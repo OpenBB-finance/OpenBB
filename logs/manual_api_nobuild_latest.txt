@@ -1,0 +1,3 @@
+PID=23380
+OUT=logs\manual_api_nobuild_20260227_021414_294.out.log
+ERR=logs\manual_api_nobuild_20260227_021414_294.err.log

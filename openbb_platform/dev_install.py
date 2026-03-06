@@ -17,7 +17,7 @@ CLI_LOCK = CLI_PATH / "poetry.lock"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
-python = ">=3.10,<4"
+python = ">=3.10,<3.14"
 openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
 openbb-core = { path = "./core", develop = true }
 openbb-platform-api = { path = "./extensions/platform_api", develop = true }
@@ -51,7 +51,7 @@ openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-index = { path = "./extensions/index", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
 openbb-regulators = { path = "./extensions/regulators", develop = true }
-openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
+openbb-mcp-server = { path = "./extensions/mcp_server", optional = true, develop = true, markers = "python_version >= '3.10'" }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
@@ -66,8 +66,6 @@ openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
-openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
-openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
 openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
 openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }

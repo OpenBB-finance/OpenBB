@@ -1,10 +1,16 @@
 """Macro router mounted under /quant_ml/macro and alias /macro."""
 
-from datetime import date
+import asyncio
+import json
+from datetime import UTC, date, datetime
+from typing import Any
 
+from cachetools import TTLCache, cached
+from fastapi.responses import StreamingResponse
 from openbb_core.app.router import Router
 
 from openbb_quant_ml.macro_models import (
+    HmmRegimePayload,
     MacroAlertsResponse,
     MacroCatalogRegisterRequest,
     MacroCatalogResponse,
@@ -22,23 +28,31 @@ from openbb_quant_ml.macro_models import (
     MacroSeriesResponse,
     MacroUpdateRequest,
     MacroUpdateResponse,
+    RegimeSchedulerStatusResponse,
+    RegimeTransitionResponse,
 )
+from openbb_quant_ml.service.macro_regime import classify_regime_label
 from openbb_quant_ml.service.macro_service import (
     evaluate_expression_response,
     get_alerts_response,
     get_catalog_response,
     get_copper_gold_preset_response,
     get_health_response,
+    get_hmm_regime_response,
     get_regime_response,
+    get_regime_scheduler_status_response,
     get_regime_state_response,
+    get_regime_transitions_response,
     get_series_multi_response,
     get_series_response,
     list_derived_response,
     register_catalog_response,
     save_derived_response,
     search_catalog_response,
+    trigger_regime_refresh_response,
     trigger_update_response,
 )
+from openbb_quant_ml.service.regime_scheduler import ensure_scheduler_started
 
 
 def _build_macro_router(prefix: str, description: str) -> Router:
@@ -107,6 +121,7 @@ def _build_macro_router(prefix: str, description: str) -> Router:
         return evaluate_expression_response(request)
 
     @router.command(methods=["GET"], path="/regime")
+    @cached(cache=TTLCache(maxsize=128, ttl=300))
     def regime(
         date: date | None = None,
         start: date | None = None,
@@ -123,6 +138,93 @@ def _build_macro_router(prefix: str, description: str) -> Router:
     def alerts(start: date | None = None, end: date | None = None, limit: int = 200) -> MacroAlertsResponse:
         """Return current and historical macro alert events."""
         return get_alerts_response(start=start, end=end, history_limit=max(1, min(limit, 1000)))
+
+    @router.command(methods=["GET"], path="/regime/transitions")
+    def regime_transitions(
+        start: date | None = None,
+        end: date | None = None,
+        threshold: float = 10.0,
+    ) -> RegimeTransitionResponse:
+        """Return macro regime transitions above threshold."""
+        return get_regime_transitions_response(
+            start=start,
+            end=end,
+            threshold=threshold,
+            freq="W",
+            fill="ffill",
+        )
+
+    @router.command(methods=["GET"], path="/regime/hmm")
+    @cached(cache=TTLCache(maxsize=128, ttl=300))
+    def regime_hmm(
+        start: date | None = None,
+        end: date | None = None,
+        n_states: int = 4,
+    ) -> HmmRegimePayload:
+        """Return HMM regime classification payload."""
+        return get_hmm_regime_response(
+            start=start,
+            end=end,
+            n_states=max(2, min(int(n_states), 8)),
+            freq="W",
+            fill="ffill",
+        )
+
+    @router.command(methods=["GET"], path="/regime/scheduler/status")
+    def regime_scheduler_status() -> RegimeSchedulerStatusResponse:
+        """Return regime scheduler status."""
+        return get_regime_scheduler_status_response()
+
+    @router.command(methods=["POST"], path="/regime/refresh")
+    def regime_refresh() -> dict[str, str]:
+        """Trigger immediate regime refresh."""
+        return trigger_regime_refresh_response()
+
+    @router.command(methods=["GET"], path="/regime/stream", response_model=None)
+    async def regime_stream(interval_sec: int = 30) -> dict[str, Any]:
+        """Stream regime score updates and label transitions as SSE."""
+        ensure_scheduler_started()
+        interval = max(10, min(int(interval_sec), 300))
+
+        async def event_generator():
+            prev_label: str | None = None
+            while True:
+                try:
+                    regime = get_regime_response(freq="W", fill="ffill")
+                    latest = regime.latest.model_dump() if regime.latest else {}
+                    label = classify_regime_label(latest) if latest else None
+                    timestamp = datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+                    payload = {
+                        "event_type": "scores_update",
+                        "timestamp": timestamp,
+                        "data": latest,
+                        "label": label,
+                    }
+                    if label and prev_label and label != prev_label:
+                        transition = {
+                            "event_type": "transition",
+                            "timestamp": timestamp,
+                            "data": {},
+                            "from_label": prev_label,
+                            "to_label": label,
+                        }
+                        yield f"event: transition\ndata: {json.dumps(transition, ensure_ascii=False)}\n\n"
+                    yield f"event: scores_update\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
+                    prev_label = label
+                except Exception as exc:  # noqa: BLE001
+                    error_payload = {
+                        "event_type": "error",
+                        "timestamp": datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+                        "data": {"message": str(exc)},
+                    }
+                    yield f"event: error\ndata: {json.dumps(error_payload, ensure_ascii=False)}\n\n"
+                await asyncio.sleep(interval)
+
+        return StreamingResponse(
+            event_generator(),
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
 
     @router.command(methods=["POST"], path="/derived/save")
     def derived_save(request: MacroDerivedSaveRequest) -> MacroDerivedResponse:

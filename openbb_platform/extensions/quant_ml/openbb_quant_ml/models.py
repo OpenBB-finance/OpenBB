@@ -5,29 +5,47 @@ from __future__ import annotations
 from datetime import date
 from typing import Any, Literal
 
-from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_validator,
+)
 
 TrainRunStatus = Literal["queued", "running", "completed", "failed"]
 SignalSide = Literal["buy", "hold", "sell"]
 ModelName = Literal["xgb_lstm", "lgbm_ranker", "catboost_ranker"]
 PortfolioMode = Literal["long_only", "long_short"]
-MuMapping = Literal["z_score", "quantile_mean_return"]
+MuMapping = Literal["z_score", "quantile_mean_return", "ic_vol_scaled"]
 TargetMode = Literal["close_to_close", "close_to_next_open", "next_open_to_close"]
 EntryPriceMode = Literal["next_open", "close", "vwap_proxy"]
 ExitPriceMode = Literal["close", "next_open", "next_close", "vwap_proxy"]
 CloseToNextOpenHorizonPolicy = Literal["fixed_1", "use_h"]
 ModelChoice = Literal["lgbm_only", "xgb_only", "catboost_only", "dual"]
 DashboardMode = Literal["live", "backtest"]
+SnapshotProfile = Literal["core", "full"]
 DashboardPayloadStatus = Literal["ok", "insufficient_data", "not_found"]
 WorkflowRunStatus = Literal["queued", "running", "completed", "failed", "unknown"]
 WalkForwardJobStatus = Literal["queued", "running", "completed", "failed", "not_found"]
-PurgingMode = Literal["legacy_month_cutoff", "strict_label_overlap"]
+PurgingMode = Literal[
+    "legacy_month_cutoff",
+    "strict_label_overlap",
+    "purged_group_kfold",
+]
 HPOObjectiveMetric = Literal["val_ic", "validation_mse"]
-OptimizerMode = Literal["mv", "cvar"]
+OptimizerMode = Literal["mv", "cvar", "sharpe", "risk_parity"]
 SignalSelectionMode = Literal["z_threshold", "quantile"]
 RiskVolMethod = Literal["ewma", "std"]
-CovarianceMethod = Literal["sample", "ewma", "ledoit_wolf", "ewma_shrink"]
+CovarianceMethod = Literal[
+    "sample", "ewma", "ledoit_wolf", "ewma_shrink", "stat_factor_pca"
+]
 TurnoverPenaltyMode = Literal["none", "l1", "l2"]
+MVOptimizerEngine = Literal["legacy_slsqp", "cvxpy", "auto"]
+AlphaMappingMode = Literal["legacy_score", "ic_vol_scaled"]
+QCStatus = Literal["NORMAL", "WARNING", "CRITICAL"]
+ExecutionMode = Literal["paper", "shadow_live", "live_adapter"]
 
 
 class DateRange(BaseModel):
@@ -93,6 +111,8 @@ class WalkForwardConfig(BaseModel):
     val_months: int = Field(default=1, ge=1, le=12)
     step_months: int = Field(default=1, ge=1, le=12)
     purging_mode: PurgingMode = "legacy_month_cutoff"
+    purged_n_splits: int = Field(default=5, ge=2, le=24)
+    purged_embargo_pct: float = Field(default=0.01, ge=0.0, le=0.5)
 
 
 class HPOConfig(BaseModel):
@@ -127,6 +147,18 @@ class FeatureConfig(BaseModel):
     include_adx: bool = False
     adx_windows: list[int] = Field(default_factory=lambda: [14])
     include_obv: bool = False
+    include_stochastic: bool = False
+    stochastic_k_period: int = Field(default=14, ge=5, le=120)
+    stochastic_d_period: int = Field(default=3, ge=2, le=30)
+    include_williams_r: bool = False
+    williams_r_period: int = Field(default=14, ge=5, le=120)
+    include_cci: bool = False
+    cci_period: int = Field(default=20, ge=5, le=120)
+    include_vwap_ratio: bool = False
+    vwap_window: int = Field(default=20, ge=5, le=252)
+    include_ichimoku_signal: bool = False
+    include_fundamentals: bool = False
+    include_sentiment: bool = False
     include_regime_features: bool = True
     include_residual_momentum: bool = False
     residual_momentum_windows: list[int] = Field(default_factory=lambda: [20])
@@ -147,6 +179,8 @@ class TrainRequest(BaseModel):
     macro_feature_subset: list[str] = Field(
         default_factory=lambda: ["z_252", "yoy", "mom_3", "slope"]
     )
+    provider: str = "yfinance"
+    fundamental_provider: str | None = None
     model_parameters: ModelConfig = Field(
         default_factory=ModelConfig,
         validation_alias=AliasChoices("model_config", "model_parameters"),
@@ -174,7 +208,28 @@ class TrainRequest(BaseModel):
     cross_sectional_sampling: bool = False
     top_liquid_n: int | None = Field(default=None, ge=50, le=5000)
     market_data_workers: int | None = Field(default=None, ge=1, le=32)
+    enable_hpo: bool | None = None
+    hpo_n_trials: int | None = Field(default=None, ge=1, le=500)
     hpo_config: HPOConfig = Field(default_factory=HPOConfig)
+
+    @field_validator("symbols")
+    @classmethod
+    def validate_symbol_limit(cls, symbols: list[str] | None):  # noqa: ANN001
+        """Limit symbols count to prevent oversized training requests."""
+        if symbols is None:
+            return symbols
+        if len(symbols) > 5000:
+            raise ValueError("Maximum 5000 symbols allowed per training request")
+        return symbols
+
+    @model_validator(mode="after")
+    def apply_hpo_legacy_fields(self) -> TrainRequest:
+        """Map legacy HPO fields into the canonical hpo_config object."""
+        if self.enable_hpo is not None:
+            self.hpo_config.enabled = bool(self.enable_hpo)
+        if self.hpo_n_trials is not None:
+            self.hpo_config.n_trials = int(self.hpo_n_trials)
+        return self
 
 
 class TrainResponse(BaseModel):
@@ -204,6 +259,29 @@ class RunStatusResponse(BaseModel):
     error: str | None = None
     artifact_contract_version: str | None = None
     required_artifacts_ready: bool | None = None
+    dataset_version: str | None = None
+    feature_set_version: str | None = None
+    qc_status: QCStatus | None = None
+    report_urls: list[str] = Field(default_factory=list)
+    model_version: str | None = None
+
+
+class RunListItem(BaseModel):
+    """Recent run item for list endpoints."""
+
+    run_id: str
+    status: str = "unknown"
+    stage: str = ""
+    created_at: str | None = None
+    updated_at: str | None = None
+    actionable_backtest: bool = False
+
+
+class RunListResponse(BaseModel):
+    """Recent run list payload."""
+
+    limit: int = 20
+    runs: list[RunListItem] = Field(default_factory=list)
 
 
 class SignalRequest(BaseModel):
@@ -274,18 +352,23 @@ class BacktestConstraints(BaseModel):
     risk_aversion: float = Field(default=3.0, gt=0, le=20.0)
     lookback_days: int = Field(default=126, ge=60, le=756)
     optimizer_mode: OptimizerMode = "mv"
+    mv_optimizer_engine: MVOptimizerEngine = "legacy_slsqp"
+    optimizer_strict: bool = False
     cvar_alpha: float = Field(default=0.05, gt=0.0, lt=1.0)
     cvar_lambda: float = Field(default=3.0, gt=0.0, le=100.0)
     scenario_lookback_days: int = Field(default=252, ge=60, le=2520)
     cov_method: CovarianceMethod = "ewma_shrink"
     cov_ewma_halflife: int = Field(default=42, ge=2, le=252)
     cov_shrinkage: float = Field(default=0.15, ge=0.0, le=1.0)
+    cov_pca_components: int = Field(default=10, ge=1, le=256)
+    cov_pca_idio_floor: float = Field(default=1e-6, gt=0.0, le=1.0)
     commission_bps: float | None = Field(default=None, ge=0.0, le=1000.0)
     half_spread_bps: float | None = Field(default=None, ge=0.0, le=1000.0)
     impact_k: float = Field(default=10.0, ge=0.0, le=1000.0)
     borrow_bps: float = Field(default=100.0, ge=0.0, le=5000.0)
     turnover_penalty_mode: TurnoverPenaltyMode = "l2"
     turnover_penalty: float = Field(default=5.0, ge=0.0, le=10000.0)
+    turnover_limit: float = Field(default=1.0, ge=0.0, le=10.0)
     gross_exposure_max: float = Field(default=1.5, ge=0.0, le=5.0)
     net_exposure_min: float = Field(default=-0.2, ge=-5.0, le=5.0)
     net_exposure_max: float = Field(default=1.0, ge=-5.0, le=5.0)
@@ -293,10 +376,33 @@ class BacktestConstraints(BaseModel):
     sector_neutral: bool = False
     beta_neutral: bool = False
     beta_tolerance: float = Field(default=0.05, ge=0.0, le=1.0)
+    min_bond_weight: float = Field(default=0.0, ge=0.0, le=1.0)
     target_vol: float | None = Field(default=None, ge=0.0, le=5.0)
+    execution_cash_buffer: float = Field(default=0.0, ge=0.0, le=1.0)
     target_vol_lookback_days: int = Field(default=63, ge=20, le=2520)
+    alpha_mapping_mode: AlphaMappingMode = "legacy_score"
+    ic_lookback_days: int = Field(default=252, ge=20, le=2520)
+    ic_ewma_halflife: int = Field(default=63, ge=2, le=2520)
+    ic_clip_min: float = Field(default=-0.2, ge=-1.0, le=1.0)
+    ic_clip_max: float = Field(default=0.2, ge=-1.0, le=1.0)
+    ic_fallback: float = Field(default=0.03, ge=-1.0, le=1.0)
+    alpha_ema_halflife_days: int = Field(default=0, ge=0, le=2520)
+    trigger_rebalance_enabled: bool = False
+    trigger_threshold_bps: float = Field(default=10.0, ge=0.0, le=5000.0)
+    trigger_cost_multiplier: float = Field(default=1.0, ge=0.0, le=100.0)
     holding_period_days: int = Field(default=-1, ge=-1, le=252)
     leakage_guard: bool = True
+    defensive_bucket_enabled: bool = False
+    defensive_floor_mode: Literal["regime", "fixed"] = "regime"
+    defensive_floor_fixed: float = Field(default=0.30, ge=0.0, le=1.0)
+    defensive_floor_low: float | None = Field(default=None, ge=0.0, le=1.0)
+    defensive_floor_mid: float | None = Field(default=None, ge=0.0, le=1.0)
+    defensive_floor_high: float | None = Field(default=None, ge=0.0, le=1.0)
+    defensive_floor_risk_off: float | None = Field(default=None, ge=0.0, le=1.0)
+    defensive_risk_off_drawdown: float | None = Field(default=None, ge=0.0, le=1.0)
+    defensive_postcheck_enabled: bool = True
+    defensive_postcheck_cvar_limit: float | None = Field(default=None, ge=-5.0, le=5.0)
+    defensive_postcheck_vol_limit: float | None = Field(default=None, ge=0.0, le=5.0)
 
 
 class BacktestRequest(BaseModel):
@@ -363,6 +469,9 @@ class BacktestMetrics(BaseModel):
     cagr: float
     sharpe: float
     sortino: float = 0.0
+    calmar: float = 0.0
+    omega: float = 0.0
+    max_consecutive_loss_days: int = 0
     max_drawdown: float
     volatility: float
     turnover: float
@@ -428,6 +537,21 @@ class RebalanceHistoryItem(BaseModel):
     turnover: float = 0.0
     binding_constraints: list[str] = Field(default_factory=list)
     previous_date: str | None = None
+    triggered: bool | None = None
+    trigger_reason: str | None = None
+    utility_gain: float | None = None
+    estimated_trigger_cost: float | None = None
+    forced_rebalance: bool | None = None
+    ic_hat: float | None = None
+    defensive_floor_target: float | None = None
+    defensive_weight_realized: float | None = None
+    defensive_core_weight: float | None = None
+    defensive_credit_weight: float | None = None
+    risk_weight_realized: float | None = None
+    postcheck_iterations: int | None = None
+    postcheck_vol_ex_ante: float | None = None
+    postcheck_cvar_ex_ante: float | None = None
+    postcheck_actions: list[str] = Field(default_factory=list)
 
 
 class BacktestResponse(BaseModel):
@@ -443,11 +567,14 @@ class BacktestResponse(BaseModel):
     metrics: BacktestMetrics
     equity_curve: list[EquityPoint]
     benchmark_curve: list[BenchmarkPoint]
+    monthly_returns: list[dict[str, float | int | str]] = Field(default_factory=list)
     period_weights: list[PeriodWeight]
     cost_breakdown: list[dict[str, float | str]] = Field(default_factory=list)
     consistency_checks: dict[str, float | bool] = Field(default_factory=dict)
     regime_mode_by_period: list[dict[str, str]] = Field(default_factory=list)
-    effective_constraints: dict[str, float | bool] = Field(default_factory=dict)
+    effective_constraints: dict[str, float | bool | str | int | None] = Field(
+        default_factory=dict
+    )
     cash_weight: float = 0.0
     cost_bps: float = 10.0
     slippage_bps: float = 2.0
@@ -463,6 +590,14 @@ class BacktestResponse(BaseModel):
     constraint_binding_summary: list[dict[str, Any]] = Field(default_factory=list)
     artifact_contract_version: str | None = None
     required_artifacts_ready: bool = False
+    dataset_version: str | None = None
+    feature_set_version: str | None = None
+    qc_status: QCStatus | None = None
+    regime_label: str | None = None
+    regime_policy_applied: dict[str, Any] = Field(default_factory=dict)
+    report_urls: list[str] = Field(default_factory=list)
+    execution_mode: ExecutionMode = "paper"
+    model_version: str | None = None
 
 
 class WalkForwardBacktestSubmitResponse(BaseModel):
@@ -605,6 +740,14 @@ class PortfolioCurrentResponse(BaseModel):
     rationale: PortfolioRationale
     last_rebalance_trades: RebalanceHistoryItem | None = None
     last_rebalance_turnover: float = 0.0
+    dataset_version: str | None = None
+    feature_set_version: str | None = None
+    qc_status: QCStatus | None = None
+    regime_label: str | None = None
+    regime_policy_applied: dict[str, Any] = Field(default_factory=dict)
+    report_urls: list[str] = Field(default_factory=list)
+    execution_mode: ExecutionMode = "paper"
+    model_version: str | None = None
 
 
 class RebalanceHistoryResponse(BaseModel):
@@ -649,12 +792,14 @@ class PortfolioPolicyResponse(BaseModel):
     """Portfolio hard-policy payload."""
 
     template: str = "diversified_long_only"
-    single_name_max_abs_weight: float = 0.04
+    single_name_max_abs_weight: float = 0.06
     small_universe_policy: str = "cash_buffer"
     sector_concentration_max: float = 0.35
-    turnover_max: float = 0.8
+    turnover_max: float = 1.0
     gross_exposure_max: float = 1.0
     net_exposure_abs_max: float = 1.0
+    min_bond_weight: float = 0.0
+    execution_cash_buffer: float = 0.0
     cash_symbol: str = "CASH"
     cash_category: str = "cash_proxy"
 
@@ -669,6 +814,11 @@ class PromotedModelResponse(BaseModel):
     updated_at: str | None = None
     source: str = "fallback_registry"
     ready: bool = False
+    alias: str = "champion"
+    model_version: str | None = None
+    dataset_version: str | None = None
+    feature_set_version: str | None = None
+    metrics: dict[str, Any] = Field(default_factory=dict)
 
 
 class FeatureImportanceResponse(BaseModel):
@@ -730,6 +880,10 @@ class DashboardHealthResponse(BaseModel):
     data_timestamp: str | None = None
     latest_market_date: str | None = None
     staleness_days: int = 0
+    disk_free_gb: float = 0.0
+    data_freshness_days: int | None = None
+    last_successful_run_at: str | None = None
+    fred_api_status: Literal["ok", "degraded", "unavailable"] = "unavailable"
     recommended_portfolio_mode: PortfolioMode = "long_only"
     universe_size: int = 0
     cost_bps: float = 10.0
@@ -893,6 +1047,15 @@ class ExecutionOrderPreviewRequest(BaseModel):
     slippage_bps: float = Field(default=2.0, ge=0.0, le=1000.0)
     cost_bps: float | None = Field(default=None, ge=0.0, le=1000.0)
     nav: float | None = Field(default=None, ge=1000.0)
+    idempotency_key: str | None = None
+
+
+class ExecutionModeUpdateRequest(BaseModel):
+    """Execution mode update request."""
+
+    run_id: str
+    model_name: ModelName = "lgbm_ranker"
+    mode: ExecutionMode = "paper"
 
 
 class ExecutionOrderItem(BaseModel):
@@ -920,6 +1083,7 @@ class ExecutionPreviewResponse(BaseModel):
     nav: float = 0.0
     orders: list[ExecutionOrderItem] = Field(default_factory=list)
     estimated_turnover: float = 0.0
+    execution_mode: ExecutionMode = "paper"
 
 
 class ExecutionSubmitResponse(BaseModel):
@@ -935,6 +1099,7 @@ class ExecutionSubmitResponse(BaseModel):
     cash_after: float = 0.0
     nav_after: float = 0.0
     kill_switch: bool = False
+    execution_mode: ExecutionMode = "paper"
 
 
 class ExecutionOrdersResponse(BaseModel):
@@ -945,6 +1110,7 @@ class ExecutionOrdersResponse(BaseModel):
     status: DashboardPayloadStatus = "ok"
     message: str | None = None
     orders: list[ExecutionOrderItem] = Field(default_factory=list)
+    execution_mode: ExecutionMode = "paper"
 
 
 class ExecutionFillsResponse(BaseModel):
@@ -955,6 +1121,7 @@ class ExecutionFillsResponse(BaseModel):
     status: DashboardPayloadStatus = "ok"
     message: str | None = None
     fills: list[dict[str, float | str]] = Field(default_factory=list)
+    execution_mode: ExecutionMode = "paper"
 
 
 class ExecutionPositionsResponse(BaseModel):
@@ -969,6 +1136,7 @@ class ExecutionPositionsResponse(BaseModel):
     cash: float = 0.0
     gross_exposure: float = 0.0
     net_exposure: float = 0.0
+    execution_mode: ExecutionMode = "paper"
 
 
 class ExecutionPnlResponse(BaseModel):
@@ -983,6 +1151,7 @@ class ExecutionPnlResponse(BaseModel):
     unrealized_pnl: float = 0.0
     total_pnl: float = 0.0
     return_pct: float = 0.0
+    execution_mode: ExecutionMode = "paper"
 
 
 class RiskLimitsResponse(BaseModel):
@@ -993,6 +1162,7 @@ class RiskLimitsResponse(BaseModel):
     status: DashboardPayloadStatus = "ok"
     limits: dict[str, float] = Field(default_factory=dict)
     kill_switch: bool = False
+    execution_mode: ExecutionMode = "paper"
 
 
 class RiskPretradeRequest(BaseModel):
@@ -1022,6 +1192,7 @@ class RiskPretradeResponse(BaseModel):
     passed: bool = True
     kill_switch: bool = False
     violations: list[RiskViolationItem] = Field(default_factory=list)
+    execution_mode: ExecutionMode = "paper"
 
 
 class RiskEventsResponse(BaseModel):
@@ -1073,6 +1244,155 @@ class OpsStatusResponse(BaseModel):
     active_job_locks: list[dict[str, Any]] = Field(default_factory=list)
     lock_health: dict[str, str] = Field(default_factory=dict)
     stale_policy: dict[str, Any] = Field(default_factory=dict)
+    data_quality: dict[str, Any] = Field(default_factory=dict)
+    reports: list[dict[str, Any]] = Field(default_factory=list)
+    model_registry: dict[str, Any] = Field(default_factory=dict)
+    scheduler: dict[str, Any] = Field(default_factory=dict)
+    notification_failures: list[dict[str, Any]] = Field(default_factory=list)
+    execution_mode: dict[str, Any] = Field(default_factory=dict)
+
+
+class DataQualityCheckResult(BaseModel):
+    """One data quality check result."""
+
+    check: str
+    severity: QCStatus = "NORMAL"
+    value: float | int | str | None = None
+    threshold: float | int | str | None = None
+    message: str | None = None
+    details: dict[str, Any] = Field(default_factory=dict)
+
+
+class DataQualityLatestResponse(BaseModel):
+    """Latest data quality payload."""
+
+    run_id: str | None = None
+    gate_name: str | None = None
+    qc_status: QCStatus = "NORMAL"
+    as_of_date: str | None = None
+    created_at: str | None = None
+    checks: list[DataQualityCheckResult] = Field(default_factory=list)
+    summary: dict[str, Any] = Field(default_factory=dict)
+    report_path: str | None = None
+
+
+class DataQualityHistoryResponse(BaseModel):
+    """Historical data quality payload."""
+
+    items: list[DataQualityLatestResponse] = Field(default_factory=list)
+
+
+class ExperimentRunItemResponse(BaseModel):
+    """Experiment registry row."""
+
+    run_id: str
+    model_type: str | None = None
+    dataset_version: str | None = None
+    feature_set_version: str | None = None
+    hyperparameters: dict[str, Any] = Field(default_factory=dict)
+    feature_set: dict[str, Any] = Field(default_factory=dict)
+    performance: dict[str, Any] = Field(default_factory=dict)
+    artifact_uri: str | None = None
+    status: str | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
+
+
+class ExperimentListResponse(BaseModel):
+    """Experiment list payload."""
+
+    items: list[ExperimentRunItemResponse] = Field(default_factory=list)
+
+
+class ModelRegistryEntryResponse(BaseModel):
+    """One model registry entry."""
+
+    alias: str
+    run_id: str | None = None
+    model_name: str | None = None
+    model_version: str | None = None
+    stage: str | None = None
+    artifact_uri: str | None = None
+    dataset_version: str | None = None
+    feature_set_version: str | None = None
+    metrics: dict[str, Any] = Field(default_factory=dict)
+    source: str | None = None
+    updated_at: str | None = None
+
+
+class ModelRegistryHistoryResponse(BaseModel):
+    """Model registry history payload."""
+
+    items: list[ModelRegistryEntryResponse] = Field(default_factory=list)
+
+
+class ReportRunItemResponse(BaseModel):
+    """One generated report row."""
+
+    run_id: str | None = None
+    report_type: str
+    report_path: str
+    status: str = "created"
+    created_at: str | None = None
+    summary: dict[str, Any] = Field(default_factory=dict)
+
+
+class ReportsLatestResponse(BaseModel):
+    """Latest report payload."""
+
+    item: ReportRunItemResponse | None = None
+
+
+class ReportsHistoryResponse(BaseModel):
+    """Historical report payload."""
+
+    items: list[ReportRunItemResponse] = Field(default_factory=list)
+
+
+class NotificationItemResponse(BaseModel):
+    """Notification outbox row."""
+
+    id: int
+    run_id: str | None = None
+    event_type: str
+    channel: str
+    fingerprint: str
+    status: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+    attempts: int = 0
+    last_error: str | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
+    delivered_at: str | None = None
+
+
+class NotificationsHistoryResponse(BaseModel):
+    """Notification history payload."""
+
+    items: list[NotificationItemResponse] = Field(default_factory=list)
+
+
+class SchedulerStatusResponse(BaseModel):
+    """Scheduler configuration and health payload."""
+
+    timezone: str | None = None
+    market_schedule: dict[str, Any] = Field(default_factory=dict)
+    expected_jobs: list[str] = Field(default_factory=list)
+    jobs: list[dict[str, Any]] = Field(default_factory=list)
+    macro_scheduler: dict[str, Any] = Field(default_factory=dict)
+    generated_at: str | None = None
+
+
+class ExecutionModeResponse(BaseModel):
+    """Execution mode payload."""
+
+    run_id: str
+    model_name: ModelName
+    mode: ExecutionMode = "paper"
+    live_adapter_enabled: bool = False
+    broker_ready: bool = False
+    kill_switch: bool = False
+    updated_at: str | None = None
 
 
 class UniverseListItemResponse(BaseModel):
@@ -1236,6 +1556,7 @@ class DashboardSnapshotV2(BaseModel):
     run_id: str
     run_uid: str | None = None
     model_name: ModelName = "lgbm_ranker"
+    snapshot_profile: SnapshotProfile = "full"
     as_of_utc: str
     total_return: float = 0.0
     cagr: float = 0.0
@@ -1249,7 +1570,21 @@ class DashboardSnapshotV2(BaseModel):
     risk_contrib_top10: list[dict[str, float | str]] = Field(default_factory=list)
     constraint_bindings: list[ConstraintBindingItem] = Field(default_factory=list)
     ic_rolling: list[dict[str, float | str]] = Field(default_factory=list)
+    regime_current: dict[str, str] = Field(default_factory=dict)
+    alerts_current_count: int = 0
+    constraint_summary: dict[str, float | int] = Field(default_factory=dict)
+    artifact_summary: ArtifactSummaryResponse | None = None
+    model_performance: ModelPerformanceResponse | None = None
+    run_latest_meta: RunLatestMetaResponse | None = None
     currency: str = "USD"
+
+
+class DashboardBootstrapResponse(BaseModel):
+    """Dashboard bootstrap payload: health + snapshot in one call."""
+
+    snapshot_profile: SnapshotProfile = "core"
+    health: DashboardHealthResponse
+    snapshot: DashboardSnapshotV2 | None = None
 
 
 class RunAuditEventItem(BaseModel):
@@ -1270,3 +1605,328 @@ class RunAuditResponse(BaseModel):
     status: DashboardPayloadStatus = "ok"
     message: str | None = None
     events: list[RunAuditEventItem] = Field(default_factory=list)
+
+
+TradingRuntimeStatus = Literal["running", "paused", "stopped"]
+TradingOrderStatus = Literal[
+    "pending",
+    "submitted",
+    "filled",
+    "partially_filled",
+    "cancelled",
+    "rejected",
+]
+TradingAlgorithmStatus = Literal[
+    "draft",
+    "dev",
+    "sandbox",
+    "validated",
+    "active",
+    "paused",
+    "deprecated",
+]
+
+
+class TradingStatusResponse(BaseModel):
+    """High-level trading console status payload."""
+
+    mode: ExecutionMode = "paper"
+    runtime_status: TradingRuntimeStatus = "stopped"
+    last_scan_at: str | None = None
+    last_order_at: str | None = None
+    active_strategy_count: int = 0
+    watchlist_size: int = 0
+    open_position_count: int = 0
+    today_signal_count: int = 0
+    today_order_count: int = 0
+    today_realized_pnl: float = 0.0
+    cumulative_pnl: float = 0.0
+    intraday_drawdown: float = 0.0
+    used_capital: float = 0.0
+    available_cash: float = 0.0
+    report_urls: list[str] = Field(default_factory=list)
+    execution_mode: ExecutionMode = "paper"
+    model_version: str | None = None
+
+
+class TradingStrategyConfigItemResponse(BaseModel):
+    """One built-in strategy config row."""
+
+    name: str
+    version: str
+    description: str | None = None
+    enabled: bool = False
+    parameters: dict[str, Any] = Field(default_factory=dict)
+
+
+class TradingAlgorithmRecordResponse(BaseModel):
+    """One custom algorithm registry row."""
+
+    name: str
+    version: str
+    status: TradingAlgorithmStatus = "draft"
+    active: bool = False
+    sandbox_mode: bool = True
+    signal_only: bool = True
+    description: str | None = None
+    parameters: dict[str, Any] = Field(default_factory=dict)
+    required_columns: list[str] = Field(default_factory=list)
+    validation_result: dict[str, Any] = Field(default_factory=dict)
+    recent_run_result: dict[str, Any] = Field(default_factory=dict)
+    recent_error: str | None = None
+    performance_summary: dict[str, Any] = Field(default_factory=dict)
+    last_run_at: str | None = None
+    created_at: str | None = None
+    modified_at: str | None = None
+
+
+class TradingSettingsResponse(BaseModel):
+    """Trading runtime settings payload."""
+
+    version: str = "v1"
+    tab_name: str = "Trading"
+    mode: ExecutionMode = "paper"
+    runtime_status: TradingRuntimeStatus = "stopped"
+    universe_id: str = "default"
+    schedule: dict[str, Any] = Field(default_factory=dict)
+    scan: dict[str, Any] = Field(default_factory=dict)
+    execution: dict[str, Any] = Field(default_factory=dict)
+    account: dict[str, Any] = Field(default_factory=dict)
+    risk: dict[str, Any] = Field(default_factory=dict)
+    strategies: dict[str, Any] = Field(default_factory=dict)
+    custom_algorithms: dict[str, Any] = Field(default_factory=dict)
+    ui: dict[str, Any] = Field(default_factory=dict)
+    built_in_strategies: list[TradingStrategyConfigItemResponse] = Field(default_factory=list)
+    custom_algorithm_records: list[TradingAlgorithmRecordResponse] = Field(default_factory=list)
+
+
+class TradingSettingsUpdateRequest(BaseModel):
+    """Partial trading settings update request."""
+
+    version: str | None = None
+    mode: ExecutionMode | None = None
+    runtime_status: TradingRuntimeStatus | None = None
+    universe_id: str | None = None
+    schedule: dict[str, Any] | None = None
+    scan: dict[str, Any] | None = None
+    execution: dict[str, Any] | None = None
+    account: dict[str, Any] | None = None
+    risk: dict[str, Any] | None = None
+    strategies: dict[str, Any] | None = None
+    custom_algorithms: dict[str, Any] | None = None
+    ui: dict[str, Any] | None = None
+
+
+class TradingCycleRunRequest(BaseModel):
+    """Trading cycle execution request."""
+
+    auto_execute: bool | None = None
+
+
+class TradingCycleRunResponse(BaseModel):
+    """Trading cycle execution result."""
+
+    cycle_id: str
+    status: str
+    signal_count: int = 0
+    order_count: int = 0
+    fill_count: int = 0
+    skipped_symbols: list[str] = Field(default_factory=list)
+    report_path: str | None = None
+    status_payload: TradingStatusResponse | None = None
+
+
+class TradingSignalItemResponse(BaseModel):
+    """One normalized signal row for the trading UI."""
+
+    signal_id: str | None = None
+    timestamp: str
+    ticker: str
+    name: str | None = None
+    current_price: float = 0.0
+    signal: str | None = None
+    signal_type: str
+    side: str
+    strategy_name: str
+    algorithm_version: str | None = None
+    signal_strength: float = 0.0
+    entry_score: float = 0.0
+    priority: float = 0.0
+    confidence: float = 0.0
+    rsi: float = 0.0
+    macd_hist: float = 0.0
+    ma_relation: float = 0.0
+    volume_change_pct: float = 0.0
+    atr: float = 0.0
+    recent_return: float = 0.0
+    recommended_action: str = "Hold"
+    position_held: bool = False
+    risk_check_status: str = "UNKNOWN"
+    risk_reason_codes: list[str] = Field(default_factory=list)
+    reason: str | None = None
+    sector: str | None = None
+
+
+class TradingScanResponse(BaseModel):
+    """Latest trading scan payload."""
+
+    generated_at: str | None = None
+    cycle_id: str | None = None
+    signal_count: int = 0
+    items: list[TradingSignalItemResponse] = Field(default_factory=list)
+
+
+class TradingScanHistoryResponse(BaseModel):
+    """Historical trading scan rows."""
+
+    items: list[TradingSignalItemResponse] = Field(default_factory=list)
+
+
+class TradingSymbolDetailResponse(BaseModel):
+    """Symbol detail panel payload."""
+
+    ticker: str
+    series: list[dict[str, Any]] = Field(default_factory=list)
+    signals: list[TradingSignalItemResponse] = Field(default_factory=list)
+    orders: list[dict[str, Any]] = Field(default_factory=list)
+    position: dict[str, Any] | None = None
+    explanation: str | None = None
+
+
+class TradingOrderItemResponse(BaseModel):
+    """One paper-trading order row."""
+
+    order_id: str
+    created_at: str | None = None
+    ticker: str
+    strategy_name: str
+    algorithm_version: str | None = None
+    status: TradingOrderStatus = "pending"
+    side: str
+    signal_type: str | None = None
+    quantity: float = 0.0
+    requested_price: float = 0.0
+    filled_price: float | None = None
+    notional: float = 0.0
+    stop_loss: float | None = None
+    take_profit: float | None = None
+    trailing_stop: float | None = None
+    reason: str | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class TradingOrdersResponse(BaseModel):
+    """Trading order history payload."""
+
+    items: list[TradingOrderItemResponse] = Field(default_factory=list)
+
+
+class TradingFillsResponse(BaseModel):
+    """Trading fill history payload."""
+
+    items: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class TradingPositionsResponse(BaseModel):
+    """Open position payload."""
+
+    mode: ExecutionMode = "paper"
+    items: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class TradingPerformanceResponse(BaseModel):
+    """Paper-trading performance payload."""
+
+    as_of_date: str | None = None
+    generated_at: str | None = None
+    equity: float = 0.0
+    cash: float = 0.0
+    used_capital: float = 0.0
+    realized_pnl: float = 0.0
+    unrealized_pnl: float = 0.0
+    total_pnl: float = 0.0
+    cumulative_return: float = 0.0
+    daily_return: float = 0.0
+    weekly_return: float = 0.0
+    monthly_return: float = 0.0
+    win_rate: float = 0.0
+    avg_win: float = 0.0
+    avg_loss: float = 0.0
+    profit_factor: float = 0.0
+    sharpe: float = 0.0
+    sortino: float = 0.0
+    max_drawdown: float = 0.0
+    turnover: float = 0.0
+    avg_holding_period: float = 0.0
+    strategy_contribution: dict[str, float] = Field(default_factory=dict)
+    ticker_contribution: dict[str, float] = Field(default_factory=dict)
+    equity_curve: list[dict[str, Any]] = Field(default_factory=list)
+    drawdown_curve: list[dict[str, Any]] = Field(default_factory=list)
+    daily_pnl: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class TradingRiskResponse(BaseModel):
+    """Trading risk status payload."""
+
+    generated_at: str | None = None
+    limits: dict[str, Any] = Field(default_factory=dict)
+    events: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class TradingEventsResponse(BaseModel):
+    """Trading audit log payload."""
+
+    items: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class TradingAlgorithmsResponse(BaseModel):
+    """Trading custom algorithm registry payload."""
+
+    items: list[TradingAlgorithmRecordResponse] = Field(default_factory=list)
+
+
+class TradingAlgorithmToggleRequest(BaseModel):
+    """Algorithm toggle request."""
+
+    name: str
+    version: str | None = None
+    active: bool | None = None
+    sandbox_mode: bool | None = None
+    signal_only: bool | None = None
+    status: TradingAlgorithmStatus | None = None
+
+
+class TradingAlgorithmValidateRequest(BaseModel):
+    """Algorithm validation request."""
+
+    name: str
+    version: str | None = None
+
+
+class TradingAlgorithmValidationResponse(BaseModel):
+    """Algorithm validation result."""
+
+    name: str
+    version: str
+    status: str
+    passed: bool
+    summary: dict[str, Any] = Field(default_factory=dict)
+    checks: list[dict[str, Any]] = Field(default_factory=list)
+    report_path: str | None = None
+    created_at: str | None = None
+
+
+class TradingExecutionModeResponse(BaseModel):
+    """Trading execution mode payload."""
+
+    mode: ExecutionMode = "paper"
+    live_adapter_enabled: bool = False
+    broker_ready: bool = False
+    kill_switch: bool = False
+    updated_at: str | None = None
+
+
+class TradingExecutionModeUpdateRequest(BaseModel):
+    """Trading execution mode update request."""
+
+    mode: ExecutionMode = "paper"

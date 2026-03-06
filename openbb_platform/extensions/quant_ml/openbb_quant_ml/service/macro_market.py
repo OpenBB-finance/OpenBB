@@ -11,6 +11,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 import pandas as pd
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 from openbb_quant_ml.service.macro_constants import load_macro_config
 from openbb_quant_ml.service.macro_db import load_observations, upsert_observations
@@ -43,6 +44,7 @@ def _rows_from_series(series: pd.Series) -> list[dict[str, Any]]:
     ]
 
 
+@retry(stop=stop_after_attempt(2), wait=wait_exponential(multiplier=1, min=1, max=4), reraise=True)
 def _fetch_yfinance(symbol: str, start: date | None, end: date | None) -> pd.Series:
     try:
         import yfinance as yf
@@ -61,6 +63,7 @@ def _fetch_yfinance(symbol: str, start: date | None, end: date | None) -> pd.Ser
             actions=False,
             interval="1d",
             threads=False,
+            timeout=8,
         )
     except Exception:  # noqa: BLE001
         return pd.Series(dtype=float)
@@ -77,13 +80,14 @@ def _fetch_yfinance(symbol: str, start: date | None, end: date | None) -> pd.Ser
     return close
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10), reraise=True)
 def _fetch_openbb_http(symbol: str, start: date | None, end: date | None) -> pd.Series:
     base_url = (os.getenv("OPENBB_API_BASE_URL") or "").strip().rstrip("/")
     if not base_url:
         return pd.Series(dtype=float)
     query = {
         "symbol": symbol,
-        "provider": "yfinance",
+        "provider": "fmp",
     }
     if start:
         query["start_date"] = start.isoformat()
@@ -122,7 +126,7 @@ def get_market_series(symbol: str, start: date | None, end: date | None) -> tupl
     symbol_norm = symbol.upper()
     cfg = load_macro_config()
     defaults = cfg.get("defaults", {})
-    order = defaults.get("market_fallback_order", ["yfinance", "openbb_http", "cache"])
+    order = defaults.get("market_fallback_order", ["openbb_http", "yfinance", "cache"])
     aliases = defaults.get("market_symbol_aliases", {})
     symbol_for_fetch = str(aliases.get(symbol_norm, symbol_norm)).upper()
 
@@ -135,22 +139,28 @@ def get_market_series(symbol: str, start: date | None, end: date | None) -> tupl
     for source in order:
         source_key = str(source).lower()
         if source_key == "yfinance":
-            series = _fetch_yfinance(symbol_for_fetch, start, end)
-            if not series.empty:
-                series.name = symbol_norm
-                upsert_observations("MARKET", symbol_norm, _rows_from_series(series))
-                return series, "yfinance", warning
-            warning = "market_yfinance_fetch_failed"
+            try:
+                series = _fetch_yfinance(symbol_for_fetch, start, end)
+                if not series.empty:
+                    series.name = symbol_norm
+                    upsert_observations("MARKET", symbol_norm, _rows_from_series(series))
+                    return series, "yfinance", warning
+                warning = "market_yfinance_fetch_failed"
+            except Exception as e:
+                warning = f"yfinance_exception: {e}"
         elif source_key == "openbb_http":
             if symbol_for_fetch != symbol_norm and symbol_for_fetch.endswith("=F"):
                 warning = "futures_symbol_openbb_http_not_supported"
                 continue
-            series = _fetch_openbb_http(symbol_for_fetch, start, end)
-            if not series.empty:
-                series.name = symbol_norm
-                upsert_observations("MARKET", symbol_norm, _rows_from_series(series))
-                return series, "openbb_http", warning
-            warning = "market_openbb_http_fetch_failed"
+            try:
+                series = _fetch_openbb_http(symbol_for_fetch, start, end)
+                if not series.empty:
+                    series.name = symbol_norm
+                    upsert_observations("MARKET", symbol_norm, _rows_from_series(series))
+                    return series, "openbb_http", warning
+                warning = "market_openbb_http_fetch_failed"
+            except Exception as e:
+                warning = f"openbb_http_exception: {e}"
         elif source_key == "cache":
             if not cached_series.empty:
                 return cached_series, "cache", warning

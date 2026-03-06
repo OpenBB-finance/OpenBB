@@ -1,0 +1,58 @@
+version: "v1"
+
+quality_gate:
+  enabled: true
+  block_on_critical: true
+  thresholds:
+    market_missing_ratio_warning: 0.05
+    market_missing_ratio_critical: 0.2
+    feature_missing_ratio_warning: 0.03
+    feature_missing_ratio_critical: 0.1
+    market_outlier_ratio_warning: 0.005
+    market_outlier_ratio_critical: 0.02
+    feature_outlier_ratio_warning: 0.01
+    feature_outlier_ratio_critical: 0.03
+    symbol_coverage_warning: 0.9
+    symbol_coverage_critical: 0.75
+    distribution_shift_warning: 1.5
+    distribution_shift_critical: 2.5
+    schema_drift_new_columns_warning: 3
+    schema_drift_missing_columns_critical: 1
+    ticker_change_warning: 1
+    delisting_warning: 1
+    corporate_action_warning: 1
+
+notifications:
+  dedupe_window_minutes: 240
+  max_attempts: 5
+  retry_backoff_sec: 30
+  channels:
+    slack:
+      enabled: false
+    discord:
+      enabled: false
+    webhook:
+      enabled: false
+    telegram:
+      enabled: false
+    email:
+      enabled: false
+
+reports:
+  output_format: "html"
+  latest_per_type_limit: 100
+  include_raw_payload_excerpt: true
+
+execution:
+  default_mode: "paper"
+  live_adapter_enabled: false
+  broker_ready: false
+  auto_reduce_positions: false
+  risk_defaults:
+    max_order_notional: 250000.0
+    daily_loss_limit: 50000.0
+    max_symbol_exposure: 0.1
+    execution_cash_buffer: 0.02
+
+scheduler:
+  expected_jobs: ["daily", "weekly", "monthly"]

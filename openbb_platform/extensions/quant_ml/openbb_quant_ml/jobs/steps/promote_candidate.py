@@ -94,12 +94,15 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             sharpe_tol = float(tol_cfg.get("sharpe", 0.10))
             val_ic_tol = float(tol_cfg.get("val_ic", 0.01))
             maxdd_tol = float(tol_cfg.get("max_drawdown", 0.03))
+            turnover_tol = float(tol_cfg.get("turnover", 0.20))
             if sharpe < (incumbent["sharpe"] - sharpe_tol):
                 failures.append("sharpe_non_inferiority")
             if val_ic < (incumbent["val_ic"] - val_ic_tol):
                 failures.append("val_ic_non_inferiority")
             if max_drawdown < (incumbent["max_drawdown"] - maxdd_tol):
                 failures.append("max_drawdown_non_inferiority")
+            if turnover > (incumbent["turnover"] + turnover_tol):
+                failures.append("turnover_non_inferiority")
 
     promoted = len(failures) == 0
     promoted_pointer = None

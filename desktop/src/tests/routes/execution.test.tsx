@@ -40,7 +40,7 @@ describe("Execution Route", () => {
       },
     ]);
 
-    global.fetch = vi.fn(async (input: string | URL) => {
+    global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
       if (url.endsWith("/api/v1/system")) return mockResponse({ results: {} });
       if (url.endsWith("/api/v1/quant_ml/universe/list")) {
@@ -82,6 +82,45 @@ describe("Execution Route", () => {
       if (url.includes("/api/v1/quant_ml/risk/events")) {
         return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", events: [] });
       }
+      if (url.includes("/api/v1/quant_ml/execution/mode?")) {
+        return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          mode: "paper",
+          live_adapter_enabled: false,
+          broker_ready: false,
+          kill_switch: false,
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/execution/mode/update") && init?.method === "POST") {
+        const body = init?.body ? JSON.parse(String(init.body)) : {};
+        return mockResponse({
+          run_id: body.run_id,
+          model_name: body.model_name,
+          mode: body.mode,
+          live_adapter_enabled: false,
+          broker_ready: false,
+          kill_switch: false,
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/runs/run-1/risk")) {
+        return mockResponse({ factor_exposure: { market: 0.3 }, stress_test: { crash: -0.08 } });
+      }
+      if (url.includes("/api/v1/quant_ml/runs/run-1/exposures")) {
+        return mockResponse({ factor_exposure: { size: 0.1 }, sector_exposure: { tech: 0.5 } });
+      }
+      if (url.includes("/api/v1/quant_ml/runs/run-1/constraints")) {
+        return mockResponse({ turnover_limit: 0.4, max_weight: 0.1 });
+      }
+      if (url.includes("/api/v1/quant_ml/runs/run-1/audit")) {
+        return mockResponse({ run_id: "run-1", status: "ok", events: [{ event_type: "preview", timestamp: "2026-03-06T00:00:00Z" }] });
+      }
+      if (url.includes("/api/v1/quant_ml/universe/snapshot")) {
+        return mockResponse({ run_id: "run-1", as_of_date: "2026-03-06", universe_id: "default", stage_counts: { u0: 100, u1: 80 }, u0_symbols: [], u1_symbols: [], u2_symbols: [], excluded: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/universe/exclusions")) {
+        return mockResponse({ run_id: "run-1", items: [{ symbol: "XYZ", reason: "liquidity" }] });
+      }
       if (url.endsWith("/api/v1/quant_ml/execution/orders/submit")) {
         return mockResponse({
           run_id: "run-1",
@@ -108,7 +147,7 @@ describe("Execution Route", () => {
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByPlaceholderText("run_id"), { target: { value: "run-1" } });
+      fireEvent.change(screen.getByPlaceholderText(/run_id/i), { target: { value: "run-1" } });
       fireEvent.click(screen.getByRole("button", { name: /Preview \+ Risk Check/i }));
     });
 
@@ -117,7 +156,35 @@ describe("Execution Route", () => {
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/execution/orders/preview"))).toBe(true);
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/risk/check/pretrade"))).toBe(true);
       expect(calls.some((url) => url.includes("/api/v1/quant_ml/execution/orders/current"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/execution/mode?"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/runs/run-1/audit"))).toBe(true);
+    });
+  });
+
+  test("updates execution mode without crashing", async () => {
+    await act(async () => {
+      render(<ExecutionComponent />);
+    });
+
+    await act(async () => {
+      fireEvent.change(screen.getByPlaceholderText(/run_id/i), { target: { value: "run-1" } });
+      fireEvent.click(screen.getByRole("button", { name: /Preview \+ Risk Check/i }));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Save Mode/i })).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/Execution Mode/i), { target: { value: "shadow_live" } });
+      fireEvent.click(screen.getByRole("button", { name: /Save Mode/i }));
+    });
+
+    await waitFor(() => {
+      const calls = vi.mocked(global.fetch).mock.calls.filter(
+        (call) => String(call[0]).endsWith("/api/v1/quant_ml/execution/mode/update") && call[1]?.method === "POST",
+      );
+      expect(calls.length).toBeGreaterThan(0);
     });
   });
 });
-

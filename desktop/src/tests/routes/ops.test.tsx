@@ -57,6 +57,51 @@ describe("Ops Route", () => {
           macro_health: {},
         });
       }
+      if (url.endsWith("/api/v1/quant_ml/data-quality/latest")) {
+        return mockResponse({
+          qc_status: "NORMAL",
+          gate_name: "gold_gate",
+          as_of_date: "2026-02-16",
+          checks: [],
+          summary: {},
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/data-quality/history")) {
+        return mockResponse({ items: [{ qc_status: "NORMAL", checks: [], summary: {} }] });
+      }
+      if (url.includes("/api/v1/quant_ml/model-registry/champion")) {
+        return mockResponse({ alias: "champion", model_name: "lgbm_ranker", model_version: "1.0.0", metrics: {} });
+      }
+      if (url.includes("/api/v1/quant_ml/model-registry/challenger")) {
+        return mockResponse({ alias: "challenger", model_name: "catboost_ranker", model_version: "0.9.0", metrics: {} });
+      }
+      if (url.includes("/api/v1/quant_ml/model-registry/history")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/reports/latest")) {
+        return mockResponse({ item: { report_type: "ops", report_path: "/tmp/ops.html", status: "ok", summary: {} } });
+      }
+      if (url.includes("/api/v1/quant_ml/reports/history")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/notifications/history")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/scheduler/status")) {
+        return mockResponse({
+          timezone: "Asia/Seoul",
+          market_schedule: { run_phase: "post_close", primary_calendar: "XNYS" },
+          expected_jobs: ["daily_close"],
+          jobs: [],
+          macro_scheduler: {},
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/experiments/list")) {
+        return mockResponse({ items: [{ run_id: "run-1", model_type: "lgbm_ranker", hyperparameters: {}, feature_set: {}, performance: {} }] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/experiments/run-1")) {
+        return mockResponse({ run_id: "run-1", model_type: "lgbm_ranker", hyperparameters: {}, feature_set: {}, performance: {} });
+      }
       return mockResponse({ detail: "not-found" }, false, 404);
     }) as unknown as typeof fetch;
   });
@@ -77,7 +122,8 @@ describe("Ops Route", () => {
     await waitFor(() => {
       const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/ops/status"))).toBe(true);
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/scheduler/status"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/experiments/list"))).toBe(true);
     });
   });
 });
-

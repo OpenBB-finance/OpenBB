@@ -245,7 +245,21 @@ describe("Macro Route", () => {
       expect(screen.getByText("Macro")).toBeInTheDocument();
       expect(screen.getByText("Catalog")).toBeInTheDocument();
       expect(screen.getByText("Cross-Asset Relationship")).toBeInTheDocument();
+      expect(screen.getByText("Current Cycle Level")).toBeInTheDocument();
     });
+
+    const desktopTabs = document
+      .querySelector('[data-testid="macro-preset-tabs-desktop"]')
+      ?.querySelectorAll('[data-testid^="macro-preset-tab-"]');
+    const mobileTabs = document
+      .querySelector('[data-testid="macro-preset-tabs-mobile"]')
+      ?.querySelectorAll('[data-testid^="macro-preset-tab-"]');
+    expect(desktopTabs?.length).toBe(12);
+    expect(mobileTabs?.length).toBe(12);
+    expect(screen.getByTestId("cycle-level-state")).toHaveTextContent(
+      "Transition",
+    );
+    expect(screen.getByTestId("cycle-level-score")).toHaveTextContent("53.4");
   });
 
   test("runs expression execute action", async () => {
@@ -396,6 +410,228 @@ describe("Macro Route", () => {
     await waitFor(() => {
       expect(screen.getByText("Macro")).toBeInTheDocument();
       expect(screen.getAllByText("No data").length).toBeGreaterThan(0);
+    });
+  });
+
+  test("caps cycle level to transition when risk-off and growth-down flags are on", async () => {
+    global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith("/api/v1/system")) {
+        return mockResponse({ results: {} });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/catalog")) {
+        return mockResponse({
+          status: "ok",
+          items: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/series")) {
+        if (url.includes("ids=")) {
+          return mockResponse({ status: "ok", series: {} });
+        }
+        return mockResponse({
+          meta: {
+            key: "FRED:UNRATE",
+            source: "FRED",
+            transform: "level",
+          },
+          status: "ok",
+          data: [{ date: "2025-01-31", value: 4.0 }],
+          stats: { last: 4.0 },
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/expression")) {
+        const body = init?.body ? JSON.parse(String(init.body)) : {};
+        return mockResponse({
+          meta: {
+            key: String(body.expr || "expr"),
+            source: "expression",
+            transform: "level",
+          },
+          data: [{ date: "2025-01-31", value: 1.0 }],
+          stats: { last: 1.0 },
+          status: "ok",
+          dependencies: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/ratio")) {
+        return mockResponse({
+          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
+          data: [{ date: "2025-01-31", value: 1.2 }],
+          stats: { last: 1.2 },
+          status: "ok",
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
+        return mockResponse({
+          meta: { key: "rolling_corr(GLD,SPY,60)", source: "expression", transform: "level" },
+          data: [{ date: "2025-01-31", value: 0.8 }],
+          stats: { last: 0.8 },
+          status: "ok",
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/regime?date=")) {
+        return mockResponse({
+          status: "ok",
+          date: "2025-02-28",
+          inflation_up: false,
+          growth_down: true,
+          risk_off_proxy: true,
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/regime")) {
+        return mockResponse({
+          status: "ok",
+          data: [
+            {
+              date: "2025-02-28",
+              risk_on_score: 80,
+              inflation_score: 25,
+              growth_score: 78,
+              liquidity_score: 75,
+              credit_stress_score: 20,
+            },
+          ],
+          latest: {
+            date: "2025-02-28",
+            risk_on_score: 80,
+            inflation_score: 25,
+            growth_score: 78,
+            liquidity_score: 75,
+            credit_stress_score: 20,
+          },
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/alerts")) {
+        return mockResponse({ status: "ok", current: [], history: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/derived")) {
+        return mockResponse({ status: "ok", items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/health")) {
+        return mockResponse({
+          status: "ok",
+          fred_api_key_configured: true,
+          macro_db_path: "/tmp/macro.db",
+          obs_stats: { total_series_in_catalog: 1, total_series_with_obs: 1 },
+          feature_stats: { total_feature_rows: 10, feature_names_present: [] },
+          warnings: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
+        return mockResponse({
+          status: "ok",
+          message: null,
+          preset_id: "copper_gold",
+          inputs: {},
+          series: [],
+          events: [],
+        });
+      }
+      if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
+        return mockResponse({ detail: "fallback" }, false, 404);
+      }
+      return mockResponse({ detail: "not-found" }, false, 404);
+    }) as unknown as typeof fetch;
+
+    await act(async () => {
+      render(<MacroComponent />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("cycle-level-state")).toHaveTextContent(
+        "Transition",
+      );
+      expect(screen.getByTestId("cycle-level-score")).toHaveTextContent("78.0");
+    });
+  });
+
+  test("renders cycle level no-data state when regime is unavailable", async () => {
+    global.fetch = vi.fn(async (input: string | URL) => {
+      const url = String(input);
+      if (url.endsWith("/api/v1/system")) {
+        return mockResponse({ results: {} });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/catalog")) {
+        return mockResponse({ status: "ok", items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/series")) {
+        return mockResponse({
+          meta: { key: "FRED:UNRATE", source: "FRED", transform: "level" },
+          status: "insufficient_data",
+          data: [],
+          stats: {},
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/expression")) {
+        return mockResponse({
+          meta: { key: "expr", source: "expression", transform: "level" },
+          status: "insufficient_data",
+          data: [],
+          stats: {},
+          dependencies: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/ratio")) {
+        return mockResponse({
+          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
+          status: "insufficient_data",
+          data: [],
+          stats: {},
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
+        return mockResponse({
+          meta: { key: "corr", source: "expression", transform: "level" },
+          status: "insufficient_data",
+          data: [],
+          stats: {},
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/regime")) {
+        return mockResponse({
+          status: "insufficient_data",
+          data: [],
+          latest: null,
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/alerts")) {
+        return mockResponse({ status: "ok", current: [], history: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/derived")) {
+        return mockResponse({ status: "ok", items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/health")) {
+        return mockResponse({
+          status: "ok",
+          fred_api_key_configured: true,
+          macro_db_path: "/tmp/macro.db",
+          obs_stats: { total_series_in_catalog: 1, total_series_with_obs: 0 },
+          feature_stats: { total_feature_rows: 0, feature_names_present: [] },
+          warnings: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
+        return mockResponse({
+          status: "insufficient_data",
+          preset_id: "copper_gold",
+          inputs: {},
+          series: [],
+          events: [],
+        });
+      }
+      if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
+        return mockResponse({ detail: "fallback" }, false, 404);
+      }
+      return mockResponse({ detail: "not-found" }, false, 404);
+    }) as unknown as typeof fetch;
+
+    await act(async () => {
+      render(<MacroComponent />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("cycle-level-state")).toHaveTextContent("No data");
     });
   });
 });

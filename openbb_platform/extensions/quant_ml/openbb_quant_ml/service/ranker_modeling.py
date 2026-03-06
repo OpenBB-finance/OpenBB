@@ -77,11 +77,97 @@ def _build_rank_labels(frame: pd.DataFrame) -> pd.Series:
     return frame.groupby("date", group_keys=False).apply(_rank_labels_for_date)
 
 
+class PurgedGroupKFold:
+    """Time-ordered group k-fold splitter with right-side embargo."""
+
+    def __init__(self, n_splits: int = 5, embargo_pct: float = 0.01) -> None:
+        self.n_splits = max(2, int(n_splits))
+        self.embargo_pct = float(max(0.0, min(float(embargo_pct), 0.5)))
+
+    def get_n_splits(self) -> int:
+        return self.n_splits
+
+    def split(
+        self,
+        x_data: pd.DataFrame | np.ndarray,  # noqa: ARG002
+        y_data: pd.Series | np.ndarray | None = None,  # noqa: ARG002
+        groups: pd.Series | np.ndarray | None = None,
+    ) -> list[tuple[np.ndarray, np.ndarray]]:
+        if groups is None:
+            raise ValueError("groups is required for PurgedGroupKFold.")
+
+        groups_arr = np.asarray(groups)
+        if groups_arr.size == 0:
+            return []
+
+        # Keep temporal order as first seen to avoid leakage from future buckets.
+        unique_groups = pd.Index(pd.Series(groups_arr).astype(str).drop_duplicates().tolist())
+        n_groups = len(unique_groups)
+        if n_groups < self.n_splits:
+            raise ValueError(
+                f"Not enough groups for PurgedGroupKFold: groups={n_groups}, splits={self.n_splits}"
+            )
+
+        fold_sizes = np.full(self.n_splits, n_groups // self.n_splits, dtype=int)
+        fold_sizes[: n_groups % self.n_splits] += 1
+        embargo_groups = int(np.ceil(n_groups * self.embargo_pct))
+
+        indexer = np.arange(groups_arr.size)
+        folds: list[tuple[np.ndarray, np.ndarray]] = []
+        start = 0
+        for fold_size in fold_sizes:
+            stop = start + int(fold_size)
+            test_groups = unique_groups[start:stop]
+
+            train_group_mask = np.ones(n_groups, dtype=bool)
+            train_group_mask[start:stop] = False
+            if embargo_groups > 0:
+                emb_start = stop
+                emb_stop = min(n_groups, stop + embargo_groups)
+                train_group_mask[emb_start:emb_stop] = False
+
+            train_groups = set(unique_groups[train_group_mask].tolist())
+            test_groups_set = set(test_groups.tolist())
+
+            train_idx = indexer[np.isin(groups_arr.astype(str), list(train_groups))]
+            test_idx = indexer[np.isin(groups_arr.astype(str), list(test_groups_set))]
+            if train_idx.size > 0 and test_idx.size > 0:
+                folds.append((train_idx, test_idx))
+            start = stop
+
+        return folds
+
+
 def _build_splits(
     data: pd.DataFrame,
     config: WalkForwardConfig,
     horizon_days: int,
 ) -> list[tuple[pd.DataFrame, pd.DataFrame]]:
+    if str(config.purging_mode) == "purged_group_kfold":
+        splitter = PurgedGroupKFold(
+            n_splits=int(getattr(config, "purged_n_splits", 5)),
+            embargo_pct=float(getattr(config, "purged_embargo_pct", 0.01)),
+        )
+        splits: list[tuple[pd.DataFrame, pd.DataFrame]] = []
+        for train_idx, val_idx in splitter.split(data, groups=data["month_id"].to_numpy()):
+            train_df = data.iloc[train_idx].copy()
+            val_df = data.iloc[val_idx].copy()
+            if train_df.empty or val_df.empty:
+                continue
+            # Purge labels whose forward horizon overlaps with validation period.
+            val_start = pd.Timestamp(val_df["date"].min()).tz_localize(None)
+            label_end = train_df["date"] + pd.to_timedelta(max(1, int(horizon_days)), unit="D")
+            train_df = train_df[label_end < val_start]
+            if train_df.empty:
+                continue
+            splits.append(
+                (
+                    train_df.sort_values(["date", "symbol"]).reset_index(drop=True),
+                    val_df.sort_values(["date", "symbol"]).reset_index(drop=True),
+                )
+            )
+        return splits
+
     month_values = sorted(data["month_id"].unique())
     min_needed = config.train_months + config.embargo_months + config.val_months
     if len(month_values) < min_needed:
@@ -322,6 +408,86 @@ def _fit_aux_xgb_regressor(
     if importance.size != len(feature_columns):
         importance = np.zeros(len(feature_columns), dtype=float)
     return model, importance
+
+
+def select_top_features(
+    feature_importance: list[dict[str, float]],
+    threshold: float = 0.95,
+    min_features: int = 15,
+) -> list[str]:
+    """Select top features by cumulative importance threshold."""
+    if not feature_importance:
+        return []
+    series = (
+        pd.Series(
+            {
+                str(item.get("feature", "")): float(item.get("importance", 0.0))
+                for item in feature_importance
+                if str(item.get("feature", "")).strip()
+            }
+        )
+        .replace([np.inf, -np.inf], np.nan)
+        .fillna(0.0)
+    )
+    if series.empty:
+        return []
+    series = series.sort_values(ascending=False)
+    positive_total = float(series[series > 0.0].sum())
+    if positive_total <= 0:
+        return list(series.index[: max(int(min_features), 1)])
+
+    capped = float(max(0.1, min(float(threshold), 1.0)))
+    cumulative = (series.clip(lower=0.0).cumsum() / positive_total).clip(upper=1.0)
+    selected = list(cumulative[cumulative <= capped].index)
+    if len(selected) < max(int(min_features), 1):
+        selected = list(series.index[: max(int(min_features), 1)])
+    elif len(selected) < len(series):
+        # Include boundary feature crossing the threshold.
+        selected.append(str(series.index[len(selected)]))
+    # Preserve order and uniqueness.
+    seen: set[str] = set()
+    output: list[str] = []
+    for name in selected:
+        if name in seen:
+            continue
+        seen.add(name)
+        output.append(name)
+    return output
+
+
+def _tune_stacking_alpha(
+    stacked_train: pd.DataFrame,
+    default_alpha: float = 1.0,
+) -> float:
+    """Tune Ridge alpha on a simple holdout split for stacked meta model."""
+    if stacked_train.empty or len(stacked_train) < 80:
+        return float(default_alpha)
+    split_idx = int(len(stacked_train) * 0.8)
+    split_idx = max(40, min(split_idx, len(stacked_train) - 20))
+    train_part = stacked_train.iloc[:split_idx]
+    val_part = stacked_train.iloc[split_idx:]
+    if train_part.empty or val_part.empty:
+        return float(default_alpha)
+
+    x_train = train_part[["score_primary", "score_aux"]].to_numpy(dtype=float)
+    y_train = train_part["target_return"].to_numpy(dtype=float)
+    x_val = val_part[["score_primary", "score_aux"]].to_numpy(dtype=float)
+    y_val = val_part["target_return"].to_numpy(dtype=float)
+
+    best_alpha = float(default_alpha)
+    best_score = -1e9
+    for alpha in [0.01, 0.1, 1.0, 5.0, 10.0]:
+        model = Ridge(alpha=float(alpha))
+        model.fit(x_train, y_train)
+        pred = model.predict(x_val).astype(float)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", ConstantInputWarning)
+            corr = spearmanr(pred, y_val, nan_policy="omit").correlation
+        score = float(corr) if corr is not None and not np.isnan(corr) else -1e9
+        if score > best_score:
+            best_score = score
+            best_alpha = float(alpha)
+    return best_alpha
 
 
 def _map_score_to_mu(
@@ -680,7 +846,9 @@ def train_ranker_models(
         if stacked_train.empty or len(stacked_train) < 50:
             stacking_enabled = False
         else:
-            stacked_meta_model = Ridge(alpha=max(0.0, stacking_alpha))
+            if stacking_alpha <= 0:
+                stacking_alpha = _tune_stacking_alpha(stacked_train, default_alpha=1.0)
+            stacked_meta_model = Ridge(alpha=max(0.0, float(stacking_alpha)))
             stacked_meta_model.fit(
                 stacked_train[["score_primary", "score_aux"]].to_numpy(dtype=float),
                 stacked_train["target_return"].to_numpy(dtype=float),
@@ -907,7 +1075,7 @@ def train_ranker_models(
             zip(feature_columns, avg_importance, strict=False),
             key=lambda pair: pair[1],
             reverse=True,
-        )[:20]
+        )
     ]
 
     metrics: dict[str, Any] = {

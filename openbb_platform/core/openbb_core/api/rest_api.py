@@ -16,12 +16,18 @@ from openbb_core.env import Env
 logger = logging.getLogger("uvicorn.error")
 
 system = SystemService().system_settings
+env = Env()
+api_docs_mode = env.API_DOCS_MODE
+_docs_enabled = api_docs_mode == "full"
+_docs_url = "/docs" if _docs_enabled else None
+_openapi_url = "/openapi.json" if _docs_enabled else None
+_redoc_url = "/redoc" if _docs_enabled else None
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     """Startup event."""
-    auth = "ENABLED" if Env().API_AUTH else "DISABLED"
+    auth = "ENABLED" if env.API_AUTH else "DISABLED"
     banner = rf"""
 
                    ███╗
@@ -63,6 +69,9 @@ app = FastAPI(
         }
         for s in system.api_settings.servers
     ],
+    docs_url=_docs_url,
+    redoc_url=_redoc_url,
+    openapi_url=_openapi_url,
     lifespan=lifespan,
 )
 app.add_middleware(
@@ -75,7 +84,7 @@ AppLoader.add_routers(
     app=app,
     routers=(
         [AuthService().router, router_system, router_coverage, router_commands]
-        if Env().DEV_MODE
+        if env.DEV_MODE
         else (
             [router_commands, router_coverage]
             if hasattr(router_commands, "routes") and router_commands.routes

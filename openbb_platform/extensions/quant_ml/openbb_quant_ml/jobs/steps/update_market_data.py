@@ -17,7 +17,14 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     symbols = get_symbols_for_universe(universe_id)
     lookback_years = int(config.get("lookback_years", 5))
     end_date = date.today()
-    start_date = end_date - timedelta(days=365 * lookback_years)
+    predict_mode = str(config.get("predict_mode", "")).strip().lower()
+    delta_days_raw = config.get("market_update_delta_days")
+    delta_days: int | None = None
+    if predict_mode == "infer_only" and delta_days_raw is not None:
+        delta_days = max(1, int(delta_days_raw))
+        start_date = end_date - timedelta(days=delta_days)
+    else:
+        start_date = end_date - timedelta(days=365 * lookback_years)
     run_dir_raw = str(config.get("_job_run_dir", "")).strip()
     run_dir = Path(run_dir_raw) if run_dir_raw else None
 
@@ -68,4 +75,8 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "market_data_timeout_sec": timeout_sec,
         "market_data_retry": retry,
         "market_data_workers": workers,
+        "start_date": start_date.isoformat(),
+        "end_date": end_date.isoformat(),
+        "lookback_years": lookback_years,
+        "market_update_delta_days": delta_days,
     }

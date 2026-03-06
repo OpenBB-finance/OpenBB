@@ -46,23 +46,28 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     root = Path(args.repo_root).resolve()
+    mirror_root = root / "OpenBB" / "openbb_platform"
+
+    if not mirror_root.exists():
+        print(f"SKIP mirror tree absent: {mirror_root}")  # noqa: T201
+        return 0
 
     checks: list[tuple[bool, str]] = []
     checks.append(
         _check_file_sync(
             root / "openbb_platform" / "core" / "openbb" / "assets" / "reference.json",
-            root / "OpenBB" / "openbb_platform" / "core" / "openbb" / "assets" / "reference.json",
+            mirror_root / "core" / "openbb" / "assets" / "reference.json",
         )
     )
     checks.append(
         _check_file_sync(
             root / "openbb_platform" / "core" / "openbb" / "package" / "__extensions__.py",
-            root / "OpenBB" / "openbb_platform" / "core" / "openbb" / "package" / "__extensions__.py",
+            mirror_root / "core" / "openbb" / "package" / "__extensions__.py",
         )
     )
 
     primary_pyproject = root / "openbb_platform" / "pyproject.toml"
-    mirror_pyproject = root / "OpenBB" / "openbb_platform" / "pyproject.toml"
+    mirror_pyproject = mirror_root / "pyproject.toml"
     for token in (
         'openbb-quant-ml = { version = "^0.1.0", optional = true }',
         'quant_ml = ["openbb-quant-ml"]',

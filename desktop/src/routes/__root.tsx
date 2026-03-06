@@ -3,20 +3,11 @@ import {
 	createRootRoute,
 	useRouter,
 } from "@tanstack/react-router";
-{/*import { invoke } from "@tauri-apps/api/core";*/}
-import { useEffect, useState } from "react";
-{/*import { useEffect, useState } from "react";
-import { ThemeToggleButton } from "../components/Icon";*/}
+import { useCallback, useEffect, useState } from "react";
 import ShowVersion from "../components/ShowVersion";
 import { ODPLogo, OpenBBLogo } from "../components/Icon";
 import { EnvironmentCreationProvider, useEnvironmentCreation } from "../contexts/EnvironmentCreationContext";
 import { QuantSessionProvider } from "../contexts/QuantSessionContext";
-
-{/*interface UserCredentials {
-	preferences?: {
-		chart_style?: string;
-	};
-}*/}
 
 export const Route = createRootRoute({
 	component: RootWithProvider,
@@ -74,6 +65,23 @@ function NavLink({ to, search, children, selectedTab, setSelectedTab }: NavLinkP
 }
 
 
+function NavSeparator() {
+    return <span className="mx-1 text-theme-muted opacity-30 select-none" aria-hidden>|</span>;
+}
+
+function ThemeToggle({ isDark, onToggle }: { isDark: boolean; onToggle: () => void }) {
+    return (
+        <button
+            type="button"
+            onClick={onToggle}
+            className="rounded-sm px-2 py-1 body-xxs-medium text-theme-muted hover:text-theme-primary transition-colors"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        >
+            {isDark ? "Light" : "Dark"}
+        </button>
+    );
+}
+
 function Root() {
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
@@ -109,116 +117,52 @@ function Root() {
 	const shouldHideNav = isJupyterLogsView || isBackendLogsView || isInstallingSetup || isInstallationProgress;
 
     useEffect(() => {
-        setSelectedTab(currentPath); // sync with route changes (e.g. browser nav)
+        setSelectedTab(currentPath);
     }, [currentPath]);
 
-	// Set up theme state and persistence
-	{/*const [isDarkMode, setIsDarkMode] = useState(() => {
-		// Check localStorage or system preference on initial load
+	const [isDarkMode, setIsDarkMode] = useState(() => {
 		if (typeof window !== "undefined") {
 			const savedTheme = localStorage.getItem("theme");
-			const prefersDark = window.matchMedia(
-				"(prefers-color-scheme: dark)",
-			).matches;
+			const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 			return savedTheme === "dark" || (savedTheme === null && prefersDark);
 		}
-		return false;
-	});*/}
+		return true;
+	});
 
-	// Load theme from backend on initial load
-	{/*useEffect(() => {
-		async function loadThemeFromSettings() {
-			try {
-				// Try to get theme from user_settings.json
-				const result = await invoke<UserCredentials>("get_user_credentials");
-				if (result?.preferences?.chart_style) {
-					const configTheme = result.preferences.chart_style;
-					const isDark = configTheme === "dark";
-
-					// Update UI state only if different from current localStorage
-					const savedTheme = localStorage.getItem("theme");
-					if (
-						(isDark && savedTheme !== "dark") ||
-						(!isDark && savedTheme !== "light")
-					) {
-						setIsDarkMode(isDark);
-					}
-				}
-			} catch (error) {
-				console.error("Failed to load theme from settings:", error);
-				// Fall back to browser/localStorage preference (already handled in useState)
-			}
-		}
-
-		loadThemeFromSettings();
-	}, []);*/}
-
-	// Apply theme class to document and save to localStorage
-	{/*useEffect(() => {
+	useEffect(() => {
+		const root = document.documentElement;
 		if (isDarkMode) {
-			document.documentElement.classList.add("dark");
+			root.classList.add("dark");
+			root.setAttribute("data-theme", "dark");
 			localStorage.setItem("theme", "dark");
 		} else {
-			document.documentElement.classList.remove("dark");
+			root.classList.remove("dark");
+			root.setAttribute("data-theme", "light");
 			localStorage.setItem("theme", "light");
 		}
-	}, [isDarkMode]);*/}
+	}, [isDarkMode]);
 
-	// Listen for theme changes in other windows
-	{/*useEffect(() => {
+	useEffect(() => {
 		const handleStorageChange = (event: StorageEvent) => {
 			if (event.key === "theme") {
-				const newTheme = event.newValue;
-				if (newTheme === "dark" && !isDarkMode) {
-					setIsDarkMode(true);
-				} else if (newTheme === "light" && isDarkMode) {
-					setIsDarkMode(false);
-				}
+				setIsDarkMode(event.newValue === "dark");
 			}
 		};
-
 		window.addEventListener("storage", handleStorageChange);
-		return () => {
-			window.removeEventListener("storage", handleStorageChange);
-		};
-	}, [isDarkMode]);*/}
+		return () => window.removeEventListener("storage", handleStorageChange);
+	}, []);
 
-	// Toggle theme function - updates both UI and backend
-	{/*const toggleTheme = async () => {
-		const newTheme = !isDarkMode ? "dark" : "light";
-
-	 	// Update UI state immediately
-		setIsDarkMode(!isDarkMode);
-
-	 	// Update backend configuration
-	 	try {
-	 		await invoke("toggle_theme", {
-	 			theme: newTheme,
-	 		});
-	 		console.log(`Theme updated to ${newTheme} in configuration`);
-	 	} catch (error) {
-	 		console.error("Failed to update theme in configuration:", error);
-	 		// Continue anyway since UI is already updated
-	 	}
-	};*/}
-
-	{/*useEffect(() => {
-		// Scroll to top on route change
-		localStorage.setItem("theme", "dark");
-	}, [currentPath]);*/}
+	const toggleTheme = useCallback(() => {
+		setIsDarkMode((prev) => !prev);
+	}, []);
 
     return (
         <div className="h-screen bg-theme-primary overflow-hidden transition-colors flex flex-col">
 			<header className={`bg-theme-primary px-5 mt-2 ${isLogsView ? "logs-page-header" : ""}`}>
-				{/*<div className="flex gap-2 relative top-2 left-[85vw] -mb-7 pt-2 px-2">
-					<ThemeToggleButton isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-				</div>*/}
 				<div className="flex items-center justify-between w-full pb-3">
-					{/* Left: ODN Logo */}
 					<ODPLogo />
-
-					{/* Right: OpenBBLogo with version below */}
-					<div className="flex flex-row items-center justify-end">
+					<div className="flex flex-row items-center gap-3">
+						<ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
 						<div className="flex flex-col">
 							<OpenBBLogo className="h-9 w-9" />
 							<div>
@@ -231,17 +175,20 @@ function Root() {
 			<div className="px-5 border-b-2 border-theme-outline">
 				{!shouldHideNav && (
 					<nav
-						className="flex flex-row gap-2 -mb-0.5"
+						className="flex flex-row items-center -mb-0.5"
 						role="tablist"
 						aria-orientation="horizontal"
 					>
 						<NavLink to="/backends" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Backends</NavLink>
 						<NavLink to="/environments" search={{ directory: undefined, userDataDir: undefined }} selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Environments</NavLink>
 						<NavLink to="/api-keys" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>API Keys</NavLink>
-						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Quant Lab</NavLink>
-						<NavLink to="/dashboard" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Dashboard</NavLink>
-						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Execution</NavLink>
+						<NavSeparator />
 						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro</NavLink>
+						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Quant Lab</NavLink>
+						<NavLink to="/trading" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Trading</NavLink>
+						<NavLink to="/dashboard" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Dashboard</NavLink>
+						<NavSeparator />
+						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Execution</NavLink>
 						<NavLink to="/ops" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Ops</NavLink>
 					</nav>
 				)}
@@ -270,3 +217,4 @@ export function RootWithProvider() {
 		</EnvironmentCreationProvider>
 	);
 }
+

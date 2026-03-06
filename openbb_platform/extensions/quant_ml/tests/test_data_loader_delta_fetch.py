@@ -7,7 +7,6 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-
 from openbb_quant_ml.service import data_loader as dl
 
 

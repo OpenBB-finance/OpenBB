@@ -1,9 +1,9 @@
 """Generate API integration tests."""
 
 import argparse
+import inspect as _inspect
 import os
 from pathlib import Path
-import inspect as _inspect
 from typing import Literal
 
 import pytest

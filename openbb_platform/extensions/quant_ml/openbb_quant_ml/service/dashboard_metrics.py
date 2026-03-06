@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -27,7 +28,7 @@ from openbb_quant_ml.models import (
     RegimeHistoryResponse,
     RollingPerformanceResponse,
 )
-from openbb_quant_ml.service.constants import RAW_STORE_DIR, RUNS_DIR
+from openbb_quant_ml.service.constants import ARTIFACT_ROOT, RAW_STORE_DIR, RUNS_DIR
 from openbb_quant_ml.service.run_index import (
     get_latest_run_id_from_index,
     upsert_run_index_entry,
@@ -97,10 +98,13 @@ def _parse_iso_timestamp(value: str | None) -> datetime | None:
         return None
 
 
+import math
+
+
 def _safe_float(value: Any, default: float = 0.0) -> float:
     try:
         casted = float(value)
-        if np.isnan(casted) or np.isinf(casted):
+        if math.isnan(casted) or math.isinf(casted) or np.isnan(casted) or np.isinf(casted):
             return default
         return casted
     except (TypeError, ValueError):
@@ -152,6 +156,51 @@ def _latest_run_from_registry() -> str | None:
             latest_ts = parsed
             latest_run_id = str(run_id)
     return latest_run_id
+
+
+def _last_successful_run_timestamp() -> str | None:
+    payload = read_registry()
+    runs = payload.get("runs", {})
+    if not isinstance(runs, dict):
+        return None
+    best_ts: datetime | None = None
+    best_value: str | None = None
+    for row in runs.values():
+        if not isinstance(row, dict):
+            continue
+        status = str(row.get("status", "")).strip().lower()
+        if status != "completed":
+            continue
+        ts_value = str(row.get("updated_at") or row.get("created_at") or "").strip()
+        parsed = _parse_iso_timestamp(ts_value)
+        if parsed is None:
+            continue
+        if best_ts is None or parsed > best_ts:
+            best_ts = parsed
+            best_value = ts_value
+    return best_value
+
+
+def _disk_free_gb() -> float:
+    try:
+        target = ARTIFACT_ROOT if ARTIFACT_ROOT.exists() else RUNS_DIR.parent
+        usage = shutil.disk_usage(target)
+        return float(round(float(usage.free) / (1024.0**3), 2))
+    except Exception:  # noqa: BLE001
+        return 0.0
+
+
+def _fred_api_status() -> str:
+    try:
+        from openbb_quant_ml.service.macro_service import get_health_response
+
+        health = get_health_response()
+        if not bool(getattr(health, "fred_api_key_configured", False)):
+            return "unavailable"
+        status_value = str(getattr(health, "status", "")).strip().lower()
+        return "ok" if status_value == "ok" else "degraded"
+    except Exception:  # noqa: BLE001
+        return "unavailable"
 
 
 def get_latest_run_id() -> str | None:
@@ -321,10 +370,19 @@ def _load_json_artifact(
     return {}
 
 
-def _load_predictions(run_dir: Path, model_name: ModelName) -> pd.DataFrame:
+def _load_predictions(
+    run_dir: Path, model_name: ModelName, columns: list[str] | None = None
+) -> pd.DataFrame:
     for path in _artifact_candidates(run_dir, "predictions", model_name, "parquet"):
         if path.exists():
-            frame = pd.read_parquet(path)
+            try:
+                frame = (
+                    pd.read_parquet(path, columns=columns)
+                    if columns
+                    else pd.read_parquet(path)
+                )
+            except Exception:  # noqa: BLE001
+                frame = pd.read_parquet(path)
             if frame.empty:
                 return frame
             frame = frame.copy()
@@ -429,6 +487,24 @@ def _strategy_returns(backtest_payload: dict[str, Any]) -> pd.Series:
         curve["daily_return"], errors="coerce"
     ).fillna(0.0)
     return curve.set_index("date")["daily_return"].sort_index()
+
+
+def _benchmark_returns_from_backtest(backtest_payload: dict[str, Any]) -> pd.Series:
+    curve = pd.DataFrame(backtest_payload.get("benchmark_curve", []))
+    if curve.empty:
+        return pd.Series(dtype=float)
+    curve["date"] = pd.to_datetime(curve["date"]).dt.tz_localize(None)
+    curve["benchmark"] = (
+        pd.to_numeric(curve.get("benchmark"), errors="coerce").ffill().bfill().fillna(100.0)
+    )
+    series = curve.set_index("date")["benchmark"].sort_index()
+    if series.empty:
+        return pd.Series(dtype=float)
+    return (
+        series.pct_change(fill_method=None)
+        .replace([np.inf, -np.inf], np.nan)
+        .fillna(0.0)
+    )
 
 
 def _equity_series(backtest_payload: dict[str, Any]) -> pd.Series:
@@ -961,7 +1037,9 @@ def _recommended_portfolio_mode(
 
 
 def get_dashboard_health(
-    run_id: str | None = None, model_name: str | None = None
+    run_id: str | None = None,
+    model_name: str | None = None,
+    mode: str | None = None,
 ) -> DashboardHealthResponse:
     """Build dashboard health payload."""
     normalized_model = _normalize_model_name(model_name)
@@ -987,6 +1065,9 @@ def get_dashboard_health(
                 backend_connected=True,
                 backend_source="quant_ml_api",
                 backend_detail="quant_ml_api_connected",
+                disk_free_gb=_disk_free_gb(),
+                last_successful_run_at=_last_successful_run_timestamp(),
+                fred_api_status=_fred_api_status(),
             )
         )
 
@@ -1001,18 +1082,38 @@ def get_dashboard_health(
                 resolved_run_id=resolved_run_id,
                 promoted_run_id=promoted_run_id,
                 pretrain_ready=pretrain_ready,
+                disk_free_gb=_disk_free_gb(),
+                last_successful_run_at=_last_successful_run_timestamp(),
+                fred_api_status=_fred_api_status(),
             )
         )
 
+    mode_key = str(mode or "backtest").strip().lower()
+    lightweight_mode = mode_key in {"live", "lite", "connect"}
     run_dir = get_run_dir(resolved_run_id)
     workflow_state, stale_running = _workflow_state_payload(
         resolved_run_id, run_dir, normalized_model
     )
     backtest_payload = _load_backtest(run_dir, normalized_model)
-    predictions = _load_predictions(run_dir, normalized_model)
-    metrics_payload = _load_metrics(run_dir, normalized_model)
+    prediction_columns = [
+        "date",
+        "symbol",
+        "predicted_return",
+        "target_return",
+        "z_score",
+        "predicted_xgb",
+        "predicted_lstm",
+    ]
+    predictions = (
+        pd.DataFrame()
+        if lightweight_mode
+        else _load_predictions(run_dir, normalized_model, columns=prediction_columns)
+    )
+    metrics_payload = {} if lightweight_mode else _load_metrics(run_dir, normalized_model)
     config_payload = load_json(run_dir / "config.json", default={})
-    cache_warm_ratio = _cache_warm_ratio(config_payload, predictions)
+    cache_warm_ratio = (
+        0.0 if lightweight_mode else _cache_warm_ratio(config_payload, predictions)
+    )
 
     latest_weight_date, latest_weights = _latest_weights(backtest_payload)
     cash_exp, gross_exp, net_exp = _exposure_from_weights(latest_weights)
@@ -1031,23 +1132,30 @@ def get_dashboard_health(
         data_timestamp = pd.Timestamp(predictions["date"].max()).date().isoformat()
 
     strategy_returns = _strategy_returns(backtest_payload)
-    close_panel = _load_market_panel(run_dir)
-    benchmark_returns = pd.Series(dtype=float)
-    if not close_panel.empty:
-        benchmark_symbol = (
-            "SPY" if "SPY" in close_panel.columns else str(close_panel.columns[0])
-        )
-        benchmark_returns = _returns_panel(close_panel)[benchmark_symbol]
-        benchmark_returns = benchmark_returns.reindex(strategy_returns.index).fillna(
-            0.0
-        )
+    benchmark_returns = _benchmark_returns_from_backtest(backtest_payload)
+    benchmark_returns = benchmark_returns.reindex(strategy_returns.index).fillna(0.0)
 
-    ic_series = _ic_series(predictions)
-    turnover_series, _ = _turnover_and_exposure_series(backtest_payload)
-    regime_frame = _regime_frame(close_panel)
-    trend_perf, _, _, _ = _build_regime_performance(
-        regime_frame, strategy_returns, ic_series, turnover_series
+    ic_series = (
+        pd.Series(dtype=float) if lightweight_mode else _ic_series(predictions)
     )
+    turnover_series, _ = _turnover_and_exposure_series(backtest_payload)
+    close_panel = pd.DataFrame()
+    regime_frame = pd.DataFrame()
+    trend_perf: dict[str, dict[str, float | int]] = {}
+    if not lightweight_mode:
+        close_panel = _load_market_panel(run_dir)
+        if benchmark_returns.empty and not close_panel.empty:
+            benchmark_symbol = (
+                "SPY" if "SPY" in close_panel.columns else str(close_panel.columns[0])
+            )
+            benchmark_returns = _returns_panel(close_panel)[benchmark_symbol]
+            benchmark_returns = benchmark_returns.reindex(strategy_returns.index).fillna(
+                0.0
+            )
+        regime_frame = _regime_frame(close_panel)
+        trend_perf, _, _, _ = _build_regime_performance(
+            regime_frame, strategy_returns, ic_series, turnover_series
+        )
     current_regime = None
     current_vol_regime = None
     if not regime_frame.empty:
@@ -1069,10 +1177,12 @@ def get_dashboard_health(
     has_backtest = bool(
         workflow_state.get("artifacts_ready", {}).get("backtest", False)
     )
-    has_metrics = bool(metrics_payload)
+    has_metrics = bool(metrics_payload) if not lightweight_mode else has_predictions
     latest_market_date = None
     if not close_panel.empty:
         latest_market_date = pd.Timestamp(close_panel.index.max()).date().isoformat()
+    elif benchmark_returns.size > 0:
+        latest_market_date = pd.Timestamp(benchmark_returns.index.max()).date().isoformat()
     elif not predictions.empty:
         latest_market_date = pd.Timestamp(predictions["date"].max()).date().isoformat()
 
@@ -1088,6 +1198,15 @@ def get_dashboard_health(
             )
         except Exception:  # noqa: BLE001
             staleness_days = 0
+    data_freshness_days: int | None = None
+    if latest_market_date:
+        try:
+            data_freshness_days = max(
+                0,
+                (datetime.now(UTC).date() - pd.Timestamp(latest_market_date).date()).days,
+            )
+        except Exception:  # noqa: BLE001
+            data_freshness_days = None
 
     recommended_mode = _recommended_portfolio_mode(current_regime, current_vol_regime)
     status = "ok"
@@ -1122,6 +1241,10 @@ def get_dashboard_health(
             data_timestamp=data_timestamp,
             latest_market_date=latest_market_date,
             staleness_days=staleness_days,
+            disk_free_gb=_disk_free_gb(),
+            data_freshness_days=data_freshness_days,
+            last_successful_run_at=_last_successful_run_timestamp(),
+            fred_api_status=_fred_api_status(),
             recommended_portfolio_mode=recommended_mode,
             universe_size=universe_size,
             cost_bps=_safe_float(backtest_payload.get("cost_bps", 10.0), 10.0),
@@ -1462,33 +1585,77 @@ def get_model_ic_decay(
     ic_rows: list[dict[str, float | int]] = []
     horizon_values: list[float] = []
 
+    pred_panel = (
+        predictions.pivot_table(
+            index="date",
+            columns="symbol",
+            values="predicted_return",
+            aggfunc="last",
+        )
+        .sort_index()
+        .astype(float)
+    )
+    common_dates = pred_panel.index.intersection(close_panel.index).intersection(
+        open_panel.index
+    )
+    common_symbols = pred_panel.columns.intersection(close_panel.columns).intersection(
+        open_panel.columns
+    )
+    pred_panel = pred_panel.reindex(index=common_dates, columns=common_symbols)
+    close_panel = close_panel.reindex(index=common_dates, columns=common_symbols)
+    open_panel = open_panel.reindex(index=common_dates, columns=common_symbols)
+
+    if pred_panel.empty or len(common_symbols) < 3:
+        return _sanitize_model_response(
+            ICDecayResponse(
+                run_id=run_id,
+                model_name=normalized_model,
+                status="insufficient_data",
+                message="Insufficient aligned panel data",
+                max_horizon=max_h,
+            )
+        )
+
+    pred_values = pred_panel.to_numpy(dtype=float, copy=False)
+
+    def _rowwise_spearman_mean(target_values: np.ndarray) -> float:
+        if target_values.shape != pred_values.shape:
+            return 0.0
+        per_date: list[float] = []
+        for idx in range(pred_values.shape[0]):
+            x = pred_values[idx]
+            y = target_values[idx]
+            valid = np.isfinite(x) & np.isfinite(y)
+            if int(valid.sum()) < 3:
+                continue
+            xv = x[valid]
+            yv = y[valid]
+            # Ties are rare for continuous predictions/returns; ordinal ranks are sufficient here.
+            rank_x = np.argsort(np.argsort(xv))
+            rank_y = np.argsort(np.argsort(yv))
+            sx = float(np.std(rank_x))
+            sy = float(np.std(rank_y))
+            if sx <= 0.0 or sy <= 0.0:
+                continue
+            corr = float(np.corrcoef(rank_x, rank_y)[0, 1])
+            if np.isfinite(corr):
+                per_date.append(corr)
+        return float(np.mean(per_date)) if per_date else 0.0
+
     for horizon in range(1, max_h + 1):
         if target_mode == "close_to_next_open":
             open_h = 1 if close_to_next_open_policy == "fixed_1" else horizon
-            fwd = open_panel.shift(-open_h) / (close_panel + 1e-12) - 1.0
+            target = open_panel.shift(-open_h) / (close_panel + 1e-12) - 1.0
         elif target_mode == "next_open_to_close":
-            fwd = close_panel.shift(-horizon) / (open_panel.shift(-1) + 1e-12) - 1.0
+            target = close_panel.shift(-horizon) / (open_panel.shift(-1) + 1e-12) - 1.0
         else:
-            fwd = close_panel.shift(-horizon) / (close_panel + 1e-12) - 1.0
-        fwd_long = (
-            fwd.reset_index()
-            .melt(id_vars=["date"], var_name="symbol", value_name="fwd_return")
-            .dropna(subset=["fwd_return"])
+            target = close_panel.shift(-horizon) / (close_panel + 1e-12) - 1.0
+        ic_value = _rowwise_spearman_mean(
+            target.to_numpy(dtype=float, copy=False)
         )
-        merged = predictions.merge(fwd_long, on=["date", "symbol"], how="inner")
-        if merged.empty:
-            ic_value = 0.0
-        else:
-            per_date: list[float] = []
-            for _, group in merged.groupby("date"):
-                if len(group) < 3:
-                    continue
-                per_date.append(
-                    _safe_spearman(group["predicted_return"], group["fwd_return"])
-                )
-            ic_value = float(np.mean(per_date)) if per_date else 0.0
-        ic_rows.append({"horizon": horizon, "ic": _safe_float(ic_value)})
-        horizon_values.append(_safe_float(ic_value))
+        safe_ic = _safe_float(ic_value)
+        ic_rows.append({"horizon": horizon, "ic": safe_ic})
+        horizon_values.append(safe_ic)
 
     arr = np.array(horizon_values, dtype=float)
     ic_t_stat = 0.0

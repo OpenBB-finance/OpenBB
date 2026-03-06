@@ -9,14 +9,25 @@ import type {
   WalkForwardBacktestStatusPayload,
   WalkForwardBacktestSubmitPayload,
   DashboardHealthPayload,
+  DashboardBootstrapPayload,
   DashboardMode,
+  DataQualityHistoryPayload,
+  DataQualityLatestPayload,
+  ExecutionMode,
+  ExecutionModePayload,
+  ExecutionModeUpdateRequestPayload,
   FeatureImportancePayload,
   ICDecayPayload,
   ModelShapPayload,
   ModelICPayload,
   ModelName,
+  ExperimentListPayload,
+  ExperimentRunItemPayload,
+  ModelRegistryEntryPayload,
+  ModelRegistryHistoryPayload,
   ModelPerformancePayload,
   ModelRegimePayload,
+  NotificationsHistoryPayload,
   OpsStatusPayload,
   PerformanceRegimePayload,
   PortfolioPolicyPayload,
@@ -33,6 +44,8 @@ import type {
   RiskPretradePayload,
   RiskLimitsPayload,
   RiskEventsPayload,
+  ReportsHistoryPayload,
+  ReportsLatestPayload,
   PortfolioExposurePayload,
   PortfolioCurrentPayload,
   PortfolioRiskPayload,
@@ -50,9 +63,11 @@ import type {
   RegimeCurrentPayload,
   RegimeHistoryPayload,
   RollingPerformancePayload,
+  RunListPayload,
   RunStatusPayload,
   SignalsRequestPayload,
   SignalsResponsePayload,
+  SnapshotProfile,
   TrainRequestPayload,
   TrainResponsePayload,
   UniverseResponse,
@@ -60,6 +75,25 @@ import type {
   UniverseExclusionsPayload,
   UniverseResolvePayload,
   UniverseSnapshotPayload,
+  SchedulerStatusPayload,
+  TradingAlgorithmToggleRequestPayload,
+  TradingAlgorithmValidationPayload,
+  TradingAlgorithmValidateRequestPayload,
+  TradingAlgorithmsPayload,
+  TradingCycleRunPayload,
+  TradingCycleRunRequestPayload,
+  TradingEventsPayload,
+  TradingExecutionModePayload,
+  TradingFillsPayload,
+  TradingOrdersPayload,
+  TradingPerformancePayload,
+  TradingPositionsPayload,
+  TradingRiskPayload,
+  TradingScanPayload,
+  TradingSettingsPayload,
+  TradingSettingsUpdatePayload,
+  TradingStatusPayload,
+  TradingSymbolDetailPayload,
 } from "../types/quant";
 import {
   parseRunAudit,
@@ -72,7 +106,8 @@ import {
 
 const QUANT_PREFIX = "/api/v1/quant_ml";
 const DASHBOARD_CACHE_TTL_MS = 60_000;
-const LIVE_CACHE_TTL_MS = 0;
+const LIVE_CACHE_TTL_MS = 5_000;
+const LEGACY_TRADING_ENDPOINT_TTL_MS = 60 * 60 * 1000;
 
 function buildFeatureActivation(featureName: string, available: boolean, detail?: string): FeatureActivation {
   return {
@@ -86,6 +121,7 @@ function buildFeatureActivation(featureName: string, available: boolean, detail?
 interface DashboardRequestOptions {
   mode?: DashboardMode;
   signal?: AbortSignal;
+  snapshotProfile?: SnapshotProfile;
 }
 
 const MAX_RETRIES = 2;
@@ -181,14 +217,158 @@ function ttlForMode(mode: DashboardMode): number {
   return mode === "live" ? LIVE_CACHE_TTL_MS : DASHBOARD_CACHE_TTL_MS;
 }
 
+function getLegacyTradingEndpointCacheKey(baseUrl: string, endpoint: string): string {
+  return `quant-legacy-endpoint:${baseUrl}:${endpoint}`;
+}
+
+function isLegacyTradingEndpointCached(baseUrl: string, endpoint: string): boolean {
+  try {
+    const raw = sessionStorage.getItem(getLegacyTradingEndpointCacheKey(baseUrl, endpoint));
+    if (!raw) return false;
+    const expiresAt = Number(raw);
+    if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) {
+      sessionStorage.removeItem(getLegacyTradingEndpointCacheKey(baseUrl, endpoint));
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function markLegacyTradingEndpoint(baseUrl: string, endpoint: string): void {
+  try {
+    sessionStorage.setItem(
+      getLegacyTradingEndpointCacheKey(baseUrl, endpoint),
+      String(Date.now() + LEGACY_TRADING_ENDPOINT_TTL_MS),
+    );
+  } catch {
+    // Ignore storage failures and fall back to probing again later.
+  }
+}
+
+function isLegacyTradingSettingsRouteError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("trading_settings_update") &&
+    message.includes("ValidationError")
+  );
+}
+
+function isLegacyTradingExecutionModeRouteError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("trading_execution_mode_update") &&
+    message.includes("ValidationError")
+  );
+}
+
+function createDefaultTradingSettingsPayload(): TradingSettingsPayload {
+  return {
+    version: "v1",
+    tab_name: "Trading",
+    mode: "paper",
+    runtime_status: "stopped",
+    universe_id: "default",
+    schedule: {
+      mode: "eod",
+      scan_interval_minutes: 1440,
+      timeframe: "1d",
+    },
+    scan: {
+      lookback_days: 320,
+      provider: "yfinance",
+      max_workers: 8,
+      max_data_delay_days: 5,
+    },
+    execution: {
+      mode: "paper",
+      auto_order: false,
+      manual_approval: false,
+      signal_generation: true,
+      fill_policy: "close",
+      slippage_bps: 2.0,
+      commission_bps: 1.0,
+    },
+    account: {
+      initial_cash: 1_000_000,
+      position_size_mode: "percent",
+      position_size_value: 0.05,
+      max_concurrent_positions: 12,
+      max_daily_new_entries: 5,
+      max_daily_gross_entry: 250_000,
+      max_order_notional: 150_000,
+      reentry_cooldown_days: 5,
+      max_daily_orders: 20,
+    },
+    risk: {
+      max_position_weight: 0.10,
+      max_sector_weight: 0.35,
+      min_avg_dollar_volume: 2_500_000,
+      max_atr_pct: 0.12,
+      stop_loss_pct: 0.08,
+      take_profit_pct: 0.15,
+      trailing_stop_enabled: false,
+      trailing_stop_pct: 0.05,
+      daily_loss_limit: 35_000,
+      portfolio_drawdown_limit: 0.15,
+      capital_cap: 750_000,
+      allow_duplicate_exposure: false,
+    },
+    strategies: {
+      ema_cross: {
+        enabled: true,
+        params: {
+          fast_span: 12,
+          slow_span: 26,
+          rsi_ceiling: 72,
+        },
+      },
+      rsi_reversal: {
+        enabled: true,
+        params: {
+          oversold: 30,
+          rebound_level: 35,
+          overbought_exit: 70,
+        },
+      },
+      breakout_volume: {
+        enabled: true,
+        params: {
+          lookback: 20,
+          volume_multiple: 1.8,
+          min_atr_pct: 0.01,
+          max_atr_pct: 0.10,
+        },
+      },
+    },
+    custom_algorithms: {
+      path: "openbb_quant_ml/algorithms",
+      auto_pause_failure_threshold: 3,
+      allowed_auto_order_statuses: ["active"],
+      default_status: "sandbox",
+      signal_only_dev: true,
+      dry_run_default: true,
+    },
+    ui: {
+      polling_ms: 5000,
+      history_limit: 250,
+    },
+    built_in_strategies: [],
+    custom_algorithm_records: [],
+  };
+}
+
 export function invalidateQuantCaches(baseUrl: string, runId?: string, modelName?: ModelName): void {
   clearCachePrefix("dashboard-");
+  clearCachePrefix("dashboard-bootstrap:");
   clearCachePrefix("portfolio-current:");
   clearCachePrefix("portfolio-rebalance-history:");
   clearCachePrefix("predictions-latest:");
   clearCachePrefix("model-performance:");
 
   if (runId && modelName) {
+    clearCachePrefix(`dashboard-bootstrap:${baseUrl}:${runId}:${modelName}`);
     clearCachePrefix(`portfolio-current:${baseUrl}:${runId}:${modelName}`);
     clearCachePrefix(`portfolio-rebalance-history:${baseUrl}:${runId}:${modelName}`);
     clearCachePrefix(`predictions-latest:${baseUrl}:${runId}:${modelName}`);
@@ -267,6 +447,34 @@ export function fetchRunStatus(baseUrl: string, runId: string): Promise<RunStatu
   });
 }
 
+export function createRunLogStreamUrl(
+  baseUrl: string,
+  runId: string,
+  pollIntervalSec = 1.0,
+  maxSeconds = 600,
+): string {
+  const query = new URLSearchParams({
+    poll_interval_sec: String(pollIntervalSec),
+    max_seconds: String(maxSeconds),
+  });
+  return `${baseUrl}${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/stream?${query.toString()}`;
+}
+
+export function fetchRunsList(
+  baseUrl: string,
+  limit = 20,
+  options: { completedFirst?: boolean; actionableOnly?: boolean } = {},
+): Promise<RunListPayload> {
+  const query = new URLSearchParams({
+    limit: String(limit),
+    completed_first: String(options.completedFirst ?? true),
+    actionable_only: String(options.actionableOnly ?? false),
+  });
+  return requestJson<RunListPayload>(baseUrl, `${QUANT_PREFIX}/runs/list?${query.toString()}`, {
+    method: "GET",
+  });
+}
+
 export function createSignals(
   baseUrl: string,
   payload: SignalsRequestPayload,
@@ -287,6 +495,19 @@ export function runBacktest(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+}
+
+export function fetchRunBacktest(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+): Promise<BacktestResponsePayload> {
+  const query = new URLSearchParams({ model_name: modelName });
+  return requestJson<BacktestResponsePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/backtest?${query.toString()}`,
+    { method: "GET" },
+  );
 }
 
 export function runBacktestWalkforward(
@@ -399,8 +620,12 @@ export function fetchRunSnapshot(
   baseUrl: string,
   runId: string,
   modelName: ModelName = "lgbm_ranker",
+  options: { profile?: SnapshotProfile } = {},
 ): Promise<RunSnapshotPayload> {
-  const query = new URLSearchParams({ model_name: modelName });
+  const query = new URLSearchParams({
+    model_name: modelName,
+    profile: options.profile ?? "full",
+  });
   return requestJsonParsed<RunSnapshotPayload>(
     baseUrl,
     `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/snapshot?${query.toString()}`,
@@ -644,6 +869,31 @@ export function fetchDashboardHealth(
     ttlForMode(mode),
     baseUrl,
     `${QUANT_PREFIX}/health?${query.toString()}`,
+    { method: "GET", signal: options.signal },
+  );
+}
+
+export function fetchDashboardBootstrap(
+  baseUrl: string,
+  runId?: string,
+  modelName: ModelName = "lgbm_ranker",
+  options: DashboardRequestOptions = {},
+): Promise<DashboardBootstrapPayload> {
+  const mode = options.mode ?? "backtest";
+  const snapshotProfile = options.snapshotProfile ?? "core";
+  const query = new URLSearchParams({
+    model_name: modelName,
+    mode,
+    snapshot_profile: snapshotProfile,
+  });
+  if (runId && runId.trim()) {
+    query.set("run_id", runId.trim());
+  }
+  return requestJsonMaybeCached<DashboardBootstrapPayload>(
+    `dashboard-bootstrap:${baseUrl}:${runId ?? ""}:${modelName}:${mode}:${snapshotProfile}`,
+    ttlForMode(mode),
+    baseUrl,
+    `${QUANT_PREFIX}/dashboard/bootstrap?${query.toString()}`,
     { method: "GET", signal: options.signal },
   );
 }
@@ -979,4 +1229,445 @@ export function fetchRiskEvents(
 
 export function fetchOpsStatus(baseUrl: string): Promise<OpsStatusPayload> {
   return requestJson<OpsStatusPayload>(baseUrl, `${QUANT_PREFIX}/ops/status`, { method: "GET" });
+}
+
+export function fetchDataQualityLatest(
+  baseUrl: string,
+  runId?: string,
+): Promise<DataQualityLatestPayload> {
+  const query = new URLSearchParams();
+  if (runId) {
+    query.set("run_id", runId);
+  }
+  const suffix = query.size > 0 ? `?${query.toString()}` : "";
+  return requestJson<DataQualityLatestPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/data-quality/latest${suffix}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchDataQualityHistory(
+  baseUrl: string,
+  runId?: string,
+  limit = 50,
+): Promise<DataQualityHistoryPayload> {
+  const query = new URLSearchParams({ limit: String(limit) });
+  if (runId) {
+    query.set("run_id", runId);
+  }
+  return requestJson<DataQualityHistoryPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/data-quality/history?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchExperimentList(baseUrl: string, limit = 50): Promise<ExperimentListPayload> {
+  return requestJson<ExperimentListPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/experiments/list?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchExperimentDetail(baseUrl: string, runId: string): Promise<ExperimentRunItemPayload> {
+  return requestJson<ExperimentRunItemPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/experiments/${runId}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchModelRegistryChampion(
+  baseUrl: string,
+  modelName?: string,
+): Promise<ModelRegistryEntryPayload> {
+  const query = modelName ? `?model_name=${encodeURIComponent(modelName)}` : "";
+  return requestJson<ModelRegistryEntryPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/model-registry/champion${query}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchModelRegistryChallenger(
+  baseUrl: string,
+  modelName?: string,
+): Promise<ModelRegistryEntryPayload> {
+  const query = modelName ? `?model_name=${encodeURIComponent(modelName)}` : "";
+  return requestJson<ModelRegistryEntryPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/model-registry/challenger${query}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchModelRegistryHistory(
+  baseUrl: string,
+  modelName?: string,
+  limit = 50,
+): Promise<ModelRegistryHistoryPayload> {
+  const query = new URLSearchParams({ limit: String(limit) });
+  if (modelName) {
+    query.set("model_name", modelName);
+  }
+  return requestJson<ModelRegistryHistoryPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/model-registry/history?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchReportsLatest(
+  baseUrl: string,
+  runId?: string,
+  reportType?: string,
+): Promise<ReportsLatestPayload> {
+  const query = new URLSearchParams();
+  if (runId) {
+    query.set("run_id", runId);
+  }
+  if (reportType) {
+    query.set("report_type", reportType);
+  }
+  const suffix = query.size > 0 ? `?${query.toString()}` : "";
+  return requestJson<ReportsLatestPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/reports/latest${suffix}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchReportsHistory(
+  baseUrl: string,
+  params?: { runId?: string; reportType?: string; limit?: number },
+): Promise<ReportsHistoryPayload> {
+  const query = new URLSearchParams({
+    limit: String(params?.limit ?? 50),
+  });
+  if (params?.runId) {
+    query.set("run_id", params.runId);
+  }
+  if (params?.reportType) {
+    query.set("report_type", params.reportType);
+  }
+  return requestJson<ReportsHistoryPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/reports/history?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchNotificationsHistory(
+  baseUrl: string,
+  limit = 100,
+): Promise<NotificationsHistoryPayload> {
+  return requestJson<NotificationsHistoryPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/notifications/history?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchSchedulerStatus(baseUrl: string): Promise<SchedulerStatusPayload> {
+  return requestJson<SchedulerStatusPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/scheduler/status`,
+    { method: "GET" },
+  );
+}
+
+export function fetchExecutionMode(
+  baseUrl: string,
+  runId: string,
+  modelName: ModelName,
+): Promise<ExecutionModePayload> {
+  const query = new URLSearchParams({
+    run_id: runId,
+    model_name: modelName,
+  });
+  return requestJson<ExecutionModePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/execution/mode?${query.toString()}`,
+    { method: "GET" },
+  );
+}
+
+export function updateExecutionMode(
+  baseUrl: string,
+  payload: ExecutionModeUpdateRequestPayload,
+): Promise<ExecutionModePayload> {
+  return requestJson<ExecutionModePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/execution/mode/update`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function fetchTradingStatus(baseUrl: string): Promise<TradingStatusPayload> {
+  return requestJson<TradingStatusPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/status`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingSettings(baseUrl: string): Promise<TradingSettingsPayload> {
+  if (isLegacyTradingEndpointCached(baseUrl, "trading-settings")) {
+    return Promise.resolve(createDefaultTradingSettingsPayload());
+  }
+  return requestJson<TradingSettingsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/settings`,
+    { method: "GET" },
+  ).catch((error) => {
+    if (isLegacyTradingSettingsRouteError(error)) {
+      markLegacyTradingEndpoint(baseUrl, "trading-settings");
+      return createDefaultTradingSettingsPayload();
+    }
+    throw error;
+  });
+}
+
+export function updateTradingSettings(
+  baseUrl: string,
+  payload: TradingSettingsUpdatePayload,
+): Promise<TradingSettingsPayload> {
+  return requestJson<TradingSettingsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/settings/update`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function runTradingCycle(
+  baseUrl: string,
+  payload: TradingCycleRunRequestPayload = {},
+): Promise<TradingCycleRunPayload> {
+  return requestJson<TradingCycleRunPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/cycle/run`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function fetchTradingScanLatest(
+  baseUrl: string,
+  limit = 200,
+): Promise<TradingScanPayload> {
+  return requestJson<TradingScanPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/scan/latest?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingScanHistory(
+  baseUrl: string,
+  limit = 250,
+): Promise<TradingScanPayload> {
+  return requestJson<TradingScanPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/scan/history?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingSymbolDetail(
+  baseUrl: string,
+  ticker: string,
+): Promise<TradingSymbolDetailPayload> {
+  return requestJson<TradingSymbolDetailPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/symbol/${encodeURIComponent(ticker)}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingOrders(
+  baseUrl: string,
+  limit = 250,
+): Promise<TradingOrdersPayload> {
+  return requestJson<TradingOrdersPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/orders?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function approveTradingOrder(
+  baseUrl: string,
+  orderId: string,
+): Promise<TradingOrdersPayload["items"][number]> {
+  return requestJson<TradingOrdersPayload["items"][number]>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/orders/${encodeURIComponent(orderId)}/approve`,
+    { method: "POST" },
+  );
+}
+
+export function cancelTradingOrder(
+  baseUrl: string,
+  orderId: string,
+): Promise<TradingOrdersPayload["items"][number]> {
+  return requestJson<TradingOrdersPayload["items"][number]>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/orders/${encodeURIComponent(orderId)}/cancel`,
+    { method: "POST" },
+  );
+}
+
+export function fetchTradingFills(
+  baseUrl: string,
+  limit = 250,
+): Promise<TradingFillsPayload> {
+  return requestJson<TradingFillsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/fills?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingPositions(baseUrl: string): Promise<TradingPositionsPayload> {
+  return requestJson<TradingPositionsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/positions`,
+    { method: "GET" },
+  );
+}
+
+export function closeTradingPosition(
+  baseUrl: string,
+  ticker: string,
+): Promise<TradingOrdersPayload["items"][number]> {
+  return requestJson<TradingOrdersPayload["items"][number]>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/positions/${encodeURIComponent(ticker)}/close`,
+    { method: "POST" },
+  );
+}
+
+export function fetchTradingPerformance(baseUrl: string): Promise<TradingPerformancePayload> {
+  return requestJson<TradingPerformancePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/performance`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingRisk(baseUrl: string): Promise<TradingRiskPayload> {
+  return requestJson<TradingRiskPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/risk`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingEvents(
+  baseUrl: string,
+  limit = 250,
+): Promise<TradingEventsPayload> {
+  return requestJson<TradingEventsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/events?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchTradingAlgorithms(baseUrl: string): Promise<TradingAlgorithmsPayload> {
+  return requestJson<TradingAlgorithmsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/algorithms`,
+    { method: "GET" },
+  );
+}
+
+export function toggleTradingAlgorithm(
+  baseUrl: string,
+  payload: TradingAlgorithmToggleRequestPayload,
+): Promise<TradingAlgorithmsPayload> {
+  return requestJson<TradingAlgorithmsPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/algorithms/toggle`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function validateTradingAlgorithm(
+  baseUrl: string,
+  payload: TradingAlgorithmValidateRequestPayload,
+): Promise<TradingAlgorithmValidationPayload> {
+  return requestJson<TradingAlgorithmValidationPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/algorithms/validate`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export function fetchTradingExecutionMode(
+  baseUrl: string,
+): Promise<TradingExecutionModePayload> {
+  if (isLegacyTradingEndpointCached(baseUrl, "trading-execution-mode")) {
+    return fetchTradingStatus(baseUrl).then((status) => ({
+      mode: status.mode ?? "paper",
+      live_adapter_enabled: false,
+      broker_ready: false,
+      kill_switch: false,
+      updated_at: status.last_order_at ?? status.last_scan_at ?? undefined,
+    }));
+  }
+  return requestJson<TradingExecutionModePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/execution/mode`,
+    { method: "GET" },
+  ).catch(async (error) => {
+    if (isLegacyTradingExecutionModeRouteError(error)) {
+      markLegacyTradingEndpoint(baseUrl, "trading-execution-mode");
+      const status = await fetchTradingStatus(baseUrl);
+      return {
+        mode: status.mode ?? "paper",
+        live_adapter_enabled: false,
+        broker_ready: false,
+        kill_switch: false,
+        updated_at: status.last_order_at ?? status.last_scan_at ?? undefined,
+      };
+    }
+    throw error;
+  });
+}
+
+export function updateTradingExecutionMode(
+  baseUrl: string,
+  mode: ExecutionMode,
+): Promise<TradingExecutionModePayload> {
+  return requestJson<TradingExecutionModePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/trading/execution/mode/update`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode }),
+    },
+  );
 }

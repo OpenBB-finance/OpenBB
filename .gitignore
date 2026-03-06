@@ -61,3 +61,20 @@ obb/*
 *.pkg
 *.exe
 build/conda/tmp
+
+# Logs
+logs/*.out.log
+logs/*.err.log
+logs/*.log
+logs/overnight/
+logs/verification/
+logs/scheduler/
+
+# Temporary files
+.tmp/
+
+# Legacy assets
+images/legacy/
+
+# Runtime data
+.logs/runtime/

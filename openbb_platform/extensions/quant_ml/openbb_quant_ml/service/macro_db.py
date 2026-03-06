@@ -23,10 +23,10 @@ def _ensure_db_parent(path: Path) -> None:
 def get_connection() -> Iterable[sqlite3.Connection]:
     """Yield SQLite connection with standard pragmas."""
     _ensure_db_parent(MACRO_DB_PATH)
-    conn = sqlite3.connect(MACRO_DB_PATH)
+    conn = sqlite3.connect(MACRO_DB_PATH, timeout=15.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL;")
-    conn.execute("PRAGMA busy_timeout=5000;")
+    conn.execute("PRAGMA busy_timeout=15000;")
     conn.execute("PRAGMA synchronous=NORMAL;")
     try:
         yield conn

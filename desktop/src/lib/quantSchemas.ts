@@ -8,7 +8,8 @@ import type {
   RunExposuresPayload,
 } from "../types/quant";
 
-const modelNameSchema = z.enum(["xgb_lstm", "lgbm_ranker"]);
+const modelNameSchema = z.enum(["xgb_lstm", "lgbm_ranker", "catboost_ranker"]);
+const snapshotProfileSchema = z.enum(["core", "full"]);
 const statusSchema = z.enum(["ok", "insufficient_data", "not_found"]);
 const portfolioPositionSchema = z.object({
   symbol: z.string(),
@@ -44,6 +45,41 @@ const runLatestMetaSchema = z.object({
   message: z.string().nullable().optional(),
 });
 
+const artifactSummarySchema = z.object({
+  run_id: z.string(),
+  model_name: modelNameSchema,
+  model_meta: z.record(z.unknown()),
+  latest_validation_error: z.number().nullable().optional(),
+  feature_importance: z.array(
+    z.object({
+      feature: z.string(),
+      importance: z.number(),
+    }),
+  ),
+  params: z.record(z.unknown()),
+  available_artifacts: z.array(z.string()),
+});
+
+const modelPerformanceSchema = z.object({
+  run_id: z.string(),
+  models: z.array(
+    z.object({
+      model_name: modelNameSchema,
+      train_ic: z.number().nullable().optional(),
+      val_ic: z.number().nullable().optional(),
+      ndcg: z.number().nullable().optional(),
+      sharpe: z.number().nullable().optional(),
+      max_dd: z.number().nullable().optional(),
+      turnover: z.number().nullable().optional(),
+      hit_rate: z.number().nullable().optional(),
+      backend: z.string().nullable().optional(),
+      primary_backend: z.string().nullable().optional(),
+      stacked_v1: z.boolean().optional(),
+      regime_performance: z.record(z.union([z.number(), z.null()])).optional(),
+    }),
+  ),
+});
+
 const runLatestConstraintsSchema = z.object({
   run_id: z.string(),
   model_name: modelNameSchema,
@@ -65,6 +101,7 @@ const dashboardSnapshotSchema = z.object({
   run_id: z.string(),
   run_uid: z.string().nullable().optional(),
   model_name: modelNameSchema,
+  snapshot_profile: snapshotProfileSchema.optional().default("full"),
   as_of_utc: z.string(),
   total_return: z.number(),
   cagr: z.number(),
@@ -78,6 +115,12 @@ const dashboardSnapshotSchema = z.object({
   risk_contrib_top10: z.array(portfolioRiskContributionSchema),
   constraint_bindings: z.array(constraintBindingItemSchema),
   ic_rolling: z.array(z.record(z.union([z.string(), z.number()]))),
+  regime_current: z.record(z.string()).optional(),
+  alerts_current_count: z.number().optional(),
+  constraint_summary: z.record(z.number()).optional(),
+  artifact_summary: artifactSummarySchema.nullable().optional(),
+  model_performance: modelPerformanceSchema.nullable().optional(),
+  run_latest_meta: runLatestMetaSchema.nullable().optional(),
   currency: z.string(),
 });
 

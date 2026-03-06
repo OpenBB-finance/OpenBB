@@ -3,6 +3,9 @@
 from pathlib import Path
 
 from tomlkit import load
+from tomlkit import loads
+
+from openbb_platform import dev_install
 
 ROOT_DIR = Path(__file__).parent.parent
 
@@ -58,6 +61,9 @@ def test_extension_versions_match_main_pyproject():
                 pkg in package_map
             ), f"{pkg} listed in main pyproject.toml but no pyproject.toml found with that name"
 
+            if isinstance(main_version, dict) and "path" in main_version and "version" not in main_version:
+                continue
+
             # Load the extension's pyproject.toml
             with open(package_map[pkg], encoding="utf-8") as f:
                 ext_data = load(f)
@@ -75,3 +81,15 @@ def test_extension_versions_match_main_pyproject():
                 f"Version mismatch for {pkg}: main pyproject.toml has"
                 f"{m_version}, extension pyproject.toml has {ext_version}"
             )
+
+
+def test_dev_install_python_constraint_matches_main_pyproject():
+    """Ensure local editable installs use the same Python range as the main project."""
+
+    with open(ROOT_DIR / "pyproject.toml", encoding="utf-8") as f:
+        data = load(f)
+
+    main_python = data["tool"]["poetry"]["dependencies"]["python"]  # type: ignore[index]
+    local_python = loads(dev_install.LOCAL_DEPS)["tool"]["poetry"]["dependencies"]["python"]  # type: ignore[index]
+
+    assert local_python == main_python

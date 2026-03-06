@@ -3,36 +3,49 @@ import './styles.css';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 
-// Suppress known forwardRef warning from Radix UI in @openbb/ui-pro
-// This is a harmless warning from older Radix UI versions
-const originalError = console.error;
-console.error = (...args) => {
-  if (typeof args[0] === 'string' && args[0].includes('forwardRef render functions accept exactly two parameters')) {
+const FORWARD_REF_WARNING = 'forwardRef render functions accept exactly two parameters';
+
+const shouldSuppressKnownConsoleNoise = (args: unknown[]): boolean =>
+  args.some((arg) => typeof arg === 'string' && arg.includes(FORWARD_REF_WARNING));
+
+const patchConsoleMethod = (
+  originalMethod: (...args: unknown[]) => void,
+) => (...args: unknown[]) => {
+  if (shouldSuppressKnownConsoleNoise(args)) {
     return;
   }
-  originalError.apply(console, args);
+  originalMethod.apply(console, args);
 };
 
-// Import the generated route tree
-import { routeTree } from './routeTree.gen'
+console.error = patchConsoleMethod(console.error.bind(console));
+console.warn = patchConsoleMethod(console.warn.bind(console));
 
-// Create a new router instance
-const router = createRouter({ routeTree })
+const createAppRouter = async () => {
+  const { routeTree } = await import('./routeTree.gen');
+  return createRouter({ routeTree });
+};
 
-// Register the router instance for type safety
+type AppRouter = Awaited<ReturnType<typeof createAppRouter>>;
+
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: AppRouter
   }
 }
 
-// Render the app
-const rootElement = document.getElementById('app')!
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
+const bootstrap = async () => {
+  const rootElement = document.getElementById('app')!;
+  if (rootElement.innerHTML) {
+    return;
+  }
+
+  const router = await createAppRouter();
+  const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
       <RouterProvider router={router} />
     </StrictMode>
-  )
-}
+  );
+};
+
+void bootstrap();

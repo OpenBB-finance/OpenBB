@@ -6,7 +6,11 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-from openbb_quant_ml.models import ExecutionOrderPreviewRequest, RiskPretradeRequest
+from openbb_quant_ml.models import (
+    ExecutionModeUpdateRequest,
+    ExecutionOrderPreviewRequest,
+    RiskPretradeRequest,
+)
 from openbb_quant_ml.service import (
     execution as ex,
     pipeline,
@@ -186,4 +190,73 @@ def test_risk_pretrade_killswitch_blocks_submit(
     limits = ex.get_risk_limits(run_id, "lgbm_ranker")
     assert limits.status == "ok"
     assert limits.kill_switch is True
-    assert limits.limits.get("max_weight") == pytest.approx(0.04)
+    assert limits.limits.get("max_weight") == pytest.approx(
+        ex.DEFAULT_RISK_LIMITS.get("max_weight", 0.0)
+    )
+
+
+def test_execution_modes_idempotency_and_live_adapter_halt(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    run_id = "run-exec-modes"
+    run_dir = _build_execution_run(tmp_path, run_id=run_id, concentrated=False)
+    _patch_run(monkeypatch, run_dir, run_id)
+
+    mode = ex.set_execution_mode(
+        ExecutionModeUpdateRequest(
+            run_id=run_id,
+            model_name="lgbm_ranker",
+            mode="shadow_live",
+        )
+    )
+    assert mode.mode == "shadow_live"
+
+    request = ExecutionOrderPreviewRequest(
+        run_id=run_id,
+        model_name="lgbm_ranker",
+        slippage_bps=2.0,
+        cost_bps=10.0,
+        nav=1_000_000.0,
+        idempotency_key="batch-1",
+    )
+
+    shadow_submit = ex.submit_execution_orders(request)
+    assert shadow_submit.status == "ok"
+    assert shadow_submit.execution_mode == "shadow_live"
+    assert shadow_submit.fills_count == 0
+
+    duplicate_submit = ex.submit_execution_orders(request)
+    assert duplicate_submit.status == "insufficient_data"
+    assert "Duplicate order batch" in str(duplicate_submit.message)
+    assert duplicate_submit.execution_mode == "shadow_live"
+
+    ex.set_execution_mode(
+        ExecutionModeUpdateRequest(
+            run_id=run_id,
+            model_name="lgbm_ranker",
+            mode="live_adapter",
+        )
+    )
+    live_submit = ex.submit_execution_orders(
+        ExecutionOrderPreviewRequest(
+            run_id=run_id,
+            model_name="lgbm_ranker",
+            slippage_bps=2.0,
+            cost_bps=10.0,
+            nav=1_000_000.0,
+            idempotency_key="batch-2",
+        )
+    )
+    assert live_submit.status == "insufficient_data"
+    assert live_submit.kill_switch is True
+    assert live_submit.execution_mode == "live_adapter"
+    assert "disabled" in str(live_submit.message).lower()
+
+    mode_after = ex.get_execution_mode_response(run_id, "lgbm_ranker")
+    assert mode_after.mode == "live_adapter"
+    assert mode_after.kill_switch is True
+
+    events = ex.get_risk_events(run_id, "lgbm_ranker", limit=100)
+    assert any(
+        str(item.get("rule_id")) == "api_failure_halt" for item in events.events
+    )

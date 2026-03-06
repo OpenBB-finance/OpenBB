@@ -1,0 +1,83 @@
+name: Quant ML Coverage Gate
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "openbb_platform/extensions/quant_ml/**"
+      - ".github/workflows/quant-ml-coverage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  quant_ml_coverage:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+          python openbb_platform/dev_install.py -e
+
+      - name: Run quant_ml tests with coverage gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pytest openbb_platform/extensions/quant_ml/tests \
+            --cov=openbb_platform/extensions/quant_ml/openbb_quant_ml \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            --cov-fail-under=70 | tee quant_ml_coverage.log
+
+      - name: Build coverage summary
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          import xml.etree.ElementTree as ET
+          tree = ET.parse("coverage.xml")
+          root = tree.getroot()
+          ratio = float(root.attrib.get("line-rate", "0"))
+          pct = ratio * 100.0
+          msg = f"Quant ML coverage: {pct:.2f}% (gate: 70%)"
+          print(msg)
+          with open("quant_ml_coverage_comment.md", "w", encoding="utf-8") as f:
+              f.write("## Quant ML Coverage\\n")
+              f.write(f"- {msg}\\n")
+              f.write("- Source: `openbb_platform/extensions/quant_ml/openbb_quant_ml`\\n")
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              with open(summary_path, "a", encoding="utf-8") as f:
+                  f.write(f"### {msg}\\n")
+          PY
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quant-ml-coverage
+          path: |
+            coverage.xml
+            quant_ml_coverage.log
+            quant_ml_coverage_comment.md
+
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: quant_ml_coverage_comment.md

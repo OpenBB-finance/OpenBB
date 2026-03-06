@@ -1,0 +1,358 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e24]:
+        - button "Switch to dark mode" [ref=e25] [cursor=pointer]: Dark
+        - img "OpenBB Logo" [ref=e27]
+  - tablist [ref=e30]:
+    - tab "Backends" [ref=e31] [cursor=pointer]
+    - tab "Environments" [ref=e32] [cursor=pointer]
+    - tab "API Keys" [ref=e33] [cursor=pointer]
+    - generic [ref=e34]: "|"
+    - tab "Macro" [ref=e35] [cursor=pointer]
+    - tab "Quant Lab" [selected] [ref=e36] [cursor=pointer]
+    - tab "Trading" [ref=e37] [cursor=pointer]
+    - tab "Dashboard" [ref=e38] [cursor=pointer]
+    - generic [ref=e39]: "|"
+    - tab "Execution" [ref=e40] [cursor=pointer]
+    - tab "Ops" [ref=e41] [cursor=pointer]
+  - main [ref=e43]:
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - heading "Quant Lab" [level=1] [ref=e46]
+        - paragraph [ref=e47]: "Local ML/DL quant workflow: train, signal generation, backtest, and SPY benchmark comparison."
+        - status "Workflow steps" [ref=e48]:
+          - generic [ref=e49]: 1. Universe
+          - generic [ref=e50]: /
+          - generic [ref=e51]: 2. Train
+          - generic [ref=e52]: /
+          - generic [ref=e53]: 3. Signals
+          - generic [ref=e54]: /
+          - generic [ref=e55]: 4. Backtest
+      - generic [ref=e56]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "Controls" [level=2] [ref=e60]
+            - paragraph [ref=e61]: Universe, period, model, and run actions
+          - generic [ref=e62]:
+            - generic [ref=e63]:
+              - text: Universe Set
+              - combobox "Universe Set" [ref=e64]:
+                - option "Default (manual symbols)" [selected]
+                - option "Global Core Equity (U0/U1/U2) (min 1200)"
+              - paragraph [ref=e65]: Default mode is active. Train request will use symbols from textarea.
+            - generic [ref=e66]:
+              - paragraph [ref=e67]: Universe Profile
+              - generic [ref=e68]:
+                - button "All" [disabled] [ref=e69]
+                - button "Aggressive" [disabled] [ref=e70]
+                - button "Defensive" [disabled] [ref=e71]
+                - generic [ref=e72]: "Current: All"
+            - generic [ref=e73]:
+              - text: Symbols (comma/newline separated)
+              - textbox "Symbols (comma/newline separated)" [ref=e74]:
+                - /placeholder: SPY, QQQ, TLT ...
+              - generic [ref=e75]:
+                - button "Format" [ref=e76] [cursor=pointer]
+                - button "Clear" [ref=e77] [cursor=pointer]
+              - paragraph [ref=e78]: "Parsed symbols: 0"
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - text: Start
+                - textbox "Start" [ref=e81]: 2021-03-06
+              - generic [ref=e82]:
+                - text: End
+                - textbox "End" [ref=e83]: 2026-03-06
+            - generic [ref=e84]:
+              - generic [ref=e85]:
+                - text: Run ID
+                - textbox "Run ID" [ref=e86]:
+                  - /placeholder: Paste existing run_id
+              - button "Load Run" [disabled] [ref=e87]
+            - generic [ref=e88]:
+              - paragraph [ref=e89]: Training Speed
+              - generic [ref=e90]:
+                - button "Turbo ~2-5m" [ref=e91] [cursor=pointer]:
+                  - paragraph [ref=e92]: Turbo
+                  - paragraph [ref=e93]: ~2-5m
+                - button "Fast ~5-15m" [ref=e94] [cursor=pointer]:
+                  - paragraph [ref=e95]: Fast
+                  - paragraph [ref=e96]: ~5-15m
+                - button "Standard ~15-40m" [ref=e97] [cursor=pointer]:
+                  - paragraph [ref=e98]: Standard
+                  - paragraph [ref=e99]: ~15-40m
+                - button "Thorough ~40m-2h" [ref=e100] [cursor=pointer]:
+                  - paragraph [ref=e101]: Thorough
+                  - paragraph [ref=e102]: ~40m-2h
+              - paragraph [ref=e103]: 5y dataset + full walk-forward with balanced defaults.
+              - generic [ref=e104]:
+                - generic [ref=e105]:
+                  - paragraph [ref=e106]: Quick
+                  - paragraph [ref=e107]: "OFF"
+                - generic [ref=e108]:
+                  - paragraph [ref=e109]: Pruning
+                  - paragraph [ref=e110]: "OFF"
+                - generic [ref=e111]:
+                  - paragraph [ref=e112]: HPO
+                  - paragraph [ref=e113]: "OFF"
+            - generic [ref=e114]:
+              - generic [ref=e115]:
+                - text: Model
+                - combobox "Model" [ref=e116]:
+                  - option "LGBM Ranker" [selected]
+                  - option "XGB + LSTM"
+                  - option "CatBoost Ranker (temporarily disabled)" [disabled]
+              - generic [ref=e117]:
+                - text: Data Provider
+                - combobox "Data Provider" [ref=e118]:
+                  - option "YFinance" [selected]
+                  - option "FMP"
+                  - option "Polygon"
+              - generic [ref=e119]:
+                - text: Top K
+                - spinbutton "Top K" [ref=e120]: "20"
+              - generic [ref=e121]:
+                - text: Score Threshold
+                - spinbutton "Score Threshold" [ref=e122]: "0.5"
+              - generic [ref=e123]:
+                - checkbox "Balanced long/short" [ref=e124]
+                - text: Balanced long/short
+              - generic [ref=e125]:
+                - checkbox "Include fundamentals" [ref=e126]
+                - text: Fundamental Momentum
+              - generic [ref=e127]:
+                - text: Fundamental Provider
+                - combobox "Fundamental Provider" [disabled] [ref=e128]:
+                  - option "Auto (same as data)" [selected]
+                  - option "YFinance"
+                  - option "FMP"
+                  - option "Polygon"
+              - generic [ref=e129]:
+                - checkbox "Include sentiment" [ref=e130]
+                - text: Market Sentiment (preview)
+            - button "Show Advanced Model Config (LSTM, XGB, WF params)" [ref=e131] [cursor=pointer]
+            - generic [ref=e132]:
+              - button "Start Training" [disabled] [ref=e133]
+              - button "Generate Signals" [disabled] [ref=e134]
+              - button "Run Backtest" [disabled] [ref=e135]
+              - button "Run Walk-forward Backtest" [disabled] [ref=e136]
+            - generic [ref=e137]:
+              - paragraph [ref=e138]: Single-name cap 6% (Hard)
+              - paragraph [ref=e139]: "Template: diversified_long_only | Small universe: cash_buffer"
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - generic [ref=e142]:
+                    - generic [ref=e143]: Single-name Max
+                    - generic [ref=e144]: 6.0%
+                  - generic [ref=e145]:
+                    - slider "Single-name Max 6.0% 0.060" [ref=e146]: "0.06"
+                    - spinbutton [ref=e147]: "0.060"
+                - generic [ref=e148]:
+                  - generic [ref=e149]:
+                    - generic [ref=e150]: Sector Concentration
+                    - generic [ref=e151]: 35.0%
+                  - generic [ref=e152]:
+                    - slider "Sector Concentration 35.0% 0.350" [ref=e153]: "0.35"
+                    - spinbutton [ref=e154]: "0.350"
+                - generic [ref=e155]:
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: Turnover Limit
+                    - generic [ref=e158]: 100.0%
+                  - generic [ref=e159]:
+                    - slider "Turnover Limit 100.0% 1.000" [ref=e160]: "1"
+                    - spinbutton [ref=e161]: "1.000"
+              - generic [ref=e162]:
+                - checkbox "Portfolio Timeline" [checked] [ref=e163]
+                - text: Portfolio Timeline
+        - generic [ref=e164]:
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - heading "Connection" [level=2] [ref=e167]
+              - paragraph [ref=e168]: OpenBB API health and resolver result
+            - paragraph [ref=e169]: Checking backend connection...
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - heading "Workflow Sync" [level=2] [ref=e172]
+              - paragraph [ref=e173]: Shared run/model session with Dashboard
+            - generic [ref=e174]:
+              - generic [ref=e175]:
+                - paragraph [ref=e176]: "Run: -"
+                - paragraph [ref=e177]: "Model: lgbm_ranker"
+                - paragraph [ref=e178]: "Dashboard timestamp: -"
+              - generic [ref=e179]:
+                - generic [ref=e180]:
+                  - paragraph [ref=e181]: Predictions
+                  - paragraph [ref=e182]: Not Ready
+                - generic [ref=e183]:
+                  - paragraph [ref=e184]: Backtest
+                  - paragraph [ref=e185]: Not Ready
+                - generic [ref=e186]:
+                  - paragraph [ref=e187]: Signals
+                  - paragraph [ref=e188]: Not Ready
+                - generic [ref=e189]:
+                  - paragraph [ref=e190]: Portfolio Rationale
+                  - paragraph [ref=e191]: Not Ready
+              - 'link "View this run in Dashboard (run: none, model: lgbm_ranker)" [ref=e192] [cursor=pointer]':
+                - /url: /dashboard
+                - text: View In Dashboard
+          - generic [ref=e193]:
+            - generic [ref=e194]:
+              - heading "Training Status" [level=2] [ref=e195]
+              - paragraph [ref=e196]: Run state and latest logs
+            - paragraph [ref=e197]: Start training to see run status.
+          - generic [ref=e198]:
+            - generic [ref=e199]:
+              - heading "Signals" [level=2] [ref=e200]
+              - paragraph [ref=e201]: Generate signals to display results.
+            - paragraph [ref=e202]: No signals available.
+          - generic [ref=e203]:
+            - generic [ref=e204]:
+              - heading "Performance KPI" [level=2] [ref=e205]
+              - paragraph [ref=e206]: Core and extended backtest metrics
+            - paragraph [ref=e207]: Run backtest to display performance metrics.
+          - generic [ref=e208]:
+            - generic [ref=e209]:
+              - heading "Monthly Returns" [level=2] [ref=e210]
+              - paragraph [ref=e211]: Calendar heatmap by year/month
+            - paragraph [ref=e212]: Run backtest to view monthly returns heatmap.
+          - generic [ref=e213]:
+            - generic [ref=e214]:
+              - heading "Portfolio Rationale" [level=2] [ref=e215]
+              - paragraph [ref=e216]: Run backtest to view allocation rationale.
+            - paragraph [ref=e217]: Run backtest to view allocation rationale.
+          - generic [ref=e218]:
+            - generic [ref=e219]:
+              - heading "Portfolio Timeline" [level=2] [ref=e220]
+              - paragraph [ref=e221]: Monthly rebalance transitions (add/sell/weight deltas/turnover).
+            - paragraph [ref=e222]: No rebalance history yet.
+          - generic [ref=e223]:
+            - generic [ref=e224]:
+              - heading "Equity Curve" [level=2] [ref=e225]
+              - paragraph [ref=e226]: Run backtest to display chart.
+            - paragraph [ref=e227]: No equity data available.
+          - generic [ref=e228]:
+            - generic [ref=e229]:
+              - heading "모델 진단" [level=2] [ref=e230]
+              - paragraph [ref=e231]: IC / 레짐 / SHAP 상태 요약
+            - generic [ref=e232]:
+              - generic [ref=e233]:
+                - generic [ref=e234]:
+                  - paragraph [ref=e235]: IC 데이터 수
+                  - generic [ref=e236]: 대기중
+                - paragraph [ref=e237]: "0"
+                - paragraph [ref=e238]: model/ic 엔드포인트에서 불러온 히스토리
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - paragraph [ref=e241]: 레짐 버킷 수
+                  - generic [ref=e242]: 대기중
+                - paragraph [ref=e243]: "0"
+                - paragraph [ref=e244]: 레짐 기준 모델 성과 분해
+              - generic [ref=e245]:
+                - generic [ref=e246]:
+                  - paragraph [ref=e247]: SHAP 상태
+                  - generic [ref=e248]: 대기중
+                - paragraph [ref=e249]: 미로드
+                - paragraph [ref=e250]: 설명가능성(Explainability) 페이로드 준비 상태
+              - generic [ref=e251]:
+                - generic [ref=e252]:
+                  - paragraph [ref=e253]: SHAP 요약 포인트
+                  - generic [ref=e254]: 대기중
+                - paragraph [ref=e255]: "0"
+                - paragraph [ref=e256]: 요약에 포함된 핵심 피처 수
+            - generic [ref=e257]:
+              - paragraph [ref=e258]: 진단 데이터가 아직 없습니다. 아래 순서대로 진행해주세요.
+              - generic [ref=e259]:
+                - link "1단계 학습 시작 -> 모델 학습 실행" [ref=e260] [cursor=pointer]:
+                  - /url: "#quant-action-train"
+                  - generic [ref=e261]:
+                    - paragraph [ref=e262]: 1단계 학습 시작
+                    - generic [ref=e263]: "->"
+                  - paragraph [ref=e264]: 모델 학습 실행
+                - link "2단계 신호 생성 -> 예측 신호 계산" [ref=e265] [cursor=pointer]:
+                  - /url: "#quant-action-signals"
+                  - generic [ref=e266]:
+                    - paragraph [ref=e267]: 2단계 신호 생성
+                    - generic [ref=e268]: "->"
+                  - paragraph [ref=e269]: 예측 신호 계산
+                - link "3단계 백테스트 실행 -> 성과/리스크 점검" [ref=e270] [cursor=pointer]:
+                  - /url: "#quant-action-backtest"
+                  - generic [ref=e271]:
+                    - paragraph [ref=e272]: 3단계 백테스트 실행
+                    - generic [ref=e273]: "->"
+                  - paragraph [ref=e274]: 성과/리스크 점검
+          - generic [ref=e275]:
+            - generic [ref=e276]:
+              - heading "모델 비교" [level=2] [ref=e277]
+              - paragraph [ref=e278]: 모델별 핵심 지표와 알림 현황
+            - generic [ref=e279]:
+              - paragraph [ref=e280]: 비교 가능한 모델 데이터가 아직 없습니다.
+              - generic [ref=e281]:
+                - paragraph [ref=e282]: 알림 요약
+                - paragraph [ref=e283]: 치명 0 | 경고 0 | 정보 0
+          - generic [ref=e284]:
+            - generic [ref=e285]:
+              - heading "피처 드리프트" [level=2] [ref=e286]
+              - paragraph [ref=e287]: IC 기반 드리프트 모니터
+            - generic [ref=e288]:
+              - generic [ref=e289]:
+                - generic [ref=e290]:
+                  - paragraph [ref=e291]: IC 포인트
+                  - paragraph [ref=e292]: "0"
+                - generic [ref=e293]:
+                  - paragraph [ref=e294]: Latest IC
+                  - paragraph [ref=e295]: "-"
+                - generic [ref=e296]:
+                  - paragraph [ref=e297]: Rolling IC
+                  - paragraph [ref=e298]: "-"
+              - paragraph [ref=e299]: 현재 활성화된 드리프트 알림이 없습니다.
+          - generic [ref=e300]:
+            - generic [ref=e301]:
+              - heading "리스크 스냅샷" [level=2] [ref=e302]
+              - paragraph [ref=e303]: 팩터 익스포저, 스트레스, 레짐 상태
+            - generic [ref=e304]:
+              - generic [ref=e305]:
+                - generic [ref=e306]:
+                  - paragraph [ref=e307]: 추세 레짐
+                  - paragraph [ref=e308]: 미확인
+                - generic [ref=e309]:
+                  - paragraph [ref=e310]: 변동성 레짐
+                  - paragraph [ref=e311]: 미확인
+                - generic [ref=e312]:
+                  - paragraph [ref=e313]: 유동성 레짐
+                  - paragraph [ref=e314]: 미확인
+              - generic [ref=e315]:
+                - generic [ref=e316]:
+                  - paragraph [ref=e317]: 상위 팩터 익스포저
+                  - paragraph [ref=e318]: 팩터 익스포저 데이터가 없습니다.
+                - generic [ref=e319]:
+                  - paragraph [ref=e320]: 스트레스 테스트
+                  - paragraph [ref=e321]: 스트레스 시나리오 데이터가 없습니다.
+          - generic [ref=e322]:
+            - generic [ref=e323]:
+              - heading "설명가능성 (Explainability)" [level=2] [ref=e324]
+              - paragraph [ref=e325]: 피처 중요도, 검증 오차, 아티팩트 준비 상태
+            - generic [ref=e326]:
+              - paragraph [ref=e327]: 설명가능성 데이터가 아직 없습니다
+              - paragraph [ref=e328]: 학습 완료 후 Completed Run을 불러오면 피처 중요도와 검증 진단을 확인할 수 있습니다.
+              - generic [ref=e329]:
+                - link "1단계 학습 시작 -> 모델 학습 실행" [ref=e330] [cursor=pointer]:
+                  - /url: "#quant-action-train"
+                  - generic [ref=e331]:
+                    - paragraph [ref=e332]: 1단계 학습 시작
+                    - generic [ref=e333]: "->"
+                  - paragraph [ref=e334]: 모델 학습 실행
+                - link "2단계 신호 생성 -> 예측 신호 계산" [ref=e335] [cursor=pointer]:
+                  - /url: "#quant-action-signals"
+                  - generic [ref=e336]:
+                    - paragraph [ref=e337]: 2단계 신호 생성
+                    - generic [ref=e338]: "->"
+                  - paragraph [ref=e339]: 예측 신호 계산
+                - link "3단계 백테스트 실행 -> 성과/리스크 점검" [ref=e340] [cursor=pointer]:
+                  - /url: "#quant-action-backtest"
+                  - generic [ref=e341]:
+                    - paragraph [ref=e342]: 3단계 백테스트 실행
+                    - generic [ref=e343]: "->"
+                  - paragraph [ref=e344]: 성과/리스크 점검
+  - contentinfo [ref=e345]:
+    - paragraph [ref=e347]: Copyright © 2025 OpenBB Inc.

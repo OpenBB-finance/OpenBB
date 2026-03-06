@@ -1,0 +1,20 @@
+Total messages: 20 (Errors: 17, Warnings: 0)
+Returning 17 messages for level "error"
+
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0

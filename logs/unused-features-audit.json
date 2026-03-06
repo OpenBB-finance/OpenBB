@@ -1,0 +1,1084 @@
+{
+  "generated_at": "2026-03-06T12:05:43+00:00",
+  "repo_root": "C:/Users/yygg1/OneDrive/\ubc14\ud0d5 \ud654\uba74/bot/OpenBB-develop",
+  "entry_points_vs_reference": {
+    "openbb_core_extension": {
+      "installed": [
+        "commodity@1.5.0",
+        "crypto@1.6.0",
+        "currency@1.6.0",
+        "derivatives@1.6.0",
+        "econometrics@1.7.0",
+        "economy@1.6.0",
+        "equity@1.6.0",
+        "etf@1.6.0",
+        "famafrench@1.1.1",
+        "federal_reserve@1.5.1",
+        "fixedincome@1.6.0",
+        "imf_utils@2.0.0",
+        "index@1.6.0",
+        "macro@0.1.0",
+        "news@1.6.0",
+        "quant_ml@0.1.0",
+        "quantitative@1.6.0",
+        "regulators@1.6.0",
+        "technical@1.6.0",
+        "uscongress@1.1.1"
+      ],
+      "reference": [
+        "commodity@1.4.2",
+        "crypto@1.5.1",
+        "currency@1.5.1",
+        "derivatives@1.5.1",
+        "econometrics@1.6.1",
+        "economy@1.5.1",
+        "equity@1.5.1",
+        "etf@1.5.1",
+        "famafrench@1.1.1",
+        "federal_reserve@1.5.1",
+        "fixedincome@1.5.1",
+        "imf_utils@2.0.0",
+        "index@1.5.1",
+        "macro@0.1.0",
+        "news@1.5.1",
+        "quant_ml@0.1.0",
+        "quantitative@1.5.1",
+        "regulators@1.5.1",
+        "technical@1.5.1",
+        "uscongress@1.1.1"
+      ],
+      "missing_in_reference": [],
+      "stale_in_reference": []
+    },
+    "openbb_provider_extension": {
+      "installed": [
+        "alpha_vantage@1.5.1",
+        "benzinga@1.5.1",
+        "biztoc@1.5.1",
+        "bls@1.2.1",
+        "cboe@1.5.1",
+        "cftc@1.2.1",
+        "congress_gov@1.1.1",
+        "deribit@1.1.1",
+        "ecb@1.5.1",
+        "econdb@1.4.1",
+        "famafranch@1.1.1",
+        "federal_reserve@1.5.1",
+        "finra@1.5.1",
+        "finviz@1.4.1",
+        "fmp@1.5.2",
+        "fred@1.5.1",
+        "government_us@1.5.2",
+        "imf@2.0.0",
+        "intrinio@1.5.1",
+        "multpl@1.2.1",
+        "nasdaq@1.5.1",
+        "oecd@1.5.1",
+        "sec@1.5.1",
+        "seeking_alpha@1.5.1",
+        "stockgrid@1.5.1",
+        "tiingo@1.5.1",
+        "tmx@1.4.1",
+        "tradier@1.4.1",
+        "tradingeconomics@1.5.1",
+        "us_eia@1.2.1",
+        "wsj@1.5.1",
+        "yfinance@1.5.2"
+      ],
+      "reference": [
+        "alpha_vantage@1.5.1",
+        "benzinga@1.5.1",
+        "biztoc@1.5.1",
+        "bls@1.2.1",
+        "cboe@1.5.1",
+        "cftc@1.2.1",
+        "congress_gov@1.1.1",
+        "deribit@1.1.1",
+        "ecb@1.5.1",
+        "econdb@1.4.1",
+        "famafranch@1.1.1",
+        "federal_reserve@1.5.1",
+        "finra@1.5.1",
+        "finviz@1.4.1",
+        "fmp@1.5.2",
+        "fred@1.5.1",
+        "government_us@1.5.2",
+        "imf@2.0.0",
+        "intrinio@1.5.1",
+        "multpl@1.2.1",
+        "nasdaq@1.5.1",
+        "oecd@1.5.1",
+        "sec@1.5.1",
+        "seeking_alpha@1.5.1",
+        "stockgrid@1.5.1",
+        "tiingo@1.5.1",
+        "tmx@1.4.1",
+        "tradier@1.4.1",
+        "tradingeconomics@1.5.1",
+        "us_eia@1.2.1",
+        "wsj@1.5.1",
+        "yfinance@1.5.2"
+      ],
+      "missing_in_reference": [],
+      "stale_in_reference": []
+    },
+    "openbb_obbject_extension": {
+      "installed": [
+        "openbb_charting@2.5.0"
+      ],
+      "reference": [
+        "openbb_charting@2.4.1"
+      ],
+      "missing_in_reference": [],
+      "stale_in_reference": []
+    }
+  },
+  "extensions_py_vs_entry_points": {
+    "declared_names": [
+      "alpha_vantage",
+      "benzinga",
+      "biztoc",
+      "bls",
+      "cboe",
+      "cftc",
+      "commodity",
+      "congress_gov",
+      "crypto",
+      "currency",
+      "deribit",
+      "derivatives",
+      "ecb",
+      "econdb",
+      "econometrics",
+      "economy",
+      "equity",
+      "etf",
+      "famafranch",
+      "famafrench",
+      "federal_reserve",
+      "finra",
+      "finviz",
+      "fixedincome",
+      "fmp",
+      "fred",
+      "government_us",
+      "imf",
+      "imf_utils",
+      "index",
+      "intrinio",
+      "macro",
+      "multpl",
+      "nasdaq",
+      "news",
+      "oecd",
+      "quant_ml",
+      "quantitative",
+      "regulators",
+      "sec",
+      "seeking_alpha",
+      "stockgrid",
+      "technical",
+      "tiingo",
+      "tmx",
+      "tradier",
+      "tradingeconomics",
+      "us_eia",
+      "uscongress",
+      "wsj",
+      "yfinance"
+    ],
+    "installed_names": [
+      "alpha_vantage",
+      "benzinga",
+      "biztoc",
+      "bls",
+      "cboe",
+      "cftc",
+      "commodity",
+      "congress_gov",
+      "crypto",
+      "currency",
+      "deribit",
+      "derivatives",
+      "ecb",
+      "econdb",
+      "econometrics",
+      "economy",
+      "equity",
+      "etf",
+      "famafranch",
+      "famafrench",
+      "federal_reserve",
+      "finra",
+      "finviz",
+      "fixedincome",
+      "fmp",
+      "fred",
+      "government_us",
+      "imf",
+      "imf_utils",
+      "index",
+      "intrinio",
+      "macro",
+      "multpl",
+      "nasdaq",
+      "news",
+      "oecd",
+      "quant_ml",
+      "quantitative",
+      "regulators",
+      "sec",
+      "seeking_alpha",
+      "stockgrid",
+      "technical",
+      "tiingo",
+      "tmx",
+      "tradier",
+      "tradingeconomics",
+      "us_eia",
+      "uscongress",
+      "wsj",
+      "yfinance"
+    ],
+    "missing_in_extensions_py": [],
+    "stale_in_extensions_py": []
+  },
+  "desktop_api_usage": {
+    "quantApi": {
+      "file": "C:/Users/yygg1/OneDrive/\ubc14\ud0d5 \ud654\uba74/bot/OpenBB-develop/desktop/src/lib/quantApi.ts",
+      "exports_total": 91,
+      "unused_total": 0,
+      "unused_exports": [],
+      "items": [
+        {
+          "name": "approveTradingOrder",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "cancelTradingOrder",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "closeTradingPosition",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "createRunLogStreamUrl",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantRunStream.ts"
+          ]
+        },
+        {
+          "name": "createSignals",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantTraining.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchAlertsCurrent",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchAlertsHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchArtifactSummary",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBacktest.ts",
+            "src/hooks/useQuantPortfolio.ts",
+            "src/hooks/useQuantRunLoader.ts",
+            "src/hooks/useQuantRunStream.ts",
+            "src/hooks/useQuantTraining.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchDashboardBootstrap",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchDashboardHealth",
+          "used": true,
+          "used_in": [
+            "src/contexts/QuantSessionContext.tsx",
+            "src/hooks/useQuantBackendRuntime.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchDataQualityHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchDataQualityLatest",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchExecutionFillsHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchExecutionMode",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchExecutionOrdersCurrent",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchExecutionPnl",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchExecutionPositionsCurrent",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchExperimentDetail",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchExperimentList",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchFeatureImportance",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchModelIc",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts"
+          ]
+        },
+        {
+          "name": "fetchModelIcDecay",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchModelPerformance",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchModelRegime",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts"
+          ]
+        },
+        {
+          "name": "fetchModelRegistryChallenger",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchModelRegistryChampion",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchModelRegistryHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchModelShap",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts"
+          ]
+        },
+        {
+          "name": "fetchNotificationsHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchOpsStatus",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchPerformanceRegime",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPerformanceRolling",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPortfolioCurrent",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantPortfolio.ts"
+          ]
+        },
+        {
+          "name": "fetchPortfolioExposure",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPortfolioPolicy",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBackendRuntime.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPortfolioRisk",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPredictionDistribution",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPredictionsLatest",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchPromotedModel",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBackendRuntime.ts"
+          ]
+        },
+        {
+          "name": "fetchRebalanceHistory",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantPortfolio.ts"
+          ]
+        },
+        {
+          "name": "fetchRegimeCurrent",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantDiagnostics.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchRegimeHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchReportsHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchReportsLatest",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchRiskEvents",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchRiskLimits",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunAudit",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunBacktest",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantRunLoader.ts"
+          ]
+        },
+        {
+          "name": "fetchRunConstraints",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunExposures",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunLatestConstraints",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunLatestExposures",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunLatestMeta",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunLatestRisk",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunRisk",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunSnapshot",
+          "used": true,
+          "used_in": [
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchRunStatus",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantRunLoader.ts",
+            "src/hooks/useQuantRunStream.ts",
+            "src/hooks/useQuantTraining.ts"
+          ]
+        },
+        {
+          "name": "fetchRunsList",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBackendRuntime.ts"
+          ]
+        },
+        {
+          "name": "fetchSchedulerStatus",
+          "used": true,
+          "used_in": [
+            "src/routes/ops.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingAlgorithms",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingEvents",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingExecutionMode",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingFills",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingOrders",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingPerformance",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingPositions",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingRisk",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingScanHistory",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingScanLatest",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingSettings",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingStatus",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchTradingSymbolDetail",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "fetchUniverse",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBackendRuntime.ts"
+          ]
+        },
+        {
+          "name": "fetchUniverseExclusions",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchUniverseList",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBackendRuntime.ts"
+          ]
+        },
+        {
+          "name": "fetchUniverseSnapshot",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "fetchWalkforwardBacktestStatus",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBacktest.ts"
+          ]
+        },
+        {
+          "name": "invalidateQuantCaches",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBacktest.ts",
+            "src/hooks/useQuantTraining.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "previewExecutionOrders",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "resolveUniverse",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantUniverseResolve.ts"
+          ]
+        },
+        {
+          "name": "riskCheckPretrade",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "runBacktest",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBacktest.ts",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "runBacktestWalkforward",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantBacktest.ts"
+          ]
+        },
+        {
+          "name": "runTradingCycle",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "startTrain",
+          "used": true,
+          "used_in": [
+            "src/hooks/useQuantTraining.ts"
+          ]
+        },
+        {
+          "name": "submitExecutionOrders",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "toggleTradingAlgorithm",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "updateExecutionMode",
+          "used": true,
+          "used_in": [
+            "src/routes/execution.tsx"
+          ]
+        },
+        {
+          "name": "updateTradingExecutionMode",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "updateTradingSettings",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        },
+        {
+          "name": "validateTradingAlgorithm",
+          "used": true,
+          "used_in": [
+            "src/routes/trading.tsx"
+          ]
+        }
+      ]
+    },
+    "macroApi": {
+      "file": "C:/Users/yygg1/OneDrive/\ubc14\ud0d5 \ud654\uba74/bot/OpenBB-develop/desktop/src/lib/macroApi.ts",
+      "exports_total": 22,
+      "unused_total": 0,
+      "unused_exports": [],
+      "items": [
+        {
+          "name": "createRegimeStreamUrl",
+          "used": true,
+          "used_in": [
+            "src/hooks/useRegimeMonitor.ts"
+          ]
+        },
+        {
+          "name": "evaluateMacroExpression",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchCopperGoldPreset",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchHmmRegime",
+          "used": true,
+          "used_in": [
+            "src/components/quant/RegimeMonitorTab.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroAlerts",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx",
+            "src/components/quant/RegimeMonitorTab.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroCatalog",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroDerived",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroHealth",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroRegime",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx",
+            "src/components/quant/RegimeMonitorTab.tsx",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroRegimeState",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx",
+            "src/routes/dashboard.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroSeries",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchMacroSeriesMulti",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchMarketRatio",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchMarketRollingCorr",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "fetchRegimeSchedulerStatus",
+          "used": true,
+          "used_in": [
+            "src/components/quant/RegimeMonitorTab.tsx"
+          ]
+        },
+        {
+          "name": "fetchRegimeTransitions",
+          "used": true,
+          "used_in": [
+            "src/components/quant/RegimeMonitorTab.tsx"
+          ]
+        },
+        {
+          "name": "invalidateMacroCache",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "registerMacroSeries",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "saveMacroDerived",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "searchMacroCatalog",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "triggerMacroUpdate",
+          "used": true,
+          "used_in": [
+            "src/components/macro/MacroPage.tsx"
+          ]
+        },
+        {
+          "name": "triggerRegimeRefresh",
+          "used": true,
+          "used_in": [
+            "src/components/quant/RegimeMonitorTab.tsx"
+          ]
+        }
+      ]
+    }
+  },
+  "metrics": {
+    "reference_drift": 0,
+    "extensions_py_drift": 0,
+    "unused_api_exports": 0,
+    "unused_route_count": 0
+  }
+}

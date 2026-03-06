@@ -171,6 +171,13 @@ export function QuantSessionProvider({ children }: { children: ReactNode }) {
     if (session.run_id.trim() || hydratedFromHealth.current) {
       return;
     }
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname || "";
+      // Quant/Dashboard routes already perform their own backend+health bootstrap.
+      if (path.startsWith("/quant") || path.startsWith("/dashboard")) {
+        return;
+      }
+    }
     hydratedFromHealth.current = true;
     let cancelled = false;
 

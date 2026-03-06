@@ -7,7 +7,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.models import DateRange, TrainRequest
 from openbb_quant_ml.service import inference as inf
 
@@ -57,6 +56,7 @@ def test_write_market_data_artifact_merges_existing_rows(tmp_path: Path):
     inf._write_market_data_artifact(run_dir, datasets)
     merged = pd.read_parquet(run_dir / "market_data.parquet")
     assert len(merged) == 2
+    assert {"open", "high", "low", "close", "volume"}.issubset(set(merged.columns))
 
 
 def test_refresh_latest_ranker_predictions_forwards_market_workers(

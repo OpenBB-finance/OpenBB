@@ -14,15 +14,25 @@ from openbb_quant_ml.models import (
     RunAuditEventItem,
     RunAuditResponse,
     RunLatestConstraintsResponse,
+    SnapshotProfile,
 )
 from openbb_quant_ml.service.dashboard_metrics import (
+    get_alerts_current,
     get_performance_rolling,
     get_portfolio_exposure,
     get_portfolio_risk,
+    get_regime_current,
+)
+from openbb_quant_ml.service.pipeline import (
+    get_model_performance,
+    get_summary,
 )
 from openbb_quant_ml.service.registry.run_registry_db import list_run_events
 from openbb_quant_ml.service.run_context import ensure_run_context
-from openbb_quant_ml.service.run_latest import get_run_latest_constraints
+from openbb_quant_ml.service.run_latest import (
+    get_run_latest_constraints,
+    get_run_latest_meta,
+)
 from openbb_quant_ml.service.snapshot.dashboard_snapshot import (
     build_dashboard_snapshot_v2,
 )
@@ -69,9 +79,14 @@ def _extract_exposure(payload: PortfolioExposureResponse) -> dict[str, float]:
     return out
 
 
-def get_run_snapshot(run_id: str, model_name: str | None = None) -> DashboardSnapshotV2:
+def get_run_snapshot(
+    run_id: str,
+    model_name: str | None = None,
+    profile: SnapshotProfile = "full",
+) -> DashboardSnapshotV2:
     """Build canonical `DashboardSnapshotV2` for one explicit run."""
     normalized_model = _normalize_model_name(model_name)
+    normalized_profile: SnapshotProfile = "core" if profile == "core" else "full"
     run_dir = get_run_dir(run_id)
     if not run_dir.exists():
         raise ValueError(f"Run not found: {run_id}")
@@ -81,31 +96,102 @@ def get_run_snapshot(run_id: str, model_name: str | None = None) -> DashboardSna
         if isinstance(backtest.get("metrics", {}), dict)
         else {}
     )
-    rolling = get_performance_rolling(
-        run_id=run_id,
-        model_name=normalized_model,
-        window_short=63,
-        window_long=126,
-    )
-    risk = get_portfolio_risk(run_id=run_id, model_name=normalized_model, lookback=126)
-    exposures = get_portfolio_exposure(run_id=run_id, model_name=normalized_model)
+    exposure = {}
+    risk_contrib_top10 = []
+    ic_rolling = []
+    regime_current: dict[str, str] = {}
+    alerts_current_count = 0
+
+    if normalized_profile == "full":
+        rolling = get_performance_rolling(
+            run_id=run_id,
+            model_name=normalized_model,
+            window_short=63,
+            window_long=126,
+        )
+        risk = get_portfolio_risk(
+            run_id=run_id, model_name=normalized_model, lookback=126
+        )
+        exposures = get_portfolio_exposure(run_id=run_id, model_name=normalized_model)
+        ic_rolling = (
+            rolling.rolling_ic_3m if isinstance(rolling.rolling_ic_3m, list) else []
+        )
+        risk_contrib_top10 = risk.position_risk_contrib_top10
+        exposure = _extract_exposure(exposures)
+        try:
+            regime = get_regime_current(run_id=run_id, model_name=normalized_model)
+            regime_current = {
+                "trend_regime": str(regime.trend_regime),
+                "vol_regime": str(regime.vol_regime),
+                "liquidity_regime": str(regime.liquidity_regime),
+            }
+        except Exception:  # noqa: BLE001
+            regime_current = {}
+        try:
+            alerts = get_alerts_current(run_id=run_id, model_name=normalized_model)
+            alerts_current_count = len(alerts.alerts or [])
+        except Exception:  # noqa: BLE001
+            alerts_current_count = 0
     run_context = ensure_run_context(run_dir, run_id)
     constraint_rows = backtest.get("constraint_binding_summary", [])
     if not isinstance(constraint_rows, list):
         constraint_rows = []
-    ic_rolling = (
-        rolling.rolling_ic_3m if isinstance(rolling.rolling_ic_3m, list) else []
-    )
+    binding_total = 0
+    binding_ratio_sum = 0.0
+    for row in constraint_rows:
+        if not isinstance(row, dict):
+            continue
+        try:
+            binding_total += int(row.get("binding_count", 0))
+        except Exception:  # noqa: BLE001
+            binding_total += 0
+        try:
+            binding_ratio_sum += float(row.get("binding_ratio", 0.0))
+        except Exception:  # noqa: BLE001
+            binding_ratio_sum += 0.0
+    constraint_summary = {
+        "binding_rows": int(len(constraint_rows)),
+        "binding_total": int(binding_total),
+        "binding_ratio_sum": float(binding_ratio_sum),
+    }
+    try:
+        artifact_summary = get_summary(run_id=run_id, model_name=normalized_model)
+        artifact_summary_payload: dict[str, Any] | None = artifact_summary.model_dump(
+            mode="json"
+        )
+    except Exception:  # noqa: BLE001
+        artifact_summary_payload = None
+    try:
+        model_performance = get_model_performance(run_id=run_id)
+        model_performance_payload: dict[str, Any] | None = model_performance.model_dump(
+            mode="json"
+        )
+    except Exception:  # noqa: BLE001
+        model_performance_payload = None
+    try:
+        run_latest_meta = get_run_latest_meta(run_id=run_id, model_name=normalized_model)
+        run_latest_meta_payload: dict[str, Any] | None = run_latest_meta.model_dump(
+            mode="json"
+        )
+    except Exception:  # noqa: BLE001
+        run_latest_meta_payload = None
     return build_dashboard_snapshot_v2(
         run_id=run_id,
         run_uid=(str(run_context.get("run_uid", "")).strip() or None),
         model_name=normalized_model,
+        snapshot_profile=normalized_profile,
         as_of_utc=_resolve_as_of_utc(backtest),
         metrics=metrics,
-        exposure=_extract_exposure(exposures),
-        risk_contrib_top10=risk.position_risk_contrib_top10,
+        exposure=exposure,
+        risk_contrib_top10=risk_contrib_top10,
         constraint_bindings=constraint_rows,
         ic_rolling=ic_rolling,
+        regime_current=regime_current,
+        alerts_current_count=alerts_current_count,
+        constraint_summary=constraint_summary,
+        artifact_summary=artifact_summary_payload,
+        model_performance=model_performance_payload,
+        run_latest_meta=run_latest_meta_payload,
     )
 
 

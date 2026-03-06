@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 import os
 import re
 import shutil
-import time
 from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 import yfinance as yf
@@ -22,6 +23,8 @@ from openbb_quant_ml.service.constants import (
     RAW_STORE_DIR,
 )
 from openbb_quant_ml.service.storage import save_parquet_atomic
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _safe_symbol(symbol: str) -> str:
@@ -107,6 +110,103 @@ def _normalize_frame(frame: pd.DataFrame, symbol: str) -> pd.DataFrame:
     )
 
 
+def _extract_result_frame(result: Any) -> pd.DataFrame:
+    if isinstance(result, pd.DataFrame):
+        return result
+    for method_name in ("to_df", "to_dataframe"):
+        method = getattr(result, method_name, None)
+        if callable(method):
+            candidate = method()
+            if isinstance(candidate, pd.DataFrame):
+                return candidate
+    return pd.DataFrame()
+
+
+from tenacity import retry, stop_after_attempt, wait_exponential
+
+
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10), reraise=True)
+def _fetch_obb_prices(
+    symbol: str,
+    start_date: date,
+    end_date: date,
+    provider: str,
+) -> pd.DataFrame:
+    provider_norm = str(provider or "").strip().lower()
+    if not provider_norm:
+        return pd.DataFrame()
+    try:
+        from openbb import obb  # type: ignore[import-not-found]
+    except Exception as exc:  # noqa: BLE001
+        LOGGER.warning(
+            "OpenBB Core import failed for symbol %s/provider %s: %s",
+            symbol,
+            provider_norm,
+            exc,
+        )
+        return pd.DataFrame()
+
+    try:
+        result = obb.equity.price.historical(
+            symbol=symbol,
+            start_date=start_date.isoformat(),
+            end_date=end_date.isoformat(),
+            provider=provider_norm,
+        )
+    except Exception as exc:  # noqa: BLE001
+        LOGGER.warning(
+            "OpenBB Core fetch failed for symbol %s/provider %s: %s",
+            symbol,
+            provider_norm,
+            exc,
+        )
+        return pd.DataFrame()
+
+    extracted = _extract_result_frame(result)
+    return _normalize_frame(extracted, symbol)
+
+
+@retry(stop=stop_after_attempt(2), wait=wait_exponential(multiplier=1, min=1, max=5), reraise=True)
+def _fetch_yfinance_prices(
+    symbol: str,
+    start_date: date,
+    end_date: date,
+    timeout_sec: int,
+    retry: int,  # kept for signature compatibility
+    backoff_base: float, # kept for signature compatibility
+) -> tuple[pd.DataFrame, Exception | None]:
+    _ensure_ssl_bundle_path()
+    try:
+        fresh = yf.download(
+            tickers=symbol,
+            start=start_date.isoformat(),
+            end=end_date.isoformat(),
+            auto_adjust=False,
+            progress=False,
+            timeout=max(1, int(timeout_sec)),
+            threads=False,
+        )
+    except Exception as exc:
+        raise ValueError(f"yfinance download failed for {symbol}: {exc}") from exc
+
+    # Some yfinance versions return empty download frames while ticker history works.
+    if fresh is None or fresh.empty:
+        try:
+            fresh = yf.Ticker(symbol).history(
+                start=start_date.isoformat(),
+                end=end_date.isoformat(),
+                auto_adjust=False,
+                timeout=max(1, int(timeout_sec)),
+            )
+        except Exception as exc:
+            raise ValueError(
+                f"yfinance returned empty download and history failed for {symbol}: {exc}"
+            ) from exc
+        if fresh is None or fresh.empty:
+            raise ValueError(f"yfinance returned empty dataframe for {symbol}")
+    return _normalize_frame(fresh, symbol), None
+
+
 def _load_cached(symbol: str) -> pd.DataFrame:
     cache_path = _cache_path(symbol)
     if not cache_path.exists():
@@ -118,24 +218,24 @@ def _load_cached(symbol: str) -> pd.DataFrame:
     return df.sort_values("date").reset_index(drop=True)
 
 
-def _save_cache(symbol: str, frame: pd.DataFrame) -> None:
+def _save_cache(symbol: str, frame: pd.DataFrame, source: str = "yfinance") -> None:
     cache_path = _cache_path(symbol)
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     save_parquet_atomic(cache_path, frame, index=False)
-    update_data_version(symbol=symbol, frame=frame, source="yfinance")
+    update_data_version(symbol=symbol, frame=frame, source=source)
 
 
 def load_symbol_prices(
     symbol: str,
     start_date: date,
     end_date: date,
+    provider: str = "yfinance",
     ttl_days: int = CACHE_TTL_DAYS,
-    timeout_sec: int = 20,
+    timeout_sec: int = 8,
     retry: int = 2,
     backoff_base: float = 2.0,
 ) -> pd.DataFrame:
-    """Load OHLCV series from cache or yfinance."""
-    _ensure_ssl_bundle_path()
+    """Load OHLCV series from cache, OpenBB Core provider, or yfinance fallback."""
 
     cached = _load_cached(symbol)
     has_coverage = False
@@ -156,30 +256,41 @@ def load_symbol_prices(
         download_start = max(start_date, cached_max - timedelta(days=7))
 
     download_end = end_date + timedelta(days=5)
-    fresh = pd.DataFrame()
-    last_exc: Exception | None = None
-    attempts = max(1, int(retry) + 1)
-    for attempt in range(1, attempts + 1):
+    provider_norm = str(provider or "").strip().lower()
+    normalized = pd.DataFrame()
+    source_used = provider_norm or "yfinance"
+    if provider_norm and provider_norm != "yfinance":
         try:
-            fresh = yf.download(
-                tickers=symbol,
-                start=download_start.isoformat(),
-                end=download_end.isoformat(),
-                auto_adjust=False,
-                progress=False,
-                group_by="column",
-                threads=False,
-                timeout=max(1, int(timeout_sec)),
+            normalized = _fetch_obb_prices(
+                symbol=symbol,
+                start_date=download_start,
+                end_date=download_end,
+                provider=provider_norm,
             )
-            if not fresh.empty:
-                break
-        except Exception as exc:  # noqa: BLE001
+            source_used = provider_norm
+        except Exception as exc:
+            LOGGER.warning("OpenBB fetch exception: %s", exc)
+    last_exc: Exception | None = None
+    if normalized.empty:
+        try:
+            normalized, last_exc = _fetch_yfinance_prices(
+                symbol=symbol,
+                start_date=download_start,
+                end_date=download_end,
+                timeout_sec=timeout_sec,
+                retry=retry,
+                backoff_base=backoff_base,
+            )
+            source_used = "yfinance"
+            if not normalized.empty and provider_norm and provider_norm != "yfinance":
+                LOGGER.warning(
+                    "Provider fallback to yfinance for symbol %s (requested provider: %s).",
+                    symbol,
+                    provider,
+                )
+        except Exception as exc:
             last_exc = exc
-        if attempt < attempts:
-            sleep_sec = float(max(0.0, backoff_base ** (attempt - 1)))
-            time.sleep(sleep_sec)
 
-    normalized = _normalize_frame(fresh, symbol)
     if normalized.empty:
         if not cached.empty:
             return cached[
@@ -199,7 +310,7 @@ def load_symbol_prices(
         else normalized
     )
     merged = merged.sort_values("date").drop_duplicates(subset=["date"], keep="last")
-    _save_cache(symbol, merged)
+    _save_cache(symbol, merged, source=source_used)
     return merged[
         (merged["date"].dt.date >= start_date) & (merged["date"].dt.date <= end_date)
     ].copy()
@@ -209,6 +320,7 @@ def load_market_data(
     symbols: list[str],
     start_date: date,
     end_date: date,
+    provider: str = "yfinance",
     ttl_days: int = CACHE_TTL_DAYS,
     progress_callback: Callable[[int, int, str, bool], None] | None = None,
     timeout_sec: int = 20,
@@ -226,6 +338,7 @@ def load_market_data(
             symbol=symbol,
             start_date=start_date,
             end_date=end_date,
+            provider=provider,
             ttl_days=ttl_days,
             timeout_sec=timeout_sec,
             retry=retry,

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-
 from openbb_quant_ml.models import RankerConfig, WalkForwardConfig
 from openbb_quant_ml.service import ranker_modeling as rm
 

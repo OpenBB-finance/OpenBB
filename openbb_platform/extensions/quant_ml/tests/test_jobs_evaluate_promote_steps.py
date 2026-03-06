@@ -77,3 +77,61 @@ def test_promote_step_respects_evaluation_gate(monkeypatch: pytest.MonkeyPatch, 
     assert payload["promoted"] is False
     assert "evaluation_gate_failed" in payload["reasons"]
     assert called["value"] is False
+
+
+def test_promote_step_checks_turnover_non_inferiority(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+):
+    candidate_run_id = "trn-260301-003"
+    incumbent_run_id = "trn-260301-000"
+    candidate_dir = tmp_path / candidate_run_id
+    incumbent_dir = tmp_path / incumbent_run_id
+
+    _write_candidate_run(
+        candidate_dir,
+        sharpe=0.6,
+        max_drawdown=-0.2,
+        turnover=1.4,
+        val_ic=0.04,
+    )
+    _write_candidate_run(
+        incumbent_dir,
+        sharpe=0.6,
+        max_drawdown=-0.2,
+        turnover=0.8,
+        val_ic=0.04,
+    )
+
+    def _get_run_dir(run_id: str):
+        if run_id == candidate_run_id:
+            return candidate_dir
+        if run_id == incumbent_run_id:
+            return incumbent_dir
+        return tmp_path / run_id
+
+    monkeypatch.setattr(promote_candidate, "get_run_dir", _get_run_dir)
+    monkeypatch.setattr(
+        promote_candidate,
+        "get_promoted_model",
+        lambda model_name=None: {"run_id": incumbent_run_id},
+    )
+
+    called = {"value": False}
+
+    def _set_pointer(**kwargs):
+        called["value"] = True
+        return {"run_id": kwargs.get("run_id"), "ready": True}
+
+    monkeypatch.setattr(promote_candidate, "set_promoted_model_pointer", _set_pointer)
+
+    payload = promote_candidate.run(
+        {
+            "run_id": candidate_run_id,
+            "model_name": "lgbm_ranker",
+            "non_inferiority_tolerance": {"turnover": 0.20},
+        }
+    )
+    assert payload["status"] == "ok"
+    assert payload["promoted"] is False
+    assert "turnover_non_inferiority" in payload["reasons"]
+    assert called["value"] is False

@@ -205,3 +205,26 @@ def test_liquidity_filter_graceful_skip_and_confidence_monotonicity():
 
     conf_map = dict(zip(signals["symbol"], signals["confidence"], strict=False))
     assert conf_map["A"] >= conf_map["B"] >= conf_map["C"]
+
+
+def test_signal_reason_codes_include_alpha_ema_and_ic_flags():
+    df = pd.DataFrame(
+        {
+            "date": [pd.Timestamp("2024-08-30")] * 3 + [pd.Timestamp("2024-09-30")] * 3,
+            "symbol": ["A", "B", "C", "A", "B", "C"],
+            "predicted_return": [0.01, 0.0, -0.01, 0.02, 0.005, -0.02],
+            "predicted_xgb": [0.01, 0.0, -0.01, 0.02, 0.005, -0.02],
+            "predicted_lstm": [0.01, 0.0, -0.01, 0.02, 0.005, -0.02],
+        }
+    )
+    _, signals = generate_signals(
+        df,
+        as_of_date=pd.Timestamp("2024-09-30").date(),
+        top_k=3,
+        score_threshold=0.0,
+        alpha_ema_halflife_days=5,
+        ic_calibrated=True,
+    )
+    reason_map = dict(zip(signals["symbol"], signals["reason_codes"], strict=False))
+    assert all("alpha_ema_smoothed" in codes for codes in reason_map.values())
+    assert all("ic_calibrated" in codes for codes in reason_map.values())

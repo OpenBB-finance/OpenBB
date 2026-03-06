@@ -8,6 +8,8 @@ from typing import Any, cast
 import pandas as pd
 
 from openbb_quant_ml.macro_models import (
+    HmmRegimePayload,
+    HmmRegimePoint,
     MacroAlertItem,
     MacroAlertsResponse,
     MacroCatalogItem,
@@ -31,6 +33,10 @@ from openbb_quant_ml.macro_models import (
     MacroSeriesStats,
     MacroUpdateRequest,
     MacroUpdateResponse,
+    RegimeLabelPoint,
+    RegimeSchedulerStatusResponse,
+    RegimeTransitionItem,
+    RegimeTransitionResponse,
 )
 from openbb_quant_ml.service.macro_alerts import evaluate_alerts, persist_and_get_alerts
 from openbb_quant_ml.service.macro_catalog import (
@@ -53,7 +59,12 @@ from openbb_quant_ml.service.macro_expression import MacroExpressionError, evalu
 from openbb_quant_ml.service.macro_fred_client import FredClient
 from openbb_quant_ml.service.macro_market import get_market_series
 from openbb_quant_ml.service.macro_presets import get_copper_gold_preset_response as build_copper_gold_preset_response
-from openbb_quant_ml.service.macro_regime import compute_regime_scores
+from openbb_quant_ml.service.macro_regime import (
+    classify_regime_label,
+    compute_regime_scores,
+    detect_regime_transitions,
+)
+from openbb_quant_ml.service.macro_regime_hmm import fit_hmm_regime
 from openbb_quant_ml.service.macro_transforms import (
     apply_publish_lag,
     apply_transform,
@@ -65,6 +76,11 @@ from openbb_quant_ml.service.macro_transforms import (
     resample_series,
 )
 from openbb_quant_ml.service.macro_update import update_all_defaults, update_series_ids
+from openbb_quant_ml.service.regime_scheduler import (
+    ensure_scheduler_started,
+    get_scheduler_status,
+    trigger_regime_refresh,
+)
 
 _DERIVED_BOOTSTRAPPED = False
 
@@ -106,10 +122,9 @@ def _load_fred_series(
 ) -> tuple[pd.Series, dict[str, Any], str | None]:
     item = resolve_catalog_item(f"FRED:{series_id}", create_if_missing=True) or {}
     warning: str | None = None
-    has_fred_api_key = FredClient().has_api_key
     updated = update_series_ids([series_id], start=start, end=end)
-    if not updated and not has_fred_api_key:
-        warning = "missing_api_key_cache_fallback"
+    if not updated:
+        warning = "fred_cache_fallback"
     rows = load_observations("FRED", series_id, start.isoformat() if start else None, end.isoformat() if end else None)
     series = normalize_series(rows)
     if series.empty:
@@ -398,6 +413,7 @@ def get_regime_response(
     resolver = _resolver_factory(start, end, freq, fill)
     try:
         frame = compute_regime_scores(resolver=resolver, start=start, end=end, freq=freq, fill=fill)
+        frame = frame.ffill().fillna(50.0)
     except Exception as exc:  # noqa: BLE001
         return MacroRegimeResponse(status="insufficient_data", message=str(exc), data=[], latest=None)
 
@@ -462,11 +478,141 @@ def get_alerts_response(
     )
 
 
+def get_regime_transitions_response(
+    start: date | None = None,
+    end: date | None = None,
+    threshold: float = 10.0,
+    freq: str = "W",
+    fill: str = "ffill",
+) -> RegimeTransitionResponse:
+    """Return axis-level regime transitions plus label history."""
+    regime = get_regime_response(start=start, end=end, freq=freq, fill=fill)
+    if regime.status != "ok" or not regime.data:
+        return RegimeTransitionResponse(
+            status="insufficient_data",
+            message=regime.message or "No regime data available.",
+            transitions=[],
+            regime_label_history=[],
+        )
+
+    frame = pd.DataFrame([item.model_dump() for item in regime.data]).set_index("date")
+    frame.index = pd.to_datetime(frame.index)
+    transitions_df = detect_regime_transitions(frame, threshold=threshold)
+    transitions = [
+        RegimeTransitionItem(
+            date=str(row["date"]),
+            axis=str(row["axis"]),
+            from_score=float(row["from_score"]),
+            to_score=float(row["to_score"]),
+            delta=float(row["delta"]),
+            direction=cast(Any, str(row["direction"])),
+            severity=cast(Any, str(row["severity"])),
+        )
+        for _, row in transitions_df.iterrows()
+    ]
+    labels = [
+        RegimeLabelPoint(
+            date=item.date,
+            label=classify_regime_label(item.model_dump()),
+        )
+        for item in regime.data
+    ]
+    return RegimeTransitionResponse(
+        status="ok",
+        transitions=transitions,
+        regime_label_history=labels,
+    )
+
+
+def get_hmm_regime_response(
+    start: date | None = None,
+    end: date | None = None,
+    n_states: int = 4,
+    freq: str = "W",
+    fill: str = "ffill",
+) -> HmmRegimePayload:
+    """Return HMM-based regime state sequence."""
+    regime = get_regime_response(start=start, end=end, freq=freq, fill=fill)
+    if regime.status != "ok" or not regime.data:
+        return HmmRegimePayload(
+            status="insufficient_data",
+            message=regime.message or "No regime data available.",
+            states=[],
+            state_meta={},
+        )
+    score_frame = pd.DataFrame([item.model_dump() for item in regime.data]).set_index("date")
+    score_frame.index = pd.to_datetime(score_frame.index)
+    score_frame = score_frame.sort_index()
+    hmm = fit_hmm_regime(score_frame, n_states=n_states)
+    if hmm is None:
+        return HmmRegimePayload(
+            status="insufficient_data",
+            message="HMM dependency unavailable or insufficient data.",
+            states=[],
+            state_meta={},
+        )
+
+    index = list(hmm.get("index", []))
+    state_seq = list(hmm.get("states", []))
+    proba_seq = list(hmm.get("probabilities", []))
+    state_meta_raw = cast(dict[int, dict[str, Any]], hmm.get("state_meta", {}))
+
+    states: list[HmmRegimePoint] = []
+    for idx, state in enumerate(state_seq):
+        date_value = pd.Timestamp(index[idx]).date().isoformat()
+        proba = proba_seq[idx] if idx < len(proba_seq) else []
+        label = str(state_meta_raw.get(int(state), {}).get("label", "Transitional"))
+        states.append(
+            HmmRegimePoint(
+                date=date_value,
+                state=int(state),
+                label=label,
+                probability=[float(value) for value in list(proba)],
+            )
+        )
+
+    state_meta: dict[str, dict[str, float | str]] = {}
+    for state_idx, payload in state_meta_raw.items():
+        means = cast(dict[str, float], payload.get("means", {}))
+        state_meta[str(state_idx)] = {
+            "label": str(payload.get("label", "Transitional")),
+            **{key: float(value) for key, value in means.items()},
+        }
+    return HmmRegimePayload(status="ok", states=states, state_meta=state_meta)
+
+
+def get_regime_scheduler_status_response() -> RegimeSchedulerStatusResponse:
+    """Return scheduler running status and recent timestamps."""
+    ensure_scheduler_started()
+    payload = get_scheduler_status()
+    return RegimeSchedulerStatusResponse(
+        running=bool(payload.get("running", False)),
+        last_market_refresh=cast(str | None, payload.get("last_market_refresh")),
+        last_fred_update=cast(str | None, payload.get("last_fred_update")),
+        next_market_refresh=cast(str | None, payload.get("next_market_refresh")),
+        next_fred_update=cast(str | None, payload.get("next_fred_update")),
+    )
+
+
+def trigger_regime_refresh_response() -> dict[str, str]:
+    """Trigger immediate macro regime refresh."""
+    ensure_scheduler_started()
+    payload = trigger_regime_refresh()
+    status = str(payload.get("status", "ok"))
+    return {"status": status}
+
+
 def get_health_response() -> MacroHealthResponse:
     """Return macro storage/update health summary for UI diagnostics."""
     warnings: list[str] = []
     fred_api_key_configured = FredClient().has_api_key
-    if not fred_api_key_configured:
+    openbb_core_available = True
+    try:
+        from openbb import obb as _obb  # type: ignore[import-not-found]
+        _ = _obb
+    except Exception:
+        openbb_core_available = False
+    if not fred_api_key_configured and not openbb_core_available:
         warnings.append("missing_api_key_cache_fallback")
 
     obs_stats_raw = get_macro_obs_health_stats()

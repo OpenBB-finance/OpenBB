@@ -1,8 +1,8 @@
 template: diversified_long_only
-single_name_max_abs_weight: 0.04
+single_name_max_abs_weight: 0.06
 small_universe_policy: cash_buffer
 sector_concentration_max: 0.35
-turnover_max: 0.8
+turnover_max: 1.0
 gross_exposure_max: 1.0
 net_exposure_abs_max: 1.0
 cash_symbol: CASH

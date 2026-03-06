@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { resolveOpenBBBackend } from "../../lib/openbbBackend";
 import {
   evaluateMacroExpression,
@@ -39,6 +39,8 @@ import { CatalogSidebar } from "./CatalogSidebar";
 import { ExpressionBar } from "./ExpressionBar";
 import { MainSeriesChart } from "./MainSeriesChart";
 import { MultiSeriesComparePanel } from "./MultiSeriesComparePanel";
+import { PresetDashboard } from "./PresetDashboard";
+import type { MacroPresetConfig } from "./PresetDashboard";
 import { RegimeAlertsPanel } from "./RegimeAlertsPanel";
 import { RelationshipPanel } from "./RelationshipPanel";
 import { StatsPanel } from "./StatsPanel";
@@ -110,17 +112,17 @@ function toFriendlyError(error: unknown): string {
   if (error instanceof Error) {
     const text = error.message || "Unknown error";
     if (/FRED_API_KEY/i.test(text)) {
-      return "FRED_API_KEY is not configured. Set the key or use cached data.";
+      return "FRED_API_KEY가 설정되지 않았습니다. API Keys 탭에서 키를 설정하세요.";
     }
     if (/Failed to fetch/i.test(text) || /NetworkError/i.test(text)) {
-      return "Backend connection failed. Verify OpenBB API is running.";
+      return "백엔드 연결 실패. Backends 탭에서 OpenBB API 상태를 확인하세요.";
     }
     if (/not found/i.test(text)) {
-      return "Endpoint not found. Check API version and router registration.";
+      return "엔드포인트를 찾을 수 없습니다. API 버전 및 라우터 등록을 확인하세요.";
     }
     return text;
   }
-  return "Request failed due to an unknown error.";
+  return "알 수 없는 오류가 발생했습니다.";
 }
 
 export default function MacroPage() {
@@ -139,6 +141,7 @@ export default function MacroPage() {
   const [startDate, setStartDate] = useState(yearsAgoIso(10));
   const [endDate, setEndDate] = useState(todayIso());
 
+  const [activePresetId, setActivePresetId] = useState<string | null>(null);
   const [catalogItems, setCatalogItems] = useState<MacroCatalogItem[]>([]);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<MacroCatalogItem[]>([]);
@@ -159,6 +162,7 @@ export default function MacroPage() {
 
   const [latestRegime, setLatestRegime] = useState<MacroRegimePoint | null>(null);
   const [regimeState, setRegimeState] = useState<MacroRegimeStateResponse | null>(null);
+  const [regimeSeries, setRegimeSeries] = useState<MacroRegimePoint[]>([]);
   const [currentAlerts, setCurrentAlerts] = useState<MacroAlertItem[]>([]);
   const [historyAlerts, setHistoryAlerts] = useState<MacroAlertItem[]>([]);
   const [macroHealth, setMacroHealth] = useState<MacroHealthResponse | null>(null);
@@ -178,7 +182,7 @@ export default function MacroPage() {
       const backend = await resolveOpenBBBackend();
       setBackendBaseUrl(backend.baseUrl);
       if (!backend.connected) {
-        setErrorMessage("OpenBB API is not connected. Check status in the Backends tab.");
+        setErrorMessage("OpenBB API에 연결되지 않았습니다. Backends 탭에서 상태를 확인하세요.");
       }
     } catch (error) {
       setErrorMessage(toFriendlyError(error));
@@ -196,7 +200,7 @@ export default function MacroPage() {
     if (!activationResult.activation.available) {
       setErrorMessage(
         activationResult.activation.detail ||
-          "macro extension unavailable. Install/enable openbb-quant-ml.",
+          "macro 확장이 사용 불가합니다. openbb-quant-ml을 설치/활성화하세요.",
       );
       return false;
     }
@@ -213,7 +217,7 @@ export default function MacroPage() {
     const ids = parseCompareKeys(compareKeys);
     if (ids.length < 2) {
       setSeriesMultiPayload(null);
-      setSeriesMultiError("Provide at least two keys for multi-series comparison.");
+      setSeriesMultiError("다중 비교를 위해 최소 2개의 키를 입력하세요.");
       return;
     }
     try {
@@ -227,7 +231,7 @@ export default function MacroPage() {
       });
       setSeriesMultiPayload(response);
       if (response.status !== "ok") {
-        setSeriesMultiError(response.message || "Multi-series comparison returned no data.");
+        setSeriesMultiError(response.message || "다중 시리즈 비교에서 데이터를 반환하지 않았습니다.");
       } else {
         setSeriesMultiError(null);
       }
@@ -252,6 +256,7 @@ export default function MacroPage() {
       setRegimeState(null);
     }
     const regimePoints = Array.isArray(regime.data) ? regime.data : [];
+    setRegimeSeries(regimePoints);
     setLatestRegime(regime.latest || (regimePoints.length > 0 ? regimePoints[regimePoints.length - 1] : null));
     setCurrentAlerts(normalizeAlerts(alerts.current));
     setHistoryAlerts(normalizeAlerts(alerts.history));
@@ -305,7 +310,7 @@ export default function MacroPage() {
         setExprPayload(null);
         setSelectedKey(expression);
         if (response.status !== "ok") {
-          setInfoMessage(response.message || "Series data is not ready.");
+          setInfoMessage(response.message || "시리즈 데이터가 준비되지 않았습니다.");
         }
       } else {
         const response = await evaluateMacroExpression(backendBaseUrl, {
@@ -319,7 +324,7 @@ export default function MacroPage() {
         setExprPayload(response);
         setSeriesPayload(null);
         if (response.status !== "ok") {
-          setInfoMessage(response.message || "Expression result is empty.");
+          setInfoMessage(response.message || "Expression 결과가 비어있습니다.");
         }
       }
     } catch (error) {
@@ -438,7 +443,7 @@ export default function MacroPage() {
         expression,
         default_transform: transform,
       });
-      setInfoMessage(`Saved derived series: ${derivedId}`);
+      setInfoMessage(`파생 시리즈 저장 완료: ${derivedId}`);
       await fetchMacroDerived(backendBaseUrl);
     } catch (error) {
       setErrorMessage(toFriendlyError(error));
@@ -464,7 +469,7 @@ export default function MacroPage() {
       await refreshRegimeAndAlerts();
       await refreshDiagnostics();
       await runSeriesMultiCompare();
-      setInfoMessage(response.message || `Updated ${response.updated_series.length} series.`);
+      setInfoMessage(response.message || `${response.updated_series.length}개 시리즈 업데이트 완료.`);
     } catch (error) {
       setErrorMessage(toFriendlyError(error));
     } finally {
@@ -479,6 +484,20 @@ export default function MacroPage() {
     runSeriesMultiCompare,
     startDate,
   ]);
+
+  const handleApplyPreset = useCallback(
+    (preset: MacroPresetConfig) => {
+      setActivePresetId(preset.id);
+      setExpression(preset.expression);
+      setSelectedKey(preset.expression);
+      setCompareKeys(preset.compareKeys);
+      setLeftSymbol(preset.leftSymbol);
+      setRightSymbol(preset.rightSymbol);
+      setRatioTicker(preset.ratioTicker);
+      setInfoMessage(`프리셋 "${preset.label}" 적용 완료. Execute를 누르세요.`);
+    },
+    [],
+  );
 
   useEffect(() => {
     void resolveBackend();
@@ -521,11 +540,11 @@ export default function MacroPage() {
         <div>
           <h1 className="body-lg-medium text-theme-primary">Macro</h1>
           <p className="body-sm-regular text-theme-muted">
-            FRED-based macro analysis with transformations, cross-asset relations, regime scores, and alerts.
+            FRED 기반 매크로 분석 — 변환, 크로스에셋 관계, 레짐 스코어, 알림을 통합한 퀀트 인사이트 플랫폼.
           </p>
         </div>
         <button type="button" className="button-secondary rounded-sm px-3 py-2 body-xs-medium" onClick={handleRefreshDefaults} disabled={isBusy}>
-          Refresh Defaults
+          {isBusy ? "Refreshing..." : "Refresh Defaults"}
         </button>
       </div>
 
@@ -537,7 +556,7 @@ export default function MacroPage() {
       {macroActivation && !macroActivation.available ? (
         <div className="mb-2 rounded-sm border border-amber-500/60 bg-amber-500/10 p-2">
           <p className="body-xs-medium text-amber-300">
-            macro extension unavailable: {macroActivation.detail || "Install/enable openbb-quant-ml."}
+            macro 확장 사용 불가: {macroActivation.detail || "openbb-quant-ml을 설치/활성화하세요."}
           </p>
         </div>
       ) : null}
@@ -547,30 +566,40 @@ export default function MacroPage() {
         </div>
       ) : null}
 
-      <ExpressionBar
-        expression={expression}
-        onExpressionChange={setExpression}
-        transform={transform}
-        onTransformChange={setTransform}
-        freq={freq}
-        onFreqChange={setFreq}
-        fill={fill}
-        onFillChange={setFill}
-        startDate={startDate}
-        endDate={endDate}
-        onStartDateChange={setStartDate}
-        onEndDateChange={setEndDate}
-        onRun={() => {
-          void runExpression();
-          void runRelationship();
-          void runSeriesMultiCompare();
-          void refreshRegimeAndAlerts();
-        }}
-        onSave={() => {
-          void handleSaveDerived();
-        }}
-        isBusy={isBusy || isBackendLoading}
+      <PresetDashboard
+        activePresetId={activePresetId}
+        onApplyPreset={handleApplyPreset}
+        latestRegime={latestRegime}
+        regimeState={regimeState}
+        regimeSeries={regimeSeries}
       />
+
+      <div className="mt-3">
+        <ExpressionBar
+          expression={expression}
+          onExpressionChange={setExpression}
+          transform={transform}
+          onTransformChange={setTransform}
+          freq={freq}
+          onFreqChange={setFreq}
+          fill={fill}
+          onFillChange={setFill}
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          onRun={() => {
+            void runExpression();
+            void runRelationship();
+            void runSeriesMultiCompare();
+            void refreshRegimeAndAlerts();
+          }}
+          onSave={() => {
+            void handleSaveDerived();
+          }}
+          isBusy={isBusy || isBackendLoading}
+        />
+      </div>
 
       <div className="mt-3 grid grid-cols-1 gap-3 xl:grid-cols-[300px_minmax(0,1fr)_320px]">
         <CatalogSidebar
@@ -582,6 +611,7 @@ export default function MacroPage() {
           onSelectKey={(key) => {
             setSelectedKey(key);
             setExpression(key);
+            setActivePresetId(null);
             const next = catalogItems.find((item) => item.id === key || `FRED:${item.series_id}` === key);
             setTransform(next?.default_transform || "level");
             setInfoMessage(null);
@@ -621,20 +651,45 @@ export default function MacroPage() {
         <div className="space-y-3">
           <div className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
             <p className="body-xs-medium text-theme-primary">Macro Health</p>
-            <p className="body-xxs-regular text-theme-muted mt-1">
-              status: {macroHealth?.status ?? "unknown"} | obs: {macroHealth?.obs_stats?.last_obs_date_global ?? "-"} | feat:{" "}
-              {macroHealth?.feature_stats?.last_feature_date ?? "-"}
-            </p>
+            <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+              <div className="rounded-sm bg-theme-primary p-1.5">
+                <p className="body-xxs-regular text-theme-muted">Status</p>
+                <p className={`body-xs-medium ${macroHealth?.status === "ok" ? "text-emerald-400" : "text-amber-400"}`}>
+                  {macroHealth?.status ?? "unknown"}
+                </p>
+              </div>
+              <div className="rounded-sm bg-theme-primary p-1.5">
+                <p className="body-xxs-regular text-theme-muted">FRED Key</p>
+                <p className={`body-xs-medium ${macroHealth?.fred_api_key_configured ? "text-emerald-400" : "text-red-400"}`}>
+                  {macroHealth?.fred_api_key_configured ? "✓ Set" : "✗ Missing"}
+                </p>
+              </div>
+              <div className="rounded-sm bg-theme-primary p-1.5">
+                <p className="body-xxs-regular text-theme-muted">Last Obs</p>
+                <p className="body-xs-medium text-theme-primary">{macroHealth?.obs_stats?.last_obs_date_global ?? "-"}</p>
+              </div>
+              <div className="rounded-sm bg-theme-primary p-1.5">
+                <p className="body-xxs-regular text-theme-muted">Features</p>
+                <p className="body-xs-medium text-theme-primary">{macroHealth?.feature_stats?.last_feature_date ?? "-"}</p>
+              </div>
+            </div>
             {Array.isArray(macroHealth?.warnings) && macroHealth!.warnings.length > 0 ? (
-              <p className="body-xxs-regular text-amber-400 mt-1">{macroHealth?.warnings.join(" | ")}</p>
+              <p className="body-xxs-regular text-amber-400 mt-1.5">{macroHealth?.warnings.join(" | ")}</p>
             ) : null}
           </div>
+
           <div className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
             <p className="body-xs-medium text-theme-primary">Copper/Gold Preset</p>
-            <p className="body-xxs-regular text-theme-muted mt-1">
-              status: {copperGoldPreset?.status ?? "unknown"} | series: {copperGoldPreset?.series?.length ?? 0} | events:{" "}
-              {copperGoldPreset?.events?.length ?? 0}
-            </p>
+            <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+              <div className="rounded-sm bg-theme-primary p-1.5">
+                <p className="body-xxs-regular text-theme-muted">Status</p>
+                <p className="body-xs-medium text-theme-primary">{copperGoldPreset?.status ?? "unknown"}</p>
+              </div>
+              <div className="rounded-sm bg-theme-primary p-1.5">
+                <p className="body-xxs-regular text-theme-muted">Events</p>
+                <p className="body-xs-medium text-theme-primary">{copperGoldPreset?.events?.length ?? 0}</p>
+              </div>
+            </div>
             {copperGoldPreset?.message ? <p className="body-xxs-regular text-theme-muted mt-1">{copperGoldPreset.message}</p> : null}
             {Array.isArray(copperGoldPreset?.events) && copperGoldPreset!.events.length > 0 ? (
               <div className="mt-2 space-y-1">
@@ -646,7 +701,9 @@ export default function MacroPage() {
               </div>
             ) : null}
           </div>
+
           <StatsPanel meta={chartPayload?.meta ?? null} stats={chartPayload?.stats ?? null} />
+
           <RegimeAlertsPanel
             latestRegime={latestRegime}
             regimeState={regimeState}
@@ -658,5 +715,3 @@ export default function MacroPage() {
     </div>
   );
 }
-
-

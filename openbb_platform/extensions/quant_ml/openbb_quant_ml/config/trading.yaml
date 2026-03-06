@@ -1,0 +1,76 @@
+version: v1
+tab_name: Trading
+mode: paper
+runtime_status: stopped
+universe_id: default
+schedule:
+  mode: eod
+  scan_interval_minutes: 1440
+  timeframe: 1d
+scan:
+  lookback_days: 320
+  provider: yfinance
+  max_workers: 8
+  max_data_delay_days: 5
+execution:
+  mode: paper
+  auto_order: false
+  manual_approval: false
+  signal_generation: true
+  fill_policy: close
+  slippage_bps: 2.0
+  commission_bps: 1.0
+account:
+  initial_cash: 1000000.0
+  position_size_mode: percent
+  position_size_value: 0.05
+  max_concurrent_positions: 12
+  max_daily_new_entries: 5
+  max_daily_gross_entry: 250000.0
+  max_order_notional: 150000.0
+  reentry_cooldown_days: 5
+  max_daily_orders: 20
+risk:
+  max_position_weight: 0.10
+  max_sector_weight: 0.35
+  min_avg_dollar_volume: 2500000.0
+  max_atr_pct: 0.12
+  stop_loss_pct: 0.08
+  take_profit_pct: 0.15
+  trailing_stop_enabled: false
+  trailing_stop_pct: 0.05
+  daily_loss_limit: 35000.0
+  portfolio_drawdown_limit: 0.15
+  capital_cap: 750000.0
+  allow_duplicate_exposure: false
+strategies:
+  ema_cross:
+    enabled: true
+    params:
+      fast_span: 12
+      slow_span: 26
+      rsi_ceiling: 72.0
+  rsi_reversal:
+    enabled: true
+    params:
+      oversold: 30.0
+      rebound_level: 35.0
+      overbought_exit: 70.0
+  breakout_volume:
+    enabled: true
+    params:
+      lookback: 20
+      volume_multiple: 1.8
+      min_atr_pct: 0.01
+      max_atr_pct: 0.10
+custom_algorithms:
+  path: openbb_quant_ml/algorithms
+  auto_pause_failure_threshold: 3
+  allowed_auto_order_statuses:
+    - active
+  default_status: sandbox
+  signal_only_dev: true
+  dry_run_default: true
+ui:
+  polling_ms: 5000
+  history_limit: 250

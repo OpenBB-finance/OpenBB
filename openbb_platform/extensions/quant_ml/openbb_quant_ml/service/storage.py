@@ -17,9 +17,27 @@ from openbb_quant_ml.service.constants import (
     ARTIFACT_ROOT,
     CACHE_DIR,
     INDEX_DIR,
+    LAKE_BRONZE_DIR,
+    LAKE_GOLD_DIR,
+    LAKE_SILVER_DIR,
+    NOTIFICATION_DIR,
     REGISTRY_PATH,
+    REPORTS_DIR,
     RUNS_DIR,
     RUNTIME_DIR,
+    TRADING_ACCOUNT_STATE_DIR,
+    TRADING_ALGORITHM_REGISTRY_DIR,
+    TRADING_ALGORITHMS_DIR,
+    TRADING_DIR,
+    TRADING_FILLS_DIR,
+    TRADING_LOGS_DIR,
+    TRADING_ORDERS_DIR,
+    TRADING_PERFORMANCE_DIR,
+    TRADING_POSITIONS_DIR,
+    TRADING_RISK_DIR,
+    TRADING_SETTINGS_DIR,
+    TRADING_SIGNALS_DIR,
+    TRADING_VALIDATION_REPORTS_DIR,
     WALKFORWARD_DIR,
 )
 
@@ -79,6 +97,24 @@ def ensure_storage_dirs() -> None:
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
     WALKFORWARD_DIR.mkdir(parents=True, exist_ok=True)
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    NOTIFICATION_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_SIGNALS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_ORDERS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_FILLS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_POSITIONS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_PERFORMANCE_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_RISK_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_ALGORITHMS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_ALGORITHM_REGISTRY_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_VALIDATION_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_SETTINGS_DIR.mkdir(parents=True, exist_ok=True)
+    TRADING_ACCOUNT_STATE_DIR.mkdir(parents=True, exist_ok=True)
+    LAKE_BRONZE_DIR.mkdir(parents=True, exist_ok=True)
+    LAKE_SILVER_DIR.mkdir(parents=True, exist_ok=True)
+    LAKE_GOLD_DIR.mkdir(parents=True, exist_ok=True)
     if not REGISTRY_PATH.exists():
         save_json(REGISTRY_PATH, {"runs": {}})
     _load_registry_stats()

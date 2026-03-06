@@ -1355,3 +1355,12 @@ ZION,ZIONS BANCORPORATION,US,Financials,us_large_mid_equity,2026-02-21,ishares_i
 ZM,ZOOM COMMUNICATIONS INC CLASS A,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
 ZS,ZSCALER INC,US,Information Technology,us_large_mid_equity,2026-02-21,ishares_iwb
 ZTS,ZOETIS INC CLASS A,US,Health Care,us_large_mid_equity,2026-02-21,ishares_iwb
+114470.KS,KIWOOM 국고채3년,KOSPI,,bond_etf,2026-03-01,manual_add
+454780.KS,KIWOOM 종합채권(AA-이상)액티브,KOSPI,,bond_etf,2026-03-01,manual_add
+449170.KS,TIGER KOFR금리액티브(합성),KOSPI,,bond_etf,2026-03-01,manual_add
+SGOV,iShares 0-3 Month Treasury Bond ETF,US,,bond_etf,2026-03-01,manual_add
+VCSH,Vanguard Short-Term Corporate Bond ETF,US,,bond_etf,2026-03-01,manual_add
+148070.KS,KIWOOM 국고채10년,KOSPI,,bond_etf,2026-03-01,manual_add
+TFLO,iShares Treasury Floating Rate Bond ETF,US,,bond_etf,2026-03-01,manual_add
+VNQ,Vanguard Real Estate ETF,US,,reit_etf,2026-03-01,manual_add
+VXUS,Vanguard Total International Stock ETF,US,,equity_etf,2026-03-01,manual_add

@@ -8,7 +8,9 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+
 from openbb_quant_ml.models import PortfolioPolicyResponse
+from openbb_quant_ml.service.ops_policy import get_ops_policy
 
 POLICY_PATH = (
     Path(__file__).resolve().parent.parent / "config" / "portfolio_policy.yaml"
@@ -16,12 +18,14 @@ POLICY_PATH = (
 
 DEFAULT_PORTFOLIO_POLICY: dict[str, Any] = {
     "template": "diversified_long_only",
-    "single_name_max_abs_weight": 0.04,
+    "single_name_max_abs_weight": 0.06,
     "small_universe_policy": "cash_buffer",
     "sector_concentration_max": 0.35,
-    "turnover_max": 0.8,
+    "turnover_max": 1.0,
     "gross_exposure_max": 1.0,
     "net_exposure_abs_max": 1.0,
+    "min_bond_weight": 0.0,
+    "execution_cash_buffer": 0.02,
     "cash_symbol": "CASH",
     "cash_category": "cash_proxy",
 }
@@ -55,6 +59,11 @@ def _load_policy() -> dict[str, Any]:
             payload = {}
 
     defaults = DEFAULT_PORTFOLIO_POLICY
+    ops_policy = get_ops_policy()
+    execution_cfg = ops_policy.get("execution", {}) if isinstance(ops_policy, dict) else {}
+    execution_risk_defaults = (
+        execution_cfg.get("risk_defaults", {}) if isinstance(execution_cfg, dict) else {}
+    )
     policy = {
         "template": _safe_str(payload.get("template"), defaults["template"]),
         "single_name_max_abs_weight": max(
@@ -93,6 +102,29 @@ def _load_policy() -> dict[str, Any]:
             0.0,
             _safe_float(
                 payload.get("net_exposure_abs_max"), defaults["net_exposure_abs_max"]
+            ),
+        ),
+        "min_bond_weight": max(
+            0.0,
+            min(
+                1.0,
+                _safe_float(
+                    payload.get("min_bond_weight"),
+                    defaults["min_bond_weight"],
+                ),
+            ),
+        ),
+        "execution_cash_buffer": max(
+            0.0,
+            min(
+                1.0,
+                _safe_float(
+                    payload.get("execution_cash_buffer"),
+                    _safe_float(
+                        execution_risk_defaults.get("execution_cash_buffer"),
+                        defaults["execution_cash_buffer"],
+                    ),
+                ),
             ),
         ),
         "cash_symbol": _safe_str(

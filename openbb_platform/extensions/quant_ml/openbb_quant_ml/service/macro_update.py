@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import logging
 from collections.abc import Iterable
 from datetime import date, timedelta
+from typing import Any
+
+import pandas as pd
 
 from openbb_quant_ml.service.macro_catalog import (
     all_default_series_ids,
@@ -15,6 +19,9 @@ from openbb_quant_ml.service.macro_constants import load_macro_config
 from openbb_quant_ml.service.macro_db import get_obs_date_bounds, upsert_observations
 from openbb_quant_ml.service.macro_feature_engineering import update_macro_features_for_series
 from openbb_quant_ml.service.macro_fred_client import FredApiKeyMissingError, FredClient, FredClientError
+from openbb_quant_ml.service.macro_market import get_market_series
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _normalize_series_ids(series_ids: Iterable[str]) -> list[str]:
@@ -55,6 +62,77 @@ def _effective_window(
     return max(req_start, refresh_start), req_end
 
 
+def _extract_result_frame(result: Any) -> pd.DataFrame:
+    if isinstance(result, pd.DataFrame):
+        return result
+    for method_name in ("to_df", "to_dataframe"):
+        method = getattr(result, method_name, None)
+        if callable(method):
+            candidate = method()
+            if isinstance(candidate, pd.DataFrame):
+                return candidate
+    return pd.DataFrame()
+
+
+def _normalize_openbb_fred_rows(frame: pd.DataFrame) -> list[dict[str, Any]]:
+    if frame.empty:
+        return []
+    normalized = frame.copy()
+    normalized.columns = [str(col).lower() for col in normalized.columns]
+    if "date" not in normalized.columns:
+        for candidate in ("observation_date", "as_of_date"):
+            if candidate in normalized.columns:
+                normalized = normalized.rename(columns={candidate: "date"})
+                break
+    value_col = next(
+        (col for col in ("value", "close", "last_price") if col in normalized.columns),
+        None,
+    )
+    if "date" not in normalized.columns or value_col is None:
+        return []
+    normalized["date"] = pd.to_datetime(normalized["date"], errors="coerce").dt.tz_localize(None)
+    normalized[value_col] = pd.to_numeric(normalized[value_col], errors="coerce")
+    normalized = normalized.dropna(subset=["date"]).sort_values("date")
+    fetched_at = pd.Timestamp.utcnow().replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    out: list[dict[str, Any]] = []
+    for _, row in normalized.iterrows():
+        raw_value = row.get(value_col)
+        value = None if pd.isna(raw_value) else float(raw_value)
+        out.append(
+            {
+                "date": pd.Timestamp(row["date"]).date().isoformat(),
+                "value": value,
+                "realtime_start": None,
+                "realtime_end": None,
+                "fetched_at": fetched_at,
+            }
+        )
+    return out
+
+
+def _fetch_openbb_fred_observations(
+    series_id: str,
+    start: date | None = None,
+    end: date | None = None,
+) -> list[dict[str, Any]]:
+    try:
+        from openbb import obb  # type: ignore[import-not-found]
+    except Exception:
+        return []
+
+    kwargs: dict[str, Any] = {"symbol": series_id}
+    if start is not None:
+        kwargs["start_date"] = start.isoformat()
+    if end is not None:
+        kwargs["end_date"] = end.isoformat()
+    try:
+        result = obb.economy.fred_series(**kwargs)
+    except Exception as exc:  # noqa: BLE001
+        LOGGER.warning("OpenBB fred_series failed for %s: %s", series_id, exc)
+        return []
+    return _normalize_openbb_fred_rows(_extract_result_frame(result))
+
+
 def update_series_ids(
     series_ids: list[str],
     start: date | None = None,
@@ -70,19 +148,31 @@ def update_series_ids(
     if not normalized:
         return []
 
-    client = FredClient()
+    client: FredClient | None = None
     updated: list[str] = []
     for series_id in normalized:
         resolve_catalog_item(series_id, create_if_missing=True)
         fetch_start, fetch_end = _effective_window(series_id, start, end, stale_days)
-        try:
-            rows = client.get_series_observations(series_id, start=fetch_start, end=fetch_end)
-        except FredApiKeyMissingError:
-            # Cache-only mode; nothing to refresh.
-            continue
-        except FredClientError:
-            # Skip but continue other series.
-            continue
+        rows = _fetch_openbb_fred_observations(
+            series_id,
+            start=fetch_start,
+            end=fetch_end,
+        )
+        if not rows:
+            if client is None:
+                client = FredClient()
+            try:
+                rows = client.get_series_observations(
+                    series_id,
+                    start=fetch_start,
+                    end=fetch_end,
+                )
+            except FredApiKeyMissingError:
+                # Cache-only mode; nothing to refresh.
+                continue
+            except FredClientError:
+                # Skip but continue other series.
+                continue
 
         if rows:
             upsert_observations("FRED", series_id, rows)
@@ -156,6 +246,36 @@ def update_macro_all(
         compute_features=compute_features,
         features_lookback_days=features_lookback_days,
     )
+
+
+def update_market_symbols(
+    symbols: list[str],
+    start: date | None = None,
+    end: date | None = None,
+) -> list[str]:
+    """Refresh market symbols into macro DB cache."""
+    updated: list[str] = []
+    for symbol in symbols:
+        key = str(symbol or "").strip().upper()
+        if not key:
+            continue
+        series, _source, _warning = get_market_series(key, start=start, end=end)
+        if series.empty:
+            continue
+        rows = [
+            {
+                "date": idx.date().isoformat(),
+                "value": float(value),
+                "realtime_start": None,
+                "realtime_end": None,
+            }
+            for idx, value in series.dropna().items()
+        ]
+        if not rows:
+            continue
+        upsert_observations("MARKET", key, rows)
+        updated.append(key)
+    return updated
 
 
 def _parse_args() -> argparse.Namespace:

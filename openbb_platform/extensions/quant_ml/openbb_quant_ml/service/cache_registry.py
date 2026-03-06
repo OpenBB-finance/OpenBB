@@ -5,12 +5,14 @@ from __future__ import annotations
 import hashlib
 import json
 import threading
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
 
 from openbb_quant_ml.service.constants import (
+    CACHE_TTL_DAYS,
     DATA_VERSION_PATH,
     FEATURE_STORE_DIR,
     FEATURE_VERSION_PATH,
@@ -128,3 +130,39 @@ def get_feature_version(symbol: str, feature_set_id: str) -> dict[str, Any] | No
     if isinstance(row, dict):
         return row
     return None
+
+
+def _parse_datetime(value: Any) -> datetime | None:
+    if not value:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    candidate = text.replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(candidate)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    else:
+        parsed = parsed.astimezone(UTC)
+    return parsed
+
+
+def is_cache_stale(
+    feature_set_id: str,
+    symbol: str,
+    ttl_days: int = CACHE_TTL_DAYS,
+) -> bool:
+    """Return True when feature cache metadata is missing or older than TTL."""
+    version_row = get_feature_version(symbol=symbol, feature_set_id=feature_set_id)
+    if not version_row:
+        return True
+
+    updated_at = _parse_datetime(version_row.get("updated_at"))
+    if updated_at is None:
+        return True
+
+    age_days = (datetime.now(UTC) - updated_at).total_seconds() / 86400.0
+    return age_days > float(max(int(ttl_days), 0))

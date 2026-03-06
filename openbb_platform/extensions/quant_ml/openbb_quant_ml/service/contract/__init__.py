@@ -1,5 +1,9 @@
 """Canonical contract helpers for Quant ML."""
 
+from openbb_quant_ml.service.contract.data_contract import (
+    DataLayerMeta,
+    write_data_layer_meta,
+)
 from openbb_quant_ml.service.contract.schema_v2 import (
     BacktestResultV2,
     DashboardSnapshotV2,
@@ -13,12 +17,8 @@ from openbb_quant_ml.service.contract.serializer import (
 )
 from openbb_quant_ml.service.contract.unit_policy import (
     EQUITY_BASE,
-    POSITION_MIN,
     POSITION_MAX,
-)
-from openbb_quant_ml.service.contract.data_contract import (
-    DataLayerMeta,
-    write_data_layer_meta,
+    POSITION_MIN,
 )
 
 __all__ = [

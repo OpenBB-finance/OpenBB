@@ -21,10 +21,13 @@ yfinance = ">=0.2.40"
 scikit-learn = ">=1.4"
 pyarrow = ">=14.0"
 lightgbm = ">=4.3"
+slowapi = ">=0.1.9"
+apscheduler = ">=3.10"
 pykrx = { version = ">=1.0.48", optional = true }
 catboost = { version = ">=1.2", optional = true }
 optuna = { version = ">=3.6", optional = true }
 cvxpy = { version = ">=1.5", optional = true }
+hmmlearn = { version = ">=0.3", optional = true }
 
 [tool.poetry.extras]
 kr = ["pykrx"]
@@ -32,6 +35,7 @@ universe-refresh = ["pykrx"]
 catboost = ["catboost"]
 hpo = ["optuna"]
 cvar = ["cvxpy"]
+hmm = ["hmmlearn"]
 
 [build-system]
 requires = ["poetry-core"]

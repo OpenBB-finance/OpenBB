@@ -18,7 +18,7 @@ from openbb_quant_ml.models import (
 from openbb_quant_ml.service.artifact_store import artifact_completeness, required_artifacts_ready
 from openbb_quant_ml.service.constraints import summarize_constraint_bindings
 from openbb_quant_ml.service.dashboard_metrics import (
-    get_dashboard_health,
+    get_latest_run_id,
     get_portfolio_exposure,
     get_portfolio_risk,
 )
@@ -32,12 +32,11 @@ def _normalize_model_name(model_name: str | None) -> ModelName:
     return "lgbm_ranker"
 
 
-def _resolve_run_id(run_id: str | None, model_name: ModelName) -> str | None:
+def _resolve_run_id(run_id: str | None, _model_name: ModelName) -> str | None:
     token = str(run_id or "").strip()
     if token:
         return token
-    health = get_dashboard_health(run_id=None, model_name=model_name)
-    resolved = str(health.resolved_run_id or health.latest_run_id or "").strip()
+    resolved = str(get_latest_run_id() or "").strip()
     return resolved or None
 
 

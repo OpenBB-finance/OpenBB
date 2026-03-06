@@ -66248,6 +66248,143 @@
                 "model": ""
             }
         },
+        "/quant_ml/macro/regime/transitions": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return macro regime transitions above threshold.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start",
+                        "type": "date | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "end",
+                        "type": "date | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "threshold",
+                        "type": "float",
+                        "description": "",
+                        "default": 10.0,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/regime/hmm": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return HMM regime classification payload.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start",
+                        "type": "date | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "end",
+                        "type": "date | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "n_states",
+                        "type": "int",
+                        "description": "",
+                        "default": 4,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/regime/scheduler/status": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return regime scheduler status.\n\nReturns\n-------\nRegimeSchedulerStatusResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/regime/refresh": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Trigger immediate regime refresh.\n\nReturns\n-------\ndict",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/regime/stream": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Stream regime score updates and label transitions as SSE.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "interval_sec",
+                        "type": "int",
+                        "description": "",
+                        "default": 30,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
         "/quant_ml/macro/derived/save": {
             "deprecated": {
                 "flag": null,
@@ -66498,6 +66635,52 @@
                         "description": "",
                         "default": null,
                         "optional": false
+                    },
+                    {
+                        "name": "http_request",
+                        "type": "starlette.requests.Request",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/runs/list": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return recent runs with optional completed-first/actionable filtering.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 20,
+                        "optional": true
+                    },
+                    {
+                        "name": "completed_first",
+                        "type": "bool",
+                        "description": "",
+                        "default": true,
+                        "optional": true
+                    },
+                    {
+                        "name": "actionable_only",
+                        "type": "bool",
+                        "description": "",
+                        "default": false,
+                        "optional": true
                     }
                 ]
             },
@@ -66533,12 +66716,90 @@
                 "model": ""
             }
         },
+        "/quant_ml/runs/{run_id}/stream": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Stream run status/log updates as Server-Sent Events (SSE).",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "poll_interval_sec",
+                        "type": "float",
+                        "description": "",
+                        "default": 1.0,
+                        "optional": true
+                    },
+                    {
+                        "name": "max_seconds",
+                        "type": "int",
+                        "description": "",
+                        "default": 600,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
         "/quant_ml/runs/{run_id}/snapshot": {
             "deprecated": {
                 "flag": null,
                 "message": null
             },
             "description": "Return canonical run-scoped dashboard snapshot payload.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "model_name",
+                        "type": "Literal['xgb_lstm', 'lgbm_ranker', 'catboost_ranker']",
+                        "description": "",
+                        "default": "lgbm_ranker",
+                        "optional": true
+                    },
+                    {
+                        "name": "profile",
+                        "type": "Literal['core', 'full']",
+                        "description": "",
+                        "default": "full",
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/runs/{run_id}/backtest": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return canonical run-scoped backtest payload.",
             "examples": "",
             "parameters": {
                 "standard": [
@@ -67329,6 +67590,52 @@
                 "model": ""
             }
         },
+        "/quant_ml/dashboard/bootstrap": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return dashboard bootstrap payload in one request.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "model_name",
+                        "type": "Literal['xgb_lstm', 'lgbm_ranker', 'catboost_ranker']",
+                        "description": "",
+                        "default": "lgbm_ranker",
+                        "optional": true
+                    },
+                    {
+                        "name": "mode",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "snapshot_profile",
+                        "type": "Literal['core', 'full']",
+                        "description": "",
+                        "default": "core",
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
         "/quant_ml/ops/status": {
             "deprecated": {
                 "flag": null,
@@ -67338,6 +67645,743 @@
             "examples": "",
             "parameters": {
                 "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/data-quality/latest": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the latest QC gate result.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/data-quality/history": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return QC history for one run or globally.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 50,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/experiments/list": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return tracked experiment runs.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 50,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/experiments/{run_id}": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return one tracked experiment run.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/model-registry/champion": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the champion alias entry.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "model_name",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/model-registry/challenger": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the challenger alias entry.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "model_name",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/model-registry/history": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return model registry history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "model_name",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 50,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/reports/latest": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the latest generated report.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "report_type",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/reports/history": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return generated report history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "report_type",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 50,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/notifications/history": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return notification outbox history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 100,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/scheduler/status": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return scheduler configuration and health.\n\nReturns\n-------\nSchedulerStatusResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/status": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return high-level trading runtime status.\n\nReturns\n-------\nTradingStatusResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/settings": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Persist trading runtime settings updates.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "TradingSettingsUpdateRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/cycle/run": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Run one trading scan/execution cycle.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "TradingCycleRunRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/scan/latest": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return latest trading scan rows.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 200,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/scan/history": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return trading scan history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 250,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/symbol/{ticker}": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return one symbol detail payload for the trading tab.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "ticker",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/orders": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return trading order history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 250,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/orders/{order_id}/approve": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Approve and submit one pending paper order.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "order_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/orders/{order_id}/cancel": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Cancel one pending paper order.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "order_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/fills": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return paper fill history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 250,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/positions": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return current open positions.\n\nReturns\n-------\nTradingPositionsResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/positions/{ticker}/close": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Force close one open paper position.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "ticker",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/performance": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return paper-trading performance snapshot.\n\nReturns\n-------\nTradingPerformanceResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/risk": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return trading risk limits and recent risk events.\n\nReturns\n-------\nTradingRiskResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/events": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return trading audit/event history.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 250,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/algorithms": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return custom algorithm registry rows.\n\nReturns\n-------\nTradingAlgorithmsResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/algorithms/toggle": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Update one custom algorithm runtime state.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "TradingAlgorithmToggleRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/algorithms/validate": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Validate one custom algorithm against a sample input frame.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "TradingAlgorithmValidateRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/execution/mode": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Update trading runtime execution mode.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "TradingExecutionModeUpdateRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
             },
             "returns": {},
             "data": {},
@@ -67752,6 +68796,31 @@
                     {
                         "name": "request",
                         "type": "ExecutionOrderPreviewRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/execution/mode": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Persist execution mode for one run/model.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "ExecutionModeUpdateRequest",
                         "description": "",
                         "default": null,
                         "optional": false
@@ -73717,6 +74786,12 @@
         "/quant_ml/macro/catalog": {
             "description": "Quant Macro analysis endpoints."
         },
+        "/quant_ml/macro/regime": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/regime/scheduler": {
+            "description": "Quant Macro analysis endpoints."
+        },
         "/quant_ml/macro/derived": {
             "description": "Quant Macro analysis endpoints."
         },
@@ -73765,7 +74840,58 @@
         "/quant_ml/predictions": {
             "description": "ML/DL based Quant Lab backend extension"
         },
+        "/quant_ml/dashboard": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
         "/quant_ml/ops": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/data-quality": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/experiments": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/model-registry": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/reports": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/notifications": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/scheduler": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/cycle": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/scan": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/symbol": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/orders": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/orders/{order_id}": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/positions": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/positions/{ticker}": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/algorithms": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/execution": {
             "description": "ML/DL based Quant Lab backend extension"
         },
         "/quant_ml/performance": {

@@ -1,711 +1,514 @@
-﻿## 빠른 실행 순서 (Quant Lab)
+# OpenBB Quant ML ?�용 가?�드 (v4 ?�합 반영)
 
-### 2026-02-23 실행 검증 상태
+?�성?? 2026-02-28  
+?�???�크?�리: `OpenBB-develop`  
+기�?: ?�재 코드 구현 ?�태 (`start_all.ps1`, `quant_ml_router.py`, `macro_router.py`, `desktop/src/*`)
 
-- `http://127.0.0.1:6900/docs` 응답 코드: `200`
-- `http://localhost:1470/quant` 응답 코드: `200`
+## 1. 빠른 ?�작
 
-### 한 번에 두 서버 실행 (권장)
-
-아래 명령 1개로 백엔드/프론트를 동시에 올리는 방법이 가장 안정적입니다.
+### 1.1 권장 ?�행 (백엔??+ ?�론???�시)
 
 ```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
+cd "C:\Users\yygg1\OneDrive\바탕 ?�면\bot\OpenBB-develop"
 .\start_all.ps1
 ```
 
-성공 메시지에 `Open: http://localhost:1470/quant`가 뜨면 정상입니다.
+?�상 ?�작 ??
+1. API: `http://127.0.0.1:6900/docs`
+2. Frontend: `http://localhost:1470/quant`
 
-### 수동 실행 (문제 있을 때만)
+`start_all.ps1` ?�동 처리:
+1. 기존 ?�거??startup shell ?�리
+2. OpenBB API ?�행 (`.venv\Scripts\openbb-api.exe`)
+3. Desktop dev server ?�행 (`npm run dev`)
+4. ?�스체크/?�트 ?�인
+5. 로그 ?�일 경로 출력
 
-PowerShell 창 1개(백엔드):
+### 1.2 ?�동 ?�행
+
+백엔??
 
 ```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-.\.venv\Scripts\openbb-api.exe --host 127.0.0.1 --port 6900
+cd "C:\Users\yygg1\OneDrive\바탕 ?�면\bot\OpenBB-develop"
+.\.venv\Scripts\openbb-api.exe --host 127.0.0.1 --port 6900 --no-build
 ```
 
-PowerShell 창 1개(프론트):
+?�론??
 
 ```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop\desktop"
+cd "C:\Users\yygg1\OneDrive\바탕 ?�면\bot\OpenBB-develop\desktop"
 if (!(Test-Path .\node_modules)) { npm ci }
 npm run dev -- --port 1470
 ```
 
-### 사용/종료
-
-1. 브라우저에서 `http://localhost:1470/quant` 접속
-2. 종료는 실행한 터미널에서 `Ctrl + C`
-
-### Quant 화면 파라미터 설명 + 권장 시작값
-
-아래 값은 `desktop/src/routes/quant.tsx`와 `openbb_quant_ml/service/signals.py` 기준 동작입니다.
-
-- `LSTM Seq Len`: LSTM이 보는 과거 시점 길이(기본 `60`, 허용 `20~240`)
-- `LSTM Epochs`: LSTM 학습 반복 횟수(기본 `30`, 허용 `5~300`)
-- `Model`: 신호/백테스트에 사용할 모델 (`lgbm_ranker`, `xgb_lstm`, `catboost_ranker`)
-- `Top K`: 최종 채택 종목 수(기본 `20`, 허용 `1~200`)
-- `Score Threshold`: `|z_score|` 필터 임계값(기본 `0.5`, 허용 `0~5`)
-- `Balanced long/short`: `Top K`를 롱/숏으로 최대한 반반 분할
-
-권장 시작값(안정형, long-only):
-
-- `LSTM Seq Len = 60`
-- `LSTM Epochs = 30`
-- `Model = lgbm_ranker` (학습 안정성 우선)
-- `Top K = 20`
-- `Score Threshold = 0.5`
-- `Balanced long/short = false`
-
-권장 시작값(중립형, long/short):
-
-- `LSTM Seq Len = 80`
-- `LSTM Epochs = 40`
-- `Model = xgb_lstm`
-- `Top K = 24`
-- `Score Threshold = 0.7`
-- `Balanced long/short = true`
-
-참고:
-
-1. 단일 종목 하드캡 `10%` 정책 때문에 `Top K < 10`이면 현금 비중이 크게 남을 수 있습니다.
-2. `Score Threshold`를 너무 높이면 후보가 줄어들고, 코드상 후보가 비면 fallback으로 원본 풀에서 다시 선별됩니다.
-3. 절대적인 "최적값"은 데이터 구간/유니버스/시장 국면에 따라 달라지므로, 위 값을 기준점으로 두고 백테스트로 미세 조정하는 것이 안전합니다.
-
-### 포트폴리오 10% 하드캡 정책 (기본 적용)
-
-Quant 백엔드는 기본적으로 아래 정책을 강제합니다.
-
-- 단일 종목 절대비중 상한: `10%` (하드캡)
-- 종목 수가 적어 10% 제약을 채우기 어려운 경우: 남는 비중은 `CASH` 버퍼로 유지
-- 기본 템플릿: `Diversified Long-only`
-
-확인 명령:
-
-```powershell
-curl "http://127.0.0.1:6900/api/v1/quant_ml/portfolio/policy"
-```
-
-검증 포인트:
-
-1. `backtest` 응답의 `effective_constraints.max_weight == 0.1`
-2. 필요 시 `cash_weight > 0` 생성
-3. `risk/limits` 기본값이 10% 체계(`max_weight=0.1`)인지 확인
-
-### 기관형 운영 점검 포인트 (신규)
-
-아래 alias API로 최신 run 운영 상태를 한 번에 점검할 수 있습니다.
-
-```powershell
-curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/meta"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/constraints"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/risk"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/run/latest/exposures"
-```
-
-확인 포인트:
-
-1. `required_artifacts_ready=true`
-2. `constraints`에서 바인딩 빈도/ADV cap 확인
-3. `risk`에서 RC 상위 종목 확인
-4. `exposures`에서 섹터/포지션 노출 확인
-
-`ops_jobs.yaml`의 `daily.shadow_live.enabled=true`일 때는 실주문 없이
-`trade_plan.parquet`, `risk_report.json`, `universe_snapshot_shadow.json`만 저장됩니다.
-
-### 안 열릴 때 빠른 점검
-
-```powershell
-netstat -ano | findstr :6900
-netstat -ano | findstr :1470
-```
-
-- `LISTENING`이 없으면 서버가 안 뜬 상태이므로 `.\start_all.ps1` 재실행
-- 다른 프로세스가 포트를 점유하면 해당 PID 종료 후 재실행:
-
-```powershell
-$apiPid = (Get-NetTCPConnection -LocalPort 6900 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -First 1)
-$webPid = (Get-NetTCPConnection -LocalPort 1470 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -First 1)
-if ($apiPid) { Stop-Process -Id $apiPid -Force }
-if ($webPid) { Stop-Process -Id $webPid -Force }
-```
-
-- 최종 확인:
+### 1.3 ?�태 ?�인
 
 ```powershell
 Invoke-WebRequest "http://127.0.0.1:6900/docs" -UseBasicParsing | Select-Object -ExpandProperty StatusCode
 Invoke-WebRequest "http://localhost:1470/quant" -UseBasicParsing | Select-Object -ExpandProperty StatusCode
 ```
 
-- 둘 다 `200`이면 정상입니다.
+????`200`?�면 ?�상?�니??
 
-### 통합 검증(개발/QA)
+## 2. ?�면 구성
 
-`run_integration_gate.ps1`는 로컬 `.venv` Python을 우선 사용하며, 테스트가 고정 URL(`0.0.0.0:8000`)을 써도 내부적으로 지정한 API 포트로 라우팅되도록 구성되어 있습니다.
+### 2.1 Quant Lab (`/quant`)
 
-기본 실행:
+?�심 ?�습/?�호/백테?�트 ?�면?�니??
+
+주요 ?�정:
+1. `Model`: `lgbm_ranker | xgb_lstm | catboost_ranker`
+2. `Data Provider`: `yfinance | fmp | polygon`
+3. `Fundamental Momentum` (?�무 ?�처 ?��?)
+4. `Fundamental Provider` (미�?????data provider?� ?�일)
+5. `Market Sentiment (preview)` (?�???��? ?�공, 백엔??no-op 경로 ?�함)
+6. `Purging Mode`: `legacy_month_cutoff | strict_label_overlap | purged_group_kfold`
+7. `HPO`: `thorough` ?�리?�에???�성
+
+### 2.2 Dashboard (`/dashboard`)
+
+??
+1. `Summary`
+2. `Performance`
+3. `Risk`
+4. `Portfolio`
+5. `Model`
+6. `Regime`
+
+`Regime` ???�공:
+1. LIVE ?�결 ?�태
+2. ?�재 ?�짐 ?�태 카드
+3. 5�??�이??4. HMM ?�?�라??5. ?�환 ?�벤???�이�?6. 매크�??�림 ?�널
+7. ?�동 갱신 버튼 (`/macro/regime/refresh`)
+
+## 3. ?�이??경로 (Core ?�선 + fallback)
+
+### 3.1 주식 가�??�이??(`service/data_loader.py`)
+
+`load_symbol_prices(..., provider="...")`:
+1. provider가 `yfinance`가 ?�니�?`obb.equity.price.historical(...)` ?�선
+2. ?�패/�??�이????`yfinance.download(...)` fallback
+3. 캐시 병합 ??`update_data_version(..., source=<?�사??provider>)` 기록
+
+?�심:
+1. `to_df()`/`to_dataframe()` 모두 처리
+2. normalize 컬럼: `date/open/high/low/close/volume/symbol`
+3. fallback 발생 ??warning 로그 기록
+
+### 3.2 FRED ?�이??(`service/macro_update.py`, `service/macro_catalog.py`)
+
+?�선?�위:
+1. `obb.economy.fred_series` / `obb.economy.fred_search`
+2. ?�패 ??`macro_fred_client.py` (deprecated fallback)
+3. 로컬 DB 캐시 fallback
+
+참고:
+1. `macro_fred_client.py`???�재 ??��가 ?�니??fallback-only ?�도�??��??�니??
+
+## 4. ?�습 ?�청 ?�키�??�심
+
+`TrainRequest` 주요 ?�드:
+1. `provider: str = "yfinance"`
+2. `fundamental_provider: str | None`
+3. `feature_config.include_fundamentals: bool`
+4. `feature_config.include_sentiment: bool`
+5. `hpo_config` + ?�거??`enable_hpo/hpo_n_trials`
+6. `symbols` 최�? 5000�??�한
+
+## 5. Quant API ?�심 ?�드?�인??
+기본 prefix: `/api/v1/quant_ml`
+
+1. `POST /train`
+2. `GET /runs/list`
+3. `GET /runs/{run_id}`
+4. `GET /runs/{run_id}/stream` (SSE)
+5. `POST /signals`
+6. `POST /backtest`
+7. `POST /backtest/walkforward`
+8. `GET /backtest/walkforward/{job_id}`
+9. `GET /portfolio/policy`
+10. `GET /run/latest/meta`
+11. `GET /run/latest/risk`
+12. `GET /run/latest/exposures`
+13. `GET /run/latest/constraints`
+
+## 6. Macro / Regime API
+
+Macro canonical prefix: `/api/v1/quant_ml/macro`  
+Macro alias prefix: `/api/v1/macro`
+
+1. `GET /macro/regime`
+2. `GET /macro/alerts`
+3. `GET /macro/regime/transitions`
+4. `GET /macro/regime/hmm`
+5. `GET /macro/regime/stream` (SSE)
+6. `GET /macro/regime/scheduler/status`
+7. `POST /macro/regime/refresh`
+
+## 7. Regime ?��?줄러
+
+`service/regime_scheduler.py` 기�?:
+1. 30�?간격 ?�장 ?�이??갱신 (`SPY/HYG/TLT/VIX/GLD/DBC`)
+2. 매일 07:00 KST FRED 기본 ?�리�?갱신
+3. lazy singleton ?�작 (`stream/status/refresh` ?�출 ???�동 ?�작)
+4. `atexit` cleanup ?�록
+5. `apscheduler` 미설�???scheduler 비활??+ warning 로그
+
+## 8. 로그 ?�치
+
+1. `logs/startup_api_<timestamp>.out.log`
+2. `logs/startup_api_<timestamp>.err.log`
+3. `logs/startup_frontend_<timestamp>.out.log`
+4. `logs/startup_frontend_<timestamp>.err.log`
+
+## 9. ?�영 ?��? 체크리스??
+1. API ?�결: `/docs` 200
+2. Front ?�결: `/quant` 200
+3. 최근 run 목록: `/runs/list`
+4. 최신 run 메�?: `/run/latest/meta`
+5. ?�책 ?�인: `/portfolio/policy`
+6. Macro health: `/api/v1/quant_ml/macro/health`
+7. Regime stream ?�결 ?�인
+
+## 10. ?�러블슈??
+### 10.1 ?�버가 ??????
+```powershell
+netstat -ano | findstr :6900
+netstat -ano | findstr :1470
+```
+
+### 10.2 Provider ?�패
+
+1. `fmp/polygon` ?�패 ??가�??�이?�는 `yfinance` fallback 가??2. fallback warning 로그가 ?�는지 ?�인
+
+### 10.3 HMM unavailable
+
+1. `/macro/regime/hmm`가 `insufficient_data`�?`hmmlearn` ?�치 ?�인
+2. transitions/scores API가 ?�상?��? 분리 ?�인
+
+## 11. 권장 ?�속 URL
+
+1. Quant Lab: `http://localhost:1470/quant`
+2. Dashboard(Regime ??: `http://localhost:1470/dashboard?tab=regime`
+3. Macro ?�이지: `http://localhost:1470/macro`
+4. API Docs: `http://127.0.0.1:6900/docs`
+
+## 12. ?� ?��? API ?�플�?
+?�래 ?�플릿�? ?� 공통 ?�행 ?�턴?�니??  
+?�영/QA/개발 모두 ?�일??변?�명/?�서�??�용?�니??
+
+### 12.0 ?�동???�크립트
+
+?�플릿을 바로 ?�행?�려�??�래 ?�크립트�??�용?�세??
+
+1. ?�일: `qa/scripts/quant_api_templates.ps1`
+2. ?��?�?
 
 ```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-.\qa\scripts\run_integration_gate.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\qa\scripts\quant_api_templates.ps1 -Action help
 ```
 
-`8000` 포트를 이미 다른 서비스가 사용 중이면(예: 다른 `uvicorn`), 포트를 바꿔 실행:
+3. 빠른 ?��?:
 
 ```powershell
-.\qa\scripts\run_integration_gate.ps1 -ApiHost 127.0.0.1 -ApiPort 8011
+powershell -NoProfile -ExecutionPolicy Bypass -File .\qa\scripts\quant_api_templates.ps1 -Action quick-check
 ```
 
-포트 충돌 시 스크립트가 `non-OpenBB service` 메시지로 중단하면, 기존 프로세스를 종료하거나 위처럼 다른 포트를 지정하면 됩니다.
-
-장시간 실행을 백그라운드로 돌릴 때:
+### 12.1 공통 ?�경변???�플�?(PowerShell)
 
 ```powershell
-# 시작
-.\qa\scripts\run_integration_gate_background.ps1 -Mode start -RunId int_bg_20260223 -ApiHost 127.0.0.1 -ApiPort 8011
-
-# 상태 확인
-.\qa\scripts\run_integration_gate_background.ps1 -Mode status -RunId int_bg_20260223
-
-# 완료 대기(성공 PASS면 exit 0)
-.\qa\scripts\run_integration_gate_background.ps1 -Mode wait -RunId int_bg_20260223
-
-# 중단
-.\qa\scripts\run_integration_gate_background.ps1 -Mode stop -RunId int_bg_20260223
+$BASE_URL = "http://127.0.0.1:6900"
+$QUANT = "$BASE_URL/api/v1/quant_ml"
+$MACRO = "$QUANT/macro"
+$RUN_ID = "<RUN_ID>"
+$MODEL = "lgbm_ranker"   # lgbm_ranker | xgb_lstm | catboost_ranker
 ```
 
-결과 요약 파일:
-- `logs/verification/<RUN_ID>/tracked_root/integration/integration_gate.json`
-- 백그라운드 로그: `logs/verification/_background/<RUN_ID>/`
----
-# OpenBB ODP 사용 가이드
-
-## ⚡ 간단 실행
-
-1. 터미널에서 아래 실행 (권장)
-   ```powershell
-   cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-   .\start_all.ps1
-   ```
-2. 브라우저에서 `http://localhost:1470/quant` 접속
-
----
-
-[OpenBB 문서](https://docs.openbb.co/)를 기반으로 정리한 설치 및 사용법입니다.
-
----
-
-## ✅ 설치 완료 상태
-
-다음이 설치되어 있습니다:
-- **ODP Python** (소스에서 빌드) - Python API
-- **ODP CLI** - 터미널 인터페이스
-- 모든 확장 프로그램 및 데이터 공급자
-
----
-
-## 🚀 실행 방법
-
-### 1. OpenBB CLI 실행 (중요!)
-
-**"지정된 경로를 찾을 수 없다" / "openbb을(는) 찾을 수 없습니다"** 에러가 나면 → 가상 환경이 활성화되지 않은 것입니다.
-
-**방법 A: 가상환경 활성화 후 실행 (권장)**
-
-1. PowerShell을 **관리자 권한 없이** 열기
-2. 프로젝트 폴더로 이동:
-   ```powershell
-   cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-   ```
-3. 가상환경 활성화:
-   ```powershell
-   .\.venv\Scripts\Activate.ps1
-   ```
-   *(성공하면 프롬프트 앞에 `(.venv)` 가 붙습니다)*
-4. openbb 실행:
-   ```powershell
-   openbb
-   ```
-
-**방법 B: 가상환경 없이 직접 실행**
-
-프로젝트 폴더에서:
-```powershell
-.\.venv\Scripts\openbb.cmd
-```
-
-**방법 C: Python 모듈로 실행**
+### 12.2 공통 ?�출 ?�퍼 (PowerShell)
 
 ```powershell
-.\.venv\Scripts\python.exe -m openbb_cli.cli
+function Invoke-QuantGet {
+  param([string]$Url)
+  Invoke-RestMethod -Method GET -Uri $Url -TimeoutSec 60
+}
+
+function Invoke-QuantPost {
+  param([string]$Url, [object]$Body)
+  Invoke-RestMethod -Method POST -Uri $Url -ContentType "application/json" -Body ($Body | ConvertTo-Json -Depth 20) -TimeoutSec 120
+}
 ```
 
-> ⚠️ Activate.ps1 실행이 거부되면: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` 먼저 실행 후 다시 시도
-
-**"지정된 경로를 찾을 수 없습니다" 지속 시 (한글 경로 이슈):**
-
-1. 프로젝트 루트에서 명령을 직접 실행:
-   ```powershell
-   cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-   .\.venv\Scripts\openbb.cmd
-   ```
-2. **system_settings.json**에 `"headless": true` 추가 — 차트 창 없이 실행 (이미 적용됨)
-3. 위 방법으로도 안 되면 프로젝트를 **한글이 없는 경로**(예: `C:\OpenBB-develop`)로 이동 후 재설치
-
-### 2. ODP Python (Python/Jupyter에서)
-
-```python
-from openbb import obb
-
-# 주식 시세 조회
-quote = obb.equity.price.quote(symbol="AAPL", provider="yfinance")
-print(quote.to_df())
-
-# 과거 주가 데이터
-df = obb.equity.price.historical(symbol="AAPL", provider="yfinance").to_df()
-
-# 기술적 분석 (예: Donchian Channel)
-output = obb.equity.price.historical(symbol="AAPL", provider="yfinance")
-ta = obb.technical.donchian(data=output.results).to_df()
-```
-
-### 3. ODP CLI 정상 실행 확인
-
-위 1번 방법으로 `openbb`를 실행하면 터미널에 OpenBB CLI 홈 화면이 나타납니다. 메뉴를 탐색하며 데이터를 조회할 수 있습니다.
-
----
-
-## 🔄 버전 업데이트 (개발자가 새 버전 릴리스 시)
-
-### ZIP으로 받은 경우 → Git 저장소로 바꾸기 (1회만)
-
-이 저장소에는 `git_변환.ps1`가 없으므로 아래 수동 절차를 사용하세요.
+### 12.3 ?�습 ?�청 ?�플�?(PowerShell)
 
 ```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-
-# 1. 커스텀 파일 백업 (홈 폴더에 보관)
-Copy-Item OpenBB_사용가이드.md $env:USERPROFILE\OpenBB_사용가이드.md.bak
-
-# 2. Git 저장소로 전환
-git init
-git remote add origin https://github.com/OpenBB-finance/OpenBB.git
-git fetch origin develop
-git checkout -b develop origin/develop
-
-# 3. 백업 파일 복원
-Copy-Item $env:USERPROFILE\OpenBB_사용가이드.md.bak OpenBB_사용가이드.md -Force
-Remove-Item $env:USERPROFILE\OpenBB_사용가이드.md.bak
-```
-
-### 일반 업데이트 (Git 저장소로 전환 후)
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-.\.venv\Scripts\Activate.ps1
-
-# 1. 최신 코드 가져오기
-git pull origin develop
-
-# 2. 의존성 및 패키지 재설치
-cd openbb_platform
-python dev_install.py -e --cli
-cd ..
-
-# 3. (선택) 정적 에셋 재빌드
-openbb-build
-```
-
-**참고:** `develop` 브랜치가 아니라 다른 브랜치(예: `main`)를 쓰는 경우 `git pull origin main`처럼 브랜치명을 맞춰 주세요.
-
----
-
-## 📤 원격 저장소 역할 및 작업 흐름
-
-### 원격 저장소 역할 정리
-
-| 원격 이름 | 저장소 | 용도 |
-|-----------|--------|------|
-| `origin` | OpenBB 공식 (OpenBB-finance/OpenBB) | 업데이트 받기 |
-| `myrepo` | 내 비공개 저장소 (ryun6249/OpenBB-develop-ML) | 내 변경사항 올리기 |
-
-### 최초 1회: 내 GitHub 저장소 연결
-
-1. https://github.com/new 에서 **Private** 저장소 `OpenBB-develop-ML` 생성
-2. 아래 명령 실행:
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-git remote add myrepo https://github.com/ryun6249/OpenBB-develop-ML.git
-git push -u myrepo develop
-```
-
-### 이후 작업 흐름
-
-| 할 일 | 명령 |
-|-------|------|
-| OpenBB 최신 버전 받기 | `git pull origin develop` |
-| 내 변경사항 GitHub에 올리기 | `git add .` → `git commit -m "메시지"` → `git push myrepo develop` |
-| 업데이트 후 패키지 재설치 | `cd openbb_platform` → `python dev_install.py -e --cli` |
-
-### 수동 업로드(권장, 실무 절차)
-
-아래 절차를 그대로 실행하면 로컬 변경을 `myrepo/develop`에 안전하게 올릴 수 있습니다.
-
-1. 작업 위치/브랜치/원격 확인
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-git status --short
-git branch --show-current
-git remote -v
-```
-
-2. 불필요 산출물은 제외하고 필요한 경로만 스테이징
-
-```powershell
-# 예시: 프론트 + quant_ml 확장만 올릴 때
-git add desktop openbb_platform/extensions/quant_ml
-```
-
-3. 커밋 생성
-
-```powershell
-git commit -m "feat: 변경 내용 요약"
-```
-
-4. 내 저장소(`myrepo`)의 `develop` 브랜치로 푸시
-
-```powershell
-git push myrepo develop
-```
-
-5. 푸시 후 확인
-
-```powershell
-git status --short
-```
-
-`logs/`, `OpenBB/` 같은 로컬 임시 폴더가 남아도, 스테이징하지 않았다면 GitHub에는 올라가지 않습니다.
-
----
-
-## 📋 당신이 해야 할 일
-
-### 1. API 키 설정 (권장)
-
-많은 데이터 제공자(FMP, Benzinga, FRED 등)는 API 키가 필요합니다.  
-설정 파일 위치: `~/.openbb_platform/user_settings.json`
-
-**yfinance**는 API 키 없이 기본 기능을 사용할 수 있습니다.
-
-필요한 경우 아래 예시처럼 설정할 수 있습니다:
-
-```json
-{
-  "credentials": {
-    "fmp_api_key": "여기에_FMP_키",
-    "fred_api_key": "여기에_FRED_키",
-    "alpha_vantage_api_key": "여기에_알파_벤티지_키"
+$trainBody = @{
+  symbols = @("AAPL","MSFT","NVDA","AMZN")
+  date_range = @{
+    start = "2021-01-01"
+    end = "2026-02-28"
+  }
+  provider = "fmp"
+  fundamental_provider = "fmp"
+  include_macro_features = $true
+  macro_feature_subset = @("z_252","yoy","mom_3","slope")
+  feature_config = @{
+    include_fundamentals = $true
+    include_sentiment = $false
+    include_regime_features = $true
+  }
+  walk_forward_config = @{
+    purging_mode = "purged_group_kfold"
+    purged_n_splits = 5
+    purged_embargo_pct = 0.01
+  }
+  hpo_config = @{
+    enabled = $true
+    n_trials = 25
+    timeout_sec = 1800
+    objective_metric = "val_ic"
+    random_state = 42
   }
 }
+
+$trainRes = Invoke-QuantPost "$QUANT/train" $trainBody
+$RUN_ID = $trainRes.run_id
+$RUN_ID
 ```
 
-API 키 발급:
-- [FMP](https://site.financialmodelingprep.com/developer/docs/) 
-- [FRED](https://fred.stlouisfed.org/docs/api/api_key.html)
-- [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
+### 12.4 ?�습 ?�청 ?�플�?(curl)
 
-### API 키 작성란 바로 열기
+```bash
+curl -X POST "http://127.0.0.1:6900/api/v1/quant_ml/train" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "symbols": ["AAPL","MSFT","NVDA","AMZN"],
+    "date_range": {"start":"2021-01-01","end":"2026-02-28"},
+    "provider": "fmp",
+    "fundamental_provider": "fmp",
+    "feature_config": {
+      "include_fundamentals": true,
+      "include_sentiment": false,
+      "include_regime_features": true
+    }
+  }'
+```
+
+### 12.5 ?�행 ?�태/SSE ?�플�?
+PowerShell:
 
 ```powershell
-notepad "$HOME\\.openbb_platform\\user_settings.json"
+Invoke-QuantGet "$QUANT/runs/list?limit=20"
+Invoke-QuantGet "$QUANT/runs/$RUN_ID"
 ```
 
-필수 키 이름(정확히 동일):
+curl SSE:
 
-```json
-{
-  "credentials": {
-    "fmp_api_key": "YOUR_FMP_KEY",
-    "fred_api_key": "YOUR_FRED_KEY",
-    "alpha_vantage_api_key": "YOUR_ALPHA_VANTAGE_KEY"
+```bash
+curl -N "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/stream?poll_interval_sec=1&max_seconds=600"
+```
+
+### 12.6 Signals/Backtest ���ø�
+```powershell
+$signalBody = @{
+  run_id = $RUN_ID
+  model_name = $MODEL
+  top_k = 20
+  score_threshold = 0.5
+  balanced_long_short = $false
+}
+Invoke-QuantPost "$QUANT/signals" $signalBody
+
+$backtestBody = @{
+  run_id = $RUN_ID
+  model_name = $MODEL
+  start = "2024-01-01"
+  end = "2026-02-28"
+  rebalance = "monthly"
+  constraints = @{
+    max_weight = 0.05
+    long_only = $true
+    risk_aversion = 3.0
+    lookback_days = 126
+    optimizer_mode = "mv"
+    turnover_limit = 1.0
+    gross_exposure_max = 1.5
+    net_exposure_min = 0.0
+    net_exposure_max = 1.0
+    sector_max_weight = 0.35
   }
+  cost_bps = 10
+  slippage_bps = 2
+  entry_price = "next_open"
+  exit_price = "close"
+  portfolio_mode = "long_only"
+  mu_mapping = "quantile_mean_return"
+}
+Invoke-QuantPost "$QUANT/backtest" $backtestBody
+```
+
+�ӵ� ���� ����:
+1. ���� �Ķ����(���� `run_id/model/start/end/constraints`)�� ��ȣ���ϸ� ����� backtest artifact ĳ�ð� ���˴ϴ�.
+2. `start/end` �Ǵ� `constraints`�� �ٲ�� ���� ���˴ϴ�.
+### 12.7 Walkforward ?�플�?
+```powershell
+$wfBody = @{
+  run_id = $RUN_ID
+  model_name = $MODEL
+  date_range = @{ start = "2021-01-01"; end = "2026-02-28" }
+}
+$wf = Invoke-QuantPost "$QUANT/backtest/walkforward" $wfBody
+$jobId = $wf.job_id
+Invoke-QuantGet "$QUANT/backtest/walkforward/$jobId"
+```
+
+### 12.8 Macro/Regime ?�플�?
+```powershell
+Invoke-QuantGet "$MACRO/regime?freq=W&fill=ffill"
+Invoke-QuantGet "$MACRO/regime/transitions?threshold=10"
+Invoke-QuantGet "$MACRO/regime/hmm?n_states=4"
+Invoke-QuantGet "$MACRO/regime/scheduler/status"
+Invoke-QuantPost "$MACRO/regime/refresh" @{}
+```
+
+Macro SSE:
+
+```bash
+curl -N "http://127.0.0.1:6900/api/v1/quant_ml/macro/regime/stream?interval_sec=60"
+```
+
+### 12.9 ?�영 메�? ?�플�?
+```powershell
+Invoke-QuantGet "$QUANT/run/latest/meta?model_name=$MODEL"
+Invoke-QuantGet "$QUANT/run/latest/risk?model_name=$MODEL"
+Invoke-QuantGet "$QUANT/run/latest/exposures?model_name=$MODEL"
+Invoke-QuantGet "$QUANT/run/latest/constraints?model_name=$MODEL"
+```
+
+### 12.10 ?�러 ?�답 ?��? ?�인
+
+```powershell
+try {
+  Invoke-QuantGet "$QUANT/runs/not_exists"
+} catch {
+  $_.Exception.Message
 }
 ```
 
-### API 연결 상태 점검/복구 절차 (권장)
+검�??�인??
+1. `404`: ?�는 run_id
+2. `400`: ?�못???�라미터
+3. `429`: `/train` 과호�?(rate limit)
 
-아래 순서대로 하면 `FRED/FMP/Alpha Vantage` 연결 상태를 한 번에 점검할 수 있습니다.
+## 13. ?�동???�영
 
-1. `user_settings.json` 인코딩 점검(BOM 제거)
+### 13.1 ?�림 ?�정 (`jobs/steps/notify.py`)
 
-```powershell
-$p = "$HOME\\.openbb_platform\\user_settings.json"
-$bytes = [System.IO.File]::ReadAllBytes($p)
-if ($bytes[0] -eq 239 -and $bytes[1] -eq 187 -and $bytes[2] -eq 191) {
-  $txt = [System.IO.File]::ReadAllText($p)
-  $enc = New-Object System.Text.UTF8Encoding($false)
-  [System.IO.File]::WriteAllText($p, $txt, $enc)
-  "BOM 제거 완료"
-} else {
-  "이미 UTF-8(BOM 없음)"
-}
-```
+?�습/검�?Job ?�료 ???�림???�송?�니??
 
-2. 백엔드 실행/포트 확인
+?�정 방법 (?�경변???�는 `ops_jobs.yaml`):
 
 ```powershell
-Get-NetTCPConnection -State Listen | Where-Object { $_.LocalPort -in 6900,6901 }
+$env:NOTIFY_CHANNELS = "slack,discord"
+$env:SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/..."
+$env:DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/..."
 ```
 
-`6901`로 떠 있다면 아래 URL의 포트를 `6901`로 바꿔서 테스트하면 됩니다.
+지??채널:
+1. **Slack** ??Incoming Webhook
+2. **Discord** ??Embed Webhook
+3. **Webhook** ??범용 JSON POST
 
-3. OpenBB API로 provider 연결 테스트
+### 13.2 ?�택??백필 (`jobs/steps/backfill_if_needed.py`)
+
+매일 ?�행 ???�체 ?�장 ?�이?��? ?�시 받�? ?�고, ?�래???�볼�??�별 ?�데?�트?�니??
+
+`ops_jobs.yaml` ?�정:
+
+```yaml
+daily:
+  backfill_staleness_days: 3    # 3???�상 미갱?????�다?�로??  backfill_force_full: false    # true�??�정 ???�체 ?�데?�트
+```
+
+### 13.3 ?�영 Job ?�정 (`config/ops_jobs.yaml`)
+
+| 주기 | 주요 ?�업 |
+|------|----------|
+| `daily` | ?�장 ?�이??갱신, ?�측 갱신, ?�림 |
+| `weekly` | 모델 ?�학??(LightGBM, HPO 8?? |
+| `monthly` | ?�장 ?�습 (HPO 20?? 5??lookback) |
+
+## 14. QA / 검�?
+?�세 가?�드: `qa/README.md`
+
+주요 명령??
 
 ```powershell
-# FMP
-curl "http://127.0.0.1:6900/api/v1/equity/profile?symbol=AAPL&provider=fmp"
+# ?�체 ?�로?�트 검�?.\qa\scripts\run_full_verification.ps1
 
-# Alpha Vantage
-curl "http://127.0.0.1:6900/api/v1/equity/price/historical?symbol=IBM&provider=alpha_vantage&start_date=2025-01-01&end_date=2025-01-31"
+# Quant ML ?�용 검�?.\qa\scripts\quant_ml_verify_full.ps1
 
-# FRED (Macro)
-curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/series?key=FRED:DGS10&start=2024-01-01&end=2024-12-31&freq=W&fill=ffill"
+# ?�로바이???�합 ?�스??.\qa\scripts\run_integration_gate.ps1
+
+# 계약 ?�벤?�리 ?�성
+python qa\scripts\quant_ml_contract_inventory.py
+python qa\scripts\quant_ml_frontend_contract_inventory.py
 ```
 
-4. Macro preset 동작 확인 (Copper/Gold + 10Y)
+## 15. 참고
+
+??문서??2026-02-28 기�? ?�크?�리 ?�제 구현??반영?�니??  
+?�드?�인???�키�?변�???�?문서??`12. ?� ?��? API ?�플�?부??먼�? 갱신?�세??
+
+
+## 16. P1 Dashboard and Docs Mode Update (2026-02-28)
+
+### 16.1 Core vs Full snapshot profile
+
+`GET /api/v1/quant_ml/runs/{run_id}/snapshot` now supports:
+
+1. `profile=core`
+2. `profile=full` (default, backward compatible)
+
+`core` profile is optimized for first paint and skips heavy calculations.
+`full` profile keeps existing behavior for detailed tabs and diagnostics.
+
+### 16.2 Bootstrap endpoint profile
+
+`GET /api/v1/quant_ml/dashboard/bootstrap` now supports:
+
+1. `snapshot_profile=core` (default)
+2. `snapshot_profile=full`
+
+Recommended default:
+
+1. initial dashboard load: `snapshot_profile=core`
+2. tab-level details: request `full` snapshot or tab-specific endpoints lazily
+
+### 16.3 API docs mode by environment
+
+Server-level docs mode is now controlled by:
+
+1. `OPENBB_API_DOCS_MODE=disabled`
+2. `OPENBB_API_DOCS_MODE=full`
+
+`start_all.ps1` mapping:
+
+1. `-ApiDocsMode dev` -> `OPENBB_API_DOCS_MODE=disabled`
+2. `-ApiDocsMode prod` -> `OPENBB_API_DOCS_MODE=full`
+
+Behavior:
+
+1. disabled: `/docs`, `/redoc`, `/openapi.json` are disabled
+2. full: docs and openapi are enabled
+
+### 16.4 Startup examples
 
 ```powershell
-curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/presets/copper_gold?start=2024-01-01&end=2024-12-31&freq=W"
+# dev: low-latency startup, docs disabled
+.\start_all.ps1 -ApiDocsMode dev
+
+# prod-like: docs enabled + openapi prewarm
+.\start_all.ps1 -ApiDocsMode prod
 ```
 
-5. FRED 키가 캐시 경고로 나오면
 
-- 백엔드를 재시작하고 다시 3~4를 실행합니다.
-- 이 확장은 `~/.openbb_platform/user_settings.json`의 `credentials.fred_api_key`도 자동 인식합니다.
-
-### 전체 연결 상태 1회 점검(복붙용)
-
-```powershell
-curl "http://127.0.0.1:6900/api/v1/quant_ml/health"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/health"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/macro/presets/copper_gold?start=2024-01-01&end=2024-12-31&freq=W"
-curl "http://127.0.0.1:6900/api/v1/economy/fred_series?symbol=DGS10&provider=fred&start_date=2025-01-01&end_date=2025-01-31"
-curl "http://127.0.0.1:6900/api/v1/equity/profile?symbol=AAPL&provider=fmp"
-curl "http://127.0.0.1:6900/api/v1/equity/price/historical?symbol=IBM&provider=alpha_vantage&start_date=2025-01-01&end_date=2025-01-31"
-```
-
-정상 기준:
-- 모두 `200 OK` 응답
-- `quant_ml/macro/presets/copper_gold` 응답에서 `series` 2개 이상
-- `quant_ml/macro/health` 응답에서 `status=ok` 또는 경고 메시지 포함(`insufficient_data` 원인 확인 가능)
-
-### Quant 운영잡/베이스라인 실행 절차 (신규)
-
-1. 운영 잡 수동 1회 점검 (`ops_jobs.yaml` 사용)
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
-python -m openbb_quant_ml.tools.refresh_universes --only russell1000 all_in_one --no-validate
-python -m openbb_quant_ml.jobs.cli daily --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
-python -m openbb_quant_ml.jobs.cli weekly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
-python -m openbb_quant_ml.jobs.cli monthly --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
-python -m openbb_quant_ml.jobs.cli bootstrap --config openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml
-```
-
-기본 운영 정책(`ops_jobs.yaml`):
-- `defaults.run_id_scheme: compact_v1`
-- `defaults.training_run_id_scheme: compact_v1`
-- `defaults.pretrain_bootstrap_enabled: true`
-- `defaults.stale_timeout_minutes: 90`
-- `defaults.heartbeat_interval_sec: 30`
-- `defaults.market_data_timeout_sec: 20`
-- `defaults.market_data_retry: 2`
-- `defaults.market_data_workers: 6`
-- `daily.predict_mode: infer_only`
-- `daily.predict_fallback_legacy: true`
-- `daily.market_delta_days: 45`
-- `daily.feature_delta_days: 120`
-- `daily.max_infer_workers: 4`
-- `daily/weekly/monthly.universe_id: all_in_one`
-- `weekly.promote_on_success: true`
-- `retention.policy: keep_all`
-- `retention.index_compaction: true`
-
-run id 예시:
-- Daily Job: `dly-260219-01`
-- Weekly Job: `wkl-260219-01`
-- Monthly Job: `mth-260301-01`
-- Bootstrap Job: `bst-260219-01`
-- Training Run: `trn-260219-001`
-
-의미:
-- Daily는 데이터/피처/예측만 갱신(재학습 없음)
-- Weekly/Monthly에서만 full 학습 수행
-- Bootstrap은 최초 1회 선학습/승격(run pointer 초기화) 용도
-
-백테스트 이중 모드:
-- 빠른 모드: `POST /api/v1/quant_ml/backtest`
-- 시점별 리밸런싱(Walk-forward): `POST /api/v1/quant_ml/backtest/walkforward`
-- Walk-forward 상태 조회: `GET /api/v1/quant_ml/backtest/walkforward/{job_id}`
-
-롤백(기존 방식으로 즉시 복귀):
-- `run_id_scheme: legacy`
-- `training_run_id_scheme: legacy`
-- `daily.predict_mode: legacy`
-
-### 야간 무인 운영(복구 + 학습 + 점검 + 리포트)
-
-추가된 스크립트:
-- `qa/scripts/quant_ml_recover_state.ps1`
-- `qa/scripts/quant_ml_verify_full.ps1`
-- `qa/scripts/quant_ml_overnight_runner.ps1`
-- `qa/scripts/quant_ml_collect_report.py`
-- 설정: `openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml`
-
-실행 예시:
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
-powershell -ExecutionPolicy Bypass -File qa/scripts/quant_ml_overnight_runner.ps1 `
-  -ConfigPath openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml `
-  -ApiBaseUrl http://127.0.0.1:6900
-```
-
-산출물:
-- `logs/overnight/<session_id>/timeline.log`
-- `logs/overnight/<session_id>/checks.json`
-- `logs/overnight/<session_id>/final_report.md`
-
-장시간 단계 모니터링 기준:
-- `update_market_data`는 `30초` 또는 `50심볼`마다 heartbeat를 기록합니다.
-- stale 판정은 `updated_at + last_heartbeat_at + artifact mtime` 결합으로 수행합니다.
-- timeout은 `90분` 고정이며, 실제 heartbeat/artifact 진척이 있으면 stale 실패로 처리되지 않습니다.
-
-모든 게이트 통과 후 자동 푸시까지 원하면:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File qa/scripts/quant_ml_overnight_runner.ps1 `
-  -ConfigPath openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs_overnight.yaml `
-  -EnablePush
-```
-
-2. Task Scheduler 등록(Windows)
-
-```powershell
-$repo = "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-$cfg  = "openbb_platform/extensions/quant_ml/openbb_quant_ml/config/ops_jobs.yaml"
-
-$jobRoot = "C:\quantml_jobs"
-New-Item -ItemType Directory -Force -Path $jobRoot | Out-Null
-
-@"
-Set-Location "$repo"
-$env:PYTHONPATH = "openbb_platform/extensions/quant_ml"
-python -m openbb_quant_ml.jobs.cli daily --config "$cfg"
-"@ | Set-Content -Path "$jobRoot\quantml_daily.ps1" -Encoding UTF8
-
-@"
-Set-Location "$repo"
-$env:PYTHONPATH = "openbb_platform/extensions/quant_ml"
-python -m openbb_quant_ml.jobs.cli weekly --config "$cfg"
-"@ | Set-Content -Path "$jobRoot\quantml_weekly.ps1" -Encoding UTF8
-
-@"
-Set-Location "$repo"
-$env:PYTHONPATH = "openbb_platform/extensions/quant_ml"
-python -m openbb_quant_ml.jobs.cli monthly --config "$cfg"
-"@ | Set-Content -Path "$jobRoot\quantml_monthly.ps1" -Encoding UTF8
-
-schtasks /Create /F /TN "QuantML-Daily"   /SC DAILY   /ST 18:30 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\quantml_jobs\quantml_daily.ps1"
-schtasks /Create /F /TN "QuantML-Weekly"  /SC WEEKLY  /D SAT /ST 08:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\quantml_jobs\quantml_weekly.ps1"
-schtasks /Create /F /TN "QuantML-Monthly" /SC MONTHLY /D 1   /ST 09:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\quantml_jobs\quantml_monthly.ps1"
-```
-
-3. 소규모 E2E 후 베이스라인 스냅샷 생성
-
-- 학습/신호/백테스트를 1회 완료한 다음:
-
-```powershell
-cd "C:\Users\yygg1\OneDrive\바탕 화면\bot\OpenBB-develop"
-$env:PYTHONPATH='openbb_platform/extensions/quant_ml'
-python -m openbb_quant_ml.service.baseline_snapshot --run-id <RUN_ID> --period 1y --symbols-count 20 --target-mode next_open_to_close --entry-price next_open --exit-price close
-```
-
-- `RUN_ID` 확인:
-
-```powershell
-curl "http://127.0.0.1:6900/api/v1/quant_ml/health"
-```
-
-응답의 `resolved_run_id`를 사용하면 됩니다.
-
-- 결과 파일:
-  - `~/.openbb_platform/quant_ml/runs/<RUN_ID>/time_profile.json`
-  - `~/.openbb_platform/quant_ml/runs/<RUN_ID>/metrics.json`
-  - `~/.openbb_platform/quant_ml/baselines/baseline_*.json`
-
-### 2. ODP Desktop (선택)
-
-그래픽 환경이 필요하면:
-- [ODP Desktop 다운로드](https://github.com/OpenBB-finance/OpenBB/releases/tag/ODP)
-- 설치 후 API Keys 화면에서 키 등록
-- Backends에서 `OpenBB API` 시작 → Workspace에서 `http://127.0.0.1:6900` 연결
-
-### 3. Docker 사용 (선택)
-
-```powershell
-docker build -f build/docker/platformAPI.Dockerfile -t openbb-platform:latest .
-docker run -it --rm -p 6900:6900 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
-```
-
----
-
-## 📖 CLI 사용법 요약
-
-| 동작 | 입력 |
-|------|------|
-| 메뉴 들어가기 | `economy` 등 메뉴 이름 입력 |
-| 상위로 | `..` 또는 `q` |
-| 홈으로 | `/` 또는 `home` |
-| 다른 메뉴로 이동 | `/equity/price/historical` (절대 경로) |
-| 도움말 | `--help` 또는 `-h` |
-| 파라미터 | `--기호 AAPL --시작일 2024-01-01` |
-| **주의**: 위치 인자 없음 | ❌ `historical AAPL` / ✅ `historical --symbol AAPL` |
-
-**예시 명령:**
-```
-/equity/price/historical --symbol SPY --start_date 2024-01-01 --provider yfinance
-/technical/rsi --data OBB0 --chart
-/economy/calendar --provider nasdaq --country united_states
-```
-
----
-
-## 📚 참고 링크
-
-## Quant Lab 표준 조회 API (run_id 기반)
-
-`run/latest/*`는 호환용으로 유지되지만, 신규 대시보드/자동화는 아래 경로를 우선 사용합니다.
-
-```powershell
-curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/snapshot?model_name=lgbm_ranker"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/risk?model_name=lgbm_ranker&lookback=126"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/exposures?model_name=lgbm_ranker"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/constraints?model_name=lgbm_ranker"
-curl "http://127.0.0.1:6900/api/v1/quant_ml/runs/<RUN_ID>/audit?limit=200"
-```
-
-운영 중 레지스트리 저장 위치:
-
-- `~/.openbb_platform/quant_ml/run_registry.sqlite3` (표준)
-- `~/.openbb_platform/quant_ml/registry.json` (호환 dual-write)
-
-- [ODP Python 문서](https://docs.openbb.co/odp/python)
-- [ODP CLI 문서](https://docs.openbb.co/odp/cli)
-- [ODP Desktop 문서](https://docs.openbb.co/odp/desktop)
-- [API 키 설정](https://docs.openbb.co/odp/python/settings/user_settings/api_keys)

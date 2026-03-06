@@ -6,7 +6,6 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-
 from openbb_quant_ml.service import runtime_pointer as rp
 
 

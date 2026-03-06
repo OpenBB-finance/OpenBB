@@ -1,6 +1,7 @@
 import { clearCachePrefix, getCachedOrFetch } from "./quantCache";
 import type { FeatureActivation, FeatureActivationResult } from "../types/feature-activation";
 import type {
+  HmmRegimePayload,
   MacroAlertsResponse,
   MacroCatalogResponse,
   MacroDerivedResponse,
@@ -12,12 +13,28 @@ import type {
   MacroRegimeStateResponse,
   MacroSeriesResponse,
   MacroSeriesMultiResponse,
+  RegimeRefreshResponse,
+  RegimeSchedulerStatus,
+  RegimeTransitionResponse,
   MacroUpdateResponse,
 } from "../types/macro";
 
 const MACRO_PREFIX_CANONICAL = "/api/v1/quant_ml/macro";
 const MACRO_PREFIX_ALIAS = "/api/v1/macro";
-const CACHE_TTL_MS = 60_000;
+
+const CACHE_TTL = {
+  CATALOG: 300_000,
+  SERIES: 60_000,
+  HEALTH: 30_000,
+  REGIME: 120_000,
+  ALERTS: 90_000,
+  HMM: 120_000,
+  TRANSITIONS: 120_000,
+  SCHEDULER: 30_000,
+  DERIVED: 120_000,
+  PRESET: 120_000,
+  DEFAULT: 60_000,
+} as const;
 
 function buildFeatureActivation(featureName: string, available: boolean, detail?: string): FeatureActivation {
   return {
@@ -59,8 +76,8 @@ async function requestMacro<T>(baseUrl: string, path: string, init: RequestInit)
   throw new Error(lastError);
 }
 
-function cachedMacro<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
-  return getCachedOrFetch<T>(`macro:${key}`, CACHE_TTL_MS, fetcher);
+function cachedMacro<T>(key: string, fetcher: () => Promise<T>, ttl: number = CACHE_TTL.DEFAULT): Promise<T> {
+  return getCachedOrFetch<T>(`macro:${key}`, ttl, fetcher);
 }
 
 export function invalidateMacroCache(): void {
@@ -73,7 +90,7 @@ export function fetchMacroCatalog(baseUrl: string, domain?: string): Promise<Mac
     query.set("domain", domain);
   }
   const path = query.toString() ? `/catalog?${query.toString()}` : "/catalog";
-  return cachedMacro(`catalog:${baseUrl}:${domain ?? "*"}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+  return cachedMacro(`catalog:${baseUrl}:${domain ?? "*"}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.CATALOG);
 }
 
 export function searchMacroCatalog(
@@ -118,7 +135,7 @@ export function fetchMacroSeries(
   if (params.freq) query.set("freq", params.freq);
   if (params.fill) query.set("fill", params.fill);
   const path = `/series?${query.toString()}`;
-  return cachedMacro(`series:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+  return cachedMacro(`series:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.SERIES);
 }
 
 export function fetchMacroSeriesMulti(
@@ -160,14 +177,14 @@ export function fetchMacroRegime(
   if (params.freq) query.set("freq", params.freq);
   if (params.fill) query.set("fill", params.fill);
   const path = query.toString() ? `/regime?${query.toString()}` : "/regime";
-  return cachedMacro(`regime:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+  return cachedMacro(`regime:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.REGIME);
 }
 
 export function fetchMacroRegimeState(baseUrl: string, date?: string): Promise<MacroRegimeStateResponse> {
   const query = new URLSearchParams();
   if (date) query.set("date", date);
   const path = query.toString() ? `/regime?${query.toString()}` : "/regime";
-  return cachedMacro(`regime-state:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+  return cachedMacro(`regime-state:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.REGIME);
 }
 
 export function fetchMacroAlerts(
@@ -179,7 +196,53 @@ export function fetchMacroAlerts(
   if (params.end) query.set("end", params.end);
   if (params.limit) query.set("limit", String(params.limit));
   const path = query.toString() ? `/alerts?${query.toString()}` : "/alerts";
-  return cachedMacro(`alerts:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+  return cachedMacro(`alerts:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.ALERTS);
+}
+
+export function fetchRegimeTransitions(
+  baseUrl: string,
+  params: { start?: string; end?: string; threshold?: number } = {},
+): Promise<RegimeTransitionResponse> {
+  const query = new URLSearchParams();
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  if (params.threshold !== undefined) query.set("threshold", String(params.threshold));
+  const path = query.toString() ? `/regime/transitions?${query.toString()}` : "/regime/transitions";
+  return cachedMacro(`regime-transitions:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.TRANSITIONS);
+}
+
+export function fetchHmmRegime(
+  baseUrl: string,
+  params: { start?: string; end?: string; n_states?: number } = {},
+): Promise<HmmRegimePayload> {
+  const query = new URLSearchParams();
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  if (params.n_states !== undefined) query.set("n_states", String(params.n_states));
+  const path = query.toString() ? `/regime/hmm?${query.toString()}` : "/regime/hmm";
+  return cachedMacro(`regime-hmm:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.HMM);
+}
+
+export function fetchRegimeSchedulerStatus(baseUrl: string): Promise<RegimeSchedulerStatus> {
+  return cachedMacro(
+    `regime-scheduler:${baseUrl}`,
+    () => requestMacro(baseUrl, "/regime/scheduler/status", { method: "GET" }),
+    CACHE_TTL.SCHEDULER,
+  );
+}
+
+export function triggerRegimeRefresh(baseUrl: string): Promise<RegimeRefreshResponse> {
+  invalidateMacroCache();
+  return requestMacro(baseUrl, "/regime/refresh", {
+    method: "POST",
+  });
+}
+
+export function createRegimeStreamUrl(baseUrl: string, intervalSec = 60): string {
+  const query = new URLSearchParams({
+    interval_sec: String(intervalSec),
+  });
+  return `${baseUrl}${MACRO_PREFIX_CANONICAL}/regime/stream?${query.toString()}`;
 }
 
 export function saveMacroDerived(
@@ -194,7 +257,7 @@ export function saveMacroDerived(
 }
 
 export function fetchMacroDerived(baseUrl: string): Promise<MacroDerivedResponse> {
-  return cachedMacro(`derived:${baseUrl}`, () => requestMacro(baseUrl, "/derived", { method: "GET" }));
+  return cachedMacro(`derived:${baseUrl}`, () => requestMacro(baseUrl, "/derived", { method: "GET" }), CACHE_TTL.DERIVED);
 }
 
 export function triggerMacroUpdate(
@@ -217,7 +280,7 @@ export function triggerMacroUpdate(
 }
 
 export function fetchMacroHealth(baseUrl: string): Promise<MacroHealthResponse> {
-  return cachedMacro(`health:${baseUrl}`, () => requestMacro(baseUrl, "/health", { method: "GET" }));
+  return cachedMacro(`health:${baseUrl}`, () => requestMacro(baseUrl, "/health", { method: "GET" }), CACHE_TTL.HEALTH);
 }
 
 export async function fetchMacroHealthWithActivation(

@@ -7,8 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-
-from openbb_quant_ml.models import WalkForwardBacktestRequest
+from openbb_quant_ml.models import BacktestConstraints, WalkForwardBacktestRequest
 from openbb_quant_ml.service import walkforward_backtest as wf
 
 
@@ -84,6 +83,14 @@ def test_walkforward_submit_and_status(monkeypatch: pytest.MonkeyPatch, tmp_path
             start_date=pd.Timestamp("2025-03-01").date(),
             end_date=pd.Timestamp("2025-08-31").date(),
             min_history_days=126,
+            constraints=BacktestConstraints(
+                defensive_bucket_enabled=True,
+                defensive_floor_mode="fixed",
+                defensive_floor_fixed=0.25,
+                defensive_postcheck_enabled=True,
+                defensive_postcheck_cvar_limit=-0.02,
+                defensive_postcheck_vol_limit=0.20,
+            ),
         )
     )
     assert submit.status == "queued"

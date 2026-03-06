@@ -17,6 +17,8 @@ from importlib import metadata as importlib_metadata
 from pathlib import Path
 from typing import Any
 
+from tomlkit import load as load_toml
+
 ENTRY_POINT_GROUPS = (
     "openbb_core_extension",
     "openbb_provider_extension",
@@ -67,6 +69,43 @@ def _load_entry_points() -> dict[str, list[str]]:
     return out
 
 
+def _load_repo_extension_map(repo_root: Path) -> dict[str, list[str]]:
+    """Load extension inventory from local pyproject plugin declarations when available."""
+    platform_root = repo_root / "openbb_platform"
+    if not platform_root.exists():
+        return {}
+
+    out: dict[str, list[str]] = {group: [] for group in ENTRY_POINT_GROUPS}
+    found = False
+    for pyproject_path in platform_root.rglob("pyproject.toml"):
+        try:
+            with pyproject_path.open(encoding="utf-8") as f:
+                data = load_toml(f)
+        except Exception:  # pragma: no cover - defensive parsing
+            continue
+
+        poetry = data.get("tool", {}).get("poetry", {})
+        version = str(poetry.get("version", "")).strip()
+        plugins = poetry.get("plugins", {})
+        if not isinstance(plugins, dict):
+            continue
+        for group in ENTRY_POINT_GROUPS:
+            entries = plugins.get(group, {})
+            if not isinstance(entries, dict):
+                continue
+            found = True
+            for entry_name in entries:
+                name = str(entry_name).strip()
+                if not name:
+                    continue
+                out[group].append(f"{name}@{version}" if version else name)
+
+    if not found:
+        return {}
+
+    return {group: sorted(set(values)) for group, values in out.items()}
+
+
 def _load_reference_extensions(reference_path: Path) -> dict[str, list[str]]:
     payload = _read_json(reference_path)
     ext_map = payload.get("info", {}).get("extensions", {})
@@ -84,10 +123,10 @@ def _load_reference_extensions(reference_path: Path) -> dict[str, list[str]]:
 
 
 def _diff_lists(installed: list[str], declared: list[str]) -> ExtensionDiff:
-    installed_set = set(installed)
-    declared_set = set(declared)
-    missing = sorted(installed_set - declared_set)
-    stale = sorted(declared_set - installed_set)
+    installed_map = {item.split("@", 1)[0]: item for item in installed}
+    declared_map = {item.split("@", 1)[0]: item for item in declared}
+    missing = sorted(installed_map[name] for name in installed_map.keys() - declared_map.keys())
+    stale = sorted(declared_map[name] for name in declared_map.keys() - installed_map.keys())
     return ExtensionDiff(missing=missing, stale=stale)
 
 
@@ -170,7 +209,13 @@ def _imports_desktop_api(path: Path) -> bool:
 def _estimate_unused_route_count(desktop_src: Path) -> int:
     """Heuristic route utilization check including delegated page components."""
     checks: dict[str, list[Path]] = {
-        "quant": [desktop_src / "routes" / "quant.tsx"],
+        "quant": [
+            desktop_src / "routes" / "quant.tsx",
+            desktop_src / "hooks" / "useQuantBackendRuntime.ts",
+            desktop_src / "hooks" / "useQuantTraining.ts",
+        ],
+        "dashboard": [desktop_src / "routes" / "dashboard.tsx"],
+        "trading": [desktop_src / "routes" / "trading.tsx"],
         "macro": [
             desktop_src / "routes" / "macro.tsx",
             desktop_src / "components" / "macro" / "MacroPage.tsx",
@@ -242,7 +287,7 @@ def generate_audit(repo_root: Path) -> dict[str, Any]:
     quant_api = desktop_src / "lib" / "quantApi.ts"
     macro_api = desktop_src / "lib" / "macroApi.ts"
 
-    entry_points_by_group = _load_entry_points()
+    entry_points_by_group = _load_repo_extension_map(repo_root) or _load_entry_points()
     reference_by_group = _load_reference_extensions(reference_path)
 
     ep_report: dict[str, Any] = {}

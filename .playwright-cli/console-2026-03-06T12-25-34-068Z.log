@@ -1,0 +1,50 @@
+[     326ms] [ERROR] Warning: forwardRef render functions accept exactly two parameters: props and ref. %s Did you forget to use the ref parameter? @ http://127.0.0.1:1470/node_modules/.vite/deps/chunk-CYZG5QNB.js?v=593890a9:135
+[     326ms] [ERROR] Warning: forwardRef render functions accept exactly two parameters: props and ref. %s Did you forget to use the ref parameter? @ http://127.0.0.1:1470/node_modules/.vite/deps/chunk-CYZG5QNB.js?v=593890a9:135
+[     399ms] [ERROR] Failed to get version: TypeError: Cannot read properties of undefined (reading 'invoke')
+    at invoke (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-G7S6KQDI.js?v=593890a9:109:37)
+    at getVersion (http://127.0.0.1:1470/node_modules/.vite/deps/@tauri-apps_api_app.js?v=593890a9:86:10)
+    at safeGetVersion (http://127.0.0.1:1470/src/components/ShowVersion.tsx:24:27)
+    at http://127.0.0.1:1470/src/components/ShowVersion.tsx:37:5
+    at commitHookEffectListMount (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:16963:34)
+    at commitPassiveMountOnFiber (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18206:19)
+    at commitPassiveMountEffects_complete (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18179:17)
+    at commitPassiveMountEffects_begin (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18169:15)
+    at commitPassiveMountEffects (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18159:11)
+    at flushPassiveEffectsImpl (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19543:11) @ http://127.0.0.1:1470/src/main.tsx:10
+[     399ms] [ERROR] Failed to get version: TypeError: Cannot read properties of undefined (reading 'invoke')
+    at invoke (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-G7S6KQDI.js?v=593890a9:109:37)
+    at getVersion (http://127.0.0.1:1470/node_modules/.vite/deps/@tauri-apps_api_app.js?v=593890a9:86:10)
+    at safeGetVersion (http://127.0.0.1:1470/src/components/ShowVersion.tsx:24:27)
+    at http://127.0.0.1:1470/src/components/ShowVersion.tsx:37:5
+    at commitHookEffectListMount (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:16963:34)
+    at invokePassiveEffectMountInDEV (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18374:19)
+    at invokeEffectsInDev (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19754:19)
+    at commitDoubleInvokeEffectsInDEV (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19739:15)
+    at flushPassiveEffectsImpl (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19556:13)
+    at flushPassiveEffects (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19500:22) @ http://127.0.0.1:1470/src/main.tsx:10
+[     549ms] [ERROR] Warning: forwardRef render functions accept exactly two parameters: props and ref. %s Did you forget to use the ref parameter? @ http://127.0.0.1:1470/node_modules/.vite/deps/chunk-CYZG5QNB.js?v=593890a9:135
+[     549ms] [ERROR] Warning: forwardRef render functions accept exactly two parameters: props and ref. %s Did you forget to use the ref parameter? @ http://127.0.0.1:1470/node_modules/.vite/deps/chunk-CYZG5QNB.js?v=593890a9:135
+[     595ms] [ERROR] Failed to get version: TypeError: Cannot read properties of undefined (reading 'invoke')
+    at invoke (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-G7S6KQDI.js?v=593890a9:109:37)
+    at getVersion (http://127.0.0.1:1470/node_modules/.vite/deps/@tauri-apps_api_app.js?v=593890a9:86:10)
+    at safeGetVersion (http://127.0.0.1:1470/src/components/ShowVersion.tsx:24:27)
+    at http://127.0.0.1:1470/src/components/ShowVersion.tsx:37:5
+    at commitHookEffectListMount (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:16963:34)
+    at commitPassiveMountOnFiber (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18206:19)
+    at commitPassiveMountEffects_complete (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18179:17)
+    at commitPassiveMountEffects_begin (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18169:15)
+    at commitPassiveMountEffects (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18159:11)
+    at flushPassiveEffectsImpl (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19543:11) @ http://127.0.0.1:1470/src/main.tsx:10
+[     595ms] [ERROR] Failed to get version: TypeError: Cannot read properties of undefined (reading 'invoke')
+    at invoke (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-G7S6KQDI.js?v=593890a9:109:37)
+    at getVersion (http://127.0.0.1:1470/node_modules/.vite/deps/@tauri-apps_api_app.js?v=593890a9:86:10)
+    at safeGetVersion (http://127.0.0.1:1470/src/components/ShowVersion.tsx:24:27)
+    at http://127.0.0.1:1470/src/components/ShowVersion.tsx:37:5
+    at commitHookEffectListMount (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:16963:34)
+    at invokePassiveEffectMountInDEV (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:18374:19)
+    at invokeEffectsInDev (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19754:19)
+    at commitDoubleInvokeEffectsInDEV (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19739:15)
+    at flushPassiveEffectsImpl (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19556:13)
+    at flushPassiveEffects (http://127.0.0.1:1470/node_modules/.vite/deps/chunk-E22KYI7D.js?v=593890a9:19500:22) @ http://127.0.0.1:1470/src/main.tsx:10
+[    3873ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6900/api/v1/system:0
+[    3874ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:6900/api/v1/system:0

@@ -10,6 +10,13 @@ import pandas as pd
 
 from openbb_quant_ml.models import ModelName, PromotedModelResponse
 from openbb_quant_ml.service.constants import PROMOTED_MODEL_PATH
+from openbb_quant_ml.service.registry.run_registry_db import (
+    get_model_alias,
+    insert_promotion_event,
+    list_model_versions,
+    upsert_model_alias,
+)
+from openbb_quant_ml.service.signal_schema import infer_model_version
 from openbb_quant_ml.service.storage import get_run_dir, load_json, save_json
 
 _SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
@@ -134,11 +141,72 @@ def set_promoted_model_pointer(
         "model_name": normalized_model,
         "as_of_date": resolved_as_of,
         "feature_hash": resolved_hash,
+        "model_version": None,
+        "dataset_version": None,
+        "feature_set_version": None,
+        "metrics": {},
         "updated_at": _now_iso(),
         "source": source,
         "ready": _has_required_artifacts(run_id, normalized_model),
     }
+    model_version = None
+    dataset_version = None
+    feature_set_version = None
+    metrics = {}
+    for row in list_model_versions(model_name=normalized_model, limit=200):
+        if str(row.get("run_id", "")) != run_id:
+            continue
+        model_version = str(row.get("model_version", "")).strip() or None
+        dataset_version = (
+            str(row.get("dataset_version", "")).strip() or None
+        )
+        feature_set_version = (
+            str(row.get("feature_set_version", "")).strip() or None
+        )
+        metrics_raw = row.get("metrics_json")
+        metrics = metrics_raw if isinstance(metrics_raw, dict) else {}
+        break
+    if model_version is None:
+        metrics_payload = load_json(
+            get_run_dir(run_id) / f"metrics_{normalized_model}.json",
+            default={},
+        )
+        if isinstance(metrics_payload, dict):
+            model_version = infer_model_version(metrics_payload)
+            metrics = (
+                metrics_payload.get("metrics", {})
+                if isinstance(metrics_payload.get("metrics"), dict)
+                else {}
+            )
+    payload["model_version"] = model_version
+    payload["dataset_version"] = dataset_version
+    payload["feature_set_version"] = feature_set_version
+    payload["metrics"] = metrics
     save_json(PROMOTED_MODEL_PATH, payload)
+    previous = get_model_alias("champion")
+    upsert_model_alias(
+        alias="champion",
+        run_id=run_id,
+        model_name=normalized_model,
+        model_version=model_version,
+        source=source,
+        updated_at_utc=str(payload["updated_at"]),
+    )
+    insert_promotion_event(
+        run_id=run_id,
+        model_name=normalized_model,
+        previous_run_id=(
+            str(previous.get("run_id")) if isinstance(previous, dict) else None
+        ),
+        previous_model_version=(
+            str(previous.get("model_version"))
+            if isinstance(previous, dict) and previous.get("model_version") is not None
+            else None
+        ),
+        new_model_version=model_version,
+        summary_json={"source": source},
+        created_at_utc=str(payload["updated_at"]),
+    )
     return payload
 
 
@@ -147,6 +215,51 @@ def get_promoted_model(model_name: str | None = None) -> dict[str, Any]:
     normalized_model = _normalize_model_name(model_name)
     pointer = load_promoted_model_payload()
     pointer_run_id = str(pointer.get("run_id", "")).strip()
+    alias_row = get_model_alias("champion")
+    if isinstance(alias_row, dict) and alias_row:
+        alias_run_id = str(alias_row.get("run_id", "")).strip()
+        if (
+            pointer_run_id
+            and pointer_run_id == alias_run_id
+            and _has_required_artifacts(pointer_run_id, normalized_model)
+        ):
+            run_dir = get_run_dir(pointer_run_id)
+            return {
+                "run_id": pointer_run_id,
+                "model_name": normalized_model,
+                "as_of_date": pointer.get("as_of_date")
+                or _load_as_of_date(run_dir, normalized_model),
+                "feature_hash": pointer.get("feature_hash")
+                or _load_feature_hash(run_dir, normalized_model),
+                "updated_at": pointer.get("updated_at") or _now_iso(),
+                "source": "runtime_pointer",
+                "ready": True,
+                "alias": "champion",
+                "model_version": pointer.get("model_version"),
+                "dataset_version": pointer.get("dataset_version"),
+                "feature_set_version": pointer.get("feature_set_version"),
+                "metrics": pointer.get("metrics", {}),
+            }
+        if alias_run_id and _has_required_artifacts(alias_run_id, normalized_model):
+            run_dir = get_run_dir(alias_run_id)
+            return {
+                "run_id": alias_run_id,
+                "model_name": normalized_model,
+                "as_of_date": _load_as_of_date(run_dir, normalized_model),
+                "feature_hash": _load_feature_hash(run_dir, normalized_model),
+                "updated_at": str(alias_row.get("updated_at_utc") or _now_iso()),
+                "source": str(alias_row.get("source") or "model_registry"),
+                "ready": True,
+                "alias": "champion",
+                "model_version": (
+                    str(alias_row.get("model_version"))
+                    if alias_row.get("model_version") is not None
+                    else None
+                ),
+                "dataset_version": None,
+                "feature_set_version": None,
+                "metrics": {},
+            }
 
     if pointer_run_id and _has_required_artifacts(pointer_run_id, normalized_model):
         run_dir = get_run_dir(pointer_run_id)
@@ -160,6 +273,11 @@ def get_promoted_model(model_name: str | None = None) -> dict[str, Any]:
             "updated_at": pointer.get("updated_at") or _now_iso(),
             "source": "runtime_pointer",
             "ready": True,
+            "alias": "champion",
+            "model_version": pointer.get("model_version"),
+            "dataset_version": pointer.get("dataset_version"),
+            "feature_set_version": pointer.get("feature_set_version"),
+            "metrics": pointer.get("metrics", {}),
         }
 
     fallback_run_id = _latest_completed_run_id(normalized_model)
@@ -173,6 +291,11 @@ def get_promoted_model(model_name: str | None = None) -> dict[str, Any]:
             "updated_at": _now_iso(),
             "source": "fallback_registry",
             "ready": True,
+            "alias": "champion",
+            "model_version": None,
+            "dataset_version": None,
+            "feature_set_version": None,
+            "metrics": {},
         }
 
     return {
@@ -183,6 +306,11 @@ def get_promoted_model(model_name: str | None = None) -> dict[str, Any]:
         "updated_at": _now_iso(),
         "source": "fallback_registry",
         "ready": False,
+        "alias": "champion",
+        "model_version": None,
+        "dataset_version": None,
+        "feature_set_version": None,
+        "metrics": {},
     }
 
 

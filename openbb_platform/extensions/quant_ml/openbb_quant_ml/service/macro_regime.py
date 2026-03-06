@@ -62,3 +62,87 @@ def compute_regime_scores(
     frame = pd.DataFrame(out).sort_index()
     frame = frame.dropna(how="all")
     return frame
+
+
+def classify_regime_label(row: pd.Series | dict[str, float]) -> str:
+    """Classify one 5-axis score row to a human-readable regime label."""
+    risk_on = float(row.get("risk_on_score", 50.0))
+    inflation = float(row.get("inflation_score", 50.0))
+    growth = float(row.get("growth_score", 50.0))
+    liquidity = float(row.get("liquidity_score", 50.0))
+    credit_stress = float(row.get("credit_stress_score", 50.0))
+    if risk_on >= 60.0 and growth >= 60.0:
+        return "Risk-On / Bull"
+    if risk_on < 40.0 and credit_stress > 60.0:
+        return "Risk-Off / Crisis"
+    if inflation > 70.0 and growth < 40.0:
+        return "Stagflation"
+    if liquidity < 40.0:
+        return "Liquidity Crunch"
+    return "Transitional"
+
+
+def detect_regime_transitions(
+    frame: pd.DataFrame,
+    threshold: float = 10.0,
+) -> pd.DataFrame:
+    """Return axis-level transition rows where score delta exceeds threshold."""
+    if frame.empty:
+        return pd.DataFrame(
+            columns=[
+                "date",
+                "axis",
+                "from_score",
+                "to_score",
+                "delta",
+                "direction",
+                "severity",
+            ]
+        )
+    axes = [
+        "risk_on_score",
+        "inflation_score",
+        "growth_score",
+        "liquidity_score",
+        "credit_stress_score",
+    ]
+    rows: list[dict[str, float | str]] = []
+    threshold_abs = float(abs(threshold))
+    for axis in axes:
+        if axis not in frame.columns:
+            continue
+        prev = frame[axis].shift(1)
+        delta = frame[axis] - prev
+        changed = delta.abs() >= threshold_abs
+        for idx in frame.index[changed.fillna(False)]:
+            from_score = float(prev.loc[idx]) if pd.notna(prev.loc[idx]) else 0.0
+            to_score = float(frame.at[idx, axis]) if pd.notna(frame.at[idx, axis]) else 0.0
+            delta_value = to_score - from_score
+            rows.append(
+                {
+                    "date": pd.Timestamp(idx).date().isoformat(),
+                    "axis": axis,
+                    "from_score": from_score,
+                    "to_score": to_score,
+                    "delta": delta_value,
+                    "direction": "rising" if delta_value >= 0 else "falling",
+                    "severity": "major" if abs(delta_value) >= 20.0 else "minor",
+                }
+            )
+    if not rows:
+        return pd.DataFrame(
+            columns=[
+                "date",
+                "axis",
+                "from_score",
+                "to_score",
+                "delta",
+                "direction",
+                "severity",
+            ]
+        )
+    out = pd.DataFrame(rows)
+    out["date"] = pd.to_datetime(out["date"], errors="coerce")
+    out = out.sort_values(["date", "axis"]).reset_index(drop=True)
+    out["date"] = out["date"].dt.date.astype(str)
+    return out

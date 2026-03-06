@@ -105,6 +105,11 @@ def test_build_feature_dataset_with_extended_technical_features():
             include_atr=True,
             include_adx=True,
             include_obv=True,
+            include_stochastic=True,
+            include_williams_r=True,
+            include_cci=True,
+            include_vwap_ratio=True,
+            include_ichimoku_signal=True,
             include_regime_features=False,
         ),
         horizon_days=1,
@@ -116,4 +121,10 @@ def test_build_feature_dataset_with_extended_technical_features():
     assert "atr_14" in feature_columns
     assert "adx_14" in feature_columns
     assert "obv" in feature_columns
+    assert "stoch_k_14_3" in feature_columns
+    assert "stoch_d_14_3" in feature_columns
+    assert "williams_r_14" in feature_columns
+    assert "cci_20" in feature_columns
+    assert "vwap_ratio_20" in feature_columns
+    assert "ichimoku_signal" in feature_columns
     assert feature_data[feature_columns].isna().sum().sum() == 0

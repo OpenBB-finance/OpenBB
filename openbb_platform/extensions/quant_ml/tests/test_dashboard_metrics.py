@@ -143,6 +143,11 @@ def _patch_run(
             ]
         },
     )
+    monkeypatch.setattr(dm, "_disk_free_gb", lambda: 128.0)
+    monkeypatch.setattr(dm, "_fred_api_status", lambda: "ok")
+    monkeypatch.setattr(
+        dm, "_last_successful_run_timestamp", lambda: "2026-02-01T00:00:00+00:00"
+    )
 
 
 def test_dashboard_health_payload(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
@@ -171,6 +176,10 @@ def test_dashboard_health_payload(monkeypatch: pytest.MonkeyPatch, tmp_path: Pat
         "regime_mismatch_risk",
         "prediction_confidence",
     }
+    assert payload.disk_free_gb == 128.0
+    assert payload.fred_api_status == "ok"
+    assert payload.last_successful_run_at == "2026-02-01T00:00:00+00:00"
+    assert payload.data_freshness_days is not None
 
 
 def test_performance_rolling_payload(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
@@ -255,7 +264,7 @@ def test_alerts_include_ic_drift_rules(monkeypatch: pytest.MonkeyPatch, tmp_path
     run_dir = _build_test_run(tmp_path)
     _patch_run(monkeypatch, run_dir)
 
-    ic_index = pd.date_range("2024-01-31", periods=12, freq="M")
+    ic_index = pd.date_range("2024-01-31", periods=12, freq="ME")
     ic_values = pd.Series(
         [0.12, 0.11, 0.10, 0.09, 0.08, 0.07, 0.02, 0.01, 0.00, -0.02, -0.03, -0.05],
         index=ic_index,

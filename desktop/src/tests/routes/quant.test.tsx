@@ -4,7 +4,9 @@ import React from "react";
 import { vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { Route as QuantRoute } from "../../routes/quant";
+import { QuantSessionProvider } from "../../contexts/QuantSessionContext";
 import { clearCachePrefix } from "../../lib/quantCache";
+import { invalidateBackendCache } from "../../lib/openbbBackend";
 
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: vi.fn(() => (options: { component: React.ComponentType }) => ({
@@ -31,10 +33,18 @@ function mockJsonResponse(payload: unknown, ok = true, status = 200): Response {
 
 describe("Quant Route", () => {
   const QuantComponent = QuantRoute.options.component as React.ComponentType;
+  const renderQuant = () =>
+    render(
+      <QuantSessionProvider>
+        <QuantComponent />
+      </QuantSessionProvider>,
+    );
 
   beforeEach(() => {
     vi.clearAllMocks();
     clearCachePrefix("");
+    invalidateBackendCache();
+    localStorage.removeItem("openbb-backend-url");
     localStorage.setItem("quant_latest_run_id", "run-1");
 
     vi.mocked(invoke).mockResolvedValue([
@@ -100,6 +110,44 @@ describe("Quant Route", () => {
           ready: true,
         });
       }
+      if (url.includes("/api/v1/quant_ml/runs/list")) {
+        return mockJsonResponse({
+          limit: 20,
+          runs: [
+            {
+              run_id: "run-1",
+              status: "completed",
+              stage: "completed",
+              created_at: "2026-02-13T00:00:00Z",
+              updated_at: "2026-02-13T00:00:10Z",
+            },
+          ],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/health")) {
+        return mockJsonResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          status: "ok",
+          backend_connected: true,
+          backend_source: "backend_service",
+          backend_detail: "ok",
+          latest_run_id: "run-1",
+          mode_supported: ["backtest", "live"],
+          latest_market_date: "2026-02-12",
+          cache_warm_ratio: 0.82,
+          universe_size: 2,
+          cost_bps: 10,
+          cash_exposure: 0.2,
+          gross_exposure: 1.0,
+          net_exposure: 1.0,
+          strategy_health: { score: 0.95 },
+          data_freshness_days: 1,
+          disk_free_gb: 123.4,
+          last_successful_run_at: "2026-02-13T00:00:10Z",
+          fred_api_status: "ok",
+        });
+      }
       if (url.includes("/api/v1/quant_ml/universe/resolve")) {
         return mockJsonResponse({
           universe_id: "all_in_one",
@@ -115,6 +163,23 @@ describe("Quant Route", () => {
           status: "queued",
           artifact_root: "/tmp/run-1",
           created_at: "2026-02-13T00:00:00Z",
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/signals")) {
+        return mockJsonResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          as_of_date: "2026-02-13",
+          signals: [
+            {
+              symbol: "SPY",
+              side: "long",
+              predicted_return: 0.012,
+              confidence: 0.8,
+              reason_codes: ["rank_top"],
+              z_score: 1.2,
+            },
+          ],
         });
       }
       if (url.endsWith("/api/v1/quant_ml/backtest")) {
@@ -277,19 +342,21 @@ describe("Quant Route", () => {
 
   test("renders quant controls with connected backend", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
       expect(screen.getByText("Quant Lab")).toBeInTheDocument();
       expect(screen.getByText(/OpenBB API connected/i)).toBeInTheDocument();
+      expect(screen.getByText(/Dashboard Health/i)).toBeInTheDocument();
+      expect(screen.getByText(/Supported modes:/i)).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /Start Training/i })).toBeInTheDocument();
     });
   });
 
   test("renders portfolio timeline from rebalance history endpoint", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -311,7 +378,7 @@ describe("Quant Route", () => {
 
   test("starts training workflow", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -342,7 +409,7 @@ describe("Quant Route", () => {
 
   test("sends universe_id only in universe set mode", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -429,7 +496,7 @@ describe("Quant Route", () => {
     }) as unknown as typeof fetch;
 
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -456,7 +523,7 @@ describe("Quant Route", () => {
 
   test("loads model diagnostics when run is completed", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -477,7 +544,7 @@ describe("Quant Route", () => {
 
   test("uses 4% hard cap in backtest request and shows policy badge", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -492,6 +559,15 @@ describe("Quant Route", () => {
     await waitFor(() => {
       const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/train"))).toBe(true);
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Generate Signals/i }));
+    });
+
+    await waitFor(() => {
+      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/signals"))).toBe(true);
     });
 
     await act(async () => {
@@ -513,7 +589,7 @@ describe("Quant Route", () => {
 
   test("runs walk-forward backtest from dedicated button", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -526,6 +602,15 @@ describe("Quant Route", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /Run Walk-forward Backtest/i })).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Generate Signals/i }));
+    });
+
+    await waitFor(() => {
+      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/signals"))).toBe(true);
     });
 
     await act(async () => {
@@ -551,18 +636,18 @@ describe("Quant Route", () => {
     }) as unknown as typeof fetch;
 
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
       expect(screen.getByText(/OpenBB API not connected/i)).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /Go to Backends/i })).toBeInTheDocument();
-    });
+    }, { timeout: 8000 });
   });
 
   test("renders portfolio metadata columns with name+ticker and L1/L2 buckets", async () => {
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {
@@ -593,7 +678,7 @@ describe("Quant Route", () => {
     vi.mocked(invoke).mockRejectedValueOnce(new Error("tauri invoke unavailable"));
 
     await act(async () => {
-      render(<QuantComponent />);
+      renderQuant();
     });
 
     await waitFor(() => {

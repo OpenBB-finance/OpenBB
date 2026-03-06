@@ -25,12 +25,19 @@ def build_dashboard_snapshot_v2(
     run_id: str,
     run_uid: str | None,
     model_name: str,
+    snapshot_profile: str = "full",
     as_of_utc: str | None,
     metrics: dict[str, Any],
     exposure: dict[str, float],
     risk_contrib_top10: list[dict[str, float | str]],
     constraint_bindings: list[dict[str, Any]],
     ic_rolling: list[dict[str, float | str]],
+    regime_current: dict[str, str] | None = None,
+    alerts_current_count: int = 0,
+    constraint_summary: dict[str, float | int] | None = None,
+    artifact_summary: dict[str, Any] | None = None,
+    model_performance: dict[str, Any] | None = None,
+    run_latest_meta: dict[str, Any] | None = None,
 ) -> DashboardSnapshotV2:
     """Construct canonical `DashboardSnapshotV2` payload from raw components."""
     stamp = as_of_utc or datetime.now(UTC).replace(microsecond=0).isoformat()
@@ -38,6 +45,7 @@ def build_dashboard_snapshot_v2(
         run_id=run_id,
         run_uid=run_uid,
         model_name=model_name,  # type: ignore[arg-type]
+        snapshot_profile=snapshot_profile,  # type: ignore[arg-type]
         as_of_utc=stamp,
         total_return=_safe_float(
             metrics.get("net_return", metrics.get("gross_return", 0.0)), default=0.0
@@ -53,5 +61,11 @@ def build_dashboard_snapshot_v2(
         risk_contrib_top10=risk_contrib_top10,
         constraint_bindings=constraint_bindings,
         ic_rolling=ic_rolling,
+        regime_current=regime_current or {},
+        alerts_current_count=max(0, int(alerts_current_count)),
+        constraint_summary=constraint_summary or {},
+        artifact_summary=artifact_summary,
+        model_performance=model_performance,
+        run_latest_meta=run_latest_meta,
         currency="USD",
     )

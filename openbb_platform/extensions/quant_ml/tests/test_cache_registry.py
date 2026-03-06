@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -38,3 +39,30 @@ def test_data_and_feature_version_roundtrip(monkeypatch, tmp_path: Path):
     key = "default:SPY"
     assert key in feature_versions.get("features", {})
     assert feature_versions["features"][key]["params_hash"] == params_hash
+
+
+def test_is_cache_stale_by_ttl(monkeypatch, tmp_path: Path):
+    monkeypatch.setattr(cr, "RAW_STORE_DIR", tmp_path / "raw_store")
+    monkeypatch.setattr(cr, "FEATURE_STORE_DIR", tmp_path / "feature_store")
+    monkeypatch.setattr(cr, "VERSIONS_DIR", tmp_path / "versions")
+    monkeypatch.setattr(cr, "DATA_VERSION_PATH", tmp_path / "versions" / "data_version.json")
+    monkeypatch.setattr(cr, "FEATURE_VERSION_PATH", tmp_path / "versions" / "feature_version.json")
+
+    frame = pd.DataFrame(
+        {
+            "date": pd.to_datetime(["2025-01-02"]),
+            "symbol": ["SPY"],
+            "target_return": [0.01],
+        }
+    )
+    params_hash = cr.compute_params_hash({"a": 1})
+    cr.update_feature_version("SPY", "default", params_hash, frame)
+    assert cr.is_cache_stale("default", "SPY", ttl_days=7) is False
+
+    payload = cr.get_feature_versions()
+    payload["features"]["default:SPY"]["updated_at"] = (
+        datetime.now(UTC) - timedelta(days=9)
+    ).replace(microsecond=0).isoformat()
+    cr._write_json(cr.FEATURE_VERSION_PATH, payload)
+
+    assert cr.is_cache_stale("default", "SPY", ttl_days=7) is True

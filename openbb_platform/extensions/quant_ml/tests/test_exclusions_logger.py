@@ -6,7 +6,6 @@ from datetime import date
 from pathlib import Path
 
 import pandas as pd
-
 from openbb_quant_ml.service.exclusions_logger import append_exclusions
 
 

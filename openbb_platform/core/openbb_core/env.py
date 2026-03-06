@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from typing import Literal
 
 import dotenv
 from openbb_core.app.constants import OPENBB_DIRECTORY
@@ -57,6 +58,20 @@ class Env(metaclass=SingletonMeta):
     def DEV_MODE(self) -> bool:
         """Dev mode: enables development mode."""
         return self.str2bool(self._environ.get("OPENBB_DEV_MODE", False))
+
+    @property
+    def API_DOCS_MODE(self) -> Literal["disabled", "full"]:
+        """API docs mode.
+
+        - `disabled`: disables docs/redoc/openapi endpoints.
+        - `full`: enables docs/redoc/openapi endpoints.
+        """
+        raw = str(self._environ.get("OPENBB_API_DOCS_MODE", "")).strip().lower()
+        if not raw:
+            return "disabled" if self.DEV_MODE else "full"
+        if raw in {"disabled", "full"}:
+            return raw  # type: ignore[return-value]
+        return "full"
 
     @property
     def ALLOW_MUTABLE_EXTENSIONS(self) -> bool:

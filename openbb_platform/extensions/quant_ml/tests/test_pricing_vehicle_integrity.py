@@ -5,7 +5,6 @@ from __future__ import annotations
 from datetime import date
 
 import pandas as pd
-
 from openbb_quant_ml.service.pricing_vehicle import select_pricing_vehicle
 
 

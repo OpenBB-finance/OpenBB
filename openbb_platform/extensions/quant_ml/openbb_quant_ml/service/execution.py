@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -12,6 +14,8 @@ import pandas as pd
 
 from openbb_quant_ml.models import (
     ExecutionFillsResponse,
+    ExecutionModeResponse,
+    ExecutionModeUpdateRequest,
     ExecutionOrderItem,
     ExecutionOrderPreviewRequest,
     ExecutionOrdersResponse,
@@ -26,17 +30,30 @@ from openbb_quant_ml.models import (
     RiskPretradeResponse,
     RiskViolationItem,
 )
-from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
+from openbb_quant_ml.service.execution_adapter import DisabledLiveAdapter
+from openbb_quant_ml.service.ops_policy import get_ops_policy
 from openbb_quant_ml.service.pipeline import get_portfolio_current
+from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
 from openbb_quant_ml.service.storage import get_run_dir, load_json, save_json
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
-SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker")
+SUPPORTED_MODELS: tuple[ModelName, ...] = (
+    "xgb_lstm",
+    "lgbm_ranker",
+    "catboost_ranker",
+)
 DEFAULT_NAV = 1_000_000.0
 DEFAULT_SLIPPAGE_BPS = 2.0
 PORTFOLIO_POLICY = get_portfolio_policy()
+OPS_POLICY = get_ops_policy()
 DEFAULT_CASH_CATEGORY = (
     str(PORTFOLIO_POLICY.get("cash_category", "cash_proxy")).strip() or "cash_proxy"
+)
+_EXECUTION_POLICY = OPS_POLICY.get("execution", {}) if isinstance(OPS_POLICY, dict) else {}
+_EXECUTION_RISK_DEFAULTS = (
+    _EXECUTION_POLICY.get("risk_defaults", {})
+    if isinstance(_EXECUTION_POLICY, dict)
+    else {}
 )
 DEFAULT_RISK_LIMITS: dict[str, float] = {
     "max_weight": float(PORTFOLIO_POLICY.get("single_name_max_abs_weight", 0.10)),
@@ -45,7 +62,11 @@ DEFAULT_RISK_LIMITS: dict[str, float] = {
     "sector_concentration": float(
         PORTFOLIO_POLICY.get("sector_concentration_max", 0.35)
     ),
-    "turnover": float(PORTFOLIO_POLICY.get("turnover_max", 0.8)),
+    "turnover": float(PORTFOLIO_POLICY.get("turnover_max", 1.0)),
+    "max_order_notional": float(_EXECUTION_RISK_DEFAULTS.get("max_order_notional", 250000.0)),
+    "daily_loss_limit": float(_EXECUTION_RISK_DEFAULTS.get("daily_loss_limit", 50000.0)),
+    "max_symbol_exposure": float(_EXECUTION_RISK_DEFAULTS.get("max_symbol_exposure", 0.10)),
+    "execution_cash_buffer": float(_EXECUTION_RISK_DEFAULTS.get("execution_cash_buffer", 0.02)),
 }
 
 
@@ -87,6 +108,11 @@ def _default_execution_state(nav: float = DEFAULT_NAV) -> dict[str, Any]:
         "realized_pnl": 0.0,
         "orders": [],
         "kill_switch": False,
+        "mode": str(_EXECUTION_POLICY.get("default_mode", "paper") or "paper"),
+        "live_adapter_enabled": bool(_EXECUTION_POLICY.get("live_adapter_enabled", False)),
+        "broker_ready": bool(_EXECUTION_POLICY.get("broker_ready", False)),
+        "idempotency_keys": [],
+        "risk_limits": DEFAULT_RISK_LIMITS.copy(),
         "updated_at": _utc_now_iso(),
     }
 
@@ -104,8 +130,49 @@ def _load_execution_state(
     payload.setdefault("realized_pnl", 0.0)
     payload.setdefault("orders", [])
     payload.setdefault("kill_switch", False)
+    payload.setdefault("mode", str(_EXECUTION_POLICY.get("default_mode", "paper") or "paper"))
+    payload.setdefault(
+        "live_adapter_enabled", bool(_EXECUTION_POLICY.get("live_adapter_enabled", False))
+    )
+    payload.setdefault("broker_ready", bool(_EXECUTION_POLICY.get("broker_ready", False)))
+    payload.setdefault("idempotency_keys", [])
+    merged_limits = DEFAULT_RISK_LIMITS.copy()
+    if isinstance(payload.get("risk_limits"), dict):
+        for key, value in payload["risk_limits"].items():
+            try:
+                merged_limits[str(key)] = float(value)
+            except (TypeError, ValueError):
+                continue
+    payload["risk_limits"] = merged_limits
     payload.setdefault("updated_at", _utc_now_iso())
     return payload
+
+
+def _execution_mode_value(state: dict[str, Any]) -> str:
+    mode = str(state.get("mode", _EXECUTION_POLICY.get("default_mode", "paper"))).strip().lower()
+    if mode not in {"paper", "shadow_live", "live_adapter"}:
+        return "paper"
+    return mode
+
+
+def _idempotency_key(
+    request: ExecutionOrderPreviewRequest,
+    preview: ExecutionPreviewResponse,
+) -> str:
+    if request.idempotency_key:
+        return str(request.idempotency_key).strip()
+    token = {
+        "run_id": request.run_id,
+        "model_name": request.model_name,
+        "as_of_date": preview.as_of_date,
+        "order_count": len(preview.orders),
+        "turnover": round(float(preview.estimated_turnover), 8),
+    }
+    if not preview.orders:
+        return uuid4().hex
+    return hashlib.sha1(
+        json.dumps(token, sort_keys=True).encode("utf-8")
+    ).hexdigest()
 
 
 def _load_positions(
@@ -288,6 +355,7 @@ def _preview_orders(
         )
 
     state = _load_execution_state(run_dir, model_name, nav=nav)
+    execution_mode = _execution_mode_value(state)
     nav_value = (
         float(nav)
         if nav is not None
@@ -313,6 +381,12 @@ def _preview_orders(
         )
 
     current_weights = _calc_weights_from_positions(current_positions, prices, nav_value)
+    cash_buffer = float(_risk_limits(run_dir, model_name).get("execution_cash_buffer", 0.0))
+    if cash_buffer > 0.0 and target_weights:
+        scale = max(0.0, 1.0 - min(cash_buffer, 0.95))
+        target_weights = {
+            symbol: float(weight) * scale for symbol, weight in target_weights.items()
+        }
     symbols = sorted(set(target_weights).union(set(current_weights)))
     orders: list[ExecutionOrderItem] = []
     turnover_notional = 0.0
@@ -352,6 +426,7 @@ def _preview_orders(
         nav=nav_value,
         orders=orders,
         estimated_turnover=float(turnover_notional / max(nav_value, 1e-12)),
+        execution_mode=execution_mode,  # type: ignore[arg-type]
         message=None if orders else "No rebalance orders required.",
     )
 
@@ -368,6 +443,7 @@ def _preview_orders(
         ),
         "slippage_bps": float(slippage_bps),
         "target_category_weights": category_weights,
+        "execution_mode": execution_mode,
     }
     return preview, context
 
@@ -393,6 +469,9 @@ def _risk_violations_from_preview(
     max_weight_limit = float(
         limits.get("max_weight", DEFAULT_RISK_LIMITS["max_weight"])
     )
+    max_symbol_exposure = float(
+        limits.get("max_symbol_exposure", max_weight_limit)
+    )
     if max_weight > max_weight_limit + 1e-12:
         violations.append(
             RiskViolationItem(
@@ -401,6 +480,16 @@ def _risk_violations_from_preview(
                 value=max_weight,
                 limit=max_weight_limit,
                 message="Maximum position weight exceeded (hard cap policy).",
+            )
+        )
+    if max_weight > max_symbol_exposure + 1e-12:
+        violations.append(
+            RiskViolationItem(
+                rule_id="max_symbol_exposure",
+                severity="critical",
+                value=max_weight,
+                limit=max_symbol_exposure,
+                message="Maximum symbol exposure exceeded.",
             )
         )
 
@@ -469,6 +558,24 @@ def _risk_violations_from_preview(
             )
         )
 
+    max_order_notional = float(
+        limits.get("max_order_notional", DEFAULT_RISK_LIMITS["max_order_notional"])
+    )
+    largest_order = max(
+        (float(order.est_notional) for order in preview.orders),
+        default=0.0,
+    )
+    if largest_order > max_order_notional + 1e-12:
+        violations.append(
+            RiskViolationItem(
+                rule_id="max_order_notional",
+                severity="critical",
+                value=largest_order,
+                limit=max_order_notional,
+                message="Maximum per-order notional limit exceeded.",
+            )
+        )
+
     return violations
 
 
@@ -524,6 +631,7 @@ def submit_execution_orders(
             message=preview.message,
             orders=[],
             kill_switch=False,
+            execution_mode=preview.execution_mode or "paper",
         )
 
     run_dir: Path = context["run_dir"]
@@ -533,9 +641,24 @@ def submit_execution_orders(
     cost_bps = float(context["cost_bps"])
     slippage_bps = float(context["slippage_bps"])
     target_category_weights: dict[str, float] = context["target_category_weights"]
+    execution_mode = str(context.get("execution_mode", _execution_mode_value(state)))
 
     limits = _risk_limits(run_dir, model_name)
     violations = _risk_violations_from_preview(preview, target_category_weights, limits)
+    daily_loss_limit = float(
+        limits.get("daily_loss_limit", DEFAULT_RISK_LIMITS["daily_loss_limit"])
+    )
+    realized_loss = max(0.0, -float(state.get("realized_pnl", 0.0)))
+    if realized_loss > daily_loss_limit + 1e-12:
+        violations.append(
+            RiskViolationItem(
+                rule_id="daily_loss_limit",
+                severity="critical",
+                value=realized_loss,
+                limit=daily_loss_limit,
+                message="Daily loss limit exceeded.",
+            )
+        )
     critical = [item for item in violations if item.severity == "critical"]
     if critical or bool(state.get("kill_switch", False)):
         state["kill_switch"] = True
@@ -559,7 +682,82 @@ def submit_execution_orders(
             message="Kill switch active. Orders are blocked by risk limits.",
             orders=[],
             kill_switch=True,
+            execution_mode=execution_mode,  # type: ignore[arg-type]
         )
+
+    idempotency_key = _idempotency_key(request, preview)
+    existing_keys = [
+        str(item).strip()
+        for item in state.get("idempotency_keys", [])
+        if str(item).strip()
+    ]
+    if idempotency_key in existing_keys:
+        return ExecutionSubmitResponse(
+            run_id=request.run_id,
+            model_name=model_name,
+            status="insufficient_data",
+            message="Duplicate order batch blocked by idempotency key.",
+            orders=[],
+            kill_switch=bool(state.get("kill_switch", False)),
+            execution_mode=execution_mode,  # type: ignore[arg-type]
+        )
+
+    if execution_mode == "shadow_live":
+        shadow_orders = [
+            order.model_copy(update={"status": "submitted"}) for order in preview.orders
+        ]
+        state["orders"] = [item.model_dump(mode="json") for item in shadow_orders]
+        state["idempotency_keys"] = (existing_keys + [idempotency_key])[-100:]
+        _save_execution_state(run_dir, model_name, state)
+        return ExecutionSubmitResponse(
+            run_id=request.run_id,
+            model_name=model_name,
+            status="ok",
+            submitted_at=_utc_now_iso(),
+            orders=shadow_orders,
+            fills_count=0,
+            cash_after=float(state.get("cash", preview.nav)),
+            nav_after=float(state.get("nav", preview.nav)),
+            kill_switch=bool(state.get("kill_switch", False)),
+            execution_mode=execution_mode,  # type: ignore[arg-type]
+            message="Shadow live mode enabled. Orders were logged but not filled.",
+        )
+
+    if execution_mode == "live_adapter":
+        adapter = DisabledLiveAdapter()
+        try:
+            adapter.submit_orders(
+                [
+                    item.model_dump(mode="json")
+                    for item in preview.orders
+                ]
+            )
+        except Exception as exc:  # noqa: BLE001
+            state["kill_switch"] = True
+            _save_execution_state(run_dir, model_name, state)
+            _append_risk_events(
+                run_dir,
+                model_name,
+                [
+                    {
+                        "triggered_at": _utc_now_iso(),
+                        "rule_id": "api_failure_halt",
+                        "severity": "critical",
+                        "message": str(exc),
+                        "value": 1.0,
+                        "limit": 0.0,
+                    }
+                ],
+            )
+            return ExecutionSubmitResponse(
+                run_id=request.run_id,
+                model_name=model_name,
+                status="insufficient_data",
+                message=str(exc),
+                orders=[],
+                kill_switch=True,
+                execution_mode=execution_mode,  # type: ignore[arg-type]
+            )
 
     cash = float(state.get("cash", preview.nav))
     realized = float(state.get("realized_pnl", 0.0))
@@ -636,6 +834,7 @@ def submit_execution_orders(
     state["nav"] = nav_after
     state["realized_pnl"] = float(realized)
     state["orders"] = [item.model_dump(mode="json") for item in submitted_orders]
+    state["idempotency_keys"] = (existing_keys + [idempotency_key])[-100:]
     state["cost_bps"] = float(cost_bps)
     state["slippage_bps"] = float(slippage_bps)
     _save_execution_state(run_dir, model_name, state)
@@ -650,6 +849,7 @@ def submit_execution_orders(
         cash_after=float(cash),
         nav_after=nav_after,
         kill_switch=bool(state.get("kill_switch", False)),
+        execution_mode=execution_mode,  # type: ignore[arg-type]
         message=None if fills else "No fills were generated.",
     )
 
@@ -668,6 +868,7 @@ def get_execution_orders_current(
         )
     run_dir = get_run_dir(run_id)
     state = _load_execution_state(run_dir, normalized_model)
+    execution_mode = _execution_mode_value(state)
     orders = [
         ExecutionOrderItem(**row)
         for row in state.get("orders", [])
@@ -678,6 +879,7 @@ def get_execution_orders_current(
         model_name=normalized_model,
         status="ok",
         orders=orders,
+        execution_mode=execution_mode,  # type: ignore[arg-type]
     )
 
 
@@ -694,6 +896,7 @@ def get_execution_fills_history(
             message="Run not found",
         )
     run_dir = get_run_dir(run_id)
+    state = _load_execution_state(run_dir, normalized_model)
     path = _fills_path(run_dir, normalized_model)
     if not path.exists():
         return ExecutionFillsResponse(
@@ -702,6 +905,7 @@ def get_execution_fills_history(
             status="insufficient_data",
             message="No fills history",
             fills=[],
+            execution_mode=_execution_mode_value(state),  # type: ignore[arg-type]
         )
     frame = pd.read_parquet(path)
     if frame.empty:
@@ -711,10 +915,15 @@ def get_execution_fills_history(
             status="insufficient_data",
             message="No fills history",
             fills=[],
+            execution_mode=_execution_mode_value(state),  # type: ignore[arg-type]
         )
     rows = frame.tail(max(int(limit), 1)).to_dict(orient="records")
     return ExecutionFillsResponse(
-        run_id=run_id, model_name=normalized_model, status="ok", fills=rows
+        run_id=run_id,
+        model_name=normalized_model,
+        status="ok",
+        fills=rows,
+        execution_mode=_execution_mode_value(state),  # type: ignore[arg-type]
     )
 
 
@@ -733,6 +942,7 @@ def get_execution_positions_current(
 
     run_dir = get_run_dir(run_id)
     state = _load_execution_state(run_dir, normalized_model)
+    execution_mode = _execution_mode_value(state)
     positions = _load_positions(run_dir, normalized_model)
     as_of_date, prices = _latest_prices(run_dir)
     nav = float(state.get("nav", state.get("initial_nav", DEFAULT_NAV)))
@@ -775,6 +985,7 @@ def get_execution_positions_current(
         cash=cash,
         gross_exposure=float(gross_exp),
         net_exposure=float(net_exp),
+        execution_mode=execution_mode,  # type: ignore[arg-type]
     )
 
 
@@ -793,6 +1004,7 @@ def get_execution_pnl(
 
     run_dir = get_run_dir(run_id)
     state = _load_execution_state(run_dir, normalized_model)
+    execution_mode = _execution_mode_value(state)
     positions_payload = get_execution_positions_current(
         run_id=run_id, model_name=normalized_model
     )
@@ -822,6 +1034,7 @@ def get_execution_pnl(
         unrealized_pnl=unrealized,
         total_pnl=total,
         return_pct=float(total / (initial_nav + 1e-12)),
+        execution_mode=execution_mode,  # type: ignore[arg-type]
     )
 
 
@@ -841,6 +1054,7 @@ def get_risk_limits(run_id: str, model_name: str | None = None) -> RiskLimitsRes
         status="ok",
         limits=limits,
         kill_switch=bool(state.get("kill_switch", False)),
+        execution_mode=_execution_mode_value(state),  # type: ignore[arg-type]
     )
 
 
@@ -908,6 +1122,7 @@ def risk_check_pretrade(request: RiskPretradeRequest) -> RiskPretradeResponse:
         passed=len(violations) == 0,
         kill_switch=kill_switch,
         violations=violations,
+        execution_mode=_execution_mode_value(_load_execution_state(run_dir, normalized_model)),  # type: ignore[arg-type]
     )
 
 
@@ -936,3 +1151,34 @@ def get_risk_events(
         status="ok",
         events=[row for row in rows[-max(int(limit), 1) :] if isinstance(row, dict)],
     )
+
+
+def get_execution_mode_response(
+    run_id: str, model_name: str | None = None
+) -> ExecutionModeResponse:
+    """Return the configured execution mode for one run/model."""
+    normalized_model = _normalize_model_name(model_name)
+    if not _run_exists(run_id):
+        return ExecutionModeResponse(run_id=run_id, model_name=normalized_model)
+    run_dir = get_run_dir(run_id)
+    state = _load_execution_state(run_dir, normalized_model)
+    return ExecutionModeResponse(
+        run_id=run_id,
+        model_name=normalized_model,
+        mode=_execution_mode_value(state),  # type: ignore[arg-type]
+        live_adapter_enabled=bool(state.get("live_adapter_enabled", False)),
+        broker_ready=bool(state.get("broker_ready", False)),
+        kill_switch=bool(state.get("kill_switch", False)),
+        updated_at=str(state.get("updated_at")) if state.get("updated_at") else None,
+    )
+
+
+def set_execution_mode(request: ExecutionModeUpdateRequest) -> ExecutionModeResponse:
+    """Persist one execution mode update."""
+    normalized_model = _normalize_model_name(request.model_name)
+    run_dir = get_run_dir(request.run_id)
+    run_dir.mkdir(parents=True, exist_ok=True)
+    state = _load_execution_state(run_dir, normalized_model)
+    state["mode"] = request.mode
+    _save_execution_state(run_dir, normalized_model, state)
+    return get_execution_mode_response(request.run_id, normalized_model)

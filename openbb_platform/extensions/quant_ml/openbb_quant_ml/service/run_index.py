@@ -175,6 +175,11 @@ def list_latest_runs_from_index(limit: int = 10) -> list[dict[str, Any]]:
             "stage": str(row.get("stage", "")),
             "created_at": row.get("created_at"),
             "updated_at": row.get("updated_at"),
+            "artifacts": (
+                row.get("artifacts")
+                if isinstance(row.get("artifacts"), dict)
+                else _artifact_flags(str(run_id))
+            ),
         }
         for run_id, row in runs.items()
         if isinstance(row, dict)

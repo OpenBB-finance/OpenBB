@@ -65,10 +65,8 @@ openbb-econometrics = { path = "./extensions/econometrics", optional = true, dev
 openbb-quant-ml = { path = "./extensions/quant_ml", optional = true, develop = true }
 openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
-openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
+openbb-mcp-server = { path = "./extensions/mcp_server", optional = true, develop = true, markers = "python_version >= '3.10'" }
 openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
-openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
-openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]

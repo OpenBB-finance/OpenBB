@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import pickle
 import platform
 import re
@@ -30,53 +31,56 @@ from openbb_quant_ml.models import (
     ModelPerformanceResponse,
     ModelRegimeResponse,
     PortfolioCurrentResponse,
-    RebalanceHistoryResponse,
-    UniverseSnapshotResponse,
-    UniverseExclusionItem,
     PortfolioRationale,
     PortfolioSymbolWeightItem,
     PredictionsLatestResponse,
     RebalanceHistoryItem,
+    RebalanceHistoryResponse,
+    RunListItem,
+    RunListResponse,
     RunStatusResponse,
     SignalRequest,
     SignalResponse,
     TrainRequest,
     TrainResponse,
+    UniverseExclusionItem,
     UniverseResponse,
+    UniverseSnapshotResponse,
 )
 from openbb_quant_ml.service.artifact_store import (
     ARTIFACT_CONTRACT_VERSION,
-    artifact_completeness,
-    required_artifacts_ready,
     write_contract_manifest,
     write_json as write_artifact_json,
     write_parquet as write_artifact_parquet,
     write_text as write_artifact_text,
 )
 from openbb_quant_ml.service.asof_guard import build_asof_manifest
-from openbb_quant_ml.service.backtest import run_backtest
-from openbb_quant_ml.service.contract.data_contract import write_data_layer_meta
-from openbb_quant_ml.service.constraints import (
-    build_constraints_log,
-    summarize_constraint_bindings,
-)
-from openbb_quant_ml.service.delisting import load_delisting_events
-from openbb_quant_ml.service.delisting import validate_delisting_events_required
+from openbb_quant_ml.service.backtest import build_benchmark_curve, run_backtest
 from openbb_quant_ml.service.cache_registry import (
     get_data_versions,
     get_feature_versions,
 )
+from openbb_quant_ml.service.constraints import (
+    build_constraints_log,
+    summarize_constraint_bindings,
+)
+from openbb_quant_ml.service.contract.data_contract import write_data_layer_meta
 from openbb_quant_ml.service.dashboard_metrics import (
     get_performance_regime as get_dashboard_performance_regime,
     get_portfolio_risk as get_dashboard_portfolio_risk,
     refresh_alerts_for_run,
 )
-from openbb_quant_ml.service.data_loader import (
-    build_close_panel,
-    build_price_panel,
-    load_market_data,
+from openbb_quant_ml.service.data_lake import write_lake_dataset
+from openbb_quant_ml.service.data_loader import load_market_data
+from openbb_quant_ml.service.data_quality import (
+    register_dataset_snapshot,
+    run_quality_gate,
+    should_block_on_quality,
 )
+from openbb_quant_ml.service.delisting import load_delisting_events, validate_delisting_events_required
+from openbb_quant_ml.service.experiment_tracking import register_experiment_run
 from openbb_quant_ml.service.feature_engineering import build_feature_dataset
+from openbb_quant_ml.service.model_registry import register_model_version
 from openbb_quant_ml.service.modeling import (
     train_hybrid_models,
     tune_xgb_hyperparameters,
@@ -84,11 +88,14 @@ from openbb_quant_ml.service.modeling import (
 from openbb_quant_ml.service.pnl_attribution import build_pnl_attribution
 from openbb_quant_ml.service.portfolio_policy import get_portfolio_policy
 from openbb_quant_ml.service.ranker_modeling import (
+    select_top_features,
     train_ranker_models,
     tune_ranker_hyperparameters,
 )
 from openbb_quant_ml.service.report_builder import build_report_html
+from openbb_quant_ml.service.reporting import write_backtest_report
 from openbb_quant_ml.service.run_context import ensure_run_context
+from openbb_quant_ml.service.run_index import list_latest_runs_from_index
 from openbb_quant_ml.service.run_registry import (
     append_log,
     create_run,
@@ -122,13 +129,13 @@ from openbb_quant_ml.service.universe import (
     list_universe_ids,
     load_universe_config,
 )
-from openbb_quant_ml.service.universe_policy import get_universe_policy
 from openbb_quant_ml.service.universe_engine import (
     build_universe_snapshot,
     load_latest_universe_exclusions,
     load_latest_universe_snapshot,
     universe_snapshot_dir,
 )
+from openbb_quant_ml.service.universe_policy import get_universe_policy
 
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker", "catboost_ranker")
@@ -148,6 +155,57 @@ _STATUS_ALIASES: dict[str, str] = {
     "완료": "completed",
     "실패": "failed",
 }
+
+def _ops_metadata_path(run_id: str) -> Path:
+    return get_run_dir(run_id) / "ops_metadata.json"
+
+
+def _load_ops_metadata(run_id: str) -> dict[str, Any]:
+    payload = load_json(_ops_metadata_path(run_id), default={})
+    return payload if isinstance(payload, dict) else {}
+
+
+def _update_ops_metadata(run_id: str, **updates: Any) -> dict[str, Any]:
+    payload = _load_ops_metadata(run_id)
+    payload.update({key: value for key, value in updates.items() if value is not None})
+    report_urls = payload.get("report_urls", [])
+    if isinstance(report_urls, list):
+        payload["report_urls"] = [str(item) for item in report_urls if str(item).strip()]
+    save_json(_ops_metadata_path(run_id), payload)
+    return payload
+
+
+def _merge_operational_fields(
+    run_id: str, payload: dict[str, Any], model_name: str | None = None
+) -> dict[str, Any]:
+    enriched = dict(payload)
+    ops_meta = _load_ops_metadata(run_id)
+    for key in (
+        "dataset_version",
+        "feature_set_version",
+        "qc_status",
+        "regime_label",
+        "model_version",
+    ):
+        if enriched.get(key) is None and ops_meta.get(key) is not None:
+            enriched[key] = ops_meta.get(key)
+    report_urls = ops_meta.get("report_urls", [])
+    if isinstance(report_urls, list) and "report_urls" not in enriched:
+        enriched["report_urls"] = [
+            str(item) for item in report_urls if str(item).strip()
+        ]
+    regime_policy = ops_meta.get("regime_policy_applied", {})
+    if isinstance(regime_policy, dict) and "regime_policy_applied" not in enriched:
+        enriched["regime_policy_applied"] = regime_policy
+    try:
+        from openbb_quant_ml.service.execution import get_execution_mode_response
+
+        enriched.setdefault(
+            "execution_mode", get_execution_mode_response(run_id, model_name).mode
+        )
+    except Exception:
+        pass
+    return enriched
 
 
 def _save_run_config(run_id: str, request: TrainRequest) -> None:
@@ -405,6 +463,84 @@ def _json_sanitize(value: Any) -> Any:
     return value
 
 
+def _canonical_json(value: Any) -> str:
+    """Return deterministic JSON string for cache key/signature comparison."""
+    return json.dumps(
+        _json_sanitize(value),
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    )
+
+
+def _build_backtest_request_signature(
+    request: BacktestRequest, model_name: ModelName
+) -> dict[str, Any]:
+    return {
+        "run_id": request.run_id,
+        "model_name": model_name,
+        "start_date": request.start_date.isoformat(),
+        "end_date": request.end_date.isoformat(),
+        "rebalance": request.rebalance,
+        "constraints": request.constraints.model_dump(mode="json"),
+        "cost_bps": float(request.cost_bps),
+        "slippage_bps": float(request.slippage_bps),
+        "entry_price": request.entry_price,
+        "exit_price": request.exit_price,
+        "portfolio_mode": request.portfolio_mode,
+        "mu_mapping": request.mu_mapping,
+        "regime_policy": request.regime_policy,
+    }
+
+
+def _load_cached_backtest_response(
+    request: BacktestRequest, model_name: ModelName
+) -> BacktestResponse | None:
+    payload = load_json(_backtest_path(request.run_id, model_name), default={})
+    if not isinstance(payload, dict) or not payload:
+        return None
+
+    expected_signature = _build_backtest_request_signature(request, model_name)
+    saved_signature = payload.get("request_signature")
+    if isinstance(saved_signature, dict):
+        signature_matches = (
+            _canonical_json(saved_signature) == _canonical_json(expected_signature)
+        )
+    else:
+        # Backward-compatible matching for artifacts written before request_signature.
+        legacy_signature = {
+            "run_id": str(payload.get("run_id", "")).strip(),
+            "model_name": str(payload.get("model_name", "")).strip() or model_name,
+            "start_date": str(payload.get("start_date", "")).strip(),
+            "end_date": str(payload.get("end_date", "")).strip(),
+            "rebalance": str(payload.get("rebalance", "monthly")).strip() or "monthly",
+            "constraints": payload.get("constraints", {}),
+            "cost_bps": _safe_float(payload.get("cost_bps"), default=10.0),
+            "slippage_bps": _safe_float(payload.get("slippage_bps"), default=2.0),
+            "entry_price": str(payload.get("entry_price", "next_open")).strip()
+            or "next_open",
+            "exit_price": str(payload.get("exit_price", "close")).strip() or "close",
+            "portfolio_mode": str(payload.get("portfolio_mode", "long_only")).strip()
+            or "long_only",
+            "mu_mapping": str(payload.get("mu_mapping", "quantile_mean_return")).strip()
+            or "quantile_mean_return",
+            "regime_policy": str(payload.get("regime_policy", "mixed")).strip()
+            or "mixed",
+        }
+        signature_matches = (
+            _canonical_json(legacy_signature) == _canonical_json(expected_signature)
+        )
+
+    if not signature_matches:
+        return None
+
+    try:
+        return BacktestResponse(**payload)
+    except Exception:  # noqa: BLE001
+        # Corrupted or outdated payload shape should trigger recompute.
+        return None
+
+
 def _safe_float(value: Any, default: float = 0.0) -> float:
     try:
         casted = float(value)
@@ -413,6 +549,25 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
     if np.isnan(casted) or np.isinf(casted):
         return default
     return casted
+
+
+def _prepare_predictions_for_backtest(predictions: pd.DataFrame) -> pd.DataFrame:
+    prepared = predictions.copy()
+    if "score" not in prepared.columns:
+        prepared["score"] = pd.to_numeric(
+            prepared.get("predicted_return"),
+            errors="coerce",
+        ).fillna(0.0)
+    if "predicted_return" not in prepared.columns:
+        prepared["predicted_return"] = pd.to_numeric(
+            prepared["score"], errors="coerce"
+        ).fillna(0.0)
+    else:
+        prepared["predicted_return"] = pd.to_numeric(
+            prepared["predicted_return"], errors="coerce"
+        ).fillna(0.0)
+    prepared["score"] = pd.to_numeric(prepared["score"], errors="coerce").fillna(0.0)
+    return prepared
 
 
 def _period_weights_to_frame(period_weights: list[dict[str, Any]]) -> pd.DataFrame:
@@ -686,6 +841,34 @@ def _sample_symbols_by_liquidity(
     return {symbol: frame for symbol, frame in datasets.items() if symbol in selected}
 
 
+def _build_market_long_from_datasets(datasets: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Build long-format OHLCV artifact from per-symbol frames."""
+    rows: list[pd.DataFrame] = []
+    for symbol, frame in datasets.items():
+        if frame is None or frame.empty:
+            continue
+        local = frame.copy()
+        local["symbol"] = symbol
+        for column in ("open", "high", "low", "close", "volume"):
+            if column not in local.columns:
+                local[column] = np.nan
+        rows.append(
+            local[["date", "symbol", "open", "high", "low", "close", "volume"]]
+        )
+
+    if not rows:
+        return pd.DataFrame(
+            columns=["date", "symbol", "open", "high", "low", "close", "volume"]
+        )
+
+    market_long = pd.concat(rows, ignore_index=True)
+    market_long["date"] = pd.to_datetime(market_long["date"]).dt.tz_localize(None)
+    market_long = market_long.dropna(subset=["close"])
+    market_long = market_long.sort_values(["date", "symbol"])
+    market_long = market_long.drop_duplicates(subset=["date", "symbol"], keep="last")
+    return market_long.reset_index(drop=True)
+
+
 def _apply_feature_pruning(
     frame: pd.DataFrame,
     feature_columns: list[str],
@@ -703,6 +886,25 @@ def _apply_feature_pruning(
     pruned = frame.drop(columns=drop_cols, errors="ignore")
     out_cols = [col for col in feature_columns if col not in set(drop_cols)]
     return pruned, out_cols, len(drop_cols)
+
+
+def _select_features_by_importance(
+    feature_columns: list[str],
+    feature_importance: list[dict[str, float]],
+    *,
+    threshold: float = 0.95,
+    min_features: int = 15,
+) -> list[str]:
+    selected = select_top_features(
+        feature_importance=feature_importance,
+        threshold=threshold,
+        min_features=min_features,
+    )
+    if not selected:
+        return feature_columns
+    selected_set = set(selected)
+    filtered = [name for name in feature_columns if name in selected_set]
+    return filtered if filtered else feature_columns
 
 
 def _run_training_job(run_id: str, request: TrainRequest) -> None:
@@ -754,6 +956,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             symbols,
             start_date,
             end_date,
+            provider=request.provider,
             progress_callback=_on_market_data_progress,
             max_workers=(
                 int(request.market_data_workers)
@@ -788,6 +991,9 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
             close_to_next_open_horizon_policy=request.close_to_next_open_horizon_policy,
             include_macro_features=request.include_macro_features,
             macro_feature_subset=request.macro_feature_subset,
+            include_fundamentals=request.feature_parameters.include_fundamentals,
+            fundamental_provider=request.fundamental_provider or request.provider,
+            include_sentiment=request.feature_parameters.include_sentiment,
         )
         if request.feature_pruning:
             feature_data, feature_columns, dropped = _apply_feature_pruning(
@@ -901,19 +1107,7 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 log="HPO stage completed.",
             )
 
-        close_panel = build_close_panel(datasets)
-        open_panel = build_price_panel(datasets, "open")
-        close_long = (
-            close_panel.reset_index()
-            .melt(id_vars=["date"], var_name="symbol", value_name="close")
-            .dropna(subset=["close"])
-        )
-        open_long = (
-            open_panel.reset_index()
-            .melt(id_vars=["date"], var_name="symbol", value_name="open")
-            .dropna(subset=["open"])
-        )
-        market_long = close_long.merge(open_long, on=["date", "symbol"], how="left")
+        market_long = _build_market_long_from_datasets(datasets)
         market_long.to_parquet(run_dir / "market_data.parquet", index=False)
         save_json(
             run_dir / "config_used.json", request.model_dump(mode="json", by_alias=True)
@@ -971,6 +1165,110 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 run_id,
                 f"{layer}_layer_meta.json",
                 load_json(run_dir / f"{layer}_layer_meta.json", default={}),
+            )
+        market_clean = (
+            market_long.drop_duplicates(subset=["date", "symbol"], keep="last")
+            .sort_values(["date", "symbol"])
+            .reset_index(drop=True)
+        )
+        bronze_snapshot = write_lake_dataset(
+            layer="bronze",
+            dataset="equity_ohlcv",
+            frame=market_long,
+            as_of_date=cutoff_iso,
+            version=data_version,
+            source=request.provider,
+            run_id=run_id,
+            metadata={
+                "symbols": sorted(list(datasets.keys())),
+                "expected_symbols": symbols,
+                "provider": request.provider,
+            },
+        )
+        silver_snapshot = write_lake_dataset(
+            layer="silver",
+            dataset="equity_ohlcv",
+            frame=market_clean,
+            as_of_date=cutoff_iso,
+            version=data_version,
+            source=request.provider,
+            run_id=run_id,
+            metadata={
+                "symbols": sorted(list(datasets.keys())),
+                "expected_symbols": symbols,
+                "provider": request.provider,
+            },
+        )
+        gold_snapshot = write_lake_dataset(
+            layer="gold",
+            dataset="model_ready_features",
+            frame=feature_data,
+            as_of_date=cutoff_iso,
+            version=feature_version,
+            source="feature_engineering",
+            run_id=run_id,
+            metadata={
+                "feature_columns": feature_columns,
+                "symbols": sorted(list(datasets.keys())),
+                "expected_symbols": symbols,
+            },
+        )
+        for snapshot in (bronze_snapshot, silver_snapshot, gold_snapshot):
+            register_dataset_snapshot(snapshot)
+        bronze_qc = run_quality_gate(
+            run_id=run_id,
+            gate_name="bronze_to_silver",
+            dataset_name="equity_ohlcv",
+            layer="silver",
+            frame=market_clean,
+            as_of_date=cutoff_iso,
+            snapshot_meta=silver_snapshot,
+        )
+        gold_qc = run_quality_gate(
+            run_id=run_id,
+            gate_name="silver_to_gold",
+            dataset_name="model_ready_features",
+            layer="gold",
+            frame=feature_data,
+            as_of_date=cutoff_iso,
+            snapshot_meta=gold_snapshot,
+        )
+        qc_status = (
+            "CRITICAL"
+            if "CRITICAL" in {bronze_qc.qc_status, gold_qc.qc_status}
+            else "WARNING"
+            if "WARNING" in {bronze_qc.qc_status, gold_qc.qc_status}
+            else "NORMAL"
+        )
+        _update_ops_metadata(
+            run_id,
+            dataset_version=data_version,
+            feature_set_version=feature_version,
+            qc_status=qc_status,
+            report_urls=[
+                path
+                for path in [
+                    bronze_qc.report_path,
+                    gold_qc.report_path,
+                ]
+                if path
+            ],
+            regime_policy_applied={},
+        )
+        register_experiment_run(
+            run_id=run_id,
+            model_type=",".join(selected_models),
+            dataset_version=data_version,
+            feature_set_version=feature_version,
+            hyperparameters=request.model_dump(mode="json", by_alias=True),
+            feature_set={"feature_columns": feature_columns},
+            performance={},
+            artifact_uri=str(run_dir),
+            status="running",
+        )
+        if should_block_on_quality(qc_status):
+            raise ValueError(
+                f"Critical data quality gate failure for run {run_id}: {qc_status}"
             )
         save_json(
             run_dir / "environment_fingerprint.json",
@@ -1121,6 +1419,28 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 progress_callback=_ranker_progress,
                 backend="lightgbm",
             )
+            if request.feature_pruning:
+                reduced_columns = _select_features_by_importance(
+                    feature_columns=feature_columns,
+                    feature_importance=ranker_output.feature_importance,
+                    threshold=0.95,
+                    min_features=20,
+                )
+                if 20 <= len(reduced_columns) < len(feature_columns):
+                    append_log(
+                        run_id,
+                        f"[lgbm_ranker] Importance-based feature selection: {len(reduced_columns)}/{len(feature_columns)}; retraining.",
+                    )
+                    ranker_output = train_ranker_models(
+                        feature_data=feature_data,
+                        feature_columns=reduced_columns,
+                        walk_forward=walk_forward_cfg,
+                        ranker_config=ranker_config_active_lgbm,
+                        theta_grid=request.signal_config.theta_grid,
+                        horizon_days=int(request.horizon_days),
+                        progress_callback=_ranker_progress,
+                        backend="lightgbm",
+                    )
             _mark_elapsed("train_ranker_sec", t_train_ranker)
             update_run(run_id, progress=ranker_end, stage="training_ranker")
             ranker_pred = ranker_output.predictions.copy()
@@ -1205,6 +1525,28 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 progress_callback=_catboost_progress,
                 backend="catboost",
             )
+            if request.feature_pruning:
+                reduced_columns_cat = _select_features_by_importance(
+                    feature_columns=feature_columns,
+                    feature_importance=catboost_output.feature_importance,
+                    threshold=0.95,
+                    min_features=20,
+                )
+                if 20 <= len(reduced_columns_cat) < len(feature_columns):
+                    append_log(
+                        run_id,
+                        f"[catboost_ranker] Importance-based feature selection: {len(reduced_columns_cat)}/{len(feature_columns)}; retraining.",
+                    )
+                    catboost_output = train_ranker_models(
+                        feature_data=feature_data,
+                        feature_columns=reduced_columns_cat,
+                        walk_forward=walk_forward_cfg,
+                        ranker_config=ranker_config_active_catboost,
+                        theta_grid=request.signal_config.theta_grid,
+                        horizon_days=int(request.horizon_days),
+                        progress_callback=_catboost_progress,
+                        backend="catboost",
+                    )
             _mark_elapsed("train_ranker_sec", t_train_catboost)
             update_run(run_id, progress=ranker_end, stage="training_ranker")
             catboost_pred = catboost_output.predictions.copy()
@@ -1274,8 +1616,57 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
                 "models": performance_rows,
             },
         )
+        model_versions: dict[str, str] = {}
+        for trained_model in selected_models:
+            metrics_payload = load_json(
+                run_dir / f"metrics_{trained_model}.json", default={}
+            )
+            if not isinstance(metrics_payload, dict) or not metrics_payload:
+                continue
+            model_version = infer_model_version(metrics_payload)
+            model_versions[trained_model] = model_version
+            artifact_uri = None
+            if trained_model == "xgb_lstm":
+                artifact_uri = str(run_dir / "model_xgb_xgb_lstm.json")
+            elif trained_model == "lgbm_ranker":
+                artifact_uri = str(run_dir / "model_lgbm_ranker.pkl")
+            elif trained_model == "catboost_ranker":
+                artifact_uri = str(run_dir / "model_catboost_ranker.pkl")
+            register_model_version(
+                run_id=run_id,
+                model_name=trained_model,
+                model_version=model_version,
+                stage="challenger",
+                artifact_uri=artifact_uri,
+                dataset_version=data_version,
+                feature_set_version=feature_version,
+                metrics=(
+                    metrics_payload.get("metrics", {})
+                    if isinstance(metrics_payload.get("metrics"), dict)
+                    else {}
+                ),
+                alias="challenger" if trained_model == DEFAULT_MODEL else None,
+            )
         time_profile["total_training_sec"] = float(sum(time_profile.values()))
         save_json(run_dir / "time_profile.json", time_profile)
+        register_experiment_run(
+            run_id=run_id,
+            model_type=",".join(selected_models),
+            dataset_version=data_version,
+            feature_set_version=feature_version,
+            hyperparameters=request.model_dump(mode="json", by_alias=True),
+            feature_set={"feature_columns": feature_columns},
+            performance={"models": performance_rows},
+            artifact_uri=str(run_dir),
+            status="completed",
+        )
+        _update_ops_metadata(
+            run_id,
+            dataset_version=data_version,
+            feature_set_version=feature_version,
+            qc_status=_load_ops_metadata(run_id).get("qc_status", "NORMAL"),
+            model_version=model_versions.get(DEFAULT_MODEL),
+        )
 
         update_run(run_id, progress=99, stage="finalizing")
         update_run(
@@ -1286,6 +1677,21 @@ def _run_training_job(run_id: str, request: TrainRequest) -> None:
         if time_profile:
             time_profile["total_training_sec"] = float(sum(time_profile.values()))
             save_json(run_dir / "time_profile.json", time_profile)
+        try:
+            ops_meta = _load_ops_metadata(run_id)
+            register_experiment_run(
+                run_id=run_id,
+                model_type=None,
+                dataset_version=ops_meta.get("dataset_version"),
+                feature_set_version=ops_meta.get("feature_set_version"),
+                hyperparameters=load_json(run_dir / "config.json", default={}),
+                feature_set={},
+                performance={"error": str(exc)},
+                artifact_uri=str(run_dir),
+                status="failed",
+            )
+        except Exception:
+            pass
         update_run(
             run_id, status="failed", progress=100, stage="failed", error=str(exc)
         )
@@ -1342,7 +1748,7 @@ def get_run(run_id: str) -> RunStatusResponse:
         payload["required_artifacts_ready"] = bool(
             contract_manifest.get("required_artifacts_ready", False)
         )
-        return RunStatusResponse(**payload)
+        return RunStatusResponse(**_merge_operational_fields(run_id, payload))
 
     files = _run_artifact_files(run_id)
     if files:
@@ -1388,31 +1794,92 @@ def get_run(run_id: str) -> RunStatusResponse:
 
         restored_at = _run_dir_timestamp_iso(run_id)
         return RunStatusResponse(
-            run_id=run_id,
-            run_uid=(str(run_context.get("run_uid", "")).strip() or None),
-            status=status,  # type: ignore[arg-type]
-            progress=progress,
-            stage=stage,
-            created_at=restored_at,
-            updated_at=restored_at,
-            last_heartbeat_at=restored_at,
-            run_idle_minutes=0.0,
-            stale_timeout_minutes=STALE_TIMEOUT_MINUTES,
-            stale_reason=None,
-            logs_tail=[
-                log_message,
-            ],
-            error=None,
-            artifact_contract_version=str(
-                contract_manifest.get("artifact_contract_version", "") or ""
+            **_merge_operational_fields(
+                run_id,
+                {
+                    "run_id": run_id,
+                    "run_uid": (str(run_context.get("run_uid", "")).strip() or None),
+                    "status": status,
+                    "progress": progress,
+                    "stage": stage,
+                    "created_at": restored_at,
+                    "updated_at": restored_at,
+                    "last_heartbeat_at": restored_at,
+                    "run_idle_minutes": 0.0,
+                    "stale_timeout_minutes": STALE_TIMEOUT_MINUTES,
+                    "stale_reason": None,
+                    "logs_tail": [log_message],
+                    "error": None,
+                    "artifact_contract_version": str(
+                        contract_manifest.get("artifact_contract_version", "") or ""
+                    )
+                    or None,
+                    "required_artifacts_ready": bool(
+                        contract_manifest.get("required_artifacts_ready", False)
+                    ),
+                },
             )
-            or None,
-            required_artifacts_ready=bool(
-                contract_manifest.get("required_artifacts_ready", False)
-            ),
         )
 
     raise ValueError(f"Run not found: {run_id}")
+
+
+def _row_has_backtest_artifacts(row: dict[str, Any], run_id: str) -> bool:
+    artifacts = row.get("artifacts", {})
+    if isinstance(artifacts, dict):
+        if bool(artifacts.get("predictions")) or bool(artifacts.get("backtest")):
+            return True
+    return _run_has_completion_artifacts(run_id)
+
+
+def get_runs_list(
+    limit: int = 20,
+    *,
+    completed_first: bool = True,
+    actionable_only: bool = False,
+) -> RunListResponse:
+    """Return latest runs with optional completed-first and actionable filtering."""
+    safe_limit = max(1, min(int(limit), 200))
+    # Pull a slightly larger window so filtering still returns enough rows.
+    rows = list_latest_runs_from_index(limit=max(safe_limit * 3, safe_limit))
+    items: list[RunListItem] = []
+    for row in rows:
+        run_id = str(row.get("run_id", "")).strip()
+        if not run_id:
+            continue
+        status = str(row.get("status", "unknown")).strip().lower() or "unknown"
+        actionable_backtest = status == "completed" and _row_has_backtest_artifacts(
+            row, run_id
+        )
+        item = RunListItem(
+            run_id=run_id,
+            status=status,
+            stage=str(row.get("stage", "")),
+            created_at=(
+                str(row.get("created_at"))
+                if row.get("created_at") is not None
+                else None
+            ),
+            updated_at=(
+                str(row.get("updated_at"))
+                if row.get("updated_at") is not None
+                else None
+            ),
+            actionable_backtest=actionable_backtest,
+        )
+        if actionable_only and not item.actionable_backtest:
+            continue
+        items.append(item)
+
+    # Recency sort first, then completed-first stable sort.
+    items.sort(
+        key=lambda row: str(row.updated_at or row.created_at or ""),
+        reverse=True,
+    )
+    if completed_first:
+        items.sort(key=lambda row: 0 if row.status == "completed" else 1)
+
+    return RunListResponse(limit=safe_limit, runs=items[:safe_limit])
 
 
 def _ensure_run_completed(
@@ -1420,9 +1887,12 @@ def _ensure_run_completed(
 ) -> None:
     state = get_run_state(run_id)
     if state:
+        if state.status == "completed":
+            return
+        if allow_artifact_fallback and _run_has_completion_artifacts(run_id):
+            return
         if state.status != "completed":
             raise ValueError(f"Run is not completed: {state.status}")
-        return
     if allow_artifact_fallback and _run_has_completion_artifacts(run_id):
         return
     raise ValueError(f"Run not found: {run_id}")
@@ -1522,6 +1992,13 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     """Run backtest from a completed run."""
     _ensure_run_completed(request.run_id, allow_artifact_fallback=True)
     model_name = _normalize_model_name(request.model_name)
+    cached_response = _load_cached_backtest_response(request, model_name)
+    if cached_response is not None:
+        append_log(
+            request.run_id,
+            f"Backtest cache hit for {model_name} [{request.start_date.isoformat()}..{request.end_date.isoformat()}].",
+        )
+        return cached_response
     predictions = _load_predictions(request.run_id, model_name=model_name)
 
     run_dir = get_run_dir(request.run_id)
@@ -1547,9 +2024,15 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
                 if downloaded is not None and not downloaded.empty:
                     close = downloaded["Close"] if "Close" in downloaded.columns else downloaded
                     open_price = downloaded["Open"] if "Open" in downloaded.columns else close
+                    high_price = downloaded["High"] if "High" in downloaded.columns else close
+                    low_price = downloaded["Low"] if "Low" in downloaded.columns else close
+                    volume = downloaded["Volume"] if "Volume" in downloaded.columns else close * np.nan
                     if isinstance(close, pd.Series):
                         close = close.to_frame(name=pred_symbols[0])
                         open_price = open_price.to_frame(name=pred_symbols[0])
+                        high_price = high_price.to_frame(name=pred_symbols[0])
+                        low_price = low_price.to_frame(name=pred_symbols[0])
+                        volume = volume.to_frame(name=pred_symbols[0])
                     rows = []
                     for sym in close.columns:
                         df_sym = pd.DataFrame({
@@ -1557,6 +2040,9 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
                             "symbol": sym,
                             "close": close[sym].values,
                             "open": open_price[sym].values if sym in open_price.columns else close[sym].values,
+                            "high": high_price[sym].values if sym in high_price.columns else close[sym].values,
+                            "low": low_price[sym].values if sym in low_price.columns else close[sym].values,
+                            "volume": volume[sym].values if sym in volume.columns else np.nan,
                         })
                         rows.append(df_sym)
                     if rows:
@@ -1572,6 +2058,42 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     market_long = market_long.assign(
         date=pd.to_datetime(market_long["date"]).dt.tz_localize(None)
     )
+    volume_available = "volume" in market_long.columns and bool(
+        pd.to_numeric(market_long["volume"], errors="coerce").fillna(0.0).gt(0.0).any()
+    )
+    if not volume_available and not market_long.empty:
+        # Legacy runs may have open/close-only market artifacts; rebuild OHLCV from cache.
+        symbols_for_refresh = sorted(
+            {
+                str(symbol).strip().upper()
+                for symbol in market_long.get("symbol", pd.Series(dtype=str)).tolist()
+                if str(symbol).strip()
+            }
+        )
+        if symbols_for_refresh:
+            refresh_start = max(
+                request.start_date - timedelta(days=120),
+                pd.Timestamp(market_long["date"].min()).date() - timedelta(days=30),
+            )
+            refresh_end = max(
+                request.end_date,
+                pd.Timestamp(market_long["date"].max()).date(),
+            )
+            refreshed_datasets, _ = load_market_data(
+                symbols_for_refresh,
+                refresh_start,
+                refresh_end,
+                provider="yfinance",
+                max_workers=6,
+            )
+            refreshed_market_long = _build_market_long_from_datasets(refreshed_datasets)
+            if not refreshed_market_long.empty:
+                save_parquet_atomic(market_path, refreshed_market_long, index=False)
+                market_long = refreshed_market_long
+                append_log(
+                    request.run_id,
+                    "market_data.parquet repaired from cache with OHLCV columns.",
+                )
     close_panel = market_long.pivot(
         index="date", columns="symbol", values="close"
     ).sort_index()
@@ -1591,15 +2113,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     )
     universe_policy = get_universe_policy()
 
-    predictions_for_backtest = predictions.copy()
-    if "score" not in predictions_for_backtest.columns:
-        predictions_for_backtest["score"] = pd.to_numeric(
-            predictions_for_backtest.get("predicted_return"),
-            errors="coerce",
-        ).fillna(0.0)
-    predictions_for_backtest["predicted_return"] = pd.to_numeric(
-        predictions_for_backtest["score"], errors="coerce"
-    ).fillna(0.0)
+    predictions_for_backtest = _prepare_predictions_for_backtest(predictions)
 
     pred_wide = predictions_for_backtest.pivot(
         index="date", columns="symbol", values="score"
@@ -1668,6 +2182,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         entry_price=request.entry_price,
         exit_price=request.exit_price,
         portfolio_mode=request.portfolio_mode,
+        mu_mapping=request.mu_mapping,
         regime_policy=request.regime_policy,
         rebalance_universe_context=rebalance_context,
         delisting_events=delisting_events,
@@ -1716,6 +2231,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "metrics": result.metrics,
         "equity_curve": result.equity_curve,
         "benchmark_curve": result.benchmark_curve,
+        "monthly_returns": result.monthly_returns,
         "period_weights": result.period_weights,
         "cost_breakdown": result.cost_breakdown,
         "consistency_checks": result.consistency_checks,
@@ -1735,6 +2251,7 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
         "liquidity_clip_ratio": result.liquidity_clip_ratio,
         "risk_contribution_max": result.risk_contribution_max,
         "universe_stage_counts": result.universe_stage_counts,
+        "request_signature": _build_backtest_request_signature(request, model_name),
     }
 
     weights_final_frame = _period_weights_to_frame(result.period_weights)
@@ -1925,13 +2442,149 @@ def run_backtest_for_run(request: BacktestRequest) -> BacktestResponse:
     save_json(_backtest_path(request.run_id, model_name), payload)
     if model_name == DEFAULT_MODEL:
         save_json(run_dir / "backtest.json", payload)
+    report_item = write_backtest_report(
+        run_id=request.run_id,
+        model_name=model_name,
+        metrics=(
+            payload.get("metrics", {}) if isinstance(payload.get("metrics"), dict) else {}
+        ),
+        payload=payload,
+    )
+    ops_meta = _load_ops_metadata(request.run_id)
+    report_urls = [
+        str(item)
+        for item in list(ops_meta.get("report_urls", []))
+        if str(item).strip()
+    ]
+    report_path = str(report_item.get("report_path", "")).strip()
+    if report_path and report_path not in report_urls:
+        report_urls.append(report_path)
+    register_experiment_run(
+        run_id=request.run_id,
+        model_type=model_name,
+        dataset_version=ops_meta.get("dataset_version"),
+        feature_set_version=feature_set_version,
+        hyperparameters=load_json(run_dir / "config.json", default={}),
+        feature_set={"feature_columns": metrics_payload.get("feature_columns", [])},
+        performance=(
+            payload.get("metrics", {}) if isinstance(payload.get("metrics"), dict) else {}
+        ),
+        artifact_uri=str(_backtest_path(request.run_id, model_name)),
+        status="backtest_completed",
+    )
+    _update_ops_metadata(
+        request.run_id,
+        feature_set_version=feature_set_version,
+        model_version=model_version,
+        regime_label=str(request.regime_policy or "fixed"),
+        regime_policy_applied=(
+            payload.get("effective_constraints", {})
+            if isinstance(payload.get("effective_constraints"), dict)
+            else {}
+        ),
+        report_urls=report_urls,
+    )
     try:
         refresh_alerts_for_run(run_id=request.run_id, model_name=model_name)
     except Exception:  # noqa: BLE001
         # Alerts are non-blocking post-processing outputs.
         pass
 
-    return BacktestResponse(**payload)
+    return BacktestResponse(
+        **_merge_operational_fields(request.run_id, payload, model_name=model_name)
+    )
+
+
+def get_backtest_result(
+    run_id: str, model_name: ModelName = DEFAULT_MODEL
+) -> BacktestResponse:
+    """Read backtest artifact payload for a run/model."""
+    model_name = _normalize_model_name(model_name)
+    payload = _load_backtest_payload(run_id, model_name)
+    payload = _repair_flat_benchmark_curve(run_id=run_id, model_name=model_name, payload=payload)
+    sanitized = _json_sanitize(payload)
+    if not isinstance(sanitized, dict):
+        raise ValueError(f"Backtest artifact is invalid for model: {model_name}")
+    return BacktestResponse(
+        **_merge_operational_fields(run_id, sanitized, model_name=model_name)
+    )
+
+
+def _is_flat_benchmark_curve(rows: Any) -> bool:
+    if not isinstance(rows, list) or len(rows) < 2:
+        return True
+    values = pd.to_numeric(
+        pd.Series(
+            [row.get("benchmark") for row in rows if isinstance(row, dict)],
+            dtype="float64",
+        ),
+        errors="coerce",
+    ).dropna()
+    if values.empty:
+        return True
+    return float(values.max() - values.min()) <= 1e-9
+
+
+def _repair_flat_benchmark_curve(
+    *,
+    run_id: str,
+    model_name: ModelName,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        return payload
+    if not _is_flat_benchmark_curve(payload.get("benchmark_curve", [])):
+        return payload
+
+    equity_rows = payload.get("equity_curve", [])
+    if not isinstance(equity_rows, list) or len(equity_rows) < 2:
+        return payload
+    curve_dates = pd.to_datetime(
+        [row.get("date") for row in equity_rows if isinstance(row, dict)],
+        errors="coerce",
+    )
+    curve_dates = pd.DatetimeIndex(curve_dates[~pd.isna(curve_dates)])
+    if len(curve_dates) < 2:
+        return payload
+
+    run_dir = get_run_dir(run_id)
+    close_panel = pd.DataFrame()
+    market_path = run_dir / "market_data.parquet"
+    if market_path.exists():
+        try:
+            market_long = pd.read_parquet(market_path)
+            if (
+                not market_long.empty
+                and {"date", "symbol", "close"}.issubset(market_long.columns)
+            ):
+                market_long = market_long.assign(
+                    date=pd.to_datetime(market_long["date"]).dt.tz_localize(None)
+                )
+                close_panel = market_long.pivot(
+                    index="date", columns="symbol", values="close"
+                ).sort_index()
+        except Exception:  # noqa: BLE001
+            close_panel = pd.DataFrame()
+
+    benchmark_symbol = str(payload.get("benchmark_symbol") or "SPY").strip() or "SPY"
+    base_index = _safe_float(payload.get("base_index"), 100.0)
+    rebuilt_curve = build_benchmark_curve(
+        close_panel=close_panel,
+        curve_dates=curve_dates,
+        benchmark_symbol=benchmark_symbol,
+        base_index=base_index if abs(base_index) > 1e-12 else 100.0,
+    )
+    if _is_flat_benchmark_curve(rebuilt_curve):
+        return payload
+
+    payload["benchmark_curve"] = rebuilt_curve
+    try:
+        save_json(_backtest_path(run_id, model_name), payload)
+        if model_name == DEFAULT_MODEL:
+            save_json(get_run_dir(run_id) / "backtest.json", payload)
+    except Exception:  # noqa: BLE001
+        pass
+    return payload
 
 
 def get_summary(
@@ -2313,16 +2966,22 @@ def get_portfolio_current(
             },
         )
         return PortfolioCurrentResponse(
-            run_id=run_id,
-            model_name=model_name,
-            as_of_date=None,
-            total_weight=0.0,
-            symbol_weights=[],
-            asset_class_weights=[],
-            asset_class_weights_l1=[],
-            rationale=rationale,
-            last_rebalance_trades=None,
-            last_rebalance_turnover=0.0,
+            **_merge_operational_fields(
+                run_id,
+                {
+                    "run_id": run_id,
+                    "model_name": model_name,
+                    "as_of_date": None,
+                    "total_weight": 0.0,
+                    "symbol_weights": [],
+                    "asset_class_weights": [],
+                    "asset_class_weights_l1": [],
+                    "rationale": rationale.model_dump(mode="json"),
+                    "last_rebalance_trades": None,
+                    "last_rebalance_turnover": 0.0,
+                },
+                model_name=model_name,
+            )
         )
 
     latest = period_weights[-1]
@@ -2464,7 +3123,13 @@ def get_portfolio_current(
             else 0.0
         ),
     )
-    return PortfolioCurrentResponse(**_json_sanitize(response.model_dump(mode="json")))
+    return PortfolioCurrentResponse(
+        **_merge_operational_fields(
+            run_id,
+            _json_sanitize(response.model_dump(mode="json")),
+            model_name=model_name,
+        )
+    )
 
 
 def get_rebalance_history(

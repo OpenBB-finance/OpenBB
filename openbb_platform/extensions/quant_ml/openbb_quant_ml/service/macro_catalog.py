@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import date
 from typing import Any
 
@@ -9,6 +10,8 @@ from openbb_quant_ml.service.macro_constants import load_macro_config
 from openbb_quant_ml.service.macro_db import get_catalog_item, list_catalog, upsert_catalog_item
 from openbb_quant_ml.service.macro_fred_client import FredApiKeyMissingError, FredClient, FredClientError
 from openbb_quant_ml.service.macro_transforms import default_publish_lag_days
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _normalize_series_id(series_id: str) -> str:
@@ -37,6 +40,68 @@ def _domain_defaults() -> list[dict[str, Any]]:
                 }
             )
     return defaults
+
+
+def _extract_result_rows(payload: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, list):
+        return [row for row in payload if isinstance(row, dict)]
+    if isinstance(payload, dict):
+        for key in ("results", "data", "items"):
+            candidate = payload.get(key)
+            if isinstance(candidate, list):
+                return [row for row in candidate if isinstance(row, dict)]
+    for method_name in ("to_df", "to_dataframe"):
+        method = getattr(payload, method_name, None)
+        if callable(method):
+            frame = method()
+            if hasattr(frame, "to_dict"):
+                rows = frame.to_dict(orient="records")
+                return [row for row in rows if isinstance(row, dict)]
+    return []
+
+
+def _openbb_fred_search(query: str, limit: int = 25) -> list[dict[str, Any]]:
+    try:
+        from openbb import obb  # type: ignore[import-not-found]
+    except Exception:
+        return []
+    try:
+        result = obb.economy.fred_search(query=query, limit=max(1, min(int(limit), 100)))
+    except TypeError:
+        try:
+            result = obb.economy.fred_search(symbol=query, limit=max(1, min(int(limit), 100)))
+        except Exception as exc:  # noqa: BLE001
+            LOGGER.warning("OpenBB fred_search failed for query=%s: %s", query, exc)
+            return []
+    except Exception as exc:  # noqa: BLE001
+        LOGGER.warning("OpenBB fred_search failed for query=%s: %s", query, exc)
+        return []
+    return _extract_result_rows(result)
+
+
+def _openbb_fred_metadata(series_id: str) -> dict[str, Any]:
+    rows = _openbb_fred_search(series_id, limit=10)
+    target = series_id.upper()
+    for row in rows:
+        row_id = str(row.get("series_id") or row.get("id") or "").upper()
+        if row_id == target:
+            return {
+                "series_id": row_id,
+                "title": row.get("title"),
+                "frequency": row.get("frequency_short") or row.get("frequency"),
+                "units": row.get("units"),
+                "notes": row.get("notes"),
+            }
+    if rows:
+        row = rows[0]
+        return {
+            "series_id": str(row.get("series_id") or row.get("id") or series_id),
+            "title": row.get("title"),
+            "frequency": row.get("frequency_short") or row.get("frequency"),
+            "units": row.get("units"),
+            "notes": row.get("notes"),
+        }
+    return {}
 
 
 def bootstrap_default_catalog() -> list[dict[str, Any]]:
@@ -69,20 +134,22 @@ def register_series(
     if not sid:
         raise ValueError("series_id is required")
 
-    client = FredClient()
     meta: dict[str, Any] = {}
-    try:
-        meta = client.get_series_metadata(sid)
-    except FredApiKeyMissingError as exc:
-        # Allow registration without metadata if key is missing.
-        meta = {"series_id": sid}
-        if not get_catalog_item(sid):
-            # keep fallback row with defaults
-            pass
-        else:
-            raise ValueError("FRED_API_KEY is not configured. Metadata refresh unavailable.") from exc
-    except FredClientError as exc:
-        raise ValueError(str(exc)) from exc
+    meta = _openbb_fred_metadata(sid)
+    if not meta:
+        client = FredClient()
+        try:
+            meta = client.get_series_metadata(sid)
+        except FredApiKeyMissingError as exc:
+            # Allow registration without metadata if key is missing.
+            meta = {"series_id": sid}
+            if not get_catalog_item(sid):
+                # keep fallback row with defaults
+                pass
+            else:
+                raise ValueError("FRED_API_KEY is not configured. Metadata refresh unavailable.") from exc
+        except FredClientError as exc:
+            raise ValueError(str(exc)) from exc
 
     inferred_lag = default_publish_lag_days(str(meta.get("frequency") or ""))
     row = {
@@ -107,8 +174,10 @@ def search_catalog(query: str, domain: str | None = None, limit: int = 25) -> li
     q = str(query or "").strip()
     if not q:
         return []
-    client = FredClient()
-    rows = client.search_series(q, limit=limit)
+    rows = _openbb_fred_search(q, limit=limit)
+    if not rows:
+        client = FredClient()
+        rows = client.search_series(q, limit=limit)
     out: list[dict[str, Any]] = []
     for row in rows:
         series_id = _normalize_series_id(str(row.get("series_id", "")))

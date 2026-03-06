@@ -19,6 +19,22 @@ def _normalize_symbol(value: Any) -> str:
     return str(value or "").strip().upper()
 
 
+def _coerce_numeric_column(
+    frame: pd.DataFrame,
+    column: str,
+    *,
+    default: float | None = None,
+) -> pd.Series:
+    """Return numeric column aligned to frame index even when source column is missing."""
+    if column in frame.columns:
+        series = pd.to_numeric(frame[column], errors="coerce")
+    else:
+        series = pd.Series(default, index=frame.index, dtype="float64")
+    if default is not None:
+        return series.fillna(float(default))
+    return series
+
+
 def build_symbol_metrics(
     market_long: pd.DataFrame,
     security_master: pd.DataFrame,
@@ -56,8 +72,8 @@ def build_symbol_metrics(
             metrics[col] = float("nan")
         return metrics
 
-    frame["close"] = pd.to_numeric(frame.get("close"), errors="coerce")
-    frame["volume"] = pd.to_numeric(frame.get("volume"), errors="coerce").fillna(0.0)
+    frame["close"] = _coerce_numeric_column(frame, "close")
+    frame["volume"] = _coerce_numeric_column(frame, "volume", default=0.0)
     frame["dollar_volume"] = frame["close"] * frame["volume"]
     frame = frame.sort_values(["symbol", "date"])
 

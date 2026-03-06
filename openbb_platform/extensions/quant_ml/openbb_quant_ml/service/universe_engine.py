@@ -21,6 +21,16 @@ from openbb_quant_ml.service.universe_filters import (
 from openbb_quant_ml.service.universe_policy import get_universe_policy
 
 
+def _finite_float(value: Any, default: float = 0.0) -> float:
+    try:
+        casted = float(value)
+    except (TypeError, ValueError):
+        return default
+    if pd.isna(casted):
+        return default
+    return casted
+
+
 def universe_snapshot_dir(run_dir: Path, as_of_date: date) -> Path:
     """Return per-date universe snapshot directory."""
     return run_dir / "universe" / as_of_date.isoformat()
@@ -120,7 +130,7 @@ def build_universe_snapshot(
             str(row["symbol"]).strip().upper(): {
                 "sector_l1": str(row.get("sector_l1", "other")),
                 "country": str(row.get("country", "US")).upper(),
-                "adv20_usd": float(row.get("adv20_usd", 0.0) or 0.0),
+                "adv20_usd": _finite_float(row.get("adv20_usd"), default=0.0),
             }
             for _, row in u2.iterrows()
         },

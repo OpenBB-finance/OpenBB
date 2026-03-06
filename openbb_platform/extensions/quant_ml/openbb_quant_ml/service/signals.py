@@ -274,9 +274,7 @@ def _assign_sides_quantile(
         if use_hysteresis and prev == "buy":
             if value >= long_exit_cut:
                 out.at[idx] = "buy"
-            elif long_only:
-                out.at[idx] = "sell"
-            elif value <= short_entry_cut:
+            elif long_only or value <= short_entry_cut:
                 out.at[idx] = "sell"
             else:
                 out.at[idx] = "hold"
@@ -390,6 +388,8 @@ def generate_signals(
     risk_vol_method: str = "ewma",
     confidence_sizing_enabled: bool = True,
     confidence_disagreement_scale: float = 1.0,
+    alpha_ema_halflife_days: int = 0,
+    ic_calibrated: bool = False,
     prev_positions: dict[str, Any] | None = None,
     prev_holding_periods: dict[str, int] | None = None,
     long_only: bool = False,
@@ -413,6 +413,19 @@ def generate_signals(
     pred["predicted_return"] = pd.to_numeric(pred["predicted_return"], errors="coerce").fillna(0.0)
     pred["predicted_xgb"] = pd.to_numeric(pred["predicted_xgb"], errors="coerce").fillna(pred["predicted_return"])
     pred["predicted_lstm"] = pd.to_numeric(pred["predicted_lstm"], errors="coerce").fillna(pred["predicted_return"])
+    pred = pred.sort_values(["symbol", "date"]).reset_index(drop=True)
+
+    alpha_ema_halflife_days = max(int(alpha_ema_halflife_days), 0)
+    if alpha_ema_halflife_days > 0:
+        pred["predicted_return_smoothed"] = pred.groupby("symbol", group_keys=False)[
+            "predicted_return"
+        ].transform(
+            lambda values: values.ewm(
+                halflife=max(alpha_ema_halflife_days, 1), adjust=False
+            ).mean()
+        )
+    else:
+        pred["predicted_return_smoothed"] = pred["predicted_return"]
 
     target_date = pd.Timestamp(as_of_date) if as_of_date else pred["date"].max()
     as_of = pred[pred["date"] == target_date].copy()
@@ -421,7 +434,7 @@ def generate_signals(
 
     as_of = as_of.dropna(subset=["symbol"]).copy()
     as_of["symbol"] = as_of["symbol"].astype(str)
-    as_of["alpha_raw"] = as_of["predicted_return"].astype(float)
+    as_of["alpha_raw"] = as_of["predicted_return_smoothed"].astype(float)
     as_of["alpha_post"] = _winsorize(as_of["alpha_raw"], winsorize_pct)
     as_of["alpha_post"] = (
         _robust_zscore(as_of["alpha_post"]) if use_robust_zscore else _standard_zscore(as_of["alpha_post"])
@@ -544,6 +557,10 @@ def generate_signals(
             reasons.append("robust_zscore")
         if bool(confidence_sizing_enabled):
             reasons.append("confidence_sized")
+        if alpha_ema_halflife_days > 0:
+            reasons.append("alpha_ema_smoothed")
+        if bool(ic_calibrated):
+            reasons.append("ic_calibrated")
 
         liq_codes = row.get("liq_reasons", [])
         if isinstance(liq_codes, list):

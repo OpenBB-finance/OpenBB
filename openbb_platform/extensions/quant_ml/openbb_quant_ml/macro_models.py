@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -252,6 +252,73 @@ class MacroAlertsResponse(BaseModel):
     message: str | None = None
     current: list[MacroAlertItem] = Field(default_factory=list)
     history: list[MacroAlertItem] = Field(default_factory=list)
+
+
+class RegimeTransitionItem(BaseModel):
+    """One regime transition item."""
+
+    date: str
+    axis: str
+    from_score: float
+    to_score: float
+    delta: float
+    direction: Literal["rising", "falling"]
+    severity: Literal["minor", "major"]
+
+
+class RegimeLabelPoint(BaseModel):
+    """Regime label by date."""
+
+    date: str
+    label: str
+
+
+class RegimeTransitionResponse(BaseModel):
+    """Regime transition payload."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    transitions: list[RegimeTransitionItem] = Field(default_factory=list)
+    regime_label_history: list[RegimeLabelPoint] = Field(default_factory=list)
+
+
+class HmmRegimePoint(BaseModel):
+    """HMM state output row."""
+
+    date: str
+    state: int
+    label: str
+    probability: list[float] = Field(default_factory=list)
+
+
+class HmmRegimePayload(BaseModel):
+    """HMM regime payload."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    states: list[HmmRegimePoint] = Field(default_factory=list)
+    state_meta: dict[str, dict[str, float | str]] = Field(default_factory=dict)
+
+
+class RegimeStreamEvent(BaseModel):
+    """SSE regime stream event payload."""
+
+    event_type: Literal["scores_update", "transition", "alert", "error"]
+    timestamp: str
+    data: dict[str, Any] = Field(default_factory=dict)
+    label: str | None = None
+    from_label: str | None = None
+    to_label: str | None = None
+
+
+class RegimeSchedulerStatusResponse(BaseModel):
+    """Scheduler status payload."""
+
+    running: bool = False
+    last_market_refresh: str | None = None
+    last_fred_update: str | None = None
+    next_market_refresh: str | None = None
+    next_fred_update: str | None = None
 
 
 class MacroHealthObsStats(BaseModel):

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import pandas as pd
 import pytest
-
 from openbb_quant_ml.service.signal_schema import (
     REQUIRED_SIGNAL_COLUMNS,
     build_signal_contract,

@@ -186,13 +186,19 @@ def _write_market_data_artifact(
         local = frame.copy()
         if "open" not in local.columns:
             local["open"] = local.get("close")
-        keep = ["date", "open", "close"]
+        if "high" not in local.columns:
+            local["high"] = local.get("close")
+        if "low" not in local.columns:
+            local["low"] = local.get("close")
+        keep = ["date", "open", "high", "low", "close", "volume"]
         for column in keep:
             if column not in local.columns:
                 local[column] = np.nan
         local = local[keep]
         local["symbol"] = symbol
-        rows.append(local[["date", "symbol", "open", "close"]])
+        rows.append(
+            local[["date", "symbol", "open", "high", "low", "close", "volume"]]
+        )
 
     if not rows:
         return

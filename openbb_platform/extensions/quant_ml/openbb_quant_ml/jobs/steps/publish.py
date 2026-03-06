@@ -9,9 +9,8 @@ import pandas as pd
 from openbb_quant_ml.service.artifact_store import write_parquet
 from openbb_quant_ml.service.constants import ARTIFACT_ROOT
 from openbb_quant_ml.service.ops_status import get_ops_status_response
-from openbb_quant_ml.service.storage import get_run_dir, load_json
+from openbb_quant_ml.service.storage import get_run_dir, load_json, save_json
 from openbb_quant_ml.service.universe_engine import load_latest_universe_snapshot
-from openbb_quant_ml.service.storage import save_json
 
 
 def run(config: dict[str, Any]) -> dict[str, Any]:

@@ -152,6 +152,44 @@ Default live policy:
 - template: `diversified_long_only`
 - risk defaults: `max_weight=0.10`, `sector_concentration=0.35`, `gross_exposure=1.0`, `net_exposure_abs=1.0`, `turnover=0.8`
 
+Defensive two-bucket policy (long-only backtest):
+
+- `universe_policy.backtest.defensive_bucket` enables defensive/risk 2-stage optimization.
+- defensive minimum weight uses regime floor (`low/mid/high/risk_off`) and defaults to `25/35/45/55%`.
+- postcheck runs global ex-ante `CVaR/vol` guard and applies:
+  1) defensive floor raise, then
+  2) risk bucket de-lever, when needed.
+- legacy single-bucket optimizer remains as fallback when no defensive symbols are available.
+
+Backtest request constraint keys:
+
+- `defensive_bucket_enabled`
+- `defensive_floor_mode` (`regime` or `fixed`)
+- `defensive_floor_fixed|low|mid|high|risk_off`
+- `defensive_risk_off_drawdown`
+- `defensive_postcheck_enabled`
+- `defensive_postcheck_cvar_limit`
+- `defensive_postcheck_vol_limit`
+
+Example payload (excerpt):
+
+```json
+{
+  "constraints": {
+    "optimizer_mode": "cvar",
+    "defensive_bucket_enabled": true,
+    "defensive_floor_mode": "regime",
+    "defensive_floor_low": 0.25,
+    "defensive_floor_mid": 0.35,
+    "defensive_floor_high": 0.45,
+    "defensive_floor_risk_off": 0.55,
+    "defensive_postcheck_enabled": true,
+    "defensive_postcheck_cvar_limit": -0.02,
+    "defensive_postcheck_vol_limit": 0.20
+  }
+}
+```
+
 Backtest responses include:
 
 - `effective_constraints` (requested vs applied constraints)

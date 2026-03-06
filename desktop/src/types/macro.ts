@@ -137,6 +137,82 @@ export interface MacroRegimeStateResponse {
   risk_off_proxy: boolean;
 }
 
+export interface RegimeTransitionItem {
+  date: string;
+  axis: string;
+  from_score: number;
+  to_score: number;
+  delta: number;
+  direction: "rising" | "falling";
+  severity: "minor" | "major";
+}
+
+export interface RegimeLabelPoint {
+  date: string;
+  label: string;
+}
+
+export interface RegimeTransitionResponse {
+  status: MacroStatus;
+  message?: string | null;
+  transitions: RegimeTransitionItem[];
+  regime_label_history: RegimeLabelPoint[];
+}
+
+export interface HmmRegimePoint {
+  date: string;
+  state: number;
+  label: string;
+  probability: number[];
+}
+
+export interface HmmRegimePayload {
+  status: MacroStatus;
+  message?: string | null;
+  states: HmmRegimePoint[];
+  state_meta: Record<string, Record<string, string | number>>;
+}
+
+export interface RegimeSchedulerStatus {
+  running: boolean;
+  last_market_refresh?: string | null;
+  last_fred_update?: string | null;
+  next_market_refresh?: string | null;
+  next_fred_update?: string | null;
+}
+
+export interface RegimeRefreshResponse {
+  status: string;
+}
+
+export interface RegimeStreamEvent {
+  event_type: "scores_update" | "transition" | "alert" | "error";
+  timestamp: string;
+  data: Record<string, unknown>;
+  label?: string | null;
+  from_label?: string | null;
+  to_label?: string | null;
+}
+
+export type MacroCycleLevel =
+  | "expansion"
+  | "late_expansion"
+  | "transition"
+  | "slowdown"
+  | "contraction";
+
+export interface MacroCycleLevelSnapshot {
+  score: number;
+  level: MacroCycleLevel;
+  delta_4w: number;
+  as_of: string | null;
+  stale_days: number | null;
+  risk_off_proxy: boolean;
+  growth_down: boolean;
+  inflation_up: boolean;
+  action_hint: "aggressive" | "neutral" | "defensive";
+}
+
 export interface MacroAlertItem {
   rule_id: string;
   severity: "info" | "warning" | "critical";

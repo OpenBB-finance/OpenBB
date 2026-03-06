@@ -163,6 +163,52 @@ def get_ops_status_response() -> OpsStatusResponse:
         message = "Macro subsystem is not fully healthy."
 
     active_job_locks, lock_health = _collect_lock_health()
+    data_quality = {}
+    reports: list[dict[str, Any]] = []
+    model_registry: dict[str, Any] = {}
+    scheduler: dict[str, Any] = {}
+    notification_failures: list[dict[str, Any]] = []
+    execution_mode: dict[str, Any] = {}
+    try:
+        from openbb_quant_ml.service.data_quality import get_latest_data_quality_response
+        from openbb_quant_ml.service.execution import get_execution_mode_response
+        from openbb_quant_ml.service.model_registry import (
+            get_model_registry_entry_response,
+        )
+        from openbb_quant_ml.service.notification_center import (
+            get_notifications_history_response,
+        )
+        from openbb_quant_ml.service.reporting import get_reports_history_response
+        from openbb_quant_ml.service.scheduler_status import get_scheduler_status_response
+
+        latest_quality = get_latest_data_quality_response()
+        data_quality = latest_quality.model_dump(mode="json")
+        reports = [
+            item.model_dump(mode="json")
+            for item in get_reports_history_response(limit=5).items
+        ]
+        model_registry = {
+            "champion": get_model_registry_entry_response("champion").model_dump(
+                mode="json"
+            ),
+            "challenger": get_model_registry_entry_response("challenger").model_dump(
+                mode="json"
+            ),
+        }
+        scheduler = get_scheduler_status_response().model_dump(mode="json")
+        notification_history = get_notifications_history_response(limit=20)
+        notification_failures = [
+            item.model_dump(mode="json")
+            for item in notification_history.items
+            if item.status in {"failed", "duplicate"}
+        ][:10]
+        latest_run_id = get_latest_training_run_id_from_index()
+        if latest_run_id:
+            execution_mode = get_execution_mode_response(latest_run_id).model_dump(
+                mode="json"
+            )
+    except Exception:  # noqa: BLE001
+        pass
 
     return OpsStatusResponse(
         status=status,  # type: ignore[arg-type]
@@ -185,4 +231,10 @@ def get_ops_status_response() -> OpsStatusResponse:
             "stale_timeout_minutes": STALE_TIMEOUT_MINUTES,
             "lock_stale_ttl_sec": DEFAULT_STALE_LOCK_TTL_SEC,
         },
+        data_quality=data_quality,
+        reports=reports,
+        model_registry=model_registry,
+        scheduler=scheduler,
+        notification_failures=notification_failures,
+        execution_mode=execution_mode,
     )

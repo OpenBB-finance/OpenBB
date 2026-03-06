@@ -1,0 +1,238 @@
+- generic [ref=e249]:
+  - banner [ref=e250]:
+    - generic [ref=e251]:
+      - img [ref=e252]
+      - generic [ref=e270]:
+        - button "Switch to dark mode" [ref=e271] [cursor=pointer]: Dark
+        - img "OpenBB Logo" [ref=e273]
+  - tablist [ref=e276]:
+    - tab "Backends" [ref=e277] [cursor=pointer]
+    - tab "Environments" [ref=e278] [cursor=pointer]
+    - tab "API Keys" [ref=e279] [cursor=pointer]
+    - generic [ref=e280]: "|"
+    - tab "Macro" [ref=e281] [cursor=pointer]
+    - tab "Quant Lab" [ref=e282] [cursor=pointer]
+    - tab "Trading" [selected] [ref=e283] [cursor=pointer]
+    - tab "Dashboard" [ref=e284] [cursor=pointer]
+    - generic [ref=e285]: "|"
+    - tab "Execution" [ref=e286] [cursor=pointer]
+    - tab "Ops" [ref=e287] [cursor=pointer]
+  - main [ref=e289]:
+    - generic [ref=e290]:
+      - generic [ref=e291]:
+        - generic [ref=e292]:
+          - heading "Trading" [level=1] [ref=e293]
+          - paragraph [ref=e294]: Paper-trading operations console for built-in strategies and custom algorithm runtime.
+        - generic [ref=e295]:
+          - combobox [ref=e296]:
+            - option "paper" [selected]
+            - option "shadow_live"
+            - option "live_adapter"
+          - paragraph [ref=e297]: "Last refresh: 오후 9:37:50"
+          - button "Run Scan Cycle" [ref=e298] [cursor=pointer]
+          - button "Refresh" [ref=e299] [cursor=pointer]
+      - generic [ref=e300]:
+        - generic [ref=e301]:
+          - paragraph [ref=e302]: Mode
+          - generic [ref=e303]: paper
+        - generic [ref=e304]:
+          - paragraph [ref=e305]: Runtime
+          - generic [ref=e306]: stopped
+        - generic [ref=e307]:
+          - paragraph [ref=e308]: Last Scan
+          - generic [ref=e309]: "-"
+        - generic [ref=e310]:
+          - paragraph [ref=e311]: Last Order
+          - generic [ref=e312]: "-"
+        - generic [ref=e313]:
+          - paragraph [ref=e314]: Signals Today
+          - generic [ref=e315]: "0"
+        - generic [ref=e316]:
+          - paragraph [ref=e317]: Orders Today
+          - generic [ref=e318]: "0"
+        - generic [ref=e319]:
+          - paragraph [ref=e320]: Open Positions
+          - generic [ref=e321]: "0"
+        - generic [ref=e322]:
+          - paragraph [ref=e323]: Available Cash
+          - generic [ref=e324]: $1,000,000
+        - generic [ref=e325]:
+          - paragraph [ref=e326]: Used Capital
+          - generic [ref=e327]: $0
+        - generic [ref=e328]:
+          - paragraph [ref=e329]: Today Realized
+          - generic [ref=e330]: $0
+        - generic [ref=e331]:
+          - paragraph [ref=e332]: Cumulative PnL
+          - generic [ref=e333]: $0
+        - generic [ref=e334]:
+          - paragraph [ref=e335]: Drawdown
+          - generic [ref=e336]: 0.00%
+      - generic [ref=e337]:
+        - generic [ref=e338]:
+          - generic [ref=e339]:
+            - generic [ref=e340]:
+              - heading "Strategy Settings" [level=2] [ref=e341]
+              - paragraph [ref=e342]: Trading runtime controls.
+            - generic [ref=e343]:
+              - generic [ref=e344]:
+                - text: Lookback Days
+                - spinbutton "Lookback Days" [ref=e345]: "320"
+              - generic [ref=e346]:
+                - generic [ref=e347]: Signal Generation
+                - checkbox "Signal Generation" [checked] [ref=e348]
+              - generic [ref=e349]:
+                - generic [ref=e350]: Auto Order
+                - checkbox "Auto Order" [ref=e351]
+              - generic [ref=e352]:
+                - generic [ref=e353]: Manual Approval
+                - checkbox "Manual Approval" [ref=e354]
+              - generic [ref=e355]:
+                - text: Max Concurrent Positions
+                - spinbutton "Max Concurrent Positions" [ref=e356]: "12"
+              - generic [ref=e357]:
+                - text: Position Size
+                - spinbutton "Position Size" [ref=e358]: "0.05"
+              - generic [ref=e359]:
+                - text: Max Daily Entries
+                - spinbutton "Max Daily Entries" [ref=e360]: "5"
+              - generic [ref=e361]:
+                - text: Stop Loss
+                - spinbutton "Stop Loss" [ref=e362]: "0.08"
+              - generic [ref=e363]:
+                - text: Take Profit
+                - spinbutton "Take Profit" [ref=e364]: "0.15"
+              - generic [ref=e365]:
+                - generic [ref=e366]: Trailing Stop
+                - checkbox "Trailing Stop" [ref=e367]
+            - button "Save Settings" [ref=e368] [cursor=pointer]
+          - generic [ref=e369]:
+            - generic [ref=e370]:
+              - heading "Custom Algorithms" [level=2] [ref=e371]
+              - paragraph [ref=e372]: Registry, sandbox state, and validation.
+            - generic [ref=e374]:
+              - generic [ref=e375]:
+                - generic [ref=e376]:
+                  - paragraph [ref=e377]: sample_momentum
+                  - paragraph [ref=e378]: 0.1.0 | sandbox
+                - button "Activate" [ref=e379] [cursor=pointer]
+              - generic [ref=e380]:
+                - button "Validate" [ref=e381] [cursor=pointer]
+                - generic [ref=e382]: sandbox
+                - generic [ref=e383]: signal-only
+        - generic [ref=e384]:
+          - generic [ref=e385]:
+            - generic [ref=e386]:
+              - heading "Scan Results" [level=2] [ref=e387]
+              - paragraph [ref=e388]: Shared universe scan output for built-in and custom strategies.
+            - table [ref=e390]:
+              - rowgroup [ref=e391]:
+                - row "Ticker Signal Strategy Strength RSI Action Risk" [ref=e392]:
+                  - columnheader "Ticker" [ref=e393]
+                  - columnheader "Signal" [ref=e394]
+                  - columnheader "Strategy" [ref=e395]
+                  - columnheader "Strength" [ref=e396]
+                  - columnheader "RSI" [ref=e397]
+                  - columnheader "Action" [ref=e398]
+                  - columnheader "Risk" [ref=e399]
+              - rowgroup
+          - generic [ref=e400]:
+            - generic [ref=e401]:
+              - heading "Order Queue (0)" [level=2] [ref=e402]
+              - paragraph [ref=e403]: Signal, risk, order intent, and paper execution state.
+            - generic [ref=e404]:
+              - paragraph [ref=e405]: "Pending approvals: 0 | Fills: 0"
+              - generic [ref=e406]: paper
+            - table [ref=e408]:
+              - rowgroup [ref=e409]:
+                - row "Ticker Side Qty Price Status Actions" [ref=e410]:
+                  - columnheader "Ticker" [ref=e411]
+                  - columnheader "Side" [ref=e412]
+                  - columnheader "Qty" [ref=e413]
+                  - columnheader "Price" [ref=e414]
+                  - columnheader "Status" [ref=e415]
+                  - columnheader "Actions" [ref=e416]
+              - rowgroup
+          - generic [ref=e417]:
+            - generic [ref=e418]:
+              - heading "Open Positions (0)" [level=2] [ref=e419]
+              - paragraph [ref=e420]: Current paper positions and manual exits.
+            - table [ref=e422]:
+              - rowgroup [ref=e423]:
+                - row "Ticker Entry Current PnL Hold Action" [ref=e424]:
+                  - columnheader "Ticker" [ref=e425]
+                  - columnheader "Entry" [ref=e426]
+                  - columnheader "Current" [ref=e427]
+                  - columnheader "PnL" [ref=e428]
+                  - columnheader "Hold" [ref=e429]
+                  - columnheader "Action" [ref=e430]
+              - rowgroup
+          - generic [ref=e431]:
+            - generic [ref=e432]:
+              - heading "Performance" [level=2] [ref=e433]
+              - paragraph [ref=e434]: Paper-trading runtime metrics and equity trace.
+            - generic [ref=e435]:
+              - generic [ref=e436]:
+                - paragraph [ref=e437]: Cumulative Return
+                - generic [ref=e438]: "-"
+              - generic [ref=e439]:
+                - paragraph [ref=e440]: Win Rate
+                - generic [ref=e441]: "-"
+              - generic [ref=e442]:
+                - paragraph [ref=e443]: Sharpe
+                - generic [ref=e444]: "-"
+              - generic [ref=e445]:
+                - paragraph [ref=e446]: Max Drawdown
+                - generic [ref=e447]: "-"
+            - generic [ref=e448]:
+              - generic [ref=e449]:
+                - paragraph [ref=e450]: Equity Curve
+                - paragraph [ref=e452]: 데이터 부족
+              - generic [ref=e453]:
+                - paragraph [ref=e454]: Drawdown Curve
+                - paragraph [ref=e456]: 데이터 부족
+              - generic [ref=e457]:
+                - paragraph [ref=e458]: Daily PnL
+                - paragraph [ref=e460]: 데이터 부족
+        - generic [ref=e461]:
+          - generic [ref=e462]:
+            - generic [ref=e463]:
+              - heading "Symbol Detail" [level=2] [ref=e464]
+              - paragraph [ref=e465]: Selected symbol context, chart, and explanation.
+            - paragraph [ref=e466]: Select a scan row or an open position to load symbol detail.
+          - generic [ref=e467]:
+            - generic [ref=e468]:
+              - heading "Risk Control" [level=2] [ref=e469]
+              - paragraph [ref=e470]: Current limits and recent risk events.
+            - generic [ref=e471]:
+              - generic [ref=e472]:
+                - paragraph [ref=e473]: Max Position Weight
+                - generic [ref=e474]: 10.00%
+              - generic [ref=e475]:
+                - paragraph [ref=e476]: Daily Loss Limit
+                - generic [ref=e477]: $35,000
+              - generic [ref=e478]:
+                - paragraph [ref=e479]: Max Positions
+                - generic [ref=e480]: "0"
+              - generic [ref=e481]:
+                - paragraph [ref=e482]: Stop Loss
+                - generic [ref=e483]: 8.00%
+              - generic [ref=e484]:
+                - paragraph [ref=e485]: Broker Ready
+                - generic [ref=e486]: "false"
+              - generic [ref=e487]:
+                - paragraph [ref=e488]: Kill Switch
+                - generic [ref=e489]: "false"
+            - paragraph [ref=e491]: No recent risk events.
+          - generic [ref=e492]:
+            - generic [ref=e493]:
+              - heading "Scan History" [level=2] [ref=e494]
+              - paragraph [ref=e495]: Recent normalized scan activity for runtime comparison.
+            - paragraph [ref=e497]: No historical scans available.
+          - generic [ref=e498]:
+            - generic [ref=e499]:
+              - heading "Audit Log" [level=2] [ref=e500]
+              - paragraph [ref=e501]: Signal, order, risk, and system events.
+            - paragraph [ref=e503]: No runtime events logged yet.
+  - contentinfo [ref=e504]:
+    - paragraph [ref=e506]: Copyright © 2025 OpenBB Inc.

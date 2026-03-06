@@ -1,0 +1,94 @@
+[    2593ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[    2837ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[    4604ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[    4849ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[    6636ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[    6877ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[    8657ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[    8885ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[    9159ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[   10909ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[   10911ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/coverage/providers:0
+[   11168ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[   12924ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[   12940ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/api/v1/system:0
+[   13011ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   13155ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   13186ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[   14941ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:6900/docs:0
+[   17991ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   18093ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   22979ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   23101ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   27999ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   28091ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   32992ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   33130ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   37994ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   38120ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   42999ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   43107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   47995ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   48107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   53655ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   53789ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   57986ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   58127ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   62999ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   63147ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   68036ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   68252ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   72985ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   73114ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   78008ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   78163ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   82988ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   83107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   88029ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   88251ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   92994ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   93121ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[   97990ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[   98111ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  102987ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  103093ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  107992ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  108138ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  113013ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  113180ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  118001ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  118133ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  123001ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  123128ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  128035ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  128157ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  133045ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  133369ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  137988ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  138090ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  143411ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  143509ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  147981ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  148099ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  153013ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  153177ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  157987ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  158074ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  162993ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  163128ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  168007ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  168157ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  172993ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  173123ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  177994ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  178089ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  182990ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  183136ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  187999ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  188124ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  192988ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  193100ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  197983ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  198107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0
+[  199606ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/settings:0
+[  200073ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:6901/api/v1/quant_ml/trading/execution/mode:0

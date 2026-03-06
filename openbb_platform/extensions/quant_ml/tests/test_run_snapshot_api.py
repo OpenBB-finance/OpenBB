@@ -67,8 +67,67 @@ def test_get_run_snapshot_builds_dashboard_snapshot(
     payload = get_run_snapshot(run_id=run_id, model_name="lgbm_ranker")
     assert payload.run_id == run_id
     assert payload.model_name == "lgbm_ranker"
+    assert payload.snapshot_profile == "full"
     assert payload.constraint_bindings[0].constraint_type == "single_name_cap"
     assert payload.exposure.get("technology", 0.0) == 0.24
+
+
+def test_get_run_snapshot_core_skips_heavy_calls(
+    monkeypatch, tmp_path: Path
+) -> None:
+    run_id = "trn-260221-core"
+    run_dir = tmp_path / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / "backtest_lgbm_ranker.json").write_text(
+        """
+{
+  "metrics": {"cagr": 0.09, "sharpe": 1.0, "max_drawdown": -0.07, "volatility": 0.14, "turnover": 0.2, "net_return": 0.28},
+  "equity_curve": [{"date": "2026-02-20", "equity": 1.10}],
+  "constraint_binding_summary": [{"constraint_type": "single_name_cap", "binding_count": 2, "binding_ratio": 0.1}]
+}
+        """.strip(),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.get_run_dir", lambda _: run_dir
+    )
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.ensure_run_context",
+        lambda *_: {"run_uid": "2026-02-21_150233Z_ab12cd34"},
+    )
+
+    def _should_not_run(**_kwargs):
+        raise AssertionError("heavy endpoint should not be called for core profile")
+
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.get_performance_rolling",
+        _should_not_run,
+    )
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.get_portfolio_risk",
+        _should_not_run,
+    )
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.get_portfolio_exposure",
+        _should_not_run,
+    )
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.get_regime_current",
+        _should_not_run,
+    )
+    monkeypatch.setattr(
+        "openbb_quant_ml.service.snapshot.run_snapshot.get_alerts_current",
+        _should_not_run,
+    )
+
+    payload = get_run_snapshot(run_id=run_id, model_name="lgbm_ranker", profile="core")
+    assert payload.run_id == run_id
+    assert payload.snapshot_profile == "core"
+    assert payload.ic_rolling == []
+    assert payload.exposure == {}
+    assert payload.risk_contrib_top10 == []
+    assert payload.constraint_bindings[0].constraint_type == "single_name_cap"
 
 
 def test_get_run_audit_not_found(monkeypatch, tmp_path: Path) -> None:

@@ -1,4 +1,4 @@
-"""FRED client with retry and cache-friendly failure handling."""
+"""Deprecated FRED client (fallback-only) with retry and cache-friendly failure handling."""
 
 from __future__ import annotations
 

@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from concurrent.futures import Future, ThreadPoolExecutor
+import os
+from concurrent.futures import Future, ProcessPoolExecutor, ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -105,6 +106,40 @@ def _rebalance_dates(index: pd.DatetimeIndex) -> list[pd.Timestamp]:
     return [pd.Timestamp(item).tz_localize(None) for item in rows]
 
 
+def _build_one_walkforward_fold(args: tuple[pd.Timestamp, pd.DataFrame, Any, int]) -> tuple[pd.Timestamp, list[dict[str, Any]], dict[str, str] | None]:
+    """Build one walk-forward fold payload for a rebalance date."""
+    rebalance_date, predictions, start_date, min_history_days = args
+    train_cut = rebalance_date - pd.Timedelta(days=1)
+    train_frame = predictions[predictions["date"] <= train_cut]
+    if train_frame.empty:
+        return rebalance_date, [], None
+    if train_frame["date"].nunique() < max(20, int(min_history_days // 3)):
+        return rebalance_date, [], None
+    train_until = pd.Timestamp(train_frame["date"].max()).tz_localize(None)
+    if train_until >= rebalance_date:
+        train_until = rebalance_date - pd.Timedelta(days=1)
+    if train_until < pd.Timestamp(start_date):
+        return rebalance_date, [], None
+    latest_per_symbol = (
+        train_frame.sort_values(["date", "symbol"])
+        .groupby("symbol", as_index=False)
+        .tail(1)
+    )
+    fold_rows = [
+        {
+            "date": rebalance_date,
+            "symbol": str(item["symbol"]),
+            "predicted_return": float(item["predicted_return"]),
+        }
+        for item in latest_per_symbol.to_dict(orient="records")
+    ]
+    window = {
+        "rebalance_date": rebalance_date.date().isoformat(),
+        "train_until": train_until.date().isoformat(),
+    }
+    return rebalance_date, fold_rows, window
+
+
 def _json_sanitize(value: Any) -> Any:
     if isinstance(value, dict):
         return {key: _json_sanitize(item) for key, item in value.items()}
@@ -174,37 +209,45 @@ def _build_walkforward_predictions(
 
     windows: list[dict[str, str]] = []
     rows: list[dict[str, Any]] = []
-    for rebalance_date in rebalances:
-        train_cut = rebalance_date - pd.Timedelta(days=1)
-        train_frame = predictions[predictions["date"] <= train_cut]
-        if train_frame.empty:
-            continue
-        if train_frame["date"].nunique() < max(20, int(min_history_days // 3)):
-            continue
-        train_until = pd.Timestamp(train_frame["date"].max()).tz_localize(None)
-        if train_until >= rebalance_date:
-            train_until = rebalance_date - pd.Timedelta(days=1)
-        if train_until < pd.Timestamp(start_date):
-            continue
-        latest_per_symbol = (
-            train_frame.sort_values(["date", "symbol"])
-            .groupby("symbol", as_index=False)
-            .tail(1)
-        )
-        for _, row in latest_per_symbol.iterrows():
-            rows.append(
-                {
-                    "date": rebalance_date,
-                    "symbol": str(row["symbol"]),
-                    "predicted_return": float(row["predicted_return"]),
-                }
+
+    # Parallelize only for sufficiently large workloads where process startup
+    # overhead is amortized; small test/interactive jobs should stay sequential.
+    fold_results: list[tuple[pd.Timestamp, list[dict[str, Any]], dict[str, str] | None]]
+    use_parallel = (
+        len(rebalances) >= 8
+        and len(predictions) >= 25_000
+        and len(predictions) <= 2_000_000
+    )
+    if use_parallel:
+        max_workers = min(max(os.cpu_count() or 1, 1), 4, len(rebalances))
+        try:
+            fold_tasks = [
+                (rebalance_date, predictions, start_date, int(min_history_days))
+                for rebalance_date in rebalances
+            ]
+            with ProcessPoolExecutor(max_workers=max_workers) as executor:
+                # ProcessPool keeps fold tasks isolated and scales for larger windows.
+                fold_results = list(executor.map(_build_one_walkforward_fold, fold_tasks))
+        except Exception:
+            fold_results = [
+                _build_one_walkforward_fold(
+                    (rebalance_date, predictions, start_date, int(min_history_days))
+                )
+                for rebalance_date in rebalances
+            ]
+    else:
+        fold_results = [
+            _build_one_walkforward_fold(
+                (rebalance_date, predictions, start_date, int(min_history_days))
             )
-        windows.append(
-            {
-                "rebalance_date": rebalance_date.date().isoformat(),
-                "train_until": train_until.date().isoformat(),
-            }
-        )
+            for rebalance_date in rebalances
+        ]
+
+    for _, fold_rows, fold_window in sorted(fold_results, key=lambda item: item[0]):
+        if fold_rows:
+            rows.extend(fold_rows)
+        if fold_window is not None:
+            windows.append(fold_window)
 
     if not rows:
         raise ValueError("Walk-forward prediction set is empty.")
