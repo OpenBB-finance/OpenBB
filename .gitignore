@@ -78,3 +78,19 @@ images/legacy/
 
 # Runtime data
 .logs/runtime/
+
+# Local browser/debug artifacts
+.playwright-cli/
+logs/manual_api_nobuild_latest.txt
+logs/unused-features-audit.json
+logs/unused-features-audit.md
+openbb_platform/core/openbb/.build.lock
+macro_regime.json
+tmp_api_test.ps1
+tmp_backtest_payload.json
+test_growth.py
+test_growth2.py
+test_growth_out.txt
+test_yf.py
+test_yf_params.py
+yf_test_out.txt
