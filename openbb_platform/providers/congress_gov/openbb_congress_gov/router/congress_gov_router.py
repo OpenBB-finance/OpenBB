@@ -74,7 +74,6 @@ async def bills(
             "category": "Government",
             "subCategory": "Congress",
             "type": "multi_file_viewer",
-            "searchCategory": "Congress",
             "widgetId": "uscongress_bill_text_congress_gov_obb",
             "endpoint": f"{api_prefix}/uscongress/bill_text",
             "params": [

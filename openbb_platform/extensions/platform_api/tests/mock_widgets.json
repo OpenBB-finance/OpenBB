@@ -4,7 +4,6 @@
         "description": "Get Senior Loan Officers Opinion Survey.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_survey_sloos_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -185,7 +184,6 @@
         "description": "Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_survey_university_of_michigan_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -349,7 +347,6 @@
         "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_survey_economic_conditions_chicago_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -561,7 +558,6 @@
         "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_survey_manufacturing_outlook_texas_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -816,7 +812,6 @@
         "description": "Get Nonfarm Payrolls Survey.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_survey_nonfarm_payrolls_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -1009,7 +1004,6 @@
         "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_cpi_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -1350,7 +1344,6 @@
         "description": "Balance of Payments Reports.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_balance_of_payments_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -1761,7 +1754,6 @@
         "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_fred_search_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -2045,7 +2037,6 @@
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_fred_series_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -2265,7 +2256,6 @@
         "description": "Get data by series ID from FRED.",
         "category": "Economy",
         "type": "chart",
-        "searchCategory": "chart",
         "widgetId": "economy_fred_series_fred_obb_chart",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -2495,7 +2485,6 @@
         "description": "Get economic release data by ID and/or element from FRED.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_fred_release_table_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -2641,7 +2630,6 @@
         "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_fred_regional_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -2968,7 +2956,6 @@
         "description": "Get retail prices for common items.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_retail_prices_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3177,7 +3164,6 @@
         "description": "Get Personal Consumption Expenditures (PCE) reports.",
         "category": "Economy",
         "type": "table",
-        "searchCategory": "Economy",
         "widgetId": "economy_pce_fred_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3341,7 +3327,6 @@
         "description": "Map a ticker symbol to a CIK number.",
         "category": "Regulators",
         "type": "table",
-        "searchCategory": "Regulators",
         "widgetId": "regulators_sec_cik_map_sec_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3405,7 +3390,6 @@
         "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
         "category": "Regulators",
         "type": "table",
-        "searchCategory": "Regulators",
         "widgetId": "regulators_sec_institutions_search_sec_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3475,7 +3459,6 @@
         "description": "Explore SEC and FASB XBRL taxonomy schemas, labels, and presentation structures.\n\n- No parameters: list all available taxonomy families.\n- taxonomy only: get all parsed structures for the most recent year.\n- taxonomy + year: get all parsed structures for a specific year.\n- taxonomy + component: get one component's structure using the most recent year.\n- taxonomy + year + component: get one component's parsed structure.",
         "category": "Regulators",
         "type": "table",
-        "searchCategory": "Regulators",
         "widgetId": "regulators_sec_schema_files_sec_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3793,7 +3776,6 @@
         "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
         "category": "Regulators",
         "type": "table",
-        "searchCategory": "Regulators",
         "widgetId": "regulators_sec_symbol_map_sec_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3858,7 +3840,6 @@
         "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
         "category": "Regulators",
         "type": "table",
-        "searchCategory": "Regulators",
         "widgetId": "regulators_sec_rss_litigation_sec_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -3932,7 +3913,6 @@
         "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
         "category": "Regulators",
         "type": "table",
-        "searchCategory": "Regulators",
         "widgetId": "regulators_sec_sic_search_sec_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",
@@ -4009,7 +3989,6 @@
         "description": "",
         "category": "Form Widget",
         "type": "table",
-        "searchCategory": "Form Widget",
         "widgetId": "form_widget_custom_obb",
         "mcp_tool": {
             "mcp_server": "Open Data Platform",

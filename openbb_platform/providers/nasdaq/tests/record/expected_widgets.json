@@ -4,7 +4,6 @@
       "description": "View SEC filings by company.",
       "category": "Open Document",
       "type": "multi_file_viewer",
-      "searchCategory": "Open Document",
       "widgetId": "nasdaq_company_filings",
       "mcp_tool": {
         "mcp_server": "Open Data Platform",
@@ -240,7 +239,6 @@
       "description": "Upcoming, and historical, company earnings releases (US Markets).",
       "category": "Equity",
       "type": "table",
-      "searchCategory": "Equity",
       "widgetId": "nasdaq_earnings_calendar",
       "mcp_tool": {
         "mcp_server": "Open Data Platform",
@@ -394,7 +392,6 @@
       "description": "Upcoming, and historical, dividend payments (US Markets).",
       "category": "Equity",
       "type": "table",
-      "searchCategory": "Equity",
       "widgetId": "nasdaq_dividends_calendar",
       "mcp_tool": {
         "mcp_server": "Open Data Platform",
@@ -519,7 +516,6 @@
       "description": "Historical dividend payments for a given symbol.",
       "category": "Equity",
       "type": "table",
-      "searchCategory": "Equity",
       "widgetId": "nasdaq_historical_dividends",
       "mcp_tool": {
         "mcp_server": "Open Data Platform",
@@ -642,7 +638,6 @@
       "description": "IPO announcements and calendar.",
       "category": "Equity",
       "type": "table",
-      "searchCategory": "Equity",
       "widgetId": "nasdaq_ipo_calendar",
       "mcp_tool": {
         "mcp_server": "Open Data Platform",
@@ -809,7 +804,6 @@
       "description": "Upcoming, and historical, macroeconomic events.",
       "category": "Economy",
       "type": "table",
-      "searchCategory": "Equity",
       "widgetId": "nasdaq_economic_calendar",
       "mcp_tool": {
         "mcp_server": "Open Data Platform",
