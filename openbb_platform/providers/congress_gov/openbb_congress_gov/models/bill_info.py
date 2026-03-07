@@ -43,7 +43,6 @@ class CongressBillInfoData(Data):
                 "$.description": "Metadata and summary info for a U.S. Congressional Bill.",
                 "$.category": "Government",
                 "$.subCategory": "Congress",
-                "$.searchCategory": "Government",
                 "$.data": {
                     "dataKey": "results.markdown_content",
                 },
