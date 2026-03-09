@@ -2,6 +2,7 @@
 
 from typing import Any
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import check_single_item, convert_to_basemodel
 
 
@@ -48,6 +49,25 @@ def filter_inputs(
                             new,
                             f"{field} -> multiple items not allowed for '{provider}'",
                         )
+
+                    choices = (
+                        provider_properties.get("choices")
+                        if isinstance(provider_properties, dict)
+                        else None
+                    )
+                    if choices:
+                        items = (
+                            [s.strip() for s in new.split(",")]
+                            if isinstance(new, str) and "," in new
+                            else [new]
+                        )
+                        for item in items:
+                            if item not in choices:
+                                raise OpenBBError(
+                                    f"Invalid value '{item}' for '{field}'"
+                                    f" (provider: '{provider}')."
+                                    f" Must be one of: {choices}"
+                                )
 
                     kwargs[p][field] = new
                     break
