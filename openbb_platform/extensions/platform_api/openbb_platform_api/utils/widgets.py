@@ -596,7 +596,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                 "description": route_api[route_method].get("description", ""),
                 "category": category.replace("_", " ").title(),
                 "type": widget_type,
-                "searchCategory": category.replace("_", " ").title(),
                 "widgetId": f"{widget_id}_{provider}_obb",
                 "mcp_tool": {
                     "mcp_server": "Open Data Platform",
@@ -726,7 +725,6 @@ def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-
                         "show": False,
                     },
                 )
-                widget_config_chart["searchCategory"] = "chart"
                 widget_config_chart["gridData"]["h"] = widget_config_dict.get(
                     "gridData", {}
                 ).get("h", 20)
