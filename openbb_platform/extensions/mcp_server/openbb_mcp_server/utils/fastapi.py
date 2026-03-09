@@ -1,18 +1,28 @@
 """Utilities for handling FastAPI routes."""
 
 import inspect
+import logging
 import re
 import sys
 from collections.abc import Sequence
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
-from fastmcp.server.openapi import MCPType, RouteMap
+from fastmcp.server.providers.openapi import MCPType, RouteMap
 from openbb_core.app.service.system_service import SystemService
 from pydantic import ValidationError
 
 from openbb_mcp_server.models.mcp_config import MCPConfigModel, validate_mcp_config
 from openbb_mcp_server.models.settings import MCPSettings
+
+logger = logging.getLogger(__name__)
+VERSION_SEGMENT_PATTERN = re.compile(r"^v\d+(?:\.\d+)?$", re.IGNORECASE)
+CODE_MODE_EXCLUDED_CATEGORIES = {"technical", "quantitative", "econometrics"}
+
+
+def _extract_path_segments(local_path: str) -> list[str]:
+    """Extract non-parameter, non-empty path segments from a prefix-stripped path."""
+    return [seg for seg in local_path.split("/") if seg and "{" not in seg]
 
 
 class ProcessedRouteData:
@@ -132,7 +142,7 @@ def _create_prompt_definitions_for_route(
         path[len(api_prefix) :] if api_prefix and path.startswith(api_prefix) else path
     )
     local_path = remainder.lstrip("/")
-    segments = [seg for seg in local_path.split("/") if seg and "{" not in seg]
+    segments = _extract_path_segments(local_path)
 
     if segments:
         category = segments[0]
@@ -262,6 +272,60 @@ def _should_exclude_by_module_and_path(path: str, settings: MCPSettings | None) 
     return False
 
 
+def _extract_top_level_category(path: str, settings: MCPSettings | None) -> str | None:
+    """Extract the first category segment from a route path."""
+    normalized_path = path if path.startswith("/") else f"/{path}"
+    api_prefix = get_api_prefix(settings)
+
+    if api_prefix and normalized_path.startswith(f"{api_prefix}/"):
+        local_path = normalized_path[len(api_prefix) + 1 :]
+    elif api_prefix and normalized_path == api_prefix:
+        local_path = ""
+    elif api_prefix:
+        return None
+    else:
+        local_path = normalized_path.lstrip("/")
+
+    segments = _extract_path_segments(local_path)
+    if not segments:
+        return None
+
+    category = segments[0]
+    if VERSION_SEGMENT_PATTERN.match(category) and len(segments) > 1:
+        category = segments[1]
+
+    return category.lower()
+
+
+def _normalize_allowed_categories(settings: MCPSettings | None) -> frozenset[str]:
+    """Pre-compute normalized allowed category set. Empty frozenset means all allowed."""
+    allowed = getattr(settings, "allowed_tool_categories", None) or []
+    normalized = {str(item).strip().lower() for item in allowed if item and str(item).strip()}
+    if not normalized or "all" in normalized:
+        return frozenset()
+    return frozenset(normalized)
+
+
+def _is_allowed_tool_category(
+    category: str | None, allowed_categories: frozenset[str]
+) -> bool:
+    """Check whether a category is in the pre-computed allowed set (empty = all allowed)."""
+    if category is None or not allowed_categories:
+        return True
+    return category in allowed_categories
+
+
+def _should_exclude_by_code_mode(
+    category: str | None, settings: MCPSettings | None
+) -> bool:
+    """Exclude selected POST-heavy categories unless code mode is enabled."""
+    if settings is None or category is None:
+        return False
+    return (not getattr(settings, "enable_code_mode", False)) and (
+        category in CODE_MODE_EXCLUDED_CATEGORIES
+    )
+
+
 def process_fastapi_routes_for_mcp(
     app: FastAPI, settings: MCPSettings | None = None
 ) -> ProcessedRouteData:
@@ -273,6 +337,7 @@ def process_fastapi_routes_for_mcp(
     """
     processed = ProcessedRouteData()
     routes_to_keep = []
+    allowed_categories = _normalize_allowed_categories(settings)
 
     for route in app.router.routes:
         if not isinstance(route, APIRoute):
@@ -282,12 +347,27 @@ def process_fastapi_routes_for_mcp(
         # Check if route should be excluded
         cfg = get_mcp_config(route)
         should_exclude = False
+        category = _extract_top_level_category(route.path or "", settings)
 
         # Explicit per-route exposure control
-        if cfg.expose is False or _should_exclude_by_module_and_path(
-            route.path or "", settings
-        ):
+        if cfg.expose is False:
             should_exclude = True
+        elif _should_exclude_by_code_mode(category, settings):
+            should_exclude = True
+            logger.warning(
+                "Excluding MCP route '%s' (category '%s'): code mode is disabled.",
+                route.path,
+                category,
+            )
+        elif not _is_allowed_tool_category(category, allowed_categories):
+            should_exclude = True
+        elif _should_exclude_by_module_and_path(route.path or "", settings):
+            should_exclude = True
+            logger.warning(
+                "Excluding MCP route '%s' (category '%s'): matching module exclusion rule.",
+                route.path,
+                category,
+            )
 
         if should_exclude:
             processed.removed_routes.append(route)

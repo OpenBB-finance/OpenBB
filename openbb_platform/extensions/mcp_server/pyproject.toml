@@ -16,7 +16,7 @@ openbb-mcp = "openbb_mcp_server.app.app:main"
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
 openbb-core = "^1.6.0"
-fastmcp = ">=2.14.2,<3"
+fastmcp = { git = "https://github.com/MagnusS0/fastmcp.git", rev = "85de276388ddd9a946f89b8869c2b9164557b6a6", extras = ["code-mode"] }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

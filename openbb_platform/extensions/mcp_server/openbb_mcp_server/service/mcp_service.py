@@ -204,6 +204,11 @@ class MCPService(metaclass=SingletonMeta):
             "system-prompt": "system_prompt_file",
             "server_prompts": "server_prompts_file",
             "server-prompts": "server_prompts_file",
+            "code_mode_limits_max_duration_secs": "code_mode_max_duration_secs",
+            "code_mode_limits_max_memory": "code_mode_max_memory",
+            "code_mode_limits_max_allocations": "code_mode_max_allocations",
+            "code_mode_limits_max_recursion_depth": "code_mode_max_recursion_depth",
+            "code_mode_limits_gc_interval": "code_mode_gc_interval",
         }
         uvicorn_fields = {
             "host",
@@ -234,17 +239,36 @@ class MCPService(metaclass=SingletonMeta):
             "version",
         }
         excluded_fields = {"transport"}
-        httpx_fields = {k for k in server_kwargs if k.startswith("httpx_")}
-
         settings_overrides: dict[str, Any] = {}
         uvicorn_config: dict[str, Any] = {}
         httpx_config: dict[str, Any] = {}
 
-        for key, value in server_kwargs.items():
+        for raw_key, value in server_kwargs.items():
+            key = raw_key.replace("-", "_")
+
             if key in excluded_fields or value is None:
                 continue
 
-            if key in httpx_fields:
+            if key == "code_mode_limits" and isinstance(value, dict):
+                if "max_duration_secs" in value:
+                    settings_overrides["code_mode_max_duration_secs"] = value[
+                        "max_duration_secs"
+                    ]
+                if "max_memory" in value:
+                    settings_overrides["code_mode_max_memory"] = value["max_memory"]
+                if "max_allocations" in value:
+                    settings_overrides["code_mode_max_allocations"] = value[
+                        "max_allocations"
+                    ]
+                if "max_recursion_depth" in value:
+                    settings_overrides["code_mode_max_recursion_depth"] = value[
+                        "max_recursion_depth"
+                    ]
+                if "gc_interval" in value:
+                    settings_overrides["code_mode_gc_interval"] = value["gc_interval"]
+                continue
+
+            if key.startswith("httpx_"):
                 httpx_key = key.replace("httpx_", "", 1)
                 httpx_config[httpx_key] = value
             elif key in uvicorn_fields:

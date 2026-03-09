@@ -248,3 +248,52 @@ def test_create_prompt_definitions_auto_naming():
     assert len(defs) == 2
     assert defs[0]["name"] == "category_subcategory_tool_prompt_0"
     assert defs[1]["name"] == "category_subcategory_tool_prompt_1"
+
+
+def test_process_routes_allowed_tool_categories_top_level_filtering():
+    """Test allowed-tool-category filtering by top-level category segment."""
+    app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+    app.add_api_route("/api/v1/stocks/load", lambda: None, methods=["GET"])
+    app.add_api_route("/api/v1/crypto/price", lambda: None, methods=["GET"])
+
+    settings = MCPSettings(
+        api_prefix="/api",
+        allowed_tool_categories=["stocks"],  # type: ignore
+        enable_code_mode=True,
+    )
+    processed = process_fastapi_routes_for_mcp(app, settings)
+    removed_paths = {route.path for route in processed.removed_routes}
+
+    assert "/api/v1/stocks/load" not in removed_paths
+    assert "/api/v1/crypto/price" in removed_paths
+
+
+def test_process_routes_code_mode_category_exclusions_warn():
+    """Test code-mode-off exclusions for POST-heavy categories emit warnings."""
+    app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+    app.add_api_route("/api/v1/technical/rsi", lambda: None, methods=["POST"])
+    app.add_api_route("/api/v1/quantitative/rolling", lambda: None, methods=["GET"])
+    app.add_api_route("/api/v1/econometrics/regression", lambda: None, methods=["POST"])
+    app.add_api_route("/api/v1/stocks/load", lambda: None, methods=["GET"])
+
+    settings = MCPSettings(api_prefix="/api/v1", enable_code_mode=False)  # type: ignore
+
+    with patch("openbb_mcp_server.utils.fastapi.logger.warning") as mock_warning:
+        processed = process_fastapi_routes_for_mcp(app, settings)
+
+    removed_paths = {route.path for route in processed.removed_routes}
+    assert "/api/v1/technical/rsi" in removed_paths
+    assert "/api/v1/quantitative/rolling" in removed_paths
+    assert "/api/v1/econometrics/regression" in removed_paths
+    assert "/api/v1/stocks/load" not in removed_paths
+
+    warned_paths = {call.args[1] for call in mock_warning.call_args_list}
+    warned_categories = {call.args[2] for call in mock_warning.call_args_list}
+    assert mock_warning.call_count == 3
+    assert warned_paths == {
+        "/api/v1/technical/rsi",
+        "/api/v1/quantitative/rolling",
+        "/api/v1/econometrics/regression",
+    }
+    assert warned_categories == {"technical", "quantitative", "econometrics"}
+    assert all("code mode is disabled" in call.args[0] for call in mock_warning.call_args_list)

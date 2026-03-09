@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
-from fastmcp.server.openapi import OpenAPITool
+from fastmcp.server.providers.openapi import OpenAPITool
 from fastmcp.utilities.openapi import HTTPRoute
 from openbb_mcp_server.app.app import (
     _extract_brief_description,
@@ -48,12 +48,9 @@ def test_read_system_prompt_file(tmp_path):
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
-@patch("openbb_mcp_server.app.app.ToolRegistry")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
-def test_create_mcp_server_customization(
-    mock_from_fastapi, mock_tool_registry, mock_process_routes
-):
-    """Test create_mcp_server function ensures tool registration and customization."""
+def test_create_mcp_server_customization(mock_from_fastapi, mock_process_routes):
+    """Test create_mcp_server function ensures tool customization."""
     settings = MCPSettings()
     fastapi_app = FastAPI()
 
@@ -71,9 +68,6 @@ def test_create_mcp_server_customization(
     ]
     mock_processed_data.prompt_definitions = []
     mock_process_routes.return_value = mock_processed_data
-
-    mock_registry_instance = MagicMock()
-    mock_tool_registry.return_value = mock_registry_instance
 
     mock_mcp_instance = MagicMock()
     mock_from_fastapi.return_value = mock_mcp_instance
@@ -99,21 +93,14 @@ def test_create_mcp_server_customization(
     customize_components_func(mock_http_route, mock_openapi_tool)
 
     assert mock_openapi_tool.name == "my_dummy_tool"
-    mock_registry_instance.register_tool.assert_called_once_with(
-        category="test",
-        subcategory="general",
-        tool_name="my_dummy_tool",
-        tool=mock_openapi_tool,
-    )
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
-@patch("openbb_mcp_server.app.app.ToolRegistry")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
 def test_create_mcp_server_tool_enable_disable(
-    mock_from_fastapi, mock_tool_registry, mock_process_routes
+    mock_from_fastapi, mock_process_routes
 ):
-    """Test tool enable/disable logic based on settings."""
+    """Test tool visibility logic based on settings."""
     settings = MCPSettings(default_tool_categories=["enabled_category"])  # type: ignore
     fastapi_app = FastAPI()
 
@@ -149,36 +136,122 @@ def test_create_mcp_server_tool_enable_disable(
     mock_processed_data.prompt_definitions = []
     mock_process_routes.return_value = mock_processed_data
 
-    mock_registry_instance = MagicMock()
-    mock_tool_registry.return_value = mock_registry_instance
+    mock_mcp_instance = MagicMock()
+    captured_keys: dict[str, str] = {}
+
+    def from_fastapi_side_effect(*args, **kwargs):
+        customize_components_func = kwargs["mcp_component_fn"]
+
+        enabled_http_route = HTTPRoute(path="/enabled_category/tool1", method="GET")
+        enabled_tool = OpenAPITool(
+            MagicMock(),
+            enabled_http_route,
+            name="tool1",
+            description="desc",
+            parameters={},
+            director=MagicMock(),
+        )
+        customize_components_func(enabled_http_route, enabled_tool)
+        captured_keys["enabled"] = enabled_tool.key
+
+        disabled_http_route = HTTPRoute(path="/disabled_category/tool2", method="GET")
+        disabled_tool = OpenAPITool(
+            MagicMock(),
+            disabled_http_route,
+            name="tool2",
+            description="desc",
+            parameters={},
+            director=MagicMock(),
+        )
+        customize_components_func(disabled_http_route, disabled_tool)
+        captured_keys["disabled"] = disabled_tool.key
+
+        return mock_mcp_instance
+
+    mock_from_fastapi.side_effect = from_fastapi_side_effect
 
     create_mcp_server(settings, fastapi_app)
 
-    _, kwargs = mock_from_fastapi.call_args
-    customize_components_func = kwargs["mcp_component_fn"]
+    mock_mcp_instance.enable.assert_called_once()
+    mock_mcp_instance.disable.assert_called_once()
 
-    # Test enabled tool
-    enabled_http_route = HTTPRoute(path="/enabled_category/tool1", method="GET")
-    enabled_tool = OpenAPITool(
-        MagicMock(),
-        enabled_http_route,
-        name="tool1",
-        description="desc",
-        parameters={},
-        director=MagicMock(),
-    )
-    customize_components_func(enabled_http_route, enabled_tool)
-    assert enabled_tool.enabled
+    enabled_keys = mock_mcp_instance.enable.call_args.kwargs["keys"]
+    disabled_keys = mock_mcp_instance.disable.call_args.kwargs["keys"]
 
-    # Test disabled tool
-    disabled_http_route = HTTPRoute(path="/disabled_category/tool2", method="GET")
-    disabled_tool = OpenAPITool(
-        MagicMock(),
-        disabled_http_route,
-        name="tool2",
-        description="desc",
-        parameters={},
-        director=MagicMock(),
+    assert captured_keys["enabled"] in enabled_keys
+    assert captured_keys["disabled"] in disabled_keys
+
+
+@patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
+@patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
+def test_create_mcp_server_registers_only_prompt_tools(
+    mock_from_fastapi, mock_process_routes
+):
+    """Test root admin discovery tools are not registered."""
+    settings = MCPSettings(enable_tool_discovery=True)
+    fastapi_app = FastAPI()
+
+    mock_processed_data = MagicMock()
+    mock_processed_data.route_lookup = {}
+    mock_processed_data.route_maps = []
+    mock_processed_data.prompt_definitions = []
+    mock_process_routes.return_value = mock_processed_data
+
+    decorated_functions: dict[str, object] = {}
+
+    def tool_decorator_factory(*args, **kwargs):
+        """Capture decorated tool functions."""
+
+        def decorator(func):
+            decorated_functions[func.__name__] = func
+            return func
+
+        return decorator
+
+    mock_mcp_instance = MagicMock()
+    mock_mcp_instance.tool = MagicMock(side_effect=tool_decorator_factory)
+    mock_from_fastapi.return_value = mock_mcp_instance
+
+    create_mcp_server(settings, fastapi_app)
+
+    assert set(decorated_functions) == {"list_prompts", "execute_prompt"}
+
+
+@patch("openbb_mcp_server.app.app.MontySandboxProvider")
+@patch("openbb_mcp_server.app.app.OpenBBCodeMode")
+@patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
+@patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
+def test_create_mcp_server_code_mode_integration(
+    mock_from_fastapi,
+    mock_process_routes,
+    mock_code_mode,
+    mock_sandbox_provider,
+):
+    """Test optional Code Mode transform integration."""
+    settings = MCPSettings(
+        enable_code_mode=True,
+        code_mode_max_duration_secs=5.0,
+        code_mode_max_memory=123456,
     )
-    customize_components_func(disabled_http_route, disabled_tool)
-    assert not disabled_tool.enabled
+    fastapi_app = FastAPI()
+
+    mock_processed_data = MagicMock()
+    mock_processed_data.route_lookup = {}
+    mock_processed_data.route_maps = []
+    mock_processed_data.prompt_definitions = []
+    mock_process_routes.return_value = mock_processed_data
+
+    mock_mcp_instance = MagicMock()
+    mock_from_fastapi.return_value = mock_mcp_instance
+
+    create_mcp_server(settings, fastapi_app)
+
+    mock_sandbox_provider.assert_called_once_with(limits=settings.get_code_mode_limits())
+    mock_code_mode.assert_called_once_with(
+        search_tool_name="search",
+        execute_tool_name="execute",
+        search_max_results=settings.code_mode_search_max_results,
+        search_output_format=settings.code_mode_search_output_format,
+        sandbox_provider=mock_sandbox_provider.return_value,
+    )
+    mock_mcp_instance.add_transform.assert_called_once_with(mock_code_mode.return_value)

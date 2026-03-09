@@ -3,9 +3,15 @@
 import json
 from typing import Any, Literal
 
+from fastmcp.utilities.logging import get_logger
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+logger = get_logger(__name__)
+
 DuplicateBehavior = Literal["warn", "error", "replace", "ignore"]
+DEFAULT_CODE_MODE_MAX_DURATION_SECS = 30.0
+DEFAULT_CODE_MODE_MAX_MEMORY = 536_870_912
+DEFAULT_CODE_MODE_SEARCH_MAX_RESULTS = 30
 
 
 class MCPSettings(BaseModel):
@@ -54,6 +60,52 @@ the exact same operations available to REST clients.""",
         description="If set, restricts available tool categories to this list",
         alias="OPENBB_MCP_ALLOWED_TOOL_CATEGORIES",
     )
+    enable_code_mode: bool = Field(
+        default=False,
+        description="Enable FastMCP code mode features for post-processing tools.",
+        alias="OPENBB_MCP_ENABLE_CODE_MODE",
+    )
+    code_mode_max_duration_secs: float = Field(
+        default=DEFAULT_CODE_MODE_MAX_DURATION_SECS,
+        description="Maximum sandbox execution duration for code mode in seconds.",
+        alias="OPENBB_MCP_CODE_MODE_MAX_DURATION_SECS",
+        gt=0,
+    )
+    code_mode_max_memory: int = Field(
+        default=DEFAULT_CODE_MODE_MAX_MEMORY,
+        description="Maximum sandbox memory allocation for code mode in bytes.",
+        alias="OPENBB_MCP_CODE_MODE_MAX_MEMORY",
+        gt=0,
+    )
+    code_mode_max_allocations: int | None = Field(
+        default=None,
+        description="Optional maximum allocation count for code mode sandbox.",
+        alias="OPENBB_MCP_CODE_MODE_MAX_ALLOCATIONS",
+        gt=0,
+    )
+    code_mode_max_recursion_depth: int | None = Field(
+        default=None,
+        description="Optional maximum recursion depth for code mode sandbox.",
+        alias="OPENBB_MCP_CODE_MODE_MAX_RECURSION_DEPTH",
+        gt=0,
+    )
+    code_mode_gc_interval: int | None = Field(
+        default=None,
+        description="Optional garbage collection interval for code mode sandbox.",
+        alias="OPENBB_MCP_CODE_MODE_GC_INTERVAL",
+        gt=0,
+    )
+    code_mode_search_max_results: int = Field(
+        default=DEFAULT_CODE_MODE_SEARCH_MAX_RESULTS,
+        description="Maximum cap for tools returned by the code mode search meta-tool.",
+        alias="OPENBB_MCP_CODE_MODE_SEARCH_MAX_RESULTS",
+        gt=0,
+    )
+    code_mode_search_output_format: Literal["json", "markdown"] = Field(
+        default="markdown",
+        description="Output format for code mode search results.",
+        alias="OPENBB_MCP_CODE_MODE_SEARCH_OUTPUT_FORMAT",
+    )
 
     # Tool discovery configuration
     enable_tool_discovery: bool = Field(
@@ -95,21 +147,27 @@ the exact same operations available to REST clients.""",
     )
 
     # Duplicate handling
+    on_duplicate: DuplicateBehavior | None = Field(
+        default=None,
+        description="Unified behavior when duplicate MCP components are registered",
+        alias="OPENBB_MCP_ON_DUPLICATE",
+    )
+
     on_duplicate_tools: DuplicateBehavior | None = Field(
         default=None,
-        description="Behavior when duplicate tools are registered",
+        description="Legacy behavior when duplicate tools are registered",
         alias="OPENBB_MCP_ON_DUPLICATE_TOOLS",
     )
 
     on_duplicate_resources: DuplicateBehavior | None = Field(
         default=None,
-        description="Behavior when duplicate resources are registered",
+        description="Legacy behavior when duplicate resources are registered",
         alias="OPENBB_MCP_ON_DUPLICATE_RESOURCES",
     )
 
     on_duplicate_prompts: DuplicateBehavior | None = Field(
         default=None,
-        description="Behavior when duplicate prompts are registered",
+        description="Legacy behavior when duplicate prompts are registered",
         alias="OPENBB_MCP_ON_DUPLICATE_PROMPTS",
     )
 
@@ -234,13 +292,30 @@ the exact same operations available to REST clients.""",
         Returns a dictionary containing only the non-None FastMCP parameters
         that can be passed directly to the FastMCP constructor.
         """
+        on_duplicate = self.on_duplicate
+        if on_duplicate is None:
+            on_duplicate = next(
+                (
+                    legacy_value
+                    for legacy_value in (
+                        self.on_duplicate_tools,
+                        self.on_duplicate_resources,
+                        self.on_duplicate_prompts,
+                    )
+                    if legacy_value is not None
+                ),
+                None,
+            )
+            if on_duplicate is not None:
+                logger.warning(
+                    "MCPSettings: 'on_duplicate_tools/resources/prompts' are deprecated; use 'on_duplicate' instead."
+                )
+
         fastmcp_fields = {
             "name": self.name,
             "version": self.version,
             "cache_expiration_seconds": self.cache_expiration_seconds,
-            "on_duplicate_tools": self.on_duplicate_tools,
-            "on_duplicate_resources": self.on_duplicate_resources,
-            "on_duplicate_prompts": self.on_duplicate_prompts,
+            "on_duplicate": on_duplicate,
             "resource_prefix_format": self.resource_prefix_format,
             "mask_error_details": self.mask_error_details,
             "dependencies": self.dependencies,
@@ -263,6 +338,22 @@ the exact same operations available to REST clients.""",
             run_fields["uvicorn_config"] = self.uvicorn_config
 
         return run_fields
+
+    def get_code_mode_limits(self) -> dict[str, float | int]:
+        """Return code mode sandbox limits."""
+        limits: dict[str, float | int] = {
+            "max_duration_secs": self.code_mode_max_duration_secs,
+            "max_memory": self.code_mode_max_memory,
+        }
+        optional_limits = {
+            "max_allocations": self.code_mode_max_allocations,
+            "max_recursion_depth": self.code_mode_max_recursion_depth,
+            "gc_interval": self.code_mode_gc_interval,
+        }
+        for key, value in optional_limits.items():
+            if value is not None:
+                limits[key] = value
+        return limits
 
     def get_httpx_kwargs(self) -> dict:
         """

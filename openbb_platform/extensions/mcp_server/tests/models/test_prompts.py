@@ -2,8 +2,7 @@
 
 import pytest
 from fastmcp.exceptions import PromptError
-from fastmcp.prompts.prompt import PromptArgument
-from mcp.types import PromptMessage, TextContent
+from fastmcp.prompts.prompt import Message, PromptArgument
 from openbb_mcp_server.models.prompts import StaticPrompt
 
 
@@ -16,11 +15,7 @@ async def test_static_prompt_render_success():
         arguments=[PromptArgument(name="name", required=True)],
     )
     rendered = await prompt.render(arguments={"name": "World"})
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, World!")
-        )
-    ]
+    assert rendered == [Message(role="user", content="Hello, World!")]
 
 
 @pytest.mark.asyncio
@@ -48,11 +43,7 @@ async def test_static_prompt_render_no_arguments():
     """Test rendering StaticPrompt with no arguments."""
     prompt = StaticPrompt(name="test_prompt", content="Hello, World!")
     rendered = await prompt.render()
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, World!")
-        )
-    ]
+    assert rendered == [Message(role="user", content="Hello, World!")]
 
 
 @pytest.mark.asyncio
@@ -64,11 +55,7 @@ async def test_static_prompt_render_optional_argument():
         arguments=[PromptArgument(name="name", required=False)],
     )
     rendered = await prompt.render(arguments={"name": "Optional"})
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, Optional!")
-        )
-    ]
+    assert rendered == [Message(role="user", content="Hello, Optional!")]
 
 
 @pytest.mark.asyncio
@@ -84,10 +71,7 @@ async def test_static_prompt_render_multiple_arguments():
     )
     rendered = await prompt.render(arguments={"name": "User", "place": "OpenBB"})
     assert rendered == [
-        PromptMessage(
-            role="user",
-            content=TextContent(type="text", text="Hello, User! Welcome to OpenBB."),
-        )
+        Message(role="user", content="Hello, User! Welcome to OpenBB.")
     ]
 
 
@@ -96,8 +80,4 @@ async def test_static_prompt_render_with_none_arguments_in_prompt():
     """Test rendering StaticPrompt when arguments attribute is None."""
     prompt = StaticPrompt(name="test_prompt", content="Hello, World!", arguments=None)
     rendered = await prompt.render()
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, World!")
-        )
-    ]
+    assert rendered == [Message(role="user", content="Hello, World!")]

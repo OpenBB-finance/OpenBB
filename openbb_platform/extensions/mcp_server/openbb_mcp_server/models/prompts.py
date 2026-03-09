@@ -3,8 +3,7 @@
 from typing import Any
 
 from fastmcp.exceptions import PromptError
-from fastmcp.prompts.prompt import Prompt
-from mcp.types import PromptMessage, TextContent
+from fastmcp.prompts.prompt import Message, Prompt
 
 
 class StaticPrompt(Prompt):
@@ -15,7 +14,7 @@ class StaticPrompt(Prompt):
     async def render(
         self,
         arguments: dict[str, Any] | None = None,
-    ) -> list[PromptMessage]:
+    ) -> list[Message]:
         """Render the prompt with arguments."""
         args = arguments or {}
 
@@ -29,10 +28,6 @@ class StaticPrompt(Prompt):
 
         try:
             rendered_content = self.content.format(**args)
-            return [
-                PromptMessage(
-                    role="user", content=TextContent(type="text", text=rendered_content)
-                )
-            ]
+            return [Message(role="user", content=rendered_content)]
         except KeyError as e:
             raise PromptError(f"Missing argument for formatting: {e}") from e

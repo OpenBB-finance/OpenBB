@@ -1,6 +1,6 @@
 """Unit tests for server prompts functionality."""
 
-# pylint: disable=protected-access,unused-argument
+# pylint: disable=unused-argument
 
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -12,11 +12,8 @@ from openbb_mcp_server.models.settings import MCPSettings
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
-@patch("openbb_mcp_server.app.app.ToolRegistry")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
-def test_load_prompts_from_json(
-    mock_from_fastapi, mock_tool_registry, mock_process_routes, tmp_path
-):
+def test_load_prompts_from_json(mock_from_fastapi, mock_process_routes, tmp_path):
     """Test that prompts are loaded correctly from a JSON file."""
     prompts_data = [
         {
@@ -46,9 +43,6 @@ def test_load_prompts_from_json(
     mock_processed_data.prompt_definitions = []
     mock_process_routes.return_value = mock_processed_data
 
-    mock_registry_instance = MagicMock()
-    mock_tool_registry.return_value = mock_registry_instance
-
     mock_mcp_instance = MagicMock()
     mock_from_fastapi.return_value = mock_mcp_instance
 
@@ -65,11 +59,9 @@ def test_load_prompts_from_json(
 
 @patch("openbb_mcp_server.app.app.logger")
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
-@patch("openbb_mcp_server.app.app.ToolRegistry")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
 def test_skip_invalid_prompts(
     mock_from_fastapi,
-    mock_tool_registry,
     mock_process_routes,
     mock_logger,
     tmp_path,
@@ -93,9 +85,6 @@ def test_skip_invalid_prompts(
     mock_processed_data.prompt_definitions = []
     mock_process_routes.return_value = mock_processed_data
 
-    mock_registry_instance = MagicMock()
-    mock_tool_registry.return_value = mock_registry_instance
-
     mock_mcp_instance = MagicMock()
     mock_from_fastapi.return_value = mock_mcp_instance
 
@@ -107,11 +96,9 @@ def test_skip_invalid_prompts(
 
 @patch("openbb_mcp_server.app.app.logger")
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
-@patch("openbb_mcp_server.app.app.ToolRegistry")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
 def test_skip_invalid_arguments_in_prompts(
     mock_from_fastapi,
-    mock_tool_registry,
     mock_process_routes,
     mock_logger,
     tmp_path,
@@ -137,9 +124,6 @@ def test_skip_invalid_arguments_in_prompts(
     mock_processed_data.prompt_definitions = []
     mock_process_routes.return_value = mock_processed_data
 
-    mock_registry_instance = MagicMock()
-    mock_tool_registry.return_value = mock_registry_instance
-
     mock_mcp_instance = MagicMock()
     mock_from_fastapi.return_value = mock_mcp_instance
 
@@ -154,10 +138,9 @@ def test_skip_invalid_arguments_in_prompts(
 
 @pytest.mark.asyncio
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
-@patch("openbb_mcp_server.app.app.ToolRegistry")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
 async def test_execute_prompt_tool(
-    mock_from_fastapi, mock_tool_registry, mock_process_routes, tmp_path
+    mock_from_fastapi, mock_process_routes, tmp_path
 ):
     """Test the execute_prompt tool."""
     prompts_data = [
@@ -188,13 +171,8 @@ async def test_execute_prompt_tool(
     mock_processed_data.prompt_definitions = []
     mock_process_routes.return_value = mock_processed_data
 
-    mock_registry_instance = MagicMock()
-    mock_tool_registry.return_value = mock_registry_instance
-
     mock_mcp_instance = MagicMock()
-    prompt_manager_mock = MagicMock()
-    prompt_manager_mock.render_prompt = AsyncMock()
-    mock_mcp_instance._prompt_manager = prompt_manager_mock
+    mock_mcp_instance.render_prompt = AsyncMock()
     mock_from_fastapi.return_value = mock_mcp_instance
 
     # We need to capture the function that gets decorated
@@ -221,7 +199,7 @@ async def test_execute_prompt_tool(
     await execute_prompt_func(
         prompt_name="test_prompt_with_args", arguments={"arg1": "world"}
     )
-    mock_mcp_instance._prompt_manager.render_prompt.assert_called_with(
+    mock_mcp_instance.render_prompt.assert_called_with(
         name="test_prompt_with_args",
         arguments={"arg1": "world", "arg2": "default_value"},
     )
@@ -231,7 +209,7 @@ async def test_execute_prompt_tool(
         prompt_name="test_prompt_with_args",
         arguments={"arg1": "world", "arg2": "new_value"},
     )
-    mock_mcp_instance._prompt_manager.render_prompt.assert_called_with(
+    mock_mcp_instance.render_prompt.assert_called_with(
         name="test_prompt_with_args",
         arguments={"arg1": "world", "arg2": "new_value"},
     )

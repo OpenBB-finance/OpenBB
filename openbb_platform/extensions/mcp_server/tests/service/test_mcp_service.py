@@ -169,3 +169,44 @@ def test_map_cli_args_to_settings_system_prompt(service: MCPService):
     server_kwargs = {"system_prompt": "/path/to/prompt.txt"}
     mapped = service._map_cli_args_to_settings(server_kwargs)
     assert mapped["system_prompt_file"] == "/path/to/prompt.txt"
+
+
+def test_map_cli_args_to_settings_code_mode_fields(service: MCPService):
+    """Test mapping for code-mode CLI arguments."""
+    server_kwargs = {
+        "enable_code_mode": True,
+        "code_mode_max_duration_secs": 45,
+        "code_mode_max_memory": 1024,
+        "code_mode_search_max_results": 4,
+        "code_mode_search_output_format": "json",
+    }
+    mapped = service._map_cli_args_to_settings(server_kwargs)
+    assert mapped["enable_code_mode"] is True
+    assert mapped["code_mode_max_duration_secs"] == 45
+    assert mapped["code_mode_max_memory"] == 1024
+    assert mapped["code_mode_search_max_results"] == 4
+    assert mapped["code_mode_search_output_format"] == "json"
+
+
+def test_map_cli_args_to_settings_code_mode_limits_variants(service: MCPService):
+    """Test mapping code-mode limit variants into settings fields."""
+    server_kwargs = {
+        "code_mode_limits": {
+            "max_duration_secs": 22,
+            "max_memory": 4096,
+            "max_allocations": 55,
+            "max_recursion_depth": 10,
+            "gc_interval": 3,
+        },
+        "code-mode-limits-max-duration-secs": 30,
+        "code-mode-limits-max-memory": 8192,
+        "code-mode-limits-max-allocations": 77,
+        "code-mode-limits-max-recursion-depth": 12,
+        "code-mode-limits-gc-interval": 4,
+    }
+    mapped = service._map_cli_args_to_settings(server_kwargs)
+    assert mapped["code_mode_max_duration_secs"] == 30
+    assert mapped["code_mode_max_memory"] == 8192
+    assert mapped["code_mode_max_allocations"] == 77
+    assert mapped["code_mode_max_recursion_depth"] == 12
+    assert mapped["code_mode_gc_interval"] == 4

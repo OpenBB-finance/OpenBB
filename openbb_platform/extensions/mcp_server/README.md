@@ -2,20 +2,19 @@
 
 This extension enables LLM agents to interact with OpenBB Platform's REST API endpoints through the MCP protocol.
 
-The server provides discovery tools that allow agents to explore different options and dynamically adjust their active toolset.
-This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
+By default, the server exposes endpoint-backed MCP tools directly from enabled categories.
+Prompt helpers are provided through `list_prompts` and `execute_prompt`.
 
-Using dynamic tool discovery has one major drawback, it makes the server a single-user server.
-The tool updates are global, so if one user updates a tool, it will be updated for all users.
-
-If you plan to serve multiple users, you should disable tool discovery,
-and instead use the `allowed_tool_categories` and `default_tool_categories` settings to control the tools that are available to the users.
+For high-tool-count setups, you can opt into FastMCP Code Mode (`enable_code_mode=true`), which collapses tool usage behind the meta-tools `search` and `execute`.
+Sandbox limits are enforced via `code_mode_max_duration_secs` and `code_mode_max_memory`.
 
 ## Installation & Usage
 
 ```bash
 pip install openbb-mcp-server
 ```
+
+> **Note:** This extension currently tracks FastMCP from the GitHub `main` branch to support unreleased Code Mode APIs.
 
 Start the OpenBB MCP server with default settings:
 
@@ -71,7 +70,7 @@ Enter `openbb-mcp --help` to see the docstring from the command line.
     Defaults to 'all'.
 
 --no-tool-discovery
-    If set, tool discovery will be disabled.
+    Deprecated compatibility flag. Admin discovery tools are removed.
 
 --system-prompt <path>
     Path to a TXT file with the system prompt.
@@ -223,14 +222,23 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `version` | `OPENBB_MCP_VERSION` | string | `None` | Server version. |
 | `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | list[string] | `["all"]` | Default active tool categories on startup. |
 | `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | list[string] | `None` | Restricts available tool categories to this list. |
-| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable tool discovery. |
+| `enable_code_mode` | `OPENBB_MCP_ENABLE_CODE_MODE` | boolean | `False` | Enable FastMCP Code Mode (`search`/`execute` meta-tools). |
+| `code_mode_max_duration_secs` | `OPENBB_MCP_CODE_MODE_MAX_DURATION_SECS` | float | `30.0` | Maximum code execution time in sandbox seconds. |
+| `code_mode_max_memory` | `OPENBB_MCP_CODE_MODE_MAX_MEMORY` | int | `536870912` | Maximum code execution memory in sandbox bytes. |
+| `code_mode_max_allocations` | `OPENBB_MCP_CODE_MODE_MAX_ALLOCATIONS` | int | `None` | Optional maximum allocation count in sandbox. |
+| `code_mode_max_recursion_depth` | `OPENBB_MCP_CODE_MODE_MAX_RECURSION_DEPTH` | int | `None` | Optional maximum recursion depth in sandbox. |
+| `code_mode_gc_interval` | `OPENBB_MCP_CODE_MODE_GC_INTERVAL` | int | `None` | Optional sandbox garbage collection interval. |
+| `code_mode_search_max_results` | `OPENBB_MCP_CODE_MODE_SEARCH_MAX_RESULTS` | int | `30` | Maximum cap for tools returned from `search` (per-call `max_results` cannot exceed this). |
+| `code_mode_search_output_format` | `OPENBB_MCP_CODE_MODE_SEARCH_OUTPUT_FORMAT` | string | `"markdown"` | Search output format: `markdown` (compact) or `json` (full schemas). |
+| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Legacy toggle retained for compatibility; admin discovery tools are not registered. |
 | `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | boolean | `False` | Include response types in tool descriptions. |
 | `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | string | `None` | Path to a text file for the system prompt. |
 | `server_prompts_file` | `OPENBB_MCP_SERVER_PROMPTS_FILE` | string | `None` | Path to a JSON file with a list of server prompt definitions. |
 | `cache_expiration_seconds` | `OPENBB_MCP_CACHE_EXPIRATION_SECONDS` | float | `None` | Cache expiration time in seconds. `0` to disable. |
-| `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Behavior for duplicate tools (`warn`, `error`, `replace`, `ignore`). |
-| `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Behavior for duplicate resources. |
-| `on_duplicate_prompts` | `OPENBB_MCP_ON_DUPLICATE_PROMPTS` | string | `None` | Behavior for duplicate prompts. |
+| `on_duplicate` | `OPENBB_MCP_ON_DUPLICATE` | string | `None` | Unified behavior for duplicate MCP components (`warn`, `error`, `replace`, `ignore`). |
+| `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Legacy duplicate behavior fallback for tools. |
+| `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Legacy duplicate behavior fallback for resources. |
+| `on_duplicate_prompts` | `OPENBB_MCP_ON_DUPLICATE_PROMPTS` | string | `None` | Legacy duplicate behavior fallback for prompts. |
 | `resource_prefix_format` | `OPENBB_MCP_RESOURCE_PREFIX_FORMAT` | string | `None` | Format for resource URI prefixes (`protocol` or `path`). |
 | `mask_error_details` | `OPENBB_MCP_MASK_ERROR_DETAILS` | boolean | `None` | Mask error details from user functions. |
 | `dependencies` | `OPENBB_MCP_DEPENDENCIES` | list[string] | `None` | List of dependencies to install. |
@@ -267,19 +275,7 @@ Each category contains subcategories that group related functionality (e.g., `eq
 
 ### Root Tools
 
-An additional set of tools are tagged as "admin", or "prompt".
-
-- available_categories
-
-- available_tools: List all tools by category.
-  - `category`: Category of tool to list.
-  - `subcategory`: Optional subcategory. Use 'general' for tools directly under the category.
-
-- activate_tools: Activate a tool for use.
-  - `tool_names`: Names of tools to activate. Comma-separated string for multiple.
-
-- deactivate_tools: Deactivate a tool after use.
-  - `tool_names`: Names of tools to deactivate. Comma-separated string for multiple.
+The server always registers prompt tools:
 
 - list_prompts: Lists all available prompts in the server.
 
@@ -287,18 +283,48 @@ An additional set of tools are tagged as "admin", or "prompt".
   - `prompt_name`: Name of the prompt to execute.
   - `arguments`: Dictionary of argument:value for the prompt.
 
-## Tool Discovery
+When `enable_code_mode=true`, tool access is transformed into:
 
-When `enable_tool_discovery` is enabled (default), the server provides discovery tools that allow agents to:
+- search: Search and rank available OpenBB tools.
+- execute: Run chained Python async calls through the sandboxed `call_tool(...)` helper.
 
-- Discover available tool categories and subcategories
-- See tool counts and descriptions before activating
-- Enable/disable specific tools dynamically during a session
-- Start with minimal tools and progressively add more as needed
+## Code Mode
 
-To take full advantage of minimal startup tools, you should set the `--default-categories` argument to `admin`. This will enable only the discovery tools at startup.
+Code Mode is disabled by default.
 
-For multi-client deployments or scenarios where you want a fixed toolset, disable tool discovery with `--no-tool-discovery`.
+With Code Mode disabled, enabled category tools are exposed directly.
+Routes under `technical`, `quantitative`, and `econometrics` are excluded with startup warnings.
+
+With Code Mode enabled, tools are collapsed behind `search` and `execute`.
+The sandbox is constrained using:
+
+- `code_mode_max_duration_secs` (default `30.0`)
+- `code_mode_max_memory` (default `536870912`)
+- `code_mode_max_allocations` (optional)
+- `code_mode_max_recursion_depth` (optional)
+- `code_mode_gc_interval` (optional)
+
+Code Mode search also supports:
+
+- `code_mode_search_max_results` (default `30`)
+- `code_mode_search_output_format` (default `"markdown"`)
+
+The `search` query supports inline filters:
+
+- `category:<name>` or `cat:<name>` (matches top-level OpenBB category tags)
+- `tag:<name>` and `tags:<tag1,tag2>`
+- `categories:true` to return category list instead of tool list
+
+The `search` tool also accepts:
+
+- `max_results` to request fewer/more results per query (bounded by `code_mode_search_max_results`)
+- `categories` (boolean) as an explicit category-list mode flag
+
+Examples:
+
+- `category:equity historical prices`
+- `tags:fundamental,intrinio income statement`
+- `cat:econometrics`
 
 ## System Prompt
 
@@ -424,9 +450,9 @@ def get_gdp_data(country: str, period: Literal["annual", "quarterly"] = "annual"
     return {"country": country, "period": period}
 ```
 
-Along with being added to `list_prompts`, prompts will be included with the tool's metadata, returned by `list_tools`.
+Along with being added to `list_prompts`, prompts are included in each tool's metadata description.
 
-The discovery metadata for this tool would look like:
+The tool metadata for this endpoint can look like:
 
 __Economy Tools:__
 
@@ -557,8 +583,11 @@ openbb-mcp --default-categories equity,news --host 0.0.0.0 --port 8080
 # Start with allowed categories restriction
 openbb-mcp --allowed-categories equity,crypto,news
 
-# Disable tool discovery for multi-client usage
-openbb-mcp --no-tool-discovery
+# Enable Code Mode with stricter sandbox limits
+openbb-mcp --enable-code-mode true --code-mode-max-duration-secs 20 --code-mode-max-memory 268435456
+
+# Enable compact markdown search output with category/tag-aware filtering
+openbb-mcp --enable-code-mode true --code-mode-search-output-format markdown --code-mode-search-max-results 3
 ```
 
 ### Claude Desktop:

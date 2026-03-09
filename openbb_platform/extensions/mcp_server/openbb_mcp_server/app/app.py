@@ -12,8 +12,9 @@ from typing import Annotated, Any
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastmcp import FastMCP
-from fastmcp.prompts.prompt import FunctionPrompt, PromptArgument, PromptResult
-from fastmcp.server.openapi import (
+from fastmcp.experimental.transforms.code_mode import MontySandboxProvider
+from fastmcp.prompts.function_prompt import FunctionPrompt, PromptArgument, PromptResult
+from fastmcp.server.providers.openapi import (
     OpenAPIResource,
     OpenAPIResourceTemplate,
     OpenAPITool,
@@ -21,7 +22,6 @@ from fastmcp.server.openapi import (
 from fastmcp.utilities.json_schema import compress_schema
 from fastmcp.utilities.logging import get_logger
 from fastmcp.utilities.openapi import HTTPRoute
-from openbb_core.api.rest_api import app
 from openbb_core.app.service.system_service import SystemService
 from pydantic import Field
 from starlette.middleware import Middleware
@@ -33,17 +33,25 @@ from openbb_mcp_server.models.mcp_config import (
     is_valid_mcp_config,
 )
 from openbb_mcp_server.models.prompts import StaticPrompt
-from openbb_mcp_server.models.registry import ToolRegistry
 from openbb_mcp_server.models.settings import MCPSettings
-from openbb_mcp_server.models.tools import CategoryInfo, SubcategoryInfo, ToolInfo
 from openbb_mcp_server.service.mcp_service import MCPService
 from openbb_mcp_server.utils.app_import import parse_args
+from openbb_mcp_server.utils.code_mode import OpenBBCodeMode
 from openbb_mcp_server.utils.fastapi import (
+    _extract_path_segments,
     get_api_prefix,
     process_fastapi_routes_for_mcp,
 )
 
 logger = get_logger(__name__)
+
+
+def _get_default_openbb_app() -> FastAPI:
+    """Lazy-load the default OpenBB FastAPI app to avoid import-time side effects."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.api.rest_api import app as default_app
+
+    return default_app
 
 
 def _extract_brief_description(full_description: str) -> str:
@@ -69,6 +77,7 @@ def _get_mcp_config_from_route(fa_route: APIRoute | None) -> dict:
 
 def _strip_api_prefix(path: str, api_prefix: str) -> str:
     """Strip the exact api_prefix (from SystemService) from an absolute path.
+
     Returns the remainder without a leading slash.
     """
     if not path:
@@ -82,11 +91,9 @@ def _strip_api_prefix(path: str, api_prefix: str) -> str:
 
 
 def _read_system_prompt_file(file_path: str) -> str | None:
-    """Read system prompt content from a text file. Returns None if file doesn't exist or can't be read."""
+    """Read system prompt content from a text file. Returns None if file can't be read."""
     try:
-        prompt_path = Path(file_path)
-        if prompt_path.exists() and prompt_path.is_file():
-            return prompt_path.read_text(encoding="utf-8").strip()
+        return Path(file_path).read_text(encoding="utf-8").strip()
     except Exception as e:
         logger.warning("Could not read system prompt file '%s': %s", file_path, e)
     return None
@@ -106,6 +113,29 @@ def _build_runtime_middleware() -> list:
             expose_headers=["Mcp-Session-Id"],
         )
     ]
+
+
+def _apply_code_mode_transform(mcp: FastMCP, settings: MCPSettings) -> None:
+    """Apply FastMCP Code Mode transform when enabled."""
+    if not settings.enable_code_mode:
+        return
+
+    limits = settings.get_code_mode_limits()
+    mcp.add_transform(
+        OpenBBCodeMode(
+            search_tool_name="search",
+            execute_tool_name="execute",
+            search_max_results=settings.code_mode_search_max_results,
+            search_output_format=settings.code_mode_search_output_format,
+            sandbox_provider=MontySandboxProvider(limits=limits),
+        )
+    )
+    logger.info(
+        "Enabled FastMCP Code Mode transform with limits: %s | search_max_results=%d | search_output_format=%s",
+        limits,
+        settings.code_mode_search_max_results,
+        settings.code_mode_search_output_format,
+    )
 
 
 # pylint: disable=R0914,R0915
@@ -136,13 +166,11 @@ def create_mcp_server(
         The configured FastMCP server instance.
     """
     auth_provider = None
-    if auth and isinstance(auth, (list, tuple)) and len(auth) == 2 and all(auth):
+    if auth and isinstance(auth, list | tuple) and len(auth) == 2 and all(auth):
         # pylint: disable=import-outside-toplevel
         from .auth import get_auth_provider
 
         auth_provider = get_auth_provider(settings)
-
-    tool_registry = ToolRegistry()
 
     # Single-pass processing: filter routes, build route maps, and create lookup dictionary
     processed_data = process_fastapi_routes_for_mcp(fastapi_app, settings)
@@ -150,6 +178,16 @@ def create_mcp_server(
     route_lookup = processed_data.route_lookup
     api_prefix = get_api_prefix(settings)
     tool_prompts_map: dict = {}
+    visibility_enable_keys: set[str] = set()
+    visibility_disable_keys: set[str] = set()
+    try:
+        # ProviderInterface is a startup singleton; instantiate once and reuse.
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.provider_interface import ProviderInterface
+
+        _provider_interface = ProviderInterface()
+    except Exception:
+        _provider_interface = None
 
     for prompt_def in processed_data.prompt_definitions:
         tool_name = prompt_def.get("tool")
@@ -166,12 +204,11 @@ def create_mcp_server(
             )
 
     # pylint: disable=R0912
-    def customize_components(
+    def customize_components(  # noqa: PLR0912
         route: HTTPRoute,
         component: OpenAPITool | OpenAPIResource | OpenAPIResourceTemplate,
     ) -> None:
         """Apply naming, tags, enable/disable, and resource mime type using per-route config."""
-
         # Map back to FastAPI route to read openapi_extra
         fa_route = route_lookup.get((route.path, route.method.upper()))
         mcp_cfg = _get_mcp_config_from_route(fa_route)
@@ -188,7 +225,7 @@ def create_mcp_server(
 
         # Use the exact API prefix to determine category/subcategory/tool
         local_path = _strip_api_prefix(route.path, api_prefix)
-        segments = [seg for seg in local_path.split("/") if seg and "{" not in seg]
+        segments = _extract_path_segments(local_path)
 
         if segments:
             category = segments[0]
@@ -216,6 +253,17 @@ def create_mcp_server(
 
         # Tags
         component.tags.add(category)
+        if subcategory and subcategory != "general":
+            component.tags.add(subcategory)
+
+        if _provider_interface and fa_route:
+            model_name = (fa_route.openapi_extra or {}).get("model")
+            if model_name:
+                for provider_name in _provider_interface.map.get(model_name, {}):
+                    provider_tag = str(provider_name).strip().lower()
+                    if provider_tag and provider_tag != "openbb":
+                        component.tags.add(provider_tag)
+
         extra_tags = mcp_cfg.get("tags") or []
         for t in extra_tags:
             component.tags.add(str(t))
@@ -253,35 +301,34 @@ def create_mcp_server(
                     component.description or ""
                 ) + prompt_metadata_str
 
-        # Enable/disable: per-route override first, then category defaults
+        # Enable/disable: per-route override first, then category defaults.
+        # FastMCP v3 removed component.enable()/disable(), so collect component
+        # keys and apply visibility at server-level after construction.
         enable_override = mcp_cfg.get("enable")
+        component_key = getattr(component, "key", None)
         if isinstance(enable_override, bool):
-            if enable_override:
-                component.enable()
-            else:
-                component.disable()
+            should_enable = enable_override
         elif "all" in settings.default_tool_categories or any(
             tag in settings.default_tool_categories
             for tag in getattr(component, "tags", set())
         ):
-            component.enable()
+            should_enable = True
         else:
-            component.disable()
+            should_enable = False
+
+        if isinstance(component_key, str) and component_key:
+            if should_enable:
+                visibility_enable_keys.add(component_key)
+                visibility_disable_keys.discard(component_key)
+            else:
+                visibility_disable_keys.add(component_key)
+                visibility_enable_keys.discard(component_key)
 
         # Resource-specific mime type
         if isinstance(component, OpenAPIResource):
             mime_type = mcp_cfg.get("mime_type")
             if isinstance(mime_type, str) and mime_type:
                 component.mime_type = mime_type
-
-        # Register tools for discovery/toggling
-        if isinstance(component, OpenAPITool):
-            tool_registry.register_tool(
-                category=category,
-                subcategory=subcategory,
-                tool_name=component.name,
-                tool=component,
-            )
 
     # Extract httpx_client_kwargs from settings/kwargs if available
     httpx_client_kwargs = httpx_kwargs or settings.get_httpx_kwargs()
@@ -298,6 +345,11 @@ def create_mcp_server(
         auth=auth_provider,
         **fastmcp_kwargs,
     )
+
+    if visibility_disable_keys:
+        mcp.disable(keys=visibility_disable_keys)
+    if visibility_enable_keys:
+        mcp.enable(keys=visibility_enable_keys)
 
     # Add system prompt if configured
     if settings.system_prompt_file:
@@ -365,7 +417,7 @@ def create_mcp_server(
                 )
                 continue
 
-            if prompt_content and not isinstance(prompt_content, str):
+            if not isinstance(prompt_content, str):
                 logger.error(
                     "Skipping prompt definition with invalid content type. Expected string, got: %s",
                     prompt_def,
@@ -399,7 +451,7 @@ def create_mcp_server(
                         continue
 
             prompt_tags = prompt_def.get("tags", [])
-            tags = set(prompt_tags) if isinstance(prompt_tags, (list, set)) else set()
+            tags = set(prompt_tags) if isinstance(prompt_tags, list | set) else set()
             tags.add("server")
             static_prompt = StaticPrompt(
                 name=prompt_name,
@@ -425,7 +477,7 @@ def create_mcp_server(
             tool = prompt_def.get("tool", "")
 
             # Ensure tags are a set
-            tags = set(prompt_tags) if isinstance(prompt_tags, (list, set)) else set()
+            tags = set(prompt_tags) if isinstance(prompt_tags, list | set) else set()
             tags.add("route-specific")
             tags.add(tool)
 
@@ -462,105 +514,27 @@ def create_mcp_server(
     if inline_prompts_added:
         logger.info("Successfully added %d inline prompts.", len(inline_prompts_added))
 
-    # Admin/discovery tools if enabled
-    if settings.enable_tool_discovery:
-
-        @mcp.tool(tags={"admin"})
-        def available_categories() -> list[CategoryInfo]:
-            """List available tool categories and subcategories with tool counts."""
-            categories = tool_registry.get_categories()
-            return [
-                CategoryInfo(
-                    name=category_name,
-                    subcategories=[
-                        SubcategoryInfo(name=subcat_name, tool_count=len(tools))
-                        for subcat_name, tools in sorted(subcategories.items())
-                    ],
-                    total_tools=sum(len(tools) for tools in subcategories.values()),
-                )
-                for category_name, subcategories in sorted(categories.items())
-            ]
-
-        @mcp.tool(tags={"admin"})
-        def available_tools(
-            category: Annotated[
-                str, Field(description="The category of tools to list")
-            ],
-            subcategory: Annotated[
-                str | None,
-                Field(
-                    description="Optional subcategory to filter by. Use 'general' for tools directly under the category."
-                ),
-            ] = None,
-        ) -> list[ToolInfo]:
-            """List tools in a specific category and subcategory."""
-            category_data = tool_registry.get_category_subcategories(category)
-
-            if not category_data:
-                available_categories_names = list(tool_registry.get_categories().keys())
-                categories_str = ", ".join(sorted(available_categories_names))
-                raise ValueError(
-                    f"Category '{category}' not found. Available categories: {categories_str}"
-                )
-
-            if subcategory:
-                tools_dict = tool_registry.get_category_tools(category, subcategory)
-                if not tools_dict:
-                    available_subcategories = list(category_data.keys())
-                    subcategories_str = ", ".join(sorted(available_subcategories))
-                    raise ValueError(
-                        f"Subcategory '{subcategory}' not found in category '{category}'. "
-                        f"Available subcategories: {subcategories_str}"
-                    )
-
-                return [
-                    ToolInfo(
-                        name=name,
-                        active=tool.enabled,
-                        description=_extract_brief_description(tool.description or ""),
-                    )
-                    for name, tool in sorted(tools_dict.items())
-                ]
-
-            tools_dict = tool_registry.get_category_tools(category)
-
-            return [
-                ToolInfo(
-                    name=name,
-                    active=tool.enabled,
-                    description=_extract_brief_description(tool.description or ""),
-                )
-                for name, tool in sorted(tools_dict.items())
-            ]
-
-        @mcp.tool(tags={"admin"})
-        def activate_tools(
-            tool_names: Annotated[
-                list[str], Field(description="Names of tools to activate")
-            ],
-        ) -> str:
-            """Activate a tool for use."""
-            return tool_registry.toggle_tools(tool_names, enable=True).message
-
-        @mcp.tool(tags={"admin"})
-        def deactivate_tools(
-            tool_names: Annotated[
-                list[str], Field(description="Names of tools to deactivate")
-            ],
-        ) -> str:
-            """Deactivate a tool for use."""
-            return tool_registry.toggle_tools(tool_names, enable=False).message
-
     # Add tools for prompt execution
 
     @mcp.tool(tags={"prompt"})
-    async def list_prompts() -> list:
+    async def list_prompts() -> list[dict[str, Any]]:
         """List all available prompts."""
-        prompts = await mcp.get_prompts()
+        prompts = await mcp.list_prompts()
 
         return [
-            {"name": p.name, "tags": p.tags, "arguments": p.arguments}
-            for p in prompts.values()
+            {
+                "name": p.name,
+                "tags": sorted(p.tags) if p.tags else [],
+                "arguments": [
+                    {
+                        "name": arg.name,
+                        "description": arg.description,
+                        "required": arg.required,
+                    }
+                    for arg in (p.arguments or [])
+                ],
+            }
+            for p in prompts
         ]
 
     @mcp.tool(tags={"prompt"})
@@ -605,15 +579,11 @@ def create_mcp_server(
                 ):
                     processed_args[arg_name] = arg_def["default"]
 
-            return await mcp._prompt_manager.render_prompt(  # pylint: disable=protected-access
-                name=prompt_name, arguments=processed_args
-            )  # type: ignore
+            return await mcp.render_prompt(name=prompt_name, arguments=processed_args)
 
-        return (
-            await mcp._prompt_manager.render_prompt(  # pylint: disable=protected-access
-                name=prompt_name, arguments=arguments
-            )
-        )  # type: ignore
+        return await mcp.render_prompt(name=prompt_name, arguments=arguments)
+
+    _apply_code_mode_transform(mcp, settings)
 
     return mcp
 
@@ -723,7 +693,9 @@ def main():
 
     try:
         # Use imported app if provided, otherwise default OpenBB app
-        target_app = args.imported_app if args.imported_app else app
+        target_app = (
+            args.imported_app if args.imported_app else _get_default_openbb_app()
+        )
 
         # Extract runtime configuration from settings
         http_run_kwargs = settings.get_http_run_kwargs()

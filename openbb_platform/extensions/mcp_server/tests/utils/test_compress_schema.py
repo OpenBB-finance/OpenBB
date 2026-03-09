@@ -21,7 +21,7 @@ def test_prune_defs():
         "properties": {"a": {"$ref": "#/$defs/Used"}},
         "$defs": {"Used": {"type": "string"}, "Unused": {"type": "integer"}},
     }
-    compressed = compress_schema(schema, prune_defs=True)
+    compressed = compress_schema(schema)
     assert "Used" in compressed["$defs"]
     assert "Unused" not in compressed["$defs"]
 
@@ -57,7 +57,6 @@ def test_combined_compression():
     compressed = compress_schema(
         schema,
         prune_params=["c"],
-        prune_defs=True,
         prune_additional_properties=True,
         prune_titles=True,
     )
