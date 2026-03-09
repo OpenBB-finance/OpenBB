@@ -2549,6 +2549,9 @@ uncalled-for = ">=0.2.0"
 [package.extras]
 metrics = ["opentelemetry-sdk (>=1.33.0)"]
 
+[package.extras]
+metrics = ["opentelemetry-sdk (>=1.33.0)"]
+
 [[package]]
 name = "pygments"
 version = "2.19.2"
