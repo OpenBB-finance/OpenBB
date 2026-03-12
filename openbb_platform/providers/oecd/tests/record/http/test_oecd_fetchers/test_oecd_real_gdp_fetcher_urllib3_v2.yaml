@@ -3,53 +3,131 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1/Q..USA.S1..B1GQ._Z...USD_PPP.LR.LA.T0102?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-01-01&format=csvfile&startPeriod=2023-01-01
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.NAD/DSD_NAMAIN1@DF_QNA/1.1/Q.*.USA.S1.*.B1GQ._Z.*.*.USD_PPP.LR.LA.T0102?c%5BTIME_PERIOD%5D=ge%3A2023-01&c%5BTIME_PERIOD%5D=le%3A2024-01&detail=dataonly&dimensionAtObservation=TIME_PERIOD
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
-        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
-        9vzL746evTr9idHx0+989frNF6cv3oxenT77/Y9fnR6PXp+evPny1ejky69evDl99fL41ZvfXz96
-        8+r4xevjkzdnX74Ynb14/ebV73/8+vXpmxE++smzN7/P6PT3fnn64unZm69enY6+enH25vf/4vT4
-        Nf54+ers5PT3f3L8+lSAPPvy1RfHDOfN8ZPnp7//2VNC4ezZ2Sl1cvbF6e//8vTV2ZdPR18+ef37
-        /+Tx869OGbvf5/T41e/PkEaAhEaE5Ytnv//rN8dvvno9enp6cvbF8fPX/Jp+Jlh89fzN6OSrV69O
-        X5z8Pr9x8uXpydPx66dPxy+Onz56+vrp7//i+Ivjsxe7v+fTZ7//T7w43tod794Z/cTo9xl99Zqo
-        sYv/Pdn9/CdGv/9P6f++ondevnw5ev5q9Px49GZnd2dvtLezd2/7J+jn7qd7Bw8efjr+dCTPz2p/
-        96i/g4MHO7ufju9TX3h+VvvbH+3t7TzYub97ML5HfeH5We1vl8ZHnR3sPBzvUV94fuPk/wHpk0hF
-        wwIAAA==
+      string: "STRUCTURE,STRUCTURE_ID,ACTION,FREQ: Frequency of observation,ADJUSTMENT:
+        Adjustment,REF_AREA: Reference area,SECTOR: Institutional sector,COUNTERPART_SECTOR:
+        Counterpart institutional sector,TRANSACTION: Transaction,INSTR_ASSET: Financial
+        instruments and non-financial assets,ACTIVITY: Economic activity,EXPENDITURE:
+        Expenditure,UNIT_MEASURE: Unit of measure,PRICE_BASE: Price base,TRANSFORMATION:
+        Transformation,TABLE_IDENTIFIER: Table identifier,TIME_PERIOD: Time period,OBS_VALUE,REF_YEAR_PRICE:
+        Price reference year,BASE_PER: Base period,CONF_STATUS: Confidentiality status,DECIMALS:
+        Decimals,OBS_STATUS: Observation status,UNIT_MULT: Unit multiplier,CURRENCY:
+        Currency\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q: Quarterly,Y:
+        Calendar and seasonally adjusted,USA: United States,S1: Total economy,S1:
+        Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z: Not applicable,_Z:
+        Not applicable,\"USD_PPP: US dollars, PPP converted\",LR: Chain linked volume
+        (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity from the expenditure
+        side,2024-Q2,24538719.9,2020,,F: Free (free for publication),1: One,A: Normal
+        value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2024-Q1,24323340,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2023-Q3,24069243.5,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2025-Q4,25408422.9,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2023-Q2,23794745.9,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2023-Q1,23646277.5,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2025-Q3,25318856.3,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2025-Q2,25049239.7,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2023-Q4,24272401.7,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2025-Q1,24814494.7,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2024-Q4,24854888,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\nDATAFLOW,OECD.SDD.NAD:DSD_NAMAIN1@DF_QNA(1.1),I,Q:
+        Quarterly,Y: Calendar and seasonally adjusted,USA: United States,S1: Total
+        economy,S1: Total economy,B1GQ: Gross domestic product,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,\"USD_PPP: US dollars, PPP converted\",LR:
+        Chain linked volume (rebased),LA: Annual levels,T0102: Table 0102 - GDP identity
+        from the expenditure side,2024-Q3,24741109.9,2020,,F: Free (free for publication),1:
+        One,A: Normal value,6: Millions,USD: US dollar\r\n"
     headers:
-      Accept-Ranges:
-      - values
+      Age:
+      - '3690'
+      CF-RAY:
+      - 9d93ec983c927631-YVR
       Cache-Control:
-      - no-store,no-cache
-      Content-Disposition:
-      - attachment; filename="OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1+Q..USA.S1..B1GQ._Z...USD_PPP.LR.LA.T0102.csv"
-      Content-Encoding:
-      - gzip
+      - public,max-age=7200
+      Connection:
+      - keep-alive
       Content-Language:
       - en,en-US
       Content-Type:
-      - application/vnd.sdmx.data+csv; charset=utf-8
+      - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Tue, 16 Jul 2024 20:47:43 GMT
-      Pragma:
-      - no-cache
+      - Sun, 08 Mar 2026 18:32:43 GMT
+      Server:
+      - cloudflare
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept,Accept-Encoding,Accept-Encoding
+      - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 3
+      - Server 2
+      alt-svc:
+      - h3=":443"; ma=86400
       api-supported-versions:
-      - '1'
+      - '2'
+      cf-cache-status:
+      - HIT
+      last-modified:
+      - Sun, 08 Mar 2026 17:31:12 GMT
+      set-cookie:
+      - __cf_bm=WyO8WXIuYCnLc48XVyzUXoM88of3N3e0I5Yjga9_PzA-1772994763.5592315-1.0.1.1-DiD.7kPBMHqG015FrhaXzplyVwbGneOcO3ajvQCDEvCkgzMExCMMAqHtiQPFAO79ehenueWoOUwI02CP6tppwSci8kC1TzHwoLSWnRYuwAXqLwIoaLhmo_8AbO5YoA.g;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:43
+        GMT
+      - _cfuvid=A1ljgoP082TmWynu3QhUWRZQGNpXawV1t1TLOEH8OMk-1772994763.5592315-1.0.1.1-HohBWO.p4KrYPE0sCoOIWixQh1Pl0xO7c6F8UyspR6I;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
     status:
       code: 200
       message: OK

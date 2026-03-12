@@ -14,33 +14,25 @@ from openbb_core.provider.standard_models.house_price_index import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item
-from openbb_oecd.utils.constants import (
-    CODE_TO_COUNTRY_RGDP,
-    COUNTRY_TO_CODE_RGDP,
-)
+from openbb_oecd.utils.constants import RHPI_COUNTRIES
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_RGDP.values()) + ("all",)
-CountriesList = list(countries)  # type: ignore
-frequency_dict = {
-    "monthly": "M",
-    "quarter": "Q",
-    "annual": "A",
-}
-transform_dict = {"yoy": "PA", "period": "PC", "index": "IX"}
+FREQUENCY_MAP = {"monthly": "M", "quarter": "Q", "annual": "A"}
+TRANSFORM_MAP = {"yoy": "PA", "period": "PC", "index": "IX"}
 
 
 class OECDHousePriceIndexQueryParams(HousePriceIndexQueryParams):
     """OECD House Price Index Query.
 
+    Notes
+    -----
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": CountriesList,
+            "choices": list(RHPI_COUNTRIES) + ["all"],
         }
     }
 
@@ -53,23 +45,7 @@ class OECDHousePriceIndexQueryParams(HousePriceIndexQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: list = []
-        values = c.replace(" ", "_").split(",")
-        for v in values:
-            if v.upper() in CODE_TO_COUNTRY_RGDP:
-                result.append(CODE_TO_COUNTRY_RGDP.get(v.upper()))
-                continue
-            try:
-                check_item(v.lower(), CountriesList)
-            except Exception as e:
-                if len(values) == 1:
-                    raise e from e
-                warn(f"Invalid country: {v}. Skipping...")
-                continue
-            result.append(v.lower())
-        if result:
-            return ",".join(result)
-        raise OpenBBError(f"No valid country found. -> {values}")
+        return c.replace(" ", "_").strip().lower()
 
 
 class OECDHousePriceIndexData(HousePriceIndexData):
@@ -105,63 +81,83 @@ class OECDHousePriceIndexFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from openbb_oecd.utils.helpers import oecd_date_to_python_date  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from pandas import read_csv  # noqa
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        frequency = frequency_dict.get(query.frequency, "Q")
-        transform = transform_dict.get(query.transform, "PA")
+        qb = OecdQueryBuilder()
+        freq_code = FREQUENCY_MAP.get(query.frequency, "Q")
+        transform = TRANSFORM_MAP.get(query.transform, "PA")
 
-        def country_string(input_str: str):
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_RGDP[country] for country in _countries])
+        countries = qb.metadata.resolve_country_codes("DF_RHPI_TARGET", query.country)
+        country_str = "+".join(countries) if countries else ""
 
-        country = country_string(query.country) if query.country else ""
-        start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
-        end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
-        url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_RHPI_TARGET@DF_RHPI_TARGET,1.0/"
-            + f"COU.{country}.{frequency}.RHPI.{transform}....?"
-            + f"startPeriod={start_date}&endPeriod={end_date}"
-            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
-        )
-        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
-        response = make_request(url, headers=headers, timeout=20)
-        if response.status_code == 404 and frequency == "M":
-            warn("No monthly data found. Switching to quarterly data.")
-            response = make_request(
-                url.replace(".M.RHPI.", ".Q.RHPI."), headers=headers
+        try:
+            result = qb.fetch_data(
+                dataflow="DF_RHPI_TARGET",
+                start_date=(
+                    query.start_date.strftime("%Y-%m") if query.start_date else None
+                ),
+                end_date=query.end_date.strftime("%Y-%m") if query.end_date else None,
+                _skip_validation=True,
+                REF_AREA_TYPE="COU",
+                REF_AREA=country_str,
+                FREQ=freq_code,
+                MEASURE="RHPI",
+                UNIT_MEASURE=transform,
             )
-        if response.status_code != 200:
-            raise OpenBBError(
-                f"Error with the OECD request (HTTP {response.status_code}): `{response.text}`"
-            )
-        df = read_csv(StringIO(response.text)).get(
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
-        if df.empty:
+        except Exception as exc:
+            # Fallback from monthly to quarterly if fetch fails
+            if freq_code == "M":
+                warn("No monthly data found. Switching to quarterly data.")
+                try:
+                    result = qb.fetch_data(
+                        dataflow="DF_RHPI_TARGET",
+                        start_date=(
+                            query.start_date.strftime("%Y-%m")
+                            if query.start_date
+                            else None
+                        ),
+                        end_date=(
+                            query.end_date.strftime("%Y-%m") if query.end_date else None
+                        ),
+                        _skip_validation=True,
+                        REF_AREA_TYPE="COU",
+                        REF_AREA=country_str,
+                        FREQ="Q",
+                        MEASURE="RHPI",
+                        UNIT_MEASURE=transform,
+                    )
+                except Exception as exc2:
+                    raise OpenBBError(f"Error fetching OECD data: {exc2}") from exc2
+            else:
+                raise OpenBBError(f"Error fetching OECD data: {exc}") from exc
+
+        records = result["data"]
+        if not records:
             raise EmptyDataError()
-        df = df.rename(
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
-        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
-        df.date = df.date.apply(oecd_date_to_python_date)
-        df = (
-            df.query("value.notnull()")
-            .set_index(["date", "country"])
-            .sort_index()
-            .reset_index()
-        )
 
-        return df.to_dict("records")
+        return records
 
     @staticmethod
     def transform_data(
         query: OECDHousePriceIndexQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDHousePriceIndexData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDHousePriceIndexData.model_validate(d) for d in data]
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        output: list[OECDHousePriceIndexData] = []
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+            if d is None:
+                continue
+            value = row.get("OBS_VALUE")
+            if value is None or value == "":
+                continue
+            output.append(
+                OECDHousePriceIndexData(
+                    date=d,
+                    country=row.get("REF_AREA_label", row.get("REF_AREA", "")),
+                    value=float(value),
+                )
+            )
+
+        return sorted(output, key=lambda x: (x.date, x.country or ""))

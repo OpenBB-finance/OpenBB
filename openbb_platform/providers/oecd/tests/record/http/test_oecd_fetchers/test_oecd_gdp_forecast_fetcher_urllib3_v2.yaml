@@ -3,45 +3,70 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/vnd.sdmx.data+csv; charset=utf-8
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/data/OECD.ECO.MAD,DSD_EO@DF_EO,1.1/USA.GDPV_USD.A?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-01-01&format=csvfile&startPeriod=2023-01-01
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.ECO.MAD/DSD_EO@DF_EO/1.4/USA.GDPV_USD.A?c%5BTIME_PERIOD%5D=ge%3A2023-01&c%5BTIME_PERIOD%5D=le%3A2024-01&detail=dataonly&dimensionAtObservation=TIME_PERIOD
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
-        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
-        9vzL745enT77/Y9fnR6Pvjg9fv3Vq9PRs1enPzF6c/bF6e//8vTV2ZdPR18+ef37/+Tx869O+bfX
-        b47ffPV69NWLsze/v3lF/vjq+ZvRyVevXp2+OPl9Rk+OXzMAAvvm218+/fL5l5//PqOnpydnXxw/
-        fz16+ers5PT3R5vR8dPvfPX6zRenL978xsmXpydPx6cnX46/OH766Onrp7//6Ze/59Nn9O/W7nj3
-        zuir18ejz5++/Mnf/6vXT0fHo72dvXujvd0HD+4/vL9z79Pde7v3Rub5jZP/B2ir18HhAAAA
+      string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,MEASURE: Measure,FREQ:
+        Frequency of observation,TIME_PERIOD: Time period,OBS_VALUE,OBS_STATUS: Observation
+        status,UNIT_MEASURE: Unit of measure,UNIT_MULT: Unit multiplier,CURRENCY:
+        Currency,BASE_PER: Base period,METHODOLOGY: Methodology,DECIMALS: Decimals,PRICE_BASE:
+        Price base,ADJUSTMENT: Adjustment\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
+        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
+        exchange rates\",A: Annual,2024,25730791311746.5,,\"USD_EXC: US dollars, exchange
+        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
+        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
+        exchange rates\",A: Annual,2025,26234373045469.3,,\"USD_EXC: US dollars, exchange
+        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
+        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
+        exchange rates\",A: Annual,2026,26686779800664.5,,\"USD_EXC: US dollars, exchange
+        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
+        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
+        exchange rates\",A: Annual,2027,27184452411541.2,,\"USD_EXC: US dollars, exchange
+        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
+        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
+        exchange rates\",A: Annual,2023,25031611545935,,\"USD_EXC: US dollars, exchange
+        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\n"
     headers:
-      Accept-Ranges:
-      - values
+      Age:
+      - '3689'
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 9d93ec99d8395fbe-YVR
       Cache-Control:
-      - no-store,no-cache
-      Content-Disposition:
-      - attachment; filename="OECD.ECO.MAD,DSD_EO@DF_EO,1.1+USA.GDPV_USD.A.csv"
-      Content-Encoding:
-      - gzip
+      - public,max-age=7200
+      Connection:
+      - keep-alive
       Content-Language:
       - en,en-US
       Content-Type:
-      - application/vnd.sdmx.data+csv; charset=utf-8
+      - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Sat, 13 Jul 2024 18:47:04 GMT
-      Pragma:
-      - no-cache
+      - Sun, 08 Mar 2026 18:32:43 GMT
+      Last-Modified:
+      - Sun, 08 Mar 2026 17:31:14 GMT
+      Server:
+      - cloudflare
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept,Accept-Encoding,Accept-Encoding
+      - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
       - Server 2
+      alt-svc:
+      - h3=":443"; ma=86400
       api-supported-versions:
-      - '1'
+      - '2'
+      set-cookie:
+      - __cf_bm=YCkAV3_twsn2tKZeY5nWZJdGkXO1LOXbkGA_gXzRZ90-1772994763.815413-1.0.1.1-kWVR4BfpLUYNFwIr9tt32VXtTneSw2ZeqzF7g4BdoS1HKsiaYGFsz.QWXTSof_uFQ_BI0sKP4s1L0X_rq0Vmekfyyy7lqdz_DEiVbbGqWk_AQ_SdrbE5pmnF6hh9wpLv;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:43
+        GMT
+      - _cfuvid=zGiOHnsbHp.fxte4CB1ntCt_nTOgXXsqB1l3M5K3gp0-1772994763.815413-1.0.1.1-KvwRN9VI7yRTccUqjiuwMMUXyCwxmiAevN9If_z0kFY;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
     status:
       code: 200
       message: OK

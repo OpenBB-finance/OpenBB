@@ -4,7 +4,6 @@
 
 from datetime import date
 from typing import Any
-from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,22 +11,10 @@ from openbb_core.provider.standard_models.share_price_index import (
     SharePriceIndexData,
     SharePriceIndexQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item
-from openbb_oecd.utils.constants import (
-    CODE_TO_COUNTRY_RGDP,
-    COUNTRY_TO_CODE_RGDP,
-)
-from pydantic import Field, field_validator
+from openbb_oecd.utils.constants import FINMARK_COUNTRIES
+from pydantic import field_validator
 
-countries = tuple(CODE_TO_COUNTRY_RGDP.values()) + ("all",)
-CountriesList = sorted(list(countries))  # type: ignore
-frequency_dict = {
-    "monthly": "M",
-    "quarter": "Q",
-    "annual": "A",
-}
+FREQUENCY_MAP = {"monthly": "M", "quarter": "Q", "annual": "A"}
 
 
 class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
@@ -39,36 +26,15 @@ class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": CountriesList,
+            "choices": list(FINMARK_COUNTRIES) + ["all"],
         }
     }
-
-    country: str = Field(
-        description=QUERY_DESCRIPTIONS.get("country", ""),
-        default="united_states",
-    )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: list = []
-        values = c.replace(" ", "_").split(",")
-        for v in values:
-            if v.upper() in CODE_TO_COUNTRY_RGDP:
-                result.append(CODE_TO_COUNTRY_RGDP.get(v.upper()))
-                continue
-            try:
-                check_item(v.lower(), CountriesList)
-            except Exception as e:
-                if len(values) == 1:
-                    raise e from e
-                warn(f"Invalid country: {v}. Skipping...")
-                continue
-            result.append(v.lower())
-        if result:
-            return ",".join(result)
-        raise OpenBBError(f"No valid country found. -> {values}")
+        return c.replace(" ", "_").strip().lower()
 
 
 class OECDSharePriceIndexData(SharePriceIndexData):
@@ -84,14 +50,17 @@ class OECDSharePriceIndexFetcher(
     def transform_query(params: dict[str, Any]) -> OECDSharePriceIndexQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
+
         if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = (
                 date(2000, 1, 1)
                 if transformed_params.get("country") == "all"
                 else date(1958, 1, 1)
             )
+
         if transformed_params.get("end_date") is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
+
         if transformed_params.get("country") is None:
             transformed_params["country"] = "united_states"
 
@@ -105,54 +74,64 @@ class OECDSharePriceIndexFetcher(
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from openbb_oecd.utils.helpers import oecd_date_to_python_date  # noqa
-        from pandas import read_csv  # noqa
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        frequency = frequency_dict.get(query.frequency)
+        qb = OecdQueryBuilder()
+        freq_code = FREQUENCY_MAP.get(query.frequency, "M")
 
-        def country_string(input_str: str):
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_RGDP[country] for country in _countries])
+        countries = qb.metadata.resolve_country_codes("DF_FINMARK", query.country)
+        country_str = "+".join(countries) if countries else ""
 
-        country = country_string(query.country)
-        start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
-        end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
-        url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/"
-            + f"{country}.{frequency}.SHARE......?"
-            + f"startPeriod={start_date}&endPeriod={end_date}"
-            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
-        )
-        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
-        response = make_request(url, headers=headers, timeout=20)
-        if response.status_code != 200:
-            raise Exception(f"Error: {response.status_code}")
-        df = read_csv(StringIO(response.text)).get(
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
-        if df.empty:
-            raise EmptyDataError()
-        df = df.rename(
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
-        df = (
-            df.query("value.notnull()")
-            .set_index(["date", "country"])
-            .sort_index()
-            .reset_index()
-        )
-        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
-        df.date = df.date.apply(oecd_date_to_python_date)
+        try:
+            result = qb.fetch_data(
+                dataflow="DF_FINMARK",
+                start_date=(
+                    query.start_date.strftime("%Y-%m") if query.start_date else None
+                ),
+                end_date=query.end_date.strftime("%Y-%m") if query.end_date else None,
+                _skip_validation=True,
+                REF_AREA=country_str,
+                FREQ=freq_code,
+                MEASURE="SHARE",
+            )
+        except Exception as exc:
+            raise OpenBBError(f"Error fetching OECD data: {exc}") from exc
 
-        return df.to_dict("records")
+        records = result["data"]
+
+        if not records:
+            raise OpenBBError(
+                "OECD returned no data rows for the given query parameters."
+            )
+
+        return records
 
     @staticmethod
     def transform_data(
         query: OECDSharePriceIndexQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDSharePriceIndexData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDSharePriceIndexData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        output: list[OECDSharePriceIndexData] = []
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+
+            if d is None:
+                continue
+
+            value = row.get("OBS_VALUE")
+
+            if value is None or value == "":
+                continue
+
+            output.append(
+                OECDSharePriceIndexData(
+                    date=d,
+                    country=row.get("REF_AREA_label", row.get("REF_AREA", "")),
+                    value=float(value),
+                )
+            )
+
+        return sorted(output, key=lambda x: (x.date, x.country or ""))

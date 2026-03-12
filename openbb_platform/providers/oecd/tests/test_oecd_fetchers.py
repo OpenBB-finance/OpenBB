@@ -4,11 +4,14 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_oecd.models.available_indicators import OecdAvailableIndicatorsFetcher
+from openbb_oecd.models.balance_of_payments import OECDBalanceOfPaymentsFetcher
 from openbb_oecd.models.composite_leading_indicator import (
     OECDCompositeLeadingIndicatorFetcher,
 )
 from openbb_oecd.models.consumer_price_index import OECDCPIFetcher
 from openbb_oecd.models.country_interest_rates import OecdCountryInterestRatesFetcher
+from openbb_oecd.models.economic_indicators import OecdEconomicIndicatorsFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
@@ -38,6 +41,8 @@ def test_oecd_cpi_fetcher(credentials=test_credentials):
     params = {
         "country": "united_kingdom",
         "frequency": "annual",
+        "start_date": datetime.date(2020, 1, 1),
+        "end_date": datetime.date(2022, 1, 1),
     }
 
     fetcher = OECDCPIFetcher()
@@ -153,5 +158,46 @@ def test_oecd_country_interest_rates_fetcher(credentials=test_credentials):
     }
 
     fetcher = OecdCountryInterestRatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_oecd_economic_indicators_fetcher(credentials=test_credentials):
+    """Test the OECD Economic Indicators fetcher."""
+    params = {
+        "start_date": datetime.date(2023, 1, 1),
+        "end_date": datetime.date(2024, 1, 1),
+        "country": "united_kingdom",
+        "symbol": "DF_KEI::B1GQ_Q",
+        "frequency": "quarterly",
+    }
+
+    fetcher = OecdEconomicIndicatorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+# This fetcher will not make a network call.
+def test_oecd_available_indicators_fetcher(credentials=test_credentials):
+    """Test the OECD Available Indicators fetcher."""
+    params = {"dataflow": "DF_KEI", "query": "GDP"}
+
+    fetcher = OecdAvailableIndicatorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_oecd_balance_of_payments_fetcher(credentials=test_credentials):
+    """Test the OECD Balance of Payments fetcher."""
+    params = {
+        "country": "united_kingdom",
+        "start_date": datetime.date(2020, 1, 1),
+        "end_date": datetime.date(2021, 1, 1),
+        "frequency": "annual",
+    }
+
+    fetcher = OECDBalanceOfPaymentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

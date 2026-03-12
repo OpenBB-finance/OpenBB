@@ -4,7 +4,6 @@
 
 from datetime import date
 from typing import Any, Literal
-from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,28 +13,22 @@ from openbb_core.provider.standard_models.gdp_real import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import CODE_TO_COUNTRY_GDP, COUNTRY_TO_CODE_GDP
+from openbb_oecd.utils.constants import GDP_REAL_COUNTRIES
 from pydantic import Field, field_validator
-
-COUNTRIES = list(COUNTRY_TO_CODE_GDP) + ["all"]
 
 
 class OECDGdpRealQueryParams(GdpRealQueryParams):
     """OECD Real GDP Query.
 
+    Notes
+    -----
     Source: https://www.oecd.org/en/data/datasets/gdp-and-non-financial-accounts.html
-
-    This table presents Gross Domestic Product (GDP) and its main components according to the expenditure approach.
-    Data is presented in US dollars. In the expenditure approach, the components of GDP are:
-    final consumption expenditure of households and non-profit institutions serving households (NPISH)
-    plus final consumption expenditure of General Government plus gross fixed capital formation (or investment)
-    plus net trade (exports minus imports).
     """
 
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": COUNTRIES,
+            "choices": list(GDP_REAL_COUNTRIES) + ["all"],
         }
     }
 
@@ -54,26 +47,7 @@ class OECDGdpRealQueryParams(GdpRealQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import check_item
-
-        result: list = []
-        values = c.replace(" ", "_").split(",")
-        for v in values:
-            if v.upper() in CODE_TO_COUNTRY_GDP:
-                result.append(CODE_TO_COUNTRY_GDP.get(v.upper()))
-                continue
-            try:
-                check_item(v.lower(), COUNTRIES)
-            except Exception as e:
-                if len(values) == 1:
-                    raise e from e
-                warn(f"Invalid country: {v}. Skipping...")
-                continue
-            result.append(v.lower())
-        if result:
-            return ",".join(result)
-        raise OpenBBError(f"No valid country found. -> {values}")
+        return c.replace(" ", "_").strip().lower()
 
 
 class OECDGdpRealData(GdpRealData):
@@ -101,67 +75,44 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]])
         return OECDGdpRealQueryParams(**transformed_params)
 
     @staticmethod
-    async def aextract_data(
+    def extract_data(
         query: OECDGdpRealQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from openbb_oecd.utils.helpers import oecd_date_to_python_date
-        from numpy import nan
-        from pandas import read_csv
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        frequency = "Q" if query.frequency == "quarter" else "A"
+        qb = OecdQueryBuilder()
+        freq_code = "Q" if query.frequency == "quarter" else "A"
 
-        def country_string(input_str: str):
-            """Convert the list of countries to an abbreviated string."""
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
+        countries = qb.metadata.resolve_country_codes("DF_QNA", query.country)
+        country_str = "+".join(countries) if countries else ""
 
-            return "+".join([COUNTRY_TO_CODE_GDP[country] for country in _countries])
+        try:
+            result = qb.fetch_data(
+                dataflow="DF_QNA",
+                start_date=str(query.start_date) if query.start_date else None,
+                end_date=str(query.end_date) if query.end_date else None,
+                _skip_validation=True,
+                FREQ=freq_code,
+                REF_AREA=country_str,
+                SECTOR="S1",
+                TRANSACTION="B1GQ",
+                INSTR_ASSET="_Z",
+                UNIT_MEASURE="USD_PPP",
+                PRICE_BASE="LR",
+                TRANSFORMATION="LA",
+                TABLE_IDENTIFIER="T0102",
+            )
+        except Exception as exc:
+            raise OpenBBError(f"Error fetching OECD data: {exc}") from exc
 
-        country = country_string(query.country) if query.country else ""
-
-        url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1"
-            + f"/{frequency}..{country}.S1..B1GQ._Z...USD_PPP.LR.LA.T0102?"
-            + f"&startPeriod={query.start_date}&endPeriod={query.end_date}"
-            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly&format=csvfile"
-        )
-
-        async def response_callback(response, _):
-            """Response callback."""
-            if response.status != 200:
-                raise OpenBBError(f"Error with the OECD request: {response.status}")
-            return await response.text()
-
-        response = await amake_request(
-            url, timeout=30, response_callback=response_callback
-        )
-
-        df = read_csv(StringIO(response)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])  # type: ignore
-        if df.empty:  # type: ignore
+        records = result["data"]
+        if not records:
             raise EmptyDataError()
-        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})  # type: ignore
 
-        def apply_map(x):
-            """Apply the country map."""
-            v = CODE_TO_COUNTRY_GDP.get(x, x)
-            v = v.replace("_", " ").title()
-            return v
-
-        df["country"] = df["country"].apply(apply_map).str.replace("Oecd", "OECD")
-        df["date"] = df["date"].apply(oecd_date_to_python_date)
-        df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
-        df["value"] = (df["value"].astype(float) * 1_000_000).astype("int64")
-
-        df = df.sort_values(by=["date", "value"], ascending=[True, False])
-
-        return df.replace({nan: None}).to_dict(orient="records")
+        return records
 
     @staticmethod
     def transform_data(
@@ -170,4 +121,26 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]])
         **kwargs: Any,
     ) -> list[OECDGdpRealData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDGdpRealData.model_validate(d) for d in data]
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        output: list[OECDGdpRealData] = []
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+            if d is None:
+                continue
+            if query.start_date and d < query.start_date:
+                continue
+            if query.end_date and d > query.end_date:
+                continue
+            value = row.get("OBS_VALUE")
+            if value is None or value == "":
+                continue
+            output.append(
+                OECDGdpRealData(
+                    date=d,
+                    country=row.get("REF_AREA_label", row.get("REF_AREA", "")),
+                    value=int(float(value) * 1_000_000),
+                )
+            )
+
+        return sorted(output, key=lambda x: (x.date, -(x.value or 0)))

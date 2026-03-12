@@ -4,7 +4,6 @@
 
 from datetime import date
 from typing import Any, Literal
-from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,10 +12,8 @@ from openbb_core.provider.standard_models.country_interest_rates import (
     CountryInterestRatesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import CODE_TO_COUNTRY_IR, COUNTRY_TO_CODE_IR
+from openbb_oecd.utils.constants import KEI_COUNTRIES
 from pydantic import Field, field_validator
-
-COUNTRIES = list(CODE_TO_COUNTRY_IR.values()) + ["all"]
 
 DURATION_DICT = {
     "immediate": "IRSTCI",
@@ -31,7 +28,7 @@ class OecdCountryInterestRatesQueryParams(CountryInterestRatesQueryParams):
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": COUNTRIES,
+            "choices": list(KEI_COUNTRIES) + ["all"],
         },
         "frequency": {
             "multiple_items_allowed": False,
@@ -56,26 +53,7 @@ class OecdCountryInterestRatesQueryParams(CountryInterestRatesQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import check_item
-
-        result: list = []
-        values = c.replace(" ", "_").split(",")
-        for v in values:
-            if v.upper() in CODE_TO_COUNTRY_IR:
-                result.append(CODE_TO_COUNTRY_IR.get(v.upper()))
-                continue
-            try:
-                check_item(v.lower(), COUNTRIES)
-            except Exception as e:
-                if len(values) == 1:
-                    raise e from e
-                warn(f"Invalid country: {v}. Skipping...")
-                continue
-            result.append(v.lower())
-        if result:
-            return ",".join(result)
-        raise OpenBBError(f"No valid country found. -> {values}")
+        return c.replace(" ", "_").strip().lower()
 
 
 class OecdCountryInterestRatesData(CountryInterestRatesData):
@@ -112,52 +90,35 @@ class OecdCountryInterestRatesFetcher(
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from openbb_oecd.utils.helpers import oecd_date_to_python_date
-        from pandas import read_csv
-        from openbb_core.provider.utils.helpers import make_request
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        frequency = query.frequency[0].upper()
+        qb = OecdQueryBuilder()
+        freq_code = query.frequency[0].upper()
+        measure = DURATION_DICT.get(query.duration, "IR3TIB")
+        countries = qb.metadata.resolve_country_codes("DF_KEI", query.country)
+        country_str = "+".join(countries) if countries else ""
 
-        def country_string(input_str: str):
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_IR[country] for country in _countries])
+        try:
+            result = qb.fetch_data(
+                dataflow="DF_KEI",
+                start_date=(
+                    query.start_date.strftime("%Y-%m") if query.start_date else None
+                ),
+                end_date=query.end_date.strftime("%Y-%m") if query.end_date else None,
+                _skip_validation=True,
+                REF_AREA=country_str,
+                FREQ=freq_code,
+                MEASURE=measure,
+            )
+        except Exception as exc:
+            raise OpenBBError(f"Error fetching OECD data: {exc}") from exc
 
-        country = country_string(query.country) if query.country else ""
-        start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
-        end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
+        records = result["data"]
 
-        url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0"
-            + f"/{country}.{frequency}.{DURATION_DICT[query.duration]}....?"
-            + f"startPeriod={start_date}&endPeriod={end_date}"
-            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
-        )
-        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
-        response = make_request(url, headers=headers, timeout=20)
-        if response.status_code != 200:
-            raise Exception(f"Error with the OECD request: {response.status_code}")
-        df = read_csv(StringIO(response.text)).get(
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
-        if df.empty:
+        if not records:
             raise EmptyDataError()
-        df = df.rename(
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
-        df.country = [CODE_TO_COUNTRY_IR.get(d, d) for d in df.country]
-        df.date = df.date.apply(oecd_date_to_python_date)
-        df.value = df.value.astype(float) / 100
-        df = (
-            df.query("value.notnull()")
-            .set_index(["date", "country"])
-            .sort_index()
-            .reset_index()
-        )
 
-        return df.to_dict("records")
+        return records
 
     @staticmethod
     def transform_data(
@@ -166,4 +127,28 @@ class OecdCountryInterestRatesFetcher(
         **kwargs: Any,
     ) -> list[OecdCountryInterestRatesData]:
         """Transform the data from the OECD endpoint."""
-        return [OecdCountryInterestRatesData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        output: list[OecdCountryInterestRatesData] = []
+
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+
+            if d is None:
+                continue
+
+            value = row.get("OBS_VALUE")
+
+            if value is None or value == "":
+                continue
+
+            output.append(
+                OecdCountryInterestRatesData(
+                    date=d,
+                    country=row.get("REF_AREA_label", row.get("REF_AREA", "")),
+                    value=float(value) / 100,
+                )
+            )
+
+        return sorted(output, key=lambda x: (x.date, x.country or ""))

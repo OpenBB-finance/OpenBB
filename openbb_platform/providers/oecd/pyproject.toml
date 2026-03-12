@@ -18,3 +18,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
 oecd = "openbb_oecd:oecd_provider"
+
+[tool.poetry.plugins."openbb_core_extension"]
+oecd_utils = "openbb_oecd.oecd_router:router"
+
+[tool.poetry.scripts]
+generate-oecd-cache = "openbb_oecd.utils.generate_cache:main"

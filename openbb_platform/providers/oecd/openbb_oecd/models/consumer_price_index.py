@@ -11,30 +11,34 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
-from openbb_core.provider.utils.helpers import check_item
-from openbb_oecd.utils.constants import (
-    CODE_TO_COUNTRY_CPI,
-    COUNTRY_TO_CODE_CPI,
-)
+from openbb_oecd.utils.constants import CPI_COUNTRIES
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_CPI.values()) + ("all",)
-CountriesList = list(countries)  # type: ignore
-
+# Domain-specific expenditure mappings (COICOP codes → human labels).
+# These are NOT country dicts — they are indicator-level constants specific to the
+# CPI dataflow and are kept here intentionally.
 expenditure_dict_rev = {
+    # --- Main COICOP categories (CP01-CP12) ---
     "_T": "total",
     "CP01": "food_non_alcoholic_beverages",
     "CP02": "alcoholic_beverages_tobacco_narcotics",
     "CP03": "clothing_footwear",
     "CP04": "housing_water_electricity_gas",
+    "CP041": "actual_rentals",
+    "CP042": "imputed_rentals",
+    "CP043": "maintenance_repair_dwelling",
+    "CP044": "water_supply_other_services",
+    "CP045": "electricity_gas_other_fuels",
     "CP05": "furniture_household_equipment",
     "CP06": "health",
     "CP07": "transport",
+    "CP0722": "fuels_lubricants_personal",
     "CP08": "communication",
     "CP09": "recreation_culture",
     "CP10": "education",
     "CP11": "restaurants_hotels",
     "CP12": "miscellaneous_goods_services",
+    # --- Aggregate / special categories ---
     "CP045_0722": "energy",
     "GD": "goods",
     "CP041T043": "housing",
@@ -45,61 +49,80 @@ expenditure_dict_rev = {
     "SERV": "services",
     "_TXNRG_01_02": "overall_excl_energy_food_alcohol_tobacco",
     "CPRES": "residuals",
-    "CP0722": "fuels_lubricants_personal",
-    "CP041": "actual_rentals",
-    "CP042": "imputed_rentals",
-    "CP043": "maintenance_repair_dwelling",
-    "CP044": "water_supply_other_services",
-    "CP045": "electricity_gas_other_fuels",
 }
 expenditure_dict = {v: k for k, v in expenditure_dict_rev.items()}
-expenditures = tuple(expenditure_dict.keys()) + ("all",)
-expenditure_choices = [
-    "total",
-    "all",
-    "actual_rentals",
-    "alcoholic_beverages_tobacco_narcotics",
-    "all_non_food_non_energy",
-    "clothing_footwear",
-    "communication",
-    "education",
-    "electricity_gas_other_fuels",
-    "energy",
-    "overall_excl_energy_food_alcohol_tobacco",
-    "food_non_alcoholic_beverages",
-    "fuels_lubricants_personal",
-    "furniture_household_equipment",
-    "goods",
-    "housing",
-    "housing_excluding_rentals",
-    "housing_water_electricity_gas",
-    "health",
-    "imputed_rentals",
-    "maintenance_repair_dwelling",
-    "miscellaneous_goods_services",
-    "recreation_culture",
-    "residuals",
-    "restaurants_hotels",
-    "services_less_housing",
-    "services_less_house_excl_rentals",
-    "services",
-    "transport",
-    "water_supply_other_services",
-]
 
+expenditure_choices = sorted(expenditure_dict.keys()) + ["all"]
 transform_choices = ["index", "yoy", "period"]
+
+# CPI transformation codes: user-facing name → TRANSFORMATION dimension value.
+_TRANSFORM_MAP = {
+    "index": "_Z",  # Index — no transformation
+    "yoy": "GY",  # Growth rate, over 1 year
+    "period": "G1",  # Growth rate, period on period
+}
+
+# Frequency codes.
+_FREQ_MAP = {"annual": "A", "quarter": "Q", "monthly": "M"}
+
+# User-friendly unit labels keyed by transform name.
+_UNIT_LABELS = {
+    "index": "Index",
+    "yoy": "Year-over-year (YOY) percent change",
+    "period": "Period-over-period percent change",
+}
+
+# Sort order for expenditure categories (COICOP codes).
+_EXPENDITURE_ORDER: dict[str, int] = {
+    # Main COICOP categories
+    "_T": 0,
+    "CP01": 1,
+    "CP02": 2,
+    "CP03": 3,
+    "CP04": 4,
+    "CP041": 5,
+    "CP042": 6,
+    "CP043": 7,
+    "CP044": 8,
+    "CP045": 9,
+    "CP05": 10,
+    "CP06": 11,
+    "CP07": 12,
+    "CP0722": 13,
+    "CP08": 14,
+    "CP09": 15,
+    "CP10": 16,
+    "CP11": 17,
+    "CP12": 18,
+    # Aggregate / special categories
+    "CP045_0722": 19,
+    "GD": 20,
+    "CP041T043": 21,
+    "CP041T043X042": 22,
+    "_TXCP01_NRG": 23,
+    "SERVXCP041_042_0432": 24,
+    "SERVXCP041_0432": 25,
+    "SERV": 26,
+    "_TXNRG_01_02": 27,
+    "CPRES": 28,
+}
 
 
 class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     """OECD CPI Query.
 
+    Notes
+    -----
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": CountriesList,
+            "choices": list(CPI_COUNTRIES) + ["all"],
+        },
+        "frequency": {
+            "choices": ["annual", "quarter", "monthly"],
         },
         "transform": {
             "choices": transform_choices,
@@ -118,12 +141,7 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     @classmethod
     def validate_country(cls, c: str):
         """Validate country."""
-        result: list = []
-        values = c.replace(" ", "_").split(",")
-        for v in values:
-            check_item(v.lower(), CountriesList)
-            result.append(v.lower())
-        return ",".join(result)
+        return c.replace(" ", "_").strip().lower()
 
     @field_validator("expenditure", mode="before", check_fields=False)
     @classmethod
@@ -139,7 +157,18 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
 class OECDCPIData(ConsumerPriceIndexData):
     """OECD CPI Data."""
 
+    unit: str = Field(description="Unit of measurement.")
+    unit_multiplier: int | float = Field(
+        description="Unit multiplier for the observation value.",
+    )
+    country_code: str = Field(description="ISO3 country code.")
+    series_id: str = Field(description="OECD series identifier.")
     expenditure: str = Field(description="Expenditure component of CPI.")
+    title: str = Field(description="Complete reference title for the series.")
+    order: int | None = Field(
+        default=None,
+        description="Sort order for expenditure categories.",
+    )
 
 
 class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
@@ -166,96 +195,120 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
-        from requests.exceptions import HTTPError  # noqa
-        from openbb_oecd.utils import helpers  # noqa
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
+        qb = OecdQueryBuilder()
+        countries = qb.metadata.resolve_country_codes("DF_PRICES_ALL", query.country)
+        country_str = "+".join(countries) if countries else ""
         methodology = "HICP" if query.harmonized is True else "N"
-        unit = "mom" if query.transform == "period" else query.transform
-        query.frequency = (
-            "monthly"
-            if query.harmonized is True and query.frequency == "quarter"
-            else query.frequency
-        )
-        frequency = query.frequency[0].upper()
-        units = {
-            "index": "IX",
-            "yoy": "PA",
-            "mom": "PC",
-        }[unit]
-        expenditure = (
-            "" if query.expenditure == "all" else expenditure_dict[query.expenditure]
+        # Harmonized data not available quarterly — force monthly
+        freq = query.frequency
+
+        if query.harmonized is True and freq == "quarter":
+            freq = "monthly"
+
+        freq_code = _FREQ_MAP.get(freq, freq[0].upper() if freq else "M")
+        transform_code = _TRANSFORM_MAP.get(query.transform, "_Z")
+        expenditure_code = (
+            ""
+            if query.expenditure == "all"
+            else expenditure_dict.get(query.expenditure, query.expenditure)
         )
 
-        def country_string(input_str: str):
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_CPI[country] for country in _countries])
-
-        country = country_string(query.country)
-        # For caching, include this in the key
-        query_dict = {
-            k: v
-            for k, v in query.__dict__.items()
-            if k not in ["start_date", "end_date"]
-        }
-
-        url = (
-            f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/"
-            f"{country}.{frequency}.{methodology}.CPI.{units}.{expenditure}.N."
-        )
         try:
-            data = helpers.get_possibly_cached_data(
-                url, function="economy_cpi", query_dict=query_dict
+            result = qb.fetch_data(
+                dataflow="DF_PRICES_ALL",
+                start_date=str(query.start_date) if query.start_date else None,
+                end_date=str(query.end_date) if query.end_date else None,
+                _skip_validation=True,
+                REF_AREA=country_str,
+                FREQ=freq_code,
+                METHODOLOGY=methodology,
+                MEASURE="CPI",
+                EXPENDITURE=expenditure_code,
+                TRANSFORMATION=transform_code,
             )
-        except HTTPError as exc:
+        except Exception as exc:
             raise OpenBBError("No data found for the given query.") from exc
-        url_query = f"METHODOLOGY=='{methodology}' & UNIT_MEASURE=='{units}' & FREQ=='{frequency}'"
 
-        if country != "all":
-            if "+" in country:
-                _countries = country.split("+")
-                country_conditions = " or ".join(
-                    [f"REF_AREA=='{c}'" for c in _countries]
-                )
-                url_query += f" & ({country_conditions})"
-            else:
-                url_query = url_query + f" & REF_AREA=='{country}'"
-        url_query = (
-            url_query + f" & EXPENDITURE=='{expenditure}'"
-            if query.expenditure != "all"
-            else url_query
-        )
-        # Filter down
-        data = (
-            data.query(url_query)
-            .reset_index(drop=True)[["REF_AREA", "TIME_PERIOD", "VALUE", "EXPENDITURE"]]
-            .rename(
-                columns={
-                    "REF_AREA": "country",
-                    "TIME_PERIOD": "date",
-                    "VALUE": "value",
-                    "EXPENDITURE": "expenditure",
-                }
-            )
-        )
-        data["country"] = data["country"].map(CODE_TO_COUNTRY_CPI)
-        data["expenditure"] = data["expenditure"].map(expenditure_dict_rev)
-        data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
-        data = data[
-            (data["date"] <= query.end_date) & (data["date"] >= query.start_date)
-        ]
-        # Normalize the percent value.
-        if query.transform in ("yoy", "period"):
-            data["value"] = data["value"].astype(float) / 100
+        records = result["data"]
 
-        return data.fillna("N/A").replace("N/A", None).to_dict(orient="records")
+        if not records:
+            raise OpenBBError("No data found for the given query.")
+
+        return records
 
     @staticmethod
     def transform_data(
         query: OECDCPIQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDCPIData]:
         """Transform the data from the OECD endpoint."""
-        return [
-            OECDCPIData.model_validate(d) for d in sorted(data, key=lambda x: x["date"])
-        ]
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        is_pct = query.transform in ("yoy", "period")
+        unit_label = _UNIT_LABELS.get(query.transform, query.transform)
+        unit_mult = 100 if is_pct else 1
+        methodology = "HICP" if query.harmonized else "CPI"
+        output: list[OECDCPIData] = []
+
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+
+            if d is None:
+                continue
+
+            if query.start_date and d < query.start_date:
+                continue
+
+            if query.end_date and d > query.end_date:
+                continue
+
+            value = row.get("OBS_VALUE")
+
+            if value is None or value == "":
+                continue
+
+            value = float(value)
+
+            if is_pct:
+                value = value / 100
+
+            exp_code = row.get("EXPENDITURE", "_T")
+            country_code = row.get("REF_AREA", "")
+            freq_label = row.get("FREQ_label", "")
+            measure_label = row.get("MEASURE_label", "Consumer price index")
+            exp_label = row.get(
+                "EXPENDITURE_label", expenditure_dict_rev.get(exp_code, exp_code)
+            )
+            transform_label = row.get("TRANSFORMATION_label", unit_label)
+            # Build a descriptive title
+            # "Monthly Consumer price index - Total - Growth rate, over 1 year"
+            title_parts = [f"{freq_label} {measure_label} ({methodology})", exp_label]
+
+            if transform_label and transform_label.lower() not in ("not applicable",):
+                title_parts.append(transform_label)
+
+            title = " - ".join(title_parts)
+            # Build series_id in the same DATAFLOW::INDICATOR format used by
+            # economy.indicators / available_indicators so it's round-trippable.
+            series_id = f"DF_PRICES_ALL::{row.get('MEASURE', 'CPI')}"
+            output.append(
+                OECDCPIData(
+                    date=d,
+                    country=row.get("REF_AREA_label", country_code),
+                    country_code=country_code,
+                    value=value,
+                    unit=unit_label,
+                    unit_multiplier=unit_mult,
+                    series_id=series_id,
+                    expenditure=exp_label,
+                    title=title,
+                    order=_EXPENDITURE_ORDER.get(exp_code),
+                )
+            )
+
+        return sorted(
+            output,
+            key=lambda x: (x.date, x.country, x.order if x.order is not None else 99),
+        )

@@ -12,59 +12,10 @@ from openbb_core.provider.standard_models.composite_leading_indicator import (
     CompositeLeadingIndicatorData,
     CompositeLeadingIndicatorQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_oecd.utils.constants import CLI_COUNTRIES
 from pydantic import Field, field_validator
 
-COUNTRIES = {
-    "g20": "G20",
-    "g7": "G7",
-    "asia5": "A5M",
-    "north_america": "NAFTA",
-    "europe4": "G4E",
-    "australia": "AUS",
-    "brazil": "BRA",
-    "canada": "CAN",
-    "china": "CHN",
-    "france": "FRA",
-    "germany": "DEU",
-    "india": "IND",
-    "indonesia": "IDN",
-    "italy": "ITA",
-    "japan": "JPN",
-    "mexico": "MEX",
-    "spain": "ESP",
-    "south_africa": "ZAF",
-    "south_korea": "KOR",
-    "turkey": "TUR",
-    "united_states": "USA",
-    "united_kingdom": "GBR",
-}
-COUNTRY_CHOICES = list(COUNTRIES) + ["all"]
-Countries = Literal[
-    "g20",
-    "g7",
-    "asia5",
-    "north_america",
-    "europe4",
-    "australia",
-    "brazil",
-    "canada",
-    "china",
-    "france",
-    "germany",
-    "india",
-    "indonesia",
-    "italy",
-    "japan",
-    "mexico",
-    "south_africa",
-    "south_korea",
-    "spain",
-    "turkey",
-    "united_kingdom",
-    "united_states",
-    "all",
-]
+COUNTRY_CHOICES = list(CLI_COUNTRIES) + ["all"]
 
 
 class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryParams):
@@ -77,7 +28,7 @@ class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryPar
         },
     }
 
-    country: Countries | str = Field(
+    country: str = Field(
         description="Country to get the CLI for, default is G20.",
         default="g20",
     )
@@ -85,6 +36,7 @@ class OECDCompositeLeadingIndicatorQueryParams(CompositeLeadingIndicatorQueryPar
         default="amplitude",
         description="Adjustment of the data, either 'amplitude' or 'normalized'."
         + " Default is amplitude.",
+        json_schema_extra={"choices": ["amplitude", "normalized"]},
     )
     growth_rate: bool = Field(
         default=False,
@@ -149,78 +101,47 @@ class OECDCompositeLeadingIndicatorFetcher(
         return OECDCompositeLeadingIndicatorQueryParams(**transformed_params)
 
     @staticmethod
-    async def aextract_data(
+    def extract_data(
         query: OECDCompositeLeadingIndicatorQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
         # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from openbb_oecd.utils.helpers import oecd_date_to_python_date
-        from pandas import read_csv
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        COUNTRY_MAP = {v: k.replace("_", " ").title() for k, v in COUNTRIES.items()}
-
+        qb = OecdQueryBuilder()
         growth_rate = "GY" if query.growth_rate is True else "IX"
         adjustment = "AA" if query.adjustment == "amplitude" else "NOR"
 
         if growth_rate == "GY":
             adjustment = ""
 
-        def country_string(input_str: str):
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
-            return "+".join([COUNTRIES[country.lower()] for country in _countries])
+        countries = qb.metadata.resolve_country_codes("DF_CLI", query.country)
+        country_str = "+".join(countries) if countries else ""
 
-        country = country_string(query.country) if query.country else ""
-        url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI,4.1"
-            + f"/{country}.M.LI...{adjustment}.{growth_rate}..H"
-            + f"?startPeriod={query.start_date}&endPeriod={query.end_date}"
-            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly&format=csvfile"
-        )
-
-        async def response_callback(response, _):
-            """Response callback."""
-            if response.status != 200:
-                raise OpenBBError(f"Error with the OECD request: {response.status}")
-            return await response.text()
-
-        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
-        response = await amake_request(
-            url, timeout=30, headers=headers, response_callback=response_callback
-        )
-
-        df = read_csv(StringIO(response)).get(["REF_AREA", "TIME_PERIOD", "OBS_VALUE"])  # type: ignore
-
-        if df.empty:  # type: ignore
-            raise EmptyDataError("No data was found.")
-
-        df = df.rename(columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"})  # type: ignore
-        df.country = [
-            (
-                COUNTRY_MAP.get(d, d)
-                .replace("Asia5", "Major 5 Asian Economies")
-                .replace("Europe4", "Major 4 European Economies")
+        try:
+            result = qb.fetch_data(
+                dataflow="DF_CLI",
+                start_date=str(query.start_date) if query.start_date else None,
+                end_date=str(query.end_date) if query.end_date else None,
+                _skip_validation=True,
+                REF_AREA=country_str,
+                FREQ="M",
+                MEASURE="LI",
+                ADJUSTMENT=adjustment,
+                TRANSFORMATION=growth_rate,
+                METHODOLOGY="H",
             )
-            for d in df.country
-        ]
-        df.date = df.date.apply(oecd_date_to_python_date)
+        except Exception as exc:
+            raise OpenBBError(f"Error fetching OECD data: {exc}") from exc
 
-        if query.growth_rate is True:
-            df.value = df.value.astype(float) / 100
+        records = result["data"]
 
-        df = (
-            df.query("value.notnull()")
-            .set_index(["date", "country"])
-            .sort_index()
-            .reset_index()
-        )
+        if not records:
+            raise OpenBBError("No data returned from OECD for the given query.")
 
-        return df.to_dict("records")
+        return records
 
     @staticmethod
     def transform_data(
@@ -229,4 +150,34 @@ class OECDCompositeLeadingIndicatorFetcher(
         **kwargs: Any,
     ) -> list[OECDCompositeLeadingIndicatorData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDCompositeLeadingIndicatorData.model_validate(d) for d in data]
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        is_growth = query.growth_rate is True
+        output: list[OECDCompositeLeadingIndicatorData] = []
+
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+
+            if d is None:
+                continue
+
+            value = row.get("OBS_VALUE")
+
+            if value is None or value == "":
+                continue
+
+            value = float(value)
+
+            if is_growth:
+                value = value / 100
+
+            output.append(
+                OECDCompositeLeadingIndicatorData(
+                    date=d,
+                    country=row.get("REF_AREA_label", row.get("REF_AREA", "")),
+                    value=value,
+                )
+            )
+
+        return sorted(output, key=lambda x: (x.date, x.country or ""))

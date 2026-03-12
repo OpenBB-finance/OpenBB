@@ -117,6 +117,8 @@ async def risk_premium(
         APIEx(parameters={"provider": "fred", "country": "brazil"}),
         APIEx(parameters={"provider": "ecb"}),
         APIEx(parameters={"report_type": "summary", "provider": "ecb"}),
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(parameters={"provider": "oecd", "country": "japan"}),
         APIEx(
             description="The `country` parameter will override the `report_type`.",
             parameters={"country": "united_states", "provider": "ecb"},

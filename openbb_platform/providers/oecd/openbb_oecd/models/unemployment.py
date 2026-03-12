@@ -4,7 +4,6 @@
 
 from datetime import date
 from typing import Any, Literal
-from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,37 +13,29 @@ from openbb_core.provider.standard_models.unemployment import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item
-from openbb_oecd.utils.constants import (
-    CODE_TO_COUNTRY_UNEMPLOYMENT,
-    COUNTRY_TO_CODE_UNEMPLOYMENT,
-)
+from openbb_oecd.utils.constants import UNEMPLOYMENT_COUNTRIES
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_UNEMPLOYMENT.values()) + ("all",)
-CountriesList = sorted(list(countries))  # type: ignore
-AGES = [
-    "total",
-    "15-24",
-    "25+",
-]
-AgesLiteral = Literal[
-    "total",
-    "15-24",
-    "25+",
-]
+AGES = ["total", "15-24", "25+"]
+AgesLiteral = Literal["total", "15-24", "25+"]
+
+_SEX_MAP = {"total": "_T", "male": "M", "female": "F"}
+_AGE_MAP = {"total": "Y_GE15", "15-24": "Y15T24", "25+": "Y_GE25"}
+_FREQ_MAP = {"annual": "A", "quarter": "Q", "monthly": "M"}
 
 
 class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     """OECD Unemployment Query.
 
+    Notes
+    -----
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": CountriesList,
+            "choices": list(UNEMPLOYMENT_COUNTRIES) + ["all"],
         },
     }
 
@@ -71,23 +62,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     @classmethod
     def validate_country(cls, c):
         """Validate country."""
-        result: list = []
-        values = c.replace(" ", "_").split(",")
-        for v in values:
-            if v.upper() in CODE_TO_COUNTRY_UNEMPLOYMENT:
-                result.append(CODE_TO_COUNTRY_UNEMPLOYMENT.get(v.upper()))
-                continue
-            try:
-                check_item(v.lower(), CountriesList)
-            except Exception as e:
-                if len(values) == 1:
-                    raise e from e
-                warn(f"Invalid country: {v}. Skipping...")
-                continue
-            result.append(v.lower())
-        if result:
-            return ",".join(result)
-        raise OpenBBError(f"No valid country found. -> {values}")
+        return c.replace(" ", "_").strip().lower()
 
 
 class OECDUnemploymentData(UnemploymentData):
@@ -121,69 +96,65 @@ class OECDUnemploymentFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from openbb_oecd.utils import helpers  # noqa
-        from pandas import read_csv  # noqa
+        from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        sex = {"total": "_T", "male": "M", "female": "F"}[query.sex]
-        frequency = query.frequency[0].upper()
-        age = {
-            "total": "Y_GE15",
-            "15-24": "Y15T24",
-            "25+": "Y_GE25",
-        }[query.age]
-        seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
+        qb = OecdQueryBuilder()
+        sex = _SEX_MAP.get(query.sex, "_T")
+        age = _AGE_MAP.get(query.age, "Y_GE15")
+        freq_code = _FREQ_MAP.get(query.frequency, query.frequency[0].upper())
+        adj = "Y" if query.seasonal_adjustment else "N"
 
-        def country_string(input_str: str):
-            if input_str == "all":
-                return ""
-            _countries = input_str.split(",")
-            return "+".join(
-                [COUNTRY_TO_CODE_UNEMPLOYMENT[country] for country in _countries]
+        countries = qb.metadata.resolve_country_codes("DF_IALFS_UNE_M", query.country)
+        country_str = "+".join(countries) if countries else ""
+
+        try:
+            result = qb.fetch_data(
+                dataflow="DF_IALFS_UNE_M",
+                start_date=(
+                    query.start_date.strftime("%Y-%m") if query.start_date else None
+                ),
+                end_date=query.end_date.strftime("%Y-%m") if query.end_date else None,
+                _skip_validation=True,
+                REF_AREA=country_str,
+                ADJUSTMENT=adj,
+                SEX=sex,
+                AGE=age,
+                FREQ=freq_code,
             )
+        except Exception as exc:
+            raise OpenBBError(f"Error fetching OECD data: {exc}") from exc
 
-        country = country_string(query.country)
-        start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
-        end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
-        url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M,1.0/"
-            + f"{country}..._Z.{seasonal_adjustment}.{sex}.{age}..{frequency}"
-            + f"?startPeriod={start_date}&endPeriod={end_date}"
-            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
-        )
-        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
-        response = make_request(url, headers=headers, timeout=20)
-        if response.status_code != 200:
-            raise OpenBBError(f"Error: {response.status_code} -> {response.text}")
-        df = read_csv(StringIO(response.text)).get(
-            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
-        )
-        if df.empty:
+        records = result["data"]
+        if not records:
             raise EmptyDataError()
-        df = df.rename(
-            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
-        )
-        df["value"] = df["value"].astype(float) / 100
-        df["country"] = df["country"].map(CODE_TO_COUNTRY_UNEMPLOYMENT)
-        df["date"] = df["date"].apply(helpers.oecd_date_to_python_date)
-        df = (
-            df.query("value.notnull()")
-            .set_index(["date", "country"])
-            .sort_index()
-            .reset_index()
-        )
-        df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
 
-        # in column "country" if NaN replace with "all"
-        df["country"] = df["country"].fillna("all")
-
-        return df.to_dict(orient="records")
+        return records
 
     @staticmethod
     def transform_data(
         query: OECDUnemploymentQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDUnemploymentData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDUnemploymentData.model_validate(d) for d in data]
+        from openbb_oecd.utils.helpers import oecd_date_to_python_date
+
+        output: list[OECDUnemploymentData] = []
+        for row in data:
+            d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+            if d is None:
+                continue
+            if query.start_date and d < query.start_date:
+                continue
+            if query.end_date and d > query.end_date:
+                continue
+            value = row.get("OBS_VALUE")
+            if value is None or value == "":
+                continue
+            output.append(
+                OECDUnemploymentData(
+                    date=d,
+                    country=row.get("REF_AREA_label", row.get("REF_AREA", "all")),
+                    value=float(value) / 100,
+                )
+            )
+
+        return sorted(output, key=lambda x: (x.date, x.country or ""))
