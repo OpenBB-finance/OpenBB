@@ -39,9 +39,9 @@ def _build_also_in(
         name = df_name_cache.get(other_id, "")
         if not name:
             try:
-                full_id = metadata._resolve_dataflow_id(
+                full_id = metadata._resolve_dataflow_id(  # noqa: SLF001  # pylint: disable=W0212
                     other_id
-                )  # noqa: SLF001  # pylint: disable=W0212
+                )
                 name = df_name_cache.get(full_id, "")
             except Exception:  # noqa: BLE001, S110
                 pass
@@ -207,16 +207,16 @@ class OecdAvailableIndicatorsFetcher(
         constrained_cache: dict[str, dict] = {}
 
         for df_id in target_dfs:
-            full_id = metadata._short_id_map.get(
+            full_id = metadata._short_id_map.get(  # noqa: SLF001 # pylint: disable=W0212
                 df_id
-            )  # noqa: SLF001 # pylint: disable=W0212
+            )
             if not full_id:
                 full_id = df_id if df_id in metadata.datastructures else None
             if not full_id or full_id not in metadata.datastructures:
                 continue
             if (
-                full_id not in metadata._dataflow_parameters_cache
-            ):  # noqa: SLF001  # pylint: disable=W0212
+                full_id not in metadata._dataflow_parameters_cache  # noqa: SLF001  # pylint: disable=W0212
+            ):
                 continue
             try:
                 constrained_cache[df_id] = metadata.get_constrained_values(full_id)
