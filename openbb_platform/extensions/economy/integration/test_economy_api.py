@@ -297,6 +297,15 @@ def test_economy_gdp_real(params, headers):
                 "frequency": "quarterly",
             }
         ),
+        (
+            {
+                "country": "united_states",
+                "start_date": None,
+                "end_date": None,
+                "provider": "oecd",
+                "frequency": "quarterly",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
