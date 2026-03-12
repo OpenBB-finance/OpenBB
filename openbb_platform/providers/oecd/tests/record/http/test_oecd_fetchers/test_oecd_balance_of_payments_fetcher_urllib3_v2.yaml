@@ -1,0 +1,299 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_BOP@DF_BOP,1.0/GBR.....A.USD_EXC.Y?endPeriod=2021&startPeriod=2020
+  response:
+    body:
+      string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,COUNTERPART_AREA:
+        Counterpart area,MEASURE: Measure,ACCOUNTING_ENTRY: Accounting entry,FS_ENTRY:
+        Flow or stock entry,FREQ: Frequency of observation,UNIT_MEASURE: Unit of measure,ADJUSTMENT:
+        Adjustment,TIME_PERIOD: Time period,OBS_VALUE,OBS_STATUS: Observation status,UNIT_MULT:
+        Unit multiplier,CURRENCY: Currency,DECIMALS: Decimals\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,D: Expenditure,T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,45898,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,343570,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,D: Expenditure,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,495418,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,325078,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,914520,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,D: Expenditure,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,442745,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,799752,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,137088,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,B: Balance (revenue minus expenditure),T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,-117667,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,B: Balance (revenue minus expenditure),T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,-151848,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,B: Balance (revenue minus
+        expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2020,133335,A: Normal value,6: Millions,GBP: Pound
+        sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United
+        Kingdom,WXD: Rest of the world,S: Services,B: Balance (revenue minus expenditure),T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,152787,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,177912,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,183934,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,311247,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,336721,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,C: Revenue,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,206966,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2021,-17560,A: Normal value,6: Millions,GBP: Pound
+        sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United
+        Kingdom,WXD: Rest of the world,CA: Current account,B: Balance (revenue minus
+        expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2020,-57800,A: Normal value,6: Millions,GBP: Pound
+        sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United
+        Kingdom,WXD: Rest of the world,CA: Current account,D: Expenditure,T: Transactions,A:
+        Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,857552,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,D: Expenditure,T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,932080,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2020,-44966,A: Normal value,6: Millions,GBP: Pound
+        sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United
+        Kingdom,WXD: Rest of the world,IN1: Primary income,B: Balance (revenue minus
+        expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2021,136,A: Normal value,6: Millions,GBP: Pound sterling,2:
+        Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United Kingdom,WXD:
+        Rest of the world,IN1: Primary income,D: Expenditure,T: Transactions,A: Annual,XDC:
+        National currency,Y: Calendar and seasonally adjusted,2020,182054,A: Normal
+        value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,D: Expenditure,T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,206830,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,C: Revenue,T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,26339,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,C: Revenue,T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2021,27263,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2021,-18635,A: Normal value,6: Millions,GBP: Pound
+        sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United
+        Kingdom,WXD: Rest of the world,IN2: Secondary income,B: Balance (revenue minus
+        expenditure),T: Transactions,A: Annual,XDC: National currency,Y: Calendar
+        and seasonally adjusted,2020,-28502,A: Normal value,6: Millions,GBP: Pound
+        sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR: United
+        Kingdom,WXD: Rest of the world,S: Services,B: Balance (revenue minus expenditure),T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2021,210169.7,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2020,228174.8,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,D: Expenditure,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2020,1099824,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,D: Expenditure,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2021,1282144,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,PT_GS: Percentage of goods and services,Y: Calendar and seasonally
+        adjusted,2020,48.91321,A: Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,D: Expenditure,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2020,233487,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,D: Expenditure,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2020,70334.41,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2020,175817.4,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2021,253014.7,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,PT_CA: Percentage of current account,Y: Calendar and seasonally adjusted,2021,19.73371,A:
+        Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,PT_GS: Percentage of goods and services,Y: Calendar and seasonally
+        adjusted,2020,28.66511,A: Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,PT_GS: Percentage of goods and services,Y: Calendar and seasonally
+        adjusted,2021,27.07492,A: Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,D: Expenditure,T: Transactions,A:
+        Annual,PT_CA: Percentage of current account,Y: Calendar and seasonally adjusted,2020,20.7465,A:
+        Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2020,399179,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,D: Expenditure,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2021,284509.8,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2020,1025694,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2021,1257989,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange
+        rate converted\",Y: Calendar and seasonally adjusted,2020,-74129.38,A: Normal
+        value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange
+        rate converted\",Y: Calendar and seasonally adjusted,2021,-24155.07,A: Normal
+        value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,PT_B1GQ: Percentage of GDP,Y:
+        Calendar and seasonally adjusted,2020,-2.720358,A: Normal value,0: Units,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,CA: Current account,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,PT_B1GQ: Percentage of GDP,Y:
+        Calendar and seasonally adjusted,2021,-0.7560323,A: Normal value,0: Units,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2021,284696.9,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange
+        rate converted\",Y: Calendar and seasonally adjusted,2021,187.078,A: Normal
+        value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN1: Primary income,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange
+        rate converted\",Y: Calendar and seasonally adjusted,2020,-57669.58,A: Normal
+        value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,D: Expenditure,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2021,63136.06,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,C: Revenue,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2020,33780.17,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,C: Revenue,T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2021,37502.25,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange
+        rate converted\",Y: Calendar and seasonally adjusted,2020,-36554.25,A: Normal
+        value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,B: Balance (revenue
+        minus expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange
+        rate converted\",Y: Calendar and seasonally adjusted,2021,-25633.81,A: Normal
+        value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2021,472605.7,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,B: Balance (revenue minus expenditure),T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2020,-150909.7,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,B: Balance (revenue minus expenditure),T:
+        Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate converted\",Y:
+        Calendar and seasonally adjusted,2021,-208878,A: Normal value,6: Millions,_Z:
+        Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2020,416917.5,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,D: Expenditure,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2020,567827.2,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,G: Goods,D: Expenditure,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2021,681483.8,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,PT_GS: Percentage of goods and services,Y: Calendar and seasonally
+        adjusted,2021,49.49661,A: Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,PT_CA: Percentage of current account,Y: Calendar and seasonally adjusted,2020,38.91794,A:
+        Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,PT_CA: Percentage of current account,Y: Calendar and seasonally adjusted,2021,36.81942,A:
+        Normal value,0: Units,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,C: Revenue,T: Transactions,A:
+        Annual,\"USD_EXC: US dollars, exchange rate converted\",Y: Calendar and seasonally
+        adjusted,2021,463184.4,A: Normal value,6: Millions,_Z: Not applicable,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,IN2: Secondary income,D: Expenditure,T:
+        Transactions,A: Annual,XDC: National currency,Y: Calendar and seasonally adjusted,2020,54841,A:
+        Normal value,6: Millions,GBP: Pound sterling,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_BOP@DF_BOP(1.0),I,GBR:
+        United Kingdom,WXD: Rest of the world,S: Services,B: Balance (revenue minus
+        expenditure),T: Transactions,A: Annual,\"USD_EXC: US dollars, exchange rate
+        converted\",Y: Calendar and seasonally adjusted,2020,171004.2,A: Normal value,6:
+        Millions,_Z: Not applicable,2: Two\r\n"
+    headers:
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 9d96f122390557bb-YVR
+      Cache-Control:
+      - public,max-age=7200
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both; charset=utf-8
+      Date:
+      - Mon, 09 Mar 2026 03:20:08 GMT
+      Last-Modified:
+      - Mon, 09 Mar 2026 03:20:08 GMT
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 2
+      alt-svc:
+      - h3=":443"; ma=86400
+      api-supported-versions:
+      - '1'
+      set-cookie:
+      - __cf_bm=wiq99dVTeKIqdPcN4FI.ZbV.1vgDHK6FG5NIQwbg.ac-1773026406.7521858-1.0.1.1-3HOzkinBAOY52bfGkTWf3bHa35i7JaOz8hnbQht8vg_yTnC5DDUhyTvkzI3RVByqjY98KilJ6TcIxlj205EJnk8cJd5BdTVUp0y0q3QtliBTovxcKeHBrZ8MM4urgYXN;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Mon, 09 Mar 2026 03:50:08
+        GMT
+      - _cfuvid=FvDYDT8kwgVt.IXR2cGsa41EafakpnMwn2nwHXH2YvE-1773026406.7521858-1.0.1.1-93qqkiGAGfHWFWEn0EcYzghXrw07VDQS11bneeGCM44;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+    status:
+      code: 200
+      message: OK
+version: 1

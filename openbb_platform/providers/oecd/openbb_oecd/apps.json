@@ -1,0 +1,247 @@
+[{
+  "name": "OECD Explorer",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo_OECD_2022.svg/500px-Logo_OECD_2022.svg.png",
+  "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo_OECD_2022.svg/500px-Logo_OECD_2022.svg.png",
+  "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Logo_OECD_2022.svg/500px-Logo_OECD_2022.svg.png",
+  "description": "Explore economic indicators and presentation tables published by the OECD. Disclaimer: This application is neither affiliated with nor endorsed by the OECD. See https://data-explorer.oecd.org/ for terms and conditions.",
+  "allowCustomization": true,
+  "tabs": {
+    "dataflows": {
+      "id": "dataflows",
+      "name": "Dataflows",
+      "layout": [
+        {
+          "i": "oecd_utils_get_dataflow_parameters_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 16,
+          "h": 29,
+          "state": {
+            "params": {
+              "dataflow_id": "DF_PRICES_ALL"
+            }
+          },
+          "groups": []
+        },
+        {
+          "i": "oecd_utils_list_dataflows_custom_obb",
+          "x": 16,
+          "y": 2,
+          "w": 24,
+          "h": 29,
+          "groups": []
+        }
+      ]
+    },
+    "topics": {
+      "id": "topics",
+      "name": "Topics",
+      "layout": [
+        {
+          "i": "oecd_utils_list_topics_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 30,
+          "h": 20,
+          "groups": []
+        },
+        {
+          "i": "oecd_utils_list_tables_custom_obb",
+          "x": 0,
+          "y": 22,
+          "w": 40,
+          "h": 20,
+          "groups": []
+        }
+      ]
+    },
+    "indicators": {
+      "id": "indicators",
+      "name": "Indicators",
+      "layout": [
+        {
+          "i": "economy_available_indicators_oecd_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 15,
+          "state": {
+            "params": {
+              "dataflows": "DF_CLI",
+              "symbol": "DF_CLI::LI"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "symbol"
+                  ],
+                  "rightColIds": []
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "symbol_root",
+                    "symbol",
+                    "description",
+                    "agency_id",
+                    "dataflow_id",
+                    "dataflow_name",
+                    "structure_id",
+                    "dimension_id",
+                    "long_description",
+                    "member_of"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        },
+        {
+          "i": "economy_indicators_oecd_obb",
+          "x": 0,
+          "y": 17,
+          "w": 40,
+          "h": 21,
+          "state": {
+            "params": {
+              "symbol": "DF_CLI::LI",
+              "country": [
+                "",
+                "AUS"
+              ],
+              "frequency": "M",
+              "limit": "1",
+              "pivot": "false"
+            },
+            "chartModel": {
+              "modelType": "range",
+              "chartType": "customCombo",
+              "chartOptions": {
+                "line": {
+                  "legend": {
+                    "enabled": false
+                  },
+                  "axes": {
+                    "category": {}
+                  }
+                }
+              },
+              "cellRange": {
+                "columns": [
+                  "date",
+                  "value"
+                ]
+              },
+              "suppressChartRanges": true,
+              "seriesChartTypes": [
+                {
+                  "colId": "value",
+                  "chartType": "groupedColumn",
+                  "secondaryAxis": false
+                },
+                {
+                  "colId": "unit_multiplier",
+                  "chartType": "line",
+                  "secondaryAxis": false
+                }
+              ]
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "customCombo"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "title",
+                    "country",
+                    "date",
+                    "value"
+                  ],
+                  "rightColIds": []
+                },
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "description"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "title",
+                    "country",
+                    "unit",
+                    "scale",
+                    "date",
+                    "symbol_root",
+                    "symbol",
+                    "value",
+                    "unit_multiplier",
+                    "order",
+                    "level",
+                    "description",
+                    "country_code"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        }
+      ]
+    },
+    "presentation-tables": {
+      "id": "presentation-tables",
+      "name": "Presentation Tables",
+      "layout": [
+        {
+          "i": "oecd_utils_presentation_table_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 31,
+          "state": {
+            "params": {
+              "limit": "3"
+            },
+            "columnState": {
+              "default": {}
+            }
+          },
+          "groups": []
+        }
+      ]
+    },
+    "table-detail": {
+      "id": "table-detail",
+      "name": "Table Detail",
+      "layout": [
+        {
+          "i": "oecd_utils_get_table_detail_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 25,
+          "state": {
+            "params": {
+              "table_id": "DF_PRICES_ALL"
+            }
+          },
+          "groups": []
+        }
+      ]
+    }
+  },
+  "groups": [
+    {"name": "Group 1", "type": "param", "paramName": "symbol", "defaultValue": "DF_CLI::LI"}
+  ]
+}]

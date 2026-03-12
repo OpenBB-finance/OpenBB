@@ -602,6 +602,7 @@ def test_economy_fred_regional(params, headers):
                 "transform": None,
                 "dimension_values": None,
                 "limit": 1,
+                "pivot": None,
             }
         ),
     ],
@@ -638,7 +639,6 @@ def test_economy_indicators(params, headers):
                 "query": "balance+trade",
                 "dataflows": None,
                 "keywords": None,
-                "symbol": None,
             }
         ),
     ],
