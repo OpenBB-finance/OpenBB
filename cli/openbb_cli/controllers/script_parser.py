@@ -297,8 +297,18 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                             )
                         ):
                             parts = VAR_SLICE.split(":")
-                            start = int(parts[0]) if parts[0] and parts[0].lstrip("-").isdigit() else None
-                            stop = int(parts[1]) if len(parts) > 1 and parts[1] and parts[1].lstrip("-").isdigit() else None
+                            start = (
+                                int(parts[0])
+                                if parts[0] and parts[0].lstrip("-").isdigit()
+                                else None
+                            )
+                            stop = (
+                                int(parts[1])
+                                if len(parts) > 1
+                                and parts[1]
+                                and parts[1].lstrip("-").isdigit()
+                                else None
+                            )
                             vars_to_loop = ROUTINE_VARS[VAR_NAME][slice(start, stop)]
 
                             # Check whether the slicing was successful or not
