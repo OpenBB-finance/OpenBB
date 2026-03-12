@@ -1,0 +1,411 @@
+{
+    "cash_and_cash_equivalents": {
+        "label": "Cash And Cash Equivalents",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "CashAndCashEquivalentsAtCarryingValue",
+            "Cash",
+            "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+        ]
+    },
+    "short_term_investments": {
+        "label": "Short Term Investments",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "ShortTermInvestments",
+            "MarketableSecuritiesCurrent",
+            "AvailableForSaleSecuritiesCurrent"
+        ]
+    },
+    "cash_and_short_term_investments": {
+        "label": "Cash And Short Term Investments",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["CashCashEquivalentsAndShortTermInvestments"],
+        "derived_from": ["cash_and_cash_equivalents", "short_term_investments"]
+    },
+    "accounts_receivable": {
+        "label": "Accounts Receivable",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "AccountsReceivableNetCurrent",
+            "AccountsReceivableNet",
+            "ReceivablesNetCurrent"
+        ]
+    },
+    "inventory": {
+        "label": "Inventory",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "InventoryNet",
+            "InventoryFinishedGoodsAndWorkInProcess",
+            "InventoryGross"
+        ]
+    },
+    "prepaid_expenses": {
+        "label": "Prepaid Expenses",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["PrepaidExpenseAndOtherAssetsCurrent", "PrepaidExpenseCurrent"]
+    },
+    "other_current_assets": {
+        "label": "Other Current Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OtherAssetsCurrent", "OtherCurrentAssets"]
+    },
+    "total_current_assets": {
+        "label": "Total Current Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["AssetsCurrent"]
+    },
+    "property_plant_equipment_net": {
+        "label": "Property Plant And Equipment Net",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "PropertyPlantAndEquipmentNet",
+            "PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization"
+        ]
+    },
+    "property_plant_equipment_gross": {
+        "label": "Property Plant And Equipment Gross",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["PropertyPlantAndEquipmentGross"]
+    },
+    "accumulated_depreciation": {
+        "label": "Accumulated Depreciation",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment"
+        ]
+    },
+    "goodwill": {
+        "label": "Goodwill",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["Goodwill"]
+    },
+    "intangible_assets": {
+        "label": "Intangible Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "FiniteLivedIntangibleAssetsNet",
+            "IntangibleAssetsNetExcludingGoodwill"
+        ]
+    },
+    "goodwill_and_intangible_assets": {
+        "label": "Goodwill And Intangible Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["IntangibleAssetsNetIncludingGoodwill"],
+        "derived_from": ["goodwill", "intangible_assets"]
+    },
+    "long_term_investments": {
+        "label": "Long Term Investments",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "LongTermInvestments",
+            "MarketableSecuritiesNoncurrent",
+            "InvestmentsAndOtherNoncurrentAssets"
+        ]
+    },
+    "tax_assets": {
+        "label": "Tax Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "DeferredTaxAssetsNet",
+            "DeferredTaxAssetsGross",
+            "DeferredTaxAssetsLiabilitiesNet",
+            "DeferredIncomeTaxAssetsNet"
+        ]
+    },
+    "other_non_current_assets": {
+        "label": "Other Non Current Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OtherAssetsNoncurrent"]
+    },
+    "total_non_current_assets": {
+        "label": "Total Non Current Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["AssetsNoncurrent", "NoncurrentAssets"]
+    },
+    "total_assets": {
+        "label": "Total Assets",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["Assets"]
+    },
+    "accounts_payable": {
+        "label": "Accounts Payable",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "AccountsPayableCurrent",
+            "AccountsPayableAndAccruedLiabilitiesCurrent"
+        ]
+    },
+    "short_term_debt": {
+        "label": "Short Term Debt",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["ShortTermBorrowings", "CommercialPaper", "ShortTermDebt"]
+    },
+    "current_portion_of_long_term_debt": {
+        "label": "Current Portion Of Long Term Debt",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "LongTermDebtCurrent",
+            "LongTermDebtAndCapitalLeaseObligationsCurrent"
+        ]
+    },
+    "tax_payables": {
+        "label": "Tax Payables",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["TaxesPayableCurrent", "AccruedIncomeTaxesCurrent"]
+    },
+    "deferred_revenue_current": {
+        "label": "Deferred Revenue Current",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "ContractWithCustomerLiabilityCurrent",
+            "DeferredRevenueCurrent",
+            "DeferredRevenue"
+        ]
+    },
+    "accrued_liabilities": {
+        "label": "Accrued Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "AccruedLiabilitiesCurrent",
+            "EmployeeRelatedLiabilitiesCurrent",
+            "OtherAccruedLiabilitiesCurrent"
+        ]
+    },
+    "other_current_liabilities": {
+        "label": "Other Current Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OtherLiabilitiesCurrent"]
+    },
+    "total_current_liabilities": {
+        "label": "Total Current Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["LiabilitiesCurrent"]
+    },
+    "long_term_debt": {
+        "label": "Long Term Debt",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "LongTermDebtNoncurrent",
+            "LongTermDebt",
+            "LongTermDebtAndCapitalLeaseObligations"
+        ]
+    },
+    "deferred_revenue_non_current": {
+        "label": "Deferred Revenue Non Current",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "ContractWithCustomerLiabilityNoncurrent",
+            "DeferredRevenueNoncurrent"
+        ]
+    },
+    "deferred_tax_liabilities": {
+        "label": "Deferred Tax Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "DeferredIncomeTaxLiabilitiesNet",
+            "DeferredTaxLiabilities",
+            "DeferredIncomeTaxLiabilities"
+        ]
+    },
+    "operating_lease_liability_non_current": {
+        "label": "Operating Lease Liability Non Current",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OperatingLeaseLiabilityNoncurrent"]
+    },
+    "other_non_current_liabilities": {
+        "label": "Other Non Current Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OtherLiabilitiesNoncurrent", "OtherLiabilities"]
+    },
+    "total_non_current_liabilities": {
+        "label": "Total Non Current Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["LiabilitiesNoncurrent", "NoncurrentLiabilities"]
+    },
+    "total_liabilities": {
+        "label": "Total Liabilities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["Liabilities"],
+        "derived_from_formula": "total_liabilities_and_equity - total_equity"
+    },
+    "common_stock": {
+        "label": "Common Stock",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "CommonStocksIncludingAdditionalPaidInCapital",
+            "CommonStockValue",
+            "CommonStockValueOutstanding"
+        ]
+    },
+    "preferred_stock": {
+        "label": "Preferred Stock",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["PreferredStockValue", "PreferredStockValueOutstanding"]
+    },
+    "retained_earnings": {
+        "label": "Retained Earnings",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["RetainedEarningsAccumulatedDeficit"]
+    },
+    "accumulated_other_comprehensive_income": {
+        "label": "Accumulated Other Comprehensive Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["AccumulatedOtherComprehensiveIncomeLossNetOfTax"]
+    },
+    "treasury_stock": {
+        "label": "Treasury Stock",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["TreasuryStockValue", "TreasuryStockCommonValue"]
+    },
+    "minority_interest": {
+        "label": "Minority Interest",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "MinorityInterest",
+            "RedeemableNoncontrollingInterestEquityCarryingAmount"
+        ]
+    },
+    "total_stockholders_equity": {
+        "label": "Total Stockholders Equity",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["StockholdersEquity"]
+    },
+    "total_equity": {
+        "label": "Total Equity",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+            "StockholdersEquity"
+        ]
+    },
+    "total_liabilities_and_equity": {
+        "label": "Total Liabilities And Stockholders Equity",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["LiabilitiesAndStockholdersEquity"]
+    },
+    "total_debt": {
+        "label": "Total Debt",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [
+            "DebtLongtermAndShorttermCombinedAmount",
+            "LongTermDebtAndCapitalLeaseObligations"
+        ],
+        "derived_from": [
+            "short_term_debt",
+            "current_portion_of_long_term_debt",
+            "long_term_debt"
+        ]
+    },
+    "net_debt": {
+        "label": "Net Debt",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": [],
+        "derived_from_formula": "total_debt - cash_and_cash_equivalents"
+    },
+    "operating_lease_right_of_use_asset": {
+        "label": "Operating Lease Right Of Use Asset",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OperatingLeaseRightOfUseAsset"]
+    },
+    "operating_lease_liability_current": {
+        "label": "Operating Lease Liability Current",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": true,
+        "try_order": ["OperatingLeaseLiabilityCurrent"]
+    }
+}

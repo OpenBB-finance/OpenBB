@@ -4,6 +4,8 @@ from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
+from openbb_sec.models.cash_flow import SecCashFlowFetcher
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
@@ -11,6 +13,7 @@ from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.htm_file import SecHtmFileFetcher
+from openbb_sec.models.income_statement import SecIncomeStatementFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
@@ -36,6 +39,36 @@ def vcr_config():
             None,
         ],
     }
+
+
+@pytest.mark.record_http
+def test_sec_balance_sheet_fetcher(credentials=test_credentials):
+    """Test the SEC Balance Sheet fetcher."""
+    params = {"symbol": "AAPL", "limit": 4, "use_cache": False}
+
+    fetcher = SecBalanceSheetFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_income_statement_fetcher(credentials=test_credentials):
+    """Test the SEC Income Statement fetcher."""
+    params = {"symbol": "AAPL", "limit": 4, "use_cache": False}
+
+    fetcher = SecIncomeStatementFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_cash_flow_fetcher(credentials=test_credentials):
+    """Test the SEC Cash Flow Statement fetcher."""
+    params = {"symbol": "AAPL", "limit": 4, "use_cache": False}
+
+    fetcher = SecCashFlowFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http

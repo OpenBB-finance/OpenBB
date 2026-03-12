@@ -1,0 +1,190 @@
+{
+    "revenue": {
+        "label": "Revenue",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "RevenueFromContractWithCustomerExcludingAssessedTax",
+            "Revenues",
+            "SalesRevenueNet",
+            "SalesRevenueGoodsNet",
+            "SalesRevenueServicesNet",
+            "RevenueFromContractWithCustomerIncludingAssessedTax"
+        ]
+    },
+    "cost_of_revenue": {
+        "label": "Cost Of Revenue",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "CostOfGoodsAndServicesSold",
+            "CostOfRevenue",
+            "CostOfGoodsSold",
+            "CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization"
+        ]
+    },
+    "gross_profit": {
+        "label": "Gross Profit",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": ["GrossProfit"],
+        "derived_from_formula": "revenue - cost_of_revenue"
+    },
+    "research_and_development": {
+        "label": "Research And Development Expenses",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "ResearchAndDevelopmentExpense",
+            "ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost"
+        ]
+    },
+    "selling_general_and_administrative": {
+        "label": "Selling General And Administrative Expenses",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "SellingGeneralAndAdministrativeExpense",
+            "SellingAndMarketingExpense",
+            "GeneralAndAdministrativeExpense"
+        ]
+    },
+    "operating_expenses": {
+        "label": "Operating Expenses",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": ["OperatingExpenses", "CostsAndExpenses"]
+    },
+    "operating_income": {
+        "label": "Operating Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": ["OperatingIncomeLoss"]
+    },
+    "interest_expense": {
+        "label": "Interest Expense",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": ["InterestExpense", "InterestExpenseDebt"]
+    },
+    "interest_income": {
+        "label": "Interest Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "InvestmentIncomeInterest",
+            "InterestIncomeOther",
+            "InterestAndDividendIncomeOperating"
+        ]
+    },
+    "other_non_operating_income": {
+        "label": "Other Non Operating Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "OtherNonoperatingIncomeExpense",
+            "NonoperatingIncomeExpense",
+            "OtherIncome"
+        ]
+    },
+    "pretax_income": {
+        "label": "Pretax Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+            "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+            "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic"
+        ]
+    },
+    "income_tax_expense": {
+        "label": "Income Tax Expense",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": ["IncomeTaxExpenseBenefit"]
+    },
+    "consolidated_net_income": {
+        "label": "Consolidated Net Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": ["ProfitLoss"]
+    },
+    "net_income": {
+        "label": "Net Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "NetIncomeLoss",
+            "NetIncomeLossAvailableToCommonStockholdersBasic"
+        ]
+    },
+    "basic_earnings_per_share": {
+        "label": "Basic Earnings Per Share",
+        "taxonomy": "us-gaap",
+        "units": "USD/shares",
+        "instantaneous": false,
+        "try_order": ["EarningsPerShareBasic"]
+    },
+    "diluted_earnings_per_share": {
+        "label": "Diluted Earnings Per Share",
+        "taxonomy": "us-gaap",
+        "units": "USD/shares",
+        "instantaneous": false,
+        "try_order": ["EarningsPerShareDiluted"]
+    },
+    "weighted_average_shares_outstanding": {
+        "label": "Weighted Average Shares Outstanding",
+        "taxonomy": "us-gaap",
+        "units": "shares",
+        "instantaneous": false,
+        "try_order": [
+            "WeightedAverageNumberOfSharesOutstandingBasic",
+            "WeightedAverageNumberOfShareOutstandingBasicAndDiluted"
+        ]
+    },
+    "weighted_average_shares_diluted": {
+        "label": "Weighted Average Shares Outstanding Diluted",
+        "taxonomy": "us-gaap",
+        "units": "shares",
+        "instantaneous": false,
+        "try_order": ["WeightedAverageNumberOfDilutedSharesOutstanding"]
+    },
+    "depreciation_and_amortization": {
+        "label": "Depreciation And Amortization",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "DepreciationDepletionAndAmortization",
+            "DepreciationAndAmortization",
+            "DepreciationAmortizationAndAccretionNet"
+        ]
+    },
+    "ebitda": {
+        "label": "EBITDA",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [],
+        "derived_from": [
+            "net_income",
+            "interest_expense",
+            "income_tax_expense",
+            "depreciation_and_amortization"
+        ]
+    }
+}

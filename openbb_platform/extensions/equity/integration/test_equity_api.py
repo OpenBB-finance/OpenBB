@@ -49,6 +49,15 @@ def headers():
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 4,
+                "provider": "sec",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -170,6 +179,15 @@ def test_equity_calendar_earnings(params, headers):
                 "period": "annual",
                 "limit": 5,
                 "provider": "yfinance",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 4,
+                "provider": "sec",
+                "use_cache": False,
             }
         ),
     ],
@@ -466,6 +484,15 @@ def test_equity_estimates_forward_eps(params, headers):
                 "period": "annual",
                 "limit": 5,
                 "provider": "yfinance",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 4,
+                "provider": "sec",
+                "use_cache": False,
             }
         ),
     ],

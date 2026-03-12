@@ -47,6 +47,15 @@ def obb(pytestconfig):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 4,
+                "provider": "sec",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -155,6 +164,15 @@ def test_equity_calendar_earnings(params, obb):
                 "period": "annual",
                 "limit": 5,
                 "provider": "yfinance",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 4,
+                "provider": "sec",
+                "use_cache": False,
             }
         ),
     ],
@@ -359,6 +377,15 @@ def test_equity_estimates_historical(params, obb):
                 "symbol": "AAPL",
                 "limit": 5,
                 "period": "annual",
+            }
+        ),
+        (
+            {
+                "provider": "sec",
+                "symbol": "AAPL",
+                "limit": 4,
+                "period": "annual",
+                "use_cache": False,
             }
         ),
     ],

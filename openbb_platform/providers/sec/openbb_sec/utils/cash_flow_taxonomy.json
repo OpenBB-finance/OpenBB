@@ -1,0 +1,258 @@
+{
+    "net_income": {
+        "label": "Net Income",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "NetIncomeLoss",
+            "ProfitLoss",
+            "NetIncomeLossAvailableToCommonStockholdersBasic"
+        ]
+    },
+    "depreciation_and_amortization": {
+        "label": "Depreciation And Amortization",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "DepreciationDepletionAndAmortization",
+            "DepreciationAndAmortization",
+            "DepreciationAmortizationAndAccretionNet"
+        ]
+    },
+    "stock_based_compensation": {
+        "label": "Stock Based Compensation",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "ShareBasedCompensation",
+            "AllocatedShareBasedCompensationExpense"
+        ]
+    },
+    "deferred_income_tax": {
+        "label": "Deferred Income Tax",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "DeferredIncomeTaxExpenseBenefit",
+            "DeferredIncomeTaxesAndTaxCredits"
+        ]
+    },
+    "change_in_working_capital": {
+        "label": "Change In Working Capital",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "IncreaseDecreaseInOperatingCapital",
+            "IncreaseDecreaseInOperatingLiabilities"
+        ]
+    },
+    "change_in_accounts_receivable": {
+        "label": "Change In Accounts Receivable",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "IncreaseDecreaseInAccountsReceivable",
+            "IncreaseDecreaseInReceivables"
+        ]
+    },
+    "change_in_inventory": {
+        "label": "Change In Inventory",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "IncreaseDecreaseInInventories"
+        ]
+    },
+    "change_in_accounts_payable": {
+        "label": "Change In Accounts Payable",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "IncreaseDecreaseInAccountsPayable",
+            "IncreaseDecreaseInAccountsPayableAndAccruedLiabilities"
+        ]
+    },
+    "other_operating_activities": {
+        "label": "Other Operating Activities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "OtherOperatingActivitiesCashFlowStatement",
+            "OtherNoncashIncomeExpense"
+        ]
+    },
+    "operating_cash_flow": {
+        "label": "Net Cash From Operating Activities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "NetCashProvidedByUsedInOperatingActivities",
+            "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"
+        ]
+    },
+    "capital_expenditure": {
+        "label": "Capital Expenditure",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "PaymentsToAcquirePropertyPlantAndEquipment",
+            "PaymentsToAcquireProductiveAssets",
+            "PaymentsForCapitalImprovements"
+        ]
+    },
+    "acquisitions": {
+        "label": "Acquisitions",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "PaymentsToAcquireBusinessesNetOfCashAcquired",
+            "PaymentsToAcquireBusinessesGross"
+        ]
+    },
+    "purchase_of_investments": {
+        "label": "Purchase Of Investments",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "PaymentsToAcquireInvestments",
+            "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+            "PaymentsToAcquireMarketableSecurities"
+        ]
+    },
+    "sale_of_investments": {
+        "label": "Sale And Maturity Of Investments",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "ProceedsFromSaleAndMaturityOfMarketableSecurities",
+            "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+            "ProceedsFromSaleOfAvailableForSaleSecuritiesDebt"
+        ]
+    },
+    "other_investing_activities": {
+        "label": "Other Investing Activities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "PaymentsForProceedsFromOtherInvestingActivities",
+            "OtherInvestingActivitiesCashFlowStatement"
+        ]
+    },
+    "investing_cash_flow": {
+        "label": "Net Cash From Investing Activities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "NetCashProvidedByUsedInInvestingActivities",
+            "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"
+        ]
+    },
+    "debt_issuance": {
+        "label": "Debt Issuance",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "ProceedsFromIssuanceOfLongTermDebt",
+            "ProceedsFromDebtNetOfIssuanceCosts",
+            "ProceedsFromIssuanceOfDebt"
+        ]
+    },
+    "debt_repayment": {
+        "label": "Debt Repayment",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "RepaymentsOfLongTermDebt",
+            "RepaymentsOfDebt",
+            "RepaymentsOfLongTermDebtAndCapitalSecurities"
+        ]
+    },
+    "dividends_paid": {
+        "label": "Dividends Paid",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "PaymentsOfDividends",
+            "PaymentsOfDividendsCommonStock",
+            "PaymentsOfOrdinaryDividends"
+        ]
+    },
+    "share_repurchases": {
+        "label": "Share Repurchases",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "PaymentsForRepurchaseOfCommonStock",
+            "PaymentsForRepurchaseOfEquity"
+        ]
+    },
+    "other_financing_activities": {
+        "label": "Other Financing Activities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "ProceedsFromPaymentsForOtherFinancingActivities",
+            "OtherFinancingActivitiesCashFlowStatement"
+        ]
+    },
+    "financing_cash_flow": {
+        "label": "Net Cash From Financing Activities",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "NetCashProvidedByUsedInFinancingActivities",
+            "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"
+        ]
+    },
+    "effect_of_exchange_rate": {
+        "label": "Effect Of Exchange Rate On Cash",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+            "EffectOfExchangeRateOnCashAndCashEquivalents"
+        ]
+    },
+    "net_change_in_cash": {
+        "label": "Net Change In Cash",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [
+            "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+            "CashAndCashEquivalentsPeriodIncreaseDecrease",
+            "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect"
+        ]
+    },
+    "free_cash_flow": {
+        "label": "Free Cash Flow",
+        "taxonomy": "us-gaap",
+        "units": "USD",
+        "instantaneous": false,
+        "try_order": [],
+        "derived_from_formula": "operating_cash_flow - capital_expenditure"
+    }
+}
