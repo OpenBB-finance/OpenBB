@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1/Q..USA.S1..B1GQ._Z...USD_PPP.LR.LA.T0102?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-01-01&format=csvfile&startPeriod=2023-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL746evTr9idHx0+989frNF6cv3oxenT77/Y9fnR6PXp+evPny1ejky69evDl99fL41ZvfXz96
+        8+r4xevjkzdnX74Ynb14/ebV73/8+vXpmxE++smzN7/P6PT3fnn64unZm69enY6+enH25vf/4vT4
+        Nf54+ers5PT3f3L8+lSAPPvy1RfHDOfN8ZPnp7//2VNC4ezZ2Sl1cvbF6e//8vTV2ZdPR18+ef37
+        /+Tx869OGbvf5/T41e/PkEaAhEaE5Ytnv//rN8dvvno9enp6cvbF8fPX/Jp+Jlh89fzN6OSrV69O
+        X5z8Pr9x8uXpydPx66dPxy+Onz56+vrp7//i+Ivjsxe7v+fTZ7//T7w43tod794Z/cTo9xl99Zqo
+        sYv/Pdn9/CdGv/9P6f++ondevnw5ev5q9Px49GZnd2dvtLezd2/7J+jn7qd7Bw8efjr+dCTPz2p/
+        96i/g4MHO7ufju9TX3h+VvvbH+3t7TzYub97ML5HfeH5We1vl8ZHnR3sPBzvUV94fuPk/wHpk0hF
+        wwIAAA==
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Disposition:
+      - attachment; filename="OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1+Q..USA.S1..B1GQ._Z...USD_PPP.LR.LA.T0102.csv"
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Tue, 16 Jul 2024 20:47:43 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 3
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

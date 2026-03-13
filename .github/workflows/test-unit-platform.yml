@@ -1,0 +1,48 @@
+name: 🚉 Unit test Platform
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'openbb_platform/**'
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+    cancel-in-progress: true
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+        fail-fast: false
+
+        matrix:
+          python_version:
+            ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v6
+        with:
+            python-version: ${{ matrix.python_version }}
+            allow-prereleases: true
+            cache: "pip"
+
+      - name: Cache pip packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python_version }}-${{ hashFiles('openbb_platform/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Run tests
+        run: |
+          pip install nox
+          nox -f .github/scripts/noxfile.py -s unit_test_platform --python ${{ matrix.python_version }}

@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/GBR.M.IRLT....?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-01&startPeriod=2023-01
+  response:
+    body:
+      string: "DATAFLOW,REF_AREA,FREQ,MEASURE,UNIT_MEASURE,ACTIVITY,ADJUSTMENT,TRANSFORMATION,TIME_PERIOD,OBS_VALUE,OBS_STATUS,UNIT_MULT,DECIMALS,BASE_PER\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-03,3.5638,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-02,3.5553,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-01,3.5115,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2024-01,3.9319,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-12,3.8622,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-11,4.2721,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-10,4.5695,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-09,4.4199,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-08,4.5298,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-07,4.4372,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-06,4.3659,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-05,3.9621,,,,\r\nOECD.SDD.STES:DSD_KEI@DF_KEI(4.0),GBR,M,IRLT,PA,_Z,_Z,_Z,2023-04,3.6503,,,,\r\n"
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Wed, 31 Jul 2024 22:54:54 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 1
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,252 @@
+{
+    "name": "Company Filings & Market Calendars",
+    "img": "https://logosandtypes.com/wp-content/uploads/2020/07/nasdaq.svg",
+    "img_dark": "",
+    "img_light": "",
+    "description": "View company filings and market calendars, downloaded from the public Nasdaq website. This app is not affiliated with, or authoriazed by, Nasdaq.",
+    "allowCustomization": true,
+    "tabs": {
+      "earnings": {
+        "id": "earnings",
+        "name": "Earnings Calendar & Filings",
+        "layout": [
+          {
+            "i": "nasdaq_earnings_calendar",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 10,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "market_cap",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "symbol",
+                      "name",
+                      "period_ending"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "report_date",
+                      "reporting_time",
+                      "symbol",
+                      "name",
+                      "market_cap",
+                      "eps_previous",
+                      "eps_consensus",
+                      "num_estimates",
+                      "eps_actual",
+                      "surprise_percent",
+                      "period_ending",
+                      "previous_report_date"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "nasdaq_company_filings",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 30
+          }
+        ]
+      },
+      "dividend-calendar": {
+        "id": "dividend-calendar",
+        "name": "Dividend Calendar",
+        "layout": [
+          {
+            "i": "nasdaq_dividends_calendar",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "ex_dividend_date",
+                        "sort": "asc"
+                      },
+                      {
+                        "colId": "amount",
+                        "sort": "desc"
+                      },
+                      {
+                        "colId": "annualized_amount",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "symbol",
+                      "name"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "ex_dividend_date",
+                      "symbol",
+                      "amount",
+                      "name",
+                      "record_date",
+                      "payment_date",
+                      "declaration_date",
+                      "annualized_amount"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "nasdaq_historical_dividends",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 30
+          }
+        ]
+      },
+      "ipo-calendar": {
+        "id": "ipo-calendar",
+        "name": "IPO Calendar",
+        "layout": [
+          {
+            "i": "nasdaq_ipo_calendar",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "ipo_date",
+                      "symbol",
+                      "name"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "ipo_date",
+                      "symbol",
+                      "name",
+                      "offer_amount",
+                      "share_count",
+                      "share_price",
+                      "deal_status",
+                      "exchange",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "nasdaq_company_filings",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 30,
+            "state": {
+              "params": {
+                "form_group": "registration"
+              }
+            }
+          }
+        ]
+      },
+      "economic-calendar": {
+        "id": "economic-calendar",
+        "name": "Economic Calendar",
+        "layout": [
+          {
+            "i": "nasdaq_economic_calendar",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "date",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Group 1",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "AAPL",
+        "widgetIds": [
+          "nasdaq_earnings_calendar",
+          "nasdaq_company_filings"
+        ]
+      },
+      {
+        "name": "Group 2",
+        "type": "endpointParam",
+        "paramName": "symbol2",
+        "defaultValue": "AAPL",
+        "widgetIds": [
+          "nasdaq_dividends_calendar",
+          "nasdaq_historical_dividends"
+        ]
+      }
+    ]
+}

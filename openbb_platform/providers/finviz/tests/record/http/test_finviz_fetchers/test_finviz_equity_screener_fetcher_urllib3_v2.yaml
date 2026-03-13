@@ -1,0 +1,1957 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://finviz.com/screener.ashx?o=-relativevolume&s=ta_mostactive&v=111
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html lang=\"en\" class=\" dark\">\n<head>\n<title>Most
+        Active - Stock Screener - Overview relativevolume</title>\n<meta charset=\"UTF-8\"><meta
+        name=\"viewport\" content=\"width=1024\"><meta name=\"description\" content=\"Stock
+        screener for investors and traders, financial visualizations.\">\n<meta name=\"robots\"
+        content=\"noindex\">\n\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-regular.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-700.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-900.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/inter-latin.woff2\"
+        as=\"font\" crossorigin>\r\n        \r\n            <script>\r\n                window.notificationsArray
+        = [];\r\n                window.renderScriptNotLoaded = function () {};\r\n
+        \               window.handleScriptNotLoaded = function (element) {\r\n                    window.notificationsArray.push(element);\r\n
+        \                   window.sentryDisabled = true;\r\n                    window.handleScriptNotLoaded
+        = function () {};\r\n                };\r\n            </script>\r\n        <link
+        rel=\"stylesheet\" href=\"/assets/dist-legacy/redesign.e92b0f31.css\" type=\"text/css\"
+        onerror=\"window.handleScriptNotLoaded(this)\">\n<link rel=\"stylesheet\"
+        href=\"/assets/dist-legacy/main.0f493404.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
+        rel=\"icon\" type=\"image/png\" href=\"/favicon_2x.png\" sizes=\"32x32\">\n<link
+        rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"16x16\">\n  <script
+        type=\"text/javascript\" async=true>\r\n  (function() {\r\n    var host =
+        'finviz.com';\r\n    var element = document.createElement('script');\r\n    var
+        firstScript = document.getElementsByTagName('script')[0];\r\n    var url =
+        'https://cmp.inmobi.com'\r\n      .concat('/choice/', 'c2W8esUZ6Q8oA', '/',
+        host, '/choice.js?tag_version=V3');\r\n    var uspTries = 0;\r\n    var uspTriesLimit
+        = 3;\r\n    element.async = true;\r\n    element.type = 'text/javascript';\r\n
+        \   element.src = url;\r\n\r\n    firstScript.parentNode.insertBefore(element,
+        firstScript);\r\n\r\n    function makeStub() {\r\n      var TCF_LOCATOR_NAME
+        = '__tcfapiLocator';\r\n      var queue = [];\r\n      var win = window;\r\n
+        \     var cmpFrame;\r\n\r\n      function addFrame() {\r\n        var doc
+        = win.document;\r\n        var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);\r\n\r\n
+        \       if (!otherCMP) {\r\n          if (doc.body) {\r\n            var iframe
+        = doc.createElement('iframe');\r\n\r\n            iframe.style.cssText = 'display:none';\r\n
+        \           iframe.name = TCF_LOCATOR_NAME;\r\n            doc.body.appendChild(iframe);\r\n
+        \         } else {\r\n            setTimeout(addFrame, 5);\r\n          }\r\n
+        \       }\r\n        return !otherCMP;\r\n      }\r\n\r\n      function tcfAPIHandler()
+        {\r\n        var gdprApplies;\r\n        var args = arguments;\r\n\r\n        if
+        (!args.length) {\r\n          return queue;\r\n        } else if (args[0]
+        === 'setGdprApplies') {\r\n          if (\r\n            args.length > 3 &&\r\n
+        \           args[2] === 2 &&\r\n            typeof args[3] === 'boolean'\r\n
+        \         ) {\r\n            gdprApplies = args[3];\r\n            if (typeof
+        args[2] === 'function') {\r\n              args[2]('set', true);\r\n            }\r\n
+        \         }\r\n        } else if (args[0] === 'ping') {\r\n          var retr
+        = {\r\n            gdprApplies: gdprApplies,\r\n            cmpLoaded: false,\r\n
+        \           cmpStatus: 'stub'\r\n          };\r\n\r\n          if (typeof
+        args[2] === 'function') {\r\n            args[2](retr);\r\n          }\r\n
+        \       } else {\r\n          if(args[0] === 'init' && typeof args[3] ===
+        'object') {\r\n            args[3] = Object.assign(args[3], { tag_version:
+        'V3' });\r\n          }\r\n          queue.push(args);\r\n        }\r\n      }\r\n\r\n
+        \     function postMessageEventHandler(event) {\r\n        var msgIsString
+        = typeof event.data === 'string';\r\n        var json = {};\r\n\r\n        try
+        {\r\n          if (msgIsString) {\r\n            json = JSON.parse(event.data);\r\n
+        \         } else {\r\n            json = event.data;\r\n          }\r\n        }
+        catch (ignore) {}\r\n\r\n        var payload = json.__tcfapiCall;\r\n\r\n
+        \       if (payload) {\r\n          window.__tcfapi(\r\n            payload.command,\r\n
+        \           payload.version,\r\n            function(retValue, success) {\r\n
+        \             var returnMsg = {\r\n                __tcfapiReturn: {\r\n                  returnValue:
+        retValue,\r\n                  success: success,\r\n                  callId:
+        payload.callId\r\n                }\r\n              };\r\n              if
+        (msgIsString) {\r\n                returnMsg = JSON.stringify(returnMsg);\r\n
+        \             }\r\n              if (event && event.source && event.source.postMessage)
+        {\r\n                event.source.postMessage(returnMsg, '*');\r\n              }\r\n
+        \           },\r\n            payload.parameter\r\n          );\r\n        }\r\n
+        \     }\r\n\r\n      while (win) {\r\n        try {\r\n          if (win.frames[TCF_LOCATOR_NAME])
+        {\r\n            cmpFrame = win;\r\n            break;\r\n          }\r\n
+        \       } catch (ignore) {}\r\n\r\n        if (win === window.top) {\r\n          break;\r\n
+        \       }\r\n        win = win.parent;\r\n      }\r\n      if (!cmpFrame)
+        {\r\n        addFrame();\r\n        win.__tcfapi = tcfAPIHandler;\r\n        win.addEventListener('message',
+        postMessageEventHandler, false);\r\n      }\r\n    };\r\n\r\n    makeStub();\r\n\r\n
+        \   var uspStubFunction = function() {\r\n      var arg = arguments;\r\n      if
+        (typeof window.__uspapi !== uspStubFunction) {\r\n        setTimeout(function()
+        {\r\n          if (typeof window.__uspapi !== 'undefined') {\r\n            window.__uspapi.apply(window.__uspapi,
+        arg);\r\n          }\r\n        }, 500);\r\n      }\r\n    };\r\n\r\n    var
+        checkIfUspIsReady = function() {\r\n      uspTries++;\r\n      if (window.__uspapi
+        === uspStubFunction && uspTries < uspTriesLimit) {\r\n        console.warn('USP
+        is not accessible');\r\n      } else {\r\n        clearInterval(uspInterval);\r\n
+        \     }\r\n    };\r\n\r\n    if (typeof window.__uspapi === 'undefined') {\r\n
+        \     window.__uspapi = uspStubFunction;\r\n      var uspInterval = setInterval(checkIfUspIsReady,
+        6000);\r\n    }\r\n  })();\r\n  </script><script>\r\n            FinvizSettings
+        = {\r\n                versionImages: 12,\r\n                hasUserPremium:
+        false,\r\n                name: \"\",\r\n                email: \"\",\r\n
+        \               nodeChartsDomain: \"https://charts2-node.finviz.com\",\r\n
+        \               hasUserStickyHeader: true,\r\n                adsProvider:
+        1,\r\n                hasRedesignEnabled: true,\r\n                hasOptionsGreeksEnabled:
+        true,\r\n                hasDarkTheme: true,\r\n                quoteSearchExt:
+        '',\r\n                isJoinBannerVisible: false,\r\n            };\r\n        </script><script
+        src=\"/assets/dist-legacy/script/browser_check.fca380bf.js\"></script><script
+        src=\"/assets/dist-legacy/script/vendor/boxover.c3ec3f5d.js\"></script>\n<script
+        src=\"/assets/dist-legacy/runtime.53c11363.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/libs_init.11350bea.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/4331.f4dde913.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7000.5edbdd9d.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/6457.7207f24e.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/2725.c6891682.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7898.19760ca3.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1940.5aa3e06c.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/header.9262a136.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        type=\"text/javascript\">\r\n            var portfolioRowsLimit=50;\r\n            function
+        ScreenerSelectOnChange() {}\r\n            FinvizSettings.screenerCurrentTimeframe
+        = {timeframe: \"d\", dateRange: null}\r\n\r\n            function trackPagination(source)
+        {\r\n                window.gtag && window.gtag('event', 'click', {\r\n                    event_category:
+        'pagination',\r\n                    event_label: source });\r\n            }\r\n\r\n
+        \           function handleETFCheckboxClick(input) {\r\n                fetch('/api/set_cookie.ashx?cookie=disabledETFFiltersAll&value='
+        + !input.checked )\r\n                    .catch(function(){})\r\n                    .then(function(){
+        location.reload() })\r\n            }\r\n        </script><script src=\"/assets/dist-legacy/script/screener.b8dd0a88.js\"
+        type=\"text/javascript\" onerror=\"window.handleScriptNotLoaded(this)\"></script>\n<script>FinvizSettings.defaultPeriod
+        = 'd'</script>\n<script src=\"/assets/dist-legacy/script/screener_free.31df4c86.js\"
+        type=\"text/javascript\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/5959.14f0ac29.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1528.be3c0510.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1028.de343144.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7530.cd32fb74.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/5621.e913d074.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/screener.44a1b895.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n\r\n
+        \         <script>\r\n            const channelIdToLabel = {\r\n                '1':
+        'MarketWatch',\r\n                '2': 'WSJ',\r\n                '3': 'Reuters',\r\n
+        \               '4': 'Yahoo Finance',\r\n                '5': 'CNN',\r\n                '6':
+        'The New York Times',\r\n                '7': 'Bloomberg',\r\n                '9':
+        'BBC',\r\n                '10': 'CNBC',\r\n                '11': 'Fox Business',\r\n
+        \               '102': 'Mish\\'s Global Economic Trend Analysis',\r\n                '105':
+        'Trader Feed',\r\n                '113': 'Howard Lindzon',\r\n                '114':
+        'Seeking Alpha',\r\n                '123': 'Fallond Stock Picks',\r\n                '132':
+        'Zero Hedge',\r\n                '133': 'market folly',\r\n                '136':
+        'Daily Reckoning',\r\n                '141': 'Abnormal Returns',\r\n                '142':
+        'Calculated Risk',\r\n            }\r\n            function trackAndOpenNews(event,
+        channel, url) {\r\n              event.preventDefault()\r\n              window.open(url,
+        '_blank')\r\n\r\n              let channelLabel\r\n              if (typeof
+        channel === 'string') {\r\n                channelLabel = channel\r\n              }
+        else {\r\n                const label = channelIdToLabel[channel]\r\n                channelLabel
+        = label !== undefined ? label : channel\r\n              }\r\n              window.gtag
+        && window.gtag('event', 'click', {\r\n                send_to: 'G-ZT9VQEWD4N',\r\n
+        \               non_interaction: true,\r\n                event_category:
+        'news',\r\n                event_label: channelLabel,\r\n                value:
+        1 });\r\n            }\r\n          </script>\r\n          <body class=\"m-0
+        yellow-tooltip is-screener chart-tooltip\">\r\n            <script>\r\n                var
+        cookieName = 'fv_block';\r\n                var selector = '[data-google-query-id]';\r\n
+        \               var selectorFrame = selector + ' iframe, ' + selector + '
+        [id*=aax]';\r\n                var cookieExpiry = 5 * 60 * 1000; // 5min\r\n
+        \               var checkTimeout = 20 * 1000; // 20sec\r\n\r\n                function
+        getCookie(value) {\r\n                    var expiration = +new Date() + cookieExpiry;\r\n
+        \                   return cookieName + '=' + value + '; expires=' + (new
+        Date(expiration)).toUTCString() + '; path=/';\r\n                }\r\n\r\n
+        \               var finvizBannersLoaded = false;\r\n                function
+        loadFinvizBanners(setCookie) {\r\n                    \r\n                    if
+        (setCookie) document.cookie = getCookie('block');\r\n                    finvizBannersLoaded
+        = true;\r\n                    var s = document.createElement('script');\r\n
+        \                   s.type = 'text/javascript';\r\n                    s.async
+        = true;\r\n                    s.src = '/assets/dist-legacy/script/finviz_b.86e39215.js';\r\n
+        \                   document.head.appendChild(s);\r\n                }\r\n\r\n
+        \               function checkBannersLoaded() {\r\n                    var
+        checkEnd = +new Date() + checkTimeout;\r\n                    function asyncCheckIfExists(selector,
+        resolve) {\r\n                        var now = +new Date();\r\n                        var
+        container = document.querySelector(selector);\r\n                        if
+        (!container && checkEnd > now) return setTimeout(function () { asyncCheckIfExists(selector,
+        resolve) }, 1000)\r\n                        resolve(!!container);\r\n                    }\r\n
+        \                   \r\n                    asyncCheckIfExists(selector, function
+        (exists) {\r\n                        if (!exists) return loadFinvizBanners(true);\r\n\r\n
+        \                       asyncCheckIfExists(selectorFrame, function (hasIframe)
+        {\r\n                            if (!hasIframe) return loadFinvizBanners(true);\r\n
+        \                       })\r\n                    })\r\n                }\r\n\r\n
+        \               if (document.cookie.indexOf(cookieName) >= 0) {\r\n                    loadFinvizBanners(false);\r\n
+        \               } else {\r\n                    var s = document.createElement('script');\r\n
+        \                   s.type = 'text/javascript';\r\n                    s.async
+        = true;\r\n                    s.onerror = loadFinvizBanners;\r\n                    s.onload
+        = checkBannersLoaded;\r\n                    s.src = 'https://u5.investingchannel.com/static/uat.js';\r\n
+        \                   document.head.appendChild(s);\r\n\r\n                    InvestingChannelQueue
+        = window.InvestingChannelQueue || [];\r\n                    var ic_page;\r\n\r\n
+        \                   function refreshAd(container, refreshes) { \r\n                        var
+        placementTag, adslot;\r\n                        window.InvestingChannelQueue.push(function
+        () {\r\n                            var pubTags = ic_page.getPubTag.call(ic_page,
+        container.id);\r\n                            if (!pubTags) return;\r\n                            var
+        pubTag = pubTags[0];\r\n                            placementTag = pubTag.mPlacements[0].mTagToRender;\r\n
+        \                           adslot = pubTag.mPlacements[0].mPublisherKval.adslot[0];\r\n
+        \                           // Update div ID\r\n                            var
+        id = container.id.split('_');\r\n                            var numberOfDivs
+        = document.querySelectorAll('[id*=' + id.slice(0, id.length - 1).join('_')
+        + ']').length;\r\n                            var newDivNumber = Number(id.pop())
+        + numberOfDivs * refreshes;\r\n                            container.setAttribute('id',
+        id.join('_') + '_' + newDivNumber);\r\n                            // Destroy
+        previous pubtag & reset container html (loading span)\r\n                            pubTag.destroy();\r\n
+        \                           container.innerHTML = '';\r\n                        });
+        \r\n                        window.InvestingChannelQueue.push(function ()
+        {\r\n                            if (!placementTag || !adslot) return\r\n
+        \                           // Create new pub tag\r\n                            var
+        newTag;\r\n                            var layoutId = placementTag.mNativeLayout
+        ? placementTag.mNativeLayout.nativelayoutid : null;\r\n                            if
+        (layoutId) {\r\n                                newTag = ic_page.defineNativeTag('finviz/'
+        + placementTag.mTarget.dfpkeyname, placementTag.mAdSize, container.id, layoutId);\r\n
+        \                               var nativeLayout, layoutData\r\n\r\n                                try
+        {\r\n                                  nativeLayout = newTag.mPlacements[0].mTags[0].mNativeLayout;\r\n
+        \                               } catch (e) {\r\n                                    console.log(e.message)\r\n
+        \                               }\r\n\r\n                                try
+        {\r\n                                  layoutData = newTag.mTemplate.mNativeLayout[layoutId].Data\r\n
+        \                                 if (layoutData && nativeLayout && !nativeLayout.layout)
+        {\r\n                                    newTag.mPlacements[0].mTags[0].mNativeLayout
+        = layoutData\r\n                                  }\r\n                                }
+        catch (e) {\r\n                                    console.log(e.message)\r\n
+        \                               }\r\n                            } else {\r\n
+        \                               newTag = ic_page.defineTag('finviz/' + placementTag.mTarget.dfpkeyname,
+        placementTag.mAdSize, container.id);\r\n                            }\r\n
+        \                           // Set adslot param\r\n                            newTag.setKval({
+        adslot: adslot });\r\n                            newTag.setKval({ kw: 'ajax'
+        });\r\n                            newTag.render();\r\n                        });\r\n
+        \                   }\r\n\r\n                    var refreshCount = 1;\r\n
+        \                   function refreshAds(selectors) { \r\n                        if
+        (window.ic_page) {\r\n                            document.querySelectorAll(selectors).forEach(function
+        (element) {\r\n                                try {\r\n                                    refreshAd(element,
+        refreshCount);\r\n                                } catch (e) {\r\n                                    console.log('Ad
+        refresh error for:', element, e);\r\n                                }\r\n
+        \                           });\r\n                            window.ic_page.loadMore();\r\n
+        \                           refreshCount++;\r\n                        } \r\n
+        \                   }\r\n\r\n\r\n                    InvestingChannelQueue.push(function()
+        {\r\n                        var icConfig = window['FINVIZ_IC_UAT_CONFIG']
+        = {};\r\n                        \r\n                        ic_page = InvestingChannel.UAT.Run('df0d0d52-cc7f-11e8-82a5-0abbb61c4a6a',
+        icConfig);\r\n                    });\r\n\r\n                    var hash
+        = null;\r\n                    if (typeof hash === 'string') {\r\n                      InvestingChannelQueue.push(function()
+        {\r\n                          if (ic_page) {\r\n                              ic_page.setUserId('email',
+        hash, true);\r\n                          }\r\n                      });\r\n
+        \                   }\r\n                }\r\n            </script>    <script>\r\n
+        \       function FinvizNewsletterHide() {\r\n            fetch('/api/set_cookie.ashx?cookie=notice-newsletter').catch(function(){}).then(function(){\r\n
+        \               window.gtag && window.gtag('event', 'close', { event_category:
+        'notice-newsletter', non_interaction: true })\r\n            })\r\n            document.getElementById('js-notice-newsletter').style.display
+        = 'none';\r\n        }\r\n\r\n        const emailRegex = /^((([a-z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+(\\.([a-z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\x5b]|[\\x5d-\\x7e]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(\\\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(\\x22)))@((([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.)+(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.?$/\r\n\r\n
+        \       function FinvizNewsletterSubmit(event) {\r\n            const emailValue
+        = event.target.elements[\"email\"].value\r\n            if (!emailRegex.test(emailValue))
+        {\r\n                event.preventDefault()\r\n                alert(\"Invalid
+        email address\")\r\n                return\r\n            }\r\n            window.gtag
+        && window.gtag('event', 'subscription', { event_category: 'notice-newsletter',
+        non_interaction: true })\r\n        }\r\n        window.gtag && window.gtag('event',
+        'impression', { event_category: 'notice-newsletter', non_interaction: true
+        })\r\n    </script>\r\n    <div id=\"js-notice-newsletter\" class=\"font-sans
+        relative isolate flex items-center justify-center gap-x-2 gap-y-2 overflow-hidden
+        bg-gray-50 px-6 py-2.5\">\r\n        <div class=\"absolute left-[max(-7rem,calc(50%-52rem))]
+        top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl\" aria-hidden=\"true\">\r\n
+        \           <div class=\"aspect-[577/310] w-[36.0625rem] bg-gradient-to-r
+        from-purple-500 to-blue-500 opacity-30\" style=\"clip-path: polygon(74.8%
+        41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%,
+        50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9%
+        54.1%, 68.6% 100%, 74.8% 41.9%)\"></div>\r\n        </div>\r\n        <div
+        class=\"absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2
+        transform-gpu blur-2xl\" aria-hidden=\"true\">\r\n            <div class=\"aspect-[577/310]
+        w-[36.0625rem] bg-gradient-to-r from-blue-500 to-purple-500 opacity-30\" style=\"clip-path:
+        polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%,
+        58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9%
+        74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)\"></div>\r\n        </div>\r\n\r\n
+        \       <p class=\"text-sm leading-6 text-gray-900\">\r\n            Subscribe
+        to our newsletter to receive the latest product updates and special offers\r\n
+        \       </p>\r\n        <form action=\"/api/newsletter/widget\" method=\"post\"
+        onsubmit=\"FinvizNewsletterSubmit(event)\" class=\"relative w-[280px]\">\r\n
+        \           <div class=\"w-full\">\r\n                <label class=\"flex
+        grow flex-col\">\r\n                    <div class=\"group relative flex\">\r\n
+        \                       <input name=\"email\" value=\"\" placeholder=\"Your
+        email\" type=\"email\" maxlength=\"50\" required class=\"text-gray-900 border
+        bg-white disabled:bg-gray-50 disabled:text-gray-500 border-gray-300 focus:border-blue-400
+        disabled:hover:border-gray-100 h-8 text-sm rounded-md !pr-24 w-full grow select-text
+        appearance-none outline-none pl-2\">\r\n                    </div>\r\n                </label>\r\n
+        \           </div>\r\n            <button class=\"flex items-center font-medium
+        whitespace-nowrap focus:outline-none text-sm text-white hover:text-white active:bg-blue-600
+        disabled:bg-blue-200 disabled:hover:bg-blue-200 bg-blue-400 hover:bg-blue-500
+        h-7 px-2 rounded focus-visible:ring-2 ring-gray-200 absolute right-0.5 top-0.5
+        rounded-l-none\">\r\n                <div class=\"grow text-left\">Subscribe</div>\r\n
+        \           </button>\r\n        </form>\r\n\r\n        <button type=\"button\"
+        onclick=\"FinvizNewsletterHide()\" class=\"-m-3 p-3 focus-visible:outline-offset-[-4px]\">\r\n
+        \           <span class=\"sr-only\">Dismiss</span>\r\n            <svg class=\"h-5
+        w-5 text-gray-900\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n
+        \               <path d=\"M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75
+        0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75
+        0 00-1.06-1.06L10 8.94 6.28 5.22z\" />\r\n            </svg>\r\n        </button>\r\n
+        \   </div>\r\n          <script>\r\n            function checkMediaQuery(matches)
+        {\r\n              if (matches) {\r\n                FinvizSettings.hasUserStickyHeader
+        = true;\r\n                document.body.classList.add('is-header-sticky');\r\n
+        \             } else {\r\n                FinvizSettings.hasUserStickyHeader
+        = false;\r\n                document.body.classList.remove('is-header-sticky');\r\n
+        \             }\r\n            }\r\n            var mediaMatch = window.matchMedia('(min-width:
+        1025px) and (min-height: 650px)');\r\n            checkMediaQuery(mediaMatch.matches);\r\n
+        \           mediaMatch.addListener(function (ev) { checkMediaQuery(ev.matches)
+        });\r\n          </script>\r\n          <div id=\"notifications-container\"></div><table
+        class=\"header\">\r\n    <tr class=\"align-top\">\r\n        <td>\r\n            <table
+        class=\"header-container\">\r\n                <tr>\r\n                    <td
+        class=\"w-[30%]\">\r\n                        <table class=\"w-full\">\r\n
+        \                           <tr>\r\n                                <td class=\"h-[50px]
+        align-middle\">\r\n                                    <a href=\"/\" class=\"logo\"><svg
+        width=\"225\" height=\"32\" class=\"block\">\r\n  <use href=\"/img/logo.svg#free\"
+        class=\"dark:hidden\" />\r\n  <use href=\"/img/logo.svg#free-dark\" class=\"hidden
+        dark:block\" />\r\n</svg></a>\r\n                                </td>\r\n
+        \                           </tr>\r\n                            <tr>\r\n
+        \                               <td id=\"search\" style=\"padding-top: 7px\">\r\n
+        \                                   <div class=\"navbar-search-placeholder\">\r\n
+        \   <span class=\"icon-wrapper\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\"
+        class=\"icon\" fill=\"none\" viewBox=\"0 0 24 24\">\r\n            <path d=\"M16.9
+        15.5l4 4c.2.2.1.5 0 .7l-.7.7a.5.5 0 01-.8 0l-4-4c0-.2-.2-.3-.3-.4l-.7-1a7
+        7 0 01-11.2-4 7 7 0 1112.2 3l1 .6.5.4zM5 10a5 5 0 1010 0 5 5 0 00-10 0z\"
+        />\r\n        </svg>\r\n    </span>\r\n    <input placeholder=\"Search ticker,
+        company or profile\" class=\"search-input is-free\"/>\r\n</div>\r\n                                </td>\r\n
+        \                           </tr>\r\n                        </table>\r\n
+        \                   </td>\r\n                    <td class=\"align-bottom
+        pb-1\">\r\n                        <div id=\"microbar_position\" class=\"hidden
+        xl:flex items-center h-[37px] pl-2\"><div>\r\n                        <div
+        id=\"IC_D_88x31_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:88px;height:31px;max-height:31px\"></div>\r\n
+        \                       </div></div>\r\n                    </td>\r\n                    <td
+        class=\"relative w-[730px] text-right\">\r\n                        <div id=\"banner_position\"
+        class=\"overflow-hidden absolute top-0 right-0 w-full h-24\">\r\n                        <div
+        id=\"IC_D_728x90_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:728px;height:90px;max-height:90px\"></div>\r\n
+        \                       </div>\r\n                    </td>\r\n                </tr>\r\n
+        \           </table>\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td
+        class=\"w-[994px] leading-none\" style=\"font-size:0\">\r\n            <img
+        src=\"/gfx/nic2x2.gif\" class=\"w-[994px] h-px\" alt=\"\">\r\n        </td>\r\n
+        \   </tr>\r\n</table>\r\n            <table class=\"navbar\">\r\n                <tr>\r\n
+        \                   <td class=\"h-[30px]\">\r\n                        <table
+        class=\"header-container\">\r\n                            <tr><td><a class=\"nav-link
+        \ is-first\" href=\"/\">Home</a></td><td><a class=\"nav-link \" href=\"/news.ashx\">News</a></td><td><a
+        class=\"nav-link is-active\" href=\"/screener.ashx\">Screener</a></td><td><a
+        class=\"nav-link \" href=\"/map.ashx\">Maps</a></td><td><a class=\"nav-link
+        \" href=\"/groups.ashx\">Groups</a></td><td><a class=\"nav-link \" href=\"/portfolio.ashx\">Portfolio</a></td><td><a
+        class=\"nav-link \" href=\"/insidertrading.ashx\">Insider</a></td><td><a class=\"nav-link
+        \" href=\"/futures.ashx\">Futures</a></td><td><a class=\"nav-link \" href=\"/forex.ashx\">Forex</a></td><td><a
+        class=\"nav-link \" href=\"/crypto.ashx\">Crypto</a></td><td><a class=\"nav-link
+        \" href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=main-navbar-backtests\">Backtests</a></td><td><a
+        class=\"nav-link  is-elite\" href=\"/elite.ashx\">Elite</a></td><td class=\"w-full
+        relative\"><div class=\"absolute bottom-0 left-0 right-0 top-0\"><div id=\"time\"
+        class=\"pr-1\"></div></div></td>\r\n                    <td class=\"nav relative\">\r\n
+        \       <a data-testid=\"chart-layout-theme\" href=\"#\" class=\"!flex !bg-transparent
+        !border-b-0 mt-1 !py-0 !px-1\" style='border-left: 1px solid #444a57' title=\"Toggle
+        Light/Dark mode\" onclick=\"setChartThemeCookie('light', true)\">\r\n            <div
+        class='relative box-content flex rounded-full w-10 h-5 border border-gray-750
+        bg-gray-800 text-white justify-end'>\r\n                <div class='box-border
+        w-1/2 rounded-full p-px border border-gray-800 bg-[#4c5261] flex justify-center
+        items-center'>\r\n                    <svg width=\"16\" height=\"16\" class=\"fill-current
+        text-white inline-block -ml-px\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#moonOutlined\"/>\r\n</svg>\r\n
+        \               </div>\r\n            </div>\r\n            <span class='ml-1
+        select-none font-medium text-xs text-white'>Theme</span>\r\n        </a>\r\n
+        \   </td>\r\n    \r\n                <td>\r\n                    <a href=\"/help/screener.ashx\"
+        class=\"nav-link is-help\" style=\"border-left: 1px solid #444a57\"><span
+        class=\"fa fa-question-circle\"></span>Help</a>\r\n                </td>\r\n
+        \               <td><a href=\"/login.ashx\" class=\"nav-link sign-in\">Login</a></td>\r\n
+        \               <td><a href=\"/register.ashx\" class=\"nav-link sign-up\">Register</a></td>\r\n
+        \           \r\n                            </tr>\r\n                        </table>\r\n
+        \                   </td>\r\n                </tr>\r\n            </table>\r\n
+        \       \r\n          <script>\r\n            function reloadPage () { location.reload()
+        }\r\n            function setChartThemeCookie(chartsTheme) {\r\n              fetch('/api/set_cookie.ashx?cookie=chartsTheme&value='
+        + chartsTheme ).catch(function(){}).then(function(){\r\n                window.gtag
+        && window.gtag('event', 'click', { event_category: 'theme', event_label: 'toggle',
+        value: chartsTheme, event_callback: reloadPage });\r\n                setTimeout(reloadPage,1000);\r\n
+        \             })\r\n            }\r\n          </script><div class=\"content
+        \"><table cellpadding=\"0\" class=\"fv-container is-tight\"><tr>\n<td>\n<div
+        id=\"screener-react\"></div>\n<table id=\"filter-table-top\" class=\"screener-groups_table-filter
+        filter-table-filters\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"
+        border=\"0\">\n<tr>\n<td><img class=\"w-1.5 h-1.5\" src=\"gfx/nic2x2.gif\"
+        alt=\"\" border=\"0\"></td>\n<td align=\"center\" width=\"15%\">\n<select
+        id=\"screenerPresetsSelect\" style=\"width:100%;\" class=\"fv-select body-combo-text\"
+        onchange='ScreenerPresetsChange(value,\"v=111&s=ta_mostactive&o=-relativevolume\")'>\n<option>My
+        Presets</option>\n<option value=\"__save_screen\">-Save Screen</option>\n<option
+        value=\"__edit_screens\">-Edit Screens</option>\n</select>\n</td>\n<td class=\"screener-groups_filter-label
+        text-right\" width=\"6%\">\n<span class=\"body-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Order
+        by] body=[<table width=300><tr><td class='tooltip_tab'>Select the criteria
+        by which the output information will be sorted. The order settings apply to
+        all views. Use the <b>ascending</b> and <b>descending</b> option to invert
+        the current order.<br><br> TIP: In table views you can click on top of a column
+        to sort the table by the underlying values.</td></tr></table>] delay=[500]\">Order
+        by</span></td>\n<td align=\"left\" width=\"20%\" class=\"pl-1\">\n<select
+        id=\"orderSelect\" style=\"width:100%;\" class=\"body-combo-text fv-select\"
+        onchange='window.location=document.getElementById(\"orderSelect\").value'>\n<option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-sigrow\">Signal</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-ticker\">Ticker</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-tickersfilter\">Tickers Input
+        Filter</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-company\">Company</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-sector\">Sector</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-industry\">Industry</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-country\">Country</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-index\">Index</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-marketcap\">Market Cap.</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-pe\">Price/Earnings</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-forwardpe\">Forward Price/Earnings</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-peg\">PEG (Price/Earnings/Growth)</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-ps\">Price/Sales</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-pb\">Price/Book</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-pc\">Price/Cash</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-pfcf\">Price/Free Cash Flow</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-dividendyield\">Dividend Yield</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-payoutratio\">Payout Ratio</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-eps\">EPS (ttm)</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-epsyoy\">EPS growth this year</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-epsyoy1\">EPS growth next year</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-eps5years\">EPS growth past
+        5 years</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-estltgrowth\">EPS
+        growth next 5 years</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-sales5years\">Sales
+        growth past 5 years</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-epsqoq\">EPS
+        growth qtr over qtr</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-salesqoq\">Sales
+        growth qtr over qtr</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-epssurprise\">EPS
+        Surprise</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-revenuesurprise\">Revenue
+        Surprise</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-sharesoutstanding2\">Shares
+        Outstanding</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-sharesfloat\">Shares
+        Float</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-floatoutstandingpct\">Float/Outstanding</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-insiderown\">Insider Ownership</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-insidertrans\">Insider Transactions</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-instown\">Institutional Ownership</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-insttrans\">Institutional Transactions</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-shortinterestshare\">Short
+        Interest Share</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-shortinterestratio\">Short
+        Interest Ratio</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-shortInterest\">Short
+        Interest</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-earningsdate\">Earnings
+        Date</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-news_date\">Latest
+        News</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-roa\">Return
+        on Assets</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-roe\">Return
+        on Equity</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-roi\">Return
+        on Investment</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-curratio\">Current
+        Ratio</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-quickratio\">Quick
+        Ratio</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-ltdebteq\">LT
+        Debt/Equity</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-debteq\">Total
+        Debt/Equity</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-grossmargin\">Gross
+        Margin</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-opermargin\">Operating
+        Margin</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-netmargin\">Net
+        Profit Margin</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-recom\">Analyst
+        Recommendation</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-perf1w\">Performance
+        (Week)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-perf4w\">Performance
+        (Month)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-perf13w\">Performance
+        (Quarter)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-perf26w\">Performance
+        (Half Year)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-perf52w\">Performance
+        (Year)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-perfytd\">Performance
+        (Year To Date)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-beta\">Beta</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-averagetruerange\">Average
+        True Range</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-volatility1w\">Volatility
+        (Week)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-volatility4w\">Volatility
+        (Month)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-sma20\">20-Day
+        SMA (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-sma50\">50-Day
+        SMA (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-sma200\">200-Day
+        SMA (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-high50d\">50-Day
+        High (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-low50d\">50-Day
+        Low (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-high52w\">52-Week
+        High (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-low52w\">52-Week
+        Low (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-highat\">All-Time
+        High (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-lowat\">All-Time
+        Low (Relative)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-rsi\">Relative
+        Strength Index (14)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-averagevolume\">Average
+        Volume (3 Month)</option><option selected=\"selected\" value=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume\">Relative
+        Volume</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-change\">Change</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-changeopen\">Change from Open</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-gap\">Gap</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-volume\">Volume</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-open\">Open</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-high\">High</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-low\">Low</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-price\">Price</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-targetprice\">Target Price</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-ipodate\">IPO Date</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-book\">Book value per share</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-cashPerShare\">Cash per share</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-dividend\">Dividend</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-employees\">Employees</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-estQ1\">EPS estimate next quarter</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-income\">Income</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-prevclose\">Previous Close</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-sales\">Sales</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-optionable\">Optionable</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-shortable\">Shortable</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.category\">ETF - Single Category</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.tags\">ETF - Tags</option><option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.totalholdings\">ETF - Total
+        Holdings</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.assetsundermanagement\">ETF
+        - Assets Under Management</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.netflows1monthpct\">ETF
+        - Net Fund Flows% (1 Month)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.netflows3monthpct\">ETF
+        - Net Fund Flows% (3 Month)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.netflowsytdpct\">ETF
+        - Net Fund Flows% (YTD)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.return1year\">ETF
+        - Annualized Return (1 Year)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.return3year\">ETF
+        - Annualized Return (3 Year)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.return5year\">ETF
+        - Annualized Return (5 Year)</option><option value=\"screener.ashx?v=111&s=ta_mostactive&o=-e.netexpenseratio\">ETF
+        - Net Expense Ratio</option></select>\n</td>\n<td align=\"left\" width=\"6%\"
+        class=\"pl-1\">\n<select id=\"orderDirSelect\" style=\"width: 100%;\" class=\"body-combo-text
+        fv-select\" onchange='window.location=document.getElementById(\"orderDirSelect\").value'>\n<option
+        value=\"screener.ashx?v=111&s=ta_mostactive&o=relativevolume\">Asc</option><option
+        selected=\"selected\" value=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume\">Desc</option></select>\n</td>\n<td
+        class=\"screener-groups_filter-label text-right\" width=\"6%\">\n<span class=\"body-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Signal] body=[<table width=300><tr><td class='tooltip_tab'>You can
+        screen the stocks by signal - an event, by which traders usually enter or
+        exit positions.<br><br><b>Most Active: </b>Stocks with highest trading volume
+        today.</td></tr></table>] delay=[500]\">Signal</span></td>\n<td align=\"left\"
+        width=\"15%\" class=\"pl-1\">\n<select id=\"signalSelect\" style=\"width:
+        100%;\"  class=\"fv-select body-combo-text-h is-highlight\" onchange='window.location=document.getElementById(\"signalSelect\").value'>\n<option
+        value=\"screener.ashx?v=111&o=-relativevolume\">None (all stocks)</option><option
+        value=\"screener.ashx?v=111&s=ta_topgainers&o=-relativevolume\">Top Gainers</option><option
+        value=\"screener.ashx?v=111&s=ta_toplosers&o=-relativevolume\">Top Losers</option><option
+        value=\"screener.ashx?v=111&s=ta_newhigh&o=-relativevolume\">New High</option><option
+        value=\"screener.ashx?v=111&s=ta_newlow&o=-relativevolume\">New Low</option><option
+        value=\"screener.ashx?v=111&s=ta_mostvolatile&o=-relativevolume\">Most Volatile</option><option
+        selected=\"selected\" value=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume\">Most
+        Active</option><option value=\"screener.ashx?v=111&s=ta_unusualvolume&o=-relativevolume\">Unusual
+        Volume</option><option value=\"screener.ashx?v=111&s=ta_overbought&o=-relativevolume\">Overbought</option><option
+        value=\"screener.ashx?v=111&s=ta_oversold&o=-relativevolume\">Oversold</option><option
+        value=\"screener.ashx?v=111&s=n_downgrades&o=-relativevolume\">Downgrades</option><option
+        value=\"screener.ashx?v=111&s=n_upgrades&o=-relativevolume\">Upgrades</option><option
+        value=\"screener.ashx?v=111&s=n_earningsbefore&o=-relativevolume\">Earnings
+        Before</option><option value=\"screener.ashx?v=111&s=n_earningsafter&o=-relativevolume\">Earnings
+        After</option><option value=\"screener.ashx?v=111&s=it_latestbuys&o=-relativevolume\">Recent
+        Insider Buying</option><option value=\"screener.ashx?v=111&s=it_latestsales&o=-relativevolume\">Recent
+        Insider Selling</option><option value=\"screener.ashx?v=111&s=n_majornews&o=-relativevolume\">Major
+        News</option><option value=\"screener.ashx?v=111&s=ta_p_horizontal&o=-relativevolume\">Horizontal
+        S/R</option><option value=\"screener.ashx?v=111&s=ta_p_tlresistance&o=-relativevolume\">TL
+        Resistance</option><option value=\"screener.ashx?v=111&s=ta_p_tlsupport&o=-relativevolume\">TL
+        Support</option><option value=\"screener.ashx?v=111&s=ta_p_wedgeup&o=-relativevolume\">Wedge
+        Up</option><option value=\"screener.ashx?v=111&s=ta_p_wedgedown&o=-relativevolume\">Wedge
+        Down</option><option value=\"screener.ashx?v=111&s=ta_p_wedgeresistance&o=-relativevolume\">Triangle
+        Ascending</option><option value=\"screener.ashx?v=111&s=ta_p_wedgesupport&o=-relativevolume\">Triangle
+        Descending</option><option value=\"screener.ashx?v=111&s=ta_p_wedge&o=-relativevolume\">Wedge</option><option
+        value=\"screener.ashx?v=111&s=ta_p_channelup&o=-relativevolume\">Channel Up</option><option
+        value=\"screener.ashx?v=111&s=ta_p_channeldown&o=-relativevolume\">Channel
+        Down</option><option value=\"screener.ashx?v=111&s=ta_p_channel&o=-relativevolume\">Channel</option><option
+        value=\"screener.ashx?v=111&s=ta_p_doubletop&o=-relativevolume\">Double Top</option><option
+        value=\"screener.ashx?v=111&s=ta_p_doublebottom&o=-relativevolume\">Double
+        Bottom</option><option value=\"screener.ashx?v=111&s=ta_p_multipletop&o=-relativevolume\">Multiple
+        Top</option><option value=\"screener.ashx?v=111&s=ta_p_multiplebottom&o=-relativevolume\">Multiple
+        Bottom</option><option value=\"screener.ashx?v=111&s=ta_p_headandshoulders&o=-relativevolume\">Head
+        & Shoulders</option><option value=\"screener.ashx?v=111&s=ta_p_headandshouldersinv&o=-relativevolume\">Head
+        & Shoulders Inverse</option></select>\n</td>\n<td class=\"screener-groups_filter-label
+        text-right\" width=\"6%\">\n<span class=\"body-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Tickers]
+        body=[<table width=300><tr><td class='tooltip_tab'>To screen through a selected
+        set of stocks, you can enter one or more tickers directly, such as 'MSFT,GOOG,AAPL'.
+        The screening process will run only on the specified stocks. No input ticker(s)
+        equals all stocks. The <b>open in screener</b> option in the <b>Search</b>,
+        will copy the listed tickers to the screener's ticker box automatically.</td></tr></table>]
+        offsetx=[-100] delay=[500]\">Tickers</span></td>\n<td align=\"left\" width=\"24%\"
+        \ class=\"pl-1\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"
+        style=\"table-layout:fixed;\">\n<tr>\n<td align=\"left\" width=\"100%\">\n<input
+        id=\"tickersInput\" class=\"fv-input body-combo-text\" style=\"width:100%\"
+        value=\"\" type=\"text\" onkeypress=\"if(event.keyCode==13){window.location='screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&t='
+        + window.FLibs.getSanitizedTicker(document.getElementById('tickersInput').value,
+        true)}\">\n</td>\n</tr>\n</table>\n</td>\n<td class=\"pl-1\">\n<button data-boxover=\"Submit
+        tickers\" class=\"screener-combo-button fv-button screener_button is-arrow\"
+        style=\"cursor:pointer\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&t='
+        +tickersInput.value\"/>\r\n    <svg width=\"16\" height=\"16\" class=\"-mx-1\">\r\n
+        \   <use href=\"/assets/dist-icons/icons.svg?rev=12#chevronRight\"/>\r\n</svg>\r\n</button></td>\n<td
+        align=\"left\" valign=\"center\" class=\"pl-2\"><a href=\"screener.ashx?v=110&s=ta_mostactive&o=-relativevolume\"
+        class=\"screener-combo-button fv-button is-small is-border screener_button
+        is-open\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Filters]
+        body=[<table width=300><tr><td class='tooltip_tab'>To optimize the screening
+        by various stock-related criteria, you can use one or more <b>Filters</b>.</td></tr></table>]
+        offsetx=[-305] delay=[500]\">Filters <svg width=\"16\" height=\"16\" class=\"ml-1
+        -mr-px\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#caretDown\"/>\r\n</svg></a></td>\n<td
+        width=\"1%\"></td></tr>\n</table>\n</td>\n</tr>\n<tr><td colspan=\"30\">\n<div
+        class=\"screener_filter-tabs-section\">\r\n    <div class=\"flex w-full items-center\">\r\n
+        \       \r\n        \r\n        <div class=\"flex-1 screener_filter-tabs-filler\"></div>\r\n
+        \   </div>\r\n    <div class=\"screener_filter-tabs-wrapper\"><div class=\"screener-tabs
+        screener_filter-tab has-badge is-selected\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-relativevolume'\">Descriptive</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&ft=2&o=-relativevolume'\">Fundamental</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&ft=3&o=-relativevolume'\">Technical</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&ft=6&o=-relativevolume'\">News</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&ft=5&o=-relativevolume'\">ETF</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&ft=4&o=-relativevolume'\">All</div>\n
+        \   </div>\r\n    <div class=\"w-full screener_filter-tabs-filler\"></div>\r\n</div></td>\n</tr>\n<tr>\n<td
+        colspan=\"30\" valign=\"middle\" align=\"center\" class=\"filters-border filter-table-filters\">\n<div
+        class=\"screener-groups_settings-table-wrapper\">\n<form autocomplete=\"off\">\n<table
+        id=\"filter-table-filters\" class=\"screener-groups_settings-table is-dimmer-text\"
+        width=\"100%\" cellpadding=\"1\" cellspacing=\"1\" style=\"table-layout:fixed;\">\n<tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Exchange] body=[<table width=300><tr><td class='tooltip_tab'>Stock
+        Exchange at which a stock is listed.</td></tr></table>] delay=[500]\">Exchange</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_exch\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_exch\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"exch\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"exch\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"exch\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_exch\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"exch\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=exch_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"amex\">AMEX</option><option value=\"nasd\">NASDAQ</option><option
+        value=\"nyse\">NYSE</option><option value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Index] body=[<table width=300><tr><td class='tooltip_tab'>A major
+        index membership of a stock.</td></tr></table>] delay=[500]\">Index</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_idx\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_idx\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"idx\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"idx\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"idx\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_idx\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"idx\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=idx_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"sp500\">S&amp;P 500</option><option value=\"ndx\">NASDAQ 100</option><option
+        value=\"dji\">DJIA</option><option value=\"rut\">RUSSELL 2000</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Sector] body=[<table width=300><tr><td class='tooltip_tab'>The sector
+        which a stock belongs to.</td></tr></table>] delay=[500]\">Sector</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_sec\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_sec\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"sec\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"sec\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"sec\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_sec\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sec\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sec_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"basicmaterials\">Basic Materials</option><option value=\"communicationservices\">Communication
+        Services</option><option value=\"consumercyclical\">Consumer Cyclical</option><option
+        value=\"consumerdefensive\">Consumer Defensive</option><option value=\"energy\">Energy</option><option
+        value=\"financial\">Financial</option><option value=\"healthcare\">Healthcare</option><option
+        value=\"industrials\">Industrials</option><option value=\"realestate\">Real
+        Estate</option><option value=\"technology\">Technology</option><option value=\"utilities\">Utilities</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Industry] body=[<table width=300><tr><td class='tooltip_tab'>The industry
+        which a stock belongs to.</td></tr></table>] delay=[500]\">Industry</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_ind\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_ind\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"ind\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"ind\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"ind\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_ind\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"ind\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=ind_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"stocksonly\">Stocks only (ex-Funds)</option><option value=\"exchangetradedfund\">Exchange
+        Traded Fund</option><option value=\"advertisingagencies\">Advertising Agencies</option><option
+        value=\"aerospacedefense\">Aerospace &amp; Defense</option><option value=\"agriculturalinputs\">Agricultural
+        Inputs</option><option value=\"airlines\">Airlines</option><option value=\"airportsairservices\">Airports
+        &amp; Air Services</option><option value=\"aluminum\">Aluminum</option><option
+        value=\"apparelmanufacturing\">Apparel Manufacturing</option><option value=\"apparelretail\">Apparel
+        Retail</option><option value=\"assetmanagement\">Asset Management</option><option
+        value=\"automanufacturers\">Auto Manufacturers</option><option value=\"autoparts\">Auto
+        Parts</option><option value=\"autotruckdealerships\">Auto &amp; Truck Dealerships</option><option
+        value=\"banksdiversified\">Banks - Diversified</option><option value=\"banksregional\">Banks
+        - Regional</option><option value=\"beveragesbrewers\">Beverages - Brewers</option><option
+        value=\"beveragesnonalcoholic\">Beverages - Non-Alcoholic</option><option
+        value=\"beverageswineriesdistilleries\">Beverages - Wineries &amp; Distilleries</option><option
+        value=\"biotechnology\">Biotechnology</option><option value=\"broadcasting\">Broadcasting</option><option
+        value=\"buildingmaterials\">Building Materials</option><option value=\"buildingproductsequipment\">Building
+        Products &amp; Equipment</option><option value=\"businessequipmentsupplies\">Business
+        Equipment &amp; Supplies</option><option value=\"capitalmarkets\">Capital
+        Markets</option><option value=\"chemicals\">Chemicals</option><option value=\"closedendfunddebt\">Closed-End
+        Fund - Debt</option><option value=\"closedendfundequity\">Closed-End Fund
+        - Equity</option><option value=\"closedendfundforeign\">Closed-End Fund -
+        Foreign</option><option value=\"cokingcoal\">Coking Coal</option><option value=\"communicationequipment\">Communication
+        Equipment</option><option value=\"computerhardware\">Computer Hardware</option><option
+        value=\"confectioners\">Confectioners</option><option value=\"conglomerates\">Conglomerates</option><option
+        value=\"consultingservices\">Consulting Services</option><option value=\"consumerelectronics\">Consumer
+        Electronics</option><option value=\"copper\">Copper</option><option value=\"creditservices\">Credit
+        Services</option><option value=\"departmentstores\">Department Stores</option><option
+        value=\"diagnosticsresearch\">Diagnostics &amp; Research</option><option value=\"discountstores\">Discount
+        Stores</option><option value=\"drugmanufacturersgeneral\">Drug Manufacturers
+        - General</option><option value=\"drugmanufacturersspecialtygeneric\">Drug
+        Manufacturers - Specialty &amp; Generic</option><option value=\"educationtrainingservices\">Education
+        &amp; Training Services</option><option value=\"electricalequipmentparts\">Electrical
+        Equipment &amp; Parts</option><option value=\"electroniccomponents\">Electronic
+        Components</option><option value=\"electronicgamingmultimedia\">Electronic
+        Gaming &amp; Multimedia</option><option value=\"electronicscomputerdistribution\">Electronics
+        &amp; Computer Distribution</option><option value=\"engineeringconstruction\">Engineering
+        &amp; Construction</option><option value=\"entertainment\">Entertainment</option><option
+        value=\"exchangetradedfund\">Exchange Traded Fund</option><option value=\"farmheavyconstructionmachinery\">Farm
+        &amp; Heavy Construction Machinery</option><option value=\"farmproducts\">Farm
+        Products</option><option value=\"financialconglomerates\">Financial Conglomerates</option><option
+        value=\"financialdatastockexchanges\">Financial Data &amp; Stock Exchanges</option><option
+        value=\"fooddistribution\">Food Distribution</option><option value=\"footwearaccessories\">Footwear
+        &amp; Accessories</option><option value=\"furnishingsfixturesappliances\">Furnishings,
+        Fixtures &amp; Appliances</option><option value=\"gambling\">Gambling</option><option
+        value=\"gold\">Gold</option><option value=\"grocerystores\">Grocery Stores</option><option
+        value=\"healthcareplans\">Healthcare Plans</option><option value=\"healthinformationservices\">Health
+        Information Services</option><option value=\"homeimprovementretail\">Home
+        Improvement Retail</option><option value=\"householdpersonalproducts\">Household
+        &amp; Personal Products</option><option value=\"industrialdistribution\">Industrial
+        Distribution</option><option value=\"informationtechnologyservices\">Information
+        Technology Services</option><option value=\"infrastructureoperations\">Infrastructure
+        Operations</option><option value=\"insurancebrokers\">Insurance Brokers</option><option
+        value=\"insurancediversified\">Insurance - Diversified</option><option value=\"insurancelife\">Insurance
+        - Life</option><option value=\"insurancepropertycasualty\">Insurance - Property
+        &amp; Casualty</option><option value=\"insurancereinsurance\">Insurance -
+        Reinsurance</option><option value=\"insurancespecialty\">Insurance - Specialty</option><option
+        value=\"integratedfreightlogistics\">Integrated Freight &amp; Logistics</option><option
+        value=\"internetcontentinformation\">Internet Content &amp; Information</option><option
+        value=\"internetretail\">Internet Retail</option><option value=\"leisure\">Leisure</option><option
+        value=\"lodging\">Lodging</option><option value=\"lumberwoodproduction\">Lumber
+        &amp; Wood Production</option><option value=\"luxurygoods\">Luxury Goods</option><option
+        value=\"marineshipping\">Marine Shipping</option><option value=\"medicalcarefacilities\">Medical
+        Care Facilities</option><option value=\"medicaldevices\">Medical Devices</option><option
+        value=\"medicaldistribution\">Medical Distribution</option><option value=\"medicalinstrumentssupplies\">Medical
+        Instruments &amp; Supplies</option><option value=\"metalfabrication\">Metal
+        Fabrication</option><option value=\"mortgagefinance\">Mortgage Finance</option><option
+        value=\"oilgasdrilling\">Oil &amp; Gas Drilling</option><option value=\"oilgasep\">Oil
+        &amp; Gas E&amp;P</option><option value=\"oilgasequipmentservices\">Oil &amp;
+        Gas Equipment &amp; Services</option><option value=\"oilgasintegrated\">Oil
+        &amp; Gas Integrated</option><option value=\"oilgasmidstream\">Oil &amp; Gas
+        Midstream</option><option value=\"oilgasrefiningmarketing\">Oil &amp; Gas
+        Refining &amp; Marketing</option><option value=\"otherindustrialmetalsmining\">Other
+        Industrial Metals &amp; Mining</option><option value=\"otherpreciousmetalsmining\">Other
+        Precious Metals &amp; Mining</option><option value=\"packagedfoods\">Packaged
+        Foods</option><option value=\"packagingcontainers\">Packaging &amp; Containers</option><option
+        value=\"paperpaperproducts\">Paper &amp; Paper Products</option><option value=\"personalservices\">Personal
+        Services</option><option value=\"pharmaceuticalretailers\">Pharmaceutical
+        Retailers</option><option value=\"pollutiontreatmentcontrols\">Pollution &amp;
+        Treatment Controls</option><option value=\"publishing\">Publishing</option><option
+        value=\"railroads\">Railroads</option><option value=\"realestatedevelopment\">Real
+        Estate - Development</option><option value=\"realestatediversified\">Real
+        Estate - Diversified</option><option value=\"realestateservices\">Real Estate
+        Services</option><option value=\"recreationalvehicles\">Recreational Vehicles</option><option
+        value=\"reitdiversified\">REIT - Diversified</option><option value=\"reithealthcarefacilities\">REIT
+        - Healthcare Facilities</option><option value=\"reithotelmotel\">REIT - Hotel
+        &amp; Motel</option><option value=\"reitindustrial\">REIT - Industrial</option><option
+        value=\"reitmortgage\">REIT - Mortgage</option><option value=\"reitoffice\">REIT
+        - Office</option><option value=\"reitresidential\">REIT - Residential</option><option
+        value=\"reitretail\">REIT - Retail</option><option value=\"reitspecialty\">REIT
+        - Specialty</option><option value=\"rentalleasingservices\">Rental &amp; Leasing
+        Services</option><option value=\"residentialconstruction\">Residential Construction</option><option
+        value=\"resortscasinos\">Resorts &amp; Casinos</option><option value=\"restaurants\">Restaurants</option><option
+        value=\"scientifictechnicalinstruments\">Scientific &amp; Technical Instruments</option><option
+        value=\"securityprotectionservices\">Security &amp; Protection Services</option><option
+        value=\"semiconductorequipmentmaterials\">Semiconductor Equipment &amp; Materials</option><option
+        value=\"semiconductors\">Semiconductors</option><option value=\"shellcompanies\">Shell
+        Companies</option><option value=\"silver\">Silver</option><option value=\"softwareapplication\">Software
+        - Application</option><option value=\"softwareinfrastructure\">Software -
+        Infrastructure</option><option value=\"solar\">Solar</option><option value=\"specialtybusinessservices\">Specialty
+        Business Services</option><option value=\"specialtychemicals\">Specialty Chemicals</option><option
+        value=\"specialtyindustrialmachinery\">Specialty Industrial Machinery</option><option
+        value=\"specialtyretail\">Specialty Retail</option><option value=\"staffingemploymentservices\">Staffing
+        &amp; Employment Services</option><option value=\"steel\">Steel</option><option
+        value=\"telecomservices\">Telecom Services</option><option value=\"textilemanufacturing\">Textile
+        Manufacturing</option><option value=\"thermalcoal\">Thermal Coal</option><option
+        value=\"tobacco\">Tobacco</option><option value=\"toolsaccessories\">Tools
+        &amp; Accessories</option><option value=\"travelservices\">Travel Services</option><option
+        value=\"trucking\">Trucking</option><option value=\"uranium\">Uranium</option><option
+        value=\"utilitiesdiversified\">Utilities - Diversified</option><option value=\"utilitiesindependentpowerproducers\">Utilities
+        - Independent Power Producers</option><option value=\"utilitiesregulatedelectric\">Utilities
+        - Regulated Electric</option><option value=\"utilitiesregulatedgas\">Utilities
+        - Regulated Gas</option><option value=\"utilitiesregulatedwater\">Utilities
+        - Regulated Water</option><option value=\"utilitiesrenewable\">Utilities -
+        Renewable</option><option value=\"wastemanagement\">Waste Management</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Country] body=[<table width=300><tr><td class='tooltip_tab'>The country
+        where company of selected stock is based.</td></tr></table>] offsetx=[-305]
+        delay=[500]\">Country</span></td>\n<td width=\"10%\" class=\"filters-cells
+        relative\">\n\r\n                <div id=\"fsm_geo\" class=\"js-custom-modal\"
+        style=\"display: none\">\r\n                    <table class=\"screener_custom-input-table
+        is-modal\" style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_geo\" class=\"js-custom-modal-edit
+        screener-input-text h fv-input is-highlight w-full cursor-pointer pr-5 font-medium\"
+        data-filter=\"geo\" type=\"text\" value=\"\" readonly>\r\n                                <a
+        href=\"#\" class=\"edit-custom-modal-button fv-button js-custom-modal-edit
+        screener_custom-add-button\" data-filter=\"geo\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"geo\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_geo\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"geo\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=geo_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"usa\">USA</option><option value=\"notusa\">Foreign (ex-USA)</option><option
+        value=\"asia\">Asia</option><option value=\"europe\">Europe</option><option
+        value=\"latinamerica\">Latin America</option><option value=\"bric\">BRIC</option><option
+        value=\"argentina\">Argentina</option><option value=\"australia\">Australia</option><option
+        value=\"bahamas\">Bahamas</option><option value=\"belgium\">Belgium</option><option
+        value=\"benelux\">BeNeLux</option><option value=\"bermuda\">Bermuda</option><option
+        value=\"brazil\">Brazil</option><option value=\"canada\">Canada</option><option
+        value=\"caymanislands\">Cayman Islands</option><option value=\"chile\">Chile</option><option
+        value=\"china\">China</option><option value=\"chinahongkong\">China &amp;
+        Hong Kong</option><option value=\"colombia\">Colombia</option><option value=\"cyprus\">Cyprus</option><option
+        value=\"denmark\">Denmark</option><option value=\"finland\">Finland</option><option
+        value=\"france\">France</option><option value=\"germany\">Germany</option><option
+        value=\"greece\">Greece</option><option value=\"hongkong\">Hong Kong</option><option
+        value=\"hungary\">Hungary</option><option value=\"iceland\">Iceland</option><option
+        value=\"india\">India</option><option value=\"indonesia\">Indonesia</option><option
+        value=\"ireland\">Ireland</option><option value=\"israel\">Israel</option><option
+        value=\"italy\">Italy</option><option value=\"japan\">Japan</option><option
+        value=\"kazakhstan\">Kazakhstan</option><option value=\"luxembourg\">Luxembourg</option><option
+        value=\"malaysia\">Malaysia</option><option value=\"malta\">Malta</option><option
+        value=\"mexico\">Mexico</option><option value=\"monaco\">Monaco</option><option
+        value=\"netherlands\">Netherlands</option><option value=\"newzealand\">New
+        Zealand</option><option value=\"norway\">Norway</option><option value=\"panama\">Panama</option><option
+        value=\"peru\">Peru</option><option value=\"philippines\">Philippines</option><option
+        value=\"portugal\">Portugal</option><option value=\"russia\">Russia</option><option
+        value=\"singapore\">Singapore</option><option value=\"southafrica\">South
+        Africa</option><option value=\"southkorea\">South Korea</option><option value=\"spain\">Spain</option><option
+        value=\"sweden\">Sweden</option><option value=\"switzerland\">Switzerland</option><option
+        value=\"taiwan\">Taiwan</option><option value=\"turkey\">Turkey</option><option
+        value=\"unitedarabemirates\">United Arab Emirates</option><option value=\"unitedkingdom\">United
+        Kingdom</option><option value=\"uruguay\">Uruguay</option><option value=\"modal\">Custom
+        (Elite only)</option></select>\n</td>\n</tr><tr>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Market
+        Capitalization] body=[<table width=300><tr><td class='tooltip_tab'>Equals
+        The total dollar market value of all of a company's outstanding shares.</td></tr></table>]
+        delay=[500]\">Market Cap.</span></td>\n<td width=\"10%\" class=\"filters-cells
+        relative\">\n<select id=\"fs_cap\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"cap\"
+        data-url=\"v=111&s=ta_mostactive&o=-relativevolume\" data-url-selected=\"v=111&s=ta_mostactive&f=cap_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"mega\">Mega ($200bln and more)</option><option value=\"large\">Large
+        ($10bln to $200bln)</option><option value=\"mid\">Mid ($2bln to $10bln)</option><option
+        value=\"small\">Small ($300mln to $2bln)</option><option value=\"micro\">Micro
+        ($50mln to $300mln)</option><option value=\"nano\">Nano (under $50mln)</option><option
+        value=\"largeover\">+Large (over $10bln)</option><option value=\"midover\">+Mid
+        (over $2bln)</option><option value=\"smallover\">+Small (over $300mln)</option><option
+        value=\"microover\">+Micro (over $50mln)</option><option value=\"largeunder\">-Large
+        (under $200bln)</option><option value=\"midunder\">-Mid (under $10bln)</option><option
+        value=\"smallunder\">-Small (under $2bln)</option><option value=\"microunder\">-Micro
+        (under $300mln)</option><option value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Dividend Yield (Fiscal Year Estimate)] body=[<table width=300><tr><td
+        class='tooltip_tab'>The dividend yield equals the annual dividend per share
+        divided by the stock\u2019s price. This measurement tells what percentage
+        return a company pays out to shareholders in the form of dividends.<br><br>If
+        there is no forward dividend estimate available, trailing twelve month (TTM)
+        value is used.<br></td></tr></table>] delay=[500]\">Dividend Yield</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_fa_div\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"fa_div\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=fa_div_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"none\">None (0%)</option><option value=\"pos\">Positive (>0%)</option><option
+        value=\"high\">High (>5%)</option><option value=\"veryhigh\">Very High (>10%)</option><option
+        value=\"o1\">Over 1%</option><option value=\"o2\">Over 2%</option><option
+        value=\"o3\">Over 3%</option><option value=\"o4\">Over 4%</option><option
+        value=\"o5\">Over 5%</option><option value=\"o6\">Over 6%</option><option
+        value=\"o7\">Over 7%</option><option value=\"o8\">Over 8%</option><option
+        value=\"o9\">Over 9%</option><option value=\"o10\">Over 10%</option><option
+        value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Short Selling] body=[<table width=300><tr><td class='tooltip_tab'>The
+        amount of short-selling transactions of given stock.</td></tr></table>] delay=[500]\">Float
+        Short</span></td>\n<td width=\"10%\" class=\"filters-cells relative\">\n<select
+        id=\"fs_sh_short\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_short\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sh_short_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"low\">Low (<5%)</option><option value=\"high\">High (>20%)</option><option
+        value=\"u5\">Under 5%</option><option value=\"u10\">Under 10%</option><option
+        value=\"u15\">Under 15%</option><option value=\"u20\">Under 20%</option><option
+        value=\"u25\">Under 25%</option><option value=\"u30\">Under 30%</option><option
+        value=\"o5\">Over 5%</option><option value=\"o10\">Over 10%</option><option
+        value=\"o15\">Over 15%</option><option value=\"o20\">Over 20%</option><option
+        value=\"o25\">Over 25%</option><option value=\"o30\">Over 30%</option><option
+        value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Analyst Recommendation] body=[<table width=300><tr><td class='tooltip_tab'>An
+        outlook of a stock-market analyst on a stock.</td></tr></table>] delay=[500]\">Analyst
+        Recom.</span></td>\n<td width=\"10%\" class=\"filters-cells relative\">\n\r\n
+        \               <div id=\"fsm_an_recom\" class=\"js-custom-modal\" style=\"display:
+        none\">\r\n                    <table class=\"screener_custom-input-table
+        is-modal\" style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_an_recom\"
+        class=\"js-custom-modal-edit screener-input-text h fv-input is-highlight w-full
+        cursor-pointer pr-5 font-medium\" data-filter=\"an_recom\" type=\"text\" value=\"\"
+        readonly>\r\n                                <a href=\"#\" class=\"edit-custom-modal-button
+        fv-button js-custom-modal-edit screener_custom-add-button\" data-filter=\"an_recom\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                            <td width=\"13\">\r\n
+        \                               <a href=\"#\" class=\"js-custom-modal-hide
+        screener-input-hide screener_custom-clear-button fv-button\" data-filter=\"an_recom\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                        </tr>\r\n                    </table>\r\n
+        \               </div><select id=\"fs_an_recom\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"an_recom\"
+        data-url=\"v=111&s=ta_mostactive&o=-relativevolume\" data-url-selected=\"v=111&s=ta_mostactive&f=an_recom_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"strongbuy\">Strong Buy (1)</option><option value=\"buybetter\">Buy
+        or better</option><option value=\"buy\">Buy</option><option value=\"holdbetter\">Hold
+        or better</option><option value=\"hold\">Hold</option><option value=\"holdworse\">Hold
+        or worse</option><option value=\"sell\">Sell</option><option value=\"sellworse\">Sell
+        or worse</option><option value=\"strongsell\">Strong Sell (5)</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Optionable/Shortable] body=[<table width=300><tr><td class='tooltip_tab'>Stocks
+        with options and/or available to sell short.</td></tr></table>] delay=[500]\">Option/Short</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_sh_opt\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_sh_opt\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"sh_opt\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"sh_opt\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"sh_opt\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_sh_opt\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_opt\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sh_opt_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"option\">Optionable</option><option value=\"short\">Shortable</option><option
+        value=\"notoption\">Not optionable</option><option value=\"notshort\">Not
+        shortable</option><option value=\"optionshort\">Optionable and shortable</option><option
+        value=\"optionnotshort\">Optionable and not shortable</option><option value=\"notoptionshort\">Not
+        optionable and shortable</option><option value=\"notoptionnotshort\">Not optionable
+        and not shortable</option><option value=\"restricted\">Short Sale Restricted
+        (Elite only)</option><option value=\"restricted\">Halted (Elite only)</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n</tr><tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Earnings Date] body=[<table width=300><tr><td class='tooltip_tab'>Date
+        when company reports earnings.</td></tr></table>] delay=[500]\">Earnings Date</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_earningsdate\" class=\"js-custom-modal\" style=\"display: none\">\r\n
+        \                   <table class=\"screener_custom-input-table is-modal\"
+        style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_earningsdate\"
+        class=\"js-custom-modal-edit screener-input-text h fv-input is-highlight w-full
+        cursor-pointer pr-5 font-medium\" data-filter=\"earningsdate\" type=\"text\"
+        value=\"\" readonly>\r\n                                <a href=\"#\" class=\"edit-custom-modal-button
+        fv-button js-custom-modal-edit screener_custom-add-button\" data-filter=\"earningsdate\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                            <td width=\"13\">\r\n
+        \                               <a href=\"#\" class=\"js-custom-modal-hide
+        screener-input-hide screener_custom-clear-button fv-button\" data-filter=\"earningsdate\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                        </tr>\r\n                    </table>\r\n
+        \               </div><select id=\"fs_earningsdate\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"earningsdate\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=earningsdate_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"today\">Today</option><option value=\"todaybefore\">Today Before Market
+        Open</option><option value=\"todayafter\">Today After Market Close</option><option
+        value=\"tomorrow\">Tomorrow</option><option value=\"tomorrowbefore\">Tomorrow
+        Before Market Open</option><option value=\"tomorrowafter\">Tomorrow After
+        Market Close</option><option value=\"yesterday\">Yesterday</option><option
+        value=\"yesterdaybefore\">Yesterday Before Market Open</option><option value=\"yesterdayafter\">Yesterday
+        After Market Close</option><option value=\"nextdays5\">Next 5 Days</option><option
+        value=\"prevdays5\">Previous 5 Days</option><option value=\"thisweek\">This
+        Week</option><option value=\"nextweek\">Next Week</option><option value=\"prevweek\">Previous
+        Week</option><option value=\"thismonth\">This Month</option><option value=\"modal\">Custom
+        (Elite only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Average
+        Volume] body=[<table width=300><tr><td class='tooltip_tab'>The average number
+        of shares traded in a security per day.</td></tr></table>] offsetx=[-305]
+        delay=[500]\">Average Volume</span></td>\n<td width=\"10%\" class=\"filters-cells
+        relative\">\n<select id=\"fs_sh_avgvol\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_avgvol\"
+        data-url=\"v=111&s=ta_mostactive&o=-relativevolume\" data-url-selected=\"v=111&s=ta_mostactive&f=sh_avgvol_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u50\">Under 50K</option><option value=\"u100\">Under 100K</option><option
+        value=\"u500\">Under 500K</option><option value=\"u750\">Under 750K</option><option
+        value=\"u1000\">Under 1M</option><option value=\"o50\">Over 50K</option><option
+        value=\"o100\">Over 100K</option><option value=\"o200\">Over 200K</option><option
+        value=\"o300\">Over 300K</option><option value=\"o400\">Over 400K</option><option
+        value=\"o500\">Over 500K</option><option value=\"o750\">Over 750K</option><option
+        value=\"o1000\">Over 1M</option><option value=\"o2000\">Over 2M</option><option
+        value=\"100to500\">100K to 500K</option><option value=\"100to1000\">100K to
+        1M</option><option value=\"500to1000\">500K to 1M</option><option value=\"500to10000\">500K
+        to 10M</option><option value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Relative Volume] body=[<table width=300><tr><td class='tooltip_tab'>Ratio
+        between current volume and 3-month average, intraday adjusted.</td></tr></table>]
+        offsetx=[-305] delay=[500]\">Relative Volume</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n<select id=\"fs_sh_relvol\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_relvol\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sh_relvol_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"o10\">Over 10</option><option value=\"o5\">Over 5</option><option
+        value=\"o3\">Over 3</option><option value=\"o2\">Over 2</option><option value=\"o1.5\">Over
+        1.5</option><option value=\"o1\">Over 1</option><option value=\"o0.75\">Over
+        0.75</option><option value=\"o0.5\">Over 0.5</option><option value=\"o0.25\">Over
+        0.25</option><option value=\"u2\">Under 2</option><option value=\"u1.5\">Under
+        1.5</option><option value=\"u1\">Under 1</option><option value=\"u0.75\">Under
+        0.75</option><option value=\"u0.5\">Under 0.5</option><option value=\"u0.25\">Under
+        0.25</option><option value=\"u0.1\">Under 0.1</option><option value=\"frange\">Custom
+        (Elite only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Current
+        Volume] body=[<table width=300><tr><td class='tooltip_tab'>Number of shares
+        traded today.</td></tr></table>] offsetx=[-305] delay=[500]\">Current Volume</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_sh_curvol\" class=\"js-custom-modal\" style=\"display: none\">\r\n
+        \                   <table class=\"screener_custom-input-table is-modal\"
+        style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_sh_curvol\"
+        class=\"js-custom-modal-edit screener-input-text h fv-input is-highlight w-full
+        cursor-pointer pr-5 font-medium\" data-filter=\"sh_curvol\" type=\"text\"
+        value=\"\" readonly>\r\n                                <a href=\"#\" class=\"edit-custom-modal-button
+        fv-button js-custom-modal-edit screener_custom-add-button\" data-filter=\"sh_curvol\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                            <td width=\"13\">\r\n
+        \                               <a href=\"#\" class=\"js-custom-modal-hide
+        screener-input-hide screener_custom-clear-button fv-button\" data-filter=\"sh_curvol\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                        </tr>\r\n                    </table>\r\n
+        \               </div><select id=\"fs_sh_curvol\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_curvol\"
+        data-url=\"v=111&s=ta_mostactive&o=-relativevolume\" data-url-selected=\"v=111&s=ta_mostactive&f=sh_curvol_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><optgroup
+        label=\"Shares\"><option value=\"u50\">Under 50K</option><option value=\"u100\">Under
+        100K</option><option value=\"u500\">Under 500K</option><option value=\"u750\">Under
+        750K</option><option value=\"u1000\">Under 1M</option><option value=\"o0\">Over
+        0</option><option value=\"o50\">Over 50K</option><option value=\"o100\">Over
+        100K</option><option value=\"o200\">Over 200K</option><option value=\"o300\">Over
+        300K</option><option value=\"o400\">Over 400K</option><option value=\"o500\">Over
+        500K</option><option value=\"o750\">Over 750K</option><option value=\"o1000\">Over
+        1M</option><option value=\"o2000\">Over 2M</option><option value=\"o5000\">Over
+        5M</option><option value=\"o10000\">Over 10M</option><option value=\"o20000\">Over
+        20M</option><option value=\"o50sf\">Over 50% shares float</option><option
+        value=\"o100sf\">Over 100% shares float</option></optgroup><optgroup label=\"USD\"><option
+        value=\"uusd1000\">Under $1M</option><option value=\"uusd10000\">Under $10M</option><option
+        value=\"uusd100000\">Under $100M</option><option value=\"uusd1000000\">Under
+        $1B</option><option value=\"ousd1000\">Over $1M</option><option value=\"ousd10000\">Over
+        $10M</option><option value=\"ousd100000\">Over $100M</option><option value=\"ousd1000000\">Over
+        $1B</option></optgroup><option value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Trades] body=[<table width=300><tr><td class='tooltip_tab'>Number
+        of trades today.</td></tr></table>] delay=[500]\">Trades</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<div class=\"absolute inset-0
+        z-10\" onclick=\"window.location='elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-filter';\"></div><select
+        id=\"fs_sh_trades\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        disabled onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_trades\"
+        data-url=\"v=111&s=ta_mostactive&o=-relativevolume\" data-url-selected=\"v=111&s=ta_mostactive&f=sh_trades_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Elite only</option></select>\n</td>\n</tr><tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Price] body=[<table width=300><tr><td class='tooltip_tab'>The current
+        stock price.</td></tr></table>] delay=[500]\">Price</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n<select id=\"fs_sh_price\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_price\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sh_price_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u1\">Under $1</option><option value=\"u2\">Under $2</option><option
+        value=\"u3\">Under $3</option><option value=\"u4\">Under $4</option><option
+        value=\"u5\">Under $5</option><option value=\"u7\">Under $7</option><option
+        value=\"u10\">Under $10</option><option value=\"u15\">Under $15</option><option
+        value=\"u20\">Under $20</option><option value=\"u30\">Under $30</option><option
+        value=\"u40\">Under $40</option><option value=\"u50\">Under $50</option><option
+        value=\"o1\">Over $1</option><option value=\"o2\">Over $2</option><option
+        value=\"o3\">Over $3</option><option value=\"o4\">Over $4</option><option
+        value=\"o5\">Over $5</option><option value=\"o7\">Over $7</option><option
+        value=\"o10\">Over $10</option><option value=\"o15\">Over $15</option><option
+        value=\"o20\">Over $20</option><option value=\"o30\">Over $30</option><option
+        value=\"o40\">Over $40</option><option value=\"o50\">Over $50</option><option
+        value=\"o60\">Over $60</option><option value=\"o70\">Over $70</option><option
+        value=\"o80\">Over $80</option><option value=\"o90\">Over $90</option><option
+        value=\"o100\">Over $100</option><option value=\"1to5\">$1 to $5</option><option
+        value=\"1to10\">$1 to $10</option><option value=\"1to20\">$1 to $20</option><option
+        value=\"5to10\">$5 to $10</option><option value=\"5to20\">$5 to $20</option><option
+        value=\"5to50\">$5 to $50</option><option value=\"10to20\">$10 to $20</option><option
+        value=\"10to50\">$10 to $50</option><option value=\"20to50\">$20 to $50</option><option
+        value=\"50to100\">$50 to $100</option><option value=\"frange\">Custom (Elite
+        only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Target
+        Price] body=[<table width=300><tr><td class='tooltip_tab'>Analysts' mean target
+        price.</td></tr></table>] delay=[500]\">Target Price</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n<select id=\"fs_targetprice\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"targetprice\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=targetprice_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"a50\">50% Above Price</option><option value=\"a40\">40% Above Price</option><option
+        value=\"a30\">30% Above Price</option><option value=\"a20\">20% Above Price</option><option
+        value=\"a10\">10% Above Price</option><option value=\"a5\">5% Above Price</option><option
+        value=\"above\">Above Price</option><option value=\"below\">Below Price</option><option
+        value=\"b5\">5% Below Price</option><option value=\"b10\">10% Below Price</option><option
+        value=\"b20\">20% Below Price</option><option value=\"b30\">30% Below Price</option><option
+        value=\"b40\">40% Below Price</option><option value=\"b50\">50% Below Price</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[IPO Date] body=[<table width=300><tr><td class='tooltip_tab'>Date
+        when company had an IPO.</td></tr></table>] delay=[500]\">IPO Date</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_ipodate\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"ipodate\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=ipodate_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"today\">Today</option><option value=\"yesterday\">Yesterday</option><option
+        value=\"prevweek\">In the last week</option><option value=\"prevmonth\">In
+        the last month</option><option value=\"prevquarter\">In the last quarter</option><option
+        value=\"prevyear\">In the last year</option><option value=\"prev2yrs\">In
+        the last 2 years</option><option value=\"prev3yrs\">In the last 3 years</option><option
+        value=\"prev5yrs\">In the last 5 years</option><option value=\"more1\">More
+        than a year ago</option><option value=\"more5\">More than 5 years ago</option><option
+        value=\"more10\">More than 10 years ago</option><option value=\"more15\">More
+        than 15 years ago</option><option value=\"more20\">More than 20 years ago</option><option
+        value=\"more25\">More than 25 years ago</option><option value=\"modal\">Custom
+        (Elite only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Shares
+        Outstanding] body=[<table width=300><tr><td class='tooltip_tab'>Shares outstanding
+        represent the total number of shares issued by a corporation and held by its
+        shareholders.</td></tr></table>] delay=[500]\">Shares Outstanding</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_sh_outstanding\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_outstanding\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sh_outstanding_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u1\">Under 1M</option><option value=\"u5\">Under 5M</option><option
+        value=\"u10\">Under 10M</option><option value=\"u20\">Under 20M</option><option
+        value=\"u50\">Under 50M</option><option value=\"u100\">Under 100M</option><option
+        value=\"o1\">Over 1M</option><option value=\"o2\">Over 2M</option><option
+        value=\"o5\">Over 5M</option><option value=\"o10\">Over 10M</option><option
+        value=\"o20\">Over 20M</option><option value=\"o50\">Over 50M</option><option
+        value=\"o100\">Over 100M</option><option value=\"o200\">Over 200M</option><option
+        value=\"o500\">Over 500M</option><option value=\"o1000\">Over 1000M</option><option
+        value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Float] body=[<table width=300><tr><td class='tooltip_tab'>Float is
+        the number of stock shares that are available for trading to the public. This
+        doesn't include shares held by insiders.</td></tr></table>] delay=[500]\">Float</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_sh_float\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_float\" data-url=\"v=111&s=ta_mostactive&o=-relativevolume\"
+        data-url-selected=\"v=111&s=ta_mostactive&f=sh_float_selected_filter&o=-relativevolume\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u1\">Under 1M</option><option value=\"u5\">Under 5M</option><option
+        value=\"u10\">Under 10M</option><option value=\"u20\">Under 20M</option><option
+        value=\"u50\">Under 50M</option><option value=\"u100\">Under 100M</option><option
+        value=\"o1\">Over 1M</option><option value=\"o2\">Over 2M</option><option
+        value=\"o5\">Over 5M</option><option value=\"o10\">Over 10M</option><option
+        value=\"o20\">Over 20M</option><option value=\"o50\">Over 50M</option><option
+        value=\"o100\">Over 100M</option><option value=\"o200\">Over 200M</option><option
+        value=\"o500\">Over 500M</option><option value=\"o1000\">Over 1000M</option><option
+        value=\"u10p\">Under 10%</option><option value=\"u20p\">Under 20%</option><option
+        value=\"u30p\">Under 30%</option><option value=\"u40p\">Under 40%</option><option
+        value=\"u50p\">Under 50%</option><option value=\"u60p\">Under 60%</option><option
+        value=\"u70p\">Under 70%</option><option value=\"u80p\">Under 80%</option><option
+        value=\"u90p\">Under 90%</option><option value=\"o10p\">Over 10%</option><option
+        value=\"o20p\">Over 20%</option><option value=\"o30p\">Over 30%</option><option
+        value=\"o40p\">Over 40%</option><option value=\"o50p\">Over 50%</option><option
+        value=\"o60p\">Over 60%</option><option value=\"o70p\">Over 70%</option><option
+        value=\"o80p\">Over 80%</option><option value=\"o90p\">Over 90%</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n</tr>\n</table>\n</form>\n</div>\n</td>\n</tr>\n<tr><td>\n<div
+        id=\"screener-content\">\n<table id=\"screener-views-table\" width=\"100%\"
+        cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td width=\"100%\">\n<table
+        width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" class=\"screener-view-table
+        screener-view-switch\">\n<tr>\n<td class=\"screener-view-button is-screener
+        is-active\" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume\">Overview</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=121&s=ta_mostactive&o=-relativevolume\">Valuation</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=161&s=ta_mostactive&o=-relativevolume\">Financial</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=131&s=ta_mostactive&o=-relativevolume\">Ownership</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=141&s=ta_mostactive&o=-relativevolume\">Performance</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=171&s=ta_mostactive&o=-relativevolume\">Technical</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=181&s=ta_mostactive&o=-relativevolume\">ETF</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=191&s=ta_mostactive&o=-relativevolume\">ETF
+        Perf</a></td>\n<td class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a
+        href=\"screener.ashx?v=151&s=ta_mostactive&o=-relativevolume\">Custom</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=211&s=ta_mostactive&o=-relativevolume\">Charts</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=411&s=ta_mostactive&o=-relativevolume\">Tickers</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=311&s=ta_mostactive&o=-relativevolume\">Basic</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=351&s=ta_mostactive&o=-relativevolume\">TA</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=321&s=ta_mostactive&o=-relativevolume\">News</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=341&s=ta_mostactive&o=-relativevolume\">Snapshot</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=711&s=ta_mostactive&o=-relativevolume\">Maps</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-menu-stats\">Stats</a></td>\n</tr>\n</table>\n</td>\n</tr>\n<tr><td
+        width=\"100%\"><img src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:6px\"
+        alt=\"\" border=\"0\"></td></tr>\n<tr>\n<td width=\"100%\">\n<div class=\"relative
+        w-full min-h-6\"><div class=\"absolute bottom-0 left-0 right-0 top-0 flex
+        justify-between items-center space-x-2\">\n<div id=\"screener-total\" class=\"count-text
+        whitespace-nowrap\">#1 / 200 Total</div>\n<div id=\"screener-fullview-links\"
+        class=\"fullview-links flex space-x-3 lg:space-x-5 justify-center items-center
+        overflow-hidden text-link\"\">\n<span class=\"tab-link whitespace-nowrap\">\n<a
+        href=\"javascript:SavePortfolio(200,'v=111&s=ta_mostactive&o=-relativevolume')\"
+        class=\"tab-link\">save as portfolio</a> | \n<a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-create-alert\"
+        class=\"tab-link\">create alert</a></span>\n<span style=\"white-space: nowrap\"><span
+        class=\"count-text\"><b>Refresh:</b></span> <a href=\"/screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&ar=180\"
+        class=\"tab-link \">3min</a> | <a href=\"/screener.ashx?v=111&s=ta_mostactive&o=-relativevolume\"
+        class=\"tab-link font-bold\">off</a></div><div id=\"screener-page-select\"
+        class=\"flex justify-center items-center space-x-1\"><span class=\"screener-combo-button
+        screener_button fv-button is-arrow is-disabled\"><svg width=\"16\" height=\"16\">\r\n
+        \   <use href=\"/assets/dist-icons/icons.svg?rev=12#arrowBackward\"/>\r\n</svg></span><select
+        id=\"pageSelect\"  class=\"pages-combo fv-select\" onchange='trackPagination(\"top\");url=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=123456\";row=\"r=\"
+        + document.getElementById(\"pageSelect\").value;url=url.replace(/r=123456/,row);window.location=url;'>\n<option
+        selected=\"selected\" value=1>Page 1 / 10</option><option value=21>Page 2
+        / 10</option><option value=41>Page 3 / 10</option><option value=61>Page 4
+        / 10</option><option value=81>Page 5 / 10</option><option value=101>Page 6
+        / 10</option><option value=121>Page 7 / 10</option><option value=141>Page
+        8 / 10</option><option value=161>Page 9 / 10</option><option value=181>Page
+        10 / 10</option></select>\n<a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=21\"
+        class=\"screener-combo-button screener_button fv-button is-arrow\" onclick=\"trackPagination('top')\"><svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#arrowForward\"/>\r\n</svg></a></div>\n</div></div>\n</td>\n</tr>\n<tr><td
+        width=\"100%\" colspan=\"30\"><img src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:6px\"
+        alt=\"\" border=\"0\"></td></tr>\n<tr id=\"screener-table\"><td><table width=\"100%\"
+        cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>\n<td>\n<table class=\"styled-table-new
+        is-rounded is-tabular-nums w-full screener_table\">\n<thead>\n<tr align=\"center\"
+        valign=\"middle\">\n<th class=\"table-header cursor-pointer\" align=\"right\"
+        onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive'\">No.</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"left\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-ticker'\">Ticker</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"left\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-company'\">Company</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"left\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-sector'\">Sector</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"left\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-industry'\">Industry</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"left\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-country'\">Country</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-marketcap'\">Market
+        Cap</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-pe'\">P/E</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-price'\">Price</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-change'\">Change</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=111&s=ta_mostactive&o=-volume'\">Volume</th>\n</thead>\n<tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\"
+        \">1</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LIPO&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LIPO&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=LIPO&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Lipella Pharmaceuticals Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 7.27M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\" class=\"tab-link\">LIPO</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\" \">Lipella
+        Pharmaceuticals Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\"
+        \">7.27M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LIPO&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LIPO&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=LIPO&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Lipella Pharmaceuticals Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 7.27M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">0.96</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">136.54%</span></a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=LIPO&ty=c&p=d&b=1\" \">149,626,879</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\"
+        \">2</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=YIBO&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=YIBO&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=YIBO&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Planet Image International Ltd</b>Computer Hardware
+        <span>\u2022</span> China <span>\u2022</span> 273.17M </div>] offsetx=[100]
+        offsety=[0] delay=[0]\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\" class=\"tab-link\">YIBO</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\" \">Planet
+        Image International Ltd</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\"
+        \">Technology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\"
+        \">Computer Hardware</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\"
+        \">China</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\"
+        \">273.17M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\"
+        \">35.14</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=YIBO&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=YIBO&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=YIBO&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Planet Image International Ltd</b>Computer Hardware
+        <span>\u2022</span> China <span>\u2022</span> 273.17M </div>] offsetx=[-324]
+        offsety=[20] delay=[0]\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">5.07</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">73.93%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=YIBO&ty=c&p=d&b=1\" \">24,431,680</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\"
+        \">3</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TWOU&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TWOU&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=TWOU&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>2U Inc</b>Education & Training Services <span>\u2022</span>
+        USA <span>\u2022</span> 7.11M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" class=\"tab-link\">TWOU</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \">2U
+        Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\"
+        \">Consumer Defensive</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\"
+        \">Education & Training Services</a></td><td height=\"10\" align=\"left\"><a
+        href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \">USA</a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \">7.11M</a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \">-</a></td><td
+        height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TWOU&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TWOU&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=TWOU&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>2U Inc</b>Education & Training Services <span>\u2022</span>
+        USA <span>\u2022</span> 7.11M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">2.53</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">102.40%</span></a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=TWOU&ty=c&p=d&b=1\" \">51,306,348</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\"
+        \">4</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=CGTX&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=CGTX&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=CGTX&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Cognition Therapeutics Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 63.69M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\" class=\"tab-link\">CGTX</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\" \">Cognition
+        Therapeutics Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\"
+        \">63.69M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=CGTX&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=CGTX&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=CGTX&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Cognition Therapeutics Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 63.69M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\" \"><span class=\"color-text is-negative\">1.59</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-negative\">-32.92%</span></a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=CGTX&ty=c&p=d&b=1\" \">18,698,869</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\"
+        \">5</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TIVC&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TIVC&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=TIVC&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Tivic Health Systems Inc</b>Medical Devices <span>\u2022</span>
+        USA <span>\u2022</span> 3.87M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\" class=\"tab-link\">TIVC</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\" \">Tivic
+        Health Systems Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\"
+        \">Medical Devices</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\"
+        \">3.87M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TIVC&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=TIVC&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=TIVC&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Tivic Health Systems Inc</b>Medical Devices <span>\u2022</span>
+        USA <span>\u2022</span> 3.87M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">0.63</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">38.53%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=TIVC&ty=c&p=d&b=1\" \">60,226,282</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\" \">6</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NLSP&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NLSP&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=NLSP&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>NLS Pharmaceutics Ltd</b>Biotechnology <span>\u2022</span>
+        Switzerland <span>\u2022</span> 12.34M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\" class=\"tab-link\">NLSP</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\" \">NLS
+        Pharmaceutics Ltd</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\"
+        \">Switzerland</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\"
+        \">12.34M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NLSP&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NLSP&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=NLSP&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>NLS Pharmaceutics Ltd</b>Biotechnology <span>\u2022</span>
+        Switzerland <span>\u2022</span> 12.34M </div>] offsetx=[-324] offsety=[20]
+        delay=[0]\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\" \"><span class=\"color-text
+        is-positive\">0.26</span></a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\"
+        \"><span class=\"color-text is-positive\">39.21%</span></a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=NLSP&ty=c&p=d&b=1\" \">95,707,493</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\"
+        \">7</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LPTV&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LPTV&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=LPTV&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Loop Media Inc</b>Broadcasting <span>\u2022</span>
+        USA <span>\u2022</span> 10.51M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\" class=\"tab-link\">LPTV</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\" \">Loop
+        Media Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\"
+        \">Communication Services</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\"
+        \">Broadcasting</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\"
+        \">10.51M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LPTV&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LPTV&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=LPTV&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Loop Media Inc</b>Broadcasting <span>\u2022</span>
+        USA <span>\u2022</span> 10.51M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">0.13</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">12.82%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=LPTV&ty=c&p=d&b=1\" \">36,700,003</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\" \">8</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BMR&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BMR&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=BMR&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Beamr Imaging Ltd</b>Software - Application <span>\u2022</span>
+        Israel <span>\u2022</span> 73.94M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\" class=\"tab-link\">BMR</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\" \">Beamr
+        Imaging Ltd</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\"
+        \">Technology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\"
+        \">Software - Application</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\"
+        \">Israel</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\"
+        \">73.94M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BMR&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BMR&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=BMR&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Beamr Imaging Ltd</b>Software - Application <span>\u2022</span>
+        Israel <span>\u2022</span> 73.94M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">4.90</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">1.03%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=BMR&ty=c&p=d&b=1\" \">6,788,567</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\" \">9</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BFI&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BFI&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=BFI&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>BurgerFi International Inc</b>Restaurants <span>\u2022</span>
+        USA <span>\u2022</span> 12.82M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\" class=\"tab-link\">BFI</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\" \">BurgerFi
+        International Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\"
+        \">Consumer Cyclical</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\"
+        \">Restaurants</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\"
+        \">12.82M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BFI&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=BFI&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=BFI&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>BurgerFi International Inc</b>Restaurants <span>\u2022</span>
+        USA <span>\u2022</span> 12.82M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">0.47</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">11.29%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=BFI&ty=c&p=d&b=1\" \">27,843,015</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\" \">10</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=RNAZ&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=RNAZ&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=RNAZ&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>TransCode Therapeutics Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 2.12M </div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\" class=\"tab-link\">RNAZ</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\" \">TransCode
+        Therapeutics Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\"
+        \">2.12M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=RNAZ&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=RNAZ&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=RNAZ&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>TransCode Therapeutics Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 2.12M </div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\" \"><span class=\"color-text is-negative\">0.29</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-negative\">-1.22%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=RNAZ&ty=c&p=d&b=1\" \">6,760,969</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\" \">11</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SGMO&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SGMO&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=SGMO&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Sangamo Therapeutics Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 196.10M </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\" class=\"tab-link\">SGMO</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\" \">Sangamo
+        Therapeutics Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\"
+        \">196.10M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SGMO&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SGMO&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=SGMO&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Sangamo Therapeutics Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 196.10M </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">0.94</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">9.26%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=SGMO&ty=c&p=d&b=1\" \">32,774,017</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \">12</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NDAQ&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NDAQ&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=NDAQ&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Nasdaq Inc</b>Financial Data & Stock Exchanges <span>\u2022</span>
+        USA <span>\u2022</span> 38.94B </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" class=\"tab-link\">NDAQ</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \">Nasdaq
+        Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\"
+        \">Financial</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\"
+        \">Financial Data & Stock Exchanges</a></td><td height=\"10\" align=\"left\"><a
+        href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \">USA</a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \">38.94B</a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \">38.81</a></td><td
+        height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NDAQ&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=NDAQ&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=NDAQ&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Nasdaq Inc</b>Financial Data & Stock Exchanges <span>\u2022</span>
+        USA <span>\u2022</span> 38.94B </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">67.54</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">0.87%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=NDAQ&ty=c&p=d&b=1\" \">6,803,927</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \">13</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=VWE&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=VWE&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=VWE&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Vintage Wine Estates Inc</b>Beverages - Wineries &
+        Distilleries <span>\u2022</span> USA <span>\u2022</span> 4.37M </div>] offsetx=[100]
+        offsety=[-220] delay=[0]\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" class=\"tab-link\">VWE</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \">Vintage
+        Wine Estates Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\"
+        \">Consumer Defensive</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\"
+        \">Beverages - Wineries & Distilleries</a></td><td height=\"10\" align=\"left\"><a
+        href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \">USA</a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \">4.37M</a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \">-</a></td><td
+        height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=VWE&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=VWE&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=VWE&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Vintage Wine Estates Inc</b>Beverages - Wineries &
+        Distilleries <span>\u2022</span> USA <span>\u2022</span> 4.37M </div>] offsetx=[-324]
+        offsety=[-264] delay=[0]\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">0.07</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">4.50%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=VWE&ty=c&p=d&b=1\" \">8,299,280</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\"
+        \">14</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SERV&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SERV&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=SERV&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Serve Robotics Inc</b>Specialty Industrial Machinery
+        <span>\u2022</span> USA <span>\u2022</span> 555.02M </div>] offsetx=[100]
+        offsety=[-220] delay=[0]\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" class=\"tab-link\">SERV</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \">Serve
+        Robotics Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\"
+        \">Industrials</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\"
+        \">Specialty Industrial Machinery</a></td><td height=\"10\" align=\"left\"><a
+        href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \">USA</a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \">555.02M</a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \">-</a></td><td
+        height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SERV&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SERV&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=SERV&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Serve Robotics Inc</b>Specialty Industrial Machinery
+        <span>\u2022</span> USA <span>\u2022</span> 555.02M </div>] offsetx=[-324]
+        offsety=[-264] delay=[0]\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">14.96</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">13.16%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SERV&ty=c&p=d&b=1\" \">29,509,417</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\"
+        \">15</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=HYZN&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=HYZN&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=HYZN&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Hyzon Motors Inc</b>Auto Parts <span>\u2022</span>
+        USA <span>\u2022</span> 40.35M </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\" class=\"tab-link\">HYZN</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\" \">Hyzon
+        Motors Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\"
+        \">Consumer Cyclical</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\"
+        \">Auto Parts</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\"
+        \">40.35M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=HYZN&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=HYZN&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=HYZN&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Hyzon Motors Inc</b>Auto Parts <span>\u2022</span>
+        USA <span>\u2022</span> 40.35M </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\" \"><span class=\"color-text is-negative\">0.15</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-negative\">-6.80%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=HYZN&ty=c&p=d&b=1\" \">3,246,602</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\" \">16</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=DXCM&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=DXCM&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=DXCM&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Dexcom Inc</b>Medical Devices <span>\u2022</span> USA
+        <span>\u2022</span> 27.27B </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\" class=\"tab-link\">DXCM</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\" \">Dexcom
+        Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\"
+        \">Medical Devices</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\"
+        \">27.27B</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\"
+        \">41.93</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=DXCM&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=DXCM&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=DXCM&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Dexcom Inc</b>Medical Devices <span>\u2022</span> USA
+        <span>\u2022</span> 27.27B </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">68.05</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">6.32%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=DXCM&ty=c&p=d&b=1\" \">7,409,184</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\" \">17</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ATPC&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ATPC&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=ATPC&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Agape ATP Corp</b>Packaged Foods <span>\u2022</span>
+        Malaysia <span>\u2022</span> 7.37M </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\" class=\"tab-link\">ATPC</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\" \">Agape
+        ATP Corp</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\"
+        \">Consumer Defensive</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\"
+        \">Packaged Foods</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\"
+        \">Malaysia</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\"
+        \">7.37M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ATPC&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ATPC&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=ATPC&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Agape ATP Corp</b>Packaged Foods <span>\u2022</span>
+        Malaysia <span>\u2022</span> 7.37M </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\" \"><span class=\"color-text is-negative\">0.10</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-negative\">-11.30%</span></a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=ATPC&ty=c&p=d&b=1\" \">4,853,902</a></td></tr><tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\"
+        \">18</a></td><td height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SLRX&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SLRX&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=SLRX&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Salarius Pharmaceuticals Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 2.21M </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\" class=\"tab-link\">SLRX</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\" \">Salarius
+        Pharmaceuticals Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\"
+        \">2.21M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SLRX&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=SLRX&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=SLRX&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Salarius Pharmaceuticals Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 2.21M </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">3.69</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">15.67%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=SLRX&ty=c&p=d&b=1\" \">3,927,786</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\" \">19</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LGVN&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LGVN&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=LGVN&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Longeveron Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 25.27M </div>] offsetx=[100] offsety=[-220] delay=[0]\"><a
+        href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\" class=\"tab-link\">LGVN</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\" \">Longeveron
+        Inc</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\"
+        \">Biotechnology</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\"
+        \">25.27M</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\"
+        \">-</a></td><td height=\"10\" align=\"right\"data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LGVN&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=LGVN&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=LGVN&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Longeveron Inc</b>Biotechnology <span>\u2022</span>
+        USA <span>\u2022</span> 25.27M </div>] offsetx=[-324] offsety=[-264] delay=[0]\"><a
+        href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">3.98</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">15.69%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=LGVN&ty=c&p=d&b=1\" \">18,922,060</a></td></tr><tr class=\"styled-row
+        is-hoverable is-bordered is-rounded is-striped has-color-text\" valign=\"top\">\n<td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\" \">20</a></td><td
+        height=\"10\" align=\"left\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=IART&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=IART&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=IART&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Integra Lifesciences Holdings Corp</b>Medical Devices
+        <span>\u2022</span> USA <span>\u2022</span> 2.11B </div>] offsetx=[100] offsety=[-220]
+        delay=[0]\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\" class=\"tab-link\">IART</a></td><td
+        height=\"10\" align=\"left\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\" \">Integra
+        Lifesciences Holdings Corp</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\"
+        \">Healthcare</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\"
+        \">Medical Devices</a></td><td height=\"10\" align=\"left\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\"
+        \">USA</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\"
+        \">2.11B</a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\"
+        \"><span class=\"color-text is-negative\">52.86</span></a></td><td height=\"10\"
+        align=\"right\"data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=IART&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=IART&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=IART&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Integra Lifesciences Holdings Corp</b>Medical Devices
+        <span>\u2022</span> USA <span>\u2022</span> 2.11B </div>] offsetx=[-324] offsety=[-264]
+        delay=[0]\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\" \"><span class=\"color-text
+        is-negative\">26.80</span></a></td><td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\"
+        \"><span class=\"color-text is-negative\">-14.75%</span></a></td><td height=\"10\"
+        align=\"right\"><a href=\"quote.ashx?t=IART&ty=c&p=d&b=1\" \">2,681,416</a></td></tr></table></td></tr></table>\n</td>\n</tr>\n<tr>\n<td>\n<table
+        width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n<td
+        align=\"left\" class=\"count-text\"><b>Signal:</b> ta_mostactive</td><td align=\"right\"
+        style=\"color:#1E6DC0\"><a href=\"elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-export\"
+        class=\"tab-link\">export</a></td></tr>\n</table>\n</td>\n</tr>\n<tr><td><img
+        src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:6px\" alt=\"\"
+        border=\"0\"></td></tr>\n<tr>\n<td width=\"100%\" align=\"center\" valign=\"top\"
+        id=\"screener_pagination\" class=\"body-table screener_pagination\">\n<a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume\"
+        class=\"screener-pages is-selected\" onclick=\"trackPagination('bottom')\"><b>1</b></a><a
+        href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=21\" class=\"screener-pages\"
+        onclick=\"trackPagination('bottom')\">2</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=41\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">3</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=61\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">4</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=81\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">5</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=101\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">6</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=121\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">7</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=141\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">8</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=161\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">9</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=181\"
+        class=\"screener-pages\" onclick=\"trackPagination('bottom')\">10</a><a href=\"screener.ashx?v=111&s=ta_mostactive&o=-relativevolume&r=21\"
+        class=\"screener-pages is-next\" onclick=\"trackPagination('bottom')\"><svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#arrowForward\"/>\r\n</svg></a>\n</td>\n</tr>\n<tr><td><img
+        src=\"gfx/nic2x2.gif\" style=\"width:2px;height:10px\" alt=\"\" border=\"0\"></td></tr>\n</table>\n<div
+        id=\"IC_D_3x6_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:970px;height:315px;max-height:315px\"></div></div>\n</td></tr><!--
+        TS\nLIPO|0.96|149626879\nYIBO|5.07|24431680\nTWOU|2.53|51306348\nCGTX|1.59|18698869\nTIVC|0.63|60226282\nNLSP|0.26|95707493\nLPTV|0.13|36700003\nBMR|4.90|6788567\nBFI|0.47|27843015\nRNAZ|0.29|6760969\nSGMO|0.94|32774017\nNDAQ|67.54|6803927\nVWE|0.07|8299280\nSERV|14.96|29509417\nHYZN|0.15|3246602\nDXCM|68.05|7409184\nATPC|0.10|4853902\nSLRX|3.69|3927786\nLGVN|3.98|18922060\nIART|26.80|2681416\nTE
+        -->\n\r\n            <script type=\"text/javascript\">\r\n                ScreenerRefreshInit(0);\r\n
+        \           </script>\r\n        </table></div></div>\r\n            <div
+        class=\"footer\" style=\"margin-top: 20px;padding-bottom: 115px\">\r\n                <div
+        class=\"footer_links\">\r\n                    <a class=\"tab-link\" href=\"/affiliate.ashx\">affiliate</a>\r\n
+        \                   <span class=\"footer_dot\"> \u2022 </span>\r\n                    <a
+        class=\"tab-link\" href=\"/advertise.ashx\">advertise</a>\r\n                    \r\n
+        \                   <span class=\"footer_dot\"> \u2022 </span><a class=\"tab-link\"
+        href=\"#\" onclick=\"setChartThemeCookie('light')\">toggle light mode</a>\r\n
+        \                   <span class=\"footer_dot\"> \u2022 </span>\r\n                    <a
+        class=\"tab-link\" href=\"/contact.ashx\">contact</a>\r\n                    <span
+        class=\"footer_dot\"> \u2022 </span>\r\n                    <a class=\"tab-link\"
+        href=\"/help/screener.ashx\">help</a>\r\n                    <span class=\"footer_dot\">
+        \u2022 </span>\r\n                    <a class=\"tab-link\" href=\"/privacy.ashx\">privacy</a>
+        \   </div>\r\n    Quotes delayed 15 minutes for NASDAQ, NYSE and AMEX.\r\n
+        \   <br>\r\n    Copyright \xA9 2007-2024 FINVIZ.com. All Rights Reserved.\r\n
+        \   \r\n</div>\r\n            <script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-3261808-1\"></script>\r\n
+        \           <script>\r\n              function getSystemTheme() {\r\n                if
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        {\r\n                  return 'Dark';\r\n                }\r\n                else
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+        {\r\n                  return 'Light';\r\n                }\r\n                return
+        'No Preference';\r\n              }\r\n\r\n              var systemTheme =
+        getSystemTheme()\r\n\r\n              window.dataLayer = window.dataLayer
+        || [];\r\n              function gtag(){dataLayer.push(arguments);}\r\n              gtag('js',
+        new Date());\r\n\r\n              var fGaM = {\r\n                'dimension1':
+        'NotLoggedIn',\r\n                'dimension3': window.devicePixelRatio,\r\n
+        \               'layoutTheme': 'dark',\r\n                'systemTheme': systemTheme,\r\n
+        \               'bundle': 'legacy',\r\n                innerWidth: window.innerWidth,\r\n
+        \               innerHeight: window.innerHeight\r\n              };\r\n\r\n
+        \             gtag('config', 'G-ZT9VQEWD4N', fGaM);\r\n              \r\n
+        \           </script>\r\n            <script type=\"text/javascript\">\r\n
+        \       window._qevents = window._qevents || [];\r\n\r\n        (function()
+        {\r\n            var elem = document.createElement('script');\r\n            elem.src
+        = (document.location.protocol == \"https:\" ? \"https://secure\" : \"http://edge\")
+        + \".quantserve.com/quant.js\";\r\n            elem.async = true;\r\n            elem.type
+        = \"text/javascript\";\r\n            var scpt = document.getElementsByTagName('script')[0];\r\n
+        \           scpt.parentNode.insertBefore(elem, scpt);\r\n        })();\r\n\r\n
+        \       window._qevents.push({\r\n            qacct:\"p-c2W8esUZ6Q8oA\"\r\n
+        \       });\r\n    </script>\r\n    <noscript>\r\n        <div style=\"display:none;\">\r\n
+        \           <img src=\"//pixel.quantserve.com/pixel/p-c2W8esUZ6Q8oA.gif\"
+        border=\"0\" height=\"1\" width=\"1\" alt=\"Quantcast\"/>\r\n        </div>\r\n
+        \   </noscript><div id=\"IC_D_1x1_1\"class=\"relative overflow-hidden flex
+        items-center justify-center w-full mx-auto\"></div><div id=\"modal-elite-ad\"
+        class=\"modal-elite-ad\">\r\n                            <div id=\"modal-elite-ad_content\"
+        class=\"modal-elite-ad_content\">\r\n\t\t\t                    <button id=\"modal-elite-ad-close\"
+        type=\"button\" class=\"modal-elite-ad_close\">\xD7</button>\r\n\r\n                                <!--<div
+        id=\"modal-elite-ad-content-0\" style=\"display: none\">\r\n\t\t\t                        <h2>Ever
+        heard of Finviz*Elite?</h2>\r\n                                    <p>\r\n
+        \                                       Our premium service offers you real-time
+        quotes, advanced visualizations, technical studies, and much more.<br>\r\n
+        \                                       Become Elite and make informed financial
+        decisions.\r\n                                    </p>\r\n                                    <a
+        href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-0\"
+        id=\"modal-elite-ad-btn-0\" class=\"\" target=\"_blank\">Find out more</a>\r\n
+        \                               </div>-->\r\n\r\n                                <div
+        id=\"modal-elite-ad-content-1\" style=\"display: block\">\r\n\t\t\t                        <h2>Upgrade
+        your FINVIZ experience</h2>\r\n                                    <p>\r\n
+        \                                       Join thousands of traders who make
+        more informed decisions with&nbsp;our&nbsp;premium features.\r\n                                        Real-time
+        quotes, advanced&nbsp;visualizations, backtesting, and much more.\r\n                                    </p>\r\n
+        \                                   <a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-1\"
+        id=\"modal-elite-ad-btn-1\" class=\"modal-elite_button\" target=\"_blank\">Learn
+        more about FINVIZ*Elite</a>\r\n                                </div>\r\n
+        \                           </div>\r\n                         </div><script
+        src=\"/assets/dist-legacy/script/pv.27fa030f.js\" async></script><script defer>window.renderScriptNotLoaded();</script>\n</body>\n</html>\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8aae05b6c8d58450-YVR
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Mon, 29 Jul 2024 15:08:05 GMT
+      Request-Context:
+      - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - notice-newsletter=show; expires=Tue, 30 Jul 2024 15:08:05 GMT; domain=.finviz.com;
+        path=/; samesite=lax
+      - screenerUrl=v%3D111%26s%3Dta_mostactive%26o%3D-relativevolume; expires=Tue,
+        29 Jul 2025 15:08:05 GMT; domain=.finviz.com; path=/; samesite=lax
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - ASP.NET
+      - ARR/3.0
+      - ASP.NET
+    status:
+      code: 200
+      message: OK
+version: 1

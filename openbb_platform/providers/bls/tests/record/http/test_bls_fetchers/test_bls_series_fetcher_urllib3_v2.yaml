@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: '{"seriesid": ["APU0000701111"], "startyear": 2022, "endyear": 2022, "catalog":
+      true, "calculations": true, "annualaverage": true, "registrationkey": "MOCK_API_KEY"}'
+    headers:
+      Content-type:
+      - application/json
+    method: POST
+    uri: https://api.bls.gov/publicAPI/v2/timeseries/data/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKi5JLCktVrJSCnINDHUNDokPDnV2dnV1cXVR0lEqSi0uyM8rTg3JzE1VsjIy
+        NtZRyk0tLk5MB/KiY3WUglKLS3NKgLqruZSKU4syU4FMruhqKNvTBWisY0CoARCYGxgCAdDI5MSS
+        xJz8dKAWqKr4ksySHKB5Sm45+aVFOgrlGZklqToKiTk5CgWlRQX5xUBOQWqRQk6SnoKGiamxnplC
+        eq6mQmaeQqhesJ5CcmZJpUJiWWoR0FE6MIZCQVFmMpCbl1+iUJyaWJyfBzQOqCwlq7S4JDUF6Ayo
+        3ZkpSuhOBMqVFpWlVsbnJYI8reQMDIDSXKADAkBmKnjmpaRWKDhC7YGIuQD9hNCXmJRUlFqWmViS
+        mZ+nBDJdCRRqiUDZ1PgUoMr4ksoCkMEk+RdoRmJRaiJQG7qvU4FSQBNylUg1sVZHCeQcYExWK1Wm
+        JhYBDTAyMDICGgdUnJkPChlfQwTXDxIcLqnJqblJqUVA8bLEnFKQkIGeKVhbWn5+CTDEU4tBRtbG
+        guI6J7k0BxwQxaAIz0stiU/OSMxLTwVzDYF6dQ30DAxAmo2hHGMTIMdMCWSqgRGIDXQCiGMIlAC6
+        uCAZ3QiQLpA6sAFmeqAIBGk30bNQgmo2NtEzVaqtrdVB9yfEY0ogfxrCuVB/+uWXYfMnyCZS/Ql1
+        pIGhgRLUmUCOkakSxKFAthncqSB/WqD7E2aEoZ6lEtQAEz0zJYh2QxOwKFi3sSnQ0wQ8agDnQj3q
+        n1ySj+5PU2NC/iwGuQrdn0C9YK+BrAQ5E8g2AAWsGYRtDncoujdRTDDRA7kRoh9kEki3oTk4jsGa
+        jU0I+dLXwBLOhfoyOLWgBD0+gf40BQUjqf40BOsFFhhKMGcamIJi0AzMNjQAscEuBXLM0VMtzABD
+        PWMliHZDQ3hkGpmA0y9Ys4kpeqpF96Yv2CYIF+pNx9J0YAmnhOJHE1BgkOpHQ7BeA0OQy4whbEuQ
+        g83AbEMjuDOBHHMLdD9CDTCGx6QRJI+CdBtZgH0O1mxiAVRBwI/mcC7Uj16lOZVKKD40BhlIqg8N
+        wXoNjEH50BjCNgeFpxmYbQhOQmBHAjlmpug+hBpgrgfzITCFgsIEpNvIVA/kaLBmE/TEqoTuQ18D
+        MzgX7sM8UKleBvehiSXIZaT60BCs18AEZJ0xhG0Kcq4ZmG0ILgrAjgRygIrQfQgxwFIPph2YTkFM
+        kG5gHIKiE6zZ2BJYAKH7EKQQ4iUlkA9N4VyoD30TUaPQBD0jEvIgmGsI1gspY4whbCNQQJlB2OZI
+        HjQwNEf3INwAkGNB2s30QO4EaTa0AEcmWK8xIe/5GpjAuVDvOQLbHzlKqB4EmU2qByHuQylpjEEO
+        M4OwTZHSqIGhBboHoQZAiheQdnNwzgNpRq41QGUOAQ8aw7lQD/omFiVnKKF40AQU8qR60BCs18AI
+        FFPGELYZiG0GZYNcDnYkkGOInkRhBpjowcLH0BQRhRDPGoI0G6HnQXQf+hoguFAfuqUmFZUmFqEl
+        UyNCniwGOQrdk2C9BuBkYgxhm4DsM4OwTUGuB7sTVHkaovsSYQIoxkD6DSFMkHagh0GmGoJ1GwHD
+        Ad2bIHsg/lICedMQzoV60ysxD4svQWaS6kuIGw2MQVFmDGGDQ8sMwgZncIg7gTwjdF/CTLAExxpI
+        P6I8BXoS5A2IZhM9S6Xa2trY2liu2lpAAAAA///sqKQSvwwAAA==
+    headers:
+      APC-Route-id:
+      - _02_09v
+      Access-Control-Allow-Headers:
+      - origin,x-requested-with,access-control-request-headers,content-type,access-control-request-method,accept
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors https://*.bls.gov
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 19 Aug 2024 15:39:20 GMT
+      Pool-Info:
+      - AP02
+      Route-Id:
+      - '_t8_06v; '
+      Set-Cookie:
+      - JSESSIONID=A39A78404EF1212730033FB03DE77D91; Path=/publicAPI; Version=1; Secure;
+        Httponly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; Preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Frame-Options:
+      - ALLOW-FROM https://www.bls.gov
+    status:
+      code: 200
+      message: '200'
+version: 1

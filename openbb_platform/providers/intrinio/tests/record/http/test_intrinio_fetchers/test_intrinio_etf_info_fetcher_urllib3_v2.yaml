@@ -1,0 +1,184 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/GOVT:US?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        AP//AwC4brl6ixIAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:12 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/DJIA:US?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:12 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/SPY:US?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:12 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

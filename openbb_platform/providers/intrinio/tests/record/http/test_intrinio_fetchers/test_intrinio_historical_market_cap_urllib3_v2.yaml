@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/historical_data/AAPL/marketcap?api_key=MOCK_API_KEY&end_date=2020-12-31&frequency=weekly&page_size=10000&start_date=2020-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIANRaKmcAA3SW22pUURBE/2Wec6TvF39FJAwaNBCiaCJCyL9bx6e9SQfyEDIrTe3q6u55uXy/
+        //3049f9l+vD7dfr0/Xy8dPLBb/cXT5ehIQOlkP8cnP5c314xh9FwsySs7vkA73evKG5FppTxbJK
+        3GimeaWJjFqrJXSkyRaaOgNiktqn2nxIrjSRm1d7GM80rTSrsTOTeo8060pbgNMqz8kTPihWWsOz
+        wpxj0k2HLkoYYFR3pPakmw5ZlHAnXtkVSjIpwc+upFLgeLnbSFNvDmqAlTSrmZZVCRyx5iiveEtT
+        b6niZlYKEWYfaoNeU8XFlSTOFlNOTprX2hRInxrqz/SeKgcv5kqWA12HbPkG6WUpVO/QW745+cw4
+        l84026rbg1S1pGrSXQfl6kmzqSTVmFjKQ1dPitxTA93sqXYesioBionPppoyCJpXJaFRxOLJNGTw
+        pNd8h3RlQruODuZBa77dIk2smmii45BYaW5DWTxz7GUc3CtNWDvpjGGYPAG95ht9T8TQTKdpAE1r
+        vqFZHdlK4qk7fsiqRCMIywRTPG3Nk16VKIqefX+nO37wqkQxZIqndrePNK2Tpiqu2EHnf830mirR
+        iqbEEsrJE9tTheFxuN3niRjpLVUYnhJtE9XJE9tTxVYaWCYQM/lte6qwHCzkvFI1vVK3S8KEweEy
+        OfMy04uSbtQ280yd7NbtkPB5SXAvE4+c6fWQwD4YiE0lMhoo26qCfYZr2YXuT/GWbVUBwm1N2G09
+        PVL2VWVUgp1C1jkNmuyrCimpDqvkMYK8ryosBlYmzI9NreQ9VJrBGHhJlymCvIdKsdTwZUNMZAoV
+        76HCV4JAbSpYPtJbqKRwSRwrRf+f4s83l8e7v0+3P6/f8Onj88PD6z8AAAD//wMAyLTn230JAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 05 Nov 2024 17:50:12 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/historical_data/MSFT/marketcap?api_key=MOCK_API_KEY&end_date=2020-12-31&frequency=weekly&page_size=10000&start_date=2020-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIANlaKmcAA3SW3YpTQRCE3yXXe6T/f3wVEQm6qBBUdFeExXe3zt1M7L0JIakMdWq+rs7L5cvX
+        X0/ff379eL19+HR9ul7evnu54M3j5e1FSOhgOcQvD5ff19szPuRQZiNzE8o39PfhPzXXqiaKzHL1
+        olnNi9qDwzIsXGpUk23qTpIIZp6c8CG5qjMo1cy1ZFbTqjbCg2ox96xmXdXFSjDSmjqqKbYEtcOT
+        LWpS06GrE8vK0CKjtlEtuxNKx+FRr5zNmxPyUk5y6+l26KDeEsSxwS6dUyZQy6pG2l4lpjaoqXeq
+        HDmndasqj+qNKgtruFERHW7+VK9UWQMV5CJFw1NCfUdVSHEKbnRIkOqQjW8g5caKYHxWb3w7THSG
+        e8xn8+ZE1HD3CNGGm4eaNr4RSYe4a08J5qF7Js5cEkJjgnmIbQwyi3FbTdMANa9ODOcmkzCsz2ra
+        Z94FL+cvRjXpHVUphpmfpoHikJVvsFckZWk0OYmDV75N4KLhvWU+m1e+YQPlg1xoah+oaeVbTwAx
+        N8UVg9oPWZ2gIITPZpNp0k715sTQgJLwQxODfvDmBJmgphShTww6wNrO9j4vVJ1fUa9UwS6YbUdV
+        TU5sp0oSaKNjqXnKxHaqFC1VjsUD0mf1ShWWE3W5heg087ZTBbgNblIyJie6bxI8nWDIzHJqzVO9
+        OiFC24fgfJ3uUvdNgkrudCwT7Slv3TcJ13k82tBkmnnZu4oLMnixnnbxqea7vM8p66iJb9m7CnyA
+        FXL0yTRpsncVlChlLlWZOOG9qwSrDxV01uyUIN9RhUUMqpLwt2NUb1SJcJo0/p9Ez+r1LlEPIU2Y
+        ofEp+Y4q7zSuRGueVL1/uHx7/PP04cf1M7799ny7/f0HAAD//wMAPTPfo34JAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 05 Nov 2024 17:50:17 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

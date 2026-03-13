@@ -1,0 +1,94 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        exclude: 'construct.yaml'
+      - id: end-of-file-fixer
+        exclude_types: [css, markdown, text, svg]
+      - id: trailing-whitespace
+        exclude_types: [html, markdown, text]
+      - id: check-merge-conflict
+      - id: detect-private-key
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: "v0.12.12"
+    hooks:
+      - id: ruff
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        additional_dependencies: [tomli]
+        name: pydocstyle
+        entry: pydocstyle
+        language: python
+        types: [python]
+        files: '^(openbb_platform/|cli/).*\.py$'
+        exclude: 'tests/.*\.py|openbb_platform/test_.*\.py'
+        args: ["--config=ruff.toml"]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        entry: codespell
+        args:
+          [
+            "--ignore-words=.codespell.ignore",
+            "--quiet-level=2",
+            "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
+            "-x=.github/workflows/general-linting.yml"
+          ]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.15.0"
+    hooks:
+      - id: mypy
+        name: mypy
+        description: ""
+        entry: mypy
+        language: python
+        "types_or": [python, pyi]
+        args: ["--ignore-missing-imports", "--scripts-are-modules", "--check-untyped-defs"]
+        additional_dependencies: ["types-requests", "types-setuptools", "types-python-dateutil", "types-pytz"]
+        require_serial: true
+        exclude: 'test_.*\.py'
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+      - id: nbstripout
+        name: Strip notebooks output
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+      - id: check-generated-files
+        name: Check for generated files
+        entry: bash
+        args:
+          - -c
+          - |
+            if git ls-files | grep "^openbb_platform/core/openbb/package/" | grep -v "^openbb_platform/core/openbb/package/__init__\.py$"; then
+              echo "Error: Attempting to commit generated files in package directory. Only __init__.py should exist."
+              exit 1
+            fi
+        language: system
+        pass_filenames: false
+        always_run: true
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args:
+          [
+            "--baseline",
+            ".secrets.baseline",
+            "--exclude-files",
+            "cassettes/.*|record/.*|website/content/api/.*|openbb_platform/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_platform/extensions/charting/openbb_charting/infrastructure/.*\\.html",
+          ]
+    exclude: package.lock.json

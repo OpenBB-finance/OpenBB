@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "openbb-core"
+version = "1.6.3"
+description = "OpenBB package with core functionality."
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [
+    { include = "openbb_core" },
+    { include = "openbb" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+uvicorn = "^0.40.0"
+websockets = ">=15.0"
+pandas = ">=1.5.3"
+html5lib = "^1.1"
+fastapi = "^0.128.0"
+uuid7 = "^0.1.0"
+python-multipart = "^0.0.22"
+pydantic = "^2.12.3"
+requests = "^2.32.5"
+importlib-metadata = ">=6.8.0"
+python-dotenv = "^1.0.0"
+aiohttp = ">=3.13.3"
+ruff = "^0.13"              # Needed here to lint generated code
+pyjwt = "^2.10.1"
+
+[tool.poetry.scripts]
+openbb-build = "openbb_core.build:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,1 @@
+"""OpenBB MCP Server package."""

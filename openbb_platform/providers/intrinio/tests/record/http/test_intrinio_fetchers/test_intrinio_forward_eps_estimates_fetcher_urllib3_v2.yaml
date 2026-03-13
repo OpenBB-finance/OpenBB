@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/zacks/eps_estimates?api_key=MOCK_API_KEY&identifier=AAPL&page_size=10000
+  response:
+    body:
+      string: !!binary |
+        H4sIAHk7fWYAA+yYW0/bQBCF/0rl52S197XzRh+gVS9AVVSqqrIsxwWLxImIaUtR/juzcWyv8Wwd
+        nkoDPHnGy06SL+fsce6CbFXm86TMVsHk212QLubLpLgNJndBPg0mto4/nuujP8fBKCjz9Cq7hu7B
+        wcl7qItkntlquZxlr94WKYHeLMuh9ebL2cm7T/TDyfFZeHh0/vqziCTcTPMruEnhT3DKIhGsR8EU
+        ZkOTU27GNBoLCut+5Ks0mcW3WQLT7J2mtcyu84V9YYdf7X7JLCumyXVnZdNs1p4Ku3ZxU5TBhI2C
+        eZYUwcSQKLTX07ytLvOLy/p6tvhVX67KxG44jafZzzwp8wX8Q3Ezm40CGJFmRRmnl0lxAW9jTAmL
+        qgmxiafJ7SpOLhb16k1bULyvPf3oYX89+reYtBeT7mM6lSgmPYSJ15g4YVK1nLZlBYoTybagGAk9
+        oCgRRoZ9VM5H/ELKL6hBUqImFRJptGlRhYTXoCKio0ZRSuKgGGGUyT4opki4/6D07pISjwDFEUmB
+        VpQjqW1ZkWKt9zFihE9SzOhnKykxFmxHUvwRpBhqfpR1zG9T1ubHRWt+Xu+j1iKfISg1Znx3UAwF
+        pVBQEgWlaQfUpqxACUJrScHp5ZWUNux5Skp5Tym1c57ASTmnlG7Nz0hmXPcz2jG/Nk9YT/SYH7yJ
+        F1JDpDx5YpAUa0RliOBuQudRo6mQ1KD0X7xPywiJE5AzsDwB0xQGCuZyDJQhDOMEbfYEOHniBKYo
+        PE7gnDiqKMVdPTlZwsbBrZyk9mGim9TYwySJlPuvJ0+YwDjhYQLnxHDno13n08ZhFbZpQjMvq8ge
+        YIikGo3sKyvpzRMYKzxPyKE8Ydo8ITpxQsg29jWPUjYO+kDBNN4HZfb+SUp6jyi5c5jAMQkEE5id
+        kKJjfsJxP966X+RVlORI7FOgNIRUtX+fVG3BD0lBHz2k7Pr/ipQnTAySasOEJiqUzjkFdVSj0q2m
+        NJHGi0orjWlKMgRVtX8fFfQNhkpvfhfpo4K+egKoPHkCExWeJ3BUTp5grFWV4GEnUghHVUI3quLe
+        6Ed5iKBSOKpqf0xVwqMq4VGVeAqq8kQKDBUeKXBUeKSo/KVxP+oECvt9HrY/vvujlONmD93vkeYn
+        19/hk89+l/EyqQeu7wEAAP//AwBFKFSBCxkAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:17 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

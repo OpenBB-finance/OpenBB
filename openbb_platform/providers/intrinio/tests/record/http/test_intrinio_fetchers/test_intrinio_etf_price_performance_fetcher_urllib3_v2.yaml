@@ -1,0 +1,82 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/SPY:US/stats?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAHY7fWYAA5RV227aQBD9FeRngmZnd/bCW9U2z2lIpFRtZbmwIas6JrUNKon67z0mDSE3HAQy
+        7HrPmTlz27vsOjZNMY9NNv72Y5jNijZm44yJzRHZI5ZsmFWxzYumwXNVlEu8FmNGzmkvfpj9jG2R
+        r5q8uVlnYzWiYdbWRSpTNc8XVcyvF1V7ldexXdYVzpQJVNUsn6VVmsVqlo1pRDqwCgp0QVlnWfop
+        FlW5voeKd45FE2syWuxz7DoW9X7r7IRN8MEY8cFpq3sZHoyzOCsuGO+JvGL7GnC1KIsWe+0ahqtl
+        UabbuDGrFHvlReM3aGNt2EG3V3X8j38E7VehyJCHfKXIgjC4w+i28fQO3oBClEVWjH2d5m1VTqNy
+        2GgSi+oQ3sFfptWhokxgZ1QXY4f8Bn8Q24MmpfFhH/DtvDLuVZY3JTEFIW08MZ6MmOyGJFYHKmLn
+        AgUrxlun9BNFvWRbQeR013yIMFntkaNUTeNNmxbVAfWiJaDiRdA7cMa/h+SxSrQo8aSMqICAAjwt
+        SjDD+Y0C2W8c6eDOfPCOBPUvPfhtw3mHkkLHYErQptefwkyPZq+1EmFG5LTj0APfhtsqi+qzEpB9
+        FPULtbpnwHjH3qtgkXUyjnQPfqsWR8UoNJNywb5A8T6rR51ahcnGBoVPaGblegjuzXZATDRlDQkE
+        E3LEz4GqR69VSA8kS5ctRy8Mqzf0GkZTBCdee4c82ee4dpF3t1NPkkWL1mygwsL7d7Jsc20sW0Q8
+        sBBmWdcWsb3MxndZAnv3P7/9TfrLRXcrFtfdTTk5+XQ6mHxfErE9GQjR4PPZ8eCsXjYtDrVp+ivW
+        m2NfsbxM85Tv7o3PJ9iu0/R+OTrBKjWpwvJ84jzcOUarEnabOFuU2bhaliWc+jO9Kqo57sYN8sPp
+        x4vs799/AAAA//8DAKcBTmvMBwAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:14 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/SPY:US/analytics?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAHY7fWYAA3RQyW7DIBT8leidHeuBMcbcqrY5p1mkVG2FUExiFC+twVka5d9L3UWVqogLM29m
+        4M0ZauOc3hoH8uklgkJ7AxIoUjZGPqYpRLCxG39S/tCqgzE7VdptCTJNMSb037BqDyAZijgnEezb
+        qq+N8p0uTAEyETRLEsZjjEDvTRdeVYW21Ul9C9vGqLptfIhnAolISMhJ2XCuWHzZmV9TmiNDTpM4
+        5yK75nD2+KPnGUkpCXrGMGdMiAhq3e2MV2v9GuISJlgueEY5xjQMXak741Tbe+d1U9hmCzIXhAtK
+        yLCV8RuQZ7Bh2c+7en/D5GEVKmx0/VnrfHo3G82fe0TKp6MUcXS/mIwWXe98EHm73plukD0OtW+t
+        +svJ5TzQnV1/wXgakHW2CXA5zwTjdEIwwcA6U7QVyKavqvCp47rUTaihHpw3s9sVXC4fAAAA//8D
+        AFM/0IH5AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:14 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

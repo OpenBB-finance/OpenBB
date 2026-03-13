@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/api/series/?format=json&from=2020-01-01&ticker=%5BGDPUS%5D&to=2024-01-01&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8VU227bOBD9FUHPrsAZUry9qbETGGicxJZfFASG1mazQmXLq0uxQZB/71BKXKLt
+        4wILGDLJwzNzZnjI13jfDKc+tjCLz+Wz68bRyf1LS6ehrmm1dd+rZug+5q3rhrqn6eNr3Ff7b66N
+        bXwzv99u4ll8cN2+rc591ZxodXuqeneINn3Zuy76FN20TddFh+boOmJG57Y5DPueaM+ueW7L898v
+        v5II+9q6fwZ32nvswaco+7JzJC/+vMh2q+yGMVodiHWRWB4OlZdQ1ruj60vPiO1rPM/ybDe/u82W
+        KzuntWjeHMvKC6UodlVOlCjbjy0ZBc/vKfZ6cb3L1ovMrt1X15IUF4072peoaaOydaWXvbG/Kl+u
+        5surLL9b28W+OTVHKnl5OlT7sm98z1YUfbfdzH/PPHvv1PyjU/dTp2bRiqLQzlm03RBa12XrE13d
+        bVf5Yn2frfNJ6JUP49pz2fZ/kLor7Krpo/J8rknMX7WjENvVMt/dbr/kYxXRkY64Ing8XGlvq7om
+        iT7X9XrxYK/DM7EPA+Vxbf0Sv03H45v9vawH76ZHBMVkCjgDY4CDEDMEKZQUbIbIUKQMaSAZA00Q
+        R4Nc0grXqI2igZCpkIwg2mgAJA1SIdBDqTFijEMfLfweqYFTqBlSTs4oKSoJ9K9pYFJpDA00BTCo
+        n0ato8SYdLBPDOhHFU4TEU5UMAF2mUDIgZADIQdCDoYcDDkYcjDk8JDDQw4POTzkiHcOldmRIYex
+        zmtvHn+I/+v/k39Eake3eHege/w4Xtr/+EM5qlPnyJeHnX+LHi/HiiYHYbmynCWcaSZMEZwzZzky
+        y6VlIkEGUkERHDyhoCwi0RMpAS/o6AQfeUJNolJJri8CaxBKkYWwqU4kcJPyIvDKO8osMwkqpThe
+        UKANmAO3gDY1CVNKp6II3IRqrEhbjgljqbrkHe2F2nMJZZiIFKWSReC3CUVlBSZcm5TpIjDgFJnR
+        Bki0gpR/cEdHoswhtYxZ4IkSWgAvAotOXNIsdKIlo2tdBJ4lFMH3iupViqESRWBiiuxR4/OmnCr6
+        6MboakzfURAJ9ZEel5+o8KhXJS2whF4XAOI+vb09vf0A8kAW9+sGAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b7472ce30b62-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:27 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=6SdaWctDSarFpRp3ZOe8b8W%2FHu3aKTlbFaGSAwJfmjVyHKQG9D1m5FNA6bD5u6B9K5OspcfHX8oW8BMd%2FlTw%2BLg35ZFy%2BQzjF70MQIa%2Fo23Nfc6E8JtAf34yMUDZq%2FTK"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

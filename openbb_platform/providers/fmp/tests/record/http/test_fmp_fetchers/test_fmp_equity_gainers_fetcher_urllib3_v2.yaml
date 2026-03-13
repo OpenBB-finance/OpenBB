@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/biggest-gainers?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:53 GMT
+      Etag:
+      - W/"21cc-rh8dL6j43zhR0xT94nCee0/tgv8"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

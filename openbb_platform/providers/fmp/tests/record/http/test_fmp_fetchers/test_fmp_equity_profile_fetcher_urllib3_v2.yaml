@@ -1,0 +1,74 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/profile?apikey=MOCK_API_KEY&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA21WW2/bNhR+368g8rShtiLZsWM3T17SbgXWLkPS9mHYA03RFhGK1Egqqjvsv+87
+        pCTbyYBc7HP9zp1//sDYP/hl7MIf6q3VF2/ZxWZz/9vFJFEbp4QEcbZYZvmqJ9bcPclwyxsw5qs8
+        n8+u8+tiluc9fysDB6vIinzdkzT34U49q1KaMrLyWc9x3OzJw0WxXGezYjpb5lkxuBdVzy3ybLE6
+        I95LJ6QJPLKvsnm+Xlz3As9Wt3XSKlbLRbEeUPBn6aDwZeAvlrNiNr8a9IStG24On3hkXmyaRkv2
+        wYhshNM6J404EPfzw91IVk9EyXNKRV6s5wNDeWWSbD6/Xs3nRZ4vjra8aqLawBo48luK8H2r9YDl
+        0+bhbvMH+0XbLdfsQWopwkv5o9zo35StDy7ivbXGI2rH3pGus0YJP8h1cutViAaqEBr/9vKy67qM
+        UwIyZGWQK6UXTjVBWXOeIAaO2hs/YTU37Y6L0DqJb9yULHWLZx4fQlNZQ4xGOm8NQqGctwHfJizw
+        rYbghHWSO/rcG+BCSO+tU9KzzjpddmijjD1WkvUVY3a3gwmm7sk8tJhWRoJ66vSGfeTilPcaww0s
+        8PJUpm51UNOmdY31ckB4E2GdoKxsLV9jJbOOWmDPNsrd2xKSKWWPX4ZPX3kQ1YT9LDky1DhbtiL0
+        Yf8Ko1DK2IfAuPaW2DRAPqnecieZb5vGuhDlhbZtybx0zxjZHqNFjDxA5Zk7ZVu40DzsrKvhQxmh
+        25LQBWQSNtlDsLAZKk4Ote0YejQABTIbLCuVFxYDFA2XtjPacgQMLEpwagmfOGqvQkyqCZjPCTCK
+        inHPttY+UYOg71EGisRO2B793cfb2FJgS9A31FlqTf95CY8hJXEIrUdOSJUrpw0qfEDBsA2iGHdx
+        pdRwnhAp/AfcM1tjHpBe4pSKIpjEVLxoqiF1vt2O3T/dci+PyT4Gmaq6cYKXsQ8pvjPNQeemF32v
+        AnrTvyHhoSHVd9jeJcZL+Y8pfV2l4LBH2Hr6y1EuKnaJXHiknsKU32BTYWVJ1qkABTMtZU1JcbxU
+        lvmQKjdY/yS7BOUMsgG1H+U9/06T8QLU45c3LyBhJ2kgfcYQOTSEOTbEoIP+jZMm7HSLgpXALZxE
+        HZgAJ7VvkrznhyjIfaUpIw0/UHEHEGf9ktqAeiRQnwSQse1auMf0IBfhcL44yEYc1bQc+1bE1iBz
+        FLEqpz7WY4twqCDDaFGnSIwrT40DQNLRuPeLYE+jYiLOfgHGQcYQBae2Lc3kafuejREaM+If9gEk
+        nW331fmgngcSN4RHuP7/VYnocJdVisuauOE8GeqDLpVDqpjnSDJBoPKmQI8wBRy0mju0RMAqfqJa
+        ob8ob11loQhl+pI8jfmEDyqEQw5ObkbHyU8bS68MK9bXyzSvnlWSl3+3cCldYt62VDxlsDJuMSCA
+        ZxQ/3mVp6R49qtqG6sDuMnaLZTNwPcKyLgpIURmr7f4wasJ/fyA/PwzEHQ4vbMl3daPtQUqfnidX
+        +fFGx5NC5B+v8tVPbL1eTvHYGNlYKIg56v1u5NjHSNhXfvStQrrMQ2wjYExlNH67GUjf01thvciL
+        q/G61+nxM97sSPDZDuNmhOK6tqVEmfeNkw2d8cv0xrukB17WmP1oqLF3vcdivcqnxQw/x5u/4ziC
+        H3pnOzSaHJ8378LuFW0jAuZeHx5pxcDJWxZce8Iu3SuV9218FUYiaP/+8Nd/bj3dYJkKAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:47 GMT
+      Etag:
+      - W/"a99-KKuVkKEzP8x29DuTGyedUr46Q5k"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

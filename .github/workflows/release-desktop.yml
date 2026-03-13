@@ -1,0 +1,164 @@
+name: Update ODP Tag Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag name of the release to process (e.g., Open-Data-Platform-v0.6.0)"
+        required: true
+        type: string
+
+jobs:
+  update-odp-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set release tag
+        id: set_tag
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.event.inputs.tag_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download release artifacts from published release
+        run: |
+          mkdir -p artifacts
+          gh release download "${{ steps.set_tag.outputs.tag }}" --dir artifacts --repo ${{ github.repository }} --pattern "*"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Version and Tag from release
+        id: extract_version
+        run: |
+          INSTALLER_FILE=$(find ./artifacts -name "*.exe" -o -name "*.dmg" | head -n 1)
+          if [ -z "$INSTALLER_FILE" ]; then
+            echo "::error::No installer file found in artifacts."
+            exit 1
+          fi
+          VERSION=$(basename "$INSTALLER_FILE" | sed -n 's/.*_\([0-9]\+\.[0-9]\+\.[0-9]\+\)_.*/\1/p')
+          if [ -z "$VERSION" ]; then
+            echo "::error::Could not extract version from filename: $(basename "$INSTALLER_FILE")"
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "release_name=ODP Desktop v$VERSION" >> $GITHUB_OUTPUT
+          echo "versioned_tag=${{ steps.set_tag.outputs.tag }}" >> $GITHUB_OUTPUT
+
+      - name: Delete existing ODP tag and release
+        continue-on-error: true
+        run: |
+          gh release delete ODP --yes || true
+          git push origin :refs/tags/ODP || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare ODP assets and generate latest.json for ODP release
+        run: |
+          mkdir ./odp_assets
+
+          for file in $(find ./artifacts -name "*.exe"); do
+            BASENAME=$(basename "$file")
+            NEW_NAME=$(echo "$BASENAME" | sed -E 's/_[0-9]+\.[0-9]+\.[0-9]+_/_latest_/')
+            cp "$file" "./odp_assets/$NEW_NAME"
+          done
+
+          for file in $(find ./artifacts -name "*.dmg"); do
+            BASENAME=$(basename "$file")
+            NEW_NAME=$(echo "$BASENAME" | sed -E 's/_[0-9]+\.[0-9]+\.[0-9]+_/_latest_/')
+            cp "$file" "./odp_assets/$NEW_NAME"
+          done
+
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          RELEASE_NAME="${{ steps.extract_version.outputs.release_name }}"
+          VERSIONED_TAG="${{ steps.extract_version.outputs.versioned_tag }}"
+
+          cd ./odp_assets
+
+          cat << EOF > latest.json
+          {
+            "version": "$VERSION",
+            "notes": "Latest stable release - $RELEASE_NAME",
+            "pub_date": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
+            "platforms": {
+          EOF
+
+          FIRST_PLATFORM=true
+
+          WIN_EXE=$(find ../artifacts -name "*_x86_64.exe" | head -n 1)
+          if [ -n "$WIN_EXE" ]; then
+            WIN_SIG_FILE="${WIN_EXE}.sig"
+            WIN_SIG=$(cat "$WIN_SIG_FILE")
+            WIN_URL="https://github.com/${{ github.repository }}/releases/download/${VERSIONED_TAG}/$(basename "$WIN_EXE")"
+            cat << EOF >> latest.json
+              "windows-x86_64": {
+                "signature": "$WIN_SIG",
+                "url": "$WIN_URL"
+              }
+          EOF
+            FIRST_PLATFORM=false
+          fi
+
+          MAC_ARM_TAR=$(find ../artifacts -name "*_aarch64.app.tar.gz" | head -n 1)
+          if [ -n "$MAC_ARM_TAR" ]; then
+            if [ "$FIRST_PLATFORM" = false ]; then
+              echo "," >> latest.json
+            fi
+            MAC_ARM_SIG=$(cat "${MAC_ARM_TAR}.sig")
+            MAC_ARM_URL="https://github.com/${{ github.repository }}/releases/download/${VERSIONED_TAG}/$(basename "$MAC_ARM_TAR")"
+            cat << EOF >> latest.json
+              "darwin-aarch64": {
+                "signature": "$MAC_ARM_SIG",
+                "url": "$MAC_ARM_URL"
+              }
+          EOF
+            FIRST_PLATFORM=false
+          fi
+
+          MAC_X64_TAR=$(find ../artifacts -name "*_x86_64.app.tar.gz" | head -n 1)
+          if [ -n "$MAC_X64_TAR" ]; then
+            if [ "$FIRST_PLATFORM" = false ]; then
+              echo "," >> latest.json
+            fi
+            MAC_X64_SIG=$(cat "${MAC_X64_TAR}.sig")
+            MAC_X64_URL="https://github.com/${{ github.repository }}/releases/download/${VERSIONED_TAG}/$(basename "$MAC_X64_TAR")"
+            cat << EOF >> latest.json
+              "darwin-x86_64": {
+                "signature": "$MAC_X64_SIG",
+                "url": "$MAC_X64_URL"
+              }
+          EOF
+          fi
+
+          cat << EOF >> latest.json
+            }
+          }
+          EOF
+
+          echo "Generated latest.json for ODP release:"
+          cat latest.json
+
+      - name: Create ODP release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ODP
+          name: ODP Desktop (Latest Stable)
+          body: |
+            **This is the latest stable release (v${{ steps.extract_version.outputs.version }})**
+
+            This release always points to the most recent stable version.
+            For version-specific details and release notes, see: [${{ steps.extract_version.outputs.release_name }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.extract_version.outputs.versioned_tag }})
+
+            The `latest.json` file in this release is used by the auto-updater to check for new versions.
+          files: ./odp_assets/*
+          prerelease: false
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

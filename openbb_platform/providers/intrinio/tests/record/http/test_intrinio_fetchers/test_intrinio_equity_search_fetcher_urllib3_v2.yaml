@@ -1,0 +1,53 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/companies/search?active=True&api_key=MOCK_API_KEY&page_size=100&query=gold
+  response:
+    body:
+      string: !!binary |
+        H4sIAHA7fWYAA4xWa3OiSBT9KxafZ7NNd9M0842XhIig4AOztTWFSjlsFAyah5ma/77tmBnoNh3N
+        NyCevn3uueeeH8qi2myzssh3ytd/fijFUvl6fPVt/vbYm6+UL8q+WDzkNXvrRYHDnstsk7Mny4xj
+        3+51jm87dhQP2Kd1XrAvIMI9a2jf3acUjnuebU10xD4uiofjR/ana4QaWPn5pXXcmztxt4f2cb45
+        Tpvjir8o6HjVetmxq3p78/uw8mm9bkGrVEMGgQL0o6XNOehw4gXdBjucNMgyYAJ0CnQeeJXTaMoB
+        jxNz3OCOb5Kbhh9ZzQBAHRhIgJ79R8K0BX360TtwD14uWKMfMNHPH+kbx4TXammYv5xw/XJx0/m7
+        6/9pqYYNBIDmAS+0bwfglgQG4VpKjxQR/rR0+rqevcnuMArjc+2Il8BIUw1DoMbMektOmKO4JRT2
+        8I77CTmqjggWKD+o5F5fycodhN4VnENdVwXOD2un4tTHwSZZ+Q77GQsAU1U9g72Xwwbj0DmxEIwc
+        GSybQzaJArkOyZ+lPUuqTXbFEOqsbQAI9c6d2mwLWpmYY7s1hJPi+SpsiAAW5vCAnrMhJ+sk9u4b
+        6GSf1VdAY2YfSBO9o3YeuRGPZ27SQMfFLr8GGmJKRMfb1GUp7WBqBv5l71CxbmAKxJqdTJN6R5zt
+        8/Wp5GC/lOIahgaEAUn1u2kuHZDkNordU8V+aMtwIUWqLmruBRMkrdfK6qfLk4cw1pAwefUK9GNO
+        crHX3mBxNDODSxUza9M0URWpF9ApJ7g7htwS8122/TPYn+mCUALESVm99mcPUjr6rNTosnECCCgU
+        tVzVOsez4sVmvyn6V7nddVVnF3asTgwsMpJt1oDD7o7jWYN9fDpVzS7gJp/ZkqZizRA37WC4dnn3
+        aA/4xE9G5gdJ5LS24NTujoLexPKpgymfRChCUJjLNCKxfA/0zdTsX8E/Zo2lwiVw4BBucVkjrxWo
+        4OV1CA0DCdSkZICIfL8UqzJbN1tdbqsQqli01WDoyInIXnZVedFICIQEGmfBoCbc+ARR2N4FQVUu
+        qvpy1ViHRDXEjDPtu9Kq7WxeX8MHAQbVkYhczh/4HNn1bD4+dauncnlNTsWAqKIPTuYlrw/T8xt4
+        MzD7UXLmV+8iHzlRqqOZN0tdQzMUPuxQKrK0AsFA3luvesl3+z+9ld5CgxQiIm6feDDkWHLilumy
+        BzGXKBqTNQD3YIC8OA4h6nsIK7ybsRx4lmWnS4Nja+w5fktE47JYvbdZ5u0GZilQ3J40tCq+C2Y7
+        1B9J2TBzT7LF911n8P2wKxa/FeWOutIBAywACFQdtvEc84bcbTX8F09d3w2c5AO6UC/1rbvhzLYs
+        R4dCw6EuutpbBaelPBSYjj9utCVtuKoiSETC7gbEkkrJ3GXl/pqIpLFgJ0KvhtvHntTbzNDrRfEV
+        IUmHAGARGs5yV56fnzZFeU0cJQaCYu5Y5cu1wU2AeRvGrUEe3brhB+vqLNMAjAGb23/ZL/PX/bdt
+        tspP//XzfwAAAP//AwDM4r++tg8AAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:08 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

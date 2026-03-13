@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.deribit.com/api/v2/public/get_instruments?currency=any&kind=future
+  response:
+    body:
+      string: !!binary |
+        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
+        rTzqckcyXbL84z9ZbTVhBm4AAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization,User-Agent,Range,X-Requested-With,Content-Type,Partner
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1786'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 06 Jan 2025 16:43:31 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=15768000
+      Vary:
+      - Origin,Authorization,Partner
+      - accept-encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

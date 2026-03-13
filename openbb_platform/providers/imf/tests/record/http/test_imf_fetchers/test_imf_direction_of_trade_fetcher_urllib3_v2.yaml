@@ -1,0 +1,303 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IMTS/%2B/*.*.*.*/COUNTRY
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IMTS(1.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"471734","type":"sdmx_metrics"},{"id":"time_period_start","title":"1948-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-09-01","type":"sdmx_metrics"}],"id":"IMTS","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"1.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ASM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BDI"},{"value":"BEL"},{"value":"BEN"},{"value":"BFA"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BLR"},{"value":"BLZ"},{"value":"BMU"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CIV"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CSK"},{"value":"CUB"},{"value":"CUW"},{"value":"CYP"},{"value":"CZE"},{"value":"DDR"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECU"},{"value":"EGY"},{"value":"ERI"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"FIN"},{"value":"FJI"},{"value":"FLK"},{"value":"FRA"},{"value":"FRO"},{"value":"FSM"},{"value":"G001"},{"value":"G080"},{"value":"G092"},{"value":"G110"},{"value":"G163"},{"value":"G200"},{"value":"G205"},{"value":"G400"},{"value":"G505"},{"value":"G603"},{"value":"G903"},{"value":"G998"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIB"},{"value":"GIN"},{"value":"GMB"},{"value":"GNB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GRL"},{"value":"GTM"},{"value":"GUM"},{"value":"GUY"},{"value":"GX170"},{"value":"GX405"},{"value":"GX440"},{"value":"GX605"},{"value":"GX901"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KIR"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MHL"},{"value":"MKD"},{"value":"MLI"},{"value":"MLT"},{"value":"MMR"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NCL"},{"value":"NER"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NRU"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PLW"},{"value":"PNG"},{"value":"POL"},{"value":"PRK"},{"value":"PRT"},{"value":"PRY"},{"value":"PYF"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SCG"},{"value":"SDN"},{"value":"SEN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUN"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SXM"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"TGO"},{"value":"THA"},{"value":"TJK"},{"value":"TKM"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TUV"},{"value":"TX126"},{"value":"TX198"},{"value":"TX910"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"USA"},{"value":"UZB"},{"value":"VAT"},{"value":"VCT"},{"value":"VEN"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YAR"},{"value":"YEM"},{"value":"YMD"},{"value":"YUG"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF1591","test":false,"prepared":"2025-12-16T05:16:34.072054378Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:16:34 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-encoding:
+      - gzip
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      vary:
+      - accept-encoding
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 7e06e7c14cae19f49cc3c6475f9b35e9
+      x-envoy-upstream-service-time:
+      - '75'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IMTS/%2B/USA.*.*.*/INDICATOR
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IMTS(1.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"2175","type":"sdmx_metrics"},{"id":"time_period_start","title":"1948-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-09-01","type":"sdmx_metrics"}],"id":"IMTS","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"1.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"INDICATOR","include":false,"removePrefix":false,"values":[{"value":"MG_CIF_USD"},{"value":"TBG_USD"},{"value":"XG_FOB_USD"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF6665","test":false,"prepared":"2025-12-16T05:16:34.568119299Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1210'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:16:34 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 0738a84c629ce1356f550e1bd62d0c4e
+      x-envoy-upstream-service-time:
+      - '64'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IMTS/%2B/USA.XG_FOB_USD.*.*/COUNTERPART_COUNTRY
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IMTS(1.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"726","type":"sdmx_metrics"},{"id":"time_period_start","title":"1948-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-09-01","type":"sdmx_metrics"}],"id":"IMTS","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"1.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTERPART_COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BDI"},{"value":"BEL"},{"value":"BEN"},{"value":"BFA"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BLR"},{"value":"BLZ"},{"value":"BMU"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CIV"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CSK"},{"value":"CUB"},{"value":"CUW"},{"value":"CYP"},{"value":"CZE"},{"value":"DDR"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECU"},{"value":"EGY"},{"value":"ERI"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"FIN"},{"value":"FJI"},{"value":"FLK"},{"value":"FRA"},{"value":"FRO"},{"value":"FSM"},{"value":"G001"},{"value":"G080"},{"value":"G092"},{"value":"G110"},{"value":"G163"},{"value":"G200"},{"value":"G205"},{"value":"G400"},{"value":"G505"},{"value":"G603"},{"value":"G903"},{"value":"G998"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIB"},{"value":"GIN"},{"value":"GMB"},{"value":"GNB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GRL"},{"value":"GTM"},{"value":"GUM"},{"value":"GUY"},{"value":"GX170"},{"value":"GX405"},{"value":"GX440"},{"value":"GX605"},{"value":"GX901"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KIR"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MHL"},{"value":"MKD"},{"value":"MLI"},{"value":"MLT"},{"value":"MMR"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NCL"},{"value":"NER"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NRU"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PLW"},{"value":"PNG"},{"value":"POL"},{"value":"PRK"},{"value":"PRT"},{"value":"PRY"},{"value":"PYF"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SCG"},{"value":"SDN"},{"value":"SEN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUN"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SXM"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"TGO"},{"value":"THA"},{"value":"TJK"},{"value":"TKM"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TUV"},{"value":"TWN"},{"value":"TX126"},{"value":"TX399"},{"value":"TX489"},{"value":"TX598"},{"value":"TX799"},{"value":"TX884"},{"value":"TX898"},{"value":"TX899"},{"value":"TX910"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"UZB"},{"value":"VAT"},{"value":"VCT"},{"value":"VEN"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YAR"},{"value":"YEM"},{"value":"YMD"},{"value":"YUG"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF5741","test":false,"prepared":"2025-12-16T05:16:35.075876086Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:16:35 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-encoding:
+      - gzip
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      vary:
+      - accept-encoding
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - f236267040a2ba2678df373df8920f7f
+      x-envoy-upstream-service-time:
+      - '61'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IMTS/%2B/USA.XG_FOB_USD.G001.*/FREQUENCY
+  response:
+    body:
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IMTS(1.0.0)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"3","type":"sdmx_metrics"},{"id":"time_period_start","title":"1948-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-09-01","type":"sdmx_metrics"}],"id":"IMTS","name":"Data
+        Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"1.0.0","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"FREQUENCY","include":false,"removePrefix":false,"values":[{"value":"A"},{"value":"M"},{"value":"Q"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF5377","test":false,"prepared":"2025-12-16T05:16:35.744587138Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1183'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2025 05:16:35 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - b373baeb60cfcb0263dbc993297cbf97
+      x-envoy-upstream-service-time:
+      - '66'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/xml
+      Accept-Encoding:
+      - gzip, deflate, br, zstd
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/IMTS/+/USA.XG_FOB_USD.G001+G998.A?c%5BTIME_PERIOD%5D=ge:2023-01-01+le:2026-01-01&dimensionAtObservation=TIME_PERIOD&detail=full&includeHistory=false
+  response:
+    body:
+      string: <?xml version='1.0' encoding='UTF-8'?><message:StructureSpecificData
+        xmlns:metadata="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/metadata/generic"
+        xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xml="http://www.w3.org/XML/1998/namespace"
+        xmlns:ss="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data/structurespecific"
+        xmlns:ns1="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0):ObsLevelDim:TIME_PERIOD"
+        xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message
+        ../../schemas/SDMXMessage.xsd"><message:Header><message:ID>IDREF1833</message:ID><message:Test>false</message:Test><message:Prepared>2025-12-16T05:16:36.306712826Z</message:Prepared><message:Sender
+        id="unknown"/><message:Structure structureID="IMF.STA.DSD_IMTS.1.0.0" namespace="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0)"
+        dimensionAtObservation="TIME_PERIOD"><common:Structure>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IMTS(1.0.0)</common:Structure></message:Structure></message:Header><message:DataSet
+        ss:structureRef="IMF.STA.DSD_IMTS.1.0.0" action="Replace"><Group INDICATOR="XG_FOB_USD"
+        ns1:type="GROUP_INDICATOR"><Comp id="UNIT"><Value>USD</Value></Comp><Comp
+        id="TRADE_FLOW"><Value>XG</Value></Comp><Comp id="VALUATION"><Value>FOB</Value></Comp></Group><Series
+        COUNTRY="USA" INDICATOR="XG_FOB_USD" COUNTERPART_COUNTRY="G001" FREQUENCY="A"
+        OVERLAP="OL" SCALE="6"><Obs OBS_VALUE="2019551635133" DERIVATION_TYPE="M"
+        TIME_PERIOD="2023"/><Obs OBS_VALUE="2065411250609" DERIVATION_TYPE="M" TIME_PERIOD="2024"/></Series><Series
+        COUNTRY="USA" INDICATOR="XG_FOB_USD" COUNTERPART_COUNTRY="G998" FREQUENCY="A"
+        OVERLAP="OL" SCALE="6"><Obs OBS_VALUE="369756760426" DERIVATION_TYPE="M" TIME_PERIOD="2023"/><Obs
+        OBS_VALUE="371064529410" DERIVATION_TYPE="M" TIME_PERIOD="2024"/></Series></message:DataSet></message:StructureSpecificData>
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/xml
+      Date:
+      - Tue, 16 Dec 2025 05:16:36 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-encoding:
+      - gzip
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      vary:
+      - accept-encoding
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - fe8af9be0ef160165114bfc9f7924dbc
+      x-envoy-upstream-service-time:
+      - '104'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

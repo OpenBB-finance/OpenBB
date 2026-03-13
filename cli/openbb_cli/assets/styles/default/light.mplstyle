@@ -1,0 +1,95 @@
+# The cool hackerman style
+
+# LINES
+# http://matplotlib.org/api/artist_api.html#module-matplotlib.lines
+lines.linewidth: 1.1
+lines.color: 0F0F0F
+lines.linestyle: -
+lines.marker: None
+lines.markeredgewidth: 0.5
+lines.markersize: 4
+lines.dash_joinstyle: miter
+lines.dash_capstyle: butt
+lines.solid_joinstyle: miter
+lines.solid_capstyle: projecting
+lines.antialiased: True
+
+patch.edgecolor: 000000
+patch.facecolor: 822661
+patch.linewidth: 1
+
+# TEXT
+# http://matplotlib.org/api/font_manager_api.html
+font.family: sans-serif
+font.sans-serif: Consolas, Deja Vu Sans, Arial, Helvetica
+font.style: normal
+font.variant: normal
+font.weight: medium
+font.stretch: normal
+font.size: 13
+
+text.color: 0F0F0F
+
+axes.spines.left: true
+axes.spines.bottom: true
+axes.spines.top: true
+axes.spines.right: true
+axes.linewidth: 0.2
+
+axes.labelsize: small
+axes.titlelocation: left
+
+axes.facecolor: white
+axes.edgecolor: 0F0F0F
+axes.labelcolor: 0F0F0F
+axes.grid: true
+axes.grid.which: major
+
+axes.prop_cycle: cycler('color', ['254495', 'c13246', '48277c', 'e4003a', 'ef7d00', '822661', 'ffed00', '00aaff', '9b30d9', 'af005f', '5f00af', 'af87ff'])
+
+xtick.color: 0F0F0F
+ytick.color: 0F0F0F
+
+xtick.major.size: 2
+xtick.minor.size: 1
+xtick.labelsize: small
+
+ytick.major.size: 2
+ytick.minor.size: 1
+ytick.labelsize: small
+xtick.alignment: center
+
+ytick.left: False
+ytick.labelleft: False
+ytick.right: True
+ytick.labelright: True
+
+
+grid.color: 0F0F0F
+grid.linewidth: 0.4
+grid.linestyle: :
+
+legend.framealpha: 0.6
+legend.frameon: true
+legend.facecolor: white
+legend.edgecolor: white
+legend.scatterpoints: 3
+legend.fontsize: small
+legend.loc: best
+
+figure.facecolor: white
+figure.edgecolor: white
+figure.subplot.hspace: 0.2
+
+savefig.facecolor: white
+savefig.edgecolor: white
+
+### Boxplots
+boxplot.boxprops.color: 0F0F0F
+boxplot.capprops.color: 0F0F0F
+boxplot.flierprops.color: 0F0F0F
+boxplot.flierprops.markeredgecolor: 0F0F0F
+boxplot.whiskerprops.color: 0F0F0F
+boxplot.medianprops.color: 0F0F0F
+boxplot.meanprops.markeredgecolor: 0F0F0F
+boxplot.meanprops.color: 0F0F0F

@@ -1,0 +1,1 @@
+"""OpenBB Regulators Extension."""

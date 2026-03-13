@@ -1,0 +1,390 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://apps.fas.usda.gov/psdonline/reportHandler.ashx?fileName=Coffee_Summary&format=html&reportId=2109&templateId=8
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - private
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '7406'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Fri, 02 Jan 2026 21:26:10 GMT
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubdomains;preload
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://apps.fas.usda.gov/psdonline/reportHandler.ashx?fileName=Coffee_Summary&format=csv&reportId=2109&templateId=8
+  response:
+    body:
+      string: "Coffee Summary\r\n\r\n\r\n                ,2021/22,2022/23,2023/24,2024/25,Jun
+        2025/26,Dec 2025/26,\r\nArabica Production,\r\n                            nr,nr,nr,nr,nr,nr,\r\n
+        Brazil,36400,39800,44900,44000,40900,38000,\r\n Colombia,11800,10700,12760,14800,12500,13800,\r\n
+        Ethiopia,8150,7300,9130,11100,11560,11560,\r\n Honduras,4800,5700,5050,5000,5800,5800,\r\n
+        Peru,4200,3475,3912,3700,4200,4200,\r\n Mexico,3200,3000,3356,3530,3540,3540,\r\n
+        Guatemala,3410,3150,3339,3075,3410,3410,\r\n Nicaragua,2718,2430,2187,2400,2420,2420,\r\n
+        China,1800,1800,1800,1900,1900,1900,\r\n Indonesia,1280,1200,1350,1400,1450,1450,\r\n
+        India,1583,1667,1480,1400,1350,1350,\r\n Vietnam,1100,1000,1000,1000,1000,1200,\r\n
+        Costa Rica,1215,1100,1158,1298,1170,1170,\r\n Uganda,990,990,1000,1030,1060,1060,\r\n
+        Papua New Guinea,725,825,930,800,900,900,\r\n Other,3718,3646,3888,3770,3862,3755,\r\n\r\n
+        \   Total,87089,87783,97240,100203,97022,95515,\r\n\r\nRobusta Production,\r\n
+        \                           nr,nr,nr,nr,nr,nr,\r\n Vietnam,30480,27300,26550,28000,30000,29600,\r\n
+        Brazil,21700,22800,21400,21000,24100,25000,\r\n Indonesia,9300,9500,6800,9300,9800,11000,\r\n
+        Uganda,5060,5575,5400,5670,5815,5815,\r\n India,4117,4200,5080,4800,4700,4700,\r\n
+        Malaysia,2000,2000,1330,1400,1500,1500,\r\n Cote dchr(39)Ivoire,1110,1020,1325,650,1300,1300,\r\n
+        Thailand,650,700,750,900,900,900,\r\n Tanzania,550,550,600,650,700,700,\r\n
+        Laos,385,410,410,430,430,430,\r\n Other,2603,2551,2460,2313,2413,2388,\r\n\r\n
+        \   Total,77955,76606,72105,75113,81658,83333,\r\n\r\nProduction,\r\n                            nr,nr,nr,nr,nr,nr,\r\n
+        Brazil,58100,62600,66300,65000,65000,63000,\r\n Vietnam,31580,28300,27550,29000,31000,30800,\r\n
+        Colombia,11800,10700,12760,14800,12500,13800,\r\n Indonesia,10580,10700,8150,10700,11250,12450,\r\n
+        Ethiopia,8150,7300,9130,11100,11560,11560,\r\n Uganda,6050,6565,6400,6700,6875,6875,\r\n
+        India,5700,5867,6560,6200,6050,6050,\r\n Honduras,4800,5700,5050,5000,5800,5800,\r\n
+        Peru,4200,3475,3912,3700,4200,4200,\r\n Mexico,3740,3545,3856,3870,3903,3903,\r\n
+        Guatemala,3540,3270,3469,3205,3540,3540,\r\n Nicaragua,2838,2590,2347,2560,2580,2580,\r\n
+        China,1800,1800,1800,1900,1900,1900,\r\n Malaysia,2000,2000,1330,1400,1500,1500,\r\n
+        Tanzania,1200,1200,1350,1350,1450,1450,\r\n Cote dchr(39)Ivoire,1110,1020,1325,650,1300,1300,\r\n
+        Costa Rica,1215,1100,1158,1298,1170,1170,\r\n Papua New Guinea,775,875,980,840,950,950,\r\n
+        Thailand,650,700,750,900,900,900,\r\n Kenya,860,750,825,1000,850,850,\r\n
+        El Salvador,600,550,604,450,597,500,\r\n Venezuela,500,500,500,500,500,500,\r\n
+        Philippines,450,475,450,450,450,450,\r\n Laos,385,410,410,430,430,430,\r\n
+        Ecuador,260,354,370,355,350,350,\r\n Other,2161,2043,2009,1958,2075,2040,\r\n\r\n
+        \   Total,165044,164389,169345,175316,178680,178848,"
+    headers:
+      Cache-Control:
+      - private
+      Content-Disposition:
+      - attachment;filename=Coffee_Summary.csv
+      Content-Length:
+      - '2651'
+      Content-Type:
+      - application/vnd.ms-excel; charset=utf-8
+      Date:
+      - Fri, 02 Jan 2026 21:26:10 GMT
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubdomains;preload
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://apps.fas.usda.gov/PSDOnlineApi/api/query/GetMultiCommodityAttributes?commodityCodes=0711100%2C
+  response:
+    body:
+      string: '[{"attributeId":20,"attributeName":"Beginning Stocks              ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"20","text":"Beginning
+        Stocks              ","comments":null},{"attributeId":29,"attributeName":"Arabica
+        Production            ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"29","text":"Arabica
+        Production            ","comments":null},{"attributeId":53,"attributeName":"Robusta
+        Production            ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"53","text":"Robusta
+        Production            ","comments":null},{"attributeId":56,"attributeName":"Other
+        Production              ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"56","text":"Other
+        Production              ","comments":null},{"attributeId":28,"attributeName":"Production                    ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"28","text":"Production                    ","comments":null},{"attributeId":58,"attributeName":"Bean
+        Imports                  ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"58","text":"Bean
+        Imports                  ","comments":null},{"attributeId":75,"attributeName":"Roast
+        & Ground Imports        ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"75","text":"Roast
+        & Ground Imports        ","comments":null},{"attributeId":82,"attributeName":"Soluble
+        Imports               ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"82","text":"Soluble
+        Imports               ","comments":null},{"attributeId":57,"attributeName":"Imports                       ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"57","text":"Imports                       ","comments":null},{"attributeId":86,"attributeName":"Total
+        Supply                  ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"86","text":"Total
+        Supply                  ","comments":null},{"attributeId":90,"attributeName":"Bean
+        Exports                  ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"90","text":"Bean
+        Exports                  ","comments":null},{"attributeId":107,"attributeName":"Roast
+        & Ground Exports        ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"107","text":"Roast
+        & Ground Exports        ","comments":null},{"attributeId":114,"attributeName":"Soluble
+        Exports               ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"114","text":"Soluble
+        Exports               ","comments":null},{"attributeId":88,"attributeName":"Exports                       ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"88","text":"Exports                       ","comments":null},{"attributeId":141,"attributeName":"Rst,Ground
+        Dom. Consum        ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"141","text":"Rst,Ground
+        Dom. Consum        ","comments":null},{"attributeId":154,"attributeName":"Soluble
+        Dom. Cons.            ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"154","text":"Soluble
+        Dom. Cons.            ","comments":null},{"attributeId":125,"attributeName":"Domestic
+        Consumption          ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"125","text":"Domestic
+        Consumption          ","comments":null},{"attributeId":176,"attributeName":"Ending
+        Stocks                 ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"176","text":"Ending
+        Stocks                 ","comments":null},{"attributeId":178,"attributeName":"Total
+        Distribution            ","unitOfMeasure":null,"calculationRuleName":null,"constituentAttributes":null,"publicAccess":false,"value":"178","text":"Total
+        Distribution            ","comments":null}]'
+    headers:
+      Content-Length:
+      - '4480'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 02 Jan 2026 21:26:10 GMT
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubdomains;preload
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://apps.fas.usda.gov/PSDOnlineApi/api/CompositeVisualization/GetCountries?commodityCode=0711100&regionCode=R00
+  response:
+    body:
+      string: '[{"text":"All Countries","value":"00"},{"text":"Albania                       ","value":"AL"},{"text":"Algeria                       ","value":"AG"},{"text":"Angola                        ","value":"AO"},{"text":"Argentina                     ","value":"AR"},{"text":"Armenia                       ","value":"AM"},{"text":"Australia                     ","value":"AS"},{"text":"Benin                         ","value":"DM"},{"text":"Bolivia                       ","value":"BL"},{"text":"Bosnia
+        and Herzegovina        ","value":"BK"},{"text":"Brazil                        ","value":"BR"},{"text":"Burundi                       ","value":"BY"},{"text":"Cameroon                      ","value":"CM"},{"text":"Canada                        ","value":"CA"},{"text":"Central
+        African Republic      ","value":"CT"},{"text":"Chile                         ","value":"CI"},{"text":"China                         ","value":"CH"},{"text":"Colombia                      ","value":"CO"},{"text":"Congo
+        (Brazzaville)           ","value":"CF"},{"text":"Congo (Kinshasa)              ","value":"CG"},{"text":"Costa
+        Rica                    ","value":"CS"},{"text":"Cote d''Ivoire                 ","value":"IV"},{"text":"Croatia                       ","value":"HR"},{"text":"Cuba                          ","value":"CU"},{"text":"Dominican
+        Republic            ","value":"DR"},{"text":"Ecuador                       ","value":"EC"},{"text":"Egypt                         ","value":"EG"},{"text":"El
+        Salvador                   ","value":"ES"},{"text":"Equatorial Guinea             ","value":"EK"},{"text":"Ethiopia                      ","value":"ET"},{"text":"European
+        Union                ","value":"E4"},{"text":"Gabon                         ","value":"GB"},{"text":"Georgia                       ","value":"GG"},{"text":"Ghana                         ","value":"GH"},{"text":"Guatemala                     ","value":"GT"},{"text":"Guinea                        ","value":"GU"},{"text":"Guyana                        ","value":"GY"},{"text":"Haiti                         ","value":"HA"},{"text":"Honduras                      ","value":"HO"},{"text":"India                         ","value":"IN"},{"text":"Indonesia                     ","value":"ID"},{"text":"Iran                          ","value":"IR"},{"text":"Jamaica                       ","value":"JM"},{"text":"Japan                         ","value":"JA"},{"text":"Jordan                        ","value":"JO"},{"text":"Kazakhstan                    ","value":"KZ"},{"text":"Kenya                         ","value":"KE"},{"text":"Korea,
+        South                  ","value":"KS"},{"text":"Kosovo                        ","value":"KV"},{"text":"Laos                          ","value":"LA"},{"text":"Liberia                       ","value":"LI"},{"text":"Madagascar                    ","value":"MA"},{"text":"Malawi                        ","value":"MI"},{"text":"Malaysia                      ","value":"MY"},{"text":"Mexico                        ","value":"MX"},{"text":"Montenegro                    ","value":"MJ"},{"text":"Morocco                       ","value":"MO"},{"text":"New
+        Caledonia                 ","value":"NC"},{"text":"New Zealand                   ","value":"NZ"},{"text":"Nicaragua                     ","value":"NU"},{"text":"Nigeria                       ","value":"NI"},{"text":"North
+        Macedonia               ","value":"MK"},{"text":"Norway                        ","value":"NO"},{"text":"Panama                        ","value":"PN"},{"text":"Papua
+        New Guinea              ","value":"PP"},{"text":"Paraguay                      ","value":"PA"},{"text":"Peru                          ","value":"PE"},{"text":"Philippines                   ","value":"RP"},{"text":"Russia                        ","value":"RS"},{"text":"Rwanda                        ","value":"RW"},{"text":"Saudi
+        Arabia                  ","value":"SA"},{"text":"Senegal                       ","value":"SG"},{"text":"Serbia                        ","value":"RB"},{"text":"Sierra
+        Leone                  ","value":"SL"},{"text":"Singapore                     ","value":"SN"},{"text":"South
+        Africa                  ","value":"SF"},{"text":"Sri Lanka                     ","value":"CE"},{"text":"Switzerland                   ","value":"SZ"},{"text":"Taiwan                        ","value":"TW"},{"text":"Tanzania                      ","value":"TZ"},{"text":"Thailand                      ","value":"TH"},{"text":"Togo                          ","value":"TO"},{"text":"Trinidad
+        and Tobago           ","value":"TD"},{"text":"Turkey                        ","value":"TU"},{"text":"Uganda                        ","value":"UG"},{"text":"Ukraine                       ","value":"UP"},{"text":"United
+        Kingdom                ","value":"UK"},{"text":"United States                 ","value":"US"},{"text":"Uruguay                       ","value":"UY"},{"text":"Venezuela                     ","value":"VE"},{"text":"Vietnam                       ","value":"VM"},{"text":"Yemen                         ","value":"YM"},{"text":"Yemen
+        (Sanaa)                 ","value":"YE"},{"text":"Zambia                        ","value":"ZA"},{"text":"Zimbabwe                      ","value":"RH"}]'
+    headers:
+      Content-Length:
+      - '5209'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 02 Jan 2026 21:26:11 GMT
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubdomains;preload
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+- request:
+    body:
+      attribSummaryText: ''
+      attributes:
+      - 88
+      chkAttribSummary: false
+      chkCodes: false
+      chkCommoditySummary: false
+      chkCountrySummary: false
+      chkMonthChange: false
+      chkPrevMonth: false
+      chkTopCountry: false
+      chkYearChange: false
+      chkfileFormat: false
+      commodities:
+      - '0711100'
+      commodityGroupCode: null
+      commoditySummaryText: ''
+      countries:
+      - BR
+      countrySummaryText: ''
+      marketYears:
+      - 2025
+      optionColumn: year
+      queryId: 0
+      queryName: ''
+      sortOrder: Commodity/Attribute/Country
+      topCountryCount: ''
+      topCountryState: false
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: POST
+    uri: https://apps.fas.usda.gov/PSDOnlineApi/api/query/RunQuery
+  response:
+    body:
+      string: '{"tableHeaders":["Commodity","Attribute","Country","2025/2026","Unit
+        Description"],"queryResult":[{"commodity":"Coffee, Green","attribute":"Exports","country":"Brazil","2025/2026":40750.000,"unit
+        Description":"(1000 60 KG BAGS)   "}]}'
+    headers:
+      Content-Length:
+      - '234'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 02 Jan 2026 21:26:11 GMT
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubdomains;preload
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1

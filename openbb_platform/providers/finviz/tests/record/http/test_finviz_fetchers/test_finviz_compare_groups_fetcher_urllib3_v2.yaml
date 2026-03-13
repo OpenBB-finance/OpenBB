@@ -1,0 +1,1071 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://finviz.com/groups.ashx?g=country&o=perf1w&v=140
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html lang=\"en\" class=\" dark\">\n<head>\n<title>Group
+        Screener - Performance country perf1w</title>\n<meta charset=\"UTF-8\"><meta
+        name=\"viewport\" content=\"width=1024\"><meta name=\"description\" content=\"Stock
+        screener for investors and traders, financial visualizations.\">\n\r\n            <link
+        rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-regular.woff2\" as=\"font\"
+        crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-700.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-900.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/inter-latin.woff2\"
+        as=\"font\" crossorigin>\r\n        \r\n            <script>\r\n                window.notificationsArray
+        = [];\r\n                window.renderScriptNotLoaded = function () {};\r\n
+        \               window.handleScriptNotLoaded = function (element) {\r\n                    window.notificationsArray.push(element);\r\n
+        \                   window.sentryDisabled = true;\r\n                    window.handleScriptNotLoaded
+        = function () {};\r\n                };\r\n            </script>\r\n        <link
+        rel=\"stylesheet\" href=\"/assets/dist-legacy/redesign.434ddfac.css\" type=\"text/css\"
+        onerror=\"window.handleScriptNotLoaded(this)\">\n<link rel=\"stylesheet\"
+        href=\"/assets/dist-legacy/main.a7b34d07.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
+        rel=\"icon\" type=\"image/png\" href=\"/favicon_2x.png\" sizes=\"32x32\">\n<link
+        rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"16x16\">\n  <script
+        type=\"text/javascript\" async=true>\r\n  (function() {\r\n    var host =
+        'finviz.com';\r\n    var element = document.createElement('script');\r\n    var
+        firstScript = document.getElementsByTagName('script')[0];\r\n    var url =
+        'https://cmp.inmobi.com'\r\n      .concat('/choice/', 'c2W8esUZ6Q8oA', '/',
+        host, '/choice.js?tag_version=V3');\r\n    var uspTries = 0;\r\n    var uspTriesLimit
+        = 3;\r\n    element.async = true;\r\n    element.type = 'text/javascript';\r\n
+        \   element.src = url;\r\n\r\n    firstScript.parentNode.insertBefore(element,
+        firstScript);\r\n\r\n    function makeStub() {\r\n      var TCF_LOCATOR_NAME
+        = '__tcfapiLocator';\r\n      var queue = [];\r\n      var win = window;\r\n
+        \     var cmpFrame;\r\n\r\n      function addFrame() {\r\n        var doc
+        = win.document;\r\n        var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);\r\n\r\n
+        \       if (!otherCMP) {\r\n          if (doc.body) {\r\n            var iframe
+        = doc.createElement('iframe');\r\n\r\n            iframe.style.cssText = 'display:none';\r\n
+        \           iframe.name = TCF_LOCATOR_NAME;\r\n            doc.body.appendChild(iframe);\r\n
+        \         } else {\r\n            setTimeout(addFrame, 5);\r\n          }\r\n
+        \       }\r\n        return !otherCMP;\r\n      }\r\n\r\n      function tcfAPIHandler()
+        {\r\n        var gdprApplies;\r\n        var args = arguments;\r\n\r\n        if
+        (!args.length) {\r\n          return queue;\r\n        } else if (args[0]
+        === 'setGdprApplies') {\r\n          if (\r\n            args.length > 3 &&\r\n
+        \           args[2] === 2 &&\r\n            typeof args[3] === 'boolean'\r\n
+        \         ) {\r\n            gdprApplies = args[3];\r\n            if (typeof
+        args[2] === 'function') {\r\n              args[2]('set', true);\r\n            }\r\n
+        \         }\r\n        } else if (args[0] === 'ping') {\r\n          var retr
+        = {\r\n            gdprApplies: gdprApplies,\r\n            cmpLoaded: false,\r\n
+        \           cmpStatus: 'stub'\r\n          };\r\n\r\n          if (typeof
+        args[2] === 'function') {\r\n            args[2](retr);\r\n          }\r\n
+        \       } else {\r\n          if(args[0] === 'init' && typeof args[3] ===
+        'object') {\r\n            args[3] = Object.assign(args[3], { tag_version:
+        'V3' });\r\n          }\r\n          queue.push(args);\r\n        }\r\n      }\r\n\r\n
+        \     function postMessageEventHandler(event) {\r\n        var msgIsString
+        = typeof event.data === 'string';\r\n        var json = {};\r\n\r\n        try
+        {\r\n          if (msgIsString) {\r\n            json = JSON.parse(event.data);\r\n
+        \         } else {\r\n            json = event.data;\r\n          }\r\n        }
+        catch (ignore) {}\r\n\r\n        var payload = json.__tcfapiCall;\r\n\r\n
+        \       if (payload) {\r\n          window.__tcfapi(\r\n            payload.command,\r\n
+        \           payload.version,\r\n            function(retValue, success) {\r\n
+        \             var returnMsg = {\r\n                __tcfapiReturn: {\r\n                  returnValue:
+        retValue,\r\n                  success: success,\r\n                  callId:
+        payload.callId\r\n                }\r\n              };\r\n              if
+        (msgIsString) {\r\n                returnMsg = JSON.stringify(returnMsg);\r\n
+        \             }\r\n              if (event && event.source && event.source.postMessage)
+        {\r\n                event.source.postMessage(returnMsg, '*');\r\n              }\r\n
+        \           },\r\n            payload.parameter\r\n          );\r\n        }\r\n
+        \     }\r\n\r\n      while (win) {\r\n        try {\r\n          if (win.frames[TCF_LOCATOR_NAME])
+        {\r\n            cmpFrame = win;\r\n            break;\r\n          }\r\n
+        \       } catch (ignore) {}\r\n\r\n        if (win === window.top) {\r\n          break;\r\n
+        \       }\r\n        win = win.parent;\r\n      }\r\n      if (!cmpFrame)
+        {\r\n        addFrame();\r\n        win.__tcfapi = tcfAPIHandler;\r\n        win.addEventListener('message',
+        postMessageEventHandler, false);\r\n      }\r\n    };\r\n\r\n    makeStub();\r\n\r\n
+        \   var uspStubFunction = function() {\r\n      var arg = arguments;\r\n      if
+        (typeof window.__uspapi !== uspStubFunction) {\r\n        setTimeout(function()
+        {\r\n          if (typeof window.__uspapi !== 'undefined') {\r\n            window.__uspapi.apply(window.__uspapi,
+        arg);\r\n          }\r\n        }, 500);\r\n      }\r\n    };\r\n\r\n    var
+        checkIfUspIsReady = function() {\r\n      uspTries++;\r\n      if (window.__uspapi
+        === uspStubFunction && uspTries < uspTriesLimit) {\r\n        console.warn('USP
+        is not accessible');\r\n      } else {\r\n        clearInterval(uspInterval);\r\n
+        \     }\r\n    };\r\n\r\n    if (typeof window.__uspapi === 'undefined') {\r\n
+        \     window.__uspapi = uspStubFunction;\r\n      var uspInterval = setInterval(checkIfUspIsReady,
+        6000);\r\n    }\r\n  })();\r\n  </script><script>\r\n            FinvizSettings
+        = {\r\n                versionImages: 12,\r\n                hasUserPremium:
+        false,\r\n                name: \"\",\r\n                email: \"\",\r\n
+        \               nodeChartsDomain: \"https://charts2-node.finviz.com\",\r\n
+        \               hasUserStickyHeader: true,\r\n                adsProvider:
+        1,\r\n                hasRedesignEnabled: true,\r\n                hasDarkTheme:
+        true,\r\n                quoteSearchExt: '',\r\n                isJoinBannerVisible:
+        false,\r\n            };\r\n        </script><script src=\"/assets/dist-legacy/script/browser_check.fca380bf.js\"></script><script
+        src=\"/assets/dist-legacy/script/vendor/boxover.bd6045ad.js\"></script>\n<script
+        src=\"/assets/dist-legacy/runtime.40c1b634.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/libs_init.6c24f8e6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/4448.4d6ce3b6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7808.bfd72543.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1556.75067b82.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/3988.202a9cce.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7603.96a170ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1756.6bddc02b.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/header.4cae93ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n<body
+        class=\"m-0 yellow-tooltip is-groups min-w-[1000px] chart-tooltip\">\r\n            <script>\r\n
+        \               var cookieName = 'fv_block';\r\n                var selector
+        = '[data-google-query-id]';\r\n                var selectorFrame = selector
+        + ' iframe, ' + selector + ' [id*=aax]';\r\n                var cookieExpiry
+        = 5 * 60 * 1000; // 5min\r\n                var checkTimeout = 20 * 1000;
+        // 20sec\r\n\r\n                function getCookie(value) {\r\n                    var
+        expiration = +new Date() + cookieExpiry;\r\n                    return cookieName
+        + '=' + value + '; expires=' + (new Date(expiration)).toUTCString() + '; path=/';\r\n
+        \               }\r\n\r\n                var finvizBannersLoaded = false;\r\n
+        \               function loadFinvizBanners(setCookie) {\r\n                    \r\n
+        \                   if (setCookie) document.cookie = getCookie('block');\r\n
+        \                   finvizBannersLoaded = true;\r\n                    var
+        s = document.createElement('script');\r\n                    s.type = 'text/javascript';\r\n
+        \                   s.async = true;\r\n                    s.src = '/assets/dist-legacy/script/finviz_b.86e39215.js';\r\n
+        \                   document.head.appendChild(s);\r\n                }\r\n\r\n
+        \               function checkBannersLoaded() {\r\n                    var
+        checkEnd = +new Date() + checkTimeout;\r\n                    function asyncCheckIfExists(selector,
+        resolve) {\r\n                        var now = +new Date();\r\n                        var
+        container = document.querySelector(selector);\r\n                        if
+        (!container && checkEnd > now) return setTimeout(function () { asyncCheckIfExists(selector,
+        resolve) }, 1000)\r\n                        resolve(!!container);\r\n                    }\r\n
+        \                   \r\n                    asyncCheckIfExists(selector, function
+        (exists) {\r\n                        if (!exists) return loadFinvizBanners(true);\r\n\r\n
+        \                       asyncCheckIfExists(selectorFrame, function (hasIframe)
+        {\r\n                            if (!hasIframe) return loadFinvizBanners(true);\r\n
+        \                       })\r\n                    })\r\n                }\r\n\r\n
+        \               if (document.cookie.indexOf(cookieName) >= 0) {\r\n                    loadFinvizBanners(false);\r\n
+        \               } else {\r\n                    var s = document.createElement('script');\r\n
+        \                   s.type = 'text/javascript';\r\n                    s.async
+        = true;\r\n                    s.onerror = loadFinvizBanners;\r\n                    s.onload
+        = checkBannersLoaded;\r\n                    s.src = 'https://u5.investingchannel.com/static/uat.js';\r\n
+        \                   document.head.appendChild(s);\r\n\r\n                    InvestingChannelQueue
+        = window.InvestingChannelQueue || [];\r\n                    var ic_page;\r\n\r\n
+        \                   function refreshAd(container, refreshes) { \r\n                        var
+        placementTag, adslot;\r\n                        window.InvestingChannelQueue.push(function
+        () {\r\n                            var pubTags = ic_page.getPubTag.call(ic_page,
+        container.id);\r\n                            if (!pubTags) return;\r\n                            var
+        pubTag = pubTags[0];\r\n                            placementTag = pubTag.mPlacements[0].mTagToRender;\r\n
+        \                           adslot = pubTag.mPlacements[0].mPublisherKval.adslot[0];\r\n
+        \                           // Update div ID\r\n                            var
+        id = container.id.split('_');\r\n                            var numberOfDivs
+        = document.querySelectorAll('[id*=' + id.slice(0, id.length - 1).join('_')
+        + ']').length;\r\n                            var newDivNumber = Number(id.pop())
+        + numberOfDivs * refreshes;\r\n                            container.setAttribute('id',
+        id.join('_') + '_' + newDivNumber);\r\n                            // Destroy
+        previous pubtag & reset container html (loading span)\r\n                            pubTag.destroy();\r\n
+        \                           container.innerHTML = '';\r\n                        });
+        \r\n                        window.InvestingChannelQueue.push(function ()
+        {\r\n                            if (!placementTag || !adslot) return\r\n
+        \                           // Create new pub tag\r\n                            var
+        newTag;\r\n                            var layoutId = placementTag.mNativeLayout
+        ? placementTag.mNativeLayout.nativelayoutid : null;\r\n                            if
+        (layoutId) {\r\n                                newTag = ic_page.defineNativeTag('finviz/'
+        + placementTag.mTarget.dfpkeyname, placementTag.mAdSize, container.id, layoutId);\r\n
+        \                               var nativeLayout, layoutData\r\n\r\n                                try
+        {\r\n                                  nativeLayout = newTag.mPlacements[0].mTags[0].mNativeLayout;\r\n
+        \                               } catch (e) {\r\n                                    console.log(e.message)\r\n
+        \                               }\r\n\r\n                                try
+        {\r\n                                  layoutData = newTag.mTemplate.mNativeLayout[layoutId].Data\r\n
+        \                                 if (layoutData && nativeLayout && !nativeLayout.layout)
+        {\r\n                                    newTag.mPlacements[0].mTags[0].mNativeLayout
+        = layoutData\r\n                                  }\r\n                                }
+        catch (e) {\r\n                                    console.log(e.message)\r\n
+        \                               }\r\n                            } else {\r\n
+        \                               newTag = ic_page.defineTag('finviz/' + placementTag.mTarget.dfpkeyname,
+        placementTag.mAdSize, container.id);\r\n                            }\r\n
+        \                           // Set adslot param\r\n                            newTag.setKval({
+        adslot: adslot });\r\n                            newTag.setKval({ kw: 'ajax'
+        });\r\n                            newTag.render();\r\n                        });\r\n
+        \                   }\r\n\r\n                    var refreshCount = 1;\r\n
+        \                   function refreshAds(selectors) { \r\n                        if
+        (window.ic_page) {\r\n                            document.querySelectorAll(selectors).forEach(function
+        (element) {\r\n                                try {\r\n                                    refreshAd(element,
+        refreshCount);\r\n                                } catch (e) {\r\n                                    console.log('Ad
+        refresh error for:', element, e);\r\n                                }\r\n
+        \                           });\r\n                            window.ic_page.loadMore();\r\n
+        \                           refreshCount++;\r\n                        } \r\n
+        \                   }\r\n\r\n\r\n                    InvestingChannelQueue.push(function()
+        {\r\n                        var icConfig = window['FINVIZ_IC_UAT_CONFIG']
+        = {};\r\n                        \r\n                        ic_page = InvestingChannel.UAT.Run('df0d0d52-cc7f-11e8-82a5-0abbb61c4a6a',
+        icConfig);\r\n                    });\r\n\r\n                    var hash
+        = null;\r\n                    if (typeof hash === 'string') {\r\n                      InvestingChannelQueue.push(function()
+        {\r\n                          if (ic_page) {\r\n                              ic_page.setUserId('email',
+        hash, true);\r\n                          }\r\n                      });\r\n
+        \                   }\r\n                }\r\n            </script>    <script>\r\n
+        \       function FinvizNewsletterHide() {\r\n            fetch('/api/set_cookie.ashx?cookie=notice-newsletter').catch(function(){}).then(function(){\r\n
+        \               window.gtag && window.gtag('event', 'close', { event_category:
+        'notice-newsletter', non_interaction: true })\r\n            })\r\n            document.getElementById('js-notice-newsletter').style.display
+        = 'none';\r\n        }\r\n\r\n        const emailRegex = /^((([a-z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+(\\.([a-z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\x5b]|[\\x5d-\\x7e]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(\\\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(\\x22)))@((([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.)+(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.?$/\r\n\r\n
+        \       function FinvizNewsletterSubmit(event) {\r\n            const emailValue
+        = event.target.elements[\"email\"].value\r\n            if (!emailRegex.test(emailValue))
+        {\r\n                event.preventDefault()\r\n                alert(\"Invalid
+        email address\")\r\n                return\r\n            }\r\n            window.gtag
+        && window.gtag('event', 'subscription', { event_category: 'notice-newsletter',
+        non_interaction: true })\r\n        }\r\n        window.gtag && window.gtag('event',
+        'impression', { event_category: 'notice-newsletter', non_interaction: true
+        })\r\n    </script>\r\n    <div id=\"js-notice-newsletter\" class=\"font-sans
+        relative isolate flex items-center justify-center gap-x-2 gap-y-2 overflow-hidden
+        bg-gray-50 px-6 py-2.5\">\r\n        <div class=\"absolute left-[max(-7rem,calc(50%-52rem))]
+        top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl\" aria-hidden=\"true\">\r\n
+        \           <div class=\"aspect-[577/310] w-[36.0625rem] bg-gradient-to-r
+        from-purple-500 to-blue-500 opacity-30\" style=\"clip-path: polygon(74.8%
+        41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%,
+        50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9%
+        54.1%, 68.6% 100%, 74.8% 41.9%)\"></div>\r\n        </div>\r\n        <div
+        class=\"absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2
+        transform-gpu blur-2xl\" aria-hidden=\"true\">\r\n            <div class=\"aspect-[577/310]
+        w-[36.0625rem] bg-gradient-to-r from-blue-500 to-purple-500 opacity-30\" style=\"clip-path:
+        polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%,
+        58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9%
+        74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)\"></div>\r\n        </div>\r\n\r\n
+        \       <p class=\"text-sm leading-6 text-gray-900\">\r\n            Subscribe
+        to our newsletter to receive the latest product updates and special offers\r\n
+        \       </p>\r\n        <form action=\"/api/newsletter/widget\" method=\"post\"
+        onsubmit=\"FinvizNewsletterSubmit(event)\" class=\"relative w-[280px]\">\r\n
+        \           <div class=\"w-full\">\r\n                <label class=\"flex
+        grow flex-col\">\r\n                    <div class=\"group relative flex\">\r\n
+        \                       <input name=\"email\" value=\"\" placeholder=\"Your
+        email\" type=\"email\" maxlength=\"50\" required class=\"text-gray-900 border
+        bg-white disabled:bg-gray-50 disabled:text-gray-500 border-gray-300 focus:border-blue-400
+        disabled:hover:border-gray-100 h-8 text-sm rounded-md !pr-24 w-full grow select-text
+        appearance-none outline-none pl-2\">\r\n                    </div>\r\n                </label>\r\n
+        \           </div>\r\n            <button class=\"flex items-center font-medium
+        whitespace-nowrap focus:outline-none text-sm text-white hover:text-white active:bg-blue-600
+        disabled:bg-blue-200 disabled:hover:bg-blue-200 bg-blue-400 hover:bg-blue-500
+        h-7 px-2 rounded focus-visible:ring-2 ring-gray-200 absolute right-0.5 top-0.5
+        rounded-l-none\">\r\n                <div class=\"grow text-left\">Subscribe</div>\r\n
+        \           </button>\r\n        </form>\r\n\r\n        <button type=\"button\"
+        onclick=\"FinvizNewsletterHide()\" class=\"-m-3 p-3 focus-visible:outline-offset-[-4px]\">\r\n
+        \           <span class=\"sr-only\">Dismiss</span>\r\n            <svg class=\"h-5
+        w-5 text-gray-900\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n
+        \               <path d=\"M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75
+        0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75
+        0 00-1.06-1.06L10 8.94 6.28 5.22z\" />\r\n            </svg>\r\n        </button>\r\n
+        \   </div>\r\n          <script>\r\n            function checkMediaQuery(matches)
+        {\r\n              if (matches) {\r\n                FinvizSettings.hasUserStickyHeader
+        = true;\r\n                document.body.classList.add('is-header-sticky');\r\n
+        \             } else {\r\n                FinvizSettings.hasUserStickyHeader
+        = false;\r\n                document.body.classList.remove('is-header-sticky');\r\n
+        \             }\r\n            }\r\n            var mediaMatch = window.matchMedia('(min-width:
+        1025px) and (min-height: 650px)');\r\n            checkMediaQuery(mediaMatch.matches);\r\n
+        \           mediaMatch.addListener(function (ev) { checkMediaQuery(ev.matches)
+        });\r\n          </script>\r\n          <div id=\"notifications-container\"></div><table
+        class=\"header\">\r\n    <tr class=\"align-top\">\r\n        <td>\r\n            <table
+        class=\"header-container\">\r\n                <tr>\r\n                    <td
+        class=\"w-[30%]\">\r\n                        <table class=\"w-full\">\r\n
+        \                           <tr>\r\n                                <td class=\"h-[50px]
+        align-middle\">\r\n                                    <a href=\"/\" class=\"logo\"><svg
+        width=\"225\" height=\"32\" class=\"block\">\r\n  <use href=\"/img/logo.svg#free\"
+        class=\"dark:hidden\" />\r\n  <use href=\"/img/logo.svg#free-dark\" class=\"hidden
+        dark:block\" />\r\n</svg></a>\r\n                                </td>\r\n
+        \                           </tr>\r\n                            <tr>\r\n
+        \                               <td id=\"search\" style=\"padding-top: 7px\">\r\n
+        \                                   <div class=\"navbar-search-placeholder\">\r\n
+        \   <span class=\"icon-wrapper\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\"
+        class=\"icon\" fill=\"none\" viewBox=\"0 0 24 24\">\r\n            <path d=\"M16.9
+        15.5l4 4c.2.2.1.5 0 .7l-.7.7a.5.5 0 01-.8 0l-4-4c0-.2-.2-.3-.3-.4l-.7-1a7
+        7 0 01-11.2-4 7 7 0 1112.2 3l1 .6.5.4zM5 10a5 5 0 1010 0 5 5 0 00-10 0z\"
+        />\r\n        </svg>\r\n    </span>\r\n    <input placeholder=\"Search ticker,
+        company or profile\" class=\"search-input is-free\"/>\r\n</div>\r\n                                </td>\r\n
+        \                           </tr>\r\n                        </table>\r\n
+        \                   </td>\r\n                    <td class=\"align-bottom
+        pb-1\">\r\n                        <div id=\"microbar_position\" class=\"hidden
+        xl:flex items-center h-[37px] pl-2\"><div>\r\n                        <div
+        id=\"IC_D_88x31_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:88px;height:31px;max-height:31px\"></div>\r\n
+        \                       </div></div>\r\n                    </td>\r\n                    <td
+        class=\"relative w-[730px] text-right\">\r\n                        <div id=\"banner_position\"
+        class=\"overflow-hidden absolute top-0 right-0 w-full h-24\">\r\n                        <div
+        id=\"IC_D_728x90_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:728px;height:90px;max-height:90px\"></div>\r\n
+        \                       </div>\r\n                    </td>\r\n                </tr>\r\n
+        \           </table>\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td
+        class=\"w-[994px] leading-none\" style=\"font-size:0\">\r\n            <img
+        src=\"/gfx/nic2x2.gif\" class=\"w-[994px] h-px\" alt=\"\">\r\n        </td>\r\n
+        \   </tr>\r\n</table>\r\n            <table class=\"navbar\">\r\n                <tr>\r\n
+        \                   <td class=\"h-[30px]\">\r\n                        <table
+        class=\"header-container\">\r\n                            <tr><td><a class=\"nav-link
+        \ is-first\" href=\"/\">Home</a></td><td><a class=\"nav-link \" href=\"/news.ashx\">News</a></td><td><a
+        class=\"nav-link \" href=\"/screener.ashx\">Screener</a></td><td><a class=\"nav-link
+        \" href=\"/map.ashx\">Maps</a></td><td><a class=\"nav-link is-active\" href=\"/groups.ashx\">Groups</a></td><td><a
+        class=\"nav-link \" href=\"/portfolio.ashx\">Portfolio</a></td><td><a class=\"nav-link
+        \" href=\"/insidertrading.ashx\">Insider</a></td><td><a class=\"nav-link \"
+        href=\"/futures.ashx\">Futures</a></td><td><a class=\"nav-link \" href=\"/forex.ashx\">Forex</a></td><td><a
+        class=\"nav-link \" href=\"/crypto.ashx\">Crypto</a></td><td><a class=\"nav-link
+        \" href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=main-navbar-backtests\">Backtests</a></td><td><a
+        class=\"nav-link  is-elite\" href=\"/elite.ashx\">Elite</a></td><td class=\"w-full
+        relative\"><div class=\"absolute bottom-0 left-0 right-0 top-0\"><div id=\"time\"
+        class=\"pr-1\"></div></div></td>\r\n                    <td class=\"nav relative\">\r\n
+        \       <a data-testid=\"chart-layout-theme\" href=\"#\" class=\"!flex !bg-transparent
+        !border-b-0 mt-1 !py-0 !px-1\" style='border-left: 1px solid #444a57' title=\"Toggle
+        Light/Dark mode\" onclick=\"setChartThemeCookie('light', true)\">\r\n            <div
+        class='relative box-content flex rounded-full w-10 h-5 border border-gray-750
+        bg-gray-800 text-white justify-end'>\r\n                <div class='box-border
+        w-1/2 rounded-full p-px border border-gray-800 bg-[#4c5261] flex justify-center
+        items-center'>\r\n                    <svg width=\"16\" height=\"16\" class=\"fill-current
+        text-white inline-block -ml-px\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#moonOutlined\"/>\r\n</svg>\r\n
+        \               </div>\r\n            </div>\r\n            <span class='ml-1
+        select-none font-medium text-xs text-white'>Theme</span>\r\n        </a>\r\n
+        \   </td>\r\n    \r\n                <td>\r\n                    <a href=\"/help/groups.ashx\"
+        class=\"nav-link is-help\" style=\"border-left: 1px solid #444a57\"><span
+        class=\"fa fa-question-circle\"></span>Help</a>\r\n                </td>\r\n
+        \               <td><a href=\"/login.ashx\" class=\"nav-link sign-in\">Login</a></td>\r\n
+        \               <td><a href=\"/register.ashx\" class=\"nav-link sign-up\">Register</a></td>\r\n
+        \           \r\n                            </tr>\r\n                        </table>\r\n
+        \                   </td>\r\n                </tr>\r\n            </table>\r\n
+        \       \r\n          <script>\r\n            function reloadPage () { location.reload()
+        }\r\n            function setChartThemeCookie(chartsTheme) {\r\n              fetch('/api/set_cookie.ashx?cookie=chartsTheme&value='
+        + chartsTheme ).catch(function(){}).then(function(){\r\n                window.gtag
+        && window.gtag('event', 'click', { event_category: 'theme', event_label: 'toggle',
+        value: chartsTheme, event_callback: reloadPage });\r\n                setTimeout(reloadPage,1000);\r\n
+        \             })\r\n            }\r\n          </script><div class=\"content
+        \"><div class=\"fv-container is-tight\"><tr>\n<td>\n<table id=\"filter-table-top\"
+        class=\"screener-groups_table-filter\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"
+        border=\"0\">\n<tr>\n<td class=\"screener-groups_filter-label text-right\"
+        width=\"6%\">\n<span class=\"body-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Group]
+        body=[<table width=300><tr><td class='tooltip_tab'>Select group - stocks organized
+        by <b>sector</b>, <b>industry</b>, <b>country</b> or market <b>capitalization</b>.</td></tr></table>]
+        delay=[500]\">Group</span></td>\n<td class=\"pl-1\" align=\"left\">\n<select
+        id=\"groupSelect\" style=\"width:100%;\" class=\"body-combo-text fv-select\"
+        onchange='window.location=document.getElementById(\"groupSelect\").value'>\n<option
+        value=\"groups.ashx?g=sector&v=140&o=perf1w\">Sector</option><option value=\"groups.ashx?g=industry&v=140&o=perf1w\">Industry</option><option
+        value=\"groups.ashx?g=industry&sg=basicmaterials&v=140&o=perf1w\">Industry
+        (Basic Materials)</option><option value=\"groups.ashx?g=industry&sg=communicationservices&v=140&o=perf1w\">Industry
+        (Communication Services)</option><option value=\"groups.ashx?g=industry&sg=consumercyclical&v=140&o=perf1w\">Industry
+        (Consumer Cyclical)</option><option value=\"groups.ashx?g=industry&sg=consumerdefensive&v=140&o=perf1w\">Industry
+        (Consumer Defensive)</option><option value=\"groups.ashx?g=industry&sg=energy&v=140&o=perf1w\">Industry
+        (Energy)</option><option value=\"groups.ashx?g=industry&sg=financial&v=140&o=perf1w\">Industry
+        (Financial)</option><option value=\"groups.ashx?g=industry&sg=healthcare&v=140&o=perf1w\">Industry
+        (Healthcare)</option><option value=\"groups.ashx?g=industry&sg=industrials&v=140&o=perf1w\">Industry
+        (Industrials)</option><option value=\"groups.ashx?g=industry&sg=realestate&v=140&o=perf1w\">Industry
+        (Real Estate)</option><option value=\"groups.ashx?g=industry&sg=technology&v=140&o=perf1w\">Industry
+        (Technology)</option><option value=\"groups.ashx?g=industry&sg=utilities&v=140&o=perf1w\">Industry
+        (Utilities)</option><option selected=\"selected\" value=\"groups.ashx?g=country&v=140&o=perf1w\">Country
+        (U.S. listed stocks only)</option><option value=\"groups.ashx?g=capitalization&v=140&o=perf1w\">Capitalization</option></select>\n</td>\n<td
+        class=\"screener-groups_filter-label text-right\" width=\"7%\">\n<span class=\"body-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Order By] body=[<table width=300><tr><td class='tooltip_tab'>Select
+        the criteria by which the output information will be sorted. Use the <b>ascending</b>
+        and <b>descending</b> option to invert the current order.<br><br> TIP: In
+        table views you can click on top of a column to sort the table by the underlying
+        values.</td></tr></table>] delay=[500]\">Order By</span></td>\n<td class=\"pl-1\"
+        align=\"left\">\n<select id=\"orderSelect\" style=\"width:100%;\" class=\"body-combo-text
+        fv-select\" onchange='window.location=document.getElementById(\"orderSelect\").value'>\n<option
+        value=\"groups.ashx?g=country&v=140&o=name\">Name</option><option value=\"groups.ashx?g=country&v=140&o=marketcap\">Market
+        Capitalization</option><option value=\"groups.ashx?g=country&v=140&o=pe\">Price/Earnings</option><option
+        value=\"groups.ashx?g=country&v=140&o=forwardpe\">Forward Price/Earnings</option><option
+        value=\"groups.ashx?g=country&v=140&o=peg\">PEG (Price/Earnings/Growth)</option><option
+        value=\"groups.ashx?g=country&v=140&o=ps\">Price/Sales</option><option value=\"groups.ashx?g=country&v=140&o=pb\">Price/Book</option><option
+        value=\"groups.ashx?g=country&v=140&o=pc\">Price/Cash</option><option value=\"groups.ashx?g=country&v=140&o=pfcf\">Price/Free
+        Cash Flow</option><option value=\"groups.ashx?g=country&v=140&o=dividendyield\">Dividend
+        Yield</option><option value=\"groups.ashx?g=country&v=140&o=eps5years\">EPS
+        growth past 5 years</option><option value=\"groups.ashx?g=country&v=140&o=estltgrowth\">EPS
+        growth next 5 years</option><option value=\"groups.ashx?g=country&v=140&o=sales5years\">Sales
+        growth past 5 years</option><option value=\"groups.ashx?g=country&v=140&o=shortinterestshare\">Short
+        Interest Share</option><option value=\"groups.ashx?g=country&v=140&o=recom\">Analyst
+        Recommendation</option><option selected=\"selected\" value=\"groups.ashx?g=country&v=140&o=perf1w\">Performance
+        (Week)</option><option value=\"groups.ashx?g=country&v=140&o=perf4w\">Performance
+        (Month)</option><option value=\"groups.ashx?g=country&v=140&o=perf13w\">Performance
+        (Quarter)</option><option value=\"groups.ashx?g=country&v=140&o=perf26w\">Performance
+        (Half Year)</option><option value=\"groups.ashx?g=country&v=140&o=perf52w\">Performance
+        (Year)</option><option value=\"groups.ashx?g=country&v=140&o=perfytd\">Performance
+        (Year To Date)</option><option value=\"groups.ashx?g=country&v=140&o=averagevolume\">Average
+        Volume (3 Month)</option><option value=\"groups.ashx?g=country&v=140&o=relativevolume\">Relative
+        Volume</option><option value=\"groups.ashx?g=country&v=140&o=change\">Change</option><option
+        value=\"groups.ashx?g=country&v=140&o=volume\">Volume</option><option value=\"groups.ashx?g=country&v=140&o=count\">Number
+        of Stocks</option></select>\n</td>\n<td class=\"pl-1\" align=\"left\">\n<select
+        id=\"orderDirSelect\" style=\"width: 100%;\" class=\"body-combo-text fv-select\"
+        onchange='window.location=document.getElementById(\"orderDirSelect\").value'>\n<option
+        selected=\"selected\" value=\"groups.ashx?g=country&v=140&o=perf1w\">Ascending</option><option
+        value=\"groups.ashx?g=country&v=140&o=-perf1w\">Descending</option></select>\n</td>\n<td
+        align=\"right\" width=\"42%\" valign=\"top\">\n<img src=\"gfx/nic2x2.gif\"
+        style=\"width:83px;height:22px\" alt=\"\" border=\"0\"></td>\n<td width=\"1%\">\n<img
+        src=\"gfx/nic2x2.gif\" style=\"width:1px;height:22px\" alt=\"\" border=\"0\"></td>\n</tr>\n</table>\n</td>\n</tr>\n<tr><td
+        width=\"100%\">\n<table width=\"100%\" cellpadding=\"3\" cellspacing=\"0\"
+        class=\"screener-view-table screener-view-switch\">\n<tr>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=110&o=perf1w\">Overview</a></td>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=120&o=perf1w\">Valuation</a></td>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button is-active\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=140&o=perf1w\">Performance</a></td>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=150&o=perf1w\">Custom</a></td>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=210&o=perf1w\">Bar Chart</a></td>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=310&o=perf1w\">Spectrum</a></td>\n<td width=\"12%\"
+        align=\"center\"  class=\"screener-view-button\" style=\"cursor:pointer;\"><a
+        href=\"groups.ashx?g=country&v=410&o=perf1w\">Charts</a></td>\n</tr>\n</table>\n</td>\n</tr>\n<tr><td
+        width=\"100%\"><img src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:16px\"
+        alt=\"\" border=\"0\"></td></tr>\n<tr>\n<td>\n<table class=\"styled-table-new
+        is-medium is-rounded is-tabular-nums w-full groups_table\">\n<thead>\n<tr
+        align=\"center\" valign=\"middle\">\n<th class=\"table-header cursor-pointer\"
+        align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140'\">No.</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"left\" onclick=\"window.location='groups.ashx?g=country&v=140&o=name'\">Name</th>\n<th
+        class=\"table-header cursor-pointer is-selected\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=-perf1w'\"><svg
+        width=\"16\" height=\"16\" class=\"inline-block -mt-[3px] -mb-0.5\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#chevronUp\"/>\r\n</svg>Perf Week</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=perf4w'\">Perf
+        Month</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=perf13w'\">Perf
+        Quart</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=perf26w'\">Perf
+        Half</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=perf52w'\">Perf
+        Year</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=perfytd'\">Perf
+        YTD</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=recom'\">Recom</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=averagevolume'\">Avg
+        Volume</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=relativevolume'\">Rel
+        Volume</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=change'\">Change</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='groups.ashx?g=country&v=140&o=volume'\">Volume</th>\n</thead>\n<tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_malaysia&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">1</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_malaysia&v=141\" class=\"tab-link\">Malaysia</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.80%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-21.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-37.95%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-69.72%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-96.57%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-72.61%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.70</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.19M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.46</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.65%</span></td><td height=\"10\" align=\"right\" class=\"\">548.24K</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_argentina&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">2</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_argentina&v=141\"
+        class=\"tab-link\">Argentina</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-6.36%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-3.75%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.79%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">22.56%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">40.34%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">25.35%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.58</td><td height=\"10\" align=\"right\"
+        class=\"\">9.75M</td><td height=\"10\" align=\"right\" class=\"\">0.72</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">6.99M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_colombia&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">3</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_colombia&v=141\" class=\"tab-link\">Colombia</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.25%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.13%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.70%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.37%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.75%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">3.16</span></td><td
+        height=\"10\" align=\"right\" class=\"\">3.55M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.60</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">1.39%</span></td><td height=\"10\" align=\"right\" class=\"\">5.69M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_taiwan&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">4</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_taiwan&v=141\" class=\"tab-link\">Taiwan</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.12%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.97%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">21.96%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">60.06%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">63.96%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">58.22%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.49</span></td><td
+        height=\"10\" align=\"right\" class=\"\">34.87M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.73</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.32%</span></td><td height=\"10\" align=\"right\" class=\"\">25.36M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_netherlands&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">5</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_netherlands&v=141\"
+        class=\"tab-link\">Netherlands</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-2.16%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">2.02%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.48%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.34%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">33.38%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">18.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.75</span></td><td
+        height=\"10\" align=\"right\" class=\"\">23.08M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.77</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.42%</span></td><td height=\"10\" align=\"right\" class=\"\">17.69M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_mexico&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">6</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_mexico&v=141\" class=\"tab-link\">Mexico</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.46%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.88%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.13%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-10.43%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.91</span></td><td
+        height=\"10\" align=\"right\" class=\"\">13.06M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.30</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-1.15%</span></td><td height=\"10\" align=\"right\" class=\"\">17.04M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_spain&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">7</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_spain&v=141\" class=\"tab-link\">Spain</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.40%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.62%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.12%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.88%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">30.18%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.09</td><td height=\"10\" align=\"right\"
+        class=\"\">6.80M</td><td height=\"10\" align=\"right\" class=\"\">0.75</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.57%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">5.12M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_china&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">8</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_china&v=141\" class=\"tab-link\">China</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.34%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.22%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.36%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.55%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.41</span></td><td
+        height=\"10\" align=\"right\" class=\"\">307.55M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.72</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.22%</span></td><td height=\"10\" align=\"right\" class=\"\">220.25M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_switzerland&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">9</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_switzerland&v=141\"
+        class=\"tab-link\">Switzerland</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-1.01%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">0.57%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.22%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.80%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.80%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.35</td><td height=\"10\" align=\"right\"
+        class=\"\">44.86M</td><td height=\"10\" align=\"right\" class=\"\">0.95</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.74%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">42.81M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_turkey&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">10</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_turkey&v=141\" class=\"tab-link\">Turkey</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.82%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.52%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.31%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">49.38%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">64.25%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">48.07%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.08</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.00M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.72</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-1.07%</span></td><td height=\"10\" align=\"right\" class=\"\">723.04K</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_singapore&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">11</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_singapore&v=141\"
+        class=\"tab-link\">Singapore</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-0.80%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">0.69%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.52%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.08%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.54%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">37.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.56</span></td><td
+        height=\"10\" align=\"right\" class=\"\">59.24M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.57</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">1.02%</span></td><td height=\"10\" align=\"right\" class=\"\">34.01M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_hongkong&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">12</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_hongkong&v=141\" class=\"tab-link\">Hong
+        Kong</a></td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.73%</span></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-3.17%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">9.89%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.10%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.55%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.21</span></td><td
+        height=\"10\" align=\"right\" class=\"\">35.90M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.62</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.73%</span></td><td height=\"10\" align=\"right\" class=\"\">22.19M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_unitedarabemirates&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">13</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_unitedarabemirates&v=141\"
+        class=\"tab-link\">United Arab Emirates</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-0.69%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-41.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-57.01%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-63.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-70.09%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-64.29%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.94</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.52M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.19</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.59%</span></td><td height=\"10\" align=\"right\" class=\"\">295.20K</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_ireland&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">14</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_ireland&v=141\" class=\"tab-link\">Ireland</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.56%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.72%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.08%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.01%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.11</td><td height=\"10\" align=\"right\"
+        class=\"\">58.40M</td><td height=\"10\" align=\"right\" class=\"\">1.05</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.43%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">61.08M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_unitedkingdom&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">15</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_unitedkingdom&v=141\"
+        class=\"tab-link\">United Kingdom</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-0.33%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.89%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.26%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.86%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.16%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.86</span></td><td
+        height=\"10\" align=\"right\" class=\"\">221.58M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.68</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.50%</span></td><td height=\"10\" align=\"right\" class=\"\">151.40M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_southkorea&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">16</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_southkorea&v=141\"
+        class=\"tab-link\">South Korea</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-negative\">-0.32%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-2.67%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.63%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.67%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.38%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.58</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.74M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.92</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.52%</span></td><td height=\"10\" align=\"right\" class=\"\">2.51M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_israel&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">17</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_israel&v=141\" class=\"tab-link\">Israel</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.18%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.41%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.47%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.63%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.92%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.49%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.78</span></td><td
+        height=\"10\" align=\"right\" class=\"\">79.30M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.63</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">1.24%</span></td><td height=\"10\" align=\"right\" class=\"\">49.74M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_chile&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">18</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_chile&v=141\" class=\"tab-link\">Chile</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.93%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.52%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-9.67%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-11.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-9.75%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.30</td><td height=\"10\" align=\"right\"
+        class=\"\">2.10M</td><td height=\"10\" align=\"right\" class=\"\">0.88</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.30%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.86M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_usa&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">19</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_usa&v=141\" class=\"tab-link\">USA</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.11%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.62%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.74%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.75%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">25.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.54%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.84</span></td><td
+        height=\"10\" align=\"right\" class=\"\">7.08B</td><td height=\"10\" align=\"right\"
+        class=\"\">1.08</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.14%</span></td><td height=\"10\" align=\"right\" class=\"\">7.62B</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_bermuda&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">20</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_bermuda&v=141\" class=\"tab-link\">Bermuda</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.30%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.23%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.96%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.82%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.84</span></td><td
+        height=\"10\" align=\"right\" class=\"\">29.90M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.86</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.72%</span></td><td height=\"10\" align=\"right\" class=\"\">25.68M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_italy&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">21</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_italy&v=141\" class=\"tab-link\">Italy</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.18%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.66%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.00%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.57%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.94%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.25</td><td height=\"10\" align=\"right\"
+        class=\"\">1.84M</td><td height=\"10\" align=\"right\" class=\"\">0.47</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">866.05K</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_france&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">22</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_france&v=141\" class=\"tab-link\">France</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.59%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.51%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.46%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.34%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.13%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.78</span></td><td
+        height=\"10\" align=\"right\" class=\"\">6.70M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.27</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-2.60%</span></td><td height=\"10\" align=\"right\" class=\"\">8.52M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_belgium&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">23</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_belgium&v=141\" class=\"tab-link\">Belgium</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.27%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.25%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-7.96%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.88%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.14%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.67</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.27M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.00</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-1.12%</span></td><td height=\"10\" align=\"right\" class=\"\">2.27M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_canada&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">24</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_canada&v=141\" class=\"tab-link\">Canada</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.71%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.77%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.10%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.16%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.10</td><td height=\"10\" align=\"right\"
+        class=\"\">483.78M</td><td height=\"10\" align=\"right\" class=\"\">0.66</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">319.40M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_sweden&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">25</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_sweden&v=141\" class=\"tab-link\">Sweden</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.72%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.43%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.87%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-3.52%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">16.82%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.25%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.63</td><td height=\"10\" align=\"right\"
+        class=\"\">26.53M</td><td height=\"10\" align=\"right\" class=\"\">1.24</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.60%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">32.90M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_luxembourg&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">26</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_luxembourg&v=141\"
+        class=\"tab-link\">Luxembourg</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">0.73%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-3.18%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.89%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.21%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">34.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">13.91%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.83</span></td><td
+        height=\"10\" align=\"right\" class=\"\">11.44M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.00</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.89%</span></td><td height=\"10\" align=\"right\" class=\"\">11.46M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_brazil&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">27</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_brazil&v=141\" class=\"tab-link\">Brazil</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.21%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.72%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-12.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-19.30%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-8.95%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-19.80%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.83</span></td><td
+        height=\"10\" align=\"right\" class=\"\">147.63M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.81</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.52%</span></td><td height=\"10\" align=\"right\" class=\"\">120.09M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_australia&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">28</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_australia&v=141\"
+        class=\"tab-link\">Australia</a></td><td height=\"10\" align=\"right\" class=\"\"><span
+        class=\"color-text is-positive\">1.63%</span></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-negative\">-2.70%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.87%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-14.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-5.97%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-14.44%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.24</td><td height=\"10\" align=\"right\"
+        class=\"\">19.93M</td><td height=\"10\" align=\"right\" class=\"\">0.84</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">16.76M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_peru&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">29</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_peru&v=141\" class=\"tab-link\">Peru</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.91%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.18%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.90%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">21.92%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">7.98%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.02</td><td height=\"10\" align=\"right\"
+        class=\"\">2.20M</td><td height=\"10\" align=\"right\" class=\"\">0.62</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-0.32%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.36M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_denmark&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">30</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_denmark&v=141\" class=\"tab-link\">Denmark</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.04%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">5.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.47%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">36.01%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">72.37%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">34.98%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.87</span></td><td
+        height=\"10\" align=\"right\" class=\"\">4.89M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.11</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-2.15%</span></td><td height=\"10\" align=\"right\" class=\"\">5.43M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_greece&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">31</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_greece&v=141\" class=\"tab-link\">Greece</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.13%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.83%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">12.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">15.00%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">20.82%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">17.11%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.47</span></td><td
+        height=\"10\" align=\"right\" class=\"\">6.96M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.51</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.21%</span></td><td height=\"10\" align=\"right\" class=\"\">3.56M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_germany&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">32</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_germany&v=141\" class=\"tab-link\">Germany</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.55%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.24%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.03%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">19.91%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">34.35%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">18.86%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.04</td><td height=\"10\" align=\"right\"
+        class=\"\">16.22M</td><td height=\"10\" align=\"right\" class=\"\">1.01</td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">0.93%</span></td><td
+        height=\"10\" align=\"right\" class=\"\">16.32M</td></tr><tr valign=\"top\"
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text
+        cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_japan&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">33</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_japan&v=141\" class=\"tab-link\">Japan</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-1.52%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-9.64%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.66%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.43%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">9.56%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.85</span></td><td
+        height=\"10\" align=\"right\" class=\"\">11.67M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.62</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.47%</span></td><td height=\"10\" align=\"right\" class=\"\">7.19M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_caymanislands&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">34</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_caymanislands&v=141\"
+        class=\"tab-link\">Cayman Islands</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">3.94%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.84%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">3.17%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.92%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">40.64%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">23.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.87</span></td><td
+        height=\"10\" align=\"right\" class=\"\">39.38M</td><td height=\"10\" align=\"right\"
+        class=\"\">1.26</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.27%</span></td><td height=\"10\" align=\"right\" class=\"\">49.58M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_monaco&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">35</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_monaco&v=141\" class=\"tab-link\">Monaco</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.09%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.74%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">24.02%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">42.76%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">96.56%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">49.03%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.59</span></td><td
+        height=\"10\" align=\"right\" class=\"\">2.10M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.88</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.31%</span></td><td height=\"10\" align=\"right\" class=\"\">1.85M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_southafrica&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">36</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_southafrica&v=141\"
+        class=\"tab-link\">South Africa</a></td><td height=\"10\" align=\"right\"
+        class=\"\"><span class=\"color-text is-positive\">4.52%</span></td><td height=\"10\"
+        align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.62%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">2.33%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-4.31%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-2.78%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.22%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">3.07</span></td><td
+        height=\"10\" align=\"right\" class=\"\">16.59M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.67</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">0.12%</span></td><td height=\"10\" align=\"right\" class=\"\">11.12M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_india&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">37</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_india&v=141\" class=\"tab-link\">India</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.53%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">8.18%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">11.72%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.18%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">10.64%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">4.32%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.65</span></td><td
+        height=\"10\" align=\"right\" class=\"\">29.08M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.85</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-negative\">-0.10%</span></td><td height=\"10\" align=\"right\" class=\"\">24.60M</td></tr><tr
+        valign=\"top\" class=\"styled-row is-hoverable is-bordered is-rounded is-striped
+        has-color-text cursor-pointer\" onclick=\"window.location='screener.ashx?f=geo_cyprus&v=141'\">\n<td
+        height=\"10\" align=\"right\" class=\"groups_index-cell\">38</td><td height=\"10\"
+        align=\"left\" class=\"\"><a href=\"screener.ashx?f=geo_cyprus&v=141\" class=\"tab-link\">Cyprus</a></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">6.03%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-negative\">-6.23%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">15.58%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">22.38%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">90.75%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">31.08%</span></td><td
+        height=\"10\" align=\"right\" class=\"\"><span class=\"color-text is-positive\">1.29</span></td><td
+        height=\"10\" align=\"right\" class=\"\">1.60M</td><td height=\"10\" align=\"right\"
+        class=\"\">0.70</td><td height=\"10\" align=\"right\" class=\"\"><span class=\"color-text
+        is-positive\">2.11%</span></td><td height=\"10\" align=\"right\" class=\"\">1.12M</td></tr></table></td>\n</tr>\n<tr>\n<td>\n<table
+        width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" class=\"body-table\" border=\"0\">\n<tr>\n<td
+        align=\"right\"><a href=\"grp_export.ashx?g=country&v=140&o=perf1w\" class=\"tab-link\">export</a></td></tr>\n</table>\n</td>\n</tr>\n<div
+        class=\"my-3\"><div id=\"IC_D_3x3_1\"class=\"relative overflow-hidden flex
+        items-center justify-center w-full mx-auto\" style=\"width:970px;height:250px;max-height:250px\"></div></div></div></div>\r\n
+        \           <div class=\"footer\" style=\"margin-top: 20px;padding-bottom:
+        115px\">\r\n                <div class=\"footer_links\">\r\n                    <a
+        class=\"tab-link\" href=\"/affiliate.ashx\">affiliate</a>\r\n                    <span
+        class=\"footer_dot\"> \u2022 </span>\r\n                    <a class=\"tab-link\"
+        href=\"/advertise.ashx\">advertise</a>\r\n                    <span class=\"footer_dot\">
+        \u2022 </span><a class=\"tab-link\" href=\"/careers.ashx\">careers</a>\r\n
+        \                   <span class=\"footer_dot\"> \u2022 </span><a class=\"tab-link\"
+        href=\"#\" onclick=\"setChartThemeCookie('light')\">toggle light mode</a>\r\n
+        \                   <span class=\"footer_dot\"> \u2022 </span>\r\n                    <a
+        class=\"tab-link\" href=\"/contact.ashx\">contact</a>\r\n                    <span
+        class=\"footer_dot\"> \u2022 </span>\r\n                    <a class=\"tab-link\"
+        href=\"/privacy.ashx\">privacy</a>\r\n                    <span class=\"footer_dot\">
+        \u2022 </span>\r\n                    <a class=\"tab-link\" href=\"/help/screener.ashx\">help</a>\r\n
+        \               <br>\r\n                <a class=\"tab-link\" href=\"javascript:void(0)\"
+        onclick=\"window.__uspapi && window.__uspapi('displayUspUi');\">do not sell
+        my data</a>\r\n                <span class=\"footer_dot\"> \u2022 </span>\r\n
+        \               <a class=\"tab-link\" href=\"javascript:void(0)\" onClick=\"window.__tcfapi
+        && window.__tcfapi('displayConsentUi', 2, function() {})\">privacy settings</a>\r\n
+        \               </div>\r\n    Quotes delayed 15 minutes for NASDAQ, NYSE and
+        AMEX.\r\n    <br>\r\n    Copyright \xA9 2007-2024 FINVIZ.com. All Rights Reserved.\r\n
+        \   \r\n</div>\r\n            <script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-3261808-1\"></script>\r\n
+        \           <script>\r\n              function getSystemTheme() {\r\n                if
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        {\r\n                  return 'Dark';\r\n                }\r\n                else
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+        {\r\n                  return 'Light';\r\n                }\r\n                return
+        'No Preference';\r\n              }\r\n\r\n              var systemTheme =
+        getSystemTheme()\r\n\r\n              window.dataLayer = window.dataLayer
+        || [];\r\n              function gtag(){dataLayer.push(arguments);}\r\n              gtag('js',
+        new Date());\r\n\r\n              var fGaM = {\r\n                'dimension1':
+        'NotLoggedIn',\r\n                'dimension3': window.devicePixelRatio,\r\n
+        \               'layoutTheme': 'dark',\r\n                'systemTheme': systemTheme,\r\n
+        \               'bundle': 'legacy',\r\n                innerWidth: window.innerWidth,\r\n
+        \               innerHeight: window.innerHeight\r\n              };\r\n\r\n
+        \             gtag('config', 'G-ZT9VQEWD4N', fGaM);\r\n              \r\n
+        \           </script>\r\n            <script type=\"text/javascript\">\r\n
+        \       window._qevents = window._qevents || [];\r\n\r\n        (function()
+        {\r\n            var elem = document.createElement('script');\r\n            elem.src
+        = (document.location.protocol == \"https:\" ? \"https://secure\" : \"http://edge\")
+        + \".quantserve.com/quant.js\";\r\n            elem.async = true;\r\n            elem.type
+        = \"text/javascript\";\r\n            var scpt = document.getElementsByTagName('script')[0];\r\n
+        \           scpt.parentNode.insertBefore(elem, scpt);\r\n        })();\r\n\r\n
+        \       window._qevents.push({\r\n            qacct:\"p-c2W8esUZ6Q8oA\"\r\n
+        \       });\r\n    </script>\r\n    <noscript>\r\n        <div style=\"display:none;\">\r\n
+        \           <img src=\"//pixel.quantserve.com/pixel/p-c2W8esUZ6Q8oA.gif\"
+        border=\"0\" height=\"1\" width=\"1\" alt=\"Quantcast\"/>\r\n        </div>\r\n
+        \   </noscript><div id=\"IC_D_1x1_1\"class=\"relative overflow-hidden flex
+        items-center justify-center w-full mx-auto\"></div><div id=\"modal-elite-ad\"
+        class=\"modal-elite-ad\">\r\n                            <div id=\"modal-elite-ad_content\"
+        class=\"modal-elite-ad_content\">\r\n\t\t\t                    <button id=\"modal-elite-ad-close\"
+        type=\"button\" class=\"modal-elite-ad_close\">\xD7</button>\r\n\r\n                                <!--<div
+        id=\"modal-elite-ad-content-0\" style=\"display: none\">\r\n\t\t\t                        <h2>Ever
+        heard of Finviz*Elite?</h2>\r\n                                    <p>\r\n
+        \                                       Our premium service offers you real-time
+        quotes, advanced visualizations, technical studies, and much more.<br>\r\n
+        \                                       Become Elite and make informed financial
+        decisions.\r\n                                    </p>\r\n                                    <a
+        href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-0\"
+        id=\"modal-elite-ad-btn-0\" class=\"\" target=\"_blank\">Find out more</a>\r\n
+        \                               </div>-->\r\n\r\n                                <div
+        id=\"modal-elite-ad-content-1\" style=\"display: block\">\r\n\t\t\t                        <h2>Upgrade
+        your FINVIZ experience</h2>\r\n                                    <p>\r\n
+        \                                       Join thousands of traders who make
+        more informed decisions with&nbsp;our&nbsp;premium features.\r\n                                        Real-time
+        quotes, advanced&nbsp;visualizations, backtesting, and much more.\r\n                                    </p>\r\n
+        \                                   <a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-1\"
+        id=\"modal-elite-ad-btn-1\" class=\"modal-elite_button\" target=\"_blank\">Learn
+        more about FINVIZ*Elite</a>\r\n                                </div>\r\n
+        \                           </div>\r\n                         </div><script
+        src=\"/assets/dist-legacy/script/pv.27fa030f.js\" async></script><script defer>window.renderScriptNotLoaded();</script>\n</body>\n</html>\n"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b847dc380a57-AMS
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:23:07 GMT
+      Request-Context:
+      - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - ASP.NET
+      - ARR/3.0
+      - ASP.NET
+    status:
+      code: 200
+      message: OK
+version: 1

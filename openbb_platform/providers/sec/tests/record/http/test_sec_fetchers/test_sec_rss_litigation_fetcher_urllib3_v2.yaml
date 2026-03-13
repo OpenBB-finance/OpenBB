@@ -1,0 +1,179 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.sec.gov/enforcement-litigation/litigation-releases/rss
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<rss xmlns:dc=\"http://purl.org/dc/elements/1.1/\"
+        version=\"2.0\" xml:base=\"https://www.sec.gov/\">\n  <channel>\n    <title>Litigation
+        Releases</title>\n    <link>https://www.sec.gov/</link>\n    <description>The
+        latest Litigation Releases from the Securities and Exchange Commission</description>\n
+        \   <language>en</language>\n    \n    <item>\n  <title>Adrian J. Kawuba</title>\n
+        \ <link>https://www.sec.gov/node/963776\n</link>\n  <description>Adrian J.
+        Kawuba</description>\n  <pubDate>Mon, 01 Jul 2024 15:00:56 -0400</pubDate>\n
+        \   <dc:creator>LR-26040</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/4a082c61-74b2-4958-8721-f6af29daa3ad</guid>\n
+        \   </item>\n<item>\n  <title>Consensys Software Inc.</title>\n  <link>https://www.sec.gov/node/963771\n</link>\n
+        \ <description>Consensys Software Inc.</description>\n  <pubDate>Mon, 01 Jul
+        2024 14:34:32 -0400</pubDate>\n    <dc:creator>LR-26039</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/a32379af-53b3-4d07-a592-e44eb220d278</guid>\n
+        \   </item>\n<item>\n  <title>BorrowMoney.com, Inc. and Aldo Piscitello</title>\n
+        \ <link>https://www.sec.gov/node/963101\n</link>\n  <description>BorrowMoney.com,
+        Inc. and Aldo Piscitello</description>\n  <pubDate>Thu, 27 Jun 2024 16:57:12
+        -0400</pubDate>\n    <dc:creator>LR-26038</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/9cb5831a-caba-4e68-b02a-469022e1d0ee</guid>\n
+        \   </item>\n<item>\n  <title>Mike K. Veldhuis, Paul Sexton, Jackson T. Friesen,
+        Zhiying Yvonne Gasarch, and Courtney Kelln </title>\n  <link>https://www.sec.gov/node/962971\n</link>\n
+        \ <description>Mike K. Veldhuis, Paul Sexton, Jackson T. Friesen, Zhiying
+        Yvonne Gasarch, and Courtney Kelln </description>\n  <pubDate>Wed, 26 Jun
+        2024 16:53:50 -0400</pubDate>\n    <dc:creator>LR-26037</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/94adec9d-9410-4360-9ffa-70445326504a</guid>\n
+        \   </item>\n<item>\n  <title>Lufkin Advisors, LLC and Chauncey Forbush Lufkin,
+        III</title>\n  <link>https://www.sec.gov/node/962701\n</link>\n  <description>Lufkin
+        Advisors, LLC and Chauncey Forbush Lufkin, III</description>\n  <pubDate>Tue,
+        25 Jun 2024 15:54:23 -0400</pubDate>\n    <dc:creator>LR-26036</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/59dbfe15-5961-4976-9fa9-3cbf4d4d966c</guid>\n
+        \   </item>\n<item>\n  <title>John Brda and Georgios Palikaras</title>\n  <link>https://www.sec.gov/node/962566\n</link>\n
+        \ <description>John Brda and Georgios Palikaras</description>\n  <pubDate>Tue,
+        25 Jun 2024 08:45:24 -0400</pubDate>\n    <dc:creator>LR-26035</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/4f3e361e-0a2c-4c85-bdf9-0d57d30fa320</guid>\n
+        \   </item>\n<item>\n  <title>Ross McLellan</title>\n  <link>https://www.sec.gov/node/961926\n</link>\n
+        \ <description>Ross McLellan</description>\n  <pubDate>Thu, 20 Jun 2024 17:12:11
+        -0400</pubDate>\n    <dc:creator>LR-26034</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/71ab71f0-8443-4ab4-978d-d52493120df2</guid>\n
+        \   </item>\n<item>\n  <title>Yanni Tassev</title>\n  <link>https://www.sec.gov/node/961531\n</link>\n
+        \ <description>Yanni Tassev</description>\n  <pubDate>Tue, 18 Jun 2024 17:02:14
+        -0400</pubDate>\n    <dc:creator>LR-26033</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/8ae8e636-7bb4-4dd3-a932-31ce4c252088</guid>\n
+        \   </item>\n<item>\n  <title>Western Sierra Resource Corporation, Roger Johnson,
+        and Dennis Atkins</title>\n  <link>https://www.sec.gov/node/961526\n</link>\n
+        \ <description>Western Sierra Resource Corporation, Roger Johnson, and Dennis
+        Atkins</description>\n  <pubDate>Tue, 18 Jun 2024 16:54:28 -0400</pubDate>\n
+        \   <dc:creator>LR-26032</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/aca080d5-2d45-4c00-8b81-e571dfa1ef22</guid>\n
+        \   </item>\n<item>\n  <title>Matthew Brown and  Matthew Brown Companies,
+        LLC</title>\n  <link>https://www.sec.gov/node/961201\n</link>\n  <description>Matthew
+        Brown and  Matthew Brown Companies, LLC</description>\n  <pubDate>Mon, 17
+        Jun 2024 15:20:46 -0400</pubDate>\n    <dc:creator>LR-26031</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/bc3a9fd4-631c-4f50-8b94-a448143cd928</guid>\n
+        \   </item>\n<item>\n  <title>Karen Rosenberger et al.</title>\n  <link>https://www.sec.gov/node/961071\n</link>\n
+        \ <description>Karen Rosenberger et al.</description>\n  <pubDate>Fri, 14
+        Jun 2024 17:18:34 -0400</pubDate>\n    <dc:creator>LR-26030</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/daa6e2c3-24d4-44f6-b8b3-be1cdd068200</guid>\n
+        \   </item>\n<item>\n  <title>PixarBio Corp. et al.</title>\n  <link>https://www.sec.gov/node/961066\n</link>\n
+        \ <description>PixarBio Corp. et al.</description>\n  <pubDate>Fri, 14 Jun
+        2024 17:15:34 -0400</pubDate>\n    <dc:creator>LR-26029</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/13421790-4b68-4f12-af75-7ebc577f2158</guid>\n
+        \   </item>\n<item>\n  <title>Joshua Charles Avikzer Goltry and JAG Capital
+        Advisors, LLC</title>\n  <link>https://www.sec.gov/node/960801\n</link>\n
+        \ <description>Joshua Charles Avikzer Goltry and JAG Capital Advisors, LLC</description>\n
+        \ <pubDate>Fri, 14 Jun 2024 13:39:04 -0400</pubDate>\n    <dc:creator>LR-26028</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/9cb4cea8-d2ab-4578-9fe5-3feb7807ea27</guid>\n
+        \   </item>\n<item>\n  <title>Bhardwaj et al.</title>\n  <link>https://www.sec.gov/node/960721\n</link>\n
+        \ <description>Bhardwaj et al.</description>\n  <pubDate>Thu, 13 Jun 2024
+        16:29:59 -0400</pubDate>\n    <dc:creator>LR-26027</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/63bd7989-a6b0-45b6-a319-7c3a9b06e478</guid>\n
+        \   </item>\n<item>\n  <title>Brian C. Jensen</title>\n  <link>https://www.sec.gov/node/960561\n</link>\n
+        \ <description>Brian C. Jensen</description>\n  <pubDate>Thu, 13 Jun 2024
+        14:59:32 -0400</pubDate>\n    <dc:creator>LR-26026</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/a0143bc6-2d0a-43a1-93ea-71de3ac9aef2</guid>\n
+        \   </item>\n<item>\n  <title>Christopher R. Bentley, et al.</title>\n  <link>https://www.sec.gov/node/960576\n</link>\n
+        \ <description>Christopher R. Bentley, et al.</description>\n  <pubDate>Thu,
+        13 Jun 2024 14:58:06 -0400</pubDate>\n    <dc:creator>LR-26025</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/076e8c98-5d17-4803-9fde-b06adbc30755</guid>\n
+        \   </item>\n<item>\n  <title>Giguiere et al.</title>\n  <link>https://www.sec.gov/node/960506\n</link>\n
+        \ <description>Giguiere et al.</description>\n  <pubDate>Thu, 13 Jun 2024
+        09:18:37 -0400</pubDate>\n    <dc:creator>LR-26024</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/cee7a54f-f087-4a13-b4cc-04a62cc80ad4</guid>\n
+        \   </item>\n<item>\n  <title>Zhou Min Ni and Jian Ming \"Jonathan\" Ni, CPA</title>\n
+        \ <link>https://www.sec.gov/node/960311\n</link>\n  <description>Zhou Min
+        Ni and Jian Ming \"Jonathan\" Ni, CPA</description>\n  <pubDate>Wed, 12 Jun
+        2024 14:17:35 -0400</pubDate>\n    <dc:creator>LR-26023</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/58f9b64d-d8a8-43bd-b5a6-d9a48d2a1212</guid>\n
+        \   </item>\n<item>\n  <title>James L. Koutoulas </title>\n  <link>https://www.sec.gov/node/960301\n</link>\n
+        \ <description>James L. Koutoulas </description>\n  <pubDate>Wed, 12 Jun 2024
+        13:49:28 -0400</pubDate>\n    <dc:creator>LR-26022</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/1a2379bb-a4b8-43e7-b696-597cf1fc7b8c</guid>\n
+        \   </item>\n<item>\n  <title>Mario Gogliormella, Steven Lacaj, and Karim
+        Ibrahim a/k/a/ Chris Hayes</title>\n  <link>https://www.sec.gov/node/960276\n</link>\n
+        \ <description>Mario Gogliormella, Steven Lacaj, and Karim Ibrahim a/k/a/
+        Chris Hayes</description>\n  <pubDate>Wed, 12 Jun 2024 12:33:56 -0400</pubDate>\n
+        \   <dc:creator>LR-26021</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/46315ffa-65cc-47e2-88b4-65a376bd9ba9</guid>\n
+        \   </item>\n<item>\n  <title>Ilit Raz</title>\n  <link>https://www.sec.gov/node/960236\n</link>\n
+        \ <description>Ilit Raz</description>\n  <pubDate>Tue, 11 Jun 2024 17:15:56
+        -0400</pubDate>\n    <dc:creator>LR-26020</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/dcf0dab6-8ec9-4241-9622-00b02f0dee9a</guid>\n
+        \   </item>\n<item>\n  <title>Marc Henry Menard; Laesha Jean-Louis</title>\n
+        \ <link>https://www.sec.gov/node/960231\n</link>\n  <description>Marc Henry
+        Menard; Laesha Jean-Louis</description>\n  <pubDate>Tue, 11 Jun 2024 17:10:04
+        -0400</pubDate>\n    <dc:creator>LR-26019</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/40b56f88-2a81-4a5b-945a-258536de268e</guid>\n
+        \   </item>\n<item>\n  <title>Jared Mitchell </title>\n  <link>https://www.sec.gov/node/959846\n</link>\n
+        \ <description>Jared Mitchell </description>\n  <pubDate>Fri, 07 Jun 2024
+        17:04:00 -0400</pubDate>\n    <dc:creator>LR26018</dc:creator>\n    <guid
+        isPermaLink=\"true\">https://www.sec.gov/706a97b7-aa9c-4242-a950-e1ebf86d55c2</guid>\n
+        \   </item>\n<item>\n  <title>Jordan Qsar, Grant Witherspoon, Austin Bernard,
+        and Chase Lambert</title>\n  <link>https://www.sec.gov/node/959496\n</link>\n
+        \ <description>Jordan Qsar, Grant Witherspoon, Austin Bernard, and Chase Lambert</description>\n
+        \ <pubDate>Thu, 06 Jun 2024 17:14:51 -0400</pubDate>\n    <dc:creator>LR-26017</dc:creator>\n
+        \   <guid isPermaLink=\"true\">https://www.sec.gov/3797cdf4-6daa-49f9-8e6a-058e5c1f855d</guid>\n
+        \   </item>\n<item>\n  <title>Andre Wong</title>\n  <link>https://www.sec.gov/node/958096\n</link>\n
+        \ <description>Andre Wong</description>\n  <pubDate>Tue, 04 Jun 2024 15:07:18
+        -0400</pubDate>\n    <dc:creator>LR-26016</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/65d70a7f-4bf6-4d20-8fee-65ef3fcd1f32</guid>\n
+        \   </item>\n\n  </channel>\n</rss>\n"
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - public, max-age=24
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Length:
+      - '2179'
+      Content-Security-Policy:
+      - frame-ancestors 'self'
+      Content-Type:
+      - application/rss+xml; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 21:21:50 GMT
+      ETag:
+      - '"1719868873"'
+      Expires:
+      - Mon, 01 Jul 2024 21:22:14 GMT
+      Last-Modified:
+      - Mon, 01 Jul 2024 21:21:13 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains ; preload
+      Vary:
+      - Accept-Encoding
+      X-AH-Environment:
+      - prod
+      X-Age:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-ID:
+      - v-d8557ad0-37ef-11ef-ade7-df725f5228a9
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

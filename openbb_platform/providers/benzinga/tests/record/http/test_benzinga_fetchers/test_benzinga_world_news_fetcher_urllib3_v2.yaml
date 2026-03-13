@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=2&sort=created%3Adesc&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/62SQWvbQBCF7/0Vgwg9eSxbtuPExwQKPrix60IpwYeRNZa2lrRid1XFDfnvnZVk
+        Q1sogeSy7DIzb/d7+x6fA5UEi+n8JprPx/NBQLXLtAkWwR2Xv1SZEnzmxiZsj8Eg2Bsmx9IffK15
+        ANEEtlxBNIpmMJ6KyGI8AxxNRyPpravk1b1OuZylc0U/tAFVJvzEFsgw5LphA2TBZQzbj2uo6jy3
+        ENP+CAejC6A8R6cKhkylmR3CsvzJ1mljoaCTVK2GmEXAsrWCA7HRlIjkXhcFl47MqdP5xAncZ6QM
+        rOXKPB/6ZzFZ9l7IPtbJqdvVJpdN5lxlF2HYNM0w7q0aimjYKFWE0Swc3YZnV8PCc2HPhcKFLReS
+        ReFCixW2XOi50L8Hz1zYcslsj4WChR4LY8YLFsZGXqYKSsXGx538VEZlybmV03NQUuHd/bZcroIX
+        KYrQ/vhHabPZyDw/+TEvEQQvg0txu/7+d1FEHKVeYucbLxG6nszeFqFoMb1+bYSkd/5PhNZGTDNq
+        T2AzMbpLkTOU+M/3Xvo4HZysd6sHuKdKOcqhrlJpkQj4mLX2dKlYkTmygzWbgzYFOA0Ptav6E5UJ
+        GFJWxpSzUMmtchWZVCba6avoNvIzV5PxzbvlSSwOqzMkdpBtpHpI7CCxhcS40LjvIPEM2WXOQ3ZR
+        K1pI7LHQadQC+aY8rb8s/xeZ3Yff84coYHgEAAA=
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 23 Sep 2025 18:49:31 GMT
+      RateLimit-Limit:
+      - '250'
+      RateLimit-Remaining:
+      - '249'
+      RateLimit-Reset:
+      - '1'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/3.5.0, 1.1 74530a379e4f3e81aa5adba81b20ad86.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - HoO7AupeJ9jMUn6YbWb-H51ajArBO6u7MqPZShq1-CVQ_R1Sd_sfgw==
+      X-Amz-Cf-Pop:
+      - ORD56-P3
+      X-Bz-Request-Id:
+      - a924f550-b92b-46cb-b067-415c25e20615#74195639
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '2'
+      X-Kong-Request-Id:
+      - 66addf15fd5a6530610c700891d6455c
+      X-Kong-Upstream-Latency:
+      - '83'
+      X-Powered-By:
+      - Pentium
+      X-RateLimit-Limit-Minute:
+      - '5000'
+      X-RateLimit-Limit-Second:
+      - '250'
+      X-RateLimit-Remaining-Minute:
+      - '4999'
+      X-RateLimit-Remaining-Second:
+      - '249'
+    status:
+      code: 200
+      message: OK
+version: 1

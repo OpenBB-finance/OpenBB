@@ -1,0 +1,817 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-01
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '12929'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=57~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=8601cef857bd43fc48e94f557b34599e;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=9714580F1937256F9FA4D1979436EE19~000000000000000000000000000000~YAAQ2pUeuNo4dkuQAQAAxs8sbxjaL8Dtz9eIPpXMMt+eaoIZy1ba98ZHNAoITd2rmnExRWILYUPfFF1TZs1QjERsXIUCpn3E1OZVXKUaGsEjIVD+uVvXTE7HUI/Q/PIVelbdkb/oChc8AqdzDMIltbehw6cwYrGukdvdWTQ6duceC+4nU/x10D+cJByu5I2bYTWBWLt0IOw6GT5t0vk8zj6wpxPu/6S0f1FxI4m2ZllIaBvsL36bpP0Mmg763oliJ8b4stEK4tIAjFPJ4b2HFMRBW/e3ArKrAbgg6BkPwuJ18dqe0IF0/IeIu4mpZ+HVNvK3On4sU25QnfSQVXhDmyWg/bEPQKu21d6YELotNpomkt8EqjY1af3yAqkm3WJXiQgm1jRY405ANnR9qGTf/e+0PP2iKQ==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '101'
+      lang:
+      - en
+      rid:
+      - ee8ab77b-bdc6-49b4-b7ec-3f71c57fa174
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-07
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAFWP3UoDQQxGXyXkerakQ624t3pVKF7YF4hO1h2YH5nMtkLZd3dGKygkcEjC4csV
+        HVfG8YpvHCQ5Lp1Znycc8WVJBg5LgHsDluwODc7CTorimJYQDJZ8ufFqsPooU+EoXRF9euLaELcP
+        1g50N1h7Ihq/q4kif972dku7gfYD/dmvTRdFld/7xWmWIsCtUwbnz961pAo1g875AlMuUGev0F6R
+        TXNr5bpoT1Ees2sGS2TwtfPxV/qT38lZQv6Q8m++rl8CeZ9dFwEAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '211'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=78~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=7eba53817dca51d22c48cc287f417154;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=17F5AEA391547498ADB3C08CEA7DE328~000000000000000000000000000000~YAAQ2pUeuNs4dkuQAQAA288sbxglxJ+A1wZSNuTVnrQJo3wssafLWJiTLKKpL7Ww24u/F22dC+tcx7Tg2gzqW3qUvUFfzerPxLdwNfPP92ADjo1WSJargqUnrAcZac39y9+eKMSEuK1ggUCdjkTYXT0rB0vj2/LU9/hpxWl7jOHUgIItt5qvtAC65o56q8Szze/+Ht5Gi9GXefGJ/JBTsJOsvcqp/yBx/EKOJ4Km62NX4ARcK7jHrv1fSCRZN4t+nE0xXVQxxYCkD+Z1TyQ+pZrSL1g5cmDJ83faZE0I70Mrvupo6/9hABcI2CuJn078To1FihbR/gpw1rHBIh2FK9N498rENmLBfUrR2tLD5+kqFPjFwItCeMksAzo4iFI8SM7wCT33bL1fq04SH2wkaedRe2+Svw==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '45'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '62'
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 70dc755a-e11e-4693-bcf4-16d48ef9b0ef
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-06
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAFWPwWrDMAyGX0Xo7AzVdIXm2p4KY4f1BbRZaQx2XCynHZS8++ytgxYk+JDEx68b
+        Oi6M/Q2/OMjkODdmfR+wxw8uBg5zgI0BS3aNBkdhJ1mxn+YQDOZ0vfNisPgoQ+YoTRH9tOdSEVdb
+        azt67aw9EvW/VUWRv+97u6J1R5uOHvZL1UVR5VO7OI6SBbj2lMD5i3c1qUJJoGO6wpAylNEr1Ffk
+        pbq1cJm1pci75KrBEhn8bPz2L/3L7+QiIZ0lP82X5QfbaATPFwEAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '211'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=57~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=8601cef857bd43fc48e94f557b34599e;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=2EAF01FBEF4399C8F2F93C82422F8E11~000000000000000000000000000000~YAAQ2pUeuNw4dkuQAQAA288sbxhfysPYTHuTdo9fewpzZdl/qyXMU2wuf3fk28hEO7BVB6GoRi7El4QxGCx2AX98EBV1Eqpk5+qvkIelJNYTbrYhOluCn2YWaku6dWsyiEWFMthgZ27eW1OczO6yqveWPGFg83hg6hAPxIqeRGYtBJvwvZfwNPNnvJrUyEUtUKhSBPIpCCR5hOxyh9q6OjwlmSApUZwdfPENIaByIx3Hd9z+5cRcZgOoAKTRrX6MyHeiemQF8Swd9w762Pa6IHzKjjTQ3Fw5QvLLZpIlaVmA5dmM89Y4fA/fcDHwBEFog6Xwbz+BrqKWGb380IxfblRXhRPQPRNTdKZ+kDYF3Ou1uduDlmjhiknI2hb1ty+RiLqlyFphymwWErkd5rhXX2BzX9PnBg==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '49'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '31'
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - c5c4aab1-a060-4518-b765-97d99c6fe77d
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-04
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAH2SYWvCMBCG/0rI59bGUK3rtzJlOJgb1S9jjBKbqIUmkbR1Sul/39kaqU4GgV7e
+        5+5y99Iac1YyHNY4ZblQnJlzzIr3DQ7xalc56LXKke8gSqiPHbwTjAtTnJOKk1zrHNKWXeDgVMs9
+        U6cFkwLk9uNgnh0yDp2T2TGZsvJMZkd3elFRKzl4z05SqNJmfHRXS41IteEWxu3Nsmv/uKO2M6BM
+        8SwFlSeRUhXLkysL8dwy1DHUq2NK6Uqloj9R1NO6pxuYS/+AFV/1/eZCCyXMNmNoOYhQNI2h6dWu
+        Rfwy/3xsTOAR37s4fefI0CNwCBn+sQOKJrbozgwyIJMnPxj9awUZBGMaPN564UW4+YZNy0yKjWnX
+        q7HMlJ3qiVKXjFxKV4SE7YEpJDteOB0S3yVjl/R4A+2kKAq2hQxV5Tl4U7Kyan8q86w5yJQQB6/P
+        8dttJhcHkeu9MDd60/wClmlwBMgCAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '365'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=47~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=f8bb65f77272e0bb80a0bb5d28cac06e;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=9420FDF9FE4CF16F986F8A0C7EDCE336~000000000000000000000000000000~YAAQ2pUeuN04dkuQAQAA488sbxhgyPj8e/++l+fLOMDpVpU7XLdAsNKDArwn5GAgvo5Qiq9zmwm0qzMIRp/+dJKvxy+olQJtcdgfCbPzfNBbn9v0JSSmjwgzOtwvBVpKZa5ebu8jApugNgx7OeXl+10vtRjnB61Dsq4w8HnONxPS2pA2j5bN21olCiqFZeg+eqeJ4uYytJNAWYxcnFp9S6o+a/g8dq1ZD+dLGjCL9pHiBLYhrRacwekOvsx7u797pIBBjzsyrHvYRgrs0lxS8DhS6T1Zp/rnNAtvVOHjeOSCYU2alvzGJ6z7CM7l0Bs7BAeMGY8FVf/5kAA9cesIz6j22cQ4PNt2aK0EvR1+yjL/Gi7MJJ4IRHhPYlxoiJpiWAFekaPTdlhHXQM439WXCmOEDWx79A==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '47'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '27'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 7a520a84-e941-4e12-871e-d02d5f36cff9
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-03
+  response:
+    body:
+      string: !!binary |
+        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
+        WyMAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1657'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=2~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=853a14626f6d3b56571d09123a447538;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=E5386D3065A46F74D52C6C04A8EF3C92~000000000000000000000000000000~YAAQ2pUeuN84dkuQAQAA488sbxgNHxcMiyuQLCKfoVOZEYmYuGwSQsFyNC7BEqCzh4vQxTIeWa0Gj79cWcRC06C4MO58fF88zqqIWiTjTV1fF+2vGTTv8hKJGGKrzXdw9zwQKEQWffQllpYvFdGPhbS1hZo/vKh928R5EzD3DYD27FWDprfqn/10EoW7eTDs/uZvXSqfYfWpXZUlcyFNoSUoA5c1XdgsMEFAOlzxhtHaG4T+EbxyV22eCeS7jTCbCz5X9zdzIxe+zavfonBPh7632MYSJALAkEnF5ygELwMCTunkB7z1dpzLpZgpMGQ5GMXwaKoZCoUKSTa2z1RXxqsNy1hdCs4wbvucQLOyYKO2QveyoEc5Xqp2x4ZmLTzIOisdxZRTYyCNKa5rXrpxpbCAMral3g==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '46'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '28'
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 8f964b60-7d87-45f3-8241-772a62a9219e
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-02
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAL2Ya2+ySBTHv8qEZJM2URyGi9J3FO1lq7YR+zx7yaYZYaqTwowZoNVt/O474OVB
+        V0rgRRO1MOcw8DvnP3MO/VQCnGDl6lPxcUhYgEV2jOPHV+VKmaakBX5PQ4BaAEFkKC1lQXBARJw5
+        xetoxkPp5m0PWorPoyVm6zGOiBzO/7SUgL7TQM78Mli99HGSWQardn83CvKhlrLE64iwZO/xtD3d
+        WwXxuQj2xkl+trcd5p9srfuZpYmygPpyNHhxGEtx+HKwXSn3exvY2kDhOswYT5lPik/kFMa2t97I
+        5+IfMhR/f56QO+GcRxh4CSEhuBU8XYJ75qvA5VHEGfAWWJBY3ucQQcebDs+HqtuBqLOL/UmMuh3N
+        3puOA1S86CQ8UIXml4GRDucDICfVtpNuWqfALg7xO89QP6Q4Wse0CfffirDuj9ufDWB12ABWa8Zq
+        daBdyiqonyZ7xhDHMXDKWSfu9LsS2zCvZgdaZayPSyIwGNKI5gslIpIdM9AnSx7TBIv1GS0/Pk2c
+        JshmA2SjaXq1bhmy40cEPLMc2OViyQVOKGflcnbc5wa4SG+i5qoUW6W8einvnIbZljYl/oLxkM8p
+        qVrATdKLjAa8SLcqgG3DKFM1QmXIu+yOqC84CYmfCM6oHxfTDS7Gg5+XpRF4HrlNdjCticQt3bC7
+        VYmXXmb93E/IMp2F1AceEe/Ur0z8xLv9rpVt6l8jI1Urybxx0Nr/ge8TnGaLe4aZz8F1/nvHw4Cy
+        OfCcLzY4cDHA/gIIsoyTOTAhBE+CvBIhpI7i3OOyGKj76fN17Uj1DkWnXj2Huq53qxYKNKBWWuvM
+        snhdC7qKuJCwXFaCZH2umTkVyfXkj+8SCeqir1WiqdAuVUlphXe8wa/tcH0QiMvVFhgmgfqlTshO
+        J/JE3i67bvrBjzu/S3Dc+9WPV69gqhEvHWmWVlUzM6dSpZSurGvB+dsrJWEAbiiTC4tsVWKoFjJ/
+        A146kw8pDdnGO+aJjFSQEvDoJ3xGBJB3lC8YPXiko/FdEx1ZTXTUs6FVKSXNtND5wIw7zrmQPLpS
+        O1IAD/Ln4i4M5jLzTn9yBHn3MPyzSTktT79egolUG+p2xUZhqj3YqwP5QCOZwHAN2lkvLN5AQMCI
+        rKjcWD3VUU95H9z+qAmvVp9XtksI2ZpdVTltrVsH2F1IFefrOWXZrLJZiA/1M28hTpndZ9erz2wX
+        yGpI2UJ6V9Or2kTpVIfZWxD2r/yCwSrb1+IPvD5qlg4vCMfg3t1f4/rgvcN7Zg1wXdUNrVexhLdO
+        9ZM9oiyW9POsYXjbVoICe14QTjI+ch6agDd67UNaz7CqNnVDt0oK4XnwmzClgcBFqJth32m0dHtN
+        mhrbhpU9DdKMkkqVQ/2zaSkJjciryJk+lYiynV2zEWpDs43QFMKr/COfIsKrnR1p0GhDqw0L9o2c
+        LpLix3PpwdIwlLFJcJLm/wsTLg+yPRbKN85Zdjw69gzIOwmzHupofLP5DxJakHt/EwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1134'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=2~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=853a14626f6d3b56571d09123a447538;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=AB20B453DAAACA408885ED7CCA45C2A0~000000000000000000000000000000~YAAQ2pUeuN44dkuQAQAA488sbxgfGrEIZ+aA0uDTbqt6rdnsIJ1Oc5cyVBAP3LVSy9doHlGBLBzWaxRARd4FM35s3JhBPzwl7aNig9clH7ue4k4NsIY5Jyu5dxsVBZ53hINl3oT+/FK1bJ6e1j8CT+H6ZX3u98pVz3spM3rBnQebaaSbXvkNTZyfrrSY2jRYjjloc93JxaHIunMK5Ng+W0i3vcTAQIj1L8kcA0CIvNN/CzzqiIhkjTGfzHMbW1aWVpC//+QHlto/HYPxqiql8cGoXQXGZTbEt3Iq9yfvSwBfpI/YOtHA2JUhKIdommGR2DtiOFWM/bNRqhkaJUZuhn4vxLpbOG2JwSvJOnrLKeomIB0w60l7W6RfGB+/lNJ5UixLlXMaUI3llDugtXBkqrp9sqCYzA==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - f9cfaf1e-c033-4f2d-a644-4036ff3a541e
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2024-07-05
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2105'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Expires:
+      - Mon, 01 Jul 2024 16:42:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_central1|~rv=51~m=ao_api_central1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=8ed4614161d19b8959d4853c14e21c65;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=A1F4FEEF4F5E2E5F686FD9ADF7CB0336~000000000000000000000000000000~YAAQ2pUeuOI4dkuQAQAA6M8sbxj6HXSTEsYfm/ImEA16WnBoZDF5hgAPgocsrLaq84zfHrSFBR0VuZzrEs675JevyqjaaF5f/MuQrArQsOSH4BSqE3mT7JGiKFbYp7K8+eLAKWpvMf8uW3VzKx+nUQEFIh+K6e8pdukXvUMhHWopFVlFjkFiS4DH14oG5zZ2j14yeWO1VeBJC8/jxjks+/H5PzSxvzisQTdRQ+lSeutaEiasgubaWfggwYFL8/bEcY+zjFDlvJK453mwB/BKJ0IShzhUSC22D04aFytAvkduuAIBBA1LQYPpLoqEpdyDXlKO87PJI1UQCnkq2ZDgQ+IKDa1voh0HBn33jht3dk3soC8FUbSbqx+egehhrxZDHq+9aGdNgXamxb1YriTNRN8H7F2x/A==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 01 Jul 2024 18:42:06 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '47'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '29'
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 72baded0-0540-4c41-8ebd-7dad9730f74f
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

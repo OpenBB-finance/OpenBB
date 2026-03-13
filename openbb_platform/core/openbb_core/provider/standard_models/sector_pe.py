@@ -1,0 +1,25 @@
+"""Sector P/E Ratio Standard Model."""
+
+from datetime import date as dateType
+
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from pydantic import Field
+
+
+class SectorPEQueryParams(QueryParams):
+    """Sector P/E Ratio Query."""
+
+
+class SectorPEData(Data):
+    """Sector P/E Ratio Data."""
+
+    date: dateType | None = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""), default=None
+    )
+    exchange: str | None = Field(
+        default=None, description="The exchange where the data is from."
+    )
+    sector: str = Field(description="The name of the sector.")
+    pe: float = Field(description="The P/E ratio of the sector.")

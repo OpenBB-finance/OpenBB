@@ -1,0 +1,110 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/earnings?apikey=MOCK_API_KEY&limit=6&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA83UPU/DMBAG4L2/wvJcR/fhs2O2DGwMLEyIIRAPSGmpSFKpQvx3HChFiLhVKlUi
+        jpd7c9I9spX7hVJvaSulu93q8aXVV0pX1e2NXn5Vm7qPY42AnAFryH0ncdNVT/1Qjy3roW1/ytdd
+        /7xKfc3v5DVu43qIU037KNPY1l1/t2n2wTiKGPAGgk75+3IeAQ2V/4QQDPFsghgEwzCPgIW3ZxEQ
+        UCwTOSG4ACWdIuMUBQvxOYrNUYIFdvD55EVlEEeeXVqXAKU3A3KSAx0m+QMSlnAKFKxYwjKdkzsG
+        KsfBzgBh5rJRYac9VLDLeJAsA5wCpa9IPAdGoWOiwx9g8fABsiEMx8cEAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:27 GMT
+      Etag:
+      - W/"4c7-/wpztldjulkcl12LDUg3ajxBdSk"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/earnings?apikey=MOCK_API_KEY&limit=6&symbol=MSFT
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9XSwUoDMRAG4HufIuTcyGQymUm8edBbT9WTeFjdHIRtLe6uIKXv7qZWVGy2tNCD
+        gVzm54f5Qu4nSq2Hq5Ru3xePL42+VHo2v7nV089pXXUpzxCQDZDB8JWkVXv11PVVriz7pvkeX7fd
+        82Lo1b+T1/SWln3aV9pFhWJTtd3dqt4FeRVvIBp0esg30+MI1qD8Z4I3FgzG4wjugv1JBPEUJBJa
+        gjNIQIyDfZIf+/6ROClIhIksbM8IyEVkYUHhc4CoCCIugRBLIADmQyAO5GLwHCSMgbYvfQLIFv7a
+        sLYrgWzpr3Fkh4dBgb2AWGfHQJQXy6DJwwf9fcJlxQQAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:28 GMT
+      Etag:
+      - W/"4c5-kpAlM1YM0I3U4TU3SdUPQNxVVhQ"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

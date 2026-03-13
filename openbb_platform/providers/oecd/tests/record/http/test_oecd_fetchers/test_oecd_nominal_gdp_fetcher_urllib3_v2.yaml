@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_USD,1.1/Q..USA.S1..B1GQ.....V..?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2023-06-06&format=csvfile&startPeriod=2020-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ip4evzl+
+        9vzL746evTr9idHx0+989frNF6cv3oxenT77/Y9fnR6PXp+evPny1ejky69evDl99fL41ZvfXz96
+        8+r4xevjkzdnX74Ynb14/ebV73/8+vXpmxE++smzN7/P6PT3fnn64unZm69enY6+enH25vf/4vT4
+        Nf54+ers5PT3f3L8+lSAPPvy1RfHDOfN8ZPnp7//2VNC4ezZ2Sl1cvbF6e//8vTV2ZdPR18+ef37
+        /+Tx869OGbvf5/T41e/PkEaAhEaE5Ytnv//rN8dvvno9enp6cvbF8fPX/Jp+Jlh89fzN6OSrV69O
+        X5z8Pr9x8uXpydPx66dPxy+Onz56+vrp7//i+Ivjsxe7v+fTZ7//T7w4/v29Ufz+X71+urU73r0z
+        +onR7zP66jVRZxf/e7L7+U+Mfv+f0v9Ro9//5cuXo58cPT8evdnZ3dkb7e3s7W3/xP5o79P9nYP9
+        nfsjeX5one9s/8S90d7up/sPCAHqGM8PrfPd7Z/YHe3tfbqzs3vwQx85dU4/7+093Lv36R51jOeH
+        2TmR/d7B3sHDB/eoYzw/zM6J4fY/vb//6c5g5z9bnRO305zf39l7uLv7KY0azw9t5NQ5/bx/f39/
+        74dP9ns88k8Pdu99urNLHeP5oXVOIyeGu//w4f6n9x5Sx3h+aJ2TkqGR7z7Y+fT+7g+d7NT53mj3
+        4cPde7v7Pxedk6jRL/vE8dQxnt84+X8AYyF/4lwHAAA=
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Disposition:
+      - attachment; filename="OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA_EXPENDITURE_USD,1.1+Q..USA.S1..B1GQ.....V...csv"
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en,en-US
+      Content-Type:
+      - application/vnd.sdmx.data+csv; charset=utf-8
+      Date:
+      - Fri, 12 Jul 2024 19:23:22 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 3
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

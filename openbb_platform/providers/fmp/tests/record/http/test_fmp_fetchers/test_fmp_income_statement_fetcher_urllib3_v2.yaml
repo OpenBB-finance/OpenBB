@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/income-statement?apikey=MOCK_API_KEY&limit=1&period=annual&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4VUXW+bMBR9769AeV4mGxM+8kZLO03qkmrtHqqpDwRuEq9gI9tk6ab9911DaOIm
+        TZEQ4Z5zzz0+Nvl54Xl/8fa8UZkbGE29kU/8YEySsR+PPvWIfqkXsrJYmt7dDlUFjVQGyqtWKRDF
+        i8V/3GcDXPBnWyF4MZ/QhA3AkldcrLLDaZSOCR3wvCigQd1jhkfCKaFTFu6ldJFXj5CrgTggDSgu
+        S1u9edwb3oBorSZLKGET0l2DXanNfPn9leJbhu9QVkpqfafkkhsk0JiEMXMICjRaKdapKDMUqmRT
+        gzDX2waEBm3nUhYRVxMEqLzCjrSsueDaqNzwDRw0DVQNlQ0Oqd9y9QwGf7/P+vKxrh+SJHLMSLMG
+        dUJTYpr5m3mTKAjdbpsgznMmRDFNHJIA81UYwKTwWcgaDsbwj4Cd9AFSQqOg4GhOCrvWGk8k/9O9
+        2i2iQeDuMiy4KXMLsSAM6RFmEZ/5NHRNSzEfIujNXW+Lqi27197aqbRe13FC0kiTV3Ob9yDYpzYD
+        0wXnpsY7ziUspYKHfNtLBvHkBAnhfUx+EgUn8re8GyXrKynQZ4tWd8uTwm5bwiIWvt+V4UfXN0Lp
+        9DnHKC1/tdrY868f5AyON1Uc1M5MzKBsi7cTFtIYWd9yAbOzKtDYrvAzpftCxqsW/126Ool39d/A
+        V2usphtczwru13redodhwgIWdZ/5OSZqduSAxCSxu4LcfxdP/wGAh3d+XQUAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:20 GMT
+      Etag:
+      - W/"55d-0tMhWNUPuOKjf2I1u6avVqzUPec"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

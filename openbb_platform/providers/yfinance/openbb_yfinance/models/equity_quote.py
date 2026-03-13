@@ -1,0 +1,131 @@
+"""YFinance Equity Quote Model."""
+
+# pylint: disable=unused-argument
+
+from typing import Any
+from warnings import warn
+
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_quote import (
+    EquityQuoteData,
+    EquityQuoteQueryParams,
+)
+from pydantic import Field
+
+
+class YFinanceEquityQuoteQueryParams(EquityQuoteQueryParams):
+    """YFinance Equity Quote Query."""
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+
+class YFinanceEquityQuoteData(EquityQuoteData):
+    """YFinance Equity Quote Data."""
+
+    __alias_dict__ = {
+        "name": "longName",
+        "asset_type": "quoteType",
+        "last_price": "currentPrice",
+        "high": "dayHigh",
+        "low": "dayLow",
+        "prev_close": "previousClose",
+        "year_high": "fiftyTwoWeekHigh",
+        "year_low": "fiftyTwoWeekLow",
+        "ma_50d": "fiftyDayAverage",
+        "ma_200d": "twoHundredDayAverage",
+        "volume_average": "averageVolume",
+        "volume_average_10d": "averageDailyVolume10Day",
+    }
+
+    ma_50d: float | None = Field(
+        default=None,
+        description="50-day moving average price.",
+    )
+    ma_200d: float | None = Field(
+        default=None,
+        description="200-day moving average price.",
+    )
+    volume_average: float | None = Field(
+        default=None,
+        description="Average daily trading volume.",
+    )
+    volume_average_10d: float | None = Field(
+        default=None,
+        description="Average daily trading volume in the last 10 days.",
+    )
+    currency: str | None = Field(
+        default=None,
+        description="Currency of the price.",
+    )
+
+
+class YFinanceEquityQuoteFetcher(
+    Fetcher[YFinanceEquityQuoteQueryParams, list[YFinanceEquityQuoteData]]
+):
+    """YFinance Equity Quote Fetcher."""
+
+    @staticmethod
+    def transform_query(params: dict[str, Any]) -> YFinanceEquityQuoteQueryParams:
+        """Transform the query."""
+        return YFinanceEquityQuoteQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: YFinanceEquityQuoteQueryParams,
+        credentials: dict[str, str] | None,
+        **kwargs: Any,
+    ) -> list[dict]:
+        """Extract the raw data from YFinance."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from yfinance import Ticker
+
+        symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
+        results: list[dict] = []
+
+        fields = [
+            "symbol",
+            "longName",
+            "exchange",
+            "quoteType",
+            "bid",
+            "bidSize",
+            "ask",
+            "askSize",
+            "currentPrice",
+            "open",
+            "dayHigh",
+            "dayLow",
+            "previousClose",
+            "volume",
+            "averageVolume",
+            "averageDailyVolume10Day",
+            "fiftyTwoWeekHigh",
+            "fiftyTwoWeekLow",
+            "fiftyDayAverage",
+            "twoHundredDayAverage",
+            "currency",
+        ]
+
+        async def get_one(symbol: str) -> None:
+            try:
+                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+            except Exception as e:
+                warn(f"Error getting data for {symbol}: {e}")
+                return
+
+            result = {f: ticker.get(f) for f in fields if f in ticker}
+            if result:
+                results.append(result)
+
+        await asyncio.gather(*(get_one(symbol) for symbol in symbols))
+        return results
+
+    @staticmethod
+    def transform_data(
+        query: YFinanceEquityQuoteQueryParams,
+        data: list[dict],
+        **kwargs: Any,
+    ) -> list[YFinanceEquityQuoteData]:
+        """Transform the data."""
+        return [YFinanceEquityQuoteData.model_validate(d) for d in data]

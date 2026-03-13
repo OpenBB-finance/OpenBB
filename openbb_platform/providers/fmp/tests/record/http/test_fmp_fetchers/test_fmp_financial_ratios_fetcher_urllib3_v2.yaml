@@ -1,0 +1,143 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/ratios-ttm?apikey=MOCK_API_KEY&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5VWTU8jRxS8769AnDej/nzdnRsQNooEWhSslaIoh7bdNiOGaadnbEBR/ntqsHuY
+        McNuOBhZpqo/6tWr139+Ojn5B5+Tk9Pm+WEeq9OfT07Pzm6uTj/vf12n2DQ3Ka7K9tqndVnPZtfA
+        sEIRGSs0E8IpYRwd8GF+DJTcEknLuSbJyXE1QC79EVaRIeGEUooboeUBGjch+bas11MHeW/9TQqt
+        f5pmGMYEV1wK7Cb5gbCINfbYxm3zdb9frCdvLpRwhO0Yd9ZKo82BX4f2I/B5bNv4cFXW4SOsFBah
+        3Pl5FZrZNtVxF9KeYgsjlDEWH5IKX7MM/nkCrQoJeYkEMQleL1pZ70LdxvQ8hksqjFGMWSWt5Vbn
+        aq/Kp7A8a5rQHh9GCWnJCjhDcE75MP4tlBdCCjKSO0HaaJaXXmxTwlF+7+qQRbFknOPGMqa01Fwf
+        oH9vy8X9GIh7MZRWW1SYVL5dEytcb/E8wiqYBkg4R3dQyuCFb+5GQMG1tYwzwRSznLI5N6lchFm8
+        9KmGQ5sBRUIGiGYcNLZGkJ1m/JriYzvciqtCSyedoo6sQc5yx/To0/LmB3xZGMmcwR/CCq/0w77n
+        MQ7V0qZw6DXBrHRG4pxj9K2HeQZwV0g0j2USxUW9juFfUggXUO5LFR+HR3KF5hziWWsUQWw1pn3N
+        HT7F1QXXQjnrJNoBNch1X4Z5O4sv9hueEA3OkE0aMQJvO059qfaES/ilHXqAF1opqxFiRjnBsNUI
+        f+E3Zeur0Q7EDNPMULe4ETwrXMV6PQvp4Zd3iVprB1NKySRpbbIMq7L29aL01VVAZ/h1GBaoYLCn
+        EEyT5RA/3+YxpvsXxV52yV01IP7EbSFxNaW061yeuzB+R2xWGHJwj2XwRNdB7j3SsTHQICislQTH
+        ckfUj4TVwBLfqzPaFkXTBnpyy/BVDcpwG9IOTrmIE/IYBCQmh3WExoTAfZa1IYWmneCwHAh3MbVd
+        wd6ca3IjBKsyKLmwXf3Fe8pMcHkBS2ohlUZ82W7E9SnzUr3Lp02ol2W7TVNXRLYTss9YLgziXfV+
+        LnflErwbXy7P6iWcEJ4m6LJwvCspxh0iTsJIb/jPcTuOWq6VwRBGU0jD8ZWOKH+UoVpmMDyJ1Xk+
+        VuiER2M34ZuvtiGHoUHAItC4YFn+BLPX23AT0u2dTwegMIhkhyHTZabEDDyAMV5/qxfx4QhOBRFH
+        66LPZfceOa5+14rHDCsUUwZOZRgl/TDrAn+MRJByrQVHEmuN0uULzpGgL1cbw1XRvVqoI5Ds2vwA
+        b329LjGDzz9GazrIXayWITX7zPp/vDd+HNNMIayyiEiGIemUfp13cM8Yio6UDLajLrGEc31rDVv6
+        WFysyDQK6Cyc2sfHsHqX57PXsIGbMaEEnjioes7Rfc0u8ULMQOcUIh3PAydROXs8dXyZBl57b6Tt
+        8xwPrfvQoll6++L9gXeQsBhrANv+hbpahUVb7sLMP6E5elGERB6T4Hg8Km0xL6Z9f72t2nJTvdpa
+        CqR3Z2yF4dyHW+7BkYzIC4H///vpr/8AJWObiKILAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:39 GMT
+      Etag:
+      - W/"ba2-OOHPH804oDvu2Ry92t/8gxUpE84"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/ratios?apikey=MOCK_API_KEY&limit=1&period=annual&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA51WTW/cNhC951cYPtcCP4ZfvTmOUxRIECN2CwRFD/SKawuWxS2lXdso+t/7qF3K
+        2t0YSHvQRXxDDt+8ecM/3p2c/I3v5OS0f3m8je3pzyen5+dXn05/2v6t/RDyP8EEnTF3JmxZWTb9
+        wrffgk9lvaysQmpinf9+/Fb+pbCKaQj1xTql0C1e8upv1x/K8l2KfX+V4rIZPvt013RYZxVpwbQk
+        Z7kSUjq5A4fbPZTkijMhhDWMGaW0nsFqPwcSScMMs4qRVNLucBH5+qHp7o7Of2vnVQqDf/4e3DjG
+        Sesxb7VDL2KH3ddx3X/ZnhS746sK6QwXShntHEmrzS64C8MPY2/jMMTHT00XfjgkhUVoNv62Df3N
+        OnVxE3I1VeWYZNJazjVZJgrxK/9yCJUVU0xmkLEEqozYYZtuE7ohppcZWNgKVBrOnBIKe+tC0bJ5
+        DvV534dhhraV0kxylMtykpqVnP0BjlfYUlpDRgoL5g0V4ketDV8z5SMLuLcEC0YrSczKkupf62bx
+        MEMJzZi2ZKWVuZg7VB/bTVbuK1ASliFPCX0q+Xqs7+9fQVw7g9s6EOm0RAKThppFuImXPnWQXl8C
+        pKkgt0wmV1oBrr+P/yXFp2E65oxQMmmcgFAts2662jKmJ5/qq/8VvDvyfYwTO5pX0gi0kSGyWjq+
+        D732UEfBWuxq0TzWWK1B0T70YwrhAkx9bOPTdHlRcSGURp2Edkq7/ZAvpVEP44Sr0J0oAwmnyLly
+        VB1uh5s46mrKCmUTuT0dV0SGBDf76EuoYZiKLCrmmLJWSCUccW73sBd+1Qy+fd1aG50thqF3GEyg
+        1LqN3d1NSI8f3ohizHHOmIDZZH1OTdH5btH49lOA0P1dmIpQQb3GQE65pcmWxniK6WFkZ9y/dMhU
+        ZolGcQ7lhRcoJqDwQwM85DVfiBEjqJscZQG/FbFXeFCMacCFFYachvZLHZezmr9ZTFY5wTgXqKd1
+        yknlZpxfh7SBFi7iPiOqwoFGcyOEZASHn0xoCCn0wyGelZ6+x1DKlTnK5vgEraH6XNsss0nNR0wc
+        HVWNlFsNq7CKmCocLrZlunxeha5uhnU6uhUXleJGC9IEJtF3k/qaTVMj6so39XlXo+Dh+TCYKuO4
+        cNqRw8jjktRR8Etcz8yRo1KY4hoh2WzV4WHfmtDWI5Ll8WmVs1JinGg1a6E59iqkBewXOY1RhzGF
+        hwR1d+sA9PW9TxkrVEWWXDZXpGKdKELFMPy1W8THOVhXPLco4ZJj77/On23pc8/N4KYyysEmMAAE
+        vG6yimzaMxhV0BMECOJMZr/43C288Hff7qUrK4NZhh421sC0ecl28N1dg3H5/j/E9Hn9PrZ1SP3W
+        iX4g6EiD+/eF12nFHCkHGcrpvtDMDIdWx5bWcQanw9yfiJn37N6+8CwBLhEBgvT3SnT5/mbcGSiG
+        twQGKiY5Y4XLbWEu8Uo7HYc4/A8DV1nMfBJUNizjwjdpJPH07SG0NWW8eh7CgJ7YalXifQJnyLKz
+        jKiYSVguw2JoNuHGP3/dvnHxSqJsxFbh1cOhDVu0FLKWkEgfxhQ+r9uhWbWjVDV4M0xiezw8BJ8e
+        VlOXzSmGOi3h4aO4xVNUa0D/effnvw5gcpWECwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:40 GMT
+      Etag:
+      - W/"b84-uAxxgO+Loktaebswc6XhQsm67n4"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

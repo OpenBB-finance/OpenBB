@@ -1,0 +1,10 @@
+[workspace]
+
+resolver = "2"
+
+members = [
+    "src-tauri",
+]
+
+[workspace.dependencies]
+openssl = "^0.10.73"

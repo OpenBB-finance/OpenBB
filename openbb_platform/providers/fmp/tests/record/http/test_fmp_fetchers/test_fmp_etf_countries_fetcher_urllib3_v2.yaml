@@ -1,0 +1,215 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=QQQ
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4XQwQrCMAwG4PueIhS8jeKgrurVkwgiyE7iIayhHcwOuhQZ4ru7sXs85JTkI38e
+        BcBnLgDVDjlymtQRVBM7Jgd3RqZRlWv/TZ0PfKPUUmT0tAwejK7tRs0D31KSLl30bnhJVKXtXpJO
+        GNGhLOwk4EocKPUYnRhpq63INCn7jJNM1GKUc6LlDJkwf74xBnm/Mut+8fwBdWcClOQBAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:45 GMT
+      Etag:
+      - W/"1e4-F0AaD6+55M11HBiPGdu0rnriKKY"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=VTI
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4XRsQqDMBAG4N2nCIFuEqIith3rJO0glU6lQ6pHDNQEYoK1pe9exY7lHG66+z/u
+        uGtAyHsqQmhtvHZ2pHtCL1o5aEjlhIOehkt/ACVbV4KtQTshYR7cZYxnGzoNfMK/UmHhIXSDGRFL
+        Eoz4LXNUWjamwyTOUlTKRd/i+WSL5atBuRfYtYM4i1OMOYDtfCNwIkKJXGixKsS4MHZCk6Kfr0F/
+        zBlHdyk9WGfIWdVmhUGfc/JP6O7GW4kqCxHcvn32WlS5AgAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:45 GMT
+      Etag:
+      - W/"2b9-DFGVPONOY09byJpikrEwhZGst9g"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=VOO
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4XQPQvCMBAG4L2/IgTcSkhq/aijTiKIUJzEITRHEmhTSK8UFf+7lTrKdbjp7h7e
+        u1vC2GssxnjV9gHjg+8YvwaPYFiJGqHj6dQfwFuHF4gVBNQWvoPFRqj1go8D7/SvdIxQ62AoQ4l8
+        SxG/MCcfrGkbSpJilVFSOXh8QpwLJMVSUcxBd47ez8j9M6CbUpC/lYJU9hCb3mhakAV9SNCzQj4J
+        yf0DPWIxhisCAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:45 GMT
+      Etag:
+      - W/"22b-4C+qQF9f4H26zobrlljEgLQOUeM"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/etf/country-weightings?apikey=MOCK_API_KEY&symbol=IWM
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6XUz0vDMBQH8Pv+ilDwNsa6H7p5swOlqDAcehke3tpHG2gSeU2Ym/i/m6FH+Waw
+        Q0/N+5D3K9uBUl/xUyqrXLBeDtmtyl6t9lyrjSfPfTb8/b9n3bR+zVKx9dTw6eByOlreXGXxwPfw
+        X2lFB0NWlX1HtoZUPppfI6lgMaEmTExyRPyl9ahtUzuDpPFoMcNp9S2On81R/Gav/ZHlVBTMTGFN
+        1oHFO/WiK4eZyRIxpXD6JphYkSXcnChMkPDsLKXSyKcwDVvrxBVyOB9lL8QdFsYL2Nc4WvThhC9B
+        7oVsdZFQUEuG4LpFAi5uIXTUqVrg1XedM7tUR8Z4wONYmZQAN+0pfLLZuSBNQoH7XnrqDgkATnfB
+        XaND4s1JEKK97lv1pqXRZz2pUYTzvtlzzRYKKPwu9F6oS3QYCQ96FwFPcoYweP8BTHM21qwGAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:46 GMT
+      Etag:
+      - W/"6ac-9ABQIuc/fslKehW+7+TdT9N4pfE"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

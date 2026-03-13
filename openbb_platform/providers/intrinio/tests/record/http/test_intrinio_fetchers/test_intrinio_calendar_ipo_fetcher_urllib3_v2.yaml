@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/companies/ipos?api_key=MOCK_API_KEY&page_size=100&status=upcoming
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:14:00 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

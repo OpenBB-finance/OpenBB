@@ -1,0 +1,726 @@
+[
+  {
+    "name": "FOMC Documents",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_the_United_States_Federal_Reserve.svg/640px-Flag_of_the_United_States_Federal_Reserve.svg.png",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Read current and historical FOMC documents, beginning 1959.",
+    "allowCustomization": true,
+    "tabs": {
+      "overview": {
+        "id": "overview",
+        "name": "overview",
+        "layout": [
+          {
+            "i": "economy_fomc_documents_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 42,
+            "state": {
+              "params": {
+                "year": 2025
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  },
+  {
+    "name": "Federal Reserve System - Stats & Indicators",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Seal_of_the_United_States_Federal_Reserve_System.svg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Seal_of_the_United_States_Federal_Reserve_System.svg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Seal_of_the_United_States_Federal_Reserve_System.svg",
+    "description": "Data statistics and indactors generated from within the regional members of the Federal Reserve System.",
+    "allowCustomization": true,
+    "tabs": {
+      "rates": {
+        "id": "rates",
+        "name": "Rates",
+        "layout": [
+          {
+            "i": "fixedincome_rate_sofr_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 19,
+            "h": 18,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "customCombo",
+                "chartOptions": {
+                  "line": {
+                    "legend": {
+                      "enabled": false
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "rate"
+                  ]
+                },
+                "suppressChartRanges": true,
+                "seriesChartTypes": [
+                  {
+                    "colId": "rate",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_1",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_25",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_75",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_99",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "volume",
+                    "chartType": "line",
+                    "secondaryAxis": true
+                  }
+                ]
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "customCombo"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "rate",
+                      "percentile_1",
+                      "percentile_25",
+                      "percentile_75",
+                      "percentile_99",
+                      "volume"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "fixedincome_rate_effr_federal_reserve_obb",
+            "x": 0,
+            "y": 20,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "rate",
+                    "target_range_upper",
+                    "target_range_lower"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "revision_indicator"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "rate",
+                      "target_range_upper",
+                      "target_range_lower",
+                      "percentile_1",
+                      "percentile_25",
+                      "percentile_75",
+                      "percentile_99",
+                      "volume",
+                      "revision_indicator"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "fixedincome_rate_overnight_bank_funding_federal_reserve_obb",
+            "x": 19,
+            "y": 2,
+            "w": 21,
+            "h": 18,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "customCombo",
+                "chartOptions": {
+                  "line": {
+                    "legend": {
+                      "enabled": false
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "rate"
+                  ]
+                },
+                "suppressChartRanges": true,
+                "seriesChartTypes": [
+                  {
+                    "colId": "rate",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_1",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_25",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_75",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "percentile_99",
+                    "chartType": "line",
+                    "secondaryAxis": false
+                  },
+                  {
+                    "colId": "volume",
+                    "chartType": "line",
+                    "secondaryAxis": true
+                  }
+                ]
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "customCombo"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "rate",
+                      "percentile_1",
+                      "percentile_25",
+                      "percentile_75",
+                      "percentile_99",
+                      "volume"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          }
+        ]
+      },
+      "svensson-yield-curve": {
+        "id": "svensson-yield-curve",
+        "name": "Svensson Yield Curve",
+        "layout": [
+          {
+            "i": "fixedincome_government_svensson_yield_curve_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 23,
+            "state": {
+              "params": {
+                "series_type": [
+                  "forward_1y"
+                ],
+                "start_date": "2020-01-01"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "sven1f01",
+                    "sven1f04",
+                    "sven1f09"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "sven1f01",
+                      "sven1f04",
+                      "sven1f09"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          }
+        ]
+      },
+      "money-measures": {
+        "id": "money-measures",
+        "name": "Money Measures",
+        "layout": [
+          {
+            "i": "economy_money_measures_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01",
+                "adjusted": "false"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "month",
+                      "currency",
+                      "demand_deposits",
+                      "retail_money_market_funds",
+                      "small_denomination_time_deposits",
+                      "other_liquid_deposits",
+                      "m1",
+                      "m2"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          }
+        ]
+      },
+      "inflation-expectations": {
+        "id": "inflation-expectations",
+        "name": "Inflation Expectations",
+        "layout": [
+          {
+            "i": "economy_survey_inflation_expectations_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 27,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "infpgdp1yr",
+                    "infcpi1yr",
+                    "infcpi10yr"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          }
+        ]
+      },
+      "central-bank-holdings": {
+        "id": "central-bank-holdings",
+        "name": "Central Bank Holdings",
+        "layout": [
+          {
+            "i": "economy_central_bank_holdings_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 23,
+            "state": {
+              "params": {
+                "monthly": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "security_type",
+                      "cusip",
+                      "issuer",
+                      "maturity_date",
+                      "par_value",
+                      "coupon",
+                      "spread",
+                      "percent_outstanding",
+                      "change_prior_week",
+                      "change_prior_year",
+                      "tips_inflation_compensation"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "primary-dealer-positioning": {
+        "id": "primary-dealer-positioning",
+        "name": "Primary Dealer Positioning",
+        "layout": [
+          {
+            "i": "economy_primary_dealer_positioning_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 20,
+            "h": 23,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01",
+                "category": "bills"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "value"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "symbol",
+                      "title"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "symbol",
+                      "name"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "symbol",
+                      "value",
+                      "title",
+                      "name"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "economy_primary_dealer_fails_federal_reserve_obb",
+            "x": 20,
+            "y": 2,
+            "w": 20,
+            "h": 23,
+            "state": {
+              "params": {
+                "start_date": "2020-01-01",
+                "asset_class": "treasuries"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "value"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "pivot": {
+                    "pivotMode": false,
+                    "pivotColIds": [
+                      "title"
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "symbol"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "title",
+                      "value",
+                      "symbol"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          }
+        ]
+      },
+      "total-factor-productivity": {
+        "id": "total-factor-productivity",
+        "name": "Total Factor Productivity",
+        "layout": [
+          {
+            "i": "economy_total_factor_productivity_federal_reserve_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "frequency": "summary"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "variable",
+                      "variable_title",
+                      "full_sample_mean",
+                      "past_4_quarters",
+                      "past_8_quarters",
+                      "since_2019",
+                      "period_2004_2019",
+                      "period_1995_2004",
+                      "period_1973_1995",
+                      "period_1947_1973"
+                    ]
+                  },
+                  "rowSelection": [
+                    "2"
+                  ]
+                }
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "economy_total_factor_productivity_federal_reserve_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "frequency": "annual"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "legend": {
+                      "enabled": true
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "d_tfp",
+                    "d_hours",
+                    "d_y"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "d_y_prod",
+                      "d_y_inc",
+                      "d_y",
+                      "d_hours",
+                      "d_lp",
+                      "d_k",
+                      "d_lq_bls_interpolated",
+                      "d_lq_aaronson_sullivan",
+                      "d_lq",
+                      "alpha",
+                      "d_tfp",
+                      "d_util",
+                      "d_tfp_util",
+                      "relative_price",
+                      "inv_share",
+                      "d_tfp_i",
+                      "d_tfp_c",
+                      "d_u_invest",
+                      "d_u_consumption",
+                      "d_tfp_i_util",
+                      "d_tfp_c_util"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Group 1",
+        "type": "param",
+        "paramName": "start_date",
+        "defaultValue": "2020-01-01"
+      }
+    ]
+  }
+]

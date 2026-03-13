@@ -1,0 +1,488 @@
+[{
+  "name": "IMF Explorer",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/IMF-Seal_ENG_RGB.svg/500px-IMF-Seal_ENG_RGB.svg.png",
+  "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/IMF-Seal_ENG_RGB.svg/500px-IMF-Seal_ENG_RGB.svg.png",
+  "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/IMF-Seal_ENG_RGB.svg/500px-IMF-Seal_ENG_RGB.svg.png",
+  "description": "Explore economic indicators and presentation tables published by the IMF. Disclaimer: This application is neither affiliated with nor endorsed by the IMF. See https://data.imf.org/ for terms and conditions.",
+  "allowCustomization": true,
+  "tabs": {
+    "dataflows": {
+      "id": "dataflows",
+      "name": "Dataflows",
+      "layout": [
+        {
+          "i": "imf_utils_get_dataflow_dimensions_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 16,
+          "h": 29,
+          "state": {
+            "params": {
+              "dataflow_id": "CTOT"
+            }
+          },
+          "groups": []
+        },
+        {
+          "i": "imf_utils_list_dataflows_custom_obb",
+          "x": 16,
+          "y": 2,
+          "w": 24,
+          "h": 29,
+          "groups": []
+        }
+      ]
+    },
+    "indicators": {
+      "id": "indicators",
+      "name": "Indicators",
+      "layout": [
+        {
+          "i": "economy_available_indicators_imf_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 15,
+          "state": {
+            "params": {
+              "dataflows": "CTOT",
+              "symbol": "CTOT::CEMPI_CTOTNX_TT"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "symbol"
+                  ],
+                  "rightColIds": []
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "symbol_root",
+                    "symbol",
+                    "description",
+                    "agency_id",
+                    "dataflow_id",
+                    "dataflow_name",
+                    "structure_id",
+                    "dimension_id",
+                    "long_description",
+                    "member_of"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        },
+        {
+          "i": "economy_indicators_imf_obb",
+          "x": 0,
+          "y": 17,
+          "w": 40,
+          "h": 21,
+          "state": {
+            "params": {
+              "symbol": "CTOT::CEPI_CTOTX_GDP",
+              "country": [
+                "",
+                "AUS"
+              ],
+              "frequency": "M",
+              "limit": "1",
+              "pivot": "false"
+            },
+            "chartModel": {
+              "modelType": "range",
+              "chartType": "customCombo",
+              "chartOptions": {
+                "line": {
+                  "legend": {
+                    "enabled": false
+                  },
+                  "axes": {
+                    "category": {}
+                  }
+                }
+              },
+              "cellRange": {
+                "columns": [
+                  "date",
+                  "value"
+                ]
+              },
+              "suppressChartRanges": true,
+              "seriesChartTypes": [
+                {
+                  "colId": "value",
+                  "chartType": "groupedColumn",
+                  "secondaryAxis": false
+                },
+                {
+                  "colId": "unit_multiplier",
+                  "chartType": "line",
+                  "secondaryAxis": false
+                }
+              ]
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "customCombo"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "title",
+                    "country",
+                    "date",
+                    "value"
+                  ],
+                  "rightColIds": []
+                },
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "description"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "title",
+                    "country",
+                    "unit",
+                    "scale",
+                    "date",
+                    "symbol_root",
+                    "symbol",
+                    "value",
+                    "unit_multiplier",
+                    "order",
+                    "level",
+                    "indicator",
+                    "description",
+                    "country_code",
+                    "wgt_type",
+                    "wgt_type_code",
+                    "frequency",
+                    "frequency_code"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        }
+      ]
+    },
+    "presentation-tables": {
+      "id": "presentation-tables",
+      "name": "Presentation Tables",
+      "layout": [
+        {
+          "i": "imf_utils_presentation_table_custom_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 31,
+          "state": {
+            "params": {
+              "dataflow_group": "qgfs",
+              "table": "qgfs_balance",
+              "country": [
+                "BRA"
+              ],
+              "frequency": "Q",
+              "limit": "3"
+            },
+            "columnState": {
+              "default": {
+                "columnOrder": {
+                  "orderedColIds": [
+                    "country",
+                    "title",
+                    "2024-12-31",
+                    "2023-12-31",
+                    "2022-12-31"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": []
+        }
+      ]
+    },
+    "direction-of-trade": {
+      "id": "direction-of-trade",
+      "name": "Direction of Trade",
+      "layout": [
+        {
+          "i": "economy_direction_of_trade_imf_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 27,
+          "state": {
+            "params": {
+              "start_date": "2010-01-01",
+              "frequency": "quarter"
+            },
+            "chartModel": {
+              "modelType": "range",
+              "chartType": "line",
+              "chartOptions": {},
+              "suppressChartRanges": true
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "date",
+                    "symbol"
+                  ],
+                  "rightColIds": []
+                },
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "symbol",
+                    "country_code",
+                    "counterpart_code",
+                    "unit_multiplier"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "date",
+                    "symbol",
+                    "country",
+                    "counterpart",
+                    "title",
+                    "value",
+                    "scale",
+                    "unit",
+                    "country_code",
+                    "counterpart_code",
+                    "unit_multiplier"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": []
+        }
+      ]
+    },
+    "port-watch": {
+      "id": "port-watch",
+      "name": "Port Watch",
+      "layout": [
+        {
+          "i": "economy_shipping_chokepoint_volume_imf_obb",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 16,
+          "state": {
+            "params": {
+              "start_date": "2024-01-01",
+              "chokepoint": [
+                "chokepoint2"
+              ]
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "date",
+                    "chokepoint"
+                  ],
+                  "rightColIds": []
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "date",
+                    "chokepoint",
+                    "vessels_total",
+                    "vessels_cargo",
+                    "vessels_tanker",
+                    "vessels_container",
+                    "vessels_general_cargo",
+                    "vessels_dry_bulk",
+                    "vessels_roro",
+                    "capacity_total",
+                    "capacity_cargo",
+                    "capacity_tanker",
+                    "capacity_container",
+                    "capacity_general_cargo",
+                    "capacity_dry_bulk",
+                    "capacity_roro"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": []
+        },
+        {
+          "i": "economy_shipping_port_info_imf_obb",
+          "x": 0,
+          "y": 18,
+          "w": 40,
+          "h": 14,
+          "state": {
+            "params": {
+              "country": "USA",
+              "port_code": "port786"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "port_code",
+                    "continent",
+                    "country",
+                    "port_full_name"
+                  ],
+                  "rightColIds": []
+                },
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "country_code",
+                    "port_name"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "port_code",
+                    "continent",
+                    "country",
+                    "country_code",
+                    "port_name",
+                    "port_full_name",
+                    "latitude",
+                    "longitude",
+                    "vessel_count_total",
+                    "vessel_count_tanker",
+                    "vessel_count_container",
+                    "vessel_count_general_cargo",
+                    "vessel_count_dry_bulk",
+                    "vessel_count_roro",
+                    "share_country_maritime_import",
+                    "share_country_maritime_export",
+                    "industry_top1",
+                    "industry_top2",
+                    "industry_top3"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 2"
+          ]
+        },
+        {
+          "i": "economy_shipping_port_volume_imf_obb",
+          "x": 0,
+          "y": 32,
+          "w": 40,
+          "h": 15,
+          "state": {
+            "params": {
+              "start_date": "2024-01-01",
+              "country": "DEU"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnPinning": {
+                  "leftColIds": [
+                    "date",
+                    "port_code",
+                    "port_name",
+                    "country"
+                  ],
+                  "rightColIds": []
+                },
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "country_code"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "date",
+                    "port_code",
+                    "port_name",
+                    "country",
+                    "country_code",
+                    "portcalls",
+                    "portcalls_tanker",
+                    "portcalls_container",
+                    "portcalls_general_cargo",
+                    "portcalls_dry_bulk",
+                    "portcalls_roro",
+                    "imports",
+                    "imports_cargo",
+                    "imports_tanker",
+                    "imports_container",
+                    "imports_general_cargo",
+                    "imports_dry_bulk",
+                    "imports_roro",
+                    "exports",
+                    "exports_cargo",
+                    "exports_tanker",
+                    "exports_container",
+                    "exports_general_cargo",
+                    "exports_dry_bulk",
+                    "exports_roro"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 2"
+          ]
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "name": "Group 1",
+      "type": "param",
+      "paramName": "symbol",
+      "defaultValue": "CTOT::CEPI_CTOTX_GDP"
+    },
+    {
+      "name": "Group 2",
+      "type": "param",
+      "paramName": "port_code",
+      "defaultValue": "port664"
+    }
+  ]
+}]

@@ -1,0 +1,103 @@
+interactions:
+- request:
+    body: '{"operationName": "getStockListSymbolsWithQuote", "variables": {"locale":
+      "en", "stockListId": "TOP_PRICE_PERFORMER"}, "query": "query getStockListSymbolsWithQuote(\n  $stockListId:
+      String!\n  $locale: String,\n) {\n  stockList: getStockListSymbolsWithQuote(\n    stockListId:
+      $stockListId,\n    locale: $locale\n  ) {\n    stockListId\n    name\n    description\n    longDescription\n    metricTitle\n    listItems\n      {\n        symbol\n        longName\n        rank\n        metric\n        price\n        priceChange\n        percentChange\n        volume\n    }\n    totalPriceChange\n    totalPercentChange\n    createdAt\n    updatedAt\n  }\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WZ2W7bSBaG7+cpCr5opIGYqH3xnRZvA8eRLXnpDAYNRmJkTmTSTVFO3I28e5+S
+        ZKtOsZxkZnITmFr46Wz/f4p/7c3yNt87+Gtv2dbTz2flskV/nM72DvYm70e/jy5PB4e/jw4vj95f
+        vju83Hu7V+X3hX+xfiCjppwWZFQ0n+rmvmjgxVmxnDblQ1vWFbxn7L9uSdq7vCV3+WNB6lX7sH33
+        DC4X5D5vPhdtBp9c1NV8iD49Gd+SvJoR+P+aLOOvWuTNvFi25GHNMM/LaknefHwis3oBL5HHfLEq
+        fiVltb7NQw7vFJTM8qelv9l90cLHJmW78D8FXhjmT9tfM7jLq3nhgXwY2uJ+uXfwL4jM0/3HegFv
+        HoyvtrTnm0AM6mrZFnBTj03G9af2S94U5LSa+js1efV574A93xLez6jIFDWCS3h5Tb93IKy2GRfb
+        v7cIB/s2MxyuFc20qNqXqzTjXDrm3u491ouVZxDMCfrtbUDZ/22IKfv104wcN/XqgYyL5hHussSI
+        PEDkLrOWUqp2hFzDbVUEyDIuO3w0k8YaqXd4imrKEd6gf4bxjjzEArI1qCF2h5MjMqqb9lO9KOsX
+        QhEG0WWSBXQ0IqNdrB0PDtXgph8lNK/yWZlX5Abqq2gq0ve3f6aQIYXKmJWC8x2JFHApziPNhEnl
+        0UqnnA3yyJ2iFtGNDweYblxUj77uB/lD2eYLnESF4IL6kv9VgBg1NArSPydxkJp5/Z+iXd8fsnZ/
+        D8Xvu/U6b8r846Ig13VbVnMyvoNuWL4Q6pBQZPD7NbM7UCZ4HLxEB7BMOq58TJ+JtZROIOKbwTkm
+        voEZAO1dV1Ux9a0a1b/BYEY552TYAMJmtNOhLKPdDoDMSqEo6lAqDMeZPR7/hgHndZEvn8hZO9tR
+        WUwlLFC5IFzWZcJ1IpZJmwoah6BJvoOS1jjcl+OT96Oo3O7qh/LT0zbNi3y5JD0yXn2sm1lZ5e1r
+        aXYhN9yZYm7A1qY7TDrQLBNKCxcwQ7+pmPr4KJomcIEcVo9lU1f38G3bLiHLAPtxg73E2IwG3BDa
+        YEQrnqk40jRzLsHsmNVU7Zi5VlLi6hydRW09AiEkZ/mX9QR8qJu1muy4GOLiDIeTq8zF4YQipCxV
+        mlTA2GFBRJ2LS/NofB2N57JZtlvdSAOG8mEyJUE9bNg9VG5iFRWqTXa3UDB/wu6BjCtEeHtxgQnL
+        TQGS89542LsgjFLI+az4utaSN4PecP+kmM2L2a87ZIGRg66SLjOsk2slElonlOIm0DrOHTUIdXJ0
+        eopZ4QrAeWlZBzEe4kwiMOljGZoF5tiGBeMZlcJzgnlf8ZJsw1WU7A9xKPvv3pPzfDnL/1iH8fCP
+        Vdk+kU34yKQmEMxdbHfUofZoSLb3D2FQYX4a2aFO+QduHZMhtNJcIuaLq8iEvcunn4vqz7IgV2No
+        I7CGXiCf2RO0GtF26xWkvTPt/QRN4GoqkBZBrWPxPLyIHAZciFIeqo/KNKPWBKroaEJ66Cvm0Dgh
+        bGAquNRKI57e5DIamL32M/jnyyIH07t1iZjPIj7QRq1FMBttpmJvCMg6ESxGubLhPHdaUpzcD+c/
+        VZCJpIaqIzNjItHxc6nb1V1nBilVSoTGzMAIx37obBz5oWIBrqyc5pGrpt9FMiqzicSm3aK0SmkZ
+        yLeSzmIlvOid/E99kZ6QnGH4sJutb9NuylMjkjIN9ix0l5G37A9uo2CekuN8kX99Iv0FrH3TO9ju
+        Evnm/FU+UETbkRvIa0IReSYos9a8th/cDk5Gaa0ZF/fltK5mq2lbNyk+gfiE8IM86BqTkES68XOd
+        5GttaThkWGyCTm6jrjle1B9BWm63rbO/k8RnAS+2hg4xS8TMXCQ+xmRCd5soNcYN5S60m4YJhhN/
+        Mhq/wvzD0CqMqQAzXHgkz0yiPFPjm8Ow5eFE4ow5xHl9FNmha/jsKm9mZPzLiKjQauwANQL0CxXs
+        /KEcipSI65SIS9BDHeohuEvjopH+IZroTdn+WW6m0U/4dR4KkF/LqBfEYIE0me7Gk3XXDLrePV60
+        B0Kp8HTvD6NNsl9CINeHKM1qvZhFE9QiMqOVk0yjTjeJEcqSa5mSjOmgi5zfPnG3X40v091+OD4m
+        vdljXk3BBr0bw4y6GvdSmXcRsO+g4KzC8q6YA29SLCF4IixNGdFOBmeRtZgMycv5xRlcJpOiuSdH
+        xaxooLH60FIIVlAEqzXIkw1mFGO2a4X3/YqT8u3KChCp4OAH9h48pK6i5J+sWmLXA2mXccEw07oW
+        w4zT7txkKelREFUqONp1YNAbPIUu4hDuNPMlksf1I7h1v0tugrqOYzf1giNyMDpGCxNEE7YgGlsQ
+        X5bJkQ+brw1XXxpvQFfpQk2tQDtEgRE5xed8GnSqU5yiazQBz0/ccPMxBhN+uEr4uJfGOSnnd+Ri
+        BY4z6eWERJzen6MB//90kRGRA5lcJdroKhtnQQtNmiJfrpqnRA8phLo5own3NdglEhPKveLeoWZD
+        WEbxpL+YnE1eq1fweD9bqRozKye4C/ue8iyWeb+YJ9d1DkpP7WuFenIZubuTAhaMr/vD4rEtPuNh
+        L7AMCenHUWjrZEqGEq6Og7hKblS4RBqHPfxJ/zg6JH+xH/1yToZ5m5NfyAno/PZAvxNELE08PHBN
+        2+OUujMNu4YL10eDDxAuryLMy/7Adw6keF2jw/KxnBWQ5rMihzGP/ZzAakQFWHEVDFNtMptY3VJG
+        iQmOjJI1LjpJuImlHRp+4AsSFHOQLxbQSdO7ql7U8ycEKUMV4pmD5ZeGKiRNJuPzraRRppnlVpjQ
+        J1ODs35+E528nddNe7c+6/fH2A95tT3sfDO5K3a7kGQYcb3IhYaTZalj/+Rgd1yKIOGKOo69/GW/
+        F2ecbGsTtYtED20y25k8VKcCJ1PjXDhNZXhmKU106DKcvI+ODYb87GcNphQYVXaG5KY7ojpMGUwD
+        k0ojV0SjvWJ0dhQtlPUDfM2iyD/tSrCMn4BJGSFSvK8BYqpVUsFk2tEQ0QnBhYqNZlq+10/AXl8s
+        pEKUxi9ogbt0YnPsG2U8vVZoZkJzBO4PM/aOomcovbk/HfoC/fKd80upMSGNdgkFt+6epOvumQfo
+        jZRWBohCsijXx6fx2X+5mIFj68Eq8Vh8KfImgjMITvuWscE8VGxzIhQfpScbmRnJGbJAzgos1x+O
+        XzNBPZiHg3pVteApbupmMfuRJZIWo/vFInSXMMpFYkfriqOvT6HQQxWQf4w9HnWxv1OUDqEpPx1l
+        0Drg1nj8YA+qIIWmKKxoYVVa2M/jLSJ+evIi3OiU68enHQoLj/LrjwtC6p9TdV1m8rRDU814MNX9
+        9Pj277d7bd3mixH2USBTmgb/zPPbuhXmF/MpWM+2mPVaD0m53Kd6n+sJEweU+gfOXGq//a8eZj9+
+        27dv3/7xN4TV0J39IQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jun 2024 10:15:53 GMT
+      Etag:
+      - W/"21fd-4dLQckz3p5w5HbV/ALjf8/V/aGs"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

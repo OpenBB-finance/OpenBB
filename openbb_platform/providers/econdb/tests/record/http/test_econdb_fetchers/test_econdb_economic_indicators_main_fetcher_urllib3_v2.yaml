@@ -1,0 +1,729 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/country_forecast/?country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&transform=3
+  response:
+    body:
+      string: !!binary |
+        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
+        37vkPY+/N8tsrhn9+A/0BcBe8KUAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b74c5d6066c6-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:27 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=qJX6QQSvHxxwyiGz4Du5MYWotLfYaURH2WG9ev3Ptmg%2FCZgziO0C0%2F0pZSFd863hSfh0BNQoekz5xnU1k1wz%2F5ZGnlTCKspq6p6umHS1t%2BVSLYRB2RNkjgHgnsKvMyKw"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=RGDP&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2aXY+jNhSG/4rFddgB23ztZbfdVSNVnZ3ZkdpGUeQBJ6IlkAKZzWg1/732Icyi
+        NBu7deKoFdIIMeb45MG8fm1y8sXJWMuct2j2xakem0Wbr7n4z8Eexq7ni79PnvcW/n5zJghinlix
+        haAIozCOZHPeLJZVzVPWtOLCkhUNl61llqesrWoZfHd7906GptW2bOtn2TS9lQ1sxcv0eZFnsok4
+        LxN0DIUqUAjCxLeDEilQKPIosYLiewqUACXYxgMiaq1QlASeHRS1VkhE7aCotEJQHNvQCtHRCg1t
+        zCCq1gpBAQ7sTGYFCk6ExenL9uGCFidQ4gDbQVHIVqCQf6AVExSVbAVKEurPoH+PorY44iGfxnZQ
+        1FpJAksoaq3QxMYMUlucnEFWJrPa4oRWvER/DTKazCqUUKBou+2H9+/eX9bjwsQSi0K4BKPI1948
+        mbGolEuIcDlt7zdh0bC5COHEyjNS+5yYRkGi7XOGLGq9xL72lDZjUeqFim1LaINFw+oiRKmtOa3a
+        zoWIBNoblx9+ub2g1QkUX3tKm6GolugQJYm20xmhKJfoGEVWHpDa58SoxKGNUdHYzgnL1bd/MxSV
+        ViIUEe09lBGKztZf/z3eAEXtcfIBedrrkNlkVss20N9v//jTZS0uiLSd3wxFLds40vYVIxQNiwv0
+        Lc4ARcPiIqEVbV8xQ1FrxaeWUNTLIdV/CTFCUWolQgnVfjczQNGwODEq+t9u6KLMu558t2B1zWTg
+        bOa98SbIlwcsD0QeqDwE8hDKQyQPsTy4IlAkmSXQqesKfX3o7ENvH7r70N+HBH407OxDKh9yYMiB
+        u8+HHBhyYMiBIQcOh70x5MKQA0MOAjkI5CDdTUAOAjlIMOxNIBeBHARyEMhBIQeFHBRy0G4k6Gtv
+        OXgl/7z4WsJJeVE0zljNGas5YzVnrOb8v6s5M/C/uvq8KBngCPurMj7M8sTrx6rpmjgr0KbOn1jL
+        UVqVzXa9afOqlGEblmV5uZJhPt7sZFOzYaWbFqyRburs4Tes5uUrukBwtmXeQsR35Rs0vf1VBrZ5
+        +gevgaflu7bn6W5jWxey4abhdc6bm+7Cze9MflwtEN09ojtAvHFeYORNzH2sY411LF1zH+tYYx1L
+        19wvVcc6ae4Px819+1jk6RW8/eFb3v5w6O1AeG5rH+t3Y/1urN+N9bv/XP3ulMf3aQ5NflVXTYOW
+        +Y5nKGWbvBVtgmnN7Pm9RDtu+N2VoeMDrgu47h7XfcU9y75+LGiOBc2xoGmyrx8LmhYLmqc8f5/l
+        0PL5blPVbYOqJVpVVdYgVmZIWO5TnvLGjuULsuOODxeGhr+HdaulC7CugHV72DMZ/ljePSbXsbx7
+        bFTG8u4xlLG8e3RUzl/ePW34+yyHhp+vr274guy44cOFoeHvYb9t+MPb35u+7TKF9e/Orvoid80d
+        xfXEPe/VvUgrKdnZUOLap/PX+dCnOWMRa3LGb00nl3ojn1xm3ze5jLvMwYSLr+bifPQRhnX2I+5P
+        SH9C+xMRQ/oY0seQPob0MbSPoSCMZVW1ZdXyThYFe+RA//Nymae5kPZ9KwaxEfIBdU/lXYB6q22d
+        8v2acD+VTfIHKw1vD+zwfrq4+/A9DExTbGEGlPBYxECwFNaaxv1zy+qW18Wzu8o2IIqWla1UnJw/
+        L3MYknVeyh/FnNxVr9luGEP/toV5+Qumh+0YHD0AAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b751596d66ab-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:28 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=avLDmgDnmgWOXdkvlHq0PpprUxcQgLrHgiFP2xhiGNw75gYWzsrU2ccLsmixRl7EgA7RXr9NNJ05vg4pxeZCwXK9UgyudsUkjHtLUokZUFzJlFTZXnB5ZnDkTHMxtDBB"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=GDP&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2a72+jNhjH/xWL1+GKfwTDvdztrrpK03rrVdoWVZFLnIiNQAakl+rU/332A/TQ
+        Lou9Qdy+QIos4jx+8sV8/cHkyVdvJWrhvUWLr15xXy3rdCvVO48EhPgBVq/PQfAWXr97MwQxDyLb
+        QxBnKI4D3Z1Wy3VRykRUtfpgLbJK6t58lSaiLkodfP3LOx2ZFPu8Lh91z9W17hAbmSePy3Slu6j3
+        NEPHlDCDkhBFPHaihBuUcMQ5daEEB6eVRBixKDy/Emr2SYx45GBOqNknMaIhdqLE4JMoQAF14Fhq
+        9glFmDvwCTP6RM0JwU7WjkkJiRDjka2S2zOSjWI0D9woMThWzQmez10oMTmWEsSZ9X3n/ysxk43E
+        KIysV/EgJSafEEQJc6LE7JP53JqxQ5RY+CSK+fmVmMmmfBJhB441k41GiGNbx15+ePfhjGgjKCS2
+        uB8oxeBZGiIcuJFiNC1HUejiApnpxjCi1jvIgVJMXmGIWm8NBkoxeYUjbE3aYVKMXlG3n8CFV8yE
+        Y4q13JZwAxezCbZcbSNtsf/+1+vzEU5hnzFbqwxTYjItRkFou5QHKTF6lqKA2W4PBiix2rxFka1l
+        hykxb/ID7ODqWMCNKMc6WDsWbJsjHjjwiRltep/CiJNVbFISIEptHfvxpzOSTd2PGbG9OsOUmBwb
+        IWL9k84gJUbHRv/hbjxAiZls6urE2Naxw5SY9/gxt70DDlNi8glFYehkTow+CRGNbfeyA5RYkE2t
+        4mDsOblrBsrDUpSl0IGLRfAmmCGsG6Ibqhumm7luQt1w3US68VWgSrKIYVAzFMZiGIxhNIbhGMZj
+        SIB5fzCGVBhyEMhBmu+HHARyEMhBIAcJ+6MJ5CKQg0AOCjko5KDNSUAOCjnovD+aQi4KOSjkoJCD
+        QQ4GORjkYM1MsOfRevJy+WX5rSqTyCyrvKlAM9b9YirQTAWaqUDzqgo0C8BeWXxZ5gLUKOoVK9lL
+        8iDL+6Jqesr0QdQSJUVe7be7Oi1yHbETq1Wab3QEJruD7qp2IveTTFQan16reidKmT9rVl/u7fO0
+        hogf8jfo6vo3HVinyZ+yBCW1PNStkkb/vsz0+4tKlqmsLqD/4g+hv2zXaPN72i68J5jrIRifqlFT
+        NWqqRk3VqLEwfqZq1CmM336H8f19libuKX77LxS/7VEcpI0N8anwNhXebEE+Fd6mwpstzM9VeDtB
+        8y5LD+eXZVFVaJ0e5AolYpfWIkNKzFY4I7sWdRTtzQct2zdapw86/Van/6xzlL36VHw89tQwFR+n
+        4uNUfHw9xccTdG+T9OD+/rAryrpCxRptimJVIZGvkKLrQ5rIygnclaajbIf+Fu2yUekXax9U+kql
+        36kcZQc/VV+PPdVM1dep+jpVX19L9fUk2tskPbR/3L402pWmo2iH/hbt6daA9v4Zt3h3V0Fw+DPX
+        Cz2Dvczm4CV8e9cZd5kU2o6LvnutD++erd6lGaOONBvjd8zZ6I/Ms5H3abOR4XAH2My+scH7hBEB
+        7n4i3QHtDlh3oGJoF0O7GNrF0C6GdTEMrvq6KOq8qGVzzTNxL0H3z+t1mqRqPd7Uatoq5Q2w7pU+
+        AbBmsS8T2VL85kp36X+AVLL+B81urpaXP8KMVNke3J3DdVDXRCRwc6j8v/airGWZPfqb1U6dP8zA
+        Ns31n0pO7na34tCPYd/tL57+Bkfdi6wvPAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b7548fc3669e-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:28 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=48Ju3iy2SGVgU7A6C5R2jKME8WuZ54oMzeiJ%2BDPJir7eJBY0%2FStxRYLQxGU3x4UosQSLrTyqad0%2BXrz8Tln3JPsUq2UluaOPLZ65pPykBGkp0Y0L%2Ba9J8NnG9MHc52f7"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=CPI&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2XbW/aMBDHv0qU103J09bRl0V7Ud5Ax6RJQygyjqFeg41spw+q+t1nX2KgHcNI
+        tNYmRYqQczk7P87n/12ewxIpFF4G0+eQz2Wh6IrouzCN0zSKE319j+NLuH6GZwH43KOqNk5JEp/H
+        2kZlseCCYCSVti5QJYmxspJipLgwy43H12Y25jVT4slYhmNjQEvC8FNBS2PKwpezYB9G7sDI/GBc
+        ODA+ecFIYgfGFw8YmTs3+n4wXLnhCcOVG34wXLmR+jiwuTM3vGA45Svs98/T8DiOwejb148TsPjo
+        eJzI4cjSOPHD4UrTOPXB4daw+OjCciKHKz9yTxyu/Di6wp3G4cyPzz443Dr2ARyzZiZ5LJAQyDhO
+        p6AOcDThXEBSQkbAdgDDhfmBwh9pR73IFApO06AlMDeByU2vlMD0pmFJYIHkYjPZIDDyUGwbQ0yq
+        SnY9Ytcjdj1i1yP+xz3iFLRN8IeCIUDR0sZLsrPIPRFzLhuL4GWNiQjWgmISgCgblzUqS8qWxiVJ
+        12CSa8QiXCFpRDJsW8o1EoRtoPXbw5pRBR7Xdi1F8R0RAKLIo2pBGvxaVOa+J4mgRPbA3vuFzKvW
+        LVoEaBGg9cIXCPQJWt01xF1D3DXEXUP8TzXEB1XbrrIj2wP94gBzJuuVd+02OHvFu3nQqjfWhJEl
+        fCvhu3+1lXGPJcp7ZGc2tAXmJmLTbXybwWwTaevxLqXy7F13bQaJXG03LbxJghRK6U1qB5kd5Hag
+        fTLrk1mfzPpk1ie3PjlEY8G5YlyRJhYVmhOAvkLsLuCLYGhoIfy8Fpi0B+lqNDQ280kniXqTWPph
+        oWM2+AH5JasatnFf5KJa6k2O8C2iLHogdHmrSNk+0id+VVdIRwOiuwEbLRYUU1QFE4UUlXoz5d85
+        JwcwJ8NiMH6FuG87Ii1UcTTX8w2JCdiKMvMte7ANWqHHXZ/8jwr08hv6q7BBKRkAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b757ac5d9f69-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:29 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=jqYyTIJr41jjTPcmhmgvSA4UPI%2F3G0AO1YDukF0TQuaADbu3CRSiVq7uclga2Xd6G8SHOVORCDzN4FvdSdV%2BI3ehQ9YkybFB6ogyEyUHvBEfD1OUcFUeyWMMO5lgTpr5"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=URATE&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1YUW+bMBD+Kwipb4FgQ0nSt2rqpEWr2i59WhQhlzgdK8ERNmmiqv999gUS1qXF
+        EoFpE1JkkePu+LA/Pp/vxZwTQcwLY/pisgceiGhJ5T8TOxhbDpK/e8e5gN93s2eAz5rEGTj5hu+7
+        yhrxYMFSGhIupH1BYk6VNZlHIREsVb5X17fKM2RZItKtsozBQB5pEm6DaK5MrvnaM44B8aqADNxR
+        K0AGlUDOB20AQU71jODmgbg6HBmetwKkmiNtLI2rw5FBK0A0OOIPmwfiaXBkgNvRkUogQ8/TBHL5
+        6famUUkbYV2W1IVSSdiRq8uTmlCqKTsc6Qp9LSg6wjb0dRW2LpRqrnhtQanmio/agVLNlZGru/PU
+        gqIjcMNRS19QJRTH1q8Lvl3ef7lpUOOQrcuV+liqiIts/S2oJpZK5iLbaQeLhsw5tn6xUhdLNV9a
+        WiMNoUO2fllbE4sGX1rCoiF1zXzTs10w3QQkTYlynE4d2+kZSA1YDa4aPDWcq8FXw0ANQzVY0lEm
+        mY4gaBcKsQiCEUQjCEcQjyABGpSDEaRCkANDDrx7PuTAkANDDgw5sL+PVi+Q0OfgcNwOaRxzszt5
+        dyfv7uTdnbz/p5P3FNQuZc9BQgCMFDs2p6Uka5o+MA6WeyZIbNDlKmbbJU2Eur0i83mUPKrbCK82
+        ysRXJLHCmHAlmWYOeUVSFZEDlk82syQS4IEcQ/xgmW3c0pSzhKsIEYVPNAU8gm5Ejmf3Flkaq/99
+        TtOI8j7Y+z+JeqpQCK0Dwr75CrNdT8C7TkPXaeg6DV2n4dSC3kyn4QNJ36cpifplKKI1NVZslcVE
+        RCxpV9UB0lFdz+/kyk4ApnWAeRJp7zosXYel67B0HZZ/q8NSUbbvE5VU/mpfEhuCGc8sfZLybsjE
+        pxf+s3frdwD2Tg2f38vV/lDBy5LeyuFaEu6bDaA8C/km0NLxpc1N9S8v7qxY3SBkatWmR/f2Y7Yz
+        c7bnQhFc+0DXO1H10GuWmzP4kuMDNc07ZGAoN+5wceEWF15xIX3cwsctfNzCxy18vMLHgyleMCYS
+        JuhugmPyQOEVbhaLKIwk6SdCwuJyIbjBFsZYvQesPsvSkObCMhkrk2p6cirefEyTcSBXJXCcawiL
+        MyBR6VP6jaXS++vnSdlTIpKPsqQIhtTiWbqmWzlDMEfLKFGd1g+LtiXZlH28PzbH11/DNPMfHSUA
+        AA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b75d39620a74-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:30 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=N3j9pJCgb3pK%2FqlsxQ%2FHEVAWepN87e2hH9Nrx7lwSrLX6aJIO0QHQu659qvlnTsHR9Y2vrGTaqPXIZ41r2jKQpDDlFRd10C3uper61ioBgRunm%2Bg%2Bcn6vA57viylj78w"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=RETA&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2VUW+bMBSF/wriORAwJOn6WnVS+7Cu256GEHLMpfJG7Mg2aaIq/32+BjfRVo2X
+        iocqEroilxPnO+bm+CWsqaHhdVC8hHKtK8M3YD+FJCEkSlJ7/UiSa3f9DGeB0+xo2zlRlsefsMl1
+        1UgFjGpj2w1tNWBX1JxRIxVKbx6+fEYpk50w6oCt+6/YoE8g2KHitVswPM6Ct0DyERASZ9OArEZA
+        0jidBCRNRkCSeDkBSDY+I2SSHcnGZ2QRr6YBGZuRZUwmARmdkWW8mAAkH5+Rq/fPkbL/JuwrqhRF
+        YVEkcTILUiwES4Ylx7LAssSywnKFJbLCElcR8FydQpJB2+pLXl7y8pKXl7z8QHk5CwqXdko+V4I6
+        GBt2sobzVXag1lL3LSl0twEVMCkaXtvFIHB5i7otrWsunlCXkq1r6S0VEWupxvAMB/otVSBe2S1D
+        2AlunOLOr2U4+w3K4RjYG4/Tu+hUi425BsVBz/sH81/U/dhAGJ0II0c4D4/Hc6tDnE9stvRuKybR
+        RDFYLl89+wfvabx0s9CefIePaUDc/+uR+JvM3+T+xmoyr8m8JvOazGtyr8mdjUZKI6SB3kRL1+Cg
+        b+iaCzDBQ9NwZif2HqndtslOMRhm8vb7tzts4tGrwfz1kvBp5d+Ubju3/W8Z153awcEad9Y3XOBZ
+        /t8je0P355r8n6Q8/gE/xhz5NQ0AAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b76039ce6640-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:30 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=06tcvpGLGUCeL0tH1tq5U%2FIKee3W5QdFrTmBuAWB73EahG06Lu1WdB7BIakVHsaoKNAFblbGKAAqpiOrWW0yi0CKTzqgLzujgKl7VyORdzTd6RPq5b5sj88yZQV%2FPcfw"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=IP&transform=3
+  response:
+    body:
+      string: '
+
+        <!doctype html>
+
+        <html lang="en">
+
+        <head>
+
+        <title>Server Error (500)</title>
+
+        </head>
+
+        <body>
+
+        <h1>Server Error (500)</h1><p></p>
+
+        </body>
+
+        </html>
+
+        '
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b762e8b60e3a-AMS
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html
+      Date:
+      - Thu, 27 Jun 2024 10:22:31 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=OmRk37i6iWY%2F2z1OeTJFuENmRBcjsp6%2BZ2HIwVvIzo3YfzhIIY39lq4%2BEo3miXaLbp5UzF8jxdmSaNRbY1h%2F7zi858g5ly7AOyrm09nQ2%2BftJFoCCvs%2Fs8KOBH8FDB9M"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 500
+      message: Internal Server Error
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=GBAL&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2WXW/aMBSG/0oUaXck5Kul7fUqJG5axrSLIRSZ5AR5C3ZmOxRU9b/Px8EFdaxh
+        qgiahBSOnJPX5sn5sPPs5kQR986ZPrt8LlNFl6Dv3CiIIi8I9fU1CO7M9d3tOUazImVtRPG1n6CT
+        yrTgAjIilXYXpJSAXpbTjCguUDr8cv8NpRmvmRIbdI0e0UEWwLJNSnOzoPvScw6BJO+DJIEfdQMy
+        aInITUcgYdACcusPOgCJ22tk4AfdpKYFJIn9+FiQyeP9CYs1Pj41HwNpKdYk7AikrVg1yFUHIO3F
+        qkGObt9jQWbNTFinRAiCwuk08IOeE6KJ0MRoEjRe+HerF5pe4c01mgGaGzS3rRMRgcFTutvqMyhL
+        edn1L7v+f7XrT2dvf1jZgj+ljBg4Xdg8h/1VVyDmXDYuYCBI6Sy4drIlMOUorrRDwAqY5tbyiuQ5
+        ZQuUh1G1RpesCPOykkjsF3f7UhURer59JY3m1owqo/jkDD8bfkWznyAMlYK1slTNy9WiREdfgqAg
+        +82D/g+Cf7ZoQL0dqGdAvS1o330xWflIE19Ow8tpeI7T8N+aeLvqMU0M6wo0kapFJ42syQ43snnQ
+        1sh7sNjM+wHYNvS59rFzBn9mo59mHIM63aWgGcxek2EVJ9hae6dK88z0R7nLsjsOnch02Diyg9gO
+        EjvQmthqYquJrSa2msRqEhOmgnPFuIImSCWZg+F/KAqaUZ2xiSKKSh1M6fDCGeF7mDTxWmSwbdfJ
+        CF340ShBvanLySgdDh/SIBybaWVtsn0gErzSHkU5k96vmggFotzoWJhoLCnDb9J3T60lWe9rkj8O
+        lJffIHm208MQAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b767fdc20a73-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:31 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=F3nQFpVxv0hhweozzzfkBnHpeUtdicarSR%2Bmu%2BaPRS9jAY%2BSUBNSsFiDDtWbSP5Frj4MYM%2Fbaa%2FPFw4wj8PdW7HUAEZVE3Pb1m08hUS5hcc7uBmC5UPvp9OGhZe4hxEy"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=CA&transform=3
+  response:
+    body:
+      string: '
+
+        <!doctype html>
+
+        <html lang="en">
+
+        <head>
+
+        <title>Server Error (500)</title>
+
+        </head>
+
+        <body>
+
+        <h1>Server Error (500)</h1><p></p>
+
+        </body>
+
+        </html>
+
+        '
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b76adfd093bd-AMS
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html
+      Date:
+      - Thu, 27 Jun 2024 10:22:32 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=E3G%2FXRoa1tmMXgTgT7CGr8G%2FTZiGPkZcQ1ZAImDRgCfxnnTicgo1bEAM4u69VM%2FFOb7%2BDQY%2BfeNTyWMHn8eWaaP%2BaPtWv%2FU7m4PZF%2BGfOtPGyS9AUPKt9eM0kUDLOzjl"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 500
+      message: Internal Server Error
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=NIIP&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1XbWvbMBD+K8awb/Vi2c7L+q1lMFoCa2GfFoJRbCVoVaQgKW1KyX+f7lw1Gdvi
+        mSxeGAZj7PNz0qO706PzS1hSS8PLYPISqpnJLV8y9xYmcZJEMXHXlzi+xOtreBEg5pGKNYCSdPA+
+        djZu8rnSrKDGOuucCsPAKkteUKs0DHdzc3cF7oVaS6ufwXR7Bwa6YLJ4znkJpjTcXgS/4pEd5pF9
+        aInH8DCPAWmHB4kP80hayUtaXx/DlnjU1Ec/a4nHWdRHWlsfaSv7Jautj0Fb+nGYB+k3icf4ZDpG
+        GsXjGB6H65QMW+JRU6ek32+DR62OkUb79hgeNfUxbKJjx/CoqY9RS/Goq49B2gaPWh0jo7+fl2nl
+        yTY51ZoCcDKJYRYMfQI3XDzOjNsE9yweuCO4RQ7oBpmgtJHKFX0JOhP0JuhO0J/gAGT45gwUJHvK
+        dw1iwYQwXa/Y9Ypdr9j1iv9DrzhBkdPqKZcUuTiNUyXbH+WR6ZkylUlapiW1XEkqAi4fmbFLJm2w
+        UoaD9TK4MoZZA34rWpZcLsCPJKsNmMyKyqgQ1ICGhmG1mhXVbgi/FscpXEtuEfEu+PQRiVtePDCN
+        9CzbWE+vWtVaCzD0DNOcmV71ofeNwmR8n3G0Yxx5xhFFwr1wi1k5QuC7Jrprorsmumuiz6mJrhP4
+        cXOBH3M648K9sJZUfvw7lR83UHmxYw1Svx+TV7n/58feeSRm6jOTFwoCPtmlp3qYviXKI054Jl+c
+        vBSmuI3ErhLCe+L+CWCa+8Q/pP4h8w8Ok3pM6jGpx6Qek3lMhnGbK2WlsqyKmqAzhgu5pvIhUPPg
+        FlaAiVJrXbDXbXz9+RZs8BOKNfZDtbqPuVs/Ook1ZvsPwivLaKGVMZELLWBFVLLZHkDNI4ymCw8G
+        aMkl/AQfbIWWdLOPyX46hrbfAbaeHptqGQAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b76d4d0993c0-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:32 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=shQq7W6vSEhkP9YKMbYZMhE3NJpW4x2si5zv9%2FgsGtxAFlZXfW4F1bX0Zjkn200D7f1TgpGfufbfSkQklsxv0oMawfNjFiWVYuNoag%2Bf4avWfM%2BrIBqpB%2FdbjUSQfsbw"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=Y10YD&transform=3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2WXWvbMBSG/4ow7E5ebMtbu94VspvAWLvuZgvGKPJJp1WRjCS3CSX/fTpK1HYf
+        bIXR4IuAMPKrV9Zz5ONj3Wcd9zw7I/P7zCxc6+UKwl1WFVWVF2Von4viLLavGSXRc8vVEE158bpE
+        Ubp2aSwI7nyQl1w5QFV3UnBvLFo/sC9TtAozaG83KM0uUODXoMWmlR1KLNtS8ieQeiwgJyMBKYtR
+        gLCx5Ah7To5UhwEZR46w5+TIIXakHkuO1P/MkRfgaHYzYd1yazka5/OCkpKSihJGSU3JG0reUnJC
+        ySkl7xqcoOGufazLApRyxxJ9LNHHEn0s0ccS/SIl2pq7VvPIEQqu6eDpE27BLoyLEiMro/03spGg
+        OhzreddJfY1jZdWvUXI917lQ3GHRzva0PbegH1hD7NmgpY+OV2jxUtyAjct7WPu0/I54sAqFiQMr
+        wU12A5PvHBdieSTKI9Ek2/4Uzv63cYCAmhRRKwzCzkNYzUNcSfzf4Jr4PtVjbNllSar4iVxWqcNS
+        p06d4GHJw5KHJQ9Lnjp56oi+NMZr42EHrvgCIugMycgViMFKH4jJFLgC68i5c0ZI7qXRcdfMYAXs
+        02x2NT1HEf/qDvwv7wVH20/vLz7GeWqIu+/NzcbkFvpw4YFi28TwV1Lj2eCvR4AVXz/1/P5VbX8A
+        dpJSUPgNAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 89a4b7701a5d9f70-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 27 Jun 2024 10:22:33 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=1oWgTuMk5LiTUqjjvsqwvcOyjYEIYk377vi%2BtgppYAodHJr6XpTvSaE43zgd3DcagZsHuhODiPFKS76771rckgqdDXUHalW%2Fnfp2nF%2BDWpDhCFkrHQwpnLwMGdkGygR%2F"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

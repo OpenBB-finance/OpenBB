@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/cash-flow-statement?apikey=MOCK_API_KEY&limit=1&period=annual&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41U32/aMBB+31+BeB5S7Pwg6RulRULaCmo7TdW0B9e5gFViZ7ZhZdP+950DVnGS
+        SgXxwN13391957sfn0ajv/gbjcYlszC+Go1pRJNJVExoPv588phj/ax2zjebrb94q4ZGaQvlfK81
+        SH50/m8PN97NxYuzRPiJaUSK2DsqsRNyc3OZjZBJRLyfcQ4N8vYRoyi7ishVnL1RGc52T8C0B3pP
+        A1qo0lkXT94mwS4lV7VjLeJpnEXt5+wtodHABbNCyZksZzU2J/60fxFPSJKkHXwF2Hh5onxkr4jy
+        PmMVf7lmBsVRdQPSvNFkeR7Q8C2TG1jK70q/oCxz1gjLnNZxlpIAibqovbTmHjiIA3vegUHYJMXK
+        ApyQB5BWaTeQCYmSbJBlzY6eIotoFGCU3YLuF5RT0ofdKTlnZru0ULflUJqFCVF1B1hrdRAllNfH
+        Fc4G9ZCbGbfiIKxoiyAkp2m/EWNrbMYsJcZjnD2ud0xanM/tr71onM8lLZJk2ukS3UY41c0d2IvR
+        NHuNkhswq2r5xu9IkjxLw9INQ4G+MrvXbZXdiIzGHXFbRU6gbn8TEkfh5HvCDAfSIk67cTfwbJfG
+        7Jnk0L6Bogi5d0puHkHXd31sUaQh1mzxpQ+D4+Lc30XuB/e2A8IEv73OVF0r+QEsHwQOeO/Bj658
+        N+tan5fyPT6nnXByyxI3QLRMJMU5DtT0AWDj83WxwYNYCIll9B4EjoH2ZAsexDuBhJIij4NQqCrg
+        dlUtlIbXeXtSzKpdzLD5+fnanD2TadHpHO0zeyvLVbX2F5QWRRIPoK5hI6TE6i6wcTSNw01Ufttd
+        ysVO/R7edX46M7eveC1LgRsHg3tdaYBLogivaYgQ/hyDnwXNSEdoIS1oXDU/LLT++/TzP8S8BVML
+        BwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:19 GMT
+      Etag:
+      - W/"70b-q8gmNyNqWnHiUNzlKqBzgWK3PDY"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

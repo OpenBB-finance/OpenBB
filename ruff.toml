@@ -1,0 +1,86 @@
+# This is an introductory addition of ruff. We should look to adding:
+# PD: pandas-vet
+# All options here: https://github.com/charliermarsh/ruff#supported-rules
+
+exclude = [
+    "^openbb_platform/platform/core/openbb_core/app/static/package/.*",
+    "^openbb_platform/core/openbb/package/.*",
+    "^cookiecutter/*",
+]
+
+line-length = 122
+target-version = "py310"
+fix = true
+
+[lint]
+select = [
+    "D",
+    "E",
+    "W",
+    "F",
+    "Q",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+ignore = [
+    "PLR2004",  # magic-value-comparison
+    "PLR0913",  # too-many-arguments
+    "PLR0915",  # too-many-statements
+    "PLC0415",  # import-outside-top-level
+    "E402",     # module-import-not-at-top-of-file
+    # Docstring style choices (migrated from .pydocstyle.ini)
+    "D202",  # no-blank-line-after-function
+    "D203",  # one-blank-line-before-class
+    "D205",  # blank-line-after-summary
+    "D210",  # surrounding-whitespace
+    "D212",  # multi-line-summary-first-line
+    "D213",  # multi-line-summary-second-line
+    "D214",  # section-not-over-indented
+    "D215",  # section-underline-not-over-indented
+    "D400",  # ends-in-period
+    "D404",  # docstring-starts-with-this
+    "D405",  # capitalize-section-name
+    "D406",  # new-line-after-section-name
+    "D407",  # dashed-underline-after-section
+    "D408",  # section-underline-after-name
+    "D409",  # section-underline-matches-section-length
+    "D410",  # no-blank-line-after-section
+    "D411",  # no-blank-line-before-section
+    "D413",  # blank-line-after-last-section
+    "D415",  # ends-in-punctuation
+    "D416",  # section-name-ends-in-colon
+    "D417",  # undocumented-param
+]
+
+[lint.per-file-ignores]
+"**/tests/*" = ["S101"]
+"*init*.py" = ["F401"]
+"website/*" = ["T201", "PLR0915"]
+"*integration/*" = ["S101"]
+
+[lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[lint.pydocstyle]
+convention = "numpy"
+
+[lint.flake8-import-conventions.aliases]
+"matplotlib.pyplot" = "plt"
+numpy = "np"
+pandas = "pd"
+seaborn = "sns"
+openbb = "obb"

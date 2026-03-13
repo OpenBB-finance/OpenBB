@@ -1,0 +1,3 @@
+* linguist-vendored
+*.py linguist-vendored=false
+text eol=lf

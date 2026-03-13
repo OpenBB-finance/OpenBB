@@ -1,0 +1,537 @@
+[
+  {
+    "name": "Example FRED App",
+    "img": "https://tvblog-static.tradingview.com/uploads/2021/07/fred-preview.png",
+    "description": "FRED (Federal Reserve Economic Data) offers U.S. and global economic data, including GDP, inflation (CPI, PCE), unemployment, and consumer spending. It tracks interest rates, money supply (M1, M2), stock indices, bond yields, exchange rates, housing prices (Case-Shiller), mortgage rates, and trade balances. Industry data covers manufacturing, energy, and real estate.",
+    "authentication": "Get your FRED API KEY at https://fred.stlouisfed.org/docs/api/api_key.html",
+    "allowCustomization": true,
+    "tabs": {
+      "Search": {
+        "id": "Search",
+        "name": "Search",
+        "layout": [
+          {
+            "i": "economy_fred_search_fred_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "query": "pce",
+                "tag_names": "inflation;pce"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "series_id",
+                      "title"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "economy_fred_series_fred_obb",
+            "x": 0,
+            "y": 17,
+            "w": 40,
+            "h": 10,
+            "state": {
+              "params": {
+                "symbol": "RPI,PCE,PCENOW",
+                "transform": "pc1",
+                "start_date": "2010-01-01",
+                "frequency": "q"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "ReleaseTables": {
+        "id": "ReleaseTables",
+        "name": "Release Tables",
+        "layout": [
+          {
+            "i": "economy_fred_release_table_fred_obb",
+            "x": 0,
+            "y": 10,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "release_id": "52"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "name"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "economy_fred_search_fred_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "search_type": "release"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "observation_start",
+                      "observation_end",
+                      "frequency",
+                      "units",
+                      "seasonal_adjustment",
+                      "seasonal_adjustment_short",
+                      "realtime_start",
+                      "realtime_end",
+                      "notes"
+                    ]
+                  },
+                  "focusedCell": {
+                    "colId": "series_id",
+                    "rowIndex": 4,
+                    "rowPinned": null
+                  },
+                  "scroll": {
+                    "top": 0,
+                    "left": 12938.6357421875
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "economy_fred_release_table_fred_obb",
+            "x": 0,
+            "y": 22,
+            "w": 38,
+            "h": 13,
+            "state": {
+              "params": {
+                "release_id": "27",
+                "element_id": "1240127"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "symbol",
+                      "name",
+                      "value"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BondIndices": {
+        "id": "BondIndices",
+        "name": "Bond Indices",
+        "layout": [
+          {
+            "i": "fixedincome_bond_indices_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "PCE": {
+        "id": "PCE",
+        "name": "PCE",
+        "layout": [
+          {
+            "i": "economy_pce_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "cpi": {
+        "id": "cpi",
+        "name": "CPI",
+        "layout": [
+          {
+            "i": "economy_cpi_fred_obb",
+            "x": 0,
+            "y": 2,
+            "w": 28,
+            "h": 18,
+            "state": {
+              "params": {
+                "country": [
+                  "australia",
+                  "denmark"
+                ],
+                "frequency": "quarter",
+                "start_date": "2010-01-01"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "date",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "NonFarmPayroll": {
+        "id": "NonFarmPayroll",
+        "name": "Nonfarm Payrolls",
+        "layout": [
+          {
+            "i": "economy_survey_nonfarm_payrolls_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "RetailPrices": {
+        "id": "RetailPrices",
+        "name": "Retail Prices",
+        "layout": [
+          {
+            "i": "economy_retail_prices_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "EconomicConditions": {
+        "id": "EconomicConditions",
+        "name": "Chicago Economic Conditions",
+        "layout": [
+          {
+            "i": "economy_survey_economic_conditions_chicago_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "EmpireState": {
+        "id": "EmpireState",
+        "name": "Empire State Manufacturing",
+        "layout": [
+          {
+            "i": "economy_survey_manufacturing_outlook_ny_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "ManufacturingOutlook": {
+        "id": "ManufacturingOutlook",
+        "name": "Texas Manufacturing Outlook",
+        "layout": [
+          {
+            "i": "economy_survey_manufacturing_outlook_texas_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      },
+      "SLOOS": {
+        "id": "SLOOS",
+        "name": "SLOOS",
+        "layout": [
+          {
+            "i": "economy_survey_sloos_fred_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  },
+  {
+    "name": "Example BLS App",
+    "img": "https://tigadvisors.com/wp-content/uploads/2022/01/BLS.jpg",
+    "description": "The Bureau of Labor Statistics (BLS) provides U.S. economic data on employment, unemployment, wages, and productivity. Key datasets include the Consumer Price Index (CPI) for inflation, Producer Price Index (PPI) for wholesale prices, and Employment Situation Report for job market trends. It tracks wages (CES, QCEW), job openings (JOLTS), productivity (BLS Productivity), and workplace injuries (SOII). Industry and regional data are also available.",
+    "authentication": "Get your BLS API KEY at https://www.bls.gov/developers/home.htm",
+    "allowCustomization": true,
+    "tabs": {
+      "Search": {
+        "id": "Search",
+        "name": "Search",
+        "layout": [
+          {
+            "i": "economy_survey_bls_search_bls_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "category": "nfp",
+                "include_extras": true
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "symbol",
+                      "title"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "economy_survey_bls_series_bls_obb",
+            "x": 0,
+            "y": 8,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "CES0000000001",
+                "start_date": "2016-01-01"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default_": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "symbol",
+                      "title"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  },
+  {
+    "name": "The United States Congress",
+    "img": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "img_dark": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "img_light": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "description": "Find and view US federal legislative information and complete bill text.",
+    "allowCustomization": true,
+    "tabs": {
+      "": {
+        "id": "",
+        "name": "",
+        "layout": [
+          {
+            "i": "uscongress_bills_congress_gov_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 11,
+            "state": {
+              "params": {
+                "bill_url": "119/hr/1"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "origin_chamber_code"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "update_date",
+                      "latest_action_date",
+                      "bill_url",
+                      "congress",
+                      "bill_number",
+                      "origin_chamber",
+                      "origin_chamber_code",
+                      "bill_type",
+                      "title",
+                      "latest_action",
+                      "update_date_including_text"
+                    ]
+                  },
+                  "focusedCell": {
+                    "colId": "bill_url",
+                    "rowIndex": 2,
+                    "rowPinned": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "i": "uscongress_bill_text_congress_gov_obb",
+            "x": 16,
+            "y": 11,
+            "w": 24,
+            "h": 41,
+            "state": {
+              "params": {
+                "bill_url": "119/hr/1"
+              }
+            }
+          },
+          {
+            "i": "uscongress_bill_info_congress_gov_obb",
+            "x": 0,
+            "y": 11,
+            "w": 16,
+            "h": 41,
+            "state": {
+              "params": {
+                "bill_url": "119/hr/1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Group 1",
+        "type": "param",
+        "paramName": "bill_url",
+        "defaultValue": "119/hr/1",
+        "widgetIds": [
+          "uscongress_bills_congress_gov_obb",
+          "uscongress_bill_text_congress_gov_obb",
+          "uscongress_bill_info_congress_gov_obb"
+        ]
+      }
+    ]
+  }
+]

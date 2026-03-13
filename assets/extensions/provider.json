@@ -1,0 +1,322 @@
+[
+    {
+        "packageName": "openbb-alpha-vantage",
+        "optional": true,
+        "reprName": "Alpha Vantage",
+        "description": "Alpha Vantage provides realtime and historical\nfinancial market data through a set of powerful and developer-friendly data APIs\nand spreadsheets. From traditional asset classes (e.g., stocks, ETFs, mutual funds)\nto economic indicators, from foreign exchange rates to commodities,\nfrom fundamental data to technical indicators, Alpha Vantage\nis your one-stop-shop for enterprise-grade global market data delivered through\ncloud-based APIs, Excel, and Google Sheets. ",
+        "credentials": [
+            "alpha_vantage_api_key"
+        ],
+        "deprecatedCredentials": {
+            "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key"
+        },
+        "website": "https://www.alphavantage.co",
+        "instructions": "Go to: https://www.alphavantage.co/support/#api-key\n\n![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)\n\nFill out the form, pass Captcha, and click on, \"GET FREE API KEY\"."
+    },
+    {
+        "packageName": "openbb-benzinga",
+        "optional": false,
+        "reprName": "Benzinga",
+        "description": "Benzinga is a financial data provider that offers an API\nfocused on information that moves the market.",
+        "credentials": [
+            "benzinga_api_key"
+        ],
+        "website": "https://www.benzinga.com"
+    },
+    {
+        "packageName": "openbb-biztoc",
+        "optional": true,
+        "reprName": "BizToc",
+        "description": "BizToc uses Rapid API for its REST API.\nYou may sign up for your free account at https://rapidapi.com/thma/api/biztoc.\n\nThe Base URL for all requests is:\n\n    https://biztoc.p.rapidapi.com/\n\nIf you're not a developer but would still like to use Biztoc outside of the main website,\nwe've partnered with OpenBB, allowing you to pull in BizToc's news stream in their Terminal.",
+        "credentials": [
+            "biztoc_api_key"
+        ],
+        "deprecatedCredentials": {
+            "API_BIZTOC_TOKEN": "biztoc_api_key"
+        },
+        "website": "https://api.biztoc.com",
+        "instructions": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key. Use this value to enter as `biztoc_api_key`."
+    },
+    {
+        "packageName": "openbb-bls",
+        "optional": false,
+        "reprName": "Bureau of Labor Statistics' (BLS) Public Data API",
+        "description": "The Bureau of Labor Statistics' (BLS) Public Data Application Programming Interface (API) gives the public access to economic data from all BLS programs. It is the Bureau's hope that talented developers and programmers will use the BLS Public Data API to create original, inventive applications with published BLS data.",
+        "credentials": [
+            "bls_api_key"
+        ],
+        "website": "https://www.bls.gov/developers/api_signature_v2.htm",
+        "instructions": "Sign up for a free API key here: https://data.bls.gov/registrationEngine/"
+    },
+    {
+        "packageName": "openbb-cboe",
+        "optional": true,
+        "reprName": "Chicago Board Options Exchange (CBOE)",
+        "description": "Cboe is the world's go-to derivatives and exchange network,\ndelivering cutting-edge trading, clearing and investment solutions to people\naround the world.",
+        "credentials": [],
+        "website": "https://www.cboe.com"
+    },
+    {
+        "packageName": "openbb-cftc",
+        "optional": false,
+        "reprName": "Commodity Futures Trading Commission (CFTC) Public Reporting API",
+        "description": "The mission of the Commodity Futures Trading Commission (CFTC) is to promote the integrity,\n    resilience, and vibrancy of the U.S. derivatives markets through sound regulation.",
+        "credentials": [
+            "cftc_app_token"
+        ],
+        "website": "https://cftc.gov/",
+        "instructions": "Credentials are not required, but your IP address may be subject to throttling limits.\n    API requests made using an application token are not throttled.\n    Create an account here: https://evergreen.data.socrata.com/signup\n    and then generate the app_token by signing in with the credentials\n    here: https://publicreporting.cftc.gov/profile/edit/developer_settings."
+    },
+    {
+        "packageName": "openbb-congress-gov",
+        "optional": false,
+        "reprName": "Congress.gov",
+        "description": "The Congress.gov API provides legislative data from the U.S.\nCongress, including bills, summaries, and related information. The Federal\nRegister API provides access to presidential documents and regulations.",
+        "credentials": [
+            "congress_gov_api_key"
+        ],
+        "website": "https://api.congress.gov",
+        "instructions": "To get a Congress.gov API key:\n\n1. Go to https://api.congress.gov/sign-up/\n2. Fill out the registration form with your information\n3. Agree to the terms of service\n4. You will receive an API key via email\n\nThe API key is free and provides access to all Congress.gov data."
+    },
+    {
+        "packageName": "openbb-deribit",
+        "optional": true,
+        "reprName": "Deribit Public Data",
+        "description": "Unofficial Python client for public data published by Deribit.",
+        "credentials": [],
+        "website": "https://deribit.com/",
+        "instructions": "This provider does not require any credentials and is not meant for trading."
+    },
+    {
+        "packageName": "openbb-ecb",
+        "optional": true,
+        "reprName": "European Central Bank (ECB)",
+        "description": "The ECB Data Portal provides access to all official ECB statistics.\nThe portal also provides options to download data and comprehensive metadata for each dataset.\nStatistical publications and dashboards offer a compilation of key data on selected topics.",
+        "credentials": [],
+        "website": "https://data.ecb.europa.eu"
+    },
+    {
+        "packageName": "openbb-econdb",
+        "optional": false,
+        "reprName": "EconDB",
+        "description": "The mission of the company is to process information in ways that\nfacilitate understanding of the economic situation at different granularity levels.\n\nThe sources of data include official statistics agencies and so-called alternative\ndata sources where we collect direct observations of the market and generate\naggregate statistics.",
+        "credentials": [
+            "econdb_api_key"
+        ],
+        "website": "https://econdb.com",
+        "instructions": "Note: API key is not required to get started, but it is recommended. Register an account by clicking on the Subscribe icon in the top right corner of the website."
+    },
+    {
+        "packageName": "openbb-famafrench",
+        "optional": true,
+        "reprName": "Fama-French Research Portfolios and Factors",
+        "description": "\n    This provider implements the Fama-French research portfolios and factors data library,\n    maintained and hosted by Kenneth R. French at Dartmouth College.\n    ",
+        "credentials": [],
+        "website": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+    },
+    {
+        "packageName": "openbb-federal-reserve",
+        "optional": false,
+        "reprName": "Federal Reserve (FED)",
+        "description": "Access data provided by the Federal Reserve System, the Central Bank of the United States.",
+        "credentials": [],
+        "website": "https://www.federalreserve.gov/data.htm"
+    },
+    {
+        "packageName": "openbb-finra",
+        "optional": true,
+        "reprName": "Financial Industry Regulatory Authority (FINRA)",
+        "description": "FINRA Data provides centralized access to the abundance of data FINRA\nmakes available to the public, media, researchers and member firms.",
+        "credentials": [],
+        "website": "https://www.finra.org/finra-data"
+    },
+    {
+        "packageName": "openbb-finviz",
+        "optional": true,
+        "reprName": "FinViz",
+        "description": "Unofficial Finviz API - https://github.com/lit26/finvizfinance/releases",
+        "credentials": [],
+        "website": "https://finviz.com"
+    },
+    {
+        "packageName": "openbb-fmp",
+        "optional": false,
+        "reprName": "Financial Modeling Prep (FMP)",
+        "description": "Financial Modeling Prep is a new concept that informs you about\nstock market information (news, currencies, and stock prices).",
+        "credentials": [
+            "fmp_api_key"
+        ],
+        "deprecatedCredentials": {
+            "API_KEY_FINANCIALMODELINGPREP": "fmp_api_key"
+        },
+        "website": "https://financialmodelingprep.com",
+        "instructions": "Go to: https://site.financialmodelingprep.com/developer/docs\n\n![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207821920-64553d05-d461-4984-b0fe-be0368c71186.png)\n\nClick on, \"Get my API KEY here\", and sign up for a free account.\n\n![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207822184-a723092e-ef42-4f87-8c55-db150f09741b.png)\n\nWith an account created, sign in and navigate to the Dashboard, which shows the assigned token. by pressing the \"Dashboard\" button which will show the API key.\n\n![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207823170-dd8191db-e125-44e5-b4f3-2df0e115c91d.png)"
+    },
+    {
+        "packageName": "openbb-fred",
+        "optional": false,
+        "reprName": "Federal Reserve Economic Data | St. Louis FED (FRED)",
+        "description": "Federal Reserve Economic Data is a database maintained by the\nResearch division of the Federal Reserve Bank of St. Louis that has more than\n816,000 economic time series from various sources.",
+        "credentials": [
+            "fred_api_key"
+        ],
+        "deprecatedCredentials": {
+            "API_FRED_KEY": "fred_api_key"
+        },
+        "website": "https://fred.stlouisfed.org",
+        "instructions": "Go to: https://fred.stlouisfed.org\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)\n\nClick on, \"My Account\", create a new account or sign in with Google:\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827011-65cdd501-27e3-436f-bd9d-b0d8381d46a7.png)\n\nAfter completing the sign-up, go to \"My Account\", and select \"API Keys\". Then, click on, \"Request API Key\".\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827577-c869f989-4ef4-4949-ab57-6f3931f2ae9d.png)\n\nFill in the box for information about the use-case for FRED, and by clicking, \"Request API key\", at the bottom of the page, the API key will be issued.\n\n![FRED](https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png)"
+    },
+    {
+        "packageName": "openbb-government-us",
+        "optional": true,
+        "reprName": "Data.gov | United States Government",
+        "description": "Data.gov is the United States government's open data website.\nIt provides access to datasets published by agencies across the federal government.\nData.gov is intended to provide access to government open data to the public, achieve\nagency missions, drive innovation, fuel economic activity, and uphold the ideals of\nan open and transparent government.",
+        "credentials": [],
+        "website": "https://data.gov"
+    },
+    {
+        "packageName": "openbb-imf",
+        "optional": false,
+        "reprName": "International Monetary Fund (IMF) Data APIs",
+        "description": "Access International Monetary Fund (IMF) data APIs.",
+        "credentials": [],
+        "website": "https://datahelp.imf.org/knowledgebase/articles/667681-using-json-restful-web-service"
+    },
+    {
+        "packageName": "openbb-intrinio",
+        "optional": false,
+        "reprName": "Intrinio",
+        "description": "Intrinio is a financial data platform that provides real-time and\nhistorical financial market data to businesses and developers through an API.",
+        "credentials": [
+            "intrinio_api_key"
+        ],
+        "deprecatedCredentials": {
+            "API_INTRINIO_KEY": "intrinio_api_key"
+        },
+        "website": "https://intrinio.com",
+        "instructions": "Go to: https://intrinio.com/starter-plan\n\n![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)\n\nAn API key will be issued with a subscription. Find the token value within the account dashboard."
+    },
+    {
+        "packageName": "openbb-multpl",
+        "optional": true,
+        "description": "Public broad-market data published to https://multpl.com.",
+        "credentials": [],
+        "website": "https://www.multpl.com/"
+    },
+    {
+        "packageName": "openbb-nasdaq",
+        "optional": true,
+        "reprName": "NASDAQ",
+        "description": "Positioned at the nexus of technology and the capital markets, Nasdaq\nprovides premier platforms and services for global capital markets and beyond with\nunmatched technology, insights and markets expertise.",
+        "credentials": [
+            "nasdaq_api_key"
+        ],
+        "deprecatedCredentials": {
+            "API_KEY_QUANDL": "nasdaq_api_key"
+        },
+        "website": "https://data.nasdaq.com",
+        "instructions": "Note: API key is not required for basic access, premium content is not currently implemented. To get an API key, register for a free account here: https://data.nasdaq.com/signup"
+    },
+    {
+        "packageName": "openbb-oecd",
+        "optional": false,
+        "reprName": "Organization for Economic Co-operation and Development (OECD)",
+        "description": "OECD Data Explorer includes data and metadata for OECD countries and selected\nnon-member economies.",
+        "credentials": [],
+        "website": "https://data-explorer.oecd.org/"
+    },
+    {
+        "packageName": "openbb-sec",
+        "optional": false,
+        "reprName": "Securities and Exchange Commission (SEC)",
+        "description": "SEC is the public listings regulatory body for the United States.",
+        "credentials": [],
+        "website": "https://www.sec.gov/data"
+    },
+    {
+        "packageName": "openbb-seeking-alpha",
+        "optional": true,
+        "reprName": "Seeking Alpha",
+        "description": "Seeking Alpha is a data provider with access to news, analysis, and\nreal-time alerts on stocks.",
+        "credentials": [],
+        "website": "https://seekingalpha.com"
+    },
+    {
+        "packageName": "openbb-stockgrid",
+        "optional": true,
+        "reprName": "Stockgrid",
+        "description": "Stockgrid gives you a detailed view of what smart money is doing.\nGet in depth data about large option blocks being traded, including\nthe sentiment score, size, volume and order type. Stop guessing and\nbuild a strategy around the number 1 factor moving the market: money.",
+        "credentials": [],
+        "website": "https://www.stockgrid.io"
+    },
+    {
+        "packageName": "openbb-tiingo",
+        "optional": false,
+        "reprName": "Tiingo",
+        "description": "A Reliable, Enterprise-Grade Financial Markets API. Tiingo's APIs\npower hedge funds, tech companies, and individuals.",
+        "credentials": [
+            "tiingo_token"
+        ],
+        "website": "https://tiingo.com"
+    },
+    {
+        "packageName": "openbb-tmx",
+        "optional": true,
+        "reprName": "TMX",
+        "description": "Unofficial TMX Data Provider Extension\n    TMX Group Companies\n        - Toronto Stock Exchange\n        - TSX Venture Exchange\n        - TSX Trust\n        - Montr\u00e9al Exchange\n        - TSX Alpha Exchange\n        - Shorcan\n        - CDCC\n        - CDS\n        - TMX Datalinx\n        - Trayport\n    ",
+        "credentials": [],
+        "website": "https://www.tmx.com"
+    },
+    {
+        "packageName": "openbb-tradier",
+        "optional": true,
+        "reprName": "Tradier",
+        "description": "Tradier provides a full range of services in a scalable, secure,\nand easy-to-use REST-based API for businesses and individual developers.\nFast, secure, simple. Start in minutes.\nGet access to trading, account management, and market-data for\nTradier Brokerage accounts through our APIs.",
+        "credentials": [
+            "tradier_api_key",
+            "tradier_account_type"
+        ],
+        "deprecatedCredentials": {
+            "API_TRADIER_TOKEN": "tradier_api_key"
+        },
+        "website": "https://tradier.com",
+        "instructions": "Go to: https://documentation.tradier.com\n\n![Tradier](https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png)\n\nClick on, \"Open Account\", to start the sign-up process. After the account has been setup, navigate to [Tradier Broker Dash](https://dash.tradier.com/login?redirect=settings.api) and create the application. Request a sandbox access token."
+    },
+    {
+        "packageName": "openbb-tradingeconomics",
+        "optional": false,
+        "reprName": "Trading Economics",
+        "description": "Trading Economics provides its users with accurate information for\n196 countries including historical data and forecasts for more than 20 million economic\nindicators, exchange rates, stock market indexes, government bond yields and commodity\nprices. Our data for economic indicators is based on official sources, not third party\ndata providers, and our facts are regularly checked for inconsistencies.\nTrading Economics has received nearly 2 billion page views from all around the\nworld.",
+        "credentials": [
+            "tradingeconomics_api_key"
+        ],
+        "website": "https://tradingeconomics.com"
+    },
+    {
+        "packageName": "openbb-us-eia",
+        "optional": false,
+        "reprName": "U.S. Energy Information Administration (EIA) Open Data and API",
+        "description": "The U.S. Energy Information Administration is committed to its free and open data by making it available through an Application Programming Interface (API) and its open data tools. See https://www.eia.gov/opendata/ for more information.",
+        "credentials": [
+            "eia_api_key"
+        ],
+        "website": "https://eia.gov/",
+        "instructions": "Credentials are required for functions calling the EIA's API.\n    Register for a free key here: https://www.eia.gov/opendata/register.php"
+    },
+    {
+        "packageName": "openbb-wsj",
+        "optional": true,
+        "reprName": "Wall Street Journal (WSJ)",
+        "description": "WSJ (Wall Street Journal) is a business-focused, English-language\ninternational daily newspaper based in New York City. The Journal is published six\ndays a week by Dow Jones & Company, a division of News Corp, along with its Asian\nand European editions. The newspaper is published in the broadsheet format and\nonline. The Journal has been printed continuously since its inception on\nJuly 8, 1889, by Charles Dow, Edward Jones, and Charles Bergstresser.\nThe WSJ is the largest newspaper in the United States, by circulation.\n    ",
+        "credentials": [],
+        "website": "https://www.wsj.com"
+    },
+    {
+        "packageName": "openbb-yfinance",
+        "optional": false,
+        "reprName": "Yahoo Finance",
+        "description": "Yahoo! Finance is a web-based platform that offers financial news,\ndata, and tools for investors and individuals interested in tracking and analyzing\nfinancial markets and assets.",
+        "credentials": [],
+        "website": "https://finance.yahoo.com"
+    }
+]

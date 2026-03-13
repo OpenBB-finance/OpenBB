@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+recursive-include openbb_cookiecutter/template *
+recursive-exclude openbb_cookiecutter/template *.pyc
+recursive-exclude openbb_cookiecutter/template __pycache__

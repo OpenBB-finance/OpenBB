@@ -1,0 +1,1 @@
+"""Stockgrid provider."""

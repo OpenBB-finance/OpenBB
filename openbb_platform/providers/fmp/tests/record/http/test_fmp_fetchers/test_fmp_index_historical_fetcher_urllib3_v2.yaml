@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/historical-price-eod/full?apikey=MOCK_API_KEY&from=2023-01-01&symbol=%5EDJI&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52UT2/bMAzF7/0UQc6NwH8ixZ136U67DxuQdUFTIE2KtlsxDPvuo51IjuPksBiw
+        D3qgJf70Hr/czGZ/4p3N5q+/n77vNvMPs/m3j5/u5rf71R/Lt1W3RkC8AFwgVGX3vNqGwpxRk5Br
+        KQdl/fiw7hUjTZkdlA/KZvfeC0KYCoAVPAj3m93ral8DkhAwt5pfu83Pp04jLaQQT61ZL7cPnYDF
+        khq2/ffC59XL/Wr7FjqknN2l/u99+dzvpGhJSiz+vf1fCuATCqqSulYpn1JwztGRs1WlUejOrV2v
+        Ewo5zqZShGtPjQKTFTlHYYGiyYKsX8CwgCScqzpgiLKC12HQCQbIOfHxzQ5mQBh3e8BA7jYmN2BQ
+        jppjdAMGBTuLIVt3gJIvUcBgdIpAAgHRdQjyBAF67BGenBjhVKgAClLqvxMA5AGgg0lTAGxOZ31A
+        iuGd4HnZB1YK2QkFcisJ5DoKMqWg4Xo5lwcBHye85gGYI5Ag2u6uGYHUk6lnrrYaOJj3PphOhRgk
+        SsVxJBxPBcYsLV/VC8QxFfJ1FHhKQUoqfpTjRoEj/BmPOmpuyDGvDBgrnoECsqYuR8MsaxRiwvH5
+        qUApk7GMhJEZgM0c23aNBJKk0qfi5us/+WOoJCgGAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:17 GMT
+      Etag:
+      - W/"628-486AP08bM9lX6CEjhe+wwHfkyh8"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

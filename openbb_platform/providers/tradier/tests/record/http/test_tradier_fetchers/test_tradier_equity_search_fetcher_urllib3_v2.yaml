@@ -1,0 +1,132 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/search?q=brookfield&indexes=true
+  response:
+    body:
+      string: '{"securities":{"security":[{"symbol":"BPY","exchange":"Q","type":"stock","description":"Brookfield
+        Property Partners LP"},{"symbol":"BN","exchange":"N","type":"stock","description":"Brookfield
+        Corporation Class A Limited Voting Shares"},{"symbol":"BAM","exchange":"N","type":"stock","description":"Brookfield
+        Asset Management Inc Class A Limited Voting Shares"},{"symbol":"BPR","exchange":"Q","type":"stock","description":"Brookfield
+        Property REIT Inc"},{"symbol":"BEPC","exchange":"N","type":"stock","description":"Brookfield
+        Renewable Corporation Class A Subordinate Voting Shares"},{"symbol":"BPYU","exchange":"Q","type":"stock","description":"Brookfield
+        Property REIT Inc Cl A"},{"symbol":"BIPC","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Corporation"},{"symbol":"BEP","exchange":"N","type":"stock","description":"Brookfield
+        Renewable Partners L.P."},{"symbol":"BIP","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Partners LP Limited Partnership Units"},{"symbol":"BRP","exchange":"Q","type":"stock","description":"The
+        Baldwin Insurance Group Inc"},{"symbol":"BEPJ","exchange":"N","type":"stock","description":"Brookfield
+        BRP Holdings (Canada) Inc. 7.250% Perpetual Subordinated Notes"},{"symbol":"BPYPM","exchange":"Q","type":"stock","description":"Brookfield
+        Property Partners L.P. - 6.25% Class A Cumulative Redeemable Preferred Units,
+        Series 1"},{"symbol":"BPYUP","exchange":"Q","type":"stock","description":"Brookfield
+        Property REIT Inc 6 3\/8 % Cum Red Pfd Shs Series -A-"},{"symbol":"BBUC","exchange":"N","type":"stock","description":"Brookfield
+        Business Corporation Class A Exchangeable Subordinate Voting Shares"},{"symbol":"BIPJ","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Corporation 7.250% Subordinated Notes due 2084"},{"symbol":"BNH","exchange":"N","type":"stock","description":"Brookfield
+        Finance Inc. 4.625% Subordinated Notes due October 16, 2080"},{"symbol":"BPYPN","exchange":"Q","type":"stock","description":"Brookfield
+        Property Partners L.P. - 5.750% Class A Cumulative Redeemable Perpetual Preferred
+        Units, Series 3"},{"symbol":"BEPH","exchange":"N","type":"stock","description":"Brookfield
+        BRP Holdings (Canada) Inc. 4.625% Perpetual Subordinated Notes"},{"symbol":"BAMH","exchange":"N","type":"stock","description":"Brookfield
+        Finance Inc. 4.625% Subordinated Notes due October 16, 2080"},{"symbol":"BAMI","exchange":"N","type":"stock","description":"Brookfield
+        Finance Inc. 4.50% Perpetual Subordinated Notes"},{"symbol":"BEPI","exchange":"N","type":"stock","description":"Brookfield
+        BRP Holdings (Canada) Inc. 4.875% Perpetual Subordinated Notes"},{"symbol":"BAMR","exchange":"N","type":"stock","description":"Brookfield
+        Asset Management Reinsurance Partners Ltd. Class A Exchangeable Limited Voting
+        Shares"},{"symbol":"BPYPO","exchange":"Q","type":"stock","description":"Brookfield
+        Property Partners L.P. - 6.375% Class A Cumulative Redeemable Perpetual Preferred
+        Units, Series 2"},{"symbol":"BPYPP","exchange":"Q","type":"stock","description":"Brookfield
+        Property Partners L.P. - 6.50% Class A Cumulative Redeemable Perpetual Preferred
+        Units"},{"symbol":"BNJ","exchange":"N","type":"stock","description":"Brookfield
+        Finance Inc. 4.50% Perpetual Subordinated Notes"},{"symbol":"BIPH","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Corporation 5.000% Subordinated Notes due 2081"},{"symbol":"BBU","exchange":"N","type":"stock","description":"Brookfield
+        Business Partners L.P. Limited Partnership Units"},{"symbol":"BNRE","exchange":"N","type":"stock","description":"Brookfield
+        Reinsurance Ltd. Class A Exchangeable Limited Voting Shares"},{"symbol":"BNRE\/A","exchange":"N","type":"stock","description":"Brookfield
+        Reinsurance Ltd. Class A-1 Exchangeable Non-Voting Shares"},{"symbol":"BKFAF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CORP A 2 by BROOKFIELD CORP."},{"symbol":"BAMGF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CORP A 24 by BROOKFIELD CORP."},{"symbol":"BKAMF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CORP PFD A 30 by BROOKFIELD CORP."},{"symbol":"BROXF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CORP PFD A 37 by BROOKFIELD CORP."},{"symbol":"BAMKF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CORP PREF 26 by BROOKFIELD CORP."},{"symbol":"BXDIF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CORP PREF A 13 by BROOKFIELD CORP."},{"symbol":"BKEEF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP PF AA SR EE by Brookfield Office Properties Inc."},{"symbol":"BRPSF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP PREF A 17 by BROOKFIELD CORP."},{"symbol":"BKFOF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP PREF A 34 by BROOKFIELD CORP."},{"symbol":"BKFDF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP PREF A 40 by BROOKFIELD CORP."},{"symbol":"BRCFF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP PREF A 42 by BROOKFIELD CORP."},{"symbol":"BKFPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP PREF A 51 by BROOKFIELD CORP."},{"symbol":"BRFPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        CP SR 32 PRF A by BROOKFIELD CORP."},{"symbol":"DTLAP","exchange":"V","type":"stock","description":"BROOKFIELD
+        DTLA 7.625A PR by Brookfield DTLA Inc."},{"symbol":"BRIPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        INF PNR PFD A by Brookfield Infrastructure Partners L.P."},{"symbol":"BKOFF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFCE PR II AAA by Brookfield Office Properties Inc."},{"symbol":"BOPPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFF PRF SER CC by Brookfield Office Properties Inc."},{"symbol":"BKAAF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFF PTY AAA N by Brookfield Office Properties Inc."},{"symbol":"BROAF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFF PTY AAA R by Brookfield Office Properties Inc."},{"symbol":"BRKNF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFF PTY PREF Y by Brookfield Office Properties Inc."},{"symbol":"BRKFF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFFCE PREF AAA by Brookfield Office Properties Inc."},{"symbol":"BRPYF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFFCE PROP W by Brookfield Office Properties Inc."},{"symbol":"BRPPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        OFFIE PPTY AAA by Brookfield Office Properties Inc."},{"symbol":"BROPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        PFD A SER 23 by Brookfield Office Properties Inc."},{"symbol":"BPSPF","exchange":"V","type":"stock","description":"BROOKFIELD
+        PTY SPLT PFD 2 by BROOKFIELD PPTY SPLIT CORP."},{"symbol":"BRENF","exchange":"V","type":"stock","description":"BROOKFIELD
+        RENWBE PFD UTS by Brookfield Renewable Partners L.P."},{"symbol":"BKFTF","exchange":"V","type":"stock","description":"BROOKFIELD
+        RENWBLE A SR 3 by BROOKFIELD RENEWABLE PWR PFD EQUITY INC"},{"symbol":"BAMW","exchange":"N","type":"stock","description":"Brookfield
+        Asset Management Inc Class A Limited Voting Shares When-Issued"},{"symbol":"BMKAF","exchange":"V","type":"stock","description":"Brookfield
+        Asset Management Inc Floating Rate Cum Pfd Registered Shs -A- Series -25-"},{"symbol":"BNW","exchange":"N","type":"stock","description":"Brookfield
+        Corporation Class A Limited Voting Shares When-Issued"},{"symbol":"DTLA\/WD","exchange":"N","type":"stock","description":"Brookfield
+        DTLA Inc. 7.625% Series A Cumulative Redeemable Preferred Stock"},{"symbol":"INF","exchange":"N","type":"stock","description":"Brookfield
+        Global Listed Infrastructure Income Fund Inc"},{"symbol":"BIPCW","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Corp Ordinary Shares - Class A (Subordinate Share)"},{"symbol":"BIPFF","exchange":"V","type":"stock","description":"Brookfield
+        Infrastructure Partners LP 5% PRF PERPETUAL USD 25 - Ser 14 Cls A"},{"symbol":"BIP''B","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Partners LP 5.000% Class A Preferred Limited Partnership Units,
+        Series 14"},{"symbol":"BIP\/WDB","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Partners LP 5.000% Class A Preferred Limited Partnership Units,
+        Series 14"},{"symbol":"BIP''A","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Partners LP 5.125% Class A Preferred Limited Partnership Units,
+        Series 13"},{"symbol":"BIP\/WDA","exchange":"N","type":"stock","description":"Brookfield
+        Infrastructure Partners LP 5.125% Class A Preferred Limited Partnership Units,
+        Series 13"},{"symbol":"BIPPF","exchange":"V","type":"stock","description":"Brookfield
+        Infrastructure Partners LP 5.125% PRF PERPETUAL USD 25 - Ser 13 Cls A"},{"symbol":"BIPAF","exchange":"V","type":"stock","description":"Brookfield
+        Infrastructure Partners LP Cum Red Pfd Partnership Units -A- Series -5-"},{"symbol":"BINFF","exchange":"V","type":"stock","description":"Brookfield
+        Infrastructure Partners LP Cum Red Pfd Partnership Units -A- Series -7-"},{"symbol":"OAK''B","exchange":"N","type":"stock","description":"Brookfield
+        Oaktree Holdings, LLC 6.550% Series B Preferred Units"},{"symbol":"OAK''A","exchange":"N","type":"stock","description":"Brookfield
+        Oaktree Holdings, LLC 6.625% Series A Preferred Units"},{"symbol":"BOPTP","exchange":"V","type":"stock","description":"Brookfield
+        Property Partners LP 5.75% PRF PERPETUAL USD 25 - Cls A Ser 3"},{"symbol":"BKOYF","exchange":"V","type":"stock","description":"Brookfield
+        Property Partners LP 6.375% PRF PERPETUAL USD 25 - Cls A Ser 2"},{"symbol":"BRKPF","exchange":"V","type":"stock","description":"Brookfield
+        Property Partners LP Cls A Ser 1"},{"symbol":"BPRAP","exchange":"Q","type":"stock","description":"Brookfield
+        Property REIT Inc 6 3\/8 % Cum Red Pfd Shs Series -A-"},{"symbol":"RA","exchange":"N","type":"stock","description":"Brookfield
+        Real Assets Income Fund Inc."},{"symbol":"BEP''A","exchange":"N","type":"stock","description":"Brookfield
+        Renewable Partners L.P. 5.25% Class A Preferred Limited Partnership Units,
+        Series 17"},{"symbol":"BEP\/WDA","exchange":"N","type":"stock","description":"Brookfield
+        Renewable Partners L.P. 5.25% Class A Preferred Limited Partnership Units,
+        Series 17"},{"symbol":"BKFRF","exchange":"V","type":"stock","description":"Brookfield
+        Renewable Partners LP 5.25% PRF PERPETUAL USD 25 Cls A"},{"symbol":"BROOF","exchange":"V","type":"stock","description":"Brookfield
+        Renewable Partners LP Cum Red Pfd Partnership Units -A- Series -11-"}]}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 28 Jun 2024 16:06:01 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '199'
+      X-Ratelimit-Expiry:
+      - '1719590820000'
+      X-Ratelimit-Used:
+      - '1'
+    status:
+      code: 200
+      message: ''
+version: 1

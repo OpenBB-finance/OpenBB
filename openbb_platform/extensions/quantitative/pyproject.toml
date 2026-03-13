@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "openbb-quantitative"
+version = "1.6.1"
+description = "Quantitative Analysis extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_quantitative" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+openbb-core = "^1.6.3"
+pandas-ta-openbb = "^0.4.23"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+quantitative = "openbb_quantitative.quantitative_router:router"

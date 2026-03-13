@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "openbb-imf"
+version = "2.1.0"
+description = "https://datahelp.imf.org/knowledgebase/articles/630877-api"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_imf" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+openbb-core = "^1.6.3"
+openbb-platform-api = "^1.3.3"
+openbb-economy = "^1.6.1"
+openbb-charting = { version = "^2.5.1", optional = true }
+async-lru = "^2"
+defusedxml = ">=0.7.1"
+
+[tool.poetry.extras]
+charting = ["openbb-charting"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+imf = "openbb_imf:imf_provider"
+
+[tool.poetry.plugins."openbb_core_extension"]
+imf_utils = "openbb_imf.imf_router:router"

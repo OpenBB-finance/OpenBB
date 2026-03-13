@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "openbb-cookiecutter"
+version = "0.5.0"
+description = "Extensions template for the OpenBB Python Package."
+license = "AGPL-3.0-only"
+authors = ["OpenBB Team <hello@openbb.co>"]
+packages = [{ include = "openbb_cookiecutter" }]
+readme = "README.md"
+homepage = "https://openbb.co"
+repository = "https://github.com/OpenBB-finance/openbb-cookiecutter"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+cookiecutter = "^2.6.0"
+
+[tool.poetry.scripts]
+openbb-cookiecutter = "openbb_cookiecutter.cli:main"
+
+[tool.poetry.plugins."cookiecutter.templates"]
+openbb = "openbb_cookiecutter"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

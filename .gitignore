@@ -1,0 +1,63 @@
+# General
+__pycache__/
+*.pyc
+.DS_Store
+*.env
+.venv
+venv*/
+venv
+.vscode
+*.ipynb
+env/
+venv/
+!notebooks/jupyter/.gitkeep
+.python-version
+.mypy_cache
+.ruff_cache
+.pytest_cache
+iframe_figures/
+exports/*
+.idea
+.coverage
+.scannerwork
+htmlcov
+**/.ipynb_checkpoints
+*.swp
+*.http
+.coverage.*
+*_tests.csv
+*_sdk_audit.csv
+!build/docker/compose.env
+.dccache
+*rome.json
+**/node_modules/*
+.cursorignore
+darts_logs/
+custom_imports/*.csv
+custom_imports/*/*.csv
+cache/
+lightning_logs/
+*/mocked_path
+*.pem
+
+# CLI
+*.pyo
+**/dist/*
+build/cli
+build/nsis/app
+DMG/*
+*.dmg
+*.sh
+cli/openbb_cli/assets/styles/user/*
+
+# Platform
+openbb_platform/core/openbb/package/*
+
+# Dev Container env
+obb/*
+
+# OpenBB Distribution
+!build/conda/installer/*.sh
+*.pkg
+*.exe
+build/conda/tmp

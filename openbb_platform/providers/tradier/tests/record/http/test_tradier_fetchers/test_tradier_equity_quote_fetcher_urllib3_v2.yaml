@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - MOCK_API_KEY
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=SPY,SPY251219P00450000&greeks=true
+  response:
+    body:
+      string: '{"quotes":{"quote":[{"symbol":"SPY","description":"SPDR S&P 500","exch":"P","type":"etf","last":547.94,"change":1.57,"volume":16616657,"open":547.16,"high":550.28,"low":546.67,"close":null,"bid":547.95,"ask":547.96,"change_percentage":0.29,"average_volume":57774558,"last_volume":100,"trade_date":1719589860990,"prevclose":546.37,"week_52_high":550.12,"week_52_low":409.21,"bidsize":2,"bidexch":"P","bid_date":1719589861000,"asksize":2,"askexch":"Q","ask_date":1719589860000,"root_symbols":"SPY"},{"symbol":"SPY251219P00450000","description":"SPY
+        Dec 19 2025 $450.00 Put","exch":"Z","type":"option","last":10.05,"change":-0.49,"volume":415,"open":10.1,"high":10.1,"low":10.05,"close":null,"bid":10.2,"ask":10.36,"underlying":"SPY","strike":450.0,"greeks":{"delta":-0.136692803567622,"gamma":0.0014474030220688475,"theta":-0.05979034211472878,"vega":1.2675943936834042,"rho":5.051298572174882,"phi":-7.01492474930925,"bid_iv":0.208662,"mid_iv":0.209179,"ask_iv":0.209696,"smv_vol":0.211,"updated_at":"2024-06-28
+        14:58:47"},"change_percentage":-4.65,"average_volume":0,"last_volume":400,"trade_date":1719585288310,"prevclose":10.54,"week_52_high":0.0,"week_52_low":0.0,"bidsize":251,"bidexch":"Z","bid_date":1719589851000,"asksize":939,"askexch":"N","ask_date":1719589851000,"open_interest":7230,"contract_size":100,"expiration_date":"2025-12-19","expiration_type":"standard","option_type":"put","root_symbol":"SPY"}]}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 28 Jun 2024 16:06:01 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '199'
+      X-Ratelimit-Expiry:
+      - '1719590820000'
+      X-Ratelimit-Used:
+      - '1'
+    status:
+      code: 200
+      message: ''
+version: 1

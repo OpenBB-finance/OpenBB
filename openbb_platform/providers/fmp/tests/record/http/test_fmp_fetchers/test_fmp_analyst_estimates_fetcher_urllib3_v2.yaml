@@ -1,0 +1,112 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/analyst-estimates?apikey=MOCK_API_KEY&limit=1&page=0&period=annual&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2WRT0/CQBDF73yKhrOQ+bu7460HEk04GK/GQ9ENkkAhtqDE+N1dbAstHPYyv5f3
+        3sy+jLLsJ70sG1fHzWK7Ht9n4zx/mo/vmul7UcfTjIBsAjah0JHPeIjlPs63X4mLqTPngzOFIX9Y
+        LT+SQAkMHDsIYkNBflieOAQGVM8GnUFcrOr3ovFHRz4khTnCAW7t0SM4nzIIhrxxR+eMvFcTpB5u
+        vcWDE0fOq/Rg56yiwmkxUdejrW+qDUISELSFZawfy7ftJnbFUQIRBRG+Vpy7B0HwJqR2LenqJwsU
+        QuAuploWs+9dLKs2h0kJNS0ZbhVtDgt6VQ7MdiNpcphZgjpVd77SrmorwNTQe77Mu/Y4VW/QA+3i
+        MJVw6VvuN3lZrI9VXT03//5/+Vs621Unwgn8jl7/AMrJfR6gAgAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:27 GMT
+      Etag:
+      - W/"2a0-I1anxfg2eggiJ4IMVRNvDG34V34"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/stable/analyst-estimates?apikey=MOCK_API_KEY&limit=1&page=0&period=annual&symbol=MSFT
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2WRwU4CMRCG7zzFZs+SdDo7Mx1uHDCa6EW9GQ+LNEgCC7ELSozv7uCWhGWb9PJ/
+        068z7euoKH5sF0WZjpv5dl1OivLx+falvOnSRd3GU+YdurHjMboz+YyH2Ozjw/bLOKF6FlIfKPT5
+        3Wr5cSoQH3xgdkLSL5gelidOgqjuf2Ue56t2UXd+O0yuYkQP2sNZj3YsMIgIQI93dq+gAkxgDVzg
+        7EbxrhJG8HIBs9kTKItT8BwuaPZWBISCLOAzbGJ737xvN/lh3HWctYO8E57jtKxn37vYpKwRrGxC
+        G0JxUJGNIsrBIQXlQUknFwqk4tVe8TzJLvXvteCqQUuuJtlvpk29PqY2PXU/aBCqIZ3tkhG2/Hf0
+        9geXNClbaQIAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS, publicauthkey, privateauthkey
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 23 Sep 2025 03:08:27 GMT
+      Etag:
+      - W/"269-OAUWIQNPja+I5NrvyE30WTB+teY"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

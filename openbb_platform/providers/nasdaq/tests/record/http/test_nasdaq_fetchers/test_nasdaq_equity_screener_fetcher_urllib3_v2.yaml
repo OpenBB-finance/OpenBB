@@ -1,0 +1,102 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+    method: GET
+    uri: https://api.nasdaq.com/api/screener/stocks?limit=10000&marketcap=large&sector=consumer_staples&tableonly=true
+  response:
+    body:
+      string: '{"data":{"filters":null,"table":{"asOf":null,"headers":{"symbol":"Symbol","name":"Name","lastsale":"Last
+        Sale","netchange":"Net Change","pctchange":"% Change","marketCap":"Market
+        Cap"},"rows":[{"symbol":"FMX","name":"Fomento Economico Mexicano S.A.B. de
+        C.V. Common Stock","lastsale":"$106.74","netchange":"0.59","pctchange":"0.556%","marketCap":"174,320,098,411","url":"/market-activity/stocks/fmx"},{"symbol":"SONY","name":"Sony
+        Group Corporation American Depositary Shares ","lastsale":"$84.98","netchange":"0.70","pctchange":"0.831%","marketCap":"103,798,726,332","url":"/market-activity/stocks/sony"},{"symbol":"BUD","name":"Anheuser-Busch
+        Inbev SA Sponsored ADR (Belgium)","lastsale":"$58.06","netchange":"-1.00","pctchange":"-1.693%","marketCap":"100,861,673,090","url":"/market-activity/stocks/bud"},{"symbol":"MDLZ","name":"Mondelez
+        International, Inc. Class A Common Stock","lastsale":"$65.455","netchange":"-0.72","pctchange":"-1.088%","marketCap":"87,798,654,523","url":"/market-activity/stocks/mdlz"},{"symbol":"CVS","name":"CVS
+        Health Corporation Common Stock","lastsale":"$59.57","netchange":"1.21","pctchange":"2.073%","marketCap":"74,782,567,942","url":"/market-activity/stocks/cvs"},{"symbol":"DEO","name":"Diageo
+        plc Common Stock","lastsale":"$126.39","netchange":"-0.56","pctchange":"-0.441%","marketCap":"70,585,804,137","url":"/market-activity/stocks/deo"},{"symbol":"MNST","name":"Monster
+        Beverage Corporation","lastsale":"$50.085","netchange":"-0.485","pctchange":"-0.959%","marketCap":"52,174,958,299","url":"/market-activity/stocks/mnst"},{"symbol":"STZ","name":"Constellation
+        Brands, Inc. Common Stock","lastsale":"$255.785","netchange":"-0.125","pctchange":"-0.049%","marketCap":"46,802,603,383","url":"/market-activity/stocks/stz"},{"symbol":"KDP","name":"Keurig
+        Dr Pepper Inc. Common Stock","lastsale":"$33.525","netchange":"-0.38","pctchange":"-1.121%","marketCap":"45,445,627,569","url":"/market-activity/stocks/kdp"},{"symbol":"KHC","name":"The
+        Kraft Heinz Company Common Stock","lastsale":"$32.18","netchange":"-0.09","pctchange":"-0.279%","marketCap":"39,076,115,497","url":"/market-activity/stocks/khc"},{"symbol":"HSY","name":"The
+        Hershey Company Common Stock","lastsale":"$184.51","netchange":"0.83","pctchange":"0.452%","marketCap":"37,313,309,692","url":"/market-activity/stocks/hsy"},{"symbol":"PEG","name":"Public
+        Service Enterprise Group Incorporated Common Stock","lastsale":"$73.33","netchange":"0.21","pctchange":"0.287%","marketCap":"36,524,240,645","url":"/market-activity/stocks/peg"},{"symbol":"KR","name":"Kroger
+        Company (The) Common Stock","lastsale":"$49.455","netchange":"0.085","pctchange":"0.172%","marketCap":"35,691,072,325","url":"/market-activity/stocks/kr"},{"symbol":"GIS","name":"General
+        Mills, Inc. Common Stock","lastsale":"$63.30","netchange":"-0.41","pctchange":"-0.644%","marketCap":"35,330,620,721","url":"/market-activity/stocks/gis"},{"symbol":"CCEP","name":"Coca-Cola
+        Europacific Partners plc Ordinary Shares","lastsale":"$73.15","netchange":"-0.59","pctchange":"-0.80%","marketCap":"33,606,321,145","url":"/market-activity/stocks/ccep"},{"symbol":"ABEV","name":"Ambev
+        S.A. American Depositary Shares (Each representing 1 Common Share)","lastsale":"$2.0599","netchange":"-0.0301","pctchange":"-1.44%","marketCap":"32,451,321,182","url":"/market-activity/stocks/abev"},{"symbol":"ADM","name":"Archer-Daniels-Midland
+        Company Common Stock","lastsale":"$60.50","netchange":"-0.11","pctchange":"-0.181%","marketCap":"29,913,486,235","url":"/market-activity/stocks/adm"},{"symbol":"TSN","name":"Tyson
+        Foods, Inc. Common Stock","lastsale":"$56.31","netchange":"-0.13","pctchange":"-0.23%","marketCap":"20,047,761,331","url":"/market-activity/stocks/tsn"},{"symbol":"K","name":"Kellanova
+        Common Stock","lastsale":"$57.635","netchange":"-0.045","pctchange":"-0.078%","marketCap":"19,704,463,880","url":"/market-activity/stocks/k"},{"symbol":"MKC","name":"McCormick
+        & Company, Incorporated Common Stock","lastsale":"$70.55","netchange":"-0.05","pctchange":"-0.071%","marketCap":"18,936,516,338","url":"/market-activity/stocks/mkc"},{"symbol":"KOF","name":"Coca
+        Cola Femsa S.A.B. de C.V.  American Depositary Shares, each representing 10
+        Units (each Unit consists of 3 Series B Shares and 5 Series L Shares)","lastsale":"$84.7301","netchange":"-0.1599","pctchange":"-0.188%","marketCap":"17,800,372,747","url":"/market-activity/stocks/kof"},{"symbol":"HRL","name":"Hormel
+        Foods Corporation Common Stock","lastsale":"$30.175","netchange":"-0.045","pctchange":"-0.149%","marketCap":"16,545,114,962","url":"/market-activity/stocks/hrl"},{"symbol":"BG","name":"Bunge
+        Limited Common Shares","lastsale":"$107.11","netchange":"-0.53","pctchange":"-0.492%","marketCap":"15,166,251,911","url":"/market-activity/stocks/bg"},{"symbol":"CAG","name":"ConAgra
+        Brands, Inc. Common Stock","lastsale":"$28.3286","netchange":"-0.0114","pctchange":"-0.04%","marketCap":"13,542,848,391","url":"/market-activity/stocks/cag"},{"symbol":"CELH","name":"Celsius
+        Holdings, Inc. Common Stock","lastsale":"$57.74","netchange":"0.20","pctchange":"0.348%","marketCap":"13,458,114,435","url":"/market-activity/stocks/celh"},{"symbol":"CPB","name":"Campbell
+        Soup Company Common Stock","lastsale":"$44.975","netchange":"-0.045","pctchange":"-0.10%","marketCap":"13,427,460,978","url":"/market-activity/stocks/cpb"},{"symbol":"LW","name":"Lamb
+        Weston Holdings, Inc. Common Stock ","lastsale":"$83.61","netchange":"0.16","pctchange":"0.192%","marketCap":"12,072,533,266","url":"/market-activity/stocks/lw"},{"symbol":"SJM","name":"The
+        J.M. Smucker Company Common Stock","lastsale":"$108.5599","netchange":"-0.0901","pctchange":"-0.083%","marketCap":"11,528,556,576","url":"/market-activity/stocks/sjm"},{"symbol":"ACI","name":"Albertsons
+        Companies, Inc. Class A Common Stock","lastsale":"$19.88","netchange":"0.14","pctchange":"0.709%","marketCap":"11,478,864,340","url":"/market-activity/stocks/aci"},{"symbol":"WBA","name":"Walgreens
+        Boots Alliance, Inc. Common Stock","lastsale":"$12.25","netchange":"0.06","pctchange":"0.492%","marketCap":"10,568,238,734","url":"/market-activity/stocks/wba"},{"symbol":"TAP","name":"Molson
+        Coors Beverage Company Class B Common Stock","lastsale":"$50.56","netchange":"-0.07","pctchange":"-0.138%","marketCap":"10,103,424,417","url":"/market-activity/stocks/tap"},{"symbol":"COKE","name":"Coca-Cola
+        Consolidated, Inc. Common Stock","lastsale":"$1,069.12","netchange":"-1.76","pctchange":"-0.164%","marketCap":"10,021,598,384","url":"/market-activity/stocks/coke"}]},"totalrecords":32,"asof":"Last
+        price as of Jun 28, 2024"},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1958'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 28 Jun 2024 16:09:36 GMT
+      Expires:
+      - Fri, 28 Jun 2024 16:09:36 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=18~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=4f41c5549b77483f59f15a596dd40ae3;
+        path=/; HttpOnly; Secure; SameSite=None
+      - ak_bmsc=AD45D380395199F28FDFE4DD869299B2~000000000000000000000000000000~YAAQRw4Iw/0/U16QAQAAlPqbXxhz/X2Rzj2rBHaJWnuq3BWUN9Bx1dDBNGvoRIAuKZbpfEe4Ltd14jRieMNI/ERyW+2NoO0Wc1VyMZVAcJ743FFnQFZPSwCdsFP+cKmQ4oditCoTyZW4vMpcLdvWofJW1BmiXJ2gFbGZ02KT0LaDwqIV9zd5QpBBL+krKzjJpYygizX4eFTeoOd/xEa8HXdirRmgdG7G5Uaqg+BhW+bfUWZJ2xQDvqwmguOmlldahR0NxnUJLTCo5aExr/3wfSlga3uT1uX2bzHmUZO2A9Oln56lnHIxvsoqmU1hoAA0sbEs24jnzXPuRMQcSe/iE3nx28Ev7Snf25ZgSprNJ47LUPCXfozdYAQPuDpqpXANvLqaYzUdUDCJqpnuWIEk0bZ1xIoG;
+        Domain=.nasdaq.com; Path=/; Expires=Fri, 28 Jun 2024 18:09:35 GMT; Max-Age=7199;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '26'
+      - '41'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '171'
+      - '171'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 1acfd738-cff2-42b5-a41e-4109e483a494
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1
