@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING, Any
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_oecd.utils.metadata import OecdMetadata
 from openbb_oecd.utils.progressive_helper import OecdParamsBuilder
+from pandas.api.types import is_string_dtype
 
 if TYPE_CHECKING:
     from pandas import DataFrame  # type: ignore[import-untyped]
@@ -433,7 +434,9 @@ class OecdQueryBuilder:
             "ACTION",
         }
         dim_cols = [
-            c for c in df.columns if c not in skip_cols and df[c].dtype == object
+            c
+            for c in df.columns
+            if c not in skip_cols and is_string_dtype(df[c])
         ]
 
         for col in dim_cols:

@@ -137,11 +137,7 @@ class OecdAvailableIndicatorsData(AvailableIndicatorsData):
     )
     member_of: list[str] = Field(
         default_factory=list,
-        description="Presentation tables containing this indicator (e.g. 'DF_EO::T101').",
-    )
-    also_in: list[str] = Field(
-        default_factory=list,
-        description="Other OECD tables that also contain this indicator code.",
+        description="Other OECD dataflows that also contain this indicator code.",
     )
 
 
@@ -201,10 +197,10 @@ class OecdAvailableIndicatorsFetcher(
 
         Uses only pre-built indexes and already-cached structures.
         """
-        # Pre-fetch constrained values for all target dataflows (batch).
-        # ONLY use dataflows whose structures AND parameters are already cached.
+        # Build freq/transformation labels from cached constraints + codelists.
         target_dfs = {r.get("dataflow_id", "") for r in results} - {""}
-        constrained_cache: dict[str, dict] = {}
+        freq_labels: dict[str, list[str]] = {}  # df_id → ["A (Annual)", ...]
+        transform_labels: dict[str, list[str]] = {}  # df_id → ["G1 (Growth ...)", ...]
 
         for df_id in target_dfs:
             full_id = metadata._short_id_map.get(  # noqa: SLF001 # pylint: disable=W0212
@@ -214,14 +210,22 @@ class OecdAvailableIndicatorsFetcher(
                 full_id = df_id if df_id in metadata.datastructures else None
             if not full_id or full_id not in metadata.datastructures:
                 continue
-            if (
-                full_id not in metadata._dataflow_parameters_cache  # noqa: SLF001  # pylint: disable=W0212
-            ):
-                continue
-            try:
-                constrained_cache[df_id] = metadata.get_constrained_values(full_id)
-            except Exception:  # noqa: BLE001
-                constrained_cache[df_id] = {}
+            constraints = metadata._dataflow_constraints.get(  # noqa: SLF001 # pylint: disable=W0212
+                full_id, {}
+            )
+            dsd = metadata.datastructures.get(full_id, {})
+            dim_cl: dict[str, str] = {
+                d["id"]: d.get("codelist_id", "") for d in dsd.get("dimensions", [])
+            }
+            for dim_key, target_dict in [("FREQ", freq_labels), ("TRANSFORMATION", transform_labels)]:
+                codes = constraints.get(dim_key, [])
+                if not codes:
+                    continue
+                cl_id = dim_cl.get(dim_key, "")
+                cl = metadata.codelists.get(cl_id, {}) if cl_id else {}  # noqa: SLF001
+                target_dict[df_id] = [
+                    f"{c} ({cl.get(c, c)})" for c in codes
+                ]
 
         for row in results:
             df_id = row.get("dataflow_id", "")
@@ -234,25 +238,12 @@ class OecdAvailableIndicatorsFetcher(
             row["symbol"] = row["series_id"]
 
             # Cross-reference: other dataflows containing this indicator.
-            row["also_in"] = _build_also_in(
+            row["member_of"] = _build_also_in(
                 indicator, df_id, code_to_dataflows, df_name_cache, metadata
             )
 
-            # Frequencies and transformations from pre-fetched constrained values.
-            constrained = constrained_cache.get(df_id, {})
-            row["frequencies"] = [
-                f"{e['value']} ({e['label']})"
-                for e in constrained.get("FREQ", [])
-                if e.get("value")
-            ]
-            row["transformations"] = [
-                f"{e['value']} ({e['label']})"
-                for e in constrained.get("TRANSFORMATION", [])
-                if e.get("value")
-            ]
-
-            # Table membership placeholder (populated from cache constraints).
-            row.setdefault("member_of", [])
+            row["frequencies"] = freq_labels.get(df_id, [])
+            row["transformations"] = transform_labels.get(df_id, [])
 
         return results
 

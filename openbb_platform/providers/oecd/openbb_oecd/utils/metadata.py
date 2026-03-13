@@ -303,6 +303,8 @@ class OecdMetadata:
             self._dataflow_parameters_cache: dict[str, dict] = {}
             self._dataflow_indicators_cache: dict[str, list] = {}
             self._availability_cache: dict[str, dict[str, list[str]]] = {}
+            # Per-dataflow indicator dimension: full_id → dim_id.
+            self._indicator_dim_cache: dict[str, str | None] = {}
             # Table map: TABLE_IDENTIFIER code → {name, description, dataflows}.
             self._table_map: dict[str, dict] = {}
             self._full_catalogue_loaded: bool = False
@@ -1580,6 +1582,41 @@ class OecdMetadata:
 
         return params
 
+    def _get_indicator_dim(self, full_id: str) -> str | None:
+        """Return the indicator dimension for *full_id* using cached data only.
+
+        Tries ``_INDICATOR_DIMENSION_CANDIDATES`` against the DSD dims,
+        then falls back to the first non-skip dimension.  The result is
+        cached in ``_indicator_dim_cache``.
+        """
+        if full_id in self._indicator_dim_cache:
+            return self._indicator_dim_cache[full_id]
+
+        dsd = self.datastructures.get(full_id, {})
+        dim_ids = {d["id"] for d in dsd.get("dimensions", [])}
+
+        # First: check the well-known indicator candidates.
+        for candidate in _INDICATOR_DIMENSION_CANDIDATES:
+            if candidate in dim_ids:
+                self._indicator_dim_cache[full_id] = candidate
+                return candidate
+
+        # Fallback: first content dimension in DSD order.
+        _skip = (
+            set(_COUNTRY_DIMENSION_CANDIDATES)
+            | _NON_INDICATOR_DIMENSIONS
+            | {"FREQ", "TIME_PERIOD"}
+        )
+        for d in sorted(
+            dsd.get("dimensions", []), key=lambda x: x.get("position", 0)
+        ):
+            if d["id"] not in _skip:
+                self._indicator_dim_cache[full_id] = d["id"]
+                return d["id"]
+
+        self._indicator_dim_cache[full_id] = None
+        return None
+
     def _find_indicator_dimension(
         self, dataflow_id: str, indicator_code: str | None = None
     ) -> str | None:
@@ -2397,6 +2434,7 @@ class OecdMetadata:
             target_ids = None  # Will use full search index.
 
         # -- Scoped search (specific dataflows) --
+        _table_dims = set(_TABLE_GROUP_CANDIDATES)
         if scoped:
             all_indicators: list[dict] = []
             for df_id in target_ids:  # type: ignore[union-attr]
@@ -2417,6 +2455,8 @@ class OecdMetadata:
                     }
                     for ind in cached:
                         dim_id = ind.get("dimension_id", "")
+                        if dim_id in _table_dims:
+                            continue
                         if (
                             not dim_id
                             or dim_id not in allowed_sets
@@ -2424,7 +2464,10 @@ class OecdMetadata:
                         ):
                             all_indicators.append(ind)
                 else:
-                    all_indicators.extend(cached)
+                    all_indicators.extend(
+                        ind for ind in cached
+                        if ind.get("dimension_id", "") not in _table_dims
+                    )
 
             if query:
                 phrases = _parse_search_query(query)
@@ -2487,6 +2530,7 @@ class OecdMetadata:
         if hasattr(self, "_search_index") and self._search_index is not None:
             return self._search_index
 
+        _table_dims = set(_TABLE_GROUP_CANDIDATES)
         index: list[tuple[str, dict]] = []
         for full_id, cached in self._dataflow_indicators_cache.items():
             constraints = self._dataflow_constraints.get(full_id, {})
@@ -2495,6 +2539,9 @@ class OecdMetadata:
             )
             for ind in cached:
                 dim_id = ind.get("dimension_id", "")
+                # Skip table-grouping dimensions (TABLE_IDENTIFIER, CHAPTER).
+                if dim_id in _table_dims:
+                    continue
                 if (
                     allowed_sets
                     and dim_id

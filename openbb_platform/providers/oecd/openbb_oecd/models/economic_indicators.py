@@ -1,6 +1,6 @@
 """OECD Economic Indicators Model — generic fetcher for ALL OECD dataflows."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-branches,protected-access,too-many-instance-attributes,too-many-statements
 
 from typing import Any
 
@@ -19,32 +19,12 @@ api_prefix = SystemService().system_settings.api_settings.prefix
 
 
 class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
-    """OECD Economic Indicators Query.
-
-    Symbol format: ``DATAFLOW::INDICATOR`` or ``DATAFLOW::TABLE_ID``.
-
-    **Indicator mode** — fetch individual time series:
-
-    >>> # DF_PRICES_ALL::CPI — Consumer Price Index
-    >>> # DF_QNA::B1GQ       — GDP expenditure approach
-    >>> # DF_CLI::LI         — Composite Leading Indicator
-    >>> # DF_EO::GDPV_USD    — GDP forecast, volume
-
-    **Table mode** — fetch an entire hierarchical table:
-
-    >>> # DF_EO::T101   — Economic Outlook Summary of Projections
-
-    Use ``obb.economy.available_indicators(provider='oecd')`` to discover
-    symbols.  Multiple symbols can be comma-separated (must share the
-    same dataflow).
-    """
+    """OECD Economic Indicators Query."""
 
     __json_schema_extra__ = {
         "symbol": {
             "multiple_items_allowed": True,
             "x-widget_config": {
-                "label": "Symbol",
-                "description": "OECD indicator symbol in 'DATAFLOW::INDICATOR' format.",
                 "multiSelect": False,
                 "multiple": True,
                 "type": "text",
@@ -53,11 +33,8 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         "country": {
             "multiple_items_allowed": True,
             "x-widget_config": {
-                "label": "Country",
-                "description": "Country or reference area.",
                 "type": "endpoint",
                 "multiSelect": True,
-                "multiple": False,
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
@@ -69,7 +46,6 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         },
         "frequency": {
             "x-widget_config": {
-                "label": "Frequency",
                 "type": "endpoint",
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
                 "optionsParams": {
@@ -78,12 +54,10 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     "frequency": "true",
                     "dimension_values": "$dimension_values",
                 },
-                "description": "The observation frequency.",
             },
         },
         "transform": {
             "x-widget_config": {
-                "label": "Transform",
                 "type": "endpoint",
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
                 "optionsParams": {
@@ -93,33 +67,22 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     "transform": "true",
                     "dimension_values": "$dimension_values",
                 },
-                "description": "Transformation applied to the data.",
                 "style": {"popupWidth": 500},
             },
         },
         "dimension_values": {
+            "multiple_items_allowed": True,
             "x-widget_config": {
-                "label": "Dimension Filters",
                 "type": "text",
                 "value": None,
-                "description": "Extra dimension constraints in 'DIM_ID:VALUE' format."
-                + " See OECD Dataflow Parameters widget for available values.",
                 "multiple": True,
+                "multiSelect": False,
             },
         },
         "limit": {
             "x-widget_config": {
                 "label": "Limit",
-                "value": None,
-                "description": "Most recent N observations per series.",
                 "type": "number",
-            },
-        },
-        "pivot": {
-            "x-widget_config": {
-                "label": "Pivot",
-                "description": "Pivot dates to columns for table-style output.",
-                "type": "text",
             },
         },
     }
@@ -279,10 +242,6 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
                                 "field": "symbol",
                                 "pinned": False,
                             },
-                            {
-                                "field": "value",
-                                "pinned": "left",
-                            },
                         ]
                     }
                 },
@@ -345,6 +304,7 @@ class OecdEconomicIndicatorsFetcher(
             detect_transform_dimension,
         )
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
+        from openbb_oecd.utils.table_builder import OecdTableBuilder
 
         qb = OecdQueryBuilder()
         dataflow = query._dataflow  # noqa: SLF001
@@ -394,13 +354,12 @@ class OecdEconomicIndicatorsFetcher(
         start_date = str(query.start_date) if query.start_date else None
         end_date = str(query.end_date) if query.end_date else None
 
-        if query._is_table:  # noqa: SLF001
-            # ---- TABLE MODE ----
-            from openbb_oecd.utils.table_builder import OecdTableBuilder
-
+        if query._is_table:
             params: dict[str, Any] = {}
+
             if countries_str:
                 params["REF_AREA"] = countries_str
+
             if frequency:
                 params["FREQ"] = frequency
 
@@ -415,6 +374,7 @@ class OecdEconomicIndicatorsFetcher(
                 )
 
             builder = OecdTableBuilder()
+
             try:
                 result = builder.get_table(
                     dataflow=dataflow,
