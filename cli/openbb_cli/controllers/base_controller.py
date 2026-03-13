@@ -768,12 +768,29 @@ class BaseController(metaclass=ABCMeta):
                 ),
                 -1,
             )
-            # Split comma-separated arguments, except for the argument at routine_args_index
-            other_args = [
-                part
-                for index, arg in enumerate(other_args)
-                for part in (arg.split(",") if index != routine_args_index else [arg])
-            ]
+            # Build the set of flags whose action accepts multiple values (nargs="+").
+            # Only comma-split argument values that follow one of these flags.
+            # Values for single-value params (like --symbol AAPL,MSFT) must stay intact
+            # because the comma is meaningful to the provider, not a delimiter for argparse.
+            nargs_plus_flags: set[str] = set()
+            for action in parser._actions:  # pylint: disable=protected-access
+                if action.nargs == "+" and action.option_strings:
+                    nargs_plus_flags.update(action.option_strings)
+
+            expanded_args: list[str] = []
+            prev_flag: str | None = None
+            for index, arg in enumerate(other_args):
+                if index == routine_args_index:
+                    expanded_args.append(arg)
+                elif arg.startswith("-"):
+                    expanded_args.append(arg)
+                    prev_flag = arg
+                elif prev_flag in nargs_plus_flags:
+                    expanded_args.extend(arg.split(","))
+                else:
+                    expanded_args.append(arg)
+                    prev_flag = None
+            other_args = expanded_args
 
             # Check if the action has optional choices, if yes, remove them
             for action in parser._actions:  # pylint: disable=protected-access

@@ -77,3 +77,56 @@ def test_call_exit():
     with patch.object(controller, "save_class", MagicMock()):
         controller.queue = ["quit"]
         controller.call_exit(None)
+
+
+def test_parse_known_args_preserves_comma_separated_symbol():
+    """Test that comma-separated values for single-value params are not split.
+
+    Regression test for issue #7410: passing --symbol AAPL,MSFT,GOOGL should
+    keep the value as a single string, not split it into separate args.
+    """
+    import argparse
+
+    controller = DummyBaseController()
+
+    # Build a parser similar to what the platform produces for --symbol (nargs=None)
+    parser = argparse.ArgumentParser(prog="test")
+    parser.add_argument("--symbol", type=str, dest="symbol")
+    parser.add_argument("--start_date", type=str, dest="start_date")
+    parser.add_argument("--export", type=str, dest="export", nargs="+")
+
+    other_args = ["--symbol", "AAPL,MSFT,GOOGL", "--start_date", "2023-01-01"]
+
+    with patch("openbb_cli.controllers.base_controller.session") as mock_session:
+        mock_session.settings.USE_CLEAR_AFTER_CMD = False
+        ns_parser = controller.parse_known_args_and_warn(
+            parser=parser,
+            other_args=other_args,
+        )
+
+    assert ns_parser is not None
+    assert ns_parser.symbol == "AAPL,MSFT,GOOGL"
+
+
+def test_parse_known_args_splits_comma_for_nargs_plus():
+    """Test that comma-separated values for nargs='+' params are still split."""
+    import argparse
+
+    controller = DummyBaseController()
+
+    parser = argparse.ArgumentParser(prog="test")
+    parser.add_argument("--symbol", type=str, dest="symbol")
+    parser.add_argument("--export", type=str, dest="export", nargs="+")
+
+    other_args = ["--symbol", "AAPL,MSFT", "--export", "csv,json"]
+
+    with patch("openbb_cli.controllers.base_controller.session") as mock_session:
+        mock_session.settings.USE_CLEAR_AFTER_CMD = False
+        ns_parser = controller.parse_known_args_and_warn(
+            parser=parser,
+            other_args=other_args,
+        )
+
+    assert ns_parser is not None
+    assert ns_parser.symbol == "AAPL,MSFT"
+    assert ns_parser.export == ["csv", "json"]
