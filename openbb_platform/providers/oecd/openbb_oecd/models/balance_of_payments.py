@@ -139,6 +139,7 @@ class OECDBalanceOfPaymentsFetcher(
         """Return raw data from the OECD BOP endpoint."""
         # pylint: disable=import-outside-toplevel
         from io import StringIO
+
         from openbb_core.provider.utils.helpers import make_request
         from openbb_oecd.utils.metadata import OecdMetadata
         from pandas import read_csv, to_numeric

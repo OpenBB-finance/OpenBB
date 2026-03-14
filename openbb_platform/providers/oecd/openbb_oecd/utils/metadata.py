@@ -1122,9 +1122,8 @@ class OecdMetadata:
                             all_subtopics.append(s)
 
             # Topic filter: include if any category path starts with the topic.
-            if topic_upper:
-                if not any(c.split(".")[0] == topic_upper for c in cats):
-                    continue
+            if topic_upper and not any(c.split(".")[0] == topic_upper for c in cats):
+                continue
 
             # Deduplicate.
             all_subtopics = sorted(set(all_subtopics))
