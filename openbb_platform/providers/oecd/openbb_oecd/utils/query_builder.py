@@ -560,9 +560,7 @@ def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> A
         resp = sess.send(prepared, timeout=timeout)
 
         if resp.status_code == 429 and attempt < max_retries - 1:
-            retry_after = int(
-                resp.headers.get("Retry-After", 15 * (attempt + 1))
-            )
+            retry_after = int(resp.headers.get("Retry-After", 15 * (attempt + 1)))
             _time.sleep(min(max(retry_after, 15), 90))
             continue
 

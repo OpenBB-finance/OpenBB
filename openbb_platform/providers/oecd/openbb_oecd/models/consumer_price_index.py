@@ -295,14 +295,16 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
 
             title = " - ".join(title_parts)
             # Build compound series_id from all dimension values.
-            series_id = ".".join([
-                row.get("REF_AREA", ""),
-                row.get("FREQ", ""),
-                row.get("METHODOLOGY", "N"),
-                row.get("MEASURE", "CPI"),
-                row.get("EXPENDITURE", "_T"),
-                row.get("TRANSFORMATION", "_Z"),
-            ])
+            series_id = ".".join(
+                [
+                    row.get("REF_AREA", ""),
+                    row.get("FREQ", ""),
+                    row.get("METHODOLOGY", "N"),
+                    row.get("MEASURE", "CPI"),
+                    row.get("EXPENDITURE", "_T"),
+                    row.get("TRANSFORMATION", "_Z"),
+                ]
+            )
             output.append(
                 OECDCPIData(
                     date=d,

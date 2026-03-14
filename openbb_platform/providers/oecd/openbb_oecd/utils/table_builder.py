@@ -867,7 +867,12 @@ class OecdTableBuilder:
                     e.get("parent") for e in all_hierarchy_entries
                 )
                 if _label_parts:
-                    if base_label and not _is_compound_total and _hierarchy_is_flat and not _base_from_compounds:
+                    if (
+                        base_label
+                        and not _is_compound_total
+                        and _hierarchy_is_flat
+                        and not _base_from_compounds
+                    ):
                         clean["label"] = base_label + " - " + " - ".join(_label_parts)
                     else:
                         clean["label"] = " - ".join(_label_parts)

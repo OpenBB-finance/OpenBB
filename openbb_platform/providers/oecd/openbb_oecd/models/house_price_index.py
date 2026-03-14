@@ -159,7 +159,7 @@ class OECDHousePriceIndexFetcher(
                 continue
 
             if query.transform and query.transform != "index":
-                value = float(value)/100.0
+                value = float(value) / 100.0
 
             output.append(
                 OECDHousePriceIndexData(

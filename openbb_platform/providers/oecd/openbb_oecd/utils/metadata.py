@@ -117,9 +117,7 @@ def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> A
         resp = make_request(url, headers=headers, timeout=timeout)
 
         if resp.status_code == 429 and attempt < max_retries - 1:
-            retry_after = int(
-                resp.headers.get("Retry-After", 15 * (attempt + 1))
-            )
+            retry_after = int(resp.headers.get("Retry-After", 15 * (attempt + 1)))
             time.sleep(min(max(retry_after, 15), 90))
             continue
 
@@ -1124,9 +1122,7 @@ class OecdMetadata:
 
             # Topic filter: include if any category path starts with the topic.
             if topic_upper:
-                if not any(
-                    c.split(".")[0] == topic_upper for c in cats
-                ):
+                if not any(c.split(".")[0] == topic_upper for c in cats):
                     continue
 
             # Deduplicate.

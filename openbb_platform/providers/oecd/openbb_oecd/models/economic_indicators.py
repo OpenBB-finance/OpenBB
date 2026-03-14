@@ -648,7 +648,6 @@ class OecdEconomicIndicatorsFetcher(
                 # Build compound-code symbol from content dims in DSD order.
                 code_parts = [row.get(d, "") for d in content_dims if row.get(d)]
                 compound_code = "_".join(code_parts)
-                symbol_root = code_parts[0] if code_parts else ""
 
                 # Build title from indicator + content dimension labels.
                 title_parts: list[str] = []
@@ -763,8 +762,7 @@ class OecdEconomicIndicatorsFetcher(
         )
         return AnnotatedResult(
             result=[
-                OecdEconomicIndicatorsData.model_validate(r)
-                for r in pivot_records
+                OecdEconomicIndicatorsData.model_validate(r) for r in pivot_records
             ],
             metadata=metadata,
         )
