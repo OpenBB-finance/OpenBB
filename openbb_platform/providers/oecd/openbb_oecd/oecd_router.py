@@ -1562,7 +1562,10 @@ async def presentation_table(  # noqa: PLR0912
 ) -> Any:
     """Get a formatted presentation table from the OECD database."""
     # pylint: disable=import-outside-toplevel,too-many-branches
+    import re as _re_mod
+
     from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_oecd.utils.helpers import oecd_date_to_python_date
     from openbb_oecd.utils.table_builder import OecdTableBuilder
     from pandas import DataFrame
 
@@ -1627,11 +1630,8 @@ async def presentation_table(  # noqa: PLR0912
         raise OpenBBError(ValueError("No data returned for the given parameters."))
 
     # Build output rows matching the expected format.
-    from openbb_oecd.utils.helpers import oecd_date_to_python_date
-
     table_meta = result.get("table_metadata", {})
     fixed_dims = table_meta.get("fixed_dimensions", {})
-
     # Build a subtitle describing units, currency, etc.
     # Multiplier is excluded because values are already expanded.
     _SKIP_LABELS = {"not applicable", "not available", "n/a", "_z", ""}
@@ -1782,8 +1782,6 @@ async def presentation_table(  # noqa: PLR0912
         df = df.drop(columns=["country"])
 
     # Reorder columns: title first, then date columns latest-first.
-    import re as _re_mod
-
     def _is_date_col(c):
         return bool(_re_mod.match(r"\d{4}-\d{2}-\d{2}$", str(c)))
 
@@ -1799,7 +1797,7 @@ async def presentation_table(  # noqa: PLR0912
     title_row = {"title": table_subtitle}
     for col in df.columns:
         if col != "title":
-            title_row[col] = None
+            title_row[col] = None  # type: ignore
     return [title_row] + records
 
 

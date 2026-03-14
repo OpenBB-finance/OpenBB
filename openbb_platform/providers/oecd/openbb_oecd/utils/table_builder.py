@@ -991,7 +991,7 @@ class OecdTableBuilder:
                     while p and p not in _present:
                         p = _parents.get(p)
                     if p and p in _present:
-                        _children.setdefault(p, []).append(c)
+                        _children.setdefault(p, []).append(c)  # type: ignore
                 # Determine effective roots: codes whose effective parent
                 # (after skipping absent ancestors) is not in _present.
                 _effective_roots: list = []
