@@ -1,6 +1,6 @@
 """OECD Table Builder — hierarchical table data fetching with validation."""
 
-# pylint: disable=C0302,R0912,R0913,R0914,R0915,R1702,W0212,W0640
+# pylint: disable=C0302,R0912,R0913,R0914,R0915,R0917,R1702,W0212,W0640
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ class OecdTableBuilder:
         metadata: OecdMetadata | None = None,
         query_builder: OecdQueryBuilder | None = None,
     ) -> None:
-        # Lazy imports to avoid circular dependencies.
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata import OecdMetadata as _Meta
         from openbb_oecd.utils.query_builder import OecdQueryBuilder as _QB
 
@@ -773,7 +773,6 @@ class OecdTableBuilder:
                     all_rows.append(row)
 
         # ---- Build clean flat output rows (one per observation) ----
-        # Placeholder labels from codelists that carry no useful meaning.
         _USELESS_LABELS = {
             "not applicable",
             "not specified",
@@ -790,7 +789,7 @@ class OecdTableBuilder:
             """Return a clean string label, or empty string for NaN/useless values."""
             if val is None:
                 return ""
-            if isinstance(val, float) and val != val:
+            if isinstance(val, float):
                 return ""
             s = str(val).strip()
             if s.lower() in _USELESS_LABELS:

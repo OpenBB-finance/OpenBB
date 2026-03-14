@@ -95,6 +95,7 @@ class OECDGdpForecastFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -134,6 +135,7 @@ class OECDGdpForecastFetcher(
         query: OECDGdpForecastQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDGdpForecastData]:
         """Transform the data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         is_growth = query.units == "growth"

@@ -1,6 +1,6 @@
 """OECD Utilities Router."""
 
-# pylint: disable=unused-argument,protected-access,too-many-return-statements,too-many-branches,too-many-positional-arguments,too-many-locals,too-many-statements,too-many-lines
+# pylint: disable=unused-argument,protected-access,too-many-return-statements,too-many-branches,too-many-positional-arguments,too-many-locals,too-many-statements,too-many-lines,too-many-arguments
 
 from typing import Annotated, Any, Literal
 
@@ -1218,6 +1218,7 @@ async def presentation_table_dim_choices(
 
     pb = OecdParamsBuilder(dataflow_id=dataflow_id)
     dims_in_order = pb.get_dimensions_in_order()
+    dims_in_order_set = set(dims_in_order)
 
     for dim_id in dims_in_order:
         if dim_id in dimension_codes:
@@ -1234,12 +1235,12 @@ async def presentation_table_dim_choices(
             pb.set_dimension((dim_id, frequency))
 
     # If frequency wasn’t provided but only one exists, auto-pin it.
-    if frequency is None and freq_dim and freq_dim in {d for d in dims_in_order}:
+    if frequency is None and freq_dim and freq_dim in dims_in_order_set:
         freq_options = pb.get_options_for_dimension(freq_dim)
         if len(freq_options) == 1:
             pb.set_dimension((freq_dim, freq_options[0]["value"]))
 
-    if target_dim not in set(dims_in_order):
+    if target_dim not in dims_in_order_set:
         return []
 
     _NOT_APPLICABLE = {"not applicable", "not available", "n/a"}

@@ -101,6 +101,7 @@ class OECDGdpNominalFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -146,6 +147,7 @@ class OECDGdpNominalFetcher(
         **kwargs: Any,
     ) -> list[OECDGdpNominalData]:
         """Transform the data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         is_level = query.units == "level"

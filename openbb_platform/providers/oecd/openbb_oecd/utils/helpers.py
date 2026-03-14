@@ -5,6 +5,8 @@ Compatibility layer that re-exports utilities from the new infrastructure
 OecdQueryBuilder.fetch_data().
 """
 
+# pylint: disable=R0916, W0212
+
 from __future__ import annotations
 
 import re
@@ -115,10 +117,6 @@ def parse_search_query(query: str) -> list[list[str]]:
     return [g for g in groups if g]
 
 
-# ------------------------------------------------------------------
-# Compound-code parsing (ported from IMF helpers.py)
-# ------------------------------------------------------------------
-
 # Dimensions to exclude from compound-code matching — they are handled
 # separately via dedicated parameters (country, frequency).
 _EXCLUDE_DIMS = frozenset(
@@ -190,9 +188,10 @@ def _build_dimension_lookups(
         - *dimension_order*: list of dimension IDs in DSD position order
           (excluding country/frequency/time dimensions)
     """
-    if metadata is None:
-        from openbb_oecd.utils.metadata import OecdMetadata
+    # pylint: disable=import-outside-toplevel
+    from openbb_oecd.utils.metadata import OecdMetadata
 
+    if metadata is None:
         metadata = OecdMetadata()
 
     code_to_dimension: dict[str, str] = {}
@@ -272,9 +271,10 @@ def detect_indicator_dimensions(
     OpenBBError
         If any indicator code cannot be resolved for the dataflow.
     """
-    if metadata is None:
-        from openbb_oecd.utils.metadata import OecdMetadata
+    # pylint: disable=import-outside-toplevel
+    from openbb_oecd.utils.metadata import OecdMetadata
 
+    if metadata is None:
         metadata = OecdMetadata()
 
     dimension_codes: dict[str, list[str]] = defaultdict(list)
@@ -326,6 +326,7 @@ def _guess_primary_dimension(
     codes_by_dimension: dict[str, set[str]],
 ) -> str:
     """Return the most likely primary indicator dimension name."""
+    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import _INDICATOR_DIMENSION_CANDIDATES
 
     for candidate in _INDICATOR_DIMENSION_CANDIDATES:
@@ -413,11 +414,6 @@ def _raise_invalid_codes_error(
     )
 
 
-# ------------------------------------------------------------------
-# Transform / unit dimension detection (ported from IMF helpers.py)
-# ------------------------------------------------------------------
-
-
 def detect_transform_dimension(
     dataflow: str,
     metadata: OecdMetadata | None = None,
@@ -440,9 +436,10 @@ def detect_transform_dimension(
         ``(transform_dim, unit_dim, transform_lookup, unit_lookup)``
         where lookups map friendly names to SDMX codes.
     """
-    if metadata is None:
-        from openbb_oecd.utils.metadata import OecdMetadata
+    # pylint: disable=import-outside-toplevel
+    from openbb_oecd.utils.metadata import OecdMetadata
 
+    if metadata is None:
         metadata = OecdMetadata()
 
     transform_dim: str | None = None
@@ -533,11 +530,6 @@ def detect_transform_dimension(
     return transform_dim, unit_dim, transform_lookup, unit_lookup
 
 
-# ------------------------------------------------------------------
-# Country resolution wrapper (convenience over metadata method)
-# ------------------------------------------------------------------
-
-
 def resolve_country_code(
     country: str,
     metadata: OecdMetadata | None = None,
@@ -560,9 +552,10 @@ def resolve_country_code(
     str
         Resolved country code, or upper-cased input if resolution fails.
     """
-    if metadata is None:
-        from openbb_oecd.utils.metadata import OecdMetadata
+    # pylint: disable=import-outside-toplevel
+    from openbb_oecd.utils.metadata import OecdMetadata
 
+    if metadata is None:
         metadata = OecdMetadata()
 
     if not dataflow:

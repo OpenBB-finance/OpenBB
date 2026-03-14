@@ -46,7 +46,7 @@ class OecdParamsBuilder:
         OpenBBError
             If the dataflow cannot be resolved.
         """
-        # Import lazily to avoid circular imports.
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata import OecdMetadata
 
         self._metadata = OecdMetadata()
@@ -74,9 +74,6 @@ class OecdParamsBuilder:
         # Codelist label caches (dim_id → {code: label}).
         self._labels: dict[str, dict[str, str]] = {}
 
-    # ------------------------------------------------------------------
-    # IMF-compatible public API
-    # ------------------------------------------------------------------
 
     def get_dimensions_in_order(self) -> list[str]:
         """Return dimension IDs sorted by DSD position, excluding TIME_PERIOD."""
@@ -170,10 +167,6 @@ class OecdParamsBuilder:
     def get_dimensions(self) -> dict[str, str | None]:
         """Return the current selections dictionary."""
         return dict(self._selections)
-
-    # ------------------------------------------------------------------
-    # Extended API (preserved from the original OECD QueryBuilder)
-    # ------------------------------------------------------------------
 
     @property
     def dimensions(self) -> list[str]:
@@ -357,17 +350,13 @@ class OecdParamsBuilder:
         # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
-        qb = OecdQueryBuilder(self._metadata)
+        qb = OecdQueryBuilder()
         return qb.fetch_data(
             dataflow=self.dataflow_id,
             start_date=start_date,
             end_date=end_date,
             **self.pinned,
         )
-
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
 
     def _cache_key(self) -> frozenset:
         """Hashable key for the current pinned state."""

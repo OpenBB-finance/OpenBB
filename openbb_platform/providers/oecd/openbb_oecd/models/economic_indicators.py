@@ -284,9 +284,12 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
     @classmethod
     def nan_to_none(cls, v):
         """Convert NaN float values to None for optional fields."""
+        # pylint: disable=import-outside-toplevel
+        from math import isnan
+
         if not v:
             return None
-        if isinstance(v, float) and v != v:  # fast NaN check
+        if isinstance(v, float) and isnan(v):
             return None
         if isinstance(v, str) and v.strip().lower() == "nan":
             return None
@@ -296,9 +299,12 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
     @classmethod
     def _sanitize_extra_nan(cls, values):
         """Replace NaN in extra/dynamic fields so JSON serialization doesn't break."""
+        # pylint: disable=import-outside-toplevel
+        from math import isnan
+
         if isinstance(values, dict):
             for k, v in values.items():
-                if isinstance(v, float) and v != v:
+                if isinstance(v, float) and isnan(v):
                     values[k] = None
         return values
 

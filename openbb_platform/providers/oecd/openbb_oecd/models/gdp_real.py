@@ -81,6 +81,7 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]])
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -121,6 +122,7 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]])
         **kwargs: Any,
     ) -> list[OECDGdpRealData]:
         """Transform the data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         output: list[OECDGdpRealData] = []
