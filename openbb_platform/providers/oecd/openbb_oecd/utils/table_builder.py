@@ -1,6 +1,6 @@
 """OECD Table Builder — hierarchical table data fetching with validation."""
 
-# pylint: disable=C0302,R0912,R0913,R0914,R0915,R1702
+# pylint: disable=C0302,R0912,R0913,R0914,R0915,R1702,W0212,W0640
 
 from __future__ import annotations
 
@@ -107,6 +107,12 @@ class OecdTableBuilder:
         dict
             ``{table_metadata, structure, data, series_metadata}``
         """
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils.metadata import (
+            _NON_INDICATOR_DIMENSIONS,
+            _TABLE_GROUP_CANDIDATES,
+        )
+
         # ---- Parse combined "DATAFLOW::TABLE" format ----
         if table_id and "::" in table_id:
             parsed_df, parsed_tid = table_id.split("::", 1)
@@ -202,8 +208,6 @@ class OecdTableBuilder:
         # ---- Set table-grouping dimension if present ----
         # TABLE_IDENTIFIER is the standard; CHAPTER and others act as
         # alternatives (see _TABLE_GROUP_CANDIDATES in metadata.py).
-        from openbb_oecd.utils.metadata import _TABLE_GROUP_CANDIDATES
-
         table_group_dim: str | None = None  # which dim carries the table_id
         if table_id:
             for candidate in _TABLE_GROUP_CANDIDATES:
@@ -438,18 +442,13 @@ class OecdTableBuilder:
                     ),
                     code,
                 )
-                fixed_values[did] = {"code": code, "label": label or code}
+                fixed_values[did] = {"code": code, "label": label or code}  # type: ignore
 
         # ---- Compound symbol treatment ----
         # Split varying dims into *content* dims (part of what is being
         # measured, e.g. EXPENDITURE, SECTOR) and *metadata* dims (how
         # it is measured, e.g. UNIT_MEASURE).  Content dims are folded
         # into a compound code + label; metadata dims remain as columns.
-        from openbb_oecd.utils.metadata import (
-            _NON_INDICATOR_DIMENSIONS,
-            _TABLE_GROUP_CANDIDATES,
-        )
-
         _COUNTRY_DIMS = {
             "REF_AREA",
             "COUNTERPART_AREA",
@@ -995,8 +994,8 @@ class OecdTableBuilder:
                         _children.setdefault(p, []).append(c)
                 # Determine effective roots: codes whose effective parent
                 # (after skipping absent ancestors) is not in _present.
-                _effective_roots: list[str] = []
-                for c in sorted(_present):
+                _effective_roots: list = []
+                for c in sorted(_present):  # type: ignore
                     p = _parents.get(c)
                     while p and p not in _present:
                         p = _parents.get(p)

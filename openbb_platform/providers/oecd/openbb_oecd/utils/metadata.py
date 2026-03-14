@@ -269,6 +269,7 @@ class OecdMetadata:
     _lock = threading.Lock()
     _codelist_lock = threading.Lock()
     _initialized: bool = False
+    _search_index: list[tuple[str, dict]] | None = None
 
     def __new__(cls) -> "OecdMetadata":
         """Ensure only one instance of OecdMetadata exists."""
@@ -1132,7 +1133,7 @@ class OecdMetadata:
                 {
                     "label": v["name"],
                     "value": full_id,
-                    "topic": primary_topic if not topic_upper else topic_upper,
+                    "topic": topic_upper if topic_upper else primary_topic,
                     "topic_name": self._category_names.get(
                         topic_upper or primary_topic, ""
                     ),
@@ -2585,7 +2586,8 @@ class OecdMetadata:
                 ).lower()
                 index.append((text, ind))
 
-        self._search_index = index  # type: ignore[attr-defined]  # pylint: disable=W0201
+        self._search_index = index
+
         return index
 
     def list_tables(

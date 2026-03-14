@@ -565,7 +565,6 @@ def test_economy_country_profile(params, obb):
                 "query": "balance+trade",
                 "dataflows": None,
                 "keywords": None,
-                "symbol": None,
             }
         ),
     ],
@@ -633,6 +632,7 @@ def test_economy_available_indicators(params, obb):
                 "transform": None,
                 "dimension_values": None,
                 "limit": 1,
+                "pivot": False,
             }
         ),
     ],

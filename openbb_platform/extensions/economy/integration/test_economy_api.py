@@ -611,7 +611,7 @@ def test_economy_fred_regional(params, headers):
                 "transform": None,
                 "dimension_values": None,
                 "limit": 1,
-                "pivot": None,
+                "pivot": False,
             }
         ),
     ],
