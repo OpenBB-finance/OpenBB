@@ -66,7 +66,12 @@ The OECD codes for these values — `B1GQ`, `CPI`, `LI`, etc. — are used to co
 ### Symbology
 
 The Open Data Platform refers to all time series IDs as a `symbol`.
-Requesting data requires a symbol constructed from the dataflow's short ID and the indicator code, joined with `::`.
+Requesting data requires a symbol constructed from the dataflow's short ID and an identifier, joined with `::`.
+
+The identifier can be either:
+
+- An indicator-like code, such as `CPI`, `LI`, or `B1GQ`
+- A presentation table identifier, such as `T0101`
 
 ```
 DF_PRICES_ALL::CPI         — Consumer Price Index, all items
@@ -74,6 +79,7 @@ DF_QNA::B1GQ               — GDP, expenditure approach (Quarterly National Acc
 DF_CLI::LI                 — Composite Leading Indicator
 DF_EO::GDPV_USD            — GDP forecast, volume (Economic Outlook)
 DF_BOP::B6_USD             — Current account balance
+DF_QNA::T0101              — Quarterly National Accounts presentation table
 ```
 
 Multiple indicators from the same dataflow can be comma-separated:
@@ -82,7 +88,9 @@ Multiple indicators from the same dataflow can be comma-separated:
 DF_PRICES_ALL::CPI,DF_PRICES_ALL::HICP
 ```
 
-Use `obb.economy.available_indicators(provider='oecd')` to search for or list all available symbols.
+Use `obb.economy.available_indicators(provider="oecd")` to search for or list indicator symbols.
+
+Use `obb.oecd_utils.list_tables()` and `obb.oecd_utils.get_table_detail()` to discover presentation tables and inspect their dimensions.
 
 Use `obb.oecd_utils.get_dataflow_parameters()` to see all dimensions and valid codes for any dataflow.
 
@@ -96,8 +104,9 @@ The library ships with a bundled base cache (`oecd_cache.pkl.xz`) containing:
 - Content constraints (valid value sets per dimension)
 - The full OECD topic taxonomy (category scheme and categorisations)
 
-When a structure is missing, it is fetched on demand and merged into a user-level cache stored under
-`~/OpenBBUserData/cache/oecd_cache.pkl.xz` (configurable via `~/.openbb_platform/user_settings.json`).
+When a structure is missing, it is fetched on demand and merged into a user-level cache stored in the
+OpenBB user cache directory as `oecd_cache.pkl.xz`. If that directory cannot be resolved from OpenBB
+settings, the fallback location is `~/.openbb_platform/cache/oecd_cache.pkl.xz`.
 
 ## Coverage
 
@@ -127,9 +136,17 @@ and metadata lookup.
 
 **Utilities**
 
+- `obb.oecd_utils.list_topic_choices` — topic dropdown choices for UI widgets
+- `obb.oecd_utils.list_subtopic_choices` — subtopic dropdown choices for a selected topic
 - `obb.oecd_utils.list_dataflows` — list all OECD dataflows with topic breadcrumbs
 - `obb.oecd_utils.list_dataflow_choices` — dropdown choices for UI widgets
+- `obb.oecd_utils.list_topics` — browse OECD topics and subtopics with dataflow counts
 - `obb.oecd_utils.get_dataflow_parameters` — dimensions and valid codes for a dataflow
+- `obb.oecd_utils.list_tables` — search OECD presentation tables
+- `obb.oecd_utils.get_table_detail` — inspect a table's dimensions and indicator hierarchy
+- `obb.oecd_utils.list_table_choices` — table dropdown choices for UI widgets
+- `obb.oecd_utils.presentation_table_choices` — progressive choices for the presentation table widget
+- `obb.oecd_utils.presentation_table` — retrieve formatted OECD presentation tables
 
 "Choices" endpoints are used by OpenBB Workspace to populate widget dropdown menus.
 
@@ -151,7 +168,23 @@ data = obb.economy.indicators(
 )
 print(data.to_df())
 
+# Fetch a presentation table directly
+table = obb.economy.indicators(
+    provider="oecd",
+    symbol="DF_QNA::T0101",
+    country="USA",
+    frequency="Q",
+    limit=4,
+)
+print(table.to_df())
+
 # Inspect all dimensions and valid values for a dataflow
-params = obb.oecd_utils.get_dataflow_parameters("DF_PRICES_ALL", output_format="json")
+params = obb.oecd_utils.get_dataflow_parameters(
+    dataflow_id="DF_PRICES_ALL", output_format="json"
+)
 print(params.results)
+
+# Search available presentation tables
+tables = obb.oecd_utils.list_tables(query="GDP")
+print(tables.results)
 ```

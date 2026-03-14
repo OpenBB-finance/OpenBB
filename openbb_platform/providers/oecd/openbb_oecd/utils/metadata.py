@@ -486,10 +486,10 @@ class OecdMetadata:
         best: str | None = None
         best_depth = float("inf")
         for ch in ordered_chains:
-            for depth, anc in enumerate(ch):
-                if anc in common and depth < best_depth:
+            for depth, ancestor in enumerate(ch):
+                if ancestor in common and depth < best_depth:
                     best_depth = depth
-                    best = anc
+                    best = ancestor
         return best
 
     def _load_from_cache(self) -> bool:
@@ -2589,7 +2589,7 @@ class OecdMetadata:
                 ).lower()
                 index.append((text, ind))
 
-        self._search_index = index  # type: ignore[attr-defined]
+        self._search_index = index  # type: ignore[attr-defined]  # pylint: disable=W0201
         return index
 
     def list_tables(
