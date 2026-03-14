@@ -74,7 +74,6 @@ class OecdParamsBuilder:
         # Codelist label caches (dim_id → {code: label}).
         self._labels: dict[str, dict[str, str]] = {}
 
-
     def get_dimensions_in_order(self) -> list[str]:
         """Return dimension IDs sorted by DSD position, excluding TIME_PERIOD."""
         return list(self._dimensions)
