@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.STES/DSD_STES@DF_FINMARK/4.0/GBR.M.SHARE.*.*.*.*.*.*?c%5BTIME_PERIOD%5D=ge%3A2020-01&c%5BTIME_PERIOD%5D=le%3A2024-04&detail=dataonly&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.STES/DSD_STES@DF_FINMARK/4.0/GBR.M.SHARE.*.*.*.*.*.*?c%5BTIME_PERIOD%5D=ge%3A2020-01%2Cle%3A2024-04&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,FREQ: Frequency
@@ -15,232 +15,164 @@ interactions:
         Observation status,UNIT_MULT: Unit multiplier,DECIMALS: Decimals,BASE_PER:
         Base period\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR: United
         Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z: Not
-        applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-02,99.82986,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-11,94.35523,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-10,88.72897,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-08,92.02005,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-07,93.51866,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-05,126.2393,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-04,120.9609,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-01,115.3066,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-04,114.6437,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-03,110.9183,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-02,114.2632,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-01,113.6568,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-12,110.5146,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-11,110.1591,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-10,108.6177,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-09,107.1312,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-07,109.5683,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-06,110.677,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-01,101.4009,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-12,98.82664,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-09,89.9651,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2026-02,159.7908,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-12,148.2202,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-07,124.4262,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2026-01,153.5814,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-08,139.3394,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-07,136.0249,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-11,146.9106,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-10,144.4346,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-09,140.029,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-06,133.545,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-05,131.2874,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-04,125.0014,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-03,131.3455,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-02,132.1118,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2025-01,127.3686,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-12,124.7651,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-11,123.711,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-10,125.363,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-09,125.3474,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-08,125.2097,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-06,124.5847,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-03,117.9558,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-02,115.8311,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-06,94.69035,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-05,90.33038,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-05,112.9969,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-12,115.4689,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-11,112.8533,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-10,113.4461,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-01,114.5953,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-04,87.03309,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-03,87.06705,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-02,110.8974,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-09,114.8787,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-08,112.8674,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-07,113.9178,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-06,114.5883,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-05,116.9485,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-04,118.566,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-03,115.8184,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-02,120.0188,A:
-        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
-        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-01,117.266,A:
+        applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-10,105.719,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
         Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-12,113.3291,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-11,111.7236,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-07,93.51866,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-08,92.02005,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-02,99.82986,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-03,101.8014,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-02,110.8974,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-09,107.1312,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-10,108.6177,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-11,110.1591,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-12,110.5146,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-01,113.6568,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-02,114.2632,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-03,110.9183,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-04,114.6437,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
         Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-07,106.8666,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-06,107.6213,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-06,94.69035,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-10,105.719,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-11,111.7236,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-09,109.0082,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-01,117.266,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-08,113.2166,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-02,120.0188,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-08,108.2514,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-03,115.8184,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-05,106.4692,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-04,118.566,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-05,116.9485,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-06,114.5883,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-07,113.9178,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-08,112.8674,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-09,114.8787,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-10,113.4461,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-11,112.8533,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2023-12,115.4689,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-01,115.3066,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-02,115.8311,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-03,117.9558,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2024-04,120.9609,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-09,89.9651,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-10,88.72897,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-11,94.35523,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-12,98.82664,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-01,101.4009,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-06,110.677,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-01,114.5953,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
         Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-04,104.7217,A:
         Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
         United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-03,101.8014,A:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-05,106.4692,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-03,87.06705,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-04,87.03309,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2020-05,90.33038,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-08,108.2514,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2021-06,107.6213,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-05,112.9969,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-07,109.5683,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-08,113.2166,A:
+        Normal value,0: Units,2: Two,2015\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0),I,GBR:
+        United Kingdom,M: Monthly,SHARE: Share prices,IX: Index,_Z: Not applicable,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,N: National,2022-09,109.0082,A:
         Normal value,0: Units,2: Two,2015\r\n"
     headers:
-      Age:
-      - '3678'
       CF-RAY:
-      - 9d93ec9ead9fd9c8-YVR
+      - 9dc5fe158ad9b3af-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -250,7 +182,7 @@ interactions:
       Content-Type:
       - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Sun, 08 Mar 2026 18:32:44 GMT
+      - Sat, 14 Mar 2026 20:22:51 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -260,21 +192,21 @@ interactions:
       Vary:
       - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 2
+      - Server 3
       alt-svc:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '2'
       cf-cache-status:
-      - HIT
+      - MISS
       last-modified:
-      - Sun, 08 Mar 2026 17:31:26 GMT
+      - Sat, 14 Mar 2026 20:22:50 GMT
       set-cookie:
-      - __cf_bm=mTjwxun1Xfwxvu9CzyWTSC_I7FpCsRlam0RLWfnyWjo-1772994764.5893683-1.0.1.1-910ZzaeTM7.gFEZ6DtbyUMRamLD4YqLdT5rIsoZz45YqUik8Xya.KyvJp7.y6s3b8DHXgvE29.1zdAh7OhH7iQ5RiHVcB7QNU.CHjFEw7f328XAeqcdP5DvVDjc4zdPe;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:44
+      - __cf_bm=J.mEX9IoQXNDpm_yVHUn9VPTqoJRGun1Rya9Nf.WugQ-1773519767.924175-1.0.1.1-PL73IQinwVRjWKQwsbepx6.3tDLfJoowKN3NUqcWmpi7s7kpzaxZbh8z_yAHkr.kvJ49czjIi41gKSNxFhoHBvhCZpS0j9l8B2h4hB8iUx4IgE270m8N9QbLPsIY8_iq;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:51
         GMT
-      - _cfuvid=gub_V48dZjRqLmmCVhANfCM2o6atQmE9EbajLkFLijo-1772994764.5893683-1.0.1.1-4XKFFd2pzhgW3zefhfCZmxzySdpG5jRcYb7qTE84TgI;
-        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+      - _cfuvid=WigyecAjGGnGlppGlbHH_EQ6sa4xf4LMZ.1ImMpuU1k-1773519767.924175-1.0.1.1-b3yVA_oftF4SO87.jax4D9tRdEqncjjXtfmQ2UqOPpA;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

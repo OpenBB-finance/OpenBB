@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.ECO.MAD/DSD_EO@DF_EO/1.4/USA.GDPV_USD.A?c%5BTIME_PERIOD%5D=ge%3A2023-01&c%5BTIME_PERIOD%5D=le%3A2024-01&detail=dataonly&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.ECO.MAD/DSD_EO@DF_EO/1.4/USA.GDPV_USD.A?c%5BTIME_PERIOD%5D=ge%3A2023-01%2Cle%3A2024-01&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,MEASURE: Measure,FREQ:
@@ -14,27 +14,11 @@ interactions:
         Currency,BASE_PER: Base period,METHODOLOGY: Methodology,DECIMALS: Decimals,PRICE_BASE:
         Price base,ADJUSTMENT: Adjustment\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
         United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
-        exchange rates\",A: Annual,2024,25730791311746.5,,\"USD_EXC: US dollars, exchange
-        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
-        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
-        exchange rates\",A: Annual,2025,26234373045469.3,,\"USD_EXC: US dollars, exchange
-        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
-        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
-        exchange rates\",A: Annual,2026,26686779800664.5,,\"USD_EXC: US dollars, exchange
-        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
-        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
-        exchange rates\",A: Annual,2027,27184452411541.2,,\"USD_EXC: US dollars, exchange
-        rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
-        United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
         exchange rates\",A: Annual,2023,25031611545935,,\"USD_EXC: US dollars, exchange
         rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\n"
     headers:
-      Age:
-      - '3689'
-      CF-Cache-Status:
-      - HIT
       CF-RAY:
-      - 9d93ec99d8395fbe-YVR
+      - 9dc5fde08968ef12-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -44,9 +28,7 @@ interactions:
       Content-Type:
       - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Sun, 08 Mar 2026 18:32:43 GMT
-      Last-Modified:
-      - Sun, 08 Mar 2026 17:31:14 GMT
+      - Sat, 14 Mar 2026 20:22:42 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -56,17 +38,21 @@ interactions:
       Vary:
       - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 2
+      - Server 3
       alt-svc:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '2'
+      cf-cache-status:
+      - MISS
+      last-modified:
+      - Sat, 14 Mar 2026 20:22:42 GMT
       set-cookie:
-      - __cf_bm=YCkAV3_twsn2tKZeY5nWZJdGkXO1LOXbkGA_gXzRZ90-1772994763.815413-1.0.1.1-kWVR4BfpLUYNFwIr9tt32VXtTneSw2ZeqzF7g4BdoS1HKsiaYGFsz.QWXTSof_uFQ_BI0sKP4s1L0X_rq0Vmekfyyy7lqdz_DEiVbbGqWk_AQ_SdrbE5pmnF6hh9wpLv;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:43
+      - __cf_bm=G75AQgFiVwLSvlKsvjZiKXtdc0Q58ycOaiQugSC4mEc-1773519759.4410257-1.0.1.1-OB1cC0N8sNRLFVfKvD8AEYP2GoLxuUKsuw9w50XW.BcUXGB_wLOXuDfJ9Lr0mr1vYvJuej4eSLUbKE8NJ3kAB.rn5OKDFQzD8dQmy0EoCUYQ1xEgH4Lz9OK6G6Zbs1S8;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:42
         GMT
-      - _cfuvid=zGiOHnsbHp.fxte4CB1ntCt_nTOgXXsqB1l3M5K3gp0-1772994763.815413-1.0.1.1-KvwRN9VI7yRTccUqjiuwMMUXyCwxmiAevN9If_z0kFY;
-        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+      - _cfuvid=yk2Tj_Lkd0RTJzFZI4iNJHZcpPhvi4k4Sn5zfmbVLwY-1773519759.4410257-1.0.1.1-KD8YGE2bBkrzsyJhG9Y6aYAV_aQnk4z9bxtXieRxo.U;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.STES/DSD_KEI@DF_KEI/4.0/GBR.M.IRLT.*.*.*.*?c%5BTIME_PERIOD%5D=ge%3A2023-01&c%5BTIME_PERIOD%5D=le%3A2024-01&detail=dataonly&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.STES/DSD_KEI@DF_KEI/4.0/GBR.M.IRLT.PA._Z._Z._Z?c%5BTIME_PERIOD%5D=ge%3A2023-01%2Cle%3A2024-01&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,FREQ: Frequency
@@ -14,126 +14,47 @@ interactions:
         Time period,OBS_VALUE,OBS_STATUS: Observation status,UNIT_MULT: Unit multiplier,DECIMALS:
         Decimals,BASE_PER: Base period\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-04,4.2172,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-05,4.2229,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-09,4.6885,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-08,3.9444,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-04,3.6503,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-05,4.6004,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-06,4.5248,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-07,4.5924,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-10,4.5721,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-11,4.4985,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-12,4.4826,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2026-01,4.451,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2026-02,4.4324,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-01,3.5115,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-02,3.5553,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-03,3.5638,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-12,3.8622,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-01,3.9319,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-04,4.5762,A: Normal
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-08,4.5298,A: Normal
         value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
         Not applicable,_Z: Not applicable,_Z: Not applicable,2023-07,4.4372,A: Normal
         value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-08,4.5298,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-08,4.6369,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-07,4.1386,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-06,4.1644,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-09,4.4199,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-10,4.5695,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-11,4.2721,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-09,3.9053,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-10,4.1993,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-11,4.4164,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-12,4.4345,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-01,4.6627,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-02,4.5063,A: Normal
-        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
-        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2025-03,4.6448,A: Normal
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-06,4.3659,A: Normal
         value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
         Not applicable,_Z: Not applicable,_Z: Not applicable,2023-05,3.9621,A: Normal
         value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-06,4.3659,A: Normal
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-04,3.6503,A: Normal
         value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-02,4.123,A: Normal
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-03,3.5638,A: Normal
         value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
         United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
-        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-03,4.033,A: Normal
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-02,3.5553,A: Normal
+        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
+        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-01,3.5115,A: Normal
+        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
+        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2024-01,3.9319,A: Normal
+        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
+        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-12,3.8622,A: Normal
+        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
+        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-11,4.2721,A: Normal
+        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
+        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-10,4.5695,A: Normal
+        value,0: Units,1: One,\r\nDATAFLOW,OECD.SDD.STES:DSD_KEI@DF_KEI(4.0),I,GBR:
+        United Kingdom,M: Monthly,IRLT: Long-term interest rates,PA: Percent per annum,_Z:
+        Not applicable,_Z: Not applicable,_Z: Not applicable,2023-09,4.4199,A: Normal
         value,0: Units,1: One,\r\n"
     headers:
-      Age:
-      - '3675'
-      CF-Cache-Status:
-      - HIT
       CF-RAY:
-      - 9d93eca1fc2158e5-YVR
+      - 9dc5fe40bae8bdbf-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -143,9 +64,7 @@ interactions:
       Content-Type:
       - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Sun, 08 Mar 2026 18:32:45 GMT
-      Last-Modified:
-      - Sun, 08 Mar 2026 17:31:30 GMT
+      - Sat, 14 Mar 2026 20:22:57 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -160,12 +79,16 @@ interactions:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '2'
+      cf-cache-status:
+      - MISS
+      last-modified:
+      - Sat, 14 Mar 2026 20:22:57 GMT
       set-cookie:
-      - __cf_bm=OQgouW8.QAuY3A8Mw9VK4lj6xk1tezDVF5vccFqWkTc-1772994765.1170201-1.0.1.1-RoLzacb3ByNDumOpz1QC_gOb.yoEC8sqT58JR8x1H8Pi3YZHMwvQF2OkCnOkcARFwIQ7dGORIDx9ZqvW8ZWqdBZN9jf8aydAApmmw5pHScHi9AUmhjymMtUwfGYccyV0;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:45
+      - __cf_bm=82amJxWYb7GVtbyeli64QHHz1LBueA7j2rMPEcePhd4-1773519774.8349323-1.0.1.1-MWUxrK9b_yWbGiIOObFKyGmB2M9k.NxkTg9YqDOS6.L1wJbDT4gpf4OJHnxJuehvsLaQRVCzXxQwFlpjaTdjSO_Cmm8tacKqBKs9J2OG67a.X4OD9zu26RsL1N.nJXns;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:57
         GMT
-      - _cfuvid=apm4i2kzgly3KvNyWPIkkDWz9g2s9MEuo7OrVBa9Ick-1772994765.1170201-1.0.1.1-YkdeP.7Tpbhr1d5Jtl6EbaupmSBtWfgcIxYLpeXPOjk;
-        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+      - _cfuvid=eK3W1NiJF1a_mybmkwvkEbCZj.Oer0JFCTY4Lkz4P_Y-1773519774.8349323-1.0.1.1-AfZVf7B8jYT0ZtxVQaBqQiWd9Hbk43W5c5fxs3Wj5Hs;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

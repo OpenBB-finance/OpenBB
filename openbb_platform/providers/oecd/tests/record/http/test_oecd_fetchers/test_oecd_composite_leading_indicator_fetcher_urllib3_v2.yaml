@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.STES/DSD_STES@DF_CLI/4.1/G20.M.LI.*.*.AA.IX.*.H?c%5BTIME_PERIOD%5D=ge%3A2023-01&c%5BTIME_PERIOD%5D=le%3A2023-06&detail=dataonly&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.STES/DSD_STES@DF_CLI/4.1/G20.M.LI.*.*.AA.IX.*.H?c%5BTIME_PERIOD%5D=ge%3A2023-01%2Cle%3A2023-06&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,FREQ: Frequency
@@ -15,55 +15,7 @@ interactions:
         Observation status,UNIT_MULT: Unit multiplier,DECIMALS: Decimals,BASE_PER:
         Base period\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20: G20,M: Monthly,LI:
         Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA: Amplitude
-        adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-03,99.48336,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-08,99.81335,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-07,99.9307,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-09,99.98194,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-08,100.0685,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-11,100.287,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-12,100.3869,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-09,99.86523,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-01,100.0499,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-02,100.0357,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-03,100.0022,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-04,99.97148,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-05,99.96622,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-06,99.98547,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-07,100.0207,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-01,99.20787,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-02,99.34254,A:
+        adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-04,99.61441,A:
         Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
         G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
         Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-05,99.74016,A:
@@ -72,69 +24,17 @@ interactions:
         Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-06,99.85122,A:
         Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
         G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2026-01,100.4958,A:
+        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-01,99.20787,A:
         Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
         G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-12,100.0374,A:
+        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-02,99.34254,A:
         Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
         G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-10,99.93217,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-11,99.99519,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-08,99.9777,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2026-02,100.6007,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-10,99.96068,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-11,99.93105,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-12,99.90379,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-01,99.8815,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-02,99.86479,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-03,99.84836,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-04,99.82729,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-05,99.80472,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-06,99.78725,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2024-07,99.78794,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-09,100.1279,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2025-10,100.2002,A:
-        Normal value,0: Units,2: Two,\r\nDATAFLOW,OECD.SDD.STES:DSD_STES@DF_CLI(4.1),I,G20:
-        G20,M: Monthly,LI: Composite leading indicator (CLI),IX: Index,_Z: Not applicable,AA:
-        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-04,99.61441,A:
+        Amplitude adjusted,IX: Index,_Z: Not applicable,H: OECD harmonised,2023-03,99.48336,A:
         Normal value,0: Units,2: Two,\r\n"
     headers:
-      Age:
-      - '3686'
-      CF-Cache-Status:
-      - HIT
       CF-RAY:
-      - 9d93ec9d0b582194-YVR
+      - 9dc5fe091884497b-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -142,11 +42,9 @@ interactions:
       Content-Language:
       - en,en-US
       Content-Type:
-      - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both; charset=utf-8
       Date:
-      - Sun, 08 Mar 2026 18:32:44 GMT
-      Last-Modified:
-      - Sun, 08 Mar 2026 17:31:18 GMT
+      - Sat, 14 Mar 2026 20:22:47 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -156,17 +54,21 @@ interactions:
       Vary:
       - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 1
+      - Server 2
       alt-svc:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '2'
+      cf-cache-status:
+      - MISS
+      last-modified:
+      - Sat, 14 Mar 2026 20:22:47 GMT
       set-cookie:
-      - __cf_bm=MAK6Zw5g_yOH5_6ul_yTlf2VgI1Jd0xfqvusxxGNw5A-1772994764.3212118-1.0.1.1-f8uaF3A.NwktaaCk3T.pwlBGgNSKCkJQZGtfebbyi6d9kbmjS23kUwMDqEfm3yMLxqSwXAXi9yaJlzh8eTZW6epKje6WeTqsUeuC2R4zNzPmPrMHOz1mnwqrJB4Gv6Sk;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:44
+      - __cf_bm=tcF6EsCXREWUlm_hXUHuU._ojE9s1zRqBPqU79w4Gzo-1773519765.9402282-1.0.1.1-ojxSSyhZyxC_vbcccL7uvRXCP1sBh3USJz95UN1l8_dw_joxoCtU8D7ullyRoNYcomUqrMTL7Kel0gzVQIBEcbAoqDql30HSwtPr2cqTjoFekxJ_OFwnykNBkA.1SXYs;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:47
         GMT
-      - _cfuvid=Ey7tpnd4gcBiCRxfO2Udqtg8ncQsR1c6i4PQAHKDdWU-1772994764.3212118-1.0.1.1-WQ6REnYEzCZ1g4g6MbaoEu1ygoVp1BZ7UCqI_Gqv6BQ;
-        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+      - _cfuvid=jeGCkjlxzC2Kealz_Pa0lZSDYFprZUg9td7hOrlDhck-1773519765.9402282-1.0.1.1-wMdJ1YRsxVSHKNSOqgiYA9lk1crbG5YXkX_My3b6iLY;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

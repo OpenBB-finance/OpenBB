@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_PRICES@DF_PRICES_ALL/1.0/GBR.A.N.CPI.*._T.*.GY?c%5BTIME_PERIOD%5D=ge%3A2020-01&c%5BTIME_PERIOD%5D=le%3A2022-01&detail=dataonly&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_PRICES@DF_PRICES_ALL/1.0/GBR.A.N.CPI.*._T.*.GY?c%5BTIME_PERIOD%5D=ge%3A2020-01%2Cle%3A2022-01&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,FREQ: Frequency
@@ -19,24 +19,10 @@ interactions:
         over 1 year\",2020,1,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR:
         United Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent
         per annum,_T: Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY:
-        Growth rate, over 1 year\",2021,2.5,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR:
-        United Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent
-        per annum,_T: Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY:
-        Growth rate, over 1 year\",2022,7.9,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR:
-        United Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent
-        per annum,_T: Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY:
-        Growth rate, over 1 year\",2023,6.8,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR:
-        United Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent
-        per annum,_T: Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY:
-        Growth rate, over 1 year\",2024,3.3,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR:
-        United Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent
-        per annum,_T: Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY:
-        Growth rate, over 1 year\",2025,3.9,A: Normal value,,,,2: Two\r\n"
+        Growth rate, over 1 year\",2021,2.5,A: Normal value,,,,2: Two\r\n"
     headers:
-      Age:
-      - '3760'
       CF-RAY:
-      - 9d93ec94e8932c71-YVR
+      - 9dc5fdb1fac4b646-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -44,9 +30,9 @@ interactions:
       Content-Language:
       - en,en-US
       Content-Type:
-      - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both; charset=utf-8
       Date:
-      - Sun, 08 Mar 2026 18:32:43 GMT
+      - Sat, 14 Mar 2026 20:22:33 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -56,21 +42,21 @@ interactions:
       Vary:
       - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 1
+      - Server 2
       alt-svc:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '2'
       cf-cache-status:
-      - HIT
+      - MISS
       last-modified:
-      - Sun, 08 Mar 2026 17:30:02 GMT
+      - Sat, 14 Mar 2026 20:22:33 GMT
       set-cookie:
-      - __cf_bm=1TFJ_9vU._i1AoBdAIZSmdHVaob_uuJKvVB.Y7Oc9d8-1772994763.0262294-1.0.1.1-2gzncbXPT.z7VImuFBU.fTmmM._FTlWplyOJbKksx9LsGBIDUr6LifORIpRnK2WZMGhlMeHagFDLT.oMiOVdHN5ysp4G4xVw2I5bpCTUvWr8aNnwjwb94VXymMUuc7WA;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:43
+      - __cf_bm=Y._VioO0SKiW5XlmlNxfl_gDEvrMuqna39Ibkn0Hijo-1773519751.995473-1.0.1.1-0v4lXGn6873k7l7CZkFHUaVLcrI33Crd8F1zexLmQVqgfzJ1VOq5oeecR1Q9HHYIs1nu642IDnolYwksB3k8aImb7CIGdUZQbSIFgYuDf8_aRtisn2PqZ1fxzMU.8BVY;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:33
         GMT
-      - _cfuvid=yx6Yu69lAHaY._8jyTqfFof7tckTfUZIMqu3GiD69Qo-1772994763.0262294-1.0.1.1-m9y0KvrvpBbutNuBmfRk7bUAAx3ZwnrIo3A_z_eP_WA;
-        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+      - _cfuvid=Hxt4an.BkDFVCkqN3WjOAlEjD03._Z_lFeiSWhK81a8-1773519751.995473-1.0.1.1-fzUtMB7vJi4IhwJu6lkqPtxFScQdesLm3wzmW_fOA9M;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

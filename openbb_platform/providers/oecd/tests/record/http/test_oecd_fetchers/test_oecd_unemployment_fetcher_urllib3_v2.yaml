@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_LFS@DF_IALFS_UNE_M/1.0/USA.*.*.*.N._T.Y_GE15.*.M?c%5BTIME_PERIOD%5D=ge%3A2023-01&c%5BTIME_PERIOD%5D=le%3A2023-06&detail=dataonly&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_LFS@DF_IALFS_UNE_M/1.0/USA.*.*.*.N._T.Y_GE15.*.M?c%5BTIME_PERIOD%5D=ge%3A2023-01%2Cle%3A2023-06&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,MEASURE: Measure,UNIT_MEASURE:
@@ -13,86 +13,6 @@ interactions:
         Sex,AGE: Age,ACTIVITY: Economic activity,FREQ: Frequency of observation,TIME_PERIOD:
         Time period,OBS_VALUE,BASE_PER: Base period,OBS_STATUS: Observation status,UNIT_MULT:
         Unit multiplier,DECIMALS: Decimals\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-01,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-02,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-05,3.4,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-06,3.8,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-09,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-09,3.6,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-10,3.6,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-12,3.5,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-01,4.1,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-02,4.2,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-03,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-04,3.5,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-05,3.7,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-06,4.3,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-07,4.5,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-08,4.4,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-08,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-12,3.8,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-01,4.4,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-11,3.5,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
         United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
         labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
         adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
@@ -104,66 +24,22 @@ interactions:
         United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
         labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
         adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-02,4.5,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
+        applicable,M: Monthly,2023-05,3.4,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
         United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
         labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
         adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-03,4.2,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
+        applicable,M: Monthly,2023-06,3.8,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
         United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
         labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
         adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-04,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
+        applicable,M: Monthly,2023-01,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
         United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
         labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
         adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-05,4,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-06,4.4,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-07,4.6,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-08,4.5,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-09,4.3,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-11,4.3,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2025-12,4.1,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2026-01,4.6,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2023-07,3.8,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-10,3.9,,A: Normal value,0: Units,1: One\r\nDATAFLOW,OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0),I,USA:
-        United States,UNE_LF_M: Monthly unemployment rate,PT_LF_SUB: Percentage of
-        labour force in the same subgroup,_Z: Not applicable,N: Neither seasonally
-        adjusted nor calendar adjusted,_T: Total,Y_GE15: 15 years or over,_Z: Not
-        applicable,M: Monthly,2024-11,4,,A: Normal value,0: Units,1: One\r\n"
+        applicable,M: Monthly,2023-02,3.9,,A: Normal value,0: Units,1: One\r\n"
     headers:
-      Age:
-      - '3688'
-      CF-Cache-Status:
-      - HIT
       CF-RAY:
-      - 9d93ec9b690d3cf6-YVR
+      - 9dc5fdf34c1caf9b-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -173,9 +49,7 @@ interactions:
       Content-Type:
       - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Sun, 08 Mar 2026 18:32:44 GMT
-      Last-Modified:
-      - Sun, 08 Mar 2026 17:31:16 GMT
+      - Sat, 14 Mar 2026 20:22:45 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -185,17 +59,21 @@ interactions:
       Vary:
       - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 2
+      - Server 3
       alt-svc:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '2'
+      cf-cache-status:
+      - MISS
+      last-modified:
+      - Sat, 14 Mar 2026 20:22:45 GMT
       set-cookie:
-      - __cf_bm=fyvTegmnYE2LL6hwMufr6XJxkvW2r9sFyujkZ6a5KYk-1772994764.061131-1.0.1.1-eKeWkg7t4mjpRIkmC9.WlAbXg9_tJ.l3t1U5OyzoszC4yyVXjsDp379q6P0GDf6bmxUvYGbRPMC.A4kbdFu_khZPlsPhNT57PGwH9fwNice4FFht.Y6X8.OLNMViiZla;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sun, 08 Mar 2026 19:02:44
+      - __cf_bm=yD8wRlodB.i5FUQLXwhKTa4Yb8xby6ZWGa0tluKw41I-1773519762.4496157-1.0.1.1-5SVXMFQ50hj9E.AJRqmqRUY_e4toW6RldXnM7OoEyvu_4TRc2Y8rQSxM6CtZY6fZUa7VulHCyIZxjjo8Pc6reBES5DEWkb2YfdK9nmN8OIQJurymo7bJiBxNe.cpeAO6;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:45
         GMT
-      - _cfuvid=SYnsYHbdrU4_Yw8YpSSmodZObxhtavG5bR1sALPGN7o-1772994764.061131-1.0.1.1-qpJDrMHU9YcnV1ucb0owkp58ke4DODKzBGEEMlu1Y8c;
-        HttpOnly; SameSite=None; Secure; Path=/; Domain=sdmx.oecd.org
+      - _cfuvid=wZQcdom5Wgq_SNeKVTCPov9HbNpqSNHCkI0vL6jBNCQ-1773519762.4496157-1.0.1.1-ZyrShrehrhEpRIq0CP1mJ2ygGTrCw7FRZ.yfnqNi7g4;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

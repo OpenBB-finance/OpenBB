@@ -159,9 +159,9 @@ interactions:
         adjusted,2020,28.66511,A: Normal value,0: Units,_Z: Not applicable,2: Two\r\n"
     headers:
       CF-Cache-Status:
-      - MISS
+      - EXPIRED
       CF-RAY:
-      - 9dc4a846cc62d8fc-YVR
+      - 9dc5fe830c570c8d-YVR
       Cache-Control:
       - public,max-age=7200
       Connection:
@@ -173,9 +173,9 @@ interactions:
       Content-Type:
       - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Sat, 14 Mar 2026 16:29:29 GMT
+      - Sat, 14 Mar 2026 20:23:07 GMT
       Last-Modified:
-      - Sat, 14 Mar 2026 16:29:29 GMT
+      - Sat, 14 Mar 2026 20:23:07 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:
@@ -185,16 +185,16 @@ interactions:
       Vary:
       - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 3
+      - Server 1
       alt-svc:
       - h3=":443"; ma=86400
       api-supported-versions:
       - '1'
       set-cookie:
-      - __cf_bm=Ov8VYeHIRsR9SnsFeUr8TP2Znidr9vUkBgdFVAvS1ww-1773505767.4861112-1.0.1.1-xz5t7h8rYbJbGm.wIHtPP51Dx1ohxjhIhv31OpP7dPVV2_TCGSzeJRY3S1GVGpZyvOSBoIZCvXisrRu10vBmZ6J10.epjwwhPeT25zhZhNVJ5T5cGOI5CzzOcBx1Nd8e;
-        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 16:59:29
+      - __cf_bm=0PTJFRZ0IuKcLrkqJOYOrA.Ef6jAn2HPVakOGa.xhxk-1773519785.449739-1.0.1.1-AeqBy1_q5FPjZO4C9CeySQKuTe.KOxkn83_2.h.vR8RLdGLYWGRJtKj2HwsA5gVl_w6Q9WMgYauKxBT9xXWdwJZwjIaAOmXSCFkgrcB6.nZIHUKXZL3HDG4kOZ50Kxt.;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:53:07
         GMT
-      - _cfuvid=_Fy7VPh800OXJ9EuI2iOmen78d.r1purbfBGAPZXRpY-1773505767.4861112-1.0.1.1-jfBcfFdYMhh7LaC5fYbBJRIzG.OZI6Cz9RWeGenYUnI;
+      - _cfuvid=PyH7cC.5leMnEDQrlR_XsAGbKA0E.rGvcu_EMJbHmOU-1773519785.449739-1.0.1.1-P6IjZZAVdtBoUgp0KHYB3.hpzJbMroAICmXxmqsZwCM;
         HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
