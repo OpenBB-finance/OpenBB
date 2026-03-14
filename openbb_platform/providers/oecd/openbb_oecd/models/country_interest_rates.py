@@ -109,6 +109,10 @@ class OecdCountryInterestRatesFetcher(
                 REF_AREA=country_str,
                 FREQ=freq_code,
                 MEASURE=measure,
+                UNIT_MEASURE="PA",
+                ACTIVITY="_Z",
+                ADJUSTMENT="_Z",
+                TRANSFORMATION="_Z",
             )
         except Exception as exc:
             raise OpenBBError(f"Error fetching OECD data: {exc}") from exc

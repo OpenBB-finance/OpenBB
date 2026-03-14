@@ -111,14 +111,16 @@ def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> A
     import time  # noqa
     from openbb_core.provider.utils.helpers import make_request
 
-    max_retries = 3
+    max_retries = 5
 
     for attempt in range(max_retries):
         resp = make_request(url, headers=headers, timeout=timeout)
 
         if resp.status_code == 429 and attempt < max_retries - 1:
-            retry_after = int(resp.headers.get("Retry-After", 10 * (attempt + 1)))
-            time.sleep(min(max(retry_after, 10), 60))
+            retry_after = int(
+                resp.headers.get("Retry-After", 15 * (attempt + 1))
+            )
+            time.sleep(min(max(retry_after, 15), 90))
             continue
 
         break
@@ -1073,7 +1075,7 @@ class OecdMetadata:
         return attrs
 
     def list_dataflows(self, topic: str | None = None) -> list[dict]:
-        """Return OECD dataflows as [{label, value, topic, subtopic}, …].
+        """Return OECD dataflows as [{label, value, topic, subtopic, all_subtopics}, …].
 
         Parameters
         ----------
@@ -1083,38 +1085,70 @@ class OecdMetadata:
 
         Returns a flat list sorted by id.  Each entry includes topic
         and subtopic fields when taxonomy data is available.
+        ``all_subtopics`` lists every subtopic the dataflow belongs to
+        under the selected (or primary) topic.
         """
         self._ensure_dataflows()
         self._ensure_taxonomy()
 
+        topic_upper = topic.upper() if topic else ""
+
         result: list[dict] = []
         for full_id, v in self.dataflows.items():
             cats = self._df_to_categories.get(full_id, [])
+
+            # Determine the primary topic and all subtopics under it.
             primary_topic = ""
             primary_subtopic = ""
+            all_subtopics: list[str] = []
 
             if cats:
-                parts = cats[0].split(".")
-                primary_topic = parts[0] if parts else ""
-                primary_subtopic = parts[1] if len(parts) > 1 else ""
+                # Collect (topic, subtopic) pairs from all category paths.
+                for cat_path in cats:
+                    parts = cat_path.split(".")
+                    t = parts[0] if parts else ""
+                    s = parts[1] if len(parts) > 1 else ""
+                    if not primary_topic:
+                        primary_topic = t
+                    if topic_upper:
+                        # When filtering by topic, only consider matching paths.
+                        if t == topic_upper and s:
+                            all_subtopics.append(s)
+                            if not primary_subtopic:
+                                primary_subtopic = s
+                    else:
+                        if s and not primary_subtopic:
+                            primary_subtopic = s
+                        if s:
+                            all_subtopics.append(s)
 
-            if topic and primary_topic != topic.upper():
-                continue
+            # Topic filter: include if any category path starts with the topic.
+            if topic_upper:
+                if not any(
+                    c.split(".")[0] == topic_upper for c in cats
+                ):
+                    continue
+
+            # Deduplicate.
+            all_subtopics = sorted(set(all_subtopics))
 
             result.append(
                 {
                     "label": v["name"],
                     "value": full_id,
-                    "topic": primary_topic,
-                    "topic_name": self._category_names.get(primary_topic, ""),
+                    "topic": primary_topic if not topic_upper else topic_upper,
+                    "topic_name": self._category_names.get(
+                        topic_upper or primary_topic, ""
+                    ),
                     "subtopic": primary_subtopic,
                     "subtopic_name": (
                         self._category_names.get(
-                            f"{primary_topic}.{primary_subtopic}", ""
+                            f"{topic_upper or primary_topic}.{primary_subtopic}", ""
                         )
                         if primary_subtopic
                         else ""
                     ),
+                    "all_subtopics": all_subtopics,
                 }
             )
 
@@ -1607,9 +1641,7 @@ class OecdMetadata:
             | _NON_INDICATOR_DIMENSIONS
             | {"FREQ", "TIME_PERIOD"}
         )
-        for d in sorted(
-            dsd.get("dimensions", []), key=lambda x: x.get("position", 0)
-        ):
+        for d in sorted(dsd.get("dimensions", []), key=lambda x: x.get("position", 0)):
             if d["id"] not in _skip:
                 self._indicator_dim_cache[full_id] = d["id"]
                 return d["id"]
@@ -2465,7 +2497,8 @@ class OecdMetadata:
                             all_indicators.append(ind)
                 else:
                     all_indicators.extend(
-                        ind for ind in cached
+                        ind
+                        for ind in cached
                         if ind.get("dimension_id", "") not in _table_dims
                     )
 

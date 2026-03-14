@@ -203,8 +203,10 @@ class OecdAvailableIndicatorsFetcher(
         transform_labels: dict[str, list[str]] = {}  # df_id → ["G1 (Growth ...)", ...]
 
         for df_id in target_dfs:
-            full_id = metadata._short_id_map.get(  # noqa: SLF001 # pylint: disable=W0212
-                df_id
+            full_id = (
+                metadata._short_id_map.get(  # noqa: SLF001 # pylint: disable=W0212
+                    df_id
+                )
             )
             if not full_id:
                 full_id = df_id if df_id in metadata.datastructures else None
@@ -217,15 +219,16 @@ class OecdAvailableIndicatorsFetcher(
             dim_cl: dict[str, str] = {
                 d["id"]: d.get("codelist_id", "") for d in dsd.get("dimensions", [])
             }
-            for dim_key, target_dict in [("FREQ", freq_labels), ("TRANSFORMATION", transform_labels)]:
+            for dim_key, target_dict in [
+                ("FREQ", freq_labels),
+                ("TRANSFORMATION", transform_labels),
+            ]:
                 codes = constraints.get(dim_key, [])
                 if not codes:
                     continue
                 cl_id = dim_cl.get(dim_key, "")
                 cl = metadata.codelists.get(cl_id, {}) if cl_id else {}  # noqa: SLF001
-                target_dict[df_id] = [
-                    f"{c} ({cl.get(c, c)})" for c in codes
-                ]
+                target_dict[df_id] = [f"{c} ({cl.get(c, c)})" for c in codes]
 
         for row in results:
             df_id = row.get("dataflow_id", "")

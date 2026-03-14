@@ -186,14 +186,13 @@ class OecdTableBuilder:
         hierarchy_codes = [e["code"] for e in filtered if e.get("code")]
 
         # ---- Resolve country / frequency ----
-        if country:
-            country_dim = self.query_builder.get_country_dimension(dataflow)
-            if country_dim and country_dim not in kwargs:
-                codes = self.metadata.resolve_country_codes(
-                    dataflow, country.replace("+", ",")
-                )
-                if codes:
-                    kwargs[country_dim] = "+".join(codes)
+        country_dim = self.query_builder.get_country_dimension(dataflow)
+        if country and country_dim and country_dim not in kwargs:
+            codes = self.metadata.resolve_country_codes(
+                dataflow, country.replace("+", ",")
+            )
+            if codes:
+                kwargs[country_dim] = "+".join(codes)
 
         if frequency:
             freq_dim = self.query_builder.get_frequency_dimension(dataflow)
@@ -246,6 +245,15 @@ class OecdTableBuilder:
             "INSTR_ASSET": ["_Z"],
         }
         _NEUTRAL_CODES = {"_Z", "_T"}
+
+        # Country-like dimensions (for secondary country pin logic).
+        _COUNTRY_DIMS = {
+            "REF_AREA",
+            "COUNTERPART_AREA",
+            "JURISDICTION",
+            "COUNTRY",
+            "AREA",
+        }
 
         # Metadata / measurement parameter dims — pin to preferred value.
         _METADATA_PIN_PREFERENCES: dict[str, list[str]] = {
@@ -315,6 +323,16 @@ class OecdTableBuilder:
                 # ACTIVITY / EXPENDITURE may carry real series data.
                 elif dim_id in ("ACTIVITY", "EXPENDITURE"):
                     pass
+                # Secondary country dims (e.g. COUNTERPART_AREA) — pin
+                # to aggregate / world value so queries don't explode.
+                elif dim_id in _COUNTRY_DIMS and dim_id != country_dim:
+                    for pref in ("W", "WLD", "_T", "_Z"):
+                        if pref in available_vals:
+                            kwargs[dim_id] = pref
+                            break
+                    else:
+                        # No known aggregate — take first value.
+                        kwargs[dim_id] = available_vals[0]
                 if len(kwargs) > _old_len:
                     _refresh = True
         except Exception:  # noqa: BLE001
@@ -756,6 +774,30 @@ class OecdTableBuilder:
                     all_rows.append(row)
 
         # ---- Build clean flat output rows (one per observation) ----
+        # Placeholder labels from codelists that carry no useful meaning.
+        _USELESS_LABELS = {
+            "not applicable",
+            "not specified",
+            "no breakdown",
+            "total",
+            "all items",
+            "all activities",
+            "total economy",
+            "non transformed data",
+            "nan",
+        }
+
+        def _clean_label(val: Any) -> str:
+            """Return a clean string label, or empty string for NaN/useless values."""
+            if val is None:
+                return ""
+            if isinstance(val, float) and val != val:
+                return ""
+            s = str(val).strip()
+            if s.lower() in _USELESS_LABELS:
+                return ""
+            return s
+
         clean_rows: list[dict] = []
         for row in all_rows:
             clean: dict[str, Any] = {}
@@ -766,7 +808,33 @@ class OecdTableBuilder:
             clean["_child_order"] = row.get("_child_order", 0)
             clean["parent_id"] = row.get("parent_id")
             clean["parent_code"] = row.get("parent_code")
-            base_label = row.get("label", "")
+            base_label = _clean_label(row.get("label", ""))
+            _base_from_compounds = False
+
+            # When the hierarchy label is a useless placeholder, derive a
+            # meaningful label from the data row's dimension labels.
+            if not base_label or base_label.startswith("_"):
+                # Try the indicator dimension's own label first.
+                alt = _clean_label(row.get(f"{indicator_dim}_label", ""))
+                if alt:
+                    base_label = alt
+                else:
+                    # Build from all content dimension labels on the row.
+                    parts: list[str] = []
+                    for cdim in _compound_dims:
+                        lbl = _clean_label(row.get(f"{cdim}_label", ""))
+                        if lbl:
+                            parts.append(lbl)
+                    if parts:
+                        base_label = " - ".join(parts)
+                        _base_from_compounds = True
+                    elif not base_label:
+                        base_label = row.get(indicator_dim, "") or ""
+
+            # Raw neutral dimension codes are never useful labels.
+            if base_label.startswith("_"):
+                base_label = ""
+
             clean["is_category_header"] = row.get("is_category_header", False)
             base_code = row.get(indicator_dim, "")
             clean["_acct_code"] = row.get("ACCOUNTING_ENTRY", "")
@@ -778,18 +846,17 @@ class OecdTableBuilder:
                 _code_parts = [base_code]
                 _label_parts = []
                 _is_compound_total = True
-                _SKIP_TITLE_VALS = {
-                    "not applicable",
-                    "not specified",
-                    "no breakdown",
-                }
+                _NEUTRAL = {"_Z", "_T", "_X", ""}
+                _comp_codes: dict[str, str] = {}
                 for cdim in _compound_dims:
                     cv = row.get(cdim, "")
-                    if cv and cv not in ("_Z", "_T", "_X"):
-                        _code_parts.append(cv)
-                        _is_compound_total = False
-                    cl = row.get(f"{cdim}_label", cv)
-                    if cl and str(cl).lower() not in _SKIP_TITLE_VALS:
+                    if cv in _NEUTRAL:
+                        continue  # skip both code and label for neutral values
+                    _code_parts.append(cv)
+                    _comp_codes[cdim] = cv
+                    _is_compound_total = False
+                    cl = _clean_label(row.get(f"{cdim}_label", cv))
+                    if cl:
                         _label_parts.append(str(cl))
                 clean["code"] = "_".join(p for p in _code_parts if p)
                 # Build label: when the indicator hierarchy is flat (no
@@ -800,7 +867,7 @@ class OecdTableBuilder:
                     e.get("parent") for e in all_hierarchy_entries
                 )
                 if _label_parts:
-                    if base_label and not _is_compound_total and _hierarchy_is_flat:
+                    if base_label and not _is_compound_total and _hierarchy_is_flat and not _base_from_compounds:
                         clean["label"] = base_label + " - " + " - ".join(_label_parts)
                     else:
                         clean["label"] = " - ".join(_label_parts)
@@ -808,6 +875,7 @@ class OecdTableBuilder:
                     clean["label"] = base_label
                 # Track which base indicator this row belongs to.
                 clean["_base_indicator"] = base_code
+                clean["_compound_codes"] = _comp_codes
                 # Total/aggregate rows sort first; detail rows indent
                 # one level below as children.
                 if _is_compound_total:
@@ -873,13 +941,118 @@ class OecdTableBuilder:
                     cr["level"] = max(cr["level"] - 1, 0)
                     cr["_sub_order"] = 0
 
-        # Sort by hierarchy order, accounting entry, sub-order, code, then time.
+        # ---- Compound-dimension hierarchy from codelist parents ----
+        # When a compound dim has codelist parent-child relationships,
+        # use them to assign proper depth levels and tree-order sorting
+        # so nested categories (e.g. Transport → Sea transport) display
+        # correctly instead of appearing flat.
+        if _compound_dims and clean_rows:
+            _compound_hier: dict[str, dict[str, dict]] = {}
+            for cdim in _compound_dims:
+                # Find the codelist ID for this dimension.
+                _cl_id = ""
+                for _d in dims:
+                    if _d["id"] == cdim:
+                        _cl_id = _d.get("codelist_id", "")
+                        break
+                if not _cl_id:
+                    continue
+                _parents = self.metadata._codelist_parents.get(_cl_id, {})
+                if not _parents:
+                    continue
+                # Collect codes actually present in the data.
+                _present = {row.get(cdim) for row in all_rows if row.get(cdim)}
+                _present.discard(None)
+                _present.discard("")
+                if not _present:
+                    continue
+
+                def _cdepth(code: str, depth_cache: dict[str, int]) -> int:
+                    if code in depth_cache:
+                        return depth_cache[code]
+                    p = _parents.get(code)
+                    if p is None or p not in _present:
+                        depth_cache[code] = 0
+                        return 0
+                    d = 1 + _cdepth(p, depth_cache)
+                    depth_cache[code] = d
+                    return d
+
+                _dc: dict[str, int] = {}
+                # Build children map for DFS traversal.
+                _children: dict[str, list[str]] = {}
+                for c in _present:
+                    p = _parents.get(c)
+                    # Effective parent: must also be present in data.
+                    while p and p not in _present:
+                        p = _parents.get(p)
+                    if p and p in _present:
+                        _children.setdefault(p, []).append(c)
+                # Determine effective roots: codes whose effective parent
+                # (after skipping absent ancestors) is not in _present.
+                _effective_roots: list[str] = []
+                for c in sorted(_present):
+                    p = _parents.get(c)
+                    while p and p not in _present:
+                        p = _parents.get(p)
+                    if not p or p not in _present:
+                        _effective_roots.append(c)
+
+                # DFS traversal to assign hierarchy order.
+                _hier: dict[str, dict] = {}
+                _ord = [0]
+
+                def _visit(code: str) -> None:
+                    kids = sorted(_children.get(code, []))
+                    _hier[code] = {
+                        "depth": _cdepth(code, _dc),
+                        "order": _ord[0],
+                        "has_children": bool(kids),
+                    }
+                    _ord[0] += 1
+                    for kid in kids:
+                        _visit(kid)
+
+                for root in _effective_roots:
+                    _visit(root)
+                if _hier:
+                    _compound_hier[cdim] = _hier
+
+            # Apply hierarchy info to clean_rows.
+            if _compound_hier:
+                for cr in clean_rows:
+                    _extra_depth = 0
+                    _hier_order = 0
+                    _is_header = cr.get("is_category_header", False)
+                    _codes = cr.get("_compound_codes", {})
+                    for cdim in _compound_dims:
+                        if cdim not in _compound_hier:
+                            continue
+                        _cdim_code = _codes.get(cdim, "")
+                        if not _cdim_code:
+                            continue
+                        _h = _compound_hier[cdim].get(_cdim_code)
+                        if _h:
+                            _extra_depth += _h["depth"]
+                            _hier_order = _h["order"]
+                            if _h["has_children"]:
+                                _is_header = True
+                    if _extra_depth or _hier_order:
+                        cr["level"] = cr.get("level", 0) + _extra_depth
+                        cr["_compound_order"] = _hier_order
+                        cr["is_category_header"] = _is_header
+                    else:
+                        cr["_compound_order"] = -1  # totals sort first
+
+        # Sort by hierarchy order, accounting entry, sub-order, compound
+        # hierarchy order, then time period.
         clean_rows.sort(
             key=lambda r: (
                 r.get("order", 9999),
                 r.get("_acct_sort", 0),
                 r.get("_child_order", 0),
                 r.get("_sub_order", 0),
+                r.get("_compound_order", 0),
                 r.get("code", ""),
                 r.get("time_period", ""),
             )
@@ -986,10 +1159,14 @@ class OecdTableBuilder:
             """Get the most common label for a data-level attribute."""
             label_key = f"{attr}_label"
             for row in data_rows:
-                if label_key in row and row[label_key]:
-                    return str(row[label_key])
-                if attr in row and row[attr]:
-                    return str(row[attr])
+                if label_key in row:
+                    v = _clean_label(row[label_key])
+                    if v:
+                        return v
+                if attr in row:
+                    v = _clean_label(row[attr])
+                    if v:
+                        return v
             return ""
 
         unit_measure = _fixed_label(["UNIT_MEASURE"]) or _attr_label("UNIT_MEASURE")

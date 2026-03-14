@@ -1,6 +1,6 @@
 """OECD Economic Indicators Model — generic fetcher for ALL OECD dataflows."""
 
-# pylint: disable=unused-argument,too-many-branches,protected-access,too-many-instance-attributes,too-many-statements
+# pylint: disable=unused-argument,too-many-branches,protected-access,too-many-instance-attributes,too-many-statements,too-many-locals,too-many-return-statements
 
 from typing import Any
 
@@ -229,7 +229,7 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
                                 "renderFn": "hoverCard",
                                 "renderFnParams": {
                                     "hoverCard": {
-                                        "cellField": "title",
+                                        "cellField": "description",
                                         "markdown": "{description}",
                                     }
                                 },
@@ -270,13 +270,37 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
     description: str | None = Field(default=None, description="Indicator description.")
     country_code: str | None = Field(default=None, description="ISO country code.")
 
-    @field_validator("scale", "unit", "title", "description", "value", mode="before")
+    @field_validator(
+        "scale",
+        "unit",
+        "title",
+        "description",
+        "value",
+        "unit_multiplier",
+        "order",
+        "level",
+        mode="before",
+    )
     @classmethod
     def nan_to_none(cls, v):
-        """Convert NaN float values to None for string fields."""
-        if v is None or str(v).lower() == "nan":
+        """Convert NaN float values to None for optional fields."""
+        if not v:
+            return None
+        if isinstance(v, float) and v != v:  # fast NaN check
+            return None
+        if isinstance(v, str) and v.strip().lower() == "nan":
             return None
         return v
+
+    @model_validator(mode="before")
+    @classmethod
+    def _sanitize_extra_nan(cls, values):
+        """Replace NaN in extra/dynamic fields so JSON serialization doesn't break."""
+        if isinstance(values, dict):
+            for k, v in values.items():
+                if isinstance(v, float) and v != v:
+                    values[k] = None
+        return values
 
 
 class OecdEconomicIndicatorsFetcher(
@@ -659,28 +683,8 @@ class OecdEconomicIndicatorsFetcher(
                     "country_code": row.get("REF_AREA", ""),
                     "value": val,
                     "unit": unit_val,
-                    "unit_multiplier": row.get("UNIT_MULT"),
-                    "scale": scale_val or None,
                     "title": " - ".join(title_parts) if title_parts else compound_code,
-                    "description": None,
-                    "symbol_root": symbol_root,
                 }
-
-                # Dynamically add dimension fields from the raw data.
-                for key, raw_val in row.items():
-                    if key in new_row or key in {
-                        "TIME_PERIOD",
-                        "OBS_VALUE",
-                        "REF_AREA",
-                        "REF_AREA_label",
-                        "UNIT_MEASURE",
-                        "UNIT_MEASURE_label",
-                        "UNIT_MULT",
-                        "UNIT_MULT_label",
-                    }:
-                        continue
-                    if key.isupper() or key.endswith("_code"):
-                        new_row[key.lower()] = raw_val
 
                 result.append(new_row)
 
@@ -711,27 +715,35 @@ class OecdEconomicIndicatorsFetcher(
 
             return AnnotatedResult(result=new_data, metadata=metadata)
 
-        # Pivot mode: dates become columns.
+        # Pivot mode.
         from pandas import DataFrame
 
         df = DataFrame(result)
         if df.empty:
             raise EmptyDataError("No data for pivot.")
 
-        # Simple pivot: rows=indicator/country, columns=date, values=value.
-        pivot_index = ["symbol", "title", "country"]
+        # Determine pivot shape based on cardinality of countries/symbols.
+        unique_countries = df["country"].nunique() if "country" in df.columns else 0
+        unique_symbols = df["symbol"].nunique() if "symbol" in df.columns else 0
+
+        if unique_countries <= 1:
+            # One country: rows=title, columns=date.
+            pivot_index = ["title"]
+        elif unique_symbols <= 1:
+            # Multiple countries, one symbol: rows=country, columns=date.
+            pivot_index = ["country"]
+        else:
+            # Multiple countries, multiple symbols: rows=title+country, columns=date.
+            pivot_index = ["title", "country"]
+
         pivot_index = [c for c in pivot_index if c in df.columns]
-        if "order" in df.columns:
-            pivot_index.insert(0, "order")
-        if "level" in df.columns:
-            pivot_index.insert(1, "level")
 
         try:
             pivoted = df.pivot_table(
                 index=pivot_index,
                 columns="date",
                 values="value",
-                aggfunc="first",
+                observed=True,
             )
             pivoted.columns = [str(c) for c in pivoted.columns]
             pivoted = pivoted.reset_index()
@@ -746,10 +758,13 @@ class OecdEconomicIndicatorsFetcher(
             ]
             return AnnotatedResult(result=new_data, metadata=metadata)
 
+        pivot_records = pivoted.where(pivoted.notna(), other=None).to_dict(
+            orient="records"
+        )
         return AnnotatedResult(
             result=[
                 OecdEconomicIndicatorsData.model_validate(r)
-                for r in pivoted.to_dict(orient="records")
+                for r in pivot_records
             ],
             metadata=metadata,
         )

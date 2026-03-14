@@ -81,6 +81,7 @@ class OECDHousePriceIndexFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -142,16 +143,24 @@ class OECDHousePriceIndexFetcher(
         query: OECDHousePriceIndexQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDHousePriceIndexData]:
         """Transform the data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         output: list[OECDHousePriceIndexData] = []
         for row in data:
             d = oecd_date_to_python_date(row.get("TIME_PERIOD", ""))
+
             if d is None:
                 continue
+
             value = row.get("OBS_VALUE")
+
             if value is None or value == "":
                 continue
+
+            if query.transform and query.transform != "index":
+                value = float(value)/100.0
+
             output.append(
                 OECDHousePriceIndexData(
                     date=d,

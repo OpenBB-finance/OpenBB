@@ -62,18 +62,33 @@ class OecdQueryBuilder:
         # Resolve dimension kwargs to a filter string using DSD ordering.
         dimension_filter = self._build_dimension_filter(dataflow, **kwargs)
 
+        # When time constraints are present, detail=dataonly must NOT be
+        # used — the OECD API silently ignores c[TIME_PERIOD] filters
+        # when detail=dataonly is set.
+        has_time_constraint = bool(start_date or end_date)
+
         # Build the base URL via metadata.
+        # When date constraints are present, omit lastNObservations —
+        # the OECD API applies lastN *before* c[TIME_PERIOD] filtering,
+        # which can result in 404 when the latest obs falls outside the
+        # requested range.
         url = self.metadata.build_data_url(
             dataflow,
             dimension_filter=dimension_filter,
-            last_n=limit,
+            last_n=limit if not has_time_constraint else None,
+            detail="full" if has_time_constraint else "dataonly",
         )
 
         # v2 uses c[TIME_PERIOD] constraints (not startPeriod/endPeriod).
+        # Both ge: and le: must be in a SINGLE c[TIME_PERIOD] param,
+        # comma-separated.  Duplicate query params are silently ignored.
+        _time_parts: list[str] = []
         if start_date:
-            url += f"&c[TIME_PERIOD]=ge:{_format_period(start_date)}"
+            _time_parts.append(f"ge:{_format_period(start_date)}")
         if end_date:
-            url += f"&c[TIME_PERIOD]=le:{_format_period(end_date)}"
+            _time_parts.append(f"le:{_format_period(end_date)}")
+        if _time_parts:
+            url += f"&c[TIME_PERIOD]={','.join(_time_parts)}"
 
         return url
 
@@ -318,7 +333,10 @@ class OecdQueryBuilder:
             "row_count": len(df),
         }
 
-        return {"data": df.to_dict(orient="records"), "metadata": metadata}
+        # Convert NaN → None so downstream JSON serialization doesn't break.
+        records = df.where(df.notna(), other=None).to_dict(orient="records")
+
+        return {"data": records, "metadata": metadata}
 
     def _fetch_with_multi_value_fallback(
         self,
@@ -434,9 +452,7 @@ class OecdQueryBuilder:
             "ACTION",
         }
         dim_cols = [
-            c
-            for c in df.columns
-            if c not in skip_cols and is_string_dtype(df[c])
+            c for c in df.columns if c not in skip_cols and is_string_dtype(df[c])
         ]
 
         for col in dim_cols:
@@ -534,7 +550,7 @@ def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> A
     # Use a prepared request so that brackets in ``c[TIME_PERIOD]`` are
     # sent as-is instead of being percent-encoded to ``%5B`` / ``%5D``
     # which the OECD SDMX v2 API rejects with a 404.
-    max_retries = 3
+    max_retries = 5
     for attempt in range(max_retries):
         req = _requests.Request("GET", url, headers=headers or {})
         prepared = req.prepare()
@@ -544,8 +560,10 @@ def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> A
         resp = sess.send(prepared, timeout=timeout)
 
         if resp.status_code == 429 and attempt < max_retries - 1:
-            retry_after = int(resp.headers.get("Retry-After", 10 * (attempt + 1)))
-            _time.sleep(min(max(retry_after, 10), 60))
+            retry_after = int(
+                resp.headers.get("Retry-After", 15 * (attempt + 1))
+            )
+            _time.sleep(min(max(retry_after, 15), 90))
             continue
 
         resp.raise_for_status()

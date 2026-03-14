@@ -128,6 +128,7 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
             "choices": transform_choices,
         },
         "expenditure": {
+            "multiple_items_allowed": True,
             "choices": expenditure_choices,
         },
     }
@@ -147,11 +148,13 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     @classmethod
     def validate_expenditure(cls, v):
         """Validate expenditure."""
-        if v.lower() not in expenditure_choices:
-            raise ValueError(
-                f"Expenditure '{v}' is not a valid choice. Valid choices:\n\n{expenditure_choices}"
-            )
-        return v
+        items = [s.strip().lower() for s in str(v).split(",") if s.strip()]
+        for item in items:
+            if item not in expenditure_choices:
+                raise ValueError(
+                    f"Expenditure '{item}' is not a valid choice. Valid choices:\n\n{expenditure_choices}"
+                )
+        return ",".join(items)
 
 
 class OECDCPIData(ConsumerPriceIndexData):
@@ -209,11 +212,12 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
 
         freq_code = _FREQ_MAP.get(freq, freq[0].upper() if freq else "M")
         transform_code = _TRANSFORM_MAP.get(query.transform, "_Z")
-        expenditure_code = (
-            ""
-            if query.expenditure == "all"
-            else expenditure_dict.get(query.expenditure, query.expenditure)
-        )
+        exp_items = [s.strip() for s in query.expenditure.split(",") if s.strip()]
+        if "all" in exp_items:
+            expenditure_code = ""
+        else:
+            codes = [expenditure_dict.get(e, e) for e in exp_items]
+            expenditure_code = "+".join(codes)
 
         try:
             result = qb.fetch_data(
@@ -290,9 +294,15 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
                 title_parts.append(transform_label)
 
             title = " - ".join(title_parts)
-            # Build series_id in the same DATAFLOW::INDICATOR format used by
-            # economy.indicators / available_indicators so it's round-trippable.
-            series_id = f"DF_PRICES_ALL::{row.get('MEASURE', 'CPI')}"
+            # Build compound series_id from all dimension values.
+            series_id = ".".join([
+                row.get("REF_AREA", ""),
+                row.get("FREQ", ""),
+                row.get("METHODOLOGY", "N"),
+                row.get("MEASURE", "CPI"),
+                row.get("EXPENDITURE", "_T"),
+                row.get("TRANSFORMATION", "_Z"),
+            ])
             output.append(
                 OECDCPIData(
                     date=d,

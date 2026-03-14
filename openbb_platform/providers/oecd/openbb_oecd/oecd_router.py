@@ -1,6 +1,6 @@
 """OECD Utilities Router."""
 
-# pylint: disable=unused-argument,protected-access,too-many-return-statements,too-many-branches,too-many-positional-arguments,too-many-locals
+# pylint: disable=unused-argument,protected-access,too-many-return-statements,too-many-branches,too-many-positional-arguments,too-many-locals,too-many-statements,too-many-lines
 
 from typing import Annotated, Any, Literal
 
@@ -973,37 +973,96 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         return []
 
     # Step 2: subtopic selected → return table choices.
-    if table is None:
+    if table is None and topic is not None:
         dataflows = metadata.list_dataflows(topic=topic)
-        # Filter to matching subtopic.
+        # Filter to matching subtopic — check all_subtopics since a
+        # dataflow can belong to multiple subtopics.
         sub_upper = subtopic.upper()
         dataflows = [
             df
             for df in dataflows
-            if df.get("subtopic", "").upper() == sub_upper
-            or df.get("subtopic", "").upper() == sub_upper.split(".", 1)[-1]
+            if sub_upper in [s.upper() for s in df.get("all_subtopics", [])]
+            or df.get("subtopic", "").upper() == sub_upper
         ]
-        results: list[dict[str, str]] = []
+
+        # Collect candidates: for each TABLE_IDENTIFIER value, track
+        # which dataflow has the most indicators.  Dataflows that are
+        # just pre-filtered slices (fewer indicators) are dropped so
+        # only the richest dataflow per table is shown.
+        # table_id → (short_id, label, table_label, indicator_count)
+        _best_for_table: dict[str, tuple[str, str, str, int]] = {}
+        _no_group: list[dict[str, str]] = []
+
+        # Minimum average indicators per table group.  Dataflows where
+        # groups are just granular API slices (e.g. SUT developer tables
+        # with 100+ TABLE_IDENTIFIER values and ~1 indicator each) are
+        # not useful as presentation tables.
+        _MIN_INDICATORS_PER_GROUP = 3
+
         for df in dataflows:
             full_id = df["value"]
             info = metadata.dataflows.get(full_id, {})
             short_id = info.get("short_id", full_id.split("@")[-1])
-            groups = metadata.get_table_groups(short_id)
+
+            # Only expand table groups when the DSD structure is already
+            # cached in memory.  Calling get_table_groups / get_indicator_tree
+            # on an uncached dataflow triggers _ensure_structure → network
+            # fetch + LZMA cache write per dataflow, which is far too slow
+            # for a dropdown endpoint that may iterate dozens of dataflows.
+            structure_cached = full_id in metadata.datastructures
+            groups = metadata.get_table_groups(short_id) if structure_cached else []
+
             if groups:
-                for g in groups:
-                    results.append(
+                tree = metadata.get_indicator_tree(short_id)
+
+                def _count(nodes: list) -> int:
+                    c = 0
+                    for n in nodes:
+                        c += 1
+                        c += _count(n.get("children", []))  # pylint: disable=W0640
+                    return c
+
+                n_indicators = _count(tree)
+
+                # When there are too many groups relative to indicators,
+                # each group is a tiny slice — not a real presentation
+                # table.  Offer the dataflow as a single flat entry.
+                n_groups = len(groups)
+                if n_groups > 1 and n_indicators / n_groups < _MIN_INDICATORS_PER_GROUP:
+                    _no_group.append(
                         {
-                            "label": f"{df['label']}: {g['label']}",
-                            "value": f"{short_id}::{g['value']}",
+                            "label": df["label"],
+                            "value": short_id,
                         }
                     )
+                    continue
+
+                for g in groups:
+                    tid = g["value"]
+                    prev = _best_for_table.get(tid)
+                    if prev is None or n_indicators > prev[3]:
+                        _best_for_table[tid] = (
+                            short_id,
+                            df["label"],
+                            g["label"],
+                            n_indicators,
+                        )
             else:
-                results.append(
+                _no_group.append(
                     {
                         "label": df["label"],
                         "value": short_id,
                     }
                 )
+
+        results: list[dict[str, str]] = list(_no_group)
+        for tid, (sid, df_label, tbl_label, _) in _best_for_table.items():
+            results.append(
+                {
+                    "label": f"{df_label}: {tbl_label}",
+                    "value": f"{sid}::{tid}",
+                }
+            )
         return sorted(results, key=lambda x: x["label"])
 
     # From here, table is a symbol like "DF_QNA::T0101" or "DF_PRICES_ALL".
@@ -1091,7 +1150,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
 async def presentation_table_dim_choices(
     table: str,
     country: str,
-    dimension: Literal["unit_measure", "adjustment", "transformation"],
+    dimension: str,
     frequency: str | None = None,
 ) -> list[dict[str, str]]:
     """Return available values for a single dimension (unit, adjustment, transform).
@@ -1123,10 +1182,16 @@ async def presentation_table_dim_choices(
         "unit_measure": "UNIT_MEASURE",
         "adjustment": "ADJUSTMENT",
         "transformation": "TRANSFORMATION",
+        "counterpart_area": "COUNTERPART_AREA",
+        "counterpart": "COUNTERPART_AREA",
+        "service": "SERVICE",
+        "product": "PRODUCT",
+        "sex": "SEX",
+        "age": "AGE",
+        "sector": "SECTOR",
+        "education_lev": "EDUCATION_LEV",
     }
-    target_dim = _DIM_MAP.get(dimension)
-    if not target_dim:
-        return []
+    target_dim = _DIM_MAP.get(dimension.lower(), dimension.upper())
 
     parts = table.split("::", 1)
     dataflow_id = parts[0]
@@ -1203,6 +1268,7 @@ async def presentation_table_dim_choices(
                 "type": "endpoint",
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
                 "description": "The OECD topic.",
+                "row": 0,
             },
             {
                 "paramName": "subtopic",
@@ -1216,11 +1282,13 @@ async def presentation_table_dim_choices(
                 "style": {"popupWidth": 500},
                 "description": "Filter by subtopic. UI convenience only.",
                 "show": True,
+                "row": 0,
             },
             {
                 "paramName": "table",
                 "label": "Table",
                 "type": "endpoint",
+                "value": None,
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
@@ -1228,6 +1296,7 @@ async def presentation_table_dim_choices(
                 },
                 "style": {"popupWidth": 950},
                 "description": "The OECD presentation table (DATAFLOW::TABLE_ID).",
+                "row": 0,
             },
             {
                 "paramName": "country",
@@ -1235,12 +1304,14 @@ async def presentation_table_dim_choices(
                 "description": "Country or region for the table.",
                 "type": "endpoint",
                 "multiSelect": True,
+                "value": None,
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
                     "subtopic": "$subtopic",
                     "table": "$table",
                 },
+                "row": 1,
             },
             {
                 "paramName": "frequency",
@@ -1254,6 +1325,25 @@ async def presentation_table_dim_choices(
                     "country": "$country",
                 },
                 "description": "The data frequency.",
+                "row": 1,
+            },
+            {
+                "paramName": "counterpart",
+                "label": "Counterpart",
+                "type": "endpoint",
+                "multiSelect": True,
+                "value": None,
+                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
+                "optionsParams": {
+                    "table": "$table",
+                    "country": "$country",
+                    "frequency": "$frequency",
+                    "dimension": "counterpart_area",
+                },
+                "style": {"popupWidth": 400},
+                "description": "Counterpart area for bilateral data. Leave blank for auto-selection (World).",
+                "optional": True,
+                "row": 1,
             },
             {
                 "paramName": "unit_measure",
@@ -1267,8 +1357,9 @@ async def presentation_table_dim_choices(
                     "frequency": "$frequency",
                     "dimension": "unit_measure",
                 },
+                "style": {"popupWidth": 400},
                 "description": "Unit of measure. Leave blank for auto-selection.",
-                "optional": True,
+                "row": 1,
             },
             {
                 "paramName": "adjustment",
@@ -1284,6 +1375,7 @@ async def presentation_table_dim_choices(
                 },
                 "description": "Seasonal adjustment type. Leave blank for auto-selection.",
                 "optional": True,
+                "row": 1,
             },
             {
                 "paramName": "transformation",
@@ -1299,24 +1391,47 @@ async def presentation_table_dim_choices(
                 },
                 "description": "Data transformation. Leave blank for auto-selection.",
                 "optional": True,
+                "row": 1,
             },
             {
                 "paramName": "dimension_values",
                 "label": "Dimension Values",
                 "type": "text",
                 "value": None,
-                "description": "Dimension selection for filtering. Format: 'DIM_ID1:VAL1+VAL2.'",
+                "description": "Dimension selection for filtering. Format: 'DIM_ID1:VAL1+VAL2.' "
+                + "See the Metadata tab for available dimensions and values.",
                 "multiple": True,
                 "multiSelect": False,
+                "row": 1,
+            },
+            {
+                "paramName": "start_date",
+                "label": "Start Date",
+                "type": "date",
+                "value": None,
+                "description": "Earliest date to include (ISO format). Filters out obsolete data.",
+                "optional": True,
+                "row": 1,
+            },
+            {
+                "paramName": "end_date",
+                "label": "End Date",
+                "type": "date",
+                "value": None,
+                "description": "Latest date to include (ISO format).",
+                "optional": True,
+                "row": 1,
             },
             {
                 "paramName": "limit",
                 "label": "Limit",
-                "value": 3,
+                "value": 5,
                 "description": "Most recent N records to retrieve per series.",
                 "type": "number",
+                "row": 1,
             },
         ],
+        "runButton": True,
         "refetchInterval": False,
         "name": "OECD Presentation Table",
         "description": "Presentation tables from the OECD database.",
@@ -1371,6 +1486,14 @@ async def presentation_table(  # noqa: PLR0912
             + " Enter multiple codes by joining on '+'. See presentation_table_choices() for options.",
         ),
     ] = None,
+    counterpart: Annotated[
+        str | None,
+        Query(
+            title="Counterpart",
+            description="Counterpart area code for bilateral data (e.g. 'W' for World, 'USA')."
+            + " When omitted, auto-selected (defaults to World aggregate).",
+        ),
+    ] = None,
     frequency: Annotated[
         str | None,
         Query(
@@ -1414,6 +1537,21 @@ async def presentation_table(  # noqa: PLR0912
             description="Dimension selection for filtering. Format: 'DIM_ID1:VAL1+VAL2.'",
         ),
     ] = None,
+    start_date: Annotated[
+        str | None,
+        Query(
+            title="Start Date",
+            description="Earliest date to include (ISO format, e.g. '2020-01-01')."
+            + " Filters out obsolete rows that stopped reporting before this date.",
+        ),
+    ] = None,
+    end_date: Annotated[
+        str | None,
+        Query(
+            title="End Date",
+            description="Latest date to include (ISO format, e.g. '2025-12-31').",
+        ),
+    ] = None,
     limit: Annotated[
         int,
         Query(
@@ -1443,6 +1581,7 @@ async def presentation_table(  # noqa: PLR0912
 
     # Explicit dimension parameters — handle special UI values.
     for _dim_id, _dim_val in [
+        ("COUNTERPART_AREA", counterpart),
         ("UNIT_MEASURE", unit_measure),
         ("ADJUSTMENT", adjustment),
         ("TRANSFORMATION", transformation),
@@ -1474,6 +1613,8 @@ async def presentation_table(  # noqa: PLR0912
             table_id=table,  # handles both "DF::TBL" and bare "DF" formats
             country=country,
             frequency=frequency,
+            start_date=start_date,
+            end_date=end_date,
             limit=limit,
             **extra_dims,
         )
@@ -1548,6 +1689,7 @@ async def presentation_table(  # noqa: PLR0912
                 "_acct_sort": row.get("_acct_sort", 0),
                 "_child_order": row.get("_child_order", 0),
                 "_sub_order": row.get("_sub_order", 0),
+                "_compound_order": row.get("_compound_order", 0),
                 "code": row.get("code", ""),
                 "is_header": row.get("is_category_header", False),
                 "_unit_desc": _row_unit,
@@ -1573,6 +1715,7 @@ async def presentation_table(  # noqa: PLR0912
         "_acct_sort",
         "_child_order",
         "_sub_order",
+        "_compound_order",
         "code",
         "is_header",
         "_unit_desc",
@@ -1587,7 +1730,7 @@ async def presentation_table(  # noqa: PLR0912
             ).reset_index()
 
             pivot_df = pivot_df.sort_values(
-                ["order", "_acct_sort", "_child_order", "_sub_order"]
+                ["order", "_acct_sort", "_child_order", "_sub_order", "_compound_order"]
             )
             pivot_df.columns.name = None
             df = pivot_df
@@ -1626,6 +1769,7 @@ async def presentation_table(  # noqa: PLR0912
             "_acct_sort",
             "_child_order",
             "_sub_order",
+            "_compound_order",
             "code",
             "is_header",
             "_unit_desc",
