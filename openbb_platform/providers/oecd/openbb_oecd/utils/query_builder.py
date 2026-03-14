@@ -356,7 +356,8 @@ class OecdQueryBuilder:
         we split the first such dimension into individual requests
         and concatenate the CSV results.
         """
-        from requests.exceptions import HTTPError  # type: ignore[import-untyped]
+        # pylint: disable=import-outside-toplevel
+        from requests.exceptions import HTTPError
 
         try:
             response = _make_request(url, headers=headers, timeout=120)
@@ -413,9 +414,6 @@ class OecdQueryBuilder:
 
             return "\n".join(csv_parts)
 
-    # ------------------------------------------------------------------
-    # Response parsing
-    # ------------------------------------------------------------------
 
     def _split_label_columns(self, df: "DataFrame", dataflow: str) -> "DataFrame":
         """Process SDMX-CSV v2 labels=both columns.
