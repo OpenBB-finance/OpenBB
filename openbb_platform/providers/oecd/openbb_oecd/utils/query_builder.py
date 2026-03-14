@@ -414,7 +414,6 @@ class OecdQueryBuilder:
 
             return "\n".join(csv_parts)
 
-
     def _split_label_columns(self, df: "DataFrame", dataflow: str) -> "DataFrame":
         """Process SDMX-CSV v2 labels=both columns.
 
