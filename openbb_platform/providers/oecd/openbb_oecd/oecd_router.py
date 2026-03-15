@@ -949,7 +949,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         )
 
     # Step 1: topic selected → return subtopic choices.
-    if subtopic is None:
+    if topic is not None and subtopic is None:
         topics = metadata.list_topics()
         t_upper = topic.upper()
         for t in topics:
@@ -970,7 +970,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                 if len(choices) == 1:
                     return choices
                 return choices
-        return []
+        return [{"label": "No subtopics found for this topic", "value": ""}]
 
     # Step 2: subtopic selected → return table choices.
     if table is None and topic is not None:
@@ -1075,7 +1075,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         constrained = metadata.get_constrained_values(dataflow_id)
         country_dim = next((d for d in _COUNTRY_DIMS if d in constrained), None)
         if not country_dim:
-            return []
+            return [{"label": "Select a Table", "value": ""}]
         return sorted(constrained[country_dim], key=lambda x: x.get("label", ""))
 
     # Build common dimension codes for steps 3 & 4.
@@ -1116,10 +1116,10 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     # Step 4: country selected → return frequency choices.
     if frequency is None:
         if not freq_dim:
-            return []
+            return [{"label": "No frequency dimension", "value": ""}]
         return pb.get_options_for_dimension(freq_dim)
 
-    return []
+    return [{"label": "Select a Topic", "value": ""}]
 
 
 @router.command(
@@ -1269,7 +1269,6 @@ async def presentation_table_dim_choices(
                 "type": "endpoint",
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
                 "description": "The OECD topic.",
-                "row": 0,
             },
             {
                 "paramName": "subtopic",
@@ -1283,7 +1282,6 @@ async def presentation_table_dim_choices(
                 "style": {"popupWidth": 500},
                 "description": "Filter by subtopic. UI convenience only.",
                 "show": True,
-                "row": 0,
             },
             {
                 "paramName": "table",
@@ -1297,7 +1295,6 @@ async def presentation_table_dim_choices(
                 },
                 "style": {"popupWidth": 950},
                 "description": "The OECD presentation table (DATAFLOW::TABLE_ID).",
-                "row": 0,
             },
             {
                 "paramName": "country",
@@ -1305,14 +1302,28 @@ async def presentation_table_dim_choices(
                 "description": "Country or region for the table.",
                 "type": "endpoint",
                 "multiSelect": True,
-                "value": None,
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
                     "subtopic": "$subtopic",
                     "table": "$table",
                 },
-                "row": 1,
+            },
+            {
+                "paramName": "counterpart",
+                "label": "Counterpart",
+                "type": "endpoint",
+                "multiSelect": True,
+                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
+                "optionsParams": {
+                    "table": "$table",
+                    "country": "$country",
+                    "frequency": "$frequency",
+                    "dimension": "counterpart_area",
+                },
+                "style": {"popupWidth": 400},
+                "description": "Counterpart area for bilateral data. Leave blank for auto-selection (World).",
+                "optional": True,
             },
             {
                 "paramName": "frequency",
@@ -1326,25 +1337,6 @@ async def presentation_table_dim_choices(
                     "country": "$country",
                 },
                 "description": "The data frequency.",
-                "row": 1,
-            },
-            {
-                "paramName": "counterpart",
-                "label": "Counterpart",
-                "type": "endpoint",
-                "multiSelect": True,
-                "value": None,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
-                "optionsParams": {
-                    "table": "$table",
-                    "country": "$country",
-                    "frequency": "$frequency",
-                    "dimension": "counterpart_area",
-                },
-                "style": {"popupWidth": 400},
-                "description": "Counterpart area for bilateral data. Leave blank for auto-selection (World).",
-                "optional": True,
-                "row": 1,
             },
             {
                 "paramName": "unit_measure",
@@ -1360,7 +1352,6 @@ async def presentation_table_dim_choices(
                 },
                 "style": {"popupWidth": 400},
                 "description": "Unit of measure. Leave blank for auto-selection.",
-                "row": 1,
             },
             {
                 "paramName": "adjustment",
@@ -1376,7 +1367,6 @@ async def presentation_table_dim_choices(
                 },
                 "description": "Seasonal adjustment type. Leave blank for auto-selection.",
                 "optional": True,
-                "row": 1,
             },
             {
                 "paramName": "transformation",
@@ -1392,7 +1382,6 @@ async def presentation_table_dim_choices(
                 },
                 "description": "Data transformation. Leave blank for auto-selection.",
                 "optional": True,
-                "row": 1,
             },
             {
                 "paramName": "dimension_values",
@@ -1403,7 +1392,6 @@ async def presentation_table_dim_choices(
                 + "See the Metadata tab for available dimensions and values.",
                 "multiple": True,
                 "multiSelect": False,
-                "row": 1,
             },
             {
                 "paramName": "start_date",
@@ -1412,7 +1400,6 @@ async def presentation_table_dim_choices(
                 "value": None,
                 "description": "Earliest date to include (ISO format). Filters out obsolete data.",
                 "optional": True,
-                "row": 1,
             },
             {
                 "paramName": "end_date",
@@ -1421,7 +1408,6 @@ async def presentation_table_dim_choices(
                 "value": None,
                 "description": "Latest date to include (ISO format).",
                 "optional": True,
-                "row": 1,
             },
             {
                 "paramName": "limit",
@@ -1429,7 +1415,6 @@ async def presentation_table_dim_choices(
                 "value": 5,
                 "description": "Most recent N records to retrieve per series.",
                 "type": "number",
-                "row": 1,
             },
         ],
         "runButton": True,
@@ -1573,12 +1558,11 @@ async def presentation_table(  # noqa: PLR0912
     if table is None:
         raise OpenBBError(
             ValueError(
-                "Please enter a table (e.g. 'DF_FDI_FLOW_AGGR' or 'DF_QNA::T0101')."
+                "Please select a topic, subtopic, and table from the dropdown menus."
             )
         )
-
     if country is None or frequency is None:
-        raise OpenBBError(ValueError("Please enter a country and frequency."))
+        raise OpenBBError(ValueError("Please select a country and frequency from the dropdown menus."))
 
     # Parse dimension_values into kwargs for the table builder.
     extra_dims: dict[str, str] = {}
