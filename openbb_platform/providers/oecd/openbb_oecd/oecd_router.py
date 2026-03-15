@@ -1562,7 +1562,9 @@ async def presentation_table(  # noqa: PLR0912
             )
         )
     if country is None or frequency is None:
-        raise OpenBBError(ValueError("Please select a country and frequency from the dropdown menus."))
+        raise OpenBBError(
+            ValueError("Please select a country and frequency from the dropdown menus.")
+        )
 
     # Parse dimension_values into kwargs for the table builder.
     extra_dims: dict[str, str] = {}
