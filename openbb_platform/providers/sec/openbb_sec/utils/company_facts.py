@@ -24,19 +24,20 @@ Usage::
     # result.cash_flow         -> list of dicts
 """
 
+# pylint: disable=R0917
+
 from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from pydantic import BaseModel
-
 from openbb_sec.utils.statement_schema import (
     Frequency,
     StatementSchema,
     ValidationWarning,
 )
+from pydantic import BaseModel
 
 PeriodType = Literal[
     "annual", "quarterly", "both", "ttm", "yoy", "yoy_quarterly", "pop"
@@ -72,8 +73,7 @@ def normalize_period_fields(
     model_fields = list(model_cls.model_fields)
     ordered_tags = [f for f in model_fields if f in all_tags]
 
-    for key in periods:
-        old = periods[key]
+    for key, old in periods.items():
         periods[key] = {tag: old.get(tag, _NAN) for tag in ordered_tags}
 
 
@@ -89,11 +89,6 @@ MULTI_CIK_TICKERS: dict[str, list[str]] = {
     "BLK": ["0002012383", "0001364742"],
     "GOOG": ["0001652044", "0001288776"],
 }
-
-
-# ---------------------------------------------------------------------------
-# Output container — preserves the existing public interface
-# ---------------------------------------------------------------------------
 
 
 @dataclass
@@ -113,11 +108,6 @@ class StandardizedStatements:
     balance_sheet: list[dict[str, Any]] = field(default_factory=list)
     cash_flow: list[dict[str, Any]] = field(default_factory=list)
     diagnostics: list[ValidationWarning] = field(default_factory=list)
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 
 def _calendar_quarter(date_str: str) -> str:
@@ -225,7 +215,6 @@ def _compute_ttm(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
             continue
 
         period_type = sorted_recs[0].get("period_type", "duration")
-        unit = sorted_recs[0].get("unit", "monetary")
         use_avg = period_type == "instant" or tag in _SHARES_TAGS
 
         for i in range(3, len(sorted_recs)):
@@ -277,30 +266,37 @@ def _compute_pct_change(
     mode='pop': immediately preceding period by date order
     """
     by_tag: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
     for rec in records:
         by_tag[rec["tag"]].append(rec)
 
     pct_records: list[dict[str, Any]] = []
 
-    for tag, tag_recs in by_tag.items():
+    for tag_recs in by_tag.values():
         sorted_recs = sorted(tag_recs, key=lambda r: r["period_ending"])
 
         if mode == "yoy":
             lookup: dict[tuple[int, str], dict[str, Any]] = {}
+
             for rec in sorted_recs:
                 lookup[(rec["fiscal_year"], rec["fiscal_period"])] = rec
+
             for rec in sorted_recs:
                 prior = lookup.get((rec["fiscal_year"] - 1, rec["fiscal_period"]))
+
                 if prior is None or prior["value"] == 0:
                     continue
+
                 pct = (rec["value"] - prior["value"]) / abs(prior["value"]) * 100
                 pct_records.append(_pct_record(rec, prior, pct, "yoy"))
         else:
             for i in range(1, len(sorted_recs)):
                 cur = sorted_recs[i]
                 prior = sorted_recs[i - 1]
+
                 if prior["value"] == 0:
                     continue
+
                 pct = (cur["value"] - prior["value"]) / abs(prior["value"]) * 100
                 pct_records.append(_pct_record(cur, prior, pct, "pop"))
 
@@ -337,11 +333,6 @@ def _pct_record(
         ),
         "frequency": freq,
     }
-
-
-# ---------------------------------------------------------------------------
-# Main resolver
-# ---------------------------------------------------------------------------
 
 
 def resolve_company_facts(
@@ -452,11 +443,6 @@ def resolve_company_facts(
                 output.diagnostics.extend(stmt_result.diagnostics)
 
     return output
-
-
-# ---------------------------------------------------------------------------
-# Async fetch + resolve convenience function
-# ---------------------------------------------------------------------------
 
 
 async def get_standardized_financials(
