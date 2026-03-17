@@ -15,7 +15,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
-_PCT = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
+_PCT: dict[str, Any] = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
 
 
 class SecIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
