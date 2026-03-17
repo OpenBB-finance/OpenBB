@@ -56,6 +56,7 @@ def headers():
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -83,6 +84,7 @@ def test_equity_fundamental_balance(params, headers):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -199,6 +201,7 @@ def test_equity_calendar_earnings(params, headers):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -226,6 +229,7 @@ def test_equity_fundamental_cash(params, headers):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -515,6 +519,7 @@ def test_equity_estimates_forward_eps(params, headers):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -542,6 +547,7 @@ def test_equity_fundamental_income(params, headers):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],

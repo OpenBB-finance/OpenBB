@@ -54,6 +54,7 @@ def obb(pytestconfig):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -78,6 +79,7 @@ def test_equity_fundamental_balance(params, obb):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -182,6 +184,7 @@ def test_equity_calendar_earnings(params, obb):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -206,6 +209,7 @@ def test_equity_fundamental_cash(params, obb):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -404,6 +408,7 @@ def test_equity_estimates_historical(params, obb):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],
@@ -428,6 +433,7 @@ def test_equity_fundamental_income(params, obb):
                 "limit": 5,
                 "provider": "sec",
                 "use_cache": True,
+                "include_preliminary": True,
             }
         ),
     ],

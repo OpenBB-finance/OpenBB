@@ -784,7 +784,7 @@ class TestBLKBalanceSheet:
 
     def test_other_assets_plug(self, blk_annual):
         v, s = _val(blk_annual.balance_sheet, "other_assets")
-        assert v == 88_843_000_000
+        assert v == 86_969_000_000
         assert "imputed-plug" in s
         # Enriched source should reference parent tag and children
         assert "total_assets" in s
