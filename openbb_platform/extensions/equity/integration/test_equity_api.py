@@ -49,6 +49,15 @@ def headers():
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -65,7 +74,18 @@ def test_equity_fundamental_balance(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_balance_growth(params, headers):
@@ -172,6 +192,15 @@ def test_equity_calendar_earnings(params, headers):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -188,7 +217,18 @@ def test_equity_fundamental_cash(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_cash_growth(params, headers):
@@ -468,6 +508,15 @@ def test_equity_estimates_forward_eps(params, headers):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -484,7 +533,18 @@ def test_equity_fundamental_income(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "period": "annual", "provider": "fmp"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "period": "annual", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_income_growth(params, headers):
