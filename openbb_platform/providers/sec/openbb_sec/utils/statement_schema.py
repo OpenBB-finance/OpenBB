@@ -1235,10 +1235,10 @@ class StatementSchema:
                     else:
                         ref = None
                         for ytc in ytd_tag_candidates:
-                            filings = ytc.get(end_date)
+                            ytd_fdata = ytc.get(end_date)
 
-                            if filings:
-                                earliest = min(filings)
+                            if ytd_fdata:
+                                earliest = min(ytd_fdata)
                                 if ref is None or earliest < ref:
                                     ref = earliest
 
@@ -1246,17 +1246,17 @@ class StatementSchema:
                         continue
 
                     for i, ytc in enumerate(ytd_tag_candidates):
-                        filings = ytc.get(end_date)
+                        ytd_fdata = ytc.get(end_date)
 
-                        if not filings:
+                        if not ytd_fdata:
                             continue
 
-                        if ref in filings:
-                            start_d, val = filings[ref]
+                        if ref in ytd_fdata:
+                            start_d, val = ytd_fdata[ref]
                         else:
-                            before = [f for f in filings if f <= ref]
-                            best = max(before) if before else min(filings)
-                            start_d, val = filings[best]
+                            before = [f for f in ytd_fdata if f <= ref]
+                            best = max(before) if before else min(ytd_fdata)
+                            start_d, val = ytd_fdata[best]
 
                         xbrl_e = row.xbrl_tags[i]
                         ytd_resolved[end_date] = (
@@ -1328,7 +1328,7 @@ class StatementSchema:
 
             else:
                 for fy_end, (fy_start, fy_val, fy_xbrl_src) in annual_vals.items():
-                    q_sum = 0
+                    q_sum = 0.0
                     q_count = 0
                     for q_end, q_val in values_by_date.items():
                         if fy_start < q_end < fy_end:
@@ -1838,7 +1838,11 @@ class StatementSchema:
             facts, frequency, include_preliminary=include_preliminary
         )
 
-        _STMTS = ("income_statement", "balance_sheet", "cash_flow")
+        _STMTS: tuple[StatementName, ...] = (
+            "income_statement",
+            "balance_sheet",
+            "cash_flow",
+        )
 
         # Compute a SINGLE reference filing map across ALL rows from all
         # three statements.  This ensures every statement extracts values
@@ -2971,11 +2975,11 @@ class StatementSchema:
                         continue
 
                     # Already consistent — nothing to do
-                    if abs(enci_v - ep_v - nci_v) <= _TOLERANCE:
+                    if abs(enci_v - ep_v - nci_v) <= _TOLERANCE:  # type: ignore[operator]
                         continue
 
                     # Top-level BS must validate first
-                    if abs(l_v + enci_v + rnci_v - le_v) > _TOLERANCE:
+                    if abs(l_v + enci_v + rnci_v - le_v) > _TOLERANCE:  # type: ignore[operator]
                         continue
 
                     # Override E_parent with the value consistent with E_nci
@@ -3263,7 +3267,7 @@ class StatementSchema:
                             alt_tag_label: str,
                             *,
                             _date: str = date,
-                            _nic_idx: int = _nic_idx,
+                            _nic_idx: int = _nic_idx,  # type: ignore[assignment]
                         ) -> bool:
                             """Test identity with alt NI and apply if passes."""
                             _tax_idx = tag_idx.get("income_tax_expense")
@@ -3360,14 +3364,14 @@ class StatementSchema:
                                         continue
 
                                     try:
-                                        _d = (
+                                        _days = (
                                             datetime.strptime(date, "%Y-%m-%d")
                                             - datetime.strptime(_e["start"], "%Y-%m-%d")
                                         ).days
                                     except (ValueError, TypeError):
                                         continue
 
-                                    if 300 <= _d <= 400:
+                                    if 300 <= _days <= 400:
                                         _ef = _e.get("filed", "")
 
                                         if (
@@ -3480,14 +3484,14 @@ class StatementSchema:
                             for _e in _us.get(_dft, {}).get("units", {}).get("USD", []):
                                 if _e.get("end") == date and "start" in _e:
                                     try:
-                                        _d = (
+                                        _days = (
                                             datetime.strptime(date, "%Y-%m-%d")
                                             - datetime.strptime(_e["start"], "%Y-%m-%d")
                                         ).days
                                     except (ValueError, TypeError):
                                         continue
 
-                                    if (60 <= _d <= 135) or (300 <= _d <= 400):
+                                    if (60 <= _days <= 135) or (300 <= _days <= 400):
                                         _disc_fx = _e["val"]
                                         break
 
@@ -3521,14 +3525,16 @@ class StatementSchema:
                             ):
                                 if _e.get("end") == date and "start" in _e:
                                     try:
-                                        _d = (
+                                        _days = (
                                             datetime.strptime(date, "%Y-%m-%d")
                                             - datetime.strptime(_e["start"], "%Y-%m-%d")
                                         ).days
                                     except (ValueError, TypeError):
                                         continue
 
-                                    if ((60 <= _d <= 135) or (300 <= _d <= 400)) and (
+                                    if (
+                                        (60 <= _days <= 135) or (300 <= _days <= 400)
+                                    ) and (
                                         abs(val + _e["val"] - target_row.values[date])
                                         <= _TOLERANCE
                                     ):
@@ -3601,7 +3607,7 @@ class StatementSchema:
                                 ):
                                     if _e.get("end") == date and "start" in _e:
                                         try:
-                                            _d = (
+                                            _days = (
                                                 datetime.strptime(date, "%Y-%m-%d")
                                                 - datetime.strptime(
                                                     _e["start"], "%Y-%m-%d"
@@ -3610,7 +3616,9 @@ class StatementSchema:
                                         except (ValueError, TypeError):
                                             continue
 
-                                        if (60 <= _d <= 135) or (300 <= _d <= 400):
+                                        if (60 <= _days <= 135) or (
+                                            300 <= _days <= 400
+                                        ):
                                             _disc_fx_fb1 = _e["val"]
                                             break
 

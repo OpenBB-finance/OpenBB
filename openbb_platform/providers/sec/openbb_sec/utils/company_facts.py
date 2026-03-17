@@ -30,7 +30,13 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from openbb_sec.utils.statement_schema import StatementSchema, ValidationWarning
+from pydantic import BaseModel
+
+from openbb_sec.utils.statement_schema import (
+    Frequency,
+    StatementSchema,
+    ValidationWarning,
+)
 
 PeriodType = Literal[
     "annual", "quarterly", "both", "ttm", "yoy", "yoy_quarterly", "pop"
@@ -39,7 +45,7 @@ PeriodType = Literal[
 
 def normalize_period_fields(
     periods: dict[str, dict],
-    model_cls: type,
+    model_cls: type[BaseModel],
 ) -> None:
     """Rebuild every period dict in model-field declaration order.
 
@@ -383,7 +389,9 @@ def resolve_company_facts(
     derived = period in ("ttm", "yoy", "yoy_quarterly", "pop")
 
     if derived:
-        freq = "quarterly" if period in ("ttm", "yoy_quarterly", "pop") else "annual"
+        freq: Frequency = (
+            "quarterly" if period in ("ttm", "yoy_quarterly", "pop") else "annual"
+        )
         stmts = _schema.extract_all(
             facts_json,
             frequency=freq,
@@ -416,7 +424,7 @@ def resolve_company_facts(
             getattr(output, stmt_name).extend(records)
             output.diagnostics.extend(stmt_result.diagnostics)
     else:
-        frequencies: list[str] = []
+        frequencies: list[Frequency] = []
         if period in ("annual", "both"):
             frequencies.append("annual")
         if period in ("quarterly", "both"):
