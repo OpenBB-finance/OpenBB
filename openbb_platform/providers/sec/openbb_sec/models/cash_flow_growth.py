@@ -445,6 +445,7 @@ class SecCashFlowStatementGrowthFetcher(
         from openbb_sec.utils.company_facts import (
             StandardizedStatements,
             normalize_period_fields,
+            order_field_meta,
         )
 
         result: StandardizedStatements = data["result"]
@@ -517,7 +518,7 @@ class SecCashFlowStatementGrowthFetcher(
             "entity_name": result.entity_name,
             "cik": result.cik,
             "company_type": result.company_type,
-            "fields": field_meta,
+            "fields": order_field_meta(field_meta, SecCashFlowStatementGrowthData),
         }
 
         if result.diagnostics:

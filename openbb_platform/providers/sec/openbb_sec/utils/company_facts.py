@@ -92,6 +92,27 @@ def normalize_period_fields(
         }
 
 
+def order_field_meta(
+    field_meta: dict[str, dict],
+    model_cls: type[BaseModel],
+) -> dict[str, dict]:
+    """Reorder field_meta by model field declaration order with sequential sequence."""
+    ordered: dict[str, dict] = {}
+    seq = 1
+    for fname in model_cls.model_fields:
+        if fname in field_meta:
+            entry = field_meta[fname]
+            entry["sequence"] = seq
+            ordered[fname] = entry
+            seq += 1
+    for fname, entry in field_meta.items():
+        if fname not in ordered:
+            entry["sequence"] = seq
+            ordered[fname] = entry
+            seq += 1
+    return ordered
+
+
 # Module-level schema instance (loaded once, reused for all calls)
 _schema = StatementSchema()
 
