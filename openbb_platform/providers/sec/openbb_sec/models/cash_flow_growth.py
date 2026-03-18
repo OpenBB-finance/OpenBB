@@ -301,9 +301,9 @@ class SecCashFlowStatementGrowthData(CashFlowStatementGrowthData):
         description="Growth rate of net change in deposits.",
         json_schema_extra=_PCT,
     )
-    growth_short_term_debt_net: float | None = Field(
+    growth_net_short_term_borrowings: float | None = Field(
         default=None,
-        description="Growth rate of short-term debt, net.",
+        description="Growth rate of net short-term borrowings.",
         json_schema_extra=_PCT,
     )
     growth_tax_withholding_share_based_compensation: float | None = Field(

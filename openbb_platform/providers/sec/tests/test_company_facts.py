@@ -379,9 +379,9 @@ def test_cross_vintage_fallback():
         ]
     )
     res = resolve_company_facts(mock_data, period="annual")
-    cor = [r for r in res.income_statement if r["tag"] == "total_cost_of_revenue"]
-    assert cor[0]["value"] == 200.0
-    assert "(fallback)" in cor[0]["source"]
+    rev = [r for r in res.income_statement if r["tag"] == "total_revenue"]
+    assert rev[0]["value"] == 500.0
+    assert "(fallback)" in rev[0]["source"]
 
 
 def test_deep_cascading_imputation():
@@ -643,21 +643,22 @@ class TestBLKIncomeStatement:
     def test_costs_and_expenses_rollup(self, blk_annual):
         """C&E is imputed as sum of mapped children (diversified template)."""
         v, s = _val(blk_annual.income_statement, "costs_and_expenses")
-        assert v == 2_770_000_000
+        assert v == 3_067_000_000
         assert "imputed-rollup" in s
         # Enriched source should list child tags with their signs
         assert "sga_expense(+)" in s
         assert "restructuring_charge(+)" in s
-        # Should be sum of sga_expense (2731M) + restructuring_charge (39M)
+        assert "depreciation_and_amortization(+)" in s
+        # Should be sum of sga_expense (2731M) + D&A (297M) + restructuring_charge (39M)
         sga, _ = _val(blk_annual.income_statement, "sga_expense")
+        da, _ = _val(blk_annual.income_statement, "depreciation_and_amortization")
         restr, _ = _val(blk_annual.income_statement, "restructuring_charge")
-        assert v == sga + restr
+        assert v == sga + da + restr
 
-    def test_income_before_equity_method_imputed(self, blk_annual):
-        """income_before_equity_method = total_pretax_income - equity_method_investments."""
+    def test_income_before_equity_method(self, blk_annual):
+        """income_before_equity_method from XBRL (same tag as total_pretax_income for BLK)."""
         v, s = _val(blk_annual.income_statement, "income_before_equity_method")
-        assert v == 7_568_000_000
-        assert "imputed: total_pretax_income - equity_method_investments" in s
+        assert v == 7_619_000_000
 
     def test_comprehensive_income_nci_imputed(self, blk_annual):
         """comprehensive_income_nci = comprehensive_income - comprehensive_income_parent."""
@@ -955,7 +956,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.income_statement
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 9
+        assert len(imputed) == 8
 
     def test_bs_imputed_count(self, blk_annual):
         imputed = [
@@ -971,7 +972,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.cash_flow
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 4
+        assert len(imputed) == 5
 
     def test_no_suspect_zeros(self, blk_annual):
         """No imputed values should be suspect zeros for BLK."""
@@ -2413,7 +2414,7 @@ class TestPctChange:
         yoy_recs = [r for r in res.income_statement if r["tag"] == "total_revenue"]
         assert len(yoy_recs) >= 1
         latest = max(yoy_recs, key=lambda r: r["period_ending"])
-        assert abs(latest["value"] - 10.0) < 0.01
+        assert abs(latest["value"] - 0.1) < 0.001
         assert latest["unit"] == "percent"
         assert latest["currency"] == ""
         assert "yoy:" in latest["source"]
@@ -2585,7 +2586,7 @@ class TestPctChange:
             if r["tag"] == "total_revenue" and r["period_ending"] == "2024-12-31"
         ]
         assert len(yoy_recs) >= 1
-        assert abs(yoy_recs[0]["value"] - 150.0) < 0.01
+        assert abs(yoy_recs[0]["value"] - 1.5) < 0.01
 
     def test_pct_change_unit_and_currency(self):
         mock = self._annual_revenue([(2023, 1000), (2024, 1200)])

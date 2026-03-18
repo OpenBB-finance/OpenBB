@@ -13,6 +13,8 @@ from math import isclose
 from pathlib import Path
 from typing import Any, Literal
 
+from openbb_core.app.model.abstract.error import OpenBBError
+
 _SCHEMA_PATH = Path(__file__).resolve().parent / "statement_schema.json"
 ANNUAL_FORMS = frozenset({"10-K", "10-K/A", "20-F", "20-F/A", "40-F", "40-F/A"})
 QUARTERLY_FORMS = frozenset({"10-Q", "10-Q/A"})
@@ -1701,7 +1703,13 @@ class StatementSchema:
 
         if not skip_imputation:
             result_rows, diagnostics = self._impute(
-                result_rows, statement, company_type, filing_dates, facts
+                result_rows,
+                statement,
+                company_type,
+                filing_dates,
+                facts,
+                frequency=frequency,
+                currency=currency,
             )
 
         # Cash flow: fill gaps in cash_at_end_of_period (the strict
@@ -1815,6 +1823,22 @@ class StatementSchema:
             if any(r.values.get(date) is not None for r in result_rows):
                 pruned_dates.add(date)
 
+        # Prune rows whose values are ALL zero across every period AND
+        # none of the values were derived/imputed.  Tags that a company
+        # files as $0 in every period (e.g. ProvisionForOtherCreditLosses
+        # for non-bank lenders) are filing artifacts, not real data.
+        # Imputed zeros (e.g. GrossProfit = Revenue − COGS = 0) are kept.
+        result_rows = [
+            r
+            for r in result_rows
+            if not r.values
+            or any(v != 0 for v in r.values.values())
+            or any(
+                s.startswith(("imputed", "corrected", "reconciled", "derived"))
+                for s in r.sources.values()
+            )
+        ]
+
         # Build fiscal metadata (fy / fp) for each date from SEC entries
         fiscal_data = self.get_fiscal_meta(facts, frequency, pruned_dates)
 
@@ -1881,9 +1905,8 @@ class StatementSchema:
         )
 
         if not filing_dates and frequency == "quarterly":
-            from openbb_core.app.model.abstract.error import OpenBBError
-
             forms_seen: set[str] = set()
+
             for ns_facts in facts.values():
                 for tag_data in ns_facts.values():
                     for entries in tag_data.get("units", {}).values():
@@ -1894,6 +1917,7 @@ class StatementSchema:
             annual_only = forms_seen & {"20-F", "20-F/A", "40-F", "40-F/A"}
             has_interim = forms_seen & (QUARTERLY_FORMS | SEMI_ANNUAL_FORMS)
             entity = company_facts.get("entityName", "this company")
+
             if annual_only and not has_interim:
                 ftype = "20-F" if forms_seen & {"20-F", "20-F/A"} else "40-F"
                 raise OpenBBError(
@@ -1901,6 +1925,7 @@ class StatementSchema:
                     "report interim (quarterly/semi-annual) data via "
                     "10-Q or 6-K filings. Only period='annual' is available."
                 )
+
             raise OpenBBError(
                 f"No quarterly filing dates found for {entity}. "
                 "Only period='annual' may be available."
@@ -2700,6 +2725,8 @@ class StatementSchema:
         company_type: CompanyType,
         filing_dates: set[str],
         facts: dict[str, Any] | None = None,
+        frequency: Frequency = "annual",
+        currency: str = "USD",
     ) -> tuple[list[RowResult], list[ValidationWarning]]:
         """Apply imputation rules to derive missing values, then validate.
 
@@ -2836,6 +2863,74 @@ class StatementSchema:
         # are available for imputation rules like COGS = C&E - OpEx.
         self._apply_hierarchical_articulation(rows, filing_dates)
         tag_idx = {r.tag: i for i, r in enumerate(rows)}
+
+        # --- Post-rollup Q4 correction for quarterly duration rows ---
+        # When a parent row has FY-only XBRL data (no quarterly entries),
+        # extract_row_values returns nothing, and the rollup fills the
+        # parent from children.  For Q4, if some children lack Q4 values
+        # (their own XBRL source has no FY data), the rollup produces an
+        # incomplete/wrong Q4.  Fix: use the parent's own FY XBRL value
+        # to derive Q4 = FY - rollup(Q1+Q2+Q3), then back-derive any
+        # missing children's Q4.
+        if frequency == "quarterly" and facts is not None:
+            rows_def = self.get_rows(statement, company_type)
+            row_def_by_tag = {rd.tag: rd for rd in rows_def}
+            tag_to_row = {r.tag: r for r in rows}
+            children_by_parent: dict[str, list[RowResult]] = {}
+            for r in rows:
+                if r.parent and r.factor in ("+", "-") and r.parent in tag_to_row:
+                    children_by_parent.setdefault(r.parent, []).append(r)
+
+            for parent_tag, children in children_by_parent.items():
+                parent_row = tag_to_row[parent_tag]
+                parent_def = row_def_by_tag.get(parent_tag)
+                if parent_def is None or parent_def.period_type != "duration":
+                    continue
+                if parent_def.unit == "shares":
+                    continue
+                annual_vals = self._get_annual_values(facts, parent_def, currency)
+                if not annual_vals:
+                    continue
+                for fy_end, (fy_start, fy_val, fy_src) in annual_vals.items():
+                    p_src = parent_row.sources.get(fy_end, "")
+                    if "imputed-rollup" not in p_src:
+                        continue
+                    q_dates = sorted(
+                        d for d in parent_row.values if fy_start < d < fy_end
+                    )
+                    if len(q_dates) != 3:
+                        continue
+                    q_sum = sum(parent_row.values[d] for d in q_dates)
+                    q4_val = fy_val - q_sum
+                    # Safety: skip if Q4 has opposite sign to FY
+                    # (implies tag scope mismatch between parent XBRL
+                    # and children rollup).
+                    if fy_val != 0 and q4_val * fy_val < 0:
+                        continue
+                    q_srcs = [parent_row.sources.get(d, "") for d in q_dates]
+                    q_labels = "+".join(f"Q{i+1}[{s}]" for i, s in enumerate(q_srcs))
+                    parent_row.values[fy_end] = q4_val
+                    parent_row.sources[fy_end] = f"Q4: FY[{fy_src}] \u2212 ({q_labels})"
+                    # Back-derive missing children's Q4 from the
+                    # corrected parent: child = parent - sum(siblings).
+                    missing_children = []
+                    sibling_sum = 0.0
+                    for child in children:
+                        c_val = child.values.get(fy_end)
+                        if c_val is None:
+                            missing_children.append(child)
+                        else:
+                            sign = 1.0 if child.factor == "+" else -1.0
+                            sibling_sum += c_val * sign
+                    if len(missing_children) == 1:
+                        mc = missing_children[0]
+                        mc_sign = 1.0 if mc.factor == "+" else -1.0
+                        mc.values[fy_end] = (q4_val - sibling_sum) * mc_sign
+                        mc.sources[fy_end] = (
+                            f"Q4-derived: {parent_tag}" f" \u2212 siblings"
+                        )
+            tag_idx = {r.tag: i for i, r in enumerate(rows)}
+
         self._run_imputation_passes(rows, rules, tag_idx, filing_dates)
 
         # Post-imputation GP correction: when COGS was derived from C&E
@@ -4139,6 +4234,23 @@ class StatementSchema:
                             verified_pairs.add((target_tag, date))
                             continue
 
+                        if abs(_total_mezz_computed) <= _tolerance(
+                            _le_v, _l_v, _enci_v
+                        ):
+                            verified_pairs.add((target_tag, date))
+                            continue
+
+                        _rnci_i2 = tag_idx.get("redeemable_noncontrolling_interest")
+                        if _rnci_i2 is not None:
+                            _rnci_src2 = rows[_rnci_i2].sources.get(date, "")
+                            if "imputed" in _rnci_src2:
+                                rows[_rnci_i2].values[date] = _total_mezz_computed
+                                rows[_rnci_i2].sources[date] = (
+                                    _rnci_src2 + " (re-imputed)"
+                                )
+                                verified_pairs.add((target_tag, date))
+                                continue
+
                 # --- BS equity mezzanine correction (Fix 6) ---
                 # When equity decomposition fails (E_nci ≠ E + NCI), check
                 # if mezzanine/temporary equity bridges the gap.
@@ -4205,6 +4317,66 @@ class StatementSchema:
                         and _nci_val < 0
                         and abs(diff - 2 * abs(_nci_val)) <= _tolerance(diff, _nci_val)
                     ):
+                        verified_pairs.add((target_tag, date))
+                        continue
+
+                # --- IS operating income other-items correction ---
+                # OpInc = GP - OpEx can fail when the filer reports items
+                # like gains on asset dispositions that flow into OpInc
+                # but are not part of GP or OpEx.  Check raw XBRL for
+                # such bridging items, or detect million-rounding
+                # artifacts.
+                if (
+                    target_tag == "total_operating_income"
+                    and statement == "income_statement"
+                    and facts is not None
+                    and (target_tag, date) not in verified_pairs
+                ):
+                    _signed_gap = target_row.values[date] - val
+                    _us = facts.get("us-gaap", {})
+                    _OTHER_OP_TAGS = (
+                        "GainLossOnDispositionOfAssets",
+                        "GainLossOnSaleOfPropertyPlantEquipment",
+                        "GainLossOnDispositionOfProperty",
+                        "OtherOperatingIncomeExpenseNet",
+                    )
+                    _oi_bridge_resolved = False
+
+                    for _ot in _OTHER_OP_TAGS:
+                        _entries = _us.get(_ot, {}).get("units", {}).get("USD", [])
+
+                        for _e in _entries:
+                            if (
+                                _e.get("end") == date
+                                and "start" in _e
+                                and _e["val"] != 0
+                                and abs(_signed_gap - _e["val"])
+                                <= _tolerance(_signed_gap, _e["val"])
+                            ):
+                                _oi_bridge_resolved = True
+                                break
+
+                        if _oi_bridge_resolved:
+                            break
+
+                    if not _oi_bridge_resolved:
+                        _gp_i = tag_idx.get("total_gross_profit")
+                        _opex_i = tag_idx.get("total_operating_expenses")
+                        _opinc_i = tag_idx.get("total_operating_income")
+                        _vals = []
+                        for _idx in (_gp_i, _opex_i, _opinc_i):
+                            if _idx is not None:
+                                _v = rows[_idx].values.get(date)
+                                if _v is not None:
+                                    _vals.append(abs(int(_v)))
+                        if (
+                            len(_vals) == 3
+                            and all(v % 1_000_000 == 0 for v in _vals)
+                            and diff <= 1_000_000
+                        ):
+                            _oi_bridge_resolved = True
+
+                    if _oi_bridge_resolved:
                         verified_pairs.add((target_tag, date))
                         continue
 
@@ -4334,10 +4506,62 @@ class StatementSchema:
                     verified_pairs.add((target_tag, date))
                     continue
 
-                target_row.values[date] = val
-                target_row.sources[date] = (
-                    f"identity-enforced: {_formula} [solving {target_tag}]"
+                # When all sources are hard XBRL, emit diagnostic
+                # instead of silently overwriting hard data.
+                # But first: check if the raw XBRL has an entry for the
+                # target tag at this date that matches the identity-expected
+                # value.  This happens when a restated filing updated one
+                # tag but not its decomposition components (vintage mismatch).
+                if (
+                    facts is not None
+                    and ":" in target_src
+                    and "identity-enforced" not in target_src
+                    and "imputed" not in target_src
+                ):
+                    _parts = target_src.split(":")
+                    _tgt_ns = _parts[0]
+                    _tgt_xbrl = _parts[1].split()[0]
+                    _ns_facts = facts.get(_tgt_ns, {})
+                    _tgt_entries = _ns_facts.get(_tgt_xbrl, {}).get("units", {})
+                    _vintage_match = False
+                    for _unit_entries in _tgt_entries.values():
+                        for _e in _unit_entries:
+                            if (
+                                _e.get("end") == date
+                                and "start" not in _e
+                                and abs(_e["val"] - val) <= _tolerance(val, _e["val"])
+                            ):
+                                _vintage_match = True
+                                break
+                        if _vintage_match:
+                            break
+                    if _vintage_match:
+                        target_row.values[date] = val
+                        target_row.sources[date] = target_src + " (vintage-corrected)"
+                        verified_pairs.add((target_tag, date))
+                        continue
+
+                _any_src_soft = any(
+                    _is_source_soft(rows[tag_idx[st]].sources.get(date, ""))
+                    for st, _ in sources
+                    if tag_idx.get(st) is not None
                 )
+                if not _any_src_soft:
+                    diagnostics.append(
+                        ValidationWarning(
+                            date=date,
+                            tag=target_tag,
+                            expected=val,
+                            actual=target_row.values[date],
+                            formula=_formula,
+                            identity=f"{target_tag} = {_formula}",
+                        )
+                    )
+                else:
+                    target_row.values[date] = val
+                    target_row.sources[date] = (
+                        f"identity-enforced: {_formula} [solving {target_tag}]"
+                    )
                 verified_pairs.add((target_tag, date))
                 continue
 

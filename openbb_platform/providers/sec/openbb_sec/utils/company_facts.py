@@ -63,8 +63,20 @@ def normalize_period_fields(
     NaN (rather than None) survives ``exclude_none=True`` and
     ``exclude_unset=True`` in downstream ``model_dump`` calls, ensuring
     every period carries the same keys in the same order.
+
+    Fields whose annotation does not accept ``float`` (e.g. ``int | None``)
+    are back-filled with ``None`` instead, because ``float('nan')`` would
+    fail Pydantic validation for non-float types.
     """
     _NAN = float("nan")
+
+    int_fields: set[str] = set()
+    for fname, finfo in model_cls.model_fields.items():
+        ann = finfo.annotation
+        if ann is int or (
+            hasattr(ann, "__args__") and int in getattr(ann, "__args__", ())
+        ):
+            int_fields.add(fname)
 
     all_tags: set[str] = set()
     for d in periods.values():
@@ -74,7 +86,10 @@ def normalize_period_fields(
     ordered_tags = [f for f in model_fields if f in all_tags]
 
     for key, old in periods.items():
-        periods[key] = {tag: old.get(tag, _NAN) for tag in ordered_tags}
+        periods[key] = {
+            tag: old.get(tag, None if tag in int_fields else _NAN)
+            for tag in ordered_tags
+        }
 
 
 # Module-level schema instance (loaded once, reused for all calls)
@@ -130,6 +145,21 @@ def _build_records(
     records: list[dict[str, Any]] = []
     currency = result.currency
 
+    all_zero_tags: set[str] = set()
+    for r in result.rows:
+        if (
+            r.values
+            and all(v == 0 for v in r.values.values())
+            and (
+                not r.sources
+                or not any(
+                    s.startswith(("imputed", "corrected", "reconciled"))
+                    for s in r.sources.values()
+                )
+            )
+        ):
+            all_zero_tags.add(r.tag)
+
     for date in result.dates:
         # Fiscal metadata from SEC fy/fp fields
         fm = result.fiscal_data.get(date, {})
@@ -143,6 +173,8 @@ def _build_records(
         calendar_period = _calendar_quarter(date)
 
         for r in result.rows:
+            if r.tag in all_zero_tags:
+                continue
             val = r.values.get(date)
             if val is None:
                 continue

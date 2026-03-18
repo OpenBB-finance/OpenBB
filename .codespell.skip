@@ -22,6 +22,7 @@
 ./openbb_platform/core/openbb/package/**
 ./openbb_platform/providers/imf/openbb_imf/utils/constants.py
 ./openbb_platform/providers/sec/validate_corpus.py
+./openbb_platform/providers/sec/utils/STATEMENT_SCHEMA_README.md
 ./openbb_platform/extensions/economy/openbb_economy/economy_views.py
 ./openbb_platform/providers/fmp/openbb_fmp/models/calendar_ipo.py
 ./openbb_platform/providers/imf/openbb_imf/models/consumer_price_index.py

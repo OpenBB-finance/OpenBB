@@ -20104,6 +20104,14 @@
                             "last_year": 2026
                         },
                         {
+                            "tag": "DepreciationAndAmortization",
+                            "namespace": "us-gaap"
+                        },
+                        {
+                            "tag": "DepreciationAmortizationAndAccretionNet",
+                            "namespace": "us-gaap"
+                        },
+                        {
                             "tag": "DepreciationAndAmortisationExpense",
                             "namespace": "ifrs-full",
                             "first_year": 2020,
@@ -20181,14 +20189,6 @@
                     "xbrl_tags": [
                         {
                             "tag": "DepreciationDepletionAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAmortizationAndAccretionNet",
                             "namespace": "us-gaap"
                         },
                         {
@@ -22460,6 +22460,14 @@
                             "last_year": 2026
                         },
                         {
+                            "tag": "DepreciationAndAmortization",
+                            "namespace": "us-gaap"
+                        },
+                        {
+                            "tag": "DepreciationAmortizationAndAccretionNet",
+                            "namespace": "us-gaap"
+                        },
+                        {
                             "tag": "DepreciationAndAmortisationExpense",
                             "namespace": "ifrs-full",
                             "first_year": 2020,
@@ -22521,14 +22529,6 @@
                     "xbrl_tags": [
                         {
                             "tag": "DepreciationDepletionAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAmortizationAndAccretionNet",
                             "namespace": "us-gaap"
                         },
                         {
@@ -24517,6 +24517,14 @@
                             "last_year": 2026
                         },
                         {
+                            "tag": "DepreciationAndAmortization",
+                            "namespace": "us-gaap"
+                        },
+                        {
+                            "tag": "DepreciationAmortizationAndAccretionNet",
+                            "namespace": "us-gaap"
+                        },
+                        {
                             "tag": "DepreciationAndAmortisationExpense",
                             "namespace": "ifrs-full",
                             "first_year": 2020,
@@ -24594,14 +24602,6 @@
                     "xbrl_tags": [
                         {
                             "tag": "DepreciationDepletionAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAmortizationAndAccretionNet",
                             "namespace": "us-gaap"
                         },
                         {
@@ -26841,6 +26841,14 @@
                             "last_year": 2026
                         },
                         {
+                            "tag": "DepreciationAndAmortization",
+                            "namespace": "us-gaap"
+                        },
+                        {
+                            "tag": "DepreciationAmortizationAndAccretionNet",
+                            "namespace": "us-gaap"
+                        },
+                        {
                             "tag": "DepreciationAndAmortisationExpense",
                             "namespace": "ifrs-full",
                             "first_year": 2020,
@@ -26902,14 +26910,6 @@
                     "xbrl_tags": [
                         {
                             "tag": "DepreciationDepletionAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAndAmortization",
-                            "namespace": "us-gaap"
-                        },
-                        {
-                            "tag": "DepreciationAmortizationAndAccretionNet",
                             "namespace": "us-gaap"
                         },
                         {
