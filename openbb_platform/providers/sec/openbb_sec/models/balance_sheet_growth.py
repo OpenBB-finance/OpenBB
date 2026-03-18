@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 
+from math import isnan
 from typing import Any, Literal
 from warnings import warn
 
@@ -13,8 +14,6 @@ from openbb_core.provider.standard_models.balance_sheet_growth import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from math import isnan
-
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 _PCT: dict[str, Any] = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
@@ -239,11 +238,6 @@ class SecBalanceSheetGrowthData(BalanceSheetGrowthData):
         description="Growth rate of intangible assets.",
         json_schema_extra=_PCT,
     )
-    growth_other_assets: float | None = Field(
-        default=None,
-        description="Growth rate of other assets.",
-        json_schema_extra=_PCT,
-    )
     growth_noncurrent_deferred_tax_assets: float | None = Field(
         default=None,
         description="Growth rate of noncurrent deferred tax assets.",
@@ -272,6 +266,11 @@ class SecBalanceSheetGrowthData(BalanceSheetGrowthData):
     growth_total_noncurrent_assets: float | None = Field(
         default=None,
         description="Growth rate of total noncurrent assets.",
+        json_schema_extra=_PCT,
+    )
+    growth_other_assets: float | None = Field(
+        default=None,
+        description="Growth rate of other assets.",
         json_schema_extra=_PCT,
     )
     growth_total_assets: float | None = Field(
@@ -369,6 +368,16 @@ class SecBalanceSheetGrowthData(BalanceSheetGrowthData):
         description="Growth rate of other current nonoperating liabilities.",
         json_schema_extra=_PCT,
     )
+    growth_operating_lease_liability_current: float | None = Field(
+        default=None,
+        description="Growth rate of current operating lease liability.",
+        json_schema_extra=_PCT,
+    )
+    growth_finance_lease_liability_current: float | None = Field(
+        default=None,
+        description="Growth rate of current finance lease liability.",
+        json_schema_extra=_PCT,
+    )
     growth_total_current_liabilities: float | None = Field(
         default=None,
         description="Growth rate of total current liabilities.",
@@ -382,16 +391,6 @@ class SecBalanceSheetGrowthData(BalanceSheetGrowthData):
     growth_capital_lease_obligations: float | None = Field(
         default=None,
         description="Growth rate of capital lease obligations.",
-        json_schema_extra=_PCT,
-    )
-    growth_operating_lease_liability_current: float | None = Field(
-        default=None,
-        description="Growth rate of current operating lease liability.",
-        json_schema_extra=_PCT,
-    )
-    growth_finance_lease_liability_current: float | None = Field(
-        default=None,
-        description="Growth rate of current finance lease liability.",
         json_schema_extra=_PCT,
     )
     growth_operating_lease_liability_noncurrent: float | None = Field(

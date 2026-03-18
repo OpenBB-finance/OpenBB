@@ -38,21 +38,19 @@ files, supported by a public API layer and a taxonomy maintenance tool:
 - **`statement_schema/schemas/`** — The declarative schema, split into four
   JSON files: `_meta.json` (metadata, detection signals), plus one file per
   statement — `income_statement.json`, `balance_sheet.json`, `cash_flow.json`
-  (~28,760 lines total, ~930 KB).
+  (~950 KB in total).
 - **`statement_schema/`** — The runtime engine package: `_types.py`
   (dataclasses, constants), `_detection.py` (company-type classification,
   filing dates, fiscal metadata), `_extraction.py` (row-level XBRL
   extraction, reference filing computation), `_rules.py` (imputation and
   verification rule definitions), `_imputation.py` (multi-pass imputation,
   hierarchical articulation, identity enforcement), `_schema.py`
-  (`StatementSchema` class orchestrating the pipeline), and `__init__.py`
-  (public re-exports for backward compatibility) (~4,030 lines total).
+  (`StatementSchema` class orchestrating the pipeline), and `__init__.py`.
 - **`utils/company_facts.py`** — The public API: wraps the engine, merges
    configured multi-CIK histories, and produces long-format records with full
-   provenance per line item per period (~580 lines).
+   provenance per line item per period.
 - **`xbrl_taxonomy_helper.py`** — Taxonomy infrastructure: programmatic
-  access to FASB, SEC, and IFRS Foundation taxonomies for schema maintenance
-  (~3,440 lines).
+  access to FASB, SEC, and IFRS Foundation taxonomies for schema maintenance.
 
 ## Reader Orientation
 
@@ -332,7 +330,7 @@ The validation design can be summarized compactly as follows:
 |-----------|------------------|----------------|
 | Corpus size | 970 companies | Near-complete Russell 1000 coverage across all four company types. |
 | Company types | 619 industrial, 231 diversified, 68 financial, 52 insurance | Ensures the methodology is tested across all four statement templates with substantial depth in each category. |
-| Frequencies tested | Annual and quarterly | Validates both direct annual extraction and quarterly reconstruction behavior, including Q4 derivation. |
+| Frequencies tested | Annual, quarterly, semi-annual | Validates both direct annual extraction and interim reconstruction behavior, including Q4 and H1/H2 derivation. |
 | Validation modes | Automated extraction, deterministic unit/regression tests, identity verification, manual spot-checks | Combines end-to-end extraction checks, executable edge-case assertions, mechanical identity verification, and human review of key totals in SEC filings. |
 | Edge-case coverage | Taxonomy transitions, non-December fiscal year-ends, discontinued operations, mezzanine equity, multi-CIK continuity, IFRS filers, insurance variants, REITs | Focuses the corpus on the cases most likely to break naive XBRL standardization. |
 | Success criterion | Zero unresolved `ValidationWarning` diagnostics for the verification set | The system must clear every documented identity check after correction and enforcement logic has been applied. |

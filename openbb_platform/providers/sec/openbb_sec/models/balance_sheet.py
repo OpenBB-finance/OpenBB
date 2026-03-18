@@ -263,10 +263,6 @@ class SecBalanceSheetData(BalanceSheetData):
         description="Amount, after accumulated amortization, of finite- and indefinite-lived intangible assets and "
         "capitalized cost for software to be sold, leased, or marketed. Excludes goodwill.",
     )
-    other_assets: float | None = Field(
-        default=None,
-        description="Amount of assets classified as other.",
-    )
     noncurrent_deferred_tax_assets: float | None = Field(
         default=None,
         description="The noncurrent portion as of the balance sheet date of the aggregate carrying amount of all future "
@@ -299,6 +295,10 @@ class SecBalanceSheetData(BalanceSheetData):
         default=None,
         description="Sum of the carrying amounts as of the balance sheet date of all assets that are expected to be "
         "realized in cash, sold or consumed after one year or beyond the normal operating cycle, if longer.",
+    )
+    other_assets: float | None = Field(
+        default=None,
+        description="Amount of assets classified as other.",
     )
     total_assets: float | None = Field(
         default=None,
@@ -411,6 +411,16 @@ class SecBalanceSheetData(BalanceSheetData):
         description="Amount of current liabilities from nonoperating activities, classified as other. Includes accrued "
         "liabilities and other liabilities not separately disclosed.",
     )
+    operating_lease_liability_current: float | None = Field(
+        default=None,
+        description="Present value of lessee's discounted obligation for lease payments from operating lease, "
+        "classified as current.",
+    )
+    finance_lease_liability_current: float | None = Field(
+        default=None,
+        description="Present value of lessee's discounted obligation for lease payments from finance lease, "
+        "classified as current.",
+    )
     total_current_liabilities: float | None = Field(
         default=None,
         description="Total obligations incurred as part of normal operations that are expected to be paid during the "
@@ -424,16 +434,6 @@ class SecBalanceSheetData(BalanceSheetData):
     capital_lease_obligations: float | None = Field(
         default=None,
         description="Present value of lessee's discounted obligation for lease payments from finance lease.",
-    )
-    operating_lease_liability_current: float | None = Field(
-        default=None,
-        description="Present value of lessee's discounted obligation for lease payments from operating lease, "
-        "classified as current.",
-    )
-    finance_lease_liability_current: float | None = Field(
-        default=None,
-        description="Present value of lessee's discounted obligation for lease payments from finance lease, "
-        "classified as current.",
     )
     operating_lease_liability_noncurrent: float | None = Field(
         default=None,
