@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 
+from math import isnan
 from typing import Any, Literal
 from warnings import warn
 
@@ -13,8 +14,6 @@ from openbb_core.provider.standard_models.cash_flow_growth import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from math import isnan
-
 from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 _PCT: dict[str, Any] = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
