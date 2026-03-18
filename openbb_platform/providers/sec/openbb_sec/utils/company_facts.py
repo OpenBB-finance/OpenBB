@@ -7,7 +7,7 @@ Balance Sheet, and Cash Flow Statement — each available as both annual and
 quarterly views.
 
 Features:
-    - **250 standardized tags** across industrial, financial, diversified, and insurance templates
+  - **250 standardized tags** across industrial, financial, diversified, and insurance templates
   - **Dual namespace** — US-GAAP (``us-gaap``) and IFRS (``ifrs-full``)
   - **Auto-detection** — classifies companies as industrial, financial, diversified, or insurance
   - **Q4 derivation** — ``Q4 = Annual − Q1 − Q2 − Q3`` for duration items
@@ -287,7 +287,7 @@ def _compute_pct_change(
                 if prior is None or prior["value"] == 0:
                     continue
 
-                pct = (rec["value"] - prior["value"]) / abs(prior["value"]) * 100
+                pct = (rec["value"] - prior["value"]) / abs(prior["value"])
                 pct_records.append(_pct_record(rec, prior, pct, "yoy"))
         else:
             for i in range(1, len(sorted_recs)):
@@ -518,11 +518,13 @@ async def get_standardized_financials(
 
             async with CachedSession(expire_after=3600 * 6) as session:
                 try:
-                    resp = await amake_request(url, headers=HEADERS, session=session)
+                    resp = await amake_request(
+                        url, headers=HEADERS, session=session, timeout=300
+                    )
                 finally:
                     await session.close()
         else:
-            resp = await amake_request(url, headers=HEADERS)
+            resp = await amake_request(url, headers=HEADERS, timeout=300)
         if not isinstance(resp, dict) or "facts" not in resp:
             raise OpenBBError(f"Unexpected response from SEC for CIK {cik_str}")
         return resp  # type: ignore[return-value]

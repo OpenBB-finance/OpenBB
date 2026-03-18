@@ -22,7 +22,14 @@ ALL_FORMS = ANNUAL_FORMS | QUARTERLY_FORMS | SEMI_ANNUAL_FORMS
 Frequency = Literal["annual", "quarterly"]
 StatementName = Literal["income_statement", "balance_sheet", "cash_flow"]
 CompanyType = Literal["industrial", "financial", "diversified", "insurance"]
-_TOLERANCE = 1_000_000
+_TOLERANCE_FLOOR = 100_000
+_TOLERANCE_CAP = 1_000_000
+
+
+def _tolerance(*values: float | None) -> float:
+    """Scale-adaptive tolerance: 0.1% of max magnitude, floored at 100k, capped at 1M."""
+    scale = max((abs(v) for v in values if v is not None), default=0)
+    return max(_TOLERANCE_FLOOR, min(_TOLERANCE_CAP, scale * 0.001))
 
 
 @dataclass(frozen=True)
@@ -338,21 +345,25 @@ class StatementSchema:
                             ):
                                 preliminary_candidates.add(end)
 
-        # For quarterly: add only canonical annual FY-end dates (Q4/H2
-        # end dates).  We must NOT add raw annual-form end dates because
-        # 10-K filings can contain calendar-year tags (e.g. tax rate
-        # reconciliation items ending Dec-31) that don't match the
-        # company's actual FY-end (e.g. WMT Jan-31).  Compute the
-        # deduped annual date set via recursion and add only those.
-        if frequency != "annual":
+        # Add 8-K dates only when not already covered by a 10-Q/K filing
+        if include_preliminary:
+            filing_dates |= preliminary_candidates - filing_dates
+
+        # For quarterly: add canonical annual FY-end dates (Q4/H2 end
+        # dates) so Q4 derivation can compute Q4 = FY − (Q1+Q2+Q3).
+        # Only add them when actual interim dates exist — if a company
+        # has NO quarterly or semi-annual filings (e.g. 20-F only),
+        # quarterly extraction is meaningless and should return empty.
+        # We must NOT add raw annual-form end dates because 10-K filings
+        # can contain calendar-year tags (e.g. tax rate reconciliation
+        # items ending Dec-31) that don't match the company's actual
+        # FY-end (e.g. WMT Jan-31).  Compute the deduped annual date set
+        # via recursion and add only those.
+        if frequency != "annual" and filing_dates:
             canonical_annual = StatementSchema.get_filing_dates(
                 facts, "annual", include_preliminary=include_preliminary
             )
             filing_dates |= canonical_annual
-
-        # Add 8-K dates only when not already covered by a 10-Q/K filing
-        if include_preliminary:
-            filing_dates |= preliminary_candidates - filing_dates
 
         # Detect the dominant month-day pattern and drop outliers that have a
         # nearby canonical date covering the same fiscal year.
@@ -618,6 +629,8 @@ class StatementSchema:
             # FY-end dates (marked Q4/H2) get fy from the 10-K filing which
             # can be wrong for the same reason.  After initial assignment,
             # ensure Q4 dates inherit the same fy as surrounding quarters.
+            # Only inherit from an actual interim quarter (Q1/Q2/Q3/H1),
+            # never from another Q4/H2 date (which is a different FY).
             sorted_dates = sorted(result.keys())
             annual_set = set(annual_dates)
 
@@ -627,11 +640,12 @@ class StatementSchema:
                     and result[date]["fiscal_period"] in ("Q4", "H2")
                     and i > 0
                 ):
-                    # Q4 should share fy with the preceding quarter
                     prev = sorted_dates[i - 1]
-                    prev_fy = result[prev]["fiscal_year"]
-                    if result[date]["fiscal_year"] != prev_fy:
-                        result[date]["fiscal_year"] = prev_fy
+                    prev_meta = result[prev]
+                    if prev_meta["fiscal_period"] in ("Q1", "Q2", "Q3", "H1"):
+                        prev_fy = prev_meta["fiscal_year"]
+                        if result[date]["fiscal_year"] != prev_fy:
+                            result[date]["fiscal_year"] = prev_fy
 
         return result
 
@@ -1167,18 +1181,20 @@ class StatementSchema:
                     if not filings:
                         continue
 
+                    xbrl_e = row.xbrl_tags[i]
+
                     if ref_filed in filings:
                         values_by_date[end_date] = filings[ref_filed]
+                        sources_by_date[end_date] = (
+                            f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
+                        )
                     else:
-                        # Fall back to nearest filing before ref_filed
-                        # (same vintage as the 10-K).  If none exist
-                        # before, use the earliest after.
                         before = [f for f in filings if f <= ref_filed]
                         best = max(before) if before else min(filings)
                         values_by_date[end_date] = filings[best]
-
-                    xbrl_e = row.xbrl_tags[i]
-                    sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
+                        sources_by_date[end_date] = (
+                            f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
+                        )
                     break
             else:
                 # Annual & quarterly instant (BS/CF snapshots): filing
@@ -1384,13 +1400,18 @@ class StatementSchema:
         frequency: Frequency,
         currency: str,
         include_preliminary: bool = False,
+        pit_mode: bool = False,
     ) -> dict[str, str]:
-        """Compute the earliest filing date per end_date across all rows.
+        """Compute the reference filing date per end_date across all rows.
+
+        When pit_mode is False (default), selects the LATEST filing per
+        end_date so that restatements and amendments are reflected.
+        When pit_mode is True, selects the EARLIEST filing per end_date
+        to preserve the original filing vintage (no restatements).
 
         This global reference map ensures every row in a statement is
-        extracted from the same filing vintage, preventing values that
-        were retroactively added in later filings from mixing with
-        original-filing data.
+        extracted from the same filing vintage, preventing values from
+        different filing dates from mixing.
         """
         _base_forms = ANNUAL_FORMS if frequency == "annual" else ALL_FORMS
         allowed_forms = (
@@ -1451,7 +1472,27 @@ class StatementSchema:
 
                     filed = entry.get("filed", "")
 
-                    if filed and (end_date not in ref_map or filed < ref_map[end_date]):
+                    if not filed:
+                        continue
+
+                    if not pit_mode:
+                        try:
+                            _gap = (
+                                datetime.strptime(filed, "%Y-%m-%d")
+                                - datetime.strptime(end_date, "%Y-%m-%d")
+                            ).days
+                        except (ValueError, TypeError):
+                            continue
+                        if _gap > 450:
+                            continue
+
+                    if (
+                        end_date not in ref_map
+                        or pit_mode
+                        and filed < ref_map[end_date]
+                        or not pit_mode
+                        and filed > ref_map[end_date]
+                    ):
                         ref_map[end_date] = filed
 
         return ref_map
@@ -1586,6 +1627,7 @@ class StatementSchema:
                 frequency,
                 currency,
                 include_preliminary=include_preliminary,
+                pit_mode=pit_mode,
             )
             # For quarterly: prefer 10-K filing vintage for completed FYs
             # so restated comparatives match the annual total.
@@ -1726,7 +1768,7 @@ class StatementSchema:
 
                     _diff = abs(_bv + _nv - _ev)
 
-                    if _diff > _TOLERANCE:
+                    if _diff > _tolerance(_ev, _bv, _nv):
                         _bop_src = _bop.sources.get(date, "")
                         _nc_src = _nc.sources.get(date, "")
                         _eop_src = _eop.sources.get(date, "")
@@ -1838,6 +1880,32 @@ class StatementSchema:
             facts, frequency, include_preliminary=include_preliminary
         )
 
+        if not filing_dates and frequency == "quarterly":
+            from openbb_core.app.model.abstract.error import OpenBBError
+
+            forms_seen: set[str] = set()
+            for ns_facts in facts.values():
+                for tag_data in ns_facts.values():
+                    for entries in tag_data.get("units", {}).values():
+                        for entry in entries:
+                            f = entry.get("form", "")
+                            if f:
+                                forms_seen.add(f)
+            annual_only = forms_seen & {"20-F", "20-F/A", "40-F", "40-F/A"}
+            has_interim = forms_seen & (QUARTERLY_FORMS | SEMI_ANNUAL_FORMS)
+            entity = company_facts.get("entityName", "this company")
+            if annual_only and not has_interim:
+                ftype = "20-F" if forms_seen & {"20-F", "20-F/A"} else "40-F"
+                raise OpenBBError(
+                    f"{entity} files {ftype} (annual only) and does not "
+                    "report interim (quarterly/semi-annual) data via "
+                    "10-Q or 6-K filings. Only period='annual' is available."
+                )
+            raise OpenBBError(
+                f"No quarterly filing dates found for {entity}. "
+                "Only period='annual' may be available."
+            )
+
         _STMTS: tuple[StatementName, ...] = (
             "income_statement",
             "balance_sheet",
@@ -1860,6 +1928,7 @@ class StatementSchema:
             frequency,
             currency,
             include_preliminary=include_preliminary,
+            pit_mode=pit_mode,
         )
 
         # For quarterly IS/CF: override to 10-K vintage for completed FYs.
@@ -2582,7 +2651,7 @@ class StatementSchema:
                     # Plug generation
                     diff = p_val - children_sum
 
-                    if abs(diff) > _TOLERANCE:
+                    if abs(diff) > _tolerance(p_val, children_sum):
                         base = parent_tag.removeprefix("total_")
                         plug_tag = f"other_{base}"
 
@@ -2693,7 +2762,8 @@ class StatementSchema:
                     if (
                         _ni_v is not None
                         and _tx_v is not None
-                        and abs(_ptx.values[_d] - _ni_v - _tx_v) <= _TOLERANCE
+                        and abs(_ptx.values[_d] - _ni_v - _tx_v)
+                        <= _tolerance(_ptx.values[_d], _ni_v, _tx_v)
                     ):
                         # Narrow pretax = NI + tax already.  NI and pretax
                         # share the same scope — no correction needed.
@@ -2840,7 +2910,8 @@ class StatementSchema:
                         # Only override direct XBRL values, not imputed ones
                         and "imputed" not in cogs_src
                         # Check: CostsAndExpenses ≈ Revenue - OperatingIncome
-                        and abs(ce_val - (rev_val - opinc_val)) <= _TOLERANCE
+                        and abs(ce_val - (rev_val - opinc_val))
+                        <= _tolerance(ce_val, rev_val, opinc_val)
                         # Check: reported COGS + OpEx < CostsAndExpenses
                         # (meaning reported COGS is a narrow/partial tag)
                         and (cogs_val + opex_val) < ce_val * 0.95
@@ -2897,7 +2968,8 @@ class StatementSchema:
                         and rev_val is not None
                         and cogs_val is not None
                         and "imputed" not in gp_src
-                        and abs(rev_val - cogs_val - gp_val) > _TOLERANCE
+                        and abs(rev_val - cogs_val - gp_val)
+                        > _tolerance(rev_val, cogs_val, gp_val)
                     ):
                         cogs_row.values[date] = rev_val - gp_val
                         cogs_row.sources[date] = (
@@ -2933,7 +3005,8 @@ class StatementSchema:
                     # Case 1: opex > GP → COGS-inclusive OpEx, correct down
                     if (
                         opex_val > gp_val
-                        or abs(gp_val - opex_val - opinc_val) > _TOLERANCE
+                        or abs(gp_val - opex_val - opinc_val)
+                        > _tolerance(gp_val, opex_val, opinc_val)
                         and "imputed" not in opinc_row.sources.get(date, "")
                     ):
                         opex_row.values[date] = gp_val - opinc_val
@@ -2975,11 +3048,11 @@ class StatementSchema:
                         continue
 
                     # Already consistent — nothing to do
-                    if abs(enci_v - ep_v - nci_v) <= _TOLERANCE:  # type: ignore[operator]
+                    if abs(enci_v - ep_v - nci_v) <= _tolerance(enci_v, ep_v, nci_v):  # type: ignore[operator]
                         continue
 
                     # Top-level BS must validate first
-                    if abs(l_v + enci_v + rnci_v - le_v) > _TOLERANCE:  # type: ignore[operator]
+                    if abs(l_v + enci_v + rnci_v - le_v) > _tolerance(le_v, l_v, enci_v, rnci_v):  # type: ignore[operator]
                         continue
 
                     # Override E_parent with the value consistent with E_nci
@@ -3144,7 +3217,7 @@ class StatementSchema:
                                     _pv is not None
                                     and _nv is not None
                                     and _tv is not None
-                                    and abs(_pv - _nv - _tv) > _TOLERANCE
+                                    and abs(_pv - _nv - _tv) > _tolerance(_pv, _nv, _tv)
                                 ):
                                     verified_pairs.add(("total_pretax_income", date))
                                     verified_pairs.add(("net_income_continuing", date))
@@ -3175,8 +3248,9 @@ class StatementSchema:
                     continue
 
                 diff = abs(val - target_row.values[date])
+                _tol = _tolerance(val, target_row.values[date])
 
-                if diff <= _TOLERANCE:
+                if diff <= _tol:
                     verified_pairs.add((target_tag, date))
                     continue
 
@@ -3194,7 +3268,8 @@ class StatementSchema:
                         if (
                             _le_src_val is not None
                             and _le_src_val < 0
-                            and abs(target_row.values[date] + _le_src_val) <= _TOLERANCE
+                            and abs(target_row.values[date] + _le_src_val)
+                            <= _tolerance(target_row.values[date], _le_src_val)
                         ):
                             rows[_le_src_i].values[date] = -_le_src_val
                             rows[_le_src_i].sources[date] = (
@@ -3282,7 +3357,9 @@ class StatementSchema:
                             if _tv is None or _pv is None:
                                 return False
 
-                            if abs(_pv - alt_val - _tv) <= _TOLERANCE:
+                            if abs(_pv - alt_val - _tv) <= _tolerance(
+                                _pv, alt_val, _tv
+                            ):
                                 rows[_nic_idx].values[_date] = alt_val
                                 rows[_nic_idx].sources[_date] = alt_tag_label
                                 verified_pairs.add(("total_pretax_income", _date))
@@ -3502,12 +3579,16 @@ class StatementSchema:
                         adj_diff = abs(
                             val + disc_val + _disc_fx - target_row.values[date]
                         )
-                        if adj_diff <= _TOLERANCE:
+                        if adj_diff <= _tolerance(
+                            val, disc_val, _disc_fx, target_row.values[date]
+                        ):
                             verified_pairs.add((target_tag, date))
                             continue
                         if _disc_fx != 0.0:
                             adj_diff = abs(val + disc_val - target_row.values[date])
-                            if adj_diff <= _TOLERANCE:
+                            if adj_diff <= _tolerance(
+                                val, disc_val, target_row.values[date]
+                            ):
                                 verified_pairs.add((target_tag, date))
                                 continue
 
@@ -3536,7 +3617,9 @@ class StatementSchema:
                                         (60 <= _days <= 135) or (300 <= _days <= 400)
                                     ) and (
                                         abs(val + _e["val"] - target_row.values[date])
-                                        <= _TOLERANCE
+                                        <= _tolerance(
+                                            val, _e["val"], target_row.values[date]
+                                        )
                                     ):
                                         verified_pairs.add((target_tag, date))
                                         break
@@ -3629,7 +3712,9 @@ class StatementSchema:
                                 val + _disc_sum + _disc_fx_fb1 - target_row.values[date]
                             )
 
-                            if adj_diff <= _TOLERANCE:
+                            if adj_diff <= _tolerance(
+                                val, _disc_sum, _disc_fx_fb1, target_row.values[date]
+                            ):
                                 verified_pairs.add((target_tag, date))
                                 continue
 
@@ -3679,7 +3764,9 @@ class StatementSchema:
                                             - target_row.values[date]
                                         )
 
-                                        if adj_diff <= _TOLERANCE:
+                                        if adj_diff <= _tolerance(
+                                            val, _derived_disc, target_row.values[date]
+                                        ):
                                             verified_pairs.add((target_tag, date))
                                             break
                             else:
@@ -3739,7 +3826,9 @@ class StatementSchema:
                                     val - _disp_delta - target_row.values[date]
                                 )
 
-                                if adj_diff <= _TOLERANCE:
+                                if adj_diff <= _tolerance(
+                                    val, _disp_delta, target_row.values[date]
+                                ):
                                     verified_pairs.add((target_tag, date))
                                     continue
 
@@ -3773,7 +3862,9 @@ class StatementSchema:
                                             val + _e["val"] - target_row.values[date]
                                         )
 
-                                        if adj_diff <= _TOLERANCE:
+                                        if adj_diff <= _tolerance(
+                                            val, _e["val"], target_row.values[date]
+                                        ):
                                             verified_pairs.add((target_tag, date))
                                             break
 
@@ -3902,7 +3993,8 @@ class StatementSchema:
                             all(_act_opts)
                             and _nc_opts
                             and any(
-                                abs(_o + _i + _f + _fx - _nc) <= _TOLERANCE
+                                abs(_o + _i + _f + _fx - _nc)
+                                <= _tolerance(_o, _i, _f, _fx, _nc)
                                 for _o in _act_opts[0]
                                 for _i in _act_opts[1]
                                 for _f in _act_opts[2]
@@ -3966,7 +4058,8 @@ class StatementSchema:
                                 and _start_vals
                                 and _nc_val is not None
                                 and any(
-                                    abs((ev - sv) - _nc_val) <= _TOLERANCE
+                                    abs((ev - sv) - _nc_val)
+                                    <= _tolerance(ev, sv, _nc_val)
                                     for ev in _end_vals
                                     for sv in _start_vals
                                 )
@@ -4062,7 +4155,7 @@ class StatementSchema:
                     _rnci_val = (
                         rows[_rnci_i].values.get(date, 0) if _rnci_i is not None else 0
                     )
-                    if abs(_rnci_val) > 0 or diff > _TOLERANCE:
+                    if abs(_rnci_val) > 0 or diff > _tolerance(diff, _rnci_val):
                         _MEZZ_TAGS_EQ = (
                             "RedeemableNoncontrollingInterestEquityCarryingAmount",
                             "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
@@ -4083,7 +4176,9 @@ class StatementSchema:
 
                             for _e in _entries:
                                 if _e.get("end") == date and "start" not in _e:
-                                    if abs(diff - _e["val"]) <= _TOLERANCE:
+                                    if abs(diff - _e["val"]) <= _tolerance(
+                                        diff, _e["val"]
+                                    ):
                                         _eq_resolved = True
                                     _mezz_sum += _e["val"]
                                     break
@@ -4091,7 +4186,9 @@ class StatementSchema:
                             if _eq_resolved:
                                 break
 
-                        if not _eq_resolved and abs(diff - _mezz_sum) <= _TOLERANCE:
+                        if not _eq_resolved and abs(diff - _mezz_sum) <= _tolerance(
+                            diff, _mezz_sum
+                        ):
                             _eq_resolved = True
 
                         if _eq_resolved:
@@ -4106,7 +4203,7 @@ class StatementSchema:
                     if (
                         _nci_val is not None
                         and _nci_val < 0
-                        and abs(diff - 2 * abs(_nci_val)) <= _TOLERANCE
+                        and abs(diff - 2 * abs(_nci_val)) <= _tolerance(diff, _nci_val)
                     ):
                         verified_pairs.add((target_tag, date))
                         continue
@@ -4212,62 +4309,54 @@ class StatementSchema:
                         verified_pairs.add((target_tag, date))
                         continue
 
-                # All hard or multiple soft — genuine data discrepancy.
-                # Cross-vintage (fallback) gets a specific note.
-                _has_fallback = "(fallback)" in target_src or any(
-                    "(fallback)" in rows[tag_idx.get(st, -1)].sources.get(date, "")
-                    for st, _ in sources
-                    if tag_idx.get(st) is not None
-                )
-
-                if (
-                    _has_fallback
-                    and statement == "balance_sheet"
-                    and target_tag
-                    in (
-                        "total_equity_and_noncontrolling_interests",
-                        "total_equity",
+                if _ambiguous_cf:
+                    _new_warning = ValidationWarning(
+                        date=date,
+                        tag=target_tag,
+                        expected=val,
+                        actual=target_row.values[date],
+                        formula=_formula,
+                        identity=f"{target_tag} = {_formula}",
                     )
-                ):
-                    verified_pairs.add((target_tag, date))
+                    _existing = pending_diagnostics.get((target_tag, date))
+                    if _existing is not None:
+                        if diff < abs(_existing.actual - _existing.expected):
+                            pending_diagnostics[(target_tag, date)] = _new_warning
+                    else:
+                        pending_diagnostics[(target_tag, date)] = _new_warning
                     continue
 
                 if _cf_scope_mismatch:
-                    _identity_str = (
-                        f"SCOPE_MISMATCH: CF activities=continuing, net_change=total"
-                        f" ({target_tag} = {_formula})"
+                    target_row.values[date] = val
+                    target_row.sources[date] = (
+                        f"scope-aligned: {_formula} [solving {target_tag}]"
                     )
-                else:
-                    _identity_str = f"{target_tag} = {_formula}" + (
-                        " [cross-vintage]" if _has_fallback else ""
-                    )
+                    verified_pairs.add((target_tag, date))
+                    continue
 
-                _new_warning = ValidationWarning(
-                    date=date,
-                    tag=target_tag,
-                    expected=val,
-                    actual=target_row.values[date],
-                    formula=_formula,
-                    identity=_identity_str,
+                target_row.values[date] = val
+                target_row.sources[date] = (
+                    f"identity-enforced: {_formula} [solving {target_tag}]"
                 )
-                # For ambiguous CF: keep the diagnostic with the smaller
-                # diff so the better-fitting rule prevails.
-                _existing = pending_diagnostics.get((target_tag, date))
+                verified_pairs.add((target_tag, date))
+                continue
 
-                if _existing is not None:
-                    if diff < abs(_existing.actual - _existing.expected):
-                        pending_diagnostics[(target_tag, date)] = _new_warning
-                else:
-                    pending_diagnostics[(target_tag, date)] = _new_warning
-
-        # Emit pending diagnostics only for pairs no rule verified.
+        # Enforce ambiguous CF: pick the best-fitting rule and enforce.
         for key, warning in pending_diagnostics.items():
             if key not in verified_pairs:
-                diagnostics.append(warning)
+                _tag, _date = key
+                _ti = tag_idx.get(_tag)
+                if _ti is not None:
+                    rows[_ti].values[_date] = warning.expected
+                    rows[_ti].sources[_date] = (
+                        f"identity-enforced: {warning.formula}" f" [solving {_tag}]"
+                    )
+                    verified_pairs.add(key)
 
         # Re-run articulation to sync plugs after enforcement overrides.
         if any(
             "identity-enforced" in r.sources.get(d, "")
+            or "scope-aligned" in r.sources.get(d, "")
             for r in rows
             for d in filing_dates
         ):

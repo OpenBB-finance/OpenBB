@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.cash_flow import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field, model_serializer, model_validator
+from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 
 class SecCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -29,17 +29,34 @@ class SecCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     )
     use_cache: bool = Field(
         default=True,
-        description="Whether to use cache for the SEC request." " Defaults to True.",
+        description="Whether to use cache (4-hour memory) for the SEC request."
+        " Defaults to True.",
     )
     include_preliminary: bool = Field(
         default=False,
         description="Whether to include preliminary data from 8-K filings"
         " for periods not yet reported on 10-Q/K.",
     )
+    pit_mode: bool = Field(
+        default=False,
+        description="Point-in-time mode. When True, returns data as originally"
+        " reported at the time of filing, without subsequent restatements or"
+        " amendments. For annual data, uses the original 10-K values. For"
+        " quarterly data, preserves 10-Q filing vintage instead of using"
+        " restated comparatives from the 10-K.",
+    )
 
 
 class SecCashFlowStatementData(CashFlowStatementData):
     """SEC CashFlowStatement Data."""
+
+    model_config = ConfigDict(
+        allow_inf_nan=True,
+        ser_json_inf_nan="null",
+        json_schema_extra={
+            "x-widget_config": {"$.data": {"table": {"enableFormulas": True}}}
+        },
+    )
 
     reported_currency: str | None = Field(
         default=None,
@@ -377,7 +394,7 @@ class SecCashFlowStatementData(CashFlowStatementData):
     @classmethod
     def _validate_model(cls, values):
         """Validate the model."""
-        return {k: v for k, v in values.items() if v not in (None, 0)}
+        return {k: v for k, v in values.items() if v is not None}
 
     @model_serializer(mode="wrap")
     def _serialize(self, handler):
@@ -416,6 +433,7 @@ class SecCashFlowStatementFetcher(
             period=query.period,
             use_cache=query.use_cache,
             include_preliminary=query.include_preliminary,
+            pit_mode=query.pit_mode,
         )
         return {
             "result": result,

@@ -25,16 +25,26 @@ class SecBalanceSheetQueryParams(BalanceSheetQueryParams):
 
     period: Literal["annual", "quarterly", "ttm"] = Field(
         default="annual",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
+        description=QUERY_DESCRIPTIONS.get("period", "")
+        + " For balance sheet, TTM is treated as the average of the last 4 quarters.",
     )
     use_cache: bool = Field(
         default=True,
-        description="Whether to use cache for the SEC request." " Defaults to True.",
+        description="Whether to use cache (4-hour memory) for the SEC request."
+        " Defaults to True.",
     )
     include_preliminary: bool = Field(
         default=False,
         description="Whether to include preliminary data from 8-K filings"
         " for periods not yet reported on 10-Q/K.",
+    )
+    pit_mode: bool = Field(
+        default=False,
+        description="Point-in-time mode. When True, returns data as originally"
+        " reported at the time of filing, without subsequent restatements or"
+        " amendments. For annual data, uses the original 10-K values. For"
+        " quarterly data, preserves 10-Q filing vintage instead of using"
+        " restated comparatives from the 10-K.",
     )
 
 
@@ -618,7 +628,7 @@ class SecBalanceSheetData(BalanceSheetData):
     @classmethod
     def _validate_model(cls, values):
         """Validate the model."""
-        return {k: v for k, v in values.items() if v not in (None, 0)}
+        return {k: v for k, v in values.items() if v is not None}
 
     @model_serializer(mode="wrap")
     def _serialize(self, handler):
@@ -657,6 +667,7 @@ class SecBalanceSheetFetcher(
             period=query.period,
             use_cache=query.use_cache,
             include_preliminary=query.include_preliminary,
+            pit_mode=query.pit_mode,
         )
         return {
             "result": result,

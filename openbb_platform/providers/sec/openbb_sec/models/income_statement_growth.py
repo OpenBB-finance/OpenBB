@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 
+from math import isnan
 from typing import Any, Literal
 from warnings import warn
 
@@ -13,7 +14,7 @@ from openbb_core.provider.standard_models.income_statement_growth import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from pydantic import ConfigDict, Field, model_serializer, model_validator
 
 _PCT: dict[str, Any] = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
 
@@ -30,17 +31,34 @@ class SecIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
     )
     use_cache: bool = Field(
         default=True,
-        description="Whether to use cache for the SEC request. Defaults to True.",
+        description="Whether to use cache (4-hour memory) for the SEC request."
+        " Defaults to True.",
     )
     include_preliminary: bool = Field(
         default=False,
         description="Whether to include preliminary data from 8-K filings"
         " for periods not yet reported on 10-Q/K.",
     )
+    pit_mode: bool = Field(
+        default=False,
+        description="Point-in-time mode. When True, returns data as originally"
+        " reported at the time of filing, without subsequent restatements or"
+        " amendments. For annual data, uses the original 10-K values. For"
+        " quarterly data, preserves 10-Q filing vintage instead of using"
+        " restated comparatives from the 10-K.",
+    )
 
 
 class SecIncomeStatementGrowthData(IncomeStatementGrowthData):
     """SEC Income Statement Growth Data."""
+
+    model_config = ConfigDict(
+        allow_inf_nan=True,
+        ser_json_inf_nan="null",
+        json_schema_extra={
+            "x-widget_config": {"$.data": {"table": {"enableFormulas": True}}}
+        },
+    )
 
     growth_operating_revenue: float | None = Field(
         default=None,
@@ -498,6 +516,19 @@ class SecIncomeStatementGrowthData(IncomeStatementGrowthData):
         json_schema_extra=_PCT,
     )
 
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_model(cls, values):
+        """Validate the model."""
+        return {k: v for k, v in values.items() if v is not None}
+
+    @model_serializer(mode="wrap")
+    def _serialize(self, handler):
+        d = handler(self)
+        return {
+            k: (None if isinstance(v, float) and isnan(v) else v) for k, v in d.items()
+        }
+
 
 class SecIncomeStatementGrowthFetcher(
     Fetcher[SecIncomeStatementGrowthQueryParams, list[SecIncomeStatementGrowthData]]
@@ -535,6 +566,7 @@ class SecIncomeStatementGrowthFetcher(
             period=period_map[query.period],
             use_cache=query.use_cache,
             include_preliminary=query.include_preliminary,
+            pit_mode=query.pit_mode,
         )
         return {"result": result, "statement": "income_statement"}
 
