@@ -3,7 +3,7 @@
 import json
 from datetime import date
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
