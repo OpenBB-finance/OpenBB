@@ -32,17 +32,24 @@ tolerance; it is not a claim about all possible filers.  The corpus spans
 industrials, banks, insurers, conglomerates, REITs, discontinued-operations
 cases, fiscal-year offsets, IFRS filers, and multi-CIK histories.
 
-The system comprises four files:
+The system is organized into a Python package and a set of JSON schema
+files, supported by a public API layer and a taxonomy maintenance tool:
 
-- **`statement_schema.json`** — The declarative schema: row definitions,
-  XBRL tag priority chains, company-type detection signals, and metadata
-  (~28,600 lines, 1.3 MB).
-- **`statement_schema.py`** — The runtime engine: extraction, imputation,
-  hierarchical articulation, identity enforcement, and cross-statement
-  verification (~3,920 lines).
+- **`statement_schema/schemas/`** — The declarative schema, split into four
+  JSON files: `_meta.json` (metadata, detection signals), plus one file per
+  statement — `income_statement.json`, `balance_sheet.json`, `cash_flow.json`
+  (~28,760 lines total, ~930 KB).
+- **`statement_schema/`** — The runtime engine package: `_types.py`
+  (dataclasses, constants), `_detection.py` (company-type classification,
+  filing dates, fiscal metadata), `_extraction.py` (row-level XBRL
+  extraction, reference filing computation), `_rules.py` (imputation and
+  verification rule definitions), `_imputation.py` (multi-pass imputation,
+  hierarchical articulation, identity enforcement), `_schema.py`
+  (`StatementSchema` class orchestrating the pipeline), and `__init__.py`
+  (public re-exports for backward compatibility) (~4,030 lines total).
 - **`utils/company_facts.py`** — The public API: wraps the engine, merges
    configured multi-CIK histories, and produces long-format records with full
-   provenance per line item per period (~320 lines).
+   provenance per line item per period (~580 lines).
 - **`xbrl_taxonomy_helper.py`** — Taxonomy infrastructure: programmatic
   access to FASB, SEC, and IFRS Foundation taxonomies for schema maintenance
   (~3,440 lines).
@@ -353,40 +360,31 @@ challenging validation set**, not merely about straightforward issuers.
 
 ## 3. Schema Architecture
 
-### 3.1 The Declarative Schema (`statement_schema.json`)
+### 3.1 The Declarative Schema (`statement_schema/schemas/`)
 
-The schema is a single JSON file structured as:
+The schema is split across four JSON files in `statement_schema/schemas/`:
 
 ```
-statement_schema.json
-├── version: "2.0"
-├── generated: "2026-03-17"
-├── taxonomy_sources
-│   ├── us_gaap: { years: [2011, 2026], tags_indexed: 3753 }
-│   └── ifrs: { years: [2020, 2025], tags_indexed: 3979 }
-├── detection
-│   ├── insurance_is_signals: [8 tags]
-│   ├── insurance_bs_signals: [5 tags]
-│   ├── financial_signals: [16 tags]
-│   ├── industrial_signals: [5 tags]
-│   ├── diversified_signals: [5 tags]
-│   └── min_financial_signals: 2
-└── statements
-    ├── income_statement
-    │   ├── industrial: [55 rows]
-    │   ├── financial:  [74 rows]
-    │   ├── diversified:[52 rows]
-    │   └── insurance:  [56 rows]
-    ├── balance_sheet
-    │   ├── industrial: [73 rows]
-    │   ├── financial:  [68 rows]
-    │   ├── diversified:[73 rows]
-    │   └── insurance:  [68 rows]
-    └── cash_flow
-        ├── industrial: [57 rows]
-        ├── financial:  [62 rows]
-        ├── diversified:[57 rows]
-        └── insurance:  [62 rows]
+statement_schema/schemas/
+├── _meta.json              # version, generated, taxonomy_sources, detection signals
+│   ├── version: "2.0"
+│   ├── generated: "2026-03-17"
+│   ├── taxonomy_sources
+│   │   ├── us_gaap: { years: [2011, 2026], tags_indexed: 3753 }
+│   │   └── ifrs: { years: [2020, 2025], tags_indexed: 3979 }
+│   └── detection
+│       ├── insurance_is_signals: [8 tags]
+│       ├── insurance_bs_signals: [5 tags]
+│       ├── financial_signals: [16 tags]
+│       ├── industrial_signals: [5 tags]
+│       ├── diversified_signals: [5 tags]
+│       └── min_financial_signals: 2
+├── income_statement.json   # {industrial: [55 rows], financial: [74 rows],
+│                           #  diversified: [52 rows], insurance: [56 rows]}
+├── balance_sheet.json      # {industrial: [73 rows], financial: [68 rows],
+│                           #  diversified: [73 rows], insurance: [68 rows]}
+└── cash_flow.json          # {industrial: [57 rows], financial: [62 rows],
+                            #  diversified: [57 rows], insurance: [62 rows]}
 ```
 
 **3 statements × 4 company types = 12 arrays, totaling 761 row instances
@@ -427,10 +425,18 @@ Each row defines a standardized line item:
 | `period_type` | `"duration"` (flow) or `"instant"` (point-in-time snapshot). |
 | `xbrl_tags` | **Ordered priority chain** of XBRL tags to try during extraction. |
 
-### 3.3 The Runtime Engine (`statement_schema.py`)
+### 3.3 The Runtime Engine (`statement_schema/`)
 
-The engine is a single class, `StatementSchema`, loaded once at module
-import and reused for all calls:
+The runtime engine is a Python package comprising seven modules.
+The `StatementSchema` class in `_schema.py` is the primary entry point,
+loaded once at module import and reused for all calls. Its methods
+delegate to module-level functions in `_detection.py` (company-type
+classification, filing dates, fiscal metadata), `_extraction.py`
+(row-level value extraction, reference filing computation),
+`_imputation.py` (imputation, articulation, identity enforcement), and
+`_rules.py` (pure-data rule definitions). Dataclasses and constants
+live in `_types.py`, and `__init__.py` re-exports all public names
+for backward-compatible imports.
 
 | Method | Purpose |
 |--------|---------|
@@ -456,7 +462,10 @@ statement extraction. The `period` argument accepts `annual`, `quarterly`,
 or `both`; when `both` is requested, the resolver appends records from each
 frequency and distinguishes them via a `frequency` field in the final output.
 
-### 3.5 Key Dataclasses
+### 3.5 Key Dataclasses (`_types.py`)
+
+The following dataclasses are defined in `statement_schema/_types.py` and
+re-exported via `__init__.py`:
 
 ```python
 @dataclass
@@ -682,7 +691,7 @@ Using the latest filing ensures that restatements and amendments are
 reflected in the output:
 
 ```python
-ref_filed_map = _compute_ref_filings(facts, rows_def, frequency, currency)
+ref_filed_map = compute_ref_filings(facts, rows_def, frequency, currency)
 # {period_end_date: latest_filing_date_with_data}
 ```
 
@@ -1667,30 +1676,37 @@ that came from a derivation or correction path.
 
 The schema is maintained across three distinct control surfaces:
 
-1. **Declarative structure** in `statement_schema.json`: row definitions,
-   tag chains, company-type detection signals, and presentation metadata.
-2. **Runtime logic** in `statement_schema.py`: extraction, imputation,
-   corrections, enforcement, date alignment, and merge behavior.
+1. **Declarative structure** in `statement_schema/schemas/`: row definitions,
+   tag chains, company-type detection signals, and presentation metadata,
+   split across `_meta.json`, `income_statement.json`, `balance_sheet.json`,
+   and `cash_flow.json`.
+2. **Runtime logic** in the `statement_schema/` package: `_detection.py`
+   (classification, filing dates), `_extraction.py` (row extraction,
+   reference filings), `_rules.py` (imputation/verification rule data),
+   `_imputation.py` (multi-pass imputation, articulation, enforcement),
+   and `_schema.py` (pipeline orchestration via `StatementSchema`).
 3. **Public output assembly** in `utils/company_facts.py`: record shaping,
    suspect-zero labeling, period selection, multi-CIK ticker mapping, and
    public container semantics.
 
 Maintainers should treat these surfaces differently. Tag additions, label
 changes, sequence changes, and detection-signal changes belong in the schema
-file. Algebraic rules, scope corrections, filing-vintage behavior, and
-verification logic belong in the runtime engine. Record-level semantics and
-public container metadata belong in the output layer. The most common
-maintenance error is making a schema-level change to solve a runtime problem,
-or a runtime change to compensate for a schema gap.
+JSON files. Algebraic rules belong in `_rules.py`. Scope corrections,
+filing-vintage behavior, and verification logic belong in `_imputation.py`
+or `_extraction.py`. Record-level semantics and public container metadata
+belong in `company_facts.py`. The most common maintenance error is making a
+schema-level change to solve a runtime problem, or a runtime change to
+compensate for a schema gap.
 
 ### 16.1 Change Types and Control Points
 
-| Change Type | Primary File | Secondary Review Surface | Notes |
-|-------------|--------------|--------------------------|-------|
-| Add or reorder XBRL tags for an existing concept | `statement_schema.json` | `statement_schema.py` extraction behavior | Use when a filer reports the same economic concept under a missing or poorly prioritized tag. |
-| Add a new standardized row | `statement_schema.json` | `statement_schema.py` articulation and imputation logic | New rows often require parent/factor decisions and may need new rules or verification identities. |
-| Adjust company classification signals | `statement_schema.json` | Validation corpus and `detect_type()` behavior | Only change when the classification rule itself is wrong, not because one filer needs a tag-chain fix. |
-| Add an imputation, correction, or verification rule | `statement_schema.py` | Validation corpus and output diagnostics | Use only when the underlying economic identity is stable and cross-filer safe. |
+| Change Type | Primary File(s) | Secondary Review Surface | Notes |
+|-------------|-----------------|--------------------------|-------|
+| Add or reorder XBRL tags for an existing concept | `schemas/*.json` | `_extraction.py` behavior | Use when a filer reports the same economic concept under a missing or poorly prioritized tag. |
+| Add a new standardized row | `schemas/*.json` | `_imputation.py` articulation and imputation logic | New rows often require parent/factor decisions and may need new rules or verification identities. |
+| Adjust company classification signals | `schemas/_meta.json` | Validation corpus and `detect_type()` in `_detection.py` | Only change when the classification rule itself is wrong, not because one filer needs a tag-chain fix. |
+| Add an imputation or verification rule | `_rules.py` | `_imputation.py`, validation corpus, and output diagnostics | Use only when the underlying economic identity is stable and cross-filer safe. |
+| Add a targeted correction | `_imputation.py` | Validation corpus and output diagnostics | Encode filer-behavior patterns with explicit guard conditions. |
 | Change output semantics or suspect-zero handling | `utils/company_facts.py` | Downstream consumers | These are public-contract changes and should be treated as API-facing. |
 | Add merged history for a multi-CIK ticker | `utils/company_facts.py` | `merge_facts()` behavior | Update the explicit multi-CIK mapping used by the async fetch helper. |
 
@@ -1718,8 +1734,11 @@ identity, the issue is likely semantic rather than coverage-related.
 
 ### 16.3 Rule and Correction Maintenance
 
-Runtime rule changes belong in `statement_schema.py` and should be made only
-when the failure mode is structural rather than lexical. The decision path is:
+Runtime rule changes should be made only when the failure mode is structural
+rather than lexical. Imputation and verification rule *data* belongs in
+`_rules.py`; the *logic* that applies those rules belongs in
+`_imputation.py`. Targeted corrections (scope-mismatch fixes, NCI swaps,
+disc-ops adjustments) also live in `_imputation.py`. The decision path is:
 
 1. **Missing direct fact for a known concept** → tag-chain change.
 2. **Parent-child articulation gap** → parent/factor review or articulation-aware row change.
@@ -1768,10 +1787,10 @@ maintainer has to rediscover the same edge case empirically.
 
 ## 17. Reconstructing the Schema from Scratch
 
-If `statement_schema.json` were lost or a complete rebuild were needed
-(e.g., for a new jurisdiction's GAAP), the following procedure reproduces it
-from primary sources. The tooling to execute most of these steps already
-exists in `xbrl_taxonomy_helper.py`.
+If the `statement_schema/schemas/` JSON files were lost or a complete rebuild
+were needed (e.g., for a new jurisdiction's GAAP), the following procedure
+reproduces them from primary sources. The tooling to execute most of these
+steps already exists in `xbrl_taxonomy_helper.py`.
 
 ### 17.1 Phase 1: Obtain the Canonical Statement Trees
 
@@ -2433,10 +2452,19 @@ reporters with quarterly reporters that have missing interim data.
 
 | File | Lines | Purpose |
 |------|-------|---------|
-| `statement_schema.json` | ~28,600 | Declarative schema: row definitions, tag chains, detection signals |
-| `statement_schema.py` | ~3,920 | Runtime engine: extraction, imputation, articulation, enforcement, verification |
-| `utils/company_facts.py` | ~330 | Public API: `resolve_company_facts`, `get_standardized_financials`, record formatting |
-| `tests/test_company_facts.py` | ~2,120 | Executable regression evidence: synthetic edge cases plus the BlackRock real-data fixture |
+| `statement_schema/schemas/_meta.json` | ~73 | Metadata: version, generated date, taxonomy sources, detection signals |
+| `statement_schema/schemas/income_statement.json` | ~10,470 | Row definitions and tag chains for 4 company types |
+| `statement_schema/schemas/balance_sheet.json` | ~9,410 | Row definitions and tag chains for 4 company types |
+| `statement_schema/schemas/cash_flow.json` | ~8,810 | Row definitions and tag chains for 4 company types |
+| `statement_schema/__init__.py` | ~33 | Package init: re-exports all public names for backward-compatible imports |
+| `statement_schema/_types.py` | ~88 | Dataclasses (`RowDef`, `RowResult`, `StatementResult`, `ValidationWarning`), enums, constants |
+| `statement_schema/_detection.py` | ~420 | Company-type classification, filing-date discovery, fiscal metadata, currency detection |
+| `statement_schema/_extraction.py` | ~730 | Row-level XBRL value extraction, reference filing computation |
+| `statement_schema/_rules.py` | ~310 | Pure data: imputation and verification rule dictionaries |
+| `statement_schema/_imputation.py` | ~1,800 | Multi-pass imputation, hierarchical articulation, identity enforcement, scope corrections |
+| `statement_schema/_schema.py` | ~660 | `StatementSchema` class: pipeline orchestration, `extract`, `extract_all`, `merge_facts` |
+| `utils/company_facts.py` | ~580 | Public API: `resolve_company_facts`, `get_standardized_financials`, record formatting |
+| `tests/test_company_facts.py` | ~2,650 | Executable regression evidence: synthetic edge cases plus the BlackRock real-data fixture |
 | `xbrl_taxonomy_helper.py` | ~3,440 | Taxonomy access: `FASBClient`, `XBRLParser`, `XBRLManager`, `TAXONOMIES` registry |
 
 ---
