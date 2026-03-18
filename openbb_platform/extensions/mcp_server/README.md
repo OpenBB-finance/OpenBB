@@ -2,14 +2,11 @@
 
 This extension enables LLM agents to interact with OpenBB Platform's REST API endpoints through the MCP protocol.
 
-The server provides discovery tools that allow agents to explore different options and dynamically adjust their active toolset.
-This prevents agents from being overwhelmed with too many tools while allowing them to discover and activate only the tools they need for specific tasks.
+The server provides discovery tools that allow agents to explore available categories and dynamically activate only the tools they need.
+This keeps the initial tool list small — preventing token bloat — while still giving agents access to the full platform on demand.
 
-Using dynamic tool discovery has one major drawback, it makes the server a single-user server.
-The tool updates are global, so if one user updates a tool, it will be updated for all users.
-
-If you plan to serve multiple users, you should disable tool discovery,
-and instead use the `allowed_tool_categories` and `default_tool_categories` settings to control the tools that are available to the users.
+Tool visibility changes are **per-session**: each connected client has its own active toolset.
+Multiple agents can connect simultaneously and independently activate different tools without interfering with each other.
 
 ## Installation & Usage
 
@@ -90,7 +87,7 @@ The server can be configured through multiple methods, with settings applied in 
 1.  **Command Line Arguments**: Highest priority, overriding all other methods.
 2.  **Environment Variables**: Each setting can be controlled by an environment variable, which will override the configuration file.
 3.  **Configuration File**: A JSON file at `~/.openbb_platform/mcp_settings.json` provides the base configuration.
-  - If the cnofiguration file does not exist, one will be populated with the defaults.
+  - If the configuration file does not exist, one will be populated with the defaults.
 
 > **Note:** For some data providers you need to set your API key in the `~/.openbb_platform/user_settings.json` file.
 
@@ -221,12 +218,17 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `name` | `OPENBB_MCP_NAME` | string | `"OpenBB MCP"` | Server name. |
 | `description` | `OPENBB_MCP_DESCRIPTION` | string | | Server description. |
 | `version` | `OPENBB_MCP_VERSION` | string | `None` | Server version. |
+| `instructions` | `OPENBB_MCP_INSTRUCTIONS` | string | `None` | Server instructions sent during the MCP `initialize` handshake. Auto-populated from system prompt if not set. |
 | `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | list[string] | `["all"]` | Default active tool categories on startup. |
 | `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | list[string] | `None` | Restricts available tool categories to this list. |
-| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable tool discovery. |
+| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable per-session tool discovery (admin tools for browse/activate/deactivate). |
+| `list_page_size` | `OPENBB_MCP_LIST_PAGE_SIZE` | integer | `None` | Max items per page in MCP list responses. `None` disables pagination. |
 | `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | boolean | `False` | Include response types in tool descriptions. |
 | `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | string | `None` | Path to a text file for the system prompt. |
 | `server_prompts_file` | `OPENBB_MCP_SERVER_PROMPTS_FILE` | string | `None` | Path to a JSON file with a list of server prompt definitions. |
+| `default_skills_dir` | `OPENBB_MCP_DEFAULT_SKILLS_DIR` | string | *(bundled skills dir)* | Path to a directory of bundled skill files. Set to `null` to disable. |
+| `skills_reload` | `OPENBB_MCP_SKILLS_RELOAD` | boolean | `False` | Reload skill files on every read (useful during development). |
+| `skills_providers` | `OPENBB_MCP_SKILLS_PROVIDERS` | list[string] | `None` | Vendor skill provider short-names to load (e.g. `["claude", "cursor"]`). |
 | `cache_expiration_seconds` | `OPENBB_MCP_CACHE_EXPIRATION_SECONDS` | float | `None` | Cache expiration time in seconds. `0` to disable. |
 | `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Behavior for duplicate tools (`warn`, `error`, `replace`, `ignore`). |
 | `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Behavior for duplicate resources. |
@@ -234,8 +236,6 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `resource_prefix_format` | `OPENBB_MCP_RESOURCE_PREFIX_FORMAT` | string | `None` | Format for resource URI prefixes (`protocol` or `path`). |
 | `mask_error_details` | `OPENBB_MCP_MASK_ERROR_DETAILS` | boolean | `None` | Mask error details from user functions. |
 | `dependencies` | `OPENBB_MCP_DEPENDENCIES` | list[string] | `None` | List of dependencies to install. |
-| `include_tags` | `OPENBB_MCP_INCLUDE_TAGS` | set[string] | `None` | Only expose components with these tags. |
-| `exclude_tags` | `OPENBB_MCP_EXCLUDE_TAGS` | set[string] | `None` | Exclude components with these tags. |
 | `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | dict[str, str] | `None` | Map API tags to Python module names for exclusion. |
 | `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | dict | `{"host": "127.0.0.1", "port": "8001"}` | Configuration for the Uvicorn server. |
 | `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | dict | `{}` | Configuration for the async httpx client. |
@@ -269,36 +269,43 @@ Each category contains subcategories that group related functionality (e.g., `eq
 
 An additional set of tools are tagged as "admin", or "prompt".
 
-- available_categories
+- **available_categories**: List all tool categories with subcategory names and tool counts.
 
-- available_tools: List all tools by category.
-  - `category`: Category of tool to list.
-  - `subcategory`: Optional subcategory. Use 'general' for tools directly under the category.
+- **available_tools**: List tools in a specific category (and optional subcategory).
+  - `category`: Category of tools to list.
+  - `subcategory`: Optional subcategory. Use `general` for tools directly under the category.
+  - Inactive tools still show a short description so they remain discoverable.
 
-- activate_tools: Activate a tool for use.
-  - `tool_names`: Names of tools to activate. Comma-separated string for multiple.
+- **activate_tools**: Activate one or more tools by name for this session.
+  - `tool_names`: List of tool names to activate.
 
-- deactivate_tools: Deactivate a tool after use.
-  - `tool_names`: Names of tools to deactivate. Comma-separated string for multiple.
+- **deactivate_tools**: Deactivate one or more tools by name for this session.
+  - `tool_names`: List of tool names to deactivate.
 
-- list_prompts: Lists all available prompts in the server.
+- **activate_category**: Activate all tools in a category (or subcategory) at once.
+  - `category`: Category name.
+  - `subcategory`: Optional subcategory to narrow the activation.
 
-- execute_prompt: Execute a prompt with arguments, if any.
+- **list_prompts**: Lists all available prompts in the server.
+
+- **execute_prompt**: Execute a prompt with arguments, if any.
   - `prompt_name`: Name of the prompt to execute.
   - `arguments`: Dictionary of argument:value for the prompt.
 
 ## Tool Discovery
 
-When `enable_tool_discovery` is enabled (default), the server provides discovery tools that allow agents to:
+When `enable_tool_discovery` is enabled (default), the server registers a small set of admin tools that let agents progressively discover and activate what they need:
 
-- Discover available tool categories and subcategories
-- See tool counts and descriptions before activating
-- Enable/disable specific tools dynamically during a session
-- Start with minimal tools and progressively add more as needed
+1. **Browse** — `available_categories` returns the category tree with tool counts.
+2. **Inspect** — `available_tools` lists every tool in a category with its active/inactive state and a short description.
+3. **Activate** — `activate_tools` or `activate_category` enables specific tools (or an entire category) for the current session.
+4. **Deactivate** — `deactivate_tools` removes tools when they are no longer needed.
 
-To take full advantage of minimal startup tools, you should set the `--default-categories` argument to `admin`. This will enable only the discovery tools at startup.
+All visibility changes are **per-session** — each client maintains its own active toolset, so the server is safe for multi-user deployments.
 
-For multi-client deployments or scenarios where you want a fixed toolset, disable tool discovery with `--no-tool-discovery`.
+To take full advantage of minimal startup tools, set `--default-categories admin` so only the discovery tools are active on connect.
+
+For scenarios where you want a completely fixed toolset (no discovery overhead), disable it with `--no-tool-discovery` and control the available tools via `allowed_tool_categories` and `default_tool_categories`.
 
 ## System Prompt
 
@@ -308,6 +315,54 @@ It should be a valid, relative or absolute, path to a `.txt` file.
 The system prompt is made available as a resource, `resource://system_prompt`, and is discoverable from the, `list_prompts`, tool.
 
 Clients will not automatically use the system prompt, instruct them to use it as part of their onboarding and orientation.
+
+## Skills
+
+The server ships with a set of bundled **skill guides** — Markdown documents that teach an agent how to perform complex multi-step tasks with the OpenBB Platform.
+Skills are exposed as MCP resources and are discoverable via `list_resources()`.
+
+Each skill is available at a URI of the form `skill://<name>/SKILL.md`.
+
+### Bundled Skills
+
+| Skill | URI | Description |
+|---|---|---|
+| `develop_extension` | `skill://develop_extension/SKILL.md` | Step-by-step guide for building an OpenBB Platform extension. |
+| `build_workspace_app` | `skill://build_workspace_app/SKILL.md` | Guide for building and running OpenBB Workspace applications. |
+| `configure_mcp_server` | `skill://configure_mcp_server/SKILL.md` | Reference for configuring and customising the OpenBB MCP Server. |
+| `work_with_server` | `skill://work_with_server/SKILL.md` | Practical guide for working with the OpenBB MCP Server as an agent. |
+
+When any skills are loaded and no `system_prompt_file` is configured, the server automatically adds a brief default system prompt that nudges the agent to discover available skills.
+
+### Skill Settings
+
+| Setting | Description |
+|---|---|
+| `default_skills_dir` | Path to the bundled skills directory. Set to `null` or an empty string to disable loading the built-in skills. |
+| `skills_reload` | Set to `true` to reload skill files from disk on every read — useful when authoring or iterating on skill content. |
+| `skills_providers` | A list of vendor skill provider short-names. Supported values: `claude`, `cursor`, `vscode`, `copilot`, `codex`, `gemini`, `goose`, `opencode`. |
+
+**Example — disable bundled skills:**
+
+```json
+{
+  "default_skills_dir": null
+}
+```
+
+**Example — load vendor skill providers:**
+
+```json
+{
+  "skills_providers": ["claude", "cursor"]
+}
+```
+
+**Example — enable skill reload during development:**
+
+```env
+OPENBB_MCP_SKILLS_RELOAD=true
+```
 
 ## Server Prompts
 

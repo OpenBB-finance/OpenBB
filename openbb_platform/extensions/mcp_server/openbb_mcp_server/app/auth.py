@@ -5,7 +5,7 @@ import binascii
 import secrets
 
 from fastapi import HTTPException
-from fastmcp.server.auth.auth import AuthProvider
+from fastmcp.server.auth import AuthProvider
 from mcp.server.auth.provider import AccessToken
 from starlette.requests import Request
 
