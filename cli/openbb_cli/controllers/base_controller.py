@@ -201,7 +201,7 @@ class BaseController(metaclass=ABCMeta):
         # Single command fed, process
         else:
             try:
-                (known_args, other_args) = self.parser.parse_known_args(
+                known_args, other_args = self.parser.parse_known_args(
                     shlex.split(an_input)
                 )
             except Exception as exc:
@@ -622,7 +622,7 @@ class BaseController(metaclass=ABCMeta):
             system_clear()
 
         try:
-            (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+            ns_parser, l_unknown_args = parser.parse_known_args(other_args)
         except SystemExit:
             # In case the command has required argument that isn't specified
             session.console.print("\n")
@@ -768,11 +768,45 @@ class BaseController(metaclass=ABCMeta):
                 ),
                 -1,
             )
-            # Split comma-separated arguments, except for the argument at routine_args_index
+            # Collect indices whose values should NOT be comma-split because
+            # the provider may accept a comma-separated string (e.g. --symbol
+            # AAPL,MSFT).  Handles --flag value, --flag=value, -f value, and
+            # multi-value flags (nargs="+" / nargs="*" / nargs=N).
+            no_split_indices: set[int] = set()
+            if 0 <= routine_args_index < len(other_args):
+                no_split_indices.add(routine_args_index)
+
+            for i, arg in enumerate(other_args):
+                if not arg.startswith("-"):
+                    continue
+                # Handle --flag=value by extracting the flag portion.
+                flag_part = arg.split("=", 1)[0] if "=" in arg else arg
+                for action in parser._actions:  # pylint: disable=protected-access
+                    if flag_part in action.option_strings and action.nargs != 0:
+                        if "=" in arg:
+                            # Value is embedded in the same token.
+                            no_split_indices.add(i)
+                        elif action.nargs in ("+", "*") or (
+                            isinstance(action.nargs, int) and action.nargs > 1
+                        ):
+                            # Multi-value flag: protect all consecutive
+                            # non-flag tokens after the flag.
+                            j = i + 1
+                            while j < len(other_args) and not other_args[j].startswith(
+                                "-"
+                            ):
+                                no_split_indices.add(j)
+                                j += 1
+                        # Single-value flag: protect the next token.
+                        elif i + 1 < len(other_args):
+                            no_split_indices.add(i + 1)
+                        break
+
+            # Split comma-separated arguments only for positional / unflagged values.
             other_args = [
                 part
                 for index, arg in enumerate(other_args)
-                for part in (arg.split(",") if index != routine_args_index else [arg])
+                for part in ([arg] if index in no_split_indices else arg.split(","))
             ]
 
             # Check if the action has optional choices, if yes, remove them
@@ -780,7 +814,7 @@ class BaseController(metaclass=ABCMeta):
                 if getattr(action, "optional_choices", None):
                     action.choices = None
 
-            (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+            ns_parser, l_unknown_args = parser.parse_known_args(other_args)
 
             if export_allowed in [
                 "raw_data_only",
