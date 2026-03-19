@@ -1,28 +1,4 @@
-"""Company Facts — Standardized Financial Statements from SEC XBRL Data.
-
-Schema-driven extraction engine that resolves evolving XBRL taxonomy tags into
-a fixed set of standard financial statement line items using
-``statement_schema.json``.  Produces three normalized tables — Income Statement,
-Balance Sheet, and Cash Flow Statement — each available as both annual and
-quarterly views.
-
-Features:
-  - **250 standardized tags** across industrial, financial, diversified, and insurance templates
-  - **Dual namespace** — US-GAAP (``us-gaap``) and IFRS (``ifrs-full``)
-  - **Auto-detection** — classifies companies as industrial, financial, diversified, or insurance
-  - **Q4 derivation** — ``Q4 = Annual − Q1 − Q2 − Q3`` for duration items
-  - **Tag chain resolution** — tries multiple XBRL tags per concept in priority
-    order, handling tag evolution across taxonomy years
-
-Usage::
-
-    from openbb_sec.utils.company_facts import resolve_company_facts
-
-    result = resolve_company_facts(facts_json, period="annual")
-    # result.income_statement  -> list of dicts (one per period)
-    # result.balance_sheet     -> list of dicts
-    # result.cash_flow         -> list of dicts
-"""
+"""Company Facts — Standardized Financial Statements from SEC XBRL Data."""
 
 # pylint: disable=R0917
 
