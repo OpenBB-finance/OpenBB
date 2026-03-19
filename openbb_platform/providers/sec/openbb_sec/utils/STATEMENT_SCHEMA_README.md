@@ -46,7 +46,7 @@ files, supported by a public API layer and a taxonomy maintenance tool:
   verification rule definitions), `_imputation.py` (multi-pass imputation,
   hierarchical articulation, identity enforcement), `_schema.py`
   (`StatementSchema` class orchestrating the pipeline), and `__init__.py`.
-- **`utils/company_facts.py`** — The public API: wraps the engine, merges
+- **`company_facts.py`** — The public API: wraps the engine, merges
    configured multi-CIK histories, and produces long-format records with full
    provenance per line item per period.
 - **`xbrl_taxonomy_helper.py`** — Taxonomy infrastructure: programmatic
@@ -445,7 +445,7 @@ for backward-compatible imports.
 | `get_fiscal_meta(facts, frequency, dates)` | Build fiscal year/period metadata per date |
 | `merge_facts(*facts_list)` | Merge multiple CIKs' Company Facts (e.g., BlackRock's CIK transition) |
 
-### 3.4 The Public API (`utils/company_facts.py`)
+### 3.4 The Public API (`company_facts.py`)
 
 | Function | Purpose |
 |----------|---------|
@@ -1307,7 +1307,7 @@ holds within tolerance, NI is switched to the parent-only value.
 Source: `"us-gaap:NetIncomeLoss(NCI-corrected)"`.
 
 This correction requires access to the raw Company Facts JSON — the `facts`
-dict is passed into the `_impute()` method specifically to enable this
+dict is passed into the `impute()` method specifically to enable this
 lookup.
 
 ### 11.8 CF Discontinued Operations Correction (Disney/Merck/Coca-Cola)
@@ -1589,7 +1589,7 @@ per-filing) or balance sheet data (BS values are always per-filing because
 instant snapshots are only available from the filing that reported them).
 
 Additionally, `pit_mode` changes filing-date selection from *latest* to
-*earliest* in `_compute_ref_filings`, and disables the 450-day filing cap
+*earliest* in `compute_ref_filings`, and disables the 450-day filing cap
 (Section 6.1), since the goal is to capture the original filing regardless
 of when later amendments were filed.
 
@@ -1606,7 +1606,7 @@ earliest possible date.
 
 ### 14.1 Record Schema
 
-`utils/company_facts.py` converts each `StatementResult` into long-format
+`company_facts.py` converts each `StatementResult` into long-format
 records and applies the final output-layer source rewrites used by the public
 API:
 
@@ -1656,7 +1656,7 @@ row:
 ### 15.2 Current Behavior
 
 The suspect-zero policy is applied in the **output-building layer**, not in
-the core extraction engine. When `utils/company_facts.py` converts a
+the core extraction engine. When `company_facts.py` converts a
 `StatementResult` into long-format records, any exact zero whose source begins
 with `"imputed"`, `"corrected"`, `"reconciled"`, `"Q4:"`, or `"H2:"` is
 rewritten to an `imputed-zero` source label. If the source already begins
@@ -1683,7 +1683,7 @@ The schema is maintained across three distinct control surfaces:
    reference filings), `_rules.py` (imputation/verification rule data),
    `_imputation.py` (multi-pass imputation, articulation, enforcement),
    and `_schema.py` (pipeline orchestration via `StatementSchema`).
-3. **Public output assembly** in `utils/company_facts.py`: record shaping,
+3. **Public output assembly** in `company_facts.py`: record shaping,
    suspect-zero labeling, period selection, multi-CIK ticker mapping, and
    public container semantics.
 
@@ -1705,8 +1705,8 @@ compensate for a schema gap.
 | Adjust company classification signals | `schemas/_meta.json` | Validation corpus and `detect_type()` in `_detection.py` | Only change when the classification rule itself is wrong, not because one filer needs a tag-chain fix. |
 | Add an imputation or verification rule | `_rules.py` | `_imputation.py`, validation corpus, and output diagnostics | Use only when the underlying economic identity is stable and cross-filer safe. |
 | Add a targeted correction | `_imputation.py` | Validation corpus and output diagnostics | Encode filer-behavior patterns with explicit guard conditions. |
-| Change output semantics or suspect-zero handling | `utils/company_facts.py` | Downstream consumers | These are public-contract changes and should be treated as API-facing. |
-| Add merged history for a multi-CIK ticker | `utils/company_facts.py` | `merge_facts()` behavior | Update the explicit multi-CIK mapping used by the async fetch helper. |
+| Change output semantics or suspect-zero handling | `company_facts.py` | Downstream consumers | These are public-contract changes and should be treated as API-facing. |
+| Add merged history for a multi-CIK ticker | `company_facts.py` | `merge_facts()` behavior | Update the explicit multi-CIK mapping used by the async fetch helper. |
 
 ### 16.2 Tag-Chain Maintenance
 
@@ -2461,7 +2461,7 @@ reporters with quarterly reporters that have missing interim data.
 | `statement_schema/_rules.py` | ~310 | Pure data: imputation and verification rule dictionaries |
 | `statement_schema/_imputation.py` | ~1,800 | Multi-pass imputation, hierarchical articulation, identity enforcement, scope corrections |
 | `statement_schema/_schema.py` | ~660 | `StatementSchema` class: pipeline orchestration, `extract`, `extract_all`, `merge_facts` |
-| `utils/company_facts.py` | ~580 | Public API: `resolve_company_facts`, `get_standardized_financials`, record formatting |
+| `company_facts.py` | ~580 | Public API: `resolve_company_facts`, `get_standardized_financials`, record formatting |
 | `tests/test_company_facts.py` | ~2,650 | Executable regression evidence: synthetic edge cases plus the BlackRock real-data fixture |
 | `xbrl_taxonomy_helper.py` | ~3,440 | Taxonomy access: `FASBClient`, `XBRLParser`, `XBRLManager`, `TAXONOMIES` registry |
 

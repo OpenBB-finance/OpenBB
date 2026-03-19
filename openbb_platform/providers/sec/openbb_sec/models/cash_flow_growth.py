@@ -502,16 +502,18 @@ class SecCashFlowStatementGrowthFetcher(
         results = [
             SecCashFlowStatementGrowthData.model_validate(d) for d in sorted_periods
         ]
-        field_sources: dict[str, str] = {}
+        field_sources: dict[str, dict[str, str]] = {}
 
-        for date_sources in sources.values():
+        for date_key, date_sources in sources.items():
             for tag, source in date_sources.items():
-                if tag not in field_sources and source:
-                    field_sources[tag] = source
+                if source:
+                    if tag not in field_sources:
+                        field_sources[tag] = {}
+                    field_sources[tag][date_key] = source
 
-        for tag, src in field_sources.items():
+        for tag, period_sources in field_sources.items():
             if tag in field_meta:
-                field_meta[tag]["source"] = src
+                field_meta[tag]["sources"] = period_sources
 
         metadata: dict = {
             "entity_name": result.entity_name,

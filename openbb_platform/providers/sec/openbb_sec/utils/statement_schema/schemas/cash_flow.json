@@ -578,6 +578,10 @@
           "last_year": 2026
         },
         {
+          "tag": "AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivitiesOther",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "OtherAdjustmentsToReconcileProfitLoss",
           "namespace": "ifrs-full"
         },
@@ -612,14 +616,6 @@
         {
           "tag": "AdjustmentsForGainsLossesOnChangeInFairValueOfDerivatives",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AmortizationOfFinancingCosts",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "AmortizationOfFinancingCostsAndDiscounts",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -2868,20 +2864,16 @@
           "last_year": 2026
         },
         {
+          "tag": "AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivitiesOther",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "OtherAdjustmentsToReconcileProfitLoss",
           "namespace": "ifrs-full"
         },
         {
           "tag": "AdjustmentsForProvisions",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AmortizationOfFinancingCosts",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "AmortizationOfFinancingCostsAndDiscounts",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -5003,6 +4995,10 @@
           "last_year": 2026
         },
         {
+          "tag": "AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivitiesOther",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "OtherAdjustmentsToReconcileProfitLoss",
           "namespace": "ifrs-full"
         },
@@ -5037,14 +5033,6 @@
         {
           "tag": "AdjustmentsForGainsLossesOnChangeInFairValueOfDerivatives",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AmortizationOfFinancingCosts",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "AmortizationOfFinancingCostsAndDiscounts",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -7253,20 +7241,16 @@
           "last_year": 2026
         },
         {
+          "tag": "AdjustmentsNoncashItemsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivitiesOther",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "OtherAdjustmentsToReconcileProfitLoss",
           "namespace": "ifrs-full"
         },
         {
           "tag": "AdjustmentsForProvisions",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AmortizationOfFinancingCosts",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "AmortizationOfFinancingCostsAndDiscounts",
-          "namespace": "us-gaap"
         }
       ]
     },
