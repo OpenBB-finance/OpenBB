@@ -10,6 +10,7 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_federal_reserve.models.rssd_map import resolve_rssd
 from curl_cffi import requests as curl_requests
 
 
@@ -48,7 +49,7 @@ class FfiecRiskFetcher(
     def extract_data(query: FfiecRiskQueryParams, credentials: dict, **kwargs) -> pd.DataFrame:
         """Downloads the FR Y-15 CSV from the FFIEC NIC web portal."""
 
-        rssd_id = query.rssd_id
+        rssd_id = resolve_rssd(query.rssd_id)
         target_date = query.date.strftime("%Y%m%d") if query.date else "20241231"
 
         url = f"https://www.ffiec.gov/npw/FinancialReport/ReturnFinancialReportCSV?rpt=FRY15&id={rssd_id}&dt={target_date}"
