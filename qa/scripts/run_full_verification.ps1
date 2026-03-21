@@ -176,6 +176,20 @@ function PortOpen([string]$HostName, [int]$Port) {
   }
 }
 
+function ResolveRepoPython([string]$RepoRootPath, [string]$PreferredPython = "python") {
+  $resolver = Join-Path $repoRoot "qa/scripts/resolve_python.py"
+  if (-not (Test-Path -LiteralPath $resolver)) {
+    throw "Missing resolver script: $resolver"
+  }
+
+  $resolved = & $PreferredPython $resolver $RepoRootPath
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to resolve Python executable for $RepoRootPath"
+  }
+
+  return $resolved.Trim()
+}
+
 function WaitApi([int]$Port, [int]$Timeout = 120) {
   $deadline = (Get-Date).AddSeconds($Timeout)
   while ((Get-Date) -lt $deadline) {
@@ -327,10 +341,13 @@ foreach ($target in $targets) {
   if (-not (Test-Path -LiteralPath $rootPath)) {
     $log = Join-Path $rootOut "root_missing.log"
     Set-Content -LiteralPath $log -Value "Missing root: $rootPath"
-    $list.Add((NewGate "root_exists" "FAIL" $root "Test-Path $rootPath" $log 0 ""))
-    $rootFail = $true
-    $hasFail = $true
-    $roots.Add([pscustomobject]@{ root_path = $target.path; root_label = $root; ci_required = [bool]$target.ci_required; overall_status = "FAIL"; gates = @($list) })
+    $missingStatus = if ([bool]$target.ci_required) { "FAIL" } else { "SKIP" }
+    $list.Add((NewGate "root_exists" $missingStatus $root "Test-Path $rootPath" $log 0 ""))
+    if ($missingStatus -eq "FAIL") {
+      $rootFail = $true
+      $hasFail = $true
+    }
+    $roots.Add([pscustomobject]@{ root_path = $target.path; root_label = $root; ci_required = [bool]$target.ci_required; overall_status = $missingStatus; gates = @($list) })
     continue
   }
 
@@ -341,14 +358,22 @@ foreach ($target in $targets) {
   $doCli = [bool]$target.run_cli -and (-not $SkipCli)
   $doDesktop = [bool]$target.run_desktop -and (-not $SkipDesktop)
   $doFrontend = [bool]$target.run_frontend_components -and (-not $SkipFrontendComponents)
+  $rootPython = ResolveRepoPython -RepoRootPath $rootPath
+  $resolvedPythonLog = Join-Path $rootOut "resolved_python.log"
+  Set-Content -LiteralPath $resolvedPythonLog -Value "Resolved Python executable: $rootPython"
+  $list.Add((NewGate "resolved_python" "PASS" $root $rootPython $resolvedPythonLog 0 ""))
 
   if ($doPlatform) {
-    $status = RunGate $list $root "deps_platform_install" $rootPath (Join-Path $rootOut "deps_platform_install.log") "python" @("openbb_platform/dev_install.py", "-e")
+    $status = RunGate $list $root "deps_platform_install" $rootPath (Join-Path $rootOut "deps_platform_install.log") $rootPython @("openbb_platform/dev_install.py", "-e")
     if ($status -eq "FAIL") { $rootFail = $true }
+    $rootPython = ResolveRepoPython -RepoRootPath $rootPath
+    Set-Content -LiteralPath $resolvedPythonLog -Value "Resolved Python executable: $rootPython"
   }
   if ($doCli) {
-    $status = RunGate $list $root "deps_platform_cli_install" $rootPath (Join-Path $rootOut "deps_platform_cli_install.log") "python" @("openbb_platform/dev_install.py", "-e", "--cli")
+    $status = RunGate $list $root "deps_platform_cli_install" $rootPath (Join-Path $rootOut "deps_platform_cli_install.log") $rootPython @("openbb_platform/dev_install.py", "-e", "--cli")
     if ($status -eq "FAIL") { $rootFail = $true }
+    $rootPython = ResolveRepoPython -RepoRootPath $rootPath
+    Set-Content -LiteralPath $resolvedPythonLog -Value "Resolved Python executable: $rootPython"
   }
   if ($doDesktop -and (Test-Path -LiteralPath (Join-Path $rootPath "desktop/package.json"))) {
     $status = RunGate $list $root "deps_desktop_npm_ci" (Join-Path $rootPath "desktop") (Join-Path $rootOut "deps_desktop_npm_ci.log") "npm" @("ci")
@@ -379,7 +404,7 @@ foreach ($target in $targets) {
         @{ gate = "static_python_pylint"; args = @("-m", "pylint", "openbb_platform", "cli") },
         @{ gate = "static_python_black"; args = @("-m", "black", "--check", "openbb_platform", "cli") }
       )) {
-        $status = RunGate $list $root $item.gate $rootPath (Join-Path $rootOut "$($item.gate).log") "python" $item.args
+        $status = RunGate $list $root $item.gate $rootPath (Join-Path $rootOut "$($item.gate).log") $rootPython $item.args
         if ($status -eq "FAIL") { $rootFail = $true }
       }
     }
@@ -404,7 +429,7 @@ foreach ($target in $targets) {
         $status = RunGate $list $root $gate $rootPath (Join-Path $rootOut "$gate.log") $noxFile $args
         if ($status -eq "FAIL") { $rootFail = $true }
       }
-      $status = RunGate $list $root "unit_targeted_python" $rootPath (Join-Path $rootOut "unit_targeted_python.log") "python" @("-m", "pytest", "openbb_platform/core/tests/app/test_extension_loader.py", "openbb_platform/extensions/quant_ml/tests/test_macro_fred_client.py")
+      $status = RunGate $list $root "unit_targeted_python" $rootPath (Join-Path $rootOut "unit_targeted_python.log") $rootPython @("-m", "pytest", "openbb_platform/core/tests/app/test_extension_loader.py", "openbb_platform/extensions/quant_ml/tests/test_macro_fred_client.py")
       if ($status -eq "FAIL") { $rootFail = $true }
     }
     if ($doCli) {
@@ -437,7 +462,7 @@ foreach ($target in $targets) {
   }
 
   if (-not $SkipIntegration -and ($doPlatform -or $doCli)) {
-    $args = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $repoRoot "qa/scripts/run_integration_gate.ps1"), "-RootPath", $rootPath, "-RunId", $RunId, "-OutputBaseDir", $outBase, "-ProviderConfigPath", $providerPath, "-PythonCommand", "python")
+    $args = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $repoRoot "qa/scripts/run_integration_gate.ps1"), "-RootPath", $rootPath, "-RunId", $RunId, "-OutputBaseDir", $outBase, "-ProviderConfigPath", $providerPath, "-PythonCommand", $rootPython)
     if (-not $doPlatform) { $args += "-SkipPythonIntegration"; $args += "-SkipApiIntegration" }
     if (-not $doCli) { $args += "-SkipCliIntegration" }
     if ($DryRun) { $args += "-DryRun" }
@@ -488,7 +513,7 @@ foreach ($target in $targets) {
       }
 
       $pySmoke = "from openbb import obb; assert hasattr(obb,'equity'); assert hasattr(obb,'economy'); assert hasattr(obb,'quant_ml') or hasattr(obb,'quantitative'); x=obb.equity.price.historical('AAPL',provider='yfinance',limit=1); assert x; print('ok')"
-      $status = RunGate $list $root "smoke_python_domains" $rootPath (Join-Path $rootOut "smoke_python_domains.log") "python" @("-c", $pySmoke)
+      $status = RunGate $list $root "smoke_python_domains" $rootPath (Join-Path $rootOut "smoke_python_domains.log") $rootPython @("-c", $pySmoke)
       if ($status -eq "FAIL") { $rootFail = $true }
     }
 
@@ -497,7 +522,7 @@ foreach ($target in $targets) {
       if ($null -ne $openbb) {
         $status = RunGate $list $root "smoke_cli_help" $rootPath (Join-Path $rootOut "smoke_cli_help.log") $openbb.Source @("--help")
       } else {
-        $status = RunGate $list $root "smoke_cli_help" $rootPath (Join-Path $rootOut "smoke_cli_help.log") "python" @("-m", "openbb_cli.cli", "--help")
+        $status = RunGate $list $root "smoke_cli_help" $rootPath (Join-Path $rootOut "smoke_cli_help.log") $rootPython @("-m", "openbb_cli.cli", "--help")
       }
       if ($status -eq "FAIL") { $rootFail = $true }
     }
@@ -570,7 +595,8 @@ $summary = [ordered]@{
 $summaryPath = Join-Path $runDir "run_summary.json"
 $summary | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $summaryPath -Encoding utf8
 
-$collect = RunCommand -FilePath "python" -CmdArgs @("qa/scripts/collect_results.py", "--run-dir", $runDir, "--output", (Join-Path $runDir "summary.json"), "--report", (Join-Path $repoRoot "docs/qa/full-verification.md")) -Cwd $repoRoot -LogFile (Join-Path $runDir "collect_results.log") -DryMode:$DryRun
+$repoPython = ResolveRepoPython -RepoRootPath $repoRoot
+$collect = RunCommand -FilePath $repoPython -CmdArgs @("qa/scripts/collect_results.py", "--run-dir", $runDir, "--output", (Join-Path $runDir "summary.json"), "--report", (Join-Path $repoRoot "docs/qa/full-verification.md")) -Cwd $repoRoot -LogFile (Join-Path $runDir "collect_results.log") -DryMode:$DryRun
 
 if ($hasFail) {
   Write-Host "Full verification failed. See $summaryPath"

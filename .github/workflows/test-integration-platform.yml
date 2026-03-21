@@ -45,11 +45,25 @@ jobs:
       - name: Install base dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest
 
       - name: Install OpenBB platform (editable)
         run: |
           python openbb_platform/dev_install.py -e
+
+      - name: Resolve repo Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHON_CMD="$(python qa/scripts/resolve_python.py .)"
+          echo "PYTHON_CMD=$PYTHON_CMD" >> "$GITHUB_ENV"
+
+      - name: Python preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$PYTHON_CMD" -c "import sys; print(sys.executable)"
+          "$PYTHON_CMD" --version
+          "$PYTHON_CMD" -m pip install pytest
 
       - name: Run platform integration gate
         shell: pwsh
@@ -59,7 +73,7 @@ jobs:
             -RunId "ci_platform_${{ github.run_id }}_${{ matrix.python_version }}" `
             -OutputBaseDir logs/verification `
             -ProviderConfigPath qa/config/provider_tiers.yaml `
-            -PythonCommand python `
+            -PythonCommand $env:PYTHON_CMD `
             -SkipCliIntegration
 
       - name: Upload integration artifacts

@@ -59,27 +59,45 @@ jobs:
       - name: Install platform dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest
           python openbb_platform/dev_install.py -e
+
+      - name: Resolve repo Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHON_CMD="$(python qa/scripts/resolve_python.py .)"
+          echo "PYTHON_CMD=$PYTHON_CMD" >> "$GITHUB_ENV"
+
+      - name: Python preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$PYTHON_CMD" -c "import sys; print(sys.executable)"
+          "$PYTHON_CMD" --version
+          "$PYTHON_CMD" -m pip install pytest
 
       - name: Run quant unit and regression suite
         shell: bash
         run: |
           set -euo pipefail
           export PYTHONPATH="${GITHUB_WORKSPACE}/openbb_platform/extensions/quant_ml:${PYTHONPATH:-}"
-          python -m pytest openbb_platform/extensions/quant_ml/tests -q
-          python -m pytest \
+          "$PYTHON_CMD" -m pytest openbb_platform/extensions/quant_ml/tests -q
+          "$PYTHON_CMD" -m pytest \
             openbb_platform/extensions/quant_ml/tests/test_backtest.py \
             openbb_platform/extensions/quant_ml/tests/test_walkforward_backtest.py \
             openbb_platform/extensions/quant_ml/tests/test_quant_router_extra.py -q
-          python -m compileall openbb_platform/extensions/quant_ml/openbb_quant_ml
+          "$PYTHON_CMD" -m compileall openbb_platform/extensions/quant_ml/openbb_quant_ml
 
       - name: Build desktop contract consumer
         working-directory: desktop
         run: |
           npm ci
           npm run lint
-          npm run build
+          npm run build:verify-generated
+
+      - name: Verify generated route tree is clean
+        working-directory: desktop
+        run: git diff --exit-code -- src/routeTree.gen.ts
 
   docker_build:
     runs-on: ubuntu-latest

@@ -58,7 +58,8 @@ jobs:
 
       - run: |
           pip install openbb-devtools
-          pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
+          pip install pre-commit types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
+      - run: pre-commit run mixed-line-ending check-generated-files check-root-scratch-denylist --all-files
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: |
           # Run linters for openbb_platform | cli

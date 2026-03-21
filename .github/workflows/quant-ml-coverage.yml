@@ -31,14 +31,28 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov
           python openbb_platform/dev_install.py -e
+
+      - name: Resolve repo Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHON_CMD="$(python qa/scripts/resolve_python.py .)"
+          echo "PYTHON_CMD=$PYTHON_CMD" >> "$GITHUB_ENV"
+
+      - name: Python preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$PYTHON_CMD" -c "import sys; print(sys.executable)"
+          "$PYTHON_CMD" --version
+          "$PYTHON_CMD" -m pip install pytest pytest-cov
 
       - name: Run quant_ml tests with coverage gate
         shell: bash
         run: |
           set -euo pipefail
-          pytest openbb_platform/extensions/quant_ml/tests \
+          "$PYTHON_CMD" -m pytest openbb_platform/extensions/quant_ml/tests \
             --cov=openbb_platform/extensions/quant_ml/openbb_quant_ml \
             --cov-report=term-missing \
             --cov-report=xml \

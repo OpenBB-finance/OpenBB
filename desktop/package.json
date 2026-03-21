@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "vite --port 1470",
     "build": "tsc && vite build",
+    "routes:check": "git diff --exit-code -- src/routeTree.gen.ts",
+    "build:verify-generated": "npm run build && npm run routes:check",
     "preview": "vite preview",
     "tauri": "tauri",
     "test": "vitest",

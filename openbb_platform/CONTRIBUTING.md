@@ -223,6 +223,10 @@ For development setup, use the provided script to install all extensions and the
 
 - From the root of the repo call `python dev_install.py --extras`
 
+`dev_install.py` now bootstraps required helper modules such as `tomlkit` and `poetry` automatically. It is fail-fast: if installation cannot be completed, the script restores temporary file changes and exits non-zero.
+
+After installation, resolve the canonical interpreter with `python ../qa/scripts/resolve_python.py ..` and use that interpreter for `pytest`, local integration gates, and other QA commands.
+
 > **Note**: If developing an extension, you can avoid installing all extensions to prevent unnecessary overhead.
 
 #### Dependency Management with Poetry
@@ -703,6 +707,12 @@ There are many ways to contribute to the OpenBB Platform. You can add a [new dat
 
 We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 
+Repository hygiene rules that apply to all contributors:
+
+- Use the repo `.venv` as the canonical Python environment once the editable install is complete.
+- Do not manually edit checked-in generated files such as `desktop/src/routeTree.gen.ts`.
+- Keep local scratch artifacts in `.tmp/local/` or `.logs/local/`; do not add new root-level scratch filenames.
+
 Primarily, we have tools that semi-automate the creation of unit and integration tests.
 
 > The QA tools are still in development and we are constantly improving them.
@@ -880,6 +890,7 @@ To create a PR to the OpenBB Platform, you'll need to fork the repository and cr
    solves an issue raised by a user, you may specify such an issue by adding #ISSUE_NUMBER to the commit message, so that
    these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
    to go back to step 3 to add these.
+5. Confirm `git status --porcelain` is clean after your local verification commands. Generated-file drift and root scratch files should be resolved before you open a PR.
 
 ##### Branch Naming Conventions
 

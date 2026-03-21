@@ -144,11 +144,14 @@ jobs:
       - name: Lint frontend code
         run: npm run lint
 
-      - name: Type check
-        run: ./node_modules/.bin/tsc --noEmit
+      - name: Build frontend and verify generated routes
+        run: npm run build:verify-generated
 
       - name: Run frontend tests
         run: npm run test -- --watch=false
+
+      - name: Verify generated route tree is clean
+        run: git diff --exit-code -- src/routeTree.gen.ts
 
   finalize:
     runs-on: ubuntu-latest

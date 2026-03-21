@@ -148,8 +148,14 @@ jobs:
 
       - name: Install Modules
         run: |
-          npm install
+          npm ci
           cyclonedx-npm --output-format XML --gather-license-texts --output-file src-tauri/open-data-platform-SBOM-npm.cdx.xml
+
+      - name: Build frontend and verify generated routes
+        run: npm run build:verify-generated
+
+      - name: Verify generated route tree is clean
+        run: git diff --exit-code -- src/routeTree.gen.ts
 
       - name: Install cargo-cyclonedx
         shell: pwsh

@@ -2,11 +2,14 @@
 
 # flake8: noqa: S603
 
+from __future__ import annotations
+
+import importlib
+import importlib.util
+import os
 import subprocess
 import sys
 from pathlib import Path
-
-from tomlkit import dumps, load, loads
 
 PLATFORM_PATH = Path(__file__).parent.resolve()
 LOCK = PLATFORM_PATH / "poetry.lock"
@@ -76,12 +79,42 @@ openbb-technical = { path = "./extensions/technical", optional = true, develop =
 """
 
 
+def _ensure_python_module(module_name: str, pip_name: str) -> None:
+    """Ensure a Python module is importable, bootstrapping it with pip if needed."""
+    if importlib.util.find_spec(module_name) is not None:
+        return
+
+    bootstrap_env = os.environ.copy()
+    bootstrap_env.setdefault("PYTHONIOENCODING", "utf-8")
+    bootstrap_env.setdefault("PYTHONUTF8", "1")
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", pip_name],
+        check=True,
+        env=bootstrap_env,
+    )
+
+
+def _ensure_poetry() -> list[str]:
+    """Return the canonical Poetry command after ensuring the module exists."""
+    _ensure_python_module("poetry", "poetry")
+    return [sys.executable, "-m", "poetry"]
+
+
+def _restore_original_files(original_files: dict[Path, str]) -> None:
+    """Restore files that were temporarily modified during installation."""
+    for path, content in original_files.items():
+        with open(path, "w", encoding="utf-8", newline="\n") as file:
+            file.write(content)
+
+
 def extract_dependencies(local_dep_path, dev: bool = False):
     """Extract development dependencies from a given package's pyproject.toml."""
+    _ensure_python_module("tomlkit", "tomlkit")
+    tomlkit = importlib.import_module("tomlkit")
     package_pyproject_path = PLATFORM_PATH / local_dep_path
     if package_pyproject_path.exists():
         with open(package_pyproject_path / "pyproject.toml") as f:
-            package_pyproject_toml = load(f)
+            package_pyproject_toml = tomlkit.load(f)
         if dev:
             return (
                 package_pyproject_toml.get("tool", {})
@@ -100,8 +133,12 @@ def extract_dependencies(local_dep_path, dev: bool = False):
 
 def get_all_dev_dependencies():
     """Aggregate development dependencies from all local packages."""
+    _ensure_python_module("tomlkit", "tomlkit")
+    tomlkit = importlib.import_module("tomlkit")
     all_dev_dependencies = {}
-    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
+    local_deps = tomlkit.loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})[
+        "dependencies"
+    ]
     for _, package_info in local_deps.items():
         if "path" in package_info:
             dev_deps = extract_dependencies(Path(package_info["path"]), dev=True)
@@ -111,12 +148,18 @@ def get_all_dev_dependencies():
 
 def install_platform_local(_extras: bool = False):
     """Install the Platform locally for development purposes."""
-    original_lock = LOCK.read_text(encoding="utf-8")
-    original_pyproject = PYPROJECT.read_text(encoding="utf-8")
+    _ensure_python_module("tomlkit", "tomlkit")
+    tomlkit = importlib.import_module("tomlkit")
+    original_files = {
+        LOCK: LOCK.read_text(encoding="utf-8"),
+        PYPROJECT: PYPROJECT.read_text(encoding="utf-8"),
+    }
 
-    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
+    local_deps = tomlkit.loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})[
+        "dependencies"
+    ]
     with open(PYPROJECT) as f:
-        pyproject_toml = load(f)
+        pyproject_toml = tomlkit.load(f)
     pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
         local_deps
     )
@@ -130,84 +173,88 @@ def install_platform_local(_extras: bool = False):
             "dependencies"
         ].update(dev_dependencies)
 
-    TEMP_PYPROJECT = dumps(pyproject_toml)
+    temp_pyproject = tomlkit.dumps(pyproject_toml)
 
     try:
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(TEMP_PYPROJECT)
+            f.write(temp_pyproject)
 
-        CMD = [sys.executable, "-m", "poetry"]
+        poetry_cmd = _ensure_poetry()
         extras_args = ["-E", "all"] if _extras else []
+        poetry_env = os.environ.copy()
+        poetry_env.setdefault("PYTHONIOENCODING", "utf-8")
+        poetry_env.setdefault("PYTHONUTF8", "1")
 
         subprocess.run(
-            CMD + ["lock", "--regenerate"],
+            poetry_cmd + ["lock", "--regenerate"],
             cwd=PLATFORM_PATH,
             check=True,
+            env=poetry_env,
         )
         subprocess.run(
-            CMD + ["install"] + extras_args,
+            poetry_cmd + ["install"] + extras_args,
             cwd=PLATFORM_PATH,
             check=True,
+            env=poetry_env,
         )
-
-    except (Exception, KeyboardInterrupt) as e:
-        print(e)  # noqa: T201
-        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
 
     finally:
-        # Revert pyproject.toml and poetry.lock to their original state.
-        with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_pyproject)
-
-        with open(LOCK, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_lock)
+        _restore_original_files(original_files)
 
 
 def install_platform_cli():
     """Install the CLI locally for development purposes."""
-    original_lock = CLI_LOCK.read_text(encoding="utf-8")
-    original_pyproject = CLI_PYPROJECT.read_text(encoding="utf-8")
+    _ensure_python_module("tomlkit", "tomlkit")
+    tomlkit = importlib.import_module("tomlkit")
+    original_files = {
+        CLI_LOCK: CLI_LOCK.read_text(encoding="utf-8"),
+        CLI_PYPROJECT: CLI_PYPROJECT.read_text(encoding="utf-8"),
+    }
 
     with open(CLI_PYPROJECT) as f:
-        pyproject_toml = load(f)
+        pyproject_toml = tomlkit.load(f)
 
     # remove "openbb" from dependencies
     pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop(
         "openbb", None
     )
 
-    TEMP_PYPROJECT = dumps(pyproject_toml)
+    temp_pyproject = tomlkit.dumps(pyproject_toml)
 
     try:
         with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(TEMP_PYPROJECT)
+            f.write(temp_pyproject)
 
-        CMD = [sys.executable, "-m", "poetry"]
+        poetry_cmd = _ensure_poetry()
+        poetry_env = os.environ.copy()
+        poetry_env.setdefault("PYTHONIOENCODING", "utf-8")
+        poetry_env.setdefault("PYTHONUTF8", "1")
 
         subprocess.run(
-            CMD + ["lock", "--regenerate"],
+            poetry_cmd + ["lock", "--regenerate"],
             cwd=CLI_PATH,
             check=True,  # noqa: S603
+            env=poetry_env,
         )
-        subprocess.run(CMD + ["install"], cwd=CLI_PATH, check=True)  # noqa: S603
-
-    except (Exception, KeyboardInterrupt) as e:
-        print(e)  # noqa: T201
-        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
+        subprocess.run(
+            poetry_cmd + ["install"],
+            cwd=CLI_PATH,
+            check=True,
+            env=poetry_env,
+        )  # noqa: S603
 
     finally:
-        # Revert pyproject.toml and poetry.lock to their original state.
-        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_pyproject)
-
-        with open(CLI_LOCK, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_lock)
+        _restore_original_files(original_files)
 
 
 if __name__ == "__main__":
     args = sys.argv[1:]
     extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
     cli = any(arg.lower() in ["-c", "--cli"] for arg in args)
-    install_platform_local(extras)
-    if cli:
-        install_platform_cli()
+    try:
+        install_platform_local(extras)
+        if cli:
+            install_platform_cli()
+    except (Exception, KeyboardInterrupt) as error:
+        print(error, file=sys.stderr)  # noqa: T201
+        raise SystemExit(1) from error

@@ -20,6 +20,26 @@ const patchConsoleMethod = (
 console.error = patchConsoleMethod(console.error.bind(console));
 console.warn = patchConsoleMethod(console.warn.bind(console));
 
+const clearDevBrowserCaches = async () => {
+  if (!import.meta.env.DEV || typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    if ('serviceWorker' in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.allSettled(registrations.map((registration) => registration.unregister()));
+    }
+
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      await Promise.allSettled(cacheNames.map((cacheName) => caches.delete(cacheName)));
+    }
+  } catch (error) {
+    console.warn('Failed to clear browser caches in development mode.', error);
+  }
+};
+
 const createAppRouter = async () => {
   const { routeTree } = await import('./routeTree.gen');
   return createRouter({ routeTree });
@@ -39,6 +59,7 @@ const bootstrap = async () => {
     return;
   }
 
+  await clearDevBrowserCaches();
   const router = await createAppRouter();
   const root = ReactDOM.createRoot(rootElement);
   root.render(

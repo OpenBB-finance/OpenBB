@@ -145,14 +145,22 @@ To develop with the source code, you need to have the following:
 
 - Git
 - Python 3.10 - 3.13.
-- Virtual Environment with `poetry` installed.
-  - Activate your virtual environment and run, `pip install poetry`.
+- A repo-local virtual environment at `.venv`.
 - A local copy of the [GitHub repository](https://github.com/OpenBB-finance/OpenBB.git)
 
 Install the repository for local development by using the installation script.
 
-  1. Activate your virtual environment.
+  1. Create and activate `.venv`.
   2. Navigate into the `openbb_platform` folder.
   3. Run `python dev_install.py -e` to install all packages in editable mode.
+  4. Resolve the canonical interpreter with `python ../qa/scripts/resolve_python.py ..` before running tests or QA scripts.
+
+`dev_install.py` bootstraps required helper modules such as `tomlkit` and `poetry` when they are missing. Installation failures are fail-fast and return a non-zero exit code.
+
+### Repository Hygiene
+
+- Use the repo `.venv` as the canonical Python environment for tests, integration gates, and local verification.
+- Treat `desktop/src/routeTree.gen.ts` as generated output. Do not edit it manually.
+- Keep ad-hoc scratch files under `.tmp/local/` or `.logs/local/` instead of the repository root.
 
 See the [documentation](https://docs.openbb.co/platform/developer_guide/architecture_overview) for an overview of the architecture and how to get started building your own extensions.

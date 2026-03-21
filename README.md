@@ -135,6 +135,7 @@ There are three main ways of contributing to this project. (Hopefully you have s
 ### Become a Contributor
 
 - More information on our [Developer Documentation](https://docs.openbb.co/python/developer).
+- Repository hygiene and local development conventions are documented in [docs/engineering/repo-hygiene.md](docs/engineering/repo-hygiene.md).
 
 ### Create a GitHub ticket
 

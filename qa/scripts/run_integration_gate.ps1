@@ -393,6 +393,7 @@ $knownProviders = @($tiers.core_blocking + $tiers.extended_quarantine | Sort-Obj
 $retryMax = [int]$tiers.retry_policy.max_retries
 $retryDelaySeconds = [int]$tiers.retry_policy.retry_delay_seconds
 $pythonExe = Get-PythonExecutable -RootAbsPath $rootAbs -RequestedPythonCommand $PythonCommand
+Write-Host "Resolved Python executable: $pythonExe"
 
 $suiteResults = [System.Collections.Generic.List[object]]::new()
 $apiProcess = $null

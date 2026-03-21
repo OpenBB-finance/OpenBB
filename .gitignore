@@ -72,12 +72,14 @@ logs/scheduler/
 
 # Temporary files
 .tmp/
+.tmp/local/
 
 # Legacy assets
 images/legacy/
 
 # Runtime data
 .logs/runtime/
+.logs/local/
 
 # Local browser/debug artifacts
 .playwright-cli/
@@ -85,6 +87,7 @@ logs/manual_api_nobuild_latest.txt
 logs/unused-features-audit.json
 logs/unused-features-audit.md
 openbb_platform/core/openbb/.build.lock
+# Legacy local scratch files. Do not expand this list; use .tmp/local/ or .logs/local/ instead.
 macro_regime.json
 tmp_api_test.ps1
 tmp_backtest_payload.json

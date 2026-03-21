@@ -19,6 +19,7 @@ export default defineConfig(async () => ({
         viteStaticCopy({
             targets: [{ src: "./node_modules/@openbb/ui-pro/dist/assets", dest: "" }],
         }),
+        // TanStack Router owns routeTree.gen.ts generation during the build path.
         tanstackRouter(),
     ],
 

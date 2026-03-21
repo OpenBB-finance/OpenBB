@@ -8,6 +8,8 @@ repos:
         exclude_types: [css, markdown, text, svg]
       - id: trailing-whitespace
         exclude_types: [html, markdown, text]
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
@@ -69,15 +71,14 @@ repos:
         types: [python]
       - id: check-generated-files
         name: Check for generated files
-        entry: bash
-        args:
-          - -c
-          - |
-            if git ls-files | grep "^openbb_platform/core/openbb/package/" | grep -v "^openbb_platform/core/openbb/package/__init__\.py$"; then
-              echo "Error: Attempting to commit generated files in package directory. Only __init__.py should exist."
-              exit 1
-            fi
-        language: system
+        entry: python qa/scripts/check_generated_files.py
+        language: python
+        pass_filenames: false
+        always_run: true
+      - id: check-root-scratch-denylist
+        name: Check root scratch denylist
+        entry: python qa/scripts/check_root_scratch_denylist.py
+        language: python
         pass_filenames: false
         always_run: true
   - repo: https://github.com/Yelp/detect-secrets
@@ -91,4 +92,4 @@ repos:
             "--exclude-files",
             "cassettes/.*|record/.*|website/content/api/.*|openbb_platform/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_platform/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
-    exclude: package.lock.json
+        exclude: package.lock.json
