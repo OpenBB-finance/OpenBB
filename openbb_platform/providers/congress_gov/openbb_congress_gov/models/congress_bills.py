@@ -118,7 +118,6 @@ class CongressBillsData(Data):
                 "$.name": "Congressional Bills",
                 "$.category": "Government",
                 "$.subCategory": "Congress",
-                "$.searchCategory": "Government",
                 "$.description": "Current and historical U.S. Congressional Bills.",
                 "$.params": [
                     {

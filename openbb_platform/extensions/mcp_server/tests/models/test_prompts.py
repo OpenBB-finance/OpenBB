@@ -2,7 +2,7 @@
 
 import pytest
 from fastmcp.exceptions import PromptError
-from fastmcp.prompts.prompt import PromptArgument
+from fastmcp.prompts import PromptArgument
 from mcp.types import PromptMessage, TextContent
 from openbb_mcp_server.models.prompts import StaticPrompt
 

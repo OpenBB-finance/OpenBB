@@ -41,6 +41,20 @@ def test_get_fastmcp_kwargs():
     assert "api_prefix" not in kwargs
 
 
+def test_list_page_size_defaults_none():
+    """list_page_size defaults to None and is excluded from fastmcp kwargs."""
+    settings = MCPSettings()
+    assert settings.list_page_size is None
+    assert "list_page_size" not in settings.get_fastmcp_kwargs()
+
+
+def test_list_page_size_in_fastmcp_kwargs():
+    """When set, list_page_size is passed through to FastMCP constructor kwargs."""
+    settings = MCPSettings(list_page_size=50)  # type: ignore
+    kwargs = settings.get_fastmcp_kwargs()
+    assert kwargs["list_page_size"] == 50
+
+
 def test_get_http_run_kwargs():
     """Test the get_http_run_kwargs method."""
     settings = MCPSettings(uvicorn_config={"host": "0.0.0.0", "port": 9000})  # type: ignore  # noqa: S104

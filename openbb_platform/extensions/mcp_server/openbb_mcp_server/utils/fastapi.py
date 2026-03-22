@@ -7,7 +7,7 @@ from collections.abc import Sequence
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
-from fastmcp.server.openapi import MCPType, RouteMap
+from fastmcp.server.providers.openapi import MCPType, RouteMap
 from openbb_core.app.service.system_service import SystemService
 from pydantic import ValidationError
 

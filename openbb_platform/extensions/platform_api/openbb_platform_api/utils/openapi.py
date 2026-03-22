@@ -355,6 +355,12 @@ def _extract_provider_description(full_description: str, provider: str) -> str:
         if is_matching_provider and i > 0:
             # The description is the part before this marker
             desc = parts[i - 1].strip()
+            # When a preceding text contains multiple sections separated by
+            # ";\n    " (e.g. "general desc ...;\n    provider-specific desc"),
+            # extract the last section which belongs to this provider marker.
+            sections = re.split(r";\s*\n\s*", desc)
+            if len(sections) > 1:
+                desc = sections[-1].strip()
             # Remove leading semicolons and whitespace from continuation sections
             desc = re.sub(r"^;\s*", "", desc).strip()
             # Remove "Multiple comma separated items allowed" suffix
@@ -541,11 +547,20 @@ def process_parameter(
         ]
 
         if valid_provider_list:
-            p["available_providers"] = valid_provider_list
-            # Check if any of our current providers match the validated available providers list
+            # If set_parameter_options already determined a broader
+            # available_providers list (by inspecting actual schema entries),
+            # prefer that over the narrower title/description-based list.
+            existing_providers = p.get("available_providers")
+            if not existing_providers or len(valid_provider_list) > len(
+                existing_providers
+            ):
+                p["available_providers"] = valid_provider_list
+
+            effective_providers = p["available_providers"]
+            # Check if any of our current providers match the available providers list
             valid_for_current_providers = any(
                 current_provider.lower()
-                in [valid_p.lower() for valid_p in valid_provider_list]
+                in [valid_p.lower() for valid_p in effective_providers]
                 for current_provider in providers
             )
 

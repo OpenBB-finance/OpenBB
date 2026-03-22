@@ -1,9 +1,12 @@
 """MCP Server Settings model."""
 
 import json
+from pathlib import Path
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+_DEFAULT_SKILLS_DIR = str(Path(__file__).resolve().parent.parent / "skills")
 
 DuplicateBehavior = Literal["warn", "error", "replace", "ignore"]
 
@@ -65,6 +68,14 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_ENABLE_TOOL_DISCOVERY",
     )
 
+    # Pagination configuration
+    list_page_size: int | None = Field(
+        default=None,
+        description="Maximum number of tools/resources/prompts returned per page in list responses. "
+        "None disables pagination (all items returned in one response).",
+        alias="OPENBB_MCP_LIST_PAGE_SIZE",
+    )
+
     # Response configuration
     describe_responses: bool = Field(
         default=False,
@@ -73,6 +84,14 @@ the exact same operations available to REST clients.""",
     )
 
     # Prompt configuration
+    instructions: str | None = Field(
+        default=None,
+        description="Server instructions sent to the agent during the MCP initialize handshake."
+        " When set, this text is delivered before any tools or prompts are called."
+        " If not explicitly set, it is auto-populated from the system prompt content.",
+        alias="OPENBB_MCP_INSTRUCTIONS",
+    )
+
     system_prompt_file: str | None = Field(
         default=None,
         description="Path to a text file containing the system prompt for the server",
@@ -83,6 +102,13 @@ the exact same operations available to REST clients.""",
         default=None,
         description="Path to a JSON file containing prompt templates for the server",
         alias="OPENBB_MCP_SERVER_PROMPTS_FILE",
+    )
+
+    default_skills_dir: str | None = Field(
+        default=_DEFAULT_SKILLS_DIR,
+        description="Path to a directory containing bundled skill prompt files (.md/.txt)."
+        " Set to None or empty string to disable loading default skills.",
+        alias="OPENBB_MCP_DEFAULT_SKILLS_DIR",
     )
 
     # ===== FastMCP Core Configuration =====
@@ -132,16 +158,17 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_DEPENDENCIES",
     )
 
-    include_tags: set[str] | None = Field(
-        default=None,
-        description="If provided, only components that match these tags will be exposed to clients",
-        alias="OPENBB_MCP_INCLUDE_TAGS",
+    skills_reload: bool = Field(
+        default=False,
+        description="If True, skills providers will reload skill files on every read (useful during development).",
+        alias="OPENBB_MCP_SKILLS_RELOAD",
     )
 
-    exclude_tags: set[str] | None = Field(
+    skills_providers: list[str] | None = Field(
         default=None,
-        description="If provided, components that match these tags will be excluded from the server",
-        alias="OPENBB_MCP_EXCLUDE_TAGS",
+        description="List of vendor skill provider short-names to load (e.g. ['claude', 'cursor']). "
+        "Supported: claude, cursor, vscode, copilot, codex, gemini, goose, opencode.",
+        alias="OPENBB_MCP_SKILLS_PROVIDERS",
     )
 
     module_exclusion_map: dict[str, str] | None = Field(
@@ -196,21 +223,13 @@ the exact same operations available to REST clients.""",
         "default_tool_categories",
         "allowed_tool_categories",
         "dependencies",
+        "skills_providers",
         mode="before",
     )
     @classmethod
     def _split_list(cls, v):
         if isinstance(v, str):
             return [part.strip() for part in v.split(",") if part.strip()]
-        return v
-
-    @field_validator("include_tags", "exclude_tags", mode="before")
-    @classmethod
-    def _split_set(cls, v):
-        if isinstance(v, str):
-            return {part.strip() for part in v.split(",") if part.strip()}
-        if isinstance(v, list):
-            return set(v)
         return v
 
     @field_validator("httpx_client_kwargs", "client_auth", "server_auth", mode="before")
@@ -236,6 +255,7 @@ the exact same operations available to REST clients.""",
         """
         fastmcp_fields = {
             "name": self.name,
+            "instructions": self.instructions,
             "version": self.version,
             "cache_expiration_seconds": self.cache_expiration_seconds,
             "on_duplicate_tools": self.on_duplicate_tools,
@@ -244,8 +264,7 @@ the exact same operations available to REST clients.""",
             "resource_prefix_format": self.resource_prefix_format,
             "mask_error_details": self.mask_error_details,
             "dependencies": self.dependencies,
-            "include_tags": self.include_tags,
-            "exclude_tags": self.exclude_tags,
+            "list_page_size": self.list_page_size,
         }
 
         # Only include non-None values

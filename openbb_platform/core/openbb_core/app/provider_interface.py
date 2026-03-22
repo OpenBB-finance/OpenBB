@@ -285,6 +285,27 @@ class ProviderInterface(metaclass=SingletonMeta):
                         + ", ".join(providers)  # type: ignore[arg-type]
                         + "."
                     )
+
+        # Auto-derive choices from Literal annotation for provider-specific fields
+        # when no explicit choices are already declared for this provider.
+        # This makes Literal annotations equivalent to manually declared choices,
+        # so providers only need to declare the type annotation.
+        if provider_name and provider_name not in choices:
+            _ann = annotation
+            _origin = get_origin(_ann)
+            # Unwrap Optional[Literal[...]] = Union[Literal[...], None]
+            if _origin is Union:
+                _inner = [a for a in get_args(_ann) if a is not type(None)]
+                if len(_inner) == 1:
+                    _ann = _inner[0]
+                    _origin = get_origin(_ann)
+            if _origin is Literal:
+                _literal_args = list(get_args(_ann))
+                if _literal_args:
+                    choices[provider_name] = {
+                        "choices": _literal_args,
+                    }
+
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )

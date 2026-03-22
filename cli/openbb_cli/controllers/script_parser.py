@@ -9,7 +9,7 @@ from openbb_cli.session import Session
 
 session = Session()
 
-# pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
+# pylint: disable=too-many-statements,consider-iterating-dictionary
 # pylint: disable=too-many-branches,too-many-return-statements
 
 # Necessary for OpenBB keywords
@@ -248,13 +248,11 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                             # in python will only take the first '2'
                             if VAR_SLICE == "0":
                                 if VAR_NAME in ROUTINE_VARS:
-                                    values = eval(  # noqa: S307
-                                        f'ROUTINE_VARS["{VAR_NAME}"]'
-                                    )
+                                    values = ROUTINE_VARS[VAR_NAME]
                                     if isinstance(values, list):
                                         templine = templine.replace(
                                             match[0],
-                                            eval(f"values[{VAR_SLICE}]"),  # noqa: S307
+                                            values[int(VAR_SLICE)],
                                         )
                                     else:
                                         templine = templine.replace(match[0], values)
@@ -266,9 +264,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
 
                             # Only enters here when any other index from 0 is used
                             elif VAR_NAME in ROUTINE_VARS:
-                                variable = eval(  # noqa: S307
-                                    f'ROUTINE_VARS["{VAR_NAME}"]'
-                                )
+                                variable = ROUTINE_VARS[VAR_NAME]
                                 length_variable = (
                                     len(variable) if isinstance(variable, list) else 1
                                 )
@@ -300,23 +296,20 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                 or VAR_SLICE.split(":")[1].isdigit()
                             )
                         ):
-                            slicing_tuple = "slice("
-                            slicing_tuple += (
-                                VAR_SLICE.split(":")[0]
-                                if VAR_SLICE.split(":")[0].isdigit()
-                                else "None"
+                            parts = VAR_SLICE.split(":")
+                            start = (
+                                int(parts[0])
+                                if parts[0] and parts[0].lstrip("-").isdigit()
+                                else None
                             )
-                            slicing_tuple += ","
-                            slicing_tuple += (
-                                VAR_SLICE.split(":")[1]
-                                if VAR_SLICE.split(":")[1].isdigit()
-                                else "None"
+                            stop = (
+                                int(parts[1])
+                                if len(parts) > 1
+                                and parts[1]
+                                and parts[1].lstrip("-").isdigit()
+                                else None
                             )
-                            slicing_tuple += ")"
-
-                            vars_to_loop = eval(  # noqa: S307
-                                f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
-                            )
+                            vars_to_loop = ROUTINE_VARS[VAR_NAME][slice(start, stop)]
 
                             # Check whether the slicing was successful or not
                             if vars_to_loop:
@@ -352,9 +345,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                     )
 
                             if VAR_NAME in ROUTINE_VARS:
-                                value = eval(  # noqa: S307
-                                    f'ROUTINE_VARS["{VAR_NAME}"]'
-                                )
+                                value = ROUTINE_VARS[VAR_NAME]
 
                                 # If the value is a list, we want to replace it with the whole list
                                 if isinstance(value, list):

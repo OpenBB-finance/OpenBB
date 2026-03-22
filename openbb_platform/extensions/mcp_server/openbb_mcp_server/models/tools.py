@@ -1,7 +1,5 @@
 """Tool models for MCP server."""
 
-from typing import Literal
-
 from pydantic import BaseModel
 
 
@@ -26,12 +24,3 @@ class CategoryInfo(BaseModel):
     name: str
     subcategories: list[SubcategoryInfo]
     total_tools: int
-
-
-class ToggleResult(BaseModel):
-    """Result of a request to activate or deactivate one or more tools."""
-
-    action: Literal["activated", "deactivated"]
-    successful: list[str]
-    failed: list[str]
-    message: str

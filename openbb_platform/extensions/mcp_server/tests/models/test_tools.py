@@ -3,7 +3,6 @@
 from openbb_mcp_server.models.tools import (
     CategoryInfo,
     SubcategoryInfo,
-    ToggleResult,
     ToolInfo,
 )
 
@@ -32,17 +31,3 @@ def test_category_info():
     assert category_info.name == "test_cat"
     assert len(category_info.subcategories) == 1
     assert category_info.total_tools == 2
-
-
-def test_toggle_result():
-    """Test the ToggleResult model."""
-    toggle_result = ToggleResult(
-        action="activated",
-        successful=["tool1"],
-        failed=["tool2"],
-        message="Activated: tool1. Not found: tool2.",
-    )
-    assert toggle_result.action == "activated"
-    assert toggle_result.successful == ["tool1"]
-    assert toggle_result.failed == ["tool2"]
-    assert toggle_result.message == "Activated: tool1. Not found: tool2."
