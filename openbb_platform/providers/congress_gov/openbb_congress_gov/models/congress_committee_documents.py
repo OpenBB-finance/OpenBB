@@ -208,7 +208,6 @@ class CongressCommitteeDocumentsFetcher(
                 congress=congress,
                 doc_type=query.doc_type,
                 api_key=api_key,
-                limit=query.limit,
                 use_cache=query.use_cache,
             )
         except OpenBBError as e:

@@ -129,10 +129,9 @@ class CongressCommitteeInfoFetcher(
         import asyncio
 
         from openbb_congress_gov.utils.committees import get_committee_members
-        from openbb_congress_gov.utils.helpers import check_api_key
         from openbb_core.provider.utils.helpers import amake_request
 
-        api_key = check_api_key()
+        api_key = credentials.get("congress_gov_api_key", "") if credentials else ""
         system_code = (
             query.subcommittee if query.subcommittee else query.committee
         ).lower()
