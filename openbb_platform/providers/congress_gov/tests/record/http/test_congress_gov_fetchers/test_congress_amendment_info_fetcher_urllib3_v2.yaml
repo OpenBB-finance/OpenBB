@@ -1,0 +1,243 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/amendment/119/hamdt/2?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6xVUU/bMBB+51ec8rRJtLHbACLSNGUgNB4GVVftAcSD61xbs8TO7EtFh/jvk5PQ
+        piHAJu0xvu8+333f+fJ4AAAQiBx1mqOmIIbH6qg+lqSMdnuHVUCassJGh/vnpc2CGIIVUeHiMBSF
+        GkqjlxadGy7NOlyPw+1VIeen4UrkKYWjsLnp88LYXNCne2d0sKV+OmyV5NMx/aKyrK+s+q4gBs5P
+        O7XpMp+j9eVFJzzoBI1VS6XPVuIZ89WUDt9EnZkUK2QXRYqyKnKhHuC6tHBhLDpykEh6gd0UNcm0
+        GymLVBCeC8JLLbMyVXo5wwcvejBio+MBGw1YFPy7/nOVZbX0NoxO+PuKy44oYBYwxcKiQ02C1Bpd
+        0Ia/4kGQopNWFd5nz5Vo2I4C1N5gChwKqzRhCkpDfd0UC2PJkw04kAFHVv1EkMLOjQaHv0p0ZIXn
+        BaFTQGncxhHm4NCulUTnOY1VpH7XqIU1PliNHIwZh7kyciUspJgbvSUrrLlHSW7Ybi8ThI4S2bTR
+        GcB6jL1pjU9HA8YHo3HXpxo3U3mF4+M4GsXRCzep8ftag1haRKWXXgBaIUzQ2k1LwA8JY/wjJB6W
+        etB8A2ujJMLaEA77nd29iFG7RVcY7Yz1Dt7uFbTfbIWdK7MsVYqXqaeZMMaO2VGnj9p95X2Tvh/O
+        euILZR1diVqQ79IQ9bEsyix7Bk2xGNY6HEKVALfTwSQZcHbXl5qJHX+V1QcqhKVNRd4XddQYO0n6
+        wn/x+HL0ioeNTv1vr3Jp+3XXNqac54oI05cDNmNHMWMxYzdtJ/0A/UDr3l7i/H8tcX/d+/tku/KS
+        b+ezdrW7jbfXWzTjx3HE4ojf1IQNWWDrp9/5ZT1XdtU/3Nv4rCmjKv6VBRZwftoJUStVFEWmZLUs
+        wqrfFrSWwaN2SjwdPP0BAAD//wMAHGSujHAHAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Cache-Control:
+      - public, max-age=1800
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9e0a73fc192da509-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Mar 2026 03:47:09 GMT
+      Expires:
+      - Mon, 23 Mar 2026 04:17:09 GMT
+      Last-Modified:
+      - Mon, 23 Mar 2026 03:47:09 GMT
+      Link:
+      - <https://api.congress.gov/v3/amendment/119/hamdt/2>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=CKV_kB9IKDO_Ben6qGSgqzHjDpYYhxbvzGWil2A2ayc-1774237629-1.0.1.1-WmvASPnSvODAY0JLuw6mOLKBXYXa_XPvJ5jk6GzPPn7jBZFStmobLYBfcN0zyd2CBaUTPDt.lU1AYwj78o5BknWJ1A_OI4faJDBr2Oavi3A;
+        path=/; expires=Mon, 23-Mar-26 04:17:09 GMT; domain=.congress.gov; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=DlR3dGl05BZY4nXFYZwElh8jwy04QPtDdFJ8.tqmTzk-1774237629063-0.0.1.1-604800000;
+        path=/; domain=.congress.gov; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - ct336rj3jm8lku8au06g
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '20000'
+      X-Ratelimit-Remaining:
+      - '19972'
+      X-Vcap-Request-Id:
+      - 0994fc26-be51-485d-4ac1-1f4e13022eb9
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/amendment/119/hamdt/2/actions?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+yUX2vbMBTF3/MpLnpqofE/eYyojBEyRh/adXTd09iDYt+4GrGuJ8mhpvS7D8lt
+        4nhhMCillPpJ6P50fHSufe8mAABMFk6RtkzAj7Dhn7vtaoAsqEQmgL3PkiRhJ4eQT9IFJEuyd9Mk
+        nWb8MHet6sClXOSZyPMxZak1BX7rrMOaiZGdQBS9mdnJ3yUte/FztTTSdEArWJCuDFrL9uj70Vsd
+        3jp/8FKDrAyi0hU4AneD8BWN6UDWqMsatYOjeZKkxzD3WOmhZQcbUgXChhxG4/u4rgmWPq+JzM7E
+        wMC/E0+fMnGei4S/rMTn42BptUKDpY/1wkR9/BEcFaStKtFIfyUBiys445xPOc9PwWttt47fOvB/
+        HTij1iLs+nDZN+CpY3zto6OPcTcn5OOAEPB8UyWsfvYwa2SldPhf9tJgBbXaW84ng/swg79btG4f
+        3Rr80tZLNKFLAy+7+vWDoRtZl+4g8d2sA+BcY0Ucy0ZFxUPAUUWbeMPjLRun6SwOUnH2cUWmlu7D
+        L0t6KPx4OHwR6WxUcgNPsmnWqghBxGOVXtxTodInMrn/AwAA//8DAMfNRJchBwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - public, max-age=1800
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9e0a73fecb305edd-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Mar 2026 03:47:09 GMT
+      Expires:
+      - Mon, 23 Mar 2026 04:17:09 GMT
+      Last-Modified:
+      - Mon, 23 Mar 2026 03:47:09 GMT
+      Link:
+      - <https://api.congress.gov/v3/amendment/119/hamdt/2/actions>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=mYIsHHJKLGlZTktdurFayYzxN7P1UBs1jz7zNvCrBwk-1774237629-1.0.1.1-tDJVH_nGtQSnBrUlcmfYmKfuUMuQG5lt2fTGwPJqPp52nJxhL.AfeCT5JMZ7.KmINvrjDgvyq7_6nsJrne7U2VzZxiGRpfXhqq9O4vwhTNk;
+        path=/; expires=Mon, 23-Mar-26 04:17:09 GMT; domain=.congress.gov; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=mSj6_qUJfB2oH0Gi7jwTwfXw78ApLObFG5nEzMLZTq4-1774237629461-0.0.1.1-604800000;
+        path=/; domain=.congress.gov; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - ct336rmesfut71i6bp80
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '20000'
+      X-Ratelimit-Remaining:
+      - '19972'
+      X-Vcap-Request-Id:
+      - 99dde9e6-9343-4a36-4d4b-23e2043a9fd3
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.congress.gov/v3/amendment/119/hamdt/2/text?api_key=MOCK_API_KEY&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7RRO0/DMBDe+RVR5qYXOzzUSIihgDrwqFBhAHUwsZMaNbZxLi2o6n9HcWmahAiJ
+        gfXue913myPP8zzfsEwqhlIrP/Y2bubmiS4V+rFH3Gg72KGteC9FgW0oy4XiuVB4V+avwvqx51N/
+        0LOffRpRbRcs59iLeLRLB0A0RQzAjBwmWmVWFMUw0ytYRVBjgZAROCmgF6m2OcPzt0KrpvCeXIkS
+        MuqssJGJGbOUiSsCuio78QrlNq1GUHzgk7CF1KpyealZh4IcjjN0PjSkJ0FIAhrNKInDMA7D54ZX
+        w68t1y9bU/D7jMns9qYjV2PKdrnr9bpdbtVnYkUCVUYICdAIyBkBcgy55jKVgsP44WocHG4IDJJg
+        mk0iQoPT4QJz/4f1dvDXG6aX1/9wwq/JDU97krcm886T9mnv01RYwQ/0HW1+tP0CAAD//wMAzQuW
+        uWIDAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - public, max-age=1800
+      Cf-Cache-Status:
+      - EXPIRED
+      Cf-Ray:
+      - 9e0a74015d0bff01-PDX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 23 Mar 2026 03:47:09 GMT
+      Expires:
+      - Mon, 23 Mar 2026 04:17:09 GMT
+      Last-Modified:
+      - Mon, 23 Mar 2026 03:47:09 GMT
+      Link:
+      - <https://api.congress.gov/v3/amendment/119/hamdt/2/text>; rel="canonical"
+      Set-Cookie:
+      - __cf_bm=C9E74wyhKP7Yzn7pkBAdMt38YaHzFQyQX5Iha._eF1w-1774237629-1.0.1.1-uy8As6lBZ4Tnw.uzskJWbzdfEq1BBYDHXZHD_EdxnI8ZSp8.Pnp7Ac.CB2YNUFO_5rAh86l_r7gAJFuexqKcAzfGwrYyV3DDdKihGVK3KjI;
+        path=/; expires=Mon, 23-Mar-26 04:17:09 GMT; domain=.congress.gov; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=4aCnA9tQ2YMgRWJIwnW13Ide1ljDAi7nVAG3icC8kh0-1774237629838-0.0.1.1-604800000;
+        path=/; domain=.congress.gov; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Accept-Encoding
+      Via:
+      - https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])
+      X-Api-Umbrella-Request-Id:
+      - ct336rpldpse8i7fghgg
+      X-Cache:
+      - MISS
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Ratelimit-Limit:
+      - '20000'
+      X-Ratelimit-Remaining:
+      - '19972'
+      X-Vcap-Request-Id:
+      - 50238f3b-1ccb-4b67-589f-5d9bcf498719
+    status:
+      code: 200
+      message: OK
+version: 1

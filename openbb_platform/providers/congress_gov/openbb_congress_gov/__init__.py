@@ -1,8 +1,17 @@
 """Congress.gov Provider Module."""
 
+from openbb_congress_gov.models.amendment_info import CongressAmendmentInfoFetcher
+from openbb_congress_gov.models.amendment_text import CongressAmendmentTextFetcher
 from openbb_congress_gov.models.bill_info import CongressBillInfoFetcher
 from openbb_congress_gov.models.bill_text import CongressBillTextFetcher
+from openbb_congress_gov.models.congress_amendments import CongressAmendmentsFetcher
 from openbb_congress_gov.models.congress_bills import CongressBillsFetcher
+from openbb_congress_gov.models.congress_committee_documents import (
+    CongressCommitteeDocumentsFetcher,
+)
+from openbb_congress_gov.models.congress_committee_info import (
+    CongressCommitteeInfoFetcher,
+)
 from openbb_core.provider.abstract.provider import Provider
 
 congress_gov_provider = Provider(
@@ -16,6 +25,11 @@ Register API provides access to presidential documents and regulations.""",
         "CongressBills": CongressBillsFetcher,
         "CongressBillInfo": CongressBillInfoFetcher,
         "CongressBillText": CongressBillTextFetcher,
+        "CongressAmendments": CongressAmendmentsFetcher,
+        "CongressAmendmentInfo": CongressAmendmentInfoFetcher,
+        "CongressAmendmentText": CongressAmendmentTextFetcher,
+        "CongressCommitteeInfo": CongressCommitteeInfoFetcher,
+        "CongressCommitteeDocuments": CongressCommitteeDocumentsFetcher,
     },
     repr_name="Congress.gov",
     instructions="""To get a Congress.gov API key:

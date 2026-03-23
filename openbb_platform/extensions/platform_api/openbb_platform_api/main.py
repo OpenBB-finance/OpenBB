@@ -195,6 +195,7 @@ if not has_root_apps:
         if has_additional_apps(app):
             additional_apps = await get_additional_apps(app)
             if additional_apps:
+                print(list(additional_apps))
                 for apps in additional_apps.values():
                     if not apps:
                         continue
@@ -225,7 +226,8 @@ if not has_root_apps:
                     if _tabs := template.get("tabs"):
                         for v in _tabs.values():
                             if v.get("layout", []) and all(
-                                item.get("i") in widgets_json
+                                item.get("i", "").startswith("rich_note")
+                                or item.get("i") in widgets_json
                                 for item in v.get("layout")
                             ):
                                 new_templates.append(template)
@@ -233,7 +235,9 @@ if not has_root_apps:
                     elif (
                         template.get("layout")
                         and all(
-                            item.get("i") in widgets_json for item in template["layout"]
+                            item.get("i", "").startswith("rich_note")
+                            or item.get("i") in widgets_json
+                            for item in template["layout"]
                         )
                         and template not in new_templates
                     ):
