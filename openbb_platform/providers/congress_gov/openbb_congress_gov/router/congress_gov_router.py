@@ -759,7 +759,6 @@ async def get_congress_gov_apps_json() -> list[dict[str, Any]]:
     apps_file = Path(__file__).parent / "apps.json"
 
     try:
-        print(str(apps_file))
         with apps_file.open("r", encoding="utf-8") as f:
             apps_json = json.load(f)
             return apps_json
