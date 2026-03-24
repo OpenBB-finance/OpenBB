@@ -557,8 +557,9 @@ class ImportDefinition:
         code += "\nfrom fastapi import Depends"
 
         module_list = [
-            hint_type.__module__ if hasattr(hint_type, "__module__") else hint_type
+            hint_type.__module__
             for hint_type in hint_type_list
+            if hasattr(hint_type, "__module__")
         ]
         module_list = list(set(module_list))
         module_list.sort()  # type: ignore
@@ -1531,6 +1532,11 @@ class MethodDefinition:
             if isinstance(type_hint, type):
                 return type_hint.__name__
 
+            # Unwrap ForwardRef to its inner string so we don't emit
+            # ForwardRef('int') in generated signatures.
+            if hasattr(type_hint, "__forward_arg__"):
+                return type_hint.__forward_arg__
+
             s = str(type_hint)
             if s.startswith("typing."):
                 s = s[7:]
@@ -1615,7 +1621,7 @@ class MethodDefinition:
         if return_type == _empty:
             func_returns = "Any"
         elif isinstance(return_type, str):
-            func_returns = f"ForwardRef('{return_type}')"
+            func_returns = return_type
         elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
         else:
@@ -2041,6 +2047,10 @@ class DocstringGenerator:
 
         try:
             _type = field_type
+
+            # Unwrap ForwardRef to its inner string
+            if hasattr(_type, "__forward_arg__"):
+                _type = _type.__forward_arg__
 
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"  # type: ignore
