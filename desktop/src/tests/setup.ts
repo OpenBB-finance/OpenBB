@@ -18,6 +18,25 @@ const ResizeObserverMock = vi.fn(() => ({
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 
+const IntersectionObserverMock = vi.fn(function (
+  this: {
+    callback: IntersectionObserverCallback;
+    observe: ReturnType<typeof vi.fn>;
+    unobserve: ReturnType<typeof vi.fn>;
+    disconnect: ReturnType<typeof vi.fn>;
+    takeRecords: ReturnType<typeof vi.fn>;
+  },
+  callback: IntersectionObserverCallback,
+) {
+  this.callback = callback;
+  this.observe = vi.fn();
+  this.unobserve = vi.fn();
+  this.disconnect = vi.fn();
+  this.takeRecords = vi.fn(() => []);
+});
+
+vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+
 // Mock LocalStorage and SessionStorage
 class LocalStorageMock {
   store: Record<string, string>;
@@ -53,4 +72,3 @@ class LocalStorageMock {
 
 vi.stubGlobal('localStorage', new LocalStorageMock());
 vi.stubGlobal('sessionStorage', new LocalStorageMock());
-

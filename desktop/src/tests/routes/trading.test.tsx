@@ -45,7 +45,7 @@ describe("Trading Route", () => {
 
     global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) {
+      if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockResponse({ results: {} });
       }
       if (url.endsWith("/api/v1/quant_ml/universe/list")) {

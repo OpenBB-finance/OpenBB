@@ -1,3 +1,4 @@
+pub mod ai;
 pub mod backends;
 pub mod credentials;
 pub mod environments;

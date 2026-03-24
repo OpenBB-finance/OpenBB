@@ -8,7 +8,9 @@ import { AddExtensionSelector, PythonVersionSelector } from "../components/AddEx
 import { EnvironmentActions } from "../components/EnvironmentActions";
 import { ExtensionSelector } from "../components/InstallComponents";
 import CustomIcon, { DocumentationIcon, FolderIcon, RefreshIcon } from "../components/Icon";
+import { TauriRuntimeNotice } from "../components/TauriRuntimeNotice";
 import { useEnvironmentCreation } from "../contexts/EnvironmentCreationContext";
+import { getDesktopRuntimeMessage, isTauriRuntimeAvailable } from "../lib/tauriRuntime";
 
 // LocalStorage key for environment extensions cache
 const ENV_EXTENSIONS_CACHE_KEY = "env-extensions-cache";
@@ -230,7 +232,7 @@ function ExtensionRow({
     );
 }
 
-export default function EnvironmentsPage() {
+function EnvironmentsPageContent() {
 	const search = useSearch({ from: "/environments" });
 	const { setIsCreatingEnvironment } = useEnvironmentCreation();
 	const [creatingFromRequirements, setCreatingFromRequirements] =
@@ -3406,6 +3408,19 @@ end tell
 			) : null}
 		</div>
 	);
+}
+
+export default function EnvironmentsPage() {
+	if (!isTauriRuntimeAvailable()) {
+		return (
+			<TauriRuntimeNotice
+				title="Environments"
+				description={getDesktopRuntimeMessage("Environments")}
+			/>
+		);
+	}
+
+	return <EnvironmentsPageContent />;
 }
 
 export const Route = createFileRoute("/environments")({

@@ -52,7 +52,7 @@ describe("Dashboard Route v3", () => {
 
     global.fetch = vi.fn(async (input: string | URL) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockJsonResponse({ results: {} });
       }
       if (url.endsWith("/api/v1/quant_ml/portfolio/policy")) {

@@ -39,6 +39,10 @@ use crate::tauri_handlers::credentials::{
     get_user_credentials, open_credentials_file, update_user_credentials,
 };
 
+use crate::tauri_handlers::ai::{
+    ask_ai_question, build_ai_index, clear_ai_index, get_ai_status,
+};
+
 use crate::tauri_handlers::backends::{
     create_backend_service, delete_backend_service, initialize_backends, list_backend_services,
     open_backend_logs_window, start_backend_service, stop_backend_service, update_backend_service,
@@ -489,6 +493,7 @@ fn main() {
             save_working_directory,
             get_working_directory,
             get_home_directory,
+            get_ai_status,
             select_directory,
             get_installation_directory,
             get_userdata_directory,
@@ -535,6 +540,9 @@ fn main() {
             create_backend_service,
             delete_backend_service,
             list_backend_services,
+            build_ai_index,
+            clear_ai_index,
+            ask_ai_question,
             uninstall_application,
             quit_application,
             generate_self_signed_cert,

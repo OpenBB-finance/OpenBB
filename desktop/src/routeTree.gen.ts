@@ -17,12 +17,14 @@ import { Route as OpsRouteImport } from './routes/ops'
 import { Route as MacroRouteImport } from './routes/macro'
 import { Route as JupyterLogsRouteImport } from './routes/jupyter-logs'
 import { Route as InstallationProgressRouteImport } from './routes/installation-progress'
+import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as ExecutionRouteImport } from './routes/execution'
 import { Route as EnvironmentsRouteImport } from './routes/environments'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BackendsRouteImport } from './routes/backends'
 import { Route as BackendLogsRouteImport } from './routes/backend-logs'
 import { Route as ApiKeysRouteImport } from './routes/api-keys'
+import { Route as AiRouteImport } from './routes/ai'
 import { Route as IndexRouteImport } from './routes/index'
 
 const UninstallRoute = UninstallRouteImport.update({
@@ -65,6 +67,11 @@ const InstallationProgressRoute = InstallationProgressRouteImport.update({
   path: '/installation-progress',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FinanceRoute = FinanceRouteImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExecutionRoute = ExecutionRouteImport.update({
   id: '/execution',
   path: '/execution',
@@ -95,6 +102,11 @@ const ApiKeysRoute = ApiKeysRouteImport.update({
   path: '/api-keys',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -103,12 +115,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/api-keys': typeof ApiKeysRoute
   '/backend-logs': typeof BackendLogsRoute
   '/backends': typeof BackendsRoute
   '/dashboard': typeof DashboardRoute
   '/environments': typeof EnvironmentsRoute
   '/execution': typeof ExecutionRoute
+  '/finance': typeof FinanceRoute
   '/installation-progress': typeof InstallationProgressRoute
   '/jupyter-logs': typeof JupyterLogsRoute
   '/macro': typeof MacroRoute
@@ -120,12 +134,14 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/api-keys': typeof ApiKeysRoute
   '/backend-logs': typeof BackendLogsRoute
   '/backends': typeof BackendsRoute
   '/dashboard': typeof DashboardRoute
   '/environments': typeof EnvironmentsRoute
   '/execution': typeof ExecutionRoute
+  '/finance': typeof FinanceRoute
   '/installation-progress': typeof InstallationProgressRoute
   '/jupyter-logs': typeof JupyterLogsRoute
   '/macro': typeof MacroRoute
@@ -138,12 +154,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/api-keys': typeof ApiKeysRoute
   '/backend-logs': typeof BackendLogsRoute
   '/backends': typeof BackendsRoute
   '/dashboard': typeof DashboardRoute
   '/environments': typeof EnvironmentsRoute
   '/execution': typeof ExecutionRoute
+  '/finance': typeof FinanceRoute
   '/installation-progress': typeof InstallationProgressRoute
   '/jupyter-logs': typeof JupyterLogsRoute
   '/macro': typeof MacroRoute
@@ -157,12 +175,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai'
     | '/api-keys'
     | '/backend-logs'
     | '/backends'
     | '/dashboard'
     | '/environments'
     | '/execution'
+    | '/finance'
     | '/installation-progress'
     | '/jupyter-logs'
     | '/macro'
@@ -174,12 +194,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai'
     | '/api-keys'
     | '/backend-logs'
     | '/backends'
     | '/dashboard'
     | '/environments'
     | '/execution'
+    | '/finance'
     | '/installation-progress'
     | '/jupyter-logs'
     | '/macro'
@@ -191,12 +213,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ai'
     | '/api-keys'
     | '/backend-logs'
     | '/backends'
     | '/dashboard'
     | '/environments'
     | '/execution'
+    | '/finance'
     | '/installation-progress'
     | '/jupyter-logs'
     | '/macro'
@@ -209,12 +233,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiRoute: typeof AiRoute
   ApiKeysRoute: typeof ApiKeysRoute
   BackendLogsRoute: typeof BackendLogsRoute
   BackendsRoute: typeof BackendsRoute
   DashboardRoute: typeof DashboardRoute
   EnvironmentsRoute: typeof EnvironmentsRoute
   ExecutionRoute: typeof ExecutionRoute
+  FinanceRoute: typeof FinanceRoute
   InstallationProgressRoute: typeof InstallationProgressRoute
   JupyterLogsRoute: typeof JupyterLogsRoute
   MacroRoute: typeof MacroRoute
@@ -283,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InstallationProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/finance': {
+      id: '/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof FinanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/execution': {
       id: '/execution'
       path: '/execution'
@@ -325,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiKeysRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -337,12 +377,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiRoute: AiRoute,
   ApiKeysRoute: ApiKeysRoute,
   BackendLogsRoute: BackendLogsRoute,
   BackendsRoute: BackendsRoute,
   DashboardRoute: DashboardRoute,
   EnvironmentsRoute: EnvironmentsRoute,
   ExecutionRoute: ExecutionRoute,
+  FinanceRoute: FinanceRoute,
   InstallationProgressRoute: InstallationProgressRoute,
   JupyterLogsRoute: JupyterLogsRoute,
   MacroRoute: MacroRoute,

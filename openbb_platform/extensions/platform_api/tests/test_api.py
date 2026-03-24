@@ -185,6 +185,23 @@ def test_parse_args():
         args = parse_args()
         assert args == {"flag": True}
 
+    with patch(
+        "sys.argv",
+        [
+            "script.py",
+            "--workers",
+            "4",
+            "--timeout-keep-alive",
+            "15",
+            "--ws-ping-interval",
+            "5.5",
+        ],
+    ):
+        args = parse_args()
+        assert args["workers"] == 4
+        assert args["timeout-keep-alive"] == 15
+        assert args["ws-ping-interval"] == 5.5
+
 
 def test_import_module_app():
     # pylint: disable=import-outside-toplevel
@@ -718,27 +735,22 @@ class TestPathDetectionHelpers:
 
     def test_is_absolute_path_detection_unix(self):
         """Test absolute path detection for Unix paths."""
-        from pathlib import Path
-
         # Unix absolute paths
-        assert Path("/home/user/app.py").is_absolute() is True
-        assert Path("/app.py").is_absolute() is True
+        assert api_utils._is_absolute_path("/home/user/app.py") is True
+        assert api_utils._is_absolute_path("/app.py") is True
         # Relative paths
-        assert Path("app.py").is_absolute() is False
-        assert Path("./app.py").is_absolute() is False
-        assert Path("subdir/app.py").is_absolute() is False
+        assert api_utils._is_absolute_path("app.py") is False
+        assert api_utils._is_absolute_path("./app.py") is False
+        assert api_utils._is_absolute_path("subdir/app.py") is False
 
-    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
     def test_is_absolute_path_detection_windows(self):
         """Test absolute path detection for Windows paths."""
-        from pathlib import Path
-
         # Windows absolute paths
-        assert Path("C:\\Users\\app.py").is_absolute() is True
-        assert Path("D:/Projects/app.py").is_absolute() is True
+        assert api_utils._is_absolute_path("C:\\Users\\app.py") is True
+        assert api_utils._is_absolute_path("D:/Projects/app.py") is True
         # Relative paths
-        assert Path("app.py").is_absolute() is False
-        assert Path(".\\app.py").is_absolute() is False
+        assert api_utils._is_absolute_path("app.py") is False
+        assert api_utils._is_absolute_path(".\\app.py") is False
 
     def test_colon_notation_vs_windows_drive(self):
         """Test distinguishing module:name notation from Windows drive letters."""
@@ -756,10 +768,9 @@ class TestPathDetectionHelpers:
             parts = notation.split(":")
             assert len(parts[0]) > 1 or not parts[0].isalpha()
 
-    @pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
     def test_windows_drive_letter_detection(self):
         """Test detection of Windows drive letters vs colon notation."""
-        from pathlib import Path
+        from pathlib import PureWindowsPath
 
         # Windows paths with drive letters
         windows_paths = [
@@ -769,7 +780,7 @@ class TestPathDetectionHelpers:
         ]
 
         for path_str in windows_paths:
-            path = Path(path_str)
+            path = PureWindowsPath(path_str)
             # Should be detected as absolute (has drive)
             assert path.is_absolute()
             # Drive should be detected

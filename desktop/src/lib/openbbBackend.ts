@@ -5,17 +5,117 @@ const DEFAULT_OPENBB_API_URL = "http://127.0.0.1:6900";
 const FALLBACK_OPENBB_API_URLS = [
   DEFAULT_OPENBB_API_URL,
   "http://127.0.0.1:6901",
-  "http://127.0.0.1:8000",
 ];
 const HEALTH_CHECK_TIMEOUT_MS = 3000;
+const LOCAL_HEALTH_CHECK_TIMEOUT_MS = 900;
+const QUANT_COMPATIBILITY_TIMEOUT_MS = 3000;
+const DEV_PROBE_PATH = "/__openbb_probe";
 const MAX_RETRIES = 2;
 const RETRY_DELAY_MS = 500;
-const RESOLUTION_CACHE_TTL_MS = 15_000;
+const LOCAL_RETRY_DELAY_MS = 150;
+const CONNECTED_RESOLUTION_CACHE_TTL_MS = import.meta.env.DEV ? 120_000 : 60_000;
+const DISCONNECTED_RESOLUTION_CACHE_TTL_MS = 5_000;
 
 let cachedResolution: { result: BackendResolution; expiresAt: number } | null = null;
 
 function normalizeBaseUrl(url: string): string {
   return url.replace(/\/+$/, "");
+}
+
+function parseUrl(url: string): URL | null {
+  try {
+    return new URL(normalizeBaseUrl(url));
+  } catch {
+    return null;
+  }
+}
+
+function isLoopbackHost(host: string): boolean {
+  return host === "127.0.0.1" || host === "::1" || host === "localhost" || host.endsWith(".localhost");
+}
+
+function isLoopbackUrl(url: string): boolean {
+  const parsed = parseUrl(url);
+  return parsed ? isLoopbackHost(parsed.hostname) : false;
+}
+
+function canQueryTauriBackendServices(): boolean {
+  if (typeof window === "undefined") {
+    return true;
+  }
+  return typeof (window as Window & { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__ !== "undefined";
+}
+
+function shouldUseDevProbeProxy(baseUrl: string): boolean {
+  if (!import.meta.env.DEV || typeof window === "undefined") {
+    return false;
+  }
+
+  if (canQueryTauriBackendServices() || !isLoopbackUrl(baseUrl)) {
+    return false;
+  }
+
+  return (
+    window.location.protocol === "http:"
+    && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+    && window.location.port === "1470"
+  );
+}
+
+async function probeViaDevProxy(baseUrl: string, path: string, timeoutMs: number): Promise<boolean> {
+  const normalized = normalizeBaseUrl(baseUrl);
+  const target = `${normalized}${path}`;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(
+      `${DEV_PROBE_PATH}?target=${encodeURIComponent(target)}&timeoutMs=${timeoutMs}`,
+      {
+        method: "GET",
+        signal: controller.signal,
+      },
+    );
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const payload = await response.json() as { ok?: boolean };
+    return payload.ok === true;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+function getHealthCheckTimeoutMs(baseUrl: string): number {
+  return isLoopbackUrl(baseUrl) ? LOCAL_HEALTH_CHECK_TIMEOUT_MS : HEALTH_CHECK_TIMEOUT_MS;
+}
+
+function getHealthEndpoints(baseUrl: string): string[] {
+  if (isLoopbackUrl(baseUrl)) {
+    return ["/api/v1/coverage/providers"];
+  }
+
+  return import.meta.env.DEV
+    ? ["/api/v1/coverage/providers", "/docs"]
+    : ["/api/v1/coverage/providers", "/docs", "/openapi.json"];
+}
+
+function getRetrySettings(baseUrl: string): { retries: number; delayMs: number } {
+  if (isLoopbackUrl(baseUrl)) {
+    return {
+      retries: import.meta.env.DEV ? 1 : 2,
+      delayMs: LOCAL_RETRY_DELAY_MS,
+    };
+  }
+
+  return {
+    retries: MAX_RETRIES,
+    delayMs: RETRY_DELAY_MS,
+  };
 }
 
 function parseOpenbbUrlFromCommand(command: string): string | null {
@@ -58,15 +158,19 @@ function storeBackendUrl(url: string): void {
 
 async function checkHealth(baseUrl: string): Promise<boolean> {
   const normalized = normalizeBaseUrl(baseUrl);
-  // In dev mode skip /openapi.json probe because schema build is expensive.
-  const includeOpenApiProbe = !import.meta.env.DEV;
-  const endpoints = includeOpenApiProbe
-    ? ["/api/v1/coverage/providers", "/docs", "/api/v1/system", "/openapi.json"]
-    : ["/api/v1/coverage/providers", "/api/v1/system", "/docs"];
+  const endpoints = getHealthEndpoints(normalized);
+  const timeoutMs = getHealthCheckTimeoutMs(normalized);
 
   for (const endpoint of endpoints) {
+    if (shouldUseDevProbeProxy(normalized)) {
+      if (await probeViaDevProxy(normalized, endpoint, timeoutMs)) {
+        return true;
+      }
+      continue;
+    }
+
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT_MS);
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await fetch(`${normalized}${endpoint}`, {
         method: "GET",
@@ -85,12 +189,45 @@ async function checkHealth(baseUrl: string): Promise<boolean> {
   return false;
 }
 
+async function checkEndpointOk(baseUrl: string, path: string, timeoutMs: number): Promise<boolean> {
+  const normalized = normalizeBaseUrl(baseUrl);
+
+  if (shouldUseDevProbeProxy(normalized)) {
+    return probeViaDevProxy(normalized, path, timeoutMs);
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(`${normalized}${path}`, {
+      method: "GET",
+      signal: controller.signal,
+    });
+    return response.ok;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function getLoopbackCompatibilityScore(baseUrl: string): Promise<number> {
+  const [hasUniverseList, hasTradingOrders] = await Promise.all([
+    checkEndpointOk(baseUrl, "/api/v1/quant_ml/universe/list", QUANT_COMPATIBILITY_TIMEOUT_MS),
+    checkEndpointOk(baseUrl, "/api/v1/quant_ml/trading/orders?limit=1", QUANT_COMPATIBILITY_TIMEOUT_MS),
+  ]);
+
+  return Number(hasUniverseList) + Number(hasTradingOrders);
+}
+
 async function checkHealthWithRetry(baseUrl: string, retries: number = MAX_RETRIES): Promise<boolean> {
+  const { delayMs } = getRetrySettings(baseUrl);
   for (let attempt = 0; attempt < retries; attempt++) {
     const ok = await checkHealth(baseUrl);
     if (ok) return true;
     if (attempt < retries - 1) {
-      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   }
   return false;
@@ -98,8 +235,8 @@ async function checkHealthWithRetry(baseUrl: string, retries: number = MAX_RETRI
 
 function buildFallbackCandidateUrls(primaryUrl: string, storedUrl?: string | null): string[] {
   const urls = [
-    primaryUrl,
     storedUrl ?? null,
+    primaryUrl,
     ...FALLBACK_OPENBB_API_URLS,
   ].filter((url): url is string => Boolean(url));
 
@@ -107,12 +244,44 @@ function buildFallbackCandidateUrls(primaryUrl: string, storedUrl?: string | nul
 }
 
 async function resolveReachableUrl(candidateUrls: string[]): Promise<string | null> {
-  for (let index = 0; index < candidateUrls.length; index += 1) {
-    const candidate = candidateUrls[index];
-    const ok = index === 0
-      ? await checkHealthWithRetry(candidate)
-      : await checkHealth(candidate);
-    if (ok) {
+  if (candidateUrls.length === 0) {
+    return null;
+  }
+
+  if (candidateUrls.every(isLoopbackUrl)) {
+    const reachable = await Promise.all(
+      candidateUrls.map(async (candidate, index) => {
+        const { retries } = getRetrySettings(candidate);
+        const ok = await checkHealthWithRetry(candidate, retries);
+        return {
+          candidate,
+          index,
+          ok,
+          compatibilityScore: ok ? await getLoopbackCompatibilityScore(candidate) : -1,
+        };
+      }),
+    );
+
+    const compatible = reachable
+      .filter((entry) => entry.ok)
+      .sort((left, right) => {
+        if (right.compatibilityScore !== left.compatibilityScore) {
+          return right.compatibilityScore - left.compatibilityScore;
+        }
+        return left.index - right.index;
+      });
+
+    return compatible[0]?.candidate ?? null;
+  }
+
+  const [primaryUrl, ...fallbackUrls] = candidateUrls;
+  const { retries } = getRetrySettings(primaryUrl);
+  if (await checkHealthWithRetry(primaryUrl, retries)) {
+    return primaryUrl;
+  }
+
+  for (const candidate of fallbackUrls) {
+    if (await checkHealth(candidate)) {
       return candidate;
     }
   }
@@ -143,9 +312,32 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
   let source: BackendResolution["source"] = "fallback";
   let detail = "Using fallback URL.";
   let serviceQueryFailed = false;
-  let storedUrl: string | null = null;
+  const storedUrl = getStoredBackendUrl();
+
+  if (storedUrl) {
+    const storedHealthy = await checkHealth(storedUrl);
+    if (storedHealthy && !isLoopbackUrl(storedUrl)) {
+      const result: BackendResolution = {
+        baseUrl: storedUrl,
+        source: "stored-url",
+        connected: true,
+        detail: "Using previously stored backend URL.",
+      };
+
+      cachedResolution = {
+        result,
+        expiresAt: Date.now() + CONNECTED_RESOLUTION_CACHE_TTL_MS,
+      };
+
+      return result;
+    }
+  }
 
   try {
+    if (!canQueryTauriBackendServices()) {
+      throw new Error("tauri backend services unavailable");
+    }
+
     const backends = await invoke<BackendService[]>("list_backend_services");
     const backendRows = Array.isArray(backends) ? backends : [];
 
@@ -172,7 +364,6 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
   } catch {
     serviceQueryFailed = true;
 
-    storedUrl = getStoredBackendUrl();
     if (storedUrl) {
       candidateUrl = storedUrl;
       source = "stored-url";
@@ -222,7 +413,7 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
 
   cachedResolution = {
     result,
-    expiresAt: Date.now() + (connected ? RESOLUTION_CACHE_TTL_MS : 5_000),
+    expiresAt: Date.now() + (connected ? CONNECTED_RESOLUTION_CACHE_TTL_MS : DISCONNECTED_RESOLUTION_CACHE_TTL_MS),
   };
 
   return result;

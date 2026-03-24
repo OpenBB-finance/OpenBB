@@ -42,7 +42,7 @@ describe("Ops Route", () => {
 
     global.fetch = vi.fn(async (input: string | URL) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) return mockResponse({ results: {} });
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) return mockResponse({ results: {} });
       if (url.endsWith("/api/v1/quant_ml/universe/list")) {
         return mockResponse({ universes: [{ id: "default", has_file: true, count_hint: 2 }] });
       }

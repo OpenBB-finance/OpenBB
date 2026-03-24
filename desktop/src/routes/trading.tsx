@@ -103,6 +103,14 @@ interface SettingsFormState {
   trailingStopEnabled: boolean;
 }
 
+function tradingRowKey(row: Record<string, unknown>, index: number): string {
+  return [
+    String(row.order_id ?? row.signal_id ?? row.ticker ?? row.name ?? row.event_type ?? row.reason_code ?? "row"),
+    String(row.timestamp ?? row.created_at ?? row.entry_time ?? "na"),
+    index,
+  ].join("-");
+}
+
 function TradingPage() {
   const [baseUrl, setBaseUrl] = useState("");
   const [activationMessage, setActivationMessage] = useState<string | null>(null);
@@ -704,7 +712,7 @@ function TradingPage() {
             </div>
             <div className="space-y-2">
               {riskEvents.slice().reverse().slice(0, 8).map((row, index) => (
-                <div key={`${String(row.created_at ?? row.timestamp ?? index)}`} className="rounded-sm bg-theme-secondary p-2">
+                <div key={tradingRowKey(row, index)} className="rounded-sm bg-theme-secondary p-2">
                   <div className="flex items-center justify-between gap-2">
                     <span className="body-xs-medium text-theme-primary">{String(row.reason_code ?? row.event_type ?? "risk_event")}</span>
                     <span className={`rounded-sm px-2 py-0.5 body-xxs-medium ${badgeClass(String(row.status ?? row.severity ?? "warning"))}`}>{String(row.status ?? row.severity ?? "warning")}</span>
@@ -718,8 +726,8 @@ function TradingPage() {
 
           <PanelCard title="Scan History" description="Recent normalized scan activity for runtime comparison.">
             <div className="max-h-72 space-y-2 overflow-auto">
-              {recentScanEvents.slice(0, 12).map((row) => (
-                <div key={row.signal_id ?? `${row.ticker}-${row.timestamp}`} className="rounded-sm bg-theme-secondary p-2">
+              {recentScanEvents.slice(0, 12).map((row, index) => (
+                <div key={row.signal_id ?? tradingRowKey(row as unknown as Record<string, unknown>, index)} className="rounded-sm bg-theme-secondary p-2">
                   <div className="flex items-center justify-between gap-2">
                     <p className="body-xs-medium text-theme-primary">{row.ticker} | {row.strategy_name}</p>
                     <span className={`rounded-sm px-2 py-0.5 body-xxs-medium ${badgeClass(row.risk_check_status)}`}>{row.risk_check_status}</span>
@@ -736,7 +744,7 @@ function TradingPage() {
           <PanelCard title="Audit Log" description="Signal, order, risk, and system events.">
             <div className="max-h-80 space-y-2 overflow-auto">
               {events.slice().reverse().slice(0, 25).map((row, index) => (
-                <div key={`${String(row.timestamp ?? row.created_at ?? index)}`} className="rounded-sm bg-theme-secondary p-2">
+                <div key={tradingRowKey(row, index)} className="rounded-sm bg-theme-secondary p-2">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="body-xs-medium text-theme-primary">

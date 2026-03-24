@@ -4,6 +4,8 @@ import { invoke } from "@tauri-apps/api/core";
 import { message } from "@tauri-apps/plugin-dialog";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CustomIcon, { CopyIcon, DocumentationIcon, FileIcon } from "../components/Icon";
+import { TauriRuntimeNotice } from "../components/TauriRuntimeNotice";
+import { getDesktopRuntimeMessage, isTauriRuntimeAvailable } from "../lib/tauriRuntime";
 
 interface ApiKey {
 	key: string;
@@ -15,7 +17,7 @@ type UserCredentialsResult = {
   credentials?: Record<string, string | null | undefined>;
 };
 
-export default function ApiKeysPage() {
+function ApiKeysPageContent() {
 	// State management
 	const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -1132,6 +1134,19 @@ export default function ApiKeysPage() {
 			)}
 		</div>
 	);
+}
+
+export default function ApiKeysPage() {
+	if (!isTauriRuntimeAvailable()) {
+		return (
+			<TauriRuntimeNotice
+				title="API Keys"
+				description={getDesktopRuntimeMessage("API Keys")}
+			/>
+		);
+	}
+
+	return <ApiKeysPageContent />;
 }
 export const Route = createFileRoute("/api-keys")({
 	component: ApiKeysPage,

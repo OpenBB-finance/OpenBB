@@ -108,6 +108,7 @@ const QUANT_PREFIX = "/api/v1/quant_ml";
 const DASHBOARD_CACHE_TTL_MS = 60_000;
 const LIVE_CACHE_TTL_MS = 5_000;
 const LEGACY_TRADING_ENDPOINT_TTL_MS = 60 * 60 * 1000;
+const LOCAL_API_RETRY_BASE_MS = 150;
 
 function buildFeatureActivation(featureName: string, available: boolean, detail?: string): FeatureActivation {
   return {
@@ -127,6 +128,35 @@ interface DashboardRequestOptions {
 const MAX_RETRIES = 2;
 const RETRY_BASE_MS = 500;
 
+function isLoopbackBaseUrl(baseUrl: string): boolean {
+  try {
+    const parsed = new URL(baseUrl);
+    const { hostname } = parsed;
+    return (
+      hostname === "127.0.0.1" ||
+      hostname === "::1" ||
+      hostname === "localhost" ||
+      hostname.endsWith(".localhost")
+    );
+  } catch {
+    return false;
+  }
+}
+
+function getRetryPolicy(baseUrl: string): { retries: number; baseDelayMs: number } {
+  if (isLoopbackBaseUrl(baseUrl)) {
+    return {
+      retries: import.meta.env.DEV ? 1 : 1,
+      baseDelayMs: LOCAL_API_RETRY_BASE_MS,
+    };
+  }
+
+  return {
+    retries: MAX_RETRIES,
+    baseDelayMs: RETRY_BASE_MS,
+  };
+}
+
 function isRetryableError(response: Response | null, error: unknown): boolean {
   if (response) {
     return response.status === 503 || response.status === 502 || response.status === 504;
@@ -142,10 +172,11 @@ function isRetryableError(response: Response | null, error: unknown): boolean {
 }
 
 async function requestJson<T>(baseUrl: string, path: string, init: RequestInit): Promise<T> {
+  const retryPolicy = getRetryPolicy(baseUrl);
   let lastError: Error | null = null;
   let lastResponse: Response | null = null;
 
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+  for (let attempt = 0; attempt <= retryPolicy.retries; attempt++) {
     try {
       const response = await fetch(`${baseUrl}${path}`, init);
       lastResponse = response;
@@ -159,8 +190,8 @@ async function requestJson<T>(baseUrl: string, path: string, init: RequestInit):
           detail = "";
         }
         const err = new Error(detail || `Request failed (${response.status})`);
-        if (attempt < MAX_RETRIES && isRetryableError(response, null)) {
-          const delayMs = RETRY_BASE_MS * Math.pow(2, attempt);
+        if (attempt < retryPolicy.retries && isRetryableError(response, null)) {
+          const delayMs = retryPolicy.baseDelayMs * Math.pow(2, attempt);
           await new Promise((resolve) => setTimeout(resolve, delayMs));
           continue;
         }
@@ -169,8 +200,8 @@ async function requestJson<T>(baseUrl: string, path: string, init: RequestInit):
       return (await response.json()) as T;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
-      if (attempt < MAX_RETRIES && isRetryableError(lastResponse, error)) {
-        const delayMs = RETRY_BASE_MS * Math.pow(2, attempt);
+      if (attempt < retryPolicy.retries && isRetryableError(lastResponse, error)) {
+        const delayMs = retryPolicy.baseDelayMs * Math.pow(2, attempt);
         await new Promise((resolve) => setTimeout(resolve, delayMs));
         continue;
       }

@@ -88,6 +88,7 @@ function hasModelArtifact(
 export default function QuantPage() {
   const router = useRouter();
   const { session, setRunId, setModelName, patchSession, markArtifactReady } = useQuantSession();
+  const autoRecoveredRunRef = useRef<string | null>(null);
   const [selectedUniverseSet, setSelectedUniverseSet] = useState<UniverseSetId>("default");
   const [selectedProfile, setSelectedProfile] = useState<UniverseProfileId>("all");
   const [symbolsInput, setSymbolsInput] = useState("");
@@ -275,6 +276,32 @@ export default function QuantPage() {
     setErrorMessage,
     setPortfolioError,
   });
+
+  useEffect(() => {
+    if (!backend?.connected || recentRuns.length === 0) {
+      return;
+    }
+    const currentRunId = runIdInput.trim() || session.run_id.trim();
+    const currentStatus = String(runStatus?.status ?? "").toLowerCase();
+    const shouldRecover =
+      !currentRunId || currentStatus === "failed" || currentStatus === "error" || currentStatus === "cancelled";
+
+    if (!shouldRecover) {
+      return;
+    }
+
+    const fallbackRun =
+      recentRuns.find((run) => run.actionable_backtest) ??
+      recentRuns.find((run) => String(run.status).toLowerCase() === "completed");
+
+    if (!fallbackRun || fallbackRun.run_id === currentRunId || autoRecoveredRunRef.current === fallbackRun.run_id) {
+      return;
+    }
+
+    autoRecoveredRunRef.current = fallbackRun.run_id;
+    setRunIdInput(fallbackRun.run_id);
+    void loadExistingRun(fallbackRun.run_id);
+  }, [backend?.connected, loadExistingRun, recentRuns, runIdInput, runStatus?.status, session.run_id]);
 
   useQuantRunStream({
     backend,
@@ -616,4 +643,3 @@ export default function QuantPage() {
 }
 
 export const Route = createFileRoute("/quant")({ component: QuantPage });
-

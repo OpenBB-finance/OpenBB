@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import {
   fetchDashboardHealth,
@@ -69,14 +69,20 @@ export function useQuantBackendRuntime({
   const [dashboardHealth, setDashboardHealth] = useState<DashboardHealthPayload | null>(null);
   const [isLoadingHealth, setIsLoadingHealth] = useState(false);
   const [healthError, setHealthError] = useState<string | null>(null);
+  const bootstrapLoadId = useRef(0);
 
   const resolveBackendAndUniverse = useCallback(async () => {
+    const loadId = bootstrapLoadId.current + 1;
+    bootstrapLoadId.current = loadId;
     setIsResolvingBackend(true);
     setErrorMessage(null);
     setHealthError(null);
 
     try {
       const resolved = await resolveOpenBBBackend();
+      if (bootstrapLoadId.current !== loadId) {
+        return;
+      }
       setBackend(resolved);
 
       if (!resolved.connected) {
@@ -88,6 +94,8 @@ export function useQuantBackendRuntime({
         });
         setUniverse(null);
         setRecentRuns([]);
+        setPromotedModel(null);
+        setPortfolioPolicy(DEFAULT_PORTFOLIO_POLICY);
         setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
         setRunStreamState("idle");
         setDashboardHealth(null);
@@ -95,101 +103,117 @@ export function useQuantBackendRuntime({
         return;
       }
 
-      const [universeListResult, universeResult] = await Promise.allSettled([
-        fetchUniverseList(resolved.baseUrl),
-        fetchUniverse(resolved.baseUrl),
-      ]);
+      setIsResolvingBackend(false);
 
-      let fetchedUniverseList: Awaited<ReturnType<typeof fetchUniverseList>> | null = null;
-      if (universeListResult.status === "fulfilled") {
-        fetchedUniverseList = universeListResult.value;
-        setQuantActivation({
-          featureName: "quant_ml",
-          available: true,
-          detail: null,
-          lastCheckedAt: new Date().toISOString(),
-        });
-      } else {
-        const error = universeListResult.reason;
-        setQuantActivation({
-          featureName: "quant_ml",
-          available: false,
-          detail: error instanceof Error ? error.message : "quant_ml extension unavailable",
-          lastCheckedAt: new Date().toISOString(),
-        });
-        setUniverse(null);
-        setRecentRuns([]);
-        setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
-        setRunStreamState("idle");
-        setDashboardHealth(null);
-        setErrorMessage(
-          error instanceof Error
-            ? error.message
-            : "quant_ml extension is unavailable. Install/enable openbb-quant-ml.",
-        );
-        return;
-      }
+      const universePromise = fetchUniverse(resolved.baseUrl)
+        .then((value) => ({ ok: true as const, value }))
+        .catch((reason) => ({ ok: false as const, reason }));
 
-      if (!fetchedUniverseList) {
-        setUniverse(null);
-        setRecentRuns([]);
-        setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
-        setRunStreamState("idle");
-        setDashboardHealth(null);
-        setErrorMessage("quant_ml extension is unavailable. Install/enable openbb-quant-ml.");
-        return;
-      }
+      void (async () => {
+        try {
+          const fetchedUniverseList = await fetchUniverseList(resolved.baseUrl);
+          if (bootstrapLoadId.current !== loadId) {
+            return;
+          }
 
-      const fetchedUniverse =
-        universeResult.status === "fulfilled" ? universeResult.value : null;
-      setUniverse(fetchedUniverse);
-      setUniverseSetOptions(mergeUniverseSetOptions(fetchedUniverseList.universes));
+          setQuantActivation({
+            featureName: "quant_ml",
+            available: true,
+            detail: null,
+            lastCheckedAt: new Date().toISOString(),
+          });
+          setUniverseSetOptions(mergeUniverseSetOptions(fetchedUniverseList.universes));
 
-      const [policyResult, promotedResult, runListResult] = await Promise.allSettled([
-        fetchPortfolioPolicy(resolved.baseUrl),
-        fetchPromotedModel(resolved.baseUrl, selectedModel),
-        fetchRunsList(resolved.baseUrl, 20, {
-          completedFirst: true,
-          actionableOnly: false,
-        }),
-      ]);
-      setPortfolioPolicy(
-        policyResult.status === "fulfilled"
-          ? policyResult.value
-          : DEFAULT_PORTFOLIO_POLICY,
-      );
-      setPromotedModel(
-        promotedResult.status === "fulfilled" ? promotedResult.value : null,
-      );
-      setRecentRuns(
-        runListResult.status === "fulfilled" ? runListResult.value.runs : [],
-      );
+          const universeResult = await universePromise;
+          if (bootstrapLoadId.current !== loadId) {
+            return;
+          }
 
-      setSymbolsInput((prev) => {
-        if (prev.trim()) {
-          return prev;
+          const fetchedUniverse = universeResult.ok ? universeResult.value : null;
+          setUniverse(fetchedUniverse);
+          setSymbolsInput((prev) => {
+            if (prev.trim() || !fetchedUniverse) {
+              return prev;
+            }
+            return formatSymbolsForTextarea(
+              symbolsByProfile(fetchedUniverse.assets, "all"),
+            );
+          });
+          setSelectedProfile((prev) => (prev === "custom" ? prev : "all"));
+
+          window.setTimeout(() => {
+            void (async () => {
+              const [policyResult, promotedResult, runListResult] = await Promise.allSettled([
+                fetchPortfolioPolicy(resolved.baseUrl),
+                fetchPromotedModel(resolved.baseUrl, selectedModel),
+                fetchRunsList(resolved.baseUrl, 20, {
+                  completedFirst: true,
+                  actionableOnly: false,
+                }),
+              ]);
+
+              if (bootstrapLoadId.current !== loadId) {
+                return;
+              }
+
+              setPortfolioPolicy(
+                policyResult.status === "fulfilled"
+                  ? policyResult.value
+                  : DEFAULT_PORTFOLIO_POLICY,
+              );
+              setPromotedModel(
+                promotedResult.status === "fulfilled" ? promotedResult.value : null,
+              );
+              setRecentRuns(
+                runListResult.status === "fulfilled" ? runListResult.value.runs : [],
+              );
+            })();
+          }, 0);
+        } catch (error) {
+          if (bootstrapLoadId.current !== loadId) {
+            return;
+          }
+
+          setQuantActivation({
+            featureName: "quant_ml",
+            available: false,
+            detail: error instanceof Error ? error.message : "quant_ml extension unavailable",
+            lastCheckedAt: new Date().toISOString(),
+          });
+          setUniverse(null);
+          setRecentRuns([]);
+          setPromotedModel(null);
+          setPortfolioPolicy(DEFAULT_PORTFOLIO_POLICY);
+          setUniverseSetOptions(UNIVERSE_SET_OPTIONS_DEFAULT);
+          setRunStreamState("idle");
+          setDashboardHealth(null);
+          setErrorMessage(
+            error instanceof Error
+              ? error.message
+              : "quant_ml extension is unavailable. Install/enable openbb-quant-ml.",
+          );
         }
-        if (!fetchedUniverse) {
-          return prev;
-        }
-        return formatSymbolsForTextarea(
-          symbolsByProfile(fetchedUniverse.assets, "all"),
-        );
-      });
-      setSelectedProfile((prev) => (prev === "custom" ? prev : "all"));
+      })();
     } catch (error) {
+      if (bootstrapLoadId.current !== loadId) {
+        return;
+      }
       setQuantActivation({
         featureName: "quant_ml",
         available: false,
         detail: error instanceof Error ? error.message : "Failed to resolve quant_ml activation.",
         lastCheckedAt: new Date().toISOString(),
       });
+      setPromotedModel(null);
       setRecentRuns([]);
+      setPortfolioPolicy(DEFAULT_PORTFOLIO_POLICY);
       setRunStreamState("idle");
       setDashboardHealth(null);
       setErrorMessage(error instanceof Error ? error.message : "Failed to resolve backend connection.");
     } finally {
-      setIsResolvingBackend(false);
+      if (bootstrapLoadId.current === loadId) {
+        setIsResolvingBackend(false);
+      }
     }
   }, [
     selectedModel,

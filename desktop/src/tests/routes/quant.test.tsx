@@ -7,6 +7,7 @@ import { Route as QuantRoute } from "../../routes/quant";
 import { QuantSessionProvider } from "../../contexts/QuantSessionContext";
 import { clearCachePrefix } from "../../lib/quantCache";
 import { invalidateBackendCache } from "../../lib/openbbBackend";
+import { DEFAULT_PORTFOLIO_POLICY } from "../../lib/quantConfig";
 
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: vi.fn(() => (options: { component: React.ComponentType }) => ({
@@ -29,6 +30,16 @@ function mockJsonResponse(payload: unknown, ok = true, status = 200): Response {
     status,
     json: async () => payload,
   } as Response;
+}
+
+function createDeferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
 }
 
 describe("Quant Route", () => {
@@ -60,7 +71,7 @@ describe("Quant Route", () => {
     global.fetch = vi.fn(async (input: string | URL) => {
       const url = String(input);
 
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockJsonResponse({ results: {} });
       }
       if (url.endsWith("/api/v1/quant_ml/universe")) {
@@ -354,6 +365,113 @@ describe("Quant Route", () => {
     });
   });
 
+  test("renders connected state before secondary bootstrap metadata completes", async () => {
+    const deferredUniverseList = createDeferred<Response>();
+    let universeListRequests = 0;
+
+    global.fetch = vi.fn(async (input: string | URL) => {
+      const url = String(input);
+
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
+        return mockJsonResponse({ results: {} });
+      }
+      if (url.includes("/api/v1/quant_ml/health")) {
+        return mockJsonResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          status: "ok",
+          backend_connected: true,
+          backend_source: "backend_service",
+          backend_detail: "ok",
+          latest_run_id: "run-1",
+          mode_supported: ["backtest", "live"],
+          latest_market_date: "2026-02-12",
+          cache_warm_ratio: 0.82,
+          universe_size: 2,
+          cost_bps: 10,
+          cash_exposure: 0.2,
+          gross_exposure: 1.0,
+          net_exposure: 1.0,
+          strategy_health: { score: 0.95 },
+          data_freshness_days: 1,
+          disk_free_gb: 123.4,
+          last_successful_run_at: "2026-02-13T00:00:10Z",
+          fred_api_status: "ok",
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/universe")) {
+        return mockJsonResponse({
+          version: "v1",
+          assets: [
+            { symbol: "SPY", category: "us_equity_etf" },
+            { symbol: "QQQ", category: "us_tech_etf" },
+          ],
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/universe/list")) {
+        universeListRequests += 1;
+        if (universeListRequests === 1) {
+          return mockJsonResponse({
+            universes: [
+              { id: "default", has_file: true, path: null, count_hint: 2, minimum_required: 0 },
+            ],
+          });
+        }
+        return deferredUniverseList.promise;
+      }
+      if (url.endsWith("/api/v1/quant_ml/portfolio/policy")) {
+        return mockJsonResponse(DEFAULT_PORTFOLIO_POLICY);
+      }
+      if (url.includes("/api/v1/quant_ml/model/promoted")) {
+        return mockJsonResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          as_of_date: "2026-02-13",
+          feature_hash: "abc123",
+          updated_at: "2026-02-13T00:00:00Z",
+          source: "runtime_pointer",
+          ready: true,
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/runs/list")) {
+        return mockJsonResponse({ limit: 20, runs: [] });
+      }
+
+      return mockJsonResponse({ detail: "not-found" }, false, 404);
+    }) as unknown as typeof fetch;
+
+    await act(async () => {
+      renderQuant();
+    });
+
+    await waitFor(() => {
+      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/universe/list"))).toBe(true);
+    });
+
+    expect(screen.queryByText(/OpenBB API not connected/i)).not.toBeInTheDocument();
+
+    let calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+    expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/portfolio/policy"))).toBe(false);
+    expect(calls.some((url) => url.includes("/api/v1/quant_ml/model/promoted"))).toBe(false);
+    expect(calls.some((url) => url.includes("/api/v1/quant_ml/runs/list"))).toBe(false);
+
+    deferredUniverseList.resolve(
+      mockJsonResponse({
+        universes: [
+          { id: "default", has_file: true, path: null, count_hint: 2, minimum_required: 0 },
+        ],
+      }),
+    );
+
+    await waitFor(() => {
+      calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/portfolio/policy"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/model/promoted"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/runs/list"))).toBe(true);
+    });
+  });
+
   test("renders portfolio timeline from rebalance history endpoint", async () => {
     await act(async () => {
       renderQuant();
@@ -448,7 +566,7 @@ describe("Quant Route", () => {
     global.fetch = vi.fn(async (input: string | URL) => {
       const url = String(input);
 
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockJsonResponse({ results: {} });
       }
       if (url.endsWith("/api/v1/quant_ml/universe")) {
@@ -629,7 +747,7 @@ describe("Quant Route", () => {
   test("shows disconnected state when health check fails", async () => {
     global.fetch = vi.fn(async (input: string | URL) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system") || url.endsWith("/openapi.json") || url.endsWith("/docs")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system") || url.endsWith("/openapi.json") || url.endsWith("/docs")) {
         return mockJsonResponse({ detail: "unavailable" }, false, 503);
       }
       return mockJsonResponse({ detail: "not-found" }, false, 404);

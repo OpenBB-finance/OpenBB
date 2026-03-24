@@ -4,9 +4,21 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 
 const FORWARD_REF_WARNING = 'forwardRef render functions accept exactly two parameters';
+const PROVIDER_EVENT_WARNING = 'Cannot listen to the event from the provider';
+const PROVIDED_IFRAME_WARNING = 'Cannot listen to the event from the provided iframe';
+const TRADINGVIEW_DEPRECATION_WARNING = 'Deprecation warning: use moment.updateLocale';
 
 const shouldSuppressKnownConsoleNoise = (args: unknown[]): boolean =>
-  args.some((arg) => typeof arg === 'string' && arg.includes(FORWARD_REF_WARNING));
+  args.some(
+    (arg) =>
+      typeof arg === 'string' &&
+      (
+        arg.includes(FORWARD_REF_WARNING) ||
+        arg.includes(PROVIDER_EVENT_WARNING) ||
+        arg.includes(PROVIDED_IFRAME_WARNING) ||
+        arg.includes(TRADINGVIEW_DEPRECATION_WARNING)
+      ),
+  );
 
 const patchConsoleMethod = (
   originalMethod: (...args: unknown[]) => void,

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from math import isfinite
+from numbers import Integral, Real
 from typing import Any
 from uuid import uuid4
 
@@ -103,11 +105,42 @@ def _load_orders() -> list[dict[str, Any]]:
     frame = load_frame(order_history_path())
     if frame.empty:
         return []
-    return frame.sort_values("created_at").to_dict(orient="records")
+    return _json_safe(frame.sort_values("created_at").to_dict(orient="records"))
 
 
 def _load_fills() -> pd.DataFrame:
     return load_frame(fill_history_path())
+
+
+def _json_safe(value: Any) -> Any:
+    """Recursively coerce payloads into JSON-safe values for FastAPI responses."""
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, tuple):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, pd.Timestamp):
+        if pd.isna(value):
+            return None
+        return value.isoformat()
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, Integral):
+        return int(value)
+    if isinstance(value, Real):
+        casted = float(value)
+        if not isfinite(casted) or pd.isna(casted):
+            return 0.0
+        return casted
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return value
 
 
 def _load_closed_positions() -> pd.DataFrame:
@@ -767,19 +800,19 @@ def get_trading_symbol_detail_payload(ticker: str) -> dict[str, Any]:
         None,
     )
     explanation = str(latest_signals[0].get("reason", "")) if latest_signals else ""
-    return {
+    return _json_safe({
         "ticker": key,
         "series": enriched.to_dict(orient="records"),
         "signals": latest_signals,
         "orders": orders,
         "position": position,
         "explanation": explanation,
-    }
+    })
 
 
 def get_trading_orders_payload(limit: int = 250) -> dict[str, Any]:
     rows = _load_orders()
-    return {"items": rows[-limit:]}
+    return {"items": _json_safe(rows[-limit:])}
 
 
 def get_trading_fills_payload(limit: int = 250) -> dict[str, Any]:
@@ -791,7 +824,7 @@ def get_trading_fills_payload(limit: int = 250) -> dict[str, Any]:
         .head(limit)
         .to_dict(orient="records")
     )
-    return {"items": rows}
+    return {"items": _json_safe(rows)}
 
 
 def get_trading_positions_payload() -> dict[str, Any]:
@@ -805,10 +838,10 @@ def get_trading_positions_payload() -> dict[str, Any]:
             for row in load_open_positions()
         },
     )
-    return {
+    return _json_safe({
         "mode": settings.get("mode", "paper"),
         "items": positions,
-    }
+    })
 
 
 def get_trading_performance_payload() -> dict[str, Any]:
@@ -820,7 +853,7 @@ def get_trading_performance_payload() -> dict[str, Any]:
         payload["equity_curve"] = []
         payload["drawdown_curve"] = []
         payload["daily_pnl"] = []
-        return payload
+        return _json_safe(payload)
     payload["equity_curve"] = [
         {"date": str(row.get("as_of_date")), "value": float(row.get("equity", 0.0) or 0.0)}
         for row in frame.tail(250).to_dict(orient="records")
@@ -833,7 +866,7 @@ def get_trading_performance_payload() -> dict[str, Any]:
         {"date": str(row.get("as_of_date")), "value": float(row.get("total_pnl", 0.0) or 0.0)}
         for row in frame.tail(250).to_dict(orient="records")
     ]
-    return payload
+    return _json_safe(payload)
 
 
 def get_trading_risk_payload() -> dict[str, Any]:
@@ -843,15 +876,15 @@ def get_trading_risk_payload() -> dict[str, Any]:
         latest = {}
     latest.setdefault("limits", settings.get("risk", {}))
     latest.setdefault("events", _load_risk_events()[-100:])
-    return latest
+    return _json_safe(latest)
 
 
 def get_trading_events_payload(limit: int = 250) -> dict[str, Any]:
-    return {"items": list_trading_events(limit=limit)}
+    return {"items": _json_safe(list_trading_events(limit=limit))}
 
 
 def get_trading_algorithms_payload() -> dict[str, Any]:
-    return {"items": sync_custom_algorithm_registry()}
+    return {"items": _json_safe(sync_custom_algorithm_registry())}
 
 
 def toggle_trading_algorithm_payload(
@@ -871,7 +904,7 @@ def toggle_trading_algorithm_payload(
         signal_only=signal_only,
         status=status,
     )
-    return {"items": items}
+    return {"items": _json_safe(items)}
 
 
 def validate_trading_algorithm_payload(name: str, version: str | None = None) -> dict[str, Any]:
@@ -915,18 +948,18 @@ def validate_trading_algorithm_payload(name: str, version: str | None = None) ->
     new_row["validation_result"] = payload
     new_row["modified_at"] = _now_iso()
     upsert_algorithm_record(new_row)
-    return payload
+    return _json_safe(payload)
 
 
 def get_trading_execution_mode_payload() -> dict[str, Any]:
     settings = get_trading_config(refresh=True)
-    return {
+    return _json_safe({
         "mode": str(settings.get("execution", {}).get("mode", "paper") or "paper"),
         "live_adapter_enabled": False,
         "broker_ready": False,
         "kill_switch": False,
         "updated_at": _now_iso(),
-    }
+    })
 
 
 def set_trading_execution_mode_payload(mode: str) -> dict[str, Any]:
@@ -983,7 +1016,7 @@ def approve_trading_order_payload(order_id: str) -> dict[str, Any]:
             update_positions_market_values(positions, {key: float(fill.get("price", 0.0) or 0.0)})
         )
         save_account_state(account_state)
-    return updated_order
+    return _json_safe(updated_order)
 
 
 def cancel_trading_order_payload(order_id: str) -> dict[str, Any]:
@@ -1000,7 +1033,7 @@ def cancel_trading_order_payload(order_id: str) -> dict[str, Any]:
     if updated is None:
         raise ValueError(f"Unknown trading order: {order_id}")
     save_frame(order_history_path(), pd.DataFrame(rows))
-    return updated
+    return _json_safe(updated)
 
 
 def close_trading_position_payload(ticker: str) -> dict[str, Any]:

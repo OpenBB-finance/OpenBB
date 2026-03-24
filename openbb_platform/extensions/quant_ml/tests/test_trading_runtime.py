@@ -185,3 +185,37 @@ def test_custom_algorithm_registry_toggle_and_validation(
     report = runtime.validate_trading_algorithm_payload("sample_momentum")
     assert report["name"] == "sample_momentum"
     assert report["report_path"] is not None
+
+
+def test_get_trading_orders_payload_sanitizes_nan_values(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    _patch_trading_paths(monkeypatch, tmp_path)
+    runtime.save_frame(
+        runtime.order_history_path(),
+        pd.DataFrame(
+            [
+                {
+                    "order_id": "ord-nan",
+                    "created_at": pd.Timestamp("2026-03-20T12:00:00Z"),
+                    "ticker": "AAA",
+                    "strategy_name": "ema_cross",
+                    "status": "pending",
+                    "side": "buy",
+                    "quantity": 10.0,
+                    "requested_price": float("nan"),
+                    "notional": float("inf"),
+                    "stop_loss": float("nan"),
+                    "take_profit": float("-inf"),
+                }
+            ]
+        ),
+    )
+
+    payload = runtime.get_trading_orders_payload(limit=10)
+
+    assert payload["items"][0]["requested_price"] == 0.0
+    assert payload["items"][0]["notional"] == 0.0
+    assert payload["items"][0]["stop_loss"] == 0.0
+    assert payload["items"][0]["take_profit"] == 0.0

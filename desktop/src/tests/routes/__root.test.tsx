@@ -85,10 +85,25 @@ describe('Root Route', () => {
     expect(screen.getByText(/Environments/i)).toBeInTheDocument();
     expect(screen.getByText(/API Keys/i)).toBeInTheDocument();
     expect(screen.getByText(/Quant Lab/i)).toBeInTheDocument();
+    expect(screen.getByText(/AI/i)).toBeInTheDocument();
+    expect(screen.getByText(/Finance/i)).toBeInTheDocument();
     expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/Execution/i)).toBeInTheDocument();
     expect(screen.getByText(/Macro/i)).toBeInTheDocument();
     expect(screen.getByText(/Ops/i)).toBeInTheDocument();
+    expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual([
+      "Backends",
+      "Environments",
+      "API Keys",
+      "Macro",
+      "Quant Lab",
+      "Trading",
+      "AI",
+      "Finance",
+      "Dashboard",
+      "Execution",
+      "Ops",
+    ]);
   });
 
   test('hides navigation links in Jupyter logs view', async () => {
@@ -104,6 +119,8 @@ describe('Root Route', () => {
     expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
@@ -123,6 +140,8 @@ describe('Root Route', () => {
     expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
@@ -142,6 +161,8 @@ describe('Root Route', () => {
     expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
@@ -161,9 +182,37 @@ describe('Root Route', () => {
     expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
+  });
+
+  test('marks Finance tab active when finance route is selected', async () => {
+    const router = createTestRouter('/finance');
+    await act(async () => {
+      render(
+        <EnvironmentCreationProvider>
+          <RouterProvider router={router} />
+        </EnvironmentCreationProvider>
+      );
+    });
+    expect(screen.getByRole("tab", { name: /Finance/i })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: /Trading/i })).toHaveAttribute("aria-selected", "false");
+  });
+
+  test('marks AI tab active when ai route is selected', async () => {
+    const router = createTestRouter('/ai');
+    await act(async () => {
+      render(
+        <EnvironmentCreationProvider>
+          <RouterProvider router={router} />
+        </EnvironmentCreationProvider>
+      );
+    });
+    expect(screen.getByRole("tab", { name: /AI/i })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: /Finance/i })).toHaveAttribute("aria-selected", "false");
   });
 });

@@ -45,7 +45,7 @@ describe("Macro Route", () => {
 
     global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockResponse({ results: {} });
       }
       if (url.includes("/api/v1/quant_ml/macro/catalog")) {
@@ -296,7 +296,7 @@ describe("Macro Route", () => {
   test("does not crash when expression response omits data on insufficient_data", async () => {
     global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockResponse({ results: {} });
       }
       if (url.includes("/api/v1/quant_ml/macro/catalog")) {
@@ -416,7 +416,7 @@ describe("Macro Route", () => {
   test("caps cycle level to transition when risk-off and growth-down flags are on", async () => {
     global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockResponse({ results: {} });
       }
       if (url.includes("/api/v1/quant_ml/macro/catalog")) {
@@ -549,7 +549,7 @@ describe("Macro Route", () => {
   test("renders cycle level no-data state when regime is unavailable", async () => {
     global.fetch = vi.fn(async (input: string | URL) => {
       const url = String(input);
-      if (url.endsWith("/api/v1/system")) {
+    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
         return mockResponse({ results: {} });
       }
       if (url.includes("/api/v1/quant_ml/macro/catalog")) {

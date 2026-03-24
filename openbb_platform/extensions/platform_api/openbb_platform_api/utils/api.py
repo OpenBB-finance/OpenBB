@@ -5,7 +5,7 @@ import logging
 import os
 import socket
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 from deepdiff import DeepDiff
 from fastapi import FastAPI
@@ -13,6 +13,16 @@ from fastapi import FastAPI
 logger = logging.getLogger("openbb_platform_api")
 PATH_WIDGETS: dict = {}
 FIRST_RUN: bool = True
+_INT_CLI_ARGS = {
+    "backlog",
+    "limit_concurrency",
+    "limit_max_requests",
+    "port",
+    "timeout_graceful_shutdown",
+    "timeout_keep_alive",
+    "workers",
+}
+_FLOAT_CLI_ARGS = {"ws_ping_interval", "ws_ping_timeout"}
 LAUNCH_SCRIPT_DESCRIPTION = """
 Serve the OpenBB Platform API.
 
@@ -91,6 +101,32 @@ def check_port(host, port):
             else:
                 port += 1
     return port
+
+
+def _is_absolute_path(path_str: str) -> bool:
+    """Detect Windows and POSIX absolute paths independent of the host OS."""
+    return PurePosixPath(path_str).is_absolute() or PureWindowsPath(
+        path_str
+    ).is_absolute()
+
+
+def _coerce_cli_value(key: str, value: str):
+    """Convert CLI strings to the primitive types expected by the launcher."""
+    normalized_key = key.replace("-", "_")
+
+    if normalized_key in _INT_CLI_ARGS:
+        try:
+            return int(value)
+        except ValueError:
+            return value
+
+    if normalized_key in _FLOAT_CLI_ARGS:
+        try:
+            return float(value)
+        except ValueError:
+            return value
+
+    return value
 
 
 def get_user_settings(current_user_settings: str) -> dict:
@@ -249,7 +285,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
             if not module_path.endswith(".py"):
                 module_path += ".py"
 
-            if not Path(module_path).is_absolute():
+            if not _is_absolute_path(module_path):
                 cwd = Path.cwd()
                 file_path = str(cwd.joinpath(module_path).resolve())
             else:
@@ -264,7 +300,7 @@ def import_app(app_path: str, name: str = "app", factory: bool = False):
 
     # Case 2: File path (e.g., "main.py" or "my_app/main.py")
     else:
-        if not Path(app_path).is_absolute():
+        if not _is_absolute_path(app_path):
             cwd = Path.cwd()
             app_path = str(cwd.joinpath(app_path).resolve())
 
@@ -334,7 +370,7 @@ def parse_args():  # noqa: PLR0912  # pylint: disable=too-many-branches
                 elif key == "exclude":
                     _kwargs[key] = json.loads(value)
                 else:
-                    _kwargs[key] = value
+                    _kwargs[key] = _coerce_cli_value(key, value)
             else:
                 _kwargs[key] = True
 

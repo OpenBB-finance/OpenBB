@@ -186,6 +186,8 @@ function Root() {
 						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro</NavLink>
 						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Quant Lab</NavLink>
 						<NavLink to="/trading" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Trading</NavLink>
+						<NavLink to="/ai" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>AI</NavLink>
+						<NavLink to="/finance" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Finance</NavLink>
 						<NavLink to="/dashboard" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Dashboard</NavLink>
 						<NavSeparator />
 						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Execution</NavLink>
@@ -217,4 +219,3 @@ export function RootWithProvider() {
 		</EnvironmentCreationProvider>
 	);
 }
-

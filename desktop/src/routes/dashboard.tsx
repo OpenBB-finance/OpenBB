@@ -671,8 +671,9 @@ export default function DashboardPage() {
             });
           }
 
-          if (coreErrors.length > 0) {
-            setWarningMessage(`Some panels are using partial data: ${coreErrors[0]}`);
+          const blockingCoreErrors = coreErrors.filter((item) => item !== "summary unavailable");
+          if (blockingCoreErrors.length > 0) {
+            setWarningMessage(`Some panels are using partial data: ${blockingCoreErrors[0]}`);
           }
         }
 
@@ -1771,4 +1772,3 @@ export default function DashboardPage() {
 export const Route = createFileRoute("/dashboard")({
   component: DashboardPage,
 });
-

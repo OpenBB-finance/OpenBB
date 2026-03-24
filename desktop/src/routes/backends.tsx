@@ -13,6 +13,8 @@ import React, {
 } from "react";
 import Select, { components } from 'react-select';
 import { CopyIcon, DocumentationIcon, FileIcon, FolderIcon, HelpIcon, SettingsIcon } from "../components/Icon";
+import { TauriRuntimeNotice } from "../components/TauriRuntimeNotice";
+import { getDesktopRuntimeMessage, isTauriRuntimeAvailable } from "../lib/tauriRuntime";
 
 import CustomIcon from "~/components/Icon";
 import Toast from "../components/Toast";
@@ -2169,7 +2171,7 @@ function loadEnvironmentsFromCache(): Environment[] {
 
 
 // ============== MAIN COMPONENT ==============
-export default function BackendsPage() {
+function BackendsPageContent() {
 	const isMounted = useRef(true);
 
 	const [showToast, setShowToast] = useState(false);
@@ -2734,6 +2736,19 @@ export default function BackendsPage() {
 			)}
 		</div>
 	);
+}
+
+export default function BackendsPage() {
+	if (!isTauriRuntimeAvailable()) {
+		return (
+			<TauriRuntimeNotice
+				title="Backends"
+				description={getDesktopRuntimeMessage("Backends")}
+			/>
+		);
+	}
+
+	return <BackendsPageContent />;
 }
 
 export const Route = createFileRoute("/backends")({
