@@ -483,7 +483,7 @@ async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> li
             }
         ]
 
-    seen_urls: set = set()
+    seen_urls = set()
 
     for version in bill_text:
         version_date = version.get("date")
