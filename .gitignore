@@ -63,6 +63,8 @@ obb/*
 build/conda/tmp
 
 # Logs
+logs/
+desktop/logs/
 logs/*.out.log
 logs/*.err.log
 logs/*.log
@@ -83,6 +85,7 @@ images/legacy/
 
 # Local browser/debug artifacts
 .playwright-cli/
+output/
 logs/manual_api_nobuild_latest.txt
 logs/unused-features-audit.json
 logs/unused-features-audit.md
