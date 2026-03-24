@@ -98,7 +98,6 @@ class CongressBillTextFetcher(
                 )
                 continue
             try:
-                print(url)
                 response = make_request(url)
                 response.raise_for_status()
                 datatype = filename.split(".")[-1].lower()

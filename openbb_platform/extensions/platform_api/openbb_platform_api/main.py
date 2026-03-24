@@ -194,8 +194,8 @@ if not has_root_apps:
 
         if has_additional_apps(app):
             additional_apps = await get_additional_apps(app)
+
             if additional_apps:
-                print(list(additional_apps))
                 for apps in additional_apps.values():
                     if not apps:
                         continue
@@ -286,7 +286,7 @@ else:
 
 
 def launch_api(**_kwargs):  # noqa PRL0912
-    """Main function."""
+    """Start the API server."""
     host = _kwargs.pop("host", os.getenv("OPENBB_API_HOST", "127.0.0.1"))
     if not host:
         logger.info(
