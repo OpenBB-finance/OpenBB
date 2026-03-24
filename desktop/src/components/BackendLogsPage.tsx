@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { useSearch } from '@tanstack/react-router';
 import SearchBar from './SearchBar';
+import CustomIcon from './Icon';
 import '../styles/jupyter-logs.css';
 
 interface LogEntry {
@@ -21,16 +22,17 @@ const BackendLogsPage: React.FC = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [caseSensitive, setCaseSensitive] = useState(false);
+  const [logsCleared, setLogsCleared] = useState(false);
   const logContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Find all matches in the logs
   const searchMatches = useMemo(() => {
     if (!searchTerm) return [];
-    
+
     const matches: { logIndex: number; startIndex: number; endIndex: number }[] = [];
     const searchRegex = new RegExp(
-      searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 
+      searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
       caseSensitive ? 'g' : 'gi'
     );
 
@@ -63,7 +65,7 @@ const BackendLogsPage: React.FC = () => {
         m => m.logIndex === logIndex && m.startIndex === match.startIndex
       );
       const isCurrentMatch = globalMatchIndex === currentMatchIndex;
-      
+
       highlightedContent += content.slice(lastIndex, match.startIndex);
       highlightedContent += `<span class="${isCurrentMatch ? 'search-highlight-current' : 'search-highlight'}">${content.slice(match.startIndex, match.endIndex)}</span>`;
       lastIndex = match.endIndex;
@@ -76,11 +78,11 @@ const BackendLogsPage: React.FC = () => {
   // Scroll to current match
   const scrollToMatch = (matchIndex: number) => {
     if (matchIndex < 0 || matchIndex >= searchMatches.length || !logContainerRef.current) return;
-    
+
     const match = searchMatches[matchIndex];
     const logElements = logContainerRef.current.querySelectorAll('[data-log-index]');
     const targetElement = logElements[match.logIndex] as HTMLElement;
-    
+
     if (targetElement) {
       requestAnimationFrame(() => {
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -173,6 +175,7 @@ const BackendLogsPage: React.FC = () => {
     const unsubscribe = listen<{ processId: string, output: string, timestamp: number }>('process-output', (event) => {
       const { processId: eventProcessId, output, timestamp } = event.payload;
       if (eventProcessId === processId) {
+        setLogsCleared(false);
         setLogs(prev => ([...prev, { timestamp, content: cleanLogContent(output), process_id: eventProcessId }]));
       }
     });
@@ -195,9 +198,20 @@ const BackendLogsPage: React.FC = () => {
   return (
     <div className="h-full w-full flex flex-col bg-theme-secondary relative flex-grow">
       {!searchVisible && (
-        <div className="search-help-container opacity-0 hover:opacity-100 transition-opacity hover:cursor-default">
-          <div className="body-xs-regular text-theme-muted items-center justify-center">
+        <div className="logs-toolbar-container opacity-0 hover:opacity-100 transition-opacity">
+          <div className="body-xs-regular text-theme-muted hover:cursor-default">
             Press Ctrl+F (Cmd+F) to search
+          </div>
+          <div className="flex items-center gap-1 hover:cursor-pointer"
+            onClick={async () => {
+              const processId = `backend-${backendId}`;
+              await invoke('clear_process_logs_history', { processId });
+              setLogs([]);
+              setLogsCleared(true);
+            }}
+          >
+            <CustomIcon id="delete" className="h-3.5 w-3.5 text-theme-muted" />
+            <span className="body-xs-regular text-theme-muted">Clear logs</span>
           </div>
         </div>
       )}
@@ -218,7 +232,7 @@ const BackendLogsPage: React.FC = () => {
 
       <div className="jupyter-logs-content-section flex-grow flex flex-col">
         <div
-          ref={logContainerRef} 
+          ref={logContainerRef}
           className="jupyter-logs-content w-full flex-grow overflow-auto bg-theme-secondary font-mono text-xs whitespace-pre-wrap"
         >
           {loading && logs.length === 0 ? (
@@ -227,13 +241,13 @@ const BackendLogsPage: React.FC = () => {
             </div>
           ) : error ? (
             <div className="text-red-500 py-2 px-2">{error}</div>
-          ) : logs.length === 0 ? (
+          ) : logs.length === 0 && !logsCleared ? (
             <div className="text-theme-secondary">No logs available for this backend. Try starting a backend service first.</div>
           ) : (
             <div>
               {logs.map((log, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="py-0.5"
                   data-log-index={index}
                   dangerouslySetInnerHTML={{
