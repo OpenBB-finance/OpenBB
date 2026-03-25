@@ -53,7 +53,7 @@ def _prompt_context(preset_extension_types: list[str] | None = None) -> dict:
             raw = Prompt.ask(
                 "  extension_types"
                 " - router | provider | obbject | on_command_output | charting | all",
-                default="all",
+                default="router",
             )
             try:
                 types = _parse_extension_types(raw)
