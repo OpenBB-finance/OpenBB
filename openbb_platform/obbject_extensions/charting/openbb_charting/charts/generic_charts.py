@@ -124,7 +124,6 @@ def line_chart(  # noqa: PLR0912
     except Exception as _:
         fig = OpenBBFigure(create_backend=True)
 
-    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
     text_color = "white" if ChartStyle().plt_style == "dark" else "black"
     title = f"{title}" if title else ""
     xtitle = xtitle if xtitle else ""
@@ -245,7 +244,6 @@ def line_chart(  # noqa: PLR0912
 
     fig.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
-        font=dict(color=text_color),
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -410,7 +408,6 @@ def bar_chart(  # noqa: PLR0912
         specs=[[{"secondary_y": True}]],
     )
 
-    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
     text_color = "white" if ChartStyle().plt_style == "dark" else "black"
     if colors is not None:
         figure.update_layout(colorway=colors)
@@ -486,7 +483,6 @@ def bar_chart(  # noqa: PLR0912
         ),
         margin=dict(pad=5),
         barmode=barmode,
-        font=dict(color=text_color),
     )
     if orientation == "h":
         figure.update_layout(
@@ -567,8 +563,6 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
         row_width=[1],
         specs=[[{"secondary_y": True}]],
     )
-    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
-    text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
     try:
         data = Series(data=values, index=keys)
@@ -625,7 +619,6 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
             categoryorder="array" if orientation == "v" else None,
             categoryarray=keys if orientation == "v" else None,
         ),
-        font=dict(color="white" if text_color == "white" else "black"),
         margin=dict(pad=5),
     )
 
@@ -696,8 +689,6 @@ def surface3d(
     chart_style = ChartStyle()
     if theme:
         chart_style.plt_style = theme
-    fig.update_layout(chart_style.plotly_template.get("layout", {}))
-    text_color = "white" if chart_style.plt_style == "dark" else "black"
     fig.set_title(f"{title if title and title != 'OpenBB Platform' else ''}")
     fig_kwargs = dict(z=Z, x=X, y=Y, i=II, j=J, k=K, intensity=Z)
     customdata = np.array([[xtitle, ytitle, ztitle]] * len(X))
@@ -784,7 +775,6 @@ def surface3d(
             center=dict(x=-0.01, y=0, z=-0.3),
             eye=dict(x=1.75, y=1.75, z=0.69),
         ),
-        font=dict(color=text_color),
     )
 
     fig.update_scenes(

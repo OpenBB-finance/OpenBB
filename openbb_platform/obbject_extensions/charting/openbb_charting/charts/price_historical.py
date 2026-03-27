@@ -120,7 +120,6 @@ def price_historical(  # noqa: PLR0912
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.update_layout(
-            font=dict(color=text_color),
             showlegend=True,
             legend=dict(
                 orientation="v",
@@ -206,7 +205,6 @@ def price_historical(  # noqa: PLR0912
                 y2title = None  # type: ignore
 
         fig = OpenBBFigure()
-        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
 
         for i, col in enumerate(data.columns):
