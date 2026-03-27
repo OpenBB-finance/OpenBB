@@ -1,6 +1,6 @@
 """Backend for Plotly."""
 
-# pylint: disable=R0915,R0917,W0613
+# pylint: disable=R0915,R0917,W0613,C0415
 
 from typing import TYPE_CHECKING
 
