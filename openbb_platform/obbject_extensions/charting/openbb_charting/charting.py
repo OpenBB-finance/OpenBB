@@ -665,7 +665,7 @@ class Charting:
 
     def toggle_chart_style(self):
         """Toggle the chart style between light and dark mode."""
-        import plotly.io as pio
+        import plotly.io as pio  # pylint: disable=import-outside-toplevel
 
         if not hasattr(self._obbject.chart, "fig"):
             raise ValueError(

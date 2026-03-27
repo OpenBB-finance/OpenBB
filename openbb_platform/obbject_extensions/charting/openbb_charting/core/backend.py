@@ -31,7 +31,7 @@ class Backend:
         self._is_dark = chart_style != "light"
 
         try:
-            from pywry import PyWry, ThemeMode
+            from pywry import PyWry, ThemeMode  # pylint: disable=import-outside-toplevel
 
             theme = ThemeMode.LIGHT if chart_style == "light" else ThemeMode.DARK
             self._app = PyWry(
@@ -41,7 +41,7 @@ class Backend:
                 theme=theme,
             )
         except ImportError:
-            from .dummy_backend import DummyBackend
+            from .dummy_backend import DummyBackend  # pylint: disable=import-outside-toplevel
 
             self._app = DummyBackend()
 
@@ -51,10 +51,10 @@ class Backend:
     @staticmethod
     def _register_templates() -> tuple[dict, dict]:
         """Bake OpenBB styles into plotly_dark/plotly_white and return the raw dicts."""
-        import plotly.graph_objects as go
-        import plotly.io as pio
+        import plotly.graph_objects as go  # pylint: disable=import-outside-toplevel
+        import plotly.io as pio  # pylint: disable=import-outside-toplevel
 
-        from openbb_charting.core.chart_style import ChartStyle
+        from openbb_charting.core.chart_style import ChartStyle  # pylint: disable=import-outside-toplevel
 
         cs = ChartStyle()
         dark = {}
@@ -190,7 +190,7 @@ class Backend:
         )
 
     def _header_toolbar(self):
-        from pywry import Button, Div, Toolbar
+        from pywry import Button, Div, Toolbar  # pylint: disable=import-outside-toplevel
 
         icon_label = "☀" if self._is_dark else "☾"
 
@@ -443,7 +443,7 @@ class Backend:
         height: int | None = None,
     ):
         """Send a URL to the PyWry window."""
-        import html as html_module
+        import html as html_module  # pylint: disable=import-outside-toplevel
 
         safe_url = html_module.escape(url, quote=True)
         content = f'<meta http-equiv="refresh" content="0;url={safe_url}">'
