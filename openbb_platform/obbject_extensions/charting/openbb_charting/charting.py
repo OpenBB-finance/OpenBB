@@ -737,8 +737,8 @@ class Charting:
             self._backend.send_table(
                 df_table=data_as_df,
                 title=title
-                or self._obbject._route
-                or "",  # pylint: disable=protected-access
+                or self._obbject._route  # pylint: disable=protected-access
+                or "",
                 theme=self._charting_settings.table_style,  # pylint: disable=protected-access
             )
         except Exception as e:  # pylint: disable=W0718

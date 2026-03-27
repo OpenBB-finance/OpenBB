@@ -815,7 +815,7 @@ class OpenBBFigure(go.Figure):
         self,
         *args,
         external: bool = False,
-        export_image: Path | str | None = "",
+        export_image: Path | str | None = "",  # pylint: disable=W0613
         **kwargs,
     ) -> "OpenBBFigure":
         """Show the figure.
