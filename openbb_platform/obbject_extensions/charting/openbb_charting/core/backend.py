@@ -31,7 +31,10 @@ class Backend:
         self._is_dark = chart_style != "light"
 
         try:
-            from pywry import PyWry, ThemeMode  # pylint: disable=import-outside-toplevel
+            from pywry import (
+                PyWry,
+                ThemeMode,
+            )  # pylint: disable=import-outside-toplevel
 
             theme = ThemeMode.LIGHT if chart_style == "light" else ThemeMode.DARK
             self._app = PyWry(
@@ -41,7 +44,9 @@ class Backend:
                 theme=theme,
             )
         except ImportError:
-            from .dummy_backend import DummyBackend  # pylint: disable=import-outside-toplevel
+            from .dummy_backend import (
+                DummyBackend,
+            )  # pylint: disable=import-outside-toplevel
 
             self._app = DummyBackend()
 
@@ -54,7 +59,9 @@ class Backend:
         import plotly.graph_objects as go  # pylint: disable=import-outside-toplevel
         import plotly.io as pio  # pylint: disable=import-outside-toplevel
 
-        from openbb_charting.core.chart_style import ChartStyle  # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.chart_style import (
+            ChartStyle,
+        )  # pylint: disable=import-outside-toplevel
 
         cs = ChartStyle()
         dark = {}
@@ -190,7 +197,11 @@ class Backend:
         )
 
     def _header_toolbar(self):
-        from pywry import Button, Div, Toolbar  # pylint: disable=import-outside-toplevel
+        from pywry import (
+            Button,
+            Div,
+            Toolbar,
+        )  # pylint: disable=import-outside-toplevel
 
         icon_label = "☀" if self._is_dark else "☾"
 
