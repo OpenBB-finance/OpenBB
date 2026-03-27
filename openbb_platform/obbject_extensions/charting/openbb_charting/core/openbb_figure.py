@@ -867,9 +867,10 @@ class OpenBBFigure(go.Figure):
 
         command_location = kwargs.pop("command_location", "")
         try:
-            return self._backend.send_figure(
-                fig=self, command_location=command_location
-            )
+            if self._backend is not None:
+                return self._backend.send_figure(
+                    fig=self, command_location=command_location
+                )
         except Exception as e:
             warn(f"Failed to show figure with backend. {e}")
 

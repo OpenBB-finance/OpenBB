@@ -468,7 +468,7 @@ class Charting:
 
         try:
             charting_function = self._get_chart_function(
-                self._obbject._route  # pylint: disable=protected-access   # type: ignore
+                self._obbject._route or ""  # pylint: disable=protected-access
             )
             kwargs["obbject_item"] = self._obbject.results
             kwargs["charting_settings"] = self._charting_settings
@@ -737,8 +737,8 @@ class Charting:
             self._backend.send_table(
                 df_table=data_as_df,
                 title=title
-                or ""
-                or self._obbject._route,  # pylint: disable=protected-access  # type: ignore
+                or self._obbject._route
+                or "",  # pylint: disable=protected-access
                 theme=self._charting_settings.table_style,  # pylint: disable=protected-access
             )
         except Exception as e:  # pylint: disable=W0718
