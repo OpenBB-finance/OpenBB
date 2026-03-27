@@ -12,6 +12,11 @@ interface ThreadMessage {
   retrievalMode?: AiStatus["mode"];
 }
 
+interface PersistedThreadState {
+  indexSignature: string;
+  messages: ThreadMessage[];
+}
+
 const AI_CHAT_MODEL_KEY = "ai.chatModel";
 const AI_EMBEDDING_MODEL_KEY = "ai.embeddingModel";
 
@@ -28,6 +33,38 @@ function getThreadStorageKey(repoRoot: string | null): string | null {
     return null;
   }
   return `ai.thread.${hashRepoRoot(repoRoot)}`;
+}
+
+function getIndexSignature(status: AiStatus | null): string | null {
+  if (!status?.repoRoot || !status.indexReady || !status.lastIndexedAt) {
+    return null;
+  }
+
+  return [
+    hashRepoRoot(status.repoRoot),
+    status.lastIndexedAt,
+    String(status.chunkCount),
+    status.mode,
+  ].join(":");
+}
+
+function parsePersistedThread(stored: string, expectedSignature: string): ThreadMessage[] {
+  const parsed = JSON.parse(stored) as PersistedThreadState | ThreadMessage[];
+
+  if (Array.isArray(parsed)) {
+    return [];
+  }
+
+  if (
+    !parsed ||
+    typeof parsed !== "object" ||
+    parsed.indexSignature !== expectedSignature ||
+    !Array.isArray(parsed.messages)
+  ) {
+    return [];
+  }
+
+  return parsed.messages;
 }
 
 function formatTimestamp(timestamp: string | null): string {
@@ -49,7 +86,7 @@ function StatusRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-sm bg-theme-secondary px-3 py-2">
       <p className="body-xxs-regular text-theme-muted">{label}</p>
-      <p className="body-xs-medium text-theme-primary break-all">{value}</p>
+      <p className="body-xs-medium break-all text-theme-primary">{value}</p>
     </div>
   );
 }
@@ -62,7 +99,7 @@ function AssistantMeta({ message }: { message: ThreadMessage }) {
   const parts = [
     message.usedModel ? `Model ${message.usedModel}` : null,
     typeof message.timingMs === "number" ? `${message.timingMs} ms` : null,
-    message.retrievalMode ? message.retrievalMode : null,
+    message.retrievalMode ?? null,
   ].filter(Boolean);
 
   if (parts.length === 0) {
@@ -83,6 +120,7 @@ function AiPage() {
   const [isIndexing, setIsIndexing] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
   const [isAsking, setIsAsking] = useState(false);
+  const indexSignature = getIndexSignature(status);
 
   useEffect(() => {
     let active = true;
@@ -123,7 +161,7 @@ function AiPage() {
 
   useEffect(() => {
     const storageKey = getThreadStorageKey(status?.repoRoot ?? null);
-    if (!storageKey) {
+    if (!storageKey || !indexSignature) {
       setThread([]);
       setLatestCitations([]);
       return;
@@ -136,23 +174,29 @@ function AiPage() {
         setLatestCitations([]);
         return;
       }
-      const parsed = JSON.parse(stored) as ThreadMessage[];
-      setThread(Array.isArray(parsed) ? parsed : []);
+
+      const parsed = parsePersistedThread(stored, indexSignature);
+      setThread(parsed);
       const latestAssistant = [...parsed].reverse().find((message) => message.role === "assistant");
       setLatestCitations(latestAssistant?.citations ?? []);
     } catch {
       setThread([]);
       setLatestCitations([]);
     }
-  }, [status?.repoRoot]);
+  }, [indexSignature, status?.repoRoot]);
 
   useEffect(() => {
     const storageKey = getThreadStorageKey(status?.repoRoot ?? null);
-    if (!storageKey) {
+    if (!storageKey || !indexSignature) {
       return;
     }
-    localStorage.setItem(storageKey, JSON.stringify(thread));
-  }, [thread, status?.repoRoot]);
+
+    const payload: PersistedThreadState = {
+      indexSignature,
+      messages: thread,
+    };
+    localStorage.setItem(storageKey, JSON.stringify(payload));
+  }, [indexSignature, thread, status?.repoRoot]);
 
   const refreshStatus = async () => {
     setIsLoadingStatus(true);
@@ -171,10 +215,14 @@ function AiPage() {
     if (!status?.repoRoot) {
       return;
     }
+
     setIsIndexing(true);
     setActionMessage(null);
+
     try {
       const result = await buildAiIndex(status.repoRoot, force);
+      setThread([]);
+      setLatestCitations([]);
       setActionMessage(
         `Indexed ${result.indexedFiles}/${result.scannedFiles} files into ${result.chunkCount} chunks.`,
       );
@@ -190,10 +238,18 @@ function AiPage() {
     if (!status?.repoRoot) {
       return;
     }
+
     setIsClearing(true);
     setActionMessage(null);
+
     try {
       await clearAiIndex(status.repoRoot);
+      const storageKey = getThreadStorageKey(status.repoRoot);
+      if (storageKey) {
+        localStorage.removeItem(storageKey);
+      }
+      setThread([]);
+      setLatestCitations([]);
       setActionMessage("AI index cleared.");
       await refreshStatus();
     } catch (error) {
@@ -209,8 +265,10 @@ function AiPage() {
       return;
     }
 
+    const previousThread = thread;
     const userMessage: ThreadMessage = { role: "user", content: normalizedPrompt };
     const nextThread = [...thread, userMessage];
+
     setThread(nextThread);
     setPrompt("");
     setIsAsking(true);
@@ -237,7 +295,7 @@ function AiPage() {
       setThread(finalThread);
       setLatestCitations(response.citations);
     } catch (error) {
-      setThread(thread);
+      setThread(previousThread);
       setErrorMessage(error instanceof Error ? error.message : "Failed to ask the project AI.");
     } finally {
       setIsAsking(false);
@@ -247,6 +305,15 @@ function AiPage() {
   const repoReady = Boolean(status?.repoReady);
   const indexReady = Boolean(status?.indexReady);
   const showLexicalWarning = status?.mode === "lexical";
+  const hasExistingIndex = Boolean((status?.chunkCount ?? 0) > 0);
+  const indexStateMessage = !repoReady
+    ? "Set the workspace working directory to a Git repository before using the AI tab."
+    : indexReady
+      ? "Ask about architecture, routes, commands, or flows."
+      : hasExistingIndex
+        ? "Rebuild the stale index to re-enable chat for the current repository state."
+        : "Build the index to enable chat.";
+  const indexStatusValue = indexReady ? "Ready" : hasExistingIndex ? "Stale" : "Missing";
 
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
@@ -336,14 +403,12 @@ function AiPage() {
             </button>
           </div>
           <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-3">
-            <StatusRow label="Index Ready" value={indexReady ? "Yes" : "No"} />
+            <StatusRow label="Index State" value={indexStatusValue} />
             <StatusRow label="Chunks" value={String(status?.chunkCount ?? 0)} />
             <StatusRow label="Repo Status" value={repoReady ? "Ready" : "Needs Git root"} />
           </div>
-          {!repoReady ? (
-            <p className="mt-3 body-xxs-regular text-theme-muted">
-              Set the workspace working directory to a Git repository before using the AI tab.
-            </p>
+          {!repoReady || (hasExistingIndex && !indexReady) ? (
+            <p className="mt-3 body-xxs-regular text-theme-muted">{indexStateMessage}</p>
           ) : null}
         </section>
       </div>
@@ -352,15 +417,13 @@ function AiPage() {
         <section className="rounded-sm border border-theme-outline bg-theme-primary p-3">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="body-sm-medium text-theme-primary">Chat</h2>
-            <p className="body-xxs-regular text-theme-muted">
-              {indexReady ? "Ask about architecture, routes, commands, or flows." : "Build the index to enable chat."}
-            </p>
+            <p className="body-xxs-regular text-theme-muted">{indexStateMessage}</p>
           </div>
 
           <div className="mb-3 max-h-[460px] space-y-3 overflow-auto rounded-sm border border-theme-outline bg-theme-secondary p-3">
             {thread.length === 0 ? (
               <p className="body-xs-regular text-theme-muted">
-                Ask for a project explanation after the index is ready. Example: “Explain the tab structure.”
+                Ask for a project explanation after the index is ready. Example: "Explain the tab structure."
               </p>
             ) : (
               thread.map((message, index) => (

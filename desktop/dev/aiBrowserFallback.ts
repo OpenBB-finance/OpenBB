@@ -398,7 +398,7 @@ async function buildIndexContext(repoRoot: string, embeddingModel: string | null
     `max_file_size=${MAX_FILE_SIZE_BYTES}`,
     `extensions=${Array.from(ALLOWED_EXTENSIONS).join(",")}`,
     `excluded_dirs=${Array.from(EXCLUDED_DIRS).join(",")}`,
-    `embedding_model=${embeddingModel ?? "lexical"}`,
+    "retrieval_mode=dynamic",
   ].join(";"));
   const revision = sha1Hex(`${repoRoot}\n${headRevision}\n${configHash}`);
 
@@ -408,6 +408,23 @@ async function buildIndexContext(repoRoot: string, embeddingModel: string | null
     configHash,
     revision,
   };
+}
+
+function isManifestReusable(
+  manifest: BrowserAiManifest | null,
+  context: Awaited<ReturnType<typeof buildIndexContext>>,
+  repoRoot: string,
+): manifest is BrowserAiManifest {
+  if (!manifest) {
+    return false;
+  }
+
+  return (
+    manifest.repoHash === context.repoHash
+    && path.resolve(manifest.repoRoot) === path.resolve(repoRoot)
+    && manifest.headRevision === context.headRevision
+    && manifest.chunkCount > 0
+  );
 }
 
 function browserIndexDirectory(repoHash: string): string {
@@ -640,13 +657,13 @@ async function readChunks(indexDir: string): Promise<IndexedChunk[]> {
 async function loadIndex(repoRoot: string, embeddingModel: string | null): Promise<CachedIndex | null> {
   const context = await buildIndexContext(repoRoot, embeddingModel);
   const cached = indexCache.get(context.repoHash);
-  if (cached?.manifest.revision === context.revision) {
+  if (cached && isManifestReusable(cached.manifest, context, repoRoot)) {
     return cached;
   }
 
   const indexDir = browserIndexDirectory(context.repoHash);
   const manifest = await readManifest(indexDir);
-  if (!manifest || manifest.revision !== context.revision) {
+  if (!isManifestReusable(manifest, context, repoRoot)) {
     return null;
   }
 
@@ -998,6 +1015,7 @@ async function getBrowserAiStatus(workspaceRoot: string, defaultDir: string): Pr
 
   const context = await buildIndexContext(repoRoot, discovery.embeddingModel);
   const manifest = await readManifest(browserIndexDirectory(context.repoHash));
+  const indexReady = isManifestReusable(manifest, context, repoRoot);
 
   return {
     repoRoot,
@@ -1006,10 +1024,10 @@ async function getBrowserAiStatus(workspaceRoot: string, defaultDir: string): Pr
     chatModel: discovery.chatModel,
     embeddingModel: discovery.embeddingModel,
     availableModels: discovery.availableModels,
-    indexReady: Boolean(manifest && manifest.revision === context.revision),
+    indexReady,
     lastIndexedAt: manifest?.lastIndexedAt ?? null,
     chunkCount: manifest?.chunkCount ?? 0,
-    mode: manifest?.mode ?? discovery.mode,
+    mode: discovery.mode,
   };
 }
 

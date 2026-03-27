@@ -216,6 +216,14 @@ def build_api_wrapper(
     """Build API wrapper for a command."""
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
+    methods = sorted(
+        {
+            str(method).upper()
+            for method in (getattr(route, "methods", None) or [])
+            if str(method).upper() not in {"HEAD", "OPTIONS"}
+        }
+    )
+    command_route = f"{methods[0]} {path}" if methods else path
     original_signature = signature(func)
     has_var_kwargs = any(
         param.kind == Parameter.VAR_KEYWORD
@@ -301,7 +309,7 @@ def build_api_wrapper(
 
             dep_names.append(dep_name)
 
-        execute = partial(command_runner.run, path, user_settings)
+        execute = partial(command_runner.run, command_route, user_settings)
 
         output = await execute(*args, **kwargs)
 

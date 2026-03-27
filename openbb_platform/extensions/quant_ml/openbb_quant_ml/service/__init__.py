@@ -64,6 +64,7 @@ from openbb_quant_ml.service.model_registry import (
 from openbb_quant_ml.service.notification_center import (
     get_notifications_history_response,
 )
+from openbb_quant_ml.service.ops_issues import get_ops_issue_queue_response
 from openbb_quant_ml.service.ops_status import get_ops_status_response
 from openbb_quant_ml.service.pipeline import (
     build_signals,
@@ -89,6 +90,7 @@ from openbb_quant_ml.service.reporting import (
     get_reports_history_response,
     get_reports_latest_response,
 )
+from openbb_quant_ml.service.run_compare import get_run_compare_response
 from openbb_quant_ml.service.run_latest import (
     get_run_latest_constraints,
     get_run_latest_exposures,
@@ -104,6 +106,7 @@ from openbb_quant_ml.service.snapshot.run_snapshot import (
     get_run_risk,
     get_run_snapshot,
 )
+from openbb_quant_ml.service.symbol_context import get_symbol_context_response
 from openbb_quant_ml.service.trading import (
     approve_trading_order_payload,
     cancel_trading_order_payload,
@@ -131,6 +134,7 @@ from openbb_quant_ml.service.walkforward_backtest import (
     get_walkforward_backtest_status,
     submit_walkforward_backtest,
 )
+from openbb_quant_ml.service.workspace_brief import get_workspace_brief_response
 
 __all__ = [
     "get_alerts_current",
@@ -181,6 +185,8 @@ __all__ = [
     "get_reports_latest_response",
     "get_reports_history_response",
     "get_notifications_history_response",
+    "get_ops_issue_queue_response",
+    "get_run_compare_response",
     "get_scheduler_status_response",
     "run_backtest_for_run",
     "submit_training",
@@ -208,6 +214,7 @@ __all__ = [
     "get_copper_gold_preset_response",
     "get_ops_status_response",
     "get_portfolio_policy_response",
+    "get_symbol_context_response",
     "approve_trading_order_payload",
     "cancel_trading_order_payload",
     "close_trading_position_payload",
@@ -229,6 +236,7 @@ __all__ = [
     "toggle_trading_algorithm_payload",
     "update_trading_settings_payload",
     "validate_trading_algorithm_payload",
+    "get_workspace_brief_response",
     "get_run_latest_meta",
     "get_run_latest_risk",
     "get_run_latest_exposures",

@@ -1,8 +1,14 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { PanelCard } from "../components/quant/PanelCard";
 import { QuantControlsColumn } from "../components/quant/QuantControlsColumn";
 import { QuantPageHeader } from "../components/quant/QuantPageHeader";
 import { QuantResultsColumn } from "../components/quant/QuantResultsColumn";
+import {
+  StrategyLabStepper,
+  type StrategyLabStep,
+  type StrategyLabStepId,
+} from "../components/quant/StrategyLabStepper";
 import {
   DEFAULT_PORTFOLIO_POLICY,
   PROFILE_LIST,
@@ -17,6 +23,13 @@ import {
   todayIso,
   toBacktestErrorMessage,
 } from "../lib/quantConfig";
+import { fetchRunsCompare } from "../lib/quantApi";
+import {
+  clearMacroStudyHandoff,
+  readMacroStudyHandoff,
+} from "../lib/macroStudyHandoff";
+import { buildSymbolLabHref } from "../lib/symbolLabNavigation";
+import { writeRunHandoff } from "../lib/runHandoff";
 import type {
   RunStreamState,
   SpeedPresetId,
@@ -54,6 +67,7 @@ import type {
   RebalanceHistoryItem,
   PortfolioCurrentPayload,
   RunStatusPayload,
+  RunComparePayload,
   SignalsResponsePayload,
   UniverseResponse,
   WalkForwardBacktestStatusPayload,
@@ -153,6 +167,9 @@ export default function QuantPage() {
   const [rebalanceHistoryError, setRebalanceHistoryError] = useState<string | null>(null);
   const [showPortfolioTimeline, setShowPortfolioTimeline] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [activeLabStep, setActiveLabStep] = useState<StrategyLabStepId>("setup");
+  const [macroStudyHandoff, setMacroStudyHandoff] = useState(() => readMacroStudyHandoff());
+  const [runCompare, setRunCompare] = useState<RunComparePayload | null>(null);
   const macroHintAppliedRef = useRef<string | null>(null);
   const isUniverseSetMode = selectedUniverseSet !== "default";
   const speedPresetOptions = useMemo(() => Object.values(SPEED_PRESETS), []);
@@ -347,6 +364,129 @@ export default function QuantPage() {
   const dashboardLink = runId
     ? `/dashboard?run_id=${encodeURIComponent(runId)}&model=${encodeURIComponent(selectedModel)}&mode=backtest&focus=portfolio`
     : "/dashboard";
+  const executionHandoffHref =
+    runIdInput.trim()
+      ? `/execution?runId=${encodeURIComponent(runIdInput.trim())}&modelName=${encodeURIComponent(selectedModel)}`
+      : "/execution";
+  const strategyWorkflowSteps = useMemo<StrategyLabStep[]>(
+    () => [
+      {
+        id: "setup",
+        label: "Setup",
+        hint: "Universe, dates, and runtime defaults.",
+        complete: parsedSymbols.length > 0 || isUniverseSetMode,
+      },
+      {
+        id: "features",
+        label: "Features",
+        hint: "Macro study handoff and feature lineage.",
+        complete: Boolean(macroStudyHandoff?.featureArtifactPath),
+      },
+      {
+        id: "train",
+        label: "Train",
+        hint: "Fit the model and inspect run status.",
+        complete: runStatus?.status === "completed",
+      },
+      {
+        id: "backtest",
+        label: "Backtest",
+        hint: "Generate signals and test portfolio policy.",
+        complete: (backtest?.equity_curve?.length ?? 0) > 0,
+      },
+      {
+        id: "compare",
+        label: "Compare",
+        hint: "Review diagnostics and recent runs.",
+        complete: recentRuns.length > 1,
+      },
+      {
+        id: "promote",
+        label: "Promote",
+        hint: "Confirm artifacts and runtime handoff.",
+        complete: Boolean(promotedModel?.ready),
+      },
+    ],
+    [
+      backtest?.equity_curve?.length,
+      isUniverseSetMode,
+      macroStudyHandoff?.featureArtifactPath,
+      parsedSymbols.length,
+      promotedModel?.ready,
+      recentRuns.length,
+      runStatus?.status,
+    ],
+  );
+  const workflowNarrative = useMemo(() => {
+    switch (activeLabStep) {
+      case "setup":
+        return {
+          title: "Define the experiment scope",
+          body:
+            "Pick the universe, time window, and default runtime assumptions before changing model parameters. This keeps later diagnostics comparable.",
+        };
+      case "features":
+        return {
+          title: "Lock feature lineage",
+          body:
+            "Use Macro Lab exports as an explicit feature handoff so the run records where the macro thesis came from and which as-of policy was used.",
+        };
+      case "train":
+        return {
+          title: "Run the model",
+          body:
+            "Training should happen only after the universe and feature lineage are stable. Watch the run status and logs before generating signals.",
+        };
+      case "backtest":
+        return {
+          title: "Validate portfolio construction",
+          body:
+            "Backtest against the current portfolio policy, check turnover and max weight constraints, and only then move to execution review.",
+        };
+      case "compare":
+        return {
+          title: "Compare runs and diagnostics",
+          body:
+            "Use diagnostics, regime panels, and recent-run metadata to compare experimental changes rather than reading a single metric in isolation.",
+        };
+      case "promote":
+        return {
+          title: "Prepare handoff to execution",
+          body:
+            "Promotion means the run is ready to become the execution candidate. Confirm artifacts, policy fit, and runtime pointers before leaving Strategy Lab.",
+        };
+      default:
+        return {
+          title: "Strategy workflow",
+          body: "Move from setup to promotion in a fixed sequence so research, features, and execution artifacts stay linked.",
+        };
+    }
+  }, [activeLabStep]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hintedRunId = params.get("runId");
+    if (!hintedRunId || runIdInput.trim()) {
+      return;
+    }
+    setRunIdInput(hintedRunId);
+  }, [runIdInput]);
+
+  useEffect(() => {
+    if (!backend?.connected || recentRuns.length === 0) {
+      setRunCompare(null);
+      return;
+    }
+    const runIds = recentRuns.slice(0, 5).map((item) => item.run_id);
+    const loadCompare = async () => {
+      try {
+        setRunCompare(await fetchRunsCompare(backend.baseUrl, { runIds, limit: 5 }));
+      } catch {
+        setRunCompare(null);
+      }
+    };
+    void loadCompare();
+  }, [backend?.baseUrl, backend?.connected, recentRuns]);
 
   const { loadPortfolioCurrent, loadRebalanceHistory } = useQuantPortfolio({
     backend,
@@ -464,6 +604,91 @@ export default function QuantPage() {
         errorMessage={errorMessage}
         quantActivation={quantActivation}
       />
+
+      <StrategyLabStepper
+        steps={strategyWorkflowSteps}
+        activeStep={activeLabStep}
+        onStepChange={setActiveLabStep}
+      />
+
+      <div className="mb-4 grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <PanelCard
+          title={workflowNarrative.title}
+          description="Stage-aware guidance so the lab behaves like a workflow, not a long parameter form."
+        >
+          <div className="space-y-3">
+            <p className="body-sm-regular text-theme-muted">{workflowNarrative.body}</p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <div className="body-xxs-regular text-theme-muted">Current run</div>
+                <div className="body-sm-medium text-theme-primary">{runIdInput.trim() || "Not selected"}</div>
+              </div>
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <div className="body-xxs-regular text-theme-muted">Model</div>
+                <div className="body-sm-medium text-theme-primary">{selectedModel}</div>
+              </div>
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <div className="body-xxs-regular text-theme-muted">Recent runs</div>
+                <div className="body-sm-medium text-theme-primary">{recentRuns.length}</div>
+              </div>
+            </div>
+          </div>
+        </PanelCard>
+
+        <PanelCard
+          title="Macro Feature Handoff"
+          description="Latest study export available to Strategy Lab and execution review."
+        >
+          {macroStudyHandoff ? (
+            <div className="space-y-3">
+              <div>
+                <div className="body-sm-medium text-theme-primary">{macroStudyHandoff.name}</div>
+                <div className="body-xxs-regular text-theme-muted">
+                  {macroStudyHandoff.studyId ?? "draft"} | {macroStudyHandoff.asOfPolicy}
+                </div>
+              </div>
+              <p className="body-xs-regular text-theme-muted">
+                {macroStudyHandoff.conclusionSummary || macroStudyHandoff.objective || "No conclusion summary saved."}
+              </p>
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <div className="body-xxs-regular text-theme-muted">Feature artifact</div>
+                <div className="body-xs-medium text-theme-primary break-all">
+                  {macroStudyHandoff.featureArtifactPath ?? "Not exported yet"}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {macroStudyHandoff.linkedAssets.slice(0, 3).map((asset) => (
+                  <a
+                    key={asset}
+                    className="rounded-full border border-theme-outline px-3 py-1 body-xs-medium text-theme-primary"
+                    href={buildSymbolLabHref({
+                      symbol: asset,
+                      source: "macro",
+                      studyId: macroStudyHandoff.studyId ?? undefined,
+                    })}
+                  >
+                    {asset}
+                  </a>
+                ))}
+              </div>
+              <button
+                type="button"
+                className="rounded-sm border border-theme-outline px-3 py-2 body-xs-medium text-theme-primary"
+                onClick={() => {
+                  clearMacroStudyHandoff();
+                  setMacroStudyHandoff(null);
+                }}
+              >
+                Clear Handoff
+              </button>
+            </div>
+          ) : (
+            <p className="body-xs-regular text-theme-muted">
+              Export feature lineage from Macro Lab to pin a macro study into this strategy workflow.
+            </p>
+          )}
+        </PanelCard>
+      </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
         <QuantControlsColumn
@@ -637,6 +862,83 @@ export default function QuantPage() {
             summary,
           }}
         />
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <PanelCard
+          title="Compare"
+          description="Run-level comparison for the latest strategy candidates."
+        >
+          {runCompare?.items?.length ? (
+            <div className="max-h-72 overflow-auto">
+              <table className="w-full text-left">
+                <thead className="sticky top-0 bg-theme-primary">
+                  <tr className="body-xxs-medium text-theme-muted">
+                    <th className="pb-2">Run</th>
+                    <th className="pb-2">Model</th>
+                    <th className="pb-2">Training Window</th>
+                    <th className="pb-2">Feature Set</th>
+                    <th className="pb-2">Promotion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {runCompare.items.map((item) => (
+                    <tr key={item.run_id} className="border-t border-theme-outline body-xs-regular">
+                      <td className="py-2 pr-2 text-theme-primary">{item.run_id}</td>
+                      <td className="py-2 pr-2 text-theme-primary">{item.model_name ?? "-"}</td>
+                      <td className="py-2 pr-2 text-theme-primary">{item.training_window ?? "-"}</td>
+                      <td className="py-2 pr-2 text-theme-primary">{item.feature_set_version ?? "-"}</td>
+                      <td className="py-2 pr-2 text-theme-primary">{item.promotion_state ?? "-"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="body-xs-regular text-theme-muted">
+              Compare requires at least two recent runs from the experiment registry.
+            </p>
+          )}
+        </PanelCard>
+
+        <PanelCard
+          title="Promote"
+          description="Pin the execution handoff to the active run, model, and linked studies."
+        >
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <div className="body-xxs-regular text-theme-muted">Run</div>
+                <div className="body-sm-medium text-theme-primary">{runIdInput.trim() || "Not selected"}</div>
+              </div>
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <div className="body-xxs-regular text-theme-muted">Model</div>
+                <div className="body-sm-medium text-theme-primary">{selectedModel}</div>
+              </div>
+            </div>
+            <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-xs-regular text-theme-muted">
+              Promotion readiness: {promotedModel?.ready ? "ready" : "not ready"}
+              {macroStudyHandoff?.studyId ? ` | linked study ${macroStudyHandoff.studyId}` : ""}
+            </div>
+            <a
+              href={executionHandoffHref}
+              className="inline-flex rounded-sm border border-theme-outline px-3 py-2 body-xs-medium text-theme-primary hover:text-theme-accent"
+              onClick={() => {
+                if (!runIdInput.trim()) {
+                  return;
+                }
+                writeRunHandoff({
+                  runId: runIdInput.trim(),
+                  modelName: selectedModel,
+                  source: "strategy",
+                  studyIds: macroStudyHandoff?.studyId ? [macroStudyHandoff.studyId] : [],
+                });
+              }}
+            >
+              Send to Portfolio &amp; Execution
+            </a>
+          </div>
+        </PanelCard>
       </div>
     </div>
   );

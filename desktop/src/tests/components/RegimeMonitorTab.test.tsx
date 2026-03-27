@@ -83,6 +83,7 @@ class MockEventSource {
 describe("RegimeMonitorTab", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
     MockEventSource.instances = [];
     vi.stubGlobal("EventSource", MockEventSource as unknown as typeof EventSource);
 

@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
+from pathlib import Path
 from typing import Any, cast
 
+import numpy as np
 import pandas as pd
 
 from openbb_quant_ml.macro_models import (
@@ -14,25 +16,42 @@ from openbb_quant_ml.macro_models import (
     MacroAlertsResponse,
     MacroCatalogItem,
     MacroCatalogResponse,
+    MacroCompareResponse,
+    MacroConclusionPayload,
     MacroDataPoint,
     MacroDerivedItem,
     MacroDerivedResponse,
     MacroExpressionRequest,
     MacroExpressionResponse,
+    MacroFeatureExportItem,
+    MacroFeatureExportResponse,
     MacroHealthFeatureStats,
     MacroHealthObsStats,
     MacroHealthResponse,
+    MacroLeadLagPoint,
+    MacroLeadLagResponse,
     MacroPresetResponse,
     MacroRegimePoint,
     MacroRegimeResponse,
     MacroRegimeStateResponse,
+    MacroReleaseCalendarItem,
+    MacroReleaseCalendarResponse,
+    MacroReportResponse,
     MacroSeriesMeta,
     MacroSeriesMultiResponse,
     MacroSeriesQuery,
     MacroSeriesResponse,
     MacroSeriesStats,
+    MacroScatterPoint,
+    MacroScatterResponse,
+    MacroStudyPayload,
+    MacroStudiesResponse,
+    MacroStudySeriesSpec,
     MacroUpdateRequest,
     MacroUpdateResponse,
+    MacroViewSpec,
+    MacroVintagePoint,
+    MacroVintageResponse,
     RegimeLabelPoint,
     RegimeSchedulerStatusResponse,
     RegimeTransitionItem,
@@ -46,15 +65,23 @@ from openbb_quant_ml.service.macro_catalog import (
     resolve_catalog_item,
     search_catalog,
 )
-from openbb_quant_ml.service.macro_constants import MACRO_DB_PATH, load_macro_config
+from openbb_quant_ml.service.macro_constants import MACRO_DB_PATH, MACRO_ROOT, load_macro_config
 from openbb_quant_ml.service.macro_db import (
+    attach_report_to_macro_study,
     get_macro_feature_health_stats,
     get_macro_obs_health_stats,
+    get_obs_summaries,
+    get_macro_study,
     list_alert_events,
+    list_macro_studies,
     list_derived_expressions,
+    load_observation_vintages,
+    load_observations_asof,
     load_observations,
+    save_macro_study,
     save_derived_expression,
 )
+from openbb_quant_ml.service.reporting import get_reports_history_response
 from openbb_quant_ml.service.macro_expression import MacroExpressionError, evaluate_expression
 from openbb_quant_ml.service.macro_fred_client import FredClient
 from openbb_quant_ml.service.macro_market import get_market_series
@@ -81,6 +108,7 @@ from openbb_quant_ml.service.regime_scheduler import (
     get_scheduler_status,
     trigger_regime_refresh,
 )
+from openbb_quant_ml.service.storage import save_json, utc_now_iso
 
 _DERIVED_BOOTSTRAPPED = False
 
@@ -100,6 +128,186 @@ def _stats_to_model(stats: dict[str, float | None]) -> MacroSeriesStats:
         change_3m=stats.get("change_3m"),
         z=stats.get("z"),
         percentile_5y=stats.get("percentile_5y"),
+    )
+
+
+def _step_delta_for_frequency(frequency_label: str | None) -> timedelta:
+    freq = str(frequency_label or "").lower()
+    if "day" in freq or freq == "d":
+        return timedelta(days=1)
+    if "week" in freq or freq == "w":
+        return timedelta(days=7)
+    if "quarter" in freq or freq == "q":
+        return timedelta(days=90)
+    return timedelta(days=30)
+
+
+def _estimate_next_release(last_obs: str | None, frequency_label: str | None, publish_lag: int | None) -> str | None:
+    if not last_obs:
+        return None
+    try:
+        base = pd.Timestamp(last_obs)
+    except Exception:  # noqa: BLE001
+        return None
+    next_ts = base + _step_delta_for_frequency(frequency_label) + timedelta(days=max(0, int(publish_lag or 0)))
+    return next_ts.date().isoformat()
+
+
+def _compute_stale_days(last_obs: str | None) -> int | None:
+    if not last_obs:
+        return None
+    try:
+        return max(
+            0,
+            int((pd.Timestamp.utcnow().normalize() - pd.Timestamp(last_obs)).days),
+        )
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _get_catalog_obs_summaries(
+    rows: list[dict[str, Any]],
+) -> dict[tuple[str, str], dict[str, Any]]:
+    pairs = [
+        (str(row.get("source", "FRED")), str(row.get("series_id", "")))
+        for row in rows
+    ]
+    return get_obs_summaries(pairs)
+
+
+def _normalize_mode_for_series(series: pd.Series, normalize_mode: str) -> pd.Series:
+    mode = str(normalize_mode or "raw").lower()
+    if mode == "raw":
+        return series
+    if mode == "index100":
+        clean = series.dropna()
+        if clean.empty:
+            return series
+        base = float(clean.iloc[0])
+        if abs(base) <= 1e-12:
+            return pd.Series(np.nan, index=series.index, dtype=float)
+        return (series / base) * 100.0
+    if mode == "zscore":
+        return apply_transform(series, cast(Any, "zscore"))
+    if mode == "yoy":
+        return apply_transform(series, cast(Any, "yoy"))
+    if mode == "percentile_5y":
+        return apply_transform(series, cast(Any, "percentile_5y"))
+    return series
+
+
+def _apply_transform_chain(series: pd.Series, transform_chain: list[str]) -> pd.Series:
+    out = series.copy()
+    for raw_step in transform_chain:
+        step = str(raw_step or "").strip()
+        if not step:
+            continue
+        if ":" not in step:
+            out = apply_transform(out, cast(Any, step))
+            continue
+        name, raw_arg = step.split(":", 1)
+        name = name.strip().lower()
+        arg = raw_arg.strip()
+        if name == "lag":
+            out = out.shift(max(1, int(float(arg or "1"))))
+        elif name == "lead":
+            out = out.shift(-max(1, int(float(arg or "1"))))
+        elif name == "rolling_min":
+            win = max(2, int(float(arg or "5")))
+            out = out.rolling(win, min_periods=max(2, win // 4)).min()
+        elif name == "rolling_max":
+            win = max(2, int(float(arg or "5")))
+            out = out.rolling(win, min_periods=max(2, win // 4)).max()
+        elif name == "ema":
+            span = max(1, int(float(arg or "12")))
+            out = out.ewm(span=span, adjust=False, min_periods=1).mean()
+        else:
+            out = apply_transform(out, cast(Any, name))
+    return out
+
+
+def _series_response_from_series(
+    key: str,
+    series: pd.Series,
+    meta_raw: dict[str, Any],
+    *,
+    transform: str,
+    warning: str | None = None,
+) -> MacroSeriesResponse:
+    return MacroSeriesResponse(
+        meta=MacroSeriesMeta(
+            key=str(meta_raw.get("key", key)),
+            title=cast(str | None, meta_raw.get("title")),
+            units=cast(str | None, meta_raw.get("units")),
+            frequency=cast(str | None, meta_raw.get("frequency")),
+            source=str(meta_raw.get("source", "unknown")),
+            transform=transform,
+            lag_applied=cast(str | None, meta_raw.get("lag_applied")),
+            warning=warning,
+        ),
+        data=_series_to_points(series),
+        stats=_stats_to_model(compute_stats(series)),
+        status="ok",
+    )
+
+
+def _seed_macro_studies_if_needed() -> None:
+    if list_macro_studies():
+        return
+    save_macro_study(
+        {
+            "name": "Labor and Inflation Monitor",
+            "objective": "Track labor slack, inflation pressure, and policy stance before exporting features.",
+            "series_specs": [
+                {
+                    "key": "FRED:UNRATE",
+                    "alias": "Unemployment",
+                    "transform_chain": [],
+                    "freq": "M",
+                    "fill": "ffill",
+                    "axis": "left",
+                    "normalize_mode": "raw",
+                    "display_style": "line",
+                },
+                {
+                    "key": "FRED:CPIAUCSL",
+                    "alias": "CPI",
+                    "transform_chain": ["yoy"],
+                    "freq": "M",
+                    "fill": "ffill",
+                    "axis": "right",
+                    "normalize_mode": "yoy",
+                    "display_style": "line",
+                },
+                {
+                    "key": "FRED:FEDFUNDS",
+                    "alias": "Fed Funds",
+                    "transform_chain": [],
+                    "freq": "M",
+                    "fill": "ffill",
+                    "axis": "right",
+                    "normalize_mode": "raw",
+                    "display_style": "line",
+                },
+            ],
+            "view_specs": [
+                {"view_id": "explorer", "mode": "explorer", "title": "Explorer", "layout": {}},
+                {"view_id": "compare", "mode": "compare", "title": "Compare", "layout": {}},
+                {"view_id": "relationship", "mode": "relationship", "title": "Relationship", "layout": {}},
+                {"view_id": "release", "mode": "release", "title": "Release", "layout": {}},
+                {"view_id": "report", "mode": "report", "title": "Report", "layout": {}},
+            ],
+            "notes": "Initial seed study for macro monitoring.",
+            "conclusion": {
+                "summary": "",
+                "thesis": "",
+                "risk_cases": [],
+                "action_bias": "neutral",
+                "confidence": None,
+                "next_checks": [],
+            },
+            "linked_assets": ["SPY", "TLT", "GLD"],
+        }
     )
 
 
@@ -174,14 +382,51 @@ def _get_series(
     return _load_market_symbol(series_id, start=start, end=end)
 
 
-def _resolver_factory(start: date | None, end: date | None, freq: str, fill: str):
+def _get_series_asof(
+    key: str,
+    start: date | None,
+    end: date | None,
+    as_of_date: date | None = None,
+) -> tuple[pd.Series, dict[str, Any], str | None]:
+    if as_of_date is None:
+        return _get_series(key, start=start, end=end)
+    source, series_id = _normalize_key(key)
+    if source != "FRED":
+        return _get_series(key, start=start, end=end)
+
+    item = resolve_catalog_item(f"FRED:{series_id}", create_if_missing=True) or {}
+    rows = load_observations_asof(
+        "FRED",
+        series_id,
+        as_of_date=as_of_date.isoformat(),
+        start=start.isoformat() if start else None,
+        end=end.isoformat() if end else None,
+    )
+    series = normalize_series(rows)
+    if series.empty:
+        raise ValueError(f"No observations found for FRED:{series_id} as of {as_of_date.isoformat()}")
+    frequency = str(item.get("frequency") or infer_frequency_label(series))
+    lag_days = int(item.get("publish_lag") or default_publish_lag_days(frequency))
+    series_lagged = apply_publish_lag(series, lag_days=lag_days)
+    meta = {
+        "key": f"FRED:{series_id}",
+        "title": item.get("title") or series_id,
+        "units": item.get("units"),
+        "frequency": frequency,
+        "source": "FRED",
+        "lag_applied": lag_period_text(lag_days, frequency),
+    }
+    return series_lagged, meta, f"as_of:{as_of_date.isoformat()}"
+
+
+def _resolver_factory(start: date | None, end: date | None, freq: str, fill: str, as_of_date: date | None = None):
     cache: dict[str, pd.Series] = {}
 
     def resolver(symbol_key: str) -> pd.Series:
         key = symbol_key.strip()
         if key in cache:
             return cache[key]
-        series, _, _ = _get_series(key, start=start, end=end)
+        series, _, _ = _get_series_asof(key, start=start, end=end, as_of_date=as_of_date)
         transformed = resample_series(
             series,
             freq=cast(Any, freq),
@@ -199,7 +444,27 @@ def get_catalog_response(domain: str | None = None) -> MacroCatalogResponse:
     """Return registered macro catalog items."""
     bootstrap_default_catalog()
     bootstrap_default_derived_expressions()
-    items = [MacroCatalogItem(**row) for row in list_catalog_items(domain=domain)]
+    _seed_macro_studies_if_needed()
+    rows = list(list_catalog_items(domain=domain))
+    obs_summary_by_series = _get_catalog_obs_summaries(rows)
+    items: list[MacroCatalogItem] = []
+    for row in rows:
+        obs_summary = obs_summary_by_series.get(
+            (str(row.get("source", "FRED")), str(row.get("series_id", ""))),
+            {},
+        )
+        last_obs = cast(str | None, obs_summary.get("last_obs"))
+        items.append(
+            MacroCatalogItem(
+                **row,
+                tags=[str(row.get("domain") or "macro").lower(), str(row.get("source") or "fred").lower()],
+                last_obs=last_obs,
+                stale_days=_compute_stale_days(last_obs),
+                release_frequency=str(row.get("frequency") or "").lower() or None,
+                default_view="explorer",
+                vintage_available=bool(obs_summary.get("vintage_available")),
+            )
+        )
     return MacroCatalogResponse(status="ok", items=items)
 
 
@@ -724,6 +989,415 @@ def get_market_rolling_corr_response(
     result = evaluate_expression_response(request)
     result.meta.title = f"rolling_corr({x},{y},{window_safe})"
     return result
+
+
+def list_studies_response() -> MacroStudiesResponse:
+    """List persisted macro studies."""
+    _seed_macro_studies_if_needed()
+    rows = list_macro_studies()
+    return MacroStudiesResponse(
+        status="ok",
+        items=[MacroStudyPayload(**row) for row in rows],
+    )
+
+
+def get_study_response(study_id: str) -> MacroStudiesResponse:
+    """Return one study wrapped in list response shape."""
+    _seed_macro_studies_if_needed()
+    row = get_macro_study(study_id)
+    if row is None:
+        return MacroStudiesResponse(status="not_found", message=f"Unknown study: {study_id}", items=[])
+    return MacroStudiesResponse(status="ok", items=[MacroStudyPayload(**row)])
+
+
+def save_study_response(payload: MacroStudyPayload) -> MacroStudiesResponse:
+    """Persist a study and return the saved payload."""
+    saved = save_macro_study(payload.model_dump())
+    return MacroStudiesResponse(status="ok", items=[MacroStudyPayload(**saved)])
+
+
+def _load_series_for_spec(
+    spec: MacroStudySeriesSpec,
+    *,
+    start: date | None = None,
+    end: date | None = None,
+    as_of_date: date | None = None,
+) -> tuple[pd.Series, dict[str, Any], str | None]:
+    series, meta_raw, warning = _get_series_asof(spec.key, start=start, end=end, as_of_date=as_of_date)
+    series = _apply_transform_chain(series, spec.transform_chain)
+    series = resample_series(
+        series,
+        freq=cast(Any, spec.freq),
+        fill=cast(Any, spec.fill),
+        start=start,
+        end=end,
+    )
+    meta = {**meta_raw}
+    if spec.alias:
+        meta["title"] = spec.alias
+    return series, meta, warning
+
+
+def get_compare_response(
+    study_id: str,
+    *,
+    normalization: str = "raw",
+    start: date | None = None,
+    end: date | None = None,
+    as_of_date: date | None = None,
+) -> MacroCompareResponse:
+    """Build normalized multi-series comparison payload for a study."""
+    row = get_macro_study(study_id)
+    if row is None:
+        return MacroCompareResponse(status="not_found", message=f"Unknown study: {study_id}")
+    study = MacroStudyPayload(**row)
+    series_map: dict[str, MacroSeriesResponse] = {}
+    errors: list[str] = []
+    for spec in study.series_specs:
+        try:
+            series, meta_raw, warning = _load_series_for_spec(spec, start=start, end=end, as_of_date=as_of_date)
+            normalized = _normalize_mode_for_series(series, normalization if normalization != "raw" else spec.normalize_mode)
+            series_map[spec.key] = _series_response_from_series(
+                spec.key,
+                normalized,
+                meta_raw,
+                transform=normalization if normalization != "raw" else spec.normalize_mode,
+                warning=warning,
+            )
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{spec.key}: {exc}")
+    status = "ok" if series_map and not errors else "insufficient_data"
+    return MacroCompareResponse(
+        status=cast(Any, status),
+        message=" | ".join(errors[:5]) if errors else None,
+        normalization=cast(Any, normalization),
+        series=series_map,
+    )
+
+
+def get_leadlag_response(
+    lhs: str,
+    rhs: str,
+    *,
+    start: date | None = None,
+    end: date | None = None,
+    freq: str = "W",
+    fill: str = "ffill",
+    max_lag: int = 12,
+) -> MacroLeadLagResponse:
+    """Compute lead-lag correlation table for two series."""
+    try:
+        left, _, _ = _get_series(lhs, start=start, end=end)
+        right, _, _ = _get_series(rhs, start=start, end=end)
+    except Exception as exc:  # noqa: BLE001
+        return MacroLeadLagResponse(status="insufficient_data", message=str(exc), lhs=lhs, rhs=rhs)
+
+    left = resample_series(left, freq=cast(Any, freq), fill=cast(Any, fill), start=start, end=end)
+    right = resample_series(right, freq=cast(Any, freq), fill=cast(Any, fill), start=start, end=end)
+    left, right = left.align(right, join="inner")
+    if left.dropna().empty or right.dropna().empty:
+        return MacroLeadLagResponse(status="insufficient_data", message="No overlapping observations.", lhs=lhs, rhs=rhs)
+
+    table: list[MacroLeadLagPoint] = []
+    best_lag = 0
+    best_corr = 0.0
+    has_best = False
+    max_lag_safe = max(1, min(int(max_lag), 24))
+    for lag in range(-max_lag_safe, max_lag_safe + 1):
+        shifted = right.shift(lag)
+        corr = float(left.corr(shifted))
+        if np.isnan(corr):
+            corr = 0.0
+        table.append(MacroLeadLagPoint(lag=lag, correlation=corr))
+        if (not has_best) or abs(corr) > abs(best_corr):
+            best_corr = corr
+            best_lag = lag
+            has_best = True
+
+    rolling = left.rolling(window=max(3, min(26, max_lag_safe * 2)), min_periods=3).corr(right)
+    return MacroLeadLagResponse(
+        status="ok",
+        lhs=lhs,
+        rhs=rhs,
+        best_lag=best_lag,
+        best_correlation=best_corr,
+        table=table,
+        rolling_corr=_series_to_points(rolling),
+    )
+
+
+def get_scatter_response(
+    lhs: str,
+    rhs: str,
+    *,
+    start: date | None = None,
+    end: date | None = None,
+    freq: str = "W",
+    fill: str = "ffill",
+) -> MacroScatterResponse:
+    """Build scatter payload with regression metadata."""
+    try:
+        left, _, _ = _get_series(lhs, start=start, end=end)
+        right, _, _ = _get_series(rhs, start=start, end=end)
+    except Exception as exc:  # noqa: BLE001
+        return MacroScatterResponse(status="insufficient_data", message=str(exc), lhs=lhs, rhs=rhs)
+    left = resample_series(left, freq=cast(Any, freq), fill=cast(Any, fill), start=start, end=end)
+    right = resample_series(right, freq=cast(Any, freq), fill=cast(Any, fill), start=start, end=end)
+    left, right = left.align(right, join="inner")
+    frame = pd.DataFrame({"x": left, "y": right}).dropna()
+    if frame.empty:
+        return MacroScatterResponse(status="insufficient_data", message="No overlapping observations.", lhs=lhs, rhs=rhs)
+
+    corr = float(frame["x"].corr(frame["y"]))
+    slope: float | None = None
+    intercept: float | None = None
+    if len(frame) >= 2:
+        slope, intercept = [float(value) for value in np.polyfit(frame["x"], frame["y"], 1)]
+
+    points = [
+        MacroScatterPoint(date=index.date().isoformat(), x=float(row["x"]), y=float(row["y"]))
+        for index, row in frame.tail(250).iterrows()
+    ]
+    return MacroScatterResponse(
+        status="ok",
+        lhs=lhs,
+        rhs=rhs,
+        correlation=corr,
+        slope=slope,
+        intercept=intercept,
+        points=points,
+    )
+
+
+def get_vintage_response(
+    key: str,
+    *,
+    as_of_date: date,
+    start: date | None = None,
+    end: date | None = None,
+) -> MacroVintageResponse:
+    """Compare latest series against as-of vintage for one FRED key."""
+    try:
+        source, series_id = _normalize_key(key)
+    except Exception as exc:  # noqa: BLE001
+        return MacroVintageResponse(status="error", message=str(exc), key=key, as_of_date=as_of_date.isoformat())
+    if source != "FRED":
+        return MacroVintageResponse(
+            status="insufficient_data",
+            message="Vintage history is only available for FRED series.",
+            key=key,
+            as_of_date=as_of_date.isoformat(),
+        )
+    latest_rows = load_observations("FRED", series_id, start.isoformat() if start else None, end.isoformat() if end else None)
+    asof_rows = load_observations_asof(
+        "FRED",
+        series_id,
+        as_of_date=as_of_date.isoformat(),
+        start=start.isoformat() if start else None,
+        end=end.isoformat() if end else None,
+    )
+    latest = normalize_series(latest_rows)
+    asof = normalize_series(asof_rows)
+    latest_overlap, asof_overlap = latest.align(asof, join="inner")
+    revision_delta: float | None = None
+    if not latest_overlap.dropna().empty and not asof_overlap.dropna().empty:
+        revision_delta = float((latest_overlap - asof_overlap).dropna().iloc[-1])
+    latest_obs_date = end.isoformat() if end else (latest_rows[-1]["date"] if latest_rows else None)
+    revisions = []
+    if latest_obs_date:
+        revisions = [MacroVintagePoint(**row) for row in load_observation_vintages("FRED", series_id, str(latest_obs_date))]
+    return MacroVintageResponse(
+        status="ok",
+        key=key,
+        as_of_date=as_of_date.isoformat(),
+        latest=_series_to_points(latest),
+        as_of=_series_to_points(asof),
+        revisions=revisions,
+        revision_delta=revision_delta,
+    )
+
+
+def get_release_calendar_response(domain: str | None = None) -> MacroReleaseCalendarResponse:
+    """Return release-oriented metadata for catalog series."""
+    bootstrap_default_catalog()
+    rows = list(list_catalog_items(domain=domain))
+    obs_summary_by_series = _get_catalog_obs_summaries(rows)
+    items: list[MacroReleaseCalendarItem] = []
+    for row in rows:
+        obs_summary = obs_summary_by_series.get(
+            (str(row.get("source", "FRED")), str(row.get("series_id", ""))),
+            {},
+        )
+        last_obs = cast(str | None, obs_summary.get("last_obs"))
+        items.append(
+            MacroReleaseCalendarItem(
+                key=str(row.get("id")),
+                title=cast(str | None, row.get("title")),
+                domain=cast(str | None, row.get("domain")),
+                release_frequency=cast(str | None, row.get("frequency")),
+                last_obs=last_obs,
+                stale_days=_compute_stale_days(last_obs),
+                estimated_next_release=_estimate_next_release(last_obs, cast(str | None, row.get("frequency")), cast(int | None, row.get("publish_lag"))),
+                vintage_available=bool(obs_summary.get("vintage_available")),
+            )
+        )
+    return MacroReleaseCalendarResponse(status="ok", items=items)
+
+
+def create_report_response(study_id: str) -> MacroReportResponse:
+    """Export one study to HTML."""
+    row = get_macro_study(study_id)
+    if row is None:
+        return MacroReportResponse(status="not_found", message=f"Unknown study: {study_id}", study_id=study_id)
+    study = MacroStudyPayload(**row)
+    report_dir = MACRO_ROOT / "reports"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    report_path = report_dir / f"{study_id}.html"
+    conclusion = study.conclusion
+    series_rows = "".join(
+        f"<li><strong>{spec.alias or spec.key}</strong> ({spec.key}) - chain: {', '.join(spec.transform_chain) or 'level'}</li>"
+        for spec in study.series_specs
+    )
+    linked_assets = ", ".join(study.linked_assets) or "None"
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{study.name}</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; margin: 32px; color: #111827; }}
+    h1, h2 {{ margin-bottom: 8px; }}
+    .muted {{ color: #6b7280; }}
+    .card {{ border: 1px solid #d1d5db; border-radius: 10px; padding: 16px; margin-top: 16px; }}
+  </style>
+</head>
+<body>
+  <h1>{study.name}</h1>
+  <p class="muted">{study.objective}</p>
+  <div class="card">
+    <h2>Series Basket</h2>
+    <ul>{series_rows}</ul>
+  </div>
+  <div class="card">
+    <h2>Conclusion</h2>
+    <p><strong>Summary:</strong> {conclusion.summary}</p>
+    <p><strong>Thesis:</strong> {conclusion.thesis}</p>
+    <p><strong>Action Bias:</strong> {conclusion.action_bias}</p>
+    <p><strong>Confidence:</strong> {conclusion.confidence if conclusion.confidence is not None else 'n/a'}</p>
+    <p><strong>Risk Cases:</strong> {', '.join(conclusion.risk_cases) or 'None'}</p>
+    <p><strong>Next Checks:</strong> {', '.join(conclusion.next_checks) or 'None'}</p>
+  </div>
+  <div class="card">
+    <h2>Notes</h2>
+    <pre style="white-space: pre-wrap">{study.notes}</pre>
+  </div>
+  <div class="card">
+    <h2>Linked Assets</h2>
+    <p>{linked_assets}</p>
+  </div>
+</body>
+</html>"""
+    report_path.write_text(html, encoding="utf-8")
+    attach_report_to_macro_study(
+        study_id,
+        report_id=None,
+        title=f"Macro Study Report: {study.name}",
+        report_path=str(report_path),
+        created_at=utc_now_iso(),
+        source_run_id=None,
+        symbols=[str(item).upper() for item in study.linked_assets],
+    )
+    return MacroReportResponse(
+        status="ok",
+        study_id=study_id,
+        report_path=str(report_path),
+        generated_at=utc_now_iso(),
+    )
+
+
+def attach_report_response(
+    study_id: str,
+    *,
+    report_id: int | None = None,
+    report_path: str | None = None,
+) -> MacroStudiesResponse:
+    """Attach an existing report artifact to a macro study."""
+    if not study_id:
+        return MacroStudiesResponse(status="not_found", message="study_id is required")
+    selected_report = None
+    if report_id is not None:
+        for item in get_reports_history_response(limit=500).items:
+            if item.id == report_id:
+                selected_report = item
+                break
+    elif report_path:
+        for item in get_reports_history_response(limit=500).items:
+            if str(item.report_path).strip() == str(report_path).strip():
+                selected_report = item
+                break
+    if selected_report is None and report_path:
+        saved = attach_report_to_macro_study(
+            study_id,
+            report_id=None,
+            title=Path(report_path).stem,
+            report_path=str(report_path),
+            created_at=utc_now_iso(),
+            symbols=[],
+        )
+        if saved is None:
+            return MacroStudiesResponse(status="not_found", message=f"Unknown study: {study_id}")
+        return MacroStudiesResponse(status="ok", items=[MacroStudyPayload(**saved)])
+    if selected_report is None:
+        return MacroStudiesResponse(status="not_found", message="Unknown report attachment target")
+    saved = attach_report_to_macro_study(
+        study_id,
+        report_id=selected_report.id,
+        title=selected_report.title,
+        report_path=selected_report.report_path,
+        created_at=selected_report.created_at,
+        source_run_id=selected_report.run_id,
+        symbols=selected_report.symbols,
+    )
+    if saved is None:
+        return MacroStudiesResponse(status="not_found", message=f"Unknown study: {study_id}")
+    return MacroStudiesResponse(status="ok", items=[MacroStudyPayload(**saved)])
+
+
+def export_features_response(study_id: str, *, as_of_policy: str = "latest") -> MacroFeatureExportResponse:
+    """Export feature lineage metadata derived from a study."""
+    row = get_macro_study(study_id)
+    if row is None:
+        return MacroFeatureExportResponse(status="not_found", message=f"Unknown study: {study_id}", study_id=study_id)
+    study = MacroStudyPayload(**row)
+    items = [
+        MacroFeatureExportItem(
+            feature_name=f"{(spec.alias or spec.key).lower().replace(':', '_').replace(' ', '_')}_{'_'.join(spec.transform_chain or ['level'])}",
+            source_study_id=study_id,
+            key=spec.key,
+            transform_chain=spec.transform_chain,
+            lag_rule=spec.lag_mode,
+            as_of_policy=as_of_policy,
+        )
+        for spec in study.series_specs
+    ]
+    export_dir = MACRO_ROOT / "feature_exports"
+    export_dir.mkdir(parents=True, exist_ok=True)
+    artifact_path = export_dir / f"{study_id}.json"
+    save_json(
+        artifact_path,
+        {
+            "study_id": study_id,
+            "exported_at": utc_now_iso(),
+            "items": [item.model_dump() for item in items],
+        },
+    )
+    return MacroFeatureExportResponse(
+        status="ok",
+        study_id=study_id,
+        artifact_path=str(artifact_path),
+        exported_at=utc_now_iso(),
+        items=items,
+    )
 
 
 def bootstrap_default_derived_expressions() -> None:

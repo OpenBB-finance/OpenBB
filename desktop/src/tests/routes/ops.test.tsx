@@ -11,10 +11,15 @@ vi.mock("@tanstack/react-router", () => ({
       component: options.component,
     },
   })),
+  useNavigate: vi.fn(() => vi.fn()),
 }));
 
 vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn(),
+}));
+
+vi.mock("@tauri-apps/plugin-opener", () => ({
+  openPath: vi.fn(() => Promise.resolve()),
 }));
 
 function mockResponse(payload: unknown, ok = true, status = 200): Response {
@@ -45,6 +50,23 @@ describe("Ops Route", () => {
     if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) return mockResponse({ results: {} });
       if (url.endsWith("/api/v1/quant_ml/universe/list")) {
         return mockResponse({ universes: [{ id: "default", has_file: true, count_hint: 2 }] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/ops/issues?limit=8")) {
+        return mockResponse({
+          items: [
+            {
+              id: "issue-1",
+              severity: "warning",
+              title: "Execution handoff is blocked",
+              impact: "Orders cannot be submitted.",
+              suggested_action: "Open execution and resolve the blocker.",
+              target_route: "/execution",
+              target_search: { runId: "run-1", modelName: "lgbm_ranker" },
+              source: "execution",
+              status: "open",
+            },
+          ],
+        });
       }
       if (url.endsWith("/api/v1/quant_ml/ops/status")) {
         return mockResponse({
@@ -82,10 +104,47 @@ describe("Ops Route", () => {
         return mockResponse({ item: { report_type: "ops", report_path: "/tmp/ops.html", status: "ok", summary: {} } });
       }
       if (url.includes("/api/v1/quant_ml/reports/history")) {
-        return mockResponse({ items: [] });
+        return mockResponse({
+          items: [
+            {
+              id: "report-1",
+              run_id: "run-1",
+              report_type: "ops",
+              report_path: "/tmp/ops.html",
+              status: "ok",
+              title: "Ops report",
+              symbols: ["AAPL"],
+              summary: {},
+            },
+          ],
+        });
       }
       if (url.includes("/api/v1/quant_ml/notifications/history")) {
         return mockResponse({ items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/studies")) {
+        return mockResponse({
+          status: "ok",
+          items: [
+            {
+              id: "study-1",
+              name: "Growth Monitor",
+              objective: "Monitor macro trend",
+              series_specs: [],
+              view_specs: [],
+              notes: "",
+              conclusion: {
+                summary: "",
+                thesis: "",
+                risk_cases: [],
+                action_bias: "",
+                next_checks: [],
+              },
+              linked_assets: ["AAPL"],
+              linked_reports: [],
+            },
+          ],
+        });
       }
       if (url.endsWith("/api/v1/quant_ml/scheduler/status")) {
         return mockResponse({
@@ -121,9 +180,9 @@ describe("Ops Route", () => {
 
     await waitFor(() => {
       const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
-      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/ops/status"))).toBe(true);
+      expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/ops/issues?limit=8"))).toBe(true);
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/scheduler/status"))).toBe(true);
-      expect(calls.some((url) => url.includes("/api/v1/quant_ml/experiments/list"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/reports/history"))).toBe(true);
     });
   });
 });

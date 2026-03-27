@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import date
+import os
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -48,6 +49,19 @@ def test_load_symbol_prices_retries_after_download_error(
     )
     assert not out.empty
     assert calls["count"] == 2
+
+
+def test_is_cache_fresh_uses_utc_mtime(tmp_path: Path) -> None:
+    cache_path = tmp_path / "AAPL.parquet"
+    cache_path.write_bytes(b"cache")
+
+    fresh_ts = datetime.now(UTC) - timedelta(hours=6)
+    os.utime(cache_path, (fresh_ts.timestamp(), fresh_ts.timestamp()))
+    assert dl._is_cache_fresh(cache_path, ttl_days=1) is True
+
+    stale_ts = datetime.now(UTC) - timedelta(days=3)
+    os.utime(cache_path, (stale_ts.timestamp(), stale_ts.timestamp()))
+    assert dl._is_cache_fresh(cache_path, ttl_days=1) is False
 
 
 def test_load_market_data_reports_progress_with_workers(

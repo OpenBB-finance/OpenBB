@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { createRunLogStreamUrl, fetchArtifactSummary, fetchRunStatus } from "../lib/quantApi";
+import { openOpenBBSseStream } from "../lib/openbbSse";
 import type { ArtifactSummaryPayload, ModelName, RunStatusPayload } from "../types/quant";
 
 type BackendConnection = { connected: boolean; baseUrl: string } | null;
@@ -79,7 +80,7 @@ export function useQuantRunStream({
 
     let disposed = false;
     let fallbackTimer: number | null = null;
-    let stream: EventSource | null = null;
+    let stream: { close: () => void } | null = null;
     let terminalHandled = false;
 
     const closeStream = () => {
@@ -161,118 +162,129 @@ export function useQuantRunStream({
       }, 3000);
     };
 
-    if (typeof window !== "undefined" && typeof window.EventSource !== "undefined") {
+    if (typeof window !== "undefined") {
       setRunStreamState("connecting");
-      stream = new EventSource(createRunLogStreamUrl(backend.baseUrl, runId, 1.0, 600));
-
-      stream.addEventListener("ready", () => {
-        setRunStreamState("ready");
-      });
-
-      stream.onmessage = (event) => {
-        const payload = parseSsePayload(event.data);
-        if (!payload) {
-          return;
-        }
-        const line = typeof payload.line === "string" ? payload.line : null;
-        const eventStatus =
-          typeof payload.status === "string" ? (payload.status as RunStatusPayload["status"]) : null;
-        const eventStage = typeof payload.stage === "string" ? payload.stage : null;
-        if (!line && !eventStatus && !eventStage) {
-          return;
-        }
-        setRunStreamState("streaming");
-        setRunStatus((prev) => {
-          if (!prev) {
-            return prev;
+      stream = openOpenBBSseStream(createRunLogStreamUrl(backend.baseUrl, runId, 1.0, 600), {
+        eventTypes: ["ready", "status", "done", "timeout", "error"],
+        onEvent: (event) => {
+          if (disposed) {
+            return;
           }
-          const nextLogs = line ? appendLiveLog(prev.logs_tail, line) : prev.logs_tail;
-          return {
-            ...prev,
-            status: eventStatus ?? prev.status,
-            stage: eventStage ?? prev.stage,
-            logs_tail: nextLogs,
-            updated_at: new Date().toISOString(),
-          };
-        });
-      };
 
-      stream.addEventListener("status", (event: Event) => {
-        const payload = parseSsePayload((event as MessageEvent<string>).data ?? "");
-        if (!payload) {
-          return;
-        }
-        const eventStatus =
-          typeof payload.status === "string" ? (payload.status as RunStatusPayload["status"]) : null;
-        const eventStage = typeof payload.stage === "string" ? payload.stage : null;
-        const eventProgress = typeof payload.progress === "number" ? payload.progress : null;
-        if (!eventStatus || eventProgress == null) {
-          return;
-        }
-        setRunStreamState("streaming");
-        const updatedAt = new Date().toISOString();
-        setRunStatus((prev) => {
-          if (!prev) {
-            return prev;
+          if (event.type === "ready") {
+            setRunStreamState("ready");
+            return;
           }
-          return {
-            ...prev,
-            status: eventStatus,
-            stage: eventStage ?? prev.stage,
-            progress: eventProgress,
-            updated_at: updatedAt,
-          };
-        });
-        patchSession({
-          run_id: runId,
-          model_name: selectedModel,
-          run_status: eventStatus,
-          run_stage: eventStage ?? runStatus.stage,
-          run_progress: eventProgress,
-          updated_at: updatedAt,
-        });
-        if (eventStatus === "queued" || eventStatus === "running") {
-          setActiveTrainingRunId(runId);
-        } else {
-          void handleTerminal(eventStatus);
+
+          if (event.type === "message") {
+            const payload = parseSsePayload(event.data);
+            if (!payload) {
+              return;
+            }
+            const line = typeof payload.line === "string" ? payload.line : null;
+            const eventStatus =
+              typeof payload.status === "string" ? (payload.status as RunStatusPayload["status"]) : null;
+            const eventStage = typeof payload.stage === "string" ? payload.stage : null;
+            if (!line && !eventStatus && !eventStage) {
+              return;
+            }
+            setRunStreamState("streaming");
+            setRunStatus((prev) => {
+              if (!prev) {
+                return prev;
+              }
+              const nextLogs = line ? appendLiveLog(prev.logs_tail, line) : prev.logs_tail;
+              return {
+                ...prev,
+                status: eventStatus ?? prev.status,
+                stage: eventStage ?? prev.stage,
+                logs_tail: nextLogs,
+                updated_at: new Date().toISOString(),
+              };
+            });
+            return;
+          }
+
+          if (event.type === "status") {
+            const payload = parseSsePayload(event.data);
+            if (!payload) {
+              return;
+            }
+            const eventStatus =
+              typeof payload.status === "string" ? (payload.status as RunStatusPayload["status"]) : null;
+            const eventStage = typeof payload.stage === "string" ? payload.stage : null;
+            const eventProgress = typeof payload.progress === "number" ? payload.progress : null;
+            if (!eventStatus || eventProgress == null) {
+              return;
+            }
+            setRunStreamState("streaming");
+            const updatedAt = new Date().toISOString();
+            setRunStatus((prev) => {
+              if (!prev) {
+                return prev;
+              }
+              return {
+                ...prev,
+                status: eventStatus,
+                stage: eventStage ?? prev.stage,
+                progress: eventProgress,
+                updated_at: updatedAt,
+              };
+            });
+            patchSession({
+              run_id: runId,
+              model_name: selectedModel,
+              run_status: eventStatus,
+              run_stage: eventStage ?? runStatus.stage,
+              run_progress: eventProgress,
+              updated_at: updatedAt,
+            });
+            if (eventStatus === "queued" || eventStatus === "running") {
+              setActiveTrainingRunId(runId);
+            } else {
+              void handleTerminal(eventStatus);
+              closeStream();
+            }
+            return;
+          }
+
+          if (event.type === "done") {
+            setRunStreamState("done");
+            const payload = parseSsePayload(event.data);
+            const eventStatus =
+              payload && typeof payload.status === "string"
+                ? (payload.status as RunStatusPayload["status"])
+                : runStatus.status;
+            void handleTerminal(eventStatus);
+            closeStream();
+            void refreshFromApi();
+            return;
+          }
+
+          if (event.type === "timeout") {
+            setRunStreamState("timeout");
+            closeStream();
+            startFallbackPolling();
+            return;
+          }
+
+          if (event.type === "error") {
+            setRunStreamState("error");
+            const payload = parseSsePayload(event.data);
+            if (payload && typeof payload.message === "string") {
+              setErrorMessage(payload.message);
+            }
+          }
+        },
+        onConnectionError: () => {
+          if (disposed) {
+            return;
+          }
+          setRunStreamState("error");
           closeStream();
-        }
+          startFallbackPolling();
+        },
       });
-
-      stream.addEventListener("done", (event: Event) => {
-        setRunStreamState("done");
-        const payload = parseSsePayload((event as MessageEvent<string>).data ?? "");
-        const eventStatus =
-          payload && typeof payload.status === "string"
-            ? (payload.status as RunStatusPayload["status"])
-            : runStatus.status;
-        void handleTerminal(eventStatus);
-        closeStream();
-        void refreshFromApi();
-      });
-
-      stream.addEventListener("timeout", () => {
-        setRunStreamState("timeout");
-        closeStream();
-        startFallbackPolling();
-      });
-
-      stream.addEventListener("error", (event: Event) => {
-        setRunStreamState("error");
-        const payload = parseSsePayload((event as MessageEvent<string>).data ?? "");
-        if (payload && typeof payload.message === "string") {
-          setErrorMessage(payload.message);
-        }
-      });
-
-      stream.onerror = () => {
-        if (disposed) {
-          return;
-        }
-        setRunStreamState("error");
-        closeStream();
-        startFallbackPolling();
-      };
     } else {
       startFallbackPolling();
     }

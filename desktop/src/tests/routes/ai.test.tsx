@@ -6,6 +6,14 @@ import { Route as AiRoute } from "../../routes/ai";
 
 const invokeMock = vi.fn();
 
+function hashRepoRoot(input: string): string {
+  let hash = 5381;
+  for (let index = 0; index < input.length; index += 1) {
+    hash = ((hash << 5) + hash) ^ input.charCodeAt(index);
+  }
+  return (hash >>> 0).toString(16);
+}
+
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: vi.fn(
     () => (options: {
@@ -72,6 +80,43 @@ describe("AI Route", () => {
     await waitFor(() => {
       expect(screen.getByText(/Lexical fallback mode/i)).toBeInTheDocument();
     });
+  });
+
+  test("hides stale thread history until the index is rebuilt", async () => {
+    const repoRoot = "C:/repo";
+    localStorage.setItem(
+      `ai.thread.${hashRepoRoot(repoRoot)}`,
+      JSON.stringify({
+        indexSignature: `${hashRepoRoot(repoRoot)}:2026-03-20T00:00:00Z:12:semantic`,
+        messages: [
+          {
+            role: "assistant",
+            content: "Old answer that should not be shown for a stale index.",
+          },
+        ],
+      }),
+    );
+
+    invokeMock.mockResolvedValueOnce({
+      repoRoot,
+      repoReady: true,
+      ollamaReachable: true,
+      chatModel: "qwen3-coder",
+      embeddingModel: "qwen3-embedding",
+      availableModels: ["qwen3-coder", "qwen3-embedding"],
+      indexReady: false,
+      lastIndexedAt: "2026-03-20T00:00:00Z",
+      chunkCount: 12,
+      mode: "semantic",
+    });
+
+    render(<AiComponent />);
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/Rebuild the stale index/i)).toHaveLength(2);
+    });
+    expect(screen.queryByText(/Old answer that should not be shown/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/Project Question/i)).toBeDisabled();
   });
 
   test("renders answer and citations after asking a question", async () => {

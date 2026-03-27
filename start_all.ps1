@@ -3,7 +3,13 @@ param(
   [int]$FrontendPort = 1470,
   [bool]$ApiNoBuild = $true,
   [ValidateSet("dev", "prod")]
-  [string]$ApiDocsMode = "dev"
+  [string]$ApiDocsMode = "dev",
+  [ValidateSet("enabled", "disabled", "inherit")]
+  [string]$ApiAuthMode = "enabled",
+  [string]$ApiAuthUsername = "",
+  [string]$ApiAuthPassword = "",
+  [ValidateSet("inherit", "thread", "process")]
+  [string]$QuantMlTrainingBackend = "inherit"
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,7 +39,8 @@ function Wait-ListeningPort {
 function Test-ApiHealth {
   param(
     [int]$Port,
-    [string]$DocsMode = "dev"
+    [string]$DocsMode = "dev",
+    [hashtable]$Headers = @{}
   )
   $uris = if ($DocsMode -eq "prod") {
     @(
@@ -51,7 +58,7 @@ function Test-ApiHealth {
   }
   foreach ($uri in $uris) {
     try {
-      $response = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec 4
+      $response = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec 4 -Headers $Headers
       if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
         return $true
       }
@@ -66,17 +73,28 @@ function Test-ApiHealth {
 function Wait-ApiHealth {
   param(
     [int]$Port,
-    [int]$TimeoutSeconds = 180,
-    [string]$DocsMode = "dev"
+    [int]$TimeoutSeconds = 90,
+    [string]$DocsMode = "dev",
+    [hashtable]$Headers = @{}
   )
   $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
   while ((Get-Date) -lt $deadline) {
-    if (Test-ApiHealth -Port $Port -DocsMode $DocsMode) {
+    if (Test-ApiHealth -Port $Port -DocsMode $DocsMode -Headers $Headers) {
       return $true
     }
     Start-Sleep -Milliseconds 700
   }
   return $false
+}
+
+function Test-ApiCompatibility {
+  param(
+    [int]$Port,
+    [hashtable]$Headers = @{}
+  )
+  $uri = "http://127.0.0.1:{0}/api/v1/quant_ml/health" -f $Port
+  $response = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec 6 -Headers $Headers
+  return $response.StatusCode -ge 200 -and $response.StatusCode -lt 300
 }
 
 function Start-ShellProcess {
@@ -127,6 +145,18 @@ function Get-ShortPath {
   catch {
     return $Path
   }
+}
+
+function Get-BasicAuthHeader {
+  param(
+    [string]$Username,
+    [string]$Password
+  )
+  if ([string]::IsNullOrWhiteSpace($Username) -or [string]::IsNullOrWhiteSpace($Password)) {
+    return $null
+  }
+  $bytes = [System.Text.Encoding]::UTF8.GetBytes(("{0}:{1}" -f $Username, $Password))
+  return "Basic " + [Convert]::ToBase64String($bytes)
 }
 
 function Get-LogTail {
@@ -197,6 +227,39 @@ if ($cleanedCount -gt 0) {
   Write-Host "Cleaned up $cleanedCount old/empty log file(s)."
 }
 
+$apiAuthEnabled = $false
+switch ($ApiAuthMode) {
+  "enabled" { $apiAuthEnabled = $true }
+  "disabled" { $apiAuthEnabled = $false }
+  "inherit" {
+    $rawAuth = [string]$env:OPENBB_API_AUTH
+    $apiAuthEnabled = @("1", "true", "yes", "on") -contains $rawAuth.Trim().ToLowerInvariant()
+  }
+}
+
+if ($apiAuthEnabled) {
+  if ([string]::IsNullOrWhiteSpace($ApiAuthUsername)) {
+    $ApiAuthUsername = if ([string]::IsNullOrWhiteSpace($env:OPENBB_API_USERNAME)) { "openbb" } else { $env:OPENBB_API_USERNAME }
+  }
+  if ([string]::IsNullOrWhiteSpace($ApiAuthPassword)) {
+    if ([string]::IsNullOrWhiteSpace($env:OPENBB_API_PASSWORD)) {
+      $ApiAuthPassword = [Guid]::NewGuid().ToString("N")
+      Write-Host ("Generated development OpenBB API password for user '{0}'." -f $ApiAuthUsername)
+    }
+    else {
+      $ApiAuthPassword = $env:OPENBB_API_PASSWORD
+    }
+  }
+}
+
+$apiAuthHeaders = @{}
+if ($apiAuthEnabled) {
+  $basicAuthHeader = Get-BasicAuthHeader -Username $ApiAuthUsername -Password $ApiAuthPassword
+  if ($basicAuthHeader) {
+    $apiAuthHeaders["Authorization"] = $basicAuthHeader
+  }
+}
+
 $stoppedLegacyCount = Stop-LegacyStartAllShells -ProjectRoot $projectRoot
 if ($stoppedLegacyCount -gt 0) {
   Write-Host "Stopped $stoppedLegacyCount legacy startup shell process(es)."
@@ -212,7 +275,25 @@ else {
   }
   $apiDocsEnvMode = if ($ApiDocsMode -eq "prod") { "full" } else { "disabled" }
   $previousApiDocsEnvMode = $env:OPENBB_API_DOCS_MODE
+  $previousApiAuthEnv = $env:OPENBB_API_AUTH
+  $previousApiAuthUsername = $env:OPENBB_API_USERNAME
+  $previousApiAuthPassword = $env:OPENBB_API_PASSWORD
+  $previousTrainingBackend = $env:OPENBB_QUANT_ML_TRAINING_BACKEND
   $env:OPENBB_API_DOCS_MODE = $apiDocsEnvMode
+  if ($ApiAuthMode -ne "inherit") {
+    $env:OPENBB_API_AUTH = if ($apiAuthEnabled) { "true" } else { "false" }
+  }
+  if ($apiAuthEnabled) {
+    $env:OPENBB_API_USERNAME = $ApiAuthUsername
+    $env:OPENBB_API_PASSWORD = $ApiAuthPassword
+  }
+  elseif ($ApiAuthMode -eq "disabled") {
+    Remove-Item Env:OPENBB_API_USERNAME -ErrorAction SilentlyContinue
+    Remove-Item Env:OPENBB_API_PASSWORD -ErrorAction SilentlyContinue
+  }
+  if ($QuantMlTrainingBackend -ne "inherit") {
+    $env:OPENBB_QUANT_ML_TRAINING_BACKEND = $QuantMlTrainingBackend
+  }
   $apiProcess = Start-ShellProcess `
     -FilePath $apiExe `
     -ArgumentList $apiArgs `
@@ -225,35 +306,92 @@ else {
   else {
     $env:OPENBB_API_DOCS_MODE = $previousApiDocsEnvMode
   }
+  if ($null -eq $previousApiAuthEnv) {
+    Remove-Item Env:OPENBB_API_AUTH -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:OPENBB_API_AUTH = $previousApiAuthEnv
+  }
+  if ($null -eq $previousApiAuthUsername) {
+    Remove-Item Env:OPENBB_API_USERNAME -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:OPENBB_API_USERNAME = $previousApiAuthUsername
+  }
+  if ($null -eq $previousApiAuthPassword) {
+    Remove-Item Env:OPENBB_API_PASSWORD -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:OPENBB_API_PASSWORD = $previousApiAuthPassword
+  }
+  if ($null -eq $previousTrainingBackend) {
+    Remove-Item Env:OPENBB_QUANT_ML_TRAINING_BACKEND -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:OPENBB_QUANT_ML_TRAINING_BACKEND = $previousTrainingBackend
+  }
   Write-Host ("Started API launcher process PID {0}" -f $apiProcess.Id)
   Write-Host ("OPENBB_API_DOCS_MODE={0}" -f $apiDocsEnvMode)
+  if ($apiAuthEnabled) {
+    Write-Host ("OPENBB_API_AUTH=true username={0}" -f $ApiAuthUsername)
+  }
 }
 
 if (Test-ListeningPort -Port $FrontendPort) {
   Write-Host "Frontend port $FrontendPort already in use. Skipping frontend launch."
 }
 else {
+  $previousFrontendApiUsername = $env:VITE_OPENBB_API_USERNAME
+  $previousFrontendApiPassword = $env:VITE_OPENBB_API_PASSWORD
+  if ($apiAuthEnabled) {
+    $env:VITE_OPENBB_API_USERNAME = $ApiAuthUsername
+    $env:VITE_OPENBB_API_PASSWORD = $ApiAuthPassword
+  }
+  else {
+    Remove-Item Env:VITE_OPENBB_API_USERNAME -ErrorAction SilentlyContinue
+    Remove-Item Env:VITE_OPENBB_API_PASSWORD -ErrorAction SilentlyContinue
+  }
   $frontendProcess = Start-ShellProcess `
     -FilePath $npmCmd `
-    -ArgumentList @("run", "dev") `
+    -ArgumentList @("run", "dev", "--", "--port", "$FrontendPort") `
     -WorkingDirectory $desktopRoot `
     -StdOutLog $frontendLogs.Out `
     -StdErrLog $frontendLogs.Err
+  if ($null -eq $previousFrontendApiUsername) {
+    Remove-Item Env:VITE_OPENBB_API_USERNAME -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:VITE_OPENBB_API_USERNAME = $previousFrontendApiUsername
+  }
+  if ($null -eq $previousFrontendApiPassword) {
+    Remove-Item Env:VITE_OPENBB_API_PASSWORD -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:VITE_OPENBB_API_PASSWORD = $previousFrontendApiPassword
+  }
   Write-Host ("Started frontend launcher process PID {0}" -f $frontendProcess.Id)
 }
 
-$apiReady = Wait-ApiHealth -Port $ApiPort -TimeoutSeconds 180 -DocsMode $ApiDocsMode
+$apiReady = Wait-ApiHealth -Port $ApiPort -TimeoutSeconds 90 -DocsMode $ApiDocsMode -Headers $apiAuthHeaders
 $frontendReady = Wait-ListeningPort -Port $FrontendPort -TimeoutSeconds 45
 
 if ($apiReady -and $frontendReady) {
   if ($ApiDocsMode -eq "prod") {
     try {
-      Invoke-WebRequest -Uri ("http://127.0.0.1:{0}/openapi.json" -f $ApiPort) -UseBasicParsing -TimeoutSec 8 | Out-Null
+      Invoke-WebRequest -Uri ("http://127.0.0.1:{0}/openapi.json" -f $ApiPort) -UseBasicParsing -TimeoutSec 8 -Headers $apiAuthHeaders | Out-Null
       Write-Host "OpenAPI schema prewarmed (prod mode)."
     }
     catch {
       Write-Warning "OpenAPI schema prewarm failed."
     }
+  }
+  try {
+    if (Test-ApiCompatibility -Port $ApiPort -Headers $apiAuthHeaders) {
+      Write-Host "Quant ML compatibility probe passed."
+    }
+  }
+  catch {
+    Write-Warning ("Quant ML compatibility probe failed: {0}" -f $_.Exception.Message)
   }
   Write-Host "Started OpenBB API and Desktop dev server."
   Write-Host ("API docs mode: {0}" -f $ApiDocsMode)

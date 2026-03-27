@@ -55,6 +55,7 @@ describe("Quant Route", () => {
     vi.clearAllMocks();
     clearCachePrefix("");
     invalidateBackendCache();
+    localStorage.removeItem("openbb-api-bearer-token");
     localStorage.removeItem("openbb-backend-url");
     localStorage.setItem("quant_latest_run_id", "run-1");
 
@@ -357,9 +358,11 @@ describe("Quant Route", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Quant Lab")).toBeInTheDocument();
+      expect(screen.getByText("Strategy Lab")).toBeInTheDocument();
       expect(screen.getByText(/OpenBB API connected/i)).toBeInTheDocument();
       expect(screen.getByText(/Dashboard Health/i)).toBeInTheDocument();
+      expect(screen.getByText(/Macro Feature Handoff/i)).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /1\. Setup/i })).toBeInTheDocument();
       expect(screen.getByText(/Supported modes:/i)).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /Start Training/i })).toBeInTheDocument();
     });

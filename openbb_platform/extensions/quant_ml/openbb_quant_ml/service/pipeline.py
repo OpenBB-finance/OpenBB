@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+import logging
+import multiprocessing
+import os
 import pickle
 import platform
 import re
@@ -12,7 +15,7 @@ import traceback
 from concurrent.futures import Future, ThreadPoolExecutor
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -140,8 +143,11 @@ from openbb_quant_ml.service.universe_policy import get_universe_policy
 DEFAULT_MODEL: ModelName = "lgbm_ranker"
 SUPPORTED_MODELS: tuple[ModelName, ...] = ("xgb_lstm", "lgbm_ranker", "catboost_ranker")
 
+logger = logging.getLogger(__name__)
 _EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="quant-ml")
 _FUTURES: dict[str, Future] = {}
+_PROCESSES: dict[str, multiprocessing.process.BaseProcess] = {}
+_TRAINING_BACKEND_ENV = "OPENBB_QUANT_ML_TRAINING_BACKEND"
 _STAGE_SAFE_PATTERN = re.compile(r"^[A-Za-z0-9_.:/ -]+$")
 _STATUS_ALIASES: dict[str, str] = {
     "queued": "queued",
@@ -155,6 +161,92 @@ _STATUS_ALIASES: dict[str, str] = {
     "완료": "completed",
     "실패": "failed",
 }
+
+
+def _normalize_training_backend(
+    backend: str | None,
+) -> Literal["thread", "process"]:
+    normalized = str(backend or "").strip().lower()
+    if normalized in {"", "thread"}:
+        return "thread"
+    if normalized == "process":
+        return "process"
+    logger.warning(
+        "Unknown training backend %r; falling back to thread backend.",
+        backend,
+    )
+    return "thread"
+
+
+def _get_training_backend() -> Literal["thread", "process"]:
+    return _normalize_training_backend(os.getenv(_TRAINING_BACKEND_ENV))
+
+
+def _prune_training_handles() -> None:
+    for run_id, future in list(_FUTURES.items()):
+        if future.done():
+            _FUTURES.pop(run_id, None)
+    for run_id, process in list(_PROCESSES.items()):
+        if process.is_alive():
+            continue
+        try:
+            process.join(timeout=0.05)
+        except Exception:
+            pass
+        _PROCESSES.pop(run_id, None)
+
+
+def _run_training_job_process_entry(
+    run_id: str,
+    request_payload: dict[str, Any],
+) -> None:
+    try:
+        request = TrainRequest.model_validate(request_payload)
+    except Exception as exc:  # noqa: BLE001
+        update_run(
+            run_id,
+            status="failed",
+            progress=100,
+            stage="dispatch_failed",
+            error=str(exc),
+        )
+        append_log(run_id, f"Error: {exc}")
+        append_log(run_id, traceback.format_exc(limit=3))
+        return
+    _run_training_job(run_id, request)
+
+
+def _start_training_process(
+    run_id: str,
+    request: TrainRequest,
+) -> multiprocessing.process.BaseProcess:
+    request_payload = request.model_dump(mode="json", by_alias=True)
+    process = multiprocessing.get_context("spawn").Process(
+        target=_run_training_job_process_entry,
+        name=f"quant-ml-{run_id}",
+        args=(run_id, request_payload),
+    )
+    process.start()
+    return process
+
+
+def _dispatch_training_job(run_id: str, request: TrainRequest) -> str:
+    _prune_training_handles()
+    backend = _get_training_backend()
+    if backend == "process":
+        process = _start_training_process(run_id, request)
+        _PROCESSES[run_id] = process
+        _update_ops_metadata(
+            run_id,
+            training_backend=backend,
+            training_worker_pid=process.pid,
+        )
+        return backend
+
+    future = _EXECUTOR.submit(_run_training_job, run_id, request)
+    _FUTURES[run_id] = future
+    _update_ops_metadata(run_id, training_backend=backend)
+    return backend
 
 def _ops_metadata_path(run_id: str) -> Path:
     return get_run_dir(run_id) / "ops_metadata.json"
@@ -1713,8 +1805,19 @@ def submit_training(
     initialize_registry()
     state = create_run(run_id_scheme=run_id_scheme, timezone=timezone)
     _save_run_config(state.run_id, resolved_request)
-    future = _EXECUTOR.submit(_run_training_job, state.run_id, resolved_request)
-    _FUTURES[state.run_id] = future
+    try:
+        _dispatch_training_job(state.run_id, resolved_request)
+    except Exception as exc:
+        update_run(
+            state.run_id,
+            status="failed",
+            progress=100,
+            stage="dispatch_failed",
+            error=str(exc),
+        )
+        append_log(state.run_id, f"Error: {exc}")
+        append_log(state.run_id, traceback.format_exc(limit=3))
+        raise
     return TrainResponse(
         run_id=state.run_id,
         status=state.status,  # type: ignore[arg-type]

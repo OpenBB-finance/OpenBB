@@ -8,7 +8,7 @@ import re
 import shutil
 from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
-from datetime import date, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -81,8 +81,8 @@ def _ensure_ssl_bundle_path() -> None:
 def _is_cache_fresh(path: Path, ttl_days: int) -> bool:
     if not path.exists():
         return False
-    modified_at = datetime.fromtimestamp(path.stat().st_mtime)
-    return datetime.now() - modified_at <= timedelta(days=ttl_days)
+    modified_at = datetime.fromtimestamp(path.stat().st_mtime, tz=UTC)
+    return datetime.now(tz=UTC) - modified_at <= timedelta(days=ttl_days)
 
 
 def _normalize_frame(frame: pd.DataFrame, symbol: str) -> pd.DataFrame:
@@ -172,8 +172,8 @@ def _fetch_yfinance_prices(
     start_date: date,
     end_date: date,
     timeout_sec: int,
-    retry: int,  # kept for signature compatibility
-    backoff_base: float, # kept for signature compatibility
+    retry_count: int,  # kept for internal signature clarity
+    backoff_base: float,  # kept for signature compatibility
 ) -> tuple[pd.DataFrame, Exception | None]:
     _ensure_ssl_bundle_path()
     try:
@@ -278,7 +278,7 @@ def load_symbol_prices(
                 start_date=download_start,
                 end_date=download_end,
                 timeout_sec=timeout_sec,
-                retry=retry,
+                retry_count=retry,
                 backoff_base=backoff_base,
             )
             source_used = "yfinance"

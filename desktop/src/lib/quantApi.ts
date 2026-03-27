@@ -1,4 +1,5 @@
 import { clearCachePrefix, getCachedOrFetch } from "./quantCache";
+import { buildOpenBBRequestInit, buildOpenBBRequestUrl } from "./openbbBackend";
 import type { FeatureActivation, FeatureActivationResult } from "../types/feature-activation";
 import type {
   AlertsPayload,
@@ -28,6 +29,7 @@ import type {
   ModelPerformancePayload,
   ModelRegimePayload,
   NotificationsHistoryPayload,
+  OpsIssueQueuePayload,
   OpsStatusPayload,
   PerformanceRegimePayload,
   PortfolioPolicyPayload,
@@ -76,6 +78,7 @@ import type {
   UniverseResolvePayload,
   UniverseSnapshotPayload,
   SchedulerStatusPayload,
+  SymbolContextPayload,
   TradingAlgorithmToggleRequestPayload,
   TradingAlgorithmValidationPayload,
   TradingAlgorithmValidateRequestPayload,
@@ -94,6 +97,8 @@ import type {
   TradingSettingsUpdatePayload,
   TradingStatusPayload,
   TradingSymbolDetailPayload,
+  RunComparePayload,
+  WorkspaceBriefPayload,
 } from "../types/quant";
 import {
   parseRunAudit,
@@ -178,7 +183,7 @@ async function requestJson<T>(baseUrl: string, path: string, init: RequestInit):
 
   for (let attempt = 0; attempt <= retryPolicy.retries; attempt++) {
     try {
-      const response = await fetch(`${baseUrl}${path}`, init);
+      const response = await fetch(buildOpenBBRequestUrl(baseUrl, path), buildOpenBBRequestInit(init));
       lastResponse = response;
 
       if (!response.ok) {
@@ -488,7 +493,10 @@ export function createRunLogStreamUrl(
     poll_interval_sec: String(pollIntervalSec),
     max_seconds: String(maxSeconds),
   });
-  return `${baseUrl}${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/stream?${query.toString()}`;
+  return buildOpenBBRequestUrl(
+    baseUrl,
+    `${QUANT_PREFIX}/runs/${encodeURIComponent(runId)}/stream?${query.toString()}`,
+  );
 }
 
 export function fetchRunsList(
@@ -1262,6 +1270,20 @@ export function fetchOpsStatus(baseUrl: string): Promise<OpsStatusPayload> {
   return requestJson<OpsStatusPayload>(baseUrl, `${QUANT_PREFIX}/ops/status`, { method: "GET" });
 }
 
+export function fetchOpsIssues(baseUrl: string, limit = 10): Promise<OpsIssueQueuePayload> {
+  return requestJson<OpsIssueQueuePayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/ops/issues?limit=${limit}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchWorkspaceBrief(baseUrl: string): Promise<WorkspaceBriefPayload> {
+  return requestJson<WorkspaceBriefPayload>(baseUrl, `${QUANT_PREFIX}/workspace/brief`, {
+    method: "GET",
+  });
+}
+
 export function fetchDataQualityLatest(
   baseUrl: string,
   runId?: string,
@@ -1308,6 +1330,23 @@ export function fetchExperimentDetail(baseUrl: string, runId: string): Promise<E
     `${QUANT_PREFIX}/experiments/${runId}`,
     { method: "GET" },
   );
+}
+
+export function fetchRunsCompare(
+  baseUrl: string,
+  params?: { runIds?: string[]; limit?: number },
+): Promise<RunComparePayload> {
+  const query = new URLSearchParams();
+  if (params?.runIds?.length) {
+    query.set("run_ids", params.runIds.join(","));
+  }
+  if (params?.limit) {
+    query.set("limit", String(params.limit));
+  }
+  const suffix = query.size > 0 ? `?${query.toString()}` : "";
+  return requestJson<RunComparePayload>(baseUrl, `${QUANT_PREFIX}/runs/compare${suffix}`, {
+    method: "GET",
+  });
 }
 
 export function fetchModelRegistryChampion(
@@ -1524,6 +1563,30 @@ export function fetchTradingSymbolDetail(
   return requestJson<TradingSymbolDetailPayload>(
     baseUrl,
     `${QUANT_PREFIX}/trading/symbol/${encodeURIComponent(ticker)}`,
+    { method: "GET" },
+  );
+}
+
+export function fetchSymbolContext(
+  baseUrl: string,
+  params: {
+    symbol: string;
+    source?: string;
+    studyId?: string;
+    runId?: string;
+    signalId?: string;
+    reportPath?: string;
+  },
+): Promise<SymbolContextPayload> {
+  const query = new URLSearchParams({ symbol: params.symbol });
+  if (params.source) query.set("source", params.source);
+  if (params.studyId) query.set("study_id", params.studyId);
+  if (params.runId) query.set("run_id", params.runId);
+  if (params.signalId) query.set("signal_id", params.signalId);
+  if (params.reportPath) query.set("report_path", params.reportPath);
+  return requestJson<SymbolContextPayload>(
+    baseUrl,
+    `${QUANT_PREFIX}/symbol/context?${query.toString()}`,
     { method: "GET" },
   );
 }

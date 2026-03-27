@@ -18,6 +18,27 @@ def _dummy_request(ip: str = "127.0.0.1"):
     return SimpleNamespace(client=SimpleNamespace(host=ip))
 
 
+def _dummy_stream_request(*states: bool):
+    sequence = list(states) or [False]
+
+    class _Request:
+        def __init__(self) -> None:
+            self._states = iter(sequence)
+            self._last = sequence[-1]
+
+        async def is_disconnected(self) -> bool:
+            return next(self._states, self._last)
+
+    return _Request()
+
+
+async def _collect_stream_chunks(response) -> list[str]:
+    chunks: list[str] = []
+    async for chunk in response.body_iterator:
+        chunks.append(chunk.decode() if isinstance(chunk, bytes) else str(chunk))
+    return chunks
+
+
 @pytest.mark.parametrize(
     ("attr", "func", "kwargs", "status"),
     [
@@ -119,6 +140,28 @@ def test_run_snapshot_profile_passthrough(monkeypatch: pytest.MonkeyPatch) -> No
     assert captured == ["core"]
 
 
+def test_run_backtest_result_is_cached(monkeypatch: pytest.MonkeyPatch) -> None:
+    qmr._RUN_BACKTEST_CACHE.clear()
+    calls = {"count": 0}
+
+    def _backtest(**kwargs):
+        calls["count"] += 1
+        return {
+            "run_id": kwargs["run_id"],
+            "model_name": kwargs["model_name"],
+            "call_count": calls["count"],
+        }
+
+    monkeypatch.setattr(qmr, "get_backtest_result", _backtest)
+
+    first = qmr.run_backtest_result(run_id="run-1", model_name="lgbm_ranker")
+    second = qmr.run_backtest_result(run_id="run-1", model_name="lgbm_ranker")
+
+    assert first["call_count"] == 1
+    assert second["call_count"] == 1
+    assert calls["count"] == 1
+
+
 def test_train_health_and_alias_endpoints_passthrough(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(qmr, "_SLOWAPI_LIMITER", None)
     monkeypatch.setattr(qmr, "_TRAIN_RATE_LIMIT_ITEM", None)
@@ -210,8 +253,72 @@ def test_walkforward_status_and_stream_not_found(monkeypatch: pytest.MonkeyPatch
 
     monkeypatch.setattr(qmr, "get_run", lambda run_id: (_ for _ in ()).throw(ValueError("no run")))
     with pytest.raises(HTTPException) as exc2:
-        asyncio.run(qmr.run_log_stream("run-1"))
+        asyncio.run(
+            qmr.run_log_stream("run-1", request=_dummy_stream_request(False))
+        )
     assert exc2.value.status_code == 404
+
+
+def test_run_log_stream_stops_when_client_disconnects(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        qmr,
+        "get_run",
+        lambda run_id: SimpleNamespace(
+            status="running",
+            stage="fit",
+            progress=25,
+            logs_tail=["line-1"],
+        ),
+    )
+
+    response = asyncio.run(
+        qmr.run_log_stream(
+            "run-1",
+            request=_dummy_stream_request(False, True),
+            poll_interval_sec=0.5,
+            max_seconds=30,
+        )
+    )
+    chunks = asyncio.run(_collect_stream_chunks(response))
+
+    assert any("event: ready" in chunk for chunk in chunks)
+    assert any('"type": "status"' in chunk for chunk in chunks)
+    assert not any("event: timeout" in chunk for chunk in chunks)
+
+
+def test_run_log_stream_handles_cancelled_sleep(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        qmr,
+        "get_run",
+        lambda run_id: SimpleNamespace(
+            status="running",
+            stage="fit",
+            progress=40,
+            logs_tail=["line-1"],
+        ),
+    )
+
+    async def _cancelled_sleep(_seconds: float) -> None:
+        raise asyncio.CancelledError
+
+    monkeypatch.setattr(qmr.asyncio, "sleep", _cancelled_sleep)
+
+    response = asyncio.run(
+        qmr.run_log_stream(
+            "run-1",
+            request=_dummy_stream_request(False, False),
+            poll_interval_sec=0.5,
+            max_seconds=30,
+        )
+    )
+    chunks = asyncio.run(_collect_stream_chunks(response))
+
+    assert any("event: ready" in chunk for chunk in chunks)
+    assert any('"type": "status"' in chunk for chunk in chunks)
 
 
 def test_operational_endpoints_passthrough(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -350,3 +457,37 @@ def test_execution_mode_http_routes_use_distinct_update_path(
     )
     assert post_response.status_code == 200
     assert post_response.json()["mode"] == "shadow_live"
+
+
+def test_runs_compare_http_route_wins_over_dynamic_run_id(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        qmr,
+        "get_run_compare_response",
+        lambda **kwargs: {
+            "items": [
+                {
+                    "run_id": "run-1",
+                    "model_name": "lgbm_ranker",
+                    "metrics": {"sharpe": 1.2},
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(
+        qmr,
+        "get_run",
+        lambda run_id: (_ for _ in ()).throw(ValueError(f"dynamic route used: {run_id}")),
+    )
+
+    api_router = Router(prefix="/api/v1/quant_ml")
+    api_router.include_router(qmr.router)
+    app = FastAPI()
+    app.include_router(api_router._api_router)
+    client = TestClient(app)
+
+    response = client.get("/api/v1/quant_ml/runs/compare", params={"limit": 2})
+
+    assert response.status_code == 200
+    assert response.json()["items"][0]["run_id"] == "run-1"

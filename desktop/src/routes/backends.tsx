@@ -14,6 +14,13 @@ import React, {
 import Select, { components } from 'react-select';
 import { CopyIcon, DocumentationIcon, FileIcon, FolderIcon, HelpIcon, SettingsIcon } from "../components/Icon";
 import { TauriRuntimeNotice } from "../components/TauriRuntimeNotice";
+import {
+	OPENBB_API_BASIC_PASSWORD_STORAGE_KEY,
+	OPENBB_API_BASIC_USERNAME_STORAGE_KEY,
+	OPENBB_API_BEARER_TOKEN_STORAGE_KEY,
+	setOpenBBBasicCredentials,
+	setOpenBBBearerToken,
+} from "../lib/openbbBackend";
 import { getDesktopRuntimeMessage, isTauriRuntimeAvailable } from "../lib/tauriRuntime";
 
 import CustomIcon from "~/components/Icon";
@@ -2169,6 +2176,26 @@ function loadEnvironmentsFromCache(): Environment[] {
     }
 }
 
+function getStoredOpenBBAuthValue(storageKey: string): string {
+	try {
+		return localStorage.getItem(storageKey) ?? "";
+	} catch {
+		return "";
+	}
+}
+
+function getStoredOpenBBBasicUsername(): string {
+	return getStoredOpenBBAuthValue(OPENBB_API_BASIC_USERNAME_STORAGE_KEY);
+}
+
+function getStoredOpenBBBasicPassword(): string {
+	return getStoredOpenBBAuthValue(OPENBB_API_BASIC_PASSWORD_STORAGE_KEY);
+}
+
+function getStoredOpenBBBearerToken(): string {
+	return getStoredOpenBBAuthValue(OPENBB_API_BEARER_TOKEN_STORAGE_KEY);
+}
+
 
 // ============== MAIN COMPONENT ==============
 function BackendsPageContent() {
@@ -2198,6 +2225,12 @@ function BackendsPageContent() {
 	const [processingId, setProcessingId] = useState<string | null>(null);
 	const [isEditing, setIsEditing] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [apiBasicUsernameInput, setApiBasicUsernameInput] = useState<string>(() => getStoredOpenBBBasicUsername());
+	const [apiBasicPasswordInput, setApiBasicPasswordInput] = useState<string>(() => getStoredOpenBBBasicPassword());
+	const [apiBearerTokenInput, setApiBearerTokenInput] = useState<string>(() => getStoredOpenBBBearerToken());
+	const [apiAuthSaved, setApiAuthSaved] = useState(false);
+	const [showApiBasicPassword, setShowApiBasicPassword] = useState(false);
+	const [showApiBearerToken, setShowApiBearerToken] = useState(false);
 
 	// Form data state
 	const [formData, setFormData] = useState<BackendFormData>({
@@ -2216,6 +2249,47 @@ function BackendsPageContent() {
 	});
 
 	const [formError, setFormError] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (!apiAuthSaved) {
+			return;
+		}
+
+		const timeoutId = window.setTimeout(() => {
+			setApiAuthSaved(false);
+		}, 1800);
+
+		return () => window.clearTimeout(timeoutId);
+	}, [apiAuthSaved]);
+
+	const handleSaveApiBasicCredentials = useCallback(() => {
+		setOpenBBBasicCredentials(
+			apiBasicUsernameInput.trim() || null,
+			apiBasicPasswordInput.trim() || null,
+		);
+		setApiBasicUsernameInput(getStoredOpenBBBasicUsername());
+		setApiBasicPasswordInput(getStoredOpenBBBasicPassword());
+		setApiAuthSaved(true);
+	}, [apiBasicPasswordInput, apiBasicUsernameInput]);
+
+	const handleClearApiBasicCredentials = useCallback(() => {
+		setOpenBBBasicCredentials(null, null);
+		setApiBasicUsernameInput("");
+		setApiBasicPasswordInput("");
+		setApiAuthSaved(false);
+	}, []);
+
+	const handleSaveApiBearerToken = useCallback(() => {
+		setOpenBBBearerToken(apiBearerTokenInput.trim() || null);
+		setApiBearerTokenInput(getStoredOpenBBBearerToken());
+		setApiAuthSaved(true);
+	}, [apiBearerTokenInput]);
+
+	const handleClearApiBearerToken = useCallback(() => {
+		setOpenBBBearerToken(null);
+		setApiBearerTokenInput("");
+		setApiAuthSaved(false);
+	}, []);
 
 	useEffect(() => {
 		const unlistenPromise = listen<{ id: string; url: string }>(
@@ -2675,6 +2749,166 @@ function BackendsPageContent() {
 				// List View
 				<div className="flex flex-col h-full">
 					<div>
+						<div className="mb-4 rounded-md border border-theme-outline bg-theme-secondary px-4 py-4 shadow-sm">
+							<div className="flex items-start justify-between gap-4">
+								<div>
+									<h3 className="body-md-bold text-theme-primary">OpenBB API Auth</h3>
+									<p className="body-xs-regular text-theme-muted">
+										Optional credentials for protected OpenBB API requests. Basic auth is used first when both username and password are set.
+									</p>
+								</div>
+								{apiAuthSaved ? (
+									<span className="body-xs-medium rounded-full bg-green-500/20 px-2 py-1 text-green-500">
+										Auth saved
+									</span>
+								) : null}
+							</div>
+							<div className="mt-3 grid gap-4 xl:grid-cols-2">
+								<div className="rounded-md border border-theme-outline/60 px-3 py-3">
+									<div className="mb-2">
+										<p className="body-sm-medium text-theme-primary">Basic Auth</p>
+										<p className="body-xs-regular text-theme-muted">
+											Matches the current OpenBB core `OPENBB_API_AUTH=true` flow.
+										</p>
+									</div>
+									<div className="flex flex-col gap-3">
+										<div>
+											<label
+												htmlFor="openbb-api-basic-username"
+												className="body-sm-medium mb-1 block text-theme-primary"
+											>
+												Basic Username
+											</label>
+											<input
+												id="openbb-api-basic-username"
+												type="text"
+												value={apiBasicUsernameInput}
+												onChange={(event) => setApiBasicUsernameInput(event.target.value)}
+												placeholder="openbb"
+												className="body-xs-regular w-full rounded-md border border-theme-accent bg-theme-secondary text-theme-secondary focus:ring-0 focus:outline-none"
+												autoCapitalize="off"
+												autoCorrect="off"
+												spellCheck="false"
+											/>
+										</div>
+										<div>
+											<label
+												htmlFor="openbb-api-basic-password"
+												className="body-sm-medium mb-1 block text-theme-primary"
+											>
+												Basic Password
+											</label>
+											<input
+												id="openbb-api-basic-password"
+												type={showApiBasicPassword ? "text" : "password"}
+												value={apiBasicPasswordInput}
+												onChange={(event) => setApiBasicPasswordInput(event.target.value)}
+												placeholder="password"
+												className="body-xs-regular w-full rounded-md border border-theme-accent bg-theme-secondary text-theme-secondary focus:ring-0 focus:outline-none"
+												autoCapitalize="off"
+												autoCorrect="off"
+												spellCheck="false"
+											/>
+										</div>
+										<div className="flex gap-2">
+											<Button
+												type="button"
+												variant="outline"
+												size="sm"
+												className="button-outline shadow-sm"
+												onClick={() => setShowApiBasicPassword((prev) => !prev)}
+											>
+												<span className="body-xs-medium">{showApiBasicPassword ? "Hide" : "Show"}</span>
+											</Button>
+											<Button
+												type="button"
+												variant="outline"
+												size="sm"
+												className="button-outline shadow-sm"
+												onClick={handleClearApiBasicCredentials}
+												disabled={!apiBasicUsernameInput.trim() && !apiBasicPasswordInput.trim()}
+											>
+												<span className="body-xs-medium">Clear</span>
+											</Button>
+											<Button
+												type="button"
+												variant="primary"
+												size="sm"
+												className="button-primary shadow-sm"
+												onClick={handleSaveApiBasicCredentials}
+											>
+												<span className="body-xs-medium">Store Basic</span>
+											</Button>
+										</div>
+									</div>
+								</div>
+								<div className="rounded-md border border-theme-outline/60 px-3 py-3">
+									<div className="mb-2">
+										<p className="body-sm-medium text-theme-primary">Bearer Token</p>
+										<p className="body-xs-regular text-theme-muted">
+											Used when Basic credentials are not configured.
+										</p>
+									</div>
+									<label
+										htmlFor="openbb-api-bearer-token"
+										className="body-sm-medium mb-1 block text-theme-primary"
+									>
+										Bearer Token
+									</label>
+									<input
+										id="openbb-api-bearer-token"
+										type={showApiBearerToken ? "text" : "password"}
+										value={apiBearerTokenInput}
+										onChange={(event) => setApiBearerTokenInput(event.target.value)}
+										placeholder="Bearer eyJ..."
+										className="body-xs-regular w-full rounded-md border border-theme-accent bg-theme-secondary text-theme-secondary focus:ring-0 focus:outline-none"
+										autoCapitalize="off"
+										autoCorrect="off"
+										spellCheck="false"
+									/>
+									<div className="mt-3 flex gap-2">
+										<Button
+											type="button"
+											variant="outline"
+											size="sm"
+											className="button-outline shadow-sm"
+											onClick={() => setShowApiBearerToken((prev) => !prev)}
+										>
+											<span className="body-xs-medium">{showApiBearerToken ? "Hide" : "Show"}</span>
+										</Button>
+										<Button
+											type="button"
+											variant="outline"
+											size="sm"
+											className="button-outline shadow-sm"
+											onClick={handleClearApiBearerToken}
+											disabled={!apiBearerTokenInput.trim()}
+										>
+											<span className="body-xs-medium">Clear</span>
+										</Button>
+										<Button
+											type="button"
+											variant="primary"
+											size="sm"
+											className="button-primary shadow-sm"
+											onClick={handleSaveApiBearerToken}
+										>
+											<span className="body-xs-medium">Store Token</span>
+										</Button>
+									</div>
+								</div>
+							</div>
+							<p className="mt-2 body-xs-regular text-theme-muted">
+								Stored locally on this machine for the desktop app. Basic uses
+								<code className="mx-1 rounded bg-theme-tertiary px-1 py-0.5">OPENBB_API_AUTH</code>
+								style credentials; bearer falls back to
+								<code className="mx-1 rounded bg-theme-tertiary px-1 py-0.5">VITE_OPENBB_API_BEARER_TOKEN</code>
+								when present.
+							</p>
+							<p className="mt-1 body-xs-regular text-theme-muted">
+								Basic credentials take precedence over bearer tokens if both are stored.
+							</p>
+						</div>
 						<BackendListPanel
 							backends={backends}
 							selectedBackend={selectedBackend}

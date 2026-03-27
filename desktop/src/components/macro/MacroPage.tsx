@@ -1,49 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { openPath } from "@tauri-apps/plugin-opener";
+import { PanelCard } from "../quant/PanelCard";
+import { MacroRegimeSummary } from "./MacroRegimeSummary";
+import { MacroStudyChart } from "./MacroStudyChart";
 import { resolveOpenBBBackend } from "../../lib/openbbBackend";
 import {
-  evaluateMacroExpression,
-  fetchCopperGoldPreset,
-  fetchMacroHealth,
-  fetchMacroHealthWithActivation,
-  fetchMarketRatio,
-  fetchMarketRollingCorr,
-  fetchMacroAlerts,
+  exportMacroFeatures,
+  exportMacroReport,
   fetchMacroCatalog,
-  fetchMacroDerived,
+  fetchMacroCompare,
+  fetchMacroHealthWithActivation,
+  fetchMacroLeadLag,
   fetchMacroRegime,
   fetchMacroRegimeState,
-  fetchMacroSeries,
-  fetchMacroSeriesMulti,
-  invalidateMacroCache,
-  registerMacroSeries,
-  saveMacroDerived,
-  searchMacroCatalog,
-  triggerMacroUpdate,
+  fetchMacroReleaseCalendar,
+  fetchMacroScatter,
+  fetchMacroStudies,
+  fetchMacroVintages,
+  saveMacroStudy,
 } from "../../lib/macroApi";
-import type { FeatureActivation } from "../../types/feature-activation";
+import { writeMacroStudyHandoff } from "../../lib/macroStudyHandoff";
+import { buildSymbolLabHref } from "../../lib/symbolLabNavigation";
 import type {
-  MacroAlertItem,
   MacroCatalogItem,
-  MacroDataPoint,
-  MacroExpressionResponse,
-  MacroHealthResponse,
-  MacroPresetResponse,
-  MacroFill,
-  MacroFreq,
+  MacroCompareResponse,
+  MacroFeatureExportResponse,
+  MacroLeadLagResponse,
+  MacroNormalizeMode,
   MacroRegimePoint,
   MacroRegimeStateResponse,
-  MacroSeriesResponse,
-  MacroSeriesMultiResponse,
+  MacroReleaseCalendarItem,
+  MacroScatterResponse,
+  MacroStudyPayload,
+  MacroStudySeriesSpec,
+  MacroVintageResponse,
+  MacroViewMode,
 } from "../../types/macro";
-import { CatalogSidebar } from "./CatalogSidebar";
-import { ExpressionBar } from "./ExpressionBar";
-import { MainSeriesChart } from "./MainSeriesChart";
-import { MultiSeriesComparePanel } from "./MultiSeriesComparePanel";
-import { PresetDashboard } from "./PresetDashboard";
-import type { MacroPresetConfig } from "./PresetDashboard";
-import { RegimeAlertsPanel } from "./RegimeAlertsPanel";
-import { RelationshipPanel } from "./RelationshipPanel";
-import { StatsPanel } from "./StatsPanel";
+
+const DEFAULT_LINKED_ASSETS = ["SPY", "TLT", "GLD"];
 
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
@@ -55,663 +49,1009 @@ function yearsAgoIso(years: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-function toDerivedId(expression: string): string {
-  const clean = expression
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "");
-  return `DRV:${clean || "expression"}`;
+function emptyStudy(): MacroStudyPayload {
+  return {
+    name: "New Macro Study",
+    objective: "",
+    series_specs: [],
+    view_specs: [
+      { view_id: "explorer", mode: "explorer", title: "Explorer", layout: {} },
+      { view_id: "compare", mode: "compare", title: "Compare", layout: {} },
+      { view_id: "relationship", mode: "relationship", title: "Relationship", layout: {} },
+      { view_id: "release", mode: "release", title: "Release", layout: {} },
+      { view_id: "report", mode: "report", title: "Report", layout: {} },
+    ],
+    notes: "",
+    conclusion: {
+      summary: "",
+      thesis: "",
+      risk_cases: [],
+      action_bias: "neutral",
+      confidence: null,
+      next_checks: [],
+    },
+    linked_assets: [...DEFAULT_LINKED_ASSETS],
+    linked_feature_set_id: null,
+  };
 }
 
-function isSimpleKey(expr: string): boolean {
-  return /^[A-Za-z0-9:_.]+$/.test(expr.trim());
-}
-
-function normalizePoints(input: unknown): MacroDataPoint[] {
-  if (!Array.isArray(input)) {
-    return [];
+function studySignature(study: MacroStudyPayload | null): string {
+  if (!study) {
+    return "";
   }
-  return input
-    .map((item) => {
-      const row = item as Partial<MacroDataPoint>;
-      const date = typeof row.date === "string" ? row.date : "";
-      const numeric = typeof row.value === "number" ? row.value : Number(row.value);
-      if (!date || Number.isNaN(numeric)) {
-        return null;
-      }
-      return { date, value: numeric };
-    })
-    .filter((item): item is MacroDataPoint => item !== null);
+  return JSON.stringify({
+    name: study.name,
+    objective: study.objective,
+    series_specs: study.series_specs,
+    view_specs: study.view_specs,
+    notes: study.notes,
+    conclusion: study.conclusion,
+    linked_assets: study.linked_assets,
+    linked_feature_set_id: study.linked_feature_set_id,
+  });
 }
 
-function normalizeAlerts(input: unknown): MacroAlertItem[] {
-  if (!Array.isArray(input)) {
-    return [];
-  }
-  return input as MacroAlertItem[];
+function parseLines(value: string): string[] {
+  return value
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
-function parseCompareKeys(raw: string): string[] {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const token of raw.split(",")) {
-    const key = token.trim();
-    if (!key) {
-      continue;
-    }
-    if (!seen.has(key)) {
-      seen.add(key);
-      out.push(key);
-    }
-  }
-  return out;
+function formatLines(value: string[] | undefined | null): string {
+  return (value ?? []).join("\n");
 }
 
-function toFriendlyError(error: unknown): string {
-  if (error instanceof Error) {
-    const text = error.message || "Unknown error";
-    if (/FRED_API_KEY/i.test(text)) {
-      return "FRED_API_KEY가 설정되지 않았습니다. API Keys 탭에서 키를 설정하세요.";
-    }
-    if (/Failed to fetch/i.test(text) || /NetworkError/i.test(text)) {
-      return "백엔드 연결 실패. Backends 탭에서 OpenBB API 상태를 확인하세요.";
-    }
-    if (/not found/i.test(text)) {
-      return "엔드포인트를 찾을 수 없습니다. API 버전 및 라우터 등록을 확인하세요.";
-    }
-    return text;
+function safeScore(value: number | null | undefined, digits = 2): string {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return "-";
   }
-  return "알 수 없는 오류가 발생했습니다.";
+  return value.toFixed(digits);
+}
+
+function buildLineOption(
+  payload: MacroCompareResponse | null,
+  seriesSpecs: MacroStudySeriesSpec[],
+): Record<string, unknown> {
+  const keys = Object.keys(payload?.series ?? {});
+  const categories = Array.from(
+    new Set(keys.flatMap((key) => payload?.series[key]?.data.map((point) => point.date) ?? [])),
+  ).sort();
+  const specMap = new Map(seriesSpecs.map((spec) => [spec.key, spec]));
+  return {
+    tooltip: { trigger: "axis" },
+    legend: { top: 0, textStyle: { color: "#94a3b8" } },
+    grid: { top: 48, right: 48, bottom: 36, left: 48 },
+    xAxis: {
+      type: "category",
+      data: categories,
+      axisLabel: { color: "#94a3b8" },
+      axisLine: { lineStyle: { color: "#334155" } },
+    },
+    yAxis: [
+      {
+        type: "value",
+        axisLabel: { color: "#94a3b8" },
+        splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.15)" } },
+      },
+      {
+        type: "value",
+        axisLabel: { color: "#94a3b8" },
+        splitLine: { show: false },
+      },
+    ],
+    series: keys.map((key) => {
+      const spec = specMap.get(key);
+      const valueMap = new Map((payload?.series[key]?.data ?? []).map((point) => [point.date, point.value]));
+      return {
+        name: payload?.series[key]?.meta.title ?? spec?.alias ?? key,
+        type: spec?.display_style === "bar" ? "bar" : "line",
+        smooth: true,
+        yAxisIndex: spec?.axis === "right" ? 1 : 0,
+        areaStyle: spec?.display_style === "area" ? { opacity: 0.18 } : undefined,
+        showSymbol: false,
+        data: categories.map((date) => valueMap.get(date) ?? null),
+      };
+    }),
+  };
+}
+
+function buildLeadLagOption(payload: MacroLeadLagResponse | null): Record<string, unknown> {
+  return {
+    tooltip: { trigger: "axis" },
+    grid: { top: 24, right: 16, bottom: 36, left: 48 },
+    xAxis: {
+      type: "category",
+      data: payload?.table.map((item) => String(item.lag)) ?? [],
+      axisLabel: { color: "#94a3b8" },
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: { color: "#94a3b8" },
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.15)" } },
+    },
+    series: [{ type: "bar", data: payload?.table.map((item) => item.correlation) ?? [], itemStyle: { color: "#38bdf8" } }],
+  };
+}
+
+function buildScatterOption(payload: MacroScatterResponse | null): Record<string, unknown> {
+  return {
+    tooltip: { trigger: "item" },
+    grid: { top: 24, right: 16, bottom: 36, left: 48 },
+    xAxis: {
+      type: "value",
+      axisLabel: { color: "#94a3b8" },
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.15)" } },
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: { color: "#94a3b8" },
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.15)" } },
+    },
+    series: [{ type: "scatter", symbolSize: 10, data: payload?.points.map((point) => [point.x, point.y, point.date]) ?? [] }],
+  };
+}
+
+function buildVintageOption(payload: MacroVintageResponse | null): Record<string, unknown> {
+  const categories = Array.from(
+    new Set([...(payload?.latest.map((point) => point.date) ?? []), ...(payload?.as_of.map((point) => point.date) ?? [])]),
+  ).sort();
+  const latestMap = new Map((payload?.latest ?? []).map((point) => [point.date, point.value]));
+  const asOfMap = new Map((payload?.as_of ?? []).map((point) => [point.date, point.value]));
+  return {
+    tooltip: { trigger: "axis" },
+    legend: { top: 0, textStyle: { color: "#94a3b8" } },
+    grid: { top: 48, right: 16, bottom: 36, left: 48 },
+    xAxis: { type: "category", data: categories, axisLabel: { color: "#94a3b8" } },
+    yAxis: {
+      type: "value",
+      axisLabel: { color: "#94a3b8" },
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.15)" } },
+    },
+    series: [
+      { name: "Latest", type: "line", smooth: true, showSymbol: false, data: categories.map((date) => latestMap.get(date) ?? null) },
+      { name: "As Of", type: "line", smooth: true, showSymbol: false, data: categories.map((date) => asOfMap.get(date) ?? null) },
+    ],
+  };
+}
+
+async function openLocalPath(path: string | null | undefined) {
+  if (!path) {
+    return;
+  }
+  try {
+    await openPath(path);
+  } catch {
+    const normalized = path.replace(/\\/g, "/");
+    window.open(`file:///${normalized}`, "_blank", "noopener,noreferrer");
+  }
 }
 
 export default function MacroPage() {
-  const [backendBaseUrl, setBackendBaseUrl] = useState<string>("");
-  const [macroActivation, setMacroActivation] = useState<FeatureActivation | null>(null);
-  const [isBackendLoading, setIsBackendLoading] = useState(false);
-  const [isBusy, setIsBusy] = useState(false);
+  const [backendBaseUrl, setBackendBaseUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
+  const [macroReady, setMacroReady] = useState(false);
+  const [macroWarnings, setMacroWarnings] = useState<string[]>([]);
 
-  const [expression, setExpression] = useState("FRED:UNRATE");
-  const [selectedKey, setSelectedKey] = useState("FRED:UNRATE");
-  const [transform, setTransform] = useState("level");
-  const [freq, setFreq] = useState<MacroFreq>("W");
-  const [fill, setFill] = useState<MacroFill>("ffill");
-  const [startDate, setStartDate] = useState(yearsAgoIso(10));
-  const [endDate, setEndDate] = useState(todayIso());
-
-  const [activePresetId, setActivePresetId] = useState<string | null>(null);
   const [catalogItems, setCatalogItems] = useState<MacroCatalogItem[]>([]);
+  const [releaseCalendar, setReleaseCalendar] = useState<MacroReleaseCalendarItem[]>([]);
+  const [studies, setStudies] = useState<MacroStudyPayload[]>([]);
+  const [selectedStudyId, setSelectedStudyId] = useState<string | null>(null);
+  const [studyDraft, setStudyDraft] = useState<MacroStudyPayload | null>(null);
+
   const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState<MacroCatalogItem[]>([]);
-  const [seriesPayload, setSeriesPayload] = useState<MacroSeriesResponse | null>(null);
-  const [exprPayload, setExprPayload] = useState<MacroExpressionResponse | null>(null);
-  const [compareKeys, setCompareKeys] = useState("FRED:UNRATE,FRED:CPIAUCSL,FRED:FEDFUNDS");
-  const [seriesMultiPayload, setSeriesMultiPayload] = useState<MacroSeriesMultiResponse | null>(null);
-  const [seriesMultiError, setSeriesMultiError] = useState<string | null>(null);
-
-  const [ratioPoints, setRatioPoints] = useState<Array<{ date: string; value: number }>>([]);
-  const [spreadPoints, setSpreadPoints] = useState<Array<{ date: string; value: number }>>([]);
-  const [corrPoints, setCorrPoints] = useState<Array<{ date: string; value: number }>>([]);
-  const [betaPoints, setBetaPoints] = useState<Array<{ date: string; value: number }>>([]);
-  const [leftSymbol, setLeftSymbol] = useState("FRED:DGS10");
-  const [rightSymbol, setRightSymbol] = useState("FRED:DGS2");
-  const [ratioTicker, setRatioTicker] = useState("GLD/SPY");
-  const [corrWindow, setCorrWindow] = useState(60);
-
+  const [domainFilter, setDomainFilter] = useState("all");
+  const [startDate, setStartDate] = useState(yearsAgoIso(12));
+  const [endDate, setEndDate] = useState(todayIso());
+  const [asOfDate, setAsOfDate] = useState("");
+  const [viewMode, setViewMode] = useState<MacroViewMode>("explorer");
+  const [normalization, setNormalization] = useState<MacroNormalizeMode>("raw");
+  const [comparePayload, setComparePayload] = useState<MacroCompareResponse | null>(null);
+  const [leadLagPayload, setLeadLagPayload] = useState<MacroLeadLagResponse | null>(null);
+  const [scatterPayload, setScatterPayload] = useState<MacroScatterResponse | null>(null);
+  const [vintagePayload, setVintagePayload] = useState<MacroVintageResponse | null>(null);
+  const [regimeSeries, setRegimeSeries] = useState<MacroRegimePoint[]>([]);
   const [latestRegime, setLatestRegime] = useState<MacroRegimePoint | null>(null);
   const [regimeState, setRegimeState] = useState<MacroRegimeStateResponse | null>(null);
-  const [regimeSeries, setRegimeSeries] = useState<MacroRegimePoint[]>([]);
-  const [currentAlerts, setCurrentAlerts] = useState<MacroAlertItem[]>([]);
-  const [historyAlerts, setHistoryAlerts] = useState<MacroAlertItem[]>([]);
-  const [macroHealth, setMacroHealth] = useState<MacroHealthResponse | null>(null);
-  const [copperGoldPreset, setCopperGoldPreset] = useState<MacroPresetResponse | null>(null);
+  const [reportExport, setReportExport] = useState<{ report_path?: string | null } | null>(null);
+  const [featureExport, setFeatureExport] = useState<MacroFeatureExportResponse | null>(null);
 
-  const chartPayload = exprPayload?.status === "ok" ? exprPayload : seriesPayload;
-  const chartPoints = normalizePoints(chartPayload?.data);
-  const chartTitle = chartPayload?.meta?.title || chartPayload?.meta?.key || expression;
-  const chartSubtitle = chartPayload?.meta?.source
-    ? `${chartPayload.meta.source} | ${chartPayload.meta.transform}`
-    : "";
+  const lastSavedSignatureRef = useRef("");
 
-  const resolveBackend = useCallback(async () => {
-    setIsBackendLoading(true);
+  const currentStudy = studyDraft;
+  const currentSeriesKeys = currentStudy?.series_specs.map((spec) => spec.key) ?? [];
+  const activeRelationPair = useMemo(
+    () => currentStudy?.series_specs.slice(0, 2).map((spec) => spec.key) ?? [],
+    [currentStudy],
+  );
+
+  const filteredCatalog = useMemo(() => {
+    const query = searchText.trim().toLowerCase();
+    return catalogItems.filter((item) => {
+      const domainOk = domainFilter === "all" || (item.domain ?? "unknown") === domainFilter;
+      if (!domainOk) {
+        return false;
+      }
+      if (!query) {
+        return true;
+      }
+      return [item.id, item.title ?? "", item.domain ?? "", ...(item.tags ?? [])]
+        .join(" ")
+        .toLowerCase()
+        .includes(query);
+    });
+  }, [catalogItems, domainFilter, searchText]);
+
+  const domainOptions = useMemo(
+    () => ["all", ...Array.from(new Set(catalogItems.map((item) => item.domain).filter(Boolean) as string[])).sort()],
+    [catalogItems],
+  );
+
+  const studyReleaseItems = useMemo(() => {
+    const keySet = new Set(currentSeriesKeys);
+    return releaseCalendar.filter((item) => keySet.has(item.key));
+  }, [currentSeriesKeys, releaseCalendar]);
+
+  const hydrateStudies = useCallback((items: MacroStudyPayload[]) => {
+    setStudies(items);
+    const fallbackStudy = items[0] ?? null;
+    const nextStudy = items.find((item) => item.id === selectedStudyId) ?? fallbackStudy;
+    if (nextStudy) {
+      setSelectedStudyId(nextStudy.id ?? null);
+      setStudyDraft(nextStudy);
+      lastSavedSignatureRef.current = studySignature(nextStudy);
+    } else {
+      setSelectedStudyId(null);
+      setStudyDraft(emptyStudy());
+      lastSavedSignatureRef.current = "";
+    }
+  }, [selectedStudyId]);
+
+  const loadBootstrap = useCallback(async () => {
+    setIsLoading(true);
     setErrorMessage(null);
     try {
       const backend = await resolveOpenBBBackend();
       setBackendBaseUrl(backend.baseUrl);
       if (!backend.connected) {
-        setErrorMessage("OpenBB API에 연결되지 않았습니다. Backends 탭에서 상태를 확인하세요.");
+        setErrorMessage("OpenBB backend is not connected.");
+        return;
       }
-    } catch (error) {
-      setErrorMessage(toFriendlyError(error));
-    } finally {
-      setIsBackendLoading(false);
-    }
-  }, []);
 
-  const checkMacroActivation = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return false;
-    }
-    const activationResult = await fetchMacroHealthWithActivation(backendBaseUrl);
-    setMacroActivation(activationResult.activation);
-    if (!activationResult.activation.available) {
-      setErrorMessage(
-        activationResult.activation.detail ||
-          "macro 확장이 사용 불가합니다. openbb-quant-ml을 설치/활성화하세요.",
-      );
-      return false;
-    }
-    if (activationResult.data) {
-      setMacroHealth(activationResult.data);
-    }
-    return true;
-  }, [backendBaseUrl]);
-
-  const runSeriesMultiCompare = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    const ids = parseCompareKeys(compareKeys);
-    if (ids.length < 2) {
-      setSeriesMultiPayload(null);
-      setSeriesMultiError("다중 비교를 위해 최소 2개의 키를 입력하세요.");
-      return;
-    }
-    try {
-      const response = await fetchMacroSeriesMulti(backendBaseUrl, {
-        ids,
-        start: startDate,
-        end: endDate,
-        transform: "level",
-        freq,
-        fill,
-      });
-      setSeriesMultiPayload(response);
-      if (response.status !== "ok") {
-        setSeriesMultiError(response.message || "다중 시리즈 비교에서 데이터를 반환하지 않았습니다.");
-      } else {
-        setSeriesMultiError(null);
-      }
-    } catch (error) {
-      setSeriesMultiPayload(null);
-      setSeriesMultiError(toFriendlyError(error));
-    }
-  }, [backendBaseUrl, compareKeys, endDate, fill, freq, startDate]);
-
-  const refreshRegimeAndAlerts = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    const [regime, alerts] = await Promise.all([
-      fetchMacroRegime(backendBaseUrl, { start: startDate, end: endDate, freq: "W", fill: "ffill" }),
-      fetchMacroAlerts(backendBaseUrl, { start: startDate, end: endDate, limit: 200 }),
-    ]);
-    try {
-      const state = await fetchMacroRegimeState(backendBaseUrl, endDate);
-      setRegimeState(state);
-    } catch {
-      setRegimeState(null);
-    }
-    const regimePoints = Array.isArray(regime.data) ? regime.data : [];
-    setRegimeSeries(regimePoints);
-    setLatestRegime(regime.latest || (regimePoints.length > 0 ? regimePoints[regimePoints.length - 1] : null));
-    setCurrentAlerts(normalizeAlerts(alerts.current));
-    setHistoryAlerts(normalizeAlerts(alerts.history));
-  }, [backendBaseUrl, endDate, startDate]);
-
-  const refreshDiagnostics = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    const [health, preset] = await Promise.all([
-      fetchMacroHealth(backendBaseUrl),
-      fetchCopperGoldPreset(backendBaseUrl, {
-        start: startDate,
-        end: endDate,
-        freq: "W",
-        fill: "ffill",
-        adjust_units: true,
-        include_corr: true,
-      }),
-    ]);
-    setMacroHealth(health);
-    setCopperGoldPreset(preset);
-  }, [backendBaseUrl, endDate, startDate]);
-
-  const loadCatalog = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    const catalog = await fetchMacroCatalog(backendBaseUrl);
-    setCatalogItems(catalog.items || []);
-  }, [backendBaseUrl]);
-
-  const runExpression = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    setIsBusy(true);
-    setErrorMessage(null);
-    setInfoMessage(null);
-    try {
-      if (isSimpleKey(expression)) {
-        const response = await fetchMacroSeries(backendBaseUrl, {
-          key: expression,
-          start: startDate,
-          end: endDate,
-          transform,
-          freq,
-          fill,
-        });
-        setSeriesPayload(response);
-        setExprPayload(null);
-        setSelectedKey(expression);
-        if (response.status !== "ok") {
-          setInfoMessage(response.message || "시리즈 데이터가 준비되지 않았습니다.");
-        }
-      } else {
-        const response = await evaluateMacroExpression(backendBaseUrl, {
-          expr: expression,
-          start: startDate,
-          end: endDate,
-          transform,
-          freq,
-          fill,
-        });
-        setExprPayload(response);
-        setSeriesPayload(null);
-        if (response.status !== "ok") {
-          setInfoMessage(response.message || "Expression 결과가 비어있습니다.");
-        }
-      }
-    } catch (error) {
-      setErrorMessage(toFriendlyError(error));
-    } finally {
-      setIsBusy(false);
-    }
-  }, [backendBaseUrl, endDate, expression, fill, freq, startDate, transform]);
-
-  const runRelationship = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    setIsBusy(true);
-    setErrorMessage(null);
-    try {
-      const [ratio, spread, corr, beta] = await Promise.all([
-        fetchMarketRatio(backendBaseUrl, {
-          lhs: (ratioTicker.split("/")[0] || leftSymbol).trim(),
-          rhs: (ratioTicker.split("/")[1] || rightSymbol).trim(),
-          start: startDate,
-          end: endDate,
-          freq,
-          fill,
-        }),
-        evaluateMacroExpression(backendBaseUrl, {
-          expr: `${leftSymbol}-${rightSymbol}`,
-          start: startDate,
-          end: endDate,
-          freq,
-          fill,
-          transform: "level",
-        }),
-        fetchMarketRollingCorr(backendBaseUrl, {
-          x: leftSymbol,
-          y: rightSymbol,
-          window: corrWindow,
-          start: startDate,
-          end: endDate,
-          freq,
-          fill,
-        }),
-        evaluateMacroExpression(backendBaseUrl, {
-          expr: `rolling_beta(${leftSymbol},${rightSymbol},${corrWindow})`,
-          start: startDate,
-          end: endDate,
-          freq,
-          fill,
-          transform: "level",
-        }),
+      const [activationResult, catalog, studyResponse, releaseResponse, regimeResponse, regimeStateResponse] = await Promise.all([
+        fetchMacroHealthWithActivation(backend.baseUrl),
+        fetchMacroCatalog(backend.baseUrl),
+        fetchMacroStudies(backend.baseUrl),
+        fetchMacroReleaseCalendar(backend.baseUrl),
+        fetchMacroRegime(backend.baseUrl, { start: yearsAgoIso(3), end: todayIso(), freq: "W", fill: "ffill" }).catch(() => null),
+        fetchMacroRegimeState(backend.baseUrl).catch(() => null),
       ]);
-      setRatioPoints(normalizePoints(ratio.data));
-      setSpreadPoints(normalizePoints(spread.data));
-      setCorrPoints(normalizePoints(corr.data));
-      setBetaPoints(normalizePoints(beta.data));
-      const nonOkMessage = [ratio, spread, corr, beta]
-        .filter((payload) => payload.status !== "ok" && payload.message)
-        .map((payload) => payload.message)
-        .filter((message): message is string => Boolean(message))
-        .join(" | ");
-      if (nonOkMessage) {
-        setInfoMessage(nonOkMessage);
-      }
+      setMacroReady(activationResult.activation.available);
+      setMacroWarnings(activationResult.data?.warnings ?? []);
+      setCatalogItems(catalog.items);
+      setReleaseCalendar(releaseResponse.items);
+      setRegimeSeries(regimeResponse?.data ?? []);
+      setLatestRegime(regimeResponse?.latest ?? regimeResponse?.data?.at(-1) ?? null);
+      setRegimeState(regimeStateResponse);
+      hydrateStudies(studyResponse.items);
     } catch (error) {
-      setErrorMessage(toFriendlyError(error));
+      setErrorMessage(error instanceof Error ? error.message : "Failed to load Macro Lab.");
     } finally {
-      setIsBusy(false);
+      setIsLoading(false);
     }
-  }, [backendBaseUrl, corrWindow, endDate, fill, freq, leftSymbol, ratioTicker, rightSymbol, startDate]);
+  }, [hydrateStudies]);
 
-  const handleSearch = useCallback(async () => {
-    if (!backendBaseUrl || !searchText.trim()) {
-      return;
-    }
-    setIsBusy(true);
-    setErrorMessage(null);
-    try {
-      const response = await searchMacroCatalog(backendBaseUrl, searchText.trim(), undefined, 25);
-      setSearchResults(Array.isArray(response.items) ? response.items : []);
-    } catch (error) {
-      setErrorMessage(toFriendlyError(error));
-    } finally {
-      setIsBusy(false);
-    }
-  }, [backendBaseUrl, searchText]);
+  useEffect(() => {
+    void loadBootstrap();
+  }, [loadBootstrap]);
 
-  const handleRegister = useCallback(
-    async (seriesId: string) => {
+  const persistStudy = useCallback(
+    async (payload: MacroStudyPayload, showInfo = false) => {
       if (!backendBaseUrl) {
         return;
       }
-      setIsBusy(true);
+      const signature = studySignature(payload);
+      setIsSaving(true);
       try {
-        await registerMacroSeries(backendBaseUrl, { series_id: seriesId, domain: "Custom", default_transform: "level" });
-        invalidateMacroCache();
-        await loadCatalog();
-        setExpression(`FRED:${seriesId.toUpperCase()}`);
-        setSelectedKey(`FRED:${seriesId.toUpperCase()}`);
-      } catch (error) {
-        setErrorMessage(toFriendlyError(error));
-      } finally {
-        setIsBusy(false);
-      }
-    },
-    [backendBaseUrl, loadCatalog],
-  );
-
-  const handleSaveDerived = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    try {
-      const derivedId = toDerivedId(expression);
-      await saveMacroDerived(backendBaseUrl, {
-        derived_id: derivedId,
-        expression,
-        default_transform: transform,
-      });
-      setInfoMessage(`파생 시리즈 저장 완료: ${derivedId}`);
-      await fetchMacroDerived(backendBaseUrl);
-    } catch (error) {
-      setErrorMessage(toFriendlyError(error));
-    }
-  }, [backendBaseUrl, expression, transform]);
-
-  const handleRefreshDefaults = useCallback(async () => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    setIsBusy(true);
-    setErrorMessage(null);
-    try {
-      const response = await triggerMacroUpdate(backendBaseUrl, {
-        all_default: true,
-        start: startDate,
-        end: endDate,
-        compute_features: true,
-        features_lookback_days: 365,
-      });
-      invalidateMacroCache();
-      await loadCatalog();
-      await refreshRegimeAndAlerts();
-      await refreshDiagnostics();
-      await runSeriesMultiCompare();
-      setInfoMessage(response.message || `${response.updated_series.length}개 시리즈 업데이트 완료.`);
-    } catch (error) {
-      setErrorMessage(toFriendlyError(error));
-    } finally {
-      setIsBusy(false);
-    }
-  }, [
-    backendBaseUrl,
-    endDate,
-    loadCatalog,
-    refreshDiagnostics,
-    refreshRegimeAndAlerts,
-    runSeriesMultiCompare,
-    startDate,
-  ]);
-
-  const handleApplyPreset = useCallback(
-    (preset: MacroPresetConfig) => {
-      setActivePresetId(preset.id);
-      setExpression(preset.expression);
-      setSelectedKey(preset.expression);
-      setCompareKeys(preset.compareKeys);
-      setLeftSymbol(preset.leftSymbol);
-      setRightSymbol(preset.rightSymbol);
-      setRatioTicker(preset.ratioTicker);
-      setInfoMessage(`프리셋 "${preset.label}" 적용 완료. Execute를 누르세요.`);
-    },
-    [],
-  );
-
-  useEffect(() => {
-    void resolveBackend();
-  }, [resolveBackend]);
-
-  useEffect(() => {
-    if (!backendBaseUrl) {
-      return;
-    }
-    void (async () => {
-      try {
-        const active = await checkMacroActivation();
-        if (!active) {
+        const response = await saveMacroStudy(backendBaseUrl, payload);
+        const saved = response.items[0];
+        if (!saved) {
           return;
         }
-        await loadCatalog();
-        await runExpression();
-        await runRelationship();
-        await runSeriesMultiCompare();
-        await refreshRegimeAndAlerts();
-        await refreshDiagnostics();
+        lastSavedSignatureRef.current = signature;
+        setSelectedStudyId(saved.id ?? null);
+        setStudyDraft(saved);
+        setStudies((previous) => {
+          const rest = previous.filter((item) => item.id !== saved.id);
+          return [saved, ...rest];
+        });
+        if (showInfo) {
+          setInfoMessage(`Saved study: ${saved.name}`);
+        }
       } catch (error) {
-        setErrorMessage(toFriendlyError(error));
+        setErrorMessage(error instanceof Error ? error.message : "Failed to save study.");
+      } finally {
+        setIsSaving(false);
       }
-    })();
-  }, [
-    backendBaseUrl,
-    checkMacroActivation,
-    loadCatalog,
-    refreshDiagnostics,
-    refreshRegimeAndAlerts,
-    runExpression,
-    runRelationship,
-    runSeriesMultiCompare,
-  ]);
+    },
+    [backendBaseUrl],
+  );
+
+  useEffect(() => {
+    if (!currentStudy || !backendBaseUrl) {
+      return;
+    }
+    const signature = studySignature(currentStudy);
+    if (!signature || signature === lastSavedSignatureRef.current) {
+      return;
+    }
+    const timeoutId = window.setTimeout(() => {
+      void persistStudy(currentStudy, false);
+    }, 900);
+    return () => window.clearTimeout(timeoutId);
+  }, [backendBaseUrl, currentStudy, persistStudy]);
+
+  useEffect(() => {
+    if (!backendBaseUrl || !currentStudy?.id || !macroReady) {
+      return;
+    }
+
+    const loadAnalysis = async () => {
+      try {
+        const [compare, vintageMaybe] = await Promise.all([
+          fetchMacroCompare(backendBaseUrl, {
+            study_id: currentStudy.id!,
+            normalization,
+            start: startDate,
+            end: endDate,
+            as_of_date: asOfDate || undefined,
+          }),
+          asOfDate && currentStudy.series_specs[0]
+            ? fetchMacroVintages(backendBaseUrl, {
+                key: currentStudy.series_specs[0].key,
+                as_of_date: asOfDate,
+                start: startDate,
+                end: endDate,
+              })
+            : Promise.resolve(null),
+        ]);
+        setComparePayload(compare);
+        setVintagePayload(vintageMaybe);
+
+        if (activeRelationPair.length >= 2) {
+          const [lhs, rhs] = activeRelationPair;
+          const [leadLag, scatter] = await Promise.all([
+            fetchMacroLeadLag(backendBaseUrl, {
+              lhs,
+              rhs,
+              start: startDate,
+              end: endDate,
+              freq: "W",
+              fill: "ffill",
+              max_lag: 16,
+            }),
+            fetchMacroScatter(backendBaseUrl, {
+              lhs,
+              rhs,
+              start: startDate,
+              end: endDate,
+              freq: "W",
+              fill: "ffill",
+            }),
+          ]);
+          setLeadLagPayload(leadLag);
+          setScatterPayload(scatter);
+        } else {
+          setLeadLagPayload(null);
+          setScatterPayload(null);
+        }
+      } catch (error) {
+        setErrorMessage(error instanceof Error ? error.message : "Failed to load analysis.");
+      }
+    };
+
+    void loadAnalysis();
+  }, [activeRelationPair, asOfDate, backendBaseUrl, currentStudy?.id, currentStudy?.series_specs, endDate, macroReady, normalization, startDate]);
+
+  useEffect(() => {
+    if (!backendBaseUrl || !macroReady) {
+      return;
+    }
+
+    const loadRegimeSummary = async () => {
+      try {
+        const [regimeResponse, regimeStateResponse] = await Promise.all([
+          fetchMacroRegime(backendBaseUrl, {
+            start: startDate,
+            end: endDate,
+            freq: "W",
+            fill: "ffill",
+          }).catch(() => null),
+          fetchMacroRegimeState(backendBaseUrl).catch(() => null),
+        ]);
+        setRegimeSeries(regimeResponse?.data ?? []);
+        setLatestRegime(regimeResponse?.latest ?? regimeResponse?.data?.at(-1) ?? null);
+        setRegimeState(regimeStateResponse);
+      } catch {
+        setRegimeSeries([]);
+        setLatestRegime(null);
+        setRegimeState(null);
+      }
+    };
+
+    void loadRegimeSummary();
+  }, [backendBaseUrl, endDate, macroReady, startDate]);
+
+  const updateStudy = useCallback((updater: (study: MacroStudyPayload) => MacroStudyPayload) => {
+    setStudyDraft((previous) => (previous ? updater(previous) : previous));
+  }, []);
+
+  const addSeriesToStudy = useCallback((item: MacroCatalogItem) => {
+    updateStudy((study) => {
+      if (study.series_specs.some((spec) => spec.key === item.id)) {
+        return study;
+      }
+      return {
+        ...study,
+        series_specs: [
+          ...study.series_specs,
+          {
+            key: item.id,
+            alias: item.title ?? item.id,
+            transform_chain: [],
+            freq: "M",
+            fill: "ffill",
+            axis: study.series_specs.length % 2 === 0 ? "left" : "right",
+            normalize_mode: "raw",
+            lag_mode: null,
+            display_style: "line",
+          },
+        ],
+      };
+    });
+  }, [updateStudy]);
+
+  const removeSeriesFromStudy = useCallback((key: string) => {
+    updateStudy((study) => ({
+      ...study,
+      series_specs: study.series_specs.filter((spec) => spec.key !== key),
+    }));
+  }, [updateStudy]);
+
+  const updateSeriesSpec = useCallback((key: string, patch: Partial<MacroStudySeriesSpec>) => {
+    updateStudy((study) => ({
+      ...study,
+      series_specs: study.series_specs.map((spec) => (spec.key === key ? { ...spec, ...patch } : spec)),
+    }));
+  }, [updateStudy]);
+
+  const handleCreateStudy = useCallback(() => {
+    setSelectedStudyId(null);
+    setStudyDraft(emptyStudy());
+    lastSavedSignatureRef.current = "";
+    setInfoMessage("Created a new study draft.");
+  }, []);
+
+  const handleExportReport = useCallback(async () => {
+    if (!backendBaseUrl || !currentStudy?.id) {
+      return;
+    }
+    setIsExporting(true);
+    try {
+      const response = await exportMacroReport(backendBaseUrl, { study_id: currentStudy.id });
+      setReportExport(response);
+      setInfoMessage(`Report exported to ${response.report_path ?? "reports folder"}.`);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Failed to export report.");
+    } finally {
+      setIsExporting(false);
+    }
+  }, [backendBaseUrl, currentStudy?.id]);
+
+  const handleExportFeatures = useCallback(async () => {
+    if (!backendBaseUrl || !currentStudy?.id) {
+      return;
+    }
+    setIsExporting(true);
+    try {
+      const response = await exportMacroFeatures(backendBaseUrl, {
+        study_id: currentStudy.id,
+        as_of_policy: asOfDate ? `as_of:${asOfDate}` : "latest",
+      });
+      setFeatureExport(response);
+      writeMacroStudyHandoff({
+        studyId: currentStudy.id ?? null,
+        name: currentStudy.name,
+        objective: currentStudy.objective,
+        conclusionSummary: currentStudy.conclusion.summary,
+        actionBias: currentStudy.conclusion.action_bias,
+        linkedAssets: currentStudy.linked_assets ?? [],
+        featureArtifactPath: response.artifact_path ?? null,
+        asOfPolicy: asOfDate ? `as_of:${asOfDate}` : "latest",
+        exportedAt: response.exported_at ?? new Date().toISOString(),
+      });
+      updateStudy((study) => ({
+        ...study,
+        linked_feature_set_id: response.artifact_path ?? study.linked_feature_set_id,
+      }));
+      setInfoMessage(`Feature lineage exported to ${response.artifact_path ?? "artifact store"}.`);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Failed to export features.");
+    } finally {
+      setIsExporting(false);
+    }
+  }, [asOfDate, backendBaseUrl, currentStudy?.id, updateStudy]);
+
+  const headerTitle = currentStudy?.name ?? "Macro Lab";
 
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
-      <div className="mb-3 flex items-start justify-between gap-3">
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="body-lg-medium text-theme-primary">Macro</h1>
+          <h1 className="body-lg-medium text-theme-primary">Macro Lab</h1>
           <p className="body-sm-regular text-theme-muted">
-            FRED 기반 매크로 분석 — 변환, 크로스에셋 관계, 레짐 스코어, 알림을 통합한 퀀트 인사이트 플랫폼.
+            FRED-first research workspace for study building, vintage analysis, release monitoring, and conclusion capture.
           </p>
         </div>
-        <button type="button" className="button-secondary rounded-sm px-3 py-2 body-xs-medium" onClick={handleRefreshDefaults} disabled={isBusy}>
-          {isBusy ? "Refreshing..." : "Refresh Defaults"}
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={handleCreateStudy}
+            className="rounded-sm border border-theme-outline px-3 py-2 body-sm-medium text-theme-primary"
+          >
+            New Study
+          </button>
+          <button
+            type="button"
+            onClick={() => currentStudy && void persistStudy(currentStudy, true)}
+            className="rounded-sm bg-theme-accent px-3 py-2 body-sm-medium text-white disabled:opacity-50"
+            disabled={!currentStudy || isSaving}
+          >
+            {isSaving ? "Saving..." : "Save Study"}
+          </button>
+        </div>
       </div>
 
       {errorMessage ? (
-        <div className="mb-2 rounded-sm border border-red-500/60 bg-red-500/10 p-2">
-          <p className="body-xs-medium text-red-300">{errorMessage}</p>
-        </div>
-      ) : null}
-      {macroActivation && !macroActivation.available ? (
-        <div className="mb-2 rounded-sm border border-amber-500/60 bg-amber-500/10 p-2">
-          <p className="body-xs-medium text-amber-300">
-            macro 확장 사용 불가: {macroActivation.detail || "openbb-quant-ml을 설치/활성화하세요."}
-          </p>
+        <div className="mb-4 rounded-md border border-red-500/40 bg-red-500/10 px-4 py-3 body-sm-regular text-red-200">
+          {errorMessage}
         </div>
       ) : null}
       {infoMessage ? (
-        <div className="mb-2 rounded-sm border border-sky-500/60 bg-sky-500/10 p-2">
-          <p className="body-xs-medium text-sky-300">{infoMessage}</p>
+        <div className="mb-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 body-sm-regular text-emerald-200">
+          {infoMessage}
         </div>
       ) : null}
 
-      <PresetDashboard
-        activePresetId={activePresetId}
-        onApplyPreset={handleApplyPreset}
-        latestRegime={latestRegime}
-        regimeState={regimeState}
-        regimeSeries={regimeSeries}
-      />
-
-      <div className="mt-3">
-        <ExpressionBar
-          expression={expression}
-          onExpressionChange={setExpression}
-          transform={transform}
-          onTransformChange={setTransform}
-          freq={freq}
-          onFreqChange={setFreq}
-          fill={fill}
-          onFillChange={setFill}
-          startDate={startDate}
-          endDate={endDate}
-          onStartDateChange={setStartDate}
-          onEndDateChange={setEndDate}
-          onRun={() => {
-            void runExpression();
-            void runRelationship();
-            void runSeriesMultiCompare();
-            void refreshRegimeAndAlerts();
-          }}
-          onSave={() => {
-            void handleSaveDerived();
-          }}
-          isBusy={isBusy || isBackendLoading}
-        />
-      </div>
-
-      <div className="mt-3 grid grid-cols-1 gap-3 xl:grid-cols-[300px_minmax(0,1fr)_320px]">
-        <CatalogSidebar
-          items={catalogItems}
-          selectedKey={selectedKey}
-          searchText={searchText}
-          onSearchTextChange={setSearchText}
-          onSearch={() => void handleSearch()}
-          onSelectKey={(key) => {
-            setSelectedKey(key);
-            setExpression(key);
-            setActivePresetId(null);
-            const next = catalogItems.find((item) => item.id === key || `FRED:${item.series_id}` === key);
-            setTransform(next?.default_transform || "level");
-            setInfoMessage(null);
-          }}
-          onRegister={(seriesId) => void handleRegister(seriesId)}
-          searchResults={searchResults}
-          isBusy={isBusy}
-        />
-
-        <div className="space-y-3">
-          <MainSeriesChart points={chartPoints} title={chartTitle} subtitle={chartSubtitle} />
-          <MultiSeriesComparePanel
-            compareKeys={compareKeys}
-            onCompareKeysChange={setCompareKeys}
-            onRefresh={() => void runSeriesMultiCompare()}
-            isBusy={isBusy}
-            payload={seriesMultiPayload}
-            errorMessage={seriesMultiError}
-          />
-          <RelationshipPanel
-            leftSymbol={leftSymbol}
-            rightSymbol={rightSymbol}
-            ratioTicker={ratioTicker}
-            onRatioTickerChange={setRatioTicker}
-            onLeftChange={setLeftSymbol}
-            onRightChange={setRightSymbol}
-            corrWindow={corrWindow}
-            onCorrWindowChange={setCorrWindow}
-            onRun={() => void runRelationship()}
-            ratioPoints={ratioPoints}
-            spreadPoints={spreadPoints}
-            corrPoints={corrPoints}
-            betaPoints={betaPoints}
-          />
-        </div>
-
-        <div className="space-y-3">
-          <div className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
-            <p className="body-xs-medium text-theme-primary">Macro Health</p>
-            <div className="mt-1.5 grid grid-cols-2 gap-1.5">
-              <div className="rounded-sm bg-theme-primary p-1.5">
-                <p className="body-xxs-regular text-theme-muted">Status</p>
-                <p className={`body-xs-medium ${macroHealth?.status === "ok" ? "text-emerald-400" : "text-amber-400"}`}>
-                  {macroHealth?.status ?? "unknown"}
-                </p>
-              </div>
-              <div className="rounded-sm bg-theme-primary p-1.5">
-                <p className="body-xxs-regular text-theme-muted">FRED Key</p>
-                <p className={`body-xs-medium ${macroHealth?.fred_api_key_configured ? "text-emerald-400" : "text-red-400"}`}>
-                  {macroHealth?.fred_api_key_configured ? "✓ Set" : "✗ Missing"}
-                </p>
-              </div>
-              <div className="rounded-sm bg-theme-primary p-1.5">
-                <p className="body-xxs-regular text-theme-muted">Last Obs</p>
-                <p className="body-xs-medium text-theme-primary">{macroHealth?.obs_stats?.last_obs_date_global ?? "-"}</p>
-              </div>
-              <div className="rounded-sm bg-theme-primary p-1.5">
-                <p className="body-xxs-regular text-theme-muted">Features</p>
-                <p className="body-xs-medium text-theme-primary">{macroHealth?.feature_stats?.last_feature_date ?? "-"}</p>
-              </div>
-            </div>
-            {Array.isArray(macroHealth?.warnings) && macroHealth!.warnings.length > 0 ? (
-              <p className="body-xxs-regular text-amber-400 mt-1.5">{macroHealth?.warnings.join(" | ")}</p>
-            ) : null}
-          </div>
-
-          <div className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
-            <p className="body-xs-medium text-theme-primary">Copper/Gold Preset</p>
-            <div className="mt-1.5 grid grid-cols-2 gap-1.5">
-              <div className="rounded-sm bg-theme-primary p-1.5">
-                <p className="body-xxs-regular text-theme-muted">Status</p>
-                <p className="body-xs-medium text-theme-primary">{copperGoldPreset?.status ?? "unknown"}</p>
-              </div>
-              <div className="rounded-sm bg-theme-primary p-1.5">
-                <p className="body-xxs-regular text-theme-muted">Events</p>
-                <p className="body-xs-medium text-theme-primary">{copperGoldPreset?.events?.length ?? 0}</p>
-              </div>
-            </div>
-            {copperGoldPreset?.message ? <p className="body-xxs-regular text-theme-muted mt-1">{copperGoldPreset.message}</p> : null}
-            {Array.isArray(copperGoldPreset?.events) && copperGoldPreset!.events.length > 0 ? (
-              <div className="mt-2 space-y-1">
-                {copperGoldPreset!.events.slice(0, 3).map((event) => (
-                  <p key={`${event.date}-${event.event_type}`} className="body-xxs-regular text-theme-primary">
-                    {event.date} | {event.event_type}
-                  </p>
+      <div className="mb-4 grid grid-cols-1 gap-4 xl:grid-cols-[340px_minmax(0,1fr)_360px]">
+        <PanelCard title="Series Builder" description="Search the local catalog, build the study basket, and tune per-series transforms.">
+          <div className="space-y-4">
+            <div>
+              <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-study-selector">
+                Active Study
+              </label>
+              <select
+                id="macro-study-selector"
+                className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                value={selectedStudyId ?? ""}
+                onChange={(event) => {
+                  const next = studies.find((item) => item.id === event.target.value) ?? null;
+                  setSelectedStudyId(next?.id ?? null);
+                  setStudyDraft(next ?? emptyStudy());
+                  lastSavedSignatureRef.current = next ? studySignature(next) : "";
+                }}
+              >
+                {studies.map((study) => (
+                  <option key={study.id ?? study.name} value={study.id ?? ""}>
+                    {study.name}
+                  </option>
                 ))}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div>
+                <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-search">
+                  Search Catalog
+                </label>
+                <input
+                  id="macro-search"
+                  value={searchText}
+                  onChange={(event) => setSearchText(event.target.value)}
+                  className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                  placeholder="Search FRED series"
+                />
               </div>
-            ) : null}
+              <div>
+                <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-domain">
+                  Domain
+                </label>
+                <select
+                  id="macro-domain"
+                  value={domainFilter}
+                  onChange={(event) => setDomainFilter(event.target.value)}
+                  className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                >
+                  {domainOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="max-h-72 space-y-2 overflow-auto rounded-md border border-theme-outline p-2" data-testid="macro-catalog-results">
+              {filteredCatalog.slice(0, 24).map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => addSeriesToStudy(item)}
+                  className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 text-left transition hover:border-theme-accent"
+                >
+                  <div className="body-sm-medium text-theme-primary">{item.title ?? item.id}</div>
+                  <div className="body-xxs-regular text-theme-muted">
+                    {item.id} | {item.domain ?? "unknown"} | last obs {item.last_obs ?? "n/a"}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-3" data-testid="macro-study-series">
+              <div className="body-sm-medium text-theme-primary">Study Basket</div>
+              {(currentStudy?.series_specs ?? []).map((spec) => (
+                <div key={spec.key} className="rounded-md border border-theme-outline bg-theme-secondary p-3">
+                  <div className="mb-2 flex items-start justify-between gap-2">
+                    <div>
+                      <div className="body-sm-medium text-theme-primary">{spec.alias ?? spec.key}</div>
+                      <div className="body-xxs-regular text-theme-muted">{spec.key}</div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeSeriesFromStudy(spec.key)}
+                      className="body-xxs-medium text-red-300"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2">
+                    <input
+                      value={spec.alias ?? ""}
+                      onChange={(event) => updateSeriesSpec(spec.key, { alias: event.target.value })}
+                      className="rounded-sm border border-theme-outline bg-theme-primary px-2 py-2 body-xs-regular text-theme-primary"
+                      placeholder="Alias"
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <select
+                        value={spec.normalize_mode}
+                        onChange={(event) => updateSeriesSpec(spec.key, { normalize_mode: event.target.value as MacroNormalizeMode })}
+                        className="rounded-sm border border-theme-outline bg-theme-primary px-2 py-2 body-xs-regular text-theme-primary"
+                      >
+                        <option value="raw">Raw</option>
+                        <option value="index100">Index 100</option>
+                        <option value="zscore">Z-Score</option>
+                        <option value="yoy">YoY</option>
+                        <option value="percentile_5y">Percentile 5Y</option>
+                      </select>
+                      <select
+                        value={spec.axis}
+                        onChange={(event) => updateSeriesSpec(spec.key, { axis: event.target.value as "left" | "right" })}
+                        className="rounded-sm border border-theme-outline bg-theme-primary px-2 py-2 body-xs-regular text-theme-primary"
+                      >
+                        <option value="left">Left Axis</option>
+                        <option value="right">Right Axis</option>
+                      </select>
+                    </div>
+                    <input
+                      value={spec.transform_chain.join(", ")}
+                      onChange={(event) => updateSeriesSpec(spec.key, {
+                        transform_chain: event.target.value.split(",").map((item) => item.trim()).filter(Boolean),
+                      })}
+                      className="rounded-sm border border-theme-outline bg-theme-primary px-2 py-2 body-xs-regular text-theme-primary"
+                      placeholder="Transforms, e.g. yoy, ema:6"
+                    />
+                  </div>
+                </div>
+              ))}
+              {!currentStudy?.series_specs.length ? (
+                <div className="rounded-sm border border-dashed border-theme-outline px-3 py-4 body-sm-regular text-theme-muted">
+                  Add at least one series from the catalog to start a study.
+                </div>
+              ) : null}
+            </div>
           </div>
+        </PanelCard>
 
-          <StatsPanel meta={chartPayload?.meta ?? null} stats={chartPayload?.stats ?? null} />
+        <div className="space-y-4">
+          <PanelCard
+            title="Regime Summary"
+            description="Levelized macro scores bring the old cycle view back into the active Macro Lab workflow."
+          >
+            <MacroRegimeSummary
+              latestRegime={latestRegime}
+              regimeState={regimeState}
+              regimeSeries={regimeSeries}
+            />
+          </PanelCard>
 
-          <RegimeAlertsPanel
-            latestRegime={latestRegime}
-            regimeState={regimeState}
-            currentAlerts={currentAlerts}
-            historyAlerts={historyAlerts}
-          />
+          <PanelCard title={headerTitle} description="Analysis canvas with synchronized views for compare, relationship, release, and report work.">
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              {(["explorer", "compare", "relationship", "release", "report"] as MacroViewMode[]).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setViewMode(mode)}
+                  className={`rounded-full px-3 py-1.5 body-xs-medium ${viewMode === mode ? "bg-theme-accent text-white" : "border border-theme-outline text-theme-muted"}`}
+                >
+                  {mode}
+                </button>
+              ))}
+              <div className="ml-auto flex flex-wrap gap-2">
+                <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-1.5 body-xs-regular text-theme-primary" />
+                <input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-1.5 body-xs-regular text-theme-primary" />
+                <input type="date" value={asOfDate} onChange={(event) => setAsOfDate(event.target.value)} className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-1.5 body-xs-regular text-theme-primary" aria-label="As Of Date" />
+                <select value={normalization} onChange={(event) => setNormalization(event.target.value as MacroNormalizeMode)} className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-1.5 body-xs-regular text-theme-primary">
+                  <option value="raw">Raw</option>
+                  <option value="index100">Index 100</option>
+                  <option value="zscore">Z-Score</option>
+                  <option value="yoy">YoY</option>
+                  <option value="percentile_5y">Percentile 5Y</option>
+                </select>
+              </div>
+            </div>
+
+            <MacroStudyChart
+              title={viewMode === "release" ? "Latest vs As-Of Vintage" : "Study Compare"}
+              option={viewMode === "release" ? buildVintageOption(vintagePayload) : buildLineOption(comparePayload, currentStudy?.series_specs ?? [])}
+              height={viewMode === "release" ? 360 : 420}
+            />
+
+            <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
+              <PanelCard
+                title={viewMode === "relationship" ? "Lead-Lag Table" : "Relationship Lens"}
+                description={viewMode === "release" ? "Vintage metadata and revision diagnostics." : "Scatter and lead-lag views help translate macro relationships into conviction."}
+              >
+                {viewMode === "relationship" ? (
+                  <MacroStudyChart option={buildLeadLagOption(leadLagPayload)} height={240} />
+                ) : viewMode === "release" ? (
+                  <div className="space-y-2">
+                    <div className="body-sm-medium text-theme-primary">Revision Delta</div>
+                    <div className="body-lg-medium text-theme-primary">{safeScore(vintagePayload?.revision_delta, 4)}</div>
+                    <div className="body-xs-regular text-theme-muted">
+                      As-of view only applies to stored FRED vintages. Market series stay on latest mode.
+                    </div>
+                  </div>
+                ) : (
+                  <MacroStudyChart option={buildScatterOption(scatterPayload)} height={240} />
+                )}
+              </PanelCard>
+
+              <PanelCard
+                title={viewMode === "relationship" ? "Scatter" : "Release Monitor"}
+                description={viewMode === "report" ? "Saved conclusions and linked assets make the report reusable." : "Use freshness, release cadence, and stale markers to decide when the thesis needs refresh."}
+              >
+                {viewMode === "relationship" ? (
+                  <MacroStudyChart option={buildScatterOption(scatterPayload)} height={240} />
+                ) : (
+                  <div className="space-y-2">
+                    {studyReleaseItems.slice(0, 5).map((item) => (
+                      <div key={item.key} className="rounded-sm border border-theme-outline px-3 py-2">
+                        <div className="body-sm-medium text-theme-primary">{item.title ?? item.key}</div>
+                        <div className="body-xxs-regular text-theme-muted">
+                          next release {item.estimated_next_release ?? "n/a"} | stale {item.stale_days ?? "n/a"}d | vintage {item.vintage_available ? "yes" : "no"}
+                        </div>
+                      </div>
+                    ))}
+                    {!studyReleaseItems.length ? (
+                      <div className="body-sm-regular text-theme-muted">No study release metadata yet.</div>
+                    ) : null}
+                  </div>
+                )}
+              </PanelCard>
+            </div>
+          </PanelCard>
+        </div>
+
+        <div className="space-y-4">
+          <PanelCard title="Insight Drawer" description="Capture the thesis, action mapping, release context, and export actions in one place.">
+            <div className="space-y-4">
+              <div className="rounded-md border border-theme-outline bg-theme-secondary px-3 py-3">
+                <div className="body-sm-medium text-theme-primary">System Status</div>
+                <div className="mt-1 body-xs-regular text-theme-muted">
+                  backend {backendBaseUrl || "unresolved"} | macro {macroReady ? "ready" : "unavailable"}
+                </div>
+                {macroWarnings.length ? (
+                  <div className="mt-2 body-xxs-regular text-amber-300">{macroWarnings.join(", ")}</div>
+                ) : null}
+              </div>
+
+              <div>
+                <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-study-name">
+                  Study Name
+                </label>
+                <input
+                  id="macro-study-name"
+                  value={currentStudy?.name ?? ""}
+                  onChange={(event) => updateStudy((study) => ({ ...study, name: event.target.value }))}
+                  className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-study-objective">
+                  Objective
+                </label>
+                <textarea
+                  id="macro-study-objective"
+                  value={currentStudy?.objective ?? ""}
+                  onChange={(event) => updateStudy((study) => ({ ...study, objective: event.target.value }))}
+                  rows={3}
+                  className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-summary">
+                    Conclusion Summary
+                  </label>
+                  <textarea
+                    id="macro-summary"
+                    value={currentStudy?.conclusion.summary ?? ""}
+                    onChange={(event) => updateStudy((study) => ({ ...study, conclusion: { ...study.conclusion, summary: event.target.value } }))}
+                    rows={2}
+                    className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-thesis">
+                    Thesis
+                  </label>
+                  <textarea
+                    id="macro-thesis"
+                    value={currentStudy?.conclusion.thesis ?? ""}
+                    onChange={(event) => updateStudy((study) => ({ ...study, conclusion: { ...study.conclusion, thesis: event.target.value } }))}
+                    rows={3}
+                    className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-action-bias">
+                      Action Bias
+                    </label>
+                    <select
+                      id="macro-action-bias"
+                      value={currentStudy?.conclusion.action_bias ?? "neutral"}
+                      onChange={(event) => updateStudy((study) => ({ ...study, conclusion: { ...study.conclusion, action_bias: event.target.value } }))}
+                      className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                    >
+                      <option value="bullish">Bullish</option>
+                      <option value="neutral">Neutral</option>
+                      <option value="defensive">Defensive</option>
+                      <option value="risk_on">Risk On</option>
+                      <option value="risk_off">Risk Off</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-confidence">
+                      Confidence
+                    </label>
+                    <input
+                      id="macro-confidence"
+                      type="number"
+                      min={0}
+                      max={1}
+                      step={0.05}
+                      value={currentStudy?.conclusion.confidence ?? ""}
+                      onChange={(event) => updateStudy((study) => ({
+                        ...study,
+                        conclusion: { ...study.conclusion, confidence: event.target.value === "" ? null : Number(event.target.value) },
+                      }))}
+                      className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-risk-cases">
+                    Risk Cases
+                  </label>
+                  <textarea
+                    id="macro-risk-cases"
+                    value={formatLines(currentStudy?.conclusion.risk_cases)}
+                    onChange={(event) => updateStudy((study) => ({ ...study, conclusion: { ...study.conclusion, risk_cases: parseLines(event.target.value) } }))}
+                    rows={3}
+                    className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                    placeholder="One per line"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-next-checks">
+                    Next Checks
+                  </label>
+                  <textarea
+                    id="macro-next-checks"
+                    value={formatLines(currentStudy?.conclusion.next_checks)}
+                    onChange={(event) => updateStudy((study) => ({ ...study, conclusion: { ...study.conclusion, next_checks: parseLines(event.target.value) } }))}
+                    rows={3}
+                    className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                    placeholder="One per line"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-1 block body-xs-medium text-theme-muted" htmlFor="macro-notes">
+                  Draft Notes
+                </label>
+                <textarea
+                  id="macro-notes"
+                  value={currentStudy?.notes ?? ""}
+                  onChange={(event) => updateStudy((study) => ({ ...study, notes: event.target.value }))}
+                  rows={6}
+                  className="w-full rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2 body-sm-regular text-theme-primary"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="body-xs-medium text-theme-muted">Linked Assets</div>
+                <div className="flex flex-wrap gap-2">
+                  {(currentStudy?.linked_assets ?? []).map((asset) => (
+                    <a
+                      key={asset}
+                      href={buildSymbolLabHref({
+                        symbol: asset,
+                        source: "macro",
+                        studyId: currentStudy?.id ?? undefined,
+                      })}
+                      className="rounded-full border border-theme-outline px-3 py-1 body-xs-medium text-theme-primary"
+                    >
+                      {asset}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2">
+                <button type="button" onClick={() => void handleExportReport()} disabled={!currentStudy?.id || isExporting} className="rounded-sm border border-theme-outline px-3 py-2 body-sm-medium text-theme-primary disabled:opacity-50">
+                  Open Report Export
+                </button>
+                <button type="button" onClick={() => void handleExportFeatures()} disabled={!currentStudy?.id || isExporting} className="rounded-sm border border-theme-outline px-3 py-2 body-sm-medium text-theme-primary disabled:opacity-50">
+                  Export Feature Lineage
+                </button>
+                {reportExport?.report_path ? (
+                  <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                    <div className="body-xxs-regular text-theme-muted">{reportExport.report_path}</div>
+                    <div className="mt-2 flex gap-2">
+                      <button type="button" onClick={() => openLocalPath(reportExport.report_path)} className="body-xs-medium text-theme-accent">Open Report</button>
+                      <button type="button" onClick={() => openLocalPath(reportExport.report_path?.split(/[/\\]/).slice(0, -1).join("/"))} className="body-xs-medium text-theme-accent">Open Folder</button>
+                    </div>
+                  </div>
+                ) : null}
+                {featureExport?.artifact_path ? (
+                  <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                    <div className="body-xxs-regular text-theme-muted">{featureExport.artifact_path}</div>
+                    <div className="mt-2 flex gap-2">
+                      <button type="button" onClick={() => openLocalPath(featureExport.artifact_path)} className="body-xs-medium text-theme-accent">Open Export</button>
+                      <button type="button" onClick={() => updateStudy((study) => ({ ...study, linked_feature_set_id: featureExport.artifact_path ?? study.linked_feature_set_id }))} className="body-xs-medium text-theme-accent">Attach To Study</button>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </PanelCard>
         </div>
       </div>
+
+      {isLoading ? (
+        <div className="rounded-md border border-theme-outline px-4 py-6 body-sm-regular text-theme-muted">
+          Loading Macro Lab...
+        </div>
+      ) : null}
     </div>
   );
 }

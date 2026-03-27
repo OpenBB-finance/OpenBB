@@ -18,6 +18,7 @@ import { SummaryCard } from "../quant/SummaryCard";
 import { TradingViewWidgetEmbed } from "./TradingViewWidgetEmbed";
 
 interface FinanceFundamentalsPanelProps {
+  baseUrl: string;
   symbol: string;
   theme: TradingViewThemeMode;
   overviewHeight: number;
@@ -518,6 +519,7 @@ function renderTable(
 }
 
 export function FinanceFundamentalsPanel({
+  baseUrl,
   symbol,
   theme,
   overviewHeight,
@@ -534,41 +536,59 @@ export function FinanceFundamentalsPanel({
   const [isForecastLoading, setIsForecastLoading] = useState(false);
   const [errorsByKind, setErrorsByKind] = useState<Partial<Record<FinanceStatementKind, string>>>({});
   const [forecastError, setForecastError] = useState<string | null>(null);
+  const activeKind =
+    activeTab === "overview" || activeTab === "forecast" ? null : STATEMENT_KIND_BY_TAB[activeTab];
 
   useEffect(() => {
+    setPayloads({
+      income: null,
+      balance: null,
+      cash: null,
+    });
+    setErrorsByKind({});
+    setForecastPayload(null);
+    setForecastError(null);
+  }, [baseUrl, symbol]);
+
+  useEffect(() => {
+    if (!baseUrl || !symbol || !activeKind) {
+      setIsLoading(false);
+      return () => undefined;
+    }
+
     const controller = new AbortController();
     let cancelled = false;
 
     const loadStatements = async () => {
       setIsLoading(true);
-      setErrorsByKind({});
+      setErrorsByKind((current) => ({
+        ...current,
+        [activeKind]: undefined,
+      }));
       try {
-        const [income, balance, cash] = await Promise.allSettled([
-          fetchFinanceStatement("income", symbol, period, controller.signal),
-          fetchFinanceStatement("balance", symbol, period, controller.signal),
-          fetchFinanceStatement("cash", symbol, period, controller.signal),
-        ]);
+        const payload = await fetchFinanceStatement(baseUrl, activeKind, symbol, period, controller.signal);
         if (cancelled) {
           return;
         }
-
-        setPayloads({
-          income: income.status === "fulfilled" ? income.value : null,
-          balance: balance.status === "fulfilled" ? balance.value : null,
-          cash: cash.status === "fulfilled" ? cash.value : null,
-        });
-
-        const nextErrors: Partial<Record<FinanceStatementKind, string>> = {};
-        if (income.status === "rejected") {
-          nextErrors.income = income.reason instanceof Error ? income.reason.message : "Failed to load income statement.";
+        setPayloads((current) => ({
+          ...current,
+          [activeKind]: payload,
+        }));
+      } catch (error) {
+        if (cancelled || controller.signal.aborted) {
+          return;
         }
-        if (balance.status === "rejected") {
-          nextErrors.balance = balance.reason instanceof Error ? balance.reason.message : "Failed to load balance sheet.";
-        }
-        if (cash.status === "rejected") {
-          nextErrors.cash = cash.reason instanceof Error ? cash.reason.message : "Failed to load cash flow statement.";
-        }
-        setErrorsByKind(nextErrors);
+        setPayloads((current) => ({
+          ...current,
+          [activeKind]: null,
+        }));
+        setErrorsByKind((current) => ({
+          ...current,
+          [activeKind]:
+            error instanceof Error
+              ? error.message
+              : `Failed to load ${activeKind.replace("-", " ")} statement.`,
+        }));
       } finally {
         if (!cancelled) {
           setIsLoading(false);
@@ -582,9 +602,14 @@ export function FinanceFundamentalsPanel({
       cancelled = true;
       controller.abort();
     };
-  }, [period, symbol]);
+  }, [activeKind, baseUrl, period, symbol]);
 
   useEffect(() => {
+    if (!baseUrl || !symbol || activeTab !== "forecast") {
+      setIsForecastLoading(false);
+      return () => undefined;
+    }
+
     const controller = new AbortController();
     let cancelled = false;
 
@@ -592,7 +617,7 @@ export function FinanceFundamentalsPanel({
       setIsForecastLoading(true);
       setForecastError(null);
       try {
-        const payload = await fetchFinanceForecast(symbol, controller.signal);
+        const payload = await fetchFinanceForecast(baseUrl, symbol, controller.signal);
         if (cancelled) {
           return;
         }
@@ -616,15 +641,12 @@ export function FinanceFundamentalsPanel({
       cancelled = true;
       controller.abort();
     };
-  }, [symbol]);
+  }, [activeTab, baseUrl, symbol]);
 
   const tradingViewLink = useMemo(
     () => buildTradingViewFinancialLink(symbol, activeTab),
     [activeTab, symbol],
   );
-
-  const activeKind =
-    activeTab === "overview" || activeTab === "forecast" ? null : STATEMENT_KIND_BY_TAB[activeTab];
   const activePayload = activeKind ? payloads[activeKind] : null;
   const activeError = activeKind ? errorsByKind[activeKind] ?? null : null;
 
@@ -706,6 +728,13 @@ export function FinanceFundamentalsPanel({
           ) : forecastPayload ? (
             renderForecast(forecastPayload)
           ) : null
+        ) : !baseUrl ? (
+          <div className="rounded-sm border border-dashed border-theme-outline bg-theme-secondary/40 px-4 py-6">
+            <p className="body-xs-medium text-theme-primary">Resolving OpenBB backend...</p>
+            <p className="mt-1 body-xxs-regular text-theme-muted">
+              Financial statements will load once the active backend is confirmed.
+            </p>
+          </div>
         ) : activeError && !activePayload ? (
           <div className="rounded-sm border border-red-500/40 bg-red-500/10 px-4 py-6">
             <p className="body-xs-medium text-theme-primary">Financial statements failed to load.</p>

@@ -1,4 +1,4 @@
-import { resolveOpenBBBackend } from "./openbbBackend";
+import { buildOpenBBRequestInit, buildOpenBBRequestUrl } from "./openbbBackend";
 import { extractTickerFromSymbol } from "./tradingView";
 import type {
   FinanceForecastConsensusRecord,
@@ -77,13 +77,14 @@ function writeForecastCached(key: string, payload: FinanceForecastPayload): Fina
 }
 
 async function requestFinanceEnvelope(
+  baseUrl: string,
   kind: FinanceStatementKind,
   symbol: string,
   period: FinanceStatementPeriod,
   signal?: AbortSignal,
 ): Promise<FinanceStatementEnvelope> {
-  const backend = await resolveOpenBBBackend();
-  if (!backend.connected) {
+  const normalizedBaseUrl = baseUrl.trim();
+  if (!normalizedBaseUrl) {
     throw new Error("OpenBB backend is not connected.");
   }
 
@@ -95,10 +96,13 @@ async function requestFinanceEnvelope(
     limit: "4",
   });
 
-  const response = await fetch(`${backend.baseUrl}${getStatementPath(kind)}?${query.toString()}`, {
-    method: "GET",
-    signal,
-  });
+  const response = await fetch(
+    buildOpenBBRequestUrl(normalizedBaseUrl, `${getStatementPath(kind)}?${query.toString()}`),
+    buildOpenBBRequestInit({
+      method: "GET",
+      signal,
+    }),
+  );
 
   if (!response.ok) {
     let detail = "";
@@ -120,6 +124,7 @@ export function clearFinanceStatementCache(): void {
 }
 
 export async function fetchFinanceStatement(
+  baseUrl: string,
   kind: FinanceStatementKind,
   symbol: string,
   period: FinanceStatementPeriod,
@@ -131,7 +136,7 @@ export async function fetchFinanceStatement(
     return cached;
   }
 
-  const envelope = await requestFinanceEnvelope(kind, symbol, period, signal);
+  const envelope = await requestFinanceEnvelope(baseUrl, kind, symbol, period, signal);
   return writeCached(cacheKey, {
     rows: Array.isArray(envelope.results) ? envelope.results : [],
     provider: envelope.provider ?? null,
@@ -140,6 +145,7 @@ export async function fetchFinanceStatement(
 }
 
 export async function fetchFinanceForecast(
+  baseUrl: string,
   symbol: string,
   signal?: AbortSignal,
 ): Promise<FinanceForecastPayload> {
@@ -150,8 +156,8 @@ export async function fetchFinanceForecast(
     return cached;
   }
 
-  const backend = await resolveOpenBBBackend();
-  if (!backend.connected) {
+  const normalizedBaseUrl = baseUrl.trim();
+  if (!normalizedBaseUrl) {
     throw new Error("OpenBB backend is not connected.");
   }
 
@@ -161,11 +167,11 @@ export async function fetchFinanceForecast(
   });
 
   const response = await fetch(
-    `${backend.baseUrl}/api/v1/equity/estimates/consensus?${query.toString()}`,
-    {
+    buildOpenBBRequestUrl(normalizedBaseUrl, `/api/v1/equity/estimates/consensus?${query.toString()}`),
+    buildOpenBBRequestInit({
       method: "GET",
       signal,
-    },
+    }),
   );
 
   if (!response.ok) {

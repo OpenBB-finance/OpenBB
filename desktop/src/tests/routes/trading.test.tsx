@@ -408,8 +408,11 @@ describe("Trading Route", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Trading")).toBeInTheDocument();
-      expect(screen.getByText(/Paper-trading operations console/i)).toBeInTheDocument();
+      expect(screen.getByText("Portfolio & Execution")).toBeInTheDocument();
+      expect(screen.getByText(/Unified workflow for signals, pretrade risk, order preview, positions, fills, and broker runtime/i)).toBeInTheDocument();
+      expect(screen.getByText(/Execution Context/i)).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: "Signals" })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: "Brokers" })).toBeInTheDocument();
     });
 
     await waitFor(() => {
@@ -449,11 +452,11 @@ describe("Trading Route", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByDisplayValue("paper")).toBeInTheDocument();
+      expect(screen.getByLabelText(/^Execution Mode$/i)).toBeInTheDocument();
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByDisplayValue("paper"), { target: { value: "shadow_live" } });
+      fireEvent.change(screen.getByLabelText(/^Execution Mode$/i), { target: { value: "shadow_live" } });
     });
 
     await waitFor(() => {

@@ -618,8 +618,8 @@ try {
   $verifyScript = Join-Path $repoAbs "qa/scripts/quant_ml_verify_full.ps1"
   $verifyLog = Join-Path $sessionDir "phase7_verify_full.log"
   $verifyRun = Run-CommandWithLog "phase7_verify_full" `
-    "$verifyScript -SessionId $SessionId -OutputDir $sessionDir -RepoRoot $repoAbs -PythonExe $PythonExe -ApiBaseUrl $ApiBaseUrl" `
-    { & $verifyScript -SessionId $SessionId -OutputDir $sessionDir -RepoRoot $repoAbs -PythonExe $PythonExe -ApiBaseUrl $ApiBaseUrl -DryRun:$DryRun 2>&1 | Tee-Object -FilePath $verifyLog | Out-Host } `
+    "$verifyScript -SessionId $SessionId -OutputDir $sessionDir -RepoRoot $repoAbs -PythonExe $PythonExe -ApiBaseUrl $ApiBaseUrl -IncludeStartupSmoke" `
+    { & $verifyScript -SessionId $SessionId -OutputDir $sessionDir -RepoRoot $repoAbs -PythonExe $PythonExe -ApiBaseUrl $ApiBaseUrl -IncludeStartupSmoke -DryRun:$DryRun 2>&1 | Tee-Object -FilePath $verifyLog | Out-Host } `
     $verifyLog `
     -ExecuteInDryRun
   if (-not $verifyRun.success) {

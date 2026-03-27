@@ -12,6 +12,8 @@ vi.mock("../../../components/finance/TradingViewWidgetEmbed", () => ({
 }));
 
 vi.mock("../../../lib/openbbBackend", () => ({
+  buildOpenBBRequestInit: (init: RequestInit) => init,
+  buildOpenBBRequestUrl: (baseUrl: string, path: string) => `${baseUrl}${path}`,
   resolveOpenBBBackend: vi.fn(async () => ({
     baseUrl: "http://127.0.0.1:6900",
     connected: true,
@@ -38,7 +40,7 @@ describe("FinanceFundamentalsPanel", () => {
     clearFinanceStatementCache();
   });
 
-  test("shows TradingView overview by default", async () => {
+  test("shows TradingView overview by default without preloading financial endpoints", async () => {
     const fetchMock = vi.spyOn(global, "fetch").mockResolvedValue({
       ok: true,
       json: async () => buildEnvelope([{ period_ending: "2025-09-30", total_revenue: 416161000000 }]),
@@ -46,6 +48,7 @@ describe("FinanceFundamentalsPanel", () => {
 
     render(
       <FinanceFundamentalsPanel
+        baseUrl="http://127.0.0.1:6900"
         symbol="NASDAQ:AAPL"
         theme="dark"
         overviewHeight={920}
@@ -54,9 +57,8 @@ describe("FinanceFundamentalsPanel", () => {
 
     expect(screen.getByTestId("tv-fundamental-data")).toHaveAttribute("data-symbol", "NASDAQ:AAPL");
     expect(screen.getByRole("button", { name: "I/S" })).toBeInTheDocument();
-
     await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledTimes(4);
+      expect(fetchMock).not.toHaveBeenCalled();
     });
   });
 
@@ -108,6 +110,7 @@ describe("FinanceFundamentalsPanel", () => {
 
     render(
       <FinanceFundamentalsPanel
+        baseUrl="http://127.0.0.1:6900"
         symbol="NASDAQ:AAPL"
         theme="dark"
         overviewHeight={920}
@@ -159,6 +162,7 @@ describe("FinanceFundamentalsPanel", () => {
 
     render(
       <FinanceFundamentalsPanel
+        baseUrl="http://127.0.0.1:6900"
         symbol="NASDAQ:AAPL"
         theme="dark"
         overviewHeight={920}
@@ -215,6 +219,7 @@ describe("FinanceFundamentalsPanel", () => {
 
     render(
       <FinanceFundamentalsPanel
+        baseUrl="http://127.0.0.1:6900"
         symbol="NASDAQ:AAPL"
         theme="dark"
         overviewHeight={920}

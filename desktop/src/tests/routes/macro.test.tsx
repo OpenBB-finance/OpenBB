@@ -2,305 +2,123 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { vi } from "vitest";
-import { invoke } from "@tauri-apps/api/core";
+import { invalidateMacroCache } from "../../lib/macroApi";
 import { Route as MacroRoute } from "../../routes/macro";
-import { clearCachePrefix } from "../../lib/quantCache";
+
+const backendMock = vi.fn();
 
 vi.mock("@tanstack/react-router", () => ({
-  createFileRoute: vi.fn(() => (options: { component: React.ComponentType }) => ({
-    options: {
-      component: options.component,
+  createFileRoute: vi.fn(
+    () => (options: {
+      component: React.ComponentType;
+    }) => ({
+      options: {
+        component: options.component,
+      },
+    }),
+  ),
+}));
+
+vi.mock("../../lib/openbbBackend", () => ({
+  resolveOpenBBBackend: () => backendMock(),
+  buildOpenBBRequestInit: (init: RequestInit) => init,
+  buildOpenBBRequestUrl: (baseUrl: string, path: string) => `${baseUrl}${path}`,
+}));
+
+vi.mock("../../components/macro/MacroStudyChart", () => ({
+  MacroStudyChart: ({ title }: { title?: string }) => (
+    <div data-testid="macro-study-chart">{title ?? "Macro Study Chart"}</div>
+  ),
+}));
+
+const studyPayload = {
+  id: "study-1",
+  name: "Labor and Inflation Monitor",
+  objective: "Track labor slack, inflation pressure, and policy stance.",
+  series_specs: [
+    {
+      key: "FRED:UNRATE",
+      alias: "Unemployment",
+      transform_chain: [],
+      freq: "M",
+      fill: "ffill",
+      axis: "left",
+      normalize_mode: "raw",
+      lag_mode: null,
+      display_style: "line",
     },
-  })),
-}));
+    {
+      key: "FRED:CPIAUCSL",
+      alias: "CPI",
+      transform_chain: ["yoy"],
+      freq: "M",
+      fill: "ffill",
+      axis: "right",
+      normalize_mode: "yoy",
+      lag_mode: null,
+      display_style: "line",
+    },
+  ],
+  view_specs: [
+    { view_id: "explorer", mode: "explorer", title: "Explorer", layout: {} },
+    { view_id: "compare", mode: "compare", title: "Compare", layout: {} },
+  ],
+  notes: "Initial seed study.",
+  conclusion: {
+    summary: "",
+    thesis: "",
+    risk_cases: [],
+    action_bias: "neutral",
+    confidence: null,
+    next_checks: [],
+  },
+  linked_assets: ["SPY", "TLT", "GLD"],
+  linked_feature_set_id: null,
+  created_at: "2026-03-25T00:00:00Z",
+  updated_at: "2026-03-25T00:00:00Z",
+};
 
-vi.mock("@tauri-apps/api/core", () => ({
-  invoke: vi.fn(),
-}));
-
-function mockResponse(payload: unknown, ok = true, status = 200): Response {
-  return {
-    ok,
-    status,
+function jsonResponse(payload: unknown) {
+  return Promise.resolve({
+    ok: true,
     json: async () => payload,
-  } as Response;
+  });
 }
 
 describe("Macro Route", () => {
   const MacroComponent = MacroRoute.options.component as React.ComponentType;
+  const fetchMock = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
-    clearCachePrefix("");
+    vi.useRealTimers();
+    invalidateMacroCache();
+    backendMock.mockReset();
+    backendMock.mockResolvedValue({
+      connected: true,
+      baseUrl: "http://127.0.0.1:6900",
+      source: "stored-url",
+      detail: "ok",
+    });
 
-    vi.mocked(invoke).mockResolvedValue([
-      {
-        id: "openbb-api",
-        name: "OpenBB API",
-        command: "openbb-api --host 127.0.0.1 --port 6900",
-        status: "running",
-        url: "http://127.0.0.1:6900",
-      },
-    ]);
+    fetchMock.mockReset();
+    global.fetch = fetchMock as unknown as typeof fetch;
 
-    global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
+    fetchMock.mockImplementation((input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
-    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
-        return mockResponse({ results: {} });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/catalog")) {
-        return mockResponse({
-          status: "ok",
-          items: [
-            {
-              id: "FRED:UNRATE",
-              source: "FRED",
-              series_id: "UNRATE",
-              title: "Unemployment Rate",
-              frequency: "M",
-              units: "Percent",
-              domain: "Labor",
-              default_transform: "yoy",
-              publish_lag: 30,
-              active: true,
-            },
-          ],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/series")) {
-        if (url.includes("ids=")) {
-          return mockResponse({
-            status: "ok",
-            message: null,
-            series: {
-              "FRED:UNRATE": {
-                meta: { key: "FRED:UNRATE", source: "FRED", transform: "level" },
-                data: [
-                  { date: "2025-01-31", value: 4.0 },
-                  { date: "2025-02-28", value: 4.1 },
-                ],
-                stats: { last: 4.1 },
-                status: "ok",
-              },
-              "FRED:CPIAUCSL": {
-                meta: { key: "FRED:CPIAUCSL", source: "FRED", transform: "level" },
-                data: [
-                  { date: "2025-01-31", value: 300.0 },
-                  { date: "2025-02-28", value: 301.0 },
-                ],
-                stats: { last: 301.0 },
-                status: "ok",
-              },
-            },
-          });
-        }
-        return mockResponse({
-          meta: {
-            key: "FRED:UNRATE",
-            title: "Unemployment Rate",
-            units: "Percent",
-            frequency: "monthly",
-            source: "FRED",
-            transform: "level",
-            lag_applied: "P1M",
-          },
-          data: [
-            { date: "2025-01-31", value: 4.0 },
-            { date: "2025-02-28", value: 4.1 },
-          ],
-          stats: {
-            last: 4.1,
-            change_1m: 0.1,
-            change_3m: 0.2,
-            z: 0.4,
-            percentile_5y: 0.66,
-          },
-          status: "ok",
-          message: null,
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/expression")) {
-        const body = init?.body ? JSON.parse(String(init.body)) : {};
-        return mockResponse({
-          meta: {
-            key: String(body.expr || "expr"),
-            source: "expression",
-            transform: "level",
-          },
-          data: [
-            { date: "2025-01-31", value: 1.0 },
-            { date: "2025-02-28", value: 1.1 },
-          ],
-          stats: {
-            last: 1.1,
-            change_1m: 0.1,
-            change_3m: 0.2,
-            z: 0.3,
-            percentile_5y: 0.7,
-          },
-          status: "ok",
-          message: null,
-          dependencies: ["GLD", "SPY"],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/ratio")) {
-        return mockResponse({
-          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
-          data: [
-            { date: "2025-01-31", value: 1.2 },
-            { date: "2025-02-28", value: 1.25 },
-          ],
-          stats: { last: 1.25, change_1m: 0.05, change_3m: 0.1, z: 0.2, percentile_5y: 0.6 },
-          status: "ok",
-          message: null,
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
-        return mockResponse({
-          meta: { key: "rolling_corr(GLD,SPY,60)", source: "expression", transform: "level" },
-          data: [
-            { date: "2025-01-31", value: 0.8 },
-            { date: "2025-02-28", value: 0.82 },
-          ],
-          stats: { last: 0.82, change_1m: 0.02, change_3m: 0.03, z: 0.1, percentile_5y: 0.5 },
-          status: "ok",
-          message: null,
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/regime")) {
-        return mockResponse({
-          status: "ok",
-          data: [
-            {
-              date: "2025-02-28",
-              risk_on_score: 55,
-              inflation_score: 48,
-              growth_score: 52,
-              liquidity_score: 50,
-              credit_stress_score: 42,
-            },
-          ],
-          latest: {
-            date: "2025-02-28",
-            risk_on_score: 55,
-            inflation_score: 48,
-            growth_score: 52,
-            liquidity_score: 50,
-            credit_stress_score: 42,
-          },
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/alerts")) {
-        return mockResponse({
-          status: "ok",
-          current: [],
-          history: [],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/derived")) {
-        return mockResponse({
-          status: "ok",
-          items: [],
-        });
-      }
+      const method = init?.method ?? "GET";
+
       if (url.includes("/api/v1/quant_ml/macro/health")) {
-        return mockResponse({
+        return jsonResponse({
           status: "ok",
           fred_api_key_configured: true,
           macro_db_path: "/tmp/macro.db",
-          obs_stats: { total_series_in_catalog: 1, total_series_with_obs: 1 },
-          feature_stats: { total_feature_rows: 10, feature_names_present: [] },
+          obs_stats: {},
+          feature_stats: {},
           warnings: [],
         });
       }
-      if (url.includes("/api/v1/quant_ml/macro/update")) {
-        return mockResponse({
-          status: "ok",
-          updated_series: ["UNRATE"],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
-        return mockResponse({
-          status: "ok",
-          message: null,
-          preset_id: "copper_gold",
-          inputs: {},
-          series: [],
-          events: [],
-        });
-      }
-      if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
-        return mockResponse({ detail: "fallback" }, false, 404);
-      }
-      return mockResponse({ detail: "not-found" }, false, 404);
-    }) as unknown as typeof fetch;
-  });
-
-  test("renders macro page and loads default data", async () => {
-    await act(async () => {
-      render(<MacroComponent />);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText("Macro")).toBeInTheDocument();
-      expect(screen.getByText("Catalog")).toBeInTheDocument();
-      expect(screen.getByText("Cross-Asset Relationship")).toBeInTheDocument();
-      expect(screen.getByText("Current Cycle Level")).toBeInTheDocument();
-    });
-
-    const desktopTabs = document
-      .querySelector('[data-testid="macro-preset-tabs-desktop"]')
-      ?.querySelectorAll('[data-testid^="macro-preset-tab-"]');
-    const mobileTabs = document
-      .querySelector('[data-testid="macro-preset-tabs-mobile"]')
-      ?.querySelectorAll('[data-testid^="macro-preset-tab-"]');
-    expect(desktopTabs?.length).toBe(12);
-    expect(mobileTabs?.length).toBe(12);
-    expect(screen.getByTestId("cycle-level-state")).toHaveTextContent(
-      "Transition",
-    );
-    expect(screen.getByTestId("cycle-level-score")).toHaveTextContent("53.4");
-  });
-
-  test("runs expression execute action", async () => {
-    await act(async () => {
-      render(<MacroComponent />);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Execute/i })).toBeInTheDocument();
-    });
-
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/Expression/i), { target: { value: "GLD/SPY" } });
-      fireEvent.click(screen.getByRole("button", { name: /Execute/i }));
-    });
-
-    await waitFor(() => {
-      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
-      expect(calls.some((url) => url.includes("/api/v1/quant_ml/macro/expression"))).toBe(true);
-    });
-  });
-
-  test("requests multi-series comparison payload", async () => {
-    await act(async () => {
-      render(<MacroComponent />);
-    });
-
-    await waitFor(() => {
-      const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
-      expect(calls.some((url) => url.includes("/api/v1/quant_ml/macro/series?ids="))).toBe(true);
-    });
-  });
-
-  test("does not crash when expression response omits data on insufficient_data", async () => {
-    global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
-      const url = String(input);
-    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
-        return mockResponse({ results: {} });
-      }
       if (url.includes("/api/v1/quant_ml/macro/catalog")) {
-        return mockResponse({
+        return jsonResponse({
           status: "ok",
           items: [
             {
@@ -308,330 +126,224 @@ describe("Macro Route", () => {
               source: "FRED",
               series_id: "UNRATE",
               title: "Unemployment Rate",
-              frequency: "M",
-              units: "Percent",
-              domain: "Labor",
-              default_transform: "yoy",
+              frequency: "monthly",
+              units: "%",
+              domain: "labor",
+              default_transform: "level",
               publish_lag: 30,
+              notes: null,
               active: true,
+              tags: ["labor", "fred"],
+              last_obs: "2026-02-28",
+              stale_days: 10,
+              release_frequency: "monthly",
+              default_view: "explorer",
+              vintage_available: true,
             },
           ],
         });
       }
-      if (url.includes("/api/v1/quant_ml/macro/series")) {
-        if (url.includes("ids=")) {
-          return mockResponse({
-            status: "insufficient_data",
-            message: "No comparison data",
-            series: {},
-          });
-        }
-        return mockResponse({
-          meta: {
-            key: "FRED:UNRATE",
-            source: "FRED",
-            transform: "level",
+      if (url.includes("/api/v1/quant_ml/macro/studies") && method === "GET") {
+        return jsonResponse({ status: "ok", items: [studyPayload] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/releases/calendar")) {
+        return jsonResponse({
+          status: "ok",
+          items: [
+            {
+              key: "FRED:UNRATE",
+              title: "Unemployment Rate",
+              domain: "labor",
+              release_frequency: "monthly",
+              last_obs: "2026-02-28",
+              stale_days: 10,
+              estimated_next_release: "2026-04-05",
+              vintage_available: true,
+            },
+          ],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/analysis/compare")) {
+        return jsonResponse({
+          status: "ok",
+          normalization: "raw",
+          series: {
+            "FRED:UNRATE": {
+              meta: { key: "FRED:UNRATE", title: "Unemployment", source: "FRED", transform: "raw" },
+              data: [
+                { date: "2026-01-31", value: 4.1 },
+                { date: "2026-02-28", value: 4.2 },
+              ],
+              stats: { last: 4.2 },
+              status: "ok",
+            },
           },
-          status: "ok",
-          data: [{ date: "2025-01-31", value: 4.0 }],
-          stats: { last: 4.0 },
         });
       }
-      if (url.includes("/api/v1/quant_ml/macro/expression")) {
-        const body = init?.body ? JSON.parse(String(init.body)) : {};
-        return mockResponse({
-          meta: {
-            key: String(body.expr || "expr"),
-            source: "expression",
-            transform: "level",
+      if (url.includes("/api/v1/quant_ml/macro/analysis/leadlag")) {
+        return jsonResponse({
+          status: "ok",
+          lhs: "FRED:UNRATE",
+          rhs: "FRED:CPIAUCSL",
+          best_lag: -1,
+          best_correlation: 0.42,
+          table: [{ lag: -1, correlation: 0.42 }, { lag: 0, correlation: 0.2 }],
+          rolling_corr: [{ date: "2026-02-28", value: 0.2 }],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/analysis/scatter")) {
+        return jsonResponse({
+          status: "ok",
+          lhs: "FRED:UNRATE",
+          rhs: "FRED:CPIAUCSL",
+          correlation: -0.3,
+          slope: -0.5,
+          intercept: 3.1,
+          points: [{ date: "2026-02-28", x: 4.2, y: 2.8 }],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/regime?")) {
+        return jsonResponse({
+          status: "ok",
+          latest: {
+            date: "2026-02-28",
+            risk_on_score: 68,
+            inflation_score: 42,
+            growth_score: 61,
+            liquidity_score: 57,
+            credit_stress_score: 35,
           },
-          status: "insufficient_data",
-          message: "No market observations found for symbol: GLD",
-          dependencies: [],
+          data: [
+            {
+              date: "2026-01-31",
+              risk_on_score: 61,
+              inflation_score: 47,
+              growth_score: 55,
+              liquidity_score: 52,
+              credit_stress_score: 38,
+            },
+            {
+              date: "2026-02-07",
+              risk_on_score: 63,
+              inflation_score: 45,
+              growth_score: 57,
+              liquidity_score: 54,
+              credit_stress_score: 37,
+            },
+            {
+              date: "2026-02-14",
+              risk_on_score: 64,
+              inflation_score: 44,
+              growth_score: 58,
+              liquidity_score: 55,
+              credit_stress_score: 36,
+            },
+            {
+              date: "2026-02-21",
+              risk_on_score: 66,
+              inflation_score: 43,
+              growth_score: 59,
+              liquidity_score: 56,
+              credit_stress_score: 35,
+            },
+            {
+              date: "2026-02-28",
+              risk_on_score: 68,
+              inflation_score: 42,
+              growth_score: 61,
+              liquidity_score: 57,
+              credit_stress_score: 35,
+            },
+          ],
         });
       }
-      if (url.includes("/api/v1/quant_ml/market/ratio")) {
-        return mockResponse({
-          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
-          status: "insufficient_data",
-          message: "No market observations found",
-          data: [],
-          stats: {},
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
-        return mockResponse({
-          meta: { key: "rolling_corr(GLD,SPY,60)", source: "expression", transform: "level" },
-          status: "insufficient_data",
-          message: "No market observations found",
-          data: [],
-          stats: {},
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/regime")) {
-        return mockResponse({ status: "insufficient_data", data: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/alerts")) {
-        return mockResponse({ status: "insufficient_data", current: [], history: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/derived")) {
-        return mockResponse({ status: "ok", items: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/health")) {
-        return mockResponse({
+      if (url.endsWith("/api/v1/quant_ml/macro/regime")) {
+        return jsonResponse({
           status: "ok",
-          fred_api_key_configured: false,
-          macro_db_path: "/tmp/macro.db",
-          obs_stats: { total_series_in_catalog: 0, total_series_with_obs: 0 },
-          feature_stats: { total_feature_rows: 0, feature_names_present: [] },
-          warnings: ["FRED_API_KEY missing"],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
-        return mockResponse({
-          status: "insufficient_data",
-          message: "No preset data",
-          preset_id: "copper_gold",
-          inputs: {},
-          series: [],
-          events: [],
-        });
-      }
-      if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
-        return mockResponse({ detail: "fallback" }, false, 404);
-      }
-      return mockResponse({ detail: "not-found" }, false, 404);
-    }) as unknown as typeof fetch;
-
-    await act(async () => {
-      render(<MacroComponent />);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText("Macro")).toBeInTheDocument();
-      expect(screen.getAllByText("No data").length).toBeGreaterThan(0);
-    });
-  });
-
-  test("caps cycle level to transition when risk-off and growth-down flags are on", async () => {
-    global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
-      const url = String(input);
-    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
-        return mockResponse({ results: {} });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/catalog")) {
-        return mockResponse({
-          status: "ok",
-          items: [],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/series")) {
-        if (url.includes("ids=")) {
-          return mockResponse({ status: "ok", series: {} });
-        }
-        return mockResponse({
-          meta: {
-            key: "FRED:UNRATE",
-            source: "FRED",
-            transform: "level",
-          },
-          status: "ok",
-          data: [{ date: "2025-01-31", value: 4.0 }],
-          stats: { last: 4.0 },
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/expression")) {
-        const body = init?.body ? JSON.parse(String(init.body)) : {};
-        return mockResponse({
-          meta: {
-            key: String(body.expr || "expr"),
-            source: "expression",
-            transform: "level",
-          },
-          data: [{ date: "2025-01-31", value: 1.0 }],
-          stats: { last: 1.0 },
-          status: "ok",
-          dependencies: [],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/ratio")) {
-        return mockResponse({
-          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
-          data: [{ date: "2025-01-31", value: 1.2 }],
-          stats: { last: 1.2 },
-          status: "ok",
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
-        return mockResponse({
-          meta: { key: "rolling_corr(GLD,SPY,60)", source: "expression", transform: "level" },
-          data: [{ date: "2025-01-31", value: 0.8 }],
-          stats: { last: 0.8 },
-          status: "ok",
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/regime?date=")) {
-        return mockResponse({
-          status: "ok",
-          date: "2025-02-28",
+          date: "2026-02-28",
           inflation_up: false,
-          growth_down: true,
-          risk_off_proxy: true,
+          growth_down: false,
+          risk_off_proxy: false,
         });
       }
-      if (url.includes("/api/v1/quant_ml/macro/regime")) {
-        return mockResponse({
+      if (url.includes("/api/v1/quant_ml/macro/studies/study-1") && method === "PUT") {
+        return jsonResponse({ status: "ok", items: [{ ...studyPayload, conclusion: { ...studyPayload.conclusion, summary: "Updated summary" } }] });
+      }
+      if (url.includes("/api/v1/quant_ml/macro/report")) {
+        return jsonResponse({
           status: "ok",
-          data: [
-            {
-              date: "2025-02-28",
-              risk_on_score: 80,
-              inflation_score: 25,
-              growth_score: 78,
-              liquidity_score: 75,
-              credit_stress_score: 20,
-            },
-          ],
-          latest: {
-            date: "2025-02-28",
-            risk_on_score: 80,
-            inflation_score: 25,
-            growth_score: 78,
-            liquidity_score: 75,
-            credit_stress_score: 20,
-          },
+          study_id: "study-1",
+          report_path: "C:/reports/study-1.html",
+          generated_at: "2026-03-25T01:00:00Z",
         });
       }
-      if (url.includes("/api/v1/quant_ml/macro/alerts")) {
-        return mockResponse({ status: "ok", current: [], history: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/derived")) {
-        return mockResponse({ status: "ok", items: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/health")) {
-        return mockResponse({
+      if (url.includes("/api/v1/quant_ml/macro/features/export")) {
+        return jsonResponse({
           status: "ok",
-          fred_api_key_configured: true,
-          macro_db_path: "/tmp/macro.db",
-          obs_stats: { total_series_in_catalog: 1, total_series_with_obs: 1 },
-          feature_stats: { total_feature_rows: 10, feature_names_present: [] },
-          warnings: [],
+          study_id: "study-1",
+          artifact_path: "C:/exports/study-1.json",
+          exported_at: "2026-03-25T01:00:00Z",
+          items: [],
         });
       }
-      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
-        return mockResponse({
-          status: "ok",
-          message: null,
-          preset_id: "copper_gold",
-          inputs: {},
-          series: [],
-          events: [],
-        });
-      }
-      if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
-        return mockResponse({ detail: "fallback" }, false, 404);
-      }
-      return mockResponse({ detail: "not-found" }, false, 404);
-    }) as unknown as typeof fetch;
 
-    await act(async () => {
-      render(<MacroComponent />);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByTestId("cycle-level-state")).toHaveTextContent(
-        "Transition",
-      );
-      expect(screen.getByTestId("cycle-level-score")).toHaveTextContent("78.0");
+      return jsonResponse({});
     });
   });
 
-  test("renders cycle level no-data state when regime is unavailable", async () => {
-    global.fetch = vi.fn(async (input: string | URL) => {
-      const url = String(input);
-    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
-        return mockResponse({ results: {} });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/catalog")) {
-        return mockResponse({ status: "ok", items: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/series")) {
-        return mockResponse({
-          meta: { key: "FRED:UNRATE", source: "FRED", transform: "level" },
-          status: "insufficient_data",
-          data: [],
-          stats: {},
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/expression")) {
-        return mockResponse({
-          meta: { key: "expr", source: "expression", transform: "level" },
-          status: "insufficient_data",
-          data: [],
-          stats: {},
-          dependencies: [],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/ratio")) {
-        return mockResponse({
-          meta: { key: "GLD/SPY", source: "expression", transform: "level" },
-          status: "insufficient_data",
-          data: [],
-          stats: {},
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/market/rolling_corr")) {
-        return mockResponse({
-          meta: { key: "corr", source: "expression", transform: "level" },
-          status: "insufficient_data",
-          data: [],
-          stats: {},
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/regime")) {
-        return mockResponse({
-          status: "insufficient_data",
-          data: [],
-          latest: null,
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/alerts")) {
-        return mockResponse({ status: "ok", current: [], history: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/derived")) {
-        return mockResponse({ status: "ok", items: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/health")) {
-        return mockResponse({
-          status: "ok",
-          fred_api_key_configured: true,
-          macro_db_path: "/tmp/macro.db",
-          obs_stats: { total_series_in_catalog: 1, total_series_with_obs: 0 },
-          feature_stats: { total_feature_rows: 0, feature_names_present: [] },
-          warnings: [],
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/macro/presets/copper_gold")) {
-        return mockResponse({
-          status: "insufficient_data",
-          preset_id: "copper_gold",
-          inputs: {},
-          series: [],
-          events: [],
-        });
-      }
-      if (url.endsWith("/openapi.json") || url.endsWith("/docs")) {
-        return mockResponse({ detail: "fallback" }, false, 404);
-      }
-      return mockResponse({ detail: "not-found" }, false, 404);
-    }) as unknown as typeof fetch;
-
-    await act(async () => {
-      render(<MacroComponent />);
-    });
+  test("renders Macro Lab and loads the seed study", async () => {
+    render(<MacroComponent />);
 
     await waitFor(() => {
-      expect(screen.getByTestId("cycle-level-state")).toHaveTextContent("No data");
+      expect(screen.getByRole("heading", { name: "Macro Lab", level: 1 })).toBeInTheDocument();
+    });
+    expect(screen.getByLabelText(/Study Name/i)).toHaveValue("Labor and Inflation Monitor");
+    expect(screen.getByText("Study Basket")).toBeInTheDocument();
+    expect(screen.getAllByText("Unemployment Rate").length).toBeGreaterThan(0);
+    expect(screen.getByText("Regime Summary")).toBeInTheDocument();
+    expect(screen.getByTestId("macro-cycle-level-score")).toHaveTextContent("62.6");
+  });
+
+  test("autosaves conclusion edits", async () => {
+    render(<MacroComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Conclusion Summary/i)).toBeInTheDocument();
+    });
+
+    vi.useFakeTimers();
+    try {
+      fireEvent.change(screen.getByLabelText(/Conclusion Summary/i), {
+        target: { value: "Updated summary" },
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(1_100);
+        await Promise.resolve();
+      });
+
+      expect(
+        fetchMock.mock.calls.some(([url, init]) =>
+          String(url).includes("/api/v1/quant_ml/macro/studies/study-1") &&
+          (init as RequestInit | undefined)?.method === "PUT",
+        ),
+      ).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  test("exports feature lineage and shows the artifact path", async () => {
+    render(<MacroComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Export Feature Lineage/i })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Export Feature Lineage/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("C:/exports/study-1.json")).toBeInTheDocument();
     });
   });
 });

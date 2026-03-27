@@ -207,7 +207,7 @@ We encourage independent extensions to be shared with the community by publishin
 #### Using Poetry
 
 Ensure you're in a fresh conda environment before adjusting dependencies.
-Dependencies are manages with `poetry`. Install poetry with `pip install poetry`
+Dependencies are managed with `poetry`, and `poetry.lock` remains the source of truth. For local development bootstrap, prefer `uv` plus `dev_install.py` over manual Poetry setup.
 
 - **Add a Dependency**: `poetry add <my-dependency>`
 - **Update Dependencies**:
@@ -221,11 +221,19 @@ Dependencies are manages with `poetry`. Install poetry with `pip install poetry`
 
 For development setup, use the provided script to install all extensions and their dependencies:
 
-- From the root of the repo call `python dev_install.py --extras`
+- From the repository root, create `.venv` with `uv venv .venv --python 3.11`
+- Install from the repo `.venv`:
+  - Windows: `.\.venv\Scripts\python.exe openbb_platform/dev_install.py --extras --bootstrap-installer uv`
+  - Unix: `./.venv/bin/python openbb_platform/dev_install.py --extras --bootstrap-installer uv`
 
 `dev_install.py` now bootstraps required helper modules such as `tomlkit` and `poetry` automatically. It is fail-fast: if installation cannot be completed, the script restores temporary file changes and exits non-zero.
 
-After installation, resolve the canonical interpreter with `python ../qa/scripts/resolve_python.py ..` and use that interpreter for `pytest`, local integration gates, and other QA commands.
+Fallback path:
+
+- create `.venv` with `python -m venv .venv`
+- run the same install command with `--bootstrap-installer pip`
+
+After installation, resolve the canonical interpreter with `python qa/scripts/resolve_python.py .` and use that interpreter for `pytest`, local integration gates, and other QA commands.
 
 > **Note**: If developing an extension, you can avoid installing all extensions to prevent unnecessary overhead.
 

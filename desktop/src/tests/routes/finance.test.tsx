@@ -14,6 +14,7 @@ vi.mock("@tanstack/react-router", () => ({
       validateSearch: options.validateSearch,
     },
   })),
+  useNavigate: vi.fn(() => vi.fn()),
 }));
 
 vi.mock("../../components/finance/TradingViewWidgetEmbed", () => ({
@@ -57,9 +58,9 @@ describe("Finance Route", () => {
   test("renders finance route smoke view", () => {
     render(<FinanceComponent />);
 
-    expect(screen.getByText("Finance")).toBeInTheDocument();
+    expect(screen.getByText("Symbol Lab")).toBeInTheDocument();
     expect(
-      screen.getByText(/TradingView-backed chart and company fundamentals\./i),
+      screen.getByText(/Symbol drilldown for macro-linked assets, strategy signals, and execution candidates\./i),
     ).toBeInTheDocument();
     expect(screen.getByLabelText(/Ticker \/ TV Symbol/i)).toHaveValue("NASDAQ:AAPL");
     expect(screen.getByLabelText(/Chart Symbol Search/i)).toHaveValue("NASDAQ:AAPL");

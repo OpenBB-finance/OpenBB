@@ -104,6 +104,68 @@ def init_macro_db() -> None:
 
             CREATE INDEX IF NOT EXISTS idx_macro_alert_events_ts
               ON macro_alert_events(triggered_at DESC);
+
+            CREATE TABLE IF NOT EXISTS macro_studies (
+              id TEXT PRIMARY KEY,
+              name TEXT NOT NULL,
+              objective TEXT,
+              conclusion_json TEXT,
+              linked_assets_json TEXT,
+              linked_feature_set_id TEXT,
+              created_at TEXT NOT NULL,
+              updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS macro_study_series (
+              study_id TEXT NOT NULL,
+              position INTEGER NOT NULL,
+              key TEXT NOT NULL,
+              alias TEXT,
+              transform_chain_json TEXT,
+              freq TEXT,
+              fill TEXT,
+              axis TEXT,
+              normalize_mode TEXT,
+              lag_mode TEXT,
+              display_style TEXT,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (study_id, position) ON CONFLICT REPLACE
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_macro_study_series_key
+              ON macro_study_series(study_id, key);
+
+            CREATE TABLE IF NOT EXISTS macro_study_views (
+              study_id TEXT NOT NULL,
+              view_id TEXT NOT NULL,
+              mode TEXT NOT NULL,
+              title TEXT,
+              layout_json TEXT,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (study_id, view_id) ON CONFLICT REPLACE
+            );
+
+            CREATE TABLE IF NOT EXISTS macro_study_notes (
+              study_id TEXT NOT NULL,
+              note_type TEXT NOT NULL,
+              body TEXT,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (study_id, note_type) ON CONFLICT REPLACE
+            );
+
+            CREATE TABLE IF NOT EXISTS macro_study_reports (
+              study_id TEXT NOT NULL,
+              report_id INTEGER,
+              title TEXT,
+              report_path TEXT NOT NULL,
+              created_at TEXT,
+              source_run_id TEXT,
+              symbols_json TEXT,
+              PRIMARY KEY (study_id, report_path) ON CONFLICT REPLACE
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_macro_study_reports_study
+              ON macro_study_reports(study_id, created_at DESC);
             """
         )
         conn.commit()
@@ -256,6 +318,64 @@ def load_observations(
     return [dict(row) for row in rows]
 
 
+def load_observations_asof(
+    source: str,
+    series_id: str,
+    as_of_date: str,
+    start: str | None = None,
+    end: str | None = None,
+) -> list[dict[str, Any]]:
+    """Load observations as they were known at a given as-of date."""
+    init_macro_db()
+    start_safe = start or "1900-01-01"
+    end_safe = end or "9999-12-31"
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT date, value, realtime_start, realtime_end, fetched_at
+            FROM (
+              SELECT
+                date,
+                value,
+                realtime_start,
+                realtime_end,
+                fetched_at,
+                ROW_NUMBER() OVER (
+                  PARTITION BY date
+                  ORDER BY COALESCE(realtime_start, '1900-01-01') DESC, fetched_at DESC
+                ) AS rn
+              FROM macro_obs
+              WHERE source = ? AND series_id = ? AND date >= ? AND date <= ?
+                AND (realtime_start IS NULL OR realtime_start <= ?)
+            ) x
+            WHERE rn = 1
+            ORDER BY date
+            """,
+            (source, series_id, start_safe, end_safe, as_of_date),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def load_observation_vintages(
+    source: str,
+    series_id: str,
+    obs_date: str,
+) -> list[dict[str, Any]]:
+    """Return all stored vintages for one observation date."""
+    init_macro_db()
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT date, value, realtime_start, realtime_end, fetched_at
+            FROM macro_obs
+            WHERE source = ? AND series_id = ? AND date = ?
+            ORDER BY COALESCE(realtime_start, '') ASC, fetched_at ASC
+            """,
+            (source, series_id, obs_date),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
 def get_obs_date_bounds(source: str, series_id: str) -> tuple[str | None, str | None]:
     """Return min/max date for stored observations."""
     init_macro_db()
@@ -267,6 +387,77 @@ def get_obs_date_bounds(source: str, series_id: str) -> tuple[str | None, str | 
     if not row:
         return None, None
     return row["min_date"], row["max_date"]
+
+
+def get_obs_summary(source: str, series_id: str) -> dict[str, Any]:
+    """Return freshness and vintage coverage summary for a series."""
+    init_macro_db()
+    with get_connection() as conn:
+        row = conn.execute(
+            """
+            SELECT
+              MIN(date) AS first_obs,
+              MAX(date) AS last_obs,
+              MAX(fetched_at) AS last_fetched_at,
+              COUNT(*) AS total_rows,
+              COUNT(DISTINCT date) AS distinct_dates,
+              CASE WHEN COUNT(*) > COUNT(DISTINCT date) THEN 1 ELSE 0 END AS vintage_available
+            FROM macro_obs
+            WHERE source = ? AND series_id = ?
+            """,
+            (source, series_id),
+        ).fetchone()
+    return dict(row) if row else {}
+
+
+def get_obs_summaries(
+    series_pairs: list[tuple[str, str]],
+) -> dict[tuple[str, str], dict[str, Any]]:
+    """Return freshness/vintage summaries for multiple series in one query."""
+    normalized_pairs: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for source, series_id in series_pairs:
+        key = (str(source or "").strip(), str(series_id or "").strip())
+        if not key[0] or not key[1] or key in seen:
+            continue
+        normalized_pairs.append(key)
+        seen.add(key)
+
+    if not normalized_pairs:
+        return {}
+
+    init_macro_db()
+    values_sql = ",".join("(?, ?)" for _ in normalized_pairs)
+    params: list[str] = [item for pair in normalized_pairs for item in pair]
+    query = f"""
+        WITH requested(source, series_id) AS (
+          VALUES {values_sql}
+        )
+        SELECT
+          requested.source AS source,
+          requested.series_id AS series_id,
+          MIN(mo.date) AS first_obs,
+          MAX(mo.date) AS last_obs,
+          MAX(mo.fetched_at) AS last_fetched_at,
+          COUNT(mo.date) AS total_rows,
+          COUNT(DISTINCT mo.date) AS distinct_dates,
+          CASE
+            WHEN COUNT(mo.date) > COUNT(DISTINCT mo.date) THEN 1
+            ELSE 0
+          END AS vintage_available
+        FROM requested
+        LEFT JOIN macro_obs mo
+          ON mo.source = requested.source
+         AND mo.series_id = requested.series_id
+        GROUP BY requested.source, requested.series_id
+    """
+    with get_connection() as conn:
+        rows = conn.execute(query, params).fetchall()
+
+    return {
+        (str(row["source"]), str(row["series_id"])): dict(row)
+        for row in rows
+    }
 
 
 def upsert_macro_features(
@@ -492,3 +683,261 @@ def list_alert_events(limit: int = 200) -> list[dict[str, Any]]:
                 item["context"] = {}
         out.append(item)
     return out
+
+
+def _json_default(value: Any, fallback: Any) -> Any:
+    if value is None:
+        return fallback
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return fallback
+    return value
+
+
+def save_macro_study(study: dict[str, Any]) -> dict[str, Any]:
+    """Persist a macro study payload."""
+    init_macro_db()
+    study_id = str(study.get("id") or uuid4().hex)
+    now = utc_now_iso()
+    created_at = str(study.get("created_at") or now)
+    series_specs = study.get("series_specs") or []
+    view_specs = study.get("view_specs") or []
+    notes = str(study.get("notes") or "")
+    linked_reports = study.get("linked_reports")
+
+    with get_connection() as conn:
+        conn.execute(
+            """
+            INSERT INTO macro_studies(
+              id, name, objective, conclusion_json, linked_assets_json, linked_feature_set_id, created_at, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+              name=excluded.name,
+              objective=excluded.objective,
+              conclusion_json=excluded.conclusion_json,
+              linked_assets_json=excluded.linked_assets_json,
+              linked_feature_set_id=excluded.linked_feature_set_id,
+              updated_at=excluded.updated_at
+            """,
+            (
+                study_id,
+                str(study.get("name") or "Untitled Study"),
+                str(study.get("objective") or ""),
+                json.dumps(study.get("conclusion") or {}, ensure_ascii=False),
+                json.dumps(study.get("linked_assets") or [], ensure_ascii=False),
+                study.get("linked_feature_set_id"),
+                created_at,
+                now,
+            ),
+        )
+        conn.execute("DELETE FROM macro_study_series WHERE study_id = ?", (study_id,))
+        for position, spec in enumerate(series_specs):
+            item = dict(spec)
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO macro_study_series(
+                  study_id, position, key, alias, transform_chain_json, freq, fill, axis,
+                  normalize_mode, lag_mode, display_style, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    study_id,
+                    position,
+                    str(item.get("key") or ""),
+                    item.get("alias"),
+                    json.dumps(item.get("transform_chain") or [], ensure_ascii=False),
+                    item.get("freq"),
+                    item.get("fill"),
+                    item.get("axis"),
+                    item.get("normalize_mode"),
+                    item.get("lag_mode"),
+                    item.get("display_style"),
+                    now,
+                ),
+            )
+
+        conn.execute("DELETE FROM macro_study_views WHERE study_id = ?", (study_id,))
+        for view in view_specs:
+            item = dict(view)
+            view_id = str(item.get("view_id") or uuid4().hex)
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO macro_study_views(
+                  study_id, view_id, mode, title, layout_json, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    study_id,
+                    view_id,
+                    str(item.get("mode") or "explorer"),
+                    item.get("title"),
+                    json.dumps(item.get("layout") or {}, ensure_ascii=False),
+                    now,
+                ),
+            )
+
+        conn.execute(
+            """
+            INSERT OR REPLACE INTO macro_study_notes(study_id, note_type, body, updated_at)
+            VALUES (?, 'draft', ?, ?)
+            """,
+            (study_id, notes, now),
+        )
+        if linked_reports is not None:
+            conn.execute("DELETE FROM macro_study_reports WHERE study_id = ?", (study_id,))
+            for attachment in linked_reports:
+                item = dict(attachment)
+                report_path = str(item.get("report_path") or "").strip()
+                if not report_path:
+                    continue
+                conn.execute(
+                    """
+                    INSERT OR REPLACE INTO macro_study_reports(
+                      study_id, report_id, title, report_path, created_at, source_run_id, symbols_json
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        study_id,
+                        item.get("report_id"),
+                        item.get("title"),
+                        report_path,
+                        item.get("created_at"),
+                        item.get("source_run_id"),
+                        json.dumps(item.get("symbols") or [], ensure_ascii=False),
+                    ),
+                )
+        conn.commit()
+
+    saved = get_macro_study(study_id)
+    if saved is None:
+        raise RuntimeError(f"Failed to load saved study: {study_id}")
+    return saved
+
+
+def get_macro_study(study_id: str) -> dict[str, Any] | None:
+    """Load one macro study object."""
+    init_macro_db()
+    with get_connection() as conn:
+        head = conn.execute("SELECT * FROM macro_studies WHERE id = ?", (study_id,)).fetchone()
+        if not head:
+            return None
+        series_rows = conn.execute(
+            "SELECT * FROM macro_study_series WHERE study_id = ? ORDER BY position ASC",
+            (study_id,),
+        ).fetchall()
+        view_rows = conn.execute(
+            "SELECT * FROM macro_study_views WHERE study_id = ? ORDER BY view_id ASC",
+            (study_id,),
+        ).fetchall()
+        note_row = conn.execute(
+            "SELECT body FROM macro_study_notes WHERE study_id = ? AND note_type = 'draft'",
+            (study_id,),
+        ).fetchone()
+        report_rows = conn.execute(
+            "SELECT * FROM macro_study_reports WHERE study_id = ? ORDER BY created_at DESC, report_path ASC",
+            (study_id,),
+        ).fetchall()
+
+    item = dict(head)
+    return {
+        "id": item["id"],
+        "name": item.get("name") or "Untitled Study",
+        "objective": item.get("objective") or "",
+        "series_specs": [
+            {
+                "key": row["key"],
+                "alias": row["alias"],
+                "transform_chain": _json_default(row["transform_chain_json"], []),
+                "freq": row["freq"] or "native",
+                "fill": row["fill"] or "ffill",
+                "axis": row["axis"] or "left",
+                "normalize_mode": row["normalize_mode"] or "raw",
+                "lag_mode": row["lag_mode"],
+                "display_style": row["display_style"] or "line",
+            }
+            for row in series_rows
+        ],
+        "view_specs": [
+            {
+                "view_id": row["view_id"],
+                "mode": row["mode"],
+                "title": row["title"],
+                "layout": _json_default(row["layout_json"], {}),
+            }
+            for row in view_rows
+        ],
+        "notes": note_row["body"] if note_row else "",
+        "conclusion": _json_default(item.get("conclusion_json"), {}),
+        "linked_assets": _json_default(item.get("linked_assets_json"), []),
+        "linked_reports": [
+            {
+                "report_id": row["report_id"],
+                "title": row["title"],
+                "report_path": row["report_path"],
+                "created_at": row["created_at"],
+                "source_run_id": row["source_run_id"],
+                "symbols": _json_default(row["symbols_json"], []),
+            }
+            for row in report_rows
+        ],
+        "linked_feature_set_id": item.get("linked_feature_set_id"),
+        "created_at": item.get("created_at"),
+        "updated_at": item.get("updated_at"),
+    }
+
+
+def list_macro_studies() -> list[dict[str, Any]]:
+    """List macro studies ordered by latest update."""
+    init_macro_db()
+    with get_connection() as conn:
+        rows = conn.execute(
+            "SELECT id FROM macro_studies ORDER BY updated_at DESC, name ASC"
+        ).fetchall()
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        item = get_macro_study(str(row["id"]))
+        if item is not None:
+            out.append(item)
+    return out
+
+
+def attach_report_to_macro_study(
+    study_id: str,
+    *,
+    report_id: int | None,
+    title: str | None,
+    report_path: str,
+    created_at: str | None,
+    source_run_id: str | None = None,
+    symbols: list[str] | None = None,
+) -> dict[str, Any] | None:
+    """Attach one report artifact to a study."""
+    init_macro_db()
+    if not get_macro_study(study_id):
+        return None
+    with get_connection() as conn:
+        conn.execute(
+            """
+            INSERT OR REPLACE INTO macro_study_reports(
+              study_id, report_id, title, report_path, created_at, source_run_id, symbols_json
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                study_id,
+                report_id,
+                title,
+                str(report_path),
+                created_at or utc_now_iso(),
+                source_run_id,
+                json.dumps(symbols or [], ensure_ascii=False),
+            ),
+        )
+        conn.execute(
+            "UPDATE macro_studies SET updated_at = ? WHERE id = ?",
+            (utc_now_iso(), study_id),
+        )
+        conn.commit()
+    return get_macro_study(study_id)

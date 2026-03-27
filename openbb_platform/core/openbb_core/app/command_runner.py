@@ -35,7 +35,7 @@ class ExecutionContext:
     """Execution context."""
 
     # For checking if the command specifies no validation in the API Route
-    _route_map = PathHandler.build_route_map()
+    _route_map = PathHandler.build_route_map(include_method_routes=True)
 
     def __init__(
         self,

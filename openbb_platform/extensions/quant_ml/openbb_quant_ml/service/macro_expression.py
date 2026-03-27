@@ -17,10 +17,29 @@ _ALLOWED_FUNCTIONS = {
     "log",
     "diff",
     "pct_change",
+    "lag",
+    "lead",
     "rolling_mean",
     "rolling_std",
+    "rolling_min",
+    "rolling_max",
     "rolling_corr",
     "rolling_beta",
+    "ema",
+    "cagr",
+    "yoy",
+    "mom",
+    "annualized_mom",
+    "qoq_saar",
+    "percentile",
+    "base100",
+    "real_rate",
+    "spread",
+    "ratio",
+}
+_ALLOWED_KEYWORD_NAMES = {
+    "n",
+    "win",
 }
 _TOKEN_PATTERN = re.compile(r"\b(?:FRED:[A-Za-z0-9_]+|[A-Za-z][A-Za-z0-9_.]*)\b")
 
@@ -63,6 +82,68 @@ def _rolling_zscore(series: pd.Series, window: int) -> pd.Series:
     return (series - mean) / (std + 1e-12)
 
 
+def _infer_observation_step_days(series: pd.Series) -> float:
+    if series.size < 3:
+        return 30.0
+    diffs = pd.Series(series.index).sort_values().diff().dropna()
+    if diffs.empty:
+        return 30.0
+    median = diffs.median()
+    return max(float(median.total_seconds()) / 86_400.0, 1.0)
+
+
+def _seasonal_periods(series: pd.Series) -> int:
+    step = _infer_observation_step_days(series)
+    if step <= 2:
+        return 252
+    if step <= 9:
+        return 52
+    if step <= 40:
+        return 12
+    return 4
+
+
+def _annualize_factor(series: pd.Series) -> float:
+    step = _infer_observation_step_days(series)
+    if step <= 2:
+        return 252.0
+    if step <= 9:
+        return 52.0
+    if step <= 40:
+        return 12.0
+    return 4.0
+
+
+def _rolling_percentile(series: pd.Series, window: int) -> pd.Series:
+    min_periods = max(5, window // 5)
+    return series.rolling(window, min_periods=min_periods).apply(
+        lambda arr: float((np.asarray(arr, dtype=float) <= np.asarray(arr, dtype=float)[-1]).sum() / len(arr)),
+        raw=True,
+    )
+
+
+def _base100(series: pd.Series) -> pd.Series:
+    clean = series.dropna()
+    if clean.empty:
+        return pd.Series(dtype=float)
+    base = float(clean.iloc[0])
+    if abs(base) <= 1e-12:
+        return pd.Series(np.nan, index=series.index, dtype=float)
+    return (series / base) * 100.0
+
+
+def _cagr(series: pd.Series) -> pd.Series:
+    clean = series.dropna()
+    if clean.empty:
+        return pd.Series(dtype=float)
+    start_value = float(clean.iloc[0])
+    if start_value <= 0:
+        return pd.Series(np.nan, index=series.index, dtype=float)
+    start_ts = clean.index[0]
+    elapsed_years = (series.index.to_series().sub(start_ts).dt.total_seconds() / (365.25 * 24 * 3600)).clip(lower=1 / 365.25)
+    return (series / start_value).pow(1.0 / elapsed_years) - 1.0
+
+
 def _call_function(name: str, args: list[pd.Series | float], kwargs: dict[str, pd.Series | float]) -> pd.Series:
     lower = name.lower()
     if lower not in _ALLOWED_FUNCTIONS:
@@ -93,7 +174,14 @@ def _call_function(name: str, args: list[pd.Series | float], kwargs: dict[str, p
         n = int(kwargs.get("n", 1))
         return _to_series(args[0]).pct_change(periods=max(1, n), fill_method=None)
 
-    if lower in {"rolling_mean", "rolling_std"}:
+    if lower in {"lag", "lead"}:
+        if len(args) != 1:
+            raise MacroExpressionError(f"{name}(x, n=1) expects one series argument.")
+        n = int(kwargs.get("n", 1))
+        series = _to_series(args[0])
+        return series.shift(max(1, n) if lower == "lag" else -max(1, n))
+
+    if lower in {"rolling_mean", "rolling_std", "rolling_min", "rolling_max"}:
         if len(args) != 2:
             raise MacroExpressionError(f"{name}(x, win) expects two arguments.")
         s = _to_series(args[0])
@@ -101,7 +189,11 @@ def _call_function(name: str, args: list[pd.Series | float], kwargs: dict[str, p
         min_periods = max(2, win // 4)
         if lower == "rolling_mean":
             return s.rolling(win, min_periods=min_periods).mean()
-        return s.rolling(win, min_periods=min_periods).std(ddof=0)
+        if lower == "rolling_std":
+            return s.rolling(win, min_periods=min_periods).std(ddof=0)
+        if lower == "rolling_min":
+            return s.rolling(win, min_periods=min_periods).min()
+        return s.rolling(win, min_periods=min_periods).max()
 
     if lower in {"rolling_corr", "rolling_beta"}:
         if len(args) != 3:
@@ -117,6 +209,68 @@ def _call_function(name: str, args: list[pd.Series | float], kwargs: dict[str, p
         var = y_aligned.rolling(win, min_periods=min_periods).var(ddof=0).replace(0, np.nan)
         return cov / (var + 1e-12)
 
+    if lower == "ema":
+        if len(args) != 2:
+            raise MacroExpressionError("ema(x, span) expects two arguments.")
+        s = _to_series(args[0])
+        span = max(1, int(float(args[1])))
+        return s.ewm(span=span, adjust=False, min_periods=1).mean()
+
+    if lower == "yoy":
+        if len(args) != 1:
+            raise MacroExpressionError("yoy(x) expects one series argument.")
+        s = _to_series(args[0])
+        periods = _seasonal_periods(s)
+        return s.pct_change(periods=periods, fill_method=None)
+
+    if lower == "mom":
+        if len(args) != 1:
+            raise MacroExpressionError("mom(x, n=1) expects one series argument.")
+        n = int(kwargs.get("n", 1))
+        return _to_series(args[0]).pct_change(periods=max(1, n), fill_method=None)
+
+    if lower == "annualized_mom":
+        if len(args) != 1:
+            raise MacroExpressionError("annualized_mom(x) expects one series argument.")
+        s = _to_series(args[0])
+        factor = _annualize_factor(s)
+        mom = s.pct_change(fill_method=None)
+        return (1.0 + mom).pow(factor) - 1.0
+
+    if lower == "qoq_saar":
+        if len(args) != 1:
+            raise MacroExpressionError("qoq_saar(x) expects one series argument.")
+        s = _to_series(args[0])
+        qoq = s.pct_change(periods=1, fill_method=None)
+        return (1.0 + qoq).pow(4.0) - 1.0
+
+    if lower == "percentile":
+        if len(args) != 1:
+            raise MacroExpressionError("percentile(x, win=252) expects one series argument.")
+        s = _to_series(args[0])
+        window = max(5, int(kwargs.get("win", max(20, _seasonal_periods(s) * 5))))
+        return _rolling_percentile(s, window)
+
+    if lower == "base100":
+        if len(args) != 1:
+            raise MacroExpressionError("base100(x) expects one series argument.")
+        return _base100(_to_series(args[0]))
+
+    if lower == "cagr":
+        if len(args) != 1:
+            raise MacroExpressionError("cagr(x) expects one series argument.")
+        return _cagr(_to_series(args[0]))
+
+    if lower in {"real_rate", "spread", "ratio"}:
+        if len(args) != 2:
+            raise MacroExpressionError(f"{name}(x, y) expects two arguments.")
+        x = _to_series(args[0])
+        y = _to_series(args[1])
+        x_aligned, y_aligned = _align_binary(x, y)
+        if lower == "ratio":
+            return x_aligned / (y_aligned.replace(0, np.nan) + 1e-12)
+        return x_aligned - y_aligned
+
     raise MacroExpressionError(f"Unsupported function: {name}")
 
 
@@ -129,7 +283,7 @@ def _normalize_expression(expr: str) -> tuple[str, dict[str, str], list[str]]:
     def replacer(match: re.Match[str]) -> str:
         nonlocal counter
         token = match.group(0)
-        if token.lower() in _ALLOWED_FUNCTIONS:
+        if token.lower() in _ALLOWED_FUNCTIONS or token in _ALLOWED_KEYWORD_NAMES:
             return token.lower()
         # Preserve FRED: prefix tokens exactly, uppercase others for consistency.
         canonical = token if token.upper().startswith("FRED:") else token.upper()

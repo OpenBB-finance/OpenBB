@@ -24,10 +24,10 @@ export function QuantPageHeader({
     <>
       <div className="mb-4">
         <h1 className="body-lg-medium text-theme-primary" id="quant-lab-title">
-          Quant Lab
+          Strategy Lab
         </h1>
         <p className="body-sm-regular text-theme-muted">
-          Local ML/DL quant workflow: train, signal generation, backtest, and SPY benchmark comparison.
+          Step through setup, features, training, backtest review, and promotion for a local-first strategy workflow.
         </p>
         <div
           className="mt-2 flex flex-wrap gap-2 body-xs-regular text-theme-muted"
@@ -42,7 +42,7 @@ export function QuantPageHeader({
           <span aria-hidden>/</span>
           <span className={runStatus === "completed" ? "text-emerald-400" : "text-theme-muted"}>2. Train</span>
           <span aria-hidden>/</span>
-          <span className={signalsCount > 0 ? "text-emerald-400" : "text-theme-muted"}>3. Signals</span>
+          <span className={signalsCount > 0 ? "text-emerald-400" : "text-theme-muted"}>3. Review</span>
           <span aria-hidden>/</span>
           <span className={backtestPointsCount > 0 ? "text-emerald-400" : "text-theme-muted"}>4. Backtest</span>
         </div>

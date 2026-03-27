@@ -1,6 +1,8 @@
 export type MacroStatus = "ok" | "insufficient_data" | "not_found" | "error";
 export type MacroFreq = "native" | "D" | "W" | "M" | "Q";
 export type MacroFill = "ffill" | "interpolate" | "none";
+export type MacroViewMode = "explorer" | "compare" | "relationship" | "release" | "report";
+export type MacroNormalizeMode = "raw" | "index100" | "zscore" | "yoy" | "percentile_5y";
 
 export interface MacroDataPoint {
   date: string;
@@ -75,6 +77,12 @@ export interface MacroCatalogItem {
   publish_lag: number;
   notes?: string | null;
   active: boolean;
+  tags: string[];
+  last_obs?: string | null;
+  stale_days?: number | null;
+  release_frequency?: string | null;
+  default_view: MacroViewMode;
+  vintage_available: boolean;
 }
 
 export interface MacroCatalogResponse {
@@ -257,4 +265,164 @@ export interface MacroUpdateResponse {
   status: MacroStatus;
   message?: string | null;
   updated_series: string[];
+}
+
+export interface MacroStudySeriesSpec {
+  key: string;
+  alias?: string | null;
+  transform_chain: string[];
+  freq: MacroFreq;
+  fill: MacroFill;
+  axis: "left" | "right";
+  normalize_mode: MacroNormalizeMode;
+  lag_mode?: string | null;
+  display_style: "line" | "area" | "bar" | "scatter";
+}
+
+export interface MacroViewSpec {
+  view_id: string;
+  mode: MacroViewMode;
+  title?: string | null;
+  layout: Record<string, unknown>;
+}
+
+export interface MacroConclusionPayload {
+  summary: string;
+  thesis: string;
+  risk_cases: string[];
+  action_bias: string;
+  confidence?: number | null;
+  next_checks: string[];
+}
+
+export interface StudyReportAttachment {
+  report_id?: string | null;
+  title?: string | null;
+  report_path: string;
+  created_at?: string | null;
+  source_run_id?: string | null;
+  symbols: string[];
+}
+
+export interface MacroStudyPayload {
+  id?: string | null;
+  name: string;
+  objective: string;
+  series_specs: MacroStudySeriesSpec[];
+  view_specs: MacroViewSpec[];
+  notes: string;
+  conclusion: MacroConclusionPayload;
+  linked_assets: string[];
+  linked_feature_set_id?: string | null;
+  linked_reports?: StudyReportAttachment[];
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface MacroStudiesResponse {
+  status: MacroStatus;
+  message?: string | null;
+  items: MacroStudyPayload[];
+}
+
+export interface MacroCompareResponse {
+  status: MacroStatus;
+  message?: string | null;
+  normalization: MacroNormalizeMode;
+  series: Record<string, MacroSeriesResponse>;
+}
+
+export interface MacroLeadLagPoint {
+  lag: number;
+  correlation: number;
+}
+
+export interface MacroLeadLagResponse {
+  status: MacroStatus;
+  message?: string | null;
+  lhs: string;
+  rhs: string;
+  best_lag: number;
+  best_correlation: number;
+  table: MacroLeadLagPoint[];
+  rolling_corr: MacroDataPoint[];
+}
+
+export interface MacroScatterPoint {
+  date: string;
+  x: number;
+  y: number;
+}
+
+export interface MacroScatterResponse {
+  status: MacroStatus;
+  message?: string | null;
+  lhs: string;
+  rhs: string;
+  correlation?: number | null;
+  slope?: number | null;
+  intercept?: number | null;
+  points: MacroScatterPoint[];
+}
+
+export interface MacroVintagePoint {
+  date: string;
+  value: number;
+  realtime_start?: string | null;
+  realtime_end?: string | null;
+  fetched_at?: string | null;
+}
+
+export interface MacroVintageResponse {
+  status: MacroStatus;
+  message?: string | null;
+  key: string;
+  as_of_date?: string | null;
+  latest: MacroDataPoint[];
+  as_of: MacroDataPoint[];
+  revisions: MacroVintagePoint[];
+  revision_delta?: number | null;
+}
+
+export interface MacroReleaseCalendarItem {
+  key: string;
+  title?: string | null;
+  domain?: string | null;
+  release_frequency?: string | null;
+  last_obs?: string | null;
+  stale_days?: number | null;
+  estimated_next_release?: string | null;
+  vintage_available: boolean;
+}
+
+export interface MacroReleaseCalendarResponse {
+  status: MacroStatus;
+  message?: string | null;
+  items: MacroReleaseCalendarItem[];
+}
+
+export interface MacroReportResponse {
+  status: MacroStatus;
+  message?: string | null;
+  study_id?: string | null;
+  report_path?: string | null;
+  generated_at?: string | null;
+}
+
+export interface MacroFeatureExportItem {
+  feature_name: string;
+  source_study_id: string;
+  key: string;
+  transform_chain: string[];
+  lag_rule?: string | null;
+  as_of_policy: string;
+}
+
+export interface MacroFeatureExportResponse {
+  status: MacroStatus;
+  message?: string | null;
+  study_id?: string | null;
+  artifact_path?: string | null;
+  exported_at?: string | null;
+  items: MacroFeatureExportItem[];
 }

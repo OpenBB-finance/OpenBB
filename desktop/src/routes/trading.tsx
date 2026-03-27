@@ -8,6 +8,7 @@ import {
   approveTradingOrder,
   cancelTradingOrder,
   closeTradingPosition,
+  fetchRunConstraints,
   fetchTradingAlgorithms,
   fetchTradingEvents,
   fetchTradingExecutionMode,
@@ -21,14 +22,25 @@ import {
   fetchTradingSettings,
   fetchTradingStatus,
   fetchTradingSymbolDetail,
+  previewExecutionOrders,
   probeQuantMlActivation,
+  riskCheckPretrade,
   runTradingCycle,
+  submitExecutionOrders,
   toggleTradingAlgorithm,
   updateTradingExecutionMode,
   updateTradingSettings,
   validateTradingAlgorithm,
 } from "../lib/quantApi";
+import { readMacroStudyHandoff } from "../lib/macroStudyHandoff";
+import { readRunHandoff } from "../lib/runHandoff";
+import { buildSymbolLabHref } from "../lib/symbolLabNavigation";
 import type {
+  ExecutionPreviewPayload,
+  ExecutionSubmitPayload,
+  ModelName,
+  RiskPretradePayload,
+  RunConstraintsPayload,
   TradingAlgorithmRecordPayload,
   TradingExecutionModePayload,
   TradingOrderItemPayload,
@@ -39,6 +51,14 @@ import type {
   TradingStatusPayload,
   TradingSymbolDetailPayload,
 } from "../types/quant";
+
+type PortfolioExecutionTab =
+  | "signals"
+  | "orders"
+  | "risk_checks"
+  | "positions"
+  | "fills"
+  | "brokers";
 
 function toErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "Request failed";
@@ -111,13 +131,20 @@ function tradingRowKey(row: Record<string, unknown>, index: number): string {
   ].join("-");
 }
 
-function TradingPage() {
+export function PortfolioExecutionPage({
+  initialTab = "signals",
+}: {
+  initialTab?: PortfolioExecutionTab;
+}) {
   const [baseUrl, setBaseUrl] = useState("");
+  const [activeTab, setActiveTab] = useState<PortfolioExecutionTab>(initialTab);
   const [activationMessage, setActivationMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState<string | null>(null);
+  const [runId, setRunId] = useState("");
+  const [modelName, setModelName] = useState<ModelName>("lgbm_ranker");
   const [status, setStatus] = useState<TradingStatusPayload | null>(null);
   const [settings, setSettings] = useState<TradingSettingsPayload | null>(null);
   const [scan, setScan] = useState<TradingScanPayload | null>(null);
@@ -133,6 +160,11 @@ function TradingPage() {
   const [selectedTicker, setSelectedTicker] = useState("");
   const [executionMode, setExecutionMode] = useState("paper");
   const [executionModePayload, setExecutionModePayload] = useState<TradingExecutionModePayload | null>(null);
+  const [executionPreview, setExecutionPreview] = useState<ExecutionPreviewPayload | null>(null);
+  const [pretradeRisk, setPretradeRisk] = useState<RiskPretradePayload | null>(null);
+  const [executionSubmit, setExecutionSubmit] = useState<ExecutionSubmitPayload | null>(null);
+  const [runConstraints, setRunConstraints] = useState<RunConstraintsPayload | null>(null);
+  const [macroStudyHandoff] = useState(() => readMacroStudyHandoff());
   const [form, setForm] = useState<SettingsFormState>({
     lookbackDays: 320,
     autoOrder: false,
@@ -244,6 +276,26 @@ function TradingPage() {
   }, []);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const handoff = readRunHandoff();
+    const nextRunId = params.get("runId") ?? handoff?.runId ?? "";
+    const nextModelName = params.get("modelName") ?? handoff?.modelName ?? "";
+    const nextSignalId = params.get("signalId");
+    if (nextRunId) {
+      setRunId(nextRunId);
+    }
+    if (nextModelName === "lgbm_ranker" || nextModelName === "xgb_lstm" || nextModelName === "catboost_ranker") {
+      setModelName(nextModelName);
+    }
+    if (nextSignalId && scan?.items?.length) {
+      const matched = scan.items.find((item) => item.signal_id === nextSignalId);
+      if (matched?.ticker) {
+        setSelectedTicker(matched.ticker);
+      }
+    }
+  }, [scan?.items]);
+
+  useEffect(() => {
     if (!baseUrl) return;
     void refreshAll(baseUrl);
     const timer = window.setInterval(() => {
@@ -285,6 +337,19 @@ function TradingPage() {
   const selectedSignal = scan?.items.find((row) => row.ticker === selectedTicker) ?? null;
   const selectedPosition =
     positions.find((row) => String(row.ticker ?? "").toUpperCase() === selectedTicker.toUpperCase()) ?? null;
+  const previewOrders = executionPreview?.orders ?? [];
+  const canSubmitPreview = Boolean(pretradeRisk?.passed) && !pretradeRisk?.kill_switch;
+  const blockingConstraints = Object.entries(runConstraints ?? {}).slice(0, 6);
+  const previewBlockingConstraints = executionPreview?.blocking_constraints ?? [];
+  const rationale = executionPreview?.rationale;
+  const tabOptions: Array<{ id: PortfolioExecutionTab; label: string }> = [
+    { id: "signals", label: "Signals" },
+    { id: "orders", label: "Orders" },
+    { id: "risk_checks", label: "Risk Checks" },
+    { id: "positions", label: "Positions" },
+    { id: "fills", label: "Fills" },
+    { id: "brokers", label: "Brokers" },
+  ];
 
   async function handleRunCycle() {
     if (!baseUrl) return;
@@ -383,19 +448,91 @@ function TradingPage() {
     }
   }
 
+  async function handlePreviewExecution() {
+    if (!baseUrl || !runId.trim()) {
+      setErrorMessage("Enter a run ID to preview orders.");
+      return;
+    }
+    try {
+      setIsLoading(true);
+      setErrorMessage(null);
+      const [previewPayload, riskPayload, constraintsPayload] = await Promise.all([
+        previewExecutionOrders(baseUrl, {
+          run_id: runId.trim(),
+          model_name: modelName,
+        }),
+        riskCheckPretrade(baseUrl, {
+          run_id: runId.trim(),
+          model_name: modelName,
+        }),
+        fetchRunConstraints(baseUrl, runId.trim(), modelName).catch(() => null),
+      ]);
+      setExecutionPreview(previewPayload);
+      setPretradeRisk(riskPayload);
+      setRunConstraints(constraintsPayload);
+      setExecutionSubmit(null);
+      setActionMessage(`Preview loaded for ${runId.trim()}.`);
+      setActiveTab("orders");
+    } catch (error) {
+      setErrorMessage(toErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleSubmitExecution() {
+    if (!baseUrl || !runId.trim() || !pretradeRisk?.passed || pretradeRisk.kill_switch) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      setErrorMessage(null);
+      const payload = await submitExecutionOrders(baseUrl, {
+        run_id: runId.trim(),
+        model_name: modelName,
+      });
+      setExecutionSubmit(payload);
+      setActionMessage(`Submitted execution orders for ${runId.trim()}.`);
+      await refreshAll(baseUrl);
+    } catch (error) {
+      setErrorMessage(toErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
-          <h1 className="body-lg-medium text-theme-primary">Trading</h1>
+          <h1 className="body-lg-medium text-theme-primary">Portfolio &amp; Execution</h1>
           <p className="body-sm-regular text-theme-muted">
-            Paper-trading operations console for built-in strategies and custom algorithm runtime.
+            Unified workflow for signals, pretrade risk, order preview, positions, fills, and broker runtime.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="text"
+            value={runId}
+            onChange={(event) => setRunId(event.target.value)}
+            placeholder="Run ID for execution preview"
+            aria-label="Execution Run ID"
+            className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-2 body-xs-regular text-theme-primary"
+          />
+          <select
+            className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-2 body-xs-regular text-theme-primary"
+            value={modelName}
+            onChange={(event) => setModelName(event.target.value as ModelName)}
+            aria-label="Execution Model"
+          >
+            <option value="lgbm_ranker">lgbm_ranker</option>
+            <option value="xgb_lstm">xgb_lstm</option>
+            <option value="catboost_ranker">catboost_ranker</option>
+          </select>
           <select
             className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-2 body-xs-regular text-theme-primary"
             value={executionMode}
+            aria-label="Execution Mode"
             onChange={(event) => {
               const nextMode = event.target.value;
               setExecutionMode(nextMode);
@@ -407,6 +544,24 @@ function TradingPage() {
             <option value="shadow_live">shadow_live</option>
             <option value="live_adapter">live_adapter</option>
           </select>
+          <button
+            type="button"
+            className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
+            onClick={() => void handlePreviewExecution()}
+            disabled={isLoading || !baseUrl}
+          >
+            Preview + Risk Check
+          </button>
+          <button
+            type="button"
+            className={`rounded-sm px-3 py-2 body-xs-medium ${
+              canSubmitPreview ? "button-neutral" : "button-secondary opacity-50"
+            }`}
+            onClick={() => void handleSubmitExecution()}
+            disabled={isLoading || !canSubmitPreview}
+          >
+            Submit Orders
+          </button>
           {lastRefreshed ? <p className="body-xxs-regular text-theme-muted">Last refresh: {lastRefreshed}</p> : null}
           <button
             type="button"
@@ -425,6 +580,25 @@ function TradingPage() {
             Refresh
           </button>
         </div>
+      </div>
+
+      <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Portfolio & Execution sections">
+        {tabOptions.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            className={`rounded-full px-3 py-1.5 body-xs-medium ${
+              activeTab === tab.id
+                ? "bg-theme-accent text-white"
+                : "border border-theme-outline text-theme-muted"
+            }`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {errorMessage ? (
@@ -464,6 +638,94 @@ function TradingPage() {
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[320px_minmax(0,1fr)_380px]">
         <div className="space-y-4">
+          <PanelCard title="Execution Context" description="Signal rationale, macro handoff, and preview readiness in one place.">
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <SummaryCard label="Selected Ticker" value={selectedTicker || "-"} />
+                <SummaryCard label="Run ID" value={runId || "-"} />
+                <SummaryCard label="Model" value={modelName} />
+                <SummaryCard label="Pretrade" value={pretradeRisk ? (canSubmitPreview ? "PASS" : "BLOCKED") : "Not run"} />
+              </div>
+              <div className="rounded-sm bg-theme-secondary p-3">
+                <p className="body-xs-medium text-theme-primary">Signal Rationale</p>
+                <p className="mt-1 body-xs-regular text-theme-muted">
+                  {rationale?.signal_rationale ||
+                    selectedSignal?.reason ||
+                    symbolDetail?.explanation ||
+                    "Select a signal or position to inspect why the runtime wants exposure."}
+                </p>
+              </div>
+              <div className="rounded-sm bg-theme-secondary p-3">
+                <p className="body-xs-medium text-theme-primary">Macro Backdrop</p>
+                <p className="mt-1 body-xs-regular text-theme-muted">
+                  {rationale?.macro_backdrop ||
+                    macroStudyHandoff?.conclusionSummary ||
+                    macroStudyHandoff?.objective ||
+                    "No Macro Lab handoff is attached yet. Export feature lineage from Macro Lab to carry the thesis into execution."}
+                </p>
+              </div>
+              <div className="rounded-sm bg-theme-secondary p-3">
+                <p className="body-xs-medium text-theme-primary">Blocking Constraints</p>
+                {previewBlockingConstraints.length > 0 ? (
+                  <div className="mt-2 space-y-2">
+                    {previewBlockingConstraints.map((item) => (
+                      <div key={`${item.rule_id}-${item.message}`} className="rounded-sm border border-theme-outline px-2 py-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="body-xs-medium text-theme-primary">{item.rule_id}</span>
+                          <span className={`rounded-sm px-2 py-0.5 body-xxs-medium ${badgeClass(item.severity)}`}>
+                            {item.severity}
+                          </span>
+                        </div>
+                        <p className="mt-1 body-xxs-regular text-theme-muted">{item.message}</p>
+                        {item.target_route ? (
+                          <a
+                            href={`${item.target_route}`}
+                            className="mt-2 inline-flex body-xxs-medium text-theme-accent"
+                          >
+                            Open fix target
+                          </a>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                ) : blockingConstraints.length > 0 ? (
+                  <ul className="mt-2 space-y-1">
+                    {blockingConstraints.map(([key, value]) => (
+                      <li key={key} className="flex items-center justify-between body-xxs-regular text-theme-muted">
+                        <span>{key}</span>
+                        <span>{String(value)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-1 body-xs-regular text-theme-muted">
+                    Load an execution preview to inspect constraint payloads for the selected run.
+                  </p>
+                )}
+              </div>
+              {executionPreview ? (
+                <div className="grid grid-cols-2 gap-2">
+                  <SummaryCard label="Preview Orders" value={previewOrders.length} />
+                  <SummaryCard label="Turnover" value={formatPct(executionPreview.estimated_turnover)} />
+                  <SummaryCard label="Estimated Cost" value={formatMoney(executionPreview.estimated_cost)} />
+                  <SummaryCard label="Risk Result" value={pretradeRisk?.blocking_summary ?? rationale?.risk_check_result ?? "n/a"} />
+                </div>
+              ) : null}
+              {executionSubmit ? (
+                <div className="rounded-sm border border-emerald-500/40 bg-emerald-500/10 p-3">
+                  <p className="body-xs-medium text-emerald-300">Latest Submission</p>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    <SummaryCard label="Status" value={executionSubmit.status} />
+                    <SummaryCard label="Fills" value={executionSubmit.fills_count ?? 0} />
+                    <SummaryCard label="Cash After" value={formatMoney(executionSubmit.cash_after)} />
+                    <SummaryCard label="NAV After" value={formatMoney(executionSubmit.nav_after)} />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </PanelCard>
+
+          {activeTab === "brokers" ? (
           <PanelCard title="Strategy Settings" description="Trading runtime controls.">
             <div className="space-y-2">
               <label className="body-xs-medium text-theme-muted">
@@ -511,7 +773,9 @@ function TradingPage() {
               Save Settings
             </button>
           </PanelCard>
+          ) : null}
 
+          {activeTab === "brokers" ? (
           <PanelCard title="Custom Algorithms" description="Registry, sandbox state, and validation.">
             <div className="space-y-2">
               {algorithms.map((row) => (
@@ -536,9 +800,11 @@ function TradingPage() {
               ))}
             </div>
           </PanelCard>
+          ) : null}
         </div>
 
         <div className="space-y-4">
+          {activeTab === "signals" ? (
           <PanelCard title="Scan Results" description="Shared universe scan output for built-in and custom strategies.">
             <div className="max-h-80 overflow-auto">
               <table className="w-full text-left">
@@ -569,7 +835,59 @@ function TradingPage() {
               </table>
             </div>
           </PanelCard>
+          ) : null}
 
+          {activeTab === "orders" ? (
+          <PanelCard title={`Order Preview (${previewOrders.length})`} description="Previewed orders with expected turnover and execution intent.">
+            {executionPreview ? (
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <SummaryCard label="As Of" value={executionPreview.as_of_date ?? "-"} />
+                  <SummaryCard label="Estimated Turnover" value={formatPct(executionPreview.estimated_turnover)} />
+                </div>
+                <div className="max-h-72 overflow-auto">
+                  <table className="w-full text-left">
+                    <thead className="sticky top-0 bg-theme-primary">
+                      <tr className="body-xxs-medium text-theme-muted">
+                        <th className="pb-2">Symbol</th>
+                        <th className="pb-2">Side</th>
+                        <th className="pb-2">Qty</th>
+                        <th className="pb-2">Target Weight</th>
+                        <th className="pb-2">Notional</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {previewOrders.map((row) => (
+                        <tr key={row.order_id} className="border-t border-theme-outline body-xs-regular">
+                          <td className="py-2 pr-2 text-theme-primary">
+                            <a
+                              href={buildSymbolLabHref({
+                                symbol: row.symbol,
+                                source: "execution",
+                                runId: runId.trim() || undefined,
+                              })}
+                              className="hover:text-theme-accent"
+                            >
+                              {row.symbol}
+                            </a>
+                          </td>
+                          <td className="py-2 pr-2 text-theme-primary">{row.side}</td>
+                          <td className="py-2 pr-2 text-theme-primary">{formatNum(row.quantity, 0)}</td>
+                          <td className="py-2 pr-2 text-theme-primary">{formatPct(row.target_weight)}</td>
+                          <td className="py-2 pr-2 text-theme-primary">{formatMoney(row.est_notional)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <p className="body-xs-regular text-theme-muted">Run a preview to populate the execution order sheet.</p>
+            )}
+          </PanelCard>
+          ) : null}
+
+          {activeTab === "orders" || activeTab === "fills" ? (
           <PanelCard title={`Order Queue (${orders.length})`} description="Signal, risk, order intent, and paper execution state.">
             <div className="mb-2 flex items-center justify-between">
               <p className="body-xxs-regular text-theme-muted">Pending approvals: {pendingOrders.length} | Fills: {fillsCount}</p>
@@ -590,7 +908,18 @@ function TradingPage() {
                 <tbody>
                   {orders.slice().reverse().slice(0, 30).map((row) => (
                     <tr key={row.order_id} className="border-t border-theme-outline body-xs-regular">
-                      <td className="py-2 pr-2 text-theme-primary">{row.ticker}</td>
+                      <td className="py-2 pr-2 text-theme-primary">
+                        <a
+                          href={buildSymbolLabHref({
+                            symbol: row.ticker,
+                            source: "execution",
+                            runId: runId.trim() || undefined,
+                          })}
+                          className="hover:text-theme-accent"
+                        >
+                          {row.ticker}
+                        </a>
+                      </td>
                       <td className="py-2 pr-2 text-theme-primary">{row.side}</td>
                       <td className="py-2 pr-2 text-theme-primary">{formatNum(row.quantity, 0)}</td>
                       <td className="py-2 pr-2 text-theme-primary">{formatMoney(row.requested_price)}</td>
@@ -615,7 +944,9 @@ function TradingPage() {
               </table>
             </div>
           </PanelCard>
+          ) : null}
 
+          {activeTab === "positions" ? (
           <PanelCard title={`Open Positions (${positions.length})`} description="Current paper positions and manual exits.">
             <div className="max-h-72 overflow-auto">
               <table className="w-full text-left">
@@ -632,7 +963,19 @@ function TradingPage() {
                 <tbody>
                   {positions.map((row) => (
                     <tr key={`${String(row.ticker ?? "")}-${String(row.entry_time ?? "")}`} className={`cursor-pointer border-t border-theme-outline body-xs-regular ${selectedTicker === String(row.ticker ?? "") ? "bg-theme-secondary" : ""}`} onClick={() => setSelectedTicker(String(row.ticker ?? ""))}>
-                      <td className="py-2 pr-2 text-theme-primary">{String(row.ticker ?? "-")}</td>
+                      <td className="py-2 pr-2 text-theme-primary">
+                        <a
+                          href={buildSymbolLabHref({
+                            symbol: String(row.ticker ?? ""),
+                            source: "execution",
+                            runId: runId.trim() || undefined,
+                          })}
+                          className="hover:text-theme-accent"
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          {String(row.ticker ?? "-")}
+                        </a>
+                      </td>
                       <td className="py-2 pr-2 text-theme-primary">{formatMoney(numberFrom(row.entry_price, 0))}</td>
                       <td className="py-2 pr-2 text-theme-primary">{formatMoney(numberFrom(row.current_price, 0))}</td>
                       <td className={`py-2 pr-2 ${numberFrom(row.unrealized_pnl, 0) >= 0 ? "text-emerald-300" : "text-red-300"}`}>{formatMoney(numberFrom(row.unrealized_pnl, 0))}</td>
@@ -648,7 +991,9 @@ function TradingPage() {
               </table>
             </div>
           </PanelCard>
+          ) : null}
 
+          {activeTab === "positions" ? (
           <PanelCard title="Performance" description="Paper-trading runtime metrics and equity trace.">
             <div className="mb-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
               <SummaryCard label="Cumulative Return" value={formatPct(performance?.cumulative_return)} />
@@ -671,9 +1016,11 @@ function TradingPage() {
               </div>
             </div>
           </PanelCard>
+          ) : null}
         </div>
 
         <div className="space-y-4">
+          {activeTab === "signals" || activeTab === "positions" ? (
           <PanelCard title={selectedTicker ? `${selectedTicker} Detail` : "Symbol Detail"} description="Selected symbol context, chart, and explanation.">
             {selectedTicker ? (
               <div className="space-y-3">
@@ -695,12 +1042,61 @@ function TradingPage() {
                   <p className="body-xs-medium text-theme-primary">Signal Interpretation</p>
                   <p className="mt-2 body-xs-regular text-theme-muted">{symbolDetail?.explanation || selectedSignal?.reason || "No human-readable explanation is available for the latest signal."}</p>
                 </div>
+                <a
+                  href={buildSymbolLabHref({
+                    symbol: selectedTicker,
+                    source: "execution",
+                    runId: runId.trim() || undefined,
+                  })}
+                  className="inline-flex rounded-sm border border-theme-outline px-3 py-2 body-xs-medium text-theme-primary"
+                >
+                  Open In Symbol Lab
+                </a>
               </div>
             ) : (
               <p className="body-xs-regular text-theme-muted">Select a scan row or an open position to load symbol detail.</p>
             )}
           </PanelCard>
+          ) : null}
 
+          {activeTab === "risk_checks" ? (
+          <PanelCard title="Pretrade Risk Checks" description="Human-readable violations and blocking state for the selected execution run.">
+            {pretradeRisk ? (
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <SummaryCard label="Overall" value={pretradeRisk.passed ? "PASS" : "FAIL"} />
+                  <SummaryCard label="Kill Switch" value={pretradeRisk.kill_switch ? "ACTIVE" : "OFF"} />
+                  <SummaryCard label="Blocking Summary" value={pretradeRisk.blocking_summary ?? "n/a"} />
+                </div>
+                {pretradeRisk.violations.length ? (
+                  <div className="space-y-2">
+                    {pretradeRisk.violations.map((item) => (
+                      <div key={item.rule_id} className="rounded-sm bg-theme-secondary p-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="body-xs-medium text-theme-primary">{item.rule_id}</span>
+                          <span className={`rounded-sm px-2 py-0.5 body-xxs-medium ${badgeClass(item.severity)}`}>
+                            {item.severity}
+                          </span>
+                        </div>
+                        <p className="mt-1 body-xxs-regular text-theme-muted">
+                          {item.message} | value {formatNum(item.value, 3)} / limit {formatNum(item.limit, 3)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="body-xs-regular text-theme-muted">
+                    No blocking violations were returned for the current preview.
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="body-xs-regular text-theme-muted">Run Preview + Risk Check to inspect pretrade controls.</p>
+            )}
+          </PanelCard>
+          ) : null}
+
+          {activeTab === "risk_checks" ? (
           <PanelCard title="Risk Control" description="Current limits and recent risk events.">
             <div className="mb-3 grid grid-cols-2 gap-2">
               <SummaryCard label="Max Position Weight" value={formatPct(numberFrom(asRecord(risk?.limits).max_position_weight, 0))} />
@@ -723,7 +1119,9 @@ function TradingPage() {
               {riskEvents.length === 0 ? <p className="body-xs-regular text-theme-muted">No recent risk events.</p> : null}
             </div>
           </PanelCard>
+          ) : null}
 
+          {activeTab === "signals" ? (
           <PanelCard title="Scan History" description="Recent normalized scan activity for runtime comparison.">
             <div className="max-h-72 space-y-2 overflow-auto">
               {recentScanEvents.slice(0, 12).map((row, index) => (
@@ -740,7 +1138,23 @@ function TradingPage() {
               {recentScanEvents.length === 0 ? <p className="body-xs-regular text-theme-muted">No historical scans available.</p> : null}
             </div>
           </PanelCard>
+          ) : null}
 
+          {activeTab === "fills" ? (
+          <PanelCard title={`Fills (${fillsCount})`} description="Recent executed fills and downstream runtime events.">
+            <div className="space-y-2">
+              {fillsCount === 0 ? (
+                <p className="body-xs-regular text-theme-muted">No fills recorded yet.</p>
+              ) : (
+                <div className="rounded-sm bg-theme-secondary p-2">
+                  <p className="body-xs-regular text-theme-primary">Fills are available in the runtime feed.</p>
+                </div>
+              )}
+            </div>
+          </PanelCard>
+          ) : null}
+
+          {activeTab === "fills" ? (
           <PanelCard title="Audit Log" description="Signal, order, risk, and system events.">
             <div className="max-h-80 space-y-2 overflow-auto">
               {events.slice().reverse().slice(0, 25).map((row, index) => (
@@ -762,6 +1176,7 @@ function TradingPage() {
               {events.length === 0 ? <p className="body-xs-regular text-theme-muted">No runtime events logged yet.</p> : null}
             </div>
           </PanelCard>
+          ) : null}
         </div>
       </div>
     </div>
@@ -769,5 +1184,11 @@ function TradingPage() {
 }
 
 export const Route = createFileRoute("/trading")({
-  component: TradingPage,
+  component: () => <PortfolioExecutionPage initialTab="signals" />,
+  validateSearch: (search: Record<string, unknown>) => ({
+    runId: typeof search.runId === "string" ? search.runId : undefined,
+    modelName: typeof search.modelName === "string" ? search.modelName : undefined,
+    signalId: typeof search.signalId === "string" ? search.signalId : undefined,
+    reportPath: typeof search.reportPath === "string" ? search.reportPath : undefined,
+  }),
 });

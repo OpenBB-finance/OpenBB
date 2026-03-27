@@ -143,9 +143,19 @@ def get_user_settings(current_user_settings: str) -> dict:
     return user_settings
 
 
+def _get_widgets_json_path(widgets_path: str | None = None) -> Path:
+    """Resolve the widgets.json path used by the launcher."""
+    if widgets_path is not None:
+        return Path(widgets_path).absolute().resolve()
+
+    python_path = Path(sys.executable)
+    parent_path = python_path.parent if os.name == "nt" else python_path.parents[1]
+    return parent_path.joinpath("assets", "widgets.json").resolve()
+
+
 def get_widgets_json(
     _build: bool,
-    _openapi,
+    _openapi: dict | None,
     widget_exclude_filter: list,
     editable: bool = False,
     widgets_path: str | None = None,
@@ -156,6 +166,11 @@ def get_widgets_json(
     from openbb_core.provider.utils.helpers import run_async  # noqa
     from .merge_widgets import get_and_fix_widget_paths, has_additional_widgets
     from .widgets import build_json
+
+    def _build_widgets_payload() -> dict:
+        if _openapi is None:
+            raise ValueError("OpenAPI schema is required to build widgets.json.")
+        return build_json(_openapi, widget_exclude_filter)
 
     global PATH_WIDGETS  # noqa  pylint: disable=W0603
 
@@ -175,33 +190,22 @@ def get_widgets_json(
         # the factory for those paths.
         widget_exclude_filter.extend(to_exclude)
 
+    widgets_json_path = _get_widgets_json_path(widgets_path)
+    json_exists = widgets_json_path.exists()
+    existing_widgets_json: dict = {}
+    if json_exists:
+        with open(widgets_json_path, encoding="utf-8") as f:
+            existing_widgets_json = json.load(f)
+
     if editable is True:
-        if widgets_path is None:
-            python_path = Path(sys.executable)
-            parent_path = (
-                python_path.parent if os.name == "nt" else python_path.parents[1]
-            )
-            widgets_json_path = parent_path.joinpath("assets", "widgets.json").resolve()
-        else:
-            widgets_json_path = Path(widgets_path).absolute().resolve()
-
-        json_exists = widgets_json_path.exists()
-
         if not json_exists:
             widgets_json_path.parent.mkdir(parents=True, exist_ok=True)
             _build = True
-            json_exists = widgets_json_path.exists()
-
-        existing_widgets_json: dict = {}
-
-        if json_exists:
-            with open(widgets_json_path, encoding="utf-8") as f:
-                existing_widgets_json = json.load(f)
 
         _widgets_json = (
             existing_widgets_json
             if _build is False
-            else build_json(_openapi, widget_exclude_filter)
+            else _build_widgets_payload()
         )
 
         if _build:
@@ -229,10 +233,14 @@ def get_widgets_json(
                     _widgets_json = (
                         existing_widgets_json
                         if existing_widgets_json
-                        else build_json(_openapi, widget_exclude_filter)
+                        else _build_widgets_payload()
                     )
     else:
-        _widgets_json = build_json(_openapi, widget_exclude_filter)
+        _widgets_json = (
+            existing_widgets_json
+            if _build is False and json_exists
+            else _build_widgets_payload()
+        )
 
         if PATH_WIDGETS:
             for k in PATH_WIDGETS:

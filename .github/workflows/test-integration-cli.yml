@@ -37,13 +37,37 @@ jobs:
           allow-prereleases: true
           cache: pip
 
-      - name: Install base dependencies
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Create repo virtual environment
+        shell: bash
         run: |
-          python -m pip install --upgrade pip
+          set -euo pipefail
+          uv venv .venv --python ${{ matrix.python_version }}
 
       - name: Install OpenBB platform and CLI (editable)
+        shell: bash
         run: |
-          python openbb_platform/dev_install.py -e --cli
+          set -euo pipefail
+          ./.venv/bin/python openbb_platform/dev_install.py -e --cli --bootstrap-installer uv
+
+      - name: Verify repo metadata is unchanged after install
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- openbb_platform/pyproject.toml openbb_platform/poetry.lock cli/pyproject.toml cli/poetry.lock
+
+      - name: Verify no uv lock artifacts were created
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files --others --exclude-standard | grep -E '(^|/)uv\.lock$'; then
+            echo "Unexpected uv.lock artifact generated." >&2
+            exit 1
+          fi
 
       - name: Resolve repo Python
         shell: bash
@@ -52,6 +76,18 @@ jobs:
           PYTHON_CMD="$(python qa/scripts/resolve_python.py .)"
           echo "PYTHON_CMD=$PYTHON_CMD" >> "$GITHUB_ENV"
 
+      - name: Verify resolved interpreter points to repo .venv
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$PYTHON_CMD" in
+            "$GITHUB_WORKSPACE"/.venv/*) ;;
+            *)
+              echo "Expected repo .venv interpreter, got $PYTHON_CMD" >&2
+              exit 1
+              ;;
+          esac
+
       - name: Python preflight
         shell: bash
         run: |
@@ -59,6 +95,7 @@ jobs:
           "$PYTHON_CMD" -c "import sys; print(sys.executable)"
           "$PYTHON_CMD" --version
           "$PYTHON_CMD" -m pip install pytest
+          "$PYTHON_CMD" -m pytest openbb_platform/tests/test_resolve_python.py -q
 
       - name: Run CLI integration gate
         shell: pwsh

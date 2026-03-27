@@ -3,8 +3,14 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import { vi } from 'vitest';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
+import { useNavigate } from '@tanstack/react-router';
 import { Route as IndexRoute } from '../../routes/index'; // Import the Route object
 import React from 'react'; // Import React for ComponentType
+
+vi.mock('@tanstack/react-router', () => ({
+  createFileRoute: () => (options: unknown) => ({ options }),
+  useNavigate: vi.fn(),
+}));
 
 // Mock @tauri-apps/api/core
 vi.mock('@tauri-apps/api/core', () => ({
@@ -17,26 +23,13 @@ vi.mock('@tauri-apps/api/event', () => ({
 }));
 
 describe('Index Route', () => {
-  const originalLocation = window.location;
   const originalTauriInternals = (window as Window & { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__;
   const IndexComponent = IndexRoute.options.component as React.ComponentType;
+  const mockNavigate = vi.fn();
 
   // No global timeout configuration here. Tests should pass within default timeout.
 
-  beforeAll(() => {
-    // Mock window.location.href
-    Object.defineProperty(window, 'location', {
-      writable: true,
-      value: { href: '' },
-    });
-  });
-
   afterAll(() => {
-    // Restore original window.location
-    Object.defineProperty(window, 'location', {
-      writable: true,
-      value: originalLocation,
-    });
     Object.defineProperty(window, '__TAURI_INTERNALS__', {
       configurable: true,
       writable: true,
@@ -46,14 +39,16 @@ describe('Index Route', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    window.location.href = ''; // Reset href for each test
     Object.defineProperty(window, '__TAURI_INTERNALS__', {
       configurable: true,
       writable: true,
       value: {},
     });
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
     vi.mocked(invoke).mockClear();
     vi.mocked(listen).mockClear();
+    mockNavigate.mockReset();
+    mockNavigate.mockResolvedValue(undefined);
     localStorage.clear(); // Clear localStorage for each test
   });
 
@@ -63,7 +58,7 @@ describe('Index Route', () => {
     expect(screen.getByText(/Checking installation status.../i)).toBeInTheDocument();
   });
 
-  test('redirects to /environments if installed via event', async () => {
+  test('redirects to /workspace if installed via event', async () => {
     const unlistenMock = vi.fn();
     vi.mocked(listen).mockImplementation(async (eventName, handler) => {
       if (eventName === 'installation-status') {
@@ -87,7 +82,7 @@ describe('Index Route', () => {
       await Promise.resolve(); // Flush microtasks after render
     });
 
-    await waitFor(() => expect(window.location.href).toBe('/environments'));
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith({ to: '/workspace', replace: true }));
     expect(vi.mocked(invoke)).not.toHaveBeenCalledWith('get_installation_state');
   });
 
@@ -113,11 +108,11 @@ describe('Index Route', () => {
       await Promise.resolve(); // Flush microtasks after render
     });
 
-    await waitFor(() => expect(window.location.href).toBe('/setup'));
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith({ to: '/setup', replace: true }));
     expect(vi.mocked(invoke)).not.toHaveBeenCalledWith('get_installation_state');
   });
 
-  test('redirects to /quant in web mode', async () => {
+  test('redirects to /workspace in web mode', async () => {
     Object.defineProperty(window, '__TAURI_INTERNALS__', {
       configurable: true,
       writable: true,
@@ -129,7 +124,7 @@ describe('Index Route', () => {
       await Promise.resolve();
     });
 
-    await waitFor(() => expect(window.location.href).toBe('/quant'));
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith({ to: '/workspace', replace: true }));
     expect(vi.mocked(invoke)).not.toHaveBeenCalled();
     expect(vi.mocked(listen)).not.toHaveBeenCalled();
   });

@@ -1,5 +1,6 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { PanelCard } from "../components/quant/PanelCard";
 import { ScoreGauge } from "../components/macro/ScoreGauge";
 import { DashboardHistogramChart } from "../components/quant/DashboardHistogramChart";
@@ -15,12 +16,10 @@ import {
   createSignals,
   fetchAlertsCurrent,
   fetchAlertsHistory,
-  fetchArtifactSummary,
   fetchDashboardBootstrap,
   fetchDashboardHealth,
   fetchFeatureImportance,
   fetchModelIcDecay,
-  fetchModelPerformance,
   fetchPortfolioPolicy,
   fetchPerformanceRegime,
   fetchPerformanceRolling,
@@ -168,6 +167,7 @@ function zColor(z: number): string {
 }
 
 export default function DashboardPage() {
+  const navigate = useNavigate();
   const { session, setRunId, setModelName, setMode: setSessionMode, syncFromHealth, patchSession, markArtifactReady } =
     useQuantSession();
   const [backend, setBackend] = useState<Awaited<ReturnType<typeof resolveOpenBBBackend>> | null>(null);
@@ -639,17 +639,7 @@ export default function DashboardPage() {
           }
 
           const fallbackTasks: Array<Promise<unknown>> = [];
-          const fallbackKinds: Array<"summary" | "performance" | "run_latest_meta"> = [];
-          if (!snapshotSummary) {
-            fallbackKinds.push("summary");
-            fallbackTasks.push(fetchArtifactSummary(backend.baseUrl, runToUse, effectiveModel));
-          }
-          if (!snapshotPerformance) {
-            fallbackKinds.push("performance");
-            fallbackTasks.push(fetchModelPerformance(backend.baseUrl, runToUse));
-          }
           if (!snapshotRunLatestMeta) {
-            fallbackKinds.push("run_latest_meta");
             fallbackTasks.push(fetchRunLatestMeta(backend.baseUrl, effectiveModel, runToUse));
           }
           if (fallbackTasks.length > 0) {
@@ -657,23 +647,17 @@ export default function DashboardPage() {
             if (controller.signal.aborted) {
               return;
             }
-            fallbackSettled.forEach((result, idx) => {
-              const kind = fallbackKinds[idx];
+            fallbackSettled.forEach((result) => {
               if (result.status !== "fulfilled") {
-                if (kind === "summary") coreErrors.push("summary unavailable");
-                else if (kind === "performance") coreErrors.push("performance unavailable");
-                else coreErrors.push("run latest meta unavailable");
+                coreErrors.push("run latest meta unavailable");
                 return;
               }
-              if (kind === "summary") setSummary(result.value as typeof snapshotSummary);
-              else if (kind === "performance") setPerformance(result.value as typeof snapshotPerformance);
-              else setRunLatestMeta(result.value as typeof snapshotRunLatestMeta);
+              setRunLatestMeta(result.value as typeof snapshotRunLatestMeta);
             });
           }
 
-          const blockingCoreErrors = coreErrors.filter((item) => item !== "summary unavailable");
-          if (blockingCoreErrors.length > 0) {
-            setWarningMessage(`Some panels are using partial data: ${blockingCoreErrors[0]}`);
+          if (coreErrors.length > 0) {
+            setWarningMessage(`Some panels are using partial data: ${coreErrors[0]}`);
           }
         }
 
@@ -1170,7 +1154,7 @@ export default function DashboardPage() {
                     : "Monitor portfolio"
             }
             actionLabel={!normalizedRunId ? "Go to Quant Lab" : undefined}
-            actionHref={!normalizedRunId ? "/quant" : undefined}
+            actionOnClick={!normalizedRunId ? () => void navigate({ to: "/quant" }) : undefined}
           />
         </div>
       </div>
@@ -1247,6 +1231,16 @@ export default function DashboardPage() {
             <a
               className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
               href={`/quant?run_id=${encodeURIComponent(normalizedRunId)}&model=${encodeURIComponent(effectiveModel)}`}
+              onClick={(event) => {
+                event.preventDefault();
+                void navigate({
+                  to: "/quant",
+                  search: {
+                    run_id: normalizedRunId,
+                    model: effectiveModel,
+                  },
+                });
+              }}
             >
               Configure training and universe in Quant Lab
             </a>
@@ -1286,6 +1280,10 @@ export default function DashboardPage() {
               <a
                 href="/macro"
                 className="button-secondary rounded-sm px-2 py-1 body-xxs-medium"
+                onClick={(event) => {
+                  event.preventDefault();
+                  void navigate({ to: "/macro" });
+                }}
               >
                 Open Macro
               </a>

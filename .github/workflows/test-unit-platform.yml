@@ -6,6 +6,8 @@ on:
       - develop
     paths:
       - 'openbb_platform/**'
+      - '.github/scripts/noxfile.py'
+      - '.github/workflows/test-unit-platform.yml'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -34,6 +36,11 @@ jobs:
             allow-prereleases: true
             cache: "pip"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
       - name: Cache pip packages
         uses: actions/cache@v5
         with:
@@ -43,6 +50,22 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Run tests
+        shell: bash
         run: |
-          pip install nox
-          nox -f .github/scripts/noxfile.py -s unit_test_platform --python ${{ matrix.python_version }}
+          set -euo pipefail
+          uv tool run --from nox nox -f .github/scripts/noxfile.py -s unit_test_platform --python ${{ matrix.python_version }}
+
+      - name: Verify repo metadata is unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- openbb_platform/pyproject.toml openbb_platform/poetry.lock cli/pyproject.toml cli/poetry.lock
+
+      - name: Verify no uv lock artifacts were created
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files --others --exclude-standard | grep -E '(^|/)uv\.lock$'; then
+            echo "Unexpected uv.lock artifact generated." >&2
+            exit 1
+          fi

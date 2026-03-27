@@ -104,11 +104,9 @@ def check_for_platform_extensions(fastapi_app, widgets_to_exclude) -> list:
 
 
 widget_exclude_filter = check_for_platform_extensions(app, widget_exclude_filter)
-openapi = app.openapi()
 current_settings = get_user_settings(CURRENT_USER_SETTINGS)
-widgets_json = get_widgets_json(
-    build, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH, app
-)
+openapi: dict | None = None
+widgets_json: dict | None = None
 APPS_PATH = (
     APPS_PATH
     if APPS_PATH
@@ -119,6 +117,53 @@ APPS_PATH = (
         + "/workspace_apps.json"
     )
 )
+
+
+def _get_openapi_schema(force_refresh: bool = False) -> dict:
+    """Build the OpenAPI schema lazily so startup stays responsive."""
+    global openapi  # noqa: PLW0603  # pylint: disable=global-statement
+    if force_refresh or openapi is None:
+        openapi = app.openapi()
+    return openapi
+
+
+def _get_widgets_payload(
+    *, force_refresh: bool = False, build_override: bool | None = None
+) -> dict:
+    """Load widgets.json lazily and cache the latest payload in memory."""
+    global widgets_json  # noqa: PLW0603  # pylint: disable=global-statement
+    should_build = build if build_override is None else build_override
+    if force_refresh or widgets_json is None:
+        schema = _get_openapi_schema() if should_build else None
+        try:
+            widgets_json = get_widgets_json(
+                should_build,
+                schema,
+                widget_exclude_filter,
+                EDITABLE,
+                WIDGETS_PATH,
+                app,
+            )
+        except ValueError:
+            if should_build:
+                raise
+            widgets_json = get_widgets_json(
+                should_build,
+                _get_openapi_schema(),
+                widget_exclude_filter,
+                EDITABLE,
+                WIDGETS_PATH,
+                app,
+            )
+    return widgets_json
+
+
+def _extract_json_content(response_or_payload) -> dict:
+    """Normalize route responses into a plain dictionary payload."""
+    if isinstance(response_or_payload, JSONResponse):
+        body = response_or_payload.body or b"{}"
+        return json.loads(body.decode("utf-8"))
+    return response_or_payload if isinstance(response_or_payload, dict) else {}
 
 
 @app.get("/")
@@ -143,15 +188,16 @@ if not has_root_widgets:
         global FIRST_RUN  # noqa PLW0603  # pylint: disable=global-statement
         if FIRST_RUN is True:
             FIRST_RUN = False
-            return JSONResponse(content=widgets_json, headers=obb_headers)
-        if EDITABLE:
             return JSONResponse(
-                content=get_widgets_json(
-                    False, openapi, widget_exclude_filter, EDITABLE, WIDGETS_PATH, app
-                ),
+                content=_get_widgets_payload(build_override=build),
                 headers=obb_headers,
             )
-        return JSONResponse(content=widgets_json, headers=obb_headers)
+        if EDITABLE:
+            return JSONResponse(
+                content=_get_widgets_payload(force_refresh=True, build_override=False),
+                headers=obb_headers,
+            )
+        return JSONResponse(content=_get_widgets_payload(), headers=obb_headers)
 
 else:
     # Populate the local name `get_widgets` with the endpoint function of the existing
@@ -165,7 +211,7 @@ else:
         # Fallback mechanism
         async def get_widgets():
             """Return the generated widgets.json"""
-            return JSONResponse(content=widgets_json, headers=obb_headers)
+            return JSONResponse(content=_get_widgets_payload(), headers=obb_headers)
 
 
 # Check if the app has already defined apps.json at the root.
@@ -178,7 +224,8 @@ if not has_root_apps:
         """Get the apps.json file."""
         new_templates: list = []
         default_templates: list = []
-        widgets = await get_widgets()
+        widgets = _extract_json_content(await get_widgets())
+        widget_index = widgets_json if isinstance(widgets_json, dict) else widgets
 
         if not os.path.exists(APPS_PATH):
             apps_dir = os.path.dirname(APPS_PATH)
@@ -225,7 +272,7 @@ if not has_root_apps:
                     if _tabs := template.get("tabs"):
                         for v in _tabs.values():
                             if v.get("layout", []) and all(
-                                item.get("i") in widgets_json
+                                item.get("i") in widget_index
                                 for item in v.get("layout")
                             ):
                                 new_templates.append(template)
@@ -233,7 +280,7 @@ if not has_root_apps:
                     elif (
                         template.get("layout")
                         and all(
-                            item.get("i") in widgets_json for item in template["layout"]
+                            item.get("i") in widget_index for item in template["layout"]
                         )
                         and template not in new_templates
                     ):

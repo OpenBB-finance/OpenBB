@@ -66131,6 +66131,95 @@
                 "model": ""
             }
         },
+        "/quant_ml/macro/studies": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Create a macro study.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "MacroStudyPayload",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/studies/{study_id}": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Update one macro study.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "study_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "request",
+                        "type": "MacroStudyPayload",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/studies/{study_id}/attachments/report": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Attach one existing report artifact to a macro study.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "study_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "request",
+                        "type": "dict[str, Any]",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
         "/quant_ml/macro/expression": {
             "deprecated": {
                 "flag": null,
@@ -66143,6 +66232,202 @@
                     {
                         "name": "request",
                         "type": "MacroExpressionRequest",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/analysis/compare": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Compare normalized study series.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "dict[str, Any]",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/analysis/leadlag": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return lead-lag correlation analysis.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "dict[str, Any]",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/analysis/scatter": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return scatter analysis for two series.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "dict[str, Any]",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/series/vintages": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return latest versus as-of vintage series.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "key",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "as_of_date",
+                        "type": "date",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "start",
+                        "type": "date | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "end",
+                        "type": "date | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/releases/calendar": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return release-style metadata for catalog series.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "domain",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/report": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Export HTML report for a macro study.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "dict[str, Any]",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/macro/features/export": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Export study feature lineage metadata.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "request",
+                        "type": "dict[str, Any]",
                         "description": "",
                         "default": null,
                         "optional": false
@@ -66680,6 +66965,38 @@
                         "type": "bool",
                         "description": "",
                         "default": false,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/runs/compare": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return a compact comparison payload for recent strategy runs.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_ids",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 5,
                         "optional": true
                     }
                 ]
@@ -67590,6 +67907,23 @@
                 "model": ""
             }
         },
+        "/quant_ml/workspace/brief": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the aggregated workspace brief payload.\n\nReturns\n-------\nWorkspaceBriefResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
         "/quant_ml/dashboard/bootstrap": {
             "deprecated": {
                 "flag": null,
@@ -67913,6 +68247,91 @@
                 "model": ""
             }
         },
+        "/quant_ml/ops/issues": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the current human-readable ops issue queue.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "",
+                        "default": 10,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/symbol/context": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return the shared Symbol Lab context payload.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "source",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "study_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "run_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "signal_id",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "report_path",
+                        "type": "str | None",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
         "/quant_ml/notifications/history": {
             "deprecated": {
                 "flag": null,
@@ -67973,6 +68392,23 @@
             }
         },
         "/quant_ml/trading/settings": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return trading runtime settings and registries.\n\nReturns\n-------\nTradingSettingsResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/settings/update": {
             "deprecated": {
                 "flag": null,
                 "message": null
@@ -68366,6 +68802,23 @@
             }
         },
         "/quant_ml/trading/execution/mode": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return trading runtime execution mode.\n\nReturns\n-------\nTradingExecutionModeResponse",
+            "examples": "",
+            "parameters": {
+                "standard": []
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/trading/execution/mode/update": {
             "deprecated": {
                 "flag": null,
                 "message": null
@@ -68810,6 +69263,38 @@
             }
         },
         "/quant_ml/execution/mode": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Return execution mode for one run/model.",
+            "examples": "",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "run_id",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": false
+                    },
+                    {
+                        "name": "model_name",
+                        "type": "Literal['xgb_lstm', 'lgbm_ranker', 'catboost_ranker']",
+                        "description": "",
+                        "default": "lgbm_ranker",
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {},
+            "data": {},
+            "model": "",
+            "openapi_extra": {
+                "model": ""
+            }
+        },
+        "/quant_ml/execution/mode/update": {
             "deprecated": {
                 "flag": null,
                 "message": null
@@ -74786,6 +75271,27 @@
         "/quant_ml/macro/catalog": {
             "description": "Quant Macro analysis endpoints."
         },
+        "/quant_ml/macro/studies": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/studies/{study_id}": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/studies/{study_id}/attachments": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/analysis": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/series": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/releases": {
+            "description": "Quant Macro analysis endpoints."
+        },
+        "/quant_ml/macro/features": {
+            "description": "Quant Macro analysis endpoints."
+        },
         "/quant_ml/macro/regime": {
             "description": "Quant Macro analysis endpoints."
         },
@@ -74840,6 +75346,9 @@
         "/quant_ml/predictions": {
             "description": "ML/DL based Quant Lab backend extension"
         },
+        "/quant_ml/workspace": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
         "/quant_ml/dashboard": {
             "description": "ML/DL based Quant Lab backend extension"
         },
@@ -74858,6 +75367,9 @@
         "/quant_ml/reports": {
             "description": "ML/DL based Quant Lab backend extension"
         },
+        "/quant_ml/symbol": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
         "/quant_ml/notifications": {
             "description": "ML/DL based Quant Lab backend extension"
         },
@@ -74865,6 +75377,9 @@
             "description": "ML/DL based Quant Lab backend extension"
         },
         "/quant_ml/trading": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/trading/settings": {
             "description": "ML/DL based Quant Lab backend extension"
         },
         "/quant_ml/trading/cycle": {
@@ -74894,6 +75409,9 @@
         "/quant_ml/trading/execution": {
             "description": "ML/DL based Quant Lab backend extension"
         },
+        "/quant_ml/trading/execution/mode": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
         "/quant_ml/performance": {
             "description": "ML/DL based Quant Lab backend extension"
         },
@@ -74907,6 +75425,9 @@
             "description": "ML/DL based Quant Lab backend extension"
         },
         "/quant_ml/execution/orders": {
+            "description": "ML/DL based Quant Lab backend extension"
+        },
+        "/quant_ml/execution/mode": {
             "description": "ML/DL based Quant Lab backend extension"
         },
         "/quant_ml/execution/fills": {

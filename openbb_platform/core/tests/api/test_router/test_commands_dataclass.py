@@ -63,9 +63,10 @@ class TestAPIWrapperDataclassConversion:
     def mock_command_runner(self):
         """Create a mock CommandRunner that captures kwargs passed to run()."""
         runner = MagicMock(spec=CommandRunner)
-        captured = {"kwargs": None}
+        captured = {"kwargs": None, "route": None}
 
         async def capturing_run(path, user_settings, *args, **kwargs):
+            captured["route"] = path  # type: ignore
             captured["kwargs"] = kwargs  # type: ignore
             return OBBject(results=[{"test": "data"}])
 
@@ -336,6 +337,44 @@ class TestAPIWrapperDataclassConversion:
         captured_kwargs = mock_command_runner.captured["kwargs"]
         assert isinstance(captured_kwargs.get("standard_params"), dict)
         assert isinstance(captured_kwargs.get("extra_params"), dict)
+
+    def test_wrapper_uses_method_specific_command_key(
+        self,
+        mock_command_runner,
+    ):
+        """Routes sharing one path must execute the correct method-specific command."""
+
+        async def test_endpoint(
+            standard_params: StandardParams | None = None,
+            extra_params: ExtraParams | None = None,
+            **kwargs,
+        ):
+            return OBBject(results=[{"ok": True}])
+
+        route = APIRoute(
+            path="/api/v1/test/shared",
+            endpoint=test_endpoint,
+            methods=["POST"],
+        )
+        wrapper = build_api_wrapper(mock_command_runner, route)
+
+        app = FastAPI()
+        router = APIRouter()
+        router.add_api_route("/api/v1/test/shared", wrapper, methods=["POST"])
+        app.include_router(router)
+        client = TestClient(app, raise_server_exceptions=True)
+
+        with patch(
+            "openbb_core.api.router.commands.UserService.read_from_file",
+            return_value={},
+        ), patch(
+            "openbb_core.app.model.user_settings.os.path.exists",
+            return_value=False,
+        ):
+            response = client.post("/api/v1/test/shared", json={})
+
+        assert response.status_code == 200
+        assert mock_command_runner.captured["route"] == "POST /api/v1/test/shared"
 
 
 class TestDataclassItemAssignmentBehavior:

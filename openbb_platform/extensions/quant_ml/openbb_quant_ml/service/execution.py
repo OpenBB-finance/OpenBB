@@ -14,6 +14,7 @@ import pandas as pd
 
 from openbb_quant_ml.models import (
     ExecutionFillsResponse,
+    ExecutionBlockingConstraintItem,
     ExecutionModeResponse,
     ExecutionModeUpdateRequest,
     ExecutionOrderItem,
@@ -24,12 +25,14 @@ from openbb_quant_ml.models import (
     ExecutionPreviewResponse,
     ExecutionSubmitResponse,
     ModelName,
+    OrderRationaleResponse,
     RiskEventsResponse,
     RiskLimitsResponse,
     RiskPretradeRequest,
     RiskPretradeResponse,
     RiskViolationItem,
 )
+from openbb_quant_ml.service.experiment_tracking import get_experiment_detail_response
 from openbb_quant_ml.service.execution_adapter import DisabledLiveAdapter
 from openbb_quant_ml.service.ops_policy import get_ops_policy
 from openbb_quant_ml.service.pipeline import get_portfolio_current
@@ -426,9 +429,48 @@ def _preview_orders(
         nav=nav_value,
         orders=orders,
         estimated_turnover=float(turnover_notional / max(nav_value, 1e-12)),
+        estimated_cost=float(turnover_notional / max(nav_value, 1e-12)) * float(
+            (float(cost_bps) if cost_bps is not None else float(state.get("cost_bps", 10.0)))
+        )
+        / 10000.0,
+        rationale=_build_order_rationale(
+            run_id=run_id,
+            model_name=model_name,
+            preview=ExecutionPreviewResponse(
+                run_id=run_id,
+                model_name=model_name,
+                status="ok",
+                as_of_date=latest_market_date,
+                nav=nav_value,
+                orders=orders,
+                estimated_turnover=float(turnover_notional / max(nav_value, 1e-12)),
+                execution_mode=execution_mode,  # type: ignore[arg-type]
+            ),
+            category_weights=category_weights,
+            cost_bps=(
+                float(cost_bps)
+                if cost_bps is not None
+                else float(state.get("cost_bps", 10.0))
+            ),
+        ),
         execution_mode=execution_mode,  # type: ignore[arg-type]
         message=None if orders else "No rebalance orders required.",
     )
+    preview_violations = _risk_violations_from_preview(
+        preview,
+        category_weights,
+        _risk_limits(run_dir, model_name),
+    )
+    preview.blocking_constraints = _build_blocking_constraints(preview_violations)
+    preview.rationale.risk_check_result = (
+        "Preview indicates no blocking constraints."
+        if not preview_violations
+        else _blocking_summary(preview_violations)
+        or "Preview indicates blocking constraints."
+    )
+    preview.rationale.blocking_constraints = [
+        item.message for item in preview.blocking_constraints
+    ]
 
     context = {
         "run_dir": run_dir,
@@ -594,6 +636,95 @@ def _risk_limits(run_dir: Path, model_name: ModelName) -> dict[str, float]:
             merged.update(out)
             return merged
     return DEFAULT_RISK_LIMITS.copy()
+
+
+def _build_blocking_constraints(
+    violations: list[RiskViolationItem],
+) -> list[ExecutionBlockingConstraintItem]:
+    target_map = {
+        "max_weight": ("/execution", "Reduce the target weight or tighten the rebalance basket."),
+        "max_symbol_exposure": ("/execution", "Lower the single-name target before submitting orders."),
+        "gross_exposure": ("/execution", "Reduce gross exposure or increase the cash buffer."),
+        "net_exposure": ("/execution", "Adjust long-short balance to stay within the net exposure band."),
+        "sector_concentration": ("/execution", "Diversify sector weights or rebalance the target portfolio."),
+        "turnover": ("/execution", "Raise the turnover limit only if the trade urgency justifies the cost."),
+        "max_order_notional": ("/execution", "Split the order or reduce the order size before submitting."),
+        "daily_loss_limit": ("/ops", "Review the loss breach and clear the kill switch before trading."),
+    }
+    items: list[ExecutionBlockingConstraintItem] = []
+    for violation in violations:
+        target_route, remediation = target_map.get(
+            violation.rule_id,
+            ("/execution", "Review the pre-trade risk checks and adjust the order set."),
+        )
+        items.append(
+            ExecutionBlockingConstraintItem(
+                rule_id=violation.rule_id,
+                severity=violation.severity,
+                message=violation.message,
+                reason=remediation,
+                target_route=target_route,
+            )
+        )
+    return items
+
+
+def _build_order_rationale(
+    *,
+    run_id: str,
+    model_name: ModelName,
+    preview: ExecutionPreviewResponse,
+    category_weights: dict[str, float],
+    cost_bps: float,
+) -> OrderRationaleResponse:
+    experiment = get_experiment_detail_response(run_id)
+    study_links = [str(item) for item in experiment.macro_study_links if str(item).strip()]
+    order_count = len(preview.orders)
+    signal_rationale = (
+        f"Rebalance {order_count} order(s) from the latest target portfolio for run {run_id}."
+        if order_count
+        else f"No rebalance orders are required for run {run_id}."
+    )
+    top_categories = sorted(
+        (
+            (str(category), float(weight))
+            for category, weight in category_weights.items()
+            if str(category).strip()
+        ),
+        key=lambda item: abs(item[1]),
+        reverse=True,
+    )[:3]
+    macro_backdrop = (
+        "Linked macro studies: " + ", ".join(study_links)
+        if study_links
+        else "No linked macro studies were attached to this feature set."
+    )
+    if top_categories:
+        category_text = ", ".join(
+            f"{category} {weight:.1%}" for category, weight in top_categories
+        )
+        macro_backdrop += f" Target portfolio tilt: {category_text}."
+    estimated_cost = float(preview.estimated_turnover) * max(float(cost_bps), 0.0) / 10000.0
+    return OrderRationaleResponse(
+        signal_rationale=signal_rationale,
+        macro_backdrop=macro_backdrop,
+        risk_check_result="Pending pre-trade risk validation.",
+        expected_turnover_cost=(
+            f"Estimated turnover {preview.estimated_turnover:.2%}; estimated explicit cost {estimated_cost:.2%} of NAV."
+        ),
+        blocking_constraints=[],
+        source_run_id=run_id,
+        source_study_ids=study_links,
+    )
+
+
+def _blocking_summary(violations: list[RiskViolationItem]) -> str | None:
+    if not violations:
+        return None
+    top = violations[0]
+    if len(violations) == 1:
+        return top.message
+    return f"{top.message} {len(violations) - 1} additional constraint(s) need review."
 
 
 def preview_execution_orders(
@@ -1114,6 +1245,16 @@ def risk_check_pretrade(request: RiskPretradeRequest) -> RiskPretradeResponse:
         for item in violations
     ]
     _append_risk_events(run_dir, normalized_model, events)
+    blocking_summary = _blocking_summary(violations)
+    blocking_constraints = _build_blocking_constraints(violations)
+    risk_result_text = (
+        "Pre-trade risk checks passed."
+        if not violations
+        else blocking_summary or "Pre-trade risk checks require action."
+    )
+    preview.rationale.risk_check_result = risk_result_text
+    preview.rationale.blocking_constraints = [item.message for item in blocking_constraints]
+    preview.blocking_constraints = blocking_constraints
 
     return RiskPretradeResponse(
         run_id=request.run_id,
@@ -1122,6 +1263,7 @@ def risk_check_pretrade(request: RiskPretradeRequest) -> RiskPretradeResponse:
         passed=len(violations) == 0,
         kill_switch=kill_switch,
         violations=violations,
+        blocking_summary=blocking_summary,
         execution_mode=_execution_mode_value(_load_execution_state(run_dir, normalized_model)),  # type: ignore[arg-type]
     )
 

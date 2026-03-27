@@ -6,6 +6,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import ShowVersion from "../components/ShowVersion";
 import { ODPLogo, OpenBBLogo } from "../components/Icon";
+import { SystemReadinessBanner } from "../components/SystemReadinessBanner";
 import { EnvironmentCreationProvider, useEnvironmentCreation } from "../contexts/EnvironmentCreationContext";
 import { QuantSessionProvider } from "../contexts/QuantSessionContext";
 
@@ -117,7 +118,15 @@ function Root() {
 	const shouldHideNav = isJupyterLogsView || isBackendLogsView || isInstallingSetup || isInstallationProgress;
 
     useEffect(() => {
-        setSelectedTab(currentPath);
+        const groupedPath =
+            currentPath === "/backends" || currentPath === "/environments" || currentPath === "/api-keys"
+                ? "/settings"
+                : currentPath === "/dashboard" || currentPath === "/workspace"
+                    ? "/workspace"
+                    : currentPath === "/trading" || currentPath === "/execution"
+                        ? "/execution"
+                        : currentPath;
+        setSelectedTab(groupedPath);
     }, [currentPath]);
 
 	const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -172,6 +181,7 @@ function Root() {
 					</div>
 				</div>
 			</header>
+            <SystemReadinessBanner hidden={shouldHideNav} />
 			<div className="px-5 border-b-2 border-theme-outline">
 				{!shouldHideNav && (
 					<nav
@@ -179,18 +189,13 @@ function Root() {
 						role="tablist"
 						aria-orientation="horizontal"
 					>
-						<NavLink to="/backends" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Backends</NavLink>
-						<NavLink to="/environments" search={{ directory: undefined, userDataDir: undefined }} selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Environments</NavLink>
-						<NavLink to="/api-keys" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>API Keys</NavLink>
+						<NavLink to="/settings" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Settings</NavLink>
 						<NavSeparator />
-						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro</NavLink>
-						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Quant Lab</NavLink>
-						<NavLink to="/trading" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Trading</NavLink>
+						<NavLink to="/workspace" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Workspace</NavLink>
+						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro Lab</NavLink>
+						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Strategy Lab</NavLink>
+						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Portfolio &amp; Execution</NavLink>
 						<NavLink to="/ai" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>AI</NavLink>
-						<NavLink to="/finance" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Finance</NavLink>
-						<NavLink to="/dashboard" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Dashboard</NavLink>
-						<NavSeparator />
-						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Execution</NavLink>
 						<NavLink to="/ops" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Ops</NavLink>
 					</nav>
 				)}

@@ -198,7 +198,22 @@ def write_backtest_report(
 
 
 def _row_to_response(row: dict[str, Any]) -> ReportRunItemResponse:
+    summary = (
+        row.get("summary")
+        if isinstance(row.get("summary"), dict)
+        else json.loads(str(row.get("summary_json") or "{}"))
+    )
+    if not isinstance(summary, dict):
+        summary = {}
+    title = summary.get("title")
+    if title is None:
+        report_type = str(row.get("report_type", "")).strip().replace("_", " ")
+        title = report_type.title() or "Report"
+    symbols = summary.get("symbols", [])
+    if not isinstance(symbols, list):
+        symbols = []
     return ReportRunItemResponse(
+        id=int(row.get("id")) if row.get("id") is not None else None,
         run_id=row.get("run_id"),
         report_type=str(row.get("report_type", "")),
         report_path=str(row.get("report_path", "")),
@@ -208,11 +223,9 @@ def _row_to_response(row: dict[str, Any]) -> ReportRunItemResponse:
             if row.get("created_at") is not None
             else str(row.get("created_at_utc")) if row.get("created_at_utc") else None
         ),
-        summary=(
-            row.get("summary")
-            if isinstance(row.get("summary"), dict)
-            else json.loads(str(row.get("summary_json") or "{}"))
-        ),
+        title=str(title) if title is not None else None,
+        symbols=[str(item).upper() for item in symbols if str(item).strip()],
+        summary=summary,
     )
 
 

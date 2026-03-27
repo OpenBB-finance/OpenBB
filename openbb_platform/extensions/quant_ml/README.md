@@ -79,6 +79,119 @@ pip install pykrx
 # or poetry install -E kr
 ```
 
+## Optional Runtime Features
+
+Install optional dependencies only for the features you need:
+
+```bash
+python -m pip install "./openbb_platform/extensions/quant_ml[cache,tracking]"
+# or, from openbb_platform/: poetry install --extras quant_ml --no-interaction --no-ansi && python -m pip install "./extensions/quant_ml[cache,tracking]"
+```
+
+Supported extras:
+
+- `kr`: `pykrx` universe refresh
+- `catboost`: CatBoost ranker
+- `hpo`: Optuna-based tuning
+- `cvar`: CVXPY-based CVaR optimization
+- `hmm`: HMM regime modeling
+- `cache`: Redis-backed shared runtime cache
+- `tracking`: MLflow run mirroring
+
+Dependency and lockfile policy:
+
+- `openbb_platform/poetry.lock` is the repository-level source of truth.
+- `openbb_platform/extensions/quant_ml/uv.lock` is intentionally not used.
+- `cache` and `tracking` stay as extension-level extras and are installed explicitly where needed.
+
+Environment template:
+
+- copy `openbb_platform/extensions/quant_ml/.env.example` into your local secret management flow or CI environment
+- package installation alone does not activate Redis or MLflow; the corresponding env vars must also be present
+
+Runtime environment variables:
+
+- `OPENBB_API_AUTH=true`: enable OpenBB core HTTP Basic auth
+- `OPENBB_API_USERNAME` / `OPENBB_API_PASSWORD`: credentials used by `OPENBB_API_AUTH`
+- `OPENBB_QUANT_ML_CACHE_REDIS_URL` or `OPENBB_QUANT_ML_REDIS_URL`: enable shared Redis cache for router read caches
+- `OPENBB_QUANT_ML_CACHE_PREFIX`: Redis key prefix, default `openbb:quant-ml:cache`
+- `OPENBB_QUANT_ML_TRAINING_BACKEND=thread|process`: choose in-process thread dispatch or isolated spawn process dispatch for training jobs
+- `OPENBB_QUANT_ML_MLFLOW_ENABLED=true`: opt in to MLflow mirror writes
+- `OPENBB_QUANT_ML_MLFLOW_TRACKING_URI` or `MLFLOW_TRACKING_URI`: MLflow server location
+- `OPENBB_QUANT_ML_MLFLOW_EXPERIMENT_NAME` or `MLFLOW_EXPERIMENT_NAME`: target MLflow experiment name
+
+Launcher examples:
+
+```powershell
+$env:OPENBB_API_AUTH = "true"
+$env:OPENBB_API_USERNAME = "openbb"
+$env:OPENBB_API_PASSWORD = "change-me"
+$env:OPENBB_QUANT_ML_CACHE_REDIS_URL = "redis://127.0.0.1:6379/0"
+$env:OPENBB_QUANT_ML_MLFLOW_ENABLED = "true"
+$env:OPENBB_QUANT_ML_MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
+.\start_all.ps1 -ApiNoBuild $true -ApiAuthMode enabled -QuantMlTrainingBackend process
+```
+
+`start_all.ps1` now defaults to `-ApiAuthMode enabled`. When it launches the API itself and no password is already configured, it generates a temporary dev-session Basic password, uses it for API readiness probes, and injects the same credentials into the frontend dev server through `VITE_OPENBB_API_USERNAME` / `VITE_OPENBB_API_PASSWORD`.
+
+That generated password is a local development convenience only. Staging and production should always provide explicit credentials through environment variables or an external secret manager.
+
+Without `start_all.ps1`, the API can be started directly:
+
+```powershell
+$env:OPENBB_API_AUTH = "true"
+$env:OPENBB_API_USERNAME = "openbb"
+$env:OPENBB_API_PASSWORD = "change-me"
+$env:OPENBB_QUANT_ML_TRAINING_BACKEND = "process"
+$env:OPENBB_QUANT_ML_CACHE_REDIS_URL = "redis://127.0.0.1:6379/0"
+$env:OPENBB_QUANT_ML_MLFLOW_ENABLED = "true"
+$env:OPENBB_QUANT_ML_MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
+openbb-api --host 127.0.0.1 --port 6900 --workers 1 --no-build
+```
+
+Desktop note:
+
+- The Backends page supports both Basic credentials and Bearer tokens for OpenBB API requests.
+- When both are stored, Basic credentials take precedence because current OpenBB core auth uses HTTP Basic.
+- For dev runs launched by `start_all.ps1`, the frontend can authenticate automatically from injected Vite env vars even before anything is stored locally.
+
+## Docker and Staging
+
+The staging image is built from local repository source, not from PyPI packages. `build/docker/platformAPI.Dockerfile` installs the checked-out `openbb_platform` tree and then explicitly installs the quant optional runtime extras:
+
+```bash
+docker build -f build/docker/platformAPI.Dockerfile -t openbb-platform-api:local .
+```
+
+Authenticated local container smoke example:
+
+```bash
+docker run --rm -d \
+  --name openbb-platform-api-local \
+  -p 6900:6900 \
+  -e OPENBB_API_AUTH=true \
+  -e OPENBB_API_USERNAME=openbb \
+  -e OPENBB_API_PASSWORD=change-me \
+  -e OPENBB_QUANT_ML_TRAINING_BACKEND=process \
+  -e OPENBB_QUANT_ML_CACHE_REDIS_URL=redis://host.docker.internal:6379/0 \
+  -e OPENBB_QUANT_ML_MLFLOW_ENABLED=false \
+  openbb-platform-api:local
+
+curl -u openbb:change-me http://127.0.0.1:6900/api/v1/coverage/providers
+curl -u openbb:change-me http://127.0.0.1:6900/api/v1/quant_ml/health
+```
+
+The staging workflow expects these GitHub environment variables and secrets:
+
+- `vars.QUANT_STAGING_API_AUTH`
+- `secrets.QUANT_STAGING_API_USERNAME`
+- `secrets.QUANT_STAGING_API_PASSWORD`
+- `vars.QUANT_STAGING_TRAINING_BACKEND`
+- `secrets.QUANT_STAGING_CACHE_REDIS_URL`
+- `vars.QUANT_STAGING_MLFLOW_ENABLED`
+- `secrets.QUANT_STAGING_MLFLOW_TRACKING_URI`
+- `vars.QUANT_STAGING_MLFLOW_EXPERIMENT_NAME`
+
 ## Endpoints
 
 - `GET /api/v1/quant_ml/universe`
@@ -201,7 +314,22 @@ Quick verification:
 pytest openbb_platform/extensions/quant_ml/tests/test_backtest.py -q
 pytest openbb_platform/extensions/quant_ml/tests/test_execution_risk.py -q
 pytest openbb_platform/extensions/quant_ml/tests/test_portfolio_policy.py -q
+pytest openbb_platform/extensions/quant_ml/tests/test_runtime_cache.py -q
+pytest openbb_platform/extensions/quant_ml/tests/test_experiment_tracking_mlflow.py -q
+pytest openbb_platform/extensions/quant_ml/tests/test_pipeline_training_backend.py -q
 ```
+
+Startup smoke verification:
+
+```powershell
+.\qa\scripts\quant_ml_startup_smoke.ps1
+```
+
+Gate policy:
+
+- manual `quant_ml_verify_full.ps1` keeps startup smoke opt-in through `-IncludeStartupSmoke`
+- `quant_ml_overnight_runner.ps1` always includes startup smoke in phase 7
+- GitHub Actions `quant-ml-platform.yml` runs a dedicated Windows startup smoke gate
 
 ## Macro Tab API
 

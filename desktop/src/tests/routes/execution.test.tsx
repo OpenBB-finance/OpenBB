@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import React from "react";
 import { vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
+import { clearCachePrefix } from "../../lib/quantCache";
 import { Route as ExecutionRoute } from "../../routes/execution";
 
 vi.mock("@tanstack/react-router", () => ({
@@ -30,6 +31,7 @@ describe("Execution Route", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    clearCachePrefix("");
     vi.mocked(invoke).mockResolvedValue([
       {
         id: "openbb-api",
@@ -42,9 +44,122 @@ describe("Execution Route", () => {
 
     global.fetch = vi.fn(async (input: string | URL, init?: RequestInit) => {
       const url = String(input);
-    if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) return mockResponse({ results: {} });
+      if (url.endsWith("/api/v1/coverage/providers") || url.endsWith("/api/v1/system")) {
+        return mockResponse({ results: {} });
+      }
       if (url.endsWith("/api/v1/quant_ml/universe/list")) {
         return mockResponse({ universes: [{ id: "default", has_file: true, count_hint: 2 }] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/status")) {
+        return mockResponse({
+          mode: "paper",
+          runtime_status: "running",
+          last_scan_at: "2026-03-06T06:30:00Z",
+          last_order_at: "2026-03-06T06:35:00Z",
+          active_strategy_count: 2,
+          watchlist_size: 50,
+          open_position_count: 0,
+          today_signal_count: 0,
+          today_order_count: 0,
+          today_realized_pnl: 0,
+          cumulative_pnl: 0,
+          intraday_drawdown: -0.002,
+          used_capital: 0,
+          available_cash: 100000,
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/settings")) {
+        return mockResponse({
+          version: "1",
+          tab_name: "Trading",
+          mode: "paper",
+          runtime_status: "running",
+          universe_id: "default",
+          schedule: { mode: "eod" },
+          scan: { lookback_days: 320 },
+          execution: {
+            auto_order: false,
+            manual_approval: true,
+            signal_generation: true,
+          },
+          account: {
+            max_concurrent_positions: 12,
+            position_size_value: 0.05,
+            max_daily_new_entries: 5,
+          },
+          risk: {
+            stop_loss_pct: 0.08,
+            take_profit_pct: 0.15,
+            trailing_stop_enabled: false,
+          },
+          strategies: {},
+          custom_algorithms: {},
+          ui: {},
+          built_in_strategies: [],
+          custom_algorithm_records: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/trading/scan/latest")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/trading/scan/history")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/trading/orders")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.includes("/api/v1/quant_ml/trading/fills")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/positions")) {
+        return mockResponse({ mode: "paper", items: [] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/performance")) {
+        return mockResponse({
+          cumulative_return: 0,
+          win_rate: 0,
+          sharpe: 0,
+          max_drawdown: 0,
+          equity_curve: [],
+          drawdown_curve: [],
+          daily_pnl: [],
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/risk")) {
+        return mockResponse({
+          limits: {
+            max_position_weight: 0.1,
+            daily_loss_limit: 1500,
+            max_concurrent_positions: 12,
+            stop_loss_pct: 0.08,
+          },
+          events: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/trading/events")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/algorithms")) {
+        return mockResponse({ items: [] });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/execution/mode")) {
+        return mockResponse({
+          mode: "paper",
+          live_adapter_enabled: false,
+          broker_ready: false,
+          kill_switch: false,
+          updated_at: "2026-03-06T06:35:00Z",
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/trading/execution/mode/update") && init?.method === "POST") {
+        const body = init?.body ? JSON.parse(String(init.body)) : {};
+        return mockResponse({
+          mode: body.mode,
+          live_adapter_enabled: false,
+          broker_ready: false,
+          kill_switch: false,
+          updated_at: "2026-03-06T06:35:00Z",
+        });
       }
       if (url.endsWith("/api/v1/quant_ml/execution/orders/preview")) {
         return mockResponse({
@@ -64,62 +179,8 @@ describe("Execution Route", () => {
           violations: [],
         });
       }
-      if (url.includes("/api/v1/quant_ml/execution/orders/current")) {
-        return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", orders: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/execution/fills/history")) {
-        return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", fills: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/execution/positions/current")) {
-        return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", positions: [], cash: 0, gross_exposure: 0, net_exposure: 0 });
-      }
-      if (url.includes("/api/v1/quant_ml/execution/pnl")) {
-        return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", realized_pnl: 0, unrealized_pnl: 0, total_pnl: 0, return_pct: 0 });
-      }
-      if (url.includes("/api/v1/quant_ml/risk/limits")) {
-        return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", limits: {}, kill_switch: false });
-      }
-      if (url.includes("/api/v1/quant_ml/risk/events")) {
-        return mockResponse({ run_id: "run-1", model_name: "lgbm_ranker", status: "ok", events: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/execution/mode?")) {
-        return mockResponse({
-          run_id: "run-1",
-          model_name: "lgbm_ranker",
-          mode: "paper",
-          live_adapter_enabled: false,
-          broker_ready: false,
-          kill_switch: false,
-        });
-      }
-      if (url.endsWith("/api/v1/quant_ml/execution/mode/update") && init?.method === "POST") {
-        const body = init?.body ? JSON.parse(String(init.body)) : {};
-        return mockResponse({
-          run_id: body.run_id,
-          model_name: body.model_name,
-          mode: body.mode,
-          live_adapter_enabled: false,
-          broker_ready: false,
-          kill_switch: false,
-        });
-      }
-      if (url.includes("/api/v1/quant_ml/runs/run-1/risk")) {
-        return mockResponse({ factor_exposure: { market: 0.3 }, stress_test: { crash: -0.08 } });
-      }
-      if (url.includes("/api/v1/quant_ml/runs/run-1/exposures")) {
-        return mockResponse({ factor_exposure: { size: 0.1 }, sector_exposure: { tech: 0.5 } });
-      }
       if (url.includes("/api/v1/quant_ml/runs/run-1/constraints")) {
         return mockResponse({ turnover_limit: 0.4, max_weight: 0.1 });
-      }
-      if (url.includes("/api/v1/quant_ml/runs/run-1/audit")) {
-        return mockResponse({ run_id: "run-1", status: "ok", events: [{ event_type: "preview", timestamp: "2026-03-06T00:00:00Z" }] });
-      }
-      if (url.includes("/api/v1/quant_ml/universe/snapshot")) {
-        return mockResponse({ run_id: "run-1", as_of_date: "2026-03-06", universe_id: "default", stage_counts: { u0: 100, u1: 80 }, u0_symbols: [], u1_symbols: [], u2_symbols: [], excluded: [] });
-      }
-      if (url.includes("/api/v1/quant_ml/universe/exclusions")) {
-        return mockResponse({ run_id: "run-1", items: [{ symbol: "XYZ", reason: "liquidity" }] });
       }
       if (url.endsWith("/api/v1/quant_ml/execution/orders/submit")) {
         return mockResponse({
@@ -143,11 +204,12 @@ describe("Execution Route", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Execution \/ Risk/i)).toBeInTheDocument();
+      expect(screen.getByText("Portfolio & Execution")).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: "Orders" })).toHaveAttribute("aria-selected", "true");
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByPlaceholderText(/run_id/i), { target: { value: "run-1" } });
+      fireEvent.change(screen.getByLabelText(/^Execution Run ID$/i), { target: { value: "run-1" } });
       fireEvent.click(screen.getByRole("button", { name: /Preview \+ Risk Check/i }));
     });
 
@@ -155,9 +217,8 @@ describe("Execution Route", () => {
       const calls = vi.mocked(global.fetch).mock.calls.map((call) => String(call[0]));
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/execution/orders/preview"))).toBe(true);
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/risk/check/pretrade"))).toBe(true);
-      expect(calls.some((url) => url.includes("/api/v1/quant_ml/execution/orders/current"))).toBe(true);
-      expect(calls.some((url) => url.includes("/api/v1/quant_ml/execution/mode?"))).toBe(true);
-      expect(calls.some((url) => url.includes("/api/v1/quant_ml/runs/run-1/audit"))).toBe(true);
+      expect(calls.some((url) => url.includes("/api/v1/quant_ml/runs/run-1/constraints"))).toBe(true);
+      expect(screen.queryByText(/Latest Submission/i)).not.toBeInTheDocument();
     });
   });
 
@@ -167,22 +228,21 @@ describe("Execution Route", () => {
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByPlaceholderText(/run_id/i), { target: { value: "run-1" } });
+      fireEvent.change(screen.getByLabelText(/^Execution Run ID$/i), { target: { value: "run-1" } });
       fireEvent.click(screen.getByRole("button", { name: /Preview \+ Risk Check/i }));
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Save Mode/i })).toBeInTheDocument();
+      expect(screen.getByLabelText(/^Execution Mode$/i)).toBeInTheDocument();
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(/Execution Mode/i), { target: { value: "shadow_live" } });
-      fireEvent.click(screen.getByRole("button", { name: /Save Mode/i }));
+      fireEvent.change(screen.getByLabelText(/^Execution Mode$/i), { target: { value: "shadow_live" } });
     });
 
     await waitFor(() => {
       const calls = vi.mocked(global.fetch).mock.calls.filter(
-        (call) => String(call[0]).endsWith("/api/v1/quant_ml/execution/mode/update") && call[1]?.method === "POST",
+        (call) => String(call[0]).endsWith("/api/v1/quant_ml/trading/execution/mode/update") && call[1]?.method === "POST",
       );
       expect(calls.length).toBeGreaterThan(0);
     });

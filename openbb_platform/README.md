@@ -150,12 +150,23 @@ To develop with the source code, you need to have the following:
 
 Install the repository for local development by using the installation script.
 
-  1. Create and activate `.venv`.
-  2. Navigate into the `openbb_platform` folder.
-  3. Run `python dev_install.py -e` to install all packages in editable mode.
-  4. Resolve the canonical interpreter with `python ../qa/scripts/resolve_python.py ..` before running tests or QA scripts.
+  1. Create `.venv` with `uv venv .venv --python 3.11` from the repository root.
+  2. Install the platform in editable mode with the repo `.venv` interpreter.
+     Windows: `.\.venv\Scripts\python.exe openbb_platform/dev_install.py -e --bootstrap-installer uv`
+     Unix: `./.venv/bin/python openbb_platform/dev_install.py -e --bootstrap-installer uv`
+  3. Resolve the canonical interpreter with `python qa/scripts/resolve_python.py .` before running tests or QA scripts.
 
-`dev_install.py` bootstraps required helper modules such as `tomlkit` and `poetry` when they are missing. Installation failures are fail-fast and return a non-zero exit code.
+`dev_install.py` bootstraps required helper modules such as `tomlkit` and `poetry` automatically. `uv` is the recommended bootstrap path for local development, but Poetry remains the dependency resolver and `poetry.lock` remains the source of truth. Installation failures are fail-fast and return a non-zero exit code.
+
+Fallback path:
+
+- create `.venv` with `python -m venv .venv`
+- run the same install command with `--bootstrap-installer pip`
+
+Legacy/manual fallback:
+
+- install Poetry yourself
+- run `python openbb_platform/dev_install.py -e --bootstrap-installer pip`
 
 ### Repository Hygiene
 

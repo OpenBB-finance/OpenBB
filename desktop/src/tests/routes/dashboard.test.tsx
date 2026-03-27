@@ -12,6 +12,7 @@ vi.mock("@tanstack/react-router", () => ({
       component: options.component,
     },
   })),
+  useNavigate: vi.fn(() => vi.fn()),
 }));
 
 vi.mock("@tauri-apps/api/core", () => ({

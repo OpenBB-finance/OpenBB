@@ -1056,9 +1056,13 @@ export default function InstallationProgress() {
 		if (isCancelling) return;
 
 		try {
-			const status: InstallationStatus = await invoke(
+			const status = (await invoke(
 				"get_installation_status",
-			);
+			)) as InstallationStatus | null | undefined;
+
+			if (!status || typeof status !== "object") {
+				return;
+			}
 			console.log("Installation status check:", status);
 
 			// Don't update UI if waiting for user input
@@ -1068,8 +1072,8 @@ export default function InstallationProgress() {
 			if (status.isComplete) {
 				// Only show complete if the message indicates full installation completion
 				const fullProcessComplete =
-					status.message.includes("Installation completed successfully") ||
-					status.message.toLowerCase().includes("openbb installation complete");
+					status.message?.includes("Installation completed successfully") ||
+					status.message?.toLowerCase().includes("openbb installation complete");
 
 				if (fullProcessComplete) {
 					setPhase("complete");
@@ -1195,13 +1199,10 @@ export default function InstallationProgress() {
 	// Handle completion - continue to app (only for successful installations)
 	const handleContinue = async () => {
 		setIsContinuing(true);
-		// Instead of using navigate, use window.location to force a full page reload
-		// This ensures the installation state is properly recognized
-		const searchParams = new URLSearchParams();
-		if (directory) searchParams.append("directory", directory);
-		if (userDataDir) searchParams.append("userDataDir", userDataDir);
-
-		const queryString = searchParams.toString();
+		const search = {
+			directory: directory || undefined,
+			userDataDir: userDataDir || undefined,
+		};
 
 		try {
 			await invoke("update_openbb_settings", {
@@ -1222,31 +1223,36 @@ export default function InstallationProgress() {
 		}
 
 		window.localStorage.setItem("environments-first-load-done", "true");
-		window.location.href = `/environments${queryString ? `?${queryString}` : ""}`;
+		await navigate({
+			to: "/environments",
+			search,
+		});
 	};
 
 	// Handle "Continue Anyway" when installation has failed
 	// This skips settings updates since the environment may be incomplete
 	const handleContinueAnyway = () => {
 		setIsContinuing(true);
-		const searchParams = new URLSearchParams();
-		if (directory) searchParams.append("directory", directory);
-		if (userDataDir) searchParams.append("userDataDir", userDataDir);
-
-		const queryString = searchParams.toString();
+		const search = {
+			directory: directory || undefined,
+			userDataDir: userDataDir || undefined,
+		};
 
 		// Don't update settings or create backend configs for failed installations
 		// Just navigate to environments so user can see what's available
 		console.warn("Continuing after failed installation - settings not updated");
 		window.localStorage.setItem("environments-first-load-done", "true");
-		window.location.href = `/environments${queryString ? `?${queryString}` : ""}`;
+		void navigate({
+			to: "/environments",
+			search,
+		});
 	};
 
 	// Handle error - try again
 	const handleTryAgain = () => {
 		setPhase("preparing");
 		window.localStorage.clear();
-		window.location.href = "/setup";
+		void navigate({ to: "/setup" });
 	};
 
 	// Handle cancellation

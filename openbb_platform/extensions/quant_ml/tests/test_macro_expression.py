@@ -33,6 +33,21 @@ def test_basic_expressions():
     corr = evaluate_expression("rolling_corr(GLD,SPY,60)", resolver=_resolver)
     assert corr.series.dropna().shape[0] > 10
 
+    lagged = evaluate_expression("lag(GLD, n=3)", resolver=_resolver)
+    assert lagged.series.dropna().shape[0] > 10
+
+    ema = evaluate_expression("ema(GLD, 5)", resolver=_resolver)
+    assert ema.series.dropna().shape[0] > 10
+
+    ratio = evaluate_expression("ratio(GLD, SPY)", resolver=_resolver)
+    assert ratio.series.dropna().shape[0] > 10
+
+    base = evaluate_expression("base100(GLD)", resolver=_resolver)
+    assert float(base.series.dropna().iloc[0]) == pytest.approx(100.0)
+
+    percentile = evaluate_expression("percentile(GLD, win=20)", resolver=_resolver)
+    assert percentile.series.dropna().shape[0] > 10
+
 
 def test_fred_expression():
     out = evaluate_expression("FRED:UNRATE", resolver=_resolver)

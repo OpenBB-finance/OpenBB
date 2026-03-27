@@ -6,22 +6,32 @@ on:
       - develop
     paths:
       - "openbb_platform/extensions/quant_ml/**"
-      - "desktop/src/lib/quantApi.ts"
-      - "desktop/src/routes/ops.tsx"
-      - "desktop/src/routes/execution.tsx"
-      - "desktop/src/types/quant.ts"
       - "build/docker/platformAPI.Dockerfile"
+      - "start_all.ps1"
+      - "qa/scripts/quant_ml_verify_full.ps1"
+      - "qa/scripts/quant_ml_startup_smoke.ps1"
+      - "qa/scripts/quant_ml_overnight_runner.ps1"
+      - "desktop/src/lib/openbbBackend.ts"
+      - "desktop/src/lib/openbbSse.ts"
+      - "desktop/src/hooks/useQuantRunStream.ts"
+      - "desktop/src/hooks/useRegimeMonitor.ts"
+      - "desktop/src/routes/backends.tsx"
       - ".github/workflows/quant-ml-platform.yml"
   push:
     branches:
       - develop
     paths:
       - "openbb_platform/extensions/quant_ml/**"
-      - "desktop/src/lib/quantApi.ts"
-      - "desktop/src/routes/ops.tsx"
-      - "desktop/src/routes/execution.tsx"
-      - "desktop/src/types/quant.ts"
       - "build/docker/platformAPI.Dockerfile"
+      - "start_all.ps1"
+      - "qa/scripts/quant_ml_verify_full.ps1"
+      - "qa/scripts/quant_ml_startup_smoke.ps1"
+      - "qa/scripts/quant_ml_overnight_runner.ps1"
+      - "desktop/src/lib/openbbBackend.ts"
+      - "desktop/src/lib/openbbSse.ts"
+      - "desktop/src/hooks/useQuantRunStream.ts"
+      - "desktop/src/hooks/useRegimeMonitor.ts"
+      - "desktop/src/routes/backends.tsx"
       - ".github/workflows/quant-ml-platform.yml"
   workflow_dispatch:
 
@@ -56,10 +66,30 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package-lock.json
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
       - name: Install platform dependencies
         run: |
           python -m pip install --upgrade pip
-          python openbb_platform/dev_install.py -e
+          python openbb_platform/dev_install.py -e --bootstrap-installer uv
+
+      - name: Verify repo metadata is unchanged after install
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- openbb_platform/pyproject.toml openbb_platform/poetry.lock cli/pyproject.toml cli/poetry.lock
+
+      - name: Verify no uv lock artifacts were created
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files --others --exclude-standard | grep -E '(^|/)uv\.lock$'; then
+            echo "Unexpected uv.lock artifact generated." >&2
+            exit 1
+          fi
 
       - name: Resolve repo Python
         shell: bash
@@ -99,9 +129,128 @@ jobs:
         working-directory: desktop
         run: git diff --exit-code -- src/routeTree.gen.ts
 
+  quant_optional_runtime_validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install platform dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python openbb_platform/dev_install.py -e --bootstrap-installer uv
+
+      - name: Verify repo metadata is unchanged after install
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- openbb_platform/pyproject.toml openbb_platform/poetry.lock cli/pyproject.toml cli/poetry.lock
+
+      - name: Verify no uv lock artifacts were created
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files --others --exclude-standard | grep -E '(^|/)uv\.lock$'; then
+            echo "Unexpected uv.lock artifact generated." >&2
+            exit 1
+          fi
+
+      - name: Resolve repo Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHON_CMD="$(python qa/scripts/resolve_python.py .)"
+          echo "PYTHON_CMD=$PYTHON_CMD" >> "$GITHUB_ENV"
+
+      - name: Install optional runtime dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$PYTHON_CMD" -m pip install "./openbb_platform/extensions/quant_ml[cache,tracking]"
+
+      - name: Validate Redis and MLflow runtime paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PYTHONPATH="${GITHUB_WORKSPACE}/openbb_platform/extensions/quant_ml:${PYTHONPATH:-}"
+          "$PYTHON_CMD" -m pytest openbb_platform/extensions/quant_ml/tests/test_runtime_cache.py -q
+          "$PYTHON_CMD" -m pytest openbb_platform/extensions/quant_ml/tests/test_experiment_tracking_mlflow.py -q
+
+  startup_smoke_windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Create repo virtual environment
+        shell: pwsh
+        run: |
+          uv venv .venv --python 3.11
+          .\.venv\Scripts\python.exe -m pip install --upgrade pip
+
+      - name: Install platform dependencies into repo virtual environment
+        shell: pwsh
+        run: .\.venv\Scripts\python.exe openbb_platform/dev_install.py -e --bootstrap-installer uv
+
+      - name: Verify repo metadata is unchanged after install
+        shell: pwsh
+        run: |
+          git diff --exit-code -- openbb_platform/pyproject.toml openbb_platform/poetry.lock cli/pyproject.toml cli/poetry.lock
+
+      - name: Verify no uv lock artifacts were created
+        shell: pwsh
+        run: |
+          $uvLocks = git ls-files --others --exclude-standard | Select-String -Pattern '(^|/|\\)uv\.lock$'
+          if ($uvLocks) {
+            throw "Unexpected uv.lock artifact generated."
+          }
+
+      - name: Install desktop dependencies
+        shell: pwsh
+        run: npm --prefix desktop ci
+
+      - name: Run authenticated startup smoke
+        shell: pwsh
+        run: .\qa\scripts\quant_ml_startup_smoke.ps1 -RepoRoot .
+
   docker_build:
     runs-on: ubuntu-latest
-    needs: quant_validation
+    needs:
+      - quant_validation
+      - quant_optional_runtime_validation
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -124,11 +273,20 @@ jobs:
       - quant-staging
     needs:
       - docker_build
+      - startup_smoke_windows
     environment: staging
     env:
       STAGING_CONTAINER_NAME: ${{ vars.QUANT_STAGING_CONTAINER_NAME || 'openbb-platform-staging' }}
       STAGING_PORT: ${{ vars.QUANT_STAGING_PORT || '6900' }}
       QUANT_HEALTH_PATH: ${{ vars.QUANT_HEALTH_PATH || '/api/v1/quant_ml/health' }}
+      STAGING_API_AUTH: ${{ vars.QUANT_STAGING_API_AUTH || 'true' }}
+      STAGING_API_USERNAME: ${{ secrets.QUANT_STAGING_API_USERNAME }}
+      STAGING_API_PASSWORD: ${{ secrets.QUANT_STAGING_API_PASSWORD }}
+      STAGING_TRAINING_BACKEND: ${{ vars.QUANT_STAGING_TRAINING_BACKEND || 'process' }}
+      STAGING_CACHE_REDIS_URL: ${{ secrets.QUANT_STAGING_CACHE_REDIS_URL }}
+      STAGING_MLFLOW_ENABLED: ${{ vars.QUANT_STAGING_MLFLOW_ENABLED || 'false' }}
+      STAGING_MLFLOW_TRACKING_URI: ${{ secrets.QUANT_STAGING_MLFLOW_TRACKING_URI }}
+      STAGING_MLFLOW_EXPERIMENT_NAME: ${{ vars.QUANT_STAGING_MLFLOW_EXPERIMENT_NAME || '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -156,19 +314,67 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          docker run -d \
-            --name "${STAGING_CONTAINER_NAME}" \
-            --restart unless-stopped \
-            -p "${STAGING_PORT}:6900" \
-            openbb-platform-api:${{ github.sha }}
+          docker_args=(
+            --name "${STAGING_CONTAINER_NAME}"
+            --restart unless-stopped
+            -p "${STAGING_PORT}:6900"
+          )
+
+          auth_mode="$(printf '%s' "${STAGING_API_AUTH}" | tr '[:upper:]' '[:lower:]')"
+          if [[ "${auth_mode}" == "true" ]]; then
+            if [[ -z "${STAGING_API_USERNAME}" || -z "${STAGING_API_PASSWORD}" ]]; then
+              echo "Missing staging API credentials while QUANT_STAGING_API_AUTH=true." >&2
+              exit 1
+            fi
+            docker_args+=(
+              -e "OPENBB_API_AUTH=true"
+              -e "OPENBB_API_USERNAME=${STAGING_API_USERNAME}"
+              -e "OPENBB_API_PASSWORD=${STAGING_API_PASSWORD}"
+            )
+          else
+            docker_args+=(-e "OPENBB_API_AUTH=false")
+          fi
+
+          if [[ -n "${STAGING_TRAINING_BACKEND}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_TRAINING_BACKEND=${STAGING_TRAINING_BACKEND}")
+          fi
+          if [[ -n "${STAGING_CACHE_REDIS_URL}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_CACHE_REDIS_URL=${STAGING_CACHE_REDIS_URL}")
+          fi
+
+          mlflow_mode="$(printf '%s' "${STAGING_MLFLOW_ENABLED}" | tr '[:upper:]' '[:lower:]')"
+          if [[ "${mlflow_mode}" == "true" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_ENABLED=true")
+          else
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_ENABLED=false")
+          fi
+          if [[ -n "${STAGING_MLFLOW_TRACKING_URI}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_TRACKING_URI=${STAGING_MLFLOW_TRACKING_URI}")
+          fi
+          if [[ -n "${STAGING_MLFLOW_EXPERIMENT_NAME}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_EXPERIMENT_NAME=${STAGING_MLFLOW_EXPERIMENT_NAME}")
+          fi
+
+          docker run -d "${docker_args[@]}" openbb-platform-api:${{ github.sha }}
 
       - name: Smoke test quant ops health
         shell: bash
         run: |
           set -euo pipefail
           endpoint="http://127.0.0.1:${STAGING_PORT}${QUANT_HEALTH_PATH}"
+          curl_args=(--fail --silent)
+
+          auth_mode="$(printf '%s' "${STAGING_API_AUTH}" | tr '[:upper:]' '[:lower:]')"
+          if [[ "${auth_mode}" == "true" ]]; then
+            if [[ -z "${STAGING_API_USERNAME}" || -z "${STAGING_API_PASSWORD}" ]]; then
+              echo "Missing staging API credentials while QUANT_STAGING_API_AUTH=true." >&2
+              exit 1
+            fi
+            curl_args+=(--user "${STAGING_API_USERNAME}:${STAGING_API_PASSWORD}")
+          fi
+
           for _ in $(seq 1 30); do
-            if curl --fail --silent "${endpoint}" >/dev/null; then
+            if curl "${curl_args[@]}" "${endpoint}" >/dev/null; then
               exit 0
             fi
             sleep 5
@@ -181,8 +387,46 @@ jobs:
         run: |
           set -euo pipefail
           docker rm -f "${STAGING_CONTAINER_NAME}" || true
-          docker run -d \
-            --name "${STAGING_CONTAINER_NAME}" \
-            --restart unless-stopped \
-            -p "${STAGING_PORT}:6900" \
-            "${{ steps.previous.outputs.previous_image }}"
+
+          docker_args=(
+            --name "${STAGING_CONTAINER_NAME}"
+            --restart unless-stopped
+            -p "${STAGING_PORT}:6900"
+          )
+
+          auth_mode="$(printf '%s' "${STAGING_API_AUTH}" | tr '[:upper:]' '[:lower:]')"
+          if [[ "${auth_mode}" == "true" ]]; then
+            if [[ -z "${STAGING_API_USERNAME}" || -z "${STAGING_API_PASSWORD}" ]]; then
+              echo "Missing staging API credentials while QUANT_STAGING_API_AUTH=true." >&2
+              exit 1
+            fi
+            docker_args+=(
+              -e "OPENBB_API_AUTH=true"
+              -e "OPENBB_API_USERNAME=${STAGING_API_USERNAME}"
+              -e "OPENBB_API_PASSWORD=${STAGING_API_PASSWORD}"
+            )
+          else
+            docker_args+=(-e "OPENBB_API_AUTH=false")
+          fi
+
+          if [[ -n "${STAGING_TRAINING_BACKEND}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_TRAINING_BACKEND=${STAGING_TRAINING_BACKEND}")
+          fi
+          if [[ -n "${STAGING_CACHE_REDIS_URL}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_CACHE_REDIS_URL=${STAGING_CACHE_REDIS_URL}")
+          fi
+
+          mlflow_mode="$(printf '%s' "${STAGING_MLFLOW_ENABLED}" | tr '[:upper:]' '[:lower:]')"
+          if [[ "${mlflow_mode}" == "true" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_ENABLED=true")
+          else
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_ENABLED=false")
+          fi
+          if [[ -n "${STAGING_MLFLOW_TRACKING_URI}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_TRACKING_URI=${STAGING_MLFLOW_TRACKING_URI}")
+          fi
+          if [[ -n "${STAGING_MLFLOW_EXPERIMENT_NAME}" ]]; then
+            docker_args+=(-e "OPENBB_QUANT_ML_MLFLOW_EXPERIMENT_NAME=${STAGING_MLFLOW_EXPERIMENT_NAME}")
+          fi
+
+          docker run -d "${docker_args[@]}" "${{ steps.previous.outputs.previous_image }}"

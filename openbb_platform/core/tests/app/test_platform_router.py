@@ -210,3 +210,21 @@ def test_get_command(command_map):
     """Test get_command."""
     command = command_map.get_command("stocks/load")
     assert command is None
+
+
+def test_get_command_map_preserves_method_specific_routes():
+    """Method-specific keys should disambiguate routes sharing the same path."""
+    router = Router()
+
+    @router.command(methods=["GET"], path="/shared")
+    def shared_get() -> OBBject[list[int] | None]:
+        return OBBject(results=[1])
+
+    @router.command(methods=["POST"], path="/shared")
+    def shared_post() -> OBBject[list[int] | None]:
+        return OBBject(results=[2])
+
+    command_map = CommandMap.get_command_map(router)
+
+    assert command_map["GET /shared"].__name__ == "shared_get"
+    assert command_map["POST /shared"].__name__ == "shared_post"

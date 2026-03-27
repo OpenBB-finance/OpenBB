@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import Any
 
@@ -9,6 +10,7 @@ import numpy as np
 from scipy.optimize import minimize
 
 EPS = 1e-9
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -200,7 +202,12 @@ def _solve_cvar_with_cvxpy(
     for solver_name in ("ECOS", "OSQP", "SCS"):
         try:
             problem.solve(solver=solver_name, warm_start=True, verbose=False)
-        except Exception:
+        except Exception as exc:
+            LOGGER.debug(
+                "CVaR solver attempt failed for solver=%s: %s",
+                solver_name,
+                exc,
+            )
             continue
         if w.value is not None:
             solved = True
@@ -292,7 +299,12 @@ def _solve_mv_with_cvxpy(
     for solver_name in ("OSQP", "CLARABEL", "SCS"):
         try:
             problem.solve(solver=solver_name, warm_start=True, verbose=False)
-        except Exception:
+        except Exception as exc:
+            LOGGER.debug(
+                "MV cvxpy solver attempt failed for solver=%s: %s",
+                solver_name,
+                exc,
+            )
             continue
         if w.value is not None:
             solved = True
@@ -531,7 +543,12 @@ def optimize_weights_v2(
                 cvar_lambda=max(0.01, float(cvar_lambda)),
             )
             mode_used = "cvar"
-        except Exception:
+        except Exception as exc:
+            LOGGER.warning(
+                "CVaR optimization failed; falling back to MV solver: %s",
+                exc,
+                exc_info=True,
+            )
             used_cvar_fallback = True
             weights = np.array([], dtype=float)
 

@@ -1072,6 +1072,31 @@ class ExecutionOrderItem(BaseModel):
     status: Literal["preview", "submitted", "filled", "rejected"] = "preview"
 
 
+class ExecutionBlockingConstraintItem(BaseModel):
+    """Human-readable blocking item for execution workflows."""
+
+    rule_id: str | None = None
+    severity: str | None = None
+    message: str | None = None
+    reason: str
+    target_route: str | None = None
+    target_search: dict[str, str] = Field(default_factory=dict)
+
+
+class OrderRationaleResponse(BaseModel):
+    """Narrative execution rationale payload."""
+
+    signal_rationale: str = ""
+    macro_backdrop: str = ""
+    risk_check_result: str = ""
+    expected_turnover_cost: str = ""
+    blocking_constraints: list[ExecutionBlockingConstraintItem] = Field(
+        default_factory=list
+    )
+    source_run_id: str | None = None
+    source_study_ids: list[str] = Field(default_factory=list)
+
+
 class ExecutionPreviewResponse(BaseModel):
     """Paper execution preview payload."""
 
@@ -1083,6 +1108,11 @@ class ExecutionPreviewResponse(BaseModel):
     nav: float = 0.0
     orders: list[ExecutionOrderItem] = Field(default_factory=list)
     estimated_turnover: float = 0.0
+    estimated_cost: float = 0.0
+    rationale: OrderRationaleResponse = Field(default_factory=OrderRationaleResponse)
+    blocking_constraints: list[ExecutionBlockingConstraintItem] = Field(
+        default_factory=list
+    )
     execution_mode: ExecutionMode = "paper"
 
 
@@ -1192,6 +1222,7 @@ class RiskPretradeResponse(BaseModel):
     passed: bool = True
     kill_switch: bool = False
     violations: list[RiskViolationItem] = Field(default_factory=list)
+    blocking_summary: str | None = None
     execution_mode: ExecutionMode = "paper"
 
 
@@ -1252,6 +1283,92 @@ class OpsStatusResponse(BaseModel):
     execution_mode: dict[str, Any] = Field(default_factory=dict)
 
 
+class WorkspaceActionItemResponse(BaseModel):
+    """Action queue item for the workspace brief."""
+
+    id: str
+    title: str
+    detail: str
+    target_route: str
+    target_search: dict[str, str] = Field(default_factory=dict)
+
+
+class WorkspaceMacroStudyCardResponse(BaseModel):
+    """Active macro study summary."""
+
+    study_id: str | None = None
+    name: str | None = None
+    objective: str | None = None
+    conclusion_summary: str | None = None
+    linked_assets: list[str] = Field(default_factory=list)
+    latest_feature_export: str | None = None
+    latest_attached_report: str | None = None
+
+
+class WorkspaceStrategyCandidateResponse(BaseModel):
+    """Strategy candidate summary."""
+
+    run_id: str | None = None
+    model_name: str | None = None
+    as_of_date: str | None = None
+    feature_lineage: list[str] = Field(default_factory=list)
+    promotion_readiness: str = "not_ready"
+    training_window: str | None = None
+    macro_study_links: list[str] = Field(default_factory=list)
+
+
+class WorkspacePortfolioContributorResponse(BaseModel):
+    """Top portfolio risk contributor."""
+
+    symbol: str
+    contribution: float = 0.0
+
+
+class WorkspacePortfolioSnapshotResponse(BaseModel):
+    """Portfolio risk summary."""
+
+    run_id: str | None = None
+    model_name: str | None = None
+    vol_ex_ante: float = 0.0
+    cvar_95: float = 0.0
+    top_risk_contributors: list[WorkspacePortfolioContributorResponse] = Field(
+        default_factory=list
+    )
+    blocked_constraints: list[str] = Field(default_factory=list)
+
+
+class WorkspaceLatestReportResponse(BaseModel):
+    """Latest report card summary."""
+
+    report_id: int | None = None
+    title: str | None = None
+    report_type: str | None = None
+    report_path: str | None = None
+    created_at: str | None = None
+
+
+class WorkspaceBriefResponse(BaseModel):
+    """Aggregated workspace brief payload."""
+
+    status: DashboardPayloadStatus = "ok"
+    message: str | None = None
+    generated_at: str | None = None
+    active_macro_study: WorkspaceMacroStudyCardResponse = Field(
+        default_factory=WorkspaceMacroStudyCardResponse
+    )
+    current_strategy_candidate: WorkspaceStrategyCandidateResponse = Field(
+        default_factory=WorkspaceStrategyCandidateResponse
+    )
+    portfolio_snapshot: WorkspacePortfolioSnapshotResponse = Field(
+        default_factory=WorkspacePortfolioSnapshotResponse
+    )
+    ops_issue_queue: list["OpsIssueItemResponse"] = Field(default_factory=list)
+    latest_report: WorkspaceLatestReportResponse = Field(
+        default_factory=WorkspaceLatestReportResponse
+    )
+    pending_actions: list[WorkspaceActionItemResponse] = Field(default_factory=list)
+
+
 class DataQualityCheckResult(BaseModel):
     """One data quality check result."""
 
@@ -1294,6 +1411,11 @@ class ExperimentRunItemResponse(BaseModel):
     performance: dict[str, Any] = Field(default_factory=dict)
     artifact_uri: str | None = None
     status: str | None = None
+    macro_study_links: list[str] = Field(default_factory=list)
+    as_of_policy: str | None = None
+    training_window: str | None = None
+    constraints_summary: dict[str, Any] = Field(default_factory=dict)
+    promotion_state: str | None = None
     created_at: str | None = None
     updated_at: str | None = None
 
@@ -1329,12 +1451,54 @@ class ModelRegistryHistoryResponse(BaseModel):
 class ReportRunItemResponse(BaseModel):
     """One generated report row."""
 
+    id: int | None = None
     run_id: str | None = None
     report_type: str
     report_path: str
     status: str = "created"
     created_at: str | None = None
+    title: str | None = None
+    symbols: list[str] = Field(default_factory=list)
     summary: dict[str, Any] = Field(default_factory=dict)
+
+
+class RunCompareItemResponse(BaseModel):
+    """Strategy run comparison row."""
+
+    run_id: str
+    model_name: str | None = None
+    training_window: str | None = None
+    feature_set_version: str | None = None
+    macro_study_links: list[str] = Field(default_factory=list)
+    metrics: dict[str, Any] = Field(default_factory=dict)
+    constraints_summary: dict[str, Any] = Field(default_factory=dict)
+    promotion_state: str | None = None
+
+
+class RunCompareResponse(BaseModel):
+    """Run comparison payload."""
+
+    items: list[RunCompareItemResponse] = Field(default_factory=list)
+
+
+class OpsIssueItemResponse(BaseModel):
+    """Human-readable ops issue row."""
+
+    id: str
+    severity: Literal["critical", "warning", "info"] = "info"
+    title: str
+    impact: str
+    suggested_action: str
+    target_route: str
+    target_search: dict[str, str] = Field(default_factory=dict)
+    source: str | None = None
+    status: str = "open"
+
+
+class OpsIssueQueueResponse(BaseModel):
+    """Ops issue queue payload."""
+
+    items: list[OpsIssueItemResponse] = Field(default_factory=list)
 
 
 class ReportsLatestResponse(BaseModel):
@@ -1791,6 +1955,31 @@ class TradingSymbolDetailResponse(BaseModel):
     orders: list[dict[str, Any]] = Field(default_factory=list)
     position: dict[str, Any] | None = None
     explanation: str | None = None
+    related_studies: list[dict[str, Any]] = Field(default_factory=list)
+    related_runs: list[dict[str, Any]] = Field(default_factory=list)
+    latest_report_ids: list[int] = Field(default_factory=list)
+
+
+class SymbolContextLinkResponse(BaseModel):
+    """Back-link or related reference for Symbol Lab."""
+
+    label: str
+    target_route: str
+    target_search: dict[str, str] = Field(default_factory=dict)
+
+
+class SymbolContextResponse(BaseModel):
+    """Cross-workflow Symbol Lab context payload."""
+
+    symbol: str
+    source: str | None = None
+    linked_studies: list[dict[str, Any]] = Field(default_factory=list)
+    related_runs: list[dict[str, Any]] = Field(default_factory=list)
+    latest_signal: dict[str, Any] | None = None
+    latest_order: dict[str, Any] | None = None
+    latest_position: dict[str, Any] | None = None
+    attached_reports: list[ReportRunItemResponse] = Field(default_factory=list)
+    back_links: list[SymbolContextLinkResponse] = Field(default_factory=list)
 
 
 class TradingOrderItemResponse(BaseModel):

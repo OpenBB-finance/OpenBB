@@ -9,9 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorkspaceRouteImport } from './routes/workspace'
 import { Route as UninstallRouteImport } from './routes/uninstall'
 import { Route as TradingRouteImport } from './routes/trading'
 import { Route as SetupRouteImport } from './routes/setup'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as QuantRouteImport } from './routes/quant'
 import { Route as OpsRouteImport } from './routes/ops'
 import { Route as MacroRouteImport } from './routes/macro'
@@ -27,6 +29,11 @@ import { Route as ApiKeysRouteImport } from './routes/api-keys'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WorkspaceRoute = WorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UninstallRoute = UninstallRouteImport.update({
   id: '/uninstall',
   path: '/uninstall',
@@ -40,6 +47,11 @@ const TradingRoute = TradingRouteImport.update({
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
   path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuantRoute = QuantRouteImport.update({
@@ -128,9 +140,11 @@ export interface FileRoutesByFullPath {
   '/macro': typeof MacroRoute
   '/ops': typeof OpsRoute
   '/quant': typeof QuantRoute
+  '/settings': typeof SettingsRoute
   '/setup': typeof SetupRoute
   '/trading': typeof TradingRoute
   '/uninstall': typeof UninstallRoute
+  '/workspace': typeof WorkspaceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,9 +161,11 @@ export interface FileRoutesByTo {
   '/macro': typeof MacroRoute
   '/ops': typeof OpsRoute
   '/quant': typeof QuantRoute
+  '/settings': typeof SettingsRoute
   '/setup': typeof SetupRoute
   '/trading': typeof TradingRoute
   '/uninstall': typeof UninstallRoute
+  '/workspace': typeof WorkspaceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,9 +183,11 @@ export interface FileRoutesById {
   '/macro': typeof MacroRoute
   '/ops': typeof OpsRoute
   '/quant': typeof QuantRoute
+  '/settings': typeof SettingsRoute
   '/setup': typeof SetupRoute
   '/trading': typeof TradingRoute
   '/uninstall': typeof UninstallRoute
+  '/workspace': typeof WorkspaceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -188,9 +206,11 @@ export interface FileRouteTypes {
     | '/macro'
     | '/ops'
     | '/quant'
+    | '/settings'
     | '/setup'
     | '/trading'
     | '/uninstall'
+    | '/workspace'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -207,9 +227,11 @@ export interface FileRouteTypes {
     | '/macro'
     | '/ops'
     | '/quant'
+    | '/settings'
     | '/setup'
     | '/trading'
     | '/uninstall'
+    | '/workspace'
   id:
     | '__root__'
     | '/'
@@ -226,9 +248,11 @@ export interface FileRouteTypes {
     | '/macro'
     | '/ops'
     | '/quant'
+    | '/settings'
     | '/setup'
     | '/trading'
     | '/uninstall'
+    | '/workspace'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -246,13 +270,22 @@ export interface RootRouteChildren {
   MacroRoute: typeof MacroRoute
   OpsRoute: typeof OpsRoute
   QuantRoute: typeof QuantRoute
+  SettingsRoute: typeof SettingsRoute
   SetupRoute: typeof SetupRoute
   TradingRoute: typeof TradingRoute
   UninstallRoute: typeof UninstallRoute
+  WorkspaceRoute: typeof WorkspaceRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/workspace': {
+      id: '/workspace'
+      path: '/workspace'
+      fullPath: '/workspace'
+      preLoaderRoute: typeof WorkspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/uninstall': {
       id: '/uninstall'
       path: '/uninstall'
@@ -272,6 +305,13 @@ declare module '@tanstack/react-router' {
       path: '/setup'
       fullPath: '/setup'
       preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quant': {
@@ -390,9 +430,11 @@ const rootRouteChildren: RootRouteChildren = {
   MacroRoute: MacroRoute,
   OpsRoute: OpsRoute,
   QuantRoute: QuantRoute,
+  SettingsRoute: SettingsRoute,
   SetupRoute: SetupRoute,
   TradingRoute: TradingRoute,
   UninstallRoute: UninstallRoute,
+  WorkspaceRoute: WorkspaceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

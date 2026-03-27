@@ -580,6 +580,15 @@ def test_build_route_map(route_map):
     assert isinstance(route_map, dict)
 
 
+def test_build_route_map_includes_method_specific_keys(route_map):
+    """Method-specific API routes should resolve to the same route object."""
+    method_aware_route_map = PathHandler.build_route_map(include_method_routes=True)
+    path_route = method_aware_route_map["/equity/fundamental/income"]
+    method_route = method_aware_route_map["GET /equity/fundamental/income"]
+
+    assert method_route is path_route
+
+
 @pytest.fixture(scope="module")
 def path_list(path_handler, route_map):
     """Return path list."""

@@ -5,6 +5,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from qa.scripts import resolve_python as resolve_python_module
 from qa.scripts.resolve_python import resolve_python
 
 
@@ -20,6 +21,14 @@ def test_resolve_python_prefers_repo_virtualenv(tmp_path):
     assert resolve_python(tmp_path) == venv_python.resolve()
 
 
-def test_resolve_python_falls_back_to_system_python(tmp_path):
+def test_resolve_python_falls_back_to_system_python(tmp_path, monkeypatch):
     """The current system Python should be used when no repo virtualenv exists."""
-    assert resolve_python(tmp_path) == Path(sys.executable).resolve()
+    expected_python = Path(sys.executable).resolve()
+
+    def fake_which(executable: str) -> str:
+        assert executable == "python"
+        return str(expected_python)
+
+    monkeypatch.setattr(resolve_python_module.shutil, "which", fake_which)
+
+    assert resolve_python(tmp_path) == expected_python

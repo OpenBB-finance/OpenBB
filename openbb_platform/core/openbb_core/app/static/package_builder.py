@@ -2972,6 +2972,26 @@ class PathHandler:
     """Handle the paths for the Platform."""
 
     @staticmethod
+    def _route_keys(route: BaseRoute) -> list[str]:
+        """Build lookup keys for a route.
+
+        Method-specific keys keep the runtime route map aligned with the API
+        wrapper, which dispatches commands using `<METHOD> <PATH>` keys.
+        """
+        path = getattr(route, "path", None)
+        if not isinstance(path, str) or not path:
+            return []
+
+        keys = [path]
+        methods = [
+            str(method).upper()
+            for method in (getattr(route, "methods", None) or [])
+            if str(method).upper() not in {"HEAD", "OPTIONS"}
+        ]
+        keys.extend([f"{method} {path}" for method in sorted(set(methods))])
+        return keys
+
+    @staticmethod
     def get_router_dependencies(path: str) -> list:
         """Collect APIRouter dependencies for the path and its parents."""
         router = RouterLoader.from_extensions()
@@ -3004,16 +3024,25 @@ class PathHandler:
         return dependencies
 
     @staticmethod
-    def build_route_map() -> dict[str, BaseRoute]:
+    def build_route_map(include_method_routes: bool = False) -> dict[str, BaseRoute]:
         """Build the route map."""
         router = RouterLoader.from_extensions()
-        route_map = {
-            route.path: route
-            for route in router.api_router.routes  # type: ignore
-            if isinstance(route, APIRoute)
-            and "." not in str(route.path)
-            and getattr(route, "include_in_schema", True)
-        }
+        route_map: dict[str, BaseRoute] = {}
+
+        def register_route(route: APIRoute) -> None:
+            if "." in str(route.path) or not getattr(route, "include_in_schema", True):
+                return
+            keys = (
+                PathHandler._route_keys(route)
+                if include_method_routes
+                else [route.path]
+            )
+            for key in keys:
+                route_map.setdefault(key, route)
+
+        for route in router.api_router.routes:  # type: ignore
+            if isinstance(route, APIRoute):
+                register_route(route)
 
         # Also include routes directly registered on _api_router instances
         # We need to traverse the router tree to find all _api_router instances
@@ -3021,12 +3050,18 @@ class PathHandler:
             """Recursively collect routes from _api_router instances."""
             if hasattr(router_obj, "_api_router"):
                 for inner_route in router_obj._api_router.routes:  # type: ignore  # pylint: disable=W0212
-                    if (
-                        isinstance(inner_route, APIRoute)
-                        and getattr(inner_route, "include_in_schema", True)
-                        and (inner_route.path not in collected_routes)
-                    ):
-                        collected_routes[inner_route.path] = inner_route
+                    if isinstance(inner_route, APIRoute):
+                        keys = (
+                            PathHandler._route_keys(inner_route)
+                            if include_method_routes
+                            else [inner_route.path]
+                        )
+                        for key in keys:
+                            if (
+                                getattr(inner_route, "include_in_schema", True)
+                                and key not in collected_routes
+                            ):
+                                collected_routes[key] = inner_route
 
             # Check if this router has sub-routers
             if hasattr(router_obj, "api_router") and hasattr(

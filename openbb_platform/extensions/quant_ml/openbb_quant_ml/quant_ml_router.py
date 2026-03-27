@@ -5,11 +5,11 @@ import json
 import logging
 from collections import deque
 from datetime import date
-from threading import Lock
+from threading import Lock, RLock
 from time import monotonic
 from typing import Any
 
-from cachetools import TTLCache, cached
+from cachetools import cached
 from fastapi import HTTPException, Query, Request
 from fastapi.responses import StreamingResponse
 from openbb_core.app.router import Router
@@ -47,6 +47,7 @@ from openbb_quant_ml.models import (
     ModelRegistryHistoryResponse,
     ModelShapResponse,
     NotificationsHistoryResponse,
+    OpsIssueQueueResponse,
     OpsStatusResponse,
     PerformanceRegimeResponse,
     PortfolioCurrentResponse,
@@ -67,6 +68,7 @@ from openbb_quant_ml.models import (
     RiskPretradeResponse,
     RollingPerformanceResponse,
     RunAuditResponse,
+    RunCompareResponse,
     RunLatestConstraintsResponse,
     RunLatestMetaResponse,
     RunListResponse,
@@ -103,6 +105,8 @@ from openbb_quant_ml.models import (
     UniverseResolveResponse,
     UniverseResponse,
     UniverseSnapshotResponse,
+    WorkspaceBriefResponse,
+    SymbolContextResponse,
     WalkForwardBacktestRequest,
     WalkForwardBacktestStatusResponse,
     WalkForwardBacktestSubmitResponse,
@@ -136,6 +140,7 @@ from openbb_quant_ml.service import (
     get_model_registry_history_response,
     get_model_shap,
     get_notifications_history_response,
+    get_ops_issue_queue_response,
     get_ops_status_response,
     get_performance_regime,
     get_performance_rolling,
@@ -151,6 +156,7 @@ from openbb_quant_ml.service import (
     get_regime_history,
     get_reports_history_response,
     get_reports_latest_response,
+    get_run_compare_response,
     get_risk_events,
     get_risk_limits,
     get_run,
@@ -165,6 +171,7 @@ from openbb_quant_ml.service import (
     get_run_snapshot,
     get_runs_list,
     get_scheduler_status_response,
+    get_symbol_context_response,
     get_summary,
     get_trading_algorithms_payload,
     get_trading_events_payload,
@@ -182,6 +189,7 @@ from openbb_quant_ml.service import (
     get_universe,
     get_universe_exclusions,
     get_universe_snapshot,
+    get_workspace_brief_response,
     get_walkforward_backtest_status,
     preview_execution_orders,
     risk_check_pretrade,
@@ -196,6 +204,7 @@ from openbb_quant_ml.service import (
     update_trading_settings_payload,
     validate_trading_algorithm_payload,
 )
+from openbb_quant_ml.service.runtime_cache import build_runtime_ttl_cache
 from openbb_quant_ml.service.universe import (
     get_symbols_for_universe,
     get_universe_count_hint,
@@ -227,30 +236,56 @@ _TRAIN_RATE_LOCK = Lock()
 _TRAIN_RATE_LIMIT_ITEM: Any | None = None
 _SLOWAPI_LIMITER: Any | None = None
 
-_RUN_SNAPSHOT_CACHE = TTLCache(maxsize=128, ttl=600)
-_HEALTH_CACHE = TTLCache(maxsize=256, ttl=5)
-_DASHBOARD_BOOTSTRAP_CACHE = TTLCache(maxsize=256, ttl=5)
-_PERFORMANCE_ROLLING_CACHE = TTLCache(maxsize=256, ttl=15)
-_PERFORMANCE_REGIME_CACHE = TTLCache(maxsize=256, ttl=15)
-_MODEL_IC_DECAY_CACHE = TTLCache(maxsize=256, ttl=300)
-_RUN_LATEST_META_CACHE = TTLCache(maxsize=256, ttl=10)
-_REGIME_CURRENT_CACHE = TTLCache(maxsize=256, ttl=30)
-_REGIME_HISTORY_CACHE = TTLCache(maxsize=256, ttl=30)
-_ALERTS_CURRENT_CACHE = TTLCache(maxsize=256, ttl=15)
+_RUN_SNAPSHOT_CACHE = build_runtime_ttl_cache(
+    namespace="quant:runs:snapshot", maxsize=128, ttl=600
+)
+_RUN_BACKTEST_CACHE = build_runtime_ttl_cache(
+    namespace="quant:runs:backtest", maxsize=128, ttl=600
+)
+_HEALTH_CACHE = build_runtime_ttl_cache(
+    namespace="quant:dashboard:health", maxsize=256, ttl=5
+)
+_DASHBOARD_BOOTSTRAP_CACHE = build_runtime_ttl_cache(
+    namespace="quant:dashboard:bootstrap", maxsize=256, ttl=5
+)
+_PERFORMANCE_ROLLING_CACHE = build_runtime_ttl_cache(
+    namespace="quant:performance:rolling", maxsize=256, ttl=15
+)
+_PERFORMANCE_REGIME_CACHE = build_runtime_ttl_cache(
+    namespace="quant:performance:regime", maxsize=256, ttl=15
+)
+_MODEL_IC_DECAY_CACHE = build_runtime_ttl_cache(
+    namespace="quant:model:ic-decay", maxsize=256, ttl=300
+)
+_RUN_LATEST_META_CACHE = build_runtime_ttl_cache(
+    namespace="quant:runs:latest-meta", maxsize=256, ttl=10
+)
+_REGIME_CURRENT_CACHE = build_runtime_ttl_cache(
+    namespace="quant:regime:current", maxsize=256, ttl=30
+)
+_REGIME_HISTORY_CACHE = build_runtime_ttl_cache(
+    namespace="quant:regime:history", maxsize=256, ttl=30
+)
+_ALERTS_CURRENT_CACHE = build_runtime_ttl_cache(
+    namespace="quant:alerts:current", maxsize=256, ttl=15
+)
+_READ_CACHE_LOCK = RLock()
 _LOGGER = logging.getLogger(__name__)
 
 
 def _invalidate_read_caches() -> None:
-    _RUN_SNAPSHOT_CACHE.clear()
-    _HEALTH_CACHE.clear()
-    _DASHBOARD_BOOTSTRAP_CACHE.clear()
-    _PERFORMANCE_ROLLING_CACHE.clear()
-    _PERFORMANCE_REGIME_CACHE.clear()
-    _MODEL_IC_DECAY_CACHE.clear()
-    _RUN_LATEST_META_CACHE.clear()
-    _REGIME_CURRENT_CACHE.clear()
-    _REGIME_HISTORY_CACHE.clear()
-    _ALERTS_CURRENT_CACHE.clear()
+    with _READ_CACHE_LOCK:
+        _RUN_SNAPSHOT_CACHE.clear()
+        _RUN_BACKTEST_CACHE.clear()
+        _HEALTH_CACHE.clear()
+        _DASHBOARD_BOOTSTRAP_CACHE.clear()
+        _PERFORMANCE_ROLLING_CACHE.clear()
+        _PERFORMANCE_REGIME_CACHE.clear()
+        _MODEL_IC_DECAY_CACHE.clear()
+        _RUN_LATEST_META_CACHE.clear()
+        _REGIME_CURRENT_CACHE.clear()
+        _REGIME_HISTORY_CACHE.clear()
+        _ALERTS_CURRENT_CACHE.clear()
 
 if Limiter is not None and parse_rate_limit is not None and get_remote_address is not None:
     try:
@@ -407,6 +442,16 @@ def runs_list(
     )
 
 
+@router.command(methods=["GET"], path="/runs/compare")
+def runs_compare(
+    run_ids: str | None = None,
+    limit: int = Query(default=5, ge=2, le=20),
+) -> RunCompareResponse:
+    """Return a compact comparison payload for recent strategy runs."""
+    selected = [item.strip() for item in str(run_ids or "").split(",") if item.strip()]
+    return get_run_compare_response(run_ids=selected or None, limit=limit)
+
+
 @router.command(methods=["GET"], path="/runs/{run_id}")
 def run_status(run_id: str) -> RunStatusResponse:
     """Get run status."""
@@ -419,6 +464,7 @@ def run_status(run_id: str) -> RunStatusResponse:
 @router.command(methods=["GET"], path="/runs/{run_id}/stream")
 async def run_log_stream(
     run_id: str,
+    request: Request,
     poll_interval_sec: float = Query(default=1.0, ge=0.5, le=10.0),
     max_seconds: int = Query(default=600, ge=30, le=7200),
 ) -> dict[str, object]:
@@ -432,56 +478,71 @@ async def run_log_stream(
         started_at = _now_monotonic()
         sent_count = 0
         last_status: tuple[str, str, int] | None = None
-        yield f"event: ready\ndata: {json.dumps({'run_id': run_id})}\n\n"
-        while True:
-            try:
-                status = get_run(run_id)
-            except ValueError as exc:
-                payload = {"type": "error", "message": str(exc)}
-                yield f"event: error\ndata: {json.dumps(payload)}\n\n"
-                break
+        try:
+            yield f"event: ready\ndata: {json.dumps({'run_id': run_id})}\n\n"
+            while True:
+                if await request.is_disconnected():
+                    break
 
-            logs = list(status.logs_tail or [])
-            if sent_count > len(logs):
-                sent_count = 0
-            for line in logs[sent_count:]:
-                payload = {
-                    "type": "log",
-                    "run_id": run_id,
-                    "status": status.status,
-                    "stage": status.stage,
-                    "line": str(line),
-                }
-                yield f"data: {json.dumps(payload)}\n\n"
-            sent_count = len(logs)
+                try:
+                    status = get_run(run_id)
+                except ValueError as exc:
+                    payload = {"type": "error", "message": str(exc)}
+                    yield f"event: error\ndata: {json.dumps(payload)}\n\n"
+                    break
 
-            current_status = (str(status.status), str(status.stage), int(status.progress))
-            if current_status != last_status:
-                last_status = current_status
-                payload = {
-                    "type": "status",
-                    "run_id": run_id,
-                    "status": status.status,
-                    "stage": status.stage,
-                    "progress": int(status.progress),
-                }
-                yield f"event: status\ndata: {json.dumps(payload)}\n\n"
+                logs = list(status.logs_tail or [])
+                if sent_count > len(logs):
+                    sent_count = 0
+                for line in logs[sent_count:]:
+                    payload = {
+                        "type": "log",
+                        "run_id": run_id,
+                        "status": status.status,
+                        "stage": status.stage,
+                        "line": str(line),
+                    }
+                    yield f"data: {json.dumps(payload)}\n\n"
+                sent_count = len(logs)
 
-            if status.status in {"completed", "failed"}:
-                payload = {"type": "done", "run_id": run_id, "status": status.status}
-                yield f"event: done\ndata: {json.dumps(payload)}\n\n"
-                break
+                current_status = (
+                    str(status.status),
+                    str(status.stage),
+                    int(status.progress),
+                )
+                if current_status != last_status:
+                    last_status = current_status
+                    payload = {
+                        "type": "status",
+                        "run_id": run_id,
+                        "status": status.status,
+                        "stage": status.stage,
+                        "progress": int(status.progress),
+                    }
+                    yield f"event: status\ndata: {json.dumps(payload)}\n\n"
 
-            if (_now_monotonic() - started_at) >= float(max_seconds):
-                payload = {
-                    "type": "timeout",
-                    "run_id": run_id,
-                    "max_seconds": int(max_seconds),
-                }
-                yield f"event: timeout\ndata: {json.dumps(payload)}\n\n"
-                break
+                if status.status in {"completed", "failed"}:
+                    payload = {"type": "done", "run_id": run_id, "status": status.status}
+                    yield f"event: done\ndata: {json.dumps(payload)}\n\n"
+                    break
 
-            await asyncio.sleep(float(poll_interval_sec))
+                if (_now_monotonic() - started_at) >= float(max_seconds):
+                    payload = {
+                        "type": "timeout",
+                        "run_id": run_id,
+                        "max_seconds": int(max_seconds),
+                    }
+                    yield f"event: timeout\ndata: {json.dumps(payload)}\n\n"
+                    break
+
+                if await request.is_disconnected():
+                    break
+                try:
+                    await asyncio.sleep(float(poll_interval_sec))
+                except asyncio.CancelledError:
+                    break
+        except asyncio.CancelledError:
+            return
 
     return StreamingResponse(
         event_gen(),
@@ -491,7 +552,7 @@ async def run_log_stream(
 
 
 @router.command(methods=["GET"], path="/runs/{run_id}/snapshot")
-@cached(cache=_RUN_SNAPSHOT_CACHE)
+@cached(cache=_RUN_SNAPSHOT_CACHE, lock=_READ_CACHE_LOCK)
 def run_snapshot(
     run_id: str,
     model_name: ModelName = "lgbm_ranker",
@@ -505,6 +566,7 @@ def run_snapshot(
 
 
 @router.command(methods=["GET"], path="/runs/{run_id}/backtest")
+@cached(cache=_RUN_BACKTEST_CACHE, lock=_READ_CACHE_LOCK)
 def run_backtest_result(
     run_id: str, model_name: ModelName = "lgbm_ranker"
 ) -> BacktestResponse:
@@ -678,7 +740,7 @@ def model_promoted(model_name: ModelName = "lgbm_ranker") -> PromotedModelRespon
 
 
 @router.command(methods=["GET"], path="/run/latest/meta")
-@cached(cache=_RUN_LATEST_META_CACHE)
+@cached(cache=_RUN_LATEST_META_CACHE, lock=_READ_CACHE_LOCK)
 def run_latest_meta(
     run_id: str | None = None, model_name: ModelName = "lgbm_ranker"
 ) -> RunLatestMetaResponse:
@@ -761,7 +823,7 @@ def predictions_latest(
 
 
 @router.command(methods=["GET"], path="/health")
-@cached(cache=_HEALTH_CACHE)
+@cached(cache=_HEALTH_CACHE, lock=_READ_CACHE_LOCK)
 def health(
     run_id: str | None = None,
     model_name: ModelName = "lgbm_ranker",
@@ -769,6 +831,12 @@ def health(
 ) -> DashboardHealthResponse:
     """Return dashboard health and run resolution metadata."""
     return get_dashboard_health(run_id=run_id, model_name=model_name, mode=mode)
+
+
+@router.command(methods=["GET"], path="/workspace/brief")
+def workspace_brief() -> WorkspaceBriefResponse:
+    """Return the aggregated workspace brief payload."""
+    return get_workspace_brief_response()
 
 
 @router.command(methods=["GET"], path="/dashboard/bootstrap")
@@ -786,7 +854,8 @@ def dashboard_bootstrap(
         (str(mode).strip() if mode else ""),
         str(snapshot_profile),
     )
-    cached_payload = _DASHBOARD_BOOTSTRAP_CACHE.get(cache_key)
+    with _READ_CACHE_LOCK:
+        cached_payload = _DASHBOARD_BOOTSTRAP_CACHE.get(cache_key)
     if isinstance(cached_payload, DashboardBootstrapResponse):
         elapsed_ms = int((monotonic() - started_at) * 1000)
         _LOGGER.info(
@@ -832,7 +901,8 @@ def dashboard_bootstrap(
         health=health_payload,
         snapshot=snapshot_payload,
     )
-    _DASHBOARD_BOOTSTRAP_CACHE[cache_key] = response
+    with _READ_CACHE_LOCK:
+        _DASHBOARD_BOOTSTRAP_CACHE[cache_key] = response
     elapsed_ms = int((monotonic() - started_at) * 1000)
     _LOGGER.info(
         "dashboard_bootstrap profile=%s cache_hit=false elapsed_ms=%d run_id=%s model=%s mode=%s",
@@ -921,6 +991,32 @@ def reports_history(
     )
 
 
+@router.command(methods=["GET"], path="/ops/issues")
+def ops_issues(limit: int = Query(default=10, ge=1, le=100)) -> OpsIssueQueueResponse:
+    """Return the current human-readable ops issue queue."""
+    return get_ops_issue_queue_response(limit=limit)
+
+
+@router.command(methods=["GET"], path="/symbol/context")
+def symbol_context(
+    symbol: str,
+    source: str | None = None,
+    study_id: str | None = None,
+    run_id: str | None = None,
+    signal_id: str | None = None,
+    report_path: str | None = None,
+) -> SymbolContextResponse:
+    """Return the shared Symbol Lab context payload."""
+    return get_symbol_context_response(
+        symbol=symbol,
+        source=source,
+        study_id=study_id,
+        run_id=run_id,
+        signal_id=signal_id,
+        report_path=report_path,
+    )
+
+
 @router.command(methods=["GET"], path="/notifications/history")
 def notifications_history(limit: int = 100) -> NotificationsHistoryResponse:
     """Return notification outbox history."""
@@ -980,7 +1076,14 @@ def trading_scan_history(limit: int = Query(default=250, ge=1, le=2000)) -> Trad
 def trading_symbol_detail(ticker: str) -> TradingSymbolDetailResponse:
     """Return one symbol detail payload for the trading tab."""
     try:
-        return TradingSymbolDetailResponse(**get_trading_symbol_detail_payload(ticker))
+        payload = get_trading_symbol_detail_payload(ticker)
+        context = get_symbol_context_response(symbol=ticker)
+        payload["related_studies"] = context.linked_studies
+        payload["related_runs"] = context.related_runs
+        payload["latest_report_ids"] = [
+            int(item.id) for item in context.attached_reports if item.id is not None
+        ]
+        return TradingSymbolDetailResponse(**payload)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -1100,7 +1203,7 @@ def trading_execution_mode_update(
 
 
 @router.command(methods=["GET"], path="/performance/rolling")
-@cached(cache=_PERFORMANCE_ROLLING_CACHE)
+@cached(cache=_PERFORMANCE_ROLLING_CACHE, lock=_READ_CACHE_LOCK)
 def performance_rolling(
     run_id: str,
     model_name: ModelName = "lgbm_ranker",
@@ -1120,7 +1223,7 @@ def performance_rolling(
 
 
 @router.command(methods=["GET"], path="/performance/regime")
-@cached(cache=_PERFORMANCE_REGIME_CACHE)
+@cached(cache=_PERFORMANCE_REGIME_CACHE, lock=_READ_CACHE_LOCK)
 def performance_regime(
     run_id: str, model_name: ModelName = "lgbm_ranker"
 ) -> PerformanceRegimeResponse:
@@ -1158,7 +1261,7 @@ def portfolio_risk(
 
 
 @router.command(methods=["GET"], path="/model/ic_decay")
-@cached(cache=_MODEL_IC_DECAY_CACHE)
+@cached(cache=_MODEL_IC_DECAY_CACHE, lock=_READ_CACHE_LOCK)
 def model_ic_decay(
     run_id: str,
     model_name: ModelName = "lgbm_ranker",
@@ -1198,7 +1301,7 @@ def prediction_distribution(
 
 
 @router.command(methods=["GET"], path="/regime/current")
-@cached(cache=_REGIME_CURRENT_CACHE)
+@cached(cache=_REGIME_CURRENT_CACHE, lock=_READ_CACHE_LOCK)
 def regime_current(
     run_id: str, model_name: ModelName = "lgbm_ranker"
 ) -> RegimeCurrentResponse:
@@ -1210,7 +1313,7 @@ def regime_current(
 
 
 @router.command(methods=["GET"], path="/regime/history")
-@cached(cache=_REGIME_HISTORY_CACHE)
+@cached(cache=_REGIME_HISTORY_CACHE, lock=_READ_CACHE_LOCK)
 def regime_history(
     run_id: str, model_name: ModelName = "lgbm_ranker"
 ) -> RegimeHistoryResponse:
@@ -1222,7 +1325,7 @@ def regime_history(
 
 
 @router.command(methods=["GET"], path="/alerts/current")
-@cached(cache=_ALERTS_CURRENT_CACHE)
+@cached(cache=_ALERTS_CURRENT_CACHE, lock=_READ_CACHE_LOCK)
 def alerts_current(
     run_id: str, model_name: ModelName = "lgbm_ranker"
 ) -> AlertsResponse:

@@ -30,6 +30,8 @@ def _load_main_with_mocks():
     from fastapi import FastAPI
 
     stub_app = FastAPI()
+    real_openapi = stub_app.openapi
+    stub_app.openapi = MagicMock(side_effect=real_openapi)  # type: ignore[method-assign]
     core_module = types.ModuleType("openbb_core")
     core_module.__path__ = []
     api_module = types.ModuleType("openbb_core.api")
@@ -149,25 +151,24 @@ def test_get_user_settings_no_login():
         }
 
 
-def test_get_widgets_json_no_build():
-    dummy_main = types.ModuleType("openbb_platform_api.main")
-    dummy_main.FIRST_RUN = False  # type: ignore
+def test_get_widgets_json_no_build(tmp_path, monkeypatch):
+    widgets_path = tmp_path / "widgets.json"
+    widgets_path.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(api_utils, "FIRST_RUN", False, raising=False)
+    monkeypatch.setattr(api_utils, "PATH_WIDGETS", {}, raising=False)
 
-    with (
-        patch("builtins.open", mock_open(read_data="{}")),
-        patch("os.path.exists", return_value=True),
-        patch(
-            "openbb_platform_api.utils.widgets.build_json", MagicMock(return_value={})
-        ),
-        patch.dict(
-            sys.modules,
-            {"uvicorn": MagicMock(), "openbb_platform_api.main": dummy_main},
-        ),
+    with patch(
+        "openbb_platform_api.utils.widgets.build_json",
+        side_effect=AssertionError("widgets build should be skipped"),
     ):
         widgets_json = get_widgets_json(
-            _build=False, _openapi={}, widget_exclude_filter=[]
+            _build=False,
+            _openapi=None,
+            widget_exclude_filter=[],
+            editable=True,
+            widgets_path=str(widgets_path),
         )
-        assert widgets_json == {}
+    assert widgets_json == {}
 
 
 def test_parse_args():
@@ -884,6 +885,24 @@ async def test_get_apps_json_merges_templates_with_additional_sources(tmp_path):
         assert item in result
     if any(getattr(entry, "get", lambda *_: None)("id") == "extra" for entry in result):
         assert {"id": "extra"} in result
+
+
+@pytest.mark.asyncio
+async def test_main_defers_openapi_until_widgets_requested():
+    main = _load_main_with_mocks()
+    assert main.app.openapi.call_count == 0
+
+    with patch.object(
+        main,
+        "get_widgets_json",
+        MagicMock(return_value={"widget-1": {"name": "Widget 1"}}),
+    ):
+        first = await main.get_widgets()
+        second = await main.get_widgets()
+
+    assert main.app.openapi.call_count == 1
+    assert json.loads(first.body.decode()) == {"widget-1": {"name": "Widget 1"}}
+    assert json.loads(second.body.decode()) == {"widget-1": {"name": "Widget 1"}}
 
 
 def test_get_widgets_json_merges_with_additional_sources(monkeypatch):

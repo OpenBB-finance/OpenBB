@@ -3,6 +3,11 @@ import { render, screen, waitFor, fireEvent, act, within } from '@testing-librar
 import { vi } from 'vitest';
 import BackendsPage from '../../routes/backends';
 import { invoke } from '@tauri-apps/api/core';
+import {
+  OPENBB_API_BASIC_PASSWORD_STORAGE_KEY,
+  OPENBB_API_BASIC_USERNAME_STORAGE_KEY,
+  OPENBB_API_BEARER_TOKEN_STORAGE_KEY,
+} from '../../lib/openbbBackend';
 
 // Mocks
 vi.mock('@tanstack/react-router', () => ({
@@ -72,6 +77,96 @@ describe('BackendsPage', () => {
   test('renders BackendsPage without crashing', async () => {
     await act(async () => render(<BackendsPage />));
     expect(screen.getByText(/No backend services found/i)).toBeInTheDocument();
+  });
+
+  test('saves an OpenBB API bearer token from the auth panel', async () => {
+    await act(async () => render(<BackendsPage />));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Bearer Token/i)).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/Bearer Token/i), { target: { value: 'secret-token' } });
+      fireEvent.click(screen.getByRole('button', { name: /Store Token/i }));
+    });
+
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+      OPENBB_API_BEARER_TOKEN_STORAGE_KEY,
+      'secret-token',
+    );
+  });
+
+  test('clears a saved OpenBB API bearer token from the auth panel', async () => {
+    mockLocalStorage.getItem.mockImplementation((key: string) =>
+      key === OPENBB_API_BEARER_TOKEN_STORAGE_KEY ? 'secret-token' : null,
+    );
+
+    await act(async () => render(<BackendsPage />));
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('secret-token')).toBeInTheDocument();
+    });
+
+    const authCard = screen.getByText(/OpenBB API Auth/i).closest('div[class*="rounded-md"]');
+    expect(authCard).not.toBeNull();
+
+    await act(async () => {
+      const clearButtons = within(authCard as HTMLElement).getAllByRole('button', { name: /Clear/i });
+      fireEvent.click(clearButtons[1]);
+    });
+
+    expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(OPENBB_API_BEARER_TOKEN_STORAGE_KEY);
+  });
+
+  test('saves OpenBB API basic credentials from the auth panel', async () => {
+    await act(async () => render(<BackendsPage />));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Basic Username/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Basic Password/i)).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/Basic Username/i), { target: { value: 'openbb' } });
+      fireEvent.change(screen.getByLabelText(/Basic Password/i), { target: { value: 'secret-password' } });
+      fireEvent.click(screen.getByRole('button', { name: /Store Basic/i }));
+    });
+
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+      OPENBB_API_BASIC_USERNAME_STORAGE_KEY,
+      'openbb',
+    );
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+      OPENBB_API_BASIC_PASSWORD_STORAGE_KEY,
+      'secret-password',
+    );
+  });
+
+  test('clears saved OpenBB API basic credentials from the auth panel', async () => {
+    mockLocalStorage.getItem.mockImplementation((key: string) => {
+      if (key === OPENBB_API_BASIC_USERNAME_STORAGE_KEY) return 'openbb';
+      if (key === OPENBB_API_BASIC_PASSWORD_STORAGE_KEY) return 'secret-password';
+      return null;
+    });
+
+    await act(async () => render(<BackendsPage />));
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('openbb')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('secret-password')).toBeInTheDocument();
+    });
+
+    const authCard = screen.getByText(/OpenBB API Auth/i).closest('div[class*="rounded-md"]');
+    expect(authCard).not.toBeNull();
+
+    await act(async () => {
+      const clearButtons = within(authCard as HTMLElement).getAllByRole('button', { name: /Clear/i });
+      fireEvent.click(clearButtons[0]);
+    });
+
+    expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(OPENBB_API_BASIC_USERNAME_STORAGE_KEY);
+    expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(OPENBB_API_BASIC_PASSWORD_STORAGE_KEY);
   });
 
   test('displays loading state initially', async () => {

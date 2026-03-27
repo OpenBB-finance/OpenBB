@@ -1048,6 +1048,24 @@ export interface ExecutionOrderItemPayload {
   status: "preview" | "submitted" | "filled" | "rejected";
 }
 
+export interface ExecutionBlockingConstraintItemPayload {
+  rule_id: string;
+  severity: "info" | "warning" | "critical";
+  message: string;
+  target_route?: string | null;
+  target_search?: Record<string, string> | null;
+}
+
+export interface OrderRationalePayload {
+  signal_rationale?: string | null;
+  macro_backdrop?: string | null;
+  risk_check_result?: string | null;
+  expected_turnover_cost?: string | null;
+  blocking_constraints: string[];
+  source_run_id?: string | null;
+  source_study_ids?: string[];
+}
+
 export interface ExecutionPreviewPayload {
   run_id: string;
   model_name: ModelName;
@@ -1057,6 +1075,9 @@ export interface ExecutionPreviewPayload {
   nav: number;
   orders: ExecutionOrderItemPayload[];
   estimated_turnover: number;
+  estimated_cost?: number;
+  rationale?: OrderRationalePayload | null;
+  blocking_constraints?: ExecutionBlockingConstraintItemPayload[];
   execution_mode?: ExecutionMode;
 }
 
@@ -1139,6 +1160,7 @@ export interface RiskPretradePayload {
   passed: boolean;
   kill_switch: boolean;
   violations: RiskViolationItemPayload[];
+  blocking_summary?: string | null;
   execution_mode?: ExecutionMode;
 }
 
@@ -1226,6 +1248,11 @@ export interface ExperimentRunItemPayload {
   status?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
+  macro_study_links?: string[];
+  as_of_policy?: string | null;
+  training_window?: string | null;
+  constraints_summary?: string | null;
+  promotion_state?: string | null;
 }
 
 export interface ExperimentListPayload {
@@ -1251,11 +1278,14 @@ export interface ModelRegistryHistoryPayload {
 }
 
 export interface ReportRunItemPayload {
+  id?: string | null;
   run_id?: string | null;
   report_type: string;
   report_path: string;
   status: string;
   created_at?: string | null;
+  title?: string | null;
+  symbols?: string[];
   summary: Record<string, unknown>;
 }
 
@@ -1293,6 +1323,116 @@ export interface SchedulerStatusPayload {
   jobs: Array<Record<string, unknown>>;
   macro_scheduler: Record<string, unknown>;
   generated_at?: string | null;
+}
+
+export interface WorkspaceActionItem {
+  id: string;
+  title: string;
+  detail: string;
+  target_route: string;
+  target_search?: Record<string, string>;
+}
+
+export interface WorkspaceMacroStudyCardPayload {
+  study_id?: string | null;
+  name?: string | null;
+  objective?: string | null;
+  conclusion_summary?: string | null;
+  linked_assets: string[];
+  latest_feature_export?: string | null;
+  latest_attached_report?: string | null;
+}
+
+export interface WorkspaceStrategyCandidatePayload {
+  run_id?: string | null;
+  model_name?: string | null;
+  as_of_date?: string | null;
+  feature_lineage: string[];
+  promotion_readiness?: string | null;
+  training_window?: string | null;
+  macro_study_links: string[];
+}
+
+export interface WorkspacePortfolioContributorPayload {
+  symbol: string;
+  contribution: number;
+}
+
+export interface WorkspacePortfolioSnapshotPayload {
+  run_id?: string | null;
+  model_name?: string | null;
+  vol_ex_ante?: number | null;
+  cvar_95?: number | null;
+  top_risk_contributors: WorkspacePortfolioContributorPayload[];
+  blocked_constraints: string[];
+}
+
+export interface WorkspaceLatestReportPayload {
+  report_id?: string | null;
+  title?: string | null;
+  report_type?: string | null;
+  report_path?: string | null;
+  created_at?: string | null;
+}
+
+export interface OpsIssueItemPayload {
+  id: string;
+  severity: "critical" | "warning" | "info";
+  title: string;
+  impact: string;
+  suggested_action: string;
+  target_route: string;
+  target_search?: Record<string, string>;
+  source?: string | null;
+  status: string;
+}
+
+export interface OpsIssueQueuePayload {
+  items: OpsIssueItemPayload[];
+}
+
+export interface WorkspaceBriefPayload {
+  status: DashboardPayloadStatus;
+  generated_at?: string | null;
+  active_macro_study: WorkspaceMacroStudyCardPayload;
+  current_strategy_candidate: WorkspaceStrategyCandidatePayload;
+  portfolio_snapshot: WorkspacePortfolioSnapshotPayload;
+  ops_issue_queue: OpsIssueItemPayload[];
+  latest_report: WorkspaceLatestReportPayload;
+  pending_actions: WorkspaceActionItem[];
+}
+
+export interface RunCompareItemPayload {
+  run_id: string;
+  model_name?: string | null;
+  training_window?: string | null;
+  feature_set_version?: string | null;
+  macro_study_links: string[];
+  metrics: Record<string, unknown>;
+  constraints_summary?: string | null;
+  promotion_state?: string | null;
+}
+
+export interface RunComparePayload {
+  items: RunCompareItemPayload[];
+}
+
+export interface SymbolContextLinkPayload {
+  label: string;
+  target_route: string;
+  target_search?: Record<string, string>;
+}
+
+export interface SymbolContextPayload {
+  symbol: string;
+  source?: string | null;
+  linked_studies: Array<Record<string, string | null>>;
+  related_runs: Array<Record<string, string | null>>;
+  latest_signal?: Record<string, unknown> | null;
+  latest_order?: Record<string, unknown> | null;
+  latest_position?: Record<string, unknown> | null;
+  attached_reports: ReportRunItemPayload[];
+  back_links: SymbolContextLinkPayload[];
 }
 
 export interface ExecutionModePayload {
@@ -1475,6 +1615,26 @@ export interface TradingSymbolDetailPayload {
   orders: TradingOrderItemPayload[];
   position?: Record<string, unknown> | null;
   explanation?: string | null;
+  related_studies?: Array<Record<string, string | null>>;
+  related_runs?: Array<Record<string, string | null>>;
+  latest_report_ids?: string[];
+}
+
+export interface SymbolLabSearch {
+  symbol?: string;
+  source?: string;
+  studyId?: string;
+  runId?: string;
+  signalId?: string;
+  reportPath?: string;
+}
+
+export interface RunHandoff {
+  runId: string;
+  modelName: ModelName;
+  source: string;
+  studyIds?: string[];
+  createdAt: string;
 }
 
 export interface TradingOrderItemPayload {

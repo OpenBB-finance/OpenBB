@@ -1,14 +1,14 @@
 /// <reference types="vitest/globals" />
-import { render, screen, act } from '@testing-library/react';
-import { vi } from 'vitest';
-import { Route } from '../../routes/__root';
-import { RouterProvider, createRouter, useRouter } from '@tanstack/react-router';
-import { EnvironmentCreationProvider } from '../../contexts/EnvironmentCreationContext';
+import { act, render, screen } from "@testing-library/react";
+import { vi } from "vitest";
+import { RouterProvider, createRouter, useRouter } from "@tanstack/react-router";
+import { Route } from "../../routes/__root";
+import { EnvironmentCreationProvider } from "../../contexts/EnvironmentCreationContext";
 
 beforeAll(() => {
-  Object.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: vi.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -21,198 +21,135 @@ beforeAll(() => {
   });
 });
 
-// Mock @tanstack/react-router
-vi.mock('@tanstack/react-router', async () => {
-  const actual = await vi.importActual('@tanstack/react-router');
+vi.mock("@tanstack/react-router", async () => {
+  const actual = await vi.importActual("@tanstack/react-router");
   return {
     ...actual,
     useRouter: vi.fn(),
-    useMatch: vi.fn(() => ({ pathname: '/' })),
+    useMatch: vi.fn(() => ({ pathname: "/" })),
   };
 });
 
-// Mock @tauri-apps/api/core
-vi.mock('@tauri-apps/api/core', () => ({
+vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn(),
 }));
 
-describe('Root Route', () => {
-  const createTestRouter = (initialPath = '/') => {
-    (useRouter as ReturnType<typeof vi.fn>).mockReturnValue({
-      state: { location: { pathname: initialPath } },
-      navigate: vi.fn(),
-    });
+vi.mock("../../components/SystemReadinessBanner", () => ({
+  SystemReadinessBanner: () => <div>System Readiness</div>,
+}));
 
-    const router = createRouter({
-      routeTree: Route,
-      defaultPreload: 'intent',
-      defaultStaleTime: 0,
-    });
-    return router;
-  };
+function createTestRouter(initialPath = "/") {
+  (useRouter as ReturnType<typeof vi.fn>).mockReturnValue({
+    state: { location: { pathname: initialPath } },
+    navigate: vi.fn(),
+  });
 
+  return createRouter({
+    routeTree: Route,
+    defaultPreload: "intent",
+    defaultStaleTime: 0,
+  });
+}
+
+describe("Root Route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset useRouter mock to its default for each test
     (useRouter as ReturnType<typeof vi.fn>).mockReturnValue({
-      state: { location: { pathname: '/' } },
+      state: { location: { pathname: "/" } },
       navigate: vi.fn(),
     });
   });
 
-  test('renders Root component without crashing', async () => {
+  test("renders root shell without crashing", async () => {
     const router = createTestRouter();
     await act(async () => {
       render(
         <EnvironmentCreationProvider>
           <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
+        </EnvironmentCreationProvider>,
       );
     });
-    expect(screen.getByText(/Copyright © 2025 OpenBB Inc./i)).toBeInTheDocument();
+    expect(screen.getByText(/Copyright/i)).toBeInTheDocument();
+    expect(screen.getByText(/System Readiness/i)).toBeInTheDocument();
   });
 
-  test('displays navigation links when not in hidden views', async () => {
-    const router = createTestRouter('/'); // Explicitly set path
+  test("shows workflow-oriented navigation links", async () => {
+    const router = createTestRouter("/");
     await act(async () => {
       render(
         <EnvironmentCreationProvider>
           <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
+        </EnvironmentCreationProvider>,
       );
     });
-    expect(screen.getByText(/Backends/i)).toBeInTheDocument();
-    expect(screen.getByText(/Environments/i)).toBeInTheDocument();
-    expect(screen.getByText(/API Keys/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quant Lab/i)).toBeInTheDocument();
-    expect(screen.getByText(/AI/i)).toBeInTheDocument();
-    expect(screen.getByText(/Finance/i)).toBeInTheDocument();
-    expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
-    expect(screen.getByText(/Execution/i)).toBeInTheDocument();
-    expect(screen.getByText(/Macro/i)).toBeInTheDocument();
-    expect(screen.getByText(/Ops/i)).toBeInTheDocument();
+
     expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual([
-      "Backends",
-      "Environments",
-      "API Keys",
-      "Macro",
-      "Quant Lab",
-      "Trading",
+      "Settings",
+      "Workspace",
+      "Macro Lab",
+      "Strategy Lab",
+      "Portfolio & Execution",
       "AI",
-      "Finance",
-      "Dashboard",
-      "Execution",
       "Ops",
     ]);
   });
 
-  test('hides navigation links in Jupyter logs view', async () => {
-    const router = createTestRouter('/jupyter-logs'); // Explicitly set path
+  test.each(["/jupyter-logs", "/backend-logs", "/setup", "/installation-progress"])(
+    "hides navigation on %s",
+    async (path) => {
+      const router = createTestRouter(path);
+      await act(async () => {
+        render(
+          <EnvironmentCreationProvider>
+            <RouterProvider router={router} />
+          </EnvironmentCreationProvider>,
+        );
+      });
+      expect(screen.queryByText(/Settings/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Workspace/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Macro Lab/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Strategy Lab/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Portfolio & Execution/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
+    },
+  );
+
+  test("marks Workspace tab active when workspace route is selected", async () => {
+    const router = createTestRouter("/workspace");
     await act(async () => {
       render(
         <EnvironmentCreationProvider>
           <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
+        </EnvironmentCreationProvider>,
       );
     });
-    expect(screen.queryByText(/Backends/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Workspace/i })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: /Strategy Lab/i })).toHaveAttribute("aria-selected", "false");
   });
 
-  test('hides navigation links in Backend logs view', async () => {
-    const router = createTestRouter('/backend-logs'); // Explicitly set path
+  test("maps execution route into the Portfolio & Execution tab", async () => {
+    const router = createTestRouter("/execution");
     await act(async () => {
       render(
         <EnvironmentCreationProvider>
           <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
+        </EnvironmentCreationProvider>,
       );
     });
-    expect(screen.queryByText(/Backends/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Portfolio & Execution/i })).toHaveAttribute("aria-selected", "true");
   });
 
-  test('hides navigation links in Setup view', async () => {
-    const router = createTestRouter('/setup'); // Explicitly set path
+  test("marks AI tab active when ai route is selected", async () => {
+    const router = createTestRouter("/ai");
     await act(async () => {
       render(
         <EnvironmentCreationProvider>
           <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
-      );
-    });
-    expect(screen.queryByText(/Backends/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
-  });
-
-  test('hides navigation links in Installation Progress view', async () => {
-    const router = createTestRouter('/installation-progress'); // Explicitly set path
-    await act(async () => {
-      render(
-        <EnvironmentCreationProvider>
-          <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
-      );
-    });
-    expect(screen.queryByText(/Backends/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Environments/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/API Keys/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Quant Lab/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/AI/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Dashboard/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Execution/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Macro/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Ops/i)).not.toBeInTheDocument();
-  });
-
-  test('marks Finance tab active when finance route is selected', async () => {
-    const router = createTestRouter('/finance');
-    await act(async () => {
-      render(
-        <EnvironmentCreationProvider>
-          <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
-      );
-    });
-    expect(screen.getByRole("tab", { name: /Finance/i })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("tab", { name: /Trading/i })).toHaveAttribute("aria-selected", "false");
-  });
-
-  test('marks AI tab active when ai route is selected', async () => {
-    const router = createTestRouter('/ai');
-    await act(async () => {
-      render(
-        <EnvironmentCreationProvider>
-          <RouterProvider router={router} />
-        </EnvironmentCreationProvider>
+        </EnvironmentCreationProvider>,
       );
     });
     expect(screen.getByRole("tab", { name: /AI/i })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("tab", { name: /Finance/i })).toHaveAttribute("aria-selected", "false");
+    expect(screen.getByRole("tab", { name: /Workspace/i })).toHaveAttribute("aria-selected", "false");
   });
 });

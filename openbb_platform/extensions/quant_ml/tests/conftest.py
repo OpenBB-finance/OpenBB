@@ -22,7 +22,9 @@ def clear_quant_router_caches() -> None:
         return
     caches = [
         qmr._RUN_SNAPSHOT_CACHE,
+        qmr._RUN_BACKTEST_CACHE,
         qmr._HEALTH_CACHE,
+        qmr._DASHBOARD_BOOTSTRAP_CACHE,
         qmr._PERFORMANCE_ROLLING_CACHE,
         qmr._PERFORMANCE_REGIME_CACHE,
         qmr._MODEL_IC_DECAY_CACHE,

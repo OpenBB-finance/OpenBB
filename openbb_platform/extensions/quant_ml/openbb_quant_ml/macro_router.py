@@ -3,9 +3,10 @@
 import asyncio
 import json
 from datetime import UTC, date, datetime
-from typing import Any
+from threading import RLock
+from typing import Any, cast
 
-from cachetools import TTLCache, cached
+from cachetools import cached
 from fastapi.responses import StreamingResponse
 from openbb_core.app.router import Router
 
@@ -15,48 +16,82 @@ from openbb_quant_ml.macro_models import (
     MacroCatalogRegisterRequest,
     MacroCatalogResponse,
     MacroCatalogSearchRequest,
+    MacroCompareResponse,
     MacroDerivedResponse,
     MacroDerivedSaveRequest,
     MacroExpressionRequest,
     MacroExpressionResponse,
+    MacroFeatureExportResponse,
     MacroHealthResponse,
+    MacroLeadLagResponse,
     MacroPresetResponse,
     MacroRegimeResponse,
     MacroRegimeStateResponse,
+    MacroReleaseCalendarResponse,
+    MacroReportResponse,
     MacroSeriesMultiResponse,
     MacroSeriesQuery,
     MacroSeriesResponse,
+    MacroScatterResponse,
+    MacroStudiesResponse,
+    MacroStudyPayload,
     MacroUpdateRequest,
     MacroUpdateResponse,
+    MacroVintageResponse,
     RegimeSchedulerStatusResponse,
     RegimeTransitionResponse,
 )
 from openbb_quant_ml.service.macro_regime import classify_regime_label
 from openbb_quant_ml.service.macro_service import (
+    attach_report_response,
+    create_report_response,
     evaluate_expression_response,
+    export_features_response,
     get_alerts_response,
     get_catalog_response,
+    get_compare_response,
     get_copper_gold_preset_response,
     get_health_response,
     get_hmm_regime_response,
+    get_leadlag_response,
     get_regime_response,
     get_regime_scheduler_status_response,
     get_regime_state_response,
     get_regime_transitions_response,
+    get_release_calendar_response,
+    get_scatter_response,
     get_series_multi_response,
     get_series_response,
+    get_study_response,
+    get_vintage_response,
     list_derived_response,
+    list_studies_response,
     register_catalog_response,
+    save_study_response,
     save_derived_response,
     search_catalog_response,
     trigger_regime_refresh_response,
     trigger_update_response,
 )
 from openbb_quant_ml.service.regime_scheduler import ensure_scheduler_started
+from openbb_quant_ml.service.runtime_cache import build_runtime_ttl_cache
+
+_MACRO_READ_CACHE_LOCK = RLock()
+_REGIME_CACHE = build_runtime_ttl_cache(
+    namespace="macro:regime", maxsize=128, ttl=300
+)
+_REGIME_HMM_CACHE = build_runtime_ttl_cache(
+    namespace="macro:regime-hmm", maxsize=128, ttl=300
+)
 
 
 def _build_macro_router(prefix: str, description: str) -> Router:
     router = Router(prefix=prefix, description=description)
+
+    def _parse_optional_date(value: str | None) -> date | None:
+        if value is None or not str(value).strip():
+            return None
+        return date.fromisoformat(str(value))
 
     @router.command(methods=["GET"], path="/catalog")
     def catalog(domain: str | None = None) -> MacroCatalogResponse:
@@ -115,13 +150,107 @@ def _build_macro_router(prefix: str, description: str) -> Router:
         )
         return get_series_response(query)
 
+    @router.command(methods=["GET"], path="/studies")
+    def studies() -> MacroStudiesResponse:
+        """List macro studies."""
+        return list_studies_response()
+
+    @router.command(methods=["POST"], path="/studies")
+    def studies_create(request: MacroStudyPayload) -> MacroStudiesResponse:
+        """Create a macro study."""
+        return save_study_response(request)
+
+    @router.command(methods=["GET"], path="/studies/{study_id}")
+    def studies_get(study_id: str) -> MacroStudiesResponse:
+        """Return one macro study."""
+        return get_study_response(study_id)
+
+    @router.command(methods=["PUT"], path="/studies/{study_id}")
+    def studies_put(study_id: str, request: MacroStudyPayload) -> MacroStudiesResponse:
+        """Update one macro study."""
+        payload = request.model_copy(update={"id": study_id})
+        return save_study_response(payload)
+
+    @router.command(methods=["POST"], path="/studies/{study_id}/attachments/report")
+    def studies_attach_report(study_id: str, request: dict[str, Any]) -> MacroStudiesResponse:
+        """Attach one existing report artifact to a macro study."""
+        return attach_report_response(
+            study_id,
+            report_id=int(request["report_id"]) if request.get("report_id") is not None else None,
+            report_path=str(request.get("report_path")) if request.get("report_path") else None,
+        )
+
     @router.command(methods=["POST"], path="/expression")
     def expression(request: MacroExpressionRequest) -> MacroExpressionResponse:
         """Evaluate custom expression over macro + market series."""
         return evaluate_expression_response(request)
 
+    @router.command(methods=["POST"], path="/analysis/compare")
+    def analysis_compare(request: dict[str, Any]) -> MacroCompareResponse:
+        """Compare normalized study series."""
+        return get_compare_response(
+            study_id=str(request.get("study_id") or ""),
+            normalization=str(request.get("normalization") or "raw"),
+            start=_parse_optional_date(cast(str | None, request.get("start"))),
+            end=_parse_optional_date(cast(str | None, request.get("end"))),
+            as_of_date=_parse_optional_date(cast(str | None, request.get("as_of_date"))),
+        )
+
+    @router.command(methods=["POST"], path="/analysis/leadlag")
+    def analysis_leadlag(request: dict[str, Any]) -> MacroLeadLagResponse:
+        """Return lead-lag correlation analysis."""
+        return get_leadlag_response(
+            lhs=str(request.get("lhs") or ""),
+            rhs=str(request.get("rhs") or ""),
+            start=_parse_optional_date(cast(str | None, request.get("start"))),
+            end=_parse_optional_date(cast(str | None, request.get("end"))),
+            freq=str(request.get("freq") or "W"),
+            fill=str(request.get("fill") or "ffill"),
+            max_lag=int(request.get("max_lag") or 12),
+        )
+
+    @router.command(methods=["POST"], path="/analysis/scatter")
+    def analysis_scatter(request: dict[str, Any]) -> MacroScatterResponse:
+        """Return scatter analysis for two series."""
+        return get_scatter_response(
+            lhs=str(request.get("lhs") or ""),
+            rhs=str(request.get("rhs") or ""),
+            start=_parse_optional_date(cast(str | None, request.get("start"))),
+            end=_parse_optional_date(cast(str | None, request.get("end"))),
+            freq=str(request.get("freq") or "W"),
+            fill=str(request.get("fill") or "ffill"),
+        )
+
+    @router.command(methods=["GET"], path="/series/vintages")
+    def series_vintages(
+        key: str,
+        as_of_date: date,
+        start: date | None = None,
+        end: date | None = None,
+    ) -> MacroVintageResponse:
+        """Return latest versus as-of vintage series."""
+        return get_vintage_response(key=key, as_of_date=as_of_date, start=start, end=end)
+
+    @router.command(methods=["GET"], path="/releases/calendar")
+    def releases_calendar(domain: str | None = None) -> MacroReleaseCalendarResponse:
+        """Return release-style metadata for catalog series."""
+        return get_release_calendar_response(domain=domain)
+
+    @router.command(methods=["POST"], path="/report")
+    def report(request: dict[str, Any]) -> MacroReportResponse:
+        """Export HTML report for a macro study."""
+        return create_report_response(str(request.get("study_id") or ""))
+
+    @router.command(methods=["POST"], path="/features/export")
+    def features_export(request: dict[str, Any]) -> MacroFeatureExportResponse:
+        """Export study feature lineage metadata."""
+        return export_features_response(
+            study_id=str(request.get("study_id") or ""),
+            as_of_policy=str(request.get("as_of_policy") or "latest"),
+        )
+
     @router.command(methods=["GET"], path="/regime")
-    @cached(cache=TTLCache(maxsize=128, ttl=300))
+    @cached(cache=_REGIME_CACHE, lock=_MACRO_READ_CACHE_LOCK)
     def regime(
         date: date | None = None,
         start: date | None = None,
@@ -155,7 +284,7 @@ def _build_macro_router(prefix: str, description: str) -> Router:
         )
 
     @router.command(methods=["GET"], path="/regime/hmm")
-    @cached(cache=TTLCache(maxsize=128, ttl=300))
+    @cached(cache=_REGIME_HMM_CACHE, lock=_MACRO_READ_CACHE_LOCK)
     def regime_hmm(
         start: date | None = None,
         end: date | None = None,

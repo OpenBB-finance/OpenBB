@@ -10,6 +10,8 @@ from pydantic import BaseModel, Field, field_validator
 MacroStatus = Literal["ok", "insufficient_data", "not_found", "error"]
 MacroFreq = Literal["native", "D", "W", "M", "Q"]
 MacroFill = Literal["ffill", "interpolate", "none"]
+MacroViewMode = Literal["explorer", "compare", "relationship", "release", "report"]
+MacroNormalizeMode = Literal["raw", "index100", "zscore", "yoy", "percentile_5y"]
 
 
 class MacroDataPoint(BaseModel):
@@ -103,6 +105,12 @@ class MacroCatalogItem(BaseModel):
     publish_lag: int = 1
     notes: str | None = None
     active: bool = True
+    tags: list[str] = Field(default_factory=list)
+    last_obs: str | None = None
+    stale_days: int | None = None
+    release_frequency: str | None = None
+    default_view: MacroViewMode = "explorer"
+    vintage_available: bool = False
 
 
 class MacroCatalogResponse(BaseModel):
@@ -375,3 +383,199 @@ class MacroUpdateResponse(BaseModel):
     status: MacroStatus = "ok"
     message: str | None = None
     updated_series: list[str] = Field(default_factory=list)
+
+
+class MacroStudySeriesSpec(BaseModel):
+    """Study-level series configuration."""
+
+    key: str
+    alias: str | None = None
+    transform_chain: list[str] = Field(default_factory=list)
+    freq: MacroFreq = "native"
+    fill: MacroFill = "ffill"
+    axis: Literal["left", "right"] = "left"
+    normalize_mode: MacroNormalizeMode = "raw"
+    lag_mode: str | None = None
+    display_style: Literal["line", "area", "bar", "scatter"] = "line"
+
+
+class MacroViewSpec(BaseModel):
+    """Saved view configuration for a study."""
+
+    view_id: str
+    mode: MacroViewMode
+    title: str | None = None
+    layout: dict[str, Any] = Field(default_factory=dict)
+
+
+class MacroConclusionPayload(BaseModel):
+    """Saved conclusion block for a macro study."""
+
+    summary: str = ""
+    thesis: str = ""
+    risk_cases: list[str] = Field(default_factory=list)
+    action_bias: str = "neutral"
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    next_checks: list[str] = Field(default_factory=list)
+
+
+class StudyReportAttachment(BaseModel):
+    """Report attachment linked to a macro study."""
+
+    report_id: int | None = None
+    title: str | None = None
+    report_path: str
+    created_at: str | None = None
+    source_run_id: str | None = None
+    symbols: list[str] = Field(default_factory=list)
+
+
+class MacroStudyPayload(BaseModel):
+    """Macro study object persisted locally."""
+
+    id: str | None = None
+    name: str = Field(min_length=1, max_length=160)
+    objective: str = ""
+    series_specs: list[MacroStudySeriesSpec] = Field(default_factory=list)
+    view_specs: list[MacroViewSpec] = Field(default_factory=list)
+    notes: str = ""
+    conclusion: MacroConclusionPayload = Field(default_factory=MacroConclusionPayload)
+    linked_assets: list[str] = Field(default_factory=list)
+    linked_reports: list[StudyReportAttachment] = Field(default_factory=list)
+    linked_feature_set_id: str | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
+
+
+class MacroStudiesResponse(BaseModel):
+    """List response for macro studies."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    items: list[MacroStudyPayload] = Field(default_factory=list)
+
+
+class MacroCompareResponse(BaseModel):
+    """Normalized multi-series comparison payload."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    normalization: MacroNormalizeMode = "raw"
+    series: dict[str, MacroSeriesResponse] = Field(default_factory=dict)
+
+
+class MacroLeadLagPoint(BaseModel):
+    """Lead-lag correlation point."""
+
+    lag: int
+    correlation: float
+
+
+class MacroLeadLagResponse(BaseModel):
+    """Lead-lag response payload."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    lhs: str = ""
+    rhs: str = ""
+    best_lag: int = 0
+    best_correlation: float = 0.0
+    table: list[MacroLeadLagPoint] = Field(default_factory=list)
+    rolling_corr: list[MacroDataPoint] = Field(default_factory=list)
+
+
+class MacroScatterPoint(BaseModel):
+    """Scatter point with date context."""
+
+    date: str
+    x: float
+    y: float
+
+
+class MacroScatterResponse(BaseModel):
+    """Scatter response payload."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    lhs: str = ""
+    rhs: str = ""
+    correlation: float | None = None
+    slope: float | None = None
+    intercept: float | None = None
+    points: list[MacroScatterPoint] = Field(default_factory=list)
+
+
+class MacroVintagePoint(BaseModel):
+    """Vintage-aware observation row."""
+
+    date: str
+    value: float
+    realtime_start: str | None = None
+    realtime_end: str | None = None
+    fetched_at: str | None = None
+
+
+class MacroVintageResponse(BaseModel):
+    """Vintage comparison payload."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    key: str = ""
+    as_of_date: str | None = None
+    latest: list[MacroDataPoint] = Field(default_factory=list)
+    as_of: list[MacroDataPoint] = Field(default_factory=list)
+    revisions: list[MacroVintagePoint] = Field(default_factory=list)
+    revision_delta: float | None = None
+
+
+class MacroReleaseCalendarItem(BaseModel):
+    """Release-style metadata row for a series."""
+
+    key: str
+    title: str | None = None
+    domain: str | None = None
+    release_frequency: str | None = None
+    last_obs: str | None = None
+    stale_days: int | None = None
+    estimated_next_release: str | None = None
+    vintage_available: bool = False
+
+
+class MacroReleaseCalendarResponse(BaseModel):
+    """Release calendar response."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    items: list[MacroReleaseCalendarItem] = Field(default_factory=list)
+
+
+class MacroReportResponse(BaseModel):
+    """HTML report export response."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    study_id: str | None = None
+    report_path: str | None = None
+    generated_at: str | None = None
+
+
+class MacroFeatureExportItem(BaseModel):
+    """Feature lineage item exported from a study."""
+
+    feature_name: str
+    source_study_id: str
+    key: str
+    transform_chain: list[str] = Field(default_factory=list)
+    lag_rule: str | None = None
+    as_of_policy: str = "latest"
+
+
+class MacroFeatureExportResponse(BaseModel):
+    """Feature export response."""
+
+    status: MacroStatus = "ok"
+    message: str | None = None
+    study_id: str | None = None
+    artifact_path: str | None = None
+    exported_at: str | None = None
+    items: list[MacroFeatureExportItem] = Field(default_factory=list)

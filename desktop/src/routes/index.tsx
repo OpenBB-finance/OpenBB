@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
@@ -6,69 +6,78 @@ import { isTauriRuntime } from "../lib/runtime";
 
 function Base() {
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let unlistenStatus: (() => void) | null = null;
+    let unlistenDir: (() => void) | null = null;
+
+    const redirectTo = async (targetRoute: string) => {
+      if (cancelled) {
+        return;
+      }
+      console.log("Redirecting to:", targetRoute);
+      setLoading(false);
+      await navigate({ to: targetRoute, replace: true });
+    };
+
     if (!isTauriRuntime()) {
-      window.location.href = "/quant";
-      return;
+      void redirectTo("/workspace");
+      return () => {
+        cancelled = true;
+      };
     }
 
     console.log("Base component mounted - listening for installation events");
 
-    // Create a promise that will be resolved when we get the installation status
-    const redirectPromise = new Promise<string>((resolve) => {
-      // Listen for the installation status event
-      const unlistenStatus = listen<boolean>("installation-status", (event) => {
+    const setupListeners = async () => {
+      unlistenStatus = await listen<boolean>("installation-status", (event) => {
         console.log("Received installation-status event:", event);
 
         const isInstalled = event.payload;
         if (isInstalled) {
-          resolve("/environments");
+          void redirectTo("/workspace");
         } else {
-          resolve("/setup");
+          void redirectTo("/setup");
         }
       });
 
-      // Also listen for installation directory
-      const unlistenDir = listen<string>("installation-directory", (event) => {
+      unlistenDir = await listen<string>("installation-directory", (event) => {
         console.log("Received installation-directory event:", event);
-        // Store the directory in localStorage for later use
         localStorage.setItem("installationDirectory", event.payload);
       });
 
-      // Fallback in case the event doesn't arrive
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         console.log("Event timeout - falling back to invoke");
-        // If we don't get the event within 2 seconds, use the invoke method
         invoke<{ is_installed: boolean }>("get_installation_state")
           .then((state) => {
             console.log("Installation state from invoke:", state);
             if (state.is_installed) {
-              resolve("/environments");
+              void redirectTo("/workspace");
             } else {
-              resolve("/setup");
+              void redirectTo("/setup");
             }
           })
           .catch((err) => {
             console.error("Error getting installation state:", err);
-            resolve("/setup"); // Default to setup on error
+            void redirectTo("/setup");
           });
       }, 2000);
+    };
 
-      // Clean up listeners
-      return () => {
-        unlistenStatus.then(fn => fn());
-        unlistenDir.then(fn => fn());
-      };
-    });
-    
-    // Once we have the target route, redirect to it
-    redirectPromise.then((targetRoute) => {
-      console.log("Redirecting to:", targetRoute);
-      setLoading(false);
-      window.location.href = targetRoute;
-    });
-  }, []);
+    void setupListeners();
+
+    return () => {
+      cancelled = true;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      unlistenStatus?.();
+      unlistenDir?.();
+    };
+  }, [navigate]);
 
   return (
     <div className="flex items-center justify-center h-screen">

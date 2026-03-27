@@ -1,22 +1,32 @@
 import { clearCachePrefix, getCachedOrFetch } from "./quantCache";
+import { buildOpenBBRequestInit, buildOpenBBRequestUrl } from "./openbbBackend";
 import type { FeatureActivation, FeatureActivationResult } from "../types/feature-activation";
 import type {
   HmmRegimePayload,
   MacroAlertsResponse,
   MacroCatalogResponse,
+  MacroCompareResponse,
   MacroDerivedResponse,
   MacroExpressionRequest,
   MacroExpressionResponse,
+  MacroFeatureExportResponse,
   MacroHealthResponse,
+  MacroLeadLagResponse,
   MacroPresetResponse,
   MacroRegimeResponse,
   MacroRegimeStateResponse,
+  MacroReleaseCalendarResponse,
+  MacroReportResponse,
   MacroSeriesResponse,
   MacroSeriesMultiResponse,
+  MacroScatterResponse,
+  MacroStudiesResponse,
+  MacroStudyPayload,
   RegimeRefreshResponse,
   RegimeSchedulerStatus,
   RegimeTransitionResponse,
   MacroUpdateResponse,
+  MacroVintageResponse,
 } from "../types/macro";
 
 const MACRO_PREFIX_CANONICAL = "/api/v1/quant_ml/macro";
@@ -33,6 +43,8 @@ const CACHE_TTL = {
   SCHEDULER: 30_000,
   DERIVED: 120_000,
   PRESET: 120_000,
+  STUDIES: 45_000,
+  RELEASES: 60_000,
   DEFAULT: 60_000,
 } as const;
 
@@ -51,7 +63,7 @@ async function requestMacro<T>(baseUrl: string, path: string, init: RequestInit)
 
   for (let index = 0; index < candidates.length; index += 1) {
     const candidate = candidates[index];
-    const response = await fetch(`${baseUrl}${candidate}`, init);
+    const response = await fetch(buildOpenBBRequestUrl(baseUrl, candidate), buildOpenBBRequestInit(init));
     if (response.ok) {
       return (await response.json()) as T;
     }
@@ -91,6 +103,46 @@ export function fetchMacroCatalog(baseUrl: string, domain?: string): Promise<Mac
   }
   const path = query.toString() ? `/catalog?${query.toString()}` : "/catalog";
   return cachedMacro(`catalog:${baseUrl}:${domain ?? "*"}`, () => requestMacro(baseUrl, path, { method: "GET" }), CACHE_TTL.CATALOG);
+}
+
+export function fetchMacroStudies(baseUrl: string): Promise<MacroStudiesResponse> {
+  return cachedMacro(
+    `studies:${baseUrl}`,
+    () => requestMacro(baseUrl, "/studies", { method: "GET" }),
+    CACHE_TTL.STUDIES,
+  );
+}
+
+export function fetchMacroStudy(baseUrl: string, studyId: string): Promise<MacroStudiesResponse> {
+  return cachedMacro(
+    `study:${baseUrl}:${studyId}`,
+    () => requestMacro(baseUrl, `/studies/${encodeURIComponent(studyId)}`, { method: "GET" }),
+    CACHE_TTL.STUDIES,
+  );
+}
+
+export function saveMacroStudy(baseUrl: string, payload: MacroStudyPayload): Promise<MacroStudiesResponse> {
+  invalidateMacroCache();
+  const target = payload.id ? `/studies/${encodeURIComponent(payload.id)}` : "/studies";
+  const method = payload.id ? "PUT" : "POST";
+  return requestMacro(baseUrl, target, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function attachMacroStudyReport(
+  baseUrl: string,
+  studyId: string,
+  payload: { report_id?: string; report_path?: string; title?: string; source_run_id?: string; symbols?: string[] },
+): Promise<MacroStudiesResponse> {
+  invalidateMacroCache();
+  return requestMacro(baseUrl, `/studies/${encodeURIComponent(studyId)}/attachments/report`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 }
 
 export function searchMacroCatalog(
@@ -157,6 +209,103 @@ export function fetchMacroSeriesMulti(
   if (params.fill) query.set("fill", params.fill);
   const path = `/series?${query.toString()}`;
   return cachedMacro(`series-multi:${baseUrl}:${query.toString()}`, () => requestMacro(baseUrl, path, { method: "GET" }));
+}
+
+export function fetchMacroCompare(
+  baseUrl: string,
+  payload: {
+    study_id: string;
+    normalization?: string;
+    start?: string;
+    end?: string;
+    as_of_date?: string;
+  },
+): Promise<MacroCompareResponse> {
+  return requestMacro(baseUrl, "/analysis/compare", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function fetchMacroLeadLag(
+  baseUrl: string,
+  payload: {
+    lhs: string;
+    rhs: string;
+    start?: string;
+    end?: string;
+    freq?: string;
+    fill?: string;
+    max_lag?: number;
+  },
+): Promise<MacroLeadLagResponse> {
+  return requestMacro(baseUrl, "/analysis/leadlag", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function fetchMacroScatter(
+  baseUrl: string,
+  payload: {
+    lhs: string;
+    rhs: string;
+    start?: string;
+    end?: string;
+    freq?: string;
+    fill?: string;
+  },
+): Promise<MacroScatterResponse> {
+  return requestMacro(baseUrl, "/analysis/scatter", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function fetchMacroVintages(
+  baseUrl: string,
+  params: { key: string; as_of_date: string; start?: string; end?: string },
+): Promise<MacroVintageResponse> {
+  const query = new URLSearchParams({ key: params.key, as_of_date: params.as_of_date });
+  if (params.start) query.set("start", params.start);
+  if (params.end) query.set("end", params.end);
+  return requestMacro(baseUrl, `/series/vintages?${query.toString()}`, { method: "GET" });
+}
+
+export function fetchMacroReleaseCalendar(baseUrl: string, domain?: string): Promise<MacroReleaseCalendarResponse> {
+  const query = new URLSearchParams();
+  if (domain) query.set("domain", domain);
+  const suffix = query.toString() ? `?${query.toString()}` : "";
+  return cachedMacro(
+    `release-calendar:${baseUrl}:${suffix}`,
+    () => requestMacro(baseUrl, `/releases/calendar${suffix}`, { method: "GET" }),
+    CACHE_TTL.RELEASES,
+  );
+}
+
+export function exportMacroReport(
+  baseUrl: string,
+  payload: { study_id: string },
+): Promise<MacroReportResponse> {
+  return requestMacro(baseUrl, "/report", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function exportMacroFeatures(
+  baseUrl: string,
+  payload: { study_id: string; as_of_policy?: string },
+): Promise<MacroFeatureExportResponse> {
+  return requestMacro(baseUrl, "/features/export", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 }
 
 export function evaluateMacroExpression(baseUrl: string, payload: MacroExpressionRequest): Promise<MacroExpressionResponse> {
@@ -242,7 +391,7 @@ export function createRegimeStreamUrl(baseUrl: string, intervalSec = 60): string
   const query = new URLSearchParams({
     interval_sec: String(intervalSec),
   });
-  return `${baseUrl}${MACRO_PREFIX_CANONICAL}/regime/stream?${query.toString()}`;
+  return buildOpenBBRequestUrl(baseUrl, `${MACRO_PREFIX_CANONICAL}/regime/stream?${query.toString()}`);
 }
 
 export function saveMacroDerived(
@@ -377,7 +526,10 @@ export function fetchMarketRollingCorr(
 }
 
 async function requestJsonWithQuantPrefix<T>(baseUrl: string, path: string): Promise<T> {
-  const response = await fetch(`${baseUrl}/api/v1/quant_ml${path}`, { method: "GET" });
+  const response = await fetch(
+    buildOpenBBRequestUrl(baseUrl, `/api/v1/quant_ml${path}`),
+    buildOpenBBRequestInit({ method: "GET" }),
+  );
   if (!response.ok) {
     let detail = "";
     try {

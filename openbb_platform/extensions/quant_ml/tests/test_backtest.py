@@ -295,7 +295,7 @@ def test_backtest_execution_price_modes_change_outcome():
     assert close_close.metrics["net_return"] != open_close.metrics["net_return"]
 
 
-def test_backtest_cvar_mode_falls_back_to_mv(monkeypatch):
+def test_backtest_cvar_mode_falls_back_to_mv(monkeypatch, caplog):
     rng = np.random.default_rng(33)
     symbols = ["A", "B", "C", "D", "E", "F"]
     dates = pd.date_range("2024-01-01", "2024-06-30", freq="B")
@@ -322,30 +322,35 @@ def test_backtest_cvar_mode_falls_back_to_mv(monkeypatch):
         lambda **kwargs: (_ for _ in ()).throw(ValueError("forced_cvar_fail")),
     )
 
-    result = run_backtest(
-        predictions=predictions,
-        open_panel=open_panel,
-        close_panel=price_panel,
-        start_date=date(2024, 1, 1),
-        end_date=date(2024, 6, 30),
-        constraints=BacktestConstraints(
-            max_weight=0.2,
-            long_only=True,
-            risk_aversion=3.0,
-            lookback_days=60,
-            optimizer_mode="cvar",
-            cvar_alpha=0.05,
-            cvar_lambda=3.0,
-            scenario_lookback_days=120,
-        ),
-        cost_bps=10.0,
-        slippage_bps=2.0,
-        entry_price="next_open",
-        exit_price="close",
-    )
+    with caplog.at_level("WARNING", logger=optimizer_v2.__name__):
+        result = run_backtest(
+            predictions=predictions,
+            open_panel=open_panel,
+            close_panel=price_panel,
+            start_date=date(2024, 1, 1),
+            end_date=date(2024, 6, 30),
+            constraints=BacktestConstraints(
+                max_weight=0.2,
+                long_only=True,
+                risk_aversion=3.0,
+                lookback_days=60,
+                optimizer_mode="cvar",
+                cvar_alpha=0.05,
+                cvar_lambda=3.0,
+                scenario_lookback_days=120,
+            ),
+            cost_bps=10.0,
+            slippage_bps=2.0,
+            entry_price="next_open",
+            exit_price="close",
+        )
 
     assert len(result.period_weights) > 0
     assert "cvar_95" in result.metrics
+    assert any(
+        "CVaR optimization failed; falling back to MV solver" in record.message
+        for record in caplog.records
+    )
     assert any(
         "optimizer_fallback_mv" in item.get("binding_constraints", [])
         for item in result.rebalance_history_summary

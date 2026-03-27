@@ -174,28 +174,11 @@ def tune_xgb_hyperparameters(
             "objective_metric": objective_metric,
         }
 
-    try:
-        import optuna
-    except Exception as exc:  # noqa: BLE001
-        return config, {
-            "status": "skipped",
-            "reason": f"optuna_unavailable:{exc}",
-            "objective_metric": objective_metric,
-        }
-
     metric = str(objective_metric or "validation_mse").strip().lower()
     maximize_metric = metric == "val_ic"
     direction = "maximize" if maximize_metric else "minimize"
-    sampler = optuna.samplers.TPESampler(seed=int(random_state))
 
-    def objective(trial) -> float:  # noqa: ANN001
-        params = {
-            "n_estimators": trial.suggest_int("n_estimators", 100, 2000),
-            "max_depth": trial.suggest_int("max_depth", 2, 10),
-            "learning_rate": trial.suggest_float("learning_rate", 1e-4, 0.3, log=True),
-            "subsample": trial.suggest_float("subsample", 0.5, 1.0),
-            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
-        }
+    def evaluate_params(params: dict[str, float]) -> float:
         model = XGBRegressor(
             **params,
             objective="reg:squarederror",
@@ -213,17 +196,60 @@ def tune_xgb_hyperparameters(
             return float(_validation_ic(val_df, pred))
         return float(mean_squared_error(val_df["target_return"].values, pred))
 
+    best_params: dict[str, float] = {}
+    best_value: float | None = None
+    completed_trials = 0
+    backend_name = "optuna"
+
     try:
+        import optuna
+
+        sampler = optuna.samplers.TPESampler(seed=int(random_state))
+
+        def objective(trial) -> float:  # noqa: ANN001
+            params = {
+                "n_estimators": trial.suggest_int("n_estimators", 100, 2000),
+                "max_depth": trial.suggest_int("max_depth", 2, 10),
+                "learning_rate": trial.suggest_float("learning_rate", 1e-4, 0.3, log=True),
+                "subsample": trial.suggest_float("subsample", 0.5, 1.0),
+                "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
+            }
+            return evaluate_params(params)
+
         study = optuna.create_study(direction=direction, sampler=sampler)
         study.optimize(objective, n_trials=int(n_trials), timeout=int(timeout_sec))
-    except Exception as exc:  # noqa: BLE001
+        best_params = study.best_params or {}
+        best_value = float(study.best_value)
+        completed_trials = int(len(study.trials))
+    except Exception:  # noqa: BLE001
+        backend_name = "deterministic_random_search"
+        rng = np.random.default_rng(int(random_state))
+        for _ in range(max(1, int(n_trials))):
+            params = {
+                "n_estimators": int(rng.integers(100, 2001)),
+                "max_depth": int(rng.integers(2, 11)),
+                "learning_rate": float(np.exp(rng.uniform(np.log(1e-4), np.log(0.3)))),
+                "subsample": float(rng.uniform(0.5, 1.0)),
+                "colsample_bytree": float(rng.uniform(0.5, 1.0)),
+            }
+            value = evaluate_params(params)
+            completed_trials += 1
+            if best_value is None:
+                best_value = value
+                best_params = params
+                continue
+            is_better = value > best_value if maximize_metric else value < best_value
+            if is_better:
+                best_value = value
+                best_params = params
+
+    if best_value is None:
         return config, {
             "status": "failed",
-            "reason": str(exc),
+            "reason": "no_trials_completed",
             "objective_metric": metric,
         }
 
-    best_params = study.best_params or {}
     tuned = copy.deepcopy(config)
     tuned.xgb_n_estimators = int(best_params.get("n_estimators", config.xgb_n_estimators))
     tuned.xgb_max_depth = int(best_params.get("max_depth", config.xgb_max_depth))
@@ -234,11 +260,12 @@ def tune_xgb_hyperparameters(
     )
     return tuned, {
         "status": "ok",
+        "backend": backend_name,
         "objective_metric": metric,
         "direction": direction,
         "n_trials_requested": int(n_trials),
-        "n_trials_completed": int(len(study.trials)),
-        "best_value": float(study.best_value),
+        "n_trials_completed": completed_trials,
+        "best_value": float(best_value),
         "best_params": {
             "xgb_n_estimators": tuned.xgb_n_estimators,
             "xgb_max_depth": tuned.xgb_max_depth,

@@ -6,6 +6,8 @@ import {
 } from "../../lib/financeApi";
 
 vi.mock("../../lib/openbbBackend", () => ({
+  buildOpenBBRequestInit: (init: RequestInit) => init,
+  buildOpenBBRequestUrl: (baseUrl: string, path: string) => `${baseUrl}${path}`,
   resolveOpenBBBackend: vi.fn(async () => ({
     baseUrl: "http://127.0.0.1:6900",
     connected: true,
@@ -30,8 +32,8 @@ describe("financeApi", () => {
       }),
     } as Response);
 
-    const first = await fetchFinanceStatement("income", "NASDAQ:AAPL", "annual");
-    const second = await fetchFinanceStatement("income", "NASDAQ:AAPL", "annual");
+    const first = await fetchFinanceStatement("http://127.0.0.1:6900", "income", "NASDAQ:AAPL", "annual");
+    const second = await fetchFinanceStatement("http://127.0.0.1:6900", "income", "NASDAQ:AAPL", "annual");
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0]?.[0]).toContain("/api/v1/equity/fundamental/income");
@@ -60,8 +62,8 @@ describe("financeApi", () => {
       }),
     } as Response);
 
-    const first = await fetchFinanceForecast("NASDAQ:AAPL");
-    const second = await fetchFinanceForecast("NASDAQ:AAPL");
+    const first = await fetchFinanceForecast("http://127.0.0.1:6900", "NASDAQ:AAPL");
+    const second = await fetchFinanceForecast("http://127.0.0.1:6900", "NASDAQ:AAPL");
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0]?.[0]).toContain("/api/v1/equity/estimates/consensus");

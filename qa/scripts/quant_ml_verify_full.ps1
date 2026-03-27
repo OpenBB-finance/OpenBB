@@ -6,6 +6,7 @@ param(
   [string]$PythonExe = ".\\.venv\\Scripts\\python.exe",
   [string]$ApiBaseUrl = "http://127.0.0.1:6900",
   [switch]$SkipApiSmoke,
+  [switch]$IncludeStartupSmoke,
   [switch]$DryRun
 )
 
@@ -217,6 +218,27 @@ try {
       $checks) -and $allPass
 
   $allPass = (Run-LoggedCommand `
+      "pytest_runtime_cache" `
+      "$PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_runtime_cache.py -q" `
+      { & $PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_runtime_cache.py -q 2>&1 | Tee-Object -FilePath (Join-Path $verifyDir "pytest_runtime_cache.log") | Out-Host } `
+      (Join-Path $verifyDir "pytest_runtime_cache.log") `
+      $checks) -and $allPass
+
+  $allPass = (Run-LoggedCommand `
+      "pytest_experiment_tracking_mlflow" `
+      "$PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_experiment_tracking_mlflow.py -q" `
+      { & $PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_experiment_tracking_mlflow.py -q 2>&1 | Tee-Object -FilePath (Join-Path $verifyDir "pytest_experiment_tracking_mlflow.log") | Out-Host } `
+      (Join-Path $verifyDir "pytest_experiment_tracking_mlflow.log") `
+      $checks) -and $allPass
+
+  $allPass = (Run-LoggedCommand `
+      "pytest_pipeline_training_backend" `
+      "$PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_pipeline_training_backend.py -q" `
+      { & $PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_pipeline_training_backend.py -q 2>&1 | Tee-Object -FilePath (Join-Path $verifyDir "pytest_pipeline_training_backend.log") | Out-Host } `
+      (Join-Path $verifyDir "pytest_pipeline_training_backend.log") `
+      $checks) -and $allPass
+
+  $allPass = (Run-LoggedCommand `
       "pytest_ranker_ic_constant_groups" `
       "$PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_ranker_ic_constant_groups.py -q" `
       { & $PythonExe -m pytest openbb_platform/extensions/quant_ml/tests/test_ranker_ic_constant_groups.py -q 2>&1 | Tee-Object -FilePath (Join-Path $verifyDir "pytest_ranker_ic_constant_groups.log") | Out-Host } `
@@ -250,6 +272,15 @@ try {
       { & npm --prefix desktop run test -- src/tests/routes/quant.test.tsx 2>&1 | Tee-Object -FilePath (Join-Path $verifyDir "frontend_quant_route_test.log") | Out-Host } `
       (Join-Path $verifyDir "frontend_quant_route_test.log") `
       $checks) -and $allPass
+
+  if ($IncludeStartupSmoke) {
+    $allPass = (Run-LoggedCommand `
+        "startup_smoke" `
+        ".\\qa\\scripts\\quant_ml_startup_smoke.ps1" `
+        { & (Join-Path $repoAbs "qa/scripts/quant_ml_startup_smoke.ps1") -RepoRoot $repoAbs 2>&1 | Tee-Object -FilePath (Join-Path $verifyDir "startup_smoke.log") | Out-Host } `
+        (Join-Path $verifyDir "startup_smoke.log") `
+        $checks) -and $allPass
+  }
 
   if (-not $SkipApiSmoke) {
     $apiChecks = @(

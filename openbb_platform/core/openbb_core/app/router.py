@@ -421,12 +421,40 @@ class CommandMap:
         return self._commands_model
 
     @staticmethod
+    def _route_keys(route: Any) -> list[str]:
+        """Build lookup keys for one API route.
+
+        The OpenBB API runtime can expose multiple HTTP methods on the same path.
+        Path-only lookup is ambiguous in that case, so we also store method-specific
+        keys used by the API wrapper while keeping the plain path for backwards
+        compatibility with existing callers.
+        """
+        path = getattr(route, "path", None)
+        if not isinstance(path, str) or not path:
+            return []
+
+        keys = [path]
+        methods = [
+            str(method).upper()
+            for method in (getattr(route, "methods", None) or [])
+            if str(method).upper() not in {"HEAD", "OPTIONS"}
+        ]
+        keys.extend([f"{method} {path}" for method in sorted(set(methods))])
+        return keys
+
+    @staticmethod
     def get_command_map(
         router: Router,
     ) -> dict[str, Callable]:
         """Get command map."""
         api_router = router.api_router
-        command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
+        command_map: dict[str, Callable] = {}
+        for route in api_router.routes:  # type: ignore[attr-defined]
+            endpoint = getattr(route, "endpoint", None)
+            if not callable(endpoint):
+                continue
+            for key in CommandMap._route_keys(route):
+                command_map[key] = endpoint
         return command_map
 
     @staticmethod

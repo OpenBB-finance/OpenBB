@@ -4,9 +4,11 @@
 
 from __future__ import annotations
 
+import argparse
 import importlib
 import importlib.util
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -17,6 +19,7 @@ PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 CLI_PATH = Path(__file__).parent.parent.resolve() / "cli"
 CLI_PYPROJECT = CLI_PATH / "pyproject.toml"
 CLI_LOCK = CLI_PATH / "poetry.lock"
+BOOTSTRAP_INSTALLERS = {"auto", "pip", "uv"}
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
@@ -79,24 +82,92 @@ openbb-technical = { path = "./extensions/technical", optional = true, develop =
 """
 
 
-def _ensure_python_module(module_name: str, pip_name: str) -> None:
-    """Ensure a Python module is importable, bootstrapping it with pip if needed."""
-    if importlib.util.find_spec(module_name) is not None:
-        return
-
+def _bootstrap_env() -> dict[str, str]:
+    """Return a UTF-8-safe environment for dependency bootstrapping."""
     bootstrap_env = os.environ.copy()
     bootstrap_env.setdefault("PYTHONIOENCODING", "utf-8")
     bootstrap_env.setdefault("PYTHONUTF8", "1")
-    subprocess.run(
-        [sys.executable, "-m", "pip", "install", pip_name],
-        check=True,
-        env=bootstrap_env,
+    return bootstrap_env
+
+
+def _resolve_bootstrap_installer(bootstrap_installer: str | None = None) -> str:
+    """Resolve the active bootstrap installer from CLI, env, or defaults."""
+    candidate = (
+        bootstrap_installer
+        if bootstrap_installer is not None
+        else os.getenv("OPENBB_BOOTSTRAP_TOOL", "auto")
+    )
+    resolved = str(candidate or "auto").strip().lower() or "auto"
+    if resolved not in BOOTSTRAP_INSTALLERS:
+        raise ValueError(
+            "Invalid bootstrap installer. Expected one of: auto, pip, uv."
+        )
+    return resolved
+
+
+def _run_bootstrap_install(command: list[str], *, env: dict[str, str]) -> None:
+    """Run a bootstrap dependency installation command."""
+    subprocess.run(command, check=True, env=env)
+
+
+def _install_with_pip(package_name: str, *, env: dict[str, str]) -> None:
+    """Install a bootstrap dependency with pip."""
+    _run_bootstrap_install(
+        [sys.executable, "-m", "pip", "install", package_name],
+        env=env,
     )
 
 
-def _ensure_poetry() -> list[str]:
+def _install_with_uv(package_name: str, *, env: dict[str, str]) -> None:
+    """Install a bootstrap dependency with uv against the current interpreter."""
+    uv_executable = shutil.which("uv")
+    if uv_executable is None:
+        raise FileNotFoundError("uv executable was not found in PATH.")
+
+    _run_bootstrap_install(
+        [uv_executable, "pip", "install", "--python", sys.executable, package_name],
+        env=env,
+    )
+
+
+def _ensure_python_module(
+    module_name: str,
+    pip_name: str,
+    *,
+    bootstrap_installer: str | None = None,
+) -> None:
+    """Ensure a Python module is importable, bootstrapping it if needed."""
+    if importlib.util.find_spec(module_name) is not None:
+        return
+
+    resolved_installer = _resolve_bootstrap_installer(bootstrap_installer)
+    bootstrap_env = _bootstrap_env()
+
+    if resolved_installer == "pip":
+        _install_with_pip(pip_name, env=bootstrap_env)
+        return
+
+    if resolved_installer == "uv":
+        _install_with_uv(pip_name, env=bootstrap_env)
+        return
+
+    try:
+        _install_with_uv(pip_name, env=bootstrap_env)
+    except (FileNotFoundError, subprocess.CalledProcessError) as error:
+        print(
+            f"uv bootstrap failed for {pip_name}; falling back to pip: {error}",
+            file=sys.stderr,
+        )
+        _install_with_pip(pip_name, env=bootstrap_env)
+
+
+def _ensure_poetry(*, bootstrap_installer: str | None = None) -> list[str]:
     """Return the canonical Poetry command after ensuring the module exists."""
-    _ensure_python_module("poetry", "poetry")
+    _ensure_python_module(
+        "poetry",
+        "poetry",
+        bootstrap_installer=bootstrap_installer,
+    )
     return [sys.executable, "-m", "poetry"]
 
 
@@ -107,9 +178,18 @@ def _restore_original_files(original_files: dict[Path, str]) -> None:
             file.write(content)
 
 
-def extract_dependencies(local_dep_path, dev: bool = False):
+def extract_dependencies(
+    local_dep_path,
+    dev: bool = False,
+    *,
+    bootstrap_installer: str | None = None,
+):
     """Extract development dependencies from a given package's pyproject.toml."""
-    _ensure_python_module("tomlkit", "tomlkit")
+    _ensure_python_module(
+        "tomlkit",
+        "tomlkit",
+        bootstrap_installer=bootstrap_installer,
+    )
     tomlkit = importlib.import_module("tomlkit")
     package_pyproject_path = PLATFORM_PATH / local_dep_path
     if package_pyproject_path.exists():
@@ -131,9 +211,13 @@ def extract_dependencies(local_dep_path, dev: bool = False):
     return {}
 
 
-def get_all_dev_dependencies():
+def get_all_dev_dependencies(*, bootstrap_installer: str | None = None):
     """Aggregate development dependencies from all local packages."""
-    _ensure_python_module("tomlkit", "tomlkit")
+    _ensure_python_module(
+        "tomlkit",
+        "tomlkit",
+        bootstrap_installer=bootstrap_installer,
+    )
     tomlkit = importlib.import_module("tomlkit")
     all_dev_dependencies = {}
     local_deps = tomlkit.loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})[
@@ -141,14 +225,26 @@ def get_all_dev_dependencies():
     ]
     for _, package_info in local_deps.items():
         if "path" in package_info:
-            dev_deps = extract_dependencies(Path(package_info["path"]), dev=True)
+            dev_deps = extract_dependencies(
+                Path(package_info["path"]),
+                dev=True,
+                bootstrap_installer=bootstrap_installer,
+            )
             all_dev_dependencies.update(dev_deps)
     return all_dev_dependencies
 
 
-def install_platform_local(_extras: bool = False):
+def install_platform_local(
+    _extras: bool = False,
+    *,
+    bootstrap_installer: str | None = None,
+):
     """Install the Platform locally for development purposes."""
-    _ensure_python_module("tomlkit", "tomlkit")
+    _ensure_python_module(
+        "tomlkit",
+        "tomlkit",
+        bootstrap_installer=bootstrap_installer,
+    )
     tomlkit = importlib.import_module("tomlkit")
     original_files = {
         LOCK: LOCK.read_text(encoding="utf-8"),
@@ -165,7 +261,9 @@ def install_platform_local(_extras: bool = False):
     )
 
     if _extras:
-        dev_dependencies = get_all_dev_dependencies()
+        dev_dependencies = get_all_dev_dependencies(
+            bootstrap_installer=bootstrap_installer
+        )
         pyproject_toml.get("tool", {}).get("poetry", {}).setdefault(
             "group", {}
         ).setdefault("dev", {}).setdefault("dependencies", {})
@@ -179,11 +277,9 @@ def install_platform_local(_extras: bool = False):
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(temp_pyproject)
 
-        poetry_cmd = _ensure_poetry()
+        poetry_cmd = _ensure_poetry(bootstrap_installer=bootstrap_installer)
         extras_args = ["-E", "all"] if _extras else []
-        poetry_env = os.environ.copy()
-        poetry_env.setdefault("PYTHONIOENCODING", "utf-8")
-        poetry_env.setdefault("PYTHONUTF8", "1")
+        poetry_env = _bootstrap_env()
 
         subprocess.run(
             poetry_cmd + ["lock", "--regenerate"],
@@ -202,9 +298,13 @@ def install_platform_local(_extras: bool = False):
         _restore_original_files(original_files)
 
 
-def install_platform_cli():
+def install_platform_cli(*, bootstrap_installer: str | None = None):
     """Install the CLI locally for development purposes."""
-    _ensure_python_module("tomlkit", "tomlkit")
+    _ensure_python_module(
+        "tomlkit",
+        "tomlkit",
+        bootstrap_installer=bootstrap_installer,
+    )
     tomlkit = importlib.import_module("tomlkit")
     original_files = {
         CLI_LOCK: CLI_LOCK.read_text(encoding="utf-8"),
@@ -225,10 +325,8 @@ def install_platform_cli():
         with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(temp_pyproject)
 
-        poetry_cmd = _ensure_poetry()
-        poetry_env = os.environ.copy()
-        poetry_env.setdefault("PYTHONIOENCODING", "utf-8")
-        poetry_env.setdefault("PYTHONUTF8", "1")
+        poetry_cmd = _ensure_poetry(bootstrap_installer=bootstrap_installer)
+        poetry_env = _bootstrap_env()
 
         subprocess.run(
             poetry_cmd + ["lock", "--regenerate"],
@@ -247,14 +345,40 @@ def install_platform_cli():
         _restore_original_files(original_files)
 
 
+def _parse_args(argv: list[str]) -> argparse.Namespace:
+    """Parse installer command-line arguments."""
+    parser = argparse.ArgumentParser(description="Install OpenBB for development.")
+    parser.add_argument(
+        "-e",
+        "--extras",
+        action="store_true",
+        help="Install all optional extras in editable mode.",
+    )
+    parser.add_argument(
+        "-c",
+        "--cli",
+        action="store_true",
+        help="Install the CLI package in editable mode.",
+    )
+    parser.add_argument(
+        "--bootstrap-installer",
+        choices=sorted(BOOTSTRAP_INSTALLERS),
+        default=None,
+        help="Select the bootstrap installer used for helper modules.",
+    )
+    return parser.parse_args(argv)
+
+
 if __name__ == "__main__":
-    args = sys.argv[1:]
-    extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
-    cli = any(arg.lower() in ["-c", "--cli"] for arg in args)
+    parsed = _parse_args(sys.argv[1:])
+    bootstrap_installer = _resolve_bootstrap_installer(parsed.bootstrap_installer)
     try:
-        install_platform_local(extras)
-        if cli:
-            install_platform_cli()
+        install_platform_local(
+            parsed.extras,
+            bootstrap_installer=bootstrap_installer,
+        )
+        if parsed.cli:
+            install_platform_cli(bootstrap_installer=bootstrap_installer)
     except (Exception, KeyboardInterrupt) as error:
         print(error, file=sys.stderr)  # noqa: T201
         raise SystemExit(1) from error
