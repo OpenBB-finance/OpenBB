@@ -86,6 +86,7 @@ describe("Root Route", () => {
     expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual([
       "Settings",
       "Workspace",
+      "Finance",
       "Macro Lab",
       "Strategy Lab",
       "Portfolio & Execution",
@@ -107,6 +108,7 @@ describe("Root Route", () => {
       });
       expect(screen.queryByText(/Settings/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Workspace/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Finance/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Macro Lab/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Strategy Lab/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Portfolio & Execution/i)).not.toBeInTheDocument();
@@ -138,6 +140,19 @@ describe("Root Route", () => {
       );
     });
     expect(screen.getByRole("tab", { name: /Portfolio & Execution/i })).toHaveAttribute("aria-selected", "true");
+  });
+
+  test("marks Finance tab active when finance route is selected", async () => {
+    const router = createTestRouter("/finance");
+    await act(async () => {
+      render(
+        <EnvironmentCreationProvider>
+          <RouterProvider router={router} />
+        </EnvironmentCreationProvider>,
+      );
+    });
+    expect(screen.getByRole("tab", { name: /Finance/i })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: /Workspace/i })).toHaveAttribute("aria-selected", "false");
   });
 
   test("marks AI tab active when ai route is selected", async () => {

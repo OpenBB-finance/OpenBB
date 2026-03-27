@@ -192,6 +192,7 @@ function Root() {
 						<NavLink to="/settings" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Settings</NavLink>
 						<NavSeparator />
 						<NavLink to="/workspace" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Workspace</NavLink>
+						<NavLink to="/finance" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Finance</NavLink>
 						<NavLink to="/macro" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Macro Lab</NavLink>
 						<NavLink to="/quant" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Strategy Lab</NavLink>
 						<NavLink to="/execution" selectedTab={selectedTab} setSelectedTab={setSelectedTab}>Portfolio &amp; Execution</NavLink>
