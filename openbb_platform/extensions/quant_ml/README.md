@@ -10,6 +10,25 @@
 - Portfolio backtesting with mean-variance optimization
 - Local artifact and cache storage under `~/.openbb_platform/quant_ml`
 
+## Quick Start
+
+Use this as the canonical local dev path for the Quant ML stack:
+
+```powershell
+uv venv .venv --python 3.11
+.\.venv\Scripts\python.exe openbb_platform/dev_install.py -e --bootstrap-installer uv
+.\start_all.ps1 -ApiNoBuild $true -ApiAuthMode enabled -QuantMlTrainingBackend process
+.\qa\scripts\quant_ml_startup_smoke.ps1 -RepoRoot .
+npm.cmd test -- --run src/tests/routes/__root.test.tsx src/tests/routes/finance.test.tsx src/tests/routes/trading.test.tsx src/tests/lib/openbbBackend.test.ts src/tests/lib/openbbSse.test.ts src/tests/routes/backends.test.tsx src/tests/routes/quant.test.tsx src/tests/routes/macro.test.tsx
+```
+
+Defaults chosen for this repo:
+
+- Poetry remains the dependency resolver and `openbb_platform/poetry.lock` remains the source of truth.
+- `uv` is used for bootstrap and runner setup, not for replacing Poetry metadata.
+- `start_all.ps1` defaults to auth-enabled local startup.
+- `Finance Lab` is the canonical desktop label for the `/finance` route.
+
 ## Universe Files
 
 Local universe files are discovered from:
@@ -317,6 +336,24 @@ pytest openbb_platform/extensions/quant_ml/tests/test_portfolio_policy.py -q
 pytest openbb_platform/extensions/quant_ml/tests/test_runtime_cache.py -q
 pytest openbb_platform/extensions/quant_ml/tests/test_experiment_tracking_mlflow.py -q
 pytest openbb_platform/extensions/quant_ml/tests/test_pipeline_training_backend.py -q
+```
+
+Merge-ready baseline verification:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest openbb_platform/tests/test_dev_install.py openbb_platform/tests/test_pyproject_toml.py openbb_platform/tests/test_resolve_python.py -q
+.\.venv\Scripts\python.exe -m pytest openbb_platform/extensions/platform_api/tests/test_api.py openbb_platform/extensions/quant_ml/tests/test_runtime_cache.py openbb_platform/extensions/quant_ml/tests/test_experiment_tracking_mlflow.py openbb_platform/extensions/quant_ml/tests/test_pipeline_training_backend.py openbb_platform/extensions/quant_ml/tests/test_quant_router_extra.py -q
+.\qa\scripts\quant_ml_startup_smoke.ps1 -RepoRoot .
+npm.cmd test -- --run src/tests/routes/__root.test.tsx src/tests/routes/finance.test.tsx src/tests/routes/trading.test.tsx src/tests/lib/openbbBackend.test.ts src/tests/lib/openbbSse.test.ts src/tests/routes/backends.test.tsx src/tests/routes/quant.test.tsx src/tests/routes/macro.test.tsx
+```
+
+Repo-consistency verification after bootstrap:
+
+```powershell
+.\.venv\Scripts\python.exe openbb_platform/dev_install.py -e --bootstrap-installer uv
+.\.venv\Scripts\python.exe openbb_platform/dev_install.py -e --cli --bootstrap-installer uv
+git diff --exit-code -- openbb_platform/pyproject.toml openbb_platform/poetry.lock cli/pyproject.toml cli/poetry.lock
+git ls-files --others --exclude-standard | Select-String -Pattern '(^|/|\\)uv\.lock$'
 ```
 
 Startup smoke verification:
