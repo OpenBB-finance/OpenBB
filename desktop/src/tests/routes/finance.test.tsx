@@ -4,6 +4,8 @@ import React from "react";
 import { vi } from "vitest";
 import { Route as FinanceRoute } from "../../routes/finance";
 
+const resolveOpenBBBackendMock = vi.fn();
+
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: vi.fn(() => (options: {
     component: React.ComponentType;
@@ -15,6 +17,15 @@ vi.mock("@tanstack/react-router", () => ({
     },
   })),
   useNavigate: vi.fn(() => vi.fn()),
+}));
+
+vi.mock("../../lib/openbbBackend", () => ({
+  resolveOpenBBBackend: () => resolveOpenBBBackendMock(),
+  formatBackendDetail: (detail: string) => detail,
+}));
+
+vi.mock("../../lib/quantApi", () => ({
+  fetchSymbolContext: vi.fn(async () => null),
 }));
 
 vi.mock("../../components/finance/TradingViewWidgetEmbed", () => ({
@@ -50,6 +61,13 @@ describe("Finance Route", () => {
   const FinanceComponent = FinanceRoute.options.component as React.ComponentType;
 
   beforeEach(() => {
+    resolveOpenBBBackendMock.mockReset();
+    resolveOpenBBBackendMock.mockResolvedValue({
+      baseUrl: "http://127.0.0.1:6900",
+      connected: true,
+      detail: "Using fallback URL.",
+      source: "fallback",
+    });
     window.history.replaceState({}, "", "/finance");
     localStorage.clear();
     document.documentElement.classList.add("dark");
@@ -73,6 +91,22 @@ describe("Finance Route", () => {
     expect(screen.getByRole("button", { name: "I/S" })).toBeInTheDocument();
     expect(screen.getByTestId("tv-advanced-chart")).toHaveAttribute("data-symbol", "NASDAQ:AAPL");
     expect(screen.getByTestId("finance-fundamentals-panel")).toHaveAttribute("data-symbol", "NASDAQ:AAPL");
+  });
+
+  test("shows backend status banner and retry action", async () => {
+    resolveOpenBBBackendMock.mockResolvedValue({
+      baseUrl: "http://127.0.0.1:6901",
+      connected: false,
+      detail: "Backend probe failed.",
+      source: "fallback",
+    });
+
+    render(<FinanceComponent />);
+
+    expect(await screen.findByText(/Offline or auth required/i)).toBeInTheDocument();
+    expect(screen.getByText("http://127.0.0.1:6901")).toBeInTheDocument();
+    expect(screen.getByText(/Backend probe failed\./i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Retry Backend/i })).toBeInTheDocument();
   });
 
   test("prefers URL search symbol over localStorage", () => {

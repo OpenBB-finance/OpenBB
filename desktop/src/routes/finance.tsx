@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FinancePageLayout } from "../components/finance/FinancePageLayout";
-import { resolveOpenBBBackend } from "../lib/openbbBackend";
+import { formatBackendDetail, resolveOpenBBBackend } from "../lib/openbbBackend";
 import { fetchSymbolContext } from "../lib/quantApi";
 import { getTradingViewThemeMode } from "../lib/tradingView";
 import { useFinanceSymbolState } from "../hooks/useFinanceSymbolState";
 import type { TradingViewThemeMode } from "../types/finance";
-import type { SymbolContextPayload, SymbolLabSearch } from "../types/quant";
+import type { BackendResolution, SymbolContextPayload, SymbolLabSearch } from "../types/quant";
 
 function readSymbolLabSearch(): SymbolLabSearch {
   if (typeof window === "undefined") {
@@ -34,6 +34,8 @@ function FinancePage() {
   } = useFinanceSymbolState();
   const [theme, setTheme] = useState<TradingViewThemeMode>(() => getTradingViewThemeMode());
   const [baseUrl, setBaseUrl] = useState("");
+  const [backendResolution, setBackendResolution] = useState<BackendResolution | null>(null);
+  const [isResolvingBackend, setIsResolvingBackend] = useState(true);
   const [contextRail, setContextRail] = useState<SymbolContextPayload | null>(null);
   const [contextError, setContextError] = useState<string | null>(null);
   const symbolLabSearch = useMemo(() => readSymbolLabSearch(), [activeSymbol]);
@@ -50,19 +52,54 @@ function FinancePage() {
     return () => observer.disconnect();
   }, []);
 
+  const refreshBackend = useCallback(async () => {
+    setIsResolvingBackend(true);
+    try {
+      const backend = await resolveOpenBBBackend();
+      setBackendResolution(backend);
+      setBaseUrl(backend.baseUrl ?? "");
+    } catch {
+      setBackendResolution(null);
+      setBaseUrl("");
+    } finally {
+      setIsResolvingBackend(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const loadBackend = async () => {
-      try {
-        const backend = await resolveOpenBBBackend();
-        if (backend.connected) {
-          setBaseUrl(backend.baseUrl);
-        }
-      } catch {
-        setBaseUrl("");
+    void refreshBackend();
+  }, [refreshBackend]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        void refreshBackend();
       }
     };
-    void loadBackend();
-  }, []);
+    const handleFocus = () => {
+      void refreshBackend();
+    };
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key?.startsWith("openbb-api-")) {
+        void refreshBackend();
+      }
+    };
+    const timer = window.setInterval(() => {
+      if (!backendResolution?.connected && document.visibilityState === "visible") {
+        void refreshBackend();
+      }
+    }, 10_000);
+
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("storage", handleStorage);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("storage", handleStorage);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [backendResolution?.connected, refreshBackend]);
 
   useEffect(() => {
     if (!baseUrl || !activeSymbol) {
@@ -108,6 +145,44 @@ function FinancePage() {
         <div className="rounded-full border border-theme-outline bg-theme-primary px-4 py-2">
           <p className="body-xxs-regular text-theme-muted">Active Symbol</p>
           <p className="body-sm-medium text-theme-primary">{activeSymbol}</p>
+        </div>
+      </div>
+
+      <div className="mb-4 rounded-sm border border-theme-outline bg-theme-primary px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="body-xxs-regular text-theme-muted">OpenBB Backend</p>
+            <p className="body-sm-medium text-theme-primary">
+              {isResolvingBackend
+                ? "Resolving..."
+                : backendResolution
+                  ? backendResolution.connected
+                    ? "Connected"
+                    : "Offline or auth required"
+                  : "Unavailable"}
+            </p>
+            <p className="mt-1 body-xxs-regular text-theme-muted">
+              {backendResolution
+                ? formatBackendDetail(backendResolution.detail, backendResolution.connected)
+                : "Finance fundamentals will load once an OpenBB backend is available."}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {backendResolution?.baseUrl ? (
+              <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
+                <p className="body-xxs-regular text-theme-muted">URL</p>
+                <p className="body-xs-medium text-theme-primary">{backendResolution.baseUrl}</p>
+              </div>
+            ) : null}
+            <button
+              type="button"
+              className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
+              onClick={() => void refreshBackend()}
+              disabled={isResolvingBackend}
+            >
+              {isResolvingBackend ? "Refreshing..." : "Retry Backend"}
+            </button>
+          </div>
         </div>
       </div>
 

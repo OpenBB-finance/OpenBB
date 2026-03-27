@@ -88,6 +88,22 @@ const VISUAL_METRICS: Record<FinanceStatementKind, string[]> = {
   cash: ["operating_cash_flow", "free_cash_flow", "capital_expenditure"],
 };
 
+const METRIC_ALIASES: Partial<Record<string, string[]>> = {
+  total_liabilities_net_minority_interest: [
+    "total_liabilities_net_minority_interest",
+    "total_liabilities",
+  ],
+  stockholders_equity: [
+    "stockholders_equity",
+    "total_shareholder_equity",
+    "total_equity_gross_minority_interest",
+  ],
+  operating_cash_flow: ["operating_cash_flow", "operating_cashflow"],
+  investing_cash_flow: ["investing_cash_flow", "cashflow_from_investment"],
+  financing_cash_flow: ["financing_cash_flow", "cashflow_from_financing"],
+  capital_expenditure: ["capital_expenditure", "capital_expenditures"],
+};
+
 function formatTimestamp(value: string | null): string {
   if (!value) return "Unknown";
   const parsed = new Date(value);
@@ -120,6 +136,29 @@ function getNumericValue(value: FinanceStatementRecord[string] | number | null |
     return value;
   }
   return null;
+}
+
+function getResolvedMetricValue(
+  row: FinanceStatementRecord,
+  metric: string,
+): FinanceStatementRecord[string] | number | null | undefined {
+  const aliases = METRIC_ALIASES[metric] ?? [metric];
+  for (const candidate of aliases) {
+    const value = row[candidate];
+    if (value !== null && value !== undefined && value !== "") {
+      return value;
+    }
+  }
+
+  if (metric === "free_cash_flow") {
+    const operatingCashFlow = getNumericValue(getResolvedMetricValue(row, "operating_cash_flow"));
+    const capitalExpenditure = getNumericValue(getResolvedMetricValue(row, "capital_expenditure"));
+    if (operatingCashFlow !== null && capitalExpenditure !== null) {
+      return operatingCashFlow - capitalExpenditure;
+    }
+  }
+
+  return row[metric];
 }
 
 function formatFinancialValue(metric: string, value: FinanceStatementRecord[string] | number | null | undefined): string {
@@ -227,7 +266,7 @@ function buildHighlights(kind: FinanceStatementKind, latestRow: FinanceStatement
 
   return summaryByKind[kind].map((item) => ({
     label: item.label,
-    value: formatFinancialValue(item.key, latestRow[item.key]),
+    value: formatFinancialValue(item.key, getResolvedMetricValue(latestRow, item.key)),
   }));
 }
 
@@ -238,7 +277,7 @@ function renderMetricVisualCard(
 ) {
   const points = rows
     .map((row, index) => {
-      const numericValue = getNumericValue(row[metric]);
+      const numericValue = getNumericValue(getResolvedMetricValue(row, metric));
       return {
         key: `${metric}-${row.period_ending ?? index}`,
         label: row.period_ending ?? `P${index + 1}`,

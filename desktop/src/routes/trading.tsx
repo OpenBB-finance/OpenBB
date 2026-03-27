@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DashboardLineChart } from "../components/quant/DashboardLineChart";
 import { PanelCard } from "../components/quant/PanelCard";
 import { SummaryCard } from "../components/quant/SummaryCard";
@@ -8,6 +8,11 @@ import {
   approveTradingOrder,
   cancelTradingOrder,
   closeTradingPosition,
+  fetchExecutionFillsHistory,
+  fetchExecutionMode,
+  fetchExecutionOrdersCurrent,
+  fetchExecutionPnl,
+  fetchExecutionPositionsCurrent,
   fetchRunConstraints,
   fetchTradingAlgorithms,
   fetchTradingEvents,
@@ -28,6 +33,7 @@ import {
   runTradingCycle,
   submitExecutionOrders,
   toggleTradingAlgorithm,
+  updateExecutionMode,
   updateTradingExecutionMode,
   updateTradingSettings,
   validateTradingAlgorithm,
@@ -38,6 +44,7 @@ import { buildSymbolLabHref } from "../lib/symbolLabNavigation";
 import type {
   ExecutionPreviewPayload,
   ExecutionSubmitPayload,
+  ExecutionModePayload,
   ModelName,
   RiskPretradePayload,
   RunConstraintsPayload,
@@ -59,6 +66,17 @@ type PortfolioExecutionTab =
   | "positions"
   | "fills"
   | "brokers";
+
+type PortfolioExecutionVariant = "trading" | "execution";
+
+type FlashState =
+  | {
+      tone: "success" | "warning" | "error";
+      text: string;
+    }
+  | null;
+
+const FOCUS_MODELS: ModelName[] = ["lgbm_ranker", "xgb_lstm"];
 
 function toErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "Request failed";
@@ -131,20 +149,88 @@ function tradingRowKey(row: Record<string, unknown>, index: number): string {
   ].join("-");
 }
 
+function isModelSelectable(modelName: string): modelName is ModelName {
+  return FOCUS_MODELS.includes(modelName as ModelName);
+}
+
+function normalizeExecutionOrders(
+  items: Array<{
+    order_id: string;
+    symbol: string;
+    side: "buy" | "sell";
+    quantity: number;
+    est_price: number;
+    est_notional: number;
+    status: "preview" | "submitted" | "filled" | "rejected";
+  }>,
+): TradingOrderItemPayload[] {
+  return items.map((item) => ({
+    order_id: item.order_id,
+    ticker: item.symbol,
+    strategy_name: "execution",
+    status: item.status === "preview" ? "pending" : item.status,
+    side: item.side,
+    signal_type: item.side,
+    quantity: item.quantity,
+    requested_price: item.est_price,
+    notional: item.est_notional,
+    metadata: {},
+  }));
+}
+
+function normalizeExecutionPositions(items: Array<Record<string, string | number>>): Array<Record<string, unknown>> {
+  return items.map((item) => ({
+    ...item,
+    ticker: item.ticker ?? item.symbol ?? "",
+    entry_price: item.entry_price ?? item.avg_price ?? item.average_price ?? 0,
+    current_price: item.current_price ?? item.market_price ?? item.last_price ?? 0,
+    unrealized_pnl: item.unrealized_pnl ?? item.pnl ?? 0,
+    holding_period_days: item.holding_period_days ?? item.hold_days ?? 0,
+  }));
+}
+
+function tradingPerformanceFromExecutionPnl(payload: {
+  total_pnl: number;
+  realized_pnl: number;
+  unrealized_pnl: number;
+  return_pct: number;
+  as_of_date?: string | null;
+}): TradingPerformancePayload {
+  const pointDate = payload.as_of_date ?? new Date().toISOString().slice(0, 10);
+  return {
+    realized_pnl: payload.realized_pnl,
+    unrealized_pnl: payload.unrealized_pnl,
+    total_pnl: payload.total_pnl,
+    cumulative_return: payload.return_pct,
+    equity_curve: [{ date: pointDate, value: payload.total_pnl }],
+    drawdown_curve: [{ date: pointDate, value: 0 }],
+    daily_pnl: [{ date: pointDate, value: payload.total_pnl }],
+  };
+}
+
 export function PortfolioExecutionPage({
   initialTab = "signals",
+  variant = "trading",
+  initialRunId = "",
+  initialModelName,
+  initialSignalId,
 }: {
   initialTab?: PortfolioExecutionTab;
+  variant?: PortfolioExecutionVariant;
+  initialRunId?: string;
+  initialModelName?: ModelName;
+  initialSignalId?: string;
 }) {
+  const isExecutionVariant = variant === "execution";
   const [baseUrl, setBaseUrl] = useState("");
   const [activeTab, setActiveTab] = useState<PortfolioExecutionTab>(initialTab);
   const [activationMessage, setActivationMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [flashMessage, setFlashMessage] = useState<FlashState>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState<string | null>(null);
-  const [runId, setRunId] = useState("");
-  const [modelName, setModelName] = useState<ModelName>("lgbm_ranker");
+  const [runId, setRunId] = useState(initialRunId);
+  const [modelName, setModelName] = useState<ModelName>(initialModelName ?? "lgbm_ranker");
   const [status, setStatus] = useState<TradingStatusPayload | null>(null);
   const [settings, setSettings] = useState<TradingSettingsPayload | null>(null);
   const [scan, setScan] = useState<TradingScanPayload | null>(null);
@@ -159,12 +245,15 @@ export function PortfolioExecutionPage({
   const [symbolDetail, setSymbolDetail] = useState<TradingSymbolDetailPayload | null>(null);
   const [selectedTicker, setSelectedTicker] = useState("");
   const [executionMode, setExecutionMode] = useState("paper");
-  const [executionModePayload, setExecutionModePayload] = useState<TradingExecutionModePayload | null>(null);
+  const [executionModePayload, setExecutionModePayload] = useState<TradingExecutionModePayload | ExecutionModePayload | null>(null);
   const [executionPreview, setExecutionPreview] = useState<ExecutionPreviewPayload | null>(null);
   const [pretradeRisk, setPretradeRisk] = useState<RiskPretradePayload | null>(null);
   const [executionSubmit, setExecutionSubmit] = useState<ExecutionSubmitPayload | null>(null);
   const [runConstraints, setRunConstraints] = useState<RunConstraintsPayload | null>(null);
   const [macroStudyHandoff] = useState(() => readMacroStudyHandoff());
+  const initialSignalIdRef = useRef(initialSignalId ?? null);
+  const hasHydratedExecutionSearchRef = useRef(false);
+  const refreshInFlightRef = useRef(false);
   const [form, setForm] = useState<SettingsFormState>({
     lookbackDays: 320,
     autoOrder: false,
@@ -189,74 +278,119 @@ export function PortfolioExecutionPage({
 
   async function refreshAll(nextBaseUrl: string) {
     if (!nextBaseUrl) return;
+    if (isExecutionVariant && !runId.trim()) return;
+    if (refreshInFlightRef.current) return;
+    refreshInFlightRef.current = true;
     setIsLoading(true);
     setErrorMessage(null);
     try {
-      const [
-        nextStatus,
-        nextSettings,
-        nextScan,
-        nextScanHistory,
-        nextOrders,
-        nextFills,
-        nextPositions,
-        nextPerformance,
-        nextRisk,
-        nextEvents,
-        nextAlgorithms,
-        nextExecutionMode,
-      ] = await Promise.all([
-        fetchTradingStatus(nextBaseUrl),
-        fetchTradingSettings(nextBaseUrl),
-        fetchTradingScanLatest(nextBaseUrl),
-        fetchTradingScanHistory(nextBaseUrl),
-        fetchTradingOrders(nextBaseUrl),
-        fetchTradingFills(nextBaseUrl),
-        fetchTradingPositions(nextBaseUrl),
-        fetchTradingPerformance(nextBaseUrl),
-        fetchTradingRisk(nextBaseUrl),
-        fetchTradingEvents(nextBaseUrl),
-        fetchTradingAlgorithms(nextBaseUrl),
-        fetchTradingExecutionMode(nextBaseUrl),
-      ]);
-      setStatus(nextStatus);
-      setSettings(nextSettings);
-      setScan(nextScan);
-      setScanHistory(nextScanHistory);
-      setOrders(nextOrders.items);
-      setFillsCount(nextFills.items.length);
-      setPositions(nextPositions.items);
-      setPerformance(nextPerformance);
-      setRisk(nextRisk);
-      setEvents(nextEvents.items);
-      setAlgorithms(nextAlgorithms.items);
-      setExecutionMode(nextExecutionMode.mode);
-      setExecutionModePayload(nextExecutionMode);
-      setLastRefreshed(new Date().toLocaleTimeString());
-      const execution = asRecord(nextSettings.execution);
-      const account = asRecord(nextSettings.account);
-      const riskCfg = asRecord(nextSettings.risk);
-      setForm({
-        lookbackDays: numberFrom(asRecord(nextSettings.scan).lookback_days, 320),
-        autoOrder: boolFrom(execution.auto_order, false),
-        manualApproval: boolFrom(execution.manual_approval, false),
-        signalGeneration: boolFrom(execution.signal_generation, true),
-        maxConcurrentPositions: numberFrom(account.max_concurrent_positions, 12),
-        positionSizeValue: numberFrom(account.position_size_value, 0.05),
-        maxDailyNewEntries: numberFrom(account.max_daily_new_entries, 5),
-        stopLossPct: numberFrom(riskCfg.stop_loss_pct, 0.08),
-        takeProfitPct: numberFrom(riskCfg.take_profit_pct, 0.15),
-        trailingStopEnabled: boolFrom(riskCfg.trailing_stop_enabled, false),
-      });
-      const fallbackTicker = selectedTicker || nextScan.items[0]?.ticker || String(nextPositions.items[0]?.ticker ?? "");
-      if (fallbackTicker) {
-        setSelectedTicker(fallbackTicker);
-        await loadSymbolDetail(nextBaseUrl, fallbackTicker);
+      if (isExecutionVariant) {
+        const trimmedRunId = runId.trim();
+        const [
+          nextStatus,
+          nextExecutionMode,
+          nextOrders,
+          nextFills,
+          nextPositions,
+          nextPnl,
+        ] = await Promise.all([
+          fetchTradingStatus(nextBaseUrl),
+          fetchExecutionMode(nextBaseUrl, trimmedRunId, modelName),
+          fetchExecutionOrdersCurrent(nextBaseUrl, trimmedRunId, modelName),
+          fetchExecutionFillsHistory(nextBaseUrl, trimmedRunId, modelName),
+          fetchExecutionPositionsCurrent(nextBaseUrl, trimmedRunId, modelName),
+          fetchExecutionPnl(nextBaseUrl, trimmedRunId, modelName).catch(() => null),
+        ]);
+        setStatus(nextStatus);
+        setSettings(null);
+        setScan(null);
+        setScanHistory(null);
+        setOrders(normalizeExecutionOrders(nextOrders.orders));
+        setFillsCount(nextFills.fills.length);
+        setPositions(normalizeExecutionPositions(nextPositions.positions));
+        setPerformance(nextPnl ? tradingPerformanceFromExecutionPnl(nextPnl) : null);
+        setRisk(null);
+        setEvents([]);
+        setAlgorithms([]);
+        setExecutionMode(nextExecutionMode.mode);
+        setExecutionModePayload(nextExecutionMode);
+        setLastRefreshed(new Date().toLocaleTimeString());
+        const fallbackTicker =
+          selectedTicker ||
+          nextOrders.orders[0]?.symbol ||
+          String(nextPositions.positions[0]?.symbol ?? nextPositions.positions[0]?.ticker ?? "");
+        if (fallbackTicker) {
+          setSelectedTicker(fallbackTicker);
+          await loadSymbolDetail(nextBaseUrl, fallbackTicker);
+        }
+      } else {
+        const [
+          nextStatus,
+          nextSettings,
+          nextScan,
+          nextScanHistory,
+          nextOrders,
+          nextFills,
+          nextPositions,
+          nextPerformance,
+          nextRisk,
+          nextEvents,
+          nextAlgorithms,
+          nextExecutionMode,
+        ] = await Promise.all([
+          fetchTradingStatus(nextBaseUrl),
+          fetchTradingSettings(nextBaseUrl),
+          fetchTradingScanLatest(nextBaseUrl),
+          fetchTradingScanHistory(nextBaseUrl),
+          fetchTradingOrders(nextBaseUrl),
+          fetchTradingFills(nextBaseUrl),
+          fetchTradingPositions(nextBaseUrl),
+          fetchTradingPerformance(nextBaseUrl),
+          fetchTradingRisk(nextBaseUrl),
+          fetchTradingEvents(nextBaseUrl),
+          fetchTradingAlgorithms(nextBaseUrl),
+          fetchTradingExecutionMode(nextBaseUrl),
+        ]);
+        setStatus(nextStatus);
+        setSettings(nextSettings);
+        setScan(nextScan);
+        setScanHistory(nextScanHistory);
+        setOrders(nextOrders.items);
+        setFillsCount(nextFills.items.length);
+        setPositions(nextPositions.items);
+        setPerformance(nextPerformance);
+        setRisk(nextRisk);
+        setEvents(nextEvents.items);
+        setAlgorithms(nextAlgorithms.items);
+        setExecutionMode(nextExecutionMode.mode);
+        setExecutionModePayload(nextExecutionMode);
+        setLastRefreshed(new Date().toLocaleTimeString());
+        const execution = asRecord(nextSettings.execution);
+        const account = asRecord(nextSettings.account);
+        const riskCfg = asRecord(nextSettings.risk);
+        setForm({
+          lookbackDays: numberFrom(asRecord(nextSettings.scan).lookback_days, 320),
+          autoOrder: boolFrom(execution.auto_order, false),
+          manualApproval: boolFrom(execution.manual_approval, false),
+          signalGeneration: boolFrom(execution.signal_generation, true),
+          maxConcurrentPositions: numberFrom(account.max_concurrent_positions, 12),
+          positionSizeValue: numberFrom(account.position_size_value, 0.05),
+          maxDailyNewEntries: numberFrom(account.max_daily_new_entries, 5),
+          stopLossPct: numberFrom(riskCfg.stop_loss_pct, 0.08),
+          takeProfitPct: numberFrom(riskCfg.take_profit_pct, 0.15),
+          trailingStopEnabled: boolFrom(riskCfg.trailing_stop_enabled, false),
+        });
+        const fallbackTicker = selectedTicker || nextScan.items[0]?.ticker || String(nextPositions.items[0]?.ticker ?? "");
+        if (fallbackTicker) {
+          setSelectedTicker(fallbackTicker);
+          await loadSymbolDetail(nextBaseUrl, fallbackTicker);
+        }
       }
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
     } finally {
       setIsLoading(false);
+      refreshInFlightRef.current = false;
     }
   }
 
@@ -276,33 +410,92 @@ export function PortfolioExecutionPage({
   }, []);
 
   useEffect(() => {
+    if (hasHydratedExecutionSearchRef.current) {
+      return;
+    }
+    hasHydratedExecutionSearchRef.current = true;
     const params = new URLSearchParams(window.location.search);
     const handoff = readRunHandoff();
-    const nextRunId = params.get("runId") ?? handoff?.runId ?? "";
-    const nextModelName = params.get("modelName") ?? handoff?.modelName ?? "";
-    const nextSignalId = params.get("signalId");
+    const nextRunId = initialRunId || params.get("runId") || handoff?.runId || "";
+    const nextModelName = initialModelName || params.get("modelName") || handoff?.modelName || "";
     if (nextRunId) {
       setRunId(nextRunId);
     }
-    if (nextModelName === "lgbm_ranker" || nextModelName === "xgb_lstm" || nextModelName === "catboost_ranker") {
+    if (isModelSelectable(nextModelName)) {
       setModelName(nextModelName);
     }
-    if (nextSignalId && scan?.items?.length) {
-      const matched = scan.items.find((item) => item.signal_id === nextSignalId);
-      if (matched?.ticker) {
-        setSelectedTicker(matched.ticker);
-      }
+  }, [initialModelName, initialRunId]);
+
+  useEffect(() => {
+    const nextSignalId = initialSignalIdRef.current ?? new URLSearchParams(window.location.search).get("signalId");
+    if (!nextSignalId || !scan?.items?.length) {
+      return;
+    }
+    const matched = scan.items.find((item) => item.signal_id === nextSignalId);
+    if (matched?.ticker) {
+      setSelectedTicker(matched.ticker);
     }
   }, [scan?.items]);
 
   useEffect(() => {
+    if (!flashMessage || flashMessage.tone === "error") {
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setFlashMessage((current) => (current === flashMessage ? null : current));
+    }, 3000);
+    return () => window.clearTimeout(timer);
+  }, [flashMessage]);
+
+  useEffect(() => {
     if (!baseUrl) return;
-    void refreshAll(baseUrl);
-    const timer = window.setInterval(() => {
+    if (isExecutionVariant && !runId.trim()) {
+      return;
+    }
+    let timer: number | null = null;
+    const stopPolling = () => {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+    const triggerRefresh = () => {
       void refreshAll(baseUrl);
-    }, 5000);
-    return () => window.clearInterval(timer);
-  }, [baseUrl]);
+    };
+    const startPolling = () => {
+      stopPolling();
+      if (typeof document !== "undefined" && document.visibilityState !== "visible") {
+        return;
+      }
+      timer = window.setInterval(() => {
+        triggerRefresh();
+      }, 5000);
+    };
+    const handleVisibilityChange = () => {
+      if (typeof document === "undefined") {
+        return;
+      }
+      if (document.visibilityState === "visible") {
+        triggerRefresh();
+        startPolling();
+      } else {
+        stopPolling();
+      }
+    };
+
+    triggerRefresh();
+    startPolling();
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+    }
+
+    return () => {
+      stopPolling();
+      if (typeof document !== "undefined") {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      }
+    };
+  }, [baseUrl, isExecutionVariant, runId, modelName]);
 
   useEffect(() => {
     if (!baseUrl || !selectedTicker) return;
@@ -339,23 +532,40 @@ export function PortfolioExecutionPage({
     positions.find((row) => String(row.ticker ?? "").toUpperCase() === selectedTicker.toUpperCase()) ?? null;
   const previewOrders = executionPreview?.orders ?? [];
   const canSubmitPreview = Boolean(pretradeRisk?.passed) && !pretradeRisk?.kill_switch;
+  const isLiveAdapterReady = Boolean(executionModePayload?.live_adapter_enabled && executionModePayload?.broker_ready);
   const blockingConstraints = Object.entries(runConstraints ?? {}).slice(0, 6);
   const previewBlockingConstraints = executionPreview?.blocking_constraints ?? [];
   const rationale = executionPreview?.rationale;
-  const tabOptions: Array<{ id: PortfolioExecutionTab; label: string }> = [
-    { id: "signals", label: "Signals" },
-    { id: "orders", label: "Orders" },
-    { id: "risk_checks", label: "Risk Checks" },
-    { id: "positions", label: "Positions" },
-    { id: "fills", label: "Fills" },
-    { id: "brokers", label: "Brokers" },
-  ];
+  const tabOptions: Array<{ id: PortfolioExecutionTab; label: string }> = isExecutionVariant
+    ? [
+        { id: "orders", label: "Orders" },
+        { id: "risk_checks", label: "Risk Checks" },
+        { id: "positions", label: "Positions" },
+        { id: "fills", label: "Fills" },
+      ]
+    : [
+        { id: "signals", label: "Signals" },
+        { id: "orders", label: "Orders" },
+        { id: "risk_checks", label: "Risk Checks" },
+        { id: "positions", label: "Positions" },
+        { id: "fills", label: "Fills" },
+        { id: "brokers", label: "Brokers" },
+      ];
+  const externalModelBadge = !isModelSelectable(modelName) ? `External model: ${modelName}` : null;
+  const latestActionableRunId =
+    readRunHandoff()?.runId ||
+    (typeof window !== "undefined" ? window.localStorage.getItem("quant_latest_run_id") : null) ||
+    "";
+  const showExecutionWorkspace = !isExecutionVariant || Boolean(runId.trim());
 
   async function handleRunCycle() {
     if (!baseUrl) return;
     try {
       const result = await runTradingCycle(baseUrl, { auto_execute: form.autoOrder });
-      setActionMessage(`Cycle ${result.status}: ${result.cycle_id}`);
+      setFlashMessage({
+        tone: result.status === "failed" ? "error" : "success",
+        text: `Cycle ${result.status} | signals ${result.signal_count ?? 0} | orders ${result.order_count ?? 0} | fills ${result.fill_count ?? 0}`,
+      });
       await refreshAll(baseUrl);
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
@@ -371,7 +581,7 @@ export function PortfolioExecutionPage({
         account: { ...asRecord(settings.account), max_concurrent_positions: form.maxConcurrentPositions, position_size_value: form.positionSizeValue, max_daily_new_entries: form.maxDailyNewEntries },
         risk: { ...asRecord(settings.risk), stop_loss_pct: form.stopLossPct, take_profit_pct: form.takeProfitPct, trailing_stop_enabled: form.trailingStopEnabled },
       });
-      setActionMessage("Trading settings saved.");
+      setFlashMessage({ tone: "success", text: "Trading settings saved." });
       await refreshAll(baseUrl);
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
@@ -399,7 +609,7 @@ export function PortfolioExecutionPage({
     if (!baseUrl) return;
     try {
       const payload = await validateTradingAlgorithm(baseUrl, { name: row.name, version: row.version });
-      setActionMessage(`${row.name} validation: ${payload.status}`);
+      setFlashMessage({ tone: payload.status === "ok" ? "success" : "warning", text: `${row.name} validation: ${payload.status}` });
       await refreshAll(baseUrl);
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
@@ -438,11 +648,31 @@ export function PortfolioExecutionPage({
 
   async function handleUpdateExecutionMode(mode: string) {
     if (!baseUrl) return;
+    if (isExecutionVariant && !runId.trim()) {
+      setErrorMessage("Load an execution run before changing execution mode.");
+      return;
+    }
+    if (mode === "live_adapter" && !isLiveAdapterReady) {
+      setFlashMessage({
+        tone: "warning",
+        text: "Live adapter is not broker-ready in this environment.",
+      });
+      return;
+    }
     try {
-      const payload = await updateTradingExecutionMode(baseUrl, mode as "paper" | "shadow_live" | "live_adapter");
+      const payload = isExecutionVariant
+        ? await updateExecutionMode(baseUrl, {
+            run_id: runId.trim(),
+            model_name: modelName,
+            mode: mode as "paper" | "shadow_live" | "live_adapter",
+          })
+        : await updateTradingExecutionMode(baseUrl, mode as "paper" | "shadow_live" | "live_adapter");
       setExecutionMode(payload.mode);
       setExecutionModePayload(payload);
-      setActionMessage(`Trading execution mode updated to ${payload.mode}.`);
+      setFlashMessage({
+        tone: payload.mode === "shadow_live" ? "warning" : "success",
+        text: `${isExecutionVariant ? "Execution" : "Trading"} mode updated to ${payload.mode}.`,
+      });
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
     }
@@ -471,7 +701,7 @@ export function PortfolioExecutionPage({
       setPretradeRisk(riskPayload);
       setRunConstraints(constraintsPayload);
       setExecutionSubmit(null);
-      setActionMessage(`Preview loaded for ${runId.trim()}.`);
+      setFlashMessage({ tone: "success", text: `Preview loaded for ${runId.trim()}.` });
       setActiveTab("orders");
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
@@ -492,7 +722,7 @@ export function PortfolioExecutionPage({
         model_name: modelName,
       });
       setExecutionSubmit(payload);
-      setActionMessage(`Submitted execution orders for ${runId.trim()}.`);
+      setFlashMessage({ tone: "success", text: `Submitted execution orders for ${runId.trim()}.` });
       await refreshAll(baseUrl);
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
@@ -505,9 +735,11 @@ export function PortfolioExecutionPage({
     <div className="h-full min-h-0 overflow-auto py-4">
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
-          <h1 className="body-lg-medium text-theme-primary">Portfolio &amp; Execution</h1>
+          <h1 className="body-lg-medium text-theme-primary">{isExecutionVariant ? "Execution" : "Portfolio & Execution"}</h1>
           <p className="body-sm-regular text-theme-muted">
-            Unified workflow for signals, pretrade risk, order preview, positions, fills, and broker runtime.
+            {isExecutionVariant
+              ? "Run-scoped preview, risk checks, positions, fills, and execution handoff for a promoted strategy."
+              : "Unified workflow for signals, pretrade risk, order preview, positions, fills, and broker runtime."}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -521,13 +753,15 @@ export function PortfolioExecutionPage({
           />
           <select
             className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-2 body-xs-regular text-theme-primary"
-            value={modelName}
+            value={isModelSelectable(modelName) ? modelName : ""}
             onChange={(event) => setModelName(event.target.value as ModelName)}
             aria-label="Execution Model"
           >
+            <option value="" disabled>
+              Switch to lab model
+            </option>
             <option value="lgbm_ranker">lgbm_ranker</option>
             <option value="xgb_lstm">xgb_lstm</option>
-            <option value="catboost_ranker">catboost_ranker</option>
           </select>
           <select
             className="rounded-sm border border-theme-outline bg-theme-secondary px-2 py-2 body-xs-regular text-theme-primary"
@@ -542,8 +776,15 @@ export function PortfolioExecutionPage({
           >
             <option value="paper">paper</option>
             <option value="shadow_live">shadow_live</option>
-            <option value="live_adapter">live_adapter</option>
+            <option value="live_adapter" disabled={!isLiveAdapterReady}>
+              live_adapter
+            </option>
           </select>
+          {externalModelBadge ? (
+            <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 body-xxs-medium text-amber-200">
+              {externalModelBadge}
+            </span>
+          ) : null}
           <button
             type="button"
             className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
@@ -563,14 +804,16 @@ export function PortfolioExecutionPage({
             Submit Orders
           </button>
           {lastRefreshed ? <p className="body-xxs-regular text-theme-muted">Last refresh: {lastRefreshed}</p> : null}
-          <button
-            type="button"
-            className="button-neutral rounded-sm px-3 py-2 body-xs-medium"
-            onClick={() => void handleRunCycle()}
-            disabled={isLoading || Boolean(activationMessage)}
-          >
-            {isLoading ? "Running..." : "Run Scan Cycle"}
-          </button>
+          {!isExecutionVariant ? (
+            <button
+              type="button"
+              className="button-neutral rounded-sm px-3 py-2 body-xs-medium"
+              onClick={() => void handleRunCycle()}
+              disabled={isLoading || Boolean(activationMessage)}
+            >
+              {isLoading ? "Running..." : "Run Scan Cycle"}
+            </button>
+          ) : null}
           <button
             type="button"
             className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
@@ -611,13 +854,70 @@ export function PortfolioExecutionPage({
           <p className="body-xs-medium text-amber-300">{activationMessage}</p>
         </div>
       ) : null}
-      {actionMessage ? (
-        <div className="mb-2 rounded-sm border border-emerald-500/60 bg-emerald-500/10 p-2">
-          <p className="body-xs-medium text-emerald-300">{actionMessage}</p>
+      {executionMode === "shadow_live" ? (
+        <div className="mb-2 rounded-sm border border-amber-500/60 bg-amber-500/10 p-2">
+          <p className="body-xs-medium text-amber-300">
+            Shadow live mirrors decisioning and approval flow, but does not dispatch broker orders.
+          </p>
+        </div>
+      ) : null}
+      {!isLiveAdapterReady ? (
+        <div className="mb-2 rounded-sm border border-theme-outline bg-theme-secondary p-2">
+          <p className="body-xs-regular text-theme-muted">
+            Live adapter is not broker-ready in this environment.
+          </p>
+        </div>
+      ) : null}
+      {flashMessage ? (
+        <div
+          className={`mb-2 rounded-sm border p-2 ${
+            flashMessage.tone === "success"
+              ? "border-emerald-500/60 bg-emerald-500/10"
+              : flashMessage.tone === "warning"
+                ? "border-amber-500/60 bg-amber-500/10"
+                : "border-red-500/60 bg-red-500/10"
+          }`}
+        >
+          <p
+            className={`body-xs-medium ${
+              flashMessage.tone === "success"
+                ? "text-emerald-300"
+                : flashMessage.tone === "warning"
+                  ? "text-amber-300"
+                  : "text-red-300"
+            }`}
+          >
+            {flashMessage.text}
+          </p>
         </div>
       ) : null}
 
-      <div className="mb-4 grid grid-cols-2 gap-3 xl:grid-cols-6">
+      {isExecutionVariant && !runId.trim() ? (
+        <PanelCard title="Execution requires a run handoff" description="Execution works on a specific promoted or selected run.">
+          <div className="space-y-3">
+            <p className="body-sm-regular text-theme-muted">
+              Load a Strategy Lab run or open Execution from Promote.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a href="/quant" className="button-neutral rounded-sm px-3 py-2 body-xs-medium">
+                Open Strategy Lab
+              </a>
+              {latestActionableRunId ? (
+                <button
+                  type="button"
+                  className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
+                  onClick={() => setRunId(latestActionableRunId)}
+                >
+                  Load latest actionable run
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </PanelCard>
+      ) : null}
+
+      {showExecutionWorkspace && !isExecutionVariant ? (
+      <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <SummaryCard label="Mode" value={executionMode} />
         <SummaryCard
           label="Runtime"
@@ -628,6 +928,21 @@ export function PortfolioExecutionPage({
         <SummaryCard label="Last Order" value={formatDateTime(status?.last_order_at)} />
         <SummaryCard label="Signals Today" value={status?.today_signal_count ?? 0} />
         <SummaryCard label="Orders Today" value={status?.today_order_count ?? 0} />
+        <SummaryCard
+          label="Broker Ready"
+          value={executionModePayload?.broker_ready ? "Ready" : "Not Ready"}
+          status={executionModePayload?.broker_ready ? "ok" : "warning"}
+        />
+        <SummaryCard
+          label="Live Adapter"
+          value={executionModePayload?.live_adapter_enabled ? "Enabled" : "Unavailable"}
+          status={executionModePayload?.live_adapter_enabled ? "ok" : "warning"}
+        />
+        <SummaryCard
+          label="Kill Switch"
+          value={executionModePayload?.kill_switch ? "Engaged" : "Clear"}
+          status={executionModePayload?.kill_switch ? "critical" : "ok"}
+        />
         <SummaryCard label="Open Positions" value={status?.open_position_count ?? 0} />
         <SummaryCard label="Available Cash" value={formatMoney(status?.available_cash)} />
         <SummaryCard label="Used Capital" value={formatMoney(status?.used_capital)} />
@@ -635,7 +950,9 @@ export function PortfolioExecutionPage({
         <SummaryCard label="Cumulative PnL" value={formatMoney(status?.cumulative_pnl)} status={(status?.cumulative_pnl ?? 0) >= 0 ? "ok" : "warning"} />
         <SummaryCard label="Drawdown" value={formatPct(status?.intraday_drawdown)} status={(status?.intraday_drawdown ?? 0) > -0.05 ? "ok" : "warning"} />
       </div>
+      ) : null}
 
+      {showExecutionWorkspace ? (
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[320px_minmax(0,1fr)_380px]">
         <div className="space-y-4">
           <PanelCard title="Execution Context" description="Signal rationale, macro handoff, and preview readiness in one place.">
@@ -725,7 +1042,7 @@ export function PortfolioExecutionPage({
             </div>
           </PanelCard>
 
-          {activeTab === "brokers" ? (
+          {!isExecutionVariant && activeTab === "brokers" ? (
           <PanelCard title="Strategy Settings" description="Trading runtime controls.">
             <div className="space-y-2">
               <label className="body-xs-medium text-theme-muted">
@@ -775,7 +1092,7 @@ export function PortfolioExecutionPage({
           </PanelCard>
           ) : null}
 
-          {activeTab === "brokers" ? (
+          {!isExecutionVariant && activeTab === "brokers" ? (
           <PanelCard title="Custom Algorithms" description="Registry, sandbox state, and validation.">
             <div className="space-y-2">
               {algorithms.map((row) => (
@@ -804,7 +1121,7 @@ export function PortfolioExecutionPage({
         </div>
 
         <div className="space-y-4">
-          {activeTab === "signals" ? (
+          {!isExecutionVariant && activeTab === "signals" ? (
           <PanelCard title="Scan Results" description="Shared universe scan output for built-in and custom strategies.">
             <div className="max-h-80 overflow-auto">
               <table className="w-full text-left">
@@ -1020,7 +1337,7 @@ export function PortfolioExecutionPage({
         </div>
 
         <div className="space-y-4">
-          {activeTab === "signals" || activeTab === "positions" ? (
+          {(activeTab === "signals" || activeTab === "positions") ? (
           <PanelCard title={selectedTicker ? `${selectedTicker} Detail` : "Symbol Detail"} description="Selected symbol context, chart, and explanation.">
             {selectedTicker ? (
               <div className="space-y-3">
@@ -1054,7 +1371,11 @@ export function PortfolioExecutionPage({
                 </a>
               </div>
             ) : (
-              <p className="body-xs-regular text-theme-muted">Select a scan row or an open position to load symbol detail.</p>
+              <p className="body-xs-regular text-theme-muted">
+                {isExecutionVariant
+                  ? "Select an open position to load symbol detail."
+                  : "Select a scan row or an open position to load symbol detail."}
+              </p>
             )}
           </PanelCard>
           ) : null}
@@ -1121,7 +1442,7 @@ export function PortfolioExecutionPage({
           </PanelCard>
           ) : null}
 
-          {activeTab === "signals" ? (
+          {!isExecutionVariant && activeTab === "signals" ? (
           <PanelCard title="Scan History" description="Recent normalized scan activity for runtime comparison.">
             <div className="max-h-72 space-y-2 overflow-auto">
               {recentScanEvents.slice(0, 12).map((row, index) => (
@@ -1179,6 +1500,7 @@ export function PortfolioExecutionPage({
           ) : null}
         </div>
       </div>
+      ) : null}
     </div>
   );
 }

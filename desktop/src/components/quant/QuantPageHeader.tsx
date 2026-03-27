@@ -9,6 +9,7 @@ interface QuantPageHeaderProps {
   backtestPointsCount: number;
   errorMessage: string | null;
   quantActivation: FeatureActivation | null;
+  showActivationBanner?: boolean;
 }
 
 export function QuantPageHeader({
@@ -19,6 +20,7 @@ export function QuantPageHeader({
   backtestPointsCount,
   errorMessage,
   quantActivation,
+  showActivationBanner = true,
 }: QuantPageHeaderProps) {
   return (
     <>
@@ -53,7 +55,7 @@ export function QuantPageHeader({
           <p className="body-xs-medium text-red-400">{errorMessage}</p>
         </div>
       ) : null}
-      {quantActivation && !quantActivation.available ? (
+      {showActivationBanner && quantActivation && !quantActivation.available ? (
         <div className="mb-3 rounded-sm border border-amber-500/60 bg-amber-500/10 p-2">
           <p className="body-xs-medium text-amber-300">
             quant_ml extension unavailable: {quantActivation.detail || "Install/enable openbb-quant-ml."}

@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  TRADING_VIEW_WIDGET_TIMEOUT_MS,
+  buildTradingViewSymbolUrl,
   buildTradingViewWidgetConfig,
 } from "../../lib/tradingView";
 import type {
@@ -26,6 +26,8 @@ const TRADINGVIEW_CONSOLE_NOISE = [
   "Fetch:POST https://scanner.tradingview.com",
   "Fetch:GET https://scanner.tradingview.com",
 ];
+
+const TRADING_VIEW_WIDGET_MAX_ATTEMPTS = 2;
 
 function buildTradingViewHostDocument(
   widgetType: TradingViewFinanceWidgetType,
@@ -117,6 +119,15 @@ export function TradingViewWidgetEmbed({
   const frameRef = useRef<HTMLIFrameElement | null>(null);
   const [shouldMount, setShouldMount] = useState(!lazy);
   const [hasTimedOut, setHasTimedOut] = useState(false);
+  const [attempt, setAttempt] = useState(1);
+  const [reloadToken, setReloadToken] = useState(0);
+  const tradingViewHref = useMemo(() => buildTradingViewSymbolUrl(symbol), [symbol]);
+
+  const handleRetry = useCallback(() => {
+    setHasTimedOut(false);
+    setAttempt(1);
+    setReloadToken((value) => value + 1);
+  }, []);
 
   useEffect(() => {
     if (!lazy || shouldMount) {
@@ -141,6 +152,11 @@ export function TradingViewWidgetEmbed({
   }, [lazy, shouldMount]);
 
   useEffect(() => {
+    setHasTimedOut(false);
+    setAttempt(1);
+  }, [widgetType, symbol, theme, frameHeight]);
+
+  useEffect(() => {
     if (!shouldMount) {
       return undefined;
     }
@@ -153,28 +169,43 @@ export function TradingViewWidgetEmbed({
     setHasTimedOut(false);
     frameNode.srcdoc = buildTradingViewHostDocument(widgetType, symbol, theme, frameHeight);
 
-    const clearLoadedState = () => {
-      const documentRef = frameNode.contentDocument;
-      const hasWidgetContent = Boolean(
-        documentRef?.querySelector(
-          ".tradingview-widget-container__widget iframe, .tradingview-widget-container__widget canvas, .tradingview-widget-container__widget svg, .tradingview-widget-container__widget > div",
-        ),
-      );
+    let timeoutId = 0;
+    let pollId = 0;
 
-      if (hasWidgetContent) {
-        window.clearTimeout(timeoutId);
-        window.clearInterval(pollId);
+    const cleanup = () => {
+      window.clearTimeout(timeoutId);
+      window.clearInterval(pollId);
+    };
+
+      const clearLoadedState = () => {
+        const documentRef = frameNode.contentDocument;
+        const hasWidgetContent = Boolean(
+          documentRef?.querySelector(".tradingview-widget-container__widget")?.children.length,
+        );
+
+        if (hasWidgetContent) {
+        cleanup();
         setHasTimedOut(false);
         return true;
       }
       return false;
     };
 
-    const timeoutId = window.setTimeout(() => {
-      setHasTimedOut(true);
-    }, TRADING_VIEW_WIDGET_TIMEOUT_MS);
+    timeoutId = window.setTimeout(() => {
+      if (clearLoadedState()) {
+        return;
+      }
+      cleanup();
+      // Increase tolerance rather than aggressively hiding: if it hasn't loaded in 30s, then we retry.
+      if (attempt < TRADING_VIEW_WIDGET_MAX_ATTEMPTS) {
+        setAttempt((value) => value + 1);
+        setReloadToken((value) => value + 1);
+        return;
+      }
+      // setHasTimedOut(true); <-- disabled to prevent hiding working charts
+    }, 30_000);
 
-    const pollId = window.setInterval(() => {
+    pollId = window.setInterval(() => {
       clearLoadedState();
     }, 250);
 
@@ -185,11 +216,10 @@ export function TradingViewWidgetEmbed({
 
     return () => {
       frameNode.removeEventListener("load", handleLoad);
-      window.clearTimeout(timeoutId);
-      window.clearInterval(pollId);
+      cleanup();
       frameNode.srcdoc = "";
     };
-  }, [shouldMount, widgetType, symbol, theme]);
+  }, [attempt, frameHeight, reloadToken, shouldMount, symbol, theme, widgetType]);
 
   return (
     <div ref={hostRef} className="relative" style={{ minHeight }}>
@@ -221,6 +251,23 @@ export function TradingViewWidgetEmbed({
             TradingView widget failed to load. Try another symbol or reload.
           </p>
           {description ? <p className="mt-1 body-xxs-regular text-theme-muted">{description}</p> : null}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-1.5 body-xxs-medium text-theme-primary hover:bg-theme-secondary/80"
+            >
+              Retry widget
+            </button>
+            <a
+              href={tradingViewHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-sm border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 body-xxs-medium text-blue-300 hover:bg-blue-500/20"
+            >
+              Open in TradingView
+            </a>
+          </div>
         </div>
       ) : null}
     </div>

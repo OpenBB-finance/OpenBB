@@ -73,3 +73,14 @@ export async function askAiQuestion(request: AiAskRequest): Promise<AiAskRespons
   }
   return invokeAiCommand<AiAskResponse>("ask_ai_question", { request });
 }
+
+export async function warmAiChatModel(defaultDir = DEFAULT_AI_DIRECTORY): Promise<{ ok: boolean; usedModel: string | null }> {
+  if (!isTauriRuntimeAvailable() && import.meta.env.DEV) {
+    return browserAiFetch<{ ok: boolean; usedModel: string | null }>("/warmup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ defaultDir }),
+    });
+  }
+  return invokeAiCommand<{ ok: boolean; usedModel: string | null }>("warm_ai_chat_model", { defaultDir });
+}

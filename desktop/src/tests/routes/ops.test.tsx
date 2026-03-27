@@ -5,6 +5,8 @@ import { vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import { Route as OpsRoute } from "../../routes/ops";
 
+const openPathSafelyMock = vi.fn();
+
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: vi.fn(() => (options: { component: React.ComponentType }) => ({
     options: {
@@ -22,6 +24,10 @@ vi.mock("@tauri-apps/plugin-opener", () => ({
   openPath: vi.fn(() => Promise.resolve()),
 }));
 
+vi.mock("../../lib/pathOpener", () => ({
+  openPathSafely: (...args: unknown[]) => openPathSafelyMock(...args),
+}));
+
 function mockResponse(payload: unknown, ok = true, status = 200): Response {
   return {
     ok,
@@ -35,6 +41,7 @@ describe("Ops Route", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    openPathSafelyMock.mockResolvedValue(undefined);
     vi.mocked(invoke).mockResolvedValue([
       {
         id: "openbb-api",
@@ -183,6 +190,28 @@ describe("Ops Route", () => {
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/ops/issues?limit=8"))).toBe(true);
       expect(calls.some((url) => url.endsWith("/api/v1/quant_ml/scheduler/status"))).toBe(true);
       expect(calls.some((url) => url.includes("/api/v1/quant_ml/reports/history"))).toBe(true);
+    });
+  });
+
+  test("shows an inline fallback error when report opening fails in web mode", async () => {
+    openPathSafelyMock.mockRejectedValueOnce(new Error("Browser blocked the open request. Use Copy Path instead."));
+
+    await act(async () => {
+      render(<OpsComponent />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Open Report/i })).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: /Open Report/i }));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Browser blocked the open request/i)).toBeInTheDocument();
+      expect(screen.getByText("/tmp/ops.html")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Copy Path/i })).toBeInTheDocument();
     });
   });
 });

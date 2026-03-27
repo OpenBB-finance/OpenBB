@@ -22,9 +22,9 @@ vi.mock("../../../lib/openbbBackend", () => ({
   })),
 }));
 
-function buildEnvelope(results: Array<Record<string, unknown>>) {
+function buildEnvelope(results: Array<Record<string, unknown>>, provider = "yfinance") {
   return {
-    provider: "yfinance",
+    provider,
     results,
     extra: {
       metadata: {
@@ -65,7 +65,7 @@ describe("FinanceFundamentalsPanel", () => {
   test("renders inline income statement rows", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (input) => {
       const url = String(input);
-      if (url.includes("/consensus")) {
+      if (url.includes("/finance/forecast")) {
         return {
           ok: true,
           json: async () =>
@@ -81,7 +81,7 @@ describe("FinanceFundamentalsPanel", () => {
             ]),
         } as Response;
       }
-      if (url.includes("/income")) {
+      if (url.includes("/finance/statement") && url.includes("kind=income")) {
         return {
           ok: true,
           json: async () =>
@@ -131,7 +131,7 @@ describe("FinanceFundamentalsPanel", () => {
   test("switches to quarterly statement mode", async () => {
     const fetchMock = vi.spyOn(global, "fetch").mockImplementation(async (input) => {
       const url = String(input);
-      if (url.includes("/consensus")) {
+      if (url.includes("/finance/forecast")) {
         return {
           ok: true,
           json: async () =>
@@ -188,7 +188,7 @@ describe("FinanceFundamentalsPanel", () => {
   test("renders forecast snapshot inline", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (input) => {
       const url = String(input);
-      if (url.includes("/consensus")) {
+      if (url.includes("/finance/forecast")) {
         return {
           ok: true,
           json: async () => ({
@@ -235,5 +235,73 @@ describe("FinanceFundamentalsPanel", () => {
     expect(screen.getAllByText("$295.43").length).toBeGreaterThan(0);
     expect(screen.getByText("Implied Upside")).toBeInTheDocument();
     expect(screen.getByText("BUY")).toBeInTheDocument();
+  });
+
+  test("maps Alpha Vantage balance and cash aliases into summary cards", async () => {
+    vi.spyOn(global, "fetch").mockImplementation(async (input) => {
+      const url = String(input);
+      if (url.includes("/finance/statement") && url.includes("kind=balance")) {
+        return {
+          ok: true,
+          json: async () =>
+            buildEnvelope(
+              [
+                {
+                  period_ending: "2025-12-31",
+                  total_assets: 151880000000,
+                  total_liabilities: 119140000000,
+                  total_shareholder_equity: 32650000000,
+                },
+              ],
+              "alphavantage",
+            ),
+        } as Response;
+      }
+      if (url.includes("/finance/statement") && url.includes("kind=cash")) {
+        return {
+          ok: true,
+          json: async () =>
+            buildEnvelope(
+              [
+                {
+                  period_ending: "2025-12-31",
+                  operating_cashflow: 13190000000,
+                  cashflow_from_investment: -10300000000,
+                  capital_expenditures: 1620000000,
+                },
+              ],
+              "alphavantage",
+            ),
+        } as Response;
+      }
+      return {
+        ok: true,
+        json: async () => buildEnvelope([{ period_ending: "2025-12-31", total_revenue: 416161000000 }]),
+      } as Response;
+    });
+
+    render(
+      <FinanceFundamentalsPanel
+        baseUrl="http://127.0.0.1:6900"
+        symbol="IBM"
+        theme="dark"
+        overviewHeight={920}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "B/S" }));
+    await waitFor(() => {
+      expect(screen.getAllByText("Total Liabilities").length).toBeGreaterThan(0);
+    });
+    expect(screen.getAllByText("119.14B").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("32.65B").length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: "C/F" }));
+    await waitFor(() => {
+      expect(screen.getAllByText("Operating Cash Flow").length).toBeGreaterThan(0);
+    });
+    expect(screen.getAllByText("13.19B").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("-10.30B").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("11.57B").length).toBeGreaterThan(0);
   });
 });

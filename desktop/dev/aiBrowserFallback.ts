@@ -14,9 +14,18 @@ const OLLAMA_BASE_URL = "http://localhost:11434/api";
 const MAX_FILE_SIZE_BYTES = 256 * 1024;
 const CHUNK_LINES = 120;
 const CHUNK_OVERLAP = 20;
+const MAX_INDEX_LINE_CHARS = 1200;
+const MAX_INDEX_CHUNK_CHARS = 8000;
+const MAX_EMBED_INPUT_CHARS = 2000;
 const DEFAULT_CONTEXT_CHUNKS = 10;
 const MAX_CONTEXT_CHUNKS = 16;
 const MAX_SEMANTIC_CANDIDATES = 12;
+const MAX_CHAT_CANDIDATES = 4;
+const CHAT_KEEP_ALIVE = "15m";
+const CHAT_REQUEST_TIMEOUT_MS = 45000;
+const EMBED_BATCH_SIZE = 4;
+const DISCOVERY_CACHE_TTL_MS = 30000;
+const GIT_REVISION_CACHE_TTL_MS = 30000;
 const SUMMARY_CHUNK_PATH = "__project_summary__.md";
 const PINNED_PATHS = [
   "README.md",
@@ -57,6 +66,10 @@ const LOCKFILES = new Set([
   "bun.lockb",
   "composer.lock",
 ]);
+const NOISY_PATH_PATTERNS = [
+  /(^|\/)(tests?|__tests__)\/record\//i,
+  /(^|\/)record\/http\//i,
+];
 const STOPWORDS = new Set([
   "how",
   "does",
@@ -88,8 +101,24 @@ const STOPWORDS = new Set([
   "uses",
   "using",
 ]);
+const ENDPOINT_QUERY_PATTERN =
+  /(endpoint|endpoints|route|routes|command|commands|handler|handlers|api|apis|path|paths|url|urls|invoke|invokes|expose|exposes|tauri|middleware)/i;
+const ROUTE_LITERAL_PATTERN = /["'`](\/[A-Za-z0-9_./:-]+)["'`]/g;
+const ENDPOINT_ROUTE_MARKERS: Array<[string, number]> = [
+  ['server.middlewares.use("/__ai"', 26],
+  ['server.middlewares.use("/"', 10],
+  ["requesturl.pathname ===", 16],
+  ['req.method === "get"', 6],
+  ['req.method === "post"', 6],
+  ["#[tauri::command]", 20],
+  ["generate_handler!(", 18],
+  ["invoke_handler(", 12],
+  ['jsonresponse(res, 200', 4],
+  ['jsonresponse(res, 400', 3],
+  ['jsonresponse(res, 404', 3],
+];
 
-type RetrievalMode = "semantic" | "lexical";
+type RetrievalMode = "semantic" | "lexical" | "supplemental";
 type AiChatRole = "user" | "assistant";
 
 interface AiStatus {
@@ -97,6 +126,7 @@ interface AiStatus {
   repoReady: boolean;
   ollamaReachable: boolean;
   chatModel: string | null;
+  chatCandidates: string[];
   embeddingModel: string | null;
   availableModels: string[];
   indexReady: boolean;
@@ -126,12 +156,19 @@ interface AiAskRequest {
   repoRoot: string;
   messages: Array<{ role: AiChatRole; content: string }>;
   maxContextChunks?: number;
+  supplementalContext?: string;
+  supplementalOnly?: boolean;
 }
 
 interface AiAskResponse {
   answer: string;
   citations: AiCitation[];
   usedModel: string;
+  attemptedModels?: string[];
+  modelTotalMs?: number | null;
+  loadMs?: number | null;
+  promptEvalMs?: number | null;
+  evalMs?: number | null;
   timingMs: number;
   retrievalMode: RetrievalMode;
 }
@@ -148,6 +185,7 @@ interface BrowserAiManifest {
   chunkCount: number;
   lastIndexedAt: string;
   embeddingModel: string | null;
+  embeddingDim: number | null;
   mode: RetrievalMode;
   summaryPrompt: string;
 }
@@ -164,6 +202,7 @@ interface IndexedChunk {
 interface CachedIndex {
   manifest: BrowserAiManifest;
   chunks: IndexedChunk[];
+  embeddings: number[][];
 }
 
 interface OllamaModel {
@@ -189,6 +228,9 @@ interface RankedChunk {
 }
 
 const indexCache = new Map<string, CachedIndex>();
+const warmModelPromises = new Map<string, Promise<string | null>>();
+let discoveryCache: { expiresAt: number; value: OllamaDiscovery } | null = null;
+const gitRevisionCache = new Map<string, { expiresAt: number; revision: string }>();
 
 function sha1Hex(input: string | Buffer): string {
   return crypto.createHash("sha1").update(input).digest("hex");
@@ -271,19 +313,45 @@ function parseParameterSize(input: string | undefined): number | null {
   return null;
 }
 
+function isEmbeddingOnlyModelName(modelName: string): boolean {
+  const normalized = modelName.toLowerCase();
+  return (
+    normalized.includes("embed")
+    || normalized.includes("embedding")
+    || normalized.includes("minilm")
+    || normalized.includes("nomic")
+    || normalized.includes("bge")
+    || normalized.includes("e5")
+  );
+}
+
 function chatModelPriority(model: OllamaModel): number {
   const normalized = model.name.toLowerCase();
+  if (isEmbeddingOnlyModelName(normalized)) {
+    return 99;
+  }
   if (normalized.includes("coder")) {
     return 0;
   }
   if (normalized.includes("instruct") || normalized.includes("chat")) {
     return 1;
   }
-  return 2;
+  if (
+    normalized.includes("qwen")
+    || normalized.includes("llama")
+    || normalized.includes("mistral")
+    || normalized.includes("gemma")
+    || normalized.includes("phi")
+  ) {
+    return 2;
+  }
+  return 3;
 }
 
 function sortChatCandidates(models: OllamaModel[]): OllamaModel[] {
-  return [...models].sort((left, right) => {
+  return [...models]
+    .filter((model) => !isEmbeddingOnlyModelName(model.name))
+    .sort((left, right) => {
     const priorityDelta = chatModelPriority(left) - chatModelPriority(right);
     if (priorityDelta !== 0) {
       return priorityDelta;
@@ -308,7 +376,16 @@ function sortChatCandidates(models: OllamaModel[]): OllamaModel[] {
     }
 
     return left.name.localeCompare(right.name);
-  });
+    })
+    .slice(0, MAX_CHAT_CANDIDATES);
+}
+
+function ollamaDurationToMs(value: unknown): number | null {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+    return null;
+  }
+
+  return Math.round(value / 1_000_000);
 }
 
 async function canUseEmbeddingModel(model: string): Promise<boolean> {
@@ -349,6 +426,10 @@ async function chooseEmbeddingModel(models: OllamaModel[]): Promise<string | nul
 }
 
 async function discoverOllama(): Promise<OllamaDiscovery> {
+  if (discoveryCache && Date.now() < discoveryCache.expiresAt) {
+    return discoveryCache.value;
+  }
+
   try {
     const payload = await fetchJson<{ models?: OllamaModel[] }>(`${OLLAMA_BASE_URL}/tags`);
     const models = Array.isArray(payload.models) ? payload.models : [];
@@ -356,7 +437,7 @@ async function discoverOllama(): Promise<OllamaDiscovery> {
     const chatCandidates = sortChatCandidates(models).map((model) => model.name);
     const embeddingModel = await chooseEmbeddingModel(models);
 
-    return {
+    const discovery: OllamaDiscovery = {
       reachable: true,
       availableModels,
       chatModel: chatCandidates[0] ?? null,
@@ -364,8 +445,13 @@ async function discoverOllama(): Promise<OllamaDiscovery> {
       embeddingModel,
       mode: embeddingModel ? "semantic" : "lexical",
     };
+    discoveryCache = {
+      expiresAt: Date.now() + DISCOVERY_CACHE_TTL_MS,
+      value: discovery,
+    };
+    return discovery;
   } catch {
-    return {
+    const discovery: OllamaDiscovery = {
       reachable: false,
       availableModels: [],
       chatModel: null,
@@ -373,31 +459,54 @@ async function discoverOllama(): Promise<OllamaDiscovery> {
       embeddingModel: null,
       mode: "lexical",
     };
+    discoveryCache = {
+      expiresAt: Date.now() + DISCOVERY_CACHE_TTL_MS,
+      value: discovery,
+    };
+    return discovery;
   }
 }
 
 async function gitHeadRevision(repoRoot: string): Promise<string> {
+  const cached = gitRevisionCache.get(repoRoot);
+  if (cached && Date.now() < cached.expiresAt) {
+    return cached.revision;
+  }
+
   try {
     const { stdout } = await execFileAsync("git", ["-C", repoRoot, "rev-parse", "HEAD"], {
       windowsHide: true,
       timeout: 10000,
     });
     const revision = stdout.trim();
-    return revision || "nogit";
+    const nextRevision = revision || "nogit";
+    gitRevisionCache.set(repoRoot, {
+      expiresAt: Date.now() + GIT_REVISION_CACHE_TTL_MS,
+      revision: nextRevision,
+    });
+    return nextRevision;
   } catch {
+    gitRevisionCache.set(repoRoot, {
+      expiresAt: Date.now() + GIT_REVISION_CACHE_TTL_MS,
+      revision: "nogit",
+    });
     return "nogit";
   }
 }
 
-async function buildIndexContext(repoRoot: string, embeddingModel: string | null) {
+async function buildIndexContext(repoRoot: string, _embeddingModel: string | null) {
   const repoHash = sha1Hex(repoRoot);
   const headRevision = await gitHeadRevision(repoRoot);
   const configHash = sha1Hex([
     `chunk_lines=${CHUNK_LINES}`,
     `chunk_overlap=${CHUNK_OVERLAP}`,
     `max_file_size=${MAX_FILE_SIZE_BYTES}`,
+    `max_index_line_chars=${MAX_INDEX_LINE_CHARS}`,
+    `max_index_chunk_chars=${MAX_INDEX_CHUNK_CHARS}`,
+    `max_embed_input_chars=${MAX_EMBED_INPUT_CHARS}`,
     `extensions=${Array.from(ALLOWED_EXTENSIONS).join(",")}`,
     `excluded_dirs=${Array.from(EXCLUDED_DIRS).join(",")}`,
+    `noisy_path_patterns=${NOISY_PATH_PATTERNS.map((pattern) => pattern.source).join(",")}`,
     "retrieval_mode=dynamic",
   ].join(";"));
   const revision = sha1Hex(`${repoRoot}\n${headRevision}\n${configHash}`);
@@ -439,6 +548,26 @@ function chunksPath(indexDir: string): string {
   return path.join(indexDir, "chunks.jsonl");
 }
 
+function embeddingsPath(indexDir: string): string {
+  return path.join(indexDir, "embeddings.json");
+}
+
+function shouldSkipRelativePath(relativePath: string): boolean {
+  const normalized = relativePath.replace(/\\/g, "/");
+  const basename = path.basename(normalized);
+  const segments = normalized.split("/");
+  if (
+    LOCKFILES.has(basename)
+    || basename.endsWith(".min.js")
+    || segments.some((segment) => EXCLUDED_DIRS.has(segment))
+    || NOISY_PATH_PATTERNS.some((pattern) => pattern.test(normalized))
+  ) {
+    return true;
+  }
+
+  return !ALLOWED_EXTENSIONS.has(path.extname(normalized).toLowerCase());
+}
+
 function shouldIncludeFile(relativePath: string, stat: fs.Stats): boolean {
   if (!stat.isFile()) {
     return false;
@@ -447,18 +576,7 @@ function shouldIncludeFile(relativePath: string, stat: fs.Stats): boolean {
     return false;
   }
 
-  const normalized = relativePath.replace(/\\/g, "/");
-  const basename = path.basename(normalized);
-  if (LOCKFILES.has(basename) || basename.endsWith(".min.js")) {
-    return false;
-  }
-
-  const segments = normalized.split("/");
-  if (segments.some((segment) => EXCLUDED_DIRS.has(segment))) {
-    return false;
-  }
-
-  return ALLOWED_EXTENSIONS.has(path.extname(normalized).toLowerCase());
+  return !shouldSkipRelativePath(relativePath);
 }
 
 async function listGitFiles(repoRoot: string): Promise<string[]> {
@@ -525,6 +643,29 @@ function detectLanguage(relativePath: string): string {
   return ext ? ext.slice(1) : "text";
 }
 
+function truncateIndexedLine(line: string): string {
+  if (line.length <= MAX_INDEX_LINE_CHARS) {
+    return line;
+  }
+  return `${line.slice(0, MAX_INDEX_LINE_CHARS)} …[line truncated for AI index]`;
+}
+
+function truncateChunkBody(body: string): string {
+  if (body.length <= MAX_INDEX_CHUNK_CHARS) {
+    return body;
+  }
+  return `${body.slice(0, MAX_INDEX_CHUNK_CHARS)}\n...[chunk truncated for AI index]`;
+}
+
+function buildEmbeddingInput(chunk: IndexedChunk): string {
+  const prefix = `${chunk.path}:${chunk.startLine}-${chunk.endLine}\n`;
+  const remaining = Math.max(256, MAX_EMBED_INPUT_CHARS - prefix.length);
+  const body = chunk.text.length > remaining
+    ? `${chunk.text.slice(0, remaining)}\n...[embedding input truncated]`
+    : chunk.text;
+  return `${prefix}${body}`;
+}
+
 function chunkText(relativePath: string, text: string): IndexedChunk[] {
   const normalizedText = text.replace(/\r\n/g, "\n");
   const lines = normalizedText.split("\n");
@@ -533,8 +674,8 @@ function chunkText(relativePath: string, text: string): IndexedChunk[] {
 
   for (let start = 0; start < lines.length; start += step) {
     const end = Math.min(lines.length, start + CHUNK_LINES);
-    const chunkLines = lines.slice(start, end);
-    const chunkBody = chunkLines.join("\n").trim();
+    const chunkLines = lines.slice(start, end).map(truncateIndexedLine);
+    const chunkBody = truncateChunkBody(chunkLines.join("\n").trim());
 
     if (chunkBody.length > 0) {
       chunks.push({
@@ -625,11 +766,17 @@ async function buildSummaryPrompt(repoRoot: string): Promise<string> {
   return lines.join("\n");
 }
 
-async function writeIndex(indexDir: string, manifest: BrowserAiManifest, chunks: IndexedChunk[]): Promise<void> {
+async function writeIndex(
+  indexDir: string,
+  manifest: BrowserAiManifest,
+  chunks: IndexedChunk[],
+  embeddings: number[][],
+): Promise<void> {
   await fsp.mkdir(indexDir, { recursive: true });
   await fsp.writeFile(manifestPath(indexDir), JSON.stringify(manifest, null, 2), "utf8");
   const serializedChunks = chunks.map((chunk) => JSON.stringify(chunk)).join("\n");
   await fsp.writeFile(chunksPath(indexDir), serializedChunks, "utf8");
+  await fsp.writeFile(embeddingsPath(indexDir), JSON.stringify(embeddings), "utf8");
 }
 
 async function readManifest(indexDir: string): Promise<BrowserAiManifest | null> {
@@ -654,6 +801,18 @@ async function readChunks(indexDir: string): Promise<IndexedChunk[]> {
   }
 }
 
+async function readEmbeddings(indexDir: string): Promise<number[][]> {
+  try {
+    const content = await fsp.readFile(embeddingsPath(indexDir), "utf8");
+    const parsed = JSON.parse(content) as unknown;
+    return Array.isArray(parsed)
+      ? parsed.filter((value): value is number[] => Array.isArray(value))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 async function loadIndex(repoRoot: string, embeddingModel: string | null): Promise<CachedIndex | null> {
   const context = await buildIndexContext(repoRoot, embeddingModel);
   const cached = indexCache.get(context.repoHash);
@@ -668,7 +827,8 @@ async function loadIndex(repoRoot: string, embeddingModel: string | null): Promi
   }
 
   const chunks = await readChunks(indexDir);
-  const index = { manifest, chunks };
+  const embeddings = await readEmbeddings(indexDir);
+  const index = { manifest, chunks, embeddings };
   indexCache.set(context.repoHash, index);
   return index;
 }
@@ -689,20 +849,48 @@ function tokenize(input: string): string[] {
   return Array.from(new Set([...baseTokens, ...combinedTokens]));
 }
 
-function lexicalScore(queryTokens: string[], chunk: IndexedChunk): number {
+function hasEndpointIntent(query: string, queryTokens: string[]): boolean {
+  return ENDPOINT_QUERY_PATTERN.test(query)
+    || queryTokens.some((token) => token.includes("/") || token.includes("__"));
+}
+
+function countSubstringOccurrences(haystack: string, needle: string): number {
+  if (!needle) {
+    return 0;
+  }
+  let count = 0;
+  let offset = 0;
+  while (true) {
+    const next = haystack.indexOf(needle, offset);
+    if (next === -1) {
+      return count;
+    }
+    count += 1;
+    offset = next + needle.length;
+  }
+}
+
+function countLiteralRouteStrings(input: string): number {
+  return Array.from(input.matchAll(ROUTE_LITERAL_PATTERN)).length;
+}
+
+function lexicalScore(query: string, queryTokens: string[], chunk: IndexedChunk): number {
   if (queryTokens.length === 0) {
     return 0;
   }
 
+  const queryLower = query.toLowerCase();
   const haystack = `${chunk.path}\n${chunk.text}`.toLowerCase();
   const pathValue = chunk.path.toLowerCase();
   const basename = path.basename(pathValue).toLowerCase();
   const compactPath = pathValue.replace(/[^a-z0-9]+/g, "");
   const compactBasename = basename.replace(/[^a-z0-9]+/g, "");
   const compactQuery = queryTokens.join("");
+  const endpointIntent = hasEndpointIntent(query, queryTokens);
+  const uniqueTokens = Array.from(new Set(queryTokens));
   let score = 0;
 
-  for (const token of new Set(queryTokens)) {
+  for (const token of uniqueTokens) {
     if (pathValue.includes(token)) {
       score += 6;
     }
@@ -731,13 +919,47 @@ function lexicalScore(queryTokens: string[], chunk: IndexedChunk): number {
     score += 1.25;
   }
 
+  if (endpointIntent) {
+    let routeScore = 0;
+    for (const [marker, weight] of ENDPOINT_ROUTE_MARKERS) {
+      routeScore += Math.min(countSubstringOccurrences(haystack, marker), 2) * weight;
+    }
+
+    const literalRouteCount = countLiteralRouteStrings(chunk.text);
+    const literalQueryHits = uniqueTokens.filter(
+      (token) => (token.includes("/") || token.includes("__") || token.includes("."))
+        && haystack.includes(token),
+    ).length;
+
+    score += Math.min(literalRouteCount, 8) * 3.5;
+    score += literalQueryHits * 10;
+
+    if (routeScore > 0) {
+      score += routeScore;
+      const strongPathMatch = uniqueTokens.filter((token) => pathValue.includes(token)).length;
+      if (strongPathMatch >= 2) {
+        score += 18 + strongPathMatch * 3;
+      }
+    }
+
+    if (queryLower.includes("browser") && queryLower.includes("fallback") && compactPath.includes("aibrowserfallback")) {
+      score += 18;
+    }
+    if (queryLower.includes("tauri") && (pathValue.endsWith("main.rs") || pathValue.includes("/tauri_handlers/ai.rs"))) {
+      score += 12;
+    }
+    if (path.extname(pathValue) === ".md") {
+      score -= 10;
+    }
+  }
+
   return score;
 }
 
 function rankChunksLexical(query: string, chunks: IndexedChunk[]): RankedChunk[] {
   const tokens = tokenize(query);
   return chunks
-    .map((chunk, index) => ({ index, score: lexicalScore(tokens, chunk) }))
+    .map((chunk, index) => ({ index, score: lexicalScore(query, tokens, chunk) }))
     .sort((left, right) => right.score - left.score);
 }
 
@@ -779,12 +1001,71 @@ async function embedInputs(model: string, inputs: string[]): Promise<number[][]>
   return Array.isArray(payload.embeddings) ? payload.embeddings : [];
 }
 
+async function probeEmbeddingDimension(model: string): Promise<number | null> {
+  try {
+    const embeddings = await embedInputs(model, ["ping"]);
+    const dimension = embeddings[0]?.length ?? 0;
+    return dimension > 0 ? dimension : null;
+  } catch {
+    return null;
+  }
+}
+
+function splitStringBatch(batch: string[]): [string[], string[]] {
+  const midpoint = Math.max(1, Math.floor(batch.length / 2));
+  return [batch.slice(0, midpoint), batch.slice(midpoint)];
+}
+
+async function embedChunkBatches(model: string, chunks: IndexedChunk[]): Promise<number[][]> {
+  const embeddings: number[][] = [];
+  const embeddingDim = await probeEmbeddingDimension(model);
+
+  for (let index = 0; index < chunks.length; index += EMBED_BATCH_SIZE) {
+    const queue: string[][] = [
+      chunks
+        .slice(index, index + EMBED_BATCH_SIZE)
+        .map((chunk) => buildEmbeddingInput(chunk)),
+    ];
+
+    while (queue.length > 0) {
+      const batch = queue.shift() ?? [];
+      if (batch.length === 0) {
+        continue;
+      }
+
+      try {
+        const batchEmbeddings = await embedInputs(model, batch);
+        if (batchEmbeddings.length !== batch.length) {
+          throw new Error(
+            `Ollama returned ${batchEmbeddings.length} embeddings for a batch of ${batch.length} chunks.`,
+          );
+        }
+        embeddings.push(...batchEmbeddings);
+      } catch (error) {
+        if (batch.length > 1) {
+          const [left, right] = splitStringBatch(batch);
+          queue.unshift(right);
+          queue.unshift(left);
+          continue;
+        }
+        if (embeddingDim) {
+          embeddings.push(Array.from({ length: embeddingDim }, () => 0));
+          continue;
+        }
+        throw error;
+      }
+    }
+  }
+
+  return embeddings;
+}
+
 async function rerankSemantic(
   query: string,
-  chunks: IndexedChunk[],
+  index: CachedIndex,
   lexicalCandidates: RankedChunk[],
-  embeddingModel: string | null,
 ): Promise<RankedChunk[] | null> {
+  const embeddingModel = index.manifest.embeddingModel;
   if (!embeddingModel) {
     return null;
   }
@@ -798,21 +1079,19 @@ async function rerankSemantic(
   }
 
   try {
-    const candidateTexts = candidates.map(({ index }) => {
-      const chunk = chunks[index];
-      return `${chunk.path}:${chunk.startLine}-${chunk.endLine}\n${chunk.text}`;
-    });
-
-    const embeddings = await embedInputs(embeddingModel, [query, ...candidateTexts]);
-    if (embeddings.length !== candidateTexts.length + 1) {
+    if (index.embeddings.length !== index.chunks.length) {
       return null;
     }
 
-    const [queryEmbedding, ...chunkEmbeddings] = embeddings;
-    return chunkEmbeddings
-      .map((embedding, index) => ({
-        index: candidates[index]?.index ?? 0,
-        score: cosineSimilarity(queryEmbedding ?? [], embedding ?? []),
+    const embeddings = await embedInputs(embeddingModel, [query]);
+    if (embeddings.length !== 1) {
+      return null;
+    }
+
+    return candidates
+      .map((entry) => ({
+        index: entry.index,
+        score: cosineSimilarity(embeddings[0] ?? [], index.embeddings[entry.index] ?? []),
       }))
       .sort((left, right) => right.score - left.score);
   } catch {
@@ -834,16 +1113,24 @@ function mergeRankings(lexical: RankedChunk[], semantic: RankedChunk[] | null): 
     .sort((left, right) => right.score - left.score);
 }
 
+function shouldIncludeRepositorySummary(query: string): boolean {
+  return !hasEndpointIntent(query, tokenize(query))
+    && !/(function|class|file|filepath|\.tsx|\.ts|\.rs|main\.rs|aibrowserfallback)/i.test(query);
+}
+
 function buildSelection(
   chunks: IndexedChunk[],
   ranked: RankedChunk[],
   requestedContextChunks: number,
+  includeSummaryPrompt: boolean,
 ): number[] {
   const selected = new Set<number>();
   const ordered: number[] = [];
-  const totalSlots = Math.min(requestedContextChunks, 6) + 1;
+  const totalSlots = Math.min(requestedContextChunks, 6) + (includeSummaryPrompt ? 1 : 0);
 
-  const summaryIndex = chunks.findIndex((chunk) => chunk.path === SUMMARY_CHUNK_PATH);
+  const summaryIndex = includeSummaryPrompt
+    ? chunks.findIndex((chunk) => chunk.path === SUMMARY_CHUNK_PATH)
+    : -1;
   if (summaryIndex >= 0) {
     selected.add(summaryIndex);
     ordered.push(summaryIndex);
@@ -865,9 +1152,87 @@ function buildSelection(
   return ordered;
 }
 
-function buildContextPrompt(index: CachedIndex, selectedIndexes: number[]): string {
+function compactCitations(citations: AiCitation[]): AiCitation[] {
+  const merged: AiCitation[] = [];
+
+  for (const citation of citations) {
+    const previous = merged[merged.length - 1];
+    if (
+      previous
+      && previous.path === citation.path
+      && citation.startLine <= previous.endLine + 25
+    ) {
+      previous.endLine = Math.max(previous.endLine, citation.endLine);
+      previous.score = Math.max(previous.score, citation.score);
+      continue;
+    }
+
+    merged.push({ ...citation });
+  }
+
+  return merged.slice(0, 4);
+}
+
+const AI_SYSTEM_PROMPT = [
+  "You are the OpenBB repository assistant.",
+  "Answer from the provided repository context first.",
+  "Keep answers concise and concrete: use at most 6 bullets or 2 short paragraphs unless the user asks for more detail.",
+  "Prefer file paths, route names, commands, and implementation facts from the retrieved context.",
+  "When enumerating items, match the count you state to the list you provide.",
+  "If the user asks about endpoints or commands, list every matching endpoint or command found in the provided context.",
+  "For endpoints or commands, only quote literal path strings or command names that appear verbatim in the context. Never rename or infer new endpoint names.",
+  "If the retrieved code shows a middleware or mount prefix together with nested pathname checks in the same chunk, report the public route as prefix plus nested pathname.",
+  "Avoid generic software advice unless the repository context clearly supports it.",
+  "If the context is insufficient, say so plainly and state what is missing.",
+].join(" ");
+
+function buildSystemPrompt(hasRepositoryContext: boolean, hasSupplementalContext: boolean): string {
+  if (hasRepositoryContext && hasSupplementalContext) {
+    return [
+      AI_SYSTEM_PROMPT,
+      "You also have supplemental OpenBB market data. Use it as the primary source for market, financial statement, and expected price-range questions.",
+      "Do not claim that you cannot access market data when supplemental context is present.",
+    ].join(" ");
+  }
+
+  if (hasSupplementalContext) {
+    return [
+      "You are the OpenBB market data assistant.",
+      "Answer from the provided OpenBB market data first.",
+      "Keep answers concise and concrete: use at most 6 bullets or 2 short paragraphs unless the user asks for more detail.",
+      "If the user asks for an expected stock-price range, anchor on analyst target low, consensus, median, and high when available and label it as a scenario range, not a guarantee.",
+      "If the provided market data is insufficient for a precise range, say what is missing.",
+      "Do not say that you cannot access market data when the supplemental context is present.",
+    ].join(" ");
+  }
+
+  return AI_SYSTEM_PROMPT;
+}
+
+function buildContextPrompt(
+  index: CachedIndex | null,
+  selectedIndexes: number[],
+  includeSummaryPrompt: boolean,
+  userQuery: string,
+  supplementalContext?: string,
+): string {
   const sections: string[] = [];
-  sections.push(index.manifest.summaryPrompt);
+  if (supplementalContext?.trim()) {
+    sections.push(`OpenBB supplemental market data:\n${supplementalContext.trim()}`);
+  }
+
+  if (!index) {
+    return sections.join("\n\n");
+  }
+
+  if (hasEndpointIntent(userQuery, tokenize(userQuery))) {
+    sections.push(
+      "Task hint: this is an endpoint or command lookup. Use only literal route strings or command names from the retrieved code chunks.",
+    );
+  }
+  if (includeSummaryPrompt) {
+    sections.push(index.manifest.summaryPrompt);
+  }
 
   for (const indexValue of selectedIndexes) {
     const chunk = index.chunks[indexValue];
@@ -886,32 +1251,85 @@ function buildContextPrompt(index: CachedIndex, selectedIndexes: number[]): stri
 
 async function callOllamaChat(candidateModels: string[], messages: Array<Record<string, string>>) {
   let lastError = "No Ollama chat model could answer the request.";
+  const attemptedModels: string[] = [];
 
   for (const model of candidateModels) {
+    attemptedModels.push(model);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS);
+
     try {
-      const response = await fetchJson<{ model: string; message?: { content?: string } }>(`${OLLAMA_BASE_URL}/chat`, {
+      const response = await fetch(`${OLLAMA_BASE_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           model,
           stream: false,
-          keep_alive: "5m",
+          keep_alive: CHAT_KEEP_ALIVE,
           messages,
         }),
       });
 
-      if (response.message?.content?.trim()) {
+      if (!response.ok) {
+        const body = await response.text().catch(() => "");
+        throw new Error(body || `chat returned ${response.status}`);
+      }
+
+      const payload = await response.json() as {
+        model: string;
+        message?: { content?: string };
+        total_duration?: number;
+        load_duration?: number;
+        prompt_eval_duration?: number;
+        eval_duration?: number;
+      };
+
+      if (payload.message?.content?.trim()) {
         return {
-          model: response.model,
-          content: response.message.content.trim(),
+          model: payload.model,
+          content: payload.message.content.trim(),
+          attemptedModels,
+          loadMs: ollamaDurationToMs(payload.load_duration),
+          promptEvalMs: ollamaDurationToMs(payload.prompt_eval_duration),
+          evalMs: ollamaDurationToMs(payload.eval_duration),
+          totalModelMs: ollamaDurationToMs(payload.total_duration),
         };
       }
     } catch (error) {
-      lastError = error instanceof Error ? `${model}: ${error.message}` : `${model}: chat failed`;
+      const reason = error instanceof Error && error.name === "AbortError"
+        ? `${model}: chat timed out after ${CHAT_REQUEST_TIMEOUT_MS}ms`
+        : error instanceof Error
+          ? `${model}: ${error.message}`
+          : `${model}: chat failed`;
+      lastError = reason;
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
   throw new Error(lastError);
+}
+
+async function warmBrowserChatModel(candidateModels: string[]): Promise<string | null> {
+  const warmupKey = candidateModels.join("|");
+  const existing = warmModelPromises.get(warmupKey);
+  if (existing) {
+    return existing;
+  }
+
+  const pending = callOllamaChat(candidateModels.slice(0, 1), [
+    { role: "system", content: "Reply with READY only." },
+    { role: "user", content: "READY" },
+  ])
+    .then((response) => response.model ?? null)
+    .catch(() => null)
+    .finally(() => {
+      warmModelPromises.delete(warmupKey);
+    });
+
+  warmModelPromises.set(warmupKey, pending);
+  return pending;
 }
 
 async function buildBrowserIndex(repoRoot: string, discovery: OllamaDiscovery, force: boolean): Promise<AiIndexResult> {
@@ -964,6 +1382,20 @@ async function buildBrowserIndex(repoRoot: string, discovery: OllamaDiscovery, f
     text: summaryPrompt,
   });
 
+  let embeddings: number[][] = [];
+  let effectiveEmbeddingModel = discovery.embeddingModel;
+  let mode: RetrievalMode = discovery.embeddingModel ? "semantic" : "lexical";
+
+  if (effectiveEmbeddingModel) {
+    try {
+      embeddings = await embedChunkBatches(effectiveEmbeddingModel, chunks);
+    } catch {
+      embeddings = [];
+      effectiveEmbeddingModel = null;
+      mode = "lexical";
+    }
+  }
+
   const manifest: BrowserAiManifest = {
     repoRoot,
     repoHash: context.repoHash,
@@ -975,13 +1407,14 @@ async function buildBrowserIndex(repoRoot: string, discovery: OllamaDiscovery, f
     skippedFiles,
     chunkCount: chunks.length,
     lastIndexedAt: new Date().toISOString(),
-    embeddingModel: discovery.embeddingModel,
-    mode: discovery.embeddingModel ? "semantic" : "lexical",
+    embeddingModel: effectiveEmbeddingModel,
+    embeddingDim: embeddings[0]?.length ?? null,
+    mode,
     summaryPrompt,
   };
 
-  await writeIndex(indexDir, manifest, chunks);
-  indexCache.set(context.repoHash, { manifest, chunks });
+  await writeIndex(indexDir, manifest, chunks, embeddings);
+  indexCache.set(context.repoHash, { manifest, chunks, embeddings });
 
   return {
     repoRoot,
@@ -1004,6 +1437,7 @@ async function getBrowserAiStatus(workspaceRoot: string, defaultDir: string): Pr
       repoReady: false,
       ollamaReachable: discovery.reachable,
       chatModel: discovery.chatModel,
+      chatCandidates: discovery.chatCandidates,
       embeddingModel: discovery.embeddingModel,
       availableModels: discovery.availableModels,
       indexReady: false,
@@ -1016,18 +1450,24 @@ async function getBrowserAiStatus(workspaceRoot: string, defaultDir: string): Pr
   const context = await buildIndexContext(repoRoot, discovery.embeddingModel);
   const manifest = await readManifest(browserIndexDirectory(context.repoHash));
   const indexReady = isManifestReusable(manifest, context, repoRoot);
+  const hasSemanticIndex = Boolean(
+    indexReady
+    && manifest?.embeddingModel
+    && (manifest.embeddingDim ?? 0) > 0,
+  );
 
   return {
     repoRoot,
     repoReady: true,
     ollamaReachable: discovery.reachable,
     chatModel: discovery.chatModel,
+    chatCandidates: discovery.chatCandidates,
     embeddingModel: discovery.embeddingModel,
     availableModels: discovery.availableModels,
     indexReady,
     lastIndexedAt: manifest?.lastIndexedAt ?? null,
     chunkCount: manifest?.chunkCount ?? 0,
-    mode: discovery.mode,
+    mode: hasSemanticIndex ? "semantic" : "lexical",
   };
 }
 
@@ -1040,19 +1480,12 @@ async function clearBrowserIndex(repoRoot: string, embeddingModel: string | null
 
 async function askBrowserAi(request: AiAskRequest): Promise<AiAskResponse> {
   const startedAt = Date.now();
-  const requestedRepoRoot = path.resolve(request.repoRoot);
-  const repoRoot = fs.existsSync(requestedRepoRoot)
-    ? requestedRepoRoot
-    : process.cwd();
   const discovery = await discoverOllama();
+  const hasSupplementalContext = Boolean(request.supplementalContext?.trim());
+  const supplementalOnly = Boolean(request.supplementalOnly && hasSupplementalContext);
 
   if (!discovery.chatCandidates.length) {
     throw new Error("No Ollama chat model is available. Install one with `ollama pull qwen2.5-coder:1.5b`.");
-  }
-
-  const index = await loadIndex(repoRoot, discovery.embeddingModel);
-  if (!index || index.chunks.length === 0) {
-    throw new Error("Build the AI index before asking a question.");
   }
 
   const latestUserMessage = [...request.messages]
@@ -1064,43 +1497,75 @@ async function askBrowserAi(request: AiAskRequest): Promise<AiAskResponse> {
     throw new Error("A question is required before asking the project AI.");
   }
 
-  const requestedContextChunks = Math.min(
-    Math.max(request.maxContextChunks ?? DEFAULT_CONTEXT_CHUNKS, 1),
-    MAX_CONTEXT_CHUNKS,
-  );
+  let index: CachedIndex | null = null;
+  let semantic: RankedChunk[] | null = null;
+  let selectedIndexes: number[] = [];
+  let citations: AiCitation[] = [];
+  let retrievalMode: RetrievalMode = "supplemental";
+  let includeSummaryPrompt = false;
 
-  const lexical = rankChunksLexical(latestUserMessage.content, index.chunks);
-  const semantic = await rerankSemantic(
-    latestUserMessage.content,
-    index.chunks,
-    lexical,
-    discovery.embeddingModel,
-  );
-  const ranked = mergeRankings(lexical, semantic);
-  const selectedIndexes = buildSelection(index.chunks, ranked, requestedContextChunks);
-  const citations = selectedIndexes
-    .map((indexValue) => {
-      const chunk = index.chunks[indexValue];
-      if (!chunk || chunk.path === SUMMARY_CHUNK_PATH) {
-        return null;
-      }
-      const rankedEntry = ranked.find((entry) => entry.index === indexValue);
-      return {
-        path: chunk.path,
-        startLine: chunk.startLine,
-        endLine: chunk.endLine,
-        score: Number((rankedEntry?.score ?? 0).toFixed(3)),
-      } satisfies AiCitation;
-    })
-    .filter((citation): citation is AiCitation => Boolean(citation))
-    .filter((citation) => citation.score > 0)
-    .slice(0, Math.min(requestedContextChunks, 6));
+  if (!supplementalOnly) {
+    const requestedRepoRoot = path.resolve(request.repoRoot);
+    const repoRoot = fs.existsSync(requestedRepoRoot)
+      ? requestedRepoRoot
+      : process.cwd();
+    index = await loadIndex(repoRoot, discovery.embeddingModel);
+    if (!index || index.chunks.length === 0) {
+      throw new Error("Build the AI index before asking a question.");
+    }
 
-  const contextPrompt = buildContextPrompt(index, selectedIndexes);
-  const systemPrompt = "You are a read-only project guide for this repository. Explain the codebase precisely, never invent files or behaviors, say when information is missing, and cite file paths with line ranges in every substantive answer.";
+    const requestedContextChunks = Math.min(
+      Math.max(request.maxContextChunks ?? DEFAULT_CONTEXT_CHUNKS, 1),
+      MAX_CONTEXT_CHUNKS,
+    );
+    includeSummaryPrompt = shouldIncludeRepositorySummary(latestUserMessage.content);
+
+    const lexical = rankChunksLexical(latestUserMessage.content, index.chunks);
+    semantic = await rerankSemantic(latestUserMessage.content, index, lexical);
+    const ranked = mergeRankings(lexical, semantic);
+    selectedIndexes = buildSelection(
+      index.chunks,
+      ranked,
+      requestedContextChunks,
+      includeSummaryPrompt,
+    );
+    citations = selectedIndexes
+      .map((indexValue) => {
+        const chunk = index?.chunks[indexValue];
+        if (!chunk || chunk.path === SUMMARY_CHUNK_PATH) {
+          return null;
+        }
+        const rankedEntry = ranked.find((entry) => entry.index === indexValue);
+        return {
+          path: chunk.path,
+          startLine: chunk.startLine,
+          endLine: chunk.endLine,
+          score: Number((rankedEntry?.score ?? 0).toFixed(3)),
+        } satisfies AiCitation;
+      })
+      .filter((citation): citation is AiCitation => Boolean(citation))
+      .filter((citation) => citation.score > 0)
+      .slice(0, Math.min(requestedContextChunks, 6));
+    retrievalMode = semantic ? "semantic" : "lexical";
+  } else if (!hasSupplementalContext) {
+    throw new Error("Supplemental market data is required for market-data-only AI questions.");
+  }
+
   const response = await callOllamaChat(discovery.chatCandidates, [
-    { role: "system", content: systemPrompt },
-    { role: "system", content: contextPrompt },
+    {
+      role: "system",
+      content: buildSystemPrompt(Boolean(index), hasSupplementalContext),
+    },
+    {
+      role: "system",
+      content: buildContextPrompt(
+        index,
+        selectedIndexes,
+        includeSummaryPrompt,
+        latestUserMessage.content,
+        request.supplementalContext,
+      ),
+    },
     ...request.messages.map((message) => ({
       role: message.role,
       content: message.content,
@@ -1109,10 +1574,29 @@ async function askBrowserAi(request: AiAskRequest): Promise<AiAskResponse> {
 
   return {
     answer: response.content,
-    citations,
+    citations: compactCitations(citations),
     usedModel: response.model,
+    attemptedModels: response.attemptedModels,
+    modelTotalMs: response.totalModelMs,
+    loadMs: response.loadMs,
+    promptEvalMs: response.promptEvalMs,
+    evalMs: response.evalMs,
     timingMs: Date.now() - startedAt,
-    retrievalMode: semantic ? "semantic" : "lexical",
+    retrievalMode,
+  };
+}
+
+async function warmBrowserAiChatModel(defaultDir: string, workspaceRoot: string): Promise<{ ok: boolean; usedModel: string | null }> {
+  resolveRepoRoot(workspaceRoot, defaultDir);
+  const discovery = await discoverOllama();
+  if (!discovery.chatCandidates.length) {
+    return { ok: false, usedModel: null };
+  }
+
+  const usedModel = await warmBrowserChatModel(discovery.chatCandidates);
+  return {
+    ok: Boolean(usedModel),
+    usedModel,
   };
 }
 
@@ -1159,6 +1643,13 @@ export function createAiBrowserFallbackPlugin(workspaceRoot: string): Plugin {
             return;
           }
 
+          if (req.method === "POST" && requestUrl.pathname === "/warmup") {
+            const body = await readJsonBody(req) as { defaultDir?: string };
+            const response = await warmBrowserAiChatModel(body.defaultDir ?? ".", workspaceRoot);
+            jsonResponse(res, 200, response);
+            return;
+          }
+
           if (req.method === "POST" && requestUrl.pathname === "/ask") {
             const body = await readJsonBody(req) as { request?: AiAskRequest };
             if (!body.request) {
@@ -1188,3 +1679,15 @@ export function createAiBrowserFallbackPlugin(workspaceRoot: string): Plugin {
     },
   };
 }
+
+export const __aiBrowserFallbackInternals = {
+  chatModelPriority,
+  sortChatCandidates,
+  compactCitations,
+  ollamaDurationToMs,
+  isEmbeddingOnlyModelName,
+  rankChunksLexical,
+  shouldIncludeRepositorySummary,
+  shouldSkipRelativePath,
+  chunkText,
+};

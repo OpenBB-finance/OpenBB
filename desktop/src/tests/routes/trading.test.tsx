@@ -31,6 +31,7 @@ describe("Trading Route", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useRealTimers();
     clearCachePrefix("");
 
     vi.mocked(invoke).mockResolvedValue([
@@ -408,11 +409,14 @@ describe("Trading Route", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Portfolio & Execution")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/Portfolio & Execution/i);
       expect(screen.getByText(/Unified workflow for signals, pretrade risk, order preview, positions, fills, and broker runtime/i)).toBeInTheDocument();
       expect(screen.getByText(/Execution Context/i)).toBeInTheDocument();
       expect(screen.getByRole("tab", { name: "Signals" })).toBeInTheDocument();
       expect(screen.getByRole("tab", { name: "Brokers" })).toBeInTheDocument();
+      expect(screen.getByText(/Broker Ready/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Live Adapter$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Kill Switch$/i)).toBeInTheDocument();
     });
 
     await waitFor(() => {
@@ -444,7 +448,69 @@ describe("Trading Route", () => {
       );
       expect(calls.length).toBeGreaterThan(0);
     });
-  });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Cycle queued \| signals 1 \| orders 1 \| fills 1/i)).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => window.setTimeout(resolve, 3200));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Cycle queued \| signals 1 \| orders 1 \| fills 1/i)).not.toBeInTheDocument();
+    });
+  }, 10000);
+
+  test("pauses polling while the tab is hidden and refreshes when visible again", async () => {
+    let visibilityState: DocumentVisibilityState = "visible";
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      get: () => visibilityState,
+    });
+    vi.useFakeTimers();
+    try {
+      const statusCalls = () =>
+        vi
+          .mocked(global.fetch)
+          .mock.calls.filter((call) => String(call[0]).endsWith("/api/v1/quant_ml/trading/status")).length;
+
+      await act(async () => {
+        render(<TradingComponent />);
+        await Promise.resolve();
+      });
+
+      expect(statusCalls()).toBeGreaterThan(0);
+
+      const initialCalls = statusCalls();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(5000);
+      });
+      expect(statusCalls()).toBeGreaterThan(initialCalls);
+
+      visibilityState = "hidden";
+      await act(async () => {
+        document.dispatchEvent(new Event("visibilitychange"));
+        await Promise.resolve();
+      });
+
+      const hiddenCalls = statusCalls();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(15000);
+      });
+      expect(statusCalls()).toBe(hiddenCalls);
+
+      visibilityState = "visible";
+      await act(async () => {
+        document.dispatchEvent(new Event("visibilitychange"));
+        await Promise.resolve();
+      });
+
+      expect(statusCalls()).toBeGreaterThan(hiddenCalls);
+    } finally {
+      vi.useRealTimers();
+    }
+  }, 10000);
 
   test("updates trading execution mode from the console", async () => {
     await act(async () => {
@@ -465,5 +531,10 @@ describe("Trading Route", () => {
       );
       expect(calls.length).toBeGreaterThan(0);
     });
+
+    expect(
+      screen.getByText(/Shadow live mirrors decisioning and approval flow, but does not dispatch broker orders./i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Live adapter is not broker-ready in this environment./i)).toBeInTheDocument();
   });
 });

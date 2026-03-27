@@ -761,9 +761,53 @@ describe("Quant Route", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/OpenBB API not connected/i)).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 2, name: /OpenBB API is not connected/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /Go to Backends/i })).toBeInTheDocument();
     }, { timeout: 8000 });
+  }, 12000);
+
+  test("renders connecting placeholder while backend bootstrap is still resolving", async () => {
+    const deferred = createDeferred<Response>();
+    global.fetch = vi.fn(async (input: string | URL) => {
+      const url = String(input);
+      if (url.endsWith("/api/v1/coverage/providers")) {
+        return deferred.promise;
+      }
+      if (url.endsWith("/api/v1/system")) {
+        return mockJsonResponse({ detail: "warming" }, false, 503);
+      }
+      return mockJsonResponse({ detail: "not-found" }, false, 404);
+    }) as unknown as typeof fetch;
+
+    await act(async () => {
+      renderQuant();
+    });
+
+    expect(screen.getByLabelText(/Connecting to Strategy Lab backend/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Start Training/i })).not.toBeInTheDocument();
+
+    deferred.resolve(mockJsonResponse({ results: {} }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/OpenBB API connected/i)).toBeInTheDocument();
+    });
+  });
+
+  test("disables sentiment, hides catboost selection, and keeps compare empty-state actions visible", async () => {
+    await act(async () => {
+      renderQuant();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/OpenBB API connected/i)).toBeInTheDocument();
+    });
+
+    expect(screen.getByLabelText(/Focus Model/i)).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: /catboost/i })).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/Include sentiment/i)).toBeDisabled();
+    expect(screen.getByText(/Auto uses the main data provider when possible\./i)).toBeInTheDocument();
+    expect(screen.getByText(/Compare needs at least two recent runs\./i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Go to Train Step/i })).toBeInTheDocument();
   });
 
   test("renders portfolio metadata columns with name+ticker and L1/L2 buckets", async () => {

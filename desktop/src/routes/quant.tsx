@@ -1,6 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PanelCard } from "../components/quant/PanelCard";
+import { QuantConnectingPlaceholder } from "../components/quant/QuantConnectingPlaceholder";
 import { QuantControlsColumn } from "../components/quant/QuantControlsColumn";
 import { QuantPageHeader } from "../components/quant/QuantPageHeader";
 import { QuantResultsColumn } from "../components/quant/QuantResultsColumn";
@@ -352,6 +353,12 @@ export default function QuantPage() {
   });
 
   const canUseApi = backend?.connected === true;
+  const showConnectingPlaceholder = isResolvingBackend;
+  const showDisconnectedState = !isResolvingBackend && backend?.connected === false;
+  const showUnavailableState =
+    !isResolvingBackend &&
+    backend?.connected === true &&
+    quantActivation?.available === false;
   const canGenerateSignals = canUseApi && runStatus?.status === "completed";
   const hasSelectedModelPredictions = hasModelArtifact(
     summary?.available_artifacts,
@@ -595,6 +602,10 @@ export default function QuantPage() {
 
   return (
     <div className="h-full min-h-0 overflow-auto py-4">
+      {/*
+        Disconnected and extension-unavailable states get their own callout card below.
+        Hiding the header banner avoids duplicating the same blocker in two places.
+      */}
       <QuantPageHeader
         parsedSymbolsCount={parsedSymbols.length}
         isUniverseSetMode={isUniverseSetMode}
@@ -603,7 +614,49 @@ export default function QuantPage() {
         backtestPointsCount={backtest?.equity_curve?.length ?? 0}
         errorMessage={errorMessage}
         quantActivation={quantActivation}
+        showActivationBanner={!showDisconnectedState && !showUnavailableState}
       />
+
+      {showConnectingPlaceholder ? (
+        <QuantConnectingPlaceholder />
+      ) : showDisconnectedState ? (
+        <PanelCard
+          title="OpenBB API is not connected"
+          description="Strategy Lab needs a reachable OpenBB API backend before controls and results can load."
+        >
+          <div className="space-y-3">
+            <p className="body-sm-regular text-theme-muted">
+              Resolve the backend connection first, then reopen Strategy Lab to continue.
+            </p>
+            <button
+              type="button"
+              className="button-neutral rounded-sm px-3 py-2 body-xs-medium"
+              onClick={() => router.navigate({ to: "/backends" })}
+            >
+              Go to Backends
+            </button>
+          </div>
+        </PanelCard>
+      ) : showUnavailableState ? (
+        <PanelCard
+          title="quant_ml extension unavailable"
+          description="The backend is reachable, but the quant_ml extension is not active in the current runtime."
+        >
+          <div className="space-y-3">
+            <p className="body-sm-regular text-theme-muted">
+              {quantActivation?.detail || "Install or enable openbb-quant-ml, then refresh the backend."}
+            </p>
+            <button
+              type="button"
+              className="button-neutral rounded-sm px-3 py-2 body-xs-medium"
+              onClick={() => router.navigate({ to: "/backends" })}
+            >
+              Go to Backends
+            </button>
+          </div>
+        </PanelCard>
+      ) : (
+      <>
 
       <StrategyLabStepper
         steps={strategyWorkflowSteps}
@@ -758,6 +811,7 @@ export default function QuantPage() {
             onBalancedLongShortChange: setBalancedLongShort,
             showAdvancedConfig,
             onToggleAdvancedConfig: () => setShowAdvancedConfig((prev) => !prev),
+            activeLabStep,
             modelConfig,
             onModelConfigChange: updateModelConfig,
             walkForwardConfig,
@@ -895,9 +949,34 @@ export default function QuantPage() {
               </table>
             </div>
           ) : (
-            <p className="body-xs-regular text-theme-muted">
-              Compare requires at least two recent runs from the experiment registry.
-            </p>
+            <div className="space-y-3">
+              <p className="body-xs-regular text-theme-muted">
+                {recentRuns.length === 0
+                  ? "No recent runs are available yet."
+                  : "Compare needs at least two recent runs."}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  className="button-secondary rounded-sm px-3 py-2 body-xs-medium"
+                  onClick={() => setActiveLabStep("train")}
+                >
+                  Go to Train Step
+                </button>
+                {recentRuns[0]?.run_id ? (
+                  <button
+                    type="button"
+                    className="rounded-sm border border-theme-outline px-3 py-2 body-xs-medium text-theme-primary"
+                    onClick={() => {
+                      setRunIdInput(recentRuns[0].run_id);
+                      void loadExistingRun(recentRuns[0].run_id);
+                    }}
+                  >
+                    Load Latest Run
+                  </button>
+                ) : null}
+              </div>
+            </div>
           )}
         </PanelCard>
 
@@ -935,11 +1014,13 @@ export default function QuantPage() {
                 });
               }}
             >
-              Send to Portfolio &amp; Execution
+              Send to Portfolio & Execution
             </a>
           </div>
         </PanelCard>
       </div>
+      </>
+      )}
     </div>
   );
 }

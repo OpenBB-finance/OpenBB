@@ -40,7 +40,7 @@ use crate::tauri_handlers::credentials::{
 };
 
 use crate::tauri_handlers::ai::{
-    ask_ai_question, build_ai_index, clear_ai_index, get_ai_status,
+    ask_ai_question, build_ai_index, clear_ai_index, get_ai_status, warm_ai_chat_model,
 };
 
 use crate::tauri_handlers::backends::{
@@ -494,6 +494,7 @@ fn main() {
             get_working_directory,
             get_home_directory,
             get_ai_status,
+            warm_ai_chat_model,
             select_directory,
             get_installation_directory,
             get_userdata_directory,

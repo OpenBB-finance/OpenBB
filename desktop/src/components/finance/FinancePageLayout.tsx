@@ -154,7 +154,14 @@ export function FinancePageLayout({
                         event.preventDefault();
                         void navigate({
                           to: "/macro",
-                          search: study.study_id ? { studyId: study.study_id } : {},
+                          search: {
+                            studyId: study.study_id ?? undefined,
+                            view: undefined,
+                            seriesKey: undefined,
+                            query: undefined,
+                            domain: undefined,
+                            asOfDate: undefined,
+                          },
                         });
                       }}
                     >

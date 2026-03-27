@@ -17,7 +17,7 @@ Use this as the canonical local dev path for the Quant ML stack:
 ```powershell
 uv venv .venv --python 3.11
 .\.venv\Scripts\python.exe openbb_platform/dev_install.py -e --bootstrap-installer uv
-.\start_all.ps1 -ApiNoBuild $true -ApiAuthMode enabled -QuantMlTrainingBackend process
+.\start_all.ps1 -ApiNoBuild $true -QuantMlTrainingBackend process
 .\qa\scripts\quant_ml_startup_smoke.ps1 -RepoRoot .
 npm.cmd test -- --run src/tests/routes/__root.test.tsx src/tests/routes/finance.test.tsx src/tests/routes/trading.test.tsx src/tests/lib/openbbBackend.test.ts src/tests/lib/openbbSse.test.ts src/tests/routes/backends.test.tsx src/tests/routes/quant.test.tsx src/tests/routes/macro.test.tsx
 ```
@@ -26,7 +26,7 @@ Defaults chosen for this repo:
 
 - Poetry remains the dependency resolver and `openbb_platform/poetry.lock` remains the source of truth.
 - `uv` is used for bootstrap and runner setup, not for replacing Poetry metadata.
-- `start_all.ps1` defaults to auth-enabled local startup.
+- `start_all.ps1` defaults to auth-disabled local startup.
 - `Finance Lab` is the canonical desktop label for the `/finance` route.
 
 ## Universe Files
@@ -151,7 +151,7 @@ $env:OPENBB_QUANT_ML_MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
 .\start_all.ps1 -ApiNoBuild $true -ApiAuthMode enabled -QuantMlTrainingBackend process
 ```
 
-`start_all.ps1` now defaults to `-ApiAuthMode enabled`. When it launches the API itself and no password is already configured, it generates a temporary dev-session Basic password, uses it for API readiness probes, and injects the same credentials into the frontend dev server through `VITE_OPENBB_API_USERNAME` / `VITE_OPENBB_API_PASSWORD`.
+`start_all.ps1` now defaults to `-ApiAuthMode disabled`. If you want local HTTP Basic auth, pass `-ApiAuthMode enabled` explicitly or set `OPENBB_API_AUTH=true` before launch. When auth is enabled and the script launches the API itself with no password already configured, it generates a temporary dev-session Basic password, uses it for API readiness probes, and injects the same credentials into the frontend dev server through `VITE_OPENBB_API_USERNAME` / `VITE_OPENBB_API_PASSWORD`.
 
 That generated password is a local development convenience only. Staging and production should always provide explicit credentials through environment variables or an external secret manager.
 

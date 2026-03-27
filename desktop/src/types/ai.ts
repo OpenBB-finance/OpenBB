@@ -1,4 +1,4 @@
-export type AiRetrievalMode = "semantic" | "lexical";
+export type AiRetrievalMode = "semantic" | "lexical" | "supplemental";
 export type AiChatRole = "user" | "assistant";
 
 export interface AiStatus {
@@ -6,6 +6,7 @@ export interface AiStatus {
   repoReady: boolean;
   ollamaReachable: boolean;
   chatModel: string | null;
+  chatCandidates: string[];
   embeddingModel: string | null;
   availableModels: string[];
   indexReady: boolean;
@@ -28,6 +29,8 @@ export interface AiAskRequest {
   repoRoot: string;
   messages: Array<{ role: AiChatRole; content: string }>;
   maxContextChunks?: number;
+  supplementalContext?: string;
+  supplementalOnly?: boolean;
 }
 
 export interface AiCitation {
@@ -41,6 +44,11 @@ export interface AiAskResponse {
   answer: string;
   citations: AiCitation[];
   usedModel: string;
+  attemptedModels?: string[];
+  modelTotalMs?: number | null;
+  loadMs?: number | null;
+  promptEvalMs?: number | null;
+  evalMs?: number | null;
   timingMs: number;
   retrievalMode: AiRetrievalMode;
 }

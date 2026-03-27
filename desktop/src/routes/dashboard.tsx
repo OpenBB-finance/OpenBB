@@ -1282,7 +1282,17 @@ export default function DashboardPage() {
                 className="button-secondary rounded-sm px-2 py-1 body-xxs-medium"
                 onClick={(event) => {
                   event.preventDefault();
-                  void navigate({ to: "/macro" });
+                  void navigate({
+                    to: "/macro",
+                    search: {
+                      studyId: undefined,
+                      view: undefined,
+                      seriesKey: undefined,
+                      query: undefined,
+                      domain: undefined,
+                      asOfDate: undefined,
+                    },
+                  });
                 }}
               >
                 Open Macro

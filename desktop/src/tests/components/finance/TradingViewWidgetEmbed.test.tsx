@@ -1,6 +1,7 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { TradingViewWidgetEmbed } from "../../../components/finance/TradingViewWidgetEmbed";
+import { TRADING_VIEW_WIDGET_TIMEOUT_MS } from "../../../lib/tradingView";
 
 describe("TradingViewWidgetEmbed", () => {
   beforeEach(() => {
@@ -85,7 +86,7 @@ describe("TradingViewWidgetEmbed", () => {
     );
   });
 
-  test("shows fallback message after timeout", () => {
+  test("shows fallback message after retry budget is exhausted", () => {
     render(
       <TradingViewWidgetEmbed
         widgetType="fundamental-data"
@@ -96,11 +97,49 @@ describe("TradingViewWidgetEmbed", () => {
     );
 
     act(() => {
-      vi.advanceTimersByTime(8_000);
+      vi.advanceTimersByTime(TRADING_VIEW_WIDGET_TIMEOUT_MS);
+    });
+
+    expect(
+      screen.queryByText(/TradingView widget failed to load\. Try another symbol or reload\./i),
+    ).not.toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(TRADING_VIEW_WIDGET_TIMEOUT_MS);
     });
 
     expect(
       screen.getByText(/TradingView widget failed to load\. Try another symbol or reload\./i),
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Retry widget/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Open in TradingView/i })).toBeInTheDocument();
+  });
+
+  test("allows a timed-out widget to be retried", () => {
+    const { container } = render(
+      <TradingViewWidgetEmbed
+        widgetType="fundamental-data"
+        symbol="NASDAQ:AAPL"
+        theme="dark"
+        title="Fundamental Data"
+      />,
+    );
+
+    act(() => {
+      vi.advanceTimersByTime(TRADING_VIEW_WIDGET_TIMEOUT_MS);
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(TRADING_VIEW_WIDGET_TIMEOUT_MS);
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Retry widget/i }));
+
+    expect(
+      screen.queryByText(/TradingView widget failed to load\. Try another symbol or reload\./i),
+    ).not.toBeInTheDocument();
+    expect(container.querySelector('iframe[title="Fundamental Data"]')?.getAttribute("srcdoc")).toContain(
+      "embed-widget-financials",
+    );
   });
 });

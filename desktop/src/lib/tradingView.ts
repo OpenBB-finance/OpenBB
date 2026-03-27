@@ -141,6 +141,11 @@ export function toTradingViewSymbolPath(symbol: string): string {
   return normalized.replace(":", "-");
 }
 
+export function buildTradingViewSymbolUrl(symbol: string): string {
+  const symbolPath = toTradingViewSymbolPath(symbol);
+  return `https://www.tradingview.com/symbols/${symbolPath}/`;
+}
+
 export function buildTradingViewFinancialLinks(symbol: string): TradingViewFinancialLink[] {
   const symbolPath = toTradingViewSymbolPath(symbol);
   const base = `https://www.tradingview.com/symbols/${symbolPath}`;

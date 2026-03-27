@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkspaceRouteImport } from './routes/workspace'
+import { Route as WatchlistRouteImport } from './routes/watchlist'
 import { Route as UninstallRouteImport } from './routes/uninstall'
 import { Route as TradingRouteImport } from './routes/trading'
 import { Route as SetupRouteImport } from './routes/setup'
@@ -32,6 +33,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const WorkspaceRoute = WorkspaceRouteImport.update({
   id: '/workspace',
   path: '/workspace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchlistRoute = WatchlistRouteImport.update({
+  id: '/watchlist',
+  path: '/watchlist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UninstallRoute = UninstallRouteImport.update({
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/setup': typeof SetupRoute
   '/trading': typeof TradingRoute
   '/uninstall': typeof UninstallRoute
+  '/watchlist': typeof WatchlistRoute
   '/workspace': typeof WorkspaceRoute
 }
 export interface FileRoutesByTo {
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
   '/trading': typeof TradingRoute
   '/uninstall': typeof UninstallRoute
+  '/watchlist': typeof WatchlistRoute
   '/workspace': typeof WorkspaceRoute
 }
 export interface FileRoutesById {
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/setup': typeof SetupRoute
   '/trading': typeof TradingRoute
   '/uninstall': typeof UninstallRoute
+  '/watchlist': typeof WatchlistRoute
   '/workspace': typeof WorkspaceRoute
 }
 export interface FileRouteTypes {
@@ -210,6 +219,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/trading'
     | '/uninstall'
+    | '/watchlist'
     | '/workspace'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/trading'
     | '/uninstall'
+    | '/watchlist'
     | '/workspace'
   id:
     | '__root__'
@@ -252,6 +263,7 @@ export interface FileRouteTypes {
     | '/setup'
     | '/trading'
     | '/uninstall'
+    | '/watchlist'
     | '/workspace'
   fileRoutesById: FileRoutesById
 }
@@ -274,6 +286,7 @@ export interface RootRouteChildren {
   SetupRoute: typeof SetupRoute
   TradingRoute: typeof TradingRoute
   UninstallRoute: typeof UninstallRoute
+  WatchlistRoute: typeof WatchlistRoute
   WorkspaceRoute: typeof WorkspaceRoute
 }
 
@@ -284,6 +297,13 @@ declare module '@tanstack/react-router' {
       path: '/workspace'
       fullPath: '/workspace'
       preLoaderRoute: typeof WorkspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watchlist': {
+      id: '/watchlist'
+      path: '/watchlist'
+      fullPath: '/watchlist'
+      preLoaderRoute: typeof WatchlistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/uninstall': {
@@ -434,6 +454,7 @@ const rootRouteChildren: RootRouteChildren = {
   SetupRoute: SetupRoute,
   TradingRoute: TradingRoute,
   UninstallRoute: UninstallRoute,
+  WatchlistRoute: WatchlistRoute,
   WorkspaceRoute: WorkspaceRoute,
 }
 export const routeTree = rootRouteImport

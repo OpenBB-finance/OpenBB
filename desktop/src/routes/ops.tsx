@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { openPath } from "@tauri-apps/plugin-opener";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { attachMacroStudyReport, fetchMacroStudies } from "../lib/macroApi";
 import { resolveOpenBBBackend } from "../lib/openbbBackend";
+import { openPathSafely } from "../lib/pathOpener";
 import {
   fetchModelRegistryChallenger,
   fetchModelRegistryChampion,
@@ -41,6 +41,24 @@ function folderFromPath(path: string): string {
   const normalized = path.replace(/\\/g, "/");
   const index = normalized.lastIndexOf("/");
   return index > 0 ? normalized.slice(0, index) : path;
+}
+
+async function copyText(value: string): Promise<void> {
+  if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  if (typeof document === "undefined") {
+    throw new Error("Clipboard is unavailable in this runtime.");
+  }
+  const textArea = document.createElement("textarea");
+  textArea.value = value;
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.appendChild(textArea);
+  textArea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textArea);
 }
 
 function Card({ title, children }: { title: string; children: ReactNode }) {
@@ -127,6 +145,7 @@ function OpsPage() {
   const [selectedStudyId, setSelectedStudyId] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [pathActionError, setPathActionError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const refresh = useCallback(async () => {
@@ -220,6 +239,25 @@ function OpsPage() {
       await refresh();
     } catch (error) {
       setErrorMessage(toErrorMessage(error));
+    }
+  }
+
+  async function handleOpenReportPath(path: string) {
+    try {
+      setPathActionError(null);
+      await openPathSafely(path);
+    } catch (error) {
+      setPathActionError(toErrorMessage(error));
+    }
+  }
+
+  async function handleCopyReportPath(path: string) {
+    try {
+      await copyText(path);
+      setPathActionError(null);
+      setActionMessage(`Copied path: ${path}`);
+    } catch (error) {
+      setPathActionError(toErrorMessage(error));
     }
   }
 
@@ -317,20 +355,32 @@ function OpsPage() {
                   <div key={report.report_path} className="rounded-sm border border-theme-outline bg-theme-secondary p-3">
                     <p className="body-xs-medium text-theme-primary">{report.title ?? report.report_type}</p>
                     <p className="mt-1 body-xxs-regular break-all text-theme-muted">{report.report_path}</p>
+                    {pathActionError ? (
+                      <div className="mt-2 rounded-sm border border-amber-500/40 bg-amber-500/10 px-2 py-2">
+                        <p className="body-xxs-regular text-amber-200">{pathActionError}</p>
+                      </div>
+                    ) : null}
                     <div className="mt-3 flex flex-wrap gap-2">
                       <button
                         type="button"
                         className="rounded-sm border border-theme-outline px-3 py-1 body-xs-medium text-theme-primary"
-                        onClick={() => void openPath(report.report_path)}
+                        onClick={() => void handleOpenReportPath(report.report_path)}
                       >
                         Open Report
                       </button>
                       <button
                         type="button"
                         className="rounded-sm border border-theme-outline px-3 py-1 body-xs-medium text-theme-primary"
-                        onClick={() => void openPath(folderFromPath(report.report_path))}
+                        onClick={() => void handleOpenReportPath(folderFromPath(report.report_path))}
                       >
                         Open Folder
+                      </button>
+                      <button
+                        type="button"
+                        className="rounded-sm border border-theme-outline px-3 py-1 body-xs-medium text-theme-primary"
+                        onClick={() => void handleCopyReportPath(report.report_path)}
+                      >
+                        Copy Path
                       </button>
                       <button
                         type="button"

@@ -5,7 +5,11 @@ const DEFAULT_OPENBB_API_URL = "http://127.0.0.1:6900";
 export const OPENBB_API_BEARER_TOKEN_STORAGE_KEY = "openbb-api-bearer-token";
 export const OPENBB_API_BASIC_USERNAME_STORAGE_KEY = "openbb-api-basic-username";
 export const OPENBB_API_BASIC_PASSWORD_STORAGE_KEY = "openbb-api-basic-password";
+const ENV_OPENBB_API_URL = typeof import.meta.env.VITE_OPENBB_API_URL === "string"
+  ? import.meta.env.VITE_OPENBB_API_URL.trim()
+  : "";
 const FALLBACK_OPENBB_API_URLS = [
+  ENV_OPENBB_API_URL,
   DEFAULT_OPENBB_API_URL,
   "http://127.0.0.1:6901",
 ];
@@ -190,7 +194,7 @@ function canQueryTauriBackendServices(): boolean {
 }
 
 function shouldUseDevProbeProxy(baseUrl: string): boolean {
-  if (!import.meta.env.DEV || typeof window === "undefined") {
+  if (!import.meta.env.DEV || import.meta.env.MODE === "test" || typeof window === "undefined") {
     return false;
   }
 
@@ -201,7 +205,7 @@ function shouldUseDevProbeProxy(baseUrl: string): boolean {
   return (
     window.location.protocol === "http:"
     && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-    && window.location.port === "1470"
+    && /^[0-9]+$/.test(window.location.port)
   );
 }
 
@@ -495,7 +499,7 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
   }
 
   pendingResolutionPromise = (async () => {
-    let candidateUrl = DEFAULT_OPENBB_API_URL;
+    let candidateUrl = ENV_OPENBB_API_URL || DEFAULT_OPENBB_API_URL;
     let source: BackendResolution["source"] = "fallback";
     let detail = "Using fallback URL.";
     let serviceQueryFailed = false;
@@ -556,7 +560,7 @@ export async function resolveOpenBBBackend(): Promise<BackendResolution> {
         source = "stored-url";
         detail = "Using previously stored backend URL.";
       } else {
-        candidateUrl = DEFAULT_OPENBB_API_URL;
+        candidateUrl = ENV_OPENBB_API_URL || DEFAULT_OPENBB_API_URL;
         source = "fallback";
         detail = "Failed to query backend services. Using fallback URL.";
       }

@@ -91,6 +91,7 @@ describe("Macro Route", () => {
 
   beforeEach(() => {
     vi.useRealTimers();
+    window.history.replaceState({}, "", "/macro");
     invalidateMacroCache();
     backendMock.mockReset();
     backendMock.mockResolvedValue({
@@ -344,6 +345,50 @@ describe("Macro Route", () => {
 
     await waitFor(() => {
       expect(screen.getByText("C:/exports/study-1.json")).toBeInTheDocument();
+    });
+  });
+
+  test("hydrates deep-link search state and syncs view changes back into the URL", async () => {
+    window.history.replaceState(
+      {},
+      "",
+      "/macro?studyId=study-1&view=relationship&query=labor&domain=labor&asOfDate=2026-02-15&seriesKey=FRED:BAD",
+    );
+    const replaceSpy = vi.spyOn(window.history, "replaceState");
+
+    render(<MacroComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Study Name/i)).toHaveValue("Labor and Inflation Monitor");
+      expect(screen.getByLabelText(/Search Catalog/i)).toHaveValue("labor");
+      expect(screen.getByLabelText(/Domain/i)).toHaveValue("labor");
+      expect(screen.getByLabelText(/As Of Date/i)).toHaveValue("2026-02-15");
+      expect(screen.getByText(/Series FRED:BAD is not in the active study basket\./i)).toBeInTheDocument();
+      expect(screen.getByText("Lead-Lag Table")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "release" }));
+
+    await waitFor(() => {
+      const nextUrl = String(replaceSpy.mock.calls.at(-1)?.[2] ?? "");
+      expect(nextUrl).toContain("studyId=study-1");
+      expect(nextUrl).toContain("view=release");
+      expect(nextUrl).toContain("query=labor");
+      expect(nextUrl).toContain("domain=labor");
+      expect(nextUrl).toContain("asOfDate=2026-02-15");
+    });
+  });
+
+  test("ignores invalid search params and falls back to the first available study", async () => {
+    window.history.replaceState({}, "", "/macro?studyId=missing-study&view=bad-view&asOfDate=2026-99-99");
+
+    render(<MacroComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Study Name/i)).toHaveValue("Labor and Inflation Monitor");
+      expect(screen.getByText(/Study missing-study was not found\./i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/As Of Date/i)).toHaveValue("");
+      expect(screen.getByText("Relationship Lens")).toBeInTheDocument();
     });
   });
 });

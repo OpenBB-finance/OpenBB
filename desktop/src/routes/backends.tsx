@@ -1,7 +1,7 @@
 import { Button, Tooltip } from "@openbb/ui-pro";
 import { createFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
-import { openPath, openUrl } from "@tauri-apps/plugin-opener";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { listen } from "@tauri-apps/api/event";
 import React, {
 	type ReactNode,
@@ -18,9 +18,10 @@ import {
 	OPENBB_API_BASIC_PASSWORD_STORAGE_KEY,
 	OPENBB_API_BASIC_USERNAME_STORAGE_KEY,
 	OPENBB_API_BEARER_TOKEN_STORAGE_KEY,
-	setOpenBBBasicCredentials,
-	setOpenBBBearerToken,
+  setOpenBBBasicCredentials,
+  setOpenBBBearerToken,
 } from "../lib/openbbBackend";
+import { openPathSafely } from "../lib/pathOpener";
 import { getDesktopRuntimeMessage, isTauriRuntimeAvailable } from "../lib/tauriRuntime";
 
 import CustomIcon from "~/components/Icon";
@@ -48,6 +49,24 @@ interface BackendService {
 	apiUrl?: string;
 	url?: string;
 	working_directory?: string;
+}
+
+async function copyText(value: string): Promise<void> {
+	if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+		await navigator.clipboard.writeText(value);
+		return;
+	}
+	if (typeof document === "undefined") {
+		throw new Error("Clipboard is unavailable in this runtime.");
+	}
+	const textArea = document.createElement("textarea");
+	textArea.value = value;
+	textArea.style.position = "fixed";
+	textArea.style.opacity = "0";
+	document.body.appendChild(textArea);
+	textArea.select();
+	document.execCommand("copy");
+	document.body.removeChild(textArea);
 }
 
 interface Environment {
@@ -312,6 +331,36 @@ const CertificateGenerationModal: React.FC<
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [successMessage, setSuccessMessage] = useState<string | null>(null);
+	const [pathActionError, setPathActionError] = useState<string | null>(null);
+
+	const handleOpenOutputDir = useCallback(async () => {
+		if (!outputDir) {
+			return;
+		}
+		try {
+			setPathActionError(null);
+			await openPathSafely(outputDir);
+		} catch (pathError) {
+			setPathActionError(
+				pathError instanceof Error ? pathError.message : "Failed to open output folder.",
+			);
+		}
+	}, [outputDir]);
+
+	const handleCopyOutputDir = useCallback(async () => {
+		if (!outputDir) {
+			return;
+		}
+		try {
+			await copyText(outputDir);
+			setPathActionError(null);
+			setSuccessMessage(`Copied path: ${outputDir}`);
+		} catch (copyError) {
+			setPathActionError(
+				copyError instanceof Error ? copyError.message : "Failed to copy output folder path.",
+			);
+		}
+	}, [outputDir]);
 
 	const handleGenerate = async () => {
 		if (!commonName) {
@@ -330,6 +379,7 @@ const CertificateGenerationModal: React.FC<
 		setIsLoading(true);
 		setError(null);
 		setSuccessMessage(null);
+		setPathActionError(null);
 
 		try {
 			const altNamesArray = altNames.split(",").map((s) => s.trim());
@@ -391,16 +441,34 @@ const CertificateGenerationModal: React.FC<
 					</div>
 				)}
 				{successMessage && (
-					<div className="p-3 bg-theme-secondary border border-green-500 rounded text-green-500 body-xs-regular mb-4 flex justify-between items-center">
-						<p>{successMessage}</p>
-						<Button
-							variant="secondary"
-							size="sm"
-							onClick={async () => await openPath(outputDir)}
-							className="button-secondary"
-						>
-							Open Folder
-						</Button>
+					<div className="p-3 bg-theme-secondary border border-green-500 rounded text-green-500 body-xs-regular mb-4">
+						<div className="flex flex-wrap items-center justify-between gap-2">
+							<p>{successMessage}</p>
+							<div className="flex flex-wrap items-center gap-2">
+								<Button
+									variant="secondary"
+									size="sm"
+									onClick={() => void handleOpenOutputDir()}
+									className="button-secondary"
+								>
+									Open Folder
+								</Button>
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={() => void handleCopyOutputDir()}
+									className="button-ghost"
+								>
+									Copy Path
+								</Button>
+							</div>
+						</div>
+						<div className="mt-2 body-xxs-regular break-all text-theme-muted">{outputDir}</div>
+						{pathActionError ? (
+							<div className="mt-2 rounded border border-amber-500/50 bg-amber-500/10 px-2 py-1 text-amber-200">
+								{pathActionError}
+							</div>
+						) : null}
 					</div>
 				)}
 

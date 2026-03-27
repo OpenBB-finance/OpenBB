@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { openPath } from "@tauri-apps/plugin-opener";
 import { PanelCard } from "../quant/PanelCard";
 import { MacroRegimeSummary } from "./MacroRegimeSummary";
 import { MacroStudyChart } from "./MacroStudyChart";
 import { resolveOpenBBBackend } from "../../lib/openbbBackend";
+import { openPathSafely } from "../../lib/pathOpener";
 import {
   exportMacroFeatures,
   exportMacroReport,
@@ -38,6 +38,7 @@ import type {
 } from "../../types/macro";
 
 const DEFAULT_LINKED_ASSETS = ["SPY", "TLT", "GLD"];
+const MACRO_VIEW_MODES: MacroViewMode[] = ["explorer", "compare", "relationship", "release", "report"];
 
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
@@ -107,6 +108,14 @@ function safeScore(value: number | null | undefined, digits = 2): string {
     return "-";
   }
   return value.toFixed(digits);
+}
+
+function isValidAsOfDate(value: string | null): value is string {
+  return Boolean(value && /^\d{4}-\d{2}-\d{2}$/.test(value));
+}
+
+function isMacroViewMode(value: string | null): value is MacroViewMode {
+  return Boolean(value && MACRO_VIEW_MODES.includes(value as MacroViewMode));
 }
 
 function buildLineOption(
@@ -194,7 +203,10 @@ function buildScatterOption(payload: MacroScatterResponse | null): Record<string
 
 function buildVintageOption(payload: MacroVintageResponse | null): Record<string, unknown> {
   const categories = Array.from(
-    new Set([...(payload?.latest.map((point) => point.date) ?? []), ...(payload?.as_of.map((point) => point.date) ?? [])]),
+    new Set([
+      ...(payload?.latest?.map((point) => point.date) ?? []),
+      ...(payload?.as_of?.map((point) => point.date) ?? []),
+    ]),
   ).sort();
   const latestMap = new Map((payload?.latest ?? []).map((point) => [point.date, point.value]));
   const asOfMap = new Map((payload?.as_of ?? []).map((point) => [point.date, point.value]));
@@ -215,16 +227,29 @@ function buildVintageOption(payload: MacroVintageResponse | null): Record<string
   };
 }
 
+async function copyText(value: string): Promise<void> {
+  if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  if (typeof document === "undefined") {
+    throw new Error("Clipboard is unavailable in this runtime.");
+  }
+  const textArea = document.createElement("textarea");
+  textArea.value = value;
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.appendChild(textArea);
+  textArea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textArea);
+}
+
 async function openLocalPath(path: string | null | undefined) {
   if (!path) {
     return;
   }
-  try {
-    await openPath(path);
-  } catch {
-    const normalized = path.replace(/\\/g, "/");
-    window.open(`file:///${normalized}`, "_blank", "noopener,noreferrer");
-  }
+  await openPathSafely(path);
 }
 
 export default function MacroPage() {
@@ -259,8 +284,18 @@ export default function MacroPage() {
   const [regimeState, setRegimeState] = useState<MacroRegimeStateResponse | null>(null);
   const [reportExport, setReportExport] = useState<{ report_path?: string | null } | null>(null);
   const [featureExport, setFeatureExport] = useState<MacroFeatureExportResponse | null>(null);
+  const [pathActionError, setPathActionError] = useState<string | null>(null);
 
   const lastSavedSignatureRef = useRef("");
+  const hasHydratedSearchRef = useRef(false);
+  const initialSearchRef = useRef({
+    studyId: new URLSearchParams(window.location.search).get("studyId"),
+    view: new URLSearchParams(window.location.search).get("view"),
+    seriesKey: new URLSearchParams(window.location.search).get("seriesKey"),
+    query: new URLSearchParams(window.location.search).get("query"),
+    domain: new URLSearchParams(window.location.search).get("domain"),
+    asOfDate: new URLSearchParams(window.location.search).get("asOfDate"),
+  });
 
   const currentStudy = studyDraft;
   const currentSeriesKeys = currentStudy?.series_specs.map((spec) => spec.key) ?? [];
@@ -297,13 +332,20 @@ export default function MacroPage() {
   }, [currentSeriesKeys, releaseCalendar]);
 
   const hydrateStudies = useCallback((items: MacroStudyPayload[]) => {
+    const initialSearch = initialSearchRef.current;
     setStudies(items);
     const fallbackStudy = items[0] ?? null;
-    const nextStudy = items.find((item) => item.id === selectedStudyId) ?? fallbackStudy;
+    const nextStudy =
+      items.find((item) => item.id === selectedStudyId) ??
+      items.find((item) => item.id === initialSearch.studyId) ??
+      fallbackStudy;
     if (nextStudy) {
       setSelectedStudyId(nextStudy.id ?? null);
       setStudyDraft(nextStudy);
       lastSavedSignatureRef.current = studySignature(nextStudy);
+      if (initialSearch.studyId && nextStudy.id !== initialSearch.studyId) {
+        setInfoMessage(`Study ${initialSearch.studyId} was not found. Loaded the latest available study instead.`);
+      }
     } else {
       setSelectedStudyId(null);
       setStudyDraft(emptyStudy());
@@ -348,6 +390,32 @@ export default function MacroPage() {
   useEffect(() => {
     void loadBootstrap();
   }, [loadBootstrap]);
+
+  useEffect(() => {
+    if (hasHydratedSearchRef.current || studies.length === 0) {
+      return;
+    }
+    hasHydratedSearchRef.current = true;
+    const initialSearch = initialSearchRef.current;
+    if (initialSearch.query) {
+      setSearchText(initialSearch.query);
+    }
+    if (initialSearch.domain) {
+      setDomainFilter(initialSearch.domain);
+    }
+    if (isValidAsOfDate(initialSearch.asOfDate)) {
+      setAsOfDate(initialSearch.asOfDate);
+    }
+    if (isMacroViewMode(initialSearch.view)) {
+      setViewMode(initialSearch.view);
+    }
+    if (initialSearch.seriesKey) {
+      const currentKeys = new Set((studyDraft?.series_specs ?? []).map((spec) => spec.key));
+      if (!currentKeys.has(initialSearch.seriesKey)) {
+        setInfoMessage(`Series ${initialSearch.seriesKey} is not in the active study basket.`);
+      }
+    }
+  }, [studies.length, studyDraft?.series_specs]);
 
   const persistStudy = useCallback(
     async (payload: MacroStudyPayload, showInfo = false) => {
@@ -486,6 +554,37 @@ export default function MacroPage() {
     void loadRegimeSummary();
   }, [backendBaseUrl, endDate, macroReady, startDate]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    if (selectedStudyId) {
+      params.set("studyId", selectedStudyId);
+    } else {
+      params.delete("studyId");
+    }
+    params.set("view", viewMode);
+    if (searchText.trim()) {
+      params.set("query", searchText.trim());
+    } else {
+      params.delete("query");
+    }
+    if (domainFilter && domainFilter !== "all") {
+      params.set("domain", domainFilter);
+    } else {
+      params.delete("domain");
+    }
+    if (isValidAsOfDate(asOfDate)) {
+      params.set("asOfDate", asOfDate);
+    } else {
+      params.delete("asOfDate");
+    }
+    const nextSearch = params.toString();
+    const nextUrl = `${window.location.pathname}${nextSearch ? `?${nextSearch}` : ""}`;
+    window.history.replaceState(window.history.state, "", nextUrl);
+  }, [asOfDate, domainFilter, searchText, selectedStudyId, viewMode]);
+
   const updateStudy = useCallback((updater: (study: MacroStudyPayload) => MacroStudyPayload) => {
     setStudyDraft((previous) => (previous ? updater(previous) : previous));
   }, []);
@@ -585,6 +684,28 @@ export default function MacroPage() {
       setIsExporting(false);
     }
   }, [asOfDate, backendBaseUrl, currentStudy?.id, updateStudy]);
+
+  const handleOpenPath = useCallback(async (path: string | null | undefined) => {
+    try {
+      setPathActionError(null);
+      await openLocalPath(path);
+    } catch (error) {
+      setPathActionError(error instanceof Error ? error.message : "Failed to open local path.");
+    }
+  }, []);
+
+  const handleCopyPath = useCallback(async (path: string | null | undefined) => {
+    if (!path) {
+      return;
+    }
+    try {
+      await copyText(path);
+      setPathActionError(null);
+      setInfoMessage(`Copied path: ${path}`);
+    } catch (error) {
+      setPathActionError(error instanceof Error ? error.message : "Failed to copy local path.");
+    }
+  }, []);
 
   const headerTitle = currentStudy?.name ?? "Macro Lab";
 
@@ -1023,12 +1144,18 @@ export default function MacroPage() {
                 <button type="button" onClick={() => void handleExportFeatures()} disabled={!currentStudy?.id || isExporting} className="rounded-sm border border-theme-outline px-3 py-2 body-sm-medium text-theme-primary disabled:opacity-50">
                   Export Feature Lineage
                 </button>
+                {pathActionError ? (
+                  <div className="rounded-sm border border-amber-500/40 bg-amber-500/10 px-3 py-2">
+                    <p className="body-xxs-regular text-amber-200">{pathActionError}</p>
+                  </div>
+                ) : null}
                 {reportExport?.report_path ? (
                   <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
                     <div className="body-xxs-regular text-theme-muted">{reportExport.report_path}</div>
                     <div className="mt-2 flex gap-2">
-                      <button type="button" onClick={() => openLocalPath(reportExport.report_path)} className="body-xs-medium text-theme-accent">Open Report</button>
-                      <button type="button" onClick={() => openLocalPath(reportExport.report_path?.split(/[/\\]/).slice(0, -1).join("/"))} className="body-xs-medium text-theme-accent">Open Folder</button>
+                      <button type="button" onClick={() => void handleOpenPath(reportExport.report_path)} className="body-xs-medium text-theme-accent">Open Report</button>
+                      <button type="button" onClick={() => void handleOpenPath(reportExport.report_path?.split(/[/\\]/).slice(0, -1).join("/"))} className="body-xs-medium text-theme-accent">Open Folder</button>
+                      <button type="button" onClick={() => void handleCopyPath(reportExport.report_path)} className="body-xs-medium text-theme-accent">Copy Path</button>
                     </div>
                   </div>
                 ) : null}
@@ -1036,7 +1163,8 @@ export default function MacroPage() {
                   <div className="rounded-sm border border-theme-outline bg-theme-secondary px-3 py-2">
                     <div className="body-xxs-regular text-theme-muted">{featureExport.artifact_path}</div>
                     <div className="mt-2 flex gap-2">
-                      <button type="button" onClick={() => openLocalPath(featureExport.artifact_path)} className="body-xs-medium text-theme-accent">Open Export</button>
+                      <button type="button" onClick={() => void handleOpenPath(featureExport.artifact_path)} className="body-xs-medium text-theme-accent">Open Export</button>
+                      <button type="button" onClick={() => void handleCopyPath(featureExport.artifact_path)} className="body-xs-medium text-theme-accent">Copy Path</button>
                       <button type="button" onClick={() => updateStudy((study) => ({ ...study, linked_feature_set_id: featureExport.artifact_path ?? study.linked_feature_set_id }))} className="body-xs-medium text-theme-accent">Attach To Study</button>
                     </div>
                   </div>

@@ -87,6 +87,7 @@ describe("Root Route", () => {
       "Settings",
       "Workspace",
       "Finance Lab",
+      "Watchlist",
       "Macro Lab",
       "Strategy Lab",
       "Portfolio & Execution",
@@ -109,6 +110,7 @@ describe("Root Route", () => {
       expect(screen.queryByText(/Settings/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Workspace/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Finance Lab/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Watchlist/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Macro Lab/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Strategy Lab/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/Portfolio & Execution/i)).not.toBeInTheDocument();

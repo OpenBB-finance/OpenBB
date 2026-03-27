@@ -32,6 +32,7 @@ describe("Execution Route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     clearCachePrefix("");
+    window.history.replaceState({}, "", "/execution");
     vi.mocked(invoke).mockResolvedValue([
       {
         id: "openbb-api",
@@ -151,14 +152,65 @@ describe("Execution Route", () => {
           updated_at: "2026-03-06T06:35:00Z",
         });
       }
-      if (url.endsWith("/api/v1/quant_ml/trading/execution/mode/update") && init?.method === "POST") {
+      if (url.includes("/api/v1/quant_ml/execution/mode?")) {
+        return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          mode: "paper",
+          live_adapter_enabled: false,
+          broker_ready: false,
+          kill_switch: false,
+          updated_at: "2026-03-06T06:35:00Z",
+        });
+      }
+      if (url.endsWith("/api/v1/quant_ml/execution/mode/update") && init?.method === "POST") {
         const body = init?.body ? JSON.parse(String(init.body)) : {};
         return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
           mode: body.mode,
           live_adapter_enabled: false,
           broker_ready: false,
           kill_switch: false,
           updated_at: "2026-03-06T06:35:00Z",
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/execution/orders/current?")) {
+        return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          status: "ok",
+          orders: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/execution/fills/history?")) {
+        return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          status: "ok",
+          fills: [],
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/execution/positions/current?")) {
+        return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          status: "ok",
+          positions: [],
+          cash: 100000,
+          gross_exposure: 0,
+          net_exposure: 0,
+        });
+      }
+      if (url.includes("/api/v1/quant_ml/execution/pnl?")) {
+        return mockResponse({
+          run_id: "run-1",
+          model_name: "lgbm_ranker",
+          status: "ok",
+          total_pnl: 0,
+          realized_pnl: 0,
+          unrealized_pnl: 0,
+          return_pct: 0,
         });
       }
       if (url.endsWith("/api/v1/quant_ml/execution/orders/preview")) {
@@ -198,18 +250,30 @@ describe("Execution Route", () => {
     }) as unknown as typeof fetch;
   });
 
-  test("runs preview and risk workflow without crashing", async () => {
+  test("shows empty-state guard until a run handoff is loaded", async () => {
     await act(async () => {
       render(<ExecutionComponent />);
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Portfolio & Execution")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Execution");
+      expect(screen.getByText(/Execution requires a run handoff/i)).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /Open Strategy Lab/i })).toBeInTheDocument();
+    });
+  });
+
+  test("runs preview and risk workflow without crashing", async () => {
+    window.history.replaceState({}, "", "/execution?runId=run-1&modelName=lgbm_ranker");
+    await act(async () => {
+      render(<ExecutionComponent />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Execution");
       expect(screen.getByRole("tab", { name: "Orders" })).toHaveAttribute("aria-selected", "true");
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(/^Execution Run ID$/i), { target: { value: "run-1" } });
       fireEvent.click(screen.getByRole("button", { name: /Preview \+ Risk Check/i }));
     });
 
@@ -223,12 +287,12 @@ describe("Execution Route", () => {
   });
 
   test("updates execution mode without crashing", async () => {
+    window.history.replaceState({}, "", "/execution?runId=run-1&modelName=lgbm_ranker");
     await act(async () => {
       render(<ExecutionComponent />);
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByLabelText(/^Execution Run ID$/i), { target: { value: "run-1" } });
       fireEvent.click(screen.getByRole("button", { name: /Preview \+ Risk Check/i }));
     });
 
@@ -242,9 +306,11 @@ describe("Execution Route", () => {
 
     await waitFor(() => {
       const calls = vi.mocked(global.fetch).mock.calls.filter(
-        (call) => String(call[0]).endsWith("/api/v1/quant_ml/trading/execution/mode/update") && call[1]?.method === "POST",
+        (call) => String(call[0]).endsWith("/api/v1/quant_ml/execution/mode/update") && call[1]?.method === "POST",
       );
       expect(calls.length).toBeGreaterThan(0);
     });
+
+    expect(screen.getByText(/Live adapter is not broker-ready in this environment./i)).toBeInTheDocument();
   });
 });

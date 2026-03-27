@@ -5,7 +5,7 @@ param(
   [ValidateSet("dev", "prod")]
   [string]$ApiDocsMode = "dev",
   [ValidateSet("enabled", "disabled", "inherit")]
-  [string]$ApiAuthMode = "enabled",
+  [string]$ApiAuthMode = "disabled",
   [string]$ApiAuthUsername = "",
   [string]$ApiAuthPassword = "",
   [ValidateSet("inherit", "thread", "process")]
@@ -343,6 +343,8 @@ if (Test-ListeningPort -Port $FrontendPort) {
 else {
   $previousFrontendApiUsername = $env:VITE_OPENBB_API_USERNAME
   $previousFrontendApiPassword = $env:VITE_OPENBB_API_PASSWORD
+  $previousFrontendApiUrl = $env:VITE_OPENBB_API_URL
+  $env:VITE_OPENBB_API_URL = "http://127.0.0.1:$ApiPort"
   if ($apiAuthEnabled) {
     $env:VITE_OPENBB_API_USERNAME = $ApiAuthUsername
     $env:VITE_OPENBB_API_PASSWORD = $ApiAuthPassword
@@ -368,6 +370,12 @@ else {
   }
   else {
     $env:VITE_OPENBB_API_PASSWORD = $previousFrontendApiPassword
+  }
+  if ($null -eq $previousFrontendApiUrl) {
+    Remove-Item Env:VITE_OPENBB_API_URL -ErrorAction SilentlyContinue
+  }
+  else {
+    $env:VITE_OPENBB_API_URL = $previousFrontendApiUrl
   }
   Write-Host ("Started frontend launcher process PID {0}" -f $frontendProcess.Id)
 }

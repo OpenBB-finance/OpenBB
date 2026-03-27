@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type {
   AlphaMappingMode,
   CovarianceMethod,
@@ -64,6 +65,7 @@ interface TrainingConfigSectionProps {
   onBalancedLongShortChange: (checked: boolean) => void;
   showAdvancedConfig: boolean;
   onToggleAdvancedConfig: () => void;
+  activeLabStep?: string;
   modelConfig: ModelConfigInput;
   onModelConfigChange: (patch: Partial<ModelConfigInput>) => void;
   walkForwardConfig: WalkForwardConfigInput;
@@ -111,6 +113,7 @@ export function TrainingConfigSection({
   onBalancedLongShortChange,
   showAdvancedConfig,
   onToggleAdvancedConfig,
+  activeLabStep,
   modelConfig,
   onModelConfigChange,
   walkForwardConfig,
@@ -130,6 +133,20 @@ export function TrainingConfigSection({
   walkforwardElapsed,
   onWalkforwardBacktest,
 }: TrainingConfigSectionProps) {
+  const advancedSectionDefaults = {
+    dataFeatures: activeLabStep === "setup" || activeLabStep === "review",
+    modelWindows: activeLabStep === "train",
+    walkForward: activeLabStep === "backtest",
+    portfolioOptimizer: activeLabStep === "backtest" || activeLabStep === "promote",
+  };
+  const [advancedSectionsOpen, setAdvancedSectionsOpen] = useState(advancedSectionDefaults);
+
+  useEffect(() => {
+    if (!showAdvancedConfig) {
+      setAdvancedSectionsOpen(advancedSectionDefaults);
+    }
+  }, [activeLabStep, showAdvancedConfig]);
+
   return (
     <>
       <RunSelectorCard
@@ -200,7 +217,10 @@ export function TrainingConfigSection({
 
       <div className="grid grid-cols-2 gap-2">
         <label className="body-xs-medium text-theme-muted">
-          Model
+          Focus Model
+          <p className="mt-1 body-xxs-regular text-theme-muted">
+            Training currently runs the dual compare pack (LGBM + XGB). Focus model controls which artifacts the lab prioritizes after training.
+          </p>
           <select
             className="mt-1 w-full rounded-sm border border-theme-outline bg-theme-secondary p-2 body-xs-regular text-theme-primary"
             value={selectedModel}
@@ -208,9 +228,6 @@ export function TrainingConfigSection({
           >
             <option value="lgbm_ranker">LGBM Ranker</option>
             <option value="xgb_lstm">XGB + LSTM</option>
-            <option value="catboost_ranker" disabled>
-              CatBoost Ranker (temporarily disabled)
-            </option>
           </select>
         </label>
         <label className="body-xs-medium text-theme-muted">
@@ -264,10 +281,13 @@ export function TrainingConfigSection({
             onChange={(event) => onIncludeFundamentalsChange(event.target.checked)}
             aria-label="Include fundamentals"
           />
-          Fundamental Momentum
+          Fundamental Features
         </label>
         <label className="body-xs-medium text-theme-muted">
           Fundamental Provider
+          <p className="mt-1 body-xxs-regular text-theme-muted">
+            Auto uses the main data provider when possible.
+          </p>
           <select
             className="mt-1 w-full rounded-sm border border-theme-outline bg-theme-secondary p-2 body-xs-regular text-theme-primary"
             value={fundamentalProvider}
@@ -286,8 +306,15 @@ export function TrainingConfigSection({
             checked={includeSentiment}
             onChange={(event) => onIncludeSentimentChange(event.target.checked)}
             aria-label="Include sentiment"
+            disabled
           />
-          Market Sentiment (preview)
+          Market Sentiment
+        </label>
+        <label className="body-xs-medium text-theme-muted">
+          Sentiment Runtime
+          <p className="mt-1 body-xxs-regular text-theme-muted">
+            Temporarily unavailable. Sentiment backend is not configured in the current runtime.
+          </p>
         </label>
       </div>
 
@@ -303,59 +330,93 @@ export function TrainingConfigSection({
 
       {showAdvancedConfig ? (
         <div className="space-y-2 rounded-sm border border-theme-outline bg-theme-tertiary p-2">
-          <div className="grid grid-cols-3 gap-2">
-            <label className="body-xxs-medium text-theme-muted">
-              Purging Mode
-              <select
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={walkForwardConfig.purging_mode ?? "legacy_month_cutoff"}
-                onChange={(event) =>
-                  onWalkForwardConfigChange({
-                    purging_mode: event.target.value as PurgingMode,
-                  })
-                }
-              >
-                <option value="legacy_month_cutoff">Legacy Month Cutoff</option>
-                <option value="strict_label_overlap">Strict Label Overlap</option>
-                <option value="purged_group_kfold">Purged Group K-Fold</option>
-              </select>
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Purged Splits
-              <input
-                type="number"
-                min={2}
-                max={24}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={walkForwardConfig.purged_n_splits ?? 5}
-                onChange={(event) =>
-                  onWalkForwardConfigChange({
-                    purged_n_splits: Number(event.target.value),
-                  })
-                }
-                disabled={(walkForwardConfig.purging_mode ?? "legacy_month_cutoff") !== "purged_group_kfold"}
-              />
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Embargo %
-              <input
-                type="number"
-                step={0.005}
-                min={0}
-                max={0.5}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={walkForwardConfig.purged_embargo_pct ?? 0.01}
-                onChange={(event) =>
-                  onWalkForwardConfigChange({
-                    purged_embargo_pct: Number(event.target.value),
-                  })
-                }
-                disabled={(walkForwardConfig.purging_mode ?? "legacy_month_cutoff") !== "purged_group_kfold"}
-              />
-            </label>
-          </div>
+          <details
+            className="rounded-sm border border-theme-outline bg-theme-secondary p-2"
+            open={advancedSectionsOpen.dataFeatures}
+            onToggle={(event) =>
+              setAdvancedSectionsOpen((previous) => ({
+                ...previous,
+                dataFeatures: event.currentTarget.open,
+              }))
+            }
+          >
+            <summary className="cursor-pointer body-xxs-medium text-theme-primary">Data & Features</summary>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              <label className="body-xxs-medium text-theme-muted">
+                Alpha Mapping
+                <select
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={backtestAdvanced.alpha_mapping_mode}
+                  onChange={(event) =>
+                    onBacktestAdvancedChange({
+                      alpha_mapping_mode: event.target.value as AlphaMappingMode,
+                    })
+                  }
+                >
+                  <option value="legacy_score">Legacy Score</option>
+                  <option value="ic_vol_scaled">IC x Vol x Z</option>
+                </select>
+              </label>
+              <label className="body-xxs-medium text-theme-muted">
+                IC Lookback
+                <input
+                  type="number"
+                  min={20}
+                  max={2520}
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={backtestAdvanced.ic_lookback_days}
+                  onChange={(event) =>
+                    onBacktestAdvancedChange({
+                      ic_lookback_days: Number(event.target.value),
+                    })
+                  }
+                />
+              </label>
+              <label className="body-xxs-medium text-theme-muted">
+                IC Halflife
+                <input
+                  type="number"
+                  min={2}
+                  max={2520}
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={backtestAdvanced.ic_ewma_halflife}
+                  onChange={(event) =>
+                    onBacktestAdvancedChange({
+                      ic_ewma_halflife: Number(event.target.value),
+                    })
+                  }
+                />
+              </label>
+              <label className="body-xxs-medium text-theme-muted">
+                Alpha EMA
+                <input
+                  type="number"
+                  min={0}
+                  max={2520}
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={backtestAdvanced.alpha_ema_halflife_days}
+                  onChange={(event) =>
+                    onBacktestAdvancedChange({
+                      alpha_ema_halflife_days: Number(event.target.value),
+                    })
+                  }
+                />
+              </label>
+            </div>
+          </details>
 
-          <div className="grid grid-cols-3 gap-2">
+          <details
+            className="rounded-sm border border-theme-outline bg-theme-secondary p-2"
+            open={advancedSectionsOpen.modelWindows}
+            onToggle={(event) =>
+              setAdvancedSectionsOpen((previous) => ({
+                ...previous,
+                modelWindows: event.currentTarget.open,
+              }))
+            }
+          >
+            <summary className="cursor-pointer body-xxs-medium text-theme-primary">Model Windows</summary>
+            <div className="mt-2 grid grid-cols-3 gap-2">
             <label className="body-xxs-medium text-theme-muted">
               Seq Len
               <input
@@ -422,154 +483,169 @@ export function TrainingConfigSection({
                 onChange={(event) => onModelConfigChange({ lstm_batch_size: Number(event.target.value) })}
               />
             </label>
-          </div>
+            </div>
+          </details>
 
-          <div className="grid grid-cols-3 gap-2">
-            <label className="body-xxs-medium text-theme-muted">
-              MV Engine
-              <select
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.mv_optimizer_engine}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    mv_optimizer_engine: event.target.value as MVOptimizerEngine,
-                  })
-                }
-              >
-                <option value="legacy_slsqp">Legacy SLSQP</option>
-                <option value="auto">Auto (CVXPY -&gt; SLSQP)</option>
-                <option value="cvxpy">CVXPY</option>
-              </select>
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Covariance
-              <select
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.cov_method}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    cov_method: event.target.value as CovarianceMethod,
-                  })
-                }
-              >
-                <option value="ewma_shrink">EWMA + Shrink</option>
-                <option value="ewma">EWMA</option>
-                <option value="ledoit_wolf">Ledoit-Wolf</option>
-                <option value="sample">Sample</option>
-                <option value="stat_factor_pca">Stat Factor PCA</option>
-              </select>
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Alpha Mapping
-              <select
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.alpha_mapping_mode}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    alpha_mapping_mode: event.target.value as AlphaMappingMode,
-                  })
-                }
-              >
-                <option value="legacy_score">Legacy Score</option>
-                <option value="ic_vol_scaled">IC x Vol x Z</option>
-              </select>
-            </label>
-          </div>
+          <details
+            className="rounded-sm border border-theme-outline bg-theme-secondary p-2"
+            open={advancedSectionsOpen.walkForward}
+            onToggle={(event) =>
+              setAdvancedSectionsOpen((previous) => ({
+                ...previous,
+                walkForward: event.currentTarget.open,
+              }))
+            }
+          >
+            <summary className="cursor-pointer body-xxs-medium text-theme-primary">Walk-Forward</summary>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              <label className="body-xxs-medium text-theme-muted">
+                Purging Mode
+                <select
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={walkForwardConfig.purging_mode ?? "legacy_month_cutoff"}
+                  onChange={(event) =>
+                    onWalkForwardConfigChange({
+                      purging_mode: event.target.value as PurgingMode,
+                    })
+                  }
+                >
+                  <option value="legacy_month_cutoff">Legacy Month Cutoff</option>
+                  <option value="strict_label_overlap">Strict Label Overlap</option>
+                  <option value="purged_group_kfold">Purged Group K-Fold</option>
+                </select>
+              </label>
+              <label className="body-xxs-medium text-theme-muted">
+                Purged Splits
+                <input
+                  type="number"
+                  min={2}
+                  max={24}
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={walkForwardConfig.purged_n_splits ?? 5}
+                  onChange={(event) =>
+                    onWalkForwardConfigChange({
+                      purged_n_splits: Number(event.target.value),
+                    })
+                  }
+                  disabled={(walkForwardConfig.purging_mode ?? "legacy_month_cutoff") !== "purged_group_kfold"}
+                />
+              </label>
+              <label className="body-xxs-medium text-theme-muted">
+                Embargo %
+                <input
+                  type="number"
+                  step={0.005}
+                  min={0}
+                  max={0.5}
+                  className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                  value={walkForwardConfig.purged_embargo_pct ?? 0.01}
+                  onChange={(event) =>
+                    onWalkForwardConfigChange({
+                      purged_embargo_pct: Number(event.target.value),
+                    })
+                  }
+                  disabled={(walkForwardConfig.purging_mode ?? "legacy_month_cutoff") !== "purged_group_kfold"}
+                />
+              </label>
+            </div>
+          </details>
 
-          <div className="grid grid-cols-3 gap-2">
-            <label className="body-xxs-medium text-theme-muted">
-              IC Lookback
-              <input
-                type="number"
-                min={20}
-                max={2520}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.ic_lookback_days}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    ic_lookback_days: Number(event.target.value),
-                  })
-                }
-              />
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              IC Halflife
-              <input
-                type="number"
-                min={2}
-                max={2520}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.ic_ewma_halflife}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    ic_ewma_halflife: Number(event.target.value),
-                  })
-                }
-              />
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Alpha EMA
-              <input
-                type="number"
-                min={0}
-                max={2520}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.alpha_ema_halflife_days}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    alpha_ema_halflife_days: Number(event.target.value),
-                  })
-                }
-              />
-            </label>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            <label className="flex items-center gap-2 body-xxs-medium text-theme-muted pt-4">
-              <input
-                type="checkbox"
-                checked={backtestAdvanced.trigger_rebalance_enabled}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    trigger_rebalance_enabled: event.target.checked,
-                  })
-                }
-              />
-              Trigger Rebalance
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Trigger bps
-              <input
-                type="number"
-                min={0}
-                max={5000}
-                step={1}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.trigger_threshold_bps}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    trigger_threshold_bps: Number(event.target.value),
-                  })
-                }
-              />
-            </label>
-            <label className="body-xxs-medium text-theme-muted">
-              Trigger Cost Mult
-              <input
-                type="number"
-                min={0}
-                max={100}
-                step={0.1}
-                className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-secondary p-1.5 body-xxs-regular text-theme-primary"
-                value={backtestAdvanced.trigger_cost_multiplier}
-                onChange={(event) =>
-                  onBacktestAdvancedChange({
-                    trigger_cost_multiplier: Number(event.target.value),
-                  })
-                }
-              />
-            </label>
-          </div>
+          <details
+            className="rounded-sm border border-theme-outline bg-theme-secondary p-2"
+            open={advancedSectionsOpen.portfolioOptimizer}
+            onToggle={(event) =>
+              setAdvancedSectionsOpen((previous) => ({
+                ...previous,
+                portfolioOptimizer: event.currentTarget.open,
+              }))
+            }
+          >
+            <summary className="cursor-pointer body-xxs-medium text-theme-primary">Portfolio & Optimizer</summary>
+            <div className="mt-2 space-y-2">
+              <div className="grid grid-cols-3 gap-2">
+                <label className="body-xxs-medium text-theme-muted">
+                  MV Engine
+                  <select
+                    className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                    value={backtestAdvanced.mv_optimizer_engine}
+                    onChange={(event) =>
+                      onBacktestAdvancedChange({
+                        mv_optimizer_engine: event.target.value as MVOptimizerEngine,
+                      })
+                    }
+                  >
+                    <option value="legacy_slsqp">Legacy SLSQP</option>
+                    <option value="auto">Auto (CVXPY -&gt; SLSQP)</option>
+                    <option value="cvxpy">CVXPY</option>
+                  </select>
+                </label>
+                <label className="body-xxs-medium text-theme-muted">
+                  Covariance
+                  <select
+                    className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                    value={backtestAdvanced.cov_method}
+                    onChange={(event) =>
+                      onBacktestAdvancedChange({
+                        cov_method: event.target.value as CovarianceMethod,
+                      })
+                    }
+                  >
+                    <option value="ewma_shrink">EWMA + Shrink</option>
+                    <option value="ewma">EWMA</option>
+                    <option value="ledoit_wolf">Ledoit-Wolf</option>
+                    <option value="sample">Sample</option>
+                    <option value="stat_factor_pca">Stat Factor PCA</option>
+                  </select>
+                </label>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <label className="flex items-center gap-2 body-xxs-medium text-theme-muted pt-4">
+                  <input
+                    type="checkbox"
+                    checked={backtestAdvanced.trigger_rebalance_enabled}
+                    onChange={(event) =>
+                      onBacktestAdvancedChange({
+                        trigger_rebalance_enabled: event.target.checked,
+                      })
+                    }
+                  />
+                  Trigger Rebalance
+                </label>
+                <label className="body-xxs-medium text-theme-muted">
+                  Trigger bps
+                  <input
+                    type="number"
+                    min={0}
+                    max={5000}
+                    step={1}
+                    className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                    value={backtestAdvanced.trigger_threshold_bps}
+                    onChange={(event) =>
+                      onBacktestAdvancedChange({
+                        trigger_threshold_bps: Number(event.target.value),
+                      })
+                    }
+                  />
+                </label>
+                <label className="body-xxs-medium text-theme-muted">
+                  Trigger Cost Mult
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={0.1}
+                    className="mt-0.5 w-full rounded-sm border border-theme-outline bg-theme-primary p-1.5 body-xxs-regular text-theme-primary"
+                    value={backtestAdvanced.trigger_cost_multiplier}
+                    onChange={(event) =>
+                      onBacktestAdvancedChange({
+                        trigger_cost_multiplier: Number(event.target.value),
+                      })
+                    }
+                  />
+                </label>
+              </div>
+            </div>
+          </details>
         </div>
       ) : null}
 

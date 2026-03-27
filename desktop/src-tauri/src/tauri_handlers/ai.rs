@@ -19,9 +19,15 @@ const OLLAMA_BASE_URL: &str = "http://localhost:11434/api";
 const MAX_FILE_SIZE_BYTES: u64 = 256 * 1024;
 const CHUNK_LINES: usize = 120;
 const CHUNK_OVERLAP: usize = 20;
+const MAX_INDEX_LINE_CHARS: usize = 1200;
+const MAX_INDEX_CHUNK_CHARS: usize = 8000;
+const MAX_EMBED_INPUT_CHARS: usize = 2000;
 const DEFAULT_CONTEXT_CHUNKS: usize = 10;
 const MAX_CONTEXT_CHUNKS: usize = 16;
-const EMBED_BATCH_SIZE: usize = 12;
+const EMBED_BATCH_SIZE: usize = 4;
+const MAX_CHAT_CANDIDATES: usize = 4;
+const CHAT_KEEP_ALIVE: &str = "15m";
+const OLLAMA_DISCOVERY_CACHE_TTL: Duration = Duration::from_secs(30);
 const SUMMARY_CHUNK_PATH: &str = "__project_summary__.md";
 const PINNED_PATHS: [&str; 3] = [
     "README.md",
@@ -52,15 +58,41 @@ const LOCKFILES: [&str; 8] = [
     "bun.lockb",
     "composer.lock",
 ];
+const ENDPOINT_ROUTE_MARKERS: [(&str, f32); 11] = [
+    ("server.middlewares.use(\"/__ai\"", 26.0),
+    ("server.middlewares.use(\"/\"", 10.0),
+    ("requesturl.pathname ===", 16.0),
+    ("req.method === \"get\"", 6.0),
+    ("req.method === \"post\"", 6.0),
+    ("#[tauri::command]", 20.0),
+    ("generate_handler!(", 18.0),
+    ("invoke_handler(", 12.0),
+    ("jsonresponse(res, 200", 4.0),
+    ("jsonresponse(res, 400", 3.0),
+    ("jsonresponse(res, 404", 3.0),
+];
 
 static AI_INDEX_CACHE: Lazy<Mutex<HashMap<String, CachedAiIndex>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));
+static OLLAMA_DISCOVERY_CACHE: Lazy<Mutex<Option<(Instant, OllamaDiscovery)>>> =
+    Lazy::new(|| Mutex::new(None));
+static ENDPOINT_QUERY_RE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?i)(endpoint|endpoints|route|routes|command|commands|handler|handlers|api|apis|path|paths|url|urls|invoke|invokes|expose|exposes|tauri|middleware)",
+    )
+    .unwrap()
+});
+static ROUTE_LITERAL_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r#"['"`](\/[A-Za-z0-9_./:-]+)['"`]"#).unwrap());
+static NOISY_PATH_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?i)(^|/)(tests?|__tests__)/record/|(^|/)record/http/").unwrap());
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum RetrievalMode {
     Semantic,
     Lexical,
+    Supplemental,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -70,6 +102,7 @@ pub struct AiStatus {
     pub repo_ready: bool,
     pub ollama_reachable: bool,
     pub chat_model: Option<String>,
+    pub chat_candidates: Vec<String>,
     pub embedding_model: Option<String>,
     pub available_models: Vec<String>,
     pub index_ready: bool,
@@ -103,6 +136,8 @@ pub struct AiAskRequest {
     pub repo_root: String,
     pub messages: Vec<AiChatMessage>,
     pub max_context_chunks: Option<usize>,
+    pub supplemental_context: Option<String>,
+    pub supplemental_only: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -120,6 +155,11 @@ pub struct AiAskResponse {
     pub answer: String,
     pub citations: Vec<AiCitation>,
     pub used_model: String,
+    pub attempted_models: Option<Vec<String>>,
+    pub model_total_ms: Option<u64>,
+    pub load_ms: Option<u64>,
+    pub prompt_eval_ms: Option<u64>,
+    pub eval_ms: Option<u64>,
     pub timing_ms: u64,
     pub retrieval_mode: RetrievalMode,
 }
@@ -180,7 +220,6 @@ struct OllamaDiscovery {
     chat_model: Option<String>,
     chat_candidates: Vec<String>,
     embedding_model: Option<String>,
-    mode: RetrievalMode,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -214,6 +253,14 @@ struct OllamaEmbedResponse {
 struct OllamaChatResponse {
     model: String,
     message: OllamaChatMessageResponse,
+    #[serde(default)]
+    total_duration: Option<u64>,
+    #[serde(default)]
+    load_duration: Option<u64>,
+    #[serde(default)]
+    prompt_eval_duration: Option<u64>,
+    #[serde(default)]
+    eval_duration: Option<u64>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -236,6 +283,7 @@ pub async fn get_ai_status(default_dir: String) -> Result<AiStatus, String> {
     let mut index_ready = false;
     let mut last_indexed_at = None;
     let mut chunk_count = 0;
+    let mut status_mode = RetrievalMode::Lexical;
 
     if repo_context.repo_ready
         && let Some(repo_root) = repo_context.repo_root.as_ref()
@@ -245,6 +293,9 @@ pub async fn get_ai_status(default_dir: String) -> Result<AiStatus, String> {
             last_indexed_at = Some(manifest.last_indexed_at.clone());
             chunk_count = manifest.chunk_count;
             index_ready = manifest.revision == index_context.revision;
+            if index_ready && manifest.embedding_model.is_some() && manifest.embedding_dim.unwrap_or(0) > 0 {
+                status_mode = RetrievalMode::Semantic;
+            }
         }
     }
 
@@ -256,13 +307,49 @@ pub async fn get_ai_status(default_dir: String) -> Result<AiStatus, String> {
         repo_ready: repo_context.repo_ready,
         ollama_reachable: discovery.reachable,
         chat_model: discovery.chat_model,
+        chat_candidates: discovery.chat_candidates,
         embedding_model: discovery.embedding_model,
         available_models: discovery.available_models,
         index_ready,
         last_indexed_at,
         chunk_count,
-        mode: discovery.mode,
+        mode: status_mode,
     })
+}
+
+#[tauri::command]
+pub async fn warm_ai_chat_model(default_dir: String) -> Result<serde_json::Value, String> {
+    let _ = default_dir;
+
+    let client = build_http_client(60)?;
+    let discovery = discover_ollama(&client).await;
+    if !discovery.reachable || discovery.chat_candidates.is_empty() {
+        return Ok(json!({
+            "ok": false,
+            "usedModel": serde_json::Value::Null,
+        }));
+    }
+
+    let response = chat_with_fallback(
+        &client,
+        &discovery.chat_candidates[..1],
+        vec![
+            json!({
+                "role": "system",
+                "content": "Reply with READY only.",
+            }),
+            json!({
+                "role": "user",
+                "content": "READY",
+            }),
+        ],
+    )
+    .await?;
+
+    Ok(json!({
+        "ok": true,
+        "usedModel": response.response.model,
+    }))
 }
 
 #[tauri::command]
@@ -409,9 +496,14 @@ pub async fn clear_ai_index(repo_root: String) -> Result<serde_json::Value, Stri
 #[tauri::command]
 pub async fn ask_ai_question(request: AiAskRequest) -> Result<AiAskResponse, String> {
     let started_at = Instant::now();
-    let repo_root = ensure_repo_root(&request.repo_root)?;
     let client = build_http_client(90)?;
     let discovery = discover_ollama(&client).await;
+    let supplemental_context = request
+        .supplemental_context
+        .as_deref()
+        .map(str::trim)
+        .filter(|value| !value.is_empty());
+    let supplemental_only = request.supplemental_only.unwrap_or(false) && supplemental_context.is_some();
 
     if !discovery.reachable {
         return Err(
@@ -433,16 +525,6 @@ pub async fn ask_ai_question(request: AiAskRequest) -> Result<AiAskResponse, Str
         );
     }
 
-    let index_context = build_index_context(&repo_root, discovery.embedding_model.as_deref())?;
-    let cached_index = load_cached_index(&repo_root, &index_context).or_else(|_| {
-        let lexical_context = build_index_context(&repo_root, None)?;
-        load_cached_index(&repo_root, &lexical_context)
-    })?;
-
-    if cached_index.chunks.is_empty() {
-        return Err("AI index is empty. Rebuild the index and try again.".to_string());
-    }
-
     let latest_user_message = request
         .messages
         .iter()
@@ -451,17 +533,37 @@ pub async fn ask_ai_question(request: AiAskRequest) -> Result<AiAskResponse, Str
         .or_else(|| request.messages.last())
         .ok_or_else(|| "A question is required before asking the project AI.".to_string())?;
 
-    let requested_context = request
-        .max_context_chunks
-        .unwrap_or(DEFAULT_CONTEXT_CHUNKS)
-        .clamp(1, MAX_CONTEXT_CHUNKS);
+    let mut cached_index: Option<CachedAiIndex> = None;
+    let mut selected_indexes: Vec<usize> = Vec::new();
+    let mut citations: Vec<AiCitation> = Vec::new();
+    let mut include_summary = false;
+    let retrieval_mode = if supplemental_only {
+        RetrievalMode::Supplemental
+    } else {
+        let repo_root = ensure_repo_root(&request.repo_root)?;
+        let index_context = build_index_context(&repo_root, discovery.embedding_model.as_deref())?;
+        let next_index = load_cached_index(&repo_root, &index_context).or_else(|_| {
+            let lexical_context = build_index_context(&repo_root, None)?;
+            load_cached_index(&repo_root, &lexical_context)
+        })?;
 
-    let semantic_candidates =
-        if cached_index.manifest.mode == RetrievalMode::Semantic && !cached_index.embeddings.is_empty() {
-            if let Some(model) = cached_index.manifest.embedding_model.as_deref() {
+        if next_index.chunks.is_empty() {
+            return Err("AI index is empty. Rebuild the index and try again.".to_string());
+        }
+
+        let requested_context = request
+            .max_context_chunks
+            .unwrap_or(DEFAULT_CONTEXT_CHUNKS)
+            .clamp(1, MAX_CONTEXT_CHUNKS);
+        include_summary = should_include_repository_summary(&latest_user_message.content);
+
+        let semantic_candidates = if next_index.manifest.mode == RetrievalMode::Semantic
+            && !next_index.embeddings.is_empty()
+        {
+            if let Some(model) = next_index.manifest.embedding_model.as_deref() {
                 match embed_query(&client, model, &latest_user_message.content).await {
                     Ok(query_embedding) => {
-                        Some(rank_chunks_semantic(&query_embedding, &cached_index.embeddings))
+                        Some(rank_chunks_semantic(&query_embedding, &next_index.embeddings))
                     }
                     Err(_) => None,
                 }
@@ -472,50 +574,65 @@ pub async fn ask_ai_question(request: AiAskRequest) -> Result<AiAskResponse, Str
             None
         };
 
-    let retrieval_mode = if semantic_candidates.is_some() {
-        RetrievalMode::Semantic
-    } else {
-        RetrievalMode::Lexical
-    };
+        let mode = if semantic_candidates.is_some() {
+            RetrievalMode::Semantic
+        } else {
+            RetrievalMode::Lexical
+        };
 
-    let mut ranked = semantic_candidates
-        .unwrap_or_else(|| rank_chunks_lexical(&latest_user_message.content, &cached_index.chunks));
-    ranked.sort_by(|left, right| right.score.total_cmp(&left.score));
+        let mut ranked = semantic_candidates
+            .unwrap_or_else(|| rank_chunks_lexical(&latest_user_message.content, &next_index.chunks));
+        ranked.sort_by(|left, right| right.score.total_cmp(&left.score));
 
-    let selected_indexes =
-        select_context_chunk_indexes(&ranked, &cached_index.chunks, requested_context);
-    let citations = selected_indexes
-        .iter()
-        .filter_map(|index| {
-            let chunk = cached_index.chunks.get(*index)?;
-            if chunk.path == SUMMARY_CHUNK_PATH {
-                return None;
-            }
-            let score = ranked
-                .iter()
-                .find(|entry| entry.index == *index)
-                .map(|entry| entry.score)
-                .unwrap_or(0.0);
-            Some(AiCitation {
-                path: chunk.path.clone(),
-                start_line: chunk.start_line,
-                end_line: chunk.end_line,
-                score,
+        selected_indexes =
+            select_context_chunk_indexes(&ranked, &next_index.chunks, requested_context, include_summary);
+        citations = selected_indexes
+            .iter()
+            .filter_map(|index| {
+                let chunk = next_index.chunks.get(*index)?;
+                if chunk.path == SUMMARY_CHUNK_PATH {
+                    return None;
+                }
+                let score = ranked
+                    .iter()
+                    .find(|entry| entry.index == *index)
+                    .map(|entry| entry.score)
+                    .unwrap_or(0.0);
+                Some(AiCitation {
+                    path: chunk.path.clone(),
+                    start_line: chunk.start_line,
+                    end_line: chunk.end_line,
+                    score,
+                })
             })
-        })
-        .collect::<Vec<_>>();
+            .collect::<Vec<_>>();
+        cached_index = Some(next_index);
+        mode
+    };
 
     let response = chat_with_fallback(
         &client,
         &chat_candidates,
-        build_chat_messages(&cached_index, &request.messages, &selected_indexes),
+        build_chat_messages(
+            cached_index.as_ref(),
+            &request.messages,
+            &selected_indexes,
+            include_summary,
+            &latest_user_message.content,
+            supplemental_context,
+        ),
     )
     .await?;
 
     Ok(AiAskResponse {
-        answer: response.message.content.trim().to_string(),
-        citations,
-        used_model: response.model,
+        answer: response.response.message.content.trim().to_string(),
+        citations: compact_citations(citations),
+        used_model: response.response.model,
+        attempted_models: Some(response.attempted_models),
+        model_total_ms: ollama_duration_to_ms(response.response.total_duration),
+        load_ms: ollama_duration_to_ms(response.response.load_duration),
+        prompt_eval_ms: ollama_duration_to_ms(response.response.prompt_eval_duration),
+        eval_ms: ollama_duration_to_ms(response.response.eval_duration),
         timing_ms: started_at.elapsed().as_millis().try_into().unwrap_or(u64::MAX),
         retrieval_mode,
     })
@@ -529,12 +646,16 @@ fn build_http_client(timeout_secs: u64) -> Result<Client, String> {
 }
 
 fn build_chat_messages(
-    index: &CachedAiIndex,
+    index: Option<&CachedAiIndex>,
     messages: &[AiChatMessage],
     selected_indexes: &[usize],
+    include_summary: bool,
+    user_query: &str,
+    supplemental_context: Option<&str>,
 ) -> Vec<serde_json::Value> {
-    let system_prompt = "You are a read-only project guide for this repository. Explain the codebase precisely, never invent files or behaviors, say when information is missing, and cite file paths with line ranges in every substantive answer.";
-    let context_prompt = build_context_prompt(index, selected_indexes);
+    let system_prompt = build_system_prompt(index.is_some(), supplemental_context);
+    let context_prompt =
+        build_context_prompt(index, selected_indexes, include_summary, user_query, supplemental_context);
 
     let mut chat_messages = vec![
         json!({
@@ -554,6 +675,49 @@ fn build_chat_messages(
         })
     }));
     chat_messages
+}
+
+fn build_system_prompt(has_repository_context: bool, supplemental_context: Option<&str>) -> String {
+    let has_supplemental_context = supplemental_context
+        .map(|value| !value.trim().is_empty())
+        .unwrap_or(false);
+
+    if has_repository_context && has_supplemental_context {
+        return "You are the OpenBB repository assistant. Answer from the provided repository context first. Keep answers concise and concrete: use at most 6 bullets or 2 short paragraphs unless the user asks for more detail. Prefer file paths, route names, commands, and implementation facts from the retrieved context. When enumerating items, match the count you state to the list you provide. If the user asks about endpoints or commands, list every matching endpoint or command found in the provided context. For endpoints or commands, only quote literal path strings or command names that appear verbatim in the context. Never rename or infer new endpoint names. If the retrieved code shows a middleware or mount prefix together with nested pathname checks in the same chunk, report the public route as prefix plus nested pathname. Avoid generic software advice unless the repository context clearly supports it. If the context is insufficient, say so plainly and state what is missing. You also have supplemental OpenBB market data. Use it as the primary source for market, financial statement, and expected price-range questions. Do not claim that you cannot access market data when supplemental context is present."
+            .to_string();
+    }
+
+    if has_supplemental_context {
+        return "You are the OpenBB market data assistant. Answer from the provided OpenBB market data first. Keep answers concise and concrete: use at most 6 bullets or 2 short paragraphs unless the user asks for more detail. If the user asks for an expected stock-price range, anchor on analyst target low, consensus, median, and high when available and label it as a scenario range, not a guarantee. If the provided market data is insufficient for a precise range, say what is missing. Do not say that you cannot access market data when the supplemental context is present."
+            .to_string();
+    }
+
+    "You are the OpenBB repository assistant. Answer from the provided repository context first. Keep answers concise and concrete: use at most 6 bullets or 2 short paragraphs unless the user asks for more detail. Prefer file paths, route names, commands, and implementation facts from the retrieved context. When enumerating items, match the count you state to the list you provide. If the user asks about endpoints or commands, list every matching endpoint or command found in the provided context. For endpoints or commands, only quote literal path strings or command names that appear verbatim in the context. Never rename or infer new endpoint names. If the retrieved code shows a middleware or mount prefix together with nested pathname checks in the same chunk, report the public route as prefix plus nested pathname. Avoid generic software advice unless the repository context clearly supports it. If the context is insufficient, say so plainly and state what is missing."
+        .to_string()
+}
+
+fn compact_citations(citations: Vec<AiCitation>) -> Vec<AiCitation> {
+    let mut merged: Vec<AiCitation> = Vec::new();
+
+    for citation in citations {
+        if let Some(previous) = merged.last_mut()
+            && previous.path == citation.path
+            && citation.start_line <= previous.end_line + 25
+        {
+            previous.end_line = previous.end_line.max(citation.end_line);
+            previous.score = previous.score.max(citation.score);
+            continue;
+        }
+
+        merged.push(citation);
+    }
+
+    merged.truncate(4);
+    merged
+}
+
+fn ollama_duration_to_ms(value: Option<u64>) -> Option<u64> {
+    value.map(|duration| duration / 1_000_000)
 }
 
 fn resolve_repo_context(default_dir: &str) -> Result<RepoContext, String> {
@@ -653,11 +817,12 @@ fn build_index_context(repo_root: &Path, embedding_model: Option<&str>) -> Resul
     let head_revision = git_head_revision(&absolute_root).unwrap_or_else(|| "nogit".to_string());
     let config_hash = sha1_hex(
         format!(
-            "chunk_lines={CHUNK_LINES};chunk_overlap={CHUNK_OVERLAP};max_file_bytes={MAX_FILE_SIZE_BYTES};extensions={};extra_extensions={};excluded_dirs={};extra_excluded_dirs={};embedding_model={}",
+            "chunk_lines={CHUNK_LINES};chunk_overlap={CHUNK_OVERLAP};max_file_bytes={MAX_FILE_SIZE_BYTES};max_index_line_chars={MAX_INDEX_LINE_CHARS};max_index_chunk_chars={MAX_INDEX_CHUNK_CHARS};max_embed_input_chars={MAX_EMBED_INPUT_CHARS};extensions={};extra_extensions={};excluded_dirs={};extra_excluded_dirs={};noisy_path_re={};embedding_model={}",
             ALLOWED_EXTENSIONS.join(","),
             EXTRA_ALLOWED_EXTENSIONS.join(","),
             EXCLUDED_DIRS.join(","),
             EXTRA_EXCLUDED_DIRS.join(","),
+            NOISY_PATH_RE.as_str(),
             embedding_model.unwrap_or("lexical")
         )
         .as_bytes(),
@@ -982,6 +1147,9 @@ fn should_skip_relative_path(relative_path: &str) -> bool {
     if file_name.contains(".generated.") || file_name.contains(".gen.") {
         return true;
     }
+    if NOISY_PATH_RE.is_match(&normalized) {
+        return true;
+    }
 
     let extension = Path::new(file_name)
         .extension()
@@ -1026,6 +1194,35 @@ fn detect_language(path: &str) -> String {
         .to_ascii_lowercase()
 }
 
+fn truncate_indexed_line(line: &str) -> String {
+    let count = line.chars().count();
+    if count <= MAX_INDEX_LINE_CHARS {
+        return line.to_string();
+    }
+
+    line.chars().take(MAX_INDEX_LINE_CHARS).collect::<String>() + " …[line truncated for AI index]"
+}
+
+fn truncate_chunk_body(input: String) -> String {
+    if input.chars().count() <= MAX_INDEX_CHUNK_CHARS {
+        return input;
+    }
+
+    input.chars().take(MAX_INDEX_CHUNK_CHARS).collect::<String>() + "\n...[chunk truncated for AI index]"
+}
+
+fn build_embedding_input(chunk: &IndexedChunk) -> String {
+    let prefix = format!("{}:{}-{}\n", chunk.path, chunk.start_line, chunk.end_line);
+    let remaining = MAX_EMBED_INPUT_CHARS.saturating_sub(prefix.chars().count()).max(256);
+    let body = if chunk.text.chars().count() > remaining {
+        chunk.text.chars().take(remaining).collect::<String>() + "\n...[embedding input truncated]"
+    } else {
+        chunk.text.clone()
+    };
+
+    format!("{prefix}{body}")
+}
+
 fn chunk_file_contents(path: &str, language: &str, contents: &str) -> Vec<IndexedChunk> {
     let lines = contents.lines().collect::<Vec<_>>();
     if lines.is_empty() {
@@ -1038,7 +1235,13 @@ fn chunk_file_contents(path: &str, language: &str, contents: &str) -> Vec<Indexe
 
     while start_index < lines.len() {
         let end_index = min(start_index + CHUNK_LINES, lines.len());
-        let chunk_text = lines[start_index..end_index].join("\n");
+        let chunk_text = truncate_chunk_body(
+            lines[start_index..end_index]
+                .iter()
+                .map(|line| truncate_indexed_line(line))
+                .collect::<Vec<_>>()
+                .join("\n"),
+        );
         chunks.push(IndexedChunk {
             path: path.to_string(),
             start_line: start_index + 1,
@@ -1182,27 +1385,35 @@ fn describe_backend_resolution(repo_root: &Path) -> String {
 }
 
 async fn discover_ollama(client: &Client) -> OllamaDiscovery {
+    if let Some((cached_at, cached)) = OLLAMA_DISCOVERY_CACHE.lock().unwrap().as_ref()
+        && cached_at.elapsed() < OLLAMA_DISCOVERY_CACHE_TTL
+    {
+        return cached.clone();
+    }
+
     let tags_response = client.get(format!("{OLLAMA_BASE_URL}/tags")).send().await;
     let Ok(response) = tags_response else {
-        return OllamaDiscovery {
+        let discovery = OllamaDiscovery {
             reachable: false,
             available_models: Vec::new(),
             chat_model: None,
             chat_candidates: Vec::new(),
             embedding_model: None,
-            mode: RetrievalMode::Lexical,
         };
+        *OLLAMA_DISCOVERY_CACHE.lock().unwrap() = Some((Instant::now(), discovery.clone()));
+        return discovery;
     };
 
     if !response.status().is_success() {
-        return OllamaDiscovery {
+        let discovery = OllamaDiscovery {
             reachable: false,
             available_models: Vec::new(),
             chat_model: None,
             chat_candidates: Vec::new(),
             embedding_model: None,
-            mode: RetrievalMode::Lexical,
         };
+        *OLLAMA_DISCOVERY_CACHE.lock().unwrap() = Some((Instant::now(), discovery.clone()));
+        return discovery;
     }
 
     let models = response
@@ -1214,26 +1425,26 @@ async fn discover_ollama(client: &Client) -> OllamaDiscovery {
     let chat_candidates = build_chat_candidates(&models);
     let chat_model = chat_candidates.first().cloned();
     let embedding_model = pick_embedding_model(client, &available_models).await;
-    let mode = if embedding_model.is_some() {
-        RetrievalMode::Semantic
-    } else {
-        RetrievalMode::Lexical
-    };
-
-    OllamaDiscovery {
+    let discovery = OllamaDiscovery {
         reachable: true,
         available_models,
         chat_model,
         chat_candidates,
         embedding_model,
-        mode,
-    }
+    };
+    *OLLAMA_DISCOVERY_CACHE.lock().unwrap() = Some((Instant::now(), discovery.clone()));
+    discovery
 }
 
 fn build_chat_candidates(models: &[OllamaModel]) -> Vec<String> {
     let mut candidates = models.to_vec();
     candidates.sort_by(compare_chat_models);
-    candidates.into_iter().map(|model| model.name).collect()
+    candidates
+        .into_iter()
+        .filter(|model| !is_embedding_only_model_name(&model.name))
+        .take(MAX_CHAT_CANDIDATES)
+        .map(|model| model.name)
+        .collect()
 }
 
 fn compare_chat_models(left: &OllamaModel, right: &OllamaModel) -> Ordering {
@@ -1246,13 +1457,32 @@ fn compare_chat_models(left: &OllamaModel, right: &OllamaModel) -> Ordering {
 
 fn chat_model_priority(model: &OllamaModel) -> u8 {
     let normalized = model.name.to_ascii_lowercase();
-    if normalized.contains("coder") {
+    if is_embedding_only_model_name(&normalized) {
+        99
+    } else if normalized.contains("coder") {
         0
     } else if normalized.contains("instruct") || normalized.contains("chat") {
         1
-    } else {
+    } else if normalized.contains("qwen")
+        || normalized.contains("llama")
+        || normalized.contains("mistral")
+        || normalized.contains("gemma")
+        || normalized.contains("phi")
+    {
         2
+    } else {
+        3
     }
+}
+
+fn is_embedding_only_model_name(model_name: &str) -> bool {
+    let normalized = model_name.to_ascii_lowercase();
+    normalized.contains("embed")
+        || normalized.contains("embedding")
+        || normalized.contains("minilm")
+        || normalized.contains("nomic")
+        || normalized.contains("bge")
+        || normalized.contains("e5")
 }
 
 fn compare_optional_f32(left: Option<f32>, right: Option<f32>) -> Ordering {
@@ -1353,11 +1583,20 @@ async fn embed_chunks(
     chunks: &[IndexedChunk],
 ) -> Result<Vec<Vec<f32>>, String> {
     let mut embeddings = Vec::new();
+    let embedding_dim = probe_embedding_dimension(client, model).await.ok().flatten();
     for batch in chunks.chunks(EMBED_BATCH_SIZE) {
-        let inputs = batch.iter().map(|chunk| chunk.text.clone()).collect::<Vec<_>>();
+        let inputs = batch.iter().map(build_embedding_input).collect::<Vec<_>>();
         let batch_embeddings = embed_input_batch(client, model, inputs).await?;
 
         if batch_embeddings.len() != batch.len() {
+            if let Some(dim) = embedding_dim {
+                let mut padded = batch_embeddings;
+                while padded.len() < batch.len() {
+                    padded.push(vec![0.0; dim]);
+                }
+                embeddings.extend(padded);
+                continue;
+            }
             return Err(format!(
                 "Ollama returned {} embeddings for a batch of {} chunks.",
                 batch_embeddings.len(),
@@ -1367,6 +1606,27 @@ async fn embed_chunks(
         embeddings.extend(batch_embeddings);
     }
     Ok(embeddings)
+}
+
+async fn probe_embedding_dimension(client: &Client, model: &str) -> Result<Option<usize>, String> {
+    let response = post_json::<OllamaEmbedResponse>(
+        client,
+        &format!("{OLLAMA_BASE_URL}/embed"),
+        json!({
+            "model": model,
+            "input": "ping",
+            "truncate": true,
+            "keep_alive": "5m",
+        }),
+    )
+    .await?;
+
+    Ok(response
+        .embeddings
+        .into_iter()
+        .next()
+        .map(|vector| vector.len())
+        .filter(|dim| *dim > 0))
 }
 
 async fn embed_query(client: &Client, model: &str, input: &str) -> Result<Vec<f32>, String> {
@@ -1456,7 +1716,13 @@ async fn embed_input_batch(
                 pending.push_front(right);
                 pending.push_front(left);
             }
-            Err(error) => return Err(error),
+            Err(error) => {
+                if let Some(dim) = probe_embedding_dimension(client, model).await.ok().flatten() {
+                    embeddings.push(vec![0.0; dim]);
+                } else {
+                    return Err(error);
+                }
+            }
         }
     }
 
@@ -1468,27 +1734,39 @@ fn split_string_batch(batch: &[String]) -> (Vec<String>, Vec<String>) {
     (batch[..midpoint].to_vec(), batch[midpoint..].to_vec())
 }
 
+struct ChatAttemptResult {
+    response: OllamaChatResponse,
+    attempted_models: Vec<String>,
+}
+
 async fn chat_with_fallback(
     client: &Client,
     candidate_models: &[String],
     messages: Vec<serde_json::Value>,
-) -> Result<OllamaChatResponse, String> {
+) -> Result<ChatAttemptResult, String> {
     let mut last_error = None;
+    let mut attempted_models = Vec::new();
 
     for model in candidate_models {
+        attempted_models.push(model.clone());
         match post_json::<OllamaChatResponse>(
             client,
             &format!("{OLLAMA_BASE_URL}/chat"),
             json!({
                 "model": model,
                 "stream": false,
-                "keep_alive": "5m",
+                "keep_alive": CHAT_KEEP_ALIVE,
                 "messages": messages.clone(),
             }),
         )
         .await
         {
-            Ok(response) => return Ok(response),
+            Ok(response) => {
+                return Ok(ChatAttemptResult {
+                    response,
+                    attempted_models,
+                })
+            }
             Err(error) => last_error = Some(format!("{model}: {error}")),
         }
     }
@@ -1535,7 +1813,7 @@ fn rank_chunks_lexical(query: &str, chunks: &[IndexedChunk]) -> Vec<RankedChunk>
         .enumerate()
         .map(|(index, chunk)| RankedChunk {
             index,
-            score: lexical_score(&query_tokens, chunk),
+            score: lexical_score(query, &query_tokens, chunk),
         })
         .collect()
 }
@@ -1618,11 +1896,34 @@ fn is_query_stopword(token: &str) -> bool {
     )
 }
 
-fn lexical_score(query_tokens: &[String], chunk: &IndexedChunk) -> f32 {
+fn has_endpoint_intent(query: &str, query_tokens: &[String]) -> bool {
+    ENDPOINT_QUERY_RE.is_match(query)
+        || query_tokens
+            .iter()
+            .any(|token| token.contains('/') || token.contains("__"))
+}
+
+fn count_substring_occurrences(haystack: &str, needle: &str) -> usize {
+    if needle.is_empty() {
+        return 0;
+    }
+
+    let mut count = 0;
+    let mut offset = 0;
+    while let Some(next) = haystack[offset..].find(needle) {
+        count += 1;
+        offset += next + needle.len();
+    }
+
+    count
+}
+
+fn lexical_score(query: &str, query_tokens: &[String], chunk: &IndexedChunk) -> f32 {
     if query_tokens.is_empty() {
         return 0.0;
     }
 
+    let query_lower = query.to_ascii_lowercase();
     let haystack = format!("{} {}", chunk.path, chunk.text);
     let haystack_lower = haystack.to_ascii_lowercase();
     let chunk_tokens = tokenize(&haystack).into_iter().collect::<HashSet<_>>();
@@ -1641,14 +1942,61 @@ fn lexical_score(query_tokens: &[String], chunk: &IndexedChunk) -> f32 {
         .filter(|token| haystack_lower.contains(token.as_str()))
         .count() as f32
         * 0.05;
+    let mut score = overlap as f32 / query_tokens.len() as f32 + path_bonus + substring_bonus;
 
-    overlap as f32 / query_tokens.len() as f32 + path_bonus + substring_bonus
+    if has_endpoint_intent(query, query_tokens) {
+        let route_marker_score = ENDPOINT_ROUTE_MARKERS
+            .iter()
+            .map(|(marker, weight)| count_substring_occurrences(&haystack_lower, marker).min(2) as f32 * weight)
+            .sum::<f32>();
+        let literal_route_count = ROUTE_LITERAL_RE.find_iter(chunk.text.as_str()).count().min(8) as f32;
+        let literal_query_hits = query_tokens
+            .iter()
+            .filter(|token| {
+                (token.contains('/') || token.contains("__") || token.contains('.'))
+                    && haystack_lower.contains(token.as_str())
+            })
+            .count() as f32;
+        let chunk_path_lower = chunk.path.to_ascii_lowercase();
+        let strong_path_match = query_tokens
+            .iter()
+            .filter(|token| chunk_path_lower.contains(token.as_str()))
+            .count() as f32;
+
+        score += route_marker_score;
+        score += literal_route_count * 3.5;
+        score += literal_query_hits * 10.0;
+
+        if route_marker_score > 0.0 && strong_path_match >= 2.0 {
+            score += 18.0 + strong_path_match * 3.0;
+        }
+        if query_lower.contains("browser")
+            && query_lower.contains("fallback")
+            && chunk_path_lower
+                .replace(|character: char| !character.is_ascii_alphanumeric(), "")
+                .contains("aibrowserfallback")
+        {
+            score += 18.0;
+        }
+        if query_lower.contains("tauri")
+            && (chunk_path_lower.ends_with("main.rs")
+                || chunk_path_lower.contains("/tauri_handlers/ai.rs"))
+        {
+            score += 12.0;
+        }
+        if chunk_path_lower.ends_with(".md") {
+            score -= 10.0;
+        }
+    }
+
+    score
 }
 
 fn select_context_chunk_indexes(
     ranked: &[RankedChunk],
     chunks: &[IndexedChunk],
     max_chunks: usize,
+    include_summary: bool,
 ) -> Vec<usize> {
     let mut selected = Vec::new();
     let mut seen = HashSet::new();
@@ -1667,7 +2015,8 @@ fn select_context_chunk_indexes(
         }
     }
 
-    if let Some(index) = chunks.iter().position(|chunk| chunk.path == SUMMARY_CHUNK_PATH)
+    if include_summary
+        && let Some(index) = chunks.iter().position(|chunk| chunk.path == SUMMARY_CHUNK_PATH)
         && seen.insert(index)
     {
         selected.push(index);
@@ -1676,13 +2025,44 @@ fn select_context_chunk_indexes(
     selected
 }
 
-fn build_context_prompt(index: &CachedAiIndex, selected_indexes: &[usize]) -> String {
+fn should_include_repository_summary(query: &str) -> bool {
+    !has_endpoint_intent(query, &tokenize_query(query))
+        && !Regex::new(r"(?i)(function|class|file|filepath|\.tsx|\.ts|\.rs|main\.rs|aibrowserfallback)")
+            .unwrap()
+            .is_match(query)
+}
+
+fn build_context_prompt(
+    index: Option<&CachedAiIndex>,
+    selected_indexes: &[usize],
+    include_summary: bool,
+    user_query: &str,
+    supplemental_context: Option<&str>,
+) -> String {
     let mut sections = Vec::new();
+    if let Some(supplemental) = supplemental_context
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+    {
+        sections.push(format!("OpenBB supplemental market data:\n{}", supplemental));
+    }
+
+    let Some(index) = index else {
+        return sections.join("\n\n");
+    };
+
+    if has_endpoint_intent(user_query, &tokenize_query(user_query)) {
+        sections.push(
+            "Task hint: this is an endpoint or command lookup. Use only literal route strings or command names from the retrieved code chunks.".to_string(),
+        );
+    }
     sections.push(format!(
         "Repository root: {}\nIndexed at: {}\nRetrieval mode: {:?}",
         index.manifest.repo_root, index.manifest.last_indexed_at, index.manifest.mode
     ));
-    sections.push(format!("Project summary:\n{}", index.manifest.summary_prompt));
+    if include_summary {
+        sections.push(format!("Project summary:\n{}", index.manifest.summary_prompt));
+    }
 
     for index_value in selected_indexes {
         if let Some(chunk) = index.chunks.get(*index_value) {
@@ -1730,6 +2110,9 @@ mod tests {
         assert!(should_skip_relative_path("desktop/src/routeTree.gen.ts"));
         assert!(should_skip_relative_path("package-lock.json"));
         assert!(should_skip_relative_path("desktop/src/vendor/chart.min.js"));
+        assert!(should_skip_relative_path(
+            "openbb_platform/providers/fred/tests/record/http/test_fred_fetchers/example.yaml"
+        ));
         assert!(!should_skip_relative_path("desktop/src/routes/ai.tsx"));
         assert!(!should_skip_relative_path("README.md"));
         assert!(!should_skip_relative_path("scripts/setup.ps1"));
@@ -1750,6 +2133,17 @@ mod tests {
         assert_eq!(chunks[1].end_line, 220);
         assert_eq!(chunks[2].start_line, 201);
         assert_eq!(chunks[2].end_line, 250);
+    }
+
+    #[test]
+    fn chunking_truncates_oversized_lines_and_chunks() {
+        let giant_line = "x".repeat(20_000);
+        let content = format!("{giant_line}\n{giant_line}");
+        let chunks = chunk_file_contents("desktop/src/components/GamestonkIcon.tsx", "tsx", &content);
+
+        assert_eq!(chunks.len(), 1);
+        assert!(chunks[0].text.contains("truncated for AI index"));
+        assert!(chunks[0].text.chars().count() <= MAX_INDEX_CHUNK_CHARS + 64);
     }
 
     #[test]
@@ -1817,6 +2211,44 @@ mod tests {
     }
 
     #[test]
+    fn endpoint_queries_prefer_route_definition_chunks() {
+        let chunks = vec![
+            IndexedChunk {
+                path: "desktop/dev/aiBrowserFallback.ts".to_string(),
+                start_line: 100,
+                end_line: 140,
+                sha1: "a".to_string(),
+                language: "ts".to_string(),
+                text: "function createAiBrowserFallbackPlugin() { return true; }".to_string(),
+            },
+            IndexedChunk {
+                path: "desktop/dev/aiBrowserFallback.ts".to_string(),
+                start_line: 1300,
+                end_line: 1380,
+                sha1: "b".to_string(),
+                language: "ts".to_string(),
+                text: "server.middlewares.use(\"/__ai\", async (req, res) => {\nif (req.method === \"GET\" && requestUrl.pathname === \"/status\") {}\nif (req.method === \"POST\" && requestUrl.pathname === \"/ask\") {}\n}".to_string(),
+            },
+            IndexedChunk {
+                path: "README.md".to_string(),
+                start_line: 1,
+                end_line: 20,
+                sha1: "c".to_string(),
+                language: "md".to_string(),
+                text: "AI browser fallback overview".to_string(),
+            },
+        ];
+
+        let mut ranked = rank_chunks_lexical(
+            "Which file implements the browser AI fallback, and what endpoints does it expose?",
+            &chunks,
+        );
+        ranked.sort_by(|left, right| right.score.total_cmp(&left.score));
+
+        assert_eq!(ranked[0].index, 1);
+    }
+
+    #[test]
     fn chat_candidates_prefer_smaller_coder_models() {
         let candidates = build_chat_candidates(&[
             OllamaModel {
@@ -1840,9 +2272,85 @@ mod tests {
                     parameter_size: "3.0B".to_string(),
                 },
             },
+            OllamaModel {
+                name: "qwen3-embedding:latest".to_string(),
+                size: 600_000_000,
+                details: OllamaModelDetails {
+                    parameter_size: "0.6B".to_string(),
+                },
+            },
         ]);
 
         assert_eq!(candidates[0], "qwen2.5-coder:1.5b");
+        assert!(!candidates.iter().any(|candidate| candidate.contains("embedding")));
+    }
+
+    #[test]
+    fn compact_citations_merges_adjacent_ranges() {
+        let citations = compact_citations(vec![
+            AiCitation {
+                path: "desktop/src/routes/ai.tsx".to_string(),
+                start_line: 10,
+                end_line: 40,
+                score: 0.9,
+            },
+            AiCitation {
+                path: "desktop/src/routes/ai.tsx".to_string(),
+                start_line: 48,
+                end_line: 72,
+                score: 0.8,
+            },
+            AiCitation {
+                path: "desktop/src/lib/aiApi.ts".to_string(),
+                start_line: 1,
+                end_line: 24,
+                score: 0.7,
+            },
+        ]);
+
+        assert_eq!(citations.len(), 2);
+        assert_eq!(citations[0].start_line, 10);
+        assert_eq!(citations[0].end_line, 72);
+    }
+
+    #[test]
+    fn repository_summary_is_disabled_for_endpoint_queries() {
+        assert!(!should_include_repository_summary(
+            "Which endpoints does the browser AI fallback expose?"
+        ));
+        assert!(should_include_repository_summary(
+            "How does the AI tab work overall?"
+        ));
+    }
+
+    #[test]
+    fn supplemental_market_context_can_build_without_repo_chunks() {
+        let context = build_context_prompt(
+            None,
+            &[],
+            false,
+            "Analyze IBM financial statements and estimate a price range.",
+            Some("OpenBB market data for IBM:\n- Current price: $194.50"),
+        );
+        let messages = build_chat_messages(
+            None,
+            &[AiChatMessage {
+                role: "user".to_string(),
+                content: "Analyze IBM financial statements.".to_string(),
+            }],
+            &[],
+            false,
+            "Analyze IBM financial statements.",
+            Some("OpenBB market data for IBM:\n- Current price: $194.50"),
+        );
+
+        assert!(context.contains("OpenBB supplemental market data"));
+        assert!(messages
+            .first()
+            .and_then(|message| message.get("content"))
+            .and_then(|value| value.as_str())
+            .unwrap_or_default()
+            .contains("market data assistant"));
     }
 
     #[test]
@@ -1923,6 +2431,8 @@ mod tests {
                 content: "How does this project resolve the OpenBB backend?".to_string(),
             }],
             max_context_chunks: Some(8),
+            supplemental_context: None,
+            supplemental_only: None,
         })
         .await
         .unwrap();

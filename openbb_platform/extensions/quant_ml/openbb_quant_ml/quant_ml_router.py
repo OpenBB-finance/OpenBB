@@ -1489,3 +1489,97 @@ def market_rolling_corr(
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+# ---------------------------------------------------------------------------
+# Finance: News & Watchlist
+# ---------------------------------------------------------------------------
+
+
+@router.command(methods=["GET"], path="/finance/news")
+def get_finance_news(
+    symbol: str = Query(..., description="Ticker symbol, e.g. IBM"),
+    days: int = Query(7, ge=1, le=30, description="Lookback window in days"),
+    limit: int = Query(30, ge=1, le=100, description="Max news items"),
+) -> dict[str, Any]:
+    """Return recent news articles for a single stock symbol."""
+    from openbb_quant_ml.service.finance_news import get_stock_news  # noqa: PLC0415
+
+    return get_stock_news(symbol=symbol.upper(), days=days, limit=limit)
+
+
+@router.command(methods=["GET"], path="/finance/market_news")
+def get_finance_market_news(
+    limit: int = Query(20, ge=1, le=50, description="Max items"),
+) -> dict[str, Any]:
+    """Return broad market news from major indices."""
+    from openbb_quant_ml.service.finance_news import get_market_news  # noqa: PLC0415
+
+    return get_market_news(limit=limit)
+
+
+@router.command(methods=["GET"], path="/finance/watchlist")
+def get_finance_watchlist() -> dict[str, Any]:
+    """Return the full watchlist with groups and tickers."""
+    from openbb_quant_ml.service.watchlist_store import get_watchlist  # noqa: PLC0415
+
+    return get_watchlist()
+
+
+@router.command(methods=["POST"], path="/finance/watchlist")
+def update_finance_watchlist(
+    action: str = Query(..., description="One of: add_group, remove_group, add_ticker, remove_ticker, reorder"),
+    group_name: str = Query("Default Watchlist", description="Target group name"),
+    symbol: str = Query("", description="Ticker symbol (for add/remove ticker)"),
+    ordered_symbols: str = Query("", description="Comma-separated ordered symbols (for reorder)"),
+) -> dict[str, Any]:
+    """Mutate the watchlist. Action determines the operation."""
+    from openbb_quant_ml.service.watchlist_store import (  # noqa: PLC0415
+        add_group,
+        add_ticker,
+        remove_group,
+        remove_ticker,
+        reorder_tickers,
+    )
+
+    if action == "add_group":
+        return add_group(group_name)
+    if action == "remove_group":
+        return remove_group(group_name)
+    if action == "add_ticker":
+        if not symbol.strip():
+            raise HTTPException(status_code=400, detail="symbol is required for add_ticker")
+        return add_ticker(group_name, symbol.strip())
+    if action == "remove_ticker":
+        if not symbol.strip():
+            raise HTTPException(status_code=400, detail="symbol is required for remove_ticker")
+        return remove_ticker(group_name, symbol.strip())
+    if action == "reorder":
+        symbols_list = [s.strip() for s in ordered_symbols.split(",") if s.strip()]
+        return reorder_tickers(group_name, symbols_list)
+    raise HTTPException(status_code=400, detail=f"Unknown action: {action}")
+
+@router.command(methods=["GET"], path="/finance/statement")
+def get_finance_statement_proxy(
+    kind: str = Query(..., description="income, balance, or cash"),
+    symbol: str = Query(...),
+    period: str = Query("annual"),
+    limit: int = Query(4)
+) -> dict[str, Any]:
+    """Proxy fundamental statement fetch using internal SDK."""
+    from openbb_quant_ml.service.finance_fundamentals import get_statement  # noqa: PLC0415
+    res = get_statement(kind, symbol, period, limit)
+    if "detail" in res:
+        raise HTTPException(status_code=400, detail=res["detail"])
+    return res
+
+@router.command(methods=["GET"], path="/finance/forecast")
+def get_finance_forecast_proxy(
+    symbol: str = Query(...)
+) -> dict[str, Any]:
+    """Proxy analyst consensus forecast using internal SDK."""
+    from openbb_quant_ml.service.finance_fundamentals import get_forecast  # noqa: PLC0415
+    res = get_forecast(symbol)
+    if "detail" in res:
+        raise HTTPException(status_code=400, detail=res["detail"])
+    return res

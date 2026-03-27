@@ -30,10 +30,8 @@ function toApiPeriod(period: FinanceStatementPeriod): "annual" | "quarter" {
   return period === "quarterly" ? "quarter" : "annual";
 }
 
-function getStatementPath(kind: FinanceStatementKind): string {
-  if (kind === "income") return "/api/v1/equity/fundamental/income";
-  if (kind === "balance") return "/api/v1/equity/fundamental/balance";
-  return "/api/v1/equity/fundamental/cash";
+function getStatementPath(): string {
+  return "/api/v1/quant_ml/finance/statement";
 }
 
 function buildCacheKey(kind: FinanceStatementKind, symbol: string, period: FinanceStatementPeriod): string {
@@ -90,14 +88,14 @@ async function requestFinanceEnvelope(
 
   const ticker = extractTickerFromSymbol(symbol);
   const query = new URLSearchParams({
+    kind,
     symbol: ticker,
-    provider: "yfinance",
     period: toApiPeriod(period),
     limit: "4",
   });
 
   const response = await fetch(
-    buildOpenBBRequestUrl(normalizedBaseUrl, `${getStatementPath(kind)}?${query.toString()}`),
+    buildOpenBBRequestUrl(normalizedBaseUrl, `${getStatementPath()}?${query.toString()}`),
     buildOpenBBRequestInit({
       method: "GET",
       signal,
@@ -163,11 +161,10 @@ export async function fetchFinanceForecast(
 
   const query = new URLSearchParams({
     symbol: ticker,
-    provider: "yfinance",
   });
 
   const response = await fetch(
-    buildOpenBBRequestUrl(normalizedBaseUrl, `/api/v1/equity/estimates/consensus?${query.toString()}`),
+    buildOpenBBRequestUrl(normalizedBaseUrl, `/api/v1/quant_ml/finance/forecast?${query.toString()}`),
     buildOpenBBRequestInit({
       method: "GET",
       signal,
