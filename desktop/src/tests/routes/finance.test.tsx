@@ -58,7 +58,7 @@ describe("Finance Route", () => {
   test("renders finance route smoke view", () => {
     render(<FinanceComponent />);
 
-    expect(screen.getByText("Symbol Lab")).toBeInTheDocument();
+    expect(screen.getByText("Finance Lab")).toBeInTheDocument();
     expect(
       screen.getByText(/Symbol drilldown for macro-linked assets, strategy signals, and execution candidates\./i),
     ).toBeInTheDocument();

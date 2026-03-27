@@ -82,7 +82,7 @@ function FinancePage() {
         });
         setContextRail(payload);
       } catch (error) {
-        setContextError(error instanceof Error ? error.message : "Failed to load Symbol Lab context.");
+        setContextError(error instanceof Error ? error.message : "Failed to load Finance Lab context.");
       }
     };
     void loadContext();
@@ -100,7 +100,7 @@ function FinancePage() {
     <div className="h-full min-h-0 overflow-auto py-4">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="body-lg-medium text-theme-primary">Symbol Lab</h1>
+          <h1 className="body-lg-medium text-theme-primary">Finance Lab</h1>
           <p className="body-sm-regular text-theme-muted">
             Symbol drilldown for macro-linked assets, strategy signals, and execution candidates.
           </p>

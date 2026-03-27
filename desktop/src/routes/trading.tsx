@@ -1050,7 +1050,7 @@ export function PortfolioExecutionPage({
                   })}
                   className="inline-flex rounded-sm border border-theme-outline px-3 py-2 body-xs-medium text-theme-primary"
                 >
-                  Open In Symbol Lab
+                  Open In Finance Lab
                 </a>
               </div>
             ) : (
