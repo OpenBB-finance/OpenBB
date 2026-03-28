@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "vite --port 1470",
     "build": "tsc && vite build",
+    "build:ai-gateway-sidecar": "cargo build --manifest-path src-tauri/Cargo.toml --bin openbb-ai-gateway --release",
+    "stage:ai-gateway-sidecar": "node scripts/stage-ai-gateway-sidecar.mjs",
+    "tauri:prep": "npm run build && npm run build:ai-gateway-sidecar && npm run stage:ai-gateway-sidecar",
     "routes:check": "git diff --exit-code -- src/routeTree.gen.ts",
     "build:verify-generated": "npm run build && npm run routes:check",
     "preview": "vite preview",

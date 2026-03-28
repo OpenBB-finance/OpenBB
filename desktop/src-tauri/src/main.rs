@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 pub mod tauri_handlers;
+pub mod ai_gateway;
 pub mod uninstall;
 pub mod utils;
 
@@ -40,7 +41,8 @@ use crate::tauri_handlers::credentials::{
 };
 
 use crate::tauri_handlers::ai::{
-    ask_ai_question, build_ai_index, clear_ai_index, get_ai_status, warm_ai_chat_model,
+    ask_ai_question, build_ai_index, clear_ai_index, ensure_ai_gateway_running, get_ai_gateway_info,
+    get_ai_settings, get_ai_status, stop_ai_gateway, update_ai_settings, warm_ai_chat_model,
 };
 
 use crate::tauri_handlers::backends::{
@@ -499,6 +501,11 @@ fn main() {
             get_installation_directory,
             get_userdata_directory,
             get_settings_directory,
+            get_ai_gateway_info,
+            ensure_ai_gateway_running,
+            stop_ai_gateway,
+            get_ai_settings,
+            update_ai_settings,
             select_file,
             install_to_directory,
             check_directory_exists,
@@ -579,6 +586,11 @@ fn main() {
                     }
                 });
             }
+
+            let ai_handle = app_handle.handle().clone();
+            tauri::async_runtime::spawn(async move {
+                crate::tauri_handlers::ai::initialize_ai_gateway(ai_handle).await;
+            });
 
             if let Some(window) = app_handle.get_webview_window("main") {
                 window.set_menu(Menu::new(app_handle.handle())?)?;

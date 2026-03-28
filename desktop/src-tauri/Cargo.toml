@@ -48,6 +48,8 @@ openssl = { workspace = true }
 tauri-plugin-opener = "2"
 which = "8.0.0"
 fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
+axum = "0.8.6"
+tokio-stream = { version = "0.1.17", features = ["sync"] }
 
 [target.'cfg(target_os= "macos")'.dependencies]
 objc2 = "0.6"
@@ -75,3 +77,7 @@ custom-protocol = ["tauri/custom-protocol"]
 [[bin]]
 name = "openbb-platform"
 path = "src/main.rs"
+
+[[bin]]
+name = "openbb-ai-gateway"
+path = "src/bin/openbb-ai-gateway.rs"

@@ -7,7 +7,7 @@
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1470",
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "beforeBuildCommand": "npm run tauri:prep"
   },
   "app": {
     "windows": [
@@ -53,7 +53,10 @@
     "publisher": "OpenBB, Inc.",
     "copyright": "Copyright © 2026 OpenBB, Inc.",
     "license": "AGPLv3",
-    "licenseFile": "./LICENSE"
+    "licenseFile": "./LICENSE",
+    "resources": [
+      "resources/ai/*"
+    ]
   },
   "plugins": {
     "updater": {

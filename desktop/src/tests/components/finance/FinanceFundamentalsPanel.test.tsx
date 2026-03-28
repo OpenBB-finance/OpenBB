@@ -304,4 +304,55 @@ describe("FinanceFundamentalsPanel", () => {
     expect(screen.getAllByText("-10.30B").length).toBeGreaterThan(0);
     expect(screen.getAllByText("11.57B").length).toBeGreaterThan(0);
   });
+
+  test("falls back to TradingView financials when backend is unavailable for statements", async () => {
+    render(
+      <FinanceFundamentalsPanel
+        baseUrl=""
+        symbol="IBM"
+        theme="dark"
+        overviewHeight={920}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "B/S" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/OpenBB statements are unavailable/i)).toBeInTheDocument();
+    });
+    expect(screen.getByTestId("tv-fundamental-data")).toHaveAttribute("data-symbol", "IBM");
+  });
+
+  test("falls back to TradingView financials when forecast request fails", async () => {
+    vi.spyOn(global, "fetch").mockImplementation(async (input) => {
+      const url = String(input);
+      if (url.includes("/finance/forecast")) {
+        return {
+          ok: false,
+          json: async () => ({ detail: "401 Unauthorized" }),
+          status: 401,
+        } as Response;
+      }
+      return {
+        ok: true,
+        json: async () => buildEnvelope([{ period_ending: "2025-12-31", total_revenue: 416161000000 }]),
+      } as Response;
+    });
+
+    render(
+      <FinanceFundamentalsPanel
+        baseUrl="http://127.0.0.1:6900"
+        symbol="IBM"
+        theme="dark"
+        overviewHeight={920}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Forecast" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/OpenBB forecast is unavailable/i)).toBeInTheDocument();
+    });
+    expect(screen.getByTestId("tv-fundamental-data")).toHaveAttribute("data-symbol", "IBM");
+  });
 });

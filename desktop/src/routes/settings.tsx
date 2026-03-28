@@ -17,6 +17,11 @@ const SETTINGS_CARDS = [
     description: "Set credentials for FRED and other integrations without mixing them into research workflows.",
     to: "/api-keys" as const,
   },
+  {
+    title: "AI Providers",
+    description: "Configure the local AI gateway, provider defaults, and retrieval behavior.",
+    to: "/ai-settings" as const,
+  },
 ];
 
 function SettingsPage() {
@@ -29,7 +34,7 @@ function SettingsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
         {SETTINGS_CARDS.map((card) => (
           <PanelCard key={card.title} title={card.title} description={card.description}>
             <a href={card.to} className="body-sm-medium text-theme-accent">

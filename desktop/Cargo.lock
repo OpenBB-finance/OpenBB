@@ -5625,6 +5625,7 @@ dependencies = [
 name = "openbb-platform"
 version = "1.0.2"
 dependencies = [
+ "axum",
  "cc",
  "chrono",
  "ctrlc",
@@ -5660,6 +5661,7 @@ dependencies = [
  "tauri-plugin-single-instance",
  "tauri-plugin-updater",
  "tokio",
+ "tokio-stream",
  "tokio-tungstenite 0.27.0",
  "toml 0.9.11+spec-1.1.0",
  "url",

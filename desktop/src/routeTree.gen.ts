@@ -27,6 +27,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BackendsRouteImport } from './routes/backends'
 import { Route as BackendLogsRouteImport } from './routes/backend-logs'
 import { Route as ApiKeysRouteImport } from './routes/api-keys'
+import { Route as AiSettingsRouteImport } from './routes/ai-settings'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -120,6 +121,11 @@ const ApiKeysRoute = ApiKeysRouteImport.update({
   path: '/api-keys',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiSettingsRoute = AiSettingsRouteImport.update({
+  id: '/ai-settings',
+  path: '/ai-settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AiRoute = AiRouteImport.update({
   id: '/ai',
   path: '/ai',
@@ -134,6 +140,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/ai-settings': typeof AiSettingsRoute
   '/api-keys': typeof ApiKeysRoute
   '/backend-logs': typeof BackendLogsRoute
   '/backends': typeof BackendsRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/ai-settings': typeof AiSettingsRoute
   '/api-keys': typeof ApiKeysRoute
   '/backend-logs': typeof BackendLogsRoute
   '/backends': typeof BackendsRoute
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/ai-settings': typeof AiSettingsRoute
   '/api-keys': typeof ApiKeysRoute
   '/backend-logs': typeof BackendLogsRoute
   '/backends': typeof BackendsRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/ai'
+    | '/ai-settings'
     | '/api-keys'
     | '/backend-logs'
     | '/backends'
@@ -225,6 +235,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ai'
+    | '/ai-settings'
     | '/api-keys'
     | '/backend-logs'
     | '/backends'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/ai'
+    | '/ai-settings'
     | '/api-keys'
     | '/backend-logs'
     | '/backends'
@@ -270,6 +282,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiRoute: typeof AiRoute
+  AiSettingsRoute: typeof AiSettingsRoute
   ApiKeysRoute: typeof ApiKeysRoute
   BackendLogsRoute: typeof BackendLogsRoute
   BackendsRoute: typeof BackendsRoute
@@ -418,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiKeysRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-settings': {
+      id: '/ai-settings'
+      path: '/ai-settings'
+      fullPath: '/ai-settings'
+      preLoaderRoute: typeof AiSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ai': {
       id: '/ai'
       path: '/ai'
@@ -438,6 +458,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiRoute: AiRoute,
+  AiSettingsRoute: AiSettingsRoute,
   ApiKeysRoute: ApiKeysRoute,
   BackendLogsRoute: BackendLogsRoute,
   BackendsRoute: BackendsRoute,

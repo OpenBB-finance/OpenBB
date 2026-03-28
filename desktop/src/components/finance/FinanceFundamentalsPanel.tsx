@@ -470,6 +470,33 @@ function renderForecast(payload: FinanceForecastPayload) {
   );
 }
 
+function renderTradingViewFallback(
+  symbol: string,
+  theme: TradingViewThemeMode,
+  overviewHeight: number,
+  title: string,
+  message: string,
+  detail?: string | null,
+) {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-sm border border-amber-500/40 bg-amber-500/10 px-4 py-4">
+        <p className="body-xs-medium text-theme-primary">{title}</p>
+        <p className="mt-1 body-xxs-regular text-theme-muted">{message}</p>
+        {detail ? <p className="mt-2 body-xxs-regular text-theme-muted">{detail}</p> : null}
+      </div>
+      <TradingViewWidgetEmbed
+        widgetType="fundamental-data"
+        symbol={symbol}
+        theme={theme}
+        title="TradingView Financial Fallback"
+        minHeight={overviewHeight}
+        frameHeight={overviewHeight}
+      />
+    </div>
+  );
+}
+
 function renderTable(
   kind: FinanceStatementKind,
   payload: FinanceStatementPayload,
@@ -688,6 +715,22 @@ export function FinanceFundamentalsPanel({
   );
   const activePayload = activeKind ? payloads[activeKind] : null;
   const activeError = activeKind ? errorsByKind[activeKind] ?? null : null;
+  const forecastFallback = renderTradingViewFallback(
+    symbol,
+    theme,
+    overviewHeight,
+    "OpenBB forecast is unavailable. Showing TradingView financial view instead.",
+    "TradingView remains available even when analyst consensus data cannot be loaded from the active backend.",
+    forecastError,
+  );
+  const statementFallback = renderTradingViewFallback(
+    symbol,
+    theme,
+    overviewHeight,
+    "OpenBB statements are unavailable. Showing TradingView financial view instead.",
+    "TradingView financials are shown as a fallback while the selected backend is offline, unauthenticated, or missing statement coverage for this ticker.",
+    activeError ?? (!baseUrl ? "OpenBB backend is not currently connected." : null),
+  );
 
   return (
     <PanelCard
@@ -753,10 +796,7 @@ export function FinanceFundamentalsPanel({
           />
         ) : activeTab === "forecast" ? (
           forecastError && !forecastPayload ? (
-            <div className="rounded-sm border border-red-500/40 bg-red-500/10 px-4 py-6">
-              <p className="body-xs-medium text-theme-primary">Forecast data failed to load.</p>
-              <p className="mt-2 body-xxs-regular text-theme-muted">{forecastError}</p>
-            </div>
+            forecastFallback
           ) : isForecastLoading && !forecastPayload ? (
             <div className="rounded-sm border border-dashed border-theme-outline bg-theme-secondary/40 px-4 py-6">
               <p className="body-xs-medium text-theme-primary">Loading forecast...</p>
@@ -765,20 +805,12 @@ export function FinanceFundamentalsPanel({
               </p>
             </div>
           ) : forecastPayload ? (
-            renderForecast(forecastPayload)
+            forecastPayload.consensus ? renderForecast(forecastPayload) : forecastFallback
           ) : null
         ) : !baseUrl ? (
-          <div className="rounded-sm border border-dashed border-theme-outline bg-theme-secondary/40 px-4 py-6">
-            <p className="body-xs-medium text-theme-primary">Resolving OpenBB backend...</p>
-            <p className="mt-1 body-xxs-regular text-theme-muted">
-              Financial statements will load once the active backend is confirmed.
-            </p>
-          </div>
+          statementFallback
         ) : activeError && !activePayload ? (
-          <div className="rounded-sm border border-red-500/40 bg-red-500/10 px-4 py-6">
-            <p className="body-xs-medium text-theme-primary">Financial statements failed to load.</p>
-            <p className="mt-2 body-xxs-regular text-theme-muted">{activeError}</p>
-          </div>
+          statementFallback
         ) : isLoading && !activePayload ? (
           <div className="rounded-sm border border-dashed border-theme-outline bg-theme-secondary/40 px-4 py-6">
             <p className="body-xs-medium text-theme-primary">Loading financial statements...</p>
@@ -787,7 +819,7 @@ export function FinanceFundamentalsPanel({
             </p>
           </div>
         ) : activeKind && activePayload ? (
-          renderTable(activeKind, activePayload, period)
+          activePayload.rows.length > 0 ? renderTable(activeKind, activePayload, period) : statementFallback
         ) : null}
       </div>
     </PanelCard>

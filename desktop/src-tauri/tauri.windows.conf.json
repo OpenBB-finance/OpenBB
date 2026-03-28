@@ -1,6 +1,6 @@
 {
   "build": {
-    "beforeBundleCommand": "pwsh -File src-tauri/scripts/sign.ps1"
+    "beforeBundleCommand": "powershell -ExecutionPolicy Bypass -File src-tauri/scripts/run-windows-sign.ps1"
   },
   "plugins": {
     "updater": {
