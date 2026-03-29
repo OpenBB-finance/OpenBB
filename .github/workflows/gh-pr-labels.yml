@@ -23,6 +23,6 @@ jobs:
           labels: "do not merge"
 
       - name: 🏷️ Label OpenBB Platform PRs
-        uses: srvaroa/labeler@master
+        uses: srvaroa/labeler@e8fbb2561481ef6e711a770f0234e9379dc76892
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
