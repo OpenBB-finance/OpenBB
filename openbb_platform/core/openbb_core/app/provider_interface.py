@@ -739,3 +739,23 @@ class ProviderInterface(metaclass=SingletonMeta):
                 __doc__=f"OBBject with results of type {name}",
             )
         return annotations
+
+
+_cached_return_annotations: dict[str, type[OBBject]] | None = None
+
+
+def __getattr__(name: str) -> type[OBBject]:
+    """Lazily expose dynamically generated OBBject_* annotations as module attributes."""
+    if not name.startswith("OBBject_"):
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+    global _cached_return_annotations
+    if _cached_return_annotations is None:
+        _cached_return_annotations = ProviderInterface().return_annotations
+
+    model_name = name.removeprefix("OBBject_")
+    annotation = _cached_return_annotations.get(model_name)
+    if annotation is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+    return annotation

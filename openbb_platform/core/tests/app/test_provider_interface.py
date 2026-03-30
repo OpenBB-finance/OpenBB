@@ -2,6 +2,7 @@
 
 # pylint: disable=redefined-outer-name
 
+import importlib
 from typing import Literal, Optional
 
 import pytest
@@ -81,6 +82,38 @@ def test_models(provider_interface):
     assert isinstance(models, list)
     assert len(models) > 0
     assert "EquityHistorical" in models
+
+
+def test_module_exposes_dynamic_obbject_annotations_from_cache(monkeypatch):
+    """Dynamic OBBject_* imports should resolve from the cached annotation map."""
+    module = importlib.import_module("openbb_core.app.provider_interface")
+    sentinel = object()
+    monkeypatch.setattr(module, "_cached_return_annotations", {"EquityInfo": sentinel})
+    annotation = getattr(module, "OBBject_EquityInfo")
+    assert annotation is sentinel
+
+
+def test_module_populates_cache_from_provider_interface(monkeypatch):
+    """The module should lazily load return annotations when the cache is empty."""
+    module = importlib.import_module("openbb_core.app.provider_interface")
+    sentinel = object()
+
+    class FakeProviderInterface:
+        @property
+        def return_annotations(self):
+            return {"EquityInfo": sentinel}
+
+    monkeypatch.setattr(module, "_cached_return_annotations", None)
+    monkeypatch.setattr(module, "ProviderInterface", FakeProviderInterface)
+    annotation = getattr(module, "OBBject_EquityInfo")
+    assert annotation is sentinel
+
+
+def test_module_raises_attribute_error_for_unknown_obbject():
+    """Unknown OBBject_* names should still fail cleanly."""
+    module = importlib.import_module("openbb_core.app.provider_interface")
+    with pytest.raises(AttributeError, match="OBBject_NotARealModel"):
+        getattr(module, "OBBject_NotARealModel")
 
 
 # --- _create_field: Literal → choices auto-derivation ---
