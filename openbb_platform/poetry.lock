@@ -3090,22 +3090,22 @@ openbb-core = ">=1.6.1,<2.0.0"
 
 [[package]]
 name = "openbb-federal-reserve"
-version = "1.6.0"
+version = "1.6.1"
 description = "US Federal Reserve Data Extension for OpenBB"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["main"]
 files = [
-    {file = "openbb_federal_reserve-1.6.0-py3-none-any.whl", hash = "sha256:a842c84d23955eae649208aa8e34345d8a398546d1254730a27534d9cfb1cce2"},
-    {file = "openbb_federal_reserve-1.6.0.tar.gz", hash = "sha256:32d6787dd60d7a8e85fdae5af9b31fd1eaf9f0dda8f358e986713155317eb6f7"},
+    {file = "openbb_federal_reserve-1.6.1-py3-none-any.whl", hash = "sha256:73f8bbac7f9fb729a9c872d9fc9c3ae3234bf6ece237e1235d00b1853cea599c"},
+    {file = "openbb_federal_reserve-1.6.1.tar.gz", hash = "sha256:50cff43e31535f7de176589f94aa0f2f2fe835fc755f00794a4e3a1c52cf423c"},
 ]
 
 [package.dependencies]
 beautifulsoup4 = ">=4.13.4,<5.0.0"
-openbb-core = ">=1.6.1,<2.0.0"
+openbb-core = ">=1.6.4,<2.0.0"
 openbb-economy = ">=1.6.1,<2.0.0"
 openbb-fixedincome = ">=1.6.1,<2.0.0"
-openbb-platform-api = ">=1.3.1,<2.0.0"
+openbb-platform-api = ">=1.3.5,<2.0.0"
 openpyxl = ">=3.1.5,<4.0.0"
 
 [[package]]
@@ -6168,4 +6168,4 @@ wsj = ["openbb-wsj"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4"
-content-hash = "e1f83c106389931b456f90c87df710edd33a9f396297a0a8168f410b57e11977"
+content-hash = "51367b27b57ae5e184dbf67b7bd7d20513d4f8c21496a2441263222a4becf2c9"
