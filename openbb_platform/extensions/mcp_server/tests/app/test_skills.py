@@ -40,8 +40,9 @@ def _make_mocks(mock_from_fastapi, mock_category_index, mock_process_routes):
 
 @pytest.fixture(autouse=True)
 def _patch_transforms():
-    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), \
-         patch("openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()):
+    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
+        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    ):
         yield
 
 
