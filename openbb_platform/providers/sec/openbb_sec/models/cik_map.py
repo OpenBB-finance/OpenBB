@@ -5,6 +5,7 @@
 from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.standard_models.cik_map import CikMapData, CikMapQueryParams
 from pydantic import Field
 
@@ -48,10 +49,10 @@ class SecCikMapFetcher(
         # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import symbol_map
 
-        results = {"cik": await symbol_map(query.symbol, query.use_cache)}
-        if not results:
-            return {"Error": "Symbol not found."}
-        return results
+        cik = await symbol_map(query.symbol, query.use_cache)
+        if not cik:
+            raise OpenBBError(f"Symbol '{query.symbol}' not found in SEC database.")
+        return {"cik": cik}
 
     @staticmethod
     def transform_data(
