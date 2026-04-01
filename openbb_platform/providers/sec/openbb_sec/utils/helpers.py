@@ -50,7 +50,9 @@ async def get_all_companies(use_cache: bool = True) -> DataFrame:
         response = await amake_request(url, headers=SEC_HEADERS)  # type: ignore
 
     if not response or not isinstance(response, dict):
-        raise OpenBBError("Empty or invalid response from SEC company tickers endpoint.")
+        raise OpenBBError(
+            "Empty or invalid response from SEC company tickers endpoint."
+        )
 
     df = DataFrame.from_dict(response, orient="index")
     cols = ["cik", "symbol", "name"]
