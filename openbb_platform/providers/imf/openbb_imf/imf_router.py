@@ -548,7 +548,6 @@ async def presentation_table_choices(
 @router.command(
     methods=["GET"],
     widget_config={
-        "title": "IMF Presentation Table",
         "type": "html",
         "params": [
             {

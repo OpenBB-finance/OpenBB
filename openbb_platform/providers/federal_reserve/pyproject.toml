@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-federal-reserve"
-version = "1.6.0"
+version = "1.6.1"
 description = "US Federal Reserve Data Extension for OpenBB"
 authors = ["OpenBB <hello@openbb.co>"]
 license = "AGPL-3.0-only"
