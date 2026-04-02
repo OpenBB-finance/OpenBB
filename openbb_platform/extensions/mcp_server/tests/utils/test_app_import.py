@@ -99,14 +99,14 @@ def test_parse_args_simple():
         "test_transport",
         "--allowed_categories",
         "cat1,cat2",
-        "--no-tool-discovery",
+        "--tool-discovery",
         "true",
     ]
     with patch.object(sys, "argv", test_args):
         args = parse_args()
         assert args.transport == "test_transport"
         assert args.allowed_categories == "cat1,cat2"
-        assert args.no_tool_discovery is True
+        assert args.tool_discovery is True
         assert args.imported_app is None
 
 
@@ -365,8 +365,6 @@ class TestModuleColonNotationHelper:
     def test_simple_module_notation(self):
         """Test simple module:name notation is detected correctly."""
         # These should be recognized as module colon notation
-        from openbb_mcp_server.utils.app_import import import_app
-
         # We test the behavior indirectly through import_app
         # Module notation without file should try import first
         with pytest.raises((ImportError, FileNotFoundError)):
