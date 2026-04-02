@@ -1852,7 +1852,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
 
         today = datetime.now()
 
-        _id = "" if query.code == "all" else query.code
+        _id = "" if query.code == "all" else query.code  # type: ignore
         if _id.startswith("CFTC_"):
             _id = _id[5:]
 
