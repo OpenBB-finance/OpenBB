@@ -8,17 +8,15 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field
+from pydantic import AliasChoices, Field
 
 
 class COTQueryParams(QueryParams):
     """Commitment of Traders Reports Query."""
 
-    id: str = Field(
-        description="A string with the CFTC market code or other identifying string,"
-        + " such as the contract market name, commodity name, or commodity group - i.e, 'gold' or 'japanese yen'."
-        + "Default report is Fed Funds Futures. Use the 'cftc_market_code' for an exact match.",
-        default="045601",
+    code: str = Field(
+        description="A string with the market code.",
+        validation_alias=AliasChoices("code", "id"),
     )
     start_date: dateType | None = Field(
         default=None,
