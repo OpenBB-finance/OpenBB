@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24group=cftc_contract_market_code%2Ccontract_market_name%2Ccommodity_name%2Ccommodity_group_name%2Ccommodity_subgroup_name%2Ccontract_units&%24limit=MOCK_LIMIT&%24order=MOCK_ORDER&%24select=cftc_contract_market_code%2Ccontract_market_name%2Ccommodity_name%2Ccommodity_group_name%2Ccommodity_subgroup_name%2Ccontract_units&%24where=MOCK_WHERE
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAANWUUU+DMBSF3/crGmKMxmk6HdH41tGaVFlxpeiMMQsCGqKAgZJojP/dwsSMCRvZ
+        i/rY3Ht6T7+e9vZd8x6kN/OSWKauJ2eRmz4FUq39QDvVBkcnx8Nrra8t12M3KuoInzu2IBhQJgBH
+        ggB7+xLoEAJhCbPURVHih/KtUhT1EbcQBiNkK6EtLONCyTE1iF0TPKZJ/lLJzihDzKDIVK224M6Y
+        MFFvz/L7muLnxl8nyONQZqphZ8Gq2pcT4XBWCMgUvIKtQ31X++j1V/MZFnxQO59qBGLMUTMwvaKY
+        MDyf0oRnseP3iDTaBdMCCuxApUzN3noqRhJnyXPouzLw/0lWvkno8AB2YVEmZLKexcRBXBBu3tSo
+        /92INPudsxlA2DEkK54O2R9TRqv/ZLN4LJtXt6b81e6ya5yddqdjanAL1P22v/BNXDeYvut9AmVI
+        m0G7BQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Thu, 02 Apr 2026 04:20:30 GMT
+      Etag: null
+      Last-Modified:
+      - Fri, 27 Mar 2026 19:31:05 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-SODA2-Data-Out-Of-Date:
+      - 'false'
+      X-SODA2-Fields:
+      - '["cftc_contract_market_code","contract_market_name","commodity_name","commodity_group_name","commodity_subgroup_name","contract_units"]'
+      X-SODA2-Secondary-Last-Modified:
+      - Fri, 27 Mar 2026 19:31:05 GMT
+      X-SODA2-Truth-Last-Modified:
+      - Fri, 27 Mar 2026 19:31:05 GMT
+      X-SODA2-Types:
+      - '["text","text","text","text","text","text"]'
+      X-Socrata-Region: null
+      X-Socrata-RequestId: null
+    status:
+      code: 200
+      message: OK
+version: 1
