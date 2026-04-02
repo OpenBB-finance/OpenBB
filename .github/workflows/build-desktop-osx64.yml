@@ -64,7 +64,7 @@ jobs:
         run: npm install -g @cyclonedx/cyclonedx-npm
 
       - name: install Rust stable
-        uses: dtolnay/rust-toolchain@631a55b12751854ce901bb631d5902ceb48146f7 # stable
+        uses: dtolnay/rust-toolchain@3c5f7ea28cd621ae0bf5283f0e981fb97b8a7af9 # master
         with:
           targets: "x86_64-apple-darwin"
 
