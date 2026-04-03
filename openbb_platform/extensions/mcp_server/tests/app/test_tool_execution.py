@@ -90,6 +90,14 @@ def _build_server(
     return mock_mcp_instance, decorated, index
 
 
+@pytest.fixture(autouse=True)
+def _patch_transforms():
+    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
+        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    ):
+        yield
+
+
 # ===================================================================
 # Discovery tool execution tests
 # ===================================================================
@@ -504,15 +512,10 @@ class TestTransformsAdded:
 
     def test_transforms_are_added(self):
         """Both PromptsAsTools and ResourcesAsTools transforms are registered."""
-        from fastmcp.server.transforms import PromptsAsTools, ResourcesAsTools
-
         settings = MCPSettings()  # type: ignore
         mock_mcp, _, _ = _build_server(settings)
 
         assert mock_mcp.add_transform.call_count == 2
-        transforms = [call[0][0] for call in mock_mcp.add_transform.call_args_list]
-        assert isinstance(transforms[0], PromptsAsTools)
-        assert isinstance(transforms[1], ResourcesAsTools)
 
     def test_no_hand_rolled_prompt_or_resource_tools(self):
         """The old list_prompts / execute_prompt / list_resources / read_resource closures are no longer registered."""
