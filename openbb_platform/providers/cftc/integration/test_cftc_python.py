@@ -33,9 +33,9 @@ def obb(pytestconfig):
     ],
 )
 @pytest.mark.integration
-def test_regulators_cftc_cot_search(params, obb):
+def test_cftc_cot_search(params, obb):
     """Test the CFTC COT search endpoint."""
-    result = obb.regulators.cftc.cot_search(**params)
+    result = obb.cftc.cot_search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -59,9 +59,9 @@ def test_regulators_cftc_cot_search(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_regulators_cftc_cot(params, obb):
+def test_cftc_cot(params, obb):
     """Test the CFTC COT endpoint."""
-    result = obb.regulators.cftc.cot(**params)
+    result = obb.cftc.cot(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
