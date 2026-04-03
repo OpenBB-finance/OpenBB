@@ -79,7 +79,7 @@ openbb-mcp --app ./my_app.py:create_app --factory
 | `--transport <type>` | `streamable-http`, `sse`, or `stdio` | `streamable-http` |
 | `--default-categories <csv>` | Comma-separated default active tool categories | `all` |
 | `--allowed-categories <csv>` | Restrict available categories to this list | All categories |
-| `--no-tool-discovery` | Disable runtime tool activation/deactivation | Discovery enabled |
+| `--tool-discovery` | Enable runtime tool activation/deactivation | Discovery disabled |
 | `--system-prompt <path>` | Path to a `.txt` system prompt file | None |
 | `--server-prompts <path>` | Path to a `.json` server prompts file | None |
 
@@ -104,7 +104,7 @@ Create `~/.openbb_platform/mcp_settings.json`:
 {
     "name": "My MCP Server",
     "default_tool_categories": ["equity", "economy"],
-    "enable_tool_discovery": true,
+    "enable_tool_discovery": false,
     "describe_responses": false,
     "system_prompt_file": "/path/to/system_prompt.txt",
     "server_prompts_file": "/path/to/prompts.json"
@@ -141,7 +141,7 @@ OPENBB_MCP_SERVER_PROMPTS_FILE="/path/to/prompts.json"
 |---|---|---|---|
 | `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | `list[str]` | `["all"]` |
 | `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | `list[str] \| None` | `None` |
-| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | `bool` | `true` |
+| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | `bool` | `false` |
 | `list_page_size` | `OPENBB_MCP_LIST_PAGE_SIZE` | `int \| None` | `None` |
 | `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | `bool` | `false` |
 | `api_prefix` | `OPENBB_MCP_API_PREFIX` | `str \| None` | `None` |
@@ -241,7 +241,7 @@ mcp = create_mcp_server(settings, my_fastapi_app, auth=my_auth_provider)
 
 ## Tool Discovery
 
-When `enable_tool_discovery` is `true` (the default), five admin tools are
+When `enable_tool_discovery` is `true`, five admin tools are
 available to the agent:
 
 | Tool | Description |
@@ -281,14 +281,14 @@ openbb-mcp --allowed-categories equity,economy,crypto
 
 Categories not in this list cannot be activated even via discovery tools.
 
-### Disabling Discovery
+### Enabling Discovery
 
 ```
-openbb-mcp --no-tool-discovery
+openbb-mcp --tool-discovery
 ```
 
 All tools in `default_tool_categories` are active and the admin tools are
-not registered.
+not registered unless discovery is enabled.
 
 ---
 
@@ -644,7 +644,7 @@ async def hello():
 settings = MCPSettings(
     name="My Custom MCP",
     default_tool_categories=["all"],
-    enable_tool_discovery=True,
+    enable_tool_discovery=False,
 )
 
 mcp = create_mcp_server(settings, app)

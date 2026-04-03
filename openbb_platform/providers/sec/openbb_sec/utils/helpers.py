@@ -49,8 +49,17 @@ async def get_all_companies(use_cache: bool = True) -> DataFrame:
     else:
         response = await amake_request(url, headers=SEC_HEADERS)  # type: ignore
 
-    df = DataFrame(response).transpose()
+    if not response or not isinstance(response, dict):
+        raise OpenBBError(
+            "Empty or invalid response from SEC company tickers endpoint."
+        )
+
+    df = DataFrame.from_dict(response, orient="index")
     cols = ["cik", "symbol", "name"]
+    if len(df.columns) != len(cols):
+        raise OpenBBError(
+            f"Unexpected SEC response format. Expected {len(cols)} fields, got {len(df.columns)}: {df.columns.tolist()}"
+        )
     df.columns = cols
     return df.astype(str)
 

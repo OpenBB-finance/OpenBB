@@ -9,7 +9,7 @@ def test_mcp_settings_defaults():
     assert settings.name == "OpenBB MCP"
     assert settings.default_tool_categories == ["all"]
     assert settings.allowed_tool_categories is None
-    assert settings.enable_tool_discovery is True
+    assert settings.enable_tool_discovery is False
     assert settings.describe_responses is False
 
 
