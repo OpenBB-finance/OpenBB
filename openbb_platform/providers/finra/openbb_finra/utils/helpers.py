@@ -122,8 +122,7 @@ def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
     session.get("https://www.finra.org/finra-data", timeout=10)
 
     weeks = [
-        week["weekStartDate"]
-        for week in get_finra_weeks(tier, is_ats, session=session)
+        week["weekStartDate"] for week in get_finra_weeks(tier, is_ats, session=session)
     ]
 
     data = []
