@@ -97,6 +97,7 @@ def _get_mcp_config_from_route(fa_route: APIRoute | None) -> dict:
 
 def _strip_api_prefix(path: str, api_prefix: str) -> str:
     """Strip the exact api_prefix (from SystemService) from an absolute path.
+
     Returns the remainder without a leading slash.
     """
     if not path:
@@ -242,7 +243,7 @@ def _add_prompts_from_json(mcp: FastMCP, settings: MCPSettings) -> None:
                     continue
 
         prompt_tags = prompt_def.get("tags", [])
-        tags = set(prompt_tags) if isinstance(prompt_tags, (list, set)) else set()
+        tags = set(prompt_tags) if isinstance(prompt_tags, list | set) else set()
         tags.add("server")
         mcp.add_prompt(
             StaticPrompt(
@@ -271,7 +272,7 @@ def _add_inline_prompts(mcp: FastMCP, prompt_definitions: list) -> None:
             prompt_tags = prompt_def.get("tags", [])
             tool = prompt_def.get("tool", "")
 
-            tags = set(prompt_tags) if isinstance(prompt_tags, (list, set)) else set()
+            tags = set(prompt_tags) if isinstance(prompt_tags, list | set) else set()
             tags.add("route-specific")
             tags.add(tool)
 
@@ -369,7 +370,7 @@ def create_mcp_server(
         The configured FastMCP server instance.
     """
     auth_provider = None
-    if auth and isinstance(auth, (list, tuple)) and len(auth) == 2 and all(auth):
+    if auth and isinstance(auth, list | tuple) and len(auth) == 2 and all(auth):
         # pylint: disable=import-outside-toplevel
         from .auth import get_auth_provider
 
@@ -405,7 +406,6 @@ def create_mcp_server(
         component: OpenAPITool | OpenAPIResource | OpenAPIResourceTemplate,
     ) -> None:
         """Apply naming, tags, enable/disable, and resource mime type using per-route config."""
-
         # Map back to FastAPI route to read openapi_extra
         fa_route = route_lookup.get((route.path, route.method.upper()))
         mcp_cfg = _get_mcp_config_from_route(fa_route)
@@ -962,8 +962,8 @@ def main():
     if hasattr(args, "default_categories") and args.default_categories:
         cli_overrides["default_categories"] = args.default_categories
 
-    if hasattr(args, "no_tool_discovery") and args.no_tool_discovery:
-        cli_overrides["no_tool_discovery"] = args.no_tool_discovery
+    if hasattr(args, "tool_discovery") and args.tool_discovery:
+        cli_overrides["tool_discovery"] = args.tool_discovery
 
     if hasattr(args, "system_prompt") and args.system_prompt:
         cli_overrides["system_prompt"] = args.system_prompt
