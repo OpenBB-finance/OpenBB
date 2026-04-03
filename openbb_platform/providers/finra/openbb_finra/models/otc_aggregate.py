@@ -45,16 +45,16 @@ class FinraOTCAggregateFetcher(
 
     # pylint: disable=unused-argument
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FinraOTCAggregateQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the FINRA endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_finra.utils.helpers import get_full_data
+        from openbb_finra.utils.helpers import aget_full_data
 
-        return get_full_data(query.symbol, query.tier, query.is_ats)
+        return await aget_full_data(query.symbol, query.tier, query.is_ats)
 
     @staticmethod
     def transform_data(
