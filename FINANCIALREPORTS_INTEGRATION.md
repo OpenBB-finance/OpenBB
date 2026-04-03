@@ -2,15 +2,15 @@
 
 ## Overview
 
-[FinancialReports.eu](https://financialreports.eu) is a financial data API specializing in **regulatory filings and company disclosures** from 35 official sources across 30+ countries. It would complement OpenBB's existing data providers by adding global regulatory filing coverage — annual reports, interim reports, ESG disclosures, M&A announcements, and more.
+[FinancialReports.eu](https://financialreports.eu) is a financial data API specializing in **filings and company disclosures** from data sources across 30+ countries. It would complement OpenBB's existing data providers by adding global regulatory filing coverage — annual reports, interim reports, ESG disclosures, M&A announcements, and more.
 
 ## Why This Fits OpenBB
 
-OpenBB aggregates data from dozens of providers, but filing coverage is primarily US-centric (SEC/EDGAR). FinancialReports.eu extends this to:
+OpenBB aggregates data from dozens of providers, but filing coverage is primarily US-centric. FinancialReports.eu extends this to:
 
-- **14M+ regulatory filings** from official regulators worldwide
+- **14M+ filings** 
 - **33,000+ companies** with ISIN, LEI, and GICS industry classification
-- **35 official sources**: SEC, FCA (UK), Euronext, EDINET (Japan), OPENDART (South Korea), SIX (Switzerland), BaFin (Germany), CNMV (Spain), AMF (France), and 26 more
+- **Data coverage across 30+ countries**
 - **11 standardized filing categories**: Financial Reporting, ESG Information, M&A/Partnerships/Legal, Debt/Equity Information, and more
 - **Markdown endpoint** for LLM-ready text extraction from filings
 
@@ -20,9 +20,9 @@ OpenBB aggregates data from dozens of providers, but filing coverage is primaril
 
 FinancialReports.eu fits OpenBB's provider model — users bring their own API key. A provider extension could expose:
 
-- `obb.equity.filings(symbol, source="financialreports")` — regulatory filings by company
+- `obb.equity.filings(symbol, source="financialreports")` — filings by company
 - `obb.equity.filing_content(filing_id)` — filing text in Markdown for LLM analysis
-- `obb.equity.filing_sources()` — list available regulatory sources
+- `obb.equity.filing_sources()` — list available data sources
 
 ### 2. MCP Server Integration
 
@@ -30,7 +30,7 @@ FinancialReports.eu offers an [MCP server](https://financialreports.eu) compatib
 
 ### 3. Python SDK
 
-Official Python client available for direct integration:
+Python client available for direct integration:
 ```bash
 pip install financial-reports-generated-client
 ```
@@ -54,7 +54,7 @@ pip install financial-reports-generated-client
 | `GET /filings/` | Search 14M+ filings by company, date, category, type, country |
 | `GET /filings/{id}/markdown/` | Filing content as Markdown (LLM-ready) |
 | `GET /companies/{id}/next-annual-report/` | Predicted next annual report date |
-| `GET /sources/` | List all 35 regulatory data sources |
+| `GET /sources/` | List all available data sources |
 | `GET /filing-categories/` | 11 standardized disclosure categories |
 
 ### Code Example
@@ -102,7 +102,7 @@ filings = filings_list.sync(client=client, company_isin="US0378331005", categori
 
 | OpenBB (current filing coverage) | + FinancialReports.eu |
 |---|---|
-| SEC/EDGAR (US) | 35 regulators across 30+ countries |
+| US only | 30+ countries |
 | US company filings | 33,000+ global companies |
 | Raw filing documents | Markdown-converted text (LLM-ready) |
 | — | Standardized filing categories across all sources |
