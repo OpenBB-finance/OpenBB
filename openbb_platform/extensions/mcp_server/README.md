@@ -67,8 +67,8 @@ Enter `openbb-mcp --help` to see the docstring from the command line.
     A comma-separated list of tool categories to be enabled by default.
     Defaults to 'all'.
 
---no-tool-discovery
-    If set, tool discovery will be disabled.
+--tool-discovery
+    If set, tool discovery will be enabled.
 
 --system-prompt <path>
     Path to a TXT file with the system prompt.
@@ -221,7 +221,7 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `instructions` | `OPENBB_MCP_INSTRUCTIONS` | string | `None` | Server instructions sent during the MCP `initialize` handshake. Auto-populated from system prompt if not set. |
 | `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | list[string] | `["all"]` | Default active tool categories on startup. |
 | `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | list[string] | `None` | Restricts available tool categories to this list. |
-| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `True` | Enable per-session tool discovery (admin tools for browse/activate/deactivate). |
+| `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | boolean | `False` | Enable per-session tool discovery (admin tools for browse/activate/deactivate). |
 | `list_page_size` | `OPENBB_MCP_LIST_PAGE_SIZE` | integer | `None` | Max items per page in MCP list responses. `None` disables pagination. |
 | `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | boolean | `False` | Include response types in tool descriptions. |
 | `system_prompt_file` | `OPENBB_MCP_SYSTEM_PROMPT_FILE` | string | `None` | Path to a text file for the system prompt. |
@@ -294,7 +294,7 @@ An additional set of tools are tagged as "admin", or "prompt".
 
 ## Tool Discovery
 
-When `enable_tool_discovery` is enabled (default), the server registers a small set of admin tools that let agents progressively discover and activate what they need:
+When `enable_tool_discovery` is enabled, the server registers a small set of admin tools that let agents progressively discover and activate what they need:
 
 1. **Browse** — `available_categories` returns the category tree with tool counts.
 2. **Inspect** — `available_tools` lists every tool in a category with its active/inactive state and a short description.
@@ -305,7 +305,7 @@ All visibility changes are **per-session** — each client maintains its own act
 
 To take full advantage of minimal startup tools, set `--default-categories admin` so only the discovery tools are active on connect.
 
-For scenarios where you want a completely fixed toolset (no discovery overhead), disable it with `--no-tool-discovery` and control the available tools via `allowed_tool_categories` and `default_tool_categories`.
+For scenarios where you want discovery available, enable it with `--tool-discovery`. Otherwise the server runs with a fixed toolset and you can control the available tools via `allowed_tool_categories` and `default_tool_categories`.
 
 ## System Prompt
 
@@ -612,8 +612,8 @@ openbb-mcp --default-categories equity,news --host 0.0.0.0 --port 8080
 # Start with allowed categories restriction
 openbb-mcp --allowed-categories equity,crypto,news
 
-# Disable tool discovery for multi-client usage
-openbb-mcp --no-tool-discovery
+# Enable tool discovery for per-session activation
+openbb-mcp --tool-discovery
 ```
 
 ### Claude Desktop:
