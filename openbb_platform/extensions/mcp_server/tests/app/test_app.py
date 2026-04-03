@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
+import pytest
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastmcp.server.providers.openapi import OpenAPITool
@@ -14,6 +15,14 @@ from openbb_mcp_server.app.app import (
     create_mcp_server,
 )
 from openbb_mcp_server.models.settings import MCPSettings
+
+
+@pytest.fixture(autouse=True)
+def _patch_transforms():
+    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
+        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    ):
+        yield
 
 
 def test_extract_brief_description():
