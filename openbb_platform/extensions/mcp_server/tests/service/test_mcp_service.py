@@ -149,7 +149,7 @@ def test_map_cli_args_to_settings(service: MCPService):
         "host": "10.10.10.10",
         "port": 9000,
         "allowed_categories": "stocks,crypto",
-        "no_tool_discovery": True,
+        "tool_discovery": True,
         "httpx_timeout": 30,
         "unknown_param": "some_value",
     }
@@ -159,7 +159,7 @@ def test_map_cli_args_to_settings(service: MCPService):
     assert mapped["uvicorn_config"]["host"] == "10.10.10.10"
     assert mapped["uvicorn_config"]["port"] == 9000
     assert mapped["allowed_tool_categories"] == "stocks,crypto"
-    assert mapped["enable_tool_discovery"] is False
+    assert mapped["enable_tool_discovery"] is True
     assert mapped["httpx_client_kwargs"]["timeout"] == 30
     assert mapped["uvicorn_config"]["unknown_param"] == "some_value"
 
