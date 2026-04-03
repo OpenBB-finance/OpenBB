@@ -155,8 +155,8 @@ Options:
         A comma-separated list of tool categories to be enabled by default.
         Defaults to 'all'.
 
-    --no-tool-discovery
-        If set, tool discovery will be disabled.
+    --tool-discovery
+        If set, tool discovery will be enabled.
 
     --system-prompt <path>
         Path to a TXT file with the system prompt.
@@ -234,7 +234,7 @@ def parse_args():
     transport = _kwargs.pop("transport", "streamable-http")
     allowed_categories = _kwargs.pop("allowed_categories", None)
     default_categories = _kwargs.pop("default_categories", "all")
-    no_tool_discovery = _kwargs.pop("no_tool_discovery", False)
+    tool_discovery = _kwargs.pop("tool_discovery", False)
     system_prompt = _kwargs.pop("system_prompt", None)
     server_prompts = _kwargs.pop("server_prompts", None)
 
@@ -247,7 +247,7 @@ def parse_args():
             self.transport = transport
             self.allowed_categories = allowed_categories
             self.default_categories = default_categories
-            self.no_tool_discovery = no_tool_discovery
+            self.tool_discovery = tool_discovery
             self.system_prompt = system_prompt
             self.server_prompts = server_prompts
             self.uvicorn_config = _kwargs  # All remaining kwargs go to uvicorn

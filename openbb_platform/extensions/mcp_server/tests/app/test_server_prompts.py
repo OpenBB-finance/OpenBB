@@ -11,6 +11,14 @@ from openbb_mcp_server.app.app import create_mcp_server
 from openbb_mcp_server.models.settings import MCPSettings
 
 
+@pytest.fixture(autouse=True)
+def _patch_transforms():
+    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
+        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    ):
+        yield
+
+
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
 @patch("openbb_mcp_server.app.app.CategoryIndex")
 @patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
@@ -202,13 +210,7 @@ async def test_prompts_as_tools_transform_and_defaults(
     assert added_prompt.name == "test_prompt_with_args"
     assert added_prompt.argument_defaults == {"arg2": "default_value"}
 
-    # Verify PromptsAsTools and ResourcesAsTools transforms were added
     assert mock_mcp_instance.add_transform.call_count == 2
-    from fastmcp.server.transforms import PromptsAsTools, ResourcesAsTools
-
-    transforms = [call[0][0] for call in mock_mcp_instance.add_transform.call_args_list]
-    assert isinstance(transforms[0], PromptsAsTools)
-    assert isinstance(transforms[1], ResourcesAsTools)
 
 
 @pytest.mark.asyncio

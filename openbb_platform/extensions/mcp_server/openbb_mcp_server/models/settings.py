@@ -60,7 +60,7 @@ the exact same operations available to REST clients.""",
 
     # Tool discovery configuration
     enable_tool_discovery: bool = Field(
-        default=True,
+        default=False,
         description="""
             Enable tool discovery, allowing the agent to hot-swap tools at runtime.
             Disable for multi-client or fixed toolset deployments.

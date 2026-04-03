@@ -115,7 +115,7 @@ This reduces noise in the active tool list and can improve context efficiency.
 
 ### When Discovery Is Disabled
 
-If the server was started with `--no-tool-discovery`, the admin tools are not
+If the server was started without `--tool-discovery`, the admin tools are not
 available. All tools in `default_tool_categories` are permanently active.
 
 ---
