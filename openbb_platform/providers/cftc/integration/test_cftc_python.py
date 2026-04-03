@@ -27,6 +27,7 @@ def obb(pytestconfig):
                 "futures_only": False,
                 "category": None,
                 "subcategory": None,
+                "code": None,
                 "provider": "cftc",
             }
         ),
@@ -46,7 +47,7 @@ def test_cftc_cot_search(params, obb):
     [
         (
             {
-                "id": "045601",
+                "code": "045601",
                 "report_type": "legacy",
                 "start_date": None,
                 "end_date": None,
