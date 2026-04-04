@@ -25,9 +25,11 @@ jobs:
           if [ "${{ github.event_name }}" == "release" ]; then
             echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
           else
-            echo "tag=${{ github.event.inputs.tag_name }}" >> $GITHUB_OUTPUT
+            echo "tag=${INPUT_TAG_NAME}" >> $GITHUB_OUTPUT
           fi
 
+        env:
+          INPUT_TAG_NAME: ${{ github.event.inputs.tag_name }}
       - name: Download release artifacts from published release
         run: |
           mkdir -p artifacts
@@ -146,7 +148,7 @@ jobs:
           cat latest.json
 
       - name: Create ODP release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2
         with:
           tag_name: ODP
           name: ODP Desktop (Latest Stable)
