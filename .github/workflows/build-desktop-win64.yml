@@ -86,7 +86,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/temp-sign-dlls"
 
       - name: Sign libcrypto DLL
-        uses: sslcom/esigner-codesign@develop
+        uses: sslcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b # v1.3.2
         with:
           command: sign
           username: ${{ secrets.ESIGNER_USERNAME }}
@@ -98,7 +98,7 @@ jobs:
           malware_block: false
 
       - name: Sign libssl DLL
-        uses: sslcom/esigner-codesign@develop
+        uses: sslcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b # v1.3.2
         with:
           command: sign
           username: ${{ secrets.ESIGNER_USERNAME }}
@@ -126,7 +126,7 @@ jobs:
         run: npm install -g @cyclonedx/cyclonedx-npm
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@3c5f7ea28cd621ae0bf5283f0e981fb97b8a7af9 # master
 
       - name: Cache cargo registry
         uses: actions/cache@v5
@@ -183,7 +183,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/temp-sign"
 
       - name: Sign the executable
-        uses: sslcom/esigner-codesign@develop
+        uses: sslcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b # v1.3.2
         with:
           command: sign
           username: ${{ secrets.ESIGNER_USERNAME }}
@@ -218,7 +218,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/desktop/signed-installer"
 
       - name: Sign Installer
-        uses: sslcom/esigner-codesign@v1.3.2
+        uses: sslcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b # v1.3.2
         with:
           command: sign
           username: ${{ secrets.ESIGNER_USERNAME }}
