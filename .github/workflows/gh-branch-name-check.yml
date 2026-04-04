@@ -23,7 +23,7 @@ jobs:
 
       - name: Get branch names.
         id: branch-names
-        uses: tj-actions/branch-names@v9
+        uses: tj-actions/branch-names@5250492686b253f06fa55861556d1027b067aeb5 # v9
 
       - name: Show Output result for source-branch and target-branch
         run: |
