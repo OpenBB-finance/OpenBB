@@ -130,7 +130,7 @@ def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
         response = get_finra_data(symbol, week, tier, is_ats, session=session)
         r_json = response.json()
         if response.status_code == 200 and r_json:
-            data.append(response.json()[0])
+            data.extend(r_json)
 
     return data
 
@@ -261,16 +261,21 @@ async def aget_full_data(symbol, tier: str = "T1", is_ats: bool = True):
                 symbol, week_start, tier, is_ats, session=session
             )
             if isinstance(result, list) and result:
-                return result[0]
-            if isinstance(result, dict) and result:
                 return result
-            return None
+            if isinstance(result, dict) and result:
+                return [result]
+            return []
 
         results = await asyncio.gather(
             *[fetch_week(w) for w in weeks], return_exceptions=True
         )
 
-        return [r for r in results if r is not None and not isinstance(r, Exception)]
+        flat_results = []
+        for r in results:
+            if isinstance(r, list):
+                flat_results.extend(r)
+
+        return flat_results
     finally:
         await session.close()
 
