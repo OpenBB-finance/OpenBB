@@ -178,7 +178,7 @@ async def aget_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
     result = await amake_request(
         url="https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
         method="POST",
-        **kwargs_for_request,
+        **kwargs_for_request,  # type: ignore
     )
 
     return result if isinstance(result, list) else []
@@ -243,7 +243,7 @@ async def aget_finra_data(
     return await amake_request(
         url="https://api.finra.org/data/group/otcMarket/name/weeklySummary",
         method="POST",
-        **kwargs_for_request,
+        **kwargs_for_request,  # type: ignore
     )
 
 
