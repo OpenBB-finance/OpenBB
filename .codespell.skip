@@ -30,3 +30,4 @@
 ./desktop/src/routes/environments.tsx
 ./desktop/src/tests/routes/installation-progress.test.tsx
 ./desktop/src/tests/routes/index.test.tsx
+./openbb_platform/providers/congress_gov/openbb_congress_gov/utils/helpers.py

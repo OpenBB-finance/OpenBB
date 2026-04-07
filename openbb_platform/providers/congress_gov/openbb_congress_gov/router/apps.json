@@ -1,0 +1,277 @@
+[{
+  "name": "The United States Congress",
+  "img": "https://www.congress.gov/img/opengraph1200by630.jpg",
+  "img_dark": "https://www.congress.gov/img/opengraph1200by630.jpg",
+  "img_light": "https://www.congress.gov/img/opengraph1200by630.jpg",
+  "description": "Find and view US federal legislative information and complete bill text.",
+  "allowCustomization": true,
+  "tabs": {
+    "bills": {
+      "id": "bills",
+      "name": "Bills",
+      "layout": [
+        {
+          "i": "uscongress_bills_congress_gov_obb",
+          "x": 0,
+          "y": 11,
+          "w": 40,
+          "h": 11,
+          "state": {
+            "paramOrder": [
+              "congress",
+              "bill_type",
+              "start_date",
+              "end_date",
+              "limit",
+              "offset",
+              "sort_by",
+              "bill_url"
+            ],
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnVisibility": {
+                  "hiddenColIds": [
+                    "origin_chamber_code"
+                  ]
+                },
+                "columnOrder": {
+                  "orderedColIds": [
+                    "update_date",
+                    "latest_action_date",
+                    "bill_url",
+                    "congress",
+                    "bill_number",
+                    "origin_chamber",
+                    "origin_chamber_code",
+                    "bill_type",
+                    "title",
+                    "latest_action",
+                    "update_date_including_text"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        },
+        {
+          "i": "uscongress_bill_text_congress_gov_obb",
+          "x": 16,
+          "y": 22,
+          "w": 24,
+          "h": 31,
+          "state": {
+            "params": {
+              "bill_url": "https://api.congress.gov/v3/bill/119/hr/6967?format=json",
+              "urls": [
+                "https://www.congress.gov/119/bills/hr6967/BILLS-119hr6967rh.pdf"
+              ]
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        },
+        {
+          "i": "uscongress_bill_info_congress_gov_obb",
+          "x": 0,
+          "y": 22,
+          "w": 16,
+          "h": 31,
+          "state": {
+            "params": {
+              "bill_url": "119/hr/4553"
+            }
+          },
+          "groups": [
+            "Group 1"
+          ]
+        },
+        {
+          "i": "rich_note-01805711-1294-41d8-9a4b-956d46fa77e3",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 9,
+          "state": {
+            "storage": {
+              "html": "<h2 style=\"text-align: left;\">How To Use</h2><p style=\"text-align: left;\">The Congress number is a sequential number representing the formed Congress for the elected period. As of 2026, the current Congress number is 119. Leaving empty will populate the 100 most recent actions.</p><p style=\"text-align: left;\">You can narrow the field by selecting a bill type, restricting dates, or adjusting the limit and offset parameters.</p><p style=\"text-align: left;\">The 3 widgets on this tab are grouped by the \"Bill URL\" column.</p><p style=\"text-align: left;\"><strong>NOTE: Clicking on the cell in the whitespace beside \"Link\" will change the loaded bill in the two widgets below. Don't click the Link directly, but click to the right of it.</strong></p><p style=\"text-align: left;\"><strong>You can also use shorthand to manually enter bills - `{congress}/{bill_type}/{bill_number}`</strong></p><p style=\"text-align: left;\">Some bills may not have any formal text, directly, such as resolutions. If it has not been introduced in the House, it will likely not have any text to display for the viewer. Items from today may not be immediately available to the public via API.</p><p style=\"text-align: left;\"></p><p></p>"
+            }
+          },
+          "groups": []
+        }
+      ]
+    },
+    "ammendments": {
+      "id": "ammendments",
+      "name": "Ammendments",
+      "layout": [
+        {
+          "i": "uscongress_amendments_congress_gov_obb",
+          "x": 0,
+          "y": 10,
+          "w": 40,
+          "h": 11,
+          "state": {
+            "paramOrder": [
+              "congress",
+              "amendment_type",
+              "start_date",
+              "end_date",
+              "limit",
+              "offset",
+              "sort_by",
+              "amendment_url"
+            ],
+            "params": {
+              "congress": "119",
+              "amendment_type": "samdt",
+              "limit": "100"
+            },
+            "chartView": {
+              "enabled": false,
+              "chartType": "line"
+            },
+            "columnState": {
+              "default": {
+                "columnOrder": {
+                  "orderedColIds": [
+                    "congress",
+                    "amendment_type",
+                    "number",
+                    "update_date",
+                    "amendment_url",
+                    "amended_bill",
+                    "amended_bill_title",
+                    "sponsor",
+                    "submitted_date"
+                  ]
+                }
+              }
+            }
+          },
+          "groups": [
+            "Group 2"
+          ]
+        },
+        {
+          "i": "uscongress_amendment_info_congress_gov_obb",
+          "x": 0,
+          "y": 21,
+          "w": 14,
+          "h": 27,
+          "groups": [
+            "Group 2"
+          ]
+        },
+        {
+          "i": "uscongress_amendment_text_congress_gov_obb",
+          "x": 14,
+          "y": 21,
+          "w": 26,
+          "h": 27,
+          "state": {
+            "params": {
+              "amendment_url": "https://api.congress.gov/v3/amendment/119/samdt/4743?format=json",
+              "urls": [
+                "https://www.congress.gov/119/crec/2026/03/21/172/52/CREC-2026-03-21-pt1-PgS1484-6.pdf"
+              ]
+            }
+          },
+          "groups": [
+            "Group 2"
+          ]
+        },
+        {
+          "i": "rich_note-ba4ed537-f663-4dea-be62-3513bee784a5",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 8,
+          "state": {
+            "storage": {
+              "html": "<h2 style=\"text-align: left;\">How To Use</h2><p style=\"text-align: left;\">These widgets work the same way as three on the <strong>Bills</strong> tab.</p><p style=\"text-align: left;\">Click to the right of the \"Link\" in the Amendment URL column to change the loaded ammendment.</p><p style=\"text-align: left;\">With no Congress number, the 100 most recent amendments are surfaced. To filter them by type, you must enter a Congress number.</p><p style=\"text-align: left;\">Some amendments, like those from the Senate, reference Congressional Record text as the source, while others link to the bills themselves.</p><p style=\"text-align: left;\">On a working day, there may be hundreds of amendments appended to the same bill. Each amendment number is a unique record.</p>"
+            }
+          },
+          "groups": []
+        }
+      ]
+    },
+    "committees": {
+      "id": "committees",
+      "name": "Committees",
+      "layout": [
+        {
+          "i": "uscongress_committee_document_viewer_congress_gov_obb",
+          "x": 0,
+          "y": 9,
+          "w": 40,
+          "h": 26,
+          "state": {
+            "params": {
+              "chamber": "house",
+              "committee": "hsju00",
+              "doc_type": "report",
+              "congress": "119",
+              "urls": [
+                "https://www.congress.gov/119/crpt/hrpt541/CRPT-119hrpt541.pdf"
+              ]
+            }
+          },
+          "groups": []
+        },
+        {
+          "i": "rich_note-ab1c1d5a-f476-4dd9-b9be-88042eef2583",
+          "x": 0,
+          "y": 2,
+          "w": 40,
+          "h": 7,
+          "state": {
+            "storage": {
+              "html": "<h2 style=\"text-align: left;\">How To Use</h2><p style=\"text-align: left;\">Congressional Committees produce different types of documents, this widget exposes them as a hierarchy:</p><p style=\"text-align: left;\">Congress -&gt; Chamber -&gt; Committee -&gt; Subcommittee -&gt; Document Type</p><p style=\"text-align: left;\">When no subcommittee, the documents reflect the parent committee.</p><p style=\"text-align: left;\">Some committee meetings are only available as video, events producing no documents are omitted. <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"obb-hyper-link\" href=\"http://Congress.gov\">Congress.gov</a> includes files that are not properly encoded at the source, and those will result in \"Failed to load PDF file.\"</p>"
+            }
+          },
+          "groups": []
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "name": "Group 1",
+      "type": "param",
+      "paramName": "bill_url",
+      "defaultValue": "https://api.congress.gov/v3/bill/119/hr/6967?format=json"
+    },
+    {
+      "name": "Group 2",
+      "type": "param",
+      "paramName": "amendment_url",
+      "defaultValue": "https://api.congress.gov/v3/amendment/119/samdt/4743?format=json"
+    },
+    {
+      "name": "Group 3",
+      "type": "param",
+      "paramName": "chamber",
+      "defaultValue": "house"
+    },
+    {
+      "name": "Group 4",
+      "type": "param",
+      "paramName": "law_url",
+      "defaultValue": "119/s/3705"
+    },
+    {
+      "name": "Group 5",
+      "type": "endpointParam",
+      "paramName": "subcommittee",
+      "defaultValue": "senate"
+    }
+  ]
+}]
