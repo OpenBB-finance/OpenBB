@@ -254,7 +254,7 @@ class CongressBillInfoFetcher(
 
             return text
 
-        markdown_content = f"""# {data.get("title")}
+        markdown_content = f"""## {data.get("title")}
 
 - **Congress**: {data.get("congress")}
 - **Bill Number**: {data.get("number")}
@@ -362,7 +362,7 @@ class CongressBillInfoFetcher(
                 committee_chamber = committee.get("chamber", "")
 
                 if committee_chamber:
-                    markdown_content += f"- **{committee_name} - {committee_chamber} ({committee.get('type')})  **\n"
+                    markdown_content += f"- **{committee_name} - {committee_chamber} ({committee.get('type')})**\n"
                 else:
                     markdown_content += f"- **{committee_name}**\n"
 

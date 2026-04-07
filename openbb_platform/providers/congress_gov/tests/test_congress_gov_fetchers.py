@@ -3,9 +3,18 @@
 from datetime import datetime
 
 import pytest
+from openbb_congress_gov.models.amendment_info import CongressAmendmentInfoFetcher
+from openbb_congress_gov.models.amendment_text import CongressAmendmentTextFetcher
 from openbb_congress_gov.models.bill_info import CongressBillInfoFetcher
 from openbb_congress_gov.models.bill_text import CongressBillTextFetcher
+from openbb_congress_gov.models.congress_amendments import CongressAmendmentsFetcher
 from openbb_congress_gov.models.congress_bills import CongressBillsFetcher
+from openbb_congress_gov.models.congress_committee_documents import (
+    CongressCommitteeDocumentsFetcher,
+)
+from openbb_congress_gov.models.congress_committee_info import (
+    CongressCommitteeInfoFetcher,
+)
 from openbb_congress_gov.utils.helpers import year_to_congress
 from openbb_core.app.service.user_service import UserService
 
@@ -75,5 +84,74 @@ def test_congress_bill_text_fetcher(credentials=test_credentials):
     }
 
     fetcher = CongressBillTextFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_congress_amendments_fetcher(credentials=test_credentials):
+    """Test Congress Amendments fetcher."""
+    params = {
+        "congress": 119,
+        "limit": 1,
+    }
+
+    fetcher = CongressAmendmentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_congress_amendment_info_fetcher(credentials=test_credentials):
+    """Test Congress Amendment Info fetcher."""
+    params = {
+        "amendment_url": "119/hamdt/2",
+    }
+
+    fetcher = CongressAmendmentInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_congress_amendment_text_fetcher(credentials=test_credentials):
+    """Test Congress Bill Text fetcher."""
+    params = {
+        "urls": [
+            "https://www.congress.gov/119/crec/2026/03/21/172/52/CREC-2026-03-21-pt1-PgS1484-6.pdf"
+        ],
+    }
+
+    fetcher = CongressAmendmentTextFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_congress_committee_documents_fetcher(credentials=test_credentials):
+    """Test Congress Committee Documents fetcher."""
+    params = {
+        "chamber": "senate",
+        "committee": "slin00",
+        "doc_type": "report",
+        "congress": 119,
+        "limit": 5,
+        "use_cache": False,
+    }
+
+    fetcher = CongressCommitteeDocumentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_congress_committee_info_fetcher(credentials=test_credentials):
+    """Test Congress Committee Info fetcher."""
+    params = {
+        "chamber": "senate",
+        "committee": "slin00",
+    }
+
+    fetcher = CongressCommitteeInfoFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
