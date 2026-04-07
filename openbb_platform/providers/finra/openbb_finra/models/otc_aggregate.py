@@ -30,6 +30,7 @@ class FinraOTCAggregateData(OTCAggregateData):
         "share_quantity": "totalWeeklyShareQuantity",
         "trade_quantity": "totalWeeklyTradeCount",
         "update_date": "lastUpdateDate",
+        "symbol": "issueSymbolIdentifier",
     }
 
 

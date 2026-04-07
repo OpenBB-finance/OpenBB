@@ -167,7 +167,11 @@ async def aget_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
         "sortFields": ["-weekStartDate"],
     }
 
-    kwargs_for_request = {"headers": request_header, "json": request_data, "timeout": 20}
+    kwargs_for_request = {
+        "headers": request_header,
+        "json": request_data,
+        "timeout": 20,
+    }
     if session is not None:
         kwargs_for_request["session"] = session
 
@@ -180,7 +184,9 @@ async def aget_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
     return result if isinstance(result, list) else []
 
 
-async def aget_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True, **kwargs):
+async def aget_finra_data(
+    symbol, week_start, tier: str = "T1", is_ats: bool = True, **kwargs
+):
     """Get the data for a symbol from FINRA asynchronously."""
     # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
