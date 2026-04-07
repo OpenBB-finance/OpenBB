@@ -3,7 +3,13 @@
 from typing import Literal
 
 from fastapi.exceptions import HTTPException
-from openbb_congress_gov.utils.constants import BillTypes, base_url, bill_type_options
+from openbb_congress_gov.utils.constants import (
+    AmendmentTypes,
+    BillTypes,
+    LawTypes,
+    base_url,
+    bill_type_options,
+)
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.provider.utils.errors import UnauthorizedError
 
@@ -98,11 +104,11 @@ def download_bills(urls: list[str]) -> list:
     results: list = []
 
     for url in urls:
-        if "congress.gov" not in url:
+        if "congress.gov" not in url and "govinfo.gov" not in url:
             results.append(
                 {
                     "error_type": "invalid_url",
-                    "content": f"Invalid URL: {url}. Must be a valid Congress.gov API URL.",
+                    "content": f"Invalid URL: {url}. Must be a valid Congress.gov or GovInfo.gov URL.",
                     "filename": url.split("/")[-1],
                 }
             )
@@ -435,16 +441,30 @@ async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> li
             )
 
         text_output: list = []
+        seen_urls: set = set()
 
         for version in bill_text:
             bill_version: dict = {}
             formats = version.get("formats", [])
             bill_type = version.get("type", "")
             version_date = version.get("date", "")
+
             if not formats or not version_date:
                 continue
+
+            pdf_url = next(
+                (f.get("url") for f in formats if f.get("type") == "PDF"), None
+            )
+
+            if pdf_url and pdf_url in seen_urls:
+                continue
+
+            if pdf_url:
+                seen_urls.add(pdf_url)
+
             bill_version["version_type"] = bill_type
             bill_version["version_date"] = version_date
+
             for fmt in formats:
                 doc_url = fmt.get("url")
                 doc_type = fmt.get("type", "").replace("Formatted ", "").lower()
@@ -463,13 +483,21 @@ async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> li
             }
         ]
 
+    seen_urls = set()
+
     for version in bill_text:
         version_date = version.get("date")
         formats = version.get("formats", [])
         version_type = version.get("type", "")
+
         for fmt in formats:
             if (doc_type := fmt.get("type")) and doc_type == "PDF":
                 doc_url = fmt.get("url")
+
+                if doc_url in seen_urls:
+                    break
+
+                seen_urls.add(doc_url)
                 doc_name = doc_url.split("/")[-1]
                 filename = (
                     f"{version_type} - {version_date} - {doc_name}"
@@ -482,6 +510,472 @@ async def get_bill_text_choices(bill_url: str, is_workspace: bool = False) -> li
                         "value": doc_url,
                     }
                 )
+                break
+
+    return results
+
+
+async def get_laws(
+    congress: int,
+    law_type: str | None = None,
+    limit: int | None = None,
+    offset: int | None = None,
+    sort_by: Literal["asc", "desc"] = "desc",
+) -> dict:
+    """Fetch laws for a given Congress number.
+
+    Parameters
+    ----------
+    congress : int
+        The Congress number (e.g., 119 for the 119th Congress).
+    law_type : Optional[str]
+        The type of law to fetch. Must be one of: "pub", "priv".
+        If None, returns all laws for the congress.
+    limit : Optional[int]
+        The maximum number of laws to return. Defaults to 100 if None.
+    offset : Optional[int]
+        The number of results to skip before starting to collect the result set.
+    sort_by : Literal["asc", "desc"]
+        The sort order for the results. Defaults to "desc".
+
+    Returns
+    -------
+    dict
+        A dictionary of the raw JSON response from the API.
+    """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
+    if law_type is not None and law_type not in LawTypes:
+        raise ValueError(
+            f"Invalid law type: {law_type}. Must be one of {', '.join(LawTypes)}."
+        )
+
+    api_key = check_api_key()
+
+    url = (
+        f"{base_url}law/{congress}"
+        + (f"/{law_type}" if law_type else "")
+        + f"?limit={limit if limit is not None else 100}"
+        + (f"&offset={offset}" if offset else "")
+        + f"&sort=updateDate+{sort_by}"
+        + f"&format=json&api_key={api_key}"
+    )
+
+    return await amake_request(url)  # type: ignore
+
+
+async def get_all_laws_by_type(congress: int, law_type: str = "pub") -> list:
+    """Fetch all laws of a specific type for a given Congress number.
+
+    Parameters
+    ----------
+    congress : int
+        The Congress number (e.g., 119 for the 119th Congress).
+    law_type : str
+        The type of law to fetch. Must be one of: "pub", "priv".
+
+    Returns
+    -------
+    list
+        A list of bill dictionaries for all laws of the specified type.
+    """
+    # pylint: disable=import-outside-toplevel
+    import math  # noqa
+    from openbb_core.provider.utils.helpers import amake_requests
+
+    if law_type not in LawTypes:
+        raise ValueError(
+            f"Invalid law type: {law_type}. Must be one of {', '.join(LawTypes)}."
+        )
+
+    api_key = check_api_key()
+    results: list = []
+    limit = 250
+    res = await get_laws(congress=congress, law_type=law_type, limit=limit, offset=0)
+    results.extend(res.get("bills", []))  # type: ignore
+    total = res.get("pagination", {}).get("count", 0)  # type: ignore
+    next_url = res.get("pagination", {}).get("next", None)  # type: ignore
+    urls: list = []
+
+    for i in range(1, math.ceil(total / limit)):
+        offset = i * limit
+        url = (
+            next_url.replace(f"offset={limit}", f"offset={offset}").replace(
+                "updateDate ", "updateDate+"
+            )
+            + f"&api_key={api_key}"
+        )
+        urls.append(url)
+
+    async def response_callback(response, _):
+        result = await response.json()
+        if result and "bills" in result and (bills := result.get("bills", [])):
+            results.extend(bills)
+
+    _ = await amake_requests(urls, response_callback=response_callback)  # type: ignore
+
+    return sorted(results, key=lambda x: x.get("updateDate", ""), reverse=True)
+
+
+async def get_amendments(
+    congress: int | None = None,
+    amendment_type: str | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    limit: int | None = None,
+    offset: int | None = None,
+    sort_by: Literal["asc", "desc"] = "desc",
+) -> dict:
+    """Fetch amendments with optional filters.
+
+    Parameters
+    ----------
+    congress : Optional[int]
+        The Congress number. If None, returns amendments across congresses.
+    amendment_type : Optional[str]
+        The type of amendment. Must be one of: "hamdt", "samdt", "suamdt".
+    start_date : Optional[str]
+        The start date in ISO format (YYYY-MM-DD) for filtering by updateDate.
+    end_date : Optional[str]
+        The end date in ISO format (YYYY-MM-DD) for filtering by updateDate.
+    limit : Optional[int]
+        The maximum number of amendments to return. Defaults to 100 if None.
+    offset : Optional[int]
+        The number of results to skip before starting to collect the result set.
+    sort_by : Literal["asc", "desc"]
+        The sort order for the results. Defaults to "desc".
+
+    Returns
+    -------
+    dict
+        A dictionary of the raw JSON response from the API.
+    """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
+    if amendment_type is not None and amendment_type not in AmendmentTypes:
+        raise ValueError(
+            f"Invalid amendment type: {amendment_type}. Must be one of {', '.join(AmendmentTypes)}."
+        )
+
+    api_key = check_api_key()
+    url = f"{base_url}amendment"
+
+    if congress is not None:
+        url += f"/{congress}"
+
+        if amendment_type is not None:
+            url += f"/{amendment_type}"
+
+    url += (f"?fromDateTime={start_date + 'T00:00:00Z'}" if start_date else "") + (
+        f"&toDateTime={end_date + 'T23:59:59Z'}" if end_date else ""
+    )
+    url += (
+        f"{'?' if '?' not in url else '&'}"
+        + f"limit={limit if limit is not None else 100}"
+        + (f"&offset={offset}" if offset else "")
+        + f"&sort=updateDate+{sort_by}"
+        + f"&format=json&api_key={api_key}"
+    )
+
+    return await amake_request(url)  # type: ignore
+
+
+async def get_all_amendments_by_type(congress: int, amendment_type: str) -> list:
+    """Fetch all amendments of a specific type for a given Congress number.
+
+    Parameters
+    ----------
+    congress : int
+        The Congress number (e.g., 119 for the 119th Congress).
+    amendment_type : str
+        The type of amendment. Must be one of: "hamdt", "samdt", "suamdt".
+
+    Returns
+    -------
+    list
+        A list of all amendment dictionaries for the specified type and congress.
+    """
+    # pylint: disable=import-outside-toplevel
+    import math  # noqa
+    from openbb_core.provider.utils.helpers import amake_requests
+
+    if amendment_type not in AmendmentTypes:
+        raise ValueError(
+            f"Invalid amendment type: {amendment_type}. Must be one of {', '.join(AmendmentTypes)}."
+        )
+
+    api_key = check_api_key()
+    results: list = []
+    limit = 250
+    res = await get_amendments(
+        congress=congress, amendment_type=amendment_type, limit=limit, offset=0
+    )
+    results.extend(res.get("amendments", []))  # type: ignore
+    total = res.get("pagination", {}).get("count", 0)  # type: ignore
+    next_url = res.get("pagination", {}).get("next", None)  # type: ignore
+    urls: list = []
+
+    for i in range(1, math.ceil(total / limit)):
+        offset = i * limit
+        url = (
+            next_url.replace(f"offset={limit}", f"offset={offset}").replace(
+                "updateDate ", "updateDate+"
+            )
+            + f"&api_key={api_key}"
+        )
+        urls.append(url)
+
+    async def response_callback(response, _):
+        result = await response.json()
+        if (
+            result
+            and "amendments" in result
+            and (amendments := result.get("amendments", []))
+        ):
+            results.extend(amendments)
+
+    _ = await amake_requests(urls, response_callback=response_callback)  # type: ignore
+
+    return sorted(results, key=lambda x: x.get("updateDate", ""), reverse=True)
+
+
+# pylint: disable=R0912,R0914
+async def get_amendment_text_choices(  # noqa: PLR0912
+    amendment_url: str, is_workspace: bool = False
+) -> list:
+    """Fetch the direct download links for the available text versions of the specified amendment.
+
+    Makes multiple API calls:
+    1. GET the amendment base detail to retrieve the official textVersions URL and description.
+    2. GET the textVersions sub-resource via the URL returned in the detail response.
+    3. If the description references a committee report (e.g., "House Report 119-1"),
+       GET that report's text — these documents contain the clean printed amendment text
+       and are returned first (higher priority than Congressional Record references).
+
+    Parameters
+    ----------
+    amendment_url : str
+        The base URL of the amendment
+        (e.g., "https://api.congress.gov/v3/amendment/119/hamdt/2?format=json")
+        or a shorthand like "119/hamdt/2".
+    is_workspace : bool
+        When True, returns {label, value} dicts suitable for workspace dropdowns.
+
+    Returns
+    -------
+    list
+        List of dictionaries with available text version formats.
+    """
+    # pylint: disable=import-outside-toplevel
+    import re
+
+    from openbb_core.provider.utils.helpers import amake_request
+
+    api_key = check_api_key()
+
+    if amendment_url[0].isnumeric() or (
+        amendment_url[0] == "/" and amendment_url[1].isnumeric()
+    ):
+        path = amendment_url[1:] if amendment_url[0] == "/" else amendment_url
+        amendment_url = f"https://api.congress.gov/v3/amendment/{path}?format=json"
+
+    # Step 1: Amendment base detail for description (committee report check) and text URL
+    detail_response: dict = await amake_request(amendment_url + f"&api_key={api_key}")  # type: ignore
+    amendment_detail = detail_response.get("amendment", {})
+
+    # Step 2: Fetch the /text sub-resource.
+    tv_info = amendment_detail.get("textVersions", {})
+
+    if isinstance(tv_info, dict) and tv_info.get("url"):
+        tv_url = tv_info["url"] + f"&api_key={api_key}"
+    else:
+        # Construct the /text URL directly as a fallback
+        tv_url = amendment_url.replace("?", "/text?") + f"&api_key={api_key}"
+
+    tv_response: dict = await amake_request(tv_url)  # type: ignore
+    text_versions: list = tv_response.get("textVersions", [])
+    # Step 3: Check if the amendment was printed in a committee report and fetch that text
+    committee_report_text: list = []
+    description = (
+        amendment_detail.get("description") or amendment_detail.get("purpose") or ""
+    )
+    report_match = re.search(
+        r"\b(House|Senate)\s+Report\s+(\d+)-(\d+)", description, re.IGNORECASE
+    )
+
+    if report_match:
+        report_congress = report_match.group(2)
+        report_number = report_match.group(3)
+        report_type = "hrpt" if report_match.group(1).lower() == "house" else "srpt"
+        report_text_url = (
+            f"https://api.congress.gov/v3/committeeReport/{report_congress}"
+            f"/{report_type}/{report_number}/text?format=json&api_key={api_key}"
+        )
+        try:
+            report_response: dict = await amake_request(report_text_url)  # type: ignore
+            if isinstance(report_response, dict) and "text" in report_response:
+                committee_report_text = report_response.get("text", [])
+        except Exception:  # pylint: disable=broad-except  # noqa: S110
+            pass
+
+    # Step 4: If no text versions found, fall back to the amended bill's text versions.
+    bill_text_versions: list = []
+
+    if not text_versions and not committee_report_text:
+        amended_bill = amendment_detail.get("amendedBill", {})
+        bill_url = amended_bill.get("url", "") if amended_bill else ""
+
+        if bill_url:
+            bill_text_url = bill_url.replace("?", "/text?") + f"&api_key={api_key}"
+
+            try:
+                bill_tv_response: dict = await amake_request(bill_text_url)  # type: ignore
+                bill_text_versions = bill_tv_response.get("textVersions", [])
+            except Exception:  # pylint: disable=broad-except  # noqa: S110
+                pass
+
+    if is_workspace is False:
+        if not text_versions and not committee_report_text and not bill_text_versions:
+            raise HTTPException(
+                status_code=404,
+                detail="No text available for this amendment currently.",
+            )
+
+        text_output: list = []
+        seen_pdf_urls: set = set()
+
+        def _deduped_entry(entry: dict, formats: list) -> dict | None:
+            pdf_url = next(
+                (f.get("url") for f in formats if f.get("type") == "PDF"), None
+            )
+
+            if pdf_url and pdf_url in seen_pdf_urls:
+                return None
+
+            if pdf_url:
+                seen_pdf_urls.add(pdf_url)
+
+            for fmt in formats:
+                doc_url = fmt.get("url")
+                doc_type = fmt.get("type", "").replace("Formatted ", "").lower()
+                entry[doc_type] = doc_url
+
+            return entry
+
+        for version in committee_report_text:
+            formats = version.get("formats", [])
+            entry: dict = {
+                "version_type": "Committee Report",
+                "version_date": version.get("date", ""),
+            }
+            result = _deduped_entry(entry, formats)
+
+            if result:
+                text_output.append(result)
+
+        for version in text_versions:
+            formats = version.get("formats", [])
+            version_type = version.get("type", "")
+            version_date = version.get("date", "")
+
+            if not formats or not version_date:
+                continue
+
+            entry = {"version_type": version_type, "version_date": version_date}
+            result = _deduped_entry(entry, formats)
+
+            if result:
+                text_output.append(result)
+
+        for version in bill_text_versions:
+            formats = version.get("formats", [])
+            version_type = version.get("type", "")
+            version_date = version.get("date", "")
+
+            if not formats or not version_date:
+                continue
+
+            entry = {
+                "version_type": f"Bill Text - {version_type}",
+                "version_date": version_date,
+            }
+            result = _deduped_entry(entry, formats)
+
+            if result:
+                text_output.append(result)
+
+        return text_output
+
+    if not text_versions and not committee_report_text and not bill_text_versions:
+        return [
+            {"label": "No text available for this amendment currently.", "value": ""}
+        ]
+
+    results: list = []
+
+    # Committee report documents first — these are the printed amendment text
+    for version in committee_report_text:
+        version_date = version.get("date", "")
+        for fmt in version.get("formats", []):
+            if fmt.get("type") == "PDF":
+                doc_url = fmt.get("url", "")
+                doc_name = doc_url.split("/")[-1]
+                label = (
+                    f"Committee Report - {version_date} - {doc_name}"
+                    if version_date
+                    else doc_name
+                )
+                results.append({"label": label, "value": doc_url})
+                break
+
+    seen_urls_ws: set = set()
+
+    # Congressional Record / other text versions
+    for version in text_versions:
+        version_date = version.get("date")
+        formats = version.get("formats", [])
+        version_type = version.get("type", "")
+
+        for fmt in formats:
+            if (doc_type := fmt.get("type")) and doc_type == "PDF":
+                doc_url = fmt.get("url", "")
+
+                if doc_url in seen_urls_ws:
+                    break
+
+                seen_urls_ws.add(doc_url)
+                doc_name = doc_url.split("/")[-1]
+                filename = (
+                    f"{version_type} - {version_date} - {doc_name}"
+                    if version_date
+                    else doc_name
+                )
+                results.append({"label": filename, "value": doc_url})
+                break
+
+    # Amended bill text fallback (for ANS amendments that adopt the printed bill)
+    for version in bill_text_versions:
+        version_date = version.get("date")
+        formats = version.get("formats", [])
+        version_type = version.get("type", "")
+
+        for fmt in formats:
+            if (doc_type := fmt.get("type")) and doc_type == "PDF":
+                doc_url = fmt.get("url", "")
+
+                if doc_url in seen_urls_ws:
+                    break
+
+                seen_urls_ws.add(doc_url)
+                doc_name = doc_url.split("/")[-1]
+                filename = (
+                    f"Bill Text ({version_type}) - {version_date} - {doc_name}"
+                    if version_date
+                    else doc_name
+                )
+                results.append({"label": filename, "value": doc_url})
                 break
 
     return results
