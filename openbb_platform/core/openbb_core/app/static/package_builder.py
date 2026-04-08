@@ -188,13 +188,17 @@ class PackageBuilder:
 
                 # Actual build steps
                 self.console.log("\nBuilding extensions package...\n")
-                self._clean(modules)
-                ext_map = self._get_extension_map()
-                self._save_modules(modules, ext_map)
-                self._save_reference_file(ext_map)
-                self._save_package()
-                if self.lint:
-                    self._run_linters()
+                try:
+                    self._clean(modules)
+                    ext_map = self._get_extension_map()
+                    self._save_modules(modules, ext_map)
+                    self._save_reference_file(ext_map)
+                    self._save_package()
+                    if self.lint:
+                        self._run_linters()
+                except Exception:
+                    self._clean(modules)
+                    raise
             except BlockingIOError:
                 raise RuntimeError(  # noqa # pylint: disable=W0707
                     f"Another build process is running and has locked {self._lock_path}"
