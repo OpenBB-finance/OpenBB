@@ -59,9 +59,7 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="EquityScreener", examples=[APIEx(parameters={"provider": "fmp"})]
-)
+@router.command(model="EquityScreener", examples=[APIEx(parameters={"provider": "fmp"})])
 async def screener(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -89,9 +87,7 @@ async def profile(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="MarketSnapshots", examples=[APIEx(parameters={"provider": "fmp"})]
-)
+@router.command(model="MarketSnapshots", examples=[APIEx(parameters={"provider": "fmp"})])
 async def market_snapshots(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -99,6 +95,26 @@ async def market_snapshots(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get an updated equity market snapshot. This includes price data for thousands of stocks."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="MarketState",
+    examples=[
+        APIEx(parameters={"exchange": "XNYS", "provider": "headless_oracle"}),
+        APIEx(
+            description="Check market state using an exchange acronym.",
+            parameters={"exchange": "NASDAQ", "provider": "headless_oracle"},
+        ),
+    ],
+)
+async def market_state(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a signed market-state receipt for an exchange."""
     return await OBBject.from_query(Query(**locals()))
 
 

@@ -62,6 +62,7 @@ openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
+openbb-headless-oracle = { path = "./providers/headless_oracle", optional = true, develop = true }
 openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
@@ -91,11 +92,7 @@ def extract_dependencies(local_dep_path, dev: bool = False):
                 .get("dev", {})
                 .get("dependencies", {})
             )
-        return (
-            package_pyproject_toml.get("tool", {})
-            .get("poetry", {})
-            .get("dependencies", {})
-        )
+        return package_pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {})
     return {}
 
 
@@ -118,18 +115,14 @@ def install_platform_local(_extras: bool = False):
     local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
     with open(PYPROJECT) as f:
         pyproject_toml = load(f)
-    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
-        local_deps
-    )
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(local_deps)
 
     if _extras:
         dev_dependencies = get_all_dev_dependencies()
-        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault(
-            "group", {}
-        ).setdefault("dev", {}).setdefault("dependencies", {})
-        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"][
-            "dependencies"
-        ].update(dev_dependencies)
+        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault("group", {}).setdefault("dev", {}).setdefault(
+            "dependencies", {}
+        )
+        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"]["dependencies"].update(dev_dependencies)
 
     TEMP_PYPROJECT = dumps(pyproject_toml)
 
@@ -173,9 +166,7 @@ def install_platform_cli():
         pyproject_toml = load(f)
 
     # remove "openbb" from dependencies
-    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop(
-        "openbb", None
-    )
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop("openbb", None)
 
     TEMP_PYPROJECT = dumps(pyproject_toml)
 

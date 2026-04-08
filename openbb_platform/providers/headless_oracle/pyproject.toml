@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-headless-oracle"
+version = "1.0.0"
+description = "Headless Oracle provider for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_headless_oracle" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+openbb-core = "^1.6.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+headless_oracle = "openbb_headless_oracle:headless_oracle_provider"

@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://headlessoracle.com/v5/demo?mic=XNYS
+  response:
+    body:
+      string: '{"receipt_id":"74f3e7b7-5b70-4163-96d3-f78574c10fd6","issued_at":"2026-04-08T18:24:49.087Z","expires_at":"2026-04-08T18:25:49.087Z","issuer":"headlessoracle.com","mic":"XNYS","status":"OPEN","source":"SCHEDULE","halt_detection":"active","receipt_mode":"demo","schema_version":"v5.0","public_key_id":"key_2026_v1","signature":"9481fb791e8156e444748eba09f53d03724668bd586619d15be7540c6442ea976b3ac570ca1cd21db88ed1e0180eb680a547b15718fc151adfd2b6c4b9f96102","receipt":{"receipt_id":"74f3e7b7-5b70-4163-96d3-f78574c10fd6","issued_at":"2026-04-08T18:24:49.087Z","expires_at":"2026-04-08T18:25:49.087Z","issuer":"headlessoracle.com","mic":"XNYS","status":"OPEN","source":"SCHEDULE","halt_detection":"active","receipt_mode":"demo","schema_version":"v5.0","public_key_id":"key_2026_v1","signature":"9481fb791e8156e444748eba09f53d03724668bd586619d15be7540c6442ea976b3ac570ca1cd21db88ed1e0180eb680a547b15718fc151adfd2b6c4b9f96102"},"discovery_url":"https://headlessoracle.com/.well-known/mcp/server-card.json","extensions":{"bazaar":{"discoverable":true,"category":"financial-data","tags":["market-state","exchange-status","pre-trade","attestation","Ed25519","trading-hours","holiday-calendar","fail-closed","28-exchanges","signed-receipt","MIC"],"description":"Ed25519-signed
+        market-state receipt for 28 global exchanges. Pre-trade verification gate
+        for autonomous financial agents. UNKNOWN = CLOSED. Real-time session status,
+        holiday-aware calendar, 60-second TTL."}}}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, X-Oracle-Key, X-Payment, Payment-Signature
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Payment-Required, Payment-Response, X-Payment-Required, X-Oracle-Plan, X-RateLimit-Limit,
+        X-RateLimit-Remaining, X-RateLimit-Reset, X-Trial-Remaining, X-Attestation-Mode
+      CF-RAY:
+      - 9e934fa24ccd79cf-LAX
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'; frame-ancestors 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 08 Apr 2026 18:24:49 GMT
+      Link:
+      - </llms.txt>; rel="llms-txt"
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Permissions-Policy:
+      - camera=(), microphone=(), geolocation=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=RaomkkP8OJHKQh2sIs4xhJwVcI4C7kbnbk3kJif3kC676VPPbg1mOx2rzx6gOnw%2BwJAC%2FMqVYEt4fUy5EnsQH8knwf1vSTNIXEws0Gss5Mffd33PbIncfpjhc6mM%2F3p7S47BgJB92jIBzQVNuOKSL7I%3D"}]}'
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-Attestation-Mode:
+      - demo
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Oracle-Plan:
+      - free
+      X-Oracle-Version:
+      - v5
+      X-RateLimit-Limit:
+      - '500'
+      X-RateLimit-Remaining:
+      - '500'
+      X-RateLimit-Reset:
+      - '2026-04-09T00:00:00.000Z'
+    status:
+      code: 200
+      message: OK
+version: 1
