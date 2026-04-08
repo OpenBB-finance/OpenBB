@@ -59,6 +59,7 @@ openbb-stockgrid = { version = "^1.6.0", optional = true }
 openbb-tmx = { version = "^1.5.0", optional = true }
 openbb-tradier = { version = "^1.5.0", optional = true }
 openbb-wsj = { version = "^1.6.0", optional = true }
+openbb-coingecko = { version = "^1.6.0", optional = true }
 
 openbb-charting = { version = "^2.5.1", optional = true }
 openbb-econometrics = { version = "^1.7.1", optional = true }
@@ -71,6 +72,7 @@ alpha_vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
 charting = ["openbb-charting"]
+coingecko = ["openbb-coingecko"]
 deribit = ["openbb-deribit"]
 ecb = ["openbb-ecb"]
 econometrics = ["openbb-econometrics"]
@@ -94,6 +96,7 @@ all = [
     "openbb-biztoc",
     "openbb-cboe",
     "openbb-charting",
+    "openbb-coingecko",
     "openbb-deribit",
     "openbb-ecb",
     "openbb-econometrics",
