@@ -58,7 +58,14 @@ class HeadlessOracleMarketStateFetcher(
         **kwargs: Any,
     ) -> MarketStateData:
         payload = data.get("receipt")
-        payload = payload if isinstance(payload, dict) else data
+        if not isinstance(payload, dict):
+            raise OpenBBError("Headless Oracle response did not include a valid receipt payload.")
+
+        missing_fields = [field for field in ("mic", "status", "issued_at", "expires_at") if not payload.get(field)]
+        if missing_fields:
+            raise OpenBBError(
+                f"Headless Oracle receipt payload is missing required field(s): {', '.join(missing_fields)}"
+            )
 
         status = str(payload.get("status") or "UNKNOWN").upper()
         issued_at = HeadlessOracleMarketStateFetcher._parse_datetime(payload.get("issued_at"))

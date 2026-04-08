@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 import pytest
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_headless_oracle.models.market_state import HeadlessOracleMarketStateFetcher
 
 
@@ -55,3 +56,23 @@ def test_headless_oracle_market_state_transform_data_fail_closed():
     assert result.schema_version == "v5.0"
     assert result.public_key_id == "key_2026_v1"
     assert result.signature == "sig"
+
+
+def test_headless_oracle_market_state_transform_data_requires_receipt_payload():
+    query = HeadlessOracleMarketStateFetcher.transform_query({"exchange": "XNYS"})
+
+    with pytest.raises(OpenBBError, match="did not include a valid receipt payload"):
+        HeadlessOracleMarketStateFetcher.transform_data(query, {"status": "UNKNOWN"})
+
+
+def test_headless_oracle_market_state_transform_data_requires_core_fields():
+    query = HeadlessOracleMarketStateFetcher.transform_query({"exchange": "XNYS"})
+    payload = {
+        "receipt": {
+            "mic": "XNYS",
+            "status": "OPEN",
+        }
+    }
+
+    with pytest.raises(OpenBBError, match=r"missing required field\(s\): issued_at, expires_at"):
+        HeadlessOracleMarketStateFetcher.transform_data(query, payload)
