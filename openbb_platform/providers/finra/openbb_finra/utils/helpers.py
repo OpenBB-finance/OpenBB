@@ -5,12 +5,17 @@ import datetime
 # pylint: disable=W0621
 
 
-def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
+def get_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
     """Fetch the available weeks from FINRA that can be used."""
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import make_request
+    from openbb_core.provider.utils.helpers import get_requests_session, make_request
 
-    request_header = {"Accept": "application/json", "Content-Type": "application/json"}
+    session = kwargs.get("session", get_requests_session())
+
+    request_header = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
 
     request_data = {
         "compareFilters": [
@@ -37,21 +42,23 @@ def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
         url="https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
         headers=request_header,
         json=request_data,
-        timeout=3,
+        timeout=20,
+        session=session,
     )
 
     return response.json() if response.status_code == 200 else []
 
 
-def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
+def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True, **kwargs):
     """Get the data for a symbol from FINRA."""
     # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import make_request
+    from openbb_core.provider.utils.helpers import get_requests_session, make_request
+
+    session = kwargs.get("session", get_requests_session())
 
     req_hdr = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ",
     }
 
     filters = [
@@ -97,22 +104,186 @@ def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
         headers=req_hdr,
         json=req_data,
         timeout=20,
+        session=session,
     )
     return response
 
 
 def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
     """Get the full data for a symbol from FINRA."""
-    weeks = [week["weekStartDate"] for week in get_finra_weeks(tier, is_ats)]
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import get_requests_session
+
+    session = get_requests_session()
+
+    # We make a pre-flight request to the FINRA website to establish a session.
+    # This is to avoid the TooManyRedirects error that occurs when the FINRA
+    # API redirects to the FINRA website to establish a session.
+    session.get("https://www.finra.org/finra-data", timeout=10)
+
+    weeks = [
+        week["weekStartDate"] for week in get_finra_weeks(tier, is_ats, session=session)
+    ]
 
     data = []
     for week in weeks:
-        response = get_finra_data(symbol, week, tier, is_ats)
+        response = get_finra_data(symbol, week, tier, is_ats, session=session)
         r_json = response.json()
         if response.status_code == 200 and r_json:
-            data.append(response.json()[0])
+            data.extend(r_json)
 
     return data
+
+
+async def aget_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
+    """Fetch the available weeks from FINRA asynchronously."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
+    session = kwargs.pop("session", None)
+
+    request_header = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+
+    request_data = {
+        "compareFilters": [
+            {
+                "compareType": "EQUAL",
+                "fieldName": "summaryTypeCode",
+                "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
+            },
+            {
+                "compareType": "EQUAL",
+                "fieldName": "tierIdentifier",
+                "fieldValue": tier,
+            },
+        ],
+        "delimiter": "|",
+        "fields": ["weekStartDate"],
+        "limit": 52,
+        "quoteValues": False,
+        "sortFields": ["-weekStartDate"],
+    }
+
+    kwargs_for_request = {
+        "headers": request_header,
+        "json": request_data,
+        "timeout": 20,
+    }
+    if session is not None:
+        kwargs_for_request["session"] = session
+
+    result = await amake_request(
+        url="https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
+        method="POST",
+        **kwargs_for_request,  # type: ignore
+    )
+
+    return result if isinstance(result, list) else []
+
+
+async def aget_finra_data(
+    symbol, week_start, tier: str = "T1", is_ats: bool = True, **kwargs
+):
+    """Get the data for a symbol from FINRA asynchronously."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
+    session = kwargs.pop("session", None)
+
+    filters = [
+        {
+            "compareType": "EQUAL",
+            "fieldName": "weekStartDate",
+            "fieldValue": week_start,
+        },
+        {"compareType": "EQUAL", "fieldName": "tierIdentifier", "fieldValue": tier},
+        {
+            "compareType": "EQUAL",
+            "description": "",
+            "fieldName": "summaryTypeCode",
+            "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
+        },
+    ]
+
+    if symbol:
+        filters.append(
+            {
+                "compareType": "EQUAL",
+                "fieldName": "issueSymbolIdentifier",
+                "fieldValue": symbol,
+            }
+        )
+
+    req_data = {
+        "compareFilters": filters,
+        "delimiter": "|",
+        "fields": [
+            "issueSymbolIdentifier",
+            "totalWeeklyShareQuantity",
+            "totalWeeklyTradeCount",
+            "lastUpdateDate",
+        ],
+        "limit": 5000,
+        "quoteValues": False,
+        "sortFields": ["totalWeeklyShareQuantity"],
+    }
+
+    req_hdr = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+
+    kwargs_for_request = {"headers": req_hdr, "json": req_data, "timeout": 20}
+    if session is not None:
+        kwargs_for_request["session"] = session
+
+    return await amake_request(
+        url="https://api.finra.org/data/group/otcMarket/name/weeklySummary",
+        method="POST",
+        **kwargs_for_request,  # type: ignore
+    )
+
+
+async def aget_full_data(symbol, tier: str = "T1", is_ats: bool = True):
+    """Get the full data for a symbol from FINRA asynchronously."""
+    # pylint: disable=import-outside-toplevel
+    import asyncio
+
+    from openbb_core.provider.utils.helpers import get_async_requests_session
+
+    session = await get_async_requests_session()
+
+    try:
+        await session.request("GET", "https://www.finra.org/finra-data", timeout=10)
+
+        weeks_data = await aget_finra_weeks(tier, is_ats, session=session)
+        weeks = [week["weekStartDate"] for week in weeks_data]
+
+        async def fetch_week(week_start):
+            result = await aget_finra_data(
+                symbol, week_start, tier, is_ats, session=session
+            )
+            if isinstance(result, list) and result:
+                return result
+            if isinstance(result, dict) and result:
+                return [result]
+            return []
+
+        results = await asyncio.gather(
+            *[fetch_week(w) for w in weeks], return_exceptions=True
+        )
+
+        flat_results = []
+        for r in results:
+            if isinstance(r, list):
+                flat_results.extend(r)
+
+        return flat_results
+    finally:
+        await session.close()
 
 
 def get_adjusted_date(year, month, day):
