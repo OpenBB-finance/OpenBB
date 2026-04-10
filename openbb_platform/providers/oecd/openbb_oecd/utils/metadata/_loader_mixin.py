@@ -29,9 +29,7 @@ class LoaderMixin(_MixinBase):  # pylint: disable=abstract-method
         """Lazy-load the full dataflow catalogue if not yet populated."""
         if self._full_catalogue_loaded:
             _first = next(iter(self.dataflows.values()), None)
-            if self.dataflows and _first is not None and not _first.get(
-                "annotations"
-            ):
+            if self.dataflows and _first is not None and not _first.get("annotations"):
                 self._backfill_annotations()
             return
 
