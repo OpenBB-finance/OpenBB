@@ -21,7 +21,7 @@ This file ships with the package so users have a complete metadata map
 with zero API calls at runtime.
 """
 
-# pylint: disable=C0302,R0914
+# pylint: disable=C0302,R0914,R0917
 # flake8: noqa: T201
 
 from __future__ import annotations

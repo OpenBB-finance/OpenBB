@@ -4,8 +4,6 @@ import re
 from pathlib import Path
 from typing import Any
 
-from openbb_core.app.model.abstract.error import OpenBBError  # noqa: F401
-
 
 def _get_user_cache_file() -> Path:
     """Resolve the user-writable cache path via OpenBB core settings."""

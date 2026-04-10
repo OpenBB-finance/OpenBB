@@ -982,6 +982,11 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         [{label, value}] choices for the current cascading step.
     """
     # pylint: disable=import-outside-toplevel
+    from collections import (
+        Counter,
+        defaultdict as _ddict,
+    )
+
     from openbb_oecd.utils.metadata import OecdMetadata
     from openbb_oecd.utils.progressive_helper import OecdParamsBuilder
 
@@ -995,8 +1000,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
 
     # Step 0: No params → return topic choices from taxonomy.
     if topic is None:
-        from collections import Counter
-
         topics = metadata.list_topics()
         tm = metadata.table_map()
         topic_counts = Counter(r.get("topic_id", "") for r in tm)
@@ -1014,8 +1017,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
 
     # Step 1: topic selected → return subtopic choices.
     if topic is not None and subtopic is None:
-        from collections import Counter
-
         topics = metadata.list_topics()
         t_upper = topic.upper()
         tm = metadata.table_map()
@@ -1059,10 +1060,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         # Remove section children — they'll be reintroduced via their
         # parent root below.
         dataflows = [df for df in dataflows if df["value"] not in section_map]
-
-        # Replace NonProductionDataflow roots with their section children.
-        # The parent can't serve data; the children can.
-        from collections import defaultdict as _ddict
 
         _children_of: dict[str, list[str]] = _ddict(list)
         for _child, _parent in section_map.items():
@@ -1182,28 +1179,13 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     # From here, table is a symbol like "DF_QNA::T0101" or "DF_PRICES_ALL".
     parts = table.split("::", 1)
     dataflow_id = parts[0]
-    hierarchy_id = parts[1] if len(parts) > 1 else None
-
     full_id = metadata._resolve_dataflow_id(dataflow_id)
     annotations = metadata.dataflows.get(full_id, {}).get("annotations", {})
     nd_pins = _parse_not_displayed(annotations)
     defaults = _parse_defaults(annotations)
-
-    # Identify the table-group dimension (TABLE_IDENTIFIER, CHAPTER, etc.).
     _TABLE_GROUP_DIMS = {"TABLE_IDENTIFIER", "CHAPTER"}
-    table_group_dim: str | None = None
-    if hierarchy_id:
-        dsd = metadata.datastructures.get(full_id, {})
-        dsd_dim_ids = {d["id"] for d in dsd.get("dimensions", [])}
-        for candidate in _TABLE_GROUP_DIMS:
-            if candidate in dsd_dim_ids:
-                table_group_dim = candidate
-                break
 
     # Collect single-value NOT_DISPLAYED pins for real DSD dimensions.
-    # These narrow the availability query (e.g. ADJUSTMENT=N, TRANSFORMATION=N).
-    # Multi-value pins (containing '+') and table-group dims are skipped —
-    # the OECD availability endpoint returns empty/fallback for those.
     _tmp_pb = OecdParamsBuilder(dataflow_id=dataflow_id)
     pb_dims = _tmp_pb.get_dimensions_in_order()
     pb_dim_set = set(pb_dims)
@@ -1356,13 +1338,12 @@ async def presentation_table_dim_choices(
 
     parts = _table.split("::", 1)
     dataflow_id = parts[0]
-    hierarchy_id = parts[1] if len(parts) > 1 else None
-
     metadata = OecdMetadata()
     full_id = metadata._resolve_dataflow_id(dataflow_id)
     annotations = metadata.dataflows.get(full_id, {}).get("annotations", {})
     nd_pins = _parse_not_displayed(annotations)
     defaults = _parse_defaults(annotations)
+
     if target_dim in nd_pins:
         return []
 
@@ -1379,9 +1360,6 @@ async def presentation_table_dim_choices(
     freq_dim = next((d for d in dims_in_order if d in _FREQ_DIMS), None)
 
     # Pin known dimensions in DSD order to avoid clearing downstream pins.
-    # Single-value NOT_DISPLAYED pins are included to narrow availability.
-    # Multi-value pins ('+') and table-group dims are skipped — the OECD
-    # availability endpoint returns empty/fallback for those.
     for dim_id in dims_in_order:
         if dim_id == country_dim and country:
             pb.set_dimension((dim_id, str(country).replace(",", "+")))
@@ -1406,10 +1384,12 @@ async def presentation_table_dim_choices(
     not_applicable = {"not applicable", "not available", "n/a"}
     options = pb.get_options_for_dimension(target_dim)
     options = [o for o in options if o.get("label", "").lower() not in not_applicable]
+
     if not options:
         return []
 
     default_val = defaults.get(target_dim)
+
     if default_val:
         for opt in options:
             if opt["value"] == default_val:
@@ -1418,8 +1398,10 @@ async def presentation_table_dim_choices(
 
     if len(options) == 1:
         return options
+
     options.insert(0, {"label": "All", "value": "all"})
     options.insert(0, {"label": "Auto", "value": "auto"})
+
     return options
 
 

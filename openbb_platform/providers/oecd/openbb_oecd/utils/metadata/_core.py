@@ -1,5 +1,7 @@
 """Core OecdMetadata singleton class assembled from mixins."""
 
+# pylint: disable=R0902
+
 import threading
 
 from openbb_oecd.utils.metadata._cache_mixin import CacheMixin
@@ -47,7 +49,7 @@ class OecdMetadata(
         if cls._instance is None:
             with cls._lock:
                 if cls._instance is None:
-                    inst = super().__new__(cls)
+                    inst = object.__new__(cls)
                     cls._instance = inst
         return cls._instance  # type: ignore[return-value]
 

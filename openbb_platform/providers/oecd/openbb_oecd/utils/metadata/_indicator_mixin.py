@@ -410,13 +410,14 @@ class IndicatorMixin(_MixinBase):  # pylint: disable=abstract-method
         self, codelist_id: str, _dataflow_id: str | None = None
     ) -> dict[str, str]:
         """Fetch a single codelist from the OECD structure API."""
+        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata._constants import (
             _STRUCTURE_ACCEPT,
             BASE_URL,
-        )  # pylint: disable=import-outside-toplevel
+        )
         from openbb_oecd.utils.metadata._helpers import (
             _make_request,
-        )  # pylint: disable=import-outside-toplevel
+        )
 
         _cl_key_re = re.compile(r"^([^:]+):([^(]+)\(([^)]+)\)$")
         m = _cl_key_re.match(codelist_id)
