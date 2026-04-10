@@ -17,7 +17,7 @@ from openbb_oecd.utils.metadata._constants import (
     _TABLE_GROUP_CANDIDATES,
     BASE_URL,
 )
-from openbb_oecd.utils.metadata._core import OecdMetadata
+from openbb_oecd.utils.metadata._core import OecdMetadata, OECDMetadataDependency
 from openbb_oecd.utils.metadata._helpers import (
     _build_code_tree,
     _extract_codelist_id_from_urn,
@@ -34,6 +34,7 @@ from openbb_oecd.utils.metadata._helpers import (
 __all__ = [
     "BASE_URL",
     "OecdMetadata",
+    "OECDMetadataDependency",
     "_COUNTRY_DIMENSION_CANDIDATES",
     "_DATA_ACCEPT_CSV",
     "_DATA_ACCEPT_CSV_LABELS",

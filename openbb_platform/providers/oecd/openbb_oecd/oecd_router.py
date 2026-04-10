@@ -9,6 +9,7 @@ from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.service.system_service import SystemService
+from openbb_oecd.utils.metadata import OECDMetadataDependency
 
 router = Router(prefix="", description="Utilities for OECD provider.")
 api_prefix = SystemService().system_settings.api_settings.prefix
@@ -63,14 +64,11 @@ def _parse_defaults(annotations: dict[str, str]) -> dict[str, str]:
         )
     ],
 )
-async def list_topic_choices() -> list[dict[str, str]]:
+async def list_topic_choices(metadata: OECDMetadataDependency) -> list[dict[str, str]]:
     """Return [{label, value}] for every OECD topic (for dropdowns)."""
     # pylint: disable=import-outside-toplevel
     from collections import Counter
 
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     topics = metadata.list_topics()
     tm = metadata.table_map()
     topic_counts = Counter(r.get("topic_id", "") for r in tm)
@@ -98,6 +96,7 @@ async def list_topic_choices() -> list[dict[str, str]]:
     ],
 )
 async def list_subtopic_choices(
+    metadata: OECDMetadataDependency,
     topic: Annotated[
         str | None,
         Query(
@@ -110,25 +109,27 @@ async def list_subtopic_choices(
     # pylint: disable=import-outside-toplevel
     from collections import Counter
 
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     if not topic:
         return []
+
     t_upper = topic.upper()
     topics = metadata.list_topics()
     target = None
+
     for t in topics:
         if t["id"].upper() == t_upper:
             target = t
             break
+
     if not target:
         return []
+
     tm = metadata.table_map()
     sub_counts = Counter(
         r.get("subtopic_id", "") for r in tm if r.get("topic_id", "").upper() == t_upper
     )
     result = []
+
     for s in target.get("subtopics", []):
         count = sub_counts.get(s["id"], 0)
         if count > 0:
@@ -138,6 +139,7 @@ async def list_subtopic_choices(
                     "value": s["id"],
                 }
             )
+
     return sorted(result, key=lambda x: x["label"])
 
 
@@ -194,6 +196,7 @@ async def list_subtopic_choices(
     ],
 )
 async def list_dataflows(
+    metadata: OECDMetadataDependency,
     topic: Annotated[
         str | None,
         Query(
@@ -214,10 +217,6 @@ async def list_dataflows(
     ] = None,
 ) -> OBBject:
     """List all available OECD dataflows, optionally filtered by topic and subtopic."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     dataflows = metadata.list_dataflows(topic=topic or None)
 
     if subtopic:
@@ -225,6 +224,7 @@ async def list_dataflows(
         dataflows = [d for d in dataflows if d.get("subtopic", "").upper() == needle]
 
     rows = []
+
     for entry in dataflows:
         full_id = entry["value"]
         short_id = full_id.split("@")[-1] if "@" in full_id else full_id
@@ -236,7 +236,8 @@ async def list_dataflows(
                 "subtopic": entry.get("subtopic_name", ""),
             }
         )
-    return OBBject(results=rows)
+
+    return OBBject(results=rows, provider="oecd")
 
 
 @router.command(
@@ -249,13 +250,12 @@ async def list_dataflows(
         )
     ],
 )
-async def list_dataflow_choices() -> list[dict[str, str]]:
+async def list_dataflow_choices(
+    metadata: OECDMetadataDependency,
+) -> list[dict[str, str]]:
     """Return [{label, value}] for every OECD dataflow (for dropdowns)."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     dataflows = metadata.list_dataflows()
+
     return sorted(
         [{"label": e.get("label", e["value"]), "value": e["value"]} for e in dataflows],
         key=lambda x: x["label"],
@@ -295,6 +295,7 @@ async def list_dataflow_choices() -> list[dict[str, str]]:
     ],
 )
 async def list_topics(
+    metadata: OECDMetadataDependency,
     query: Annotated[
         str | None,
         Query(
@@ -304,17 +305,15 @@ async def list_topics(
     ] = None,
 ) -> OBBject:
     """List all OECD topic categories with dataflow counts."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     topics = metadata.list_topics()
 
     rows = []
+
     for t in topics:
         if not t["dataflow_count"]:
             continue
         subs = t.get("subtopics", [])
+
         if subs:
             for s in subs:
                 if not s["dataflow_count"]:
@@ -347,7 +346,7 @@ async def list_topics(
             if needle in r["topic"].lower() or needle in r["subtopic"].lower()
         ]
 
-    return OBBject(results=rows)
+    return OBBject(results=rows, provider="oecd")
 
 
 @router.command(
@@ -395,6 +394,7 @@ async def list_topics(
     ],
 )
 async def get_dataflow_parameters(
+    metadata: OECDMetadataDependency,
     dataflow_id: Annotated[
         str,
         Query(
@@ -408,16 +408,13 @@ async def get_dataflow_parameters(
 
     Returns an OBBject with either a JSON dict or markdown string under results.
     """
-    # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     parameters = metadata.get_constrained_values(dataflow_id)
 
     if output_format == "json":
         return OBBject(results=parameters)
 
     sections: list[str] = []
+
     for dim_id, options in parameters.items():
         inner = "\n".join(
             f"| {opt['value']} | {opt.get('label', '')} |" for opt in options
@@ -429,7 +426,7 @@ async def get_dataflow_parameters(
             f"\n\n{table}\n\n</details>"
         )
 
-    return OBBject(results="\n\n".join(sections))
+    return OBBject(results="\n\n".join(sections), provider="oecd")
 
 
 @router.command(
@@ -498,6 +495,7 @@ async def get_dataflow_parameters(
     ],
 )
 async def list_tables(
+    metadata: OECDMetadataDependency,
     query: Annotated[
         str | None,
         Query(
@@ -534,13 +532,10 @@ async def list_tables(
     ] = None,
 ) -> OBBject:
     """List all OECD tables with keyword search, topic, subtopic, and dataflow ID filtering."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     rows = metadata.list_tables(
         query=query, topic=topic or None, subtopic=subtopic or None
     )
+
     if dataflow_id:
         needle = dataflow_id.upper()
         rows = [
@@ -548,7 +543,8 @@ async def list_tables(
             for r in rows
             if needle in r["table_id"].upper() or needle in r["dataflow_id"].upper()
         ]
-    return OBBject(results=rows)
+
+    return OBBject(results=rows, provider="oecd")
 
 
 @router.command(
@@ -597,6 +593,7 @@ async def list_tables(
     ],
 )
 async def get_table_detail(
+    metadata: OECDMetadataDependency,
     table_id: Annotated[
         str,
         Query(
@@ -614,14 +611,14 @@ async def get_table_detail(
     - Indicator count and hierarchy summary
     """
     # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
+    from openbb_oecd.utils.metadata import _TABLE_GROUP_CANDIDATES
 
-    metadata = OecdMetadata()
     detail = metadata.describe_dataflow(table_id)
     short_id = detail.get("short_id", table_id)
 
     # Look up topic/subtopic/path from the table map for context
     table_row: dict = {}
+
     for row in metadata.table_map():
         if row["short_id"] == short_id or row["dataflow_id"] == detail.get(
             "dataflow_id"
@@ -636,18 +633,20 @@ async def get_table_detail(
     lines.append(f"**Dataflow ID:** `{short_id}`")
 
     path = table_row.get("path", "")
+
     if path:
         lines.append(f"\n**Category:** {path}")
 
     desc = detail.get("description", "")
+
     if desc:
         lines.append(f"\n{desc}")
+
     lines.append("")
-
     indicator_dim = detail.get("indicator_dimension")
-
     # Table groups (TABLE_IDENTIFIER) — show as the primary content with full descriptions
     table_groups = detail.get("table_groups", [])
+
     if table_groups:
         lines.append("## Tables\n")
         for g in table_groups:
@@ -660,12 +659,11 @@ async def get_table_detail(
             else:
                 lines.append("")
 
-    # Identify the table-grouping dimension (if any) to skip in the
-    # dimensions list below since it's already shown under "Tables".
-    from openbb_oecd.utils.metadata import _TABLE_GROUP_CANDIDATES
+    # Identify the table-grouping dimension (if any) to skip in the dimensions section
 
     dimensions = detail.get("dimensions", [])
     _table_group_dim: str | None = None
+
     if table_groups:
         for _cand in _TABLE_GROUP_CANDIDATES:
             if any(d.get("id") == _cand for d in dimensions):
@@ -677,17 +675,22 @@ async def get_table_detail(
         lines.append("## Dimensions\n")
         for dim in dimensions:
             dim_id = dim["id"]
+
             if dim_id == _table_group_dim:
                 continue  # already shown above as table groups
+
             concept_name = dim.get("name", dim_id)
             values = dim.get("values", [])
             constrained = dim.get("constrained_codes", len(values))
             tag = " *(indicator dimension)*" if dim_id == indicator_dim else ""
             summary_label = f"`{dim_id}`"
+
             if concept_name and concept_name != dim_id:
                 summary_label += f" — {concept_name}"
+
             summary_label += f"  ({constrained} values){tag}"
             lines.append(f"<details>\n<summary>{summary_label}</summary>\n")
+
             if values:
                 lines.append("| Code | Label | Description |")
                 lines.append("|---|---|---|")
@@ -697,10 +700,12 @@ async def get_table_detail(
                     vdesc = " ".join(v.get("description", "").split())
                     desc_col = vdesc if vdesc and vdesc != lbl else ""
                     lines.append(f"| {code} | {lbl} | {desc_col} |")
+
             lines.append("\n</details>\n")
 
     # Indicator tree
     ind_count = detail.get("indicator_count", 0)
+
     if ind_count:
         lines.append(
             f"## Indicators\n\n**{ind_count}** indicators in dimension `{indicator_dim}`.\n"
@@ -721,7 +726,7 @@ async def get_table_detail(
             _render_tree(tree)
             lines.append("\n</details>\n")
 
-    return OBBject(results="\n".join(lines))
+    return OBBject(results="\n".join(lines), provider="oecd")
 
 
 @router.command(
@@ -735,6 +740,7 @@ async def get_table_detail(
     ],
 )
 async def list_table_choices(
+    metadata: OECDMetadataDependency,
     topic: Annotated[
         str | None,
         Query(
@@ -744,13 +750,10 @@ async def list_table_choices(
     ] = None,
 ) -> list[dict]:
     """Return [{label, value}] for OECD tables (for dropdowns), optionally filtered by topic."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
-
-    metadata = OecdMetadata()
     tables = metadata.list_tables(topic=topic or None)
     seen: set[str] = set()
     choices = []
+
     for t in sorted(tables, key=lambda x: x["name"]):
         if t["table_id"] not in seen:
             seen.add(t["table_id"])
@@ -761,6 +764,7 @@ async def list_table_choices(
                     "extraInfo": {"description": t["table_id"]},
                 }
             )
+
     return choices
 
 
@@ -780,6 +784,7 @@ async def list_table_choices(
     ],
 )
 async def indicator_choices(  # noqa: PLR0911,PLR0912
+    metadata: OECDMetadataDependency,
     symbol: str | None = None,
     country: str | None = None,
     frequency: str | None = None,
@@ -820,19 +825,19 @@ async def indicator_choices(  # noqa: PLR0911,PLR0912
     # pylint: disable=import-outside-toplevel
     from urllib.parse import unquote
 
-    from openbb_oecd.utils.metadata import OecdMetadata
-
     if not symbol:
         return []
 
     symbol = unquote(symbol)
     symbols = [s.strip() for s in symbol.split(",") if s.strip()]
+
     if not symbols:
         return []
 
     # Parse dataflow + indicator codes from the (possibly comma-joined) symbol.
     dataflows_seen: set[str] = set()
     indicator_codes: list[str] = []
+
     for sym in symbols:
         if "::" in sym:
             df_part, ind_part = sym.split("::", 1)
@@ -843,10 +848,9 @@ async def indicator_choices(  # noqa: PLR0911,PLR0912
             dataflows_seen.add(sym.strip())
 
     dataflow_id = next(iter(dataflows_seen), None)
+
     if not dataflow_id:
         return []
-
-    metadata = OecdMetadata()
 
     try:
         dim_order = metadata.get_dimension_order(dataflow_id)
@@ -861,7 +865,6 @@ async def indicator_choices(  # noqa: PLR0911,PLR0912
     country_dim = next((d for d in dim_order if d in _COUNTRY_DIMS), None)
     freq_dim = next((d for d in dim_order if d in _FREQ_DIMS), None)
     transform_dim = next((d for d in dim_order if d in _TRANSFORM_DIMS), None)
-
     full_id = metadata._resolve_dataflow_id(dataflow_id)
     nd_pins = _parse_not_displayed(
         metadata.dataflows.get(full_id, {}).get("annotations", {})
@@ -949,6 +952,7 @@ async def indicator_choices(  # noqa: PLR0911,PLR0912
     ],
 )
 async def presentation_table_choices(  # noqa: PLR0911,PLR0912
+    metadata: OECDMetadataDependency,
     topic: str | None = None,
     subtopic: str | None = None,
     table: str | None = None,
@@ -987,7 +991,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         defaultdict as _ddict,
     )
 
-    from openbb_oecd.utils.metadata import OecdMetadata
     from openbb_oecd.utils.progressive_helper import OecdParamsBuilder
 
     topic = topic if topic and topic.strip() else None
@@ -996,13 +999,12 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     country = country if country and country.strip() else None
     frequency = frequency if frequency and frequency.strip() else None
 
-    metadata = OecdMetadata()
-
     # Step 0: No params → return topic choices from taxonomy.
     if topic is None:
         topics = metadata.list_topics()
         tm = metadata.table_map()
         topic_counts = Counter(r.get("topic_id", "") for r in tm)
+
         return sorted(
             [
                 {
@@ -1043,6 +1045,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                 if len(choices) == 1:
                     return choices
                 return choices
+
         return [{"label": "No subtopics found for this topic", "value": ""}]
 
     # Step 2: subtopic selected → return table choices.
@@ -1060,12 +1063,13 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         # Remove section children — they'll be reintroduced via their
         # parent root below.
         dataflows = [df for df in dataflows if df["value"] not in section_map]
-
         _children_of: dict[str, list[str]] = _ddict(list)
+
         for _child, _parent in section_map.items():
             _children_of[_parent].append(_child)
 
         _expanded: list[dict] = []
+
         for df in dataflows:
             annots = metadata.dataflows.get(df["value"], {}).get("annotations", {})
             if (
@@ -1083,8 +1087,8 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                     )
             else:
                 _expanded.append(df)
-        dataflows = _expanded
 
+        dataflows = _expanded
         country_family_map = metadata._detect_country_families()
         dataflows = [
             df
@@ -1101,7 +1105,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         # (e.g. T0101 in DSD_NAMAIN10 vs DSD_NAMAIN1) don't collide.
         _best_for_table: dict[tuple[str, str], tuple[str, str, str, int]] = {}
         _no_group: list[dict[str, str]] = []
-
         # Minimum average indicators per table group.  Dataflows where
         # groups are just granular API slices (e.g. SUT developer tables
         # with 100+ TABLE_IDENTIFIER values and ~1 indicator each) are
@@ -1112,7 +1115,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
             full_id = df["value"]
             info = metadata.dataflows.get(full_id, {})
             short_id = info.get("short_id", full_id.split("@")[-1])
-
             # Only expand table groups when the DSD structure is already
             # cached in memory.  Calling get_table_groups / get_indicator_tree
             # on an uncached dataflow triggers _ensure_structure → network
@@ -1137,6 +1139,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                 # each group is a tiny slice — not a real presentation
                 # table.  Offer the dataflow as a single flat entry.
                 n_groups = len(groups)
+
                 if n_groups > 1 and n_indicators / n_groups < min_indicators_per_group:
                     _no_group.append(
                         {
@@ -1151,6 +1154,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                     dsd_prefix = full_id.split("@")[0] if "@" in full_id else full_id
                     key = (dsd_prefix, tid)
                     prev = _best_for_table.get(key)
+
                     if prev is None or n_indicators > prev[3]:
                         _best_for_table[key] = (
                             short_id,
@@ -1167,6 +1171,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                 )
 
         results: list[dict[str, str]] = list(_no_group)
+
         for (_, tid), (sid, df_label, tbl_label, _) in _best_for_table.items():
             results.append(
                 {
@@ -1174,6 +1179,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                     "value": f"{sid}::{tid}",
                 }
             )
+
         return sorted(results, key=lambda x: x["label"])
 
     # From here, table is a symbol like "DF_QNA::T0101" or "DF_PRICES_ALL".
@@ -1184,12 +1190,12 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     nd_pins = _parse_not_displayed(annotations)
     defaults = _parse_defaults(annotations)
     _TABLE_GROUP_DIMS = {"TABLE_IDENTIFIER", "CHAPTER"}
-
     # Collect single-value NOT_DISPLAYED pins for real DSD dimensions.
     _tmp_pb = OecdParamsBuilder(dataflow_id=dataflow_id)
     pb_dims = _tmp_pb.get_dimensions_in_order()
     pb_dim_set = set(pb_dims)
     nd_avail_pins: dict[str, str] = {}
+
     for dim_id, val in nd_pins.items():
         if (
             dim_id in pb_dim_set
@@ -1200,9 +1206,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
             nd_avail_pins[dim_id] = val
 
     # Build progressive helper with known pins applied in DSD order.
-    # Pinning in DSD order is critical because set_dimension() clears all
-    # downstream selections — pinning a late dim first then an early dim
-    # would discard the late pin.
     country_dim = next((d for d in pb_dims if d in _COUNTRY_DIMS), None)
     freq_dim = next((d for d in pb_dims if d in _FREQ_DIMS), None)
 
@@ -1211,6 +1214,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         pin_freq: str | None = None,
     ) -> OecdParamsBuilder:
         _pb = OecdParamsBuilder(dataflow_id=dataflow_id)
+
         for _dim in _pb.get_dimensions_in_order():
             if _dim == country_dim and pin_country:
                 _pb.set_dimension((_dim, pin_country.replace(",", "+")))
@@ -1218,6 +1222,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                 _pb.set_dimension((_dim, pin_freq))
             elif _dim in nd_avail_pins:
                 _pb.set_dimension((_dim, nd_avail_pins[_dim]))
+
         return _pb
 
     def _mark_default(
@@ -1225,12 +1230,14 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     ) -> list[dict[str, str]]:
         """Tag the option matching the DEFAULT annotation for *dim_id*."""
         default_val = defaults.get(dim_id)
+
         if not default_val:
             return options
         for opt in options:
             if opt["value"] == default_val:
                 opt["default"] = "true"
                 break
+
         return options
 
     # Step 3: table selected → return country choices (availability-filtered).
@@ -1284,6 +1291,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     ],
 )
 async def presentation_table_dim_choices(
+    metadata: OECDMetadataDependency,
     table: str,
     dimension: str,
     country: str | None = None,
@@ -1311,7 +1319,6 @@ async def presentation_table_dim_choices(
         [{label, value}] choices.
     """
     # pylint: disable=import-outside-toplevel
-    from openbb_oecd.utils.metadata import OecdMetadata
     from openbb_oecd.utils.progressive_helper import OecdParamsBuilder
 
     dim_map: dict[str, str] = {
@@ -1338,7 +1345,6 @@ async def presentation_table_dim_choices(
 
     parts = _table.split("::", 1)
     dataflow_id = parts[0]
-    metadata = OecdMetadata()
     full_id = metadata._resolve_dataflow_id(dataflow_id)
     annotations = metadata.dataflows.get(full_id, {}).get("annotations", {})
     nd_pins = _parse_not_displayed(annotations)
@@ -1348,7 +1354,6 @@ async def presentation_table_dim_choices(
         return []
 
     _TABLE_GROUP_DIMS = {"TABLE_IDENTIFIER", "CHAPTER"}
-
     pb = OecdParamsBuilder(dataflow_id=dataflow_id)
     dims_in_order = pb.get_dimensions_in_order()
     dims_in_order_set = set(dims_in_order)
@@ -1375,6 +1380,7 @@ async def presentation_table_dim_choices(
 
     if frequency is None and freq_dim and freq_dim in dims_in_order_set:
         freq_options = pb.get_options_for_dimension(freq_dim)
+
         if len(freq_options) == 1:
             pb.set_dimension((freq_dim, freq_options[0]["value"]))
 
@@ -1782,18 +1788,22 @@ async def presentation_table(  # noqa: PLR0912
     unit = table_meta.get("unit_measure", "")
     currency = table_meta.get("currency", "")
     price_base = table_meta.get("price_base", "")
+
     if unit and unit.lower() not in skip_labels:
         subtitle_parts.append(unit)
+
     if (
         currency
         and currency.lower() not in skip_labels
         and currency.lower() != unit.lower()
     ):
         subtitle_parts.append(currency)
+
     if price_base and price_base.lower() not in skip_labels:
         subtitle_parts.append(price_base)
     table_subtitle = ", ".join(subtitle_parts)
     fixed_country = ""
+
     for dim_key in ("REF_AREA", "COUNTRY", "AREA"):
         if dim_key in fixed_dims:
             fixed_country = fixed_dims[dim_key].get("label", "")
@@ -1804,12 +1814,14 @@ async def presentation_table(  # noqa: PLR0912
     unit_keys = ("unit_measure", "currency_denom", "currency", "price_base")
     _row_units: list[str] = []
     _row_unit_parts: list[list[str]] = []
+
     for row in data_rows:
         time_str = row.get("time_period", "")
         parsed_date = oecd_date_to_python_date(time_str) if time_str else None
         country_val = row.get("ref_area", "") or row.get("country", "") or fixed_country
         # Build per-row unit description from available metadata.
         _parts: list[str] = []
+
         for _uk in unit_keys:
             _uv = row.get(_uk, "")
             if (
@@ -1818,6 +1830,7 @@ async def presentation_table(  # noqa: PLR0912
                 and (not _parts or str(_uv).lower() != _parts[-1].lower())
             ):
                 _parts.append(str(_uv))
+
         _row_unit = ", ".join(_parts)
         _row_units.append(_row_unit)
         _row_unit_parts.append(_parts)
@@ -1848,7 +1861,6 @@ async def presentation_table(  # noqa: PLR0912
     _units_vary = len(_unique_units) > 1
 
     df = DataFrame(results_json)
-
     # Pivot: one row per indicator + accounting entry, dates as columns.
     _pivot_index = [
         "title",
@@ -1934,13 +1946,14 @@ async def presentation_table(  # noqa: PLR0912
         reverse=True,
     )
     df = df[_fixed_cols + _date_cols]
-
     records = df.to_dict(orient="records")
     # Prepend a title row with null values for all data columns.
     title_row = {"title": table_subtitle}
+
     for col in df.columns:
         if col != "title":
             title_row[col] = None  # type: ignore
+
     return [title_row] + records
 
 

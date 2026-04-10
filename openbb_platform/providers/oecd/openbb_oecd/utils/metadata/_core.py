@@ -3,7 +3,9 @@
 # pylint: disable=R0902
 
 import threading
+from typing import Annotated
 
+from fastapi import Depends
 from openbb_oecd.utils.metadata._cache_mixin import CacheMixin
 from openbb_oecd.utils.metadata._indicator_mixin import IndicatorMixin
 from openbb_oecd.utils.metadata._loader_mixin import LoaderMixin
@@ -85,9 +87,15 @@ class OecdMetadata(
             self._load_from_cache()
             self.__class__._initialized = True
 
+    def __call__(self) -> "OecdMetadata":
+        return self
+
     @classmethod
     def _reset(cls) -> None:
         """Destroy the singleton (for testing only)."""
         with cls._lock:
             cls._instance = None
             cls._initialized = False
+
+
+OECDMetadataDependency = Annotated[OecdMetadata, Depends(OecdMetadata)]
