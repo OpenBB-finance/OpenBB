@@ -203,7 +203,7 @@ class CacheMixin(_MixinBase):  # pylint: disable=abstract-method
 
     def _save_cache(self) -> None:
         """Persist current metadata to the user-writable cache."""
-        if not self._cache_dirty:
+        if not self._cache_dirty:  # type: ignore[has-type]
             return
         try:
             cache_file = _get_user_cache_file()
