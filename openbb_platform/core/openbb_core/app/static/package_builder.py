@@ -9,6 +9,7 @@ import re
 import shutil
 import sys
 import textwrap
+import traceback
 import typing as typing_module
 from collections import OrderedDict
 from collections.abc import Callable
@@ -196,7 +197,15 @@ class PackageBuilder:
                     self._save_package()
                     if self.lint:
                         self._run_linters()
-                except Exception:
+                except Exception as e:
+                    self.console.error("\nBuild failed!")
+                    self.console.error(f"Error: {e}")
+                    self.console.error(traceback.format_exc())
+                    self.console.error("\nInstruction:")
+                    self.console.error(
+                        "Set OPENBB_DEBUG_MODE='true' environment variable and run "
+                        "'openbb-build' again to see verbose output."
+                    )
                     self._clean(modules)
                     raise
             except BlockingIOError:

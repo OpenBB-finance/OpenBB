@@ -997,6 +997,7 @@ def test_build_purges_on_failure(tmp_openbb_dir):
     # Mocking _save_modules to fail
     with (
         patch.object(builder, "_clean") as mock_clean,
+        patch.object(builder.console, "error") as mock_error,
         patch.object(builder, "_get_extension_map"),
         patch.object(builder, "_save_modules", side_effect=Exception("Generation failed")),
     ):
@@ -1005,4 +1006,8 @@ def test_build_purges_on_failure(tmp_openbb_dir):
 
         # _clean should be called twice: once at the start, once after failure
         assert mock_clean.call_count == 2
+        # console.error should be called for error message, traceback and instruction
+        assert mock_error.call_count >= 3
+        mock_error.assert_any_call("\nBuild failed!")
+        assert any("Generation failed" in str(call) for call in mock_error.call_args_list)
 
