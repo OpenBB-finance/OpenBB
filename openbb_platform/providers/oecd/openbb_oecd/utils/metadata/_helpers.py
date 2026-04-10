@@ -13,9 +13,9 @@ def _get_user_cache_file() -> Path:
     try:
         from openbb_core.app.utils import get_user_cache_directory
 
-        return Path(get_user_cache_directory()) / "oecd_cache.msgpack.gz"
+        return Path(get_user_cache_directory()) / "oecd_cache.json.gz"
     except Exception:  # noqa: BLE001
-        return Path.home() / ".openbb_platform" / "cache" / "oecd_cache.msgpack.gz"
+        return Path.home() / ".openbb_platform" / "cache" / "oecd_cache.json.gz"
 
 
 def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> Any:

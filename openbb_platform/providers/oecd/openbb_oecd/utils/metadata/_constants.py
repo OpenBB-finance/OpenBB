@@ -7,7 +7,7 @@ _STRUCTURE_ACCEPT = "application/vnd.sdmx.structure+json; version=1.0; charset=u
 _DATA_ACCEPT_CSV = "application/vnd.sdmx.data+csv; charset=utf-8"
 _DATA_ACCEPT_CSV_LABELS = "application/vnd.sdmx.data+csv; charset=utf-8; labels=both"
 _SHIPPED_CACHE_DIR = Path(__file__).resolve().parent.parent.parent / "assets"
-_SHIPPED_CACHE_FILE = _SHIPPED_CACHE_DIR / "oecd_cache.msgpack.xz"
+_SHIPPED_CACHE_FILE = _SHIPPED_CACHE_DIR / "oecd_cache.json.xz"
 
 _INDICATOR_DIMENSION_CANDIDATES = (
     "MEASURE",

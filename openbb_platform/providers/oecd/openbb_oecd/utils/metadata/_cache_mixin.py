@@ -2,11 +2,10 @@
 
 # pylint: disable=R0902
 import gzip
+import json
 import lzma
 import warnings
 from pathlib import Path
-
-import msgpack
 
 from openbb_oecd.utils.metadata._constants import _SHIPPED_CACHE_FILE
 from openbb_oecd.utils.metadata._helpers import _get_user_cache_file
@@ -28,7 +27,7 @@ class CacheMixin(_MixinBase):  # pylint: disable=abstract-method
             data = (
                 lzma.decompress(raw) if raw[:6] == _XZ_MAGIC else gzip.decompress(raw)
             )
-            return msgpack.unpackb(data, raw=False)
+            return json.loads(data)
         except Exception:  # noqa: BLE001
             return None
 
@@ -225,7 +224,7 @@ class CacheMixin(_MixinBase):  # pylint: disable=abstract-method
                 "category_to_dfs": self._category_to_dfs,
                 "category_names": self._category_names,
             }
-            raw = msgpack.packb(blob, use_bin_type=True)
+            raw = json.dumps(blob, separators=(",", ":")).encode()
             cache_file.write_bytes(gzip.compress(raw, compresslevel=1))
             self._cache_dirty = False
         except Exception:  # noqa: BLE001

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Generate the shipped oecd_cache.msgpack.xz baseline cache.
+"""Generate the shipped oecd_cache.json.xz baseline cache.
 
 Run from the oecd provider root:
 
@@ -15,7 +15,7 @@ Uses **bulk** SDMX v2 endpoints to fetch everything in ~4 API calls:
 
 Then joins dataflows->DSDs->codelists in memory, derives parameters and
 indicators for every dataflow, and writes the result to
-openbb_oecd/assets/oecd_cache.msgpack.xz.
+openbb_oecd/assets/oecd_cache.json.xz.
 
 This file ships with the package so users have a complete metadata map
 with zero API calls at runtime.
@@ -33,11 +33,10 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-import msgpack
 import requests
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
-CACHE_FILE = ASSETS_DIR / "oecd_cache.msgpack.xz"
+CACHE_FILE = ASSETS_DIR / "oecd_cache.json.xz"
 BASE_URL = "https://sdmx.oecd.org/public/rest/v2"
 STRUCTURE_ACCEPT = "application/vnd.sdmx.structure+json; version=1.0; charset=utf-8"
 _CL_URN_RE = re.compile(r"Codelist=([^:]+):([^(]+)\(([^)]+)\)")
@@ -1115,7 +1114,7 @@ def build_table_map(
 
 
 def main() -> None:
-    """Generate the shipped oecd_cache.msgpack.xz file."""
+    """Generate the shipped oecd_cache.json.xz file."""
     t0 = time.time()
     print("Generating OECD cache... this will take a few minutes...")
 
@@ -1286,7 +1285,7 @@ def main() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
     with lzma.open(CACHE_FILE, "wb", format=lzma.FORMAT_XZ, preset=6) as fh:
-        fh.write(msgpack.packb(blob, use_bin_type=True))
+        fh.write(json.dumps(blob, separators=(",", ":")).encode())
 
     size_mb = CACHE_FILE.stat().st_size / (1024 * 1024)
     elapsed = time.time() - t0
