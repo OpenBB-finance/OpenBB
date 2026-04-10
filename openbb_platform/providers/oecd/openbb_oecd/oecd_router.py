@@ -29,17 +29,17 @@ def _parse_annotation(text: str) -> dict[str, str]:
     if not text:
         return result
     for part in text.split(","):
-        part = part.strip()
-        if not part:
+        p = part.strip()
+        if not p:
             continue
-        if "=" in part:
-            dim, val = part.split("=", 1)
+        if "=" in p:
+            dim, val = p.split("=", 1)
             val = val.strip()
             if val.startswith("(") and val.endswith(")"):
                 val = val[1:-1]
             result[dim.strip()] = val
         else:
-            result[part] = ""
+            result[p] = ""
     return result
 
 

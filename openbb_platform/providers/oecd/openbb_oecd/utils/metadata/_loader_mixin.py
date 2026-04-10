@@ -343,7 +343,7 @@ class LoaderMixin(_MixinBase):  # pylint: disable=abstract-method
                     ext_dsds = ext_data.get("dataStructures", [])
                     if ext_dsds:
                         return ext_dsds, ext_data
-                except Exception:  # noqa: BLE001
+                except Exception:  # noqa: S112
                     continue
         return [], raw_data
 

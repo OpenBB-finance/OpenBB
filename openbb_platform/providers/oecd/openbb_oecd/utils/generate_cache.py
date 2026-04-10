@@ -555,7 +555,7 @@ def fetch_external_dsds(
                         if raw_dsd_list:
                             raw_data = ext_data
                             break
-                    except Exception:  # noqa: BLE001
+                    except Exception:  # noqa: S112
                         continue
                 if raw_dsd_list:
                     break
