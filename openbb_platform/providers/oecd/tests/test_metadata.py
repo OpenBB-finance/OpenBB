@@ -1005,7 +1005,9 @@ class TestEnsureDescription:
     def test_already_has_description(self, meta):
         """Skips fetch when description already present."""
         meta.dataflows[_FULL_ID]["description"] = "Existing"
-        with patch("openbb_oecd.utils.metadata._make_request") as mock_req:
+        with patch(
+            "openbb_oecd.utils.metadata._loader_mixin._make_request"
+        ) as mock_req:
             meta._ensure_description(_FULL_ID)
             mock_req.assert_not_called()
         assert meta.dataflows[_FULL_ID]["description"] == "Existing"
@@ -1019,7 +1021,10 @@ class TestEnsureDescription:
                 "dataflows": [{"descriptions": {"en": "<p>Hello <b>World</b></p>"}}]
             }
         }
-        with patch("openbb_oecd.utils.metadata._make_request", return_value=mock_resp):
+        with patch(
+            "openbb_oecd.utils.metadata._loader_mixin._make_request",
+            return_value=mock_resp,
+        ):
             meta._ensure_description(_FULL_ID)
         assert meta.dataflows[_FULL_ID]["description"] == "Hello World"
 
@@ -1031,7 +1036,10 @@ class TestEnsureDescription:
                 "dataflows": [{"descriptions": {"en": "Word1\t\t  Word2   Word3"}}]
             }
         }
-        with patch("openbb_oecd.utils.metadata._make_request", return_value=mock_resp):
+        with patch(
+            "openbb_oecd.utils.metadata._loader_mixin._make_request",
+            return_value=mock_resp,
+        ):
             meta._ensure_description(_FULL_ID)
         assert meta.dataflows[_FULL_ID]["description"] == "Word1 Word2 Word3"
 
@@ -1039,7 +1047,7 @@ class TestEnsureDescription:
         """Exception during fetch is silently ignored."""
         meta.dataflows[_FULL_ID]["description"] = ""
         with patch(
-            "openbb_oecd.utils.metadata._make_request",
+            "openbb_oecd.utils.metadata._loader_mixin._make_request",
             side_effect=Exception("network error"),
         ):
             meta._ensure_description(_FULL_ID)  # must not raise
@@ -1053,7 +1061,8 @@ class TestEnsureDescription:
             "data": {"dataflows": [{"descriptions": {"en": "Desc"}}]}
         }
         with patch(
-            "openbb_oecd.utils.metadata._make_request", return_value=mock_resp
+            "openbb_oecd.utils.metadata._loader_mixin._make_request",
+            return_value=mock_resp,
         ) as mock_req:
             meta._ensure_description(_FULL_ID)
             meta._ensure_description(_FULL_ID)
@@ -1067,7 +1076,10 @@ class TestEnsureDescription:
                 "dataflows": [{"descriptions": {"en": "A &amp; B &lt;C&gt; D&nbsp;E"}}]
             }
         }
-        with patch("openbb_oecd.utils.metadata._make_request", return_value=mock_resp):
+        with patch(
+            "openbb_oecd.utils.metadata._loader_mixin._make_request",
+            return_value=mock_resp,
+        ):
             meta._ensure_description(_FULL_ID)
         desc = meta.dataflows[_FULL_ID]["description"]
         assert "&amp;" not in desc

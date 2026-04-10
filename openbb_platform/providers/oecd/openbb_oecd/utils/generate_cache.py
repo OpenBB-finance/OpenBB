@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Generate the shipped oecd_cache.pkl.xz baseline cache.
+"""Generate the shipped oecd_cache.msgpack.xz baseline cache.
 
 Run from the oecd provider root:
 
@@ -15,7 +15,7 @@ Uses **bulk** SDMX v2 endpoints to fetch everything in ~4 API calls:
 
 Then joins dataflows->DSDs->codelists in memory, derives parameters and
 indicators for every dataflow, and writes the result to
-openbb_oecd/assets/oecd_cache.pkl.xz.
+openbb_oecd/assets/oecd_cache.msgpack.xz.
 
 This file ships with the package so users have a complete metadata map
 with zero API calls at runtime.
@@ -28,16 +28,16 @@ from __future__ import annotations
 
 import json
 import lzma
-import pickle
 import re
 import time
 from collections import defaultdict
 from pathlib import Path
 
+import msgpack
 import requests
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
-CACHE_FILE = ASSETS_DIR / "oecd_cache.pkl.xz"
+CACHE_FILE = ASSETS_DIR / "oecd_cache.msgpack.xz"
 BASE_URL = "https://sdmx.oecd.org/public/rest/v2"
 STRUCTURE_ACCEPT = "application/vnd.sdmx.structure+json; version=1.0; charset=utf-8"
 _CL_URN_RE = re.compile(r"Codelist=([^:]+):([^(]+)\(([^)]+)\)")
@@ -78,7 +78,7 @@ def _extract_codelist_id(urn: str) -> str:
     if m:
         return f"{m.group(1)}:{m.group(2)}({m.group(3)})"
     if ":" in urn:
-        return urn.rsplit(":", 1)[-1].split("(")[0]
+        return urn.rsplit(":", 1)[-1].split("(", maxsplit=1)[0]
     return urn
 
 
@@ -109,12 +109,22 @@ def fetch_dataflows() -> tuple[dict[str, dict], dict[str, str]]:
         if m:
             dsd_key = f"{m.group(1)}:{m.group(2)}({m.group(3)})"
 
+        annotations: dict[str, str] = {}
+        for ann in df.get("annotations", []):
+            ann_type = ann.get("type", "")
+            if ann_type:
+                ann_text = ann.get("title", "") or ann.get("text", "")
+                if isinstance(ann_text, dict):
+                    ann_text = ann_text.get("en", next(iter(ann_text.values()), ""))
+                annotations[ann_type] = str(ann_text) if ann_text else ""
+
         dataflows[full_id] = {
             "short_id": short_id,
             "agency_id": agency_id,
             "version": version,
             "name": name,
             "_dsd_key": dsd_key,
+            "annotations": annotations,
         }
         short_id_map[short_id] = full_id
 
@@ -471,6 +481,177 @@ def _closest_common_ancestor(
             return ancestor
 
     return None
+
+
+# ---------------------------------------------------------------------------
+# Step 3c -- Fetch external DSDs for dataflows not in the bulk result
+# ---------------------------------------------------------------------------
+
+_STRUCTURE_ACCEPT = "application/vnd.sdmx.structure+json; version=1.0; charset=utf-8"
+
+
+def fetch_external_dsds(
+    dataflows: dict[str, dict],
+    datastructures: dict[str, dict],
+    codelists_by_id: dict[str, dict[str, str]],
+    codelist_descriptions: dict[str, dict[str, str]],
+    codelist_parents: dict[str, dict[str, str]],
+    codelist_comp_rules: dict[str, dict[str, str]],
+) -> dict[str, dict]:
+    """Fetch DSDs for dataflows whose structures are external references.
+
+    Some dataflows (e.g. DF_BTIGE, DF_CRS) have their DSD hosted on a
+    different OECD subdomain (sti-public instead of public).  The bulk
+    ``/structure/datastructure`` call doesn't include these.
+
+    This function:
+    1. Identifies dataflows that have no entry in *datastructures*
+    2. Fetches each dataflow's structure endpoint individually
+    3. Follows ``isExternalReference`` links to get the real DSD
+    4. Merges the external codelists into the provided dicts
+
+    Returns the additional DSDs dict to be merged with the main dsds.
+    """
+    missing = {
+        full_id: df_meta
+        for full_id, df_meta in dataflows.items()
+        if full_id not in datastructures
+    }
+
+    if not missing:
+        return {}
+
+    print(f"  Fetching external DSDs for {len(missing)} dataflows...")
+    ext_dsds: dict[str, dict] = {}
+
+    for full_id, df_meta in missing.items():
+        agency = df_meta.get("agency_id", "")
+        version = df_meta.get("version", "")
+        url = (
+            f"{BASE_URL}/structure/dataflow/{agency}/{full_id}/{version}"
+            "?references=all&detail=referencepartial"
+        )
+        try:
+            raw = _get(url)
+        except Exception:  # noqa: BLE001
+            print(f"    WARN: failed to fetch structure for {full_id}")
+            continue
+
+        raw_data = raw.get("data", raw)
+        raw_dsd_list = raw_data.get("dataStructures", [])
+
+        if not raw_dsd_list:
+            for df in raw_data.get("dataflows", []):
+                if not df.get("isExternalReference"):
+                    continue
+                for link in df.get("links", []):
+                    href = link.get("href", "")
+                    if not href:
+                        continue
+                    ext_url = f"{href}?references=all&detail=referencepartial"
+                    try:
+                        ext_raw = _get(ext_url)
+                        ext_data = ext_raw.get("data", ext_raw)
+                        raw_dsd_list = ext_data.get("dataStructures", [])
+                        if raw_dsd_list:
+                            raw_data = ext_data
+                            break
+                    except Exception:  # noqa: BLE001
+                        continue
+                if raw_dsd_list:
+                    break
+
+        if not raw_dsd_list:
+            print(f"    WARN: no DSD found for {full_id} (even via external refs)")
+            continue
+
+        for dsd in raw_dsd_list:
+            dsd_id = dsd.get("id", "")
+            dsd_agency = dsd.get("agencyID", "")
+            dsd_version = dsd.get("version", "")
+            key = f"{dsd_agency}:{dsd_id}({dsd_version})"
+
+            dims: list[dict] = []
+            components = dsd.get("dataStructureComponents", {})
+            for dim in components.get("dimensionList", {}).get("dimensions", []):
+                dim_id = dim.get("id", "")
+                position = dim.get("position", len(dims))
+                local_repr = dim.get("localRepresentation", {})
+                enum_urn = local_repr.get("enumeration", "")
+                cl_id = _extract_codelist_id(enum_urn) if enum_urn else ""
+                names = dim.get("names", {})
+                dim_name = (
+                    names.get("en", "") if isinstance(names, dict) else ""
+                ) or dim.get("name", dim_id)
+                dims.append(
+                    {
+                        "id": dim_id,
+                        "position": position,
+                        "codelist_id": cl_id,
+                        "name": dim_name,
+                    }
+                )
+            dims.sort(key=lambda d: d["position"])
+
+            time_dims = components.get("dimensionList", {}).get("timeDimensions", [])
+            ext_dsds[key] = {
+                "dimensions": dims,
+                "has_time_dimension": bool(time_dims),
+            }
+            break
+
+        for cl in raw_data.get("codelists", []):
+            bare_id = cl.get("id", "")
+            cl_agency = cl.get("agencyID", "")
+            cl_version = cl.get("version", "")
+            cl_id = (
+                f"{cl_agency}:{bare_id}({cl_version})"
+                if cl_agency and cl_version
+                else bare_id
+            )
+
+            if cl_id in codelists_by_id:
+                continue
+
+            codes: dict[str, str] = {}
+            descs: dict[str, str] = {}
+            parents: dict[str, str] = {}
+            comp_rules: dict[str, str] = {}
+
+            for code in cl.get("codes", []):
+                code_id = code.get("id", "")
+                code_names = code.get("names", {})
+                label = (
+                    code_names.get("en", "") if isinstance(code_names, dict) else ""
+                ) or code.get("name", code_id)
+                codes[code_id] = label
+
+                d = code.get("descriptions", {})
+                desc = (d.get("en", "") if isinstance(d, dict) else "") or code.get(
+                    "description", ""
+                )
+                if desc and desc != label:
+                    descs[code_id] = desc
+
+                parent = code.get("parent", "")
+                if parent:
+                    parents[code_id] = parent
+
+                for ann in code.get("annotations", []):
+                    if ann.get("id") == "COMP_RULE" or ann.get("type") == "COMP_RULE":
+                        comp_rules[code_id] = ann.get("value", ann.get("text", ""))
+
+            codelists_by_id[cl_id] = codes
+            if descs:
+                codelist_descriptions[cl_id] = descs
+            if parents:
+                codelist_parents[cl_id] = parents
+            if comp_rules:
+                codelist_comp_rules[cl_id] = comp_rules
+
+        print(f"    {full_id}: {len(raw_dsd_list)} DSD(s)")
+
+    return ext_dsds
 
 
 # ---------------------------------------------------------------------------
@@ -934,7 +1115,7 @@ def build_table_map(
 
 
 def main() -> None:
-    """Generate the shipped oecd_cache.pkl.xz file."""
+    """Generate the shipped oecd_cache.msgpack.xz file."""
     t0 = time.time()
     print("Generating OECD cache... this will take a few minutes...")
 
@@ -955,6 +1136,21 @@ def main() -> None:
 
     # 4. Join: map every dataflow to its DSD
     datastructures = join_dataflows_to_structures(dataflows, dsds)
+
+    # 4a. Fetch external DSDs for dataflows not in the bulk result.
+    ext_dsds = fetch_external_dsds(
+        dataflows,
+        datastructures,
+        codelists_by_id,
+        codelist_descriptions,
+        codelist_parents,
+        codelist_comp_rules,
+    )
+    if ext_dsds:
+        dsds.update(ext_dsds)
+        ext_structures = join_dataflows_to_structures(dataflows, ext_dsds)
+        datastructures.update(ext_structures)
+        print(f"    External DSDs resolved: {len(ext_structures)} dataflows")
 
     # 4b. Remap dimension codelist_id to match actual keys in the cache.
     # DSDs may reference v1.0 but the bulk codelist fetch returned v1.2.
@@ -1090,7 +1286,7 @@ def main() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
     with lzma.open(CACHE_FILE, "wb", format=lzma.FORMAT_XZ, preset=6) as fh:
-        pickle.dump(blob, fh, protocol=pickle.HIGHEST_PROTOCOL)
+        fh.write(msgpack.packb(blob, use_bin_type=True))
 
     size_mb = CACHE_FILE.stat().st_size / (1024 * 1024)
     elapsed = time.time() - t0

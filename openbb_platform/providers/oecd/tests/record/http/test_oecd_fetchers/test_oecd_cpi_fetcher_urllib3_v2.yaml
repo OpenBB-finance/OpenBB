@@ -5,7 +5,7 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_PRICES@DF_PRICES_ALL/1.0/GBR.A.N.CPI.*._T.*.GY?c%5BTIME_PERIOD%5D=ge%3A2020-01%2Cle%3A2022-01&detail=full&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_PRICES%40DF_PRICES_ALL/1.0/GBR.A.N.CPI.*._T.*.GY?c%5BTIME_PERIOD%5D=ge%3A2020-01%2Cle%3A2022-01&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,FREQ: Frequency
@@ -13,10 +13,10 @@ interactions:
         of measure,EXPENDITURE: Expenditure,ADJUSTMENT: Adjustment,TRANSFORMATION:
         Transformation,TIME_PERIOD: Time period,OBS_VALUE,OBS_STATUS: Observation
         status,UNIT_MULT: Unit multiplier,BASE_PER: Base period,DURABILITY: Durability,DECIMALS:
-        Decimals\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR: United
+        Decimals\r\nDATAFLOW,OECD.SDD.TPS:DF_PRICES_ALL(1.0),I,GBR: United
         Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent per annum,_T:
         Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY: Growth rate,
-        over 1 year\",2020,1,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0),I,GBR:
+        over 1 year\",2020,1,A: Normal value,,,,2: Two\r\nDATAFLOW,OECD.SDD.TPS:DF_PRICES_ALL(1.0),I,GBR:
         United Kingdom,A: Annual,N: National,CPI: Consumer price index,PA: Percent
         per annum,_T: Total,N: Neither seasonally adjusted nor calendar adjusted,\"GY:
         Growth rate, over 1 year\",2021,2.5,A: Normal value,,,,2: Two\r\n"

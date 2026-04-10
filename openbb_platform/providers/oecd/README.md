@@ -96,7 +96,7 @@ Use `obb.oecd_utils.get_dataflow_parameters()` to see all dimensions and valid c
 
 ### Metadata Cache
 
-The library ships with a bundled base cache (`oecd_cache.pkl.xz`) containing:
+The library ships with a bundled base cache (`oecd_cache.msgpack.xz`) containing:
 
 - All dataflow IDs, names, and version metadata
 - DSD dimension definitions and codelist references for every dataflow
@@ -105,8 +105,8 @@ The library ships with a bundled base cache (`oecd_cache.pkl.xz`) containing:
 - The full OECD topic taxonomy (category scheme and categorisations)
 
 When a structure is missing, it is fetched on demand and merged into a user-level cache stored in the
-OpenBB user cache directory as `oecd_cache.pkl.xz`. If that directory cannot be resolved from OpenBB
-settings, the fallback location is `~/.openbb_platform/cache/oecd_cache.pkl.xz`.
+OpenBB user cache directory as `oecd_cache.msgpack.gz`. If that directory cannot be resolved from OpenBB
+settings, the fallback location is `~/.openbb_platform/cache/oecd_cache.msgpack.gz`.
 
 ## Coverage
 

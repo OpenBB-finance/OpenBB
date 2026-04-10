@@ -26,7 +26,7 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             "multiple_items_allowed": True,
             "x-widget_config": {
                 "multiSelect": False,
-                "multiple": True,
+                "multiple": False,
                 "type": "text",
             },
         },
@@ -34,7 +34,7 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             "multiple_items_allowed": True,
             "x-widget_config": {
                 "type": "endpoint",
-                "multiSelect": True,
+                "multiSelect": False,
                 "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",

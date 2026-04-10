@@ -155,16 +155,7 @@ class OECDBalanceOfPaymentsFetcher(
         entries = sorted({k[1] for k in _COL_MAP})
         units = sorted({k[2] for k in _COL_MAP})
 
-        dim_filter = (
-            f"{country_str}"
-            "."
-            f".{'+'.join(measures)}"
-            f".{'+'.join(entries)}"
-            "."
-            f".{freq_code}"
-            f".{'+'.join(units)}"
-            ".Y"
-        )
+        dim_filter = f"{country_str}..{'+'.join(measures)}.{'+'.join(entries)}..{freq_code}.{'+'.join(units)}.Y"
         url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_BOP@DF_BOP,1.0/{dim_filter}"
         params: list[str] = []
 
@@ -305,5 +296,5 @@ class OECDBalanceOfPaymentsFetcher(
 
         return sorted(
             output,
-            key=lambda r: (r.period or dateType.min),
+            key=lambda r: r.period or dateType.min,
         )

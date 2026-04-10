@@ -10,6 +10,7 @@ packages = [{ include = "openbb_oecd" }]
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
 openbb-core = "^1.6.3"
+msgpack = ">=1.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -23,3 +24,6 @@ oecd_utils = "openbb_oecd.oecd_router:router"
 
 [tool.poetry.scripts]
 generate-oecd-cache = "openbb_oecd.utils.generate_cache:main"
+
+[tool.mypy]
+explicit_package_bases = true

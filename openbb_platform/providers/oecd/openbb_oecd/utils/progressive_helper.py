@@ -354,7 +354,7 @@ class OecdParamsBuilder:
             dataflow=self.dataflow_id,
             start_date=start_date,
             end_date=end_date,
-            **self.pinned,
+            **self.pinned,  # type: ignore[arg-type]
         )
 
     def _cache_key(self) -> frozenset:

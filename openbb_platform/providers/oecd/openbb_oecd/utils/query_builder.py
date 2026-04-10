@@ -14,7 +14,6 @@ from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_oecd.utils.metadata import OecdMetadata
-from openbb_oecd.utils.progressive_helper import OecdParamsBuilder
 from pandas.api.types import is_string_dtype
 
 if TYPE_CHECKING:
@@ -68,14 +67,10 @@ class OecdQueryBuilder:
         has_time_constraint = bool(start_date or end_date)
 
         # Build the base URL via metadata.
-        # When date constraints are present, omit lastNObservations —
-        # the OECD API applies lastN *before* c[TIME_PERIOD] filtering,
-        # which can result in 404 when the latest obs falls outside the
-        # requested range.
         url = self.metadata.build_data_url(
             dataflow,
             dimension_filter=dimension_filter,
-            last_n=limit if not has_time_constraint else None,
+            last_n=limit,
             detail="full" if has_time_constraint else "dataonly",
         )
 
@@ -120,9 +115,12 @@ class OecdQueryBuilder:
     def validate_dimension_constraints(self, dataflow: str, **kwargs: Any) -> None:
         """Validate dimension parameters against the OECD availability API.
 
-        Uses progressive constraint checking: dimensions are validated in
-        DSD order, and each step narrows the available values for
-        subsequent dimensions.
+        Fetches availability with ALL provided dimensions pinned
+        simultaneously, then checks that each value appears in the
+        result.  This avoids progressive cascading which can
+        wrongly exclude values for dimensions late in DSD order
+        (e.g. TABLE_IDENTIFIER) when earlier auto-pinned dims
+        narrow the context without the later pin.
 
         Parameters
         ----------
@@ -135,12 +133,11 @@ class OecdQueryBuilder:
         Raises
         ------
         ValueError
-            If any dimension value is not available given prior selections.
+            If any dimension value is not available given the selections.
         """
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.abstract.warning import OpenBBWarning
 
-        # Filter kwargs to only dimension IDs.
         dim_order = self.metadata.get_dimension_order(dataflow)
         dim_id_map = {d.lower(): d for d in dim_order}
         non_dimension_keys = {"start_date", "end_date", "limit"}
@@ -157,10 +154,10 @@ class OecdQueryBuilder:
             return
 
         try:
-            qb = OecdParamsBuilder(dataflow)
+            constrained = self.metadata.get_constrained_values(dataflow)
         except Exception as exc:  # noqa: BLE001
             warnings.warn(
-                f"Could not initialise query builder for dataflow '{dataflow}': {exc}",
+                f"Could not load constraints for dataflow '{dataflow}': {exc}",
                 OpenBBWarning,
                 stacklevel=2,
             )
@@ -172,7 +169,6 @@ class OecdQueryBuilder:
 
             user_value = dim_kwargs[dim_id]
 
-            # Parse multi-select.
             if "+" in user_value:
                 user_values = [v.strip() for v in user_value.split("+")]
             elif "," in user_value:
@@ -184,54 +180,34 @@ class OecdQueryBuilder:
             if not user_values:
                 continue
 
-            is_multi = len(user_values) > 1
-
-            # Get available options given current single-value pins.
-            # If the availability fetch itself fails, warn and skip this dimension.
-            try:
-                available_options = qb.available(dim_id)
-            except Exception as exc:  # noqa: BLE001
-                warnings.warn(
-                    f"Could not fetch availability for dimension '{dim_id}' of dataflow '{dataflow}': {exc}",
-                    OpenBBWarning,
-                    stacklevel=2,
-                )
-                # Still pin if it's a single value so downstream dims are constrained.
-                if not is_multi:
-                    qb.set_dimension((dim_id, user_values[0]))
+            entries = constrained.get(dim_id, [])
+            if not entries:
                 continue
 
-            available_codes = {opt["value"] for opt in available_options}
+            available_codes = {e["value"] for e in entries}
 
             invalid = [v for v in user_values if v not in available_codes]
             if invalid:
                 prior = {
                     d: dim_kwargs[d]
                     for d in dim_order
-                    if d in dim_kwargs and dim_order.index(d) < dim_order.index(dim_id)
+                    if d in dim_kwargs and d != dim_id
                 }
-                # Build a compact list of available options with labels.
+                labels = {e["value"]: e["label"] for e in entries}
                 avail_display = [
                     (
-                        f"{opt['value']} ({opt['label']})"
-                        if opt.get("label") and opt["label"] != opt["value"]
-                        else opt["value"]
+                        f"{code} ({labels[code]})"
+                        if code in labels and labels[code] != code
+                        else code
                     )
-                    for opt in sorted(available_options, key=lambda x: x["value"])
+                    for code in sorted(available_codes)
                 ]
                 raise ValueError(
                     f"Invalid value(s) for dimension '{dim_id}': {invalid}. "
-                    + (f"Given prior selections {prior}, " if prior else "")
+                    + (f"Given selections {prior}, " if prior else "")
                     + f"Available options ({len(avail_display)}): "
                     + ", ".join(avail_display)
                 )
-
-            # Only pin single-value selections for cascading constraint propagation.
-            # Multi-select values break the availability API endpoint, so we skip
-            # pinning them — they were valid individually; downstream dims will use
-            # the already-pinned single-value context.
-            if not is_multi:
-                qb.set_dimension((dim_id, user_values[0]))
 
     def fetch_data(
         self,
@@ -503,7 +479,10 @@ class OecdQueryBuilder:
         return freq_dims[0]["id"] if freq_dims else None
 
     def list_tables(
-        self, query: str | None = None, topic: str | None = None
+        self,
+        query: str | None = None,
+        topic: str | None = None,
+        subtopic: str | None = None,
     ) -> list[dict]:
         """List all OECD tables (every dataflow is a table).
 
@@ -513,13 +492,15 @@ class OecdQueryBuilder:
             Keyword search on table name / dataflow ID / topic.
         topic : str, optional
             Topic code filter (e.g. "ECO", "HEA").
+        subtopic : str, optional
+            Subtopic code filter (e.g. "ECO_OUTLOOK").
 
         Returns
         -------
         list[dict]
-            [{table_id, name, topic, subtopic, dataflow_id}, ...]
+            [{table_id, name, topic, topic_id, subtopic, subtopic_id, dataflow_id}, ...]
         """
-        return self.metadata.list_tables(query=query, topic=topic)
+        return self.metadata.list_tables(query=query, topic=topic, subtopic=subtopic)
 
     def get_table(self, table_id: str) -> dict:
         """Get full metadata for a table: name, dimensions, allowed values.

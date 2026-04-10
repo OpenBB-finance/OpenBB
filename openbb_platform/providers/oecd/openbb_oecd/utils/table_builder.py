@@ -135,6 +135,17 @@ class OecdTableBuilder:
 
         # ---- Resolve dataflow + ensure structure loaded ----
         full_id = self.metadata._resolve_dataflow_id(dataflow)
+
+        # If the dataflow is a section child, resolve up to the parent.
+        # Section children are organisational groupings — only the parent
+        # dataflow actually serves data.
+        _section_map = self.metadata._detect_section_families()
+        _parent_full = _section_map.get(full_id)
+        if _parent_full:
+            full_id = _parent_full
+            info = self.metadata.dataflows.get(_parent_full, {})
+            dataflow = info.get("short_id", _parent_full.split("@")[-1].split("/")[0])
+
         self.metadata._ensure_structure(full_id)
         dsd = self.metadata.datastructures.get(full_id, {})
         dims = sorted(dsd.get("dimensions", []), key=lambda d: d["position"])

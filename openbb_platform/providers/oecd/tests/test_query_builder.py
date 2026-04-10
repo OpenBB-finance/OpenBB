@@ -391,13 +391,13 @@ class TestListTables:
             qb.metadata, "list_tables", return_value=[{"table_id": "X"}]
         ) as mock:
             result = qb.list_tables(query="test")
-            mock.assert_called_once_with(query="test", topic=None)
+            mock.assert_called_once_with(query="test", topic=None, subtopic=None)
         assert result == [{"table_id": "X"}]
 
     def test_with_topic(self, qb):
         with patch.object(qb.metadata, "list_tables", return_value=[]) as mock:
             qb.list_tables(topic="ECO")
-            mock.assert_called_once_with(query=None, topic="ECO")
+            mock.assert_called_once_with(query=None, topic="ECO", subtopic=None)
 
 
 class TestGetTable:
@@ -423,73 +423,43 @@ class TestValidateDimensionConstraints:
 
     def test_valid_dimension_passes(self, qb):
         """A valid dimension value should pass without raising."""
-        mock_qb_inst = MagicMock()
-        mock_qb_inst.available.return_value = [
-            {"value": "USA", "label": "United States"}
-        ]
-        with patch(
-            "openbb_oecd.utils.query_builder.OecdParamsBuilder",
-            return_value=mock_qb_inst,
-        ):
-            # Should not raise
-            qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA")
+        qb.metadata.get_constrained_values = MagicMock(
+            return_value={
+                "REF_AREA": [{"value": "USA", "label": "United States"}],
+            }
+        )
+        qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA")
 
     def test_invalid_dimension_raises(self, qb):
         """An invalid dimension value raises ValueError with helpful message."""
-        mock_qb_inst = MagicMock()
-        mock_qb_inst.available.return_value = [
-            {"value": "USA", "label": "United States"}
-        ]
-        with patch(
-            "openbb_oecd.utils.query_builder.OecdParamsBuilder",
-            return_value=mock_qb_inst,
-        ):
-            with pytest.raises(ValueError, match="Invalid value"):
-                qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="ZZZNOTVALID")
+        qb.metadata.get_constrained_values = MagicMock(
+            return_value={
+                "REF_AREA": [{"value": "USA", "label": "United States"}],
+            }
+        )
+        with pytest.raises(ValueError, match="Invalid value"):
+            qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="ZZZNOTVALID")
 
-    def test_query_builder_init_failure_warns(self, qb):
-        """If OecdParamsBuilder cannot be initialized, only a warning is issued."""
-        with patch(
-            "openbb_oecd.utils.query_builder.OecdParamsBuilder",
-            side_effect=Exception("fail"),
-        ):
-            with warnings.catch_warnings(record=True) as w:
-                warnings.simplefilter("always")
-                qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA")
-                assert len(w) == 1
-                assert "Could not initialise" in str(w[0].message)
+    def test_constraint_load_failure_warns(self, qb):
+        """If get_constrained_values fails, only a warning is issued."""
+        qb.metadata.get_constrained_values = MagicMock(side_effect=Exception("fail"))
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA")
+            assert len(w) == 1
+            assert "Could not load constraints" in str(w[0].message)
 
-    def test_availability_failure_still_pins(self, qb):
-        """If availability fetch fails, a warning is issued and the dim is pinned."""
-        mock_qb_inst = MagicMock()
-        mock_qb_inst.available.side_effect = Exception("avail fail")
-        mock_qb_inst._pinned = {}
-        mock_qb_inst._avail_cache = {}
-        with patch(
-            "openbb_oecd.utils.query_builder.OecdParamsBuilder",
-            return_value=mock_qb_inst,
-        ):
-            with warnings.catch_warnings(record=True) as w:
-                warnings.simplefilter("always")
-                qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA")
-                assert any("Could not fetch availability" in str(x.message) for x in w)
-
-    def test_multi_value_not_pinned(self, qb):
-        """Multi-value dimension values are not pinned for cascading."""
-        mock_qb_inst = MagicMock()
-        mock_qb_inst.available.return_value = [
-            {"value": "USA", "label": "United States"},
-            {"value": "GBR", "label": "United Kingdom"},
-        ]
-        mock_qb_inst._pinned = {}
-        mock_qb_inst._avail_cache = {}
-        with patch(
-            "openbb_oecd.utils.query_builder.OecdParamsBuilder",
-            return_value=mock_qb_inst,
-        ):
-            qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA+GBR")
-            # Multi-select should NOT be pinned
-            assert "REF_AREA" not in mock_qb_inst._pinned
+    def test_multi_value_validated(self, qb):
+        """Multi-value dimension values are validated."""
+        qb.metadata.get_constrained_values = MagicMock(
+            return_value={
+                "REF_AREA": [
+                    {"value": "USA", "label": "United States"},
+                    {"value": "GBR", "label": "United Kingdom"},
+                ],
+            }
+        )
+        qb.validate_dimension_constraints(_SHORT_ID, REF_AREA="USA+GBR")
 
 
 class TestFetchData:

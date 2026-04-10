@@ -5,14 +5,14 @@ interactions:
       Accept:
       - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.ECO.MAD/DSD_EO@DF_EO/1.4/USA.GDPV_USD.A?c%5BTIME_PERIOD%5D=ge%3A2023-01%2Cle%3A2024-01&detail=full&dimensionAtObservation=TIME_PERIOD
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.ECO.MAD/DSD_EO%40DF_EO/1.4/USA.GDPV_USD.A?c%5BTIME_PERIOD%5D=ge%3A2023-01%2Cle%3A2024-01&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
       string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA: Reference area,MEASURE: Measure,FREQ:
         Frequency of observation,TIME_PERIOD: Time period,OBS_VALUE,OBS_STATUS: Observation
         status,UNIT_MEASURE: Unit of measure,UNIT_MULT: Unit multiplier,CURRENCY:
         Currency,BASE_PER: Base period,METHODOLOGY: Methodology,DECIMALS: Decimals,PRICE_BASE:
-        Price base,ADJUSTMENT: Adjustment\r\nDATAFLOW,OECD.ECO.MAD:DSD_EO@DF_EO(1.4),I,USA:
+        Price base,ADJUSTMENT: Adjustment\r\nDATAFLOW,OECD.ECO.MAD:DF_EO(1.4),I,USA:
         United States,\"GDPV_USD: Gross domestic product, volume in USD, constant
         exchange rates\",A: Annual,2023,25031611545935,,\"USD_EXC: US dollars, exchange
         rate converted\",0: Units,,2021,,2: Two,L: Chain linked volume,\r\n"
