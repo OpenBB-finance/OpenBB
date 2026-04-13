@@ -71,7 +71,7 @@ The above code will produce the same effect as the previous example.
 
 Various types of charts can be generated from Pandas DataFrames without needing to understand the Plotly library.
 
-The methods are exposed as part of the `OBBject` accessor class. The `data` paramter can be passed as a list object from `OBBject.results`, or any Pandas DataFrame instance.
+The methods are exposed as part of the `OBBject` accessor class. The `data` parameter can be passed as a list object from `OBBject.results`, or any Pandas DataFrame instance.
 
 ```python
 res = obb.equity.price.historical("AAPL", chart=True)
