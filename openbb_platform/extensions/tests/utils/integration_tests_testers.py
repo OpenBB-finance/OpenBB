@@ -5,14 +5,31 @@ import inspect
 import os
 from collections.abc import Callable
 from typing import (
+    Annotated,
     Any,
     Literal,
+    get_args,
+    get_origin,
 )
+
+try:
+    from fastapi.params import Depends as FastAPIDepends
+except ImportError:
+    FastAPIDepends = type(None)
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
 from .integration_tests_generator import find_extensions
+
+
+def _is_depends_param(param: inspect.Parameter) -> bool:
+    if isinstance(param.default, FastAPIDepends):
+        return True
+    if get_origin(param.annotation) is Annotated:
+        metadata = get_args(param.annotation)[1:]
+        return any(isinstance(item, FastAPIDepends) for item in metadata)
+    return False
 
 
 def get_integration_tests(
@@ -260,10 +277,12 @@ def check_integration_tests(
         for function in processing_functions:
             if route.replace("/", "_")[1:] == function.replace("test_", ""):
                 sig = inspect.signature(cm.map[route])
-                param_names = list(sig.parameters.keys()) + ["return"]
-                processing_command_params = [
-                    {k: "" for k in param_names}
-                ]
+                param_names = [
+                    name
+                    for name, param in sig.parameters.items()
+                    if not _is_depends_param(param)
+                ] + ["return"]
+                processing_command_params = [{k: "" for k in param_names}]
                 if (
                     not processing_command_params
                     or len(functions[function].pytestmark) < 2
