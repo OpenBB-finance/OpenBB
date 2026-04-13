@@ -423,6 +423,7 @@ class Backend:
         source: str = "",
         theme: str = "dark",
         command_location: str | None = "",
+        include_query_toolbar: bool = True,
     ):
         """Send a DataFrame table to the PyWry window."""
         import re
@@ -441,8 +442,11 @@ class Backend:
         self._app.show_dataframe(
             data=df_table,
             title=display_title,
-            toolbars=[self._header_toolbar(), self._query_toolbar()],
-            callbacks=self._table_callbacks(),
+            toolbars=[self._header_toolbar()]
+            + ([self._query_toolbar()] if include_query_toolbar else []),
+            callbacks=(
+                self._table_callbacks() if include_query_toolbar else self._callbacks()
+            ),
             grid_options={"rowSelection": False},
         )
 
