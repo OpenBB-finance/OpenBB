@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import (
     Any,
+    ClassVar,
 )
 from warnings import warn
 
@@ -46,6 +47,7 @@ class ChartStyle:
     line_width: float = 1.5
 
     initialized: bool = False
+    instance: ClassVar["ChartStyle | None"] = None
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         """Create a singleton."""

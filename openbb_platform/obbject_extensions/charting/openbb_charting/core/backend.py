@@ -2,7 +2,7 @@
 
 # pylint: disable=R0915,R0917,W0613,C0415
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -14,6 +14,8 @@ if TYPE_CHECKING:
 
 class Backend:
     """Custom backend for Plotly."""
+
+    instance: ClassVar["Backend | None"] = None
 
     def __new__(cls, *args, **kwargs):
         """Create or return the singleton Backend instance."""
