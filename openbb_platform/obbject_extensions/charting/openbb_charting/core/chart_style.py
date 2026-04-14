@@ -51,7 +51,7 @@ class ChartStyle:
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         """Create a singleton."""
-        if not hasattr(cls, "instance"):
+        if cls.instance is None:
             cls.instance = super().__new__(cls)  # pylint: disable=E1120
         return cls.instance
 

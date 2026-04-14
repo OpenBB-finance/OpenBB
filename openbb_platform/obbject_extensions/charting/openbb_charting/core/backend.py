@@ -19,7 +19,7 @@ class Backend:
 
     def __new__(cls, *args, **kwargs):
         """Create or return the singleton Backend instance."""
-        if not hasattr(cls, "instance"):
+        if cls.instance is None:
             cls.instance = super().__new__(cls)
         return cls.instance
 

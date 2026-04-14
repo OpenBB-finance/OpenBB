@@ -117,7 +117,7 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(**kwargs)
 
-        self._backend = Backend.instance if hasattr(Backend, "instance") else None
+        self._backend = Backend.instance
 
     @property
     def theme(self):
