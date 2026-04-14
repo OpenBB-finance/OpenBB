@@ -21,8 +21,8 @@
     "@tanstack/router-core": "^1.114.33",
     "@tanstack/router-devtools": "^1.131.27",
     "@tauri-apps/plugin-app": "^2.0.0-alpha.1",
-    "@tauri-apps/plugin-dialog": "^2.6.0",
-    "@tauri-apps/plugin-fs": "^2.4.2",
+    "@tauri-apps/plugin-dialog": "^2.7.0",
+    "@tauri-apps/plugin-fs": "^2.5.0",
     "@tauri-apps/plugin-http": "^2.5.2",
     "@tauri-apps/plugin-log": "^2.8.0",
     "@tauri-apps/plugin-opener": "^2.5.0",
@@ -53,7 +53,7 @@
     "@tauri-apps/plugin-window": "^2.0.0-alpha.1",
     "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
-    "@types/node": "^20.19.11",
+    "@types/node": "^25.6.0",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.37.0",
@@ -66,12 +66,14 @@
     "jsdom": "^26.1.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.40.0",
-    "vite": "^7.2.2",
+    "vite": "^7.3.2",
     "vite-plugin-svgr": "^4.5.0",
     "vitest": "^3.2.4"
   },
   "overrides": {
     "seroval": ">=1.4.1",
-    "minimatch": ">10.2.1"
+    "minimatch": ">10.2.1",
+    "flatted": ">=3.4.2",
+    "picomatch": "^4.0.4"
   }
 }

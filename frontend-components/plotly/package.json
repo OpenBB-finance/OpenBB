@@ -14,13 +14,13 @@
     "dom-to-image": "^2.6.0",
     "esbuild": ">=0.25.0",
     "glob": ">=10.5.0",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.0",
     "plotly.js-dist-min": "^3.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-plotly.js": "^2.6.0",
     "rollup": ">=4.22.4",
-    "brace-expansion": ">=2.0.2"
+    "brace-expansion": ">=5.0.5"
   },
   "devDependencies": {
     "@types/dom-to-image": "^2.6.4",
@@ -38,7 +38,7 @@
     "react-hotkeys-hook": "^4.4.0",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
-    "vite": ">=7.1.11",
+    "vite": ">=7.3.2",
     "vite-plugin-singlefile": "^0.13.3"
   },
   "overrides": {
