@@ -135,7 +135,7 @@ def _apply_hierarchical_articulation(
             children_by_parent[row.parent].append(row)
 
     parents = list(children_by_parent.keys())
-    parents.sort(key=lambda p: get_depth(p), reverse=True)
+    parents.sort(key=get_depth, reverse=True)
     new_rows: list[RowResult] = []
 
     for parent_tag in parents:
