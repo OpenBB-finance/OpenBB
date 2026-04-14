@@ -7,4 +7,4 @@ members = [
 ]
 
 [workspace.dependencies]
-openssl = "^0.10.73"
+openssl = "^0.10.76"
