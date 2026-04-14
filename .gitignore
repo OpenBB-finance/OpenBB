@@ -52,6 +52,8 @@ cli/openbb_cli/assets/styles/user/*
 
 # Platform
 openbb_platform/core/openbb/package/*
+openbb_platform/providers/oecd/openbb_oecd/assets/*
+openbb_platform/providers/imf/openbb_imf/assets/*
 
 # Dev Container env
 obb/*
