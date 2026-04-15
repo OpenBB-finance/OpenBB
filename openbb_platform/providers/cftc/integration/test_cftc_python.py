@@ -66,3 +66,19 @@ def test_cftc_cot(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({}),
+    ],
+)
+@pytest.mark.integration
+@pytest.mark.skip(reason="This is not included in the Python interface.")
+def test_cftc_get_cot_choices(params, obb):
+    """Test the CFTC get_cot_choices endpoint."""
+    result = obb.cftc.get_cot_choices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

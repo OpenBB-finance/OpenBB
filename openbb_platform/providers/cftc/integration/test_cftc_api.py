@@ -75,3 +75,19 @@ def test_cftc_cot(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({}),
+    ],
+)
+@pytest.mark.integration
+def test_cftc_get_cot_choices(params, headers):
+    """Test the CFTC get_cot_choices endpoint."""
+    query_str = get_querystring(params, [])
+    url = f"http://localhost:8000/api/v1/cftc/get_cot_choices?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
