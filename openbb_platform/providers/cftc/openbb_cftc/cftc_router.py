@@ -35,7 +35,7 @@ async def build_choices():
         }
         choices.append(choice)
 
-    global COT_CHOICES  # noqa: PLW0603
+    global COT_CHOICES  # noqa: PLW0603  # pylint: disable=W0603
 
     COT_CHOICES = choices
 
@@ -43,13 +43,17 @@ async def build_choices():
 router.api_router.add_event_handler("startup", build_choices)
 
 
-@router.command(
-    methods=["GET"],
-    include_in_schema=False,
-)
 async def get_cot_choices() -> list[dict[str, str | dict[str, str | None]]]:
     """Get the choices for the COT command in Workspace."""
     return COT_CHOICES
+
+
+router._api_router.add_api_route(
+    path="/get_cot_choices",
+    endpoint=get_cot_choices,
+    methods=["GET"],
+    include_in_schema=False,
+)
 
 
 @router.command(
