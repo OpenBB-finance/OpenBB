@@ -1011,3 +1011,24 @@ def test_build_purges_on_failure(tmp_openbb_dir):
         mock_error.assert_any_call("\nBuild failed!")
         assert any("Generation failed" in str(call) for call in mock_error.call_args_list)
 
+
+def test_build_purges_on_keyboard_interrupt(tmp_openbb_dir):
+    """Test that build purges incomplete assets on KeyboardInterrupt."""
+    builder = PackageBuilder(tmp_openbb_dir)
+
+    # Mocking _save_modules to raise KeyboardInterrupt
+    with (
+        patch.object(builder, "_clean") as mock_clean,
+        patch.object(builder.console, "error") as mock_error,
+        patch.object(builder, "_get_extension_map"),
+        patch.object(builder, "_save_modules", side_effect=KeyboardInterrupt()),
+    ):
+        with pytest.raises(KeyboardInterrupt):
+            builder.build()
+
+        # _clean should be called twice: once at the start, once after interruption
+        assert mock_clean.call_count == 2
+        # console.error should NOT be called for KeyboardInterrupt
+        mock_error.assert_not_called()
+
+

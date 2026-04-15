@@ -7,6 +7,7 @@ import inspect
 import os
 import re
 import shutil
+import signal
 import sys
 import textwrap
 import traceback
@@ -187,8 +188,15 @@ class PackageBuilder:
                 lock_file.write(str(os.getpid()))
                 lock_file.flush()
 
-                # Actual build steps
-                self.console.log("\nBuilding extensions package...\n")
+                # Signal handler for SIGTERM
+                def _handle_term(signum, frame):
+                    self._clean(modules)
+                    sys.exit(signum)
+
+                if hasattr(signal, "SIGTERM"):
+                    original_sigterm = signal.getsignal(signal.SIGTERM)
+                    signal.signal(signal.SIGTERM, _handle_term)
+
                 try:
                     self._clean(modules)
                     ext_map = self._get_extension_map()
@@ -197,17 +205,21 @@ class PackageBuilder:
                     self._save_package()
                     if self.lint:
                         self._run_linters()
-                except Exception as e:
-                    self.console.error("\nBuild failed!")
-                    self.console.error(f"Error: {e}")
-                    self.console.error(traceback.format_exc())
-                    self.console.error("\nInstruction:")
-                    self.console.error(
-                        "Set OPENBB_DEBUG_MODE='true' environment variable and run "
-                        "'openbb-build' again to see verbose output."
-                    )
+                except BaseException as e:
+                    if not isinstance(e, (KeyboardInterrupt, SystemExit)):
+                        self.console.error("\nBuild failed!")
+                        self.console.error(f"Error: {e}")
+                        self.console.error(traceback.format_exc())
+                        self.console.error("\nInstruction:")
+                        self.console.error(
+                            "Set OPENBB_DEBUG_MODE='true' environment variable and run "
+                            "'openbb-build' again to see verbose output."
+                        )
                     self._clean(modules)
                     raise
+                finally:
+                    if hasattr(signal, "SIGTERM"):
+                        signal.signal(signal.SIGTERM, original_sigterm)
             except BlockingIOError:
                 raise RuntimeError(  # noqa # pylint: disable=W0707
                     f"Another build process is running and has locked {self._lock_path}"
