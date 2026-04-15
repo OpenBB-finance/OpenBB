@@ -9,10 +9,13 @@ from typing import Any, Literal
 
 from openbb_cftc.utils import reports_dict
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot import COTData, COTQueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
+
+api_prefix = SystemService().system_settings.api_settings.prefix
 
 
 class CftcCotQueryParams(COTQueryParams):
@@ -22,6 +25,14 @@ class CftcCotQueryParams(COTQueryParams):
     """
 
     __json_schema_extra__ = {
+        "code": {
+            "multiple_items_allowed": False,
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": f"{api_prefix}/cftc/get_cot_choices",
+                "style": {"popupWidth": 650},
+            },
+        },
         "report_type": {
             "multiple_items_allowed": False,
             "choices": ["legacy", "disaggregated", "financial", "supplemental"],

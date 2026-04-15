@@ -16,6 +16,40 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
 router = Router(prefix="")
+COT_CHOICES: list[dict[str, str | dict[str, str | None]]] = []
+
+
+async def build_choices():
+    """Build the choices for Workspace."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_cftc.models.cot_search import CftcCotSearchFetcher
+
+    contracts = await CftcCotSearchFetcher.fetch_data({}, {})
+    choices: list[dict[str, str | dict[str, str | None]]] = []
+
+    for d in contracts:
+        choice: dict[str, str | dict[str, str | None]] = {
+            "label": d.name.strip(),  # type: ignore
+            "value": d.code.strip(),  # type: ignore
+            "extraInfo": {"description": f"{d.subcategory.strip()}  | {d.code.strip()}", "rightOfDescription": ""},  # type: ignore
+        }
+        choices.append(choice)
+
+    global COT_CHOICES  # noqa: PLW0603
+
+    COT_CHOICES = choices
+
+
+router.api_router.add_event_handler("startup", build_choices)
+
+
+@router.command(
+    methods=["GET"],
+    include_in_schema=False,
+)
+async def get_cot_choices() -> list[dict[str, str | dict[str, str | None]]]:
+    """Get the choices for the COT command in Workspace."""
+    return COT_CHOICES
 
 
 @router.command(
@@ -91,9 +125,7 @@ async def cot(
 async def get_cftc_apps_json() -> list[dict[str, Any]]:
     """Get the IMF apps.json file.
 
-    This endpoint serves the apps.json file containing OpenBB Workspace app configurations
-    related to IMF data and utilities.
-
+    This endpoint serves the apps.json file containing OpenBB Workspace app configurations.
     It is automatically merged with any existing apps.json files in the Workspace and API.
 
     Returns
