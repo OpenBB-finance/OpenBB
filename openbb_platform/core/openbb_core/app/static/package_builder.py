@@ -189,7 +189,7 @@ class PackageBuilder:
                 lock_file.flush()
 
                 # Signal handler for SIGTERM
-                def _handle_term(signum, frame):
+                def _handle_term(signum, _):
                     self._clean(modules)
                     sys.exit(signum)
 
@@ -207,11 +207,11 @@ class PackageBuilder:
                         self._run_linters()
                 except BaseException as e:
                     if not isinstance(e, (KeyboardInterrupt, SystemExit)):
-                        self.console.error("\nBuild failed!")
-                        self.console.error(f"Error: {e}")
-                        self.console.error(traceback.format_exc())
-                        self.console.error("\nInstruction:")
-                        self.console.error(
+                        self.console.error("\nBuild failed!")  # type: ignore
+                        self.console.error(f"Error: {e}")  # type: ignore
+                        self.console.error(traceback.format_exc())  # type: ignore
+                        self.console.error("\nInstruction:")  # type: ignore
+                        self.console.error(  # type: ignore
                             "Set OPENBB_DEBUG_MODE='true' environment variable and run "
                             "'openbb-build' again to see verbose output."
                         )
