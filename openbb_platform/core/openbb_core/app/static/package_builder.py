@@ -207,11 +207,11 @@ class PackageBuilder:
                         self._run_linters()
                 except BaseException as e:
                     if not isinstance(e, (KeyboardInterrupt, SystemExit)):
-                        self.console.error("\nBuild failed!")  # type: ignore
-                        self.console.error(f"Error: {e}")  # type: ignore
-                        self.console.error(traceback.format_exc())  # type: ignore
-                        self.console.error("\nInstruction:")  # type: ignore
-                        self.console.error(  # type: ignore
+                        self.console.error("\nBuild failed!")  # type: ignore  # pylint: disable=E1101
+                        self.console.error(f"Error: {e}")  # type: ignore  # pylint: disable=E1101
+                        self.console.error(traceback.format_exc())  # type: ignore  # pylint: disable=E1101
+                        self.console.error("\nInstruction:")  # type: ignore  # pylint: disable=E1101
+                        self.console.error(  # type: ignore  # pylint: disable=E1101
                             "Set OPENBB_DEBUG_MODE='true' environment variable and run "
                             "'openbb-build' again to see verbose output."
                         )
