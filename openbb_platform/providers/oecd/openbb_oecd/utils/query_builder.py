@@ -388,7 +388,7 @@ class OecdQueryBuilder:
                     f"OECD data request failed for all values of '{split_dim}': {values}\nURL: {url}"
                 ) from exc
 
-            return "\n".join(csv_parts)
+        return "\n".join(csv_parts)
 
     def _split_label_columns(self, df: "DataFrame", dataflow: str) -> "DataFrame":
         """Process SDMX-CSV v2 labels=both columns.
