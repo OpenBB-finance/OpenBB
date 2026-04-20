@@ -4,6 +4,7 @@
   "project_name": "OpenBB Python Extension Template",
   "project_tag": "extension-template",
   "package_name": "extension_template",
+  "extension_types": "all",
   "provider_name": "template",
   "router_name": "template",
   "obbject_name": "template",

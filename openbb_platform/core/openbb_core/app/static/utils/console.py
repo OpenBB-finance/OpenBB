@@ -14,3 +14,7 @@ class Console:
         """Console log method."""
         if self.verbose or Env().DEBUG_MODE:
             print(message, **kwargs)  # noqa: T201
+
+    def error(self, message: str, **kwargs):
+        """Console error method."""
+        print(message, **kwargs)  # noqa: T201

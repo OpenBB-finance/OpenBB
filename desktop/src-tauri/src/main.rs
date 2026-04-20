@@ -56,8 +56,9 @@ use crate::tauri_handlers::helpers::{
 use tauri_plugin_updater::UpdaterExt;
 
 use crate::utils::process_monitor::{
-    GetProcessLogsRequest, LogEntry, LogStorage, RunningProcesses, get_log_storage,
-    get_process_logs, init_process_monitoring, register_process, unregister_process,
+    GetProcessLogsRequest, LogEntry, LogStorage, RunningProcesses, clear_process_logs,
+    get_log_storage, get_process_logs, init_process_monitoring, register_process,
+    unregister_process,
 };
 
 use crate::uninstall::uninstall_application;
@@ -89,6 +90,11 @@ fn get_process_logs_history(
 ) -> Vec<LogEntry> {
     let request = GetProcessLogsRequest { process_id, count };
     get_process_logs(&state.0.clone(), request)
+}
+
+#[tauri::command]
+fn clear_process_logs_history(state: State<ProcessLogState>, process_id: String) -> bool {
+    clear_process_logs(&state.0, &process_id)
 }
 
 async fn check_and_apply_update(app: AppHandle, always_prompt: bool) {
@@ -526,6 +532,7 @@ fn main() {
             register_process_monitoring,
             unregister_process_monitoring,
             get_process_logs_history,
+            clear_process_logs_history,
             open_jupyter_logs_window,
             update_jupyter_status,
             open_backend_logs_window,
