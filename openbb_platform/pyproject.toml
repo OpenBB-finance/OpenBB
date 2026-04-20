@@ -10,7 +10,7 @@ packages = [{ include = "openbb", from = "core" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-openbb-core = "^1.6.7"
+openbb-core = "^1.6.8"
 openbb-platform-api = "^1.3.5"
 
 openbb-benzinga = "^1.6.0"
@@ -29,7 +29,7 @@ openbb-sec = "^1.6.0"
 openbb-tiingo = "^1.6.0"
 openbb-tradingeconomics = "^1.6.0"
 openbb-us-eia = "^1.3.0"
-openbb-yfinance = "^1.6.1"
+openbb-yfinance = "^1.6.2"
 
 openbb-commodity = "^1.5.1"
 openbb-crypto = "^1.6.1"
