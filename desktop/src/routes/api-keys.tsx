@@ -89,7 +89,9 @@ export default function ApiKeysPage() {
 						});
 					}
 				} catch (e) {
-					throw new Error(`Invalid JSON file: ${e}`);
+					const err = new Error(`Invalid JSON file: ${e}`);
+					(err as unknown as Record<string, unknown>).cause = e;
+					throw err;
 				}
 			} else if (extension === "env") {
 				// Parse .env file
