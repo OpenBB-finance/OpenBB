@@ -18,18 +18,26 @@ openbb-devtools = { version = "*" }
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
+{% set types = cookiecutter.extension_types.split(',') | map('trim') | list %}
+{% if 'router' in types or 'all' in types %}
 [tool.poetry.plugins."openbb_core_extension"]
 {{ cookiecutter.router_name }} = "{{ cookiecutter.package_name }}.routers.{{ cookiecutter.router_name }}:router"
-
+{% endif %}
+{% if 'charting' in types or 'all' in types %}
 [tool.poetry.plugins."openbb_charting_extension"]
 {{ cookiecutter.router_name }} = "{{ cookiecutter.package_name }}.routers.{{ cookiecutter.router_name }}_views:{{cookiecutter.router_name.replace('_', ' ').title().replace(' ', '').replace('"', '')}}Views"
-
+{% endif %}
+{% if 'provider' in types or 'all' in types %}
 [tool.poetry.plugins."openbb_provider_extension"]
 {{ cookiecutter.provider_name }} = "{{ cookiecutter.package_name }}.providers.{{ cookiecutter.provider_name }}:{{ cookiecutter.provider_name }}_provider"
-
+{% endif %}
+{% if 'obbject' in types or 'on_command_output' in types or 'all' in types %}
 [tool.poetry.plugins."openbb_obbject_extension"]
+{% if 'obbject' in types or 'all' in types %}
 to_string = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:ext"
 {{ cookiecutter.obbject_name }} = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:class_ext"
-# Uncomment to use
-# nonblocking_plugin = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:nonblocking_plugin"
+{% endif %}
+{% if 'on_command_output' in types or 'all' in types %}
+nonblocking_plugin = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:nonblocking_plugin"
+{% endif %}
+{% endif %}

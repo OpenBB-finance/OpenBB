@@ -6,16 +6,19 @@ from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
+from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
 
 
-class SecSicSearchQueryParams(CotSearchQueryParams):
+class SecSicSearchQueryParams(QueryParams):
     """SEC Standard Industrial Classification Code (SIC) Query.
 
     Source: https://sec.gov/
     """
 
+    query: str = Field(
+        description="Search query to match against SIC code, industry title, or office."
+    )
     use_cache: bool | None = Field(
         default=True,
         description="Whether or not to use cache.",

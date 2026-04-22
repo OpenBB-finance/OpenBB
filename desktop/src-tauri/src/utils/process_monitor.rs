@@ -77,6 +77,16 @@ pub fn unregister_process(logs: &LogStorage, process_id: &str) -> bool {
     storage.remove(process_id).is_some()
 }
 
+pub fn clear_process_logs(logs: &LogStorage, process_id: &str) -> bool {
+    let mut storage = logs.lock().unwrap();
+    if let Some(buffer) = storage.get_mut(process_id) {
+        buffer.entries.clear();
+        true
+    } else {
+        false
+    }
+}
+
 #[derive(Deserialize)]
 pub struct GetProcessLogsRequest {
     pub process_id: String,
@@ -567,6 +577,38 @@ mod tests {
         assert_eq!(logs.len(), 2);
         assert_eq!(logs[0].content, "Message 4");
         assert_eq!(logs[1].content, "Message 5");
+    }
+
+    #[test]
+    fn test_clear_process_logs_existing() {
+        let storage = create_log_storage();
+        register_process(&storage, "test_process");
+
+        {
+            let mut locked = storage.lock().unwrap();
+            let buffer = locked.get_mut("test_process").unwrap();
+            for i in 1..=3 {
+                buffer.add(LogEntry {
+                    timestamp: i as i64,
+                    content: format!("Message {i}"),
+                    process_id: "test_process".to_string(),
+                });
+            }
+        }
+
+        let result = clear_process_logs(&storage, "test_process");
+        assert!(result);
+
+        let locked = storage.lock().unwrap();
+        let buffer = locked.get("test_process").unwrap();
+        assert_eq!(buffer.entries.len(), 0);
+    }
+
+    #[test]
+    fn test_clear_process_logs_nonexistent() {
+        let storage = create_log_storage();
+        let result = clear_process_logs(&storage, "nonexistent");
+        assert!(!result);
     }
 
     #[test]

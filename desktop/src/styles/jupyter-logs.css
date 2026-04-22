@@ -27,7 +27,7 @@ body.jupyter-logs-view main > div {
 }
 
 /* Target any potential horizontal scrollbars */
-body.jupyter-logs-view div,
+body.jupyter-logs-view div:not(.logs-toolbar-container):not(.logs-toolbar-container *),
 body.jupyter-logs-view pre,
 body.jupyter-logs-view code {
   overflow-x: hidden !important; /* No horizontal scrolling */
@@ -51,7 +51,7 @@ header.logs-page-header {
 
 .search-help-container {
   position: fixed;
-  top: 65px;
+  top: 75px;
   left: 0;
   right: 0;
   z-index: 50;
@@ -60,6 +60,17 @@ header.logs-page-header {
   align-items: flex-start;
 }
 
+.logs-toolbar-container {
+  position: fixed;
+  top: 75px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 18px;
+}
 
 /* Search highlight styles */
 .search-highlight {

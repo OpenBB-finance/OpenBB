@@ -139,51 +139,6 @@ def test_regulators_sec_sic_search(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "grain", "provider": "cftc"}),
-    ],
-)
-@pytest.mark.integration
-def test_regulators_cftc_cot_search(params, headers):
-    """Test the CFTC COT search endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/regulators/cftc/cot_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "id": "045601",
-                "report_type": "legacy",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "futures_only": False,
-                "provider": "cftc",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_regulators_cftc_cot(params, headers):
-    """Test the CFTC COT endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/regulators/cftc/cot?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "url": "https://www.sec.gov/Archives/edgar/data/21344/000155278124000634/",

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-devtools"
-version = "1.6.5"
+version = "1.6.6"
 description = "Tools for OpenBB Platform Developers"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -28,7 +28,6 @@ ipykernel = ">=6.30.1"
 types-python-dateutil = "^2.8.19.14"
 types-toml = "^0.10.8.7"
 poetry = ">=2.1.3"
-openbb-core = "^1.6.7"
 
 
 [build-system]

@@ -1,20 +1,22 @@
 """{{cookiecutter.router_name}} router command example."""
-
+{% set types = cookiecutter.extension_types.split(',') | map('trim') | list %}
+{% set has_provider = 'provider' in types or 'all' in types %}
 # pylint: disable=unused-argument
+{% if has_provider %}
 
 from openbb_core.app.model.command_context import CommandContext
+{% endif %}
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
+{% if has_provider %}
 from openbb_core.app.provider_interface import ExtraParams, ProviderChoices, StandardParams
 from openbb_core.app.query import Query
+{% endif %}
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-# Example dependency injection yielding a configured requests.Session object.
 from {{cookiecutter.package_name}}.routers.depends import Session
 
-# The prefix extension's prefix is determined by the `pyproject.toml` EntryPoint assignment.
-# Assign a prefix only if this is a sub-router.
 router = Router(prefix="")
 
 
@@ -52,6 +54,7 @@ async def post_example(
     spread = ask - bid
 
     return OBBject(results={"mid": mid, "spread": spread, "flag": flag})
+{% if has_provider %}
 
 
 @router.command(model="Example")
@@ -65,14 +68,13 @@ async def model_example(
     return await OBBject.from_query(Query(**locals()))
 
 
-# If you had another provider installed that mapped to this model - i.e, `openbb-fmp`
-# they will be added to this endpoint.
 @router.command(model="EquityHistorical")
 async def candles(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject: # results type is inferred from Fetcher annotations.
+) -> OBBject:
     """Example Data."""
     return await OBBject.from_query(Query(**locals()))
+{% endif %}

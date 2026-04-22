@@ -61,7 +61,7 @@ class YFinanceHistoricalDividendsFetcher(
         if query.end_date is not None:
             ticker = ticker[ticker.index.astype(str) <= query.end_date.strftime("%Y-%m-%d")]  # type: ignore
 
-        ticker = ticker.reset_index()  # type: ignore
+        ticker = ticker.reset_index().rename(columns={"Date": "date"})  # type: ignore
         ticker["date"] = ticker.date.apply(lambda x: x.date()).astype(str)  # type: ignore
         dividends = ticker.to_dict("records")  # type: ignore
 
