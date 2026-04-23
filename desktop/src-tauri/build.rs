@@ -36,7 +36,8 @@ fn copy_if_needed(src: &Path, dest: &Path, skip_existing: bool) -> Result<(), St
     if let Some(parent) = dest.parent() {
         fs::create_dir_all(parent).map_err(|e| format!("mkdir {}: {e}", parent.display()))?;
     }
-    fs::copy(src, dest).map_err(|e| format!("copy {} -> {}: {e}", src.display(), dest.display()))?;
+    fs::copy(src, dest)
+        .map_err(|e| format!("copy {} -> {}: {e}", src.display(), dest.display()))?;
     println!("cargo:rerun-if-changed={}", src.display());
     Ok(())
 }
@@ -68,7 +69,10 @@ fn stage_macos(manifest_dir: &Path, skip_existing: bool) -> Result<(), String> {
 }
 
 fn brew_openssl_prefix() -> Result<PathBuf, String> {
-    if let Ok(output) = Command::new("brew").args(["--prefix", "openssl@3"]).output() {
+    if let Ok(output) = Command::new("brew")
+        .args(["--prefix", "openssl@3"])
+        .output()
+    {
         if output.status.success() {
             let path = String::from_utf8_lossy(&output.stdout).trim().to_string();
             if !path.is_empty() {
