@@ -24,7 +24,7 @@ prompt-toolkit = "^3.0.50"
 rich = "^14.0.0"
 python-dotenv = "^1.0.1"
 openpyxl = "^3.1.5"
-pywry = "^0.6.2"
+pywry = ">=2.0.0rc7"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

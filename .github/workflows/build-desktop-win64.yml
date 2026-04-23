@@ -58,14 +58,22 @@ jobs:
           echo "OPENSSL_INCLUDE_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows/include" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=${{ env.VCPKG_ROOT }}/installed/x64-windows/lib" >> $GITHUB_ENV
 
-      - name: Copy SSL DLLs
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Copy OpenSSL DLLs from vcpkg
+        run: npm run openssl:copy
+
+      - name: Verify OpenSSL DLLs present
         shell: pwsh
         run: |
-          # Verify OpenSSL DLLs exist
-          $opensslBinDir = "${{ env.VCPKG_ROOT }}/installed/x64-windows/bin"
-          $libcryptoPath = Join-Path $opensslBinDir "libcrypto-3-x64.dll"
-          $libsslPath = Join-Path $opensslBinDir "libssl-3-x64.dll"
-
+          $libcryptoPath = "${{ github.workspace }}/desktop/src-tauri/libcrypto-3-x64.dll"
+          $libsslPath = "${{ github.workspace }}/desktop/src-tauri/libssl-3-x64.dll"
           if (-not (Test-Path $libcryptoPath)) {
             Write-Error "Error: libcrypto-3-x64.dll not found at $libcryptoPath"
             exit 1
@@ -74,12 +82,8 @@ jobs:
             Write-Error "Error: libssl-3-x64.dll not found at $libsslPath"
             exit 1
           }
-
-          # Copy DLLs to src-tauri folder
-          Copy-Item -Path $libcryptoPath -Destination "src-tauri/" -Force
-          Copy-Item -Path $libsslPath -Destination "src-tauri/" -Force
-          Write-Host "Successfully copied OpenSSL DLLs to src-tauri/"
-          Get-ChildItem -Path "src-tauri/"
+          Write-Host "OpenSSL DLLs staged in src-tauri/"
+          Get-ChildItem -Path "${{ github.workspace }}/desktop/src-tauri/*.dll"
 
       - name: Create temp directory for signing DLLs
         shell: pwsh
@@ -117,16 +121,14 @@ jobs:
           Write-Host "Successfully replaced unsigned DLLs with signed versions"
           Get-ChildItem -Path "${{ github.workspace }}/desktop/src-tauri/*.dll"
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: lts/*
-
       - name: Install cyclonedx-npm
         run: npm install -g @cyclonedx/cyclonedx-npm
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@3c5f7ea28cd621ae0bf5283f0e981fb97b8a7af9 # master
+        with:
+          toolchain: stable
+
 
       - name: Cache cargo registry
         uses: actions/cache@v5
@@ -146,10 +148,8 @@ jobs:
           restore-keys: |
             windows-x64-cargo-build-
 
-      - name: Install Modules
-        run: |
-          npm install
-          cyclonedx-npm --output-format XML --gather-license-texts --output-file src-tauri/open-data-platform-SBOM-npm.cdx.xml
+      - name: Generate npm SBOM
+        run: cyclonedx-npm --output-format XML --gather-license-texts --output-file src-tauri/open-data-platform-SBOM-npm.cdx.xml
 
       - name: Install cargo-cyclonedx
         shell: pwsh
@@ -172,6 +172,7 @@ jobs:
         run: npm run tauri build -- --target x86_64-pc-windows-msvc --no-bundle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENSSL_COPY_SKIP_EXISTING: "1"
 
       - name: Create backup of unsigned executable
         shell: pwsh
@@ -205,6 +206,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          OPENSSL_COPY_SKIP_EXISTING: "1"
 
       - name: Get Installer Path
         id: get_installer_path
