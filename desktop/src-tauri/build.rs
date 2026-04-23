@@ -83,6 +83,75 @@ fn stage_macos(manifest_dir: &Path, skip_existing: bool) -> Result<(), String> {
             let _ = fs::set_permissions(&dest, perms);
         }
     }
+
+    rewrite_macos_install_names(&frameworks, &names, &prefix)?;
+    Ok(())
+}
+
+fn rewrite_macos_install_names(
+    frameworks: &Path,
+    names: &[&str],
+    brew_prefix: &Path,
+) -> Result<(), String> {
+    for name in names {
+        let dest = frameworks.join(name);
+        let new_id = format!("@executable_path/../Frameworks/{name}");
+        run_install_name_tool(&["-id", &new_id, dest.to_str().unwrap()])?;
+
+        let output = Command::new("otool")
+            .args(["-L", dest.to_str().unwrap()])
+            .output()
+            .map_err(|e| format!("otool -L {}: {e}", dest.display()))?;
+        if !output.status.success() {
+            return Err(format!(
+                "otool -L {} failed: {}",
+                dest.display(),
+                String::from_utf8_lossy(&output.stderr)
+            ));
+        }
+        let listing = String::from_utf8_lossy(&output.stdout).into_owned();
+        for dep in names {
+            if dep == name {
+                continue;
+            }
+            for line in listing.lines() {
+                let trimmed = line.trim();
+                let path = trimmed.split_whitespace().next().unwrap_or("");
+                if path.is_empty() || path == dest.to_str().unwrap() {
+                    continue;
+                }
+                if path.ends_with(&format!("/{dep}"))
+                    && (path.starts_with(brew_prefix.to_str().unwrap_or(""))
+                        || path.starts_with("/usr/local/")
+                        || path.starts_with("/opt/homebrew/")
+                        || path.starts_with("@loader_path")
+                        || path.starts_with("@rpath"))
+                {
+                    let new_dep = format!("@executable_path/../Frameworks/{dep}");
+                    run_install_name_tool(&["-change", path, &new_dep, dest.to_str().unwrap()])?;
+                }
+            }
+        }
+
+        let _ = Command::new("codesign")
+            .args(["--force", "--sign", "-", dest.to_str().unwrap()])
+            .status();
+    }
+    Ok(())
+}
+
+fn run_install_name_tool(args: &[&str]) -> Result<(), String> {
+    let output = Command::new("install_name_tool")
+        .args(args)
+        .output()
+        .map_err(|e| format!("install_name_tool {:?}: {e}", args))?;
+    if !output.status.success() {
+        return Err(format!(
+            "install_name_tool {:?} failed: {}",
+            args,
+            String::from_utf8_lossy(&output.stderr)
+        ));
+    }
     Ok(())
 }
 
