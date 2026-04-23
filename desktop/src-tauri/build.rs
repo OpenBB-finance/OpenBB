@@ -55,15 +55,15 @@ fn stage_macos(manifest_dir: &Path, skip_existing: bool) -> Result<(), String> {
         }
         let dest = frameworks.join(name);
         copy_if_needed(&src, &dest, skip_existing)?;
-        let mut perms = fs::metadata(&dest)
-            .map_err(|e| format!("stat {}: {e}", dest.display()))?
-            .permissions();
         #[cfg(unix)]
         {
             use std::os::unix::fs::PermissionsExt;
+            let mut perms = fs::metadata(&dest)
+                .map_err(|e| format!("stat {}: {e}", dest.display()))?
+                .permissions();
             perms.set_mode(perms.mode() | 0o200);
+            let _ = fs::set_permissions(&dest, perms);
         }
-        let _ = fs::set_permissions(&dest, perms);
     }
     Ok(())
 }
