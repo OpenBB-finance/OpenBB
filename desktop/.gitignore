@@ -35,4 +35,5 @@ yarn-error.log*
 
 src-tauri/*.dll
 
-src-tauri/frameworks/*.dylib
+src-tauri/frameworks/*
+!src-tauri/frameworks/.gitkeep

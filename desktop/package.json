@@ -9,6 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "openssl:copy": "node src-tauri/scripts/copy_openssl.cjs",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx"
