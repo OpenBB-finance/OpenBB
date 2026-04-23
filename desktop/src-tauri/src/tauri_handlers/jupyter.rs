@@ -391,14 +391,31 @@ pub async fn stop_jupyter_server_impl<R: tauri::Runtime, E: EnvSystem>(
                     if let Ok(pid) = pid_str.parse::<u32>() {
                         log::debug!("🎯 Found PID {pid} using port {port}, terminating...");
 
-                        // Kill this specific PID
-                        let kill_result = env_sys
+                        let term_result = env_sys
                             .new_command("kill")
-                            .args(["-9", &pid.to_string()])
+                            .args(["-15", &pid.to_string()])
                             .output();
 
-                        match kill_result {
+                        match term_result {
                             Ok(_) => {
+                                log::debug!(
+                                    "Sent SIGTERM to PID {pid}, waiting for graceful shutdown..."
+                                );
+                                std::thread::sleep(std::time::Duration::from_secs(2));
+
+                                let check = env_sys
+                                    .new_command("kill")
+                                    .args(["-0", &pid.to_string()])
+                                    .output();
+
+                                if check.is_ok() && check.unwrap().status.success() {
+                                    log::debug!("PID {pid} still running, sending SIGKILL...");
+                                    let _ = env_sys
+                                        .new_command("kill")
+                                        .args(["-9", &pid.to_string()])
+                                        .output();
+                                }
+
                                 log::debug!("✅ Successfully terminated Jupyter PID {pid}");
                                 killed_any = true;
                             }

@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.equity_historical import (
 from pydantic import Field, field_validator
 
 
-class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalQueryParams(EquityHistoricalQueryParams):
+class {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Example provider query.
 
     The standard model here comes with parameters for symbol, start_date, and end_date.
@@ -25,7 +25,7 @@ class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '
     )
 
 
-class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalData(EquityHistoricalData):
+class {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalData(EquityHistoricalData):
     """Sample provider data.
 
     The standard model has these fields,
@@ -51,10 +51,10 @@ class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '
         return v if v else "Data validator replaced None."
 
 
-class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalFetcher(
+class {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalFetcher(
     Fetcher[
-        {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalQueryParams,
-        list[{{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalData],
+        {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalQueryParams,
+        list[{{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalData],
     ]
 ):
     """Example Fetcher class.
@@ -63,18 +63,18 @@ class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '
     """
 
     @staticmethod
-    def transform_query(params: dict[str, Any]) -> {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalQueryParams:
+    def transform_query(params: dict[str, Any]) -> {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalQueryParams:
         """Define example transform_query.
 
         Here we can pre-process the query parameters and add any extra parameters that
         will be used inside the extract_data method.
         """
-        return {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalQueryParams(**params)
+        return {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalQueryParams(**params)
 
     # Note the use of async here. Make the Fetcher async with this small change.
     @staticmethod
     async def aextract_data(
-        query: {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalQueryParams,
+        query: {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
@@ -115,13 +115,13 @@ class {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '
 
     @staticmethod
     def transform_data(
-        query: {{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalQueryParams,
+        query: {{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalQueryParams,
         data: list[dict],
         **kwargs: Any
-    ) -> list[{{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalData]:
+    ) -> list[{{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalData]:
         """Define example transform_data.
 
         Right now, we're converting the data to fit our desired format.
         You can apply other transformations to it here.
         """
-        return [{{cookiecutter.provider_name.replace('_', ' ').capitalize().replace(' ', '')}}EquityHistoricalData.model_validate(d) for d in data]
+        return [{{cookiecutter.provider_name.replace('_', ' ').title().replace(' ', '')}}EquityHistoricalData.model_validate(d) for d in data]

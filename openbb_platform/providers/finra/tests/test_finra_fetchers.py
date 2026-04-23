@@ -1,5 +1,6 @@
 """Tests for the Finra fetchers."""
 
+import pandas  # noqa: F401
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_finra.models.equity_short_interest import FinraShortInterestFetcher
@@ -21,6 +22,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.freeze_time("2026-04-06")
 @pytest.mark.record_http
 def test_finra_otc_aggregate_fetcher(credentials=test_credentials):
     """Test the Finra OTC Aggregate fetcher."""
