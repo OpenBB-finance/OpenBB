@@ -7,7 +7,30 @@ fn main() {
     if let Err(err) = stage_openssl() {
         panic!("[build.rs] failed to stage OpenSSL runtime libraries: {err}");
     }
+    if let Err(err) = stage_sbom_placeholders() {
+        panic!("[build.rs] failed to stage SBOM placeholders: {err}");
+    }
     tauri_build::build()
+}
+
+fn stage_sbom_placeholders() -> Result<(), String> {
+    let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").map_err(|e| e.to_string())?);
+    for name in [
+        "open-data-platform-SBOM-cargo.cdx.xml",
+        "open-data-platform-SBOM-npm.cdx.xml",
+    ] {
+        let path = manifest_dir.join(name);
+        if path.exists() {
+            continue;
+        }
+        let stub = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bom xmlns=\"http://cyclonedx.org/schema/bom/1.6\" version=\"1\"><components/></bom>\n";
+        fs::write(&path, stub).map_err(|e| format!("write {}: {e}", path.display()))?;
+        println!(
+            "cargo:warning=wrote SBOM placeholder at {}; CI regenerates real SBOMs before bundling",
+            path.display()
+        );
+    }
+    Ok(())
 }
 
 fn stage_openssl() -> Result<(), String> {
