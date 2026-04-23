@@ -72,12 +72,13 @@ fn brew_openssl_prefix() -> Result<PathBuf, String> {
     if let Ok(output) = Command::new("brew")
         .args(["--prefix", "openssl@3"])
         .output()
-        && output.status.success() {
-            let path = String::from_utf8_lossy(&output.stdout).trim().to_string();
-            if !path.is_empty() {
-                return Ok(PathBuf::from(path));
-            }
+        && output.status.success()
+    {
+        let path = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        if !path.is_empty() {
+            return Ok(PathBuf::from(path));
         }
+    }
     for fallback in ["/opt/homebrew/opt/openssl@3", "/usr/local/opt/openssl@3"] {
         let p = PathBuf::from(fallback);
         if p.exists() {
