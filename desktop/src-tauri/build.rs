@@ -43,15 +43,33 @@ fn copy_if_needed(src: &Path, dest: &Path, skip_existing: bool) -> Result<(), St
 }
 
 fn stage_macos(manifest_dir: &Path, skip_existing: bool) -> Result<(), String> {
-    let prefix = brew_openssl_prefix()?;
+    let names = ["libcrypto.3.dylib", "libssl.3.dylib"];
     let frameworks = manifest_dir.join("frameworks");
-    for name in ["libcrypto.3.dylib", "libssl.3.dylib"] {
+
+    if names.iter().all(|n| frameworks.join(n).exists()) {
+        if skip_existing {
+            println!("cargo:warning=OPENSSL_COPY_SKIP_EXISTING=1; OpenSSL dylibs already staged");
+        }
+        return Ok(());
+    }
+
+    let prefix = match brew_openssl_prefix() {
+        Ok(p) => p,
+        Err(err) => {
+            println!(
+                "cargo:warning={err}; skipping OpenSSL dylib staging (required only for bundling)"
+            );
+            return Ok(());
+        }
+    };
+    for name in names {
         let src = prefix.join("lib").join(name);
         if !src.exists() {
-            return Err(format!(
-                "expected {} to exist; ensure `brew install openssl@3` has been run",
+            println!(
+                "cargo:warning=expected {} to exist; skipping (required only for bundling)",
                 src.display()
-            ));
+            );
+            return Ok(());
         }
         let dest = frameworks.join(name);
         copy_if_needed(&src, &dest, skip_existing)?;
@@ -89,14 +107,28 @@ fn brew_openssl_prefix() -> Result<PathBuf, String> {
 }
 
 fn stage_windows(manifest_dir: &Path, skip_existing: bool) -> Result<(), String> {
-    let vcpkg_root = env::var("VCPKG_ROOT")
-        .map_err(|_| "VCPKG_ROOT is not set; install OpenSSL via vcpkg first".to_string())?;
+    let dest_names = ["libcrypto-3-x64.dll", "libssl-3-x64.dll"];
+
+    if dest_names.iter().all(|n| manifest_dir.join(n).exists()) {
+        if skip_existing {
+            println!("cargo:warning=OPENSSL_COPY_SKIP_EXISTING=1; OpenSSL DLLs already staged");
+        }
+        return Ok(());
+    }
+
+    let Ok(vcpkg_root) = env::var("VCPKG_ROOT") else {
+        println!(
+            "cargo:warning=VCPKG_ROOT not set; skipping OpenSSL DLL staging (required only for bundling)"
+        );
+        return Ok(());
+    };
     let bin_dir = PathBuf::from(&vcpkg_root).join("installed/x64-windows/bin");
     if !bin_dir.exists() {
-        return Err(format!(
-            "vcpkg OpenSSL bin dir not found: {}; run `vcpkg install openssl:x64-windows`",
+        println!(
+            "cargo:warning=vcpkg dynamic OpenSSL bin dir not found at {}; skipping DLL staging (required only for bundling)",
             bin_dir.display()
-        ));
+        );
+        return Ok(());
     }
     for (pattern_prefix, dest_name) in [
         ("libcrypto-3-", "libcrypto-3-x64.dll"),
