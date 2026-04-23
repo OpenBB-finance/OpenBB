@@ -117,19 +117,29 @@ fn stage_windows(manifest_dir: &Path, skip_existing: bool) -> Result<(), String>
     }
 
     let Ok(vcpkg_root) = env::var("VCPKG_ROOT") else {
-        println!(
-            "cargo:warning=VCPKG_ROOT not set; skipping OpenSSL DLL staging (required only for bundling)"
+        return Err(
+            "VCPKG_ROOT is not set; install OpenSSL via vcpkg (openssl:x64-windows or openssl:arm64-windows) before building"
+                .into(),
         );
-        return Ok(());
     };
-    let bin_dir = PathBuf::from(&vcpkg_root).join("installed/x64-windows/bin");
-    if !bin_dir.exists() {
-        println!(
-            "cargo:warning=vcpkg dynamic OpenSSL bin dir not found at {}; skipping DLL staging (required only for bundling)",
-            bin_dir.display()
-        );
-        return Ok(());
-    }
+
+    let target_arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_default();
+    let triplets: &[&str] = match target_arch.as_str() {
+        "aarch64" => &["arm64-windows", "x64-windows"],
+        _ => &["x64-windows", "arm64-windows"],
+    };
+
+    let bin_dir = triplets
+        .iter()
+        .map(|t| PathBuf::from(&vcpkg_root).join(format!("installed/{t}/bin")))
+        .find(|p| p.exists())
+        .ok_or_else(|| {
+            format!(
+                "no vcpkg dynamic OpenSSL install found under {}/installed/{{x64,arm64}}-windows/bin; run `vcpkg install openssl:x64-windows` (or openssl:arm64-windows)",
+                vcpkg_root
+            )
+        })?;
+
     for (pattern_prefix, dest_name) in [
         ("libcrypto-3-", "libcrypto-3-x64.dll"),
         ("libssl-3-", "libssl-3-x64.dll"),
