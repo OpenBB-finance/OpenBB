@@ -394,10 +394,7 @@ pub fn validate_command_input<F: FileSystem, E: EnvSystem>(
     let suspicious_chains = [";", "&&", "||", "|"];
     for chain in suspicious_chains {
         if trimmed_command.contains(chain) {
-            let chain_count = trimmed_command.matches(chain).count();
-            if chain_count > 2 || (chain == "|" && chain_count > 0) {
-                return Err("Command contains potentially dangerous content.".to_string());
-            }
+            return Err("Command contains potentially dangerous content.".to_string());
         }
     }
 
