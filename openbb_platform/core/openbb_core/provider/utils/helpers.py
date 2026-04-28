@@ -440,7 +440,8 @@ async def amake_requests(
                 isinstance(result, UnauthorizedError)
                 or kwargs.get("raise_for_status", False)
             ):
-                raise result  # type: ignore[misc]  # ty: ignore[invalid-raise]
+                assert isinstance(result, BaseException)  # noqa: S101
+                raise result
 
             if is_exception and ret_exceptions:
                 results.append(result)  # type: ignore[arg-type]
