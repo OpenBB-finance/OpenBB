@@ -114,7 +114,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[pandas]"
-          pip install pytest pytest-cov httpx
+          pip install pytest pytest-cov pytest-asyncio httpx
 
       - name: Run unit tests
         run: |
