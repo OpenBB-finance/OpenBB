@@ -58,8 +58,8 @@ jobs:
       - name: ruff check
         run: ruff check .
 
-      - name: ruff format --check
-        run: ruff format --check .
+      - name: black --check
+        run: black --check .
 
       - name: ty check
         run: ty check openbb_core
