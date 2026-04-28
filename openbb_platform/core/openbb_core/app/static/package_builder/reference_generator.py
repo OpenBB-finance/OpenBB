@@ -50,14 +50,10 @@ DataProcessingSupportedTypes = TypeVar(
     "Data",
 )
 
-TAB = "    "
-
-
-def create_indent(n: int) -> str:
-    """Create n indentation space."""
-    return TAB * n
-
-
+from openbb_core.app.static.package_builder._indent import (  # noqa: F401
+    TAB,
+    create_indent,
+)
 from openbb_core.app.static.package_builder.docstring_generator import (
     DocstringGenerator,
 )
