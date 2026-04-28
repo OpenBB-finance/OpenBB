@@ -43,9 +43,9 @@ def test_obb_exposes_fake_integration_namespace(run_in_obb):
         "}"
     )
     result = run_in_obb(snippet)
-    assert result[
-        "has_namespace"
-    ], "obb.fake_integration is missing — generated package was not picked up"
+    assert result["has_namespace"], (
+        "obb.fake_integration is missing — generated package was not picked up"
+    )
     assert result["has_command"], "obb.fake_integration.list_indicators is missing"
 
 
@@ -74,9 +74,9 @@ def test_obb_coverage_reports_fake_integration_provider(run_in_obb):
     )
     result = run_in_obb(snippet)
     assert "fake_integration" in result["providers"]
-    assert any(
-        "list_indicators" in cmd for cmd in result["commands"]
-    ), f"expected list_indicators in commands, got {result['commands']!r}"
+    assert any("list_indicators" in cmd for cmd in result["commands"]), (
+        f"expected list_indicators in commands, got {result['commands']!r}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -163,9 +163,9 @@ def test_fake_accessor_is_registered_on_obbject_class(run_in_obb):
         "}\n"
     )
     result = run_in_obb(snippet)
-    assert result[
-        "in_accessors"
-    ], "fake_accessor was not added to OBBject.accessors — openbb_obbject_extension entry point did not load"
+    assert result["in_accessors"], (
+        "fake_accessor was not added to OBBject.accessors — openbb_obbject_extension entry point did not load"
+    )
     assert result["has_descriptor"], "OBBject has no fake_accessor descriptor"
 
 

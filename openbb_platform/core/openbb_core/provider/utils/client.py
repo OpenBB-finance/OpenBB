@@ -104,7 +104,9 @@ class ClientSession(aiohttp.ClientSession):
 
         return data
 
-    async def request(self, *args, raise_for_status: bool = False, **kwargs) -> ClientResponse:  # type: ignore
+    async def request(
+        self, *args, raise_for_status: bool = False, **kwargs
+    ) -> ClientResponse:  # type: ignore
         """Send request."""
         import zlib
 

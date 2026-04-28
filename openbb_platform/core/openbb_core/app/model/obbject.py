@@ -155,8 +155,11 @@ class OBBject(Tagged, Generic[T]):
         DataFrame
             Pandas DataFrame.
         """
-        from pandas import DataFrame, Series, concat  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
+        from openbb_core.app.utils_optional import require_optional
+
+        pd = require_optional("pandas")
+        DataFrame, Series, concat = pd.DataFrame, pd.Series, pd.concat  # type: ignore[union-attr]
 
         def is_list_of_basemodel(items: list[T] | T) -> bool:
             return isinstance(items, list) and all(
@@ -213,9 +216,9 @@ class OBBject(Tagged, Generic[T]):
 
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
-                    if is_list_of_basemodel(v):  # ty: ignore[invalid-argument-type]
+                    if is_list_of_basemodel(v):
                         dict_of_df[k] = basemodel_to_df(
-                            v,  # ty: ignore[invalid-argument-type]
+                            v,
                             index,
                         )
                         sort_columns = False
@@ -227,7 +230,7 @@ class OBBject(Tagged, Generic[T]):
 
             # List[BaseModel]
             elif is_list_of_basemodel(res):
-                dt: list[Data] | Data = res  # type: ignore
+                dt: list[Data] | Data = res
                 r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None
                 if r and all(
                     prop.get("type") == "array"
@@ -286,14 +289,10 @@ class OBBject(Tagged, Generic[T]):
 
     def to_polars(self) -> "PolarsDataFrame":
         """Convert results field to polars dataframe."""
-        try:
-            from polars import from_pandas  # type: ignore
-        except ImportError as exc:
-            raise ImportError(
-                "Please install polars: `pip install polars pyarrow`  to use this method."
-            ) from exc
+        from openbb_core.app.utils_optional import require_optional
 
-        return from_pandas(self.to_dataframe(index=None))
+        polars = require_optional("polars")
+        return polars.from_pandas(self.to_dataframe(index=None))  # type: ignore[union-attr]
 
     def to_numpy(self) -> "ndarray":
         """Convert results field to numpy array."""
@@ -347,7 +346,7 @@ class OBBject(Tagged, Generic[T]):
             date_unit="s",
         )
 
-        return results  # type: ignore
+        return results
 
     def show(self, **kwargs: Any) -> None:
         """Display chart."""

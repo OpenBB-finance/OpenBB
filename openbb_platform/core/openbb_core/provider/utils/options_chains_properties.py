@@ -5,32 +5,16 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.utils_optional import require_optional
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
     from pandas import DataFrame
 
 
-_PANDAS_REQUIRED_MSG = (
-    "OptionsChainsProperties analytics require the 'pandas' extra. "
-    "Install with: pip install openbb-core[pandas]"
-)
-
-
 def _require_pandas() -> None:
-    """Verify pandas and numpy are importable, raising a clear OpenBBError if not.
-
-    The DataFrame-backed analytics on ``OptionsChainsProperties`` are the only
-    pandas-dependent surface left in ``openbb-core`` after the move to the
-    ``[pandas]`` optional extra. Calling this at the start of every public entry
-    point converts the otherwise-confusing ``ModuleNotFoundError`` into an
-    actionable installation hint.
-    """
-    try:
-        import numpy  # noqa: F401
-        import pandas  # noqa: F401
-    except ImportError as exc:
-        raise OpenBBError(_PANDAS_REQUIRED_MSG) from exc
+    """Verify pandas and numpy are importable, raising a clear OpenBBError if not."""
+    require_optional("pandas", "numpy")
 
 
 class OptionsChainsProperties(Data):
@@ -348,7 +332,9 @@ class OptionsChainsProperties(Data):
             if stat not in stats:
                 raise OpenBBError(f"Error: stat must be one of {stats}")
             if stat in ["volume", "open_interest"]:
-                return DataFrame(self._get_stat(stat, moneyness=moneyness, date=date)[by]).replace({nan: None})  # type: ignore
+                return DataFrame(
+                    self._get_stat(stat, moneyness=moneyness, date=date)[by]
+                ).replace({nan: None})  # type: ignore
             if (
                 _stat not in self.dataframe.columns
                 and self.has_greeks
@@ -522,9 +508,13 @@ class OptionsChainsProperties(Data):
                 nearest = (dataframe.dte - days).abs().idxmin()
                 return dataframe.loc[nearest, "expiration"].strftime("%Y-%m-%d")
         elif date is None:
-            date = to_datetime(df.eod_date.iloc[0] if hasattr(df, "eod_date") else datetime.today().strftime("%Y-%m-%d"))  # type: ignore
+            date = to_datetime(
+                df.eod_date.iloc[0]
+                if hasattr(df, "eod_date")
+                else datetime.today().strftime("%Y-%m-%d")
+            )
         else:
-            date = to_datetime(date)  # type: ignore
+            date = to_datetime(date)
 
         expirations = Series(to_datetime(self.expirations))
         nearest = DataFrame(expirations - date)
@@ -1069,7 +1059,9 @@ class OptionsChainsProperties(Data):
 
             if call_spread.loc["Cost"] < 0:
                 call_spread.loc["Max Profit"] = call_spread.loc["Cost"] * -1
-                call_spread.loc["Max Loss"] = -1 * (bought - sold + call_spread.loc["Cost"])  # type: ignore
+                call_spread.loc["Max Loss"] = -1 * (
+                    bought - sold + call_spread.loc["Cost"]
+                )  # type: ignore
                 lower = bought if sold > bought else sold  # type: ignore
                 call_spread.loc["Breakeven Upper"] = (
                     lower + call_spread.loc["Max Profit"]
@@ -1526,7 +1518,9 @@ class OptionsChainsProperties(Data):
         days = (
             chains.dte.unique().tolist()
             if days == -1
-            else days if days else [20, 40, 60, 90, 180, 360]
+            else days
+            if days
+            else [20, 40, 60, 90, 180, 360]
         )
         # Allows a single input to be passed instead of a list.
         days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
@@ -1829,9 +1823,7 @@ class OptionsChainsProperties(Data):
                     call["Skew"] = call["implied_volatility"] - call["ATM IV"]
                     call_skew = concat([call_skew, call])
 
-            atm_put_strike = self._get_nearest_strike(
-                "put", day, force_otm=False
-            )  # noqa:F841
+            atm_put_strike = self._get_nearest_strike("put", day, force_otm=False)  # noqa:F841
             _puts = puts[puts["dte"] == day][
                 ["expiration", "option_type", "strike", "implied_volatility"]
             ]

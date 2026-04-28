@@ -45,7 +45,6 @@ except ImportError:
     CHARTING_INSTALLED = False
 
 try:
-
     _HAS_FCNTL = True
 except Exception:  # noqa
     _HAS_FCNTL = False
@@ -1247,9 +1246,7 @@ class MethodDefinition:
         """Build the command method."""
         path_parts = [p for p in path.split("/") if p and not p.startswith("{")]
         func_name = (
-            path_parts[-1]
-            if path_parts
-            else func.__name__  # ty: ignore[unresolved-attribute]
+            path_parts[-1] if path_parts else func.__name__  # ty: ignore[unresolved-attribute]
         )
         sig = signature(func)
         parameter_map = dict(sig.parameters)

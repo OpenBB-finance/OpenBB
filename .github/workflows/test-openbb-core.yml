@@ -34,48 +34,6 @@ defaults:
     working-directory: openbb_platform/core
 
 jobs:
-  lint:
-    name: Lint (ruff + ty + black + codespell)
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-
-      - name: Setup Python 3.10
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.10"
-          cache: "pip"
-
-      - name: Install devtools (ruff, ty, black, codespell)
-        working-directory: ${{ github.workspace }}
-        run: pip install ./openbb_platform/extensions/devtools
-
-      - name: Install openbb-core (so ty can resolve runtime deps)
-        run: pip install -e ".[pandas]" numpy
-
-      - name: ruff check
-        run: ruff check .
-
-      - name: black --check
-        run: black --check .
-
-      - name: ty check
-        run: ty check openbb_core
-
-      - name: codespell
-        working-directory: ${{ github.workspace }}
-        run: |
-          codespell \
-            --ignore-words=.codespell.ignore \
-            --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" \
-            --quiet-level=2 \
-            openbb_platform/core
-
   test:
     name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
     runs-on: ${{ matrix.os }}

@@ -111,9 +111,9 @@ def test_complete_signature(
         annotation = sig.parameters[arg].annotation
         # ``Annotated[...]`` exposes its metadata via ``__metadata__``
         metadata = getattr(annotation, "__metadata__", ())
-        assert any(
-            type(m).__name__ == "Depends" for m in metadata
-        ), f"{arg} not wired with Depends: annotation={annotation!r}"
+        assert any(type(m).__name__ == "Depends" for m in metadata), (
+            f"{arg} not wired with Depends: annotation={annotation!r}"
+        )
 
 
 def test_complete_signature_unknown_model_returns_none(

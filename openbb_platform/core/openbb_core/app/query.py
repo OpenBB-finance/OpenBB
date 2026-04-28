@@ -67,7 +67,9 @@ class Query:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
-            self.filter_extra_params(self.extra_params, self.provider) if self.extra_params else {}  # type: ignore
+            self.filter_extra_params(self.extra_params, self.provider)
+            if self.extra_params
+            else {}  # type: ignore
         )
         query_executor = self.provider_interface.create_executor()
 

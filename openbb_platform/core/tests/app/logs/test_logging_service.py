@@ -123,8 +123,14 @@ def test_logging_settings_setter(logging_service):
             custom_user_settings,
         )
 
-    assert logging_service.logging_settings.system_settings.custom_attribute == "custom_system_settings"  # type: ignore[attr-defined]
-    assert logging_service.logging_settings.user_settings.preferences == "custom_preferences"  # type: ignore[attr-defined]
+    assert (
+        logging_service.logging_settings.system_settings.custom_attribute
+        == "custom_system_settings"
+    )  # type: ignore[attr-defined]
+    assert (
+        logging_service.logging_settings.user_settings.preferences
+        == "custom_preferences"
+    )  # type: ignore[attr-defined]
 
 
 def test_log_startup(logging_service):

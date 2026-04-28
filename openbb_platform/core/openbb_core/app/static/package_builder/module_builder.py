@@ -15,7 +15,6 @@ from importlib.util import find_spec
 CHARTING_INSTALLED = find_spec("openbb_charting") is not None
 
 try:
-
     _HAS_FCNTL = True
 except Exception:  # noqa
     _HAS_FCNTL = False

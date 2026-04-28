@@ -219,9 +219,9 @@ async def test_command_runner_runs_real_extension_immutable_callback(
     assert isinstance(output, OBBject), output
     assert fired, "extension accessor was never invoked by the real runner"
     # Immutable extension must NOT have mutated the original returned object
-    assert "CALLBACK_FIRED" not in (
-        output.results or []
-    ), "immutable extension leaked a mutation onto the runner's OBBject"
+    assert "CALLBACK_FIRED" not in (output.results or []), (
+        "immutable extension leaked a mutation onto the runner's OBBject"
+    )
     # The accessor's reference is a *copy* — different identity from `output`
     assert fired[0] is not output
 
@@ -258,9 +258,9 @@ async def test_command_runner_runs_real_extension_mutable_callback(
     )
 
     assert isinstance(output, OBBject)
-    assert "MUTATED" in (
-        output.results or []
-    ), "mutable extension did NOT mutate the runner's OBBject"
+    assert "MUTATED" in (output.results or []), (
+        "mutable extension did NOT mutate the runner's OBBject"
+    )
     assert getattr(output, "_extension_modified", False) is True
 
 
@@ -400,9 +400,9 @@ def test_fastapi_endpoint_results_only_extension_returns_results_array(
     body = response.json()
     # results_only short-circuits to the bare results payload — there is no
     # ``provider`` / ``warnings`` / ``extra`` envelope in this path.
-    assert (
-        "provider" not in body
-    ), f"results_only=True extension did not strip the OBBject envelope; got {body!r}"
+    assert "provider" not in body, (
+        f"results_only=True extension did not strip the OBBject envelope; got {body!r}"
+    )
 
 
 def test_fastapi_endpoint_extension_can_be_path_scoped(
@@ -435,6 +435,6 @@ def test_fastapi_endpoint_extension_can_be_path_scoped(
         )
 
     assert response.status_code == 200, response.text
-    assert (
-        fired_routes == []
-    ), f"path-scoped extension fired on the wrong route: {fired_routes!r}"
+    assert fired_routes == [], (
+        f"path-scoped extension fired on the wrong route: {fired_routes!r}"
+    )

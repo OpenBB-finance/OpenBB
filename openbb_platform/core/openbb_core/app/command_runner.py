@@ -136,8 +136,7 @@ class ParametersBuilder:
 
         argcount = func.__code__.co_argcount  # ty: ignore[unresolved-attribute]
         if (
-            "cc"
-            in func.__code__.co_varnames[:argcount]  # ty: ignore[unresolved-attribute]
+            "cc" in func.__code__.co_varnames[:argcount]  # ty: ignore[unresolved-attribute]
         ):
             kwargs["cc"] = CommandContext(
                 user_settings=user_settings,

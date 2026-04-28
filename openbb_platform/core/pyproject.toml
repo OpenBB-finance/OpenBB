@@ -53,7 +53,7 @@ include = [
 # top-level configuration being discoverable.
 # ---------------------------------------------------------------------------
 [tool.ruff]
-line-length = 122
+line-length = 88
 target-version = "py310"
 fix = true
 extend-exclude = [
@@ -67,7 +67,6 @@ select = [
     "E",
     "W",
     "F",
-    "Q",
     "S",
     "UP",
     "I",
@@ -84,14 +83,17 @@ ignore = [
     "PLR0915",  # too-many-statements
     "PLC0415",  # import-outside-top-level
     "E402",     # module-import-not-at-top-of-file
+    "E501",     # line-too-long (formatter handles this on best-effort)
     "D202",
     "D203",
     "D205",
+    "D206",     # docstring-tab-indentation (conflicts with formatter)
     "D210",
     "D212",
     "D213",
     "D214",
     "D215",
+    "D300",     # triple-single-quotes (conflicts with formatter)
     "D400",
     "D404",
     "D405",

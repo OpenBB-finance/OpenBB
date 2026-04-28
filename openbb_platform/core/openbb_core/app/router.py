@@ -372,8 +372,7 @@ class SignatureInspector:
         """Get operation id."""
         operation_id = [
             t.replace("_router", "").replace("openbb_", "")
-            for t in func.__module__.split(".")
-            + [func.__name__]  # ty: ignore[unresolved-attribute]
+            for t in func.__module__.split(".") + [func.__name__]  # ty: ignore[unresolved-attribute]
         ]
         cleaned_id = sep.join({c: "" for c in operation_id if c}.keys())
         return cleaned_id
@@ -457,7 +456,9 @@ class CommandMap:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
                             rp = (
-                                route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                                route.path
+                                if sep is None
+                                else route.path.replace("/", sep)  # type: ignore
                             )
                             coverage_map[provider].append(rp)
 

@@ -205,7 +205,9 @@ def get_requests_session(**kwargs) -> "Session":
         )
 
     if auth := python_settings.get("auth"):
-        _session.auth = auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)  # type: ignore
+        _session.auth = (
+            auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)
+        )  # type: ignore
 
     if kwargs:
         for key, value in kwargs.items():

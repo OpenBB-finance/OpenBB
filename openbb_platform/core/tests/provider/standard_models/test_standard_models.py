@@ -48,9 +48,9 @@ def test_standard_models(standard_model):
     fields = standard_model.model_fields
 
     for name, field in fields.items():
-        assert isinstance(
-            field, FieldInfo
-        ), f"Field {name} should be a ModelField instance"
+        assert isinstance(field, FieldInfo), (
+            f"Field {name} should be a ModelField instance"
+        )
         if "QueryParams" in standard_model.__name__:
             if name in QUERY_DESCRIPTIONS:
                 assert QUERY_DESCRIPTIONS[name] in getattr(field, "description"), (

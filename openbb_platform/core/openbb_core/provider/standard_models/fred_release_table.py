@@ -31,7 +31,9 @@ class ReleaseTableQueryParams(QueryParams):
     @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
-        from pandas import to_datetime
+        from openbb_core.app.utils_optional import require_optional
+
+        to_datetime = require_optional("pandas").to_datetime  # type: ignore[union-attr]
 
         if v is None:
             return None

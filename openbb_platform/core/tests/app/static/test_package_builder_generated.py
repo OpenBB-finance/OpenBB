@@ -269,9 +269,9 @@ def test_generated_command_method_imports_and_has_expected_signature(
         if found_command:
             break
 
-    assert (
-        found_command
-    ), "fake_command method not found on any generated container class"
+    assert found_command, (
+        "fake_command method not found on any generated container class"
+    )
 
 
 def test_generated_command_dispatches_to_container_run(
@@ -296,9 +296,9 @@ def test_generated_command_dispatches_to_container_run(
     assert result is sentinel
     assert captured["args"], "Container._run called without a path"
     route_path = captured["args"][0]
-    assert (
-        route_path == "/test/fake_command"
-    ), f"Expected route path '/test/fake_command', got {route_path!r}"
+    assert route_path == "/test/fake_command", (
+        f"Expected route path '/test/fake_command', got {route_path!r}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -376,9 +376,9 @@ def test_router_module_class_name_matches_path_handler_contract(built_package_di
     expected = PathHandler.build_module_class("/test")
     target_class = _locate_container_class(built_package_dir, "fake_command")
     assert target_class is not None
-    assert (
-        target_class.__name__ == expected
-    ), f"Expected class {expected!r}, got {target_class.__name__!r}"
+    assert target_class.__name__ == expected, (
+        f"Expected class {expected!r}, got {target_class.__name__!r}"
+    )
 
 
 def test_root_extensions_class_exposes_test_property(built_package_dir):
@@ -399,9 +399,9 @@ def test_root_extensions_class_exposes_test_property(built_package_dir):
         import package  # type: ignore  # noqa: F401
         from package import __extensions__ as ext_mod  # type: ignore
 
-        assert isinstance(
-            getattr(ext_mod.Extensions, "test", None), property
-        ), "Expected 'test' to be a property on Extensions"
+        assert isinstance(getattr(ext_mod.Extensions, "test", None), property), (
+            "Expected 'test' to be a property on Extensions"
+        )
 
         runner = MagicMock()
         runner.user_settings = MagicMock(defaults=MagicMock(commands={}))
@@ -428,12 +428,12 @@ def test_provider_literal_in_signature_lists_only_registered_provider(
     provider_param = next((a for a in func.args.args if a.arg == "provider"), None)
     assert provider_param is not None, "Generated method has no 'provider' parameter"
     annotation = ast.unparse(provider_param.annotation)
-    assert (
-        "'fake'" in annotation
-    ), f"Expected provider Literal to include 'fake', got: {annotation}"
-    assert (
-        "'fake_two'" not in annotation
-    ), f"Single-provider build leaked 'fake_two' into Literal: {annotation}"
+    assert "'fake'" in annotation, (
+        f"Expected provider Literal to include 'fake', got: {annotation}"
+    )
+    assert "'fake_two'" not in annotation, (
+        f"Single-provider build leaked 'fake_two' into Literal: {annotation}"
+    )
 
 
 def test_multi_provider_literal_in_signature_lists_all_providers(
@@ -446,9 +446,9 @@ def test_multi_provider_literal_in_signature_lists_all_providers(
     provider_param = next((a for a in func.args.args if a.arg == "provider"), None)
     assert provider_param is not None
     annotation = ast.unparse(provider_param.annotation)
-    assert (
-        "'fake'" in annotation and "'fake_two'" in annotation
-    ), f"Multi-provider Literal missing one or both providers: {annotation}"
+    assert "'fake'" in annotation and "'fake_two'" in annotation, (
+        f"Multi-provider Literal missing one or both providers: {annotation}"
+    )
 
 
 def test_dispatch_payload_includes_provider_choices(built_package_dir):
@@ -460,9 +460,9 @@ def test_dispatch_payload_includes_provider_choices(built_package_dir):
     instance.fake_command(provider="fake")
 
     pc = captured["kwargs"].get("provider_choices")
-    assert pc == {
-        "provider": "fake"
-    }, f"Expected provider_choices={{'provider': 'fake'}}, got {pc!r}"
+    assert pc == {"provider": "fake"}, (
+        f"Expected provider_choices={{'provider': 'fake'}}, got {pc!r}"
+    )
 
 
 def test_dispatch_payload_with_multi_provider_routes_each_choice(
@@ -488,17 +488,17 @@ def test_extra_kwargs_are_forwarded_via_extra_params(built_package_dir):
 
     extra = captured["kwargs"].get("extra_params")
     assert isinstance(extra, dict), f"Expected extra_params dict, got {extra!r}"
-    assert (
-        extra.get("custom_extra") == "banana"
-    ), f"Expected extra_params['custom_extra']='banana', got {extra!r}"
+    assert extra.get("custom_extra") == "banana", (
+        f"Expected extra_params['custom_extra']='banana', got {extra!r}"
+    )
 
 
 def test_command_docstring_preserved_in_generated_source(built_package_dir):
     """The user-supplied docstring summary is preserved in the rendered method body."""
     _path, source = _command_module_source(built_package_dir, "fake_command")
-    assert (
-        "Fake command for generator testing." in source
-    ), "Expected user docstring summary to appear in generated source"
+    assert "Fake command for generator testing." in source, (
+        "Expected user docstring summary to appear in generated source"
+    )
 
 
 def test_build_is_deterministic(tmp_path: Path, fake_router: Router):
@@ -522,13 +522,13 @@ def test_build_is_deterministic(tmp_path: Path, fake_router: Router):
         p.relative_to(out_b): p.read_bytes() for p in (out_b / "package").glob("*.py")
     }
 
-    assert (
-        files_a.keys() == files_b.keys()
-    ), f"File set differs across builds: {files_a.keys()} vs {files_b.keys()}"
+    assert files_a.keys() == files_b.keys(), (
+        f"File set differs across builds: {files_a.keys()} vs {files_b.keys()}"
+    )
     for rel_path, content_a in files_a.items():
-        assert (
-            content_a == files_b[rel_path]
-        ), f"Non-deterministic output: {rel_path} differs between builds"
+        assert content_a == files_b[rel_path], (
+            f"Non-deterministic output: {rel_path} differs between builds"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -555,9 +555,9 @@ def test_router_with_two_commands_emits_both_methods(
 
     target = _locate_container_class(package_dir, "command_one")
     assert target is not None
-    assert hasattr(target, "command_one") and hasattr(
-        target, "command_two"
-    ), f"Expected both methods on {target}, got dir={dir(target)}"
+    assert hasattr(target, "command_one") and hasattr(target, "command_two"), (
+        f"Expected both methods on {target}, got dir={dir(target)}"
+    )
 
 
 def test_deprecated_command_emits_deprecated_decorator(
@@ -592,9 +592,9 @@ def test_deprecated_command_emits_deprecated_decorator(
         )
         for d in func.decorator_list
     ]
-    assert (
-        "deprecated" in deco_names
-    ), f"Expected @deprecated decorator on soon_gone, got {deco_names}"
+    assert "deprecated" in deco_names, (
+        f"Expected @deprecated decorator on soon_gone, got {deco_names}"
+    )
 
 
 def test_command_without_model_emits_user_signature(
@@ -616,9 +616,9 @@ def test_command_without_model_emits_user_signature(
     # ``self`` is always first; ``payload`` must appear; no ``provider`` is injected
     assert arg_names[0] == "self"
     assert "payload" in arg_names, f"Expected 'payload' in {arg_names}"
-    assert (
-        "provider" not in arg_names
-    ), f"Raw command should not gain a 'provider' kwarg; got {arg_names}"
+    assert "provider" not in arg_names, (
+        f"Raw command should not gain a 'provider' kwarg; got {arg_names}"
+    )
 
 
 # ---------------------------------------------------------------------------

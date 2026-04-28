@@ -91,9 +91,9 @@ def test_filter_hint_type_list_skips_bare_depends_instance(import_def):
     output = import_def.filter_hint_type_list(
         hint_type_list=[dep_instance, MockDep, int, str, _empty]
     )
-    assert (
-        dep_instance not in output
-    ), "filter_hint_type_list leaked a bare Depends instance into imports"
+    assert dep_instance not in output, (
+        "filter_hint_type_list leaked a bare Depends instance into imports"
+    )
     # `MockDep` should pass through as a real type to import.
     assert MockDep in output, "real dependency return type should be importable"
 
@@ -105,9 +105,9 @@ def test_filter_hint_type_list_skips_annotated_with_depends(import_def):
     output = import_def.filter_hint_type_list(
         hint_type_list=[annotated_with_depends, plain_annotated, MockDep]
     )
-    assert (
-        annotated_with_depends not in output
-    ), "Annotated[X, Depends(...)] leaked into the import list"
+    assert annotated_with_depends not in output, (
+        "Annotated[X, Depends(...)] leaked into the import list"
+    )
 
 
 def test_filter_hint_type_list_keeps_annotated_without_depends(import_def):
@@ -209,9 +209,9 @@ def test_get_router_dependencies_dedupes_same_callable(
     deps = PathHandler.get_router_dependencies(path)
 
     funcs = [getattr(d, "dependency", None) for d in deps]
-    assert (
-        funcs.count(get_mock_dep) == 1
-    ), f"router-level deps must be dedup'd by callable; got {funcs!r}"
+    assert funcs.count(get_mock_dep) == 1, (
+        f"router-level deps must be dedup'd by callable; got {funcs!r}"
+    )
 
 
 def test_get_path_hint_type_list_includes_router_level_dep(
@@ -222,9 +222,9 @@ def test_get_path_hint_type_list_includes_router_level_dep(
 
     hints = ImportDefinition.get_path_hint_type_list(path=path)
 
-    assert (
-        get_mock_dep in hints
-    ), f"router-level Depends callable should be importable; got {hints!r}"
+    assert get_mock_dep in hints, (
+        f"router-level Depends callable should be importable; got {hints!r}"
+    )
 
 
 def test_dependency_identifier_uses_return_class_name():
@@ -298,9 +298,9 @@ def test_build_func_params_drops_unsafe_router_level_dependency(
 
     code = MethodDefinition.build_command_method_body(path=path, func=fake_func)
 
-    assert (
-        "get_unsafe_dep" not in code
-    ), f"unsafe (Request-bound) router-level dep must be filtered out, got:\n{code}"
+    assert "get_unsafe_dep" not in code, (
+        f"unsafe (Request-bound) router-level dep must be filtered out, got:\n{code}"
+    )
 
 
 def test_build_func_params_renders_param_level_dependency(fake_router):

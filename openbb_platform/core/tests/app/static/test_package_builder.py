@@ -949,9 +949,9 @@ def test_build_func_params_unwraps_forward_ref(method_definition):
 
     output = method_definition.build_func_params(param_map)
 
-    assert (
-        "ForwardRef" not in output
-    ), f"ForwardRef should be unwrapped in generated params, got:\n{output}"
+    assert "ForwardRef" not in output, (
+        f"ForwardRef should be unwrapped in generated params, got:\n{output}"
+    )
     assert "str," in output
     assert "int," in output
     assert "Literal['stock', 'etf', 'all']" in output
@@ -982,17 +982,17 @@ def test_get_field_type_unwraps_forward_ref(docstring_generator):
     from typing import ForwardRef
 
     result = docstring_generator.get_field_type(ForwardRef("int"), is_required=True)
-    assert (
-        "ForwardRef" not in result
-    ), f"ForwardRef should be unwrapped in docstring types, got: {result}"
+    assert "ForwardRef" not in result, (
+        f"ForwardRef should be unwrapped in docstring types, got: {result}"
+    )
     assert "int" in result
 
     result2 = docstring_generator.get_field_type(
         ForwardRef("Literal['stock', 'etf', 'all'] | None"), is_required=False
     )
-    assert (
-        "ForwardRef" not in result2
-    ), f"ForwardRef should be unwrapped in docstring types, got: {result2}"
+    assert "ForwardRef" not in result2, (
+        f"ForwardRef should be unwrapped in docstring types, got: {result2}"
+    )
 
 
 def test_build_purges_on_failure(tmp_openbb_dir):

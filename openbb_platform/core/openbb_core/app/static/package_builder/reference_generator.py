@@ -33,7 +33,6 @@ from importlib.util import find_spec
 CHARTING_INSTALLED = find_spec("openbb_charting") is not None
 
 try:
-
     _HAS_FCNTL = True
 except Exception:  # noqa
     _HAS_FCNTL = False
@@ -619,7 +618,8 @@ class ReferenceGenerator:
                 )
                 default = (
                     default.default  # type: ignore
-                    if default.default not in [Parameter.empty, PydanticUndefined, Ellipsis]  # type: ignore
+                    if default.default
+                    not in [Parameter.empty, PydanticUndefined, Ellipsis]  # type: ignore
                     else None
                 )
 
@@ -802,9 +802,9 @@ class ReferenceGenerator:
                             and param.get("choices") is not None
                         ):
                             # This parameter has a provider-specific version, so remove choices from standard
-                            reference[path]["parameters"]["standard"][i][
-                                "choices"
-                            ] = None
+                            reference[path]["parameters"]["standard"][i]["choices"] = (
+                                None
+                            )
 
                 # Add endpoint returns data
                 if validate_output is False:

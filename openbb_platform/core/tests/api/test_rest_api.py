@@ -83,6 +83,6 @@ def test_router_inclusion_invariant_commands_imply_coverage():
         p and p.startswith(prefix) and p not in builtin_paths for p in paths if p
     )
     if has_command_path:
-        assert (
-            has_coverage
-        ), f"command routes mounted without coverage routes; mounted: {paths}"
+        assert has_coverage, (
+            f"command routes mounted without coverage routes; mounted: {paths}"
+        )

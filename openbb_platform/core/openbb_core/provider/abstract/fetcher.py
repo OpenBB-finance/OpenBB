@@ -131,7 +131,9 @@ class Fetcher(Generic[Q, R]):
         AssertionError
             If any of the tests fail.
         """
-        from pandas import DataFrame
+        from openbb_core.app.utils_optional import require_optional
+
+        DataFrame = require_optional("pandas").DataFrame  # type: ignore[union-attr]
 
         query = cls.transform_query(params=params)
         data = run_async(
@@ -140,18 +142,18 @@ class Fetcher(Generic[Q, R]):
         result = cls.transform_data(query=query, data=data, **kwargs)
 
         # Class Assertions
-        assert isinstance(
-            cls.require_credentials, bool
-        ), "require_credentials must be a boolean."
+        assert isinstance(cls.require_credentials, bool), (
+            "require_credentials must be a boolean."
+        )
 
         # Query Assertions
         assert query, "Query must not be None."
-        assert issubclass(
-            type(query), cls.query_params_type
-        ), f"Query type mismatch. Expected: {cls.query_params_type} Got: {type(query)}"
-        assert all(
-            getattr(query, key) == value for key, value in params.items()
-        ), f"Query must have the correct values. Expected: {params} Got: {query.__dict__}"
+        assert issubclass(type(query), cls.query_params_type), (
+            f"Query type mismatch. Expected: {cls.query_params_type} Got: {type(query)}"
+        )
+        assert all(getattr(query, key) == value for key, value in params.items()), (
+            f"Query must have the correct values. Expected: {params} Got: {query.__dict__}"
+        )
 
         # Data Assertions
         if not isinstance(data, DataFrame):
@@ -164,20 +166,24 @@ class Fetcher(Generic[Q, R]):
                 field in data[0]
                 for field in cls.data_type.model_fields
                 if field in data[0]
-            ), f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data[0].__dict__}"
+            ), (
+                f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data[0].__dict__}"
+            )
             # This makes sure that the data is not transformed yet so that the
             # pipeline is implemented correctly. We can remove this assertion if we
             # want to be less strict.
-            assert (
-                issubclass(type(data[0]), cls.data_type) is False
-            ), f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data[0])}"
+            assert issubclass(type(data[0]), cls.data_type) is False, (
+                f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data[0])}"
+            )
         else:
             assert all(
                 field in data for field in cls.data_type.model_fields if field in data
-            ), f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data.__dict__}"
-            assert (
-                issubclass(type(data), cls.data_type) is False
-            ), f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data)}"
+            ), (
+                f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data.__dict__}"
+            )
+            assert issubclass(type(data), cls.data_type) is False, (
+                f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data)}"
+            )
 
         assert len(data) > 0, "Data must not be empty."
 
@@ -206,23 +212,31 @@ class Fetcher(Generic[Q, R]):
             assert len(transformed_data) > 0, "Transformed data must not be empty."
             assert all(
                 field in transformed_data[0].__dict__ for field in return_type_fields
-            ), f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data[0].__dict__}"
+            ), (
+                f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data[0].__dict__}"
+            )
             assert issubclass(
                 type(transformed_data[0]),
                 cls.data_type,
-            ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data[0])}"
+            ), (
+                f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data[0])}"
+            )
             assert issubclass(
                 type(transformed_data[0]),
                 return_type,
-            ), f"Transformed data must be of the correct type. Expected: {return_type} Got: {type(transformed_data[0])}"
+            ), (
+                f"Transformed data must be of the correct type. Expected: {return_type} Got: {type(transformed_data[0])}"
+            )
         else:
             assert all(
                 field in transformed_data.__dict__
                 for field in cls.return_type.model_fields
-            ), f"Transformed data must have the correct fields. Expected: {cls.return_type.model_fields} Got: {transformed_data.__dict__}"
-            assert issubclass(
-                type(transformed_data), cls.data_type
-            ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data)}"
-            assert issubclass(
-                type(transformed_data), cls.return_type
-            ), f"Transformed data must be of the correct type. Expected: {cls.return_type} Got: {type(transformed_data)}"
+            ), (
+                f"Transformed data must have the correct fields. Expected: {cls.return_type.model_fields} Got: {transformed_data.__dict__}"
+            )
+            assert issubclass(type(transformed_data), cls.data_type), (
+                f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data)}"
+            )
+            assert issubclass(type(transformed_data), cls.return_type), (
+                f"Transformed data must be of the correct type. Expected: {cls.return_type} Got: {type(transformed_data)}"
+            )

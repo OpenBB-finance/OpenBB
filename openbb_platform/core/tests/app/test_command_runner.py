@@ -418,8 +418,9 @@ def test_static_command_runner_chart_raises_when_charting_not_installed():
     obbject = OBBject(results=[{"x": 1}], provider="mock_provider")
 
     # Force DEBUG_MODE so the suppressed exception is re-raised
-    with patch.object(Env, "DEBUG_MODE", new=True), pytest.raises(
-        OpenBBError, match="Charting is not installed"
+    with (
+        patch.object(Env, "DEBUG_MODE", new=True),
+        pytest.raises(OpenBBError, match="Charting is not installed"),
     ):
         StaticCommandRunner._chart(obbject)
 

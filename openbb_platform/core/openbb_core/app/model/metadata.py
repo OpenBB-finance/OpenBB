@@ -40,8 +40,12 @@ class Metadata(BaseModel):
         value is kept or trimmed to 80 characters.
         """
         from inspect import isclass  # noqa
-        from numpy import ndarray  # noqa
-        from pandas import DataFrame, Series  # noqa
+
+        from openbb_core.app.utils_optional import require_optional
+
+        np, pd = require_optional("numpy", "pandas")
+        ndarray = np.ndarray  # type: ignore[union-attr]
+        DataFrame, Series = pd.DataFrame, pd.Series  # type: ignore[union-attr]
 
         arguments: dict[str, Any] = {}
         for item in ["provider_choices", "standard_params", "extra_params"]:

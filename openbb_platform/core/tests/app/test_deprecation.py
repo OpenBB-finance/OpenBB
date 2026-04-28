@@ -24,4 +24,6 @@ class DeprecatedCommandsTest(unittest.TestCase):
                         assert (
                             obb_deprecation_warning.expected_removal
                             != current_major_minor
-                        ), f"The expected removal version of `{path}` matches the current version, please remove it."
+                        ), (
+                            f"The expected removal version of `{path}` matches the current version, please remove it."
+                        )

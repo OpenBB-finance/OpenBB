@@ -65,13 +65,13 @@ def test_filter_inputs(
 
     # Assert that the type of 'data' in the result is the expected type
     if isinstance(result["data"], list):
-        assert isinstance(
-            result["data"][0], Data
-        ), f"The 'data' key should be a list of {Data.__name__}"
+        assert isinstance(result["data"][0], Data), (
+            f"The 'data' key should be a list of {Data.__name__}"
+        )
     else:
-        assert isinstance(
-            result["data"], Data
-        ), f"The 'data' key should be of type {Data.__name__}"
+        assert isinstance(result["data"], Data), (
+            f"The 'data' key should be of type {Data.__name__}"
+        )
 
 
 # --- Choices validation tests ---

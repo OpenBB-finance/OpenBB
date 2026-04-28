@@ -23,15 +23,13 @@ from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.app.utils_optional import is_installed
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import to_snake_case
 
-try:
+CHARTING_INSTALLED = is_installed("openbb_charting")
+if CHARTING_INSTALLED:
     from openbb_charting import Charting  # ty: ignore[unresolved-import]
-
-    CHARTING_INSTALLED = True
-except ImportError:
-    CHARTING_INSTALLED = False
 
 T = TypeVar("T")
 P = ParamSpec("P")
