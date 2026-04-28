@@ -56,7 +56,7 @@ jobs:
         run: pip install ./openbb_platform/extensions/devtools
 
       - name: Install openbb-core (so ty can resolve runtime deps)
-        run: pip install -e ".[pandas]"
+        run: pip install -e ".[pandas]" numpy
 
       - name: ruff check
         run: ruff check .
