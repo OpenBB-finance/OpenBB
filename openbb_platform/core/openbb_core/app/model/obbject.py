@@ -330,16 +330,14 @@ class OBBject(Tagged, Generic[T]):
 
         return results
 
-    def to_llm(self) -> dict[Hashable, Any] | list[dict[Hashable, Any]]:
+    def to_llm(self) -> str:
         """Convert results field to an LLM compatible output.
 
         Returns
         -------
-        Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
-            Dictionary of lists or list of dictionaries if orient is "records".
+        str
+            JSON-encoded string of the records (``orient="records"``).
         """
-        import json
-
         df = self.to_dataframe(index=None)
 
         results = df.to_json(
@@ -348,7 +346,7 @@ class OBBject(Tagged, Generic[T]):
             date_unit="s",
         )
 
-        return json.loads(results) if results else []
+        return results or "[]"
 
     def show(self, **kwargs: Any) -> None:
         """Display chart."""

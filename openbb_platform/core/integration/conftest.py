@@ -250,6 +250,13 @@ def fake_extension_installed(tmp_path_factory):
 
     try:
         _pip("install", "--no-deps", "-e", str(work))
+        # The parent pytest interpreter processed `.pth` files at startup, so
+        # the editable install isn't visible to `import` here even though
+        # `importlib.metadata.entry_points()` will return the new entry point.
+        # Add the source dir to sys.path so subsequent unit tests in this same
+        # process that instantiate `ExtensionLoader` can `ep.load()` it.
+        if str(work) not in sys.path:
+            sys.path.insert(0, str(work))
         _run_openbb_build()
 
         ext_pkg_module = PACKAGE_DIR / "fake_integration.py"
@@ -269,6 +276,12 @@ def fake_extension_installed(tmp_path_factory):
     finally:
         with contextlib.suppress(subprocess.CalledProcessError):
             _pip("uninstall", "-y", EXT_NAME)
+        with contextlib.suppress(ValueError):
+            sys.path.remove(str(work))
+        # Drop any cached imports of the synthetic package so later tests
+        # that re-instantiate `ExtensionLoader` don't see a phantom module.
+        for mod_name in [m for m in sys.modules if m.startswith(EXT_PKG)]:
+            del sys.modules[mod_name]
         _restore_dir(pkg_snapshot, PACKAGE_DIR)
         _restore_dir(assets_snapshot, ASSETS_DIR)
 
