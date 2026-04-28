@@ -60,6 +60,8 @@ jobs:
 
       - run: |
           pip install ./openbb_platform/extensions/devtools
+      - name: Install openbb-core (so ty can resolve runtime deps)
+        run: pip install -e ./openbb_platform/core
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: |
           # Run linters for openbb_platform | cli
