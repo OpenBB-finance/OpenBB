@@ -1316,9 +1316,11 @@ class OptionsChainsProperties(Data):
             }
         )
 
+        from pandas import Index
+
         synthetic_long = DataFrame(
             data=synthetic_long_dict.values(),
-            index=list(synthetic_long_dict),
+            index=Index(list(synthetic_long_dict)),
         ).rename(columns={0: "Synthetic Long"})
 
         return synthetic_long
@@ -1422,9 +1424,11 @@ class OptionsChainsProperties(Data):
             }
         )
 
+        from pandas import Index
+
         synthetic_short = DataFrame(
             data=synthetic_short_dict.values(),
-            index=list(synthetic_short_dict),
+            index=Index(list(synthetic_short_dict)),
         ).rename(columns={0: "Synthetic Short"})
 
         return synthetic_short

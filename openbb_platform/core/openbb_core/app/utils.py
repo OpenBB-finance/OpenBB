@@ -32,8 +32,11 @@ def basemodel_to_df(
         try:
             df = DataFrame(data.model_dump(exclude_none=True, exclude_unset=True))
         except ValueError:
+            from pandas import Index
+
             df = DataFrame(
-                data.model_dump(exclude_none=True, exclude_unset=True), index=["values"]
+                data.model_dump(exclude_none=True, exclude_unset=True),
+                index=Index(["values"]),
             )
 
     if "is_multiindex" in df.columns:
