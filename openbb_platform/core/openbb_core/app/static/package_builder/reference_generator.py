@@ -617,9 +617,9 @@ class ReferenceGenerator:
                     hasattr(default, "is_required") and default.is_required is False
                 )
                 default = (
-                    default.default  # type: ignore
-                    if default.default
-                    not in [Parameter.empty, PydanticUndefined, Ellipsis]  # type: ignore
+                    default.default  # ty: ignore[unresolved-attribute]
+                    if default.default  # ty: ignore[unresolved-attribute]
+                    not in [Parameter.empty, PydanticUndefined, Ellipsis]
                     else None
                 )
 

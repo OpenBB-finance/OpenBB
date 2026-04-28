@@ -333,8 +333,8 @@ class OptionsChainsProperties(Data):
                 raise OpenBBError(f"Error: stat must be one of {stats}")
             if stat in ["volume", "open_interest"]:
                 return DataFrame(
-                    self._get_stat(stat, moneyness=moneyness, date=date)[by]
-                ).replace({nan: None})  # type: ignore
+                    self._get_stat(stat, moneyness=moneyness, date=date)[by]  # ty: ignore[invalid-argument-type]
+                ).replace({nan: None})
             if (
                 _stat not in self.dataframe.columns
                 and self.has_greeks
@@ -508,13 +508,13 @@ class OptionsChainsProperties(Data):
                 nearest = (dataframe.dte - days).abs().idxmin()
                 return dataframe.loc[nearest, "expiration"].strftime("%Y-%m-%d")
         elif date is None:
-            date = to_datetime(
+            date = to_datetime(  # ty: ignore[invalid-assignment]
                 df.eod_date.iloc[0]
                 if hasattr(df, "eod_date")
                 else datetime.today().strftime("%Y-%m-%d")
             )
         else:
-            date = to_datetime(date)
+            date = to_datetime(date)  # ty: ignore[invalid-assignment]
 
         expirations = Series(to_datetime(self.expirations))
         nearest = DataFrame(expirations - date)
@@ -1060,8 +1060,8 @@ class OptionsChainsProperties(Data):
             if call_spread.loc["Cost"] < 0:
                 call_spread.loc["Max Profit"] = call_spread.loc["Cost"] * -1
                 call_spread.loc["Max Loss"] = -1 * (
-                    bought - sold + call_spread.loc["Cost"]
-                )  # type: ignore
+                    bought - sold + call_spread.loc["Cost"]  # ty: ignore[unsupported-operator]
+                )
                 lower = bought if sold > bought else sold  # type: ignore
                 call_spread.loc["Breakeven Upper"] = (
                     lower + call_spread.loc["Max Profit"]

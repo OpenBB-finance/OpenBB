@@ -338,6 +338,8 @@ class OBBject(Tagged, Generic[T]):
         Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
             Dictionary of lists or list of dictionaries if orient is "records".
         """
+        import json
+
         df = self.to_dataframe(index=None)
 
         results = df.to_json(
@@ -346,7 +348,7 @@ class OBBject(Tagged, Generic[T]):
             date_unit="s",
         )
 
-        return results
+        return json.loads(results) if results else []
 
     def show(self, **kwargs: Any) -> None:
         """Display chart."""
