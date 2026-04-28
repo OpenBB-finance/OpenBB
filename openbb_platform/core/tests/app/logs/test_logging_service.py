@@ -4,12 +4,12 @@ import json
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
-from openbb_core.app.logs.logging_service import LoggingService
-from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import BaseModel
 
+from openbb_core.app.logs.logging_service import LoggingService
+from openbb_core.app.model.abstract.error import OpenBBError
+
 # ruff: noqa: S106
-# pylint: disable=redefined-outer-name, protected-access
 
 
 class MockSystemSettings:
@@ -75,7 +75,12 @@ def logging_service():
 
 def test_correctly_initialized():
     """Test the LoggingService is correctly initialized."""
-    mock_system_settings = Mock()
+    # LoggingService is a singleton; clear any prior instance so __init__ runs.
+    from openbb_core.app.model.abstract.singleton import SingletonMeta
+
+    SingletonMeta._instances.pop(LoggingService, None)
+
+    mock_system_settings = MockSystemSettings()
     mock_user_settings = Mock()
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()

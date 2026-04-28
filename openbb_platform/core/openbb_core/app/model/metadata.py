@@ -4,8 +4,9 @@ from collections.abc import Sequence
 from datetime import datetime
 from typing import Any
 
-from openbb_core.provider.abstract.data import Data
 from pydantic import BaseModel, Field, field_validator
+
+from openbb_core.provider.abstract.data import Data
 
 
 class Metadata(BaseModel):
@@ -38,7 +39,6 @@ class Metadata(BaseModel):
         containing the type and the columns. If the type is not one of the previous, the
         value is kept or trimmed to 80 characters.
         """
-        # pylint: disable=import-outside-toplevel
         from inspect import isclass  # noqa
         from numpy import ndarray  # noqa
         from pandas import DataFrame, Series  # noqa

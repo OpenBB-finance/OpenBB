@@ -4,8 +4,9 @@ from collections.abc import Callable
 from inspect import _empty, signature
 from typing import TYPE_CHECKING, Any
 
-from openbb_core.app.provider_interface import ProviderInterface
 from pydantic import BaseModel, Field, create_model
+
+from openbb_core.app.provider_interface import ProviderInterface
 
 if TYPE_CHECKING:
     from openbb_core.app.static.app_factory import BaseApp
@@ -80,17 +81,17 @@ def create_combined_model(
         for name, (type_annotation, field) in fields.items():
             if (
                 filter_by_provider is None
-                or "openbb" in field.title  # type: ignore
-                or (filter_by_provider in field.title)  # type: ignore
+                or "openbb" in field.title
+                or (filter_by_provider in field.title)
             ):
                 combined_fields[name] = (type_annotation, field)
 
-    model = create_model(model_name, **combined_fields)  # type: ignore
+    model = create_model(model_name, **combined_fields)
 
     # # Clean up the metadata
     for field in model.model_fields.values():
         if hasattr(field, "metadata"):
-            field.metadata = None  # type: ignore
+            field.metadata = None
 
     return model
 

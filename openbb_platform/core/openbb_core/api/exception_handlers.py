@@ -1,7 +1,5 @@
 """Exception handlers module."""
 
-# pylint: disable=unused-argument
-
 import logging
 from collections.abc import Iterable
 from typing import Any
@@ -9,10 +7,11 @@ from typing import Any
 from fastapi import Request
 from fastapi.exceptions import ResponseValidationError
 from fastapi.responses import JSONResponse, Response
+from pydantic import ValidationError
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
-from pydantic import ValidationError
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -48,11 +47,11 @@ class ExceptionHandlers:
             # Required parameters are missing and is not handled by ValidationError.
             if isinstance(errors, Iterable):
                 for err in errors:
-                    if err.get("type") == "missing":
+                    if err.get("type") == "missing":  # ty: ignore[unresolved-attribute]
                         return await ExceptionHandlers._handle(
                             exception=error,
                             status_code=422,
-                            detail={**err},
+                            detail={**err},  # ty: ignore[invalid-argument-type]
                         )
         return await ExceptionHandlers._handle(
             exception=error,
@@ -93,7 +92,9 @@ class ExceptionHandlers:
         except Exception:
             errors = error.errors if hasattr(error, "errors") else error
         all_in_query = all(
-            loc in query_params for err in errors for loc in err.get("loc", ())
+            loc in query_params
+            for err in errors  # ty: ignore[not-iterable]
+            for loc in err.get("loc", ())
         )
         if "QueryParams" in error.title and all_in_query:
             detail = [
@@ -101,7 +102,7 @@ class ExceptionHandlers:
                     **{k: v for k, v in err.items() if k != "ctx"},
                     "loc": ("query",) + err.get("loc", ()),
                 }
-                for err in errors
+                for err in errors  # ty: ignore[not-iterable]
             ]
             return await ExceptionHandlers._handle(
                 exception=error,

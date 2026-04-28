@@ -2,12 +2,16 @@
 
 from unittest.mock import MagicMock
 
-import pandas as pd
 import pytest
-from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
-from openbb_core.app.utils import basemodel_to_df
-from openbb_core.provider.abstract.data import Data
-from pandas.testing import assert_frame_equal
+
+pd = pytest.importorskip("pandas")
+from pandas.testing import assert_frame_equal  # noqa: E402
+
+from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError  # noqa: E402
+from openbb_core.app.utils import basemodel_to_df  # noqa: E402
+from openbb_core.provider.abstract.data import Data  # noqa: E402
+
+pytestmark = pytest.mark.requires_pandas
 
 
 def test_OBBject():
@@ -369,7 +373,7 @@ def test_show_chart_exists():
     mock_instance.show()
 
     # Assert
-    mock_instance.chart.fig.show.assert_called_once()  # pylint: disable=no-member
+    mock_instance.chart.fig.show.assert_called_once()
 
 
 def test_show_chart_no_chart():

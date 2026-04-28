@@ -1,6 +1,7 @@
 """Test the provider helpers."""
 
 import pytest
+
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.helpers import (
     amake_request,
@@ -10,8 +11,6 @@ from openbb_core.provider.utils.helpers import (
     make_request,
     to_snake_case,
 )
-
-# pylint: disable=unused-argument
 
 
 class MockResponse:
@@ -34,7 +33,7 @@ class MockSession:
         """Initialize the mock session."""
         self.response = MockResponse()
 
-    async def request(self, *args, **kwargs):  # pylint: disable=unused-argument
+    async def request(self, *args, **kwargs):
         """Mock the ClientSession.request method."""
         if kwargs.get("raise_for_status", False):
             raise Exception("Test")

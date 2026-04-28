@@ -1,6 +1,5 @@
 """Command runner module."""
 
-# pylint: disable=R0903
 from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import asdict, is_dataclass
@@ -12,6 +11,8 @@ from typing import TYPE_CHECKING, Any, Optional
 from warnings import catch_warnings, showwarning, warn
 
 from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel, ConfigDict, create_model
+
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
@@ -22,10 +23,10 @@ from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.static.package_builder import PathHandler
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async, to_snake_case
-from pydantic import BaseModel, ConfigDict, create_model
 
 if TYPE_CHECKING:
     from fastapi.routing import APIRoute
+
     from openbb_core.app.model.system_settings import SystemSettings
     from openbb_core.app.model.user_settings import UserSettings
     from openbb_core.app.router import CommandMap
@@ -131,11 +132,13 @@ class ParametersBuilder:
         user_settings: "UserSettings",
     ) -> dict[str, Any]:
         """Update the command context with the available user and system settings."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.command_context import CommandContext
 
-        argcount = func.__code__.co_argcount
-        if "cc" in func.__code__.co_varnames[:argcount]:
+        argcount = func.__code__.co_argcount  # ty: ignore[unresolved-attribute]
+        if (
+            "cc"
+            in func.__code__.co_varnames[:argcount]  # ty: ignore[unresolved-attribute]
+        ):
             kwargs["cc"] = CommandContext(
                 user_settings=user_settings,
                 system_settings=system_settings,
@@ -157,7 +160,7 @@ class ParametersBuilder:
         if is_dataclass(annotation) and any(
             t is ExtraParams for t in getattr(annotation, "__bases__", [])
         ):
-            valid = asdict(annotation())  # type: ignore
+            valid = asdict(annotation())
             for p in extra_params:
                 if "chart_params" in p:
                     continue
@@ -173,7 +176,7 @@ class ParametersBuilder:
         try:
             if isinstance(obj, dict):
                 return obj
-            return asdict(obj) if is_dataclass(obj) else dict(obj)  # type: ignore
+            return asdict(obj) if is_dataclass(obj) else dict(obj)
         except Exception:
             return {}
 
@@ -195,7 +198,6 @@ class ParametersBuilder:
             fields[name] = (annotation, default)
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
-        # pylint: disable=C0103
         ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
         # Validate and coerce
         model = ValidationModel(**kwargs)
@@ -205,7 +207,6 @@ class ParametersBuilder:
         )
         return dict(model)
 
-    # pylint: disable=R0913
     @classmethod
     def build(
         cls,
@@ -236,7 +237,6 @@ class ParametersBuilder:
         return kwargs
 
 
-# pylint: disable=too-few-public-methods
 class StaticCommandRunner:
     """Static Command Runner."""
 
@@ -245,7 +245,7 @@ class StaticCommandRunner:
         cls,
         func: Callable,
         kwargs: dict[str, Any],
-        show_warnings: bool = True,  # pylint: disable=unused-argument   # type: ignore
+        show_warnings: bool = True,
     ) -> OBBject:
         """Run a command and return the output."""
         obbject = await maybe_coroutine(func, **kwargs)
@@ -289,8 +289,8 @@ class StaticCommandRunner:
             if chart_params:
                 kwargs.update(chart_params)
 
-            obbject.charting.show(render=False, **kwargs)  # type: ignore[attr-defined]
-        except Exception as e:  # pylint: disable=broad-exception-caught
+            obbject.charting.show(render=False, **kwargs)  # type: ignore[attr-defined]  # ty: ignore[unresolved-attribute]
+        except Exception as e:
             if Env().DEBUG_MODE:
                 raise OpenBBError(e) from e
             warn(str(e), OpenBBWarning)
@@ -303,9 +303,8 @@ class StaticCommandRunner:
             return params.__dict__
         return params
 
-    # pylint: disable=R0913, R0914
     @classmethod
-    async def _execute_func(  # pylint: disable=too-many-positional-arguments
+    async def _execute_func(
         cls,
         route: str,
         args: tuple[Any, ...],
@@ -363,17 +362,13 @@ class StaticCommandRunner:
                 # In this case, we avoid accessing those attributes.
                 if isinstance(obbject, OBBject):
                     # This section prepares the obbject to pass to the charting service.
-                    obbject._route = route  # pylint: disable=protected-access
+                    obbject._route = route
                     std_params = cls._extract_params(kwargs, "standard_params") or (
                         kwargs if "data" in kwargs else {}
                     )
                     extra_params = cls._extract_params(kwargs, "extra_params") or kwargs
-                    obbject._standard_params = (  # pylint: disable=protected-access
-                        std_params
-                    )
-                    obbject._extra_params = (  # pylint: disable=protected-access
-                        extra_params
-                    )
+                    obbject._standard_params = std_params
+                    obbject._extra_params = extra_params
                     if chart and obbject.results:
                         if "extra_params" not in kwargs_copy:
                             kwargs_copy["extra_params"] = {}
@@ -398,7 +393,7 @@ class StaticCommandRunner:
                     obbject.warnings = []
                 for w in raised_warnings:
                     if isinstance(obbject, OBBject):
-                        obbject.warnings.append(cast_warning(w))  # type: ignore
+                        obbject.warnings.append(cast_warning(w))
                     if user_settings.preferences.show_warnings:
                         showwarning(
                             message=w.message,
@@ -410,7 +405,6 @@ class StaticCommandRunner:
                         )
 
             if system_settings.logging_suppress is False:
-                # pylint: disable=import-outside-toplevel
                 from openbb_core.app.logs.logging_service import LoggingService
 
                 ls = LoggingService(system_settings, user_settings)
@@ -426,7 +420,6 @@ class StaticCommandRunner:
 
         return obbject
 
-    # pylint: disable=W0718
     @classmethod
     async def run(
         cls,
@@ -445,7 +438,7 @@ class StaticCommandRunner:
         if func := command_map.get_command(route=route):
             obbject = await cls._execute_func(
                 route=route,
-                args=args,  # type: ignore
+                args=args,
                 execution_context=execution_context,
                 func=func,
                 kwargs=kwargs,
@@ -480,9 +473,7 @@ class StaticCommandRunner:
                     dependency_param_names.add(dep_name)
 
                 for dep_key in dependency_param_names:
-                    _ = obbject._extra_params.pop(  # type:ignore  # pylint: disable=W0212
-                        dep_key, None
-                    )
+                    _ = obbject._extra_params.pop(dep_key, None)  # type: ignore
 
             meta = getattr(obbject.extra.get("metadata"), "arguments", {})
 
@@ -569,8 +560,7 @@ class StaticCommandRunner:
                 return source.model_validate(new_source)
             except Exception as e:
                 warn(
-                    "Skipped immutable callback because the OBBject "
-                    f"could not be duplicated. {e}",
+                    f"Skipped immutable callback because the OBBject could not be duplicated. {e}",
                     OpenBBWarning,
                 )
                 return None
@@ -606,7 +596,7 @@ class StaticCommandRunner:
                 if not isinstance(descriptor, CachedAccessor):
                     continue
 
-                factory = descriptor._accessor  # type: ignore  # pylint: disable=W0212
+                factory = descriptor._accessor
 
                 target = _clone_for_immutable(obbject) if ext.immutable else obbject
 
@@ -649,7 +639,6 @@ class CommandRunner:
         user_settings: Optional["UserSettings"] = None,
     ) -> None:
         """Initialize the command runner."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.router import CommandMap
         from openbb_core.app.service.system_service import SystemService
         from openbb_core.app.service.user_service import UserService
@@ -660,7 +649,6 @@ class CommandRunner:
 
     def init_logging_service(self) -> None:
         """Initialize the logging service."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.logs.logging_service import LoggingService
 
         _ = LoggingService(
@@ -686,7 +674,6 @@ class CommandRunner:
     def user_settings(self, user_settings: "UserSettings") -> None:
         self._user_settings = user_settings
 
-    # pylint: disable=W1113
     async def run(
         self,
         route: str,
@@ -696,7 +683,6 @@ class CommandRunner:
         **kwargs,
     ) -> OBBject:
         """Run a command and return the OBBject as output."""
-        # pylint: disable=import-outside-toplevel
 
         self._user_settings = user_settings or self._user_settings
 
@@ -709,7 +695,6 @@ class CommandRunner:
 
         return await StaticCommandRunner.run(execution_context, *args, **kwargs)
 
-    # pylint: disable=W1113
     def sync_run(
         self,
         route: str,

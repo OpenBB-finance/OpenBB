@@ -1,6 +1,7 @@
 """Test the chart model."""
 
 import pytest
+
 from openbb_core.app.model.charts.chart import Chart
 
 

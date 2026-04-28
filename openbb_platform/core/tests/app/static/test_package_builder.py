@@ -1,16 +1,22 @@
 """Test the package_builder.py file."""
 
-# pylint: disable=redefined-outer-name,protected-access,unused-argument
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
 from typing import Annotated, Any
 from unittest.mock import PropertyMock, mock_open, patch
 
-import pandas
 import pytest
-from fastapi import Depends, Request
-from importlib_metadata import EntryPoint, EntryPoints
+
+pandas = pytest.importorskip("pandas")
+
+from fastapi import Depends, Request  # noqa: E402
+from importlib_metadata import EntryPoint, EntryPoints  # noqa: E402
+
+pytestmark = pytest.mark.requires_pandas
+
+from pydantic import BaseModel, Field
+
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
     DocstringGenerator,
@@ -22,7 +28,6 @@ from openbb_core.app.static.package_builder import (
     PathHandler,
 )
 from openbb_core.env import Env
-from pydantic import BaseModel, Field
 
 
 @pytest.fixture(scope="module")
@@ -299,7 +304,7 @@ def test_build_func_returns(method_definition, return_type, expected_output):
     assert output == expected_output
 
 
-@patch("openbb_core.app.static.package_builder.MethodDefinition")
+@patch("openbb_core.app.static.package_builder.method_definition.MethodDefinition")
 def test_build_command_method_signature(mock_method_definitions, method_definition):
     """Test build command method signature."""
     mock_method_definitions.is_deprecated_function.return_value = False
@@ -317,7 +322,7 @@ def test_build_command_method_signature(mock_method_definitions, method_definiti
     assert output
 
 
-@patch("openbb_core.app.static.package_builder.MethodDefinition")
+@patch("openbb_core.app.static.package_builder.method_definition.MethodDefinition")
 def test_build_command_method_signature_deprecated(
     mock_method_definitions, method_definition
 ):
@@ -568,8 +573,8 @@ def test_path_handler_init(path_handler):
     assert path_handler
 
 
-@pytest.fixture(scope="module")
-def route_map(path_handler):
+@pytest.fixture
+def route_map(path_handler, fake_router):
     """Return route map."""
     return path_handler.build_route_map()
 
@@ -580,7 +585,7 @@ def test_build_route_map(route_map):
     assert isinstance(route_map, dict)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def path_list(path_handler, route_map):
     """Return path list."""
     return path_handler.build_path_list(route_map=route_map)
@@ -594,7 +599,8 @@ def test_build_path_list(path_list):
 
 def test_get_route(path_handler, route_map):
     """Test get route."""
-    route = path_handler.get_route(route_map=route_map, path="/equity/price/historical")
+    path = next(iter(route_map))
+    route = path_handler.get_route(route_map=route_map, path=path)
 
     assert route
 
@@ -602,7 +608,7 @@ def test_get_route(path_handler, route_map):
 def test_get_child_path_list(path_handler, path_list):
     """Test get child path list."""
     child_path_list = path_handler.get_child_path_list(
-        path="/equity", path_list=path_list
+        path="/test", path_list=path_list
     )
 
     assert child_path_list
@@ -634,10 +640,15 @@ def test_build_module_class(path_handler):
     assert module_class == "ROUTER_equity_price_historical"
 
 
-@pytest.fixture(scope="module")
-def docstring_generator():
-    """Return package builder."""
-    return DocstringGenerator()
+@pytest.fixture
+def docstring_generator(isolated_provider_interface):
+    """Return docstring generator bound to the isolated fake provider interface."""
+    original = DocstringGenerator.provider_interface
+    DocstringGenerator.provider_interface = isolated_provider_interface
+    try:
+        yield DocstringGenerator()
+    finally:
+        DocstringGenerator.provider_interface = original
 
 
 def test_docstring_generator_init(docstring_generator):
@@ -653,10 +664,10 @@ def test_get_OBBject_description(docstring_generator):
     assert docstring
 
 
-def test_generate_model_docstring(docstring_generator):
+def test_generate_model_docstring(docstring_generator, fake_model_name):
     """Test generate model docstring."""
     docstring = ""
-    model_name = "WorldNews"
+    model_name = fake_model_name
     summary = "This is a summary."
     sections = ["description", "parameters", "returns", "examples"]
 
@@ -677,7 +688,7 @@ def test_generate_model_docstring(docstring_generator):
         explicit_params=explicit_dict,
         kwarg_params=kwarg_params,
         returns=returns,
-        results_type="list[WorldNews]",
+        results_type=f"list[{model_name}]",
         sections=sections,
     )
 
@@ -685,7 +696,7 @@ def test_generate_model_docstring(docstring_generator):
     assert summary in docstring
     assert "Parameters" in docstring
     assert "Returns" in docstring
-    assert "WorldNews" in docstring
+    assert model_name in docstring
 
 
 @pytest.mark.parametrize(
@@ -723,7 +734,7 @@ def test__get_repr(docstring_generator, items, model, expected):
     assert output == expected
 
 
-def test_generate(docstring_generator):
+def test_generate(docstring_generator, fake_model_name):
     """Test generate docstring."""
 
     def some_func():
@@ -738,7 +749,7 @@ def test_generate(docstring_generator):
         path="/menu/submenu/command",
         func=some_func,
         formatted_params=formatted_params,
-        model_name="WorldNews",
+        model_name=fake_model_name,
     )
     assert doc
     assert "Parameters" in doc
@@ -748,7 +759,7 @@ def test_generate(docstring_generator):
 def test__read(package_builder, tmp_openbb_dir):
     """Test read."""
 
-    PATH = "openbb_core.app.static.package_builder."
+    PATH = "openbb_core.app.static.package_builder.builder."
     open_mock = mock_open()
     with patch(PATH + "open", open_mock), patch(PATH + "load") as mock_load:
         package_builder._read(Path(tmp_openbb_dir / "assets" / "reference.json"))
@@ -821,7 +832,7 @@ def test_package_diff(
         """Mock entry points."""
         return ext_installed.select(**{"group": group})
 
-    PATH = "openbb_core.app.static.package_builder."
+    PATH = "openbb_core.app.static.package_builder.builder."
     with (
         patch(PATH + "entry_points", mock_entry_points),
         patch.object(EntryPoint, "dist", new_callable=PropertyMock) as mock_obj,
@@ -906,7 +917,6 @@ def test_build_func_params_unwraps_forward_ref(method_definition):
     Annotated["int", ...] auto-wraps "int" into ForwardRef("int").
     The builder must unwrap these to plain type strings.
     """
-    # pylint: disable=import-outside-toplevel
     from collections import OrderedDict
     from typing import ForwardRef
 
@@ -917,16 +927,12 @@ def test_build_func_params_unwraps_forward_ref(method_definition):
             "symbol": Parameter(
                 name="symbol",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=Annotated[
-                    ForwardRef("str"), OpenBBField(description="")
-                ],
+                annotation=Annotated[ForwardRef("str"), OpenBBField(description="")],
             ),
             "days": Parameter(
                 name="days",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=Annotated[
-                    ForwardRef("int"), OpenBBField(description="")
-                ],
+                annotation=Annotated[ForwardRef("int"), OpenBBField(description="")],
                 default=7,
             ),
             "asset_type": Parameter(
@@ -943,9 +949,9 @@ def test_build_func_params_unwraps_forward_ref(method_definition):
 
     output = method_definition.build_func_params(param_map)
 
-    assert "ForwardRef" not in output, (
-        f"ForwardRef should be unwrapped in generated params, got:\n{output}"
-    )
+    assert (
+        "ForwardRef" not in output
+    ), f"ForwardRef should be unwrapped in generated params, got:\n{output}"
     assert "str," in output
     assert "int," in output
     assert "Literal['stock', 'etf', 'all']" in output
@@ -973,21 +979,20 @@ def test_get_field_type_unwraps_forward_ref(docstring_generator):
     Regression test: ForwardRef('int') should render as 'int' in docstrings,
     not as the literal string "ForwardRef('int')".
     """
-    # pylint: disable=import-outside-toplevel
     from typing import ForwardRef
 
     result = docstring_generator.get_field_type(ForwardRef("int"), is_required=True)
-    assert "ForwardRef" not in result, (
-        f"ForwardRef should be unwrapped in docstring types, got: {result}"
-    )
+    assert (
+        "ForwardRef" not in result
+    ), f"ForwardRef should be unwrapped in docstring types, got: {result}"
     assert "int" in result
 
     result2 = docstring_generator.get_field_type(
         ForwardRef("Literal['stock', 'etf', 'all'] | None"), is_required=False
     )
-    assert "ForwardRef" not in result2, (
-        f"ForwardRef should be unwrapped in docstring types, got: {result2}"
-    )
+    assert (
+        "ForwardRef" not in result2
+    ), f"ForwardRef should be unwrapped in docstring types, got: {result2}"
 
 
 def test_build_purges_on_failure(tmp_openbb_dir):
@@ -999,7 +1004,9 @@ def test_build_purges_on_failure(tmp_openbb_dir):
         patch.object(builder, "_clean") as mock_clean,
         patch.object(builder.console, "error") as mock_error,
         patch.object(builder, "_get_extension_map"),
-        patch.object(builder, "_save_modules", side_effect=Exception("Generation failed")),
+        patch.object(
+            builder, "_save_modules", side_effect=Exception("Generation failed")
+        ),
     ):
         with pytest.raises(Exception, match="Generation failed"):
             builder.build()
@@ -1009,7 +1016,9 @@ def test_build_purges_on_failure(tmp_openbb_dir):
         # console.error should be called for error message, traceback and instruction
         assert mock_error.call_count >= 3
         mock_error.assert_any_call("\nBuild failed!")
-        assert any("Generation failed" in str(call) for call in mock_error.call_args_list)
+        assert any(
+            "Generation failed" in str(call) for call in mock_error.call_args_list
+        )
 
 
 def test_build_purges_on_keyboard_interrupt(tmp_openbb_dir):
@@ -1030,5 +1039,3 @@ def test_build_purges_on_keyboard_interrupt(tmp_openbb_dir):
         assert mock_clean.call_count == 2
         # console.error should NOT be called for KeyboardInterrupt
         mock_error.assert_not_called()
-
-

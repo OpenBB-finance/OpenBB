@@ -7,11 +7,6 @@ import warnings
 from pathlib import Path
 from typing import Annotated, ClassVar, Optional
 
-from openbb_core.app.constants import USER_SETTINGS_PATH
-from openbb_core.app.extension_loader import ExtensionLoader
-from openbb_core.app.model.abstract.warning import OpenBBWarning
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.env import Env
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -20,6 +15,12 @@ from pydantic import (
     create_model,
 )
 from pydantic.functional_serializers import PlainSerializer
+
+from openbb_core.app.constants import USER_SETTINGS_PATH
+from openbb_core.app.extension_loader import ExtensionLoader
+from openbb_core.app.model.abstract.warning import OpenBBWarning
+from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.env import Env
 
 
 class LoadingError(Exception):
@@ -158,12 +159,12 @@ class CredentialsLoader:
             if key in additional and additional[key] not in (None, "")
         }
 
-        model = create_model(
+        model = create_model(  # ty: ignore[no-matching-overload]
             "Credentials",
             __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
-            **self.format_credentials(additional),  # type: ignore
+            **self.format_credentials(additional),
         )
-        model._env_defaults = env_overrides  # type: ignore # pylint: disable=W0212
+        model._env_defaults = env_overrides
         model.origins = self.credentials
 
         return model

@@ -36,14 +36,13 @@ class FormatterWithExceptions(logging.Formatter):
             record.lineno = 0
 
         if hasattr(record, "session_id"):
-            log_extra["sessionId"] = record.session_id  # type: ignore
+            log_extra["sessionId"] = record.session_id
 
         return log_extra
 
     @staticmethod
     def mock_ipv4(text: str) -> str:
         """Mock IPv4 addresses in the text."""
-        # pylint: disable=import-outside-toplevel
         import re
 
         pattern = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
@@ -55,7 +54,6 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_email(text: str) -> str:
         """Mock email addresses in the text."""
-        # pylint: disable=import-outside-toplevel
         import re
 
         pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
@@ -67,7 +65,6 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_password(text: str) -> str:
         """Mock passwords in the text."""
-        # pylint: disable=import-outside-toplevel
         import re
 
         pattern = r'("password": ")[^"]+'
@@ -78,7 +75,6 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_flair(text: str) -> str:
         """Mock flair in the text."""
-        # pylint: disable=import-outside-toplevel
         import re
 
         pattern = r'("FLAIR": "\[)(.*?)\]'
@@ -90,7 +86,6 @@ class FormatterWithExceptions(logging.Formatter):
     @staticmethod
     def mock_home_directory(text: str) -> str:
         """Mock home directory in the text."""
-        # pylint: disable=import-outside-toplevel
         from pathlib import Path
 
         user_home_directory = str(Path.home().as_posix())
@@ -146,7 +141,6 @@ class FormatterWithExceptions(logging.Formatter):
     @property
     def settings(self) -> LoggingSettings:
         """Get the settings."""
-        # pylint: disable=import-outside-toplevel
         from copy import deepcopy
 
         return deepcopy(self.__settings)

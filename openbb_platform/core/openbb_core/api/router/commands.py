@@ -11,6 +11,9 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.params import Depends as DependsParam
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
+from pydantic import BaseModel
+from typing_extensions import ParamSpec
+
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
@@ -22,11 +25,9 @@ from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import to_snake_case
-from pydantic import BaseModel
-from typing_extensions import ParamSpec
 
 try:
-    from openbb_charting import Charting
+    from openbb_charting import Charting  # ty: ignore[unresolved-import]
 
     CHARTING_INSTALLED = True
 except ImportError:
@@ -214,8 +215,8 @@ def build_api_wrapper(
     route: APIRoute,
 ) -> Callable:
     """Build API wrapper for a command."""
-    func: Callable = route.endpoint  # type: ignore
-    path: str = route.path  # type: ignore
+    func: Callable = route.endpoint
+    path: str = route.path
     original_signature = signature(func)
     has_var_kwargs = any(
         param.kind == Parameter.VAR_KEYWORD
@@ -235,7 +236,7 @@ def build_api_wrapper(
         route.response_model = None
 
     @wraps(wrapped=func)
-    async def wrapper(  # pylint: disable=R0914,R0912  # noqa: PLR0912
+    async def wrapper(  # noqa: PLR0912
         *args: tuple[Any], **kwargs: dict[str, Any]
     ) -> OBBject | JSONResponse:
         user_settings: UserSettings = UserSettings.model_validate(
@@ -329,7 +330,7 @@ def build_api_wrapper(
                     return JSONResponse(
                         content=jsonable_encoder(output), status_code=200
                     )
-            except Exception as exc:  # pylint: disable=W0703
+            except Exception as exc:
                 raise OpenBBError(
                     f"Error serializing output for an extension-modified endpoint {path}: {exc}",
                 ) from exc

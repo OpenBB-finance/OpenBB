@@ -8,8 +8,6 @@ from openbb_core.app.logs.handlers_manager import (
     PathTrackingFileHandler,
 )
 
-# pylint: disable=W0231
-
 
 class MockPathTrackingFileHandler(logging.NullHandler):
     """Mock path tracking file handler."""

@@ -1,9 +1,10 @@
 """Test router.py file."""
 
-# pylint: disable=redefined-outer-name
-# pylint: disable=unused-argument
+import inspect
 
 import pytest
+from pydantic import BaseModel, ConfigDict
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -17,7 +18,6 @@ from openbb_core.app.router import (
     RouterLoader,
     SignatureInspector,
 )
-from pydantic import BaseModel, ConfigDict
 
 
 class MockBaseModel(BaseModel):
@@ -80,8 +80,19 @@ def test_signature_inspector_init(signature_inspector):
     assert signature_inspector
 
 
-def test_complete_signature(signature_inspector):
-    """Test complete_signature."""
+def test_complete_signature(
+    signature_inspector, fake_registry, fake_model_name, monkeypatch
+):
+    """``complete`` wires provider/standard/extra params for a known model."""
+    from openbb_core.app.provider_interface import ProviderInterface
+    from openbb_core.provider.registry_map import RegistryMap
+
+    ProviderInterface._instances.pop(ProviderInterface, None)  # type: ignore[attr-defined]
+    fake_pi = ProviderInterface(registry_map=RegistryMap(registry=fake_registry))
+    monkeypatch.setattr(
+        "openbb_core.app.router.ProviderInterface",
+        lambda: fake_pi,
+    )
 
     async def sample_function(  # type: ignore[empty-body]
         cc: CommandContext,
@@ -91,9 +102,45 @@ def test_complete_signature(signature_inspector):
     ) -> OBBject:
         pass
 
-    model = "EquityHistorical"
+    completed = signature_inspector.complete(sample_function, fake_model_name)
 
-    assert signature_inspector.complete(sample_function, model)
+    assert completed is not None
+    # ``inject_dependency`` rewrites each param's annotation to ``Annotated[<dc>, Depends(...)]``.
+    sig = inspect.signature(completed)
+    for arg in ("provider_choices", "standard_params", "extra_params"):
+        annotation = sig.parameters[arg].annotation
+        # ``Annotated[...]`` exposes its metadata via ``__metadata__``
+        metadata = getattr(annotation, "__metadata__", ())
+        assert any(
+            type(m).__name__ == "Depends" for m in metadata
+        ), f"{arg} not wired with Depends: annotation={annotation!r}"
+
+
+def test_complete_signature_unknown_model_returns_none(
+    signature_inspector, fake_registry, monkeypatch
+):
+    """``complete`` returns ``None`` when the model isn't registered."""
+    from openbb_core.app.provider_interface import ProviderInterface
+    from openbb_core.provider.registry_map import RegistryMap
+
+    ProviderInterface._instances.pop(ProviderInterface, None)  # type: ignore[attr-defined]
+    fake_pi = ProviderInterface(registry_map=RegistryMap(registry=fake_registry))
+    monkeypatch.setattr(
+        "openbb_core.app.router.ProviderInterface",
+        lambda: fake_pi,
+    )
+
+    async def sample_function(  # type: ignore[empty-body]
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        pass
+
+    assert (
+        signature_inspector.complete(sample_function, "DefinitelyNotRegistered") is None
+    )
 
 
 def test_complete_signature_error(signature_inspector):
@@ -108,7 +155,7 @@ def test_complete_signature_error(signature_inspector):
 def test_validate_signature(signature_inspector):
     """Test validate_signature."""
 
-    async def sample_function(  # type: ignore
+    async def sample_function(
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
@@ -132,7 +179,7 @@ def test_validate_signature(signature_inspector):
 def test_inject_dependency(signature_inspector):
     """Test inject_dependency."""
 
-    async def sample_function(  # type: ignore
+    async def sample_function(
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,

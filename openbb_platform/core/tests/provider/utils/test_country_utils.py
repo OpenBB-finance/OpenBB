@@ -1,8 +1,9 @@
 """Tests for country_utils module."""
 
 import pytest
-from openbb_core.provider.utils.country_utils import Country, CountryParam
 from pydantic import BaseModel, ValidationError
+
+from openbb_core.provider.utils.country_utils import Country, CountryParam
 
 
 class CountryTestModel(BaseModel):

@@ -1,11 +1,15 @@
 """Test the filters.py file."""
 
-import numpy as np
-import pandas as pd
 import pytest
-from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.static.utils.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+
+pd = pytest.importorskip("pandas")
+np = pytest.importorskip("numpy")
+
+from openbb_core.app.model.abstract.error import OpenBBError  # noqa: E402
+from openbb_core.app.static.utils.filters import filter_inputs  # noqa: E402
+from openbb_core.provider.abstract.data import Data  # noqa: E402
+
+pytestmark = pytest.mark.requires_pandas
 
 
 def test_filter_inputs_not_df():

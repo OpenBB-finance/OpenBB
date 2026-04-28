@@ -13,7 +13,6 @@ class Container:
 
     def __init__(self, command_runner: "CommandRunner") -> None:
         """Initialize the container."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.obbject import OBBject
 
         self._command_runner = command_runner

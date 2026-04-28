@@ -4,6 +4,16 @@ from datetime import (
     date as dateType,
     datetime,
 )
+from typing import Any, get_args, get_origin
+
+from pydantic import (
+    Field,
+    GetJsonSchemaHandler,
+    create_model,
+    field_validator,
+    model_serializer,
+)
+from pydantic.json_schema import JsonSchemaValue
 
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
@@ -11,7 +21,6 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.options_chains_properties import OptionsChainsProperties
-from pydantic import Field, field_validator, model_serializer
 
 
 class OptionsChainsQueryParams(QueryParams):
@@ -369,3 +378,66 @@ class OptionsChainsData(OptionsChainsProperties):
         records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
 
         return records
+
+    @classmethod
+    def __get_pydantic_json_schema__(
+        cls,
+        core_schema: Any,
+        handler: GetJsonSchemaHandler,
+    ) -> JsonSchemaValue:
+        """Generate a JSON schema that matches the wire response shape.
+
+        ``OptionsChainsData`` stores data column-oriented (each field is a
+        ``list[...]``) but the ``model_serialize`` ``@model_serializer`` above
+        transposes it into a list of row records when serializing. The default
+        Pydantic schema generated from the field annotations therefore
+        advertises an object-of-lists, which does not match what FastAPI
+        actually returns over the wire.
+
+        This override builds a transient row-shaped Pydantic model whose
+        fields are the inner type of each list field on ``OptionsChainsData``
+        (``strike: float | None`` instead of ``strike: list[float]``) and
+        returns ``{"type": "array", "items": <row_schema>}`` so the OpenAPI
+        document the API publishes accurately describes the JSON clients
+        actually receive.
+        """
+        row_fields: dict[str, Any] = {}
+        for fname, finfo in cls.model_fields.items():
+            ann = finfo.annotation
+            inner = get_args(ann)[0] if get_origin(ann) is list else ann
+            # Datetime fields are stringified by ``model_serialize`` before
+            # the transpose, so reflect that in the schema as well.
+            if inner is datetime or get_origin(inner) is None and inner is dateType:
+                inner = str | None
+            row_fields[fname] = (
+                (
+                    inner | None
+                    if get_origin(inner) is None and inner is not type(None)
+                    else inner
+                ),
+                Field(
+                    default=None,
+                    description=finfo.description,
+                    json_schema_extra=finfo.json_schema_extra,
+                ),
+            )
+
+        row_model = create_model(  # type: ignore[call-overload]
+            f"{cls.__name__}Item",
+            **row_fields,
+        )
+        items_schema = row_model.model_json_schema(
+            ref_template="#/components/schemas/{model}",
+        )
+        # Inline ``$defs`` if Pydantic produced them so the array schema is
+        # self-contained when embedded in the parent OpenAPI document.
+        defs = items_schema.pop("$defs", None)
+        schema: JsonSchemaValue = {
+            "type": "array",
+            "description": (cls.__doc__ or "").split("\n\n", maxsplit=1)[0].strip(),
+            "items": items_schema,
+            "title": cls.__name__,
+        }
+        if defs:
+            schema["$defs"] = defs
+        return schema

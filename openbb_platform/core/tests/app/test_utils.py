@@ -1,10 +1,12 @@
 """OpenBB Platform Core app utils tests."""
 
-import numpy as np
-import pandas as pd
 import pytest
-from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import (
+
+pd = pytest.importorskip("pandas")
+np = pytest.importorskip("numpy")
+
+from openbb_core.app.model.abstract.error import OpenBBError  # noqa: E402
+from openbb_core.app.utils import (  # noqa: E402
     basemodel_to_df,
     check_single_item,
     df_to_basemodel,
@@ -14,9 +16,10 @@ from openbb_core.app.utils import (
     list_to_basemodel,
     ndarray_to_basemodel,
 )
-from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data  # noqa: E402
 
-# pylint: disable=W0621
+pytestmark = pytest.mark.requires_pandas
+
 
 df = pd.DataFrame(
     {
@@ -29,7 +32,10 @@ df = pd.DataFrame(
 df_multiindex = df.set_index(["x", "y"])
 
 simple_base_model = [
-    Data(x=i, y=j, z=k) for i in range(2) for j in range(6, 8) for k in range(10, 12)  # type: ignore[call-arg]
+    Data(x=i, y=j, z=k)
+    for i in range(2)
+    for j in range(6, 8)
+    for k in range(10, 12)  # type: ignore[call-arg]
 ]
 
 multi_index_base_model = [

@@ -1,8 +1,7 @@
 """Test static app factory."""
 
-# pylint: disable=redefined-outer-name
-
 import pytest
+
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.static.app_factory import create_app

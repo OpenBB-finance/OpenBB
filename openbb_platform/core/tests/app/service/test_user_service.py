@@ -48,7 +48,7 @@ def test_write_to_file():
 
 def test_merge_dicts():
     """Test merge dicts."""
-    result = UserService._merge_dicts(  # pylint: disable=protected-access
+    result = UserService._merge_dicts(
         list_of_dicts=[
             {"a": 1, "b": 2},
             {"a": 3, "b": 4},

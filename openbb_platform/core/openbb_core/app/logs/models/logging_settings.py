@@ -7,7 +7,6 @@ from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 
 
-# pylint: disable=too-many-instance-attributes
 class LoggingSettings:
     """Logging settings."""
 
@@ -27,7 +26,9 @@ class LoggingSettings:
             else user_settings.preferences.data_directory
         )
         hub_session = (
-            user_settings.profile.hub_session if user_settings.profile else None
+            user_settings.profile.hub_session  # ty: ignore[unresolved-attribute]
+            if user_settings.profile  # ty: ignore[unresolved-attribute]
+            else None
         )
         if hub_session:
             user_id = hub_session.user_uuid

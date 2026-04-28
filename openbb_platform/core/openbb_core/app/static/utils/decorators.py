@@ -4,11 +4,12 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any, TypeVar, overload
 
+from pydantic import ValidationError, validate_call
+from typing_extensions import ParamSpec
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
-from pydantic import ValidationError, validate_call
-from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
 R = TypeVar("R")

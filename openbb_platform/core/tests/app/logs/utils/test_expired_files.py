@@ -7,13 +7,12 @@ from time import time
 from unittest.mock import MagicMock, patch
 
 import pytest
+
 from openbb_core.app.logs.utils.expired_files import (
     get_expired_file_list,
     get_timestamp_from_x_days,
     remove_file_list,
 )
-
-# pylint: disable=W0621
 
 
 @pytest.fixture

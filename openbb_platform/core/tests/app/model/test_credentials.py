@@ -6,7 +6,6 @@ import sys
 from unittest.mock import mock_open, patch
 
 
-# pylint: disable=import-outside-toplevel
 def test_credentials():
     """Test the Credentials model."""
     # Remove credentials module to ensure fresh import with mocks

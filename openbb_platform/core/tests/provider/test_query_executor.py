@@ -1,15 +1,14 @@
 """Test the Query Executor."""
 
-# pylint: disable=W0621
-
 from unittest.mock import MagicMock, patch
 
 import pytest
+from pydantic import SecretStr
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.query_executor import QueryExecutor
-from pydantic import SecretStr
 
 
 @pytest.fixture

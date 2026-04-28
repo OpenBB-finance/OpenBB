@@ -1,6 +1,7 @@
 """Tests for exchange_utils module."""
 
 import pytest
+
 from openbb_core.provider.utils.exchange_utils import Exchange
 
 

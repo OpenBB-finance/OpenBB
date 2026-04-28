@@ -3,6 +3,7 @@
 from typing import Any
 
 import pytest
+
 from openbb_core.provider.abstract.fetcher import Data, Fetcher, QueryParams
 
 # Step 1: Create a dummy subclass of Fetcher
@@ -62,7 +63,9 @@ def test_fetcher_data_type():
     assert MockFetcher.data_type == MockData
 
 
+@pytest.mark.requires_pandas
 def test_fetcher_test():
-    """Test the test method."""
+    """``Fetcher.test`` runs the full pipeline (requires pandas for DataFrame assertions)."""
+    pytest.importorskip("pandas")
     tested = MockFetcher.test(params={})
     assert tested is None

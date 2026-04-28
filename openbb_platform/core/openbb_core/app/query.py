@@ -72,7 +72,7 @@ class Query:
         query_executor = self.provider_interface.create_executor()
 
         return await query_executor.execute(
-            provider_name=self.provider,
+            provider_name=self.provider,  # ty: ignore[invalid-argument-type]
             model_name=self.name,
             params={**standard_dict, **extra_dict},
             credentials=self.cc.user_settings.credentials.model_dump(),

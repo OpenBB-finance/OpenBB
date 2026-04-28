@@ -2,12 +2,13 @@
 
 from datetime import date as dateType
 
+from pydantic import Field, field_validator, model_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator, model_validator
 
 
 class ReportedFinancialsQueryParams(QueryParams):
@@ -59,7 +60,7 @@ class ReportedFinancialsData(Data):
 
     @model_validator(mode="before")
     @classmethod
-    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+    def replace_zero(cls, values):
         """Check for zero values and replace with None."""
         return (
             {k: None if v == 0 else v for k, v in values.items()}

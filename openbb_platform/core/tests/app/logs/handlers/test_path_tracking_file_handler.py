@@ -1,11 +1,10 @@
 """Test the path_tracking_file_handler.py file."""
 
-# pylint: disable=redefined-outer-name
-
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
+
 from openbb_core.app.logs.handlers.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )

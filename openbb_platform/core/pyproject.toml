@@ -1,35 +1,145 @@
-[tool.poetry]
+[project]
 name = "openbb-core"
-version = "1.6.8"
+version = "1.7.0"
 description = "OpenBB package with core functionality."
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [
-    { include = "openbb_core" },
-    { include = "openbb" }
+requires-python = ">=3.10,<4"
+dependencies = [
+    "uvicorn>=0.40.0,<0.41.0",
+    "websockets>=15.0",
+    "fastapi>=0.128.0,<0.129.0",
+    "uuid7>=0.1.0,<0.2.0",
+    "python-multipart>=0.0.26,<0.0.27",
+    "pydantic>=2.12.3,<3.0.0",
+    "requests>=2.33.0,<3.0.0",
+    "importlib-metadata>=6.8.0",
+    "python-dotenv>=1.0.0,<2.0.0",
+    "aiohttp>=3.13.3",
+    "ruff>=0.15,<0.16",
+    "pyjwt>=2.12.0,<3.0.0",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-uvicorn = "^0.40.0"
-websockets = ">=15.0"
-pandas = ">=1.5.3"
-html5lib = "^1.1"
-fastapi = "^0.128.0"
-uuid7 = "^0.1.0"
-python-multipart = "^0.0.26"
-pydantic = "^2.12.3"
-requests = "^2.33.0"
-importlib-metadata = ">=6.8.0"
-python-dotenv = "^1.0.0"
-aiohttp = ">=3.13.3"
-ruff = "^0.15"              # Needed here to lint generated code
-pyjwt = "^2.12.0"
+[project.optional-dependencies]
+pandas = ["pandas>=1.5.3"]
 
-[tool.poetry.scripts]
+[project.scripts]
 openbb-build = "openbb_core.build:main"
 
+[dependency-groups]
+dev = ["openbb-devtools"]
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_core", "openbb"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_core",
+    "openbb",
+    "README.md",
+    "pyproject.toml",
+]
+
+# ---------------------------------------------------------------------------
+# Ruff — sole linter / formatter / import-sorter for openbb-core.
+# Mirrors the repo-wide ``ruff.toml`` but is scoped to this package so that
+# ``ruff check openbb_platform/core`` (and editor integrations launched from
+# this directory) pick up identical settings without depending on the
+# top-level configuration being discoverable.
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 122
+target-version = "py310"
+fix = true
+extend-exclude = [
+    "openbb/package",
+    "openbb_core/app/static/package",
+]
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "E",
+    "W",
+    "F",
+    "Q",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+ignore = [
+    "PLR2004",  # magic-value-comparison
+    "PLR0913",  # too-many-arguments
+    "PLR0915",  # too-many-statements
+    "PLC0415",  # import-outside-top-level
+    "E402",     # module-import-not-at-top-of-file
+    "D202",
+    "D203",
+    "D205",
+    "D210",
+    "D212",
+    "D213",
+    "D214",
+    "D215",
+    "D400",
+    "D404",
+    "D405",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D410",
+    "D411",
+    "D413",
+    "D415",
+    "D416",
+    "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D"]
+"integration/**" = ["S101", "D"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+# ---------------------------------------------------------------------------
+# ty — Astral's static type checker (replaces mypy across the repo).
+# ---------------------------------------------------------------------------
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_core", "openbb"]
+exclude = [
+    "openbb/package",
+    "openbb/assets",
+    "tests",
+    "integration",
+]
+
+[tool.ty.rules]
+unresolved-import = "warn"

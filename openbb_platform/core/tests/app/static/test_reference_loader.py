@@ -4,9 +4,8 @@ import json
 from pathlib import Path
 
 import pytest
-from openbb_core.app.static.reference_loader import ReferenceLoader
 
-# pylint: disable=W0212, W0621
+from openbb_core.app.static.reference_loader import ReferenceLoader
 
 
 @pytest.fixture(scope="function")

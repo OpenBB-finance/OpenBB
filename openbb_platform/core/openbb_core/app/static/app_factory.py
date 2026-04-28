@@ -51,13 +51,12 @@ class BaseApp:
         return self._reference
 
 
-def create_app(extensions: E | None = None) -> type[BaseApp]:  # type: ignore
+def create_app(extensions: E | None = None) -> type[BaseApp]:
     """Create the app."""
 
-    class App(BaseApp, extensions or object):  # type: ignore[misc]
+    class App(BaseApp, extensions or object):  # type: ignore[misc]  # ty: ignore[shadowed-type-variable, unsupported-base]
         def __repr__(self) -> str:
-            # pylint: disable=E1101
             ext_doc = extensions.__doc__ if extensions else ""
             return BASE_DOC + (ext_doc or "")
 
-    return App(command_runner=CommandRunner())  # type: ignore[call-arg]
+    return App(command_runner=CommandRunner())  # type: ignore[call-arg]  # ty: ignore[invalid-return-type]

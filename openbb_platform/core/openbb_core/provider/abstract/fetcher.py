@@ -1,7 +1,6 @@
 """Abstract class for the fetcher."""
 
 # ruff: noqa: S101, E501
-# pylint: disable=E1101, C0301
 
 from typing import (
     Any,
@@ -62,7 +61,7 @@ class Fetcher(Generic[Q, R]):
         super().__init_subclass__(*args, **kwargs)
 
         if cls.aextract_data != Fetcher.aextract_data:
-            cls.extract_data = cls.aextract_data  # type: ignore[method-assign]
+            cls.extract_data = cls.aextract_data  # type: ignore[method-assign]  # ty: ignore[invalid-assignment]
         elif cls.extract_data == Fetcher.extract_data:
             raise NotImplementedError(
                 "Fetcher subclass must implement either extract_data or aextract_data"
@@ -87,26 +86,23 @@ class Fetcher(Generic[Q, R]):
     @classproperty
     def query_params_type(self) -> Q:
         """Get the type of query."""
-        # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[0]  # type: ignore
 
     @classproperty
     def return_type(self) -> R:
         """Get the type of return."""
-        # pylint: disable=E1101
         return_type = self.__orig_bases__[0].__args__[1]  # type: ignore
         if get_origin(return_type) is AnnotatedResult:
             return_type = get_args(return_type)[0]
         return return_type
 
     @classproperty
-    def data_type(self) -> D:  # type: ignore
+    def data_type(self) -> D:
         """Get the type data."""
-        # pylint: disable=E1101
         return self._get_data_type(self.__orig_bases__[0].__args__[1])  # type: ignore
 
     @staticmethod
-    def _get_data_type(data: Any) -> D:  # type: ignore
+    def _get_data_type(data: Any) -> D:
         """Get the type of the data."""
         if get_origin(data) is list:
             data = get_args(data)[0]
@@ -135,7 +131,6 @@ class Fetcher(Generic[Q, R]):
         AssertionError
             If any of the tests fail.
         """
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
 
         query = cls.transform_query(params=params)
@@ -208,18 +203,18 @@ class Fetcher(Generic[Q, R]):
                 return_type_fields = return_type_args.model_fields
                 return_type = return_type_args
 
-            assert len(transformed_data) > 0, "Transformed data must not be empty."  # type: ignore
+            assert len(transformed_data) > 0, "Transformed data must not be empty."
             assert all(
-                field in transformed_data[0].__dict__ for field in return_type_fields  # type: ignore
-            ), f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data[0].__dict__}"  # type: ignore
+                field in transformed_data[0].__dict__ for field in return_type_fields
+            ), f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data[0].__dict__}"
             assert issubclass(
                 type(transformed_data[0]),
-                cls.data_type,  # type: ignore
-            ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data[0])}"  # type: ignore
-            assert issubclass(  # type: ignore
-                type(transformed_data[0]),  # type: ignore
+                cls.data_type,
+            ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data[0])}"
+            assert issubclass(
+                type(transformed_data[0]),
                 return_type,
-            ), f"Transformed data must be of the correct type. Expected: {return_type} Got: {type(transformed_data[0])}"  # type: ignore
+            ), f"Transformed data must be of the correct type. Expected: {return_type} Got: {type(transformed_data[0])}"
         else:
             assert all(
                 field in transformed_data.__dict__

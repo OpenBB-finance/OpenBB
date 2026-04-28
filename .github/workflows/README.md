@@ -73,13 +73,10 @@ The first job, `code-linting`, runs on an Ubuntu machine and performs several li
 - Checking out the code from the repository
 - Setting up Python 3.10
 - Installing a number of Python packages necessary for the linting tasks
-- Running `bandit` to check for security vulnerabilities
-- Running `black` to check the code formatting
 - Running `codespell` to check the spelling of comments, strings, and variable names
-- Running `ruff` to check the use of Python
-- Running `pylint` to perform static analysis of the code
-- Running `mypy` to check the type annotations
-- Running `pydocstyle` to check the docstrings
+- Running `black` to check the code formatting
+- Running `ruff` to lint the code (replaces pylint, isort, flake8, and pydocstyle)
+- Running `ty` to check the type annotations
 
 The second job, `markdown-link-check`, runs on an Ubuntu machine and performs linting of the markdown files in the repository. It uses a Docker container `avtodev/markdown-lint` to perform the linting.
 

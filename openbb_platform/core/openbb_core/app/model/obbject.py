@@ -1,7 +1,5 @@
 """The OBBject."""
 
-# pylint: disable=too-many-branches, too-many-locals, too-many-statements
-
 from collections.abc import Callable, Hashable
 from typing import (
     TYPE_CHECKING,
@@ -12,13 +10,14 @@ from typing import (
     TypeVar,
 )
 
+from pydantic import BaseModel, Field, PrivateAttr
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
-from pydantic import BaseModel, Field, PrivateAttr
 
 if TYPE_CHECKING:
     from numpy import ndarray  # noqa
@@ -44,7 +43,7 @@ class OBBject(Tagged, Generic[T]):
         default=None,
         description="Serializable results.",
     )
-    provider: str | None = Field(  # type: ignore
+    provider: str | None = Field(
         default=None,
         description="Provider name.",
     )
@@ -156,7 +155,6 @@ class OBBject(Tagged, Generic[T]):
         DataFrame
             Pandas DataFrame.
         """
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, Series, concat  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
 
@@ -178,9 +176,7 @@ class OBBject(Tagged, Generic[T]):
 
             # BaseModel
             if isinstance(res, BaseModel):
-                res_dict = res.model_dump(  # pylint: disable=no-member
-                    exclude_unset=True, exclude_none=True
-                )
+                res_dict = res.model_dump(exclude_unset=True, exclude_none=True)
                 # Model is serialized as a dict[str, list] or list[dict]
                 if (
                     (
@@ -217,8 +213,11 @@ class OBBject(Tagged, Generic[T]):
 
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
-                    if is_list_of_basemodel(v):
-                        dict_of_df[k] = basemodel_to_df(v, index)
+                    if is_list_of_basemodel(v):  # ty: ignore[invalid-argument-type]
+                        dict_of_df[k] = basemodel_to_df(
+                            v,  # ty: ignore[invalid-argument-type]
+                            index,
+                        )
                         sort_columns = False
                     # Dict[str, Any]
                     else:
@@ -229,12 +228,13 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: list[Data] | Data = res  # type: ignore
-                r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None  # type: ignore
+                r = dt[0] if isinstance(dt, list) and len(dt) == 1 else None
                 if r and all(
-                    prop.get("type") == "array" for prop in r.model_json_schema()["properties"].values()  # type: ignore
+                    prop.get("type") == "array"
+                    for prop in r.model_json_schema()["properties"].values()
                 ):
                     sort_columns = False
-                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))  # type: ignore
+                    df = DataFrame(r.model_dump(exclude_unset=True, exclude_none=True))
                 else:
                     df = basemodel_to_df(dt, index)
                     sort_columns = False
@@ -284,10 +284,10 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
-    def to_polars(self) -> "PolarsDataFrame":  # type: ignore
+    def to_polars(self) -> "PolarsDataFrame":
         """Convert results field to polars dataframe."""
         try:
-            from polars import from_pandas  # type: ignore # pylint: disable=import-outside-toplevel
+            from polars import from_pandas  # type: ignore
         except ImportError as exc:
             raise ImportError(
                 "Please install polars: `pip install polars pyarrow`  to use this method."
@@ -321,10 +321,7 @@ class OBBject(Tagged, Generic[T]):
         if (
             orient == "list"
             and isinstance(self.results, dict)
-            and all(
-                isinstance(value, dict)
-                for value in self.results.values()  # pylint: disable=no-member
-            )
+            and all(isinstance(value, dict) for value in self.results.values())
         ):
             df = df.T
         results: dict | list = df.to_dict(orient=orient)
@@ -354,7 +351,6 @@ class OBBject(Tagged, Generic[T]):
 
     def show(self, **kwargs: Any) -> None:
         """Display chart."""
-        # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
             raise OpenBBError("Chart not found.")
         kwargs.setdefault("command_location", self._route or "")

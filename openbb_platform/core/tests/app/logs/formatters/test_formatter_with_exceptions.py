@@ -5,11 +5,10 @@ import os
 from unittest.mock import Mock
 
 import pytest
+
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
-
-# pylint: disable=W0621
 
 logging_settings = Mock()
 logging_settings.app_name = "test_app_name"

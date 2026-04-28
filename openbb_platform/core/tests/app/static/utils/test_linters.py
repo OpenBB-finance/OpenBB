@@ -1,8 +1,7 @@
 """Test linters.py file."""
 
-# pylint: disable=redefined-outer-name
-
 import pytest
+
 from openbb_core.app.static.package_builder import (
     Linters,
 )

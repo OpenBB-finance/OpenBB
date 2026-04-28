@@ -5,14 +5,14 @@ import json
 from datetime import time
 from typing import TYPE_CHECKING, Union
 
+from pydantic import ValidationError
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
-from pydantic import ValidationError
 
 if TYPE_CHECKING:
-    # pylint: disable=import-outside-toplevel
     from numpy import ndarray
     from pandas import DataFrame, Series
 
@@ -22,7 +22,6 @@ def basemodel_to_df(
     index: str | None = None,
 ) -> "DataFrame":
     """Convert list of BaseModel to a Pandas DataFrame."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, to_datetime
 
     if isinstance(data, list):
@@ -62,7 +61,6 @@ def df_to_basemodel(
     df: Union["DataFrame", "Series"], index: bool = False
 ) -> list[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
-    # pylint: disable=import-outside-toplevel
     from pandas import MultiIndex, Series, to_datetime
 
     is_multiindex = isinstance(df.index, MultiIndex)
@@ -85,13 +83,17 @@ def df_to_basemodel(
             df["date"] = df["date"].apply(lambda x: x.date().strftime("%Y-%m-%d"))
 
     return [
-        Data(**d) for d in json.loads(df.to_json(orient="records", date_format="iso"))
+        Data(**d)
+        for d in json.loads(
+            df.to_json(
+                orient="records", date_format="iso"
+            )  # ty: ignore[invalid-argument-type]
+        )
     ]
 
 
 def list_to_basemodel(data_list: list) -> list[Data]:
     """Convert a list to a list of BaseModel."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, Series
 
     base_models = []
@@ -129,7 +131,6 @@ def ndarray_to_basemodel(array: "ndarray") -> list[Data]:
 
 def convert_to_basemodel(data) -> Data | list[Data]:
     """Dispatch function to convert different types to BaseModel."""
-    # pylint: disable=import-outside-toplevel
     from numpy import ndarray
     from pandas import DataFrame, Series
 
@@ -158,7 +159,6 @@ def get_target_column(df: "DataFrame", target: str) -> "Series":
 
 def get_target_columns(df: "DataFrame", target_columns: list[str]) -> "DataFrame":
     """Get target columns from time series data."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
 
     df_result = DataFrame()

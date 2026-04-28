@@ -8,6 +8,8 @@ from unittest.mock import Mock, patch
 import pytest
 from fastapi import Query
 from fastapi.params import Query as QueryParam
+from pydantic import BaseModel, ConfigDict
+
 from openbb_core.app.command_runner import (
     CommandRunner,
     ExecutionContext,
@@ -22,9 +24,6 @@ from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.router import CommandMap
-from pydantic import BaseModel, ConfigDict
-
-# pylint: disable=W0613, W0621, W0102, W0212
 
 
 class MockAPIRoute:
@@ -307,7 +306,7 @@ def test_command_runner_run(_):
 
     with patch(  # type: ignore
         "openbb_core.app.command_runner.StaticCommandRunner",
-        **{"return_value.run": True},  # type: ignore
+        **{"return_value.run": True},
     ):
         assert runner.run("mock/route")
 
@@ -389,22 +388,40 @@ async def test_static_command_runner_execute_func(
 
 
 def test_static_command_runner_chart():
-    """Test _chart method when charting is in obbject.accessors."""
+    """``_chart`` invokes ``obbject.charting.show`` when the charting accessor is registered."""
+    mock_charting = Mock()
+    OBBject.accessors.add("charting")
+    try:
+        mock_obbject = OBBject(
+            results=[
+                {"date": "1990", "value": 100},
+                {"date": "1991", "value": 200},
+                {"date": "1992", "value": 300},
+            ],
+            provider="mock_provider",
+        )
+        # ``charting`` is a dynamic accessor — bypass Pydantic by writing through __dict__
+        object.__setattr__(mock_obbject, "charting", mock_charting)
 
-    mock_obbject = OBBject(
-        results=[
-            {"date": "1990", "value": 100},
-            {"date": "1991", "value": 200},
-            {"date": "1992", "value": 300},
-        ],
-        provider="mock_provider",
-        accessors={"charting": Mock()},  # type: ignore
-    )
-    mock_obbject.charting.show = Mock()  # type: ignore
+        StaticCommandRunner._chart(mock_obbject)
 
-    StaticCommandRunner._chart(mock_obbject)  # pylint: disable=protected-access
+        mock_charting.show.assert_called_once_with(render=False)
+    finally:
+        OBBject.accessors.discard("charting")
 
-    mock_obbject.charting.show.assert_called_once()  # type: ignore
+
+def test_static_command_runner_chart_raises_when_charting_not_installed():
+    """``_chart`` raises ``OpenBBError`` when the charting accessor is not registered."""
+    from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_core.env import Env
+
+    obbject = OBBject(results=[{"x": 1}], provider="mock_provider")
+
+    # Force DEBUG_MODE so the suppressed exception is re-raised
+    with patch.object(Env, "DEBUG_MODE", new=True), pytest.raises(
+        OpenBBError, match="Charting is not installed"
+    ):
+        StaticCommandRunner._chart(obbject)
 
 
 @pytest.mark.asyncio
@@ -480,7 +497,8 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
     monkeypatch,
 ):
     """Mutable extensions must modify the original OBBject and set the modification flag;
-    registration must be route-scoped."""
+    registration must be route-scoped.
+    """
     monkeypatch.setattr(
         "openbb_core.app.service.system_service.SystemService",
         lambda: SimpleNamespace(
@@ -523,7 +541,8 @@ def test_extension_mutable_modifies_original_and_sets_extension_modified_and_rou
 
 def test_results_only_flag_sets_attribute_and_accessor_runs(monkeypatch):
     """Extensions that declare results_only should toggle the _results_only attribute
-    and still run their accessor."""
+    and still run their accessor.
+    """
     monkeypatch.setattr(
         "openbb_core.app.service.system_service.SystemService",
         lambda: SimpleNamespace(

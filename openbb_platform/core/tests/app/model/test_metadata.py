@@ -2,11 +2,15 @@
 
 from datetime import datetime
 
-import numpy as np
-import pandas as pd
 import pytest
-from openbb_core.app.model.metadata import Metadata
-from openbb_core.provider.abstract.data import Data
+
+pd = pytest.importorskip("pandas")
+np = pytest.importorskip("numpy")
+
+from openbb_core.app.model.metadata import Metadata  # noqa: E402
+from openbb_core.provider.abstract.data import Data  # noqa: E402
+
+pytestmark = pytest.mark.requires_pandas
 
 
 def test_Metadata():
@@ -118,7 +122,7 @@ def test_scale_arguments(input_data, expected_output):
     )
     arguments = m.arguments
 
-    for arg in arguments:  # pylint: disable=E1133
+    for arg in arguments:
         if "columns" in arguments[arg]:
             # compare the column names disregarding the order with the expected output
             assert sorted(arguments["extra_params"][arg]["columns"]) == sorted(

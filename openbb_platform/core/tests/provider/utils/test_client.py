@@ -7,8 +7,9 @@ import zlib
 import aiohttp
 import pytest
 from multidict import CIMultiDict, CIMultiDictProxy
-from openbb_core.provider.utils import client
 from yarl import URL
+
+from openbb_core.provider.utils import client
 
 
 def test_obfuscate():
@@ -75,11 +76,12 @@ class MockResponse:
 class MockClientSession(client.ClientSession):
     """Mock ClientSession."""
 
-    # pylint: disable=unused-argument,signature-differs
     def __del__(self):  # type: ignore
         """Delete the session."""
 
-    async def request(self, *args, raise_for_status: bool = False, **kwargs) -> client.ClientResponse:  # type: ignore
+    async def request(
+        self, *args, raise_for_status: bool = False, **kwargs
+    ) -> client.ClientResponse:
         """Mock the request method."""
         response = MockResponse(*args, **kwargs)
 

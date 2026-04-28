@@ -62,10 +62,7 @@ class APIEx(Example):
     @staticmethod
     def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {typing._GenericAlias, int}."""
-        if (
-            hasattr(type_, "__args__")
-            and type(type_) is not _GenericAlias  # pylint: disable=C0123
-        ):
+        if hasattr(type_, "__args__") and type(type_) is not _GenericAlias:
             return set().union(*map(APIEx._unpack_type, type_.__args__))  # type: ignore
         return {type_} if isinstance(type_, type) else {type(type_)}
 
@@ -135,10 +132,14 @@ class APIEx(Example):
                 for k, v in sample.items():
                     if k == "date":
                         obs[k] = (
-                            datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
+                            datetime.strptime(
+                                v,  # ty: ignore[invalid-argument-type]
+                                "%Y-%m-%d",
+                            )
+                            + timedelta(days=i)
                         ).strftime("%Y-%m-%d")
                     else:
-                        obs[k] = round(v * s, 2)
+                        obs[k] = round(v * s, 2)  # ty: ignore[unsupported-operator]
                 result.append(obs)
             return result
         if dataset == "panel":

@@ -1,12 +1,12 @@
 """Test the Query class."""
 
-# pylint: disable=redefined-outer-name
-
 from dataclasses import dataclass
 from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi import Query as FastAPIQuery
+from pydantic import BaseModel, ConfigDict
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -14,7 +14,6 @@ from openbb_core.app.provider_interface import (
     StandardParams,
 )
 from openbb_core.app.query import Query
-from pydantic import BaseModel, ConfigDict
 
 
 class MockBaseModel(BaseModel):
@@ -87,7 +86,7 @@ def query_instance():
     setattr(
         cc.user_settings.credentials,
         "fmp_api_key",
-        "1234",  # pylint: disable=no-member
+        "1234",
     )
 
     return Query(

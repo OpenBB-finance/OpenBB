@@ -4,8 +4,9 @@ import os
 from pathlib import Path
 
 import pytest
-from openbb_core.app.model.system_settings import SystemSettings
 from pydantic import BaseModel, ConfigDict
+
+from openbb_core.app.model.system_settings import SystemSettings
 
 
 class MockSystemSettings(BaseModel):

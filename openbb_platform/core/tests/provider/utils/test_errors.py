@@ -1,6 +1,7 @@
 """Test custom errors."""
 
 import pytest
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
 

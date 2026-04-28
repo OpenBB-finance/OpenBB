@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi import APIRouter, FastAPI
+
 from openbb_core.app.extension_loader import EntryPoint, ExtensionLoader, OpenBBGroups
 from openbb_core.app.router import Router
 
@@ -18,8 +19,7 @@ def setup_and_teardown():
     # Code to run before each test function
     yield  # This is where the test function runs
     # Code to run after each test function
-    # pylint: disable=protected-access
-    ExtensionLoader._instances = {}  # type: ignore
+    ExtensionLoader._instances = {}
 
 
 def test_extension_loader():
@@ -70,7 +70,6 @@ def test_provider_entry_points():
 
 def test_sorted_entry_points():
     """Test the _sorted_entry_points method."""
-    # pylint: disable=protected-access
     core_entry_points = ExtensionLoader._sorted_entry_points(OpenBBGroups.core.value)
     for ep in core_entry_points:
         assert ep.group == OpenBBGroups.core.value
@@ -79,13 +78,11 @@ def test_sorted_entry_points():
 def test_get_entry_point():
     """Test the _get_entry_point method."""
     el = ExtensionLoader()
-    # pylint: disable=protected-access
     result = el._get_entry_point(el.provider_entry_points, "fmp")
     if result:
         assert result.group == OpenBBGroups.provider.value
         assert result.name == "fmp"
 
-    # pylint: disable=protected-access
     result = el._get_entry_point(el.core_entry_points, "equity")
     if result:
         assert result.group == OpenBBGroups.core.value
@@ -95,7 +92,6 @@ def test_get_entry_point():
 def test_get_entry_point_not_found():
     """Test the _get_entry_point method when the extension is not found."""
     el = ExtensionLoader()
-    # pylint: disable=protected-access
     result = el._get_entry_point(el.core_entry_points, "random_extension")
     assert result is None
 
@@ -147,7 +143,6 @@ def test_get_entry_point_provider(mock_get_entry_point):
 
 def test_obbject_objects():
     """Test the obbject objects property."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.extension import Extension
 
     el = ExtensionLoader()
@@ -160,7 +155,6 @@ def test_obbject_objects():
 
 def test_core_objects():
     """Test the core objects property."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.router import Router
 
     el = ExtensionLoader()
@@ -173,7 +167,6 @@ def test_core_objects():
 
 def test_provider_objects():
     """Test the provider objects property."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.abstract.provider import Provider
 
     el = ExtensionLoader()
@@ -187,7 +180,6 @@ def test_provider_objects():
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_core_objects_with_fastapi_instance(mock_entry_points):
     """Test the core_objects property with a FastAPI instance."""
-    # pylint: disable=import-outside-toplevel
     mock_ep = MagicMock(spec=EntryPoint)
     mock_ep.name = "fastapi_extension"
     mock_ep.load.return_value = FastAPI()
@@ -204,7 +196,6 @@ def test_core_objects_with_fastapi_instance(mock_entry_points):
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_core_objects_with_apirouter_instance(mock_entry_points):
     """Test the core_objects property with an APIRouter instance."""
-    # pylint: disable=import-outside-toplevel
     mock_ep = MagicMock(spec=EntryPoint)
     mock_ep.name = "apirouter_extension"
     mock_ep.load.return_value = APIRouter()

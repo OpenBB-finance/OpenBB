@@ -2,13 +2,14 @@
 
 from datetime import date as dateType
 
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class FuturesCurveQueryParams(QueryParams):
@@ -30,7 +31,6 @@ class FuturesCurveQueryParams(QueryParams):
     @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
-        # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
         if v is None:
@@ -55,7 +55,7 @@ class FuturesCurveData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     expiration: str = Field(description="Futures expiration month.")
-    price: float = Field(
+    price: float | None = Field(
         default=None,
         description="The price of the futures contract.",
         json_schema_extra={"x-unit_measurement": "currency"},

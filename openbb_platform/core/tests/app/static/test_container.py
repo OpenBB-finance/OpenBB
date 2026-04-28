@@ -4,14 +4,13 @@ from re import escape
 from unittest.mock import patch
 
 import pytest
+from pydantic import BaseModel, SecretStr
+
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.static.container import Container
-from pydantic import BaseModel, SecretStr
-
-# pylint: disable=redefined-outer-name,protected-access
 
 
 @pytest.fixture(scope="module")
