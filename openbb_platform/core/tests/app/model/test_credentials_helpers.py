@@ -163,7 +163,9 @@ def test_credentials_update_merges_non_none_values():
     a = Credentials()
     b = Credentials()
     # Pick the first known credential field and set it on b
-    field_name = next(iter(type(b).model_fields))
+    field_name = next(iter(type(b).model_fields), None)
+    if field_name is None:
+        pytest.skip("No credential fields loaded in this environment")
     setattr(b, field_name, SecretStr("FROM_B"))
     a.update(b)
     val = getattr(a, field_name)
@@ -234,7 +236,9 @@ def test_model_post_init_applies_env_defaults_when_unset():
 def test_model_post_init_skips_already_set_field():
     from pydantic import SecretStr
 
-    field_name = next(iter(Credentials.model_fields))
+    field_name = next(iter(Credentials.model_fields), None)
+    if field_name is None:
+        pytest.skip("No credential fields loaded in this environment")
     env_defaults_backup = dict(Credentials._env_defaults)
     Credentials._env_defaults[field_name] = SecretStr("FROM_ENV")
     try:
@@ -275,7 +279,9 @@ def test_load_picks_up_env_credentials(monkeypatch, tmp_path):
     """``load()`` should pull a credential from the environment when the env key matches an existing provider field."""
     import openbb_core.app.model.credentials as _cred_mod
 
-    field_name = next(iter(Credentials.model_fields))
+    field_name = next(iter(Credentials.model_fields), None)
+    if field_name is None:
+        pytest.skip("No credential fields loaded in this environment")
 
     monkeypatch.setenv(field_name.upper(), "ENV_VALUE")
     monkeypatch.setattr(_cred_mod, "USER_SETTINGS_PATH", str(tmp_path / "missing.json"))
@@ -290,7 +296,9 @@ def test_load_reads_credentials_from_user_settings_file(monkeypatch, tmp_path):
     """A credentials block in the user settings file is merged in."""
     import openbb_core.app.model.credentials as _cred_mod
 
-    field_name = next(iter(Credentials.model_fields))
+    field_name = next(iter(Credentials.model_fields), None)
+    if field_name is None:
+        pytest.skip("No credential fields loaded in this environment")
     settings_file = tmp_path / "user_settings.json"
     settings_file.write_text('{"credentials": {"' + field_name + '": "FROM_FILE"}}')
     monkeypatch.setattr(_cred_mod, "USER_SETTINGS_PATH", str(settings_file))

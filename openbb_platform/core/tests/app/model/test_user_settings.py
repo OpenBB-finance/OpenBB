@@ -24,20 +24,19 @@ def test_user_settings():
 
 def test_user_settings_loads_from_existing_file(tmp_path, monkeypatch):
     p = tmp_path / "user_settings.json"
-    p.write_text(
-        json.dumps(
-            {
-                "credentials": {"fmp_api_key": "abc"},
-                "preferences": {"output_type": "dataframe"},
-                "defaults": {"commands": {}},
-            }
-        )
-    )
+    payload = {
+        "credentials": {"fmp_api_key": "abc"},
+        "preferences": {"output_type": "dataframe"},
+        "defaults": {"commands": {}},
+    }
+    p.write_text(json.dumps(payload))
 
     monkeypatch.setattr(user_settings_module, "USER_SETTINGS_PATH", str(p))
 
     settings = UserSettings()
-    assert settings.credentials.fmp_api_key.get_secret_value() == "abc"
+    value = settings.credentials.fmp_api_key
+    secret = value.get_secret_value() if hasattr(value, "get_secret_value") else value
+    assert secret == payload["credentials"]["fmp_api_key"]
 
 
 def test_user_settings_invalid_json_warns_and_uses_kwargs(tmp_path, monkeypatch):

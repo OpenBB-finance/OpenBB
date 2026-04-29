@@ -39,6 +39,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       OPENBB_ALLOW_ON_COMMAND_OUTPUT: "True"
+      OPENBB_ALLOW_MUTABLE_EXTENSIONS: "True"
     permissions:
       contents: read
     strategy:
@@ -98,6 +99,7 @@ jobs:
     needs: test
     env:
       OPENBB_ALLOW_ON_COMMAND_OUTPUT: "True"
+      OPENBB_ALLOW_MUTABLE_EXTENSIONS: "True"
     permissions:
       contents: read
     steps:

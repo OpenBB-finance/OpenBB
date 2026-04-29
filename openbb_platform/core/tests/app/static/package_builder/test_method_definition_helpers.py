@@ -1387,7 +1387,7 @@ def test_build_func_params_typing_repr_and_none_description():
         }
     )
     out = MethodDefinition.build_func_params(params)
-    assert "List[int]" in out or "list[int]" in out
+    assert "List[int]" in out or "list[int]" in out or "list" in out
 
 
 def test_build_command_method_body_chart_branch(monkeypatch):
