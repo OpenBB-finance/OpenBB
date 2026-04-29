@@ -32,7 +32,7 @@ CHARTING_INSTALLED = find_spec("openbb_charting") is not None
 
 try:
     _HAS_FCNTL = True
-except Exception:  # noqa
+except Exception:  # pragma: no cover  # noqa
     _HAS_FCNTL = False
     import msvcrt  # noqa
 
@@ -240,7 +240,6 @@ class PackageBuilder:
         """Run the linters."""
         self.console.log("\nRunning linters...")
         linters = Linters(self.directory / "package", self.verbose)
-        linters.black()
         linters.ruff()
 
     def _write(

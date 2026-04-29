@@ -129,8 +129,8 @@ def multi_provider_router(
 
 def _build(tmp_path: Path) -> Path:
     """Run ``PackageBuilder.build()`` with production-equivalent lint."""
-    if not shutil.which("ruff") or not shutil.which("black"):
-        pytest.skip("ruff and black are required to lint the generated package")
+    if not shutil.which("ruff"):
+        pytest.skip("ruff is required to lint the generated package")
     builder = PackageBuilder(directory=tmp_path, lint=True, verbose=False)
     with patch.object(builder, "_save_reference_file"):
         builder.build()
@@ -503,8 +503,8 @@ def test_command_docstring_preserved_in_generated_source(built_package_dir):
 
 def test_build_is_deterministic(tmp_path: Path, fake_router: Router):
     """Running ``PackageBuilder.build()`` twice over the same input must produce byte-identical output."""
-    if not shutil.which("ruff") or not shutil.which("black"):
-        pytest.skip("ruff and black are required to lint the generated package")
+    if not shutil.which("ruff"):
+        pytest.skip("ruff is required to lint the generated package")
 
     out_a = tmp_path / "a"
     out_b = tmp_path / "b"
@@ -690,7 +690,10 @@ def test_generated_module_renders_router_level_dependency_wiring(
         "router-level Depends did not render the dep instantiation line in the "
         f"emitted module:\n--- source ---\n{source}\n--- end ---"
     )
-    assert 'kwargs["di_mock_dep"] = di_mock_dep' in source, (
+    assert (
+        'kwargs["di_mock_dep"] = di_mock_dep' in source
+        or "kwargs['di_mock_dep'] = di_mock_dep" in source
+    ), (
         "router-level Depends did not render the kwargs hand-off line in the "
         f"emitted module:\n--- source ---\n{source}\n--- end ---"
     )

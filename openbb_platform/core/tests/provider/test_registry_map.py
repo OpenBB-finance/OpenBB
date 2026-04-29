@@ -323,3 +323,48 @@ def test_default_construction_uses_extension_loader(monkeypatch):
     assert rmap.available_providers == []
     assert rmap.credentials == {}
     assert rmap.models == []
+
+
+def test_update_json_schema_extra_merges_standard_and_extra_fields():
+    class _Q(QueryParams):
+        std: str
+        extra: str
+        __json_schema_extra__ = {
+            "std": {"multiple_items_allowed": True},
+            "extra": {"choices": ["a", "b"]},
+            "missing": {"ignored": True},
+        }
+
+    class _D(Data):
+        value: int
+
+    class _F(Fetcher[_Q, list[_D]]):
+        query_params_type = _Q
+        data_type = _D
+        return_type = list[_D]
+
+        @staticmethod
+        def transform_query(params: dict[str, Any]) -> _Q:
+            return _Q(**params)
+
+        @staticmethod
+        def extract_data(query: _Q, credentials: dict[str, str] | None):
+            return []
+
+        @staticmethod
+        def transform_data(query: _Q, data, **kwargs):
+            return []
+
+    model_map = {
+        "openbb": {"QueryParams": {"fields": {"std": _Q.model_fields["std"]}}},
+        "prov": {"QueryParams": {"fields": {"extra": _Q.model_fields["extra"]}}},
+    }
+
+    RegistryMap(registry=Registry())._update_json_schema_extra("prov", _F, model_map)
+
+    assert model_map["openbb"]["QueryParams"]["fields"]["std"].json_schema_extra == {
+        "prov": {"multiple_items_allowed": True}
+    }
+    assert model_map["prov"]["QueryParams"]["fields"]["extra"].json_schema_extra == {
+        "prov": {"choices": ["a", "b"]}
+    }

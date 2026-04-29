@@ -156,6 +156,10 @@ def test_return_annotations_present_for_each_model(
     assert single_result_model_name in annotations
 
 
+def test_return_schema_property(provider_interface):
+    assert provider_interface.return_schema is provider_interface._return_schema
+
+
 def test_create_executor_uses_injected_registry(provider_interface, fake_registry):
     """``create_executor`` instantiates the executor over the injected registry."""
     executor = provider_interface.create_executor()

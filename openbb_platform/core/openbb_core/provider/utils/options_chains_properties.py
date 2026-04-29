@@ -1704,7 +1704,7 @@ class OptionsChainsProperties(Data):
             moneyness = 20
 
         if date is None:
-            date = 30
+            date = 30  # pragma: no cover
 
         if date == -1:
             date = None

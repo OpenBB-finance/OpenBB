@@ -1,8 +1,10 @@
 """Test the client helper."""
 
+import asyncio
 import gzip
 import json
 import zlib
+from unittest.mock import patch
 
 import aiohttp
 import pytest
@@ -204,3 +206,85 @@ async def test_client_content_encoding():
 
     assert isinstance(response, dict)
     assert response == {"test": "test"}
+
+
+def test_client_response_obfuscate_request_info_direct_call():
+    url = URL("http://x?api_key=secret&symbol=AAPL")
+    request_info = aiohttp.RequestInfo(
+        url=url,
+        method="GET",
+        headers=CIMultiDictProxy(CIMultiDict({"Authorization": "Bearer xyz"})),
+        real_url=url,
+    )
+    # Call obfuscation directly — verifies behavior covered by line 44-45 path.
+    obf = client.ClientResponse.obfuscate_request_info(request_info)
+    assert "********" in str(obf.url)
+    assert obf.headers["Authorization"] == "********"
+
+
+def test_client_response_init_obfuscates_before_super(monkeypatch):
+    url = URL("http://x?api_key=secret")
+    request_info = aiohttp.RequestInfo(
+        url=url,
+        method="GET",
+        headers=CIMultiDictProxy(CIMultiDict({"Authorization": "Bearer xyz"})),
+        real_url=url,
+    )
+    captured = {}
+
+    def _fake_super_init(self, *args, **kwargs):
+        captured["request_info"] = kwargs["request_info"]
+
+    monkeypatch.setattr(aiohttp.ClientResponse, "__init__", _fake_super_init)
+    client.ClientResponse(
+        "GET",
+        URL("http://x"),
+        request_info=request_info,
+        writer=None,
+        continue100=None,
+        timer=None,
+        traces=[],
+        loop=None,
+        session=None,
+    )
+
+    assert "********" in str(captured["request_info"].url)
+
+
+def test_client_session_del_schedules_close(monkeypatch):
+    calls = {"count": 0}
+
+    class _Session(client.ClientSession):
+        def __init__(self):
+            pass
+
+        @property
+        def closed(self):
+            return False
+
+        async def close(self):
+            return None
+
+    def _create_task(coro):
+        calls["count"] += 1
+        coro.close()
+
+    monkeypatch.setattr(asyncio, "create_task", _create_task)
+    _Session().__del__()
+    assert calls["count"] >= 1
+
+
+@pytest.mark.asyncio
+async def test_client_response_json_calls_super():
+    """Cover ClientResponse.json (line 60)."""
+
+    async def fake_super_json(self, **kw):
+        return {"ok": True}
+
+    class Sub(client.ClientResponse):
+        def __init__(self):  # bypass real init
+            pass
+
+    with patch.object(aiohttp.ClientResponse, "json", fake_super_json):
+        result = await Sub().json()
+    assert result == {"ok": True}

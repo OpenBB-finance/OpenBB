@@ -12,6 +12,7 @@ through the real production code paths.
 import pytest
 
 from openbb_core.app.command_runner import CommandRunner
+from openbb_core.app.static import coverage as coverage_module
 from openbb_core.app.static.app_factory import BaseApp
 from openbb_core.app.static.coverage import Coverage
 
@@ -53,3 +54,34 @@ def test_coverage_reference(coverage):
     """``Coverage.reference`` returns the loaded reference dict."""
     reference = coverage.reference
     assert isinstance(reference, dict)
+
+
+def test_coverage_repr(coverage):
+    out = repr(coverage)
+    assert "/coverage" in out
+
+
+def test_coverage_command_model(coverage):
+    out = coverage.command_model
+    assert isinstance(out, dict)
+    assert out
+
+
+def test_coverage_command_schemas_delegates(monkeypatch, coverage):
+    seen = {}
+
+    def _fake_get_route_schema_map(app, commands_model, filter_by_provider):
+        seen["app"] = app
+        seen["commands_model"] = commands_model
+        seen["filter"] = filter_by_provider
+        return {"ok": True}
+
+    monkeypatch.setattr(
+        coverage_module, "get_route_schema_map", _fake_get_route_schema_map
+    )
+
+    out = coverage.command_schemas(filter_by_provider="fake")
+    assert out == {"ok": True}
+    assert seen["app"] is coverage._app
+    assert seen["commands_model"] == coverage._command_map.commands_model
+    assert seen["filter"] == "fake"

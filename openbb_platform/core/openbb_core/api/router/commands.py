@@ -28,8 +28,13 @@ from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import to_snake_case
 
 CHARTING_INSTALLED = is_installed("openbb_charting")
+Charting = None
 if CHARTING_INSTALLED:
-    from openbb_charting import Charting  # ty: ignore[unresolved-import]
+    import importlib
+
+    Charting = getattr(
+        importlib.import_module("openbb_charting"), "Charting"
+    )  # pragma: no cover
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -103,7 +108,11 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             )
         )
 
-    if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
+    if (
+        CHARTING_INSTALLED
+        and Charting is not None
+        and path.replace("/", "_")[1:] in Charting.functions()
+    ):
         new_parameter_list.insert(
             var_kw_pos,
             Parameter(

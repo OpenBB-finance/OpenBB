@@ -139,3 +139,67 @@ def test_get_commands_model_map_handles_missing_response_schema():
     result = asyncio.run(get_commands_model_map(cmap, pi))
 
     assert result["/eco/cpi"]["response_schema_name"] is None
+
+
+def test_get_commands_model_map_serializes_data_annotations_and_merges_openbb_data():
+    cmap = _seeded_command_map({}, {}, {"/x/y": "ModelX"})
+
+    q_field = MagicMock(_attributes_set={"annotation": str, "description": "q"})
+    d_field = MagicMock(_attributes_set={"annotation": int, "description": "d"})
+    shared_d_field = MagicMock(
+        _attributes_set={"annotation": float, "description": "shared"}
+    )
+
+    pi = MagicMock()
+    pi.map = {
+        "ModelX": {
+            "provider_a": {
+                "QueryParams": {"docstring": "query", "fields": {"q": q_field}},
+                "Data": {"docstring": "data", "fields": {"d": d_field}},
+            },
+            "openbb": {
+                "QueryParams": {"docstring": "", "fields": {}},
+                "Data": {
+                    "docstring": "shared data",
+                    "fields": {"shared_d": shared_d_field},
+                },
+            },
+        }
+    }
+    pi.return_annotations = {"ModelX": None}
+
+    result = asyncio.run(get_commands_model_map(cmap, pi))
+
+    entry = result["/x/y"]["provider_a"]
+    assert entry["Data"]["docstring"] == "data"
+    assert entry["Data"]["fields"]["d"]["annotation"] == str(int)
+    assert entry["Data"]["fields"]["shared_d"]["annotation"] == str(float)
+    assert "openbb" not in result["/x/y"]
+
+
+def test_get_commands_model_map_serializer_handles_type_values():
+    cmap = _seeded_command_map({}, {}, {"/x/z": "ModelZ"})
+
+    type_value_field = MagicMock(
+        _attributes_set={"annotation": None, "custom_type": int, "description": "z"}
+    )
+    pi = MagicMock()
+    pi.map = {
+        "ModelZ": {
+            "provider_a": {
+                "QueryParams": {"docstring": "", "fields": {"z": type_value_field}},
+                "Data": {"docstring": "", "fields": {}},
+            },
+            "openbb": {
+                "QueryParams": {"docstring": "", "fields": {}},
+                "Data": {"docstring": "", "fields": {}},
+            },
+        }
+    }
+    pi.return_annotations = {"ModelZ": None}
+
+    result = asyncio.run(get_commands_model_map(cmap, pi))
+
+    assert result["/x/z"]["provider_a"]["QueryParams"]["fields"]["z"][
+        "custom_type"
+    ] == str(int)

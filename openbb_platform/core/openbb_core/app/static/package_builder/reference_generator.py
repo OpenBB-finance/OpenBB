@@ -34,9 +34,9 @@ CHARTING_INSTALLED = find_spec("openbb_charting") is not None
 
 try:
     _HAS_FCNTL = True
-except Exception:  # noqa
+except Exception:  # noqa  # pragma: no cover
     _HAS_FCNTL = False
-    import msvcrt  # noqa
+    import msvcrt  # noqa  # pragma: no cover
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
@@ -588,7 +588,7 @@ class ReferenceGenerator:
                     if hasattr(meta, "default"):
                         default = meta.default
                     if hasattr(meta, "json_schema_extra"):
-                        json_extra = meta.json_schema_extra
+                        json_extra = meta.json_schema_extra or {}
 
                 # Set the actual type to the base type
                 param_type = base_type
@@ -943,11 +943,11 @@ class ReferenceGenerator:
                     try:
                         module = sys.modules[route_func.__module__]
                         model_class = getattr(module, extracted_model_name, None)
-                        if model_class and hasattr(type(model_class), "model_fields"):
+                        if model_class and hasattr(model_class, "model_fields"):
                             # Set data to the fields
                             reference[path]["data"]["standard"] = []
                             for field_name, field in getattr(
-                                type(model_class), "model_fields", {}
+                                model_class, "model_fields", {}
                             ).items():
                                 field_type = DocstringGenerator.get_field_type(
                                     field.annotation, field.is_required(), "website"

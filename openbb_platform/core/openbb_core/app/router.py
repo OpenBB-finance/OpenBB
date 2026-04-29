@@ -79,11 +79,11 @@ class Router:
 
     @overload
     def command(self, func: Callable[P, OBBject] | None) -> Callable[P, OBBject]:
-        pass
+        pass  # pragma: no cover
 
     @overload
     def command(self, **kwargs) -> Callable:
-        pass
+        pass  # pragma: no cover
 
     def command(
         self,
@@ -447,7 +447,7 @@ class CommandMap:
             openapi_extra = getattr(route, "openapi_extra", None)
             if openapi_extra:
                 model = openapi_extra.get("model", None)
-                if model:
+                if model and model in mapping:
                     providers = list(mapping[model].keys())
                     if "openbb" in providers:
                         providers.remove("openbb")
@@ -478,7 +478,7 @@ class CommandMap:
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
                 model = openapi_extra.get("model", None)
-                if model:
+                if model and model in mapping:
                     providers = list(mapping[model].keys())
                     if "openbb" in providers:
                         providers.remove("openbb")

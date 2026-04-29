@@ -23,9 +23,10 @@ if TYPE_CHECKING:
     from numpy import ndarray  # noqa
     from pandas import DataFrame  # noqa
     from openbb_core.app.query import Query  # noqa
-
+    from polars import DataFrame as PolarsDataFrame  # noqa
+else:
     try:
-        from polars import DataFrame as PolarsDataFrame  # type: ignore
+        from polars import DataFrame as PolarsDataFrame
     except ImportError:
         PolarsDataFrame = None
 
@@ -166,11 +167,11 @@ class OBBject(Tagged, Generic[T]):
                 isinstance(item, BaseModel) for item in items
             )
 
-        if self.results is None or not self.results:
-            raise OpenBBError("Results not found.")
-
         if isinstance(self.results, DataFrame):
             return self.results
+
+        if self.results is None or not self.results:
+            raise OpenBBError("Results not found.")
 
         try:
             res = self.results
@@ -249,7 +250,7 @@ class OBBject(Tagged, Generic[T]):
                 try:
                     df = DataFrame(res)  # type: ignore[call-overload]
                 except ValueError:
-                    if isinstance(res, dict):
+                    if isinstance(res, dict):  # pragma: no cover
                         df = DataFrame([res])
 
             if df is None:

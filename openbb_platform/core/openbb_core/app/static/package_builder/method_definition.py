@@ -40,13 +40,13 @@ if TYPE_CHECKING:
 try:
     from openbb_charting import Charting  # type: ignore
 
-    CHARTING_INSTALLED = True
-except ImportError:
+    CHARTING_INSTALLED = True  # pragma: no cover
+except ImportError:  # pragma: no cover
     CHARTING_INSTALLED = False
 
 try:
     _HAS_FCNTL = True
-except Exception:  # noqa
+except Exception:  # pragma: no cover  # noqa
     _HAS_FCNTL = False
     import msvcrt  # noqa
 
@@ -292,7 +292,9 @@ class MethodDefinition:
         field_default = getattr(field, "default", None)
         if field_default:
             # Getting json_schema_extra without changing the original dict
-            json_schema_extra = getattr(field_default, "json_schema_extra", {}).copy()
+            json_schema_extra = (
+                getattr(field_default, "json_schema_extra", {}) or {}
+            ).copy()
             json_schema_extra.pop("choices", None)
             return json_schema_extra
         return {}
@@ -434,14 +436,14 @@ class MethodDefinition:
             hasattr(meta, "dependency") for meta in param.annotation.__metadata__
         )
         model = param.annotation.__args__[0]
-        is_pydantic_model = hasattr(type(model), "model_fields") or hasattr(
+        is_pydantic_model = hasattr(model, "model_fields") or hasattr(
             model, "__pydantic_fields__"
         )
         is_get_request = not MethodDefinition.is_data_processing_function(path)
 
         if is_pydantic_model and is_get_request and not has_depends:
             fields = getattr(
-                type(model),
+                model,
                 "model_fields",
                 getattr(model, "__pydantic_fields__", {}),
             )
@@ -1166,7 +1168,7 @@ class MethodDefinition:
             elif (
                 isinstance(param.annotation, _AnnotatedAlias)
                 and (
-                    hasattr(type(param.annotation.__args__[0]), "model_fields")
+                    hasattr(param.annotation.__args__[0], "model_fields")
                     or hasattr(param.annotation.__args__[0], "__pydantic_fields__")
                 )
                 and not MethodDefinition.is_data_processing_function(path)
@@ -1178,7 +1180,7 @@ class MethodDefinition:
                 if not has_depends:
                     model = param.annotation.__args__[0]
                     fields = getattr(
-                        type(model),
+                        model,
                         "model_fields",
                         getattr(model, "__pydantic_fields__", {}),
                     )

@@ -229,3 +229,44 @@ def test_filter_inputs_post_fix_monthly_rejected_with_choices():
     }
     with pytest.raises(OpenBBError, match="Invalid value 'monthly' for 'frequency'"):
         filter_inputs(info=_BOP_INFO_WITH_CHOICES, **kwargs)
+
+
+def test_filter_inputs_info_provider_properties_list_legacy():
+    kwargs = {
+        "provider_choices": {"provider": "oecd"},
+        "standard_params": {},
+        "extra_params": {"frequency": "annual"},
+    }
+    info = {
+        "frequency": {
+            "oecd": ["multiple_items_allowed"],
+        }
+    }
+
+    result = filter_inputs(info=info, **kwargs)
+    assert result["extra_params"]["frequency"] == "annual"
+
+
+def test_filter_inputs_info_provider_properties_non_mapping():
+    kwargs = {
+        "provider_choices": {"provider": "oecd"},
+        "standard_params": {},
+        "extra_params": {"frequency": "annual"},
+    }
+    info = {
+        "frequency": {
+            "oecd": "legacy",
+        }
+    }
+
+    result = filter_inputs(info=info, **kwargs)
+    assert result["extra_params"]["frequency"] == "annual"
+
+
+def test_filter_inputs_no_info_list_in_standard_params_raises():
+    kwargs = {
+        "provider_choices": {"provider": "oecd"},
+        "standard_params": {"frequency": ["annual", "quarterly"]},
+    }
+    with pytest.raises(OpenBBError, match="multiple items not allowed"):
+        filter_inputs(**kwargs)

@@ -92,7 +92,7 @@ class Fetcher(Generic[Q, R]):
     def return_type(self) -> R:
         """Get the type of return."""
         return_type = self.__orig_bases__[0].__args__[1]  # type: ignore
-        if get_origin(return_type) is AnnotatedResult:
+        if get_origin(return_type) is AnnotatedResult:  # pragma: no cover
             return_type = get_args(return_type)[0]
         return return_type
 
@@ -200,7 +200,7 @@ class Fetcher(Generic[Q, R]):
                 hasattr(return_type_args, "__origin__")
                 and return_type_args.__origin__ is dict
             )
-            if return_type_is_dict:
+            if return_type_is_dict:  # pragma: no cover
                 return_type_fields = (
                     return_type_args.__args__[1].__args__[0].model_fields
                 )

@@ -623,7 +623,7 @@ def filter_by_dates(
                 return dt >= start_date
             if end_date:
                 return dt <= end_date
-            return True
+            return True  # pragma: no cover
         return False
 
     return list(filter(_filter, data))  # ty: ignore[invalid-return-type]

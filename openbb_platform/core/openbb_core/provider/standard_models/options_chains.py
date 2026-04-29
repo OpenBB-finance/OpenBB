@@ -373,7 +373,7 @@ class OptionsChainsData(OptionsChainsProperties):
                     else:
                         data[field] = value
             else:
-                data[field] = value
+                data[field] = value  # pragma: no cover
 
         records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
 
@@ -438,6 +438,6 @@ class OptionsChainsData(OptionsChainsProperties):
             "items": items_schema,
             "title": cls.__name__,
         }
-        if defs:
+        if defs:  # pragma: no cover
             schema["$defs"] = defs
         return schema

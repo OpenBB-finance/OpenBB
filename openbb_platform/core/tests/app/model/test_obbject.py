@@ -394,3 +394,29 @@ def test_show_chart_no_fig():
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):
         mock_instance.show()
+
+    # Use an object type that triggers TypeError inside pandas conversion path
+    class _Bad:
+        def __iter__(self):
+            raise TypeError("type bad")
+
+        def __len__(self):
+            return 1
+
+    co: OBBject = OBBject(results=_Bad())
+    with pytest.raises(OpenBBError, match="TypeError"):
+        co.to_dataframe(index=None)
+
+
+def test_to_dict_list_orient_removes_index_key():
+    co: OBBject = OBBject(results=[{"a": 1}])
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr(
+            OBBject,
+            "to_dataframe",
+            lambda self, index=None: pd.DataFrame({"index": [1], "a": [2]}),
+        )
+        out = co.to_dict(orient="list")
+
+    assert "index" not in out

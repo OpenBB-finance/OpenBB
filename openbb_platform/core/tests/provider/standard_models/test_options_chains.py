@@ -103,6 +103,24 @@ class TestModelSerializer:
         for row in dumped:
             assert set(row.keys()) == provided_keys
 
+    def test_expiration_validator_accepts_datetime_list(self, sample_payload):
+        payload = dict(sample_payload)
+        payload["expiration"] = [datetime(2030, 1, 17), datetime(2030, 1, 17)]
+
+        data = OptionsChainsData(**payload)
+        dumped = data.model_dump()
+
+        assert dumped[0]["expiration"] == date(2030, 1, 17)
+
+    def test_expiration_validator_accepts_string_list(self, sample_payload):
+        payload = dict(sample_payload)
+        payload["expiration"] = ["2030-01-17", "2030-01-17"]
+
+        data = OptionsChainsData(**payload)
+        dumped = data.model_dump()
+
+        assert dumped[0]["expiration"] == date(2030, 1, 17)
+
 
 # ---------------------------------------------------------------------------
 # OpenAPI / JSON schema fidelity

@@ -19,6 +19,22 @@ def test_is_installed_false_for_missing():
     assert is_installed("definitely_not_a_module_xyz") is False
 
 
+def test_is_installed_false_when_find_spec_raises_value_error(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_core.app.utils_optional.find_spec",
+        lambda _name: (_ for _ in ()).throw(ValueError("boom")),
+    )
+    assert is_installed("json") is False
+
+
+def test_is_installed_false_when_find_spec_raises_import_error(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_core.app.utils_optional.find_spec",
+        lambda _name: (_ for _ in ()).throw(ImportError("boom")),
+    )
+    assert is_installed("json") is False
+
+
 def test_require_optional_returns_module_for_single_arg():
     import json as json_mod
 
