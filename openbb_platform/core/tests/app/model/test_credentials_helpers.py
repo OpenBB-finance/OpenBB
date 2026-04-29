@@ -163,7 +163,7 @@ def test_credentials_update_merges_non_none_values():
     a = Credentials()
     b = Credentials()
     # Pick the first known credential field and set it on b
-    field_name = next(iter(b.model_fields))
+    field_name = next(iter(type(b).model_fields))
     setattr(b, field_name, SecretStr("FROM_B"))
     a.update(b)
     val = getattr(a, field_name)

@@ -57,7 +57,8 @@ def test_create_combined_model_no_filter_keeps_all():
     fields_a = {"x": (int, Field(..., title="openbb", description="x"))}
     fields_b = {"y": (int, Field(..., title="other", description="y"))}
     model = create_combined_model("M", fields_a, fields_b)
-    assert {"x", "y"} <= set(model.model_fields)
+    model_fields = (model if isinstance(model, type) else type(model)).model_fields
+    assert {"x", "y"} <= set(model_fields)
 
 
 def test_create_combined_model_filters_by_provider():
@@ -67,9 +68,10 @@ def test_create_combined_model_filters_by_provider():
     model = create_combined_model(
         "M", fields_a, fields_b, fields_c, filter_by_provider="fmp"
     )
-    assert "x" in model.model_fields  # always kept (openbb)
-    assert "y" in model.model_fields  # matches provider
-    assert "z" not in model.model_fields
+    model_fields = (model if isinstance(model, type) else type(model)).model_fields
+    assert "x" in model_fields  # always kept (openbb)
+    assert "y" in model_fields  # matches provider
+    assert "z" not in model_fields
 
 
 def test_signature_to_fields_with_annotated_description():
@@ -143,7 +145,9 @@ def test_get_route_schema_map_combines_signature_and_dataclass(monkeypatch):
     entry = out["/equity/profile"]
     assert entry["output"] is _OutputModel
     assert entry["callable"] is _FakeApp.equity.profile
-    input_fields = entry["input"].model_fields
+    input_fields = (
+        entry["input"] if isinstance(entry["input"], type) else type(entry["input"])
+    ).model_fields
     # signature params (symbol, limit) + dataclass extras (x, y) all merged
     assert {"symbol", "limit", "x", "y"} <= set(input_fields)
 
@@ -161,7 +165,10 @@ def test_get_route_schema_map_filters_by_provider(monkeypatch):
     out = get_route_schema_map(
         _FakeApp, {"/equity/profile": "M"}, filter_by_provider="fmp"
     )
-    fields = out["/equity/profile"]["input"].model_fields
+    input_model = out["/equity/profile"]["input"]
+    fields = (
+        input_model if isinstance(input_model, type) else type(input_model)
+    ).model_fields
     # x has title "openbb" -> always kept; y has title "fmp" -> kept
     assert {"x", "y"} <= set(fields)
 
@@ -179,7 +186,10 @@ def test_get_route_schema_map_filter_excludes_non_matching_provider(monkeypatch)
     out = get_route_schema_map(
         _FakeApp, {"/equity/profile": "M"}, filter_by_provider="polygon"
     )
-    fields = out["/equity/profile"]["input"].model_fields
+    input_model = out["/equity/profile"]["input"]
+    fields = (
+        input_model if isinstance(input_model, type) else type(input_model)
+    ).model_fields
     # y had title "fmp" — should NOT appear when filtering for polygon
     assert "y" not in fields
     # x had title "openbb" — always kept

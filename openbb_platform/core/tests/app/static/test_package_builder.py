@@ -952,7 +952,9 @@ def test_generate_model_docstring(docstring_generator, fake_model_name):
     pi = docstring_generator.provider_interface
     kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
     return_schema = pi.return_schema[model_name]
-    returns = return_schema.model_fields
+    returns = (
+        return_schema if isinstance(return_schema, type) else type(return_schema)
+    ).model_fields
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),

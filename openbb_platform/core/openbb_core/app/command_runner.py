@@ -153,9 +153,8 @@ class ParametersBuilder:
         """Warn if kwargs received and ignored by the validation model."""
         # We only check the extra_params annotation because ignored fields
         # will always be there
-        annotation = getattr(
-            model.model_fields.get("extra_params", None), "annotation", None
-        )
+        fields = (model if isinstance(model, type) else type(model)).model_fields
+        annotation = getattr(fields.get("extra_params", None), "annotation", None)
         if is_dataclass(annotation) and any(
             t is ExtraParams for t in getattr(annotation, "__bases__", [])
         ):

@@ -364,7 +364,7 @@ class OptionsChainsData(OptionsChainsProperties):
     def model_serialize(self):
         """Return the serialized data."""
         data: dict = {}
-        for field in self.model_fields:
+        for field in type(self).model_fields:
             value = getattr(self, field)
             if isinstance(value, list):
                 if value:  # Check if the list is not empty

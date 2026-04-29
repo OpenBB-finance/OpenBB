@@ -111,7 +111,11 @@ def test_data_extra_carries_provider_specific_fields(
     extra_model = provider_interface.data[fake_model_name]["extra"]
     # ``extra_field`` is on _FakeData (the provider data model). It is exposed
     # on the merged extra model under a provider-namespaced field name.
-    field_names = set(extra_model.model_fields.keys())
+    field_names = set(
+        (
+            extra_model if isinstance(extra_model, type) else type(extra_model)
+        ).model_fields.keys()
+    )
     assert any("extra_field" in name for name in field_names), field_names
 
 
