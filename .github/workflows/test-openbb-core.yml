@@ -37,6 +37,8 @@ jobs:
   test:
     name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
     runs-on: ${{ matrix.os }}
+    env:
+      OPENBB_ALLOW_ON_COMMAND_OUTPUT: "True"
     permissions:
       contents: read
     strategy:
@@ -94,6 +96,8 @@ jobs:
     name: Integration (ubuntu / py3.13)
     runs-on: ubuntu-latest
     needs: test
+    env:
+      OPENBB_ALLOW_ON_COMMAND_OUTPUT: "True"
     permissions:
       contents: read
     steps:
