@@ -5,6 +5,8 @@ from datetime import (
     datetime,
 )
 
+from typing import Any
+
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -12,6 +14,8 @@ from openbb_core.provider.utils.descriptions import (
 )
 from openbb_core.provider.utils.options_chains_properties import OptionsChainsProperties
 from pydantic import Field, field_validator, model_serializer
+from pydantic.json_schema import JsonSchemaValue
+from pydantic_core import core_schema
 
 
 class OptionsChainsQueryParams(QueryParams):
@@ -369,3 +373,84 @@ class OptionsChainsData(OptionsChainsProperties):
         records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
 
         return records
+
+    @classmethod
+    def __get_pydantic_json_schema__(
+        cls,
+        core_schema_: core_schema.CoreSchema,
+        handler: Any,
+    ) -> JsonSchemaValue:
+        """Override the JSON Schema to match the serialized wire format.
+
+        The model stores data in columnar format (list[float], list[str], etc.)
+        but model_serialize reshapes it into a list of records.
+        This override ensures the OpenAPI schema reflects the actual HTTP response.
+        """
+        # Get the default schema from the columnar model
+        json_schema = handler(core_schema_)
+
+        # Build the record schema from the columnar fields
+        record_properties = {}
+        required_fields = []
+
+        for field_name, field_info in cls.model_fields.items():
+            # Extract the item type from list[T]
+            field_type = field_info.annotation
+            if hasattr(field_type, "__origin__") and field_type.__origin__ is list:
+                # Get the inner type from list[T | None] or list[T]
+                args = getattr(field_type, "__args__", ())
+                if args:
+                    item_type = args[0]
+                    # Handle Optional types (T | None)
+                    if hasattr(item_type, "__origin__"):
+                        if item_type.__origin__ is type(None) or (
+                            hasattr(item_type, "__args__")
+                            and type(None) in item_type.__args__
+                        ):
+                            # For Optional types, extract the non-None type
+                            inner_args = [
+                                t for t in item_type.__args__ if t is not type(None)
+                            ]
+                            item_type = inner_args[0] if inner_args else item_type
+                else:
+                    item_type = field_type
+            else:
+                item_type = field_type
+
+            # Map Python types to JSON Schema types
+            type_mapping = {
+                str: {"type": "string"},
+                int: {"type": "integer"},
+                float: {"type": "number"},
+                bool: {"type": "boolean"},
+                dateType: {"type": "string", "format": "date"},
+                datetime: {"type": "string", "format": "date-time"},
+            }
+
+            field_schema = type_mapping.get(item_type, {"type": "string"})
+
+            # Preserve field metadata (description, x-unit_measurement, etc.)
+            if field_info.description:
+                field_schema["description"] = field_info.description
+            if field_info.json_schema_extra:
+                field_schema.update(field_info.json_schema_extra)
+
+            record_properties[field_name] = field_schema
+
+            # Mark non-optional fields as required
+            if field_info.is_required():
+                required_fields.append(field_name)
+
+        # Build the array-of-records schema
+        array_schema = {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": record_properties,
+            },
+        }
+
+        if required_fields:
+            array_schema["items"]["required"] = required_fields
+
+        return array_schema
