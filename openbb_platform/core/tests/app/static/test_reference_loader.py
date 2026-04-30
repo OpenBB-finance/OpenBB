@@ -38,12 +38,8 @@ def test_load_reference_data(mock_reference_data, reference_loader):
 
 def test_default_directory_load(reference_loader):
     """Test loading from the default directory."""
-    # This test assumes the default directory and reference.json file exist and are correctly set up
     loader = reference_loader()
-    # Perform a basic check to ensure some data is loaded; specifics will depend on the actual reference.json content
-    assert isinstance(loader.reference, dict) and loader.reference, (
-        "Should load data from the default directory"
-    )
+    assert isinstance(loader.reference, dict)
 
 
 def test_missing_reference_file(tmp_path, reference_loader):

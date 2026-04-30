@@ -1,9 +1,15 @@
 """Tests for country_utils module."""
 
+from unittest.mock import mock_open, patch
+
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from openbb_core.provider.utils.country_utils import Country, CountryParam
+from openbb_core.provider.utils.country_utils import (
+    Country,
+    CountryParam,
+    _load_country_data,
+)
 
 
 class CountryTestModel(BaseModel):
@@ -190,3 +196,47 @@ class TestCountry:
         """Accented country names should resolve correctly."""
         c = Country(input_name)
         assert c.alpha_2 == expected_alpha2
+
+
+def test_load_country_data_includes_ascii_keys():
+    lookup = _load_country_data()
+    assert lookup["curacao"]["alpha_2"] == "CW"
+    assert lookup["cote_d'ivoire".replace("'", "")]["alpha_2"] == "CI"
+
+
+def test_load_country_data_builds_ascii_lower_and_ascii_snake_keys():
+    fake_data = {
+        "countries": [
+            {
+                "alpha_2": "CW",
+                "alpha_3": "CUW",
+                "name": "Curaçao Islands",
+                "numeric": "531",
+                "groups": [],
+            }
+        ]
+    }
+
+    with (
+        patch("builtins.open", mock_open(read_data="{}")),
+        patch("json.load", return_value=fake_data),
+    ):
+        lookup = _load_country_data()
+
+    assert lookup["curacao islands"]["alpha_2"] == "CW"
+    assert lookup["curacao_islands"]["alpha_2"] == "CW"
+
+
+def test_lookup_country_original_case_branch(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.country_utils._COUNTRY_LOOKUP",
+        {
+            "MixedCaseCountry": {
+                "alpha_2": "MC",
+                "alpha_3": "MCC",
+                "name": "MixedCaseCountry",
+            }
+        },
+    )
+    out = Country._lookup_country("MixedCaseCountry")
+    assert out["alpha_2"] == "MC"

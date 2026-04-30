@@ -47,12 +47,15 @@ class APIEx(Example):
     def validate_model(cls, values: dict) -> dict:
         """Validate model."""
         parameters = values.get("parameters", {})
-        provider = parameters.pop("provider", None)
+        provider = parameters.get("provider")
 
-        if provider and not isinstance(provider, str):
+        if provider is not None and not isinstance(provider, str):
             raise ValueError("Provider must be a string.")
 
-        if len(parameters) > 3 and not values.get("description"):
+        # `provider`, when present, is a meta-parameter rather than a real
+        # query parameter, so don't count it toward the description threshold.
+        non_provider_count = len(parameters) - (1 if "provider" in parameters else 0)
+        if non_provider_count > 3 and not values.get("description"):
             raise ValueError(
                 "Description is required when there are more than 3 parameters."
             )

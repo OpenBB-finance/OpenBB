@@ -1,8 +1,10 @@
 """Test the client helper."""
 
+import asyncio
 import gzip
 import json
 import zlib
+from unittest.mock import patch
 
 import aiohttp
 import pytest
@@ -97,6 +99,21 @@ class MockClientSession(client.ClientSession):
             )
 
         return response  # type: ignore
+
+
+class _BaseResponseMock:
+    def __init__(self, *, body: bytes = b"{}", encoding: str = ""):
+        self.headers = {"Content-Encoding": encoding} if encoding else {}
+        self._raw = body
+        self._body = None
+        self.status_raised = False
+
+    async def read(self):
+        return self._raw
+
+    def raise_for_status(self):
+        self.status_raised = True
+        raise RuntimeError("raised")
 
 
 @pytest.mark.parametrize(
@@ -204,3 +221,179 @@ async def test_client_content_encoding():
 
     assert isinstance(response, dict)
     assert response == {"test": "test"}
+
+
+def test_client_response_obfuscate_request_info_direct_call():
+    url = URL("http://x?api_key=secret&symbol=AAPL")
+    request_info = aiohttp.RequestInfo(
+        url=url,
+        method="GET",
+        headers=CIMultiDictProxy(CIMultiDict({"Authorization": "Bearer xyz"})),
+        real_url=url,
+    )
+    # Call obfuscation directly — verifies behavior covered by line 44-45 path.
+    obf = client.ClientResponse.obfuscate_request_info(request_info)
+    assert "********" in str(obf.url)
+    assert obf.headers["Authorization"] == "********"
+
+
+def test_client_response_init_obfuscates_before_super(monkeypatch):
+    url = URL("http://x?api_key=secret")
+    request_info = aiohttp.RequestInfo(
+        url=url,
+        method="GET",
+        headers=CIMultiDictProxy(CIMultiDict({"Authorization": "Bearer xyz"})),
+        real_url=url,
+    )
+    captured = {}
+
+    def _fake_super_init(self, *args, **kwargs):
+        captured["request_info"] = kwargs["request_info"]
+
+    monkeypatch.setattr(aiohttp.ClientResponse, "__init__", _fake_super_init)
+    client.ClientResponse(
+        "GET",
+        URL("http://x"),
+        request_info=request_info,
+        writer=None,
+        continue100=None,
+        timer=None,
+        traces=[],
+        loop=None,
+        session=None,
+    )
+
+    assert "********" in str(captured["request_info"].url)
+
+
+def test_client_session_del_schedules_close(monkeypatch):
+    calls = {"count": 0}
+
+    class _Session(client.ClientSession):
+        def __init__(self):
+            pass
+
+        @property
+        def closed(self):
+            return False
+
+        async def close(self):
+            return None
+
+    def _create_task(coro):
+        calls["count"] += 1
+        coro.close()
+
+    monkeypatch.setattr(asyncio, "create_task", _create_task)
+    _Session().__del__()
+    assert calls["count"] >= 1
+
+
+@pytest.mark.asyncio
+async def test_client_response_json_calls_super():
+    """Cover ClientResponse.json (line 60)."""
+
+    async def fake_super_json(self, **kw):
+        return {"ok": True}
+
+    class Sub(client.ClientResponse):
+        def __init__(self):  # bypass real init
+            pass
+
+    with patch.object(aiohttp.ClientResponse, "json", fake_super_json):
+        result = await Sub().json()
+    assert result == {"ok": True}
+
+
+@pytest.mark.asyncio
+async def test_client_request_sets_default_headers_and_user_agent(monkeypatch):
+    seen = {}
+
+    async def _fake_super_request(self, *args, **kwargs):
+        seen["headers"] = kwargs.get("headers", {})
+        return _BaseResponseMock()
+
+    monkeypatch.setattr(aiohttp.ClientSession, "request", _fake_super_request)
+
+    session = client.ClientSession()
+    try:
+        await session.request("GET", "http://mock.url")
+    finally:
+        await session.close()
+
+    assert "Accept" in seen["headers"]
+    assert "User-Agent" in seen["headers"]
+
+
+@pytest.mark.asyncio
+async def test_client_request_respects_existing_user_agent(monkeypatch):
+    seen = {}
+
+    async def _fake_super_request(self, *args, **kwargs):
+        seen["headers"] = kwargs.get("headers", {})
+        return _BaseResponseMock()
+
+    monkeypatch.setattr(aiohttp.ClientSession, "request", _fake_super_request)
+
+    session = client.ClientSession()
+    try:
+        await session.request(
+            "GET", "http://mock.url", headers={"User-Agent": "custom-ua"}
+        )
+    finally:
+        await session.close()
+
+    assert seen["headers"]["User-Agent"] == "custom-ua"
+
+
+@pytest.mark.asyncio
+async def test_client_request_raise_for_status_branch(monkeypatch):
+    async def _fake_super_request(self, *args, **kwargs):
+        return _BaseResponseMock()
+
+    monkeypatch.setattr(aiohttp.ClientSession, "request", _fake_super_request)
+
+    session = client.ClientSession()
+    try:
+        with pytest.raises(RuntimeError, match="raised"):
+            await session.request("GET", "http://mock.url", raise_for_status=True)
+    finally:
+        await session.close()
+
+
+@pytest.mark.asyncio
+async def test_client_request_gzip_decompress_branch(monkeypatch):
+    payload = b'{"ok": true}'
+    compressed = gzip.compress(payload)
+
+    async def _fake_super_request(self, *args, **kwargs):
+        return _BaseResponseMock(body=compressed, encoding="gzip")
+
+    monkeypatch.setattr(aiohttp.ClientSession, "request", _fake_super_request)
+
+    session = client.ClientSession(auto_decompress=False)
+    try:
+        response = await session.request("GET", "http://mock.url")
+    finally:
+        await session.close()
+
+    assert response._body == payload
+
+
+@pytest.mark.asyncio
+async def test_client_request_deflate_decompress_branch(monkeypatch):
+    payload = b'{"ok": true}'
+    compressed = zlib.compress(payload)[2:-4]
+
+    async def _fake_super_request(self, *args, **kwargs):
+        return _BaseResponseMock(body=compressed, encoding="deflate")
+
+    monkeypatch.setattr(aiohttp.ClientSession, "request", _fake_super_request)
+
+    session = client.ClientSession(auto_decompress=False)
+    try:
+        response = await session.request("GET", "http://mock.url")
+    finally:
+        await session.close()
+
+    assert response._body == payload

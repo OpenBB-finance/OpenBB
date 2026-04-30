@@ -80,3 +80,16 @@ def test_clean_expired_files(handler):
 
         assert mock_get_expired_file_list.call_count == 3
         assert mock_remove_file_list.call_count == 3
+
+
+def test_settings_setter(handler, mocked_path):
+    """Test settings.setter stores the settings value."""
+    new_settings = MagicMock(spec=MockLoggingSettings)
+    new_settings.app_name = "new_app"
+
+    # Set the settings
+    handler.settings = new_settings
+
+    # Retrieve and verify
+    retrieved = handler.settings
+    assert retrieved.app_name == "new_app"

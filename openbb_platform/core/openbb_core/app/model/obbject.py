@@ -1,5 +1,7 @@
 """The OBBject."""
 
+from __future__ import annotations
+
 from collections.abc import Callable, Hashable
 from typing import (
     TYPE_CHECKING,
@@ -20,14 +22,11 @@ from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
-    from numpy import ndarray  # noqa
-    from pandas import DataFrame  # noqa
-    from openbb_core.app.query import Query  # noqa
+    from numpy import ndarray
+    from pandas import DataFrame
+    from polars import DataFrame as PolarsDataFrame  # ty: ignore[unresolved-import]
 
-    try:
-        from polars import DataFrame as PolarsDataFrame  # type: ignore
-    except ImportError:
-        PolarsDataFrame = None
+    from openbb_core.app.query import Query
 
 T = TypeVar("T")
 
@@ -82,7 +81,7 @@ class OBBject(Tagged, Generic[T]):
         index: str | None | None = "date",
         sort_by: str | None = None,
         ascending: bool | None = None,
-    ) -> "DataFrame":
+    ) -> DataFrame:
         """Alias for `to_dataframe`.
 
         Supports converting creating Pandas DataFrames from the following
@@ -122,7 +121,7 @@ class OBBject(Tagged, Generic[T]):
         index: str | None | None = "date",
         sort_by: str | None = None,
         ascending: bool | None = None,
-    ) -> "DataFrame":
+    ) -> DataFrame:
         """Convert results field to Pandas DataFrame.
 
         Supports converting creating Pandas DataFrames from the following
@@ -166,11 +165,11 @@ class OBBject(Tagged, Generic[T]):
                 isinstance(item, BaseModel) for item in items
             )
 
-        if self.results is None or not self.results:
-            raise OpenBBError("Results not found.")
-
         if isinstance(self.results, DataFrame):
             return self.results
+
+        if self.results is None or not self.results:
+            raise OpenBBError("Results not found.")
 
         try:
             res = self.results
@@ -249,7 +248,7 @@ class OBBject(Tagged, Generic[T]):
                 try:
                     df = DataFrame(res)  # type: ignore[call-overload]
                 except ValueError:
-                    if isinstance(res, dict):
+                    if isinstance(res, dict):  # pragma: no cover
                         df = DataFrame([res])
 
             if df is None:
@@ -287,14 +286,14 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
-    def to_polars(self) -> "PolarsDataFrame":
+    def to_polars(self) -> PolarsDataFrame:
         """Convert results field to polars dataframe."""
         from openbb_core.app.utils_optional import require_optional
 
         polars = require_optional("polars")
         return polars.from_pandas(self.to_dataframe(index=None))  # type: ignore[union-attr]
 
-    def to_numpy(self) -> "ndarray":
+    def to_numpy(self) -> ndarray:
         """Convert results field to numpy array."""
         return self.to_dataframe(index=None).to_numpy()
 
@@ -357,7 +356,7 @@ class OBBject(Tagged, Generic[T]):
         show_function(**kwargs)
 
     @classmethod
-    async def from_query(cls, query: "Query") -> "OBBject":
+    async def from_query(cls, query: Query) -> OBBject:
         """Create OBBject from query.
 
         Parameters

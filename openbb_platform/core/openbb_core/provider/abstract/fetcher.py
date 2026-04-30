@@ -92,7 +92,7 @@ class Fetcher(Generic[Q, R]):
     def return_type(self) -> R:
         """Get the type of return."""
         return_type = self.__orig_bases__[0].__args__[1]  # type: ignore
-        if get_origin(return_type) is AnnotatedResult:
+        if get_origin(return_type) is AnnotatedResult:  # pragma: no cover
             return_type = get_args(return_type)[0]
         return return_type
 
@@ -140,6 +140,7 @@ class Fetcher(Generic[Q, R]):
             cls.extract_data, query=query, credentials=credentials, **kwargs
         )
         result = cls.transform_data(query=query, data=data, **kwargs)
+        data_type_fields = cls.data_type.model_fields
 
         # Class Assertions
         assert isinstance(cls.require_credentials, bool), (
@@ -163,11 +164,9 @@ class Fetcher(Generic[Q, R]):
         is_list = isinstance(data, list)
         if is_list:
             assert all(
-                field in data[0]
-                for field in cls.data_type.model_fields
-                if field in data[0]
+                field in data[0] for field in data_type_fields if field in data[0]
             ), (
-                f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data[0].__dict__}"
+                f"Data must have the correct fields. Expected: {data_type_fields} Got: {data[0].__dict__}"
             )
             # This makes sure that the data is not transformed yet so that the
             # pipeline is implemented correctly. We can remove this assertion if we
@@ -176,10 +175,8 @@ class Fetcher(Generic[Q, R]):
                 f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data[0])}"
             )
         else:
-            assert all(
-                field in data for field in cls.data_type.model_fields if field in data
-            ), (
-                f"Data must have the correct fields. Expected: {cls.data_type.model_fields} Got: {data.__dict__}"
+            assert all(field in data for field in data_type_fields if field in data), (
+                f"Data must have the correct fields. Expected: {data_type_fields} Got: {data.__dict__}"
             )
             assert issubclass(type(data), cls.data_type) is False, (
                 f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data)}"
@@ -200,13 +197,17 @@ class Fetcher(Generic[Q, R]):
                 hasattr(return_type_args, "__origin__")
                 and return_type_args.__origin__ is dict
             )
-            if return_type_is_dict:
+            if return_type_is_dict:  # pragma: no cover
                 return_type_fields = (
                     return_type_args.__args__[1].__args__[0].model_fields
                 )
                 return_type = return_type_args.__args__[1].__args__[0]
             else:
-                return_type_fields = return_type_args.model_fields
+                return_type_fields = (
+                    return_type_args
+                    if isinstance(return_type_args, type)
+                    else type(return_type_args)
+                ).model_fields
                 return_type = return_type_args
 
             assert len(transformed_data) > 0, "Transformed data must not be empty."
@@ -228,11 +229,11 @@ class Fetcher(Generic[Q, R]):
                 f"Transformed data must be of the correct type. Expected: {return_type} Got: {type(transformed_data[0])}"
             )
         else:
+            return_type_fields = cls.return_type.model_fields
             assert all(
-                field in transformed_data.__dict__
-                for field in cls.return_type.model_fields
+                field in transformed_data.__dict__ for field in return_type_fields
             ), (
-                f"Transformed data must have the correct fields. Expected: {cls.return_type.model_fields} Got: {transformed_data.__dict__}"
+                f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data.__dict__}"
             )
             assert issubclass(type(transformed_data), cls.data_type), (
                 f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data)}"

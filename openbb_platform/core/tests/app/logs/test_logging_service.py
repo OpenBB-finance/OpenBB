@@ -107,6 +107,37 @@ def test_correctly_initialized():
         mock_log_startup.assert_called_once()
 
 
+def test_init_with_logging_suppress_returns_early():
+    from openbb_core.app.model.abstract.singleton import SingletonMeta
+
+    SingletonMeta._instances.pop(LoggingService, None)
+
+    class _Suppressed:
+        logging_suppress = True
+
+    svc = LoggingService(system_settings=_Suppressed(), user_settings=Mock())
+    assert not hasattr(svc, "_logging_settings")
+
+
+def test_setup_handlers_executes_and_logs():
+    svc = LoggingService.__new__(LoggingService)
+    svc._logger = MagicMock()
+    svc._logging_settings = Mock(handler_list=["stdout"], verbosity=2)
+
+    fake_manager = Mock()
+    fake_manager.setup = Mock()
+
+    with patch(
+        "openbb_core.app.logs.logging_service.HandlersManager",
+        return_value=fake_manager,
+    ):
+        out = LoggingService._setup_handlers(svc)
+
+    assert out is fake_manager
+    fake_manager.setup.assert_called_once()
+    assert svc._logger.info.call_count == 4
+
+
 def test_logging_settings_setter(logging_service):
     """Test the logging_settings setter."""
     custom_user_settings = Mock()

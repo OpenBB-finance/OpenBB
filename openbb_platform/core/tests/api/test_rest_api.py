@@ -13,8 +13,11 @@ of the assembled application:
   whenever any command route is mounted, the coverage routes are too.
 """
 
+import asyncio
+
 from fastapi.testclient import TestClient
 
+from openbb_core.api import rest_api
 from openbb_core.api.rest_api import app, system
 
 
@@ -86,3 +89,46 @@ def test_router_inclusion_invariant_commands_imply_coverage():
         assert has_coverage, (
             f"command routes mounted without coverage routes; mounted: {paths}"
         )
+
+
+def test_lifespan_logs_banner_with_auth_enabled(monkeypatch):
+    logged = {}
+
+    monkeypatch.setattr(
+        rest_api,
+        "Env",
+        type("E", (), {"API_AUTH": True}),
+    )
+    monkeypatch.setattr(
+        rest_api.logger, "info", lambda message: logged.setdefault("msg", message)
+    )
+
+    async def _run():
+        async with rest_api.lifespan(app):
+            return None
+
+    asyncio.run(_run())
+
+    assert "Authentication: ENABLED" in logged["msg"]
+    assert system.version in logged["msg"]
+
+
+def test_lifespan_logs_banner_with_auth_disabled(monkeypatch):
+    logged = {}
+
+    monkeypatch.setattr(
+        rest_api,
+        "Env",
+        type("E", (), {"API_AUTH": False}),
+    )
+    monkeypatch.setattr(
+        rest_api.logger, "info", lambda message: logged.setdefault("msg", message)
+    )
+
+    async def _run():
+        async with rest_api.lifespan(app):
+            return None
+
+    asyncio.run(_run())
+
+    assert "Authentication: DISABLED" in logged["msg"]

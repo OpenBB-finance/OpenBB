@@ -79,11 +79,15 @@ def test_update_handlers():
     ):
         settings = Mock()
         settings.handler_list = ["file"]
+        settings.logging_suppress = False
+        settings.verbosity = 20
         settings.any_other_attr = "mock_settings"
         logger = logging.getLogger("test_update_handlers")
         handlers_manager = HandlersManager(logger=logger, settings=settings)
+        handlers_manager.setup()
 
         changed_settings = Mock()
+        changed_settings.logging_suppress = False
         changed_settings.any_other_attr = "changed_settings"
 
         handlers_manager.update_handlers(settings=changed_settings)
@@ -92,3 +96,18 @@ def test_update_handlers():
             if isinstance(hdlr, MockPathTrackingFileHandler):
                 assert hdlr.settings == changed_settings
                 assert hdlr.formatter.settings == changed_settings  # type: ignore[union-attr]
+
+
+def test_setup_unknown_handler_logs_debug():
+    settings = Mock()
+    settings.verbosity = 20
+    settings.handler_list = ["invalid"]
+    settings.logging_suppress = False
+    logger = logging.getLogger("test_setup_unknown_handler_logs_debug")
+    logger.handlers = []
+    logger.debug = Mock()
+
+    handlers_manager = HandlersManager(logger=logger, settings=settings)
+    handlers_manager.setup()
+
+    logger.debug.assert_called_once_with("Unknown log handler.")

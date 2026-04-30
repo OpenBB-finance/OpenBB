@@ -21,6 +21,14 @@ def test_system_settings():
     assert isinstance(sys, SystemSettings)
 
 
+def test_system_settings_repr():
+    """Test __repr__ returns formatted string with class name and fields."""
+    sys = SystemSettings()
+    result = repr(sys)
+    assert "SystemSettings" in result
+    assert "openbb_directory" in result
+
+
 def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
     """Test the create_openbb_directory method."""
     # Arrange

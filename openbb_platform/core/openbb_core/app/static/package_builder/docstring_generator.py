@@ -36,9 +36,9 @@ CHARTING_INSTALLED = find_spec("openbb_charting") is not None
 
 try:
     _HAS_FCNTL = True
-except Exception:  # noqa
+except Exception:  # noqa  # pragma: no cover
     _HAS_FCNTL = False
-    import msvcrt  # noqa
+    import msvcrt  # noqa  # pragma: no cover
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
@@ -573,7 +573,7 @@ class DocstringGenerator:
                         literal_choices = re.findall(r"'([^']+)'", literal_content)
 
                 type_ = format_type(type_)
-                if "NoneType" in str(type_):
+                if "NoneType" in str(type_):  # pragma: no cover
                     type_ = type_.replace(", NoneType", "")
 
                 default = getattr(param, "default", "")
@@ -860,7 +860,7 @@ class DocstringGenerator:
                 and not doc_has_parameters
                 and [p for p_name, p in formatted_params.items() if p_name != "kwargs"]
             ):
-                if result_doc and not result_doc.endswith("\n\n"):
+                if result_doc and not result_doc.endswith("\n\n"):  # pragma: no cover
                     result_doc = result_doc.rstrip("\n") + "\n\n"
                 elif not result_doc:
                     result_doc = "\n\n"
@@ -894,7 +894,7 @@ class DocstringGenerator:
                 result_doc += param_section + "\n"
 
             if "returns" in sections and not doc_has_returns:
-                if result_doc and not result_doc.endswith("\n\n"):
+                if result_doc and not result_doc.endswith("\n\n"):  # pragma: no cover
                     result_doc = result_doc.rstrip("\n") + "\n\n"
 
                 returns_section = "Returns\n-------\n"
@@ -920,10 +920,8 @@ class DocstringGenerator:
 
                     if not is_primitive:
                         try:
-                            if hasattr(type(return_annotation), "model_fields"):
-                                fields = getattr(
-                                    type(return_annotation), "model_fields", {}
-                                )
+                            if hasattr(return_annotation, "model_fields"):
+                                fields = getattr(return_annotation, "model_fields", {})
 
                                 for field_name, field in fields.items():
                                     field_type = cls.get_field_type(

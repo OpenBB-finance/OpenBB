@@ -3,7 +3,9 @@
 import json
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.service.user_service import (
     UserService,
     UserSettings,
@@ -59,3 +61,43 @@ def test_merge_dicts():
     assert isinstance(result, dict)
     assert result["a"] == 3
     assert result["b"] == 4
+
+
+def test_merge_dicts_recursive_nested():
+    result = UserService._merge_dicts(
+        list_of_dicts=[
+            {"a": {"x": 1, "y": 2}},
+            {"a": {"y": 3, "z": 4}},
+        ]
+    )
+
+    assert result == {"a": {"x": 1, "y": 3, "z": 4}}
+
+
+def test_default_user_settings_property_and_setter():
+    SingletonMeta._instances.pop(UserService, None)
+
+    initial = UserSettings()
+    service = UserService(default_user_settings=initial)
+
+    assert service.default_user_settings is initial
+
+    updated = UserSettings(preferences={"theme": "light"})
+    service.default_user_settings = updated
+
+    assert service.default_user_settings is updated
+
+    SingletonMeta._instances.pop(UserService, None)
+
+
+def test_init_uses_read_from_file_when_default_not_passed():
+    SingletonMeta._instances.pop(UserService, None)
+    loaded = UserSettings(preferences={"theme": "dark"})
+
+    with patch.object(UserService, "read_from_file", return_value=loaded) as mock_read:
+        service = UserService()
+
+    assert service.default_user_settings is loaded
+    mock_read.assert_called_once()
+
+    SingletonMeta._instances.pop(UserService, None)

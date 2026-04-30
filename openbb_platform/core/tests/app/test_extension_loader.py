@@ -207,3 +207,77 @@ def test_core_objects_with_apirouter_instance(mock_entry_points):
     assert "apirouter_extension" in core_objects
     assert isinstance(core_objects["apirouter_extension"], Router)
     mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_core_objects_with_router_instance(mock_entry_points):
+    """Test core_objects when entry point loads a Router directly."""
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_core_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "router_extension"
+            mock_ep.load.return_value = Router(prefix="/test")
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+    core_objects = el.core_objects
+
+    assert "router_extension" in core_objects
+    assert isinstance(core_objects["router_extension"], Router)
+    mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_provider_objects_with_module_not_found(mock_entry_points):
+    """Test provider_objects catches ModuleNotFoundError."""
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_provider_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "missing_provider"
+
+            def raise_module_not_found():
+                raise ModuleNotFoundError("Module not found")
+
+            mock_ep.load.side_effect = raise_module_not_found
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+    provider_objects = el.provider_objects
+
+    # The entry with ModuleNotFoundError should not be in the result
+    assert "missing_provider" not in provider_objects
+    mock_entry_points.assert_any_call(group="openbb_provider_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_provider_objects_with_provider_instance(mock_entry_points):
+    """Test provider_objects adds loaded Provider instances."""
+
+    from openbb_core.provider.abstract.provider import Provider
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_provider_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "ok_provider"
+            mock_ep.load.return_value = Provider(
+                name="ok",
+                description="ok provider",
+            )
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+    provider_objects = el.provider_objects
+
+    assert "ok_provider" in provider_objects
+    mock_entry_points.assert_any_call(group="openbb_provider_extension")

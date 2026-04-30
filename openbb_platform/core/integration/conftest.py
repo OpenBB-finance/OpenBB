@@ -211,6 +211,22 @@ def _pip(*args: str) -> None:
     )
 
 
+def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
+    """Build a subprocess env that opts into coverage.py auto-startup if a config exists.
+
+    Strips ``COV_CORE_*`` so the child does not also try to bootstrap via
+    ``pytest_cov.embed.init()`` (which would race with ``coverage.process_startup``
+    and write into the parent's locked data file).
+    """
+    env = {k: v for k, v in os.environ.items() if not k.startswith("COV_CORE_")}
+    rcfile = CORE_DIR / ".coveragerc"
+    if rcfile.exists():
+        env["COVERAGE_PROCESS_START"] = str(rcfile)
+    if extra:
+        env.update(extra)
+    return env
+
+
 def _run_openbb_build() -> None:
     """Invoke ``openbb-build`` in a fresh subprocess.
 
@@ -218,8 +234,7 @@ def _run_openbb_build() -> None:
     cache entry points at module load time; the parent process cannot
     discover the freshly-installed distribution without a restart.
     """
-    env = os.environ.copy()
-    env["OPENBB_AUTO_BUILD"] = "true"
+    env = _subprocess_env({"OPENBB_AUTO_BUILD": "true"})
     subprocess.run(
         [sys.executable, "-c", "import openbb"],
         check=True,
@@ -308,7 +323,7 @@ def run_in_obb(fake_extension_installed):  # noqa: ARG001
             check=False,
             capture_output=True,
             text=True,
-            env={**os.environ, "OPENBB_AUTO_BUILD": "false"},
+            env=_subprocess_env({"OPENBB_AUTO_BUILD": "false"}),
         )
         if proc.returncode != 0:
             raise AssertionError(

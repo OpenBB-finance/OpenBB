@@ -65,7 +65,142 @@ def test_fetcher_data_type():
 
 @pytest.mark.requires_pandas
 def test_fetcher_test():
-    """``Fetcher.test`` runs the full pipeline (requires pandas for DataFrame assertions)."""
+    """Test ``Fetcher.test`` runs the full pipeline (requires pandas for DataFrame assertions)."""
     pytest.importorskip("pandas")
     tested = MockFetcher.test(params={})
     assert tested is None
+
+
+def test_fetcher_aextract_data_overrides_extract():
+    """Test subclass implements aextract_data -> assigned to extract_data."""
+
+    class AsyncFetcher(Fetcher[MockQueryParams, list[MockData]]):
+        @staticmethod
+        def transform_query(params):
+            return MockQueryParams()
+
+        @staticmethod
+        async def aextract_data(query, credentials):
+            return [{"mock_key": "x"}]
+
+        @staticmethod
+        def transform_data(query, data, **kwargs):
+            return [MockData(**i) for i in data]
+
+    assert AsyncFetcher.extract_data == AsyncFetcher.aextract_data
+
+
+def test_fetcher_subclass_missing_extract_raises():
+    """Test NotImplementedError when neither extract method implemented."""
+    with pytest.raises(NotImplementedError, match="must implement"):
+
+        class _Bad(Fetcher[MockQueryParams, list[MockData]]):
+            @staticmethod
+            def transform_query(params):
+                return MockQueryParams()
+
+            @staticmethod
+            def transform_data(query, data, **kwargs):
+                return []
+
+
+def test_fetcher_return_type_annotated_result():
+    """Test AnnotatedResult origin path. Since pydantic Generic doesn't expose
+    typing origin, this branch is structurally unreachable; verify the property
+    still returns the parameterized type without crashing."""
+    from openbb_core.provider.abstract.annotated_result import AnnotatedResult
+
+    class AnnotatedFetcher(Fetcher[MockQueryParams, AnnotatedResult[list[MockData]]]):
+        @staticmethod
+        def transform_query(params):
+            return MockQueryParams()
+
+        @staticmethod
+        def extract_data(query, credentials):
+            return [{"mock_key": "x"}]
+
+        @staticmethod
+        def transform_data(query, data, **kwargs):
+            return AnnotatedResult(result=[MockData(**i) for i in data])
+
+    rt = AnnotatedFetcher.return_type
+    assert rt is not None
+
+
+def test_fetcher_return_type_annotated_result_branch(monkeypatch):
+    sentinel = object()
+
+    class _Fetcher(Fetcher[MockQueryParams, list[MockData]]):
+        __orig_bases__ = [(None, sentinel)]  # type: ignore[assignment]
+
+        @staticmethod
+        def transform_query(params):
+            return MockQueryParams()
+
+        @staticmethod
+        def extract_data(query, credentials):
+            return []
+
+        @staticmethod
+        def transform_data(query, data, **kwargs):
+            return []
+
+    monkeypatch.setattr(
+        "openbb_core.provider.abstract.fetcher.get_origin",
+        lambda value: (
+            __import__(
+                "openbb_core.provider.abstract.fetcher", fromlist=["AnnotatedResult"]
+            ).AnnotatedResult
+            if value is sentinel
+            else None
+        ),
+    )
+    monkeypatch.setattr(
+        "openbb_core.provider.abstract.fetcher.get_args",
+        lambda value: (list[MockData],) if value is sentinel else (),
+    )
+
+    assert _Fetcher.return_type == list[MockData]
+
+
+@pytest.mark.requires_pandas
+def test_fetcher_test_dataframe_data():
+    """Test DataFrame data branch in test()."""
+    pytest.importorskip("pandas")
+    from pandas import DataFrame
+
+    class DfFetcher(Fetcher[MockQueryParams, list[MockData]]):
+        @staticmethod
+        def transform_query(params):
+            return MockQueryParams()
+
+        @staticmethod
+        def extract_data(query, credentials):
+            return DataFrame([{"mock_key": "x"}])
+
+        @staticmethod
+        def transform_data(query, data, **kwargs):
+            return [MockData(**row) for row in data.to_dict(orient="records")]
+
+    assert DfFetcher.test(params={}) is None
+
+
+@pytest.mark.requires_pandas
+def test_fetcher_test_scalar_return():
+    """Test non-list return type branch in test()."""
+    pytest.importorskip("pandas")
+
+    class ScalarFetcher(Fetcher[MockQueryParams, MockData]):
+        @staticmethod
+        def transform_query(params):
+            return MockQueryParams()
+
+        @staticmethod
+        def extract_data(query, credentials):
+            return {"mock_key": "x"}
+
+        @staticmethod
+        def transform_data(query, data, **kwargs):
+            return MockData(**data)
+
+    assert ScalarFetcher.test(params={}) is None

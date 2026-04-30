@@ -111,7 +111,11 @@ def test_data_extra_carries_provider_specific_fields(
     extra_model = provider_interface.data[fake_model_name]["extra"]
     # ``extra_field`` is on _FakeData (the provider data model). It is exposed
     # on the merged extra model under a provider-namespaced field name.
-    field_names = set(extra_model.model_fields.keys())
+    field_names = set(
+        (
+            extra_model if isinstance(extra_model, type) else type(extra_model)
+        ).model_fields.keys()
+    )
     assert any("extra_field" in name for name in field_names), field_names
 
 
@@ -156,14 +160,15 @@ def test_return_annotations_present_for_each_model(
     assert single_result_model_name in annotations
 
 
+def test_return_schema_property(provider_interface):
+    assert provider_interface.return_schema is provider_interface._return_schema
+
+
 def test_create_executor_uses_injected_registry(provider_interface, fake_registry):
     """``create_executor`` instantiates the executor over the injected registry."""
     executor = provider_interface.create_executor()
     # The executor stores the registry it was built with
     assert getattr(executor, "registry", None) is fake_registry
-
-
-# --- _create_field: Literal → choices auto-derivation ---
 
 
 def test_create_field_literal_annotation_produces_choices():

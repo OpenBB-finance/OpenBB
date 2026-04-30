@@ -57,3 +57,12 @@ def test_charting_config_validation():
 def test_show():
     """Test the show method."""
     # TODO : add test after the function is properly refactored
+
+
+def test_chart_repr_contains_fields():
+    chart = Chart(content={"k": 1}, format="plotly")
+
+    rep = repr(chart)
+    assert rep.startswith("Chart")
+    assert "content: {'k': 1}" in rep
+    assert "format: plotly" in rep

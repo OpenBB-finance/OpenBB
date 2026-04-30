@@ -14,7 +14,6 @@ logging_settings = Mock()
 logging_settings.app_name = "test_app_name"
 logging_settings.app_id = "test_app_id"
 logging_settings.session_id = "test_session_id"
-logging_settings.user_id = "test_user_id"
 
 
 @pytest.fixture
@@ -55,6 +54,34 @@ def test_level_name_with_levelname(formatter):
     )
     record.levelname = "WARNING"
     assert formatter.calculate_level_name(record) == "W"
+
+
+def test_level_name_without_exc_text_or_levelname(formatter):
+    record = logging.LogRecord(
+        name="test_logger",
+        level=logging.INFO,
+        pathname="",
+        lineno=0,
+        msg="",
+        args=None,
+        exc_info=None,
+        func=None,
+    )
+    record.exc_text = None
+    record.levelname = ""
+    assert formatter.calculate_level_name(record) == "U"
+
+
+def test_format_exception_returns_repr(formatter):
+    try:
+        raise RuntimeError("boom")
+    except RuntimeError:
+        import sys
+
+        ei = sys.exc_info()
+    out = formatter.formatException(ei)
+    assert out.startswith("'")
+    assert "RuntimeError: boom" in out
 
 
 # Test when func_name_override and session_id are present in the record
@@ -315,7 +342,7 @@ def test_format(formatter):
     formatted_log = formatter.format(log_record)
 
     # Assertions
-    expected_log = "INFO|test_app_name|unknown-commit|test_app_id|test_session_id|test_user_id|Filtered log message"
+    expected_log = "INFO|test_app_name|unknown-commit|test_app_id|test_session_id|Filtered log message"
 
     assert formatted_log == expected_log
 

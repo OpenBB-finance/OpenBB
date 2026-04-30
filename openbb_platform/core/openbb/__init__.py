@@ -3,6 +3,7 @@
 # flake8: noqa
 
 from pathlib import Path
+from importlib import import_module
 from typing import List, Optional, Union
 
 from openbb_core.app.static.app_factory import (
@@ -40,10 +41,11 @@ _PackageBuilder(_this_dir).auto_build()
 _ReferenceLoader(_this_dir)
 
 try:
-    from openbb.package.__extensions__ import Extensions as _Extensions  # type: ignore
+    _extensions_module = import_module("openbb.package.__extensions__")
+    _Extensions = _extensions_module.Extensions
 
-    obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)
+    obb = _create_app(_Extensions)
     sdk = obb
-except (ImportError, ModuleNotFoundError):
+except (AttributeError, ImportError, ModuleNotFoundError):
     print("Failed to import extensions. Are any installed?")
     obb = sdk = _create_app()

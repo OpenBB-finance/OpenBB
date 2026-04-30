@@ -45,7 +45,9 @@ def test_standard_models(standard_model):
         standard_model, QueryParams
     ), f"{standard_model.__name__} should be a subclass of Data or QueryParams"
 
-    fields = standard_model.model_fields
+    fields = (
+        standard_model if isinstance(standard_model, type) else type(standard_model)
+    ).model_fields
 
     for name, field in fields.items():
         assert isinstance(field, FieldInfo), (

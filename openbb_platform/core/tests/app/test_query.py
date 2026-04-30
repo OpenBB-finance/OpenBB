@@ -1,7 +1,7 @@
 """Test the Query class."""
 
 from dataclasses import dataclass
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import Query as FastAPIQuery
@@ -175,3 +175,61 @@ async def test_execute_method_fake_credentials(query_instance: Query, mock_regis
 
     with pytest.raises(Exception):
         await query_instance.execute()
+
+
+@pytest.mark.asyncio
+async def test_execute_method_success_includes_merged_payload(query: Query):
+    @dataclass
+    class _Std:
+        symbol: str = "AAPL"
+
+    @dataclass
+    class _Extra:
+        limit: int = 5
+
+    q = Query(
+        cc=CommandContext(),
+        provider_choices=ProviderChoices(provider="fmp"),
+        standard_params=_Std(),
+        extra_params=_Extra(),
+    )
+
+    q.filter_extra_params = MagicMock(return_value={"limit": 10})
+    executor = AsyncMock()
+    executor.execute = AsyncMock(return_value={"ok": True})
+    q.provider_interface = MagicMock()
+    q.provider_interface.create_executor.return_value = executor
+
+    out = await q.execute()
+
+    assert out == {"ok": True}
+    executor.execute.assert_awaited_once()
+    kwargs = executor.execute.await_args.kwargs
+    assert kwargs["provider_name"] == "fmp"
+    assert kwargs["params"]["symbol"] == "AAPL"
+    assert kwargs["params"]["limit"] == 10
+
+
+@pytest.mark.asyncio
+async def test_execute_method_without_extra_params_uses_empty_extra(query: Query):
+    @dataclass
+    class _Std:
+        symbol: str = "MSFT"
+
+    q = Query(
+        cc=CommandContext(),
+        provider_choices=ProviderChoices(provider="fmp"),
+        standard_params=_Std(),
+        extra_params=ExtraParams(),
+    )
+    q.extra_params = None
+    executor = AsyncMock()
+    executor.execute = AsyncMock(return_value="done")
+    q.provider_interface = MagicMock()
+    q.provider_interface.create_executor.return_value = executor
+
+    out = await q.execute()
+
+    assert out == "done"
+    kwargs = executor.execute.await_args.kwargs
+    assert kwargs["params"] == {"symbol": "MSFT"}

@@ -14,6 +14,12 @@ if TYPE_CHECKING:
 provider_interface = ProviderInterface()
 
 
+def _model_fields(model_or_cls: Any):
+    """Return pydantic model fields from either a class or an instance."""
+    model_cls = model_or_cls if isinstance(model_or_cls, type) else type(model_or_cls)
+    return model_cls.model_fields
+
+
 def get_route_callable(app: "BaseApp", route: str) -> Callable:
     """Get the callable for a route."""
     # TODO: Add return typing Optional[Callable] to this function. First need to
@@ -89,7 +95,7 @@ def create_combined_model(
     model = create_model(model_name, **combined_fields)
 
     # # Clean up the metadata
-    for field in model.model_fields.values():
+    for field in _model_fields(model).values():
         if hasattr(field, "metadata"):
             field.metadata = None
 
