@@ -132,12 +132,12 @@ jobs:
       - name: Run integration tests with subprocess coverage
         env:
           COVERAGE_PROCESS_START: ${{ github.workspace }}/openbb_platform/core/.coveragerc
+          COVERAGE_FILE: .coverage.integration
         run: |
-          # Parent process: `coverage run` records its own data file.
-          # Child processes (spawned by run_in_obb / openbb-build): the
-          # sitecustomize shim above + COVERAGE_PROCESS_START make each
-          # write a parallel `.coverage.<host>.<pid>.<rand>` file into CWD.
-          coverage run --rcfile=.coveragerc -m pytest integration -m integration -v
+          # Run pytest directly. Child interpreters are instrumented via
+          # COVERAGE_PROCESS_START + sitecustomize and write parallel
+          # `.coverage.*` files in CWD.
+          pytest integration -m integration -v
           coverage combine
           coverage report --rcfile=.coveragerc
           coverage xml --rcfile=.coveragerc -o coverage-integration.xml
