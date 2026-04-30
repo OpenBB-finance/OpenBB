@@ -1,14 +1,21 @@
 """Test the provider helpers."""
 
+import asyncio
+import datetime as dt
+
 import pytest
 
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.helpers import (
     amake_request,
     amake_requests,
+    check_item,
+    filter_by_dates,
     get_querystring,
     get_requests_session,
     make_request,
+    maybe_coroutine,
+    run_async,
     to_snake_case,
 )
 
@@ -163,6 +170,16 @@ def test_safe_fromtimestamp_windows_negative_branch(monkeypatch):
     monkeypatch.setattr(helpers, "os", type("FakeOs", (), {"name": "nt"}))
     out = helpers.safe_fromtimestamp(-3600, tz=timezone.utc)
     assert out.year == 1969
+
+
+def test_check_item_suggests_similar():
+    with pytest.raises(ValueError, match="Did you mean 'apple'"):
+        check_item("appl", ["apple", "banana"])
+
+
+def test_check_item_no_similar_message():
+    with pytest.raises(ValueError, match="'zzz' is not available\\."):
+        check_item("zzz", ["apple", "banana"], threshold=0.99)
 
 
 # --- to_snake_case ---
@@ -432,3 +449,315 @@ def test_get_async_requests_session_with_basic_auth_and_cookies():
         await s.close()
 
     asyncio.run(_go())
+
+
+def test_get_requests_session_verify_false_and_auth_and_cookies(monkeypatch):
+    from openbb_core.provider.utils import helpers
+
+    monkeypatch.setattr(
+        helpers,
+        "get_python_request_settings",
+        lambda: {
+            "verify_ssl": False,
+            "cookies": {"k": "v"},
+            "auth": ["u", "p"],
+        },
+    )
+    sess = helpers.get_requests_session()
+    assert sess.verify is False
+    assert sess.cookies.get("k") == "v"
+    assert sess.auth == ("u", "p")
+
+
+def test_get_requests_session_combine_certs_and_cert_tuple(monkeypatch, tmp_path):
+    from openbb_core.provider.utils import helpers
+
+    cert = tmp_path / "ca.pem"
+    key = tmp_path / "key.pem"
+    cert.write_text("CERT")
+    key.write_text("KEY")
+    monkeypatch.setattr(
+        helpers,
+        "get_python_request_settings",
+        lambda: {"cafile": str(cert), "certfile": str(cert), "keyfile": str(key)},
+    )
+    monkeypatch.setattr(helpers, "combine_certificates", lambda *_a, **_k: "combined")
+    monkeypatch.delenv("REQUESTS_CA_BUNDLE", raising=False)
+    sess = helpers.get_requests_session()
+    assert sess.verify == "combined"
+    assert sess.cert == (str(cert), str(key))
+
+
+def test_get_requests_session_proxies_and_kwargs_update(monkeypatch):
+    from openbb_core.provider.utils import helpers
+
+    monkeypatch.setattr(helpers, "get_python_request_settings", lambda: {"headers": {}})
+    monkeypatch.setenv("HTTP_PROXY", "http://same")
+    monkeypatch.setenv("HTTPS_PROXY", "http://same")
+    sess = helpers.get_requests_session(params={"a": 1})
+    assert sess.proxies["http"] == "http://same"
+    assert sess.proxies["https"] == "http://same"
+    assert sess.params["a"] == 1
+
+
+def test_get_requests_session_kwargs_attribute_error_branch(monkeypatch):
+    from openbb_core.provider.utils import helpers
+
+    class _Bad:
+        headers = {}
+        trust_env = True
+        proxies = {}
+        verify = True
+        cert = None
+        cookies = {}
+        auth = None
+
+        @property
+        def ro(self):
+            return 1
+
+    monkeypatch.setattr(helpers, "get_python_request_settings", lambda: {})
+    monkeypatch.setattr("requests.Session", _Bad)
+    sess = helpers.get_requests_session(ro=2)
+    assert sess.trust_env is False
+
+
+def test_get_async_requests_session_ssl_context_from_settings(monkeypatch, tmp_path):
+    import asyncio
+    import subprocess
+
+    from openbb_core.provider.utils import helpers as H
+
+    cert = tmp_path / "cert.pem"
+    key = tmp_path / "key.pem"
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "openssl",
+            "req",
+            "-x509",
+            "-newkey",
+            "rsa:2048",
+            "-keyout",
+            str(key),
+            "-out",
+            str(cert),
+            "-days",
+            "1",
+            "-nodes",
+            "-subj",
+            "/CN=test",
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+    monkeypatch.setattr(
+        H,
+        "get_python_request_settings",
+        lambda: {"cafile": str(cert), "certfile": str(cert), "keyfile": str(key)},
+    )
+
+    async def _go():
+        s = await H.get_async_requests_session()
+        await s.close()
+
+    asyncio.run(_go())
+
+
+def test_get_async_requests_session_cookiejar_branch(monkeypatch):
+    import asyncio
+
+    import aiohttp
+
+    from openbb_core.provider.utils import helpers as H
+
+    monkeypatch.setattr(H, "get_python_request_settings", lambda: {})
+
+    async def _go():
+        jar = aiohttp.CookieJar()
+        jar.update_cookies({"k": "v"})
+        s = await H.get_async_requests_session(cookies=jar)
+        await s.close()
+
+    asyncio.run(_go())
+
+
+def test_get_async_requests_session_atexit_closes_orphan(monkeypatch):
+    import asyncio
+
+    from openbb_core.provider.utils import helpers as H
+
+    monkeypatch.setattr(H, "get_python_request_settings", lambda: {})
+    captured = {}
+
+    def _register(fn, session):
+        captured["fn"] = fn
+        captured["session"] = session
+
+    monkeypatch.setattr("atexit.register", _register)
+    called = {"closed": 0}
+    monkeypatch.setattr(H, "run_async", lambda fn: called.__setitem__("closed", called["closed"] + 1))
+
+    async def _go():
+        s = await H.get_async_requests_session()
+        captured["fn"](s)
+        await s.close()
+
+    asyncio.run(_go())
+    assert called["closed"] >= 1
+
+
+@pytest.mark.asyncio
+async def test_amake_requests_skips_falsey_results(monkeypatch):
+    async def _gather(*_args, **_kwargs):
+        return [None, {}, [], {"ok": True}]
+
+    class _S:
+        async def close(self):
+            return None
+
+    from openbb_core.provider.utils import helpers
+
+    async def _session_factory(**_k):
+        return _S()
+
+    monkeypatch.setattr(asyncio, "gather", _gather)
+    monkeypatch.setattr(helpers, "get_async_requests_session", _session_factory)
+    out = await helpers.amake_requests(["a", "b"])
+    assert out == [{"ok": True}]
+
+
+def test_combine_certificates_file_not_found():
+    from openbb_core.provider.utils.helpers import combine_certificates
+
+    with pytest.raises(FileNotFoundError):
+        combine_certificates("/no/such/cert.pem")
+
+
+def test_combine_certificates_returns_same_for_combined_suffix(tmp_path):
+    from openbb_core.provider.utils.helpers import combine_certificates
+
+    cert = tmp_path / "ca_combined.pem"
+    cert.write_text("CERT")
+    assert combine_certificates(str(cert)) == str(cert)
+
+
+def test_combine_certificates_returns_existing_combined_file(tmp_path):
+    from openbb_core.provider.utils.helpers import combine_certificates
+
+    cert = tmp_path / "ca.pem"
+    cert.write_text("CERT")
+    combined = tmp_path / "ca_combined.pem"
+    combined.write_text("COMBINED")
+    assert combine_certificates(str(cert)) == str(combined)
+
+
+def test_make_request_timeout_from_preferences(monkeypatch):
+    captured = {}
+
+    class _S:
+        def get(self, *_a, **kwargs):
+            captured["timeout"] = kwargs["timeout"]
+            return MockResponse()
+
+        def post(self, *_a, **_k):
+            return MockResponse()
+
+    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_python_request_settings", lambda: {})
+    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S())
+    make_request("http://mock.url", preferences={"request_timeout": 2})
+    assert captured["timeout"] == 2
+
+
+def test_make_request_timeout_from_python_settings(monkeypatch):
+    captured = {}
+
+    class _S:
+        def get(self, *_a, **kwargs):
+            captured["timeout"] = kwargs["timeout"]
+            return MockResponse()
+
+        def post(self, *_a, **_k):
+            return MockResponse()
+
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.helpers.get_python_request_settings",
+        lambda: {"timeout": 3, "headers": {}},
+    )
+    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S())
+    make_request("http://mock.url")
+    assert captured["timeout"] == 3
+
+
+def test_make_request_post_branch(monkeypatch):
+    called = {"post": 0}
+
+    class _S:
+        def get(self, *_a, **_k):
+            return MockResponse()
+
+        def post(self, *_a, **_k):
+            called["post"] += 1
+            return MockResponse()
+
+    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_python_request_settings", lambda: {})
+    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S())
+    resp = make_request("http://mock.url", method="POST")
+    assert resp.status_code == 200
+    assert called["post"] == 1
+
+
+@pytest.mark.asyncio
+async def test_maybe_coroutine_both_paths():
+    def _sync(x):
+        return x + 1
+
+    async def _async(x):
+        return x + 2
+
+    assert await maybe_coroutine(_sync, 1) == 2
+    assert await maybe_coroutine(_async, 1) == 3
+
+
+def test_run_async_sync_path():
+    assert run_async(lambda x: x + 1, 2) == 3
+
+
+def test_run_async_async_path():
+    async def _coro(x):
+        return x + 1
+
+    assert run_async(_coro, 2) == 3
+
+
+class _Item:
+    def __init__(self, dt):
+        self.date = dt
+
+
+def test_filter_by_dates_no_bounds_returns_input():
+    data = [_Item(dt.date(2024, 1, 1))]
+    assert filter_by_dates(data) == data
+
+
+def test_filter_by_dates_start_and_end():
+    data = [_Item(dt.date(2024, 1, 1)), _Item(dt.date(2024, 2, 1))]
+    out = filter_by_dates(
+        data, start_date=dt.date(2024, 1, 15), end_date=dt.date(2024, 2, 2)
+    )
+    assert len(out) == 1
+
+
+def test_filter_by_dates_only_start():
+    data = [_Item(dt.date(2024, 1, 1)), _Item(dt.datetime(2024, 2, 1))]
+    out = filter_by_dates(data, start_date=dt.date(2024, 2, 1))
+    assert len(out) == 1
+
+
+def test_filter_by_dates_only_end_and_missing_date():
+    class _NoDate:
+        pass
+
+    data = [_Item(dt.date(2024, 3, 1)), _NoDate()]
+    out = filter_by_dates(data, end_date=dt.date(2024, 2, 1))
+    assert out == []

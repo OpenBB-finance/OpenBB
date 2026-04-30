@@ -125,6 +125,15 @@ def test_parameters_builder_get_polished_func(input_func, expected_annotations):
     assert polished_func.__signature__ == input_func.__signature__  # type: ignore[attr-defined]
 
 
+def test_parameters_builder_get_polished_func_removes_authenticated_user_settings():
+    def _f(a: int, __authenticated_user_settings=None):
+        return a
+
+    polished = ParametersBuilder.get_polished_func(_f)
+    names = [p.name for p in polished.__signature__.parameters.values()]
+    assert "__authenticated_user_settings" not in names
+
+
 @pytest.mark.parametrize(
     "input_func, expected_params",
     [
@@ -171,6 +180,20 @@ def test_parameters_builder_merge_args_and_kwargs(
     )
 
     assert result == expected_result
+
+
+def test_parameters_builder_merge_args_and_kwargs_skips_existing_parameter_key():
+    def _f(a: int, **kwargs):
+        return a
+
+    result = ParametersBuilder.merge_args_and_kwargs(
+        _f,
+        (),
+        {"a": 1, "kwargs": {"a": 99, "x": 2}, "x": 3, "filter_query": "q"},
+    )
+    assert result["a"] == 99
+    assert result["x"] == 3
+    assert "filter_query" not in result
 
 
 @pytest.mark.parametrize(
@@ -252,6 +275,14 @@ def test_parameters_builder__warn_kwargs(extra_params, base, expect):
         assert len(warning_info) > 0
     else:
         ParametersBuilder._warn_kwargs(extra_params, Model)
+
+
+def test_parameters_builder_as_dict_exception_path():
+    class _Bad:
+        def __iter__(self):
+            raise RuntimeError("boom")
+
+    assert ParametersBuilder._as_dict(_Bad()) == {}
 
 
 def test_parameters_builder_build(mock_func, execution_context):

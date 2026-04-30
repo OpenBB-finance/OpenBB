@@ -1,5 +1,6 @@
 """Tests for the OBBject class."""
 
+import runpy
 from unittest.mock import MagicMock
 
 import pytest
@@ -420,3 +421,51 @@ def test_to_dict_list_orient_removes_index_key():
         out = co.to_dict(orient="list")
 
     assert "index" not in out
+
+
+def test_to_df_alias_calls_to_dataframe():
+    co: OBBject = OBBject(results=[{"a": [1]}])
+    out = co.to_df(index=None)
+    assert isinstance(out, pd.DataFrame)
+
+
+def test_to_dataframe_dict_double_valueerror_falls_back_to_series(monkeypatch):
+    calls = {"n": 0}
+    original = pd.DataFrame.from_dict
+
+    def _boom(*args, **kwargs):
+        calls["n"] += 1
+        if calls["n"] <= 2:
+            raise ValueError("fail")
+        return original(*args, **kwargs)
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr(pd.DataFrame, "from_dict", _boom)
+        co: OBBject = OBBject(results={"a": 1})
+        out = co.to_dataframe(index=None)
+        assert list(out.columns) == ["index", "values"]
+
+
+def test_to_dataframe_wraps_valueerror_in_openbb_error(monkeypatch):
+    def _raise_value_error(*args, **kwargs):
+        raise ValueError("boom")
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr(pd.DataFrame, "sort_index", _raise_value_error)
+        co: OBBject = OBBject(results=[{"a": [1]}])
+        with pytest.raises(OpenBBError, match="ValueError: boom"):
+            co.to_dataframe(index=None)
+
+
+def test_obbject_module_polars_importerror_sets_none():
+    original_import = __import__
+
+    def _fake_import(name, *args, **kwargs):
+        if name == "polars":
+            raise ImportError("forced")
+        return original_import(name, *args, **kwargs)
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr("builtins.__import__", _fake_import)
+        module_ns = runpy.run_module("openbb_core.app.model.obbject", run_name="__test_obbject_polars__")
+        assert module_ns["PolarsDataFrame"] is None
