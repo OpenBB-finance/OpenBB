@@ -457,7 +457,7 @@ def test_to_dataframe_wraps_valueerror_in_openbb_error(monkeypatch):
             co.to_dataframe(index=None)
 
 
-def test_obbject_module_polars_importerror_sets_none():
+def test_obbject_module_polars_importerror_has_no_runtime_alias():
     original_import = __import__
 
     def _fake_import(name, *args, **kwargs):
@@ -470,7 +470,7 @@ def test_obbject_module_polars_importerror_sets_none():
         module_ns = runpy.run_module(
             "openbb_core.app.model.obbject", run_name="__test_obbject_polars__"
         )
-        assert module_ns["PolarsDataFrame"] is None
+        assert "PolarsDataFrame" not in module_ns
 
 
 def test_to_polars_uses_polars_from_pandas(monkeypatch):
