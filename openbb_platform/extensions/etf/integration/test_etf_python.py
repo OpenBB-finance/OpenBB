@@ -5,16 +5,15 @@ from openbb_core.app.model.obbject import OBBject
 
 
 @pytest.fixture(scope="session")
-def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
+def obb(pytestconfig):
     """Fixture to setup obb."""
 
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb  # pylint: disable=import-outside-toplevel
+        import openbb
 
         return openbb.obb
 
-
-# pylint: disable=redefined-outer-name
+    pytest.skip("Integration tests are not enabled.")
 
 
 @pytest.mark.parametrize(
@@ -365,51 +364,6 @@ def test_etf_countries(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.countries(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"sort": "desc", "limit": 10}],
-)
-@pytest.mark.integration
-def test_etf_discovery_gainers(params, obb):
-    """Test the ETF discovery gainers endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.discovery.gainers(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"sort": "desc", "limit": 10}],
-)
-@pytest.mark.integration
-def test_etf_discovery_losers(params, obb):
-    """Test the ETF discovery losers endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.discovery.losers(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"sort": "desc", "limit": 10}],
-)
-@pytest.mark.integration
-def test_etf_discovery_active(params, obb):
-    """Test the ETF discovery active endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.discovery.active(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

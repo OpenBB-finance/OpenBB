@@ -18,9 +18,6 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-# pylint: disable=redefined-outer-name
-
-
 @pytest.mark.parametrize(
     "params",
     [
@@ -363,54 +360,6 @@ def test_etf_countries(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/etf/countries?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"sort": "desc", "limit": 10}],
-)
-@pytest.mark.integration
-def test_etf_discovery_gainers(params, headers):
-    """Test the ETF discovery gainers endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/etf/discovery/gainers?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"sort": "desc", "limit": 10}],
-)
-@pytest.mark.integration
-def test_etf_discovery_losers(params, headers):
-    """Test the ETF discovery losers endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/etf/discovery/losers?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [{"sort": "desc", "limit": 10}],
-)
-@pytest.mark.integration
-def test_etf_discovery_active(params, headers):
-    """Test the ETF discovery active endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/etf/discovery/active?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

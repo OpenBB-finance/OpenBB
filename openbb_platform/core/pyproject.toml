@@ -28,7 +28,7 @@ pandas = ["pandas>=1.5.3"]
 openbb-build = "openbb_core.build:main"
 
 [dependency-groups]
-dev = ["openbb-devtools"]
+dev = ["openbb-devtools>=2.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -36,6 +36,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["openbb_core", "openbb"]
+
+[tool.uv.sources]
+openbb-devtools = { path = "../extensions/devtools", editable = true }
 
 [tool.hatch.build.targets.sdist]
 include = [
