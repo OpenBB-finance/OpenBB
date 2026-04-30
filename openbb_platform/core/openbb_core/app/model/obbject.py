@@ -24,7 +24,7 @@ from openbb_core.provider.abstract.data import Data
 if TYPE_CHECKING:
     from numpy import ndarray
     from pandas import DataFrame
-    from polars import DataFrame as PolarsDataFrame
+    from polars import DataFrame as PolarsDataFrame  # ty: ignore[unresolved-import]
 
     from openbb_core.app.query import Query
 

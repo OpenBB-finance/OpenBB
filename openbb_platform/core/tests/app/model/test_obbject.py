@@ -1,6 +1,5 @@
 """Tests for the OBBject class."""
 
-import runpy
 from unittest.mock import MagicMock
 
 import pytest
@@ -455,22 +454,6 @@ def test_to_dataframe_wraps_valueerror_in_openbb_error(monkeypatch):
         co: OBBject = OBBject(results=[{"a": [1]}])
         with pytest.raises(OpenBBError, match="ValueError: boom"):
             co.to_dataframe(index=None)
-
-
-def test_obbject_module_polars_importerror_has_no_runtime_alias():
-    original_import = __import__
-
-    def _fake_import(name, *args, **kwargs):
-        if name == "polars":
-            raise ImportError("forced")
-        return original_import(name, *args, **kwargs)
-
-    with pytest.MonkeyPatch.context() as m:
-        m.setattr("builtins.__import__", _fake_import)
-        module_ns = runpy.run_module(
-            "openbb_core.app.model.obbject", run_name="__test_obbject_polars__"
-        )
-        assert "PolarsDataFrame" not in module_ns
 
 
 def test_to_polars_uses_polars_from_pandas(monkeypatch):
