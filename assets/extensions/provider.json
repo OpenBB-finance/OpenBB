@@ -242,14 +242,6 @@
         "website": "https://seekingalpha.com"
     },
     {
-        "packageName": "openbb-stockgrid",
-        "optional": true,
-        "reprName": "Stockgrid",
-        "description": "Stockgrid gives you a detailed view of what smart money is doing.\nGet in depth data about large option blocks being traded, including\nthe sentiment score, size, volume and order type. Stop guessing and\nbuild a strategy around the number 1 factor moving the market: money.",
-        "credentials": [],
-        "website": "https://www.stockgrid.io"
-    },
-    {
         "packageName": "openbb-tiingo",
         "optional": false,
         "reprName": "Tiingo",

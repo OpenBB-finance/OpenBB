@@ -1650,21 +1650,6 @@ def test_equity_shorts_fails_to_deliver(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "provider": "stockgrid"}],
-)
-@pytest.mark.integration
-def test_equity_shorts_short_volume(params, obb):
-    """Test the equity shorts short volume endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.shorts.short_volume(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
     [{"symbol": "AAPL", "provider": "finra"}],
 )
 @pytest.mark.integration

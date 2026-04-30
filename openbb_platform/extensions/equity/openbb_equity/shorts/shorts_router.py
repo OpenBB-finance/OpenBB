@@ -32,7 +32,6 @@ async def fails_to_deliver(
 
 @router.command(
     model="ShortVolume",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "stockgrid"})],
 )
 async def short_volume(
     cc: CommandContext,
