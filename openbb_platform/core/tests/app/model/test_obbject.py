@@ -467,5 +467,7 @@ def test_obbject_module_polars_importerror_sets_none():
 
     with pytest.MonkeyPatch.context() as m:
         m.setattr("builtins.__import__", _fake_import)
-        module_ns = runpy.run_module("openbb_core.app.model.obbject", run_name="__test_obbject_polars__")
+        module_ns = runpy.run_module(
+            "openbb_core.app.model.obbject", run_name="__test_obbject_polars__"
+        )
         assert module_ns["PolarsDataFrame"] is None

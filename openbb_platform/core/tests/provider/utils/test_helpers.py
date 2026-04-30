@@ -596,7 +596,9 @@ def test_get_async_requests_session_atexit_closes_orphan(monkeypatch):
 
     monkeypatch.setattr("atexit.register", _register)
     called = {"closed": 0}
-    monkeypatch.setattr(H, "run_async", lambda fn: called.__setitem__("closed", called["closed"] + 1))
+    monkeypatch.setattr(
+        H, "run_async", lambda fn: called.__setitem__("closed", called["closed"] + 1)
+    )
 
     async def _go():
         s = await H.get_async_requests_session()
@@ -663,8 +665,12 @@ def test_make_request_timeout_from_preferences(monkeypatch):
         def post(self, *_a, **_k):
             return MockResponse()
 
-    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_python_request_settings", lambda: {})
-    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S())
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.helpers.get_python_request_settings", lambda: {}
+    )
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S()
+    )
     make_request("http://mock.url", preferences={"request_timeout": 2})
     assert captured["timeout"] == 2
 
@@ -684,7 +690,9 @@ def test_make_request_timeout_from_python_settings(monkeypatch):
         "openbb_core.provider.utils.helpers.get_python_request_settings",
         lambda: {"timeout": 3, "headers": {}},
     )
-    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S())
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S()
+    )
     make_request("http://mock.url")
     assert captured["timeout"] == 3
 
@@ -700,8 +708,12 @@ def test_make_request_post_branch(monkeypatch):
             called["post"] += 1
             return MockResponse()
 
-    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_python_request_settings", lambda: {})
-    monkeypatch.setattr("openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S())
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.helpers.get_python_request_settings", lambda: {}
+    )
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.helpers.get_requests_session", lambda **_k: _S()
+    )
     resp = make_request("http://mock.url", method="POST")
     assert resp.status_code == 200
     assert called["post"] == 1

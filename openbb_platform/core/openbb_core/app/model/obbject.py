@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from numpy import ndarray  # noqa
     from pandas import DataFrame  # noqa
     from openbb_core.app.query import Query  # noqa
-    from polars import DataFrame as PolarsDataFrame  # noqa
+    from typing import Any as PolarsDataFrame  # noqa
 else:
     try:
         from polars import DataFrame as PolarsDataFrame

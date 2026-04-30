@@ -45,8 +45,12 @@ def test_commands_module_imports_charting_when_installed(monkeypatch):
             return []
 
     with pytest.MonkeyPatch.context() as m:
-        m.setattr(utils_optional, "is_installed", lambda name: name == "openbb_charting")
-        m.setitem(sys.modules, "openbb_charting", type("M", (), {"Charting": _Charting})())
+        m.setattr(
+            utils_optional, "is_installed", lambda name: name == "openbb_charting"
+        )
+        m.setitem(
+            sys.modules, "openbb_charting", type("M", (), {"Charting": _Charting})()
+        )
         module_ns = runpy.run_module(
             "openbb_core.api.router.commands", run_name="__test_commands_charting__"
         )
