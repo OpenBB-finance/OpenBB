@@ -196,9 +196,6 @@ def test_basemodel_to_df_with_date_index():
     assert df.index.name == "date"
 
 
-# --- df_to_basemodel ---
-
-
 def test_df_to_basemodel_with_date_only_column_keeps_date_format():
     df = pd.DataFrame(
         {
@@ -227,9 +224,6 @@ def test_df_to_basemodel_with_named_index_resets():
     assert hasattr(out[0], "x")
 
 
-# --- list_to_basemodel ---
-
-
 def test_list_to_basemodel_with_data_subclass_instance():
     class SubData(Data):
         custom: str = ""
@@ -242,9 +236,6 @@ def test_list_to_basemodel_with_data_subclass_instance():
 def test_list_to_basemodel_unsupported_type_raises():
     with pytest.raises(ValueError, match="Unsupported list item type"):
         list_to_basemodel([object()])
-
-
-# --- dict_to_basemodel ---
 
 
 def test_dict_to_basemodel_validation_error_raises_value_error(monkeypatch):
@@ -262,15 +253,9 @@ def test_dict_to_basemodel_validation_error_raises_value_error(monkeypatch):
         dict_to_basemodel({"x": 1})
 
 
-# --- ndarray_to_basemodel ---
-
-
 def test_ndarray_to_basemodel_non_2d_raises():
     with pytest.raises(ValueError, match="Only 2D arrays"):
         ndarray_to_basemodel(np.array([1, 2, 3]))
-
-
-# --- convert_to_basemodel dispatch ---
 
 
 def test_convert_to_basemodel_data_passthrough():
@@ -313,9 +298,6 @@ def test_convert_to_basemodel_unsupported_raises():
         convert_to_basemodel(object())
 
 
-# --- get_target_column / get_target_columns ---
-
-
 def test_get_target_column_missing_raises_with_choices():
     df = pd.DataFrame({"a": [1], "b": [2]})
     with pytest.raises(ValueError, match="Choose from"):
@@ -326,9 +308,6 @@ def test_get_target_columns_returns_dataframe_with_requested_columns():
     df = pd.DataFrame({"a": [1, 2], "b": [3, 4], "c": [5, 6]})
     out = get_target_columns(df, ["a", "c"])
     assert list(out.columns) == ["a", "c"]
-
-
-# --- get_user_cache_directory ---
 
 
 def test_get_user_cache_directory_reads_preferences(tmp_path, monkeypatch):

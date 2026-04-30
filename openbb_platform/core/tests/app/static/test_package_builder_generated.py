@@ -44,10 +44,6 @@ from openbb_core.app.router import Router, RouterLoader
 from openbb_core.app.static.package_builder import PackageBuilder
 from openbb_core.provider.registry_map import RegistryMap
 
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
-
 
 def _reset_provider_interface() -> None:
     """Drop the ``ProviderInterface`` singleton so the next call rebuilds it."""
@@ -149,11 +145,6 @@ def built_multi_provider_dir(tmp_path: Path, multi_provider_router: Router) -> P
     return _build(tmp_path)
 
 
-# ---------------------------------------------------------------------------
-# 1. Generated files are valid Python
-# ---------------------------------------------------------------------------
-
-
 def _emitted_py_files(package_dir: Path) -> list[Path]:
     return sorted((package_dir / "package").glob("*.py"))
 
@@ -203,11 +194,6 @@ def test_init_module_is_emitted(built_package_dir):
     init = built_package_dir / "package" / "__init__.py"
     assert init.exists()
     assert "AUTO-GENERATED" in init.read_text()
-
-
-# ---------------------------------------------------------------------------
-# 2. Generated package imports and exposes the expected API
-# ---------------------------------------------------------------------------
 
 
 def _import_module_from_path(name: str, path: Path) -> Any:
@@ -299,11 +285,6 @@ def test_generated_command_dispatches_to_container_run(
     assert route_path == "/test/fake_command", (
         f"Expected route path '/test/fake_command', got {route_path!r}"
     )
-
-
-# ---------------------------------------------------------------------------
-# 3. Behavioral contract: provider routing, dispatch payload, sub-routers
-# ---------------------------------------------------------------------------
 
 
 def _locate_container_class(package_dir: Path, method_name: str):
@@ -531,11 +512,6 @@ def test_build_is_deterministic(tmp_path: Path, fake_router: Router):
         )
 
 
-# ---------------------------------------------------------------------------
-# 4. Special command shapes: multiple commands per router, deprecation, raw
-# ---------------------------------------------------------------------------
-
-
 def test_router_with_two_commands_emits_both_methods(
     isolated_provider_interface, fake_model_name, install_router, tmp_path: Path
 ):
@@ -621,10 +597,6 @@ def test_command_without_model_emits_user_signature(
     )
 
 
-# ---------------------------------------------------------------------------
-# 6. End-to-end: dependency injection wires through the generated module
-# ---------------------------------------------------------------------------
-#
 # These tests build the *real* package against a router that carries both
 # router-level and param-level FastAPI ``Depends(...)``, then read the
 # emitted ``.py`` file off disk and assert the DI wiring shows up in the

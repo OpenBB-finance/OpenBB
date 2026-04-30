@@ -43,10 +43,6 @@ from openbb_core.app.static.package_builder import (
     PathHandler,
 )
 
-# ---------------------------------------------------------------------------
-# Test helpers / sample dependencies
-# ---------------------------------------------------------------------------
-
 
 class MockDep:
     """Plain return type used by the safe sample dependency."""
@@ -72,11 +68,6 @@ def make_param(annotation):
         return None
 
     return signature(_fn).parameters["x"]
-
-
-# ---------------------------------------------------------------------------
-# 1. filter_hint_type_list — skips Depends instances and Annotated[Depends]
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture(scope="module")
@@ -127,11 +118,6 @@ def test_filter_hint_type_list_keeps_annotated_without_depends(import_def):
     assert annotated_without_depends in output
 
 
-# ---------------------------------------------------------------------------
-# 2. get_function_hint_type_list — extracts meta.dependency for the import list
-# ---------------------------------------------------------------------------
-
-
 def test_get_function_hint_type_list_extracts_param_dependency(import_def):
     """Param-level ``Depends(get_mock_dep)`` must surface ``get_mock_dep`` for import."""
 
@@ -150,11 +136,6 @@ def test_get_function_hint_type_list_extracts_param_dependency(import_def):
         "param-level Depends(get_mock_dep) must add the dep callable to the "
         f"import list; got {hints!r}"
     )
-
-
-# ---------------------------------------------------------------------------
-# 3. Router-level dependencies — discovery + rendering
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture

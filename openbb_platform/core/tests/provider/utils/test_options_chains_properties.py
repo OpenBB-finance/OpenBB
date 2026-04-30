@@ -27,11 +27,6 @@ from openbb_core.provider.standard_models.options_chains import OptionsChainsDat
 requires_pandas = pytest.mark.requires_pandas
 
 
-# ---------------------------------------------------------------------------
-# Pandas-missing guard (runs without pandas installed)
-# ---------------------------------------------------------------------------
-
-
 def test_dataframe_raises_clear_error_without_pandas(monkeypatch):
     """``dataframe`` must surface an actionable install hint when pandas is gone."""
     real_import = builtins.__import__
@@ -57,11 +52,6 @@ def test_dataframe_raises_clear_error_without_pandas(monkeypatch):
     )
     with pytest.raises(OpenBBError, match=r"openbb-core\[pandas\]"):
         _ = data.dataframe
-
-
-# ---------------------------------------------------------------------------
-# DataFrame analytics — require pandas
-# ---------------------------------------------------------------------------
 
 
 def _build_chain(

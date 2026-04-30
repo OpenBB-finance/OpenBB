@@ -194,9 +194,6 @@ def test_check_item_no_similar_message():
         check_item("zzz", ["apple", "banana"], threshold=0.99)
 
 
-# --- to_snake_case ---
-
-
 def test_to_snake_case_collapses_double_underscores():
     from openbb_core.provider.utils.helpers import to_snake_case
 
@@ -207,9 +204,6 @@ def test_to_snake_case_replaces_spaces():
     from openbb_core.provider.utils.helpers import to_snake_case
 
     assert "_" in to_snake_case("Hello World")
-
-
-# --- combine_certificates: exception path ---
 
 
 def test_combine_certificates_returns_cert_on_write_failure(tmp_path, monkeypatch):
@@ -254,9 +248,6 @@ def test_combine_certificates_uses_certifi_when_no_bundle(tmp_path, monkeypatch)
     assert out_path.exists()
     assert "DEFAULT-BUNDLE" in out_path.read_text()
     out_path.unlink(missing_ok=True)
-
-
-# --- get_async_requests_session ---
 
 
 def test_get_async_requests_session_returns_provided_session():
@@ -346,9 +337,6 @@ def test_get_async_requests_session_with_timeout_int(monkeypatch):
             await s.close()
 
     asyncio.run(_run())
-
-
-# --- amake_requests exception aggregation ---
 
 
 def test_amake_requests_raises_first_exception_when_no_results(monkeypatch):

@@ -32,11 +32,6 @@ def sample_payload() -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
-# Pure-Python column → row serializer
-# ---------------------------------------------------------------------------
-
-
 class TestModelSerializer:
     """Cover ``OptionsChainsData.model_serialize`` row-record output."""
 
@@ -120,11 +115,6 @@ class TestModelSerializer:
         dumped = data.model_dump()
 
         assert dumped[0]["expiration"] == date(2030, 1, 17)
-
-
-# ---------------------------------------------------------------------------
-# OpenAPI / JSON schema fidelity
-# ---------------------------------------------------------------------------
 
 
 class TestOpenAPISchema:
@@ -244,11 +234,6 @@ class TestOpenAPISchema:
             f"Missing from row: {model_fields - row_props}; "
             f"Extra in row: {row_props - model_fields}"
         )
-
-
-# ---------------------------------------------------------------------------
-# Pandas-free import / construction
-# ---------------------------------------------------------------------------
 
 
 def test_options_chains_data_constructs_without_pandas(monkeypatch):

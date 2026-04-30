@@ -27,8 +27,6 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.registry import Registry
 from openbb_core.provider.registry_map import RegistryMap
 
-# --- _snake_case ---
-
 
 def test_snake_case_camel_to_snake():
     assert MethodDefinition._snake_case("MyClassName") == "my_class_name"
@@ -51,9 +49,6 @@ def test_snake_case_acronym_followed_by_lowercase():
     out = MethodDefinition._snake_case("HTTPResponse")
     assert "http" in out
     assert "response" in out
-
-
-# --- _is_none_like_return ---
 
 
 def test_is_none_like_return_none_type():
@@ -83,9 +78,6 @@ def test_is_none_like_return_optional_int_is_false():
 
 def test_is_none_like_return_union_of_nones_is_true():
     assert MethodDefinition._is_none_like_return(None | type(None)) is True
-
-
-# --- _has_request_bound_annotation ---
 
 
 def test_has_request_bound_annotation_request_type():
@@ -123,9 +115,6 @@ def test_has_request_bound_annotation_annotated_request():
         MethodDefinition._has_request_bound_annotation(Annotated[Request, "meta"])
         is True
     )
-
-
-# --- _is_safe_dependency ---
 
 
 def test_is_safe_dependency_safe_function():
@@ -194,9 +183,6 @@ def test_is_safe_dependency_signature_error():
     assert MethodDefinition._is_safe_dependency(object()) is False
 
 
-# --- _dependency_identifier ---
-
-
 def test_dependency_identifier_uses_return_annotation_class():
     class MyService:
         pass
@@ -219,9 +205,6 @@ def test_dependency_identifier_falls_back_to_func_name():
         return None
 
     assert MethodDefinition._dependency_identifier(my_dep_func) == "my_dep_func"
-
-
-# --- get_extra ---
 
 
 def test_get_extra_returns_empty_dict_when_no_default():
@@ -298,9 +281,6 @@ def test_get_deprecation_message(monkeypatch):
     assert MethodDefinition.get_deprecation_message("/x") == "deprecated msg"
 
 
-# --- _parse_docstring_params ---
-
-
 def test_parse_docstring_params_extracts_descriptions():
     def f():
         """Do nothing.
@@ -338,9 +318,6 @@ def test_parse_docstring_params_no_docstring_returns_empty():
         return None
 
     assert MethodDefinition._parse_docstring_params(f) == {}
-
-
-# --- reorder_params ---
 
 
 def test_reorder_params_for_signature_provider_at_end():
@@ -383,9 +360,6 @@ def test_reorder_params_no_provider_unchanged_order():
     assert list(out.keys()) == ["a", "b"]
 
 
-# --- get_expanded_type ---
-
-
 def test_get_expanded_type_no_extra_returns_default():
     out = MethodDefinition.get_expanded_type("symbol")
     # No expansion match, no extras -> ellipsis
@@ -417,9 +391,6 @@ def test_get_expanded_type_multiple_items_requires_original_type():
             extra={"fmp": {"multiple_items_allowed": True}},
             original_type=None,
         )
-
-
-# --- is_annotated_dc ---
 
 
 def test_is_annotated_dc_true_for_annotated_dataclass():
@@ -652,9 +623,6 @@ def test_add_field_custom_annotations_skips_params_not_in_fields(
     MethodDefinition.add_field_custom_annotations(od, model_name="RichModel")
     # unchanged
     assert od["unknown_param"].annotation.__metadata__[0].description == "orig"
-
-
-# --- _format_annotated_param: Pydantic body model expansion (lines 445-472) ---
 
 
 def test_format_annotated_param_pydantic_body_expands_fields():

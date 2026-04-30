@@ -123,9 +123,6 @@ def test_repr_includes_class_name():
     assert "OBBject" in r
 
 
-# --- additional branch coverage ---
-
-
 class _ListFieldModel(BaseModel):
     """A model whose serialized dict has all list values."""
 
@@ -205,9 +202,6 @@ def test_to_llm_returns_json_string():
     assert '"a"' in out
 
 
-# --- show() ---
-
-
 def test_show_without_chart_raises():
     obb = OBBject(results=[{"a": 1}])
     with pytest.raises(OpenBBError, match="Chart not found"):
@@ -223,9 +217,6 @@ def test_show_with_chart_calls_show():
     obb.chart.fig = fake_fig
     obb.show()
     fake_fig.show.assert_called_once()
-
-
-# --- from_query ---
 
 
 def test_from_query_returns_obbject_with_results():
@@ -252,9 +243,6 @@ def test_from_query_with_annotated_result():
     out = asyncio.run(OBBject.from_query(fake_query))
     assert out.results == [{"a": 1}]
     assert out.extra["results_metadata"] == {"src": "test"}
-
-
-# --- to_polars without polars installed ---
 
 
 def test_to_polars_raises_when_polars_missing(monkeypatch):

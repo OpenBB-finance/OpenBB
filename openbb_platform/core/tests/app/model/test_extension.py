@@ -122,17 +122,12 @@ def test_obbject_accessor_registers_on_mocked_obbject_module(monkeypatch):
     monkeypatch.delitem(sys.modules, mod_name)
 
 
-# ----------------- SystemSettings security-gate enforcement -----------------
-#
 # The Extension constructor enforces two opt-in flags that must be set in
 # system_settings.json:
 #   * `allow_on_command_output` — must be True to load *any* extension that
 #     hooks `on_command_output`.
 #   * `allow_mutable_extensions` — must be additionally True to load an
 #     extension that mutates the OBBject (`immutable=False`).
-#
-# These tests drive both gates by patching ``SystemService`` to return
-# settings with the desired flags, exactly as ``test_command_runner.py`` does.
 
 
 def _patch_system_settings(
@@ -244,9 +239,6 @@ def test_command_output_paths_requires_on_command_output(monkeypatch):
         "/equity/price/historical",
         "/news/world",
     ]
-
-
-# --------------- ExtensionLoader callback registration coverage --------------
 
 
 def test_extension_loader_registers_command_output_callbacks_by_path(monkeypatch):

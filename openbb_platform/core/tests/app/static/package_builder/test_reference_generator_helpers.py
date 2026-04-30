@@ -16,8 +16,6 @@ from openbb_core.app.static.package_builder.reference_generator import (
     ReferenceGenerator,
 )
 
-# --- _clean_string_values ---
-
 
 def test_clean_string_values_replaces_full_data_path():
     out = ReferenceGenerator._clean_string_values(
@@ -75,9 +73,6 @@ def test_clean_string_values_passthrough_non_string():
     assert ReferenceGenerator._clean_string_values(None) is None
 
 
-# --- _get_obbject_returns_fields ---
-
-
 def test_get_obbject_returns_fields_default_provider():
     out = ReferenceGenerator._get_obbject_returns_fields("MyModel", "")
     assert isinstance(out, list)
@@ -92,9 +87,6 @@ def test_get_obbject_returns_fields_with_providers():
     out = ReferenceGenerator._get_obbject_returns_fields("MyModel", "fmp, polygon")
     provider_entry = next(item for item in out if item["name"] == "provider")
     assert provider_entry["type"] == "fmp, polygon"
-
-
-# --- _get_post_method_returns_info ---
 
 
 def test_get_post_method_returns_info_extracts_obbject_inner_type():
@@ -122,9 +114,6 @@ def test_get_post_method_returns_info_handles_list_wrapper():
 def test_get_post_method_returns_info_no_match_returns_empty_dict():
     out = ReferenceGenerator._get_post_method_returns_info("No returns section here.")
     assert out == {}
-
-
-# --- _get_post_method_parameters_info ---
 
 
 def test_get_post_method_parameters_info_extracts_params():
@@ -161,9 +150,6 @@ def test_get_post_method_parameters_info_optional_marker_in_type():
     assert out[0]["optional"] is True
 
 
-# --- _resolve_field_type_str ---
-
-
 def test_resolve_field_type_str_required_simple():
     fi = FieldInfo(annotation=int)
     type_str, is_required = ReferenceGenerator._resolve_field_type_str(fi)
@@ -187,9 +173,6 @@ def test_resolve_field_type_str_unwraps_annotated():
     type_str, is_required = ReferenceGenerator._resolve_field_type_str(fi)
     # Should not start with "Annotated"
     assert not type_str.startswith("Annotated")
-
-
-# --- _apply_query_param_extras ---
 
 
 def test_apply_query_param_extras_with_multiple_items_dict():
@@ -237,9 +220,6 @@ def test_apply_query_param_extras_top_level_multiple_items():
     )
     assert "Multiple items allowed" in desc
     assert "list[str]" in type_str
-
-
-# --- _get_function_signature_info ---
 
 
 def test_get_function_signature_info_basic_params():

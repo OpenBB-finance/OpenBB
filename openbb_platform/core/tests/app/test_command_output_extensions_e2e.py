@@ -49,10 +49,6 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.router import CommandMap, Router, RouterLoader
 from openbb_core.provider.registry_map import RegistryMap
 
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
-
 
 def _reset_provider_interface() -> None:
     ProviderInterface._instances.pop(ProviderInterface, None)  # type: ignore[attr-defined]
@@ -169,11 +165,6 @@ def _restore_obbject_class():
         if name in OBBject.__dict__ and name not in pristine_attrs:
             with contextlib.suppress(AttributeError):
                 delattr(OBBject, name)
-
-
-# ---------------------------------------------------------------------------
-# CommandRunner E2E
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.asyncio
@@ -298,11 +289,6 @@ async def test_command_runner_results_only_extension_sets_flag(
     assert isinstance(output, OBBject)
     assert getattr(output, "_results_only", False) is True
     assert getattr(output, "_extension_modified", False) is True
-
-
-# ---------------------------------------------------------------------------
-# FastAPI E2E
-# ---------------------------------------------------------------------------
 
 
 def _build_app_with_real_command_router(fake_router: Router) -> FastAPI:

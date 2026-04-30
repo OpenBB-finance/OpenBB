@@ -1,9 +1,10 @@
 """Test command runner."""
 
+import warnings
 from dataclasses import dataclass
 from inspect import Parameter
 from types import SimpleNamespace
-from unittest.mock import Mock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 from fastapi import Query
@@ -634,9 +635,6 @@ def test_warn_kwargs_allows_chart_params_for_dataclass_extra_params():
     assert not [w for w in caught if issubclass(w.category, OpenBBWarning)]
 
 
-# --- StaticCommandRunner._extract_params ---
-
-
 def test_extract_params_returns_dict_directly():
     out = StaticCommandRunner._extract_params(
         {"standard_params": {"a": 1}}, "standard_params"
@@ -657,9 +655,6 @@ def test_extract_params_with_object_having_dict():
 def test_extract_params_missing_key_returns_default_dict():
     out = StaticCommandRunner._extract_params({}, "standard_params")
     assert out == {}
-
-
-# --- StaticCommandRunner._chart with chart_params plumbing ---
 
 
 def test_chart_merges_extra_params_chart_params():
@@ -719,21 +714,6 @@ def test_chart_warns_in_non_debug_mode_on_failure():
         StaticCommandRunner._chart(obb)
 
 
-# --- StaticCommandRunner.run metadata + dependency removal + callback branches ---
-
-
-import warnings
-from unittest.mock import (
-    AsyncMock,
-    patch as _patch,
-)
-
-import pytest as _pytest
-
-from openbb_core.app.model.system_settings import SystemSettings  # noqa: E402
-from openbb_core.app.model.user_settings import UserSettings  # noqa: E402
-
-
 class _APIRouteWithDep:
     def __init__(self):
         def get_user_id():
@@ -756,7 +736,7 @@ class _Ctx(ExecutionContext):
         return self._api_route
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_populates_metadata_and_strips_dependencies():
     """Lines 446-475: metadata enabled -> Metadata wrapped, dep keys stripped."""
     user = UserSettings()
@@ -771,10 +751,10 @@ async def test_run_populates_metadata_and_strips_dependencies():
         return obb
 
     with (
-        _patch.object(
+        patch.object(
             StaticCommandRunner, "_execute_func", new=AsyncMock(return_value=obb)
         ),
-        _patch.object(CommandMap, "get_command", return_value=lambda: None),
+        patch.object(CommandMap, "get_command", return_value=lambda: None),
     ):
         result = await StaticCommandRunner.run(ctx)
 
@@ -784,7 +764,7 @@ async def test_run_populates_metadata_and_strips_dependencies():
     assert "user_id" not in result._extra_params  # type: ignore
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_callback_strips_callable_arguments():
     """Lines 499-502: callable / falsy values in arguments are removed."""
     user = UserSettings()
@@ -799,10 +779,10 @@ async def test_run_callback_strips_callable_arguments():
         return obb
 
     with (
-        _patch.object(
+        patch.object(
             StaticCommandRunner, "_execute_func", new=AsyncMock(return_value=obb)
         ),
-        _patch.object(CommandMap, "get_command", return_value=lambda: None),
+        patch.object(CommandMap, "get_command", return_value=lambda: None),
     ):
         await StaticCommandRunner.run(ctx, fn=lambda: None, empty="")
     # fn (callable) and empty (falsy) should be stripped from extra_params if metadata exists
@@ -811,19 +791,19 @@ async def test_run_callback_strips_callable_arguments():
     assert "empty" not in args.get("extra_params", {})
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_invalid_route_raises_attribute_error():
     user = UserSettings()
     sys_ = SystemSettings(logging_suppress=True)
     ctx = _Ctx(user, sys_, route="does/not/exist")
     with (
-        _patch.object(CommandMap, "get_command", return_value=None),
-        _pytest.raises(AttributeError, match="Invalid command"),
+        patch.object(CommandMap, "get_command", return_value=None),
+        pytest.raises(AttributeError, match="Invalid command"),
     ):
         await StaticCommandRunner.run(ctx)
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_execute_func_merges_inner_kwargs_into_validated_kwargs(monkeypatch):
     user = UserSettings()
     sys_ = SystemSettings(logging_suppress=True)
@@ -839,9 +819,7 @@ async def test_execute_func_merges_inner_kwargs_into_validated_kwargs(monkeypatc
     )
 
     obb = OBBject(results=[{"x": 1}], provider="p")
-    with _patch.object(
-        StaticCommandRunner, "_command", new=AsyncMock(return_value=obb)
-    ):
+    with patch.object(StaticCommandRunner, "_command", new=AsyncMock(return_value=obb)):
         out = await StaticCommandRunner._execute_func(
             route="mock/route",
             args=(),
@@ -853,7 +831,7 @@ async def test_execute_func_merges_inner_kwargs_into_validated_kwargs(monkeypatc
     assert out._extra_params.get("extra_flag") is True  # type: ignore[attr-defined]
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_execute_func_chart_restores_kwargs_into_extra_params(monkeypatch):
     user = UserSettings()
     sys_ = SystemSettings(logging_suppress=True)
@@ -876,9 +854,7 @@ async def test_execute_func_chart_restores_kwargs_into_extra_params(monkeypatch)
 
     monkeypatch.setattr(StaticCommandRunner, "_chart", staticmethod(_fake_chart))
 
-    with _patch.object(
-        StaticCommandRunner, "_command", new=AsyncMock(return_value=obb)
-    ):
+    with patch.object(StaticCommandRunner, "_command", new=AsyncMock(return_value=obb)):
         await StaticCommandRunner._execute_func(
             route="mock/route",
             args=(),
@@ -891,7 +867,7 @@ async def test_execute_func_chart_restores_kwargs_into_extra_params(monkeypatch)
     assert captured["extra_params"]["outside"] == "v"
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_execute_func_collects_and_shows_warnings(monkeypatch):
     user = UserSettings()
     user.preferences.show_warnings = True
@@ -916,7 +892,7 @@ async def test_execute_func_collects_and_shows_warnings(monkeypatch):
 
     monkeypatch.setattr("openbb_core.app.command_runner.showwarning", _fake_showwarning)
 
-    with _patch.object(StaticCommandRunner, "_command", new=_warn_and_return):
+    with patch.object(StaticCommandRunner, "_command", new=_warn_and_return):
         out = await StaticCommandRunner._execute_func(
             route="mock/route",
             args=(),
@@ -929,7 +905,7 @@ async def test_execute_func_collects_and_shows_warnings(monkeypatch):
     assert shown["count"] >= 1
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_metadata_assignment_failure_warns_when_not_debug(monkeypatch):
     from openbb_core.env import Env
 
@@ -952,13 +928,13 @@ async def test_run_metadata_assignment_failure_warns_when_not_debug(monkeypatch)
     )
     monkeypatch.setattr(Env, "DEBUG_MODE", False)
 
-    with _pytest.warns(OpenBBWarning):
+    with pytest.warns(OpenBBWarning):
         out = await StaticCommandRunner.run(ctx)
 
     assert out is obb
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_populates_metadata_from_nested_kwargs_and_warns_on_callback_error(
     monkeypatch,
 ):
@@ -982,14 +958,14 @@ async def test_run_populates_metadata_from_nested_kwargs_and_warns_on_callback_e
         StaticCommandRunner, "_trigger_command_output_callbacks", staticmethod(_boom)
     )
 
-    with _pytest.warns(OpenBBWarning):
+    with pytest.warns(OpenBBWarning):
         out = await StaticCommandRunner.run(ctx, kwargs={"alpha": 1})
 
     meta = out.extra["metadata"].arguments
     assert meta["extra_params"].get("alpha") == 1
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_command_runner_run_delegates_to_static_runner(monkeypatch):
     runner = CommandRunner(
         command_map=CommandMap(),
@@ -1291,7 +1267,7 @@ def test_validate_kwargs_skips_var_keyword_parameter():
     assert out["extra"] == 9
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_execute_func_chart_removes_chart_kwarg(monkeypatch):
     user = UserSettings()
     sys_ = SystemSettings(logging_suppress=True)
@@ -1310,9 +1286,7 @@ async def test_execute_func_chart_removes_chart_kwarg(monkeypatch):
 
     monkeypatch.setattr(StaticCommandRunner, "_chart", staticmethod(_fake_chart))
 
-    with _patch.object(
-        StaticCommandRunner, "_command", new=AsyncMock(return_value=obb)
-    ):
+    with patch.object(StaticCommandRunner, "_command", new=AsyncMock(return_value=obb)):
 
         class _NoPopChartDict(dict):
             def pop(self, key, default=None):
@@ -1332,7 +1306,7 @@ async def test_execute_func_chart_removes_chart_kwarg(monkeypatch):
     assert captured["extra_params"]["outside"] == "v"
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_metadata_assignment_failure_raises_when_debug(monkeypatch):
     from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -1358,11 +1332,11 @@ async def test_run_metadata_assignment_failure_raises_when_debug(monkeypatch):
         type("E", (), {"DEBUG_MODE": True}),
     )
 
-    with _pytest.raises(OpenBBError):
+    with pytest.raises(OpenBBError):
         await StaticCommandRunner.run(ctx)
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_callback_failure_raises_when_debug(monkeypatch):
     from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -1389,11 +1363,11 @@ async def test_run_callback_failure_raises_when_debug(monkeypatch):
         type("E", (), {"DEBUG_MODE": True}),
     )
 
-    with _pytest.raises(OpenBBError):
+    with pytest.raises(OpenBBError):
         await StaticCommandRunner.run(ctx)
 
 
-@_pytest.mark.asyncio
+@pytest.mark.asyncio
 async def test_run_metadata_cleanup_skips_non_dict_and_removes_unjsonable(monkeypatch):
     from types import SimpleNamespace
 

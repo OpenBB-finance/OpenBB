@@ -95,9 +95,6 @@ def test_get_route_callable_attribute_error_propagates():
         get_route_callable(_FakeApp, "/does/not/exist")
 
 
-# --- dataclass_to_fields + get_route_schema_map ---
-
-
 def _make_extra_dataclass():
     """Build a dataclass shaped like ProviderInterface.params[model]['extra']."""
     fi_x = FieldInfo(default=None, title="openbb", description="x desc", annotation=int)

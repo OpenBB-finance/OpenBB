@@ -23,8 +23,6 @@ from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 
-# ----- build_new_annotation_map -----
-
 
 def test_build_new_annotation_map_includes_return():
     def f(a: int, b: str = "x") -> bool:
@@ -56,9 +54,6 @@ def test_commands_module_imports_charting_when_installed(monkeypatch):
         )
         assert module_ns["CHARTING_INSTALLED"] is True
         assert module_ns["Charting"] is _Charting
-
-
-# ----- build_new_signature -----
 
 
 def test_build_new_signature_skips_command_context_and_kwargs():
@@ -128,9 +123,6 @@ def test_build_new_signature_inserts_chart_param_when_charting_enabled(monkeypat
     assert "chart" in names
 
 
-# ----- validate_output -----
-
-
 class _NestedExcl(BaseModel):
     nested_secret: int = Field(default=0, json_schema_extra={"exclude_from_api": True})
     visible: int = 0
@@ -168,9 +160,6 @@ def test_validate_output_excludes_nested_basemodel_fields():
     validate_output(out)
     # nested exclusion happens; the remaining structure stays intact
     assert hasattr(out, "outer")
-
-
-# ----- build_api_wrapper end-to-end -----
 
 
 def _make_route(endpoint, path="/api/v1/x"):

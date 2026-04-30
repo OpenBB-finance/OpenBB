@@ -45,13 +45,6 @@ include = [
     "pyproject.toml",
 ]
 
-# ---------------------------------------------------------------------------
-# Ruff — sole linter / formatter / import-sorter for openbb-core.
-# Mirrors the repo-wide ``ruff.toml`` but is scoped to this package so that
-# ``ruff check openbb_platform/core`` (and editor integrations launched from
-# this directory) pick up identical settings without depending on the
-# top-level configuration being discoverable.
-# ---------------------------------------------------------------------------
 [tool.ruff]
 line-length = 88
 target-version = "py310"
@@ -127,9 +120,6 @@ max-statements = 30
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
-# ---------------------------------------------------------------------------
-# ty — Astral's static type checker (replaces mypy across the repo).
-# ---------------------------------------------------------------------------
 [tool.ty]
 [tool.ty.environment]
 python-version = "3.10"

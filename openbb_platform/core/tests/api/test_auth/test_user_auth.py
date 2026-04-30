@@ -146,15 +146,6 @@ def test_get_user_settings_returns_defaults_when_file_missing(tmp_path: Path):
     assert isinstance(result, UserSettings)
 
 
-# -------------------------- HTTP integration tests --------------------------
-#
-# The tests below mount the real auth dependencies on a real FastAPI app and
-# drive them through the real HTTP stack via ``TestClient``. They verify that
-# the dependency wiring actually rejects/accepts requests end-to-end (status
-# code, body, ``WWW-Authenticate`` header), not just the unit behavior of the
-# individual coroutines.
-
-
 def _build_app_with_auth_enabled(monkeypatch, username: str, password: str):
     """Reload the auth module with ``OPENBB_API_AUTH=True`` and mount its hooks.
 

@@ -74,7 +74,6 @@ def test_filter_inputs(
         )
 
 
-# --- Choices validation tests ---
 # These tests cover the fix for a silent data corruption bug:
 #
 # EXACT BUG SCENARIO (obb.economy.balance_of_payments):
@@ -183,7 +182,6 @@ def test_filter_inputs_choices_no_info_no_error():
     assert result["extra_params"]["frequency"] == "monthly"
 
 
-# --- Negative tests: exact bug reproduction ---
 # These two tests mirror the discriminating condition that first exposed the bug:
 #   "mont"   → rejected  (caught by ExtraParams Literal validation — was already working)
 #   "monthly" → accepted  (equalled the merged default → silently dropped → wrong data)

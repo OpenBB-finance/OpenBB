@@ -9,8 +9,6 @@ from openbb_core.app.model.credentials import (
     CredentialsLoader,
 )
 
-# --- _normalize_credential_map ---
-
 
 def test_normalize_credential_map_empty_input_returns_empty():
     assert CredentialsLoader._normalize_credential_map({}) == {}
@@ -32,9 +30,6 @@ def test_normalize_credential_map_skips_empty_override():
     """Empty value does NOT overwrite an existing key."""
     out = CredentialsLoader._normalize_credential_map({"abc": "real", "ABC": ""})
     assert out["abc"] == "real"
-
-
-# --- format_credentials ---
 
 
 def test_format_credentials_appends_additional_unknown_keys():
@@ -65,9 +60,6 @@ def test_format_credentials_skips_additional_key_already_formatted():
         out = loader.format_credentials({"api_key": "from_additional"})
 
     assert "api_key" in out
-
-
-# --- from_obbject error path ---
 
 
 def test_from_obbject_extension_error_warns_when_not_debug():
@@ -120,9 +112,6 @@ def test_from_obbject_skips_existing_extension_name():
     assert loader.credentials["already"] == ["x"]
 
 
-# --- Credentials._is_unset ---
-
-
 def test_is_unset_none():
     assert Credentials._is_unset(None) is True
 
@@ -145,9 +134,6 @@ def test_is_unset_empty_string():
 
 def test_is_unset_other_value_is_set():
     assert Credentials._is_unset(123) is False
-
-
-# --- repr / show / update ---
 
 
 def test_credentials_repr_contains_class_name_and_keys():
@@ -173,9 +159,6 @@ def test_credentials_update_merges_non_none_values():
     assert val.get_secret_value() == "FROM_B"
 
 
-# --- from_obbject DEBUG_MODE=True raises LoadingError ---
-
-
 def test_from_obbject_debug_mode_raises_loading_error():
     import openbb_core.app.model.credentials as _cred_mod
 
@@ -198,9 +181,6 @@ def test_from_obbject_debug_mode_raises_loading_error():
         pytest.raises(_cred_mod.LoadingError, match="badext"),
     ):
         loader.from_obbject()
-
-
-# --- model_post_init env_defaults ---
 
 
 def test_model_post_init_applies_env_defaults_when_unset():
@@ -262,17 +242,11 @@ def test_model_post_init_skips_env_default_for_unknown_field():
         Credentials._env_defaults.update(env_defaults_backup)
 
 
-# --- show() ---
-
-
 def test_credentials_show_prints_class_name(capsys):
     """``show()`` prints class name and dumped credentials."""
     Credentials().show()
     out = capsys.readouterr().out
     assert "Credentials" in out
-
-
-# --- load() integration ---
 
 
 def test_load_picks_up_env_credentials(monkeypatch, tmp_path):

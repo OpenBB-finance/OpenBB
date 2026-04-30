@@ -171,9 +171,6 @@ def test_create_executor_uses_injected_registry(provider_interface, fake_registr
     assert getattr(executor, "registry", None) is fake_registry
 
 
-# --- _create_field: Literal → choices auto-derivation ---
-
-
 def test_create_field_literal_annotation_produces_choices():
     """
     _create_field must auto-derive choices from a Literal annotation.

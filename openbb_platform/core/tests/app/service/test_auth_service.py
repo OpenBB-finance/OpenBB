@@ -44,9 +44,6 @@ def _isolate_singletons():
     _reset_singletons()
 
 
-# --------------------------- Default fallback path --------------------------
-
-
 def test_auth_service_uses_default_when_no_extension_configured():
     """No ``ext_name`` → default core router and default hooks."""
     from openbb_core.api.router.user import (
@@ -73,9 +70,6 @@ def test_auth_service_falls_back_when_extension_not_installed():
 
     assert service.router is default_router
     assert service.auth_hook is default_auth_hook
-
-
-# --------------------------- Real entry-point path --------------------------
 
 
 def _install_fake_auth_extension(monkeypatch, ext_name: str = "fake_auth"):

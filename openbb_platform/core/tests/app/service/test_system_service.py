@@ -1,5 +1,7 @@
 """Test the system_service.py module."""
 
+import json
+
 import pytest
 
 from openbb_core.app.service.system_service import SystemService
@@ -54,11 +56,6 @@ def test_refresh_system_settings(system_service):
     system_settings = system_service.refresh_system_settings()
 
     assert system_settings
-
-
-"""Extra tests for openbb_core.app.service.system_service hashing & file paths."""
-
-import json
 
 
 def test_compare_hash_with_explicit_hash():

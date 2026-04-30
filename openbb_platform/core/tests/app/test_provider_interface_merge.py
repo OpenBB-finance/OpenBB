@@ -26,9 +26,6 @@ def _df(
     return DataclassField(name=name, annotation=annotation, default=fi)
 
 
-# --- _merge_fields ---
-
-
 def test_merge_fields_similar_descriptions_use_provider_suffix():
     a = _df("ticker", str, description="Symbol of a security.", title="fmp")
     b = _df("ticker", str, description="Symbol of a security.", title="polygon")
@@ -148,9 +145,6 @@ def test_merge_fields_strips_multiple_items_text_for_similarity():
 
     # Descriptions should be considered similar -> "(provider: ...)" suffix used
     assert "(provider: fmp, polygon)" in merged.default.description
-
-
-# --- _create_field branches ---
 
 
 def test_create_field_required_no_force_optional_uses_ellipsis_default():
@@ -293,9 +287,6 @@ def test_create_field_dict_annotation_uses_body():
         "payload", fi, provider_name="fmp", force_optional=False
     )
     assert isinstance(out.default, BodyParam)
-
-
-# --- _extract_params and _extract_data with crafted provider dicts ---
 
 
 def _qp_fields(*pairs):

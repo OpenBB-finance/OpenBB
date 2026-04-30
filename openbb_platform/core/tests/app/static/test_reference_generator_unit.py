@@ -336,9 +336,6 @@ def test_apply_query_param_extras_no_extras_pass_through():
     assert choices == ["a"]
 
 
-# --- _extract_return_type non-OBBject return (lines 1095-1124) ---
-
-
 def _f_returns_data() -> _ResData:
     pass
 
@@ -359,9 +356,6 @@ def test_extract_return_type_data_class_returns_name():
 def test_extract_return_type_container_type():
     out = ReferenceGenerator._extract_return_type(_f_returns_list_data)
     assert "list" in out and "_ResData" in out
-
-
-# --- _extract_return_type docstring fallback for list[Data] (lines 1043-1057) ---
 
 
 def _f_obbject_unbound_with_doc() -> OBBject[list[Data]]:

@@ -6,6 +6,7 @@ from inspect import Parameter
 from typing import Annotated
 
 import pytest
+from pydantic import BaseModel, Field
 
 pandas = pytest.importorskip("pandas")
 
@@ -14,8 +15,6 @@ pytestmark = pytest.mark.requires_pandas
 from openbb_core.app.static.package_builder.docstring_generator import (
     DocstringGenerator,
 )
-
-# --- get_field_type ---
 
 
 def test_get_field_type_simple_required():
@@ -68,9 +67,6 @@ def test_get_field_type_strips_nonetype_text():
     assert "NoneType" not in out
 
 
-# --- get_OBBject_description ---
-
-
 def test_get_obbject_description_default_provider_placeholder():
     out = DocstringGenerator.get_OBBject_description("MyResults", None)
     assert "OBBject" in out
@@ -89,9 +85,6 @@ def test_get_obbject_description_with_concrete_providers():
 def test_get_obbject_description_replaces_nonetype():
     out = DocstringGenerator.get_OBBject_description("MyResults", None)
     assert "NoneType" not in out
-
-
-# --- build_examples ---
 
 
 def test_build_examples_no_examples_returns_empty_string():
@@ -122,9 +115,6 @@ def test_build_examples_website_format_wraps_in_code_fence():
     assert out.endswith("```\n\n")
 
 
-# --- _get_generic_types ---
-
-
 def test_get_generic_types_union_unpacks_to_inner_names():
     out = DocstringGenerator._get_generic_types(list[str] | dict[str, str], [])
     assert "list" in out
@@ -139,9 +129,6 @@ def test_get_generic_types_simple_list_returns_list_name():
 def test_get_generic_types_non_generic_returns_empty():
     out = DocstringGenerator._get_generic_types(int, [])
     assert out == []
-
-
-# --- _get_repr ---
 
 
 def test_get_repr_single_item_returns_bracketed_string():
@@ -317,11 +304,6 @@ def test_generate_no_model_with_examples():
     assert out
 
 
-# --- Returns section: non-OBBject model with model_fields ---
-
-from pydantic import BaseModel, Field  # noqa: E402
-
-
 class _RetModel(BaseModel):
     """A return model."""
 
@@ -343,9 +325,6 @@ def test_generate_returns_section_non_obbject_model_fields():
     )
     assert "Returns" in out
     assert "_RetModel" in out or "RetModel" in out
-
-
-# --- OBBject[ModelName] inner-type extraction with route paths populated ---
 
 
 def test_generate_obbject_inner_type_extraction(monkeypatch):
