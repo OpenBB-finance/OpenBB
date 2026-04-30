@@ -13,9 +13,6 @@ on:
     branches:
       - develop
       - v5
-      - 'feature/**'
-      - 'hotfix/**'
-      - 'release/**'
     paths:
       - 'openbb_platform/core/**'
       - 'openbb_platform/extensions/devtools/**'
