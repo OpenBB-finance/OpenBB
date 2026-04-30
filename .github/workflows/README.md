@@ -82,7 +82,7 @@ The second job, `markdown-link-check`, runs on an Ubuntu machine and performs li
 
 ## 🏷️ Pull Request Labels
 
-Automatic labelling of pull requests.
+Validate that pull requests do not include the `do not merge` label.
 
 ## 🚉 Integration test Platform (API)
 
