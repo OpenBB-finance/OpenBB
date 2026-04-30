@@ -304,14 +304,6 @@
         "instructions": "Credentials are required for functions calling the EIA's API.\n    Register for a free key here: https://www.eia.gov/opendata/register.php"
     },
     {
-        "packageName": "openbb-wsj",
-        "optional": true,
-        "reprName": "Wall Street Journal (WSJ)",
-        "description": "WSJ (Wall Street Journal) is a business-focused, English-language\ninternational daily newspaper based in New York City. The Journal is published six\ndays a week by Dow Jones & Company, a division of News Corp, along with its Asian\nand European editions. The newspaper is published in the broadsheet format and\nonline. The Journal has been printed continuously since its inception on\nJuly 8, 1889, by Charles Dow, Edward Jones, and Charles Bergstresser.\nThe WSJ is the largest newspaper in the United States, by circulation.\n    ",
-        "credentials": [],
-        "website": "https://www.wsj.com"
-    },
-    {
         "packageName": "openbb-yfinance",
         "optional": false,
         "reprName": "Yahoo Finance",

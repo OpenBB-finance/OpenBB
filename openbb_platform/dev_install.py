@@ -68,7 +68,6 @@ openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, de
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
 openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
 openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
-openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
 openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
