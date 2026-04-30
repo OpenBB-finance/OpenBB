@@ -1249,7 +1249,7 @@ def test_trigger_callbacks_factory_exception_raises_openbb_error(monkeypatch):
 
 
 def test_execution_context_api_route_property_access(monkeypatch):
-    """Line 57: ExecutionContext.api_route accesses _route_map[self.route]."""
+    """Test ExecutionContext.api_route accesses _route_map[self.route]."""
     from unittest.mock import MagicMock
 
     mock_route = MagicMock()

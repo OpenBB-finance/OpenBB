@@ -211,7 +211,7 @@ def test_core_objects_with_apirouter_instance(mock_entry_points):
 
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_core_objects_with_router_instance(mock_entry_points):
-    """Line 172-173: Test core_objects when entry point loads a Router directly."""
+    """Test core_objects when entry point loads a Router directly."""
 
     def entry_points_side_effect(group=None):
         if group == "openbb_core_extension":
@@ -233,7 +233,7 @@ def test_core_objects_with_router_instance(mock_entry_points):
 
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_provider_objects_with_module_not_found(mock_entry_points):
-    """Line 190-194: Test provider_objects catches ModuleNotFoundError."""
+    """Test provider_objects catches ModuleNotFoundError."""
 
     def entry_points_side_effect(group=None):
         if group == "openbb_provider_extension":
@@ -259,7 +259,7 @@ def test_provider_objects_with_module_not_found(mock_entry_points):
 
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_provider_objects_with_provider_instance(mock_entry_points):
-    """Line 192: Test provider_objects adds loaded Provider instances."""
+    """Test provider_objects adds loaded Provider instances."""
 
     from openbb_core.provider.abstract.provider import Provider
 

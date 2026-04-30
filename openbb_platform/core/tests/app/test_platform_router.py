@@ -276,21 +276,21 @@ def test_get_commands_model_with_separator(command_map, router):
 
 
 def test_router_description_and_routers_properties():
-    """Lines 60, 65: description and routers properties."""
+    """Test description and routers properties."""
     r = Router(prefix="/test", description="desc")
     assert r.description == "desc"
     assert r.routers == {}
 
 
 def test_command_decorator_with_kwargs_returns_lambda():
-    """Line 95: command(func=None) returns a lambda that re-calls command."""
+    """Test command(func=None) returns a lambda that re-calls command."""
     r = Router()
     decorator = r.command(widget_config={"k": "v"})
     assert callable(decorator)
 
 
 def test_command_with_widget_config_and_mcp_config():
-    """Lines 104, 107: widget_config and mcp_config are popped into openapi_extra."""
+    """Test widget_config and mcp_config are popped into openapi_extra."""
     r = Router()
 
     @r.command(widget_config={"widget": True}, mcp_config={"mcp": True})
@@ -302,7 +302,7 @@ def test_command_with_widget_config_and_mcp_config():
 
 
 def test_command_no_validate_sets_return_none():
-    """Line 110: no_validate=True sets func.__annotations__['return'] = None."""
+    """Test no_validate=True sets func.__annotations__['return'] = None."""
     Router()
 
     async def fn() -> OBBject[list[int] | None]:
@@ -314,7 +314,7 @@ def test_command_no_validate_sets_return_none():
 
 
 def test_complete_non_obbject_return_type_returns_func():
-    """Line 242: complete() returns func unchanged when return type is a non-OBBject class."""
+    """Test complete() returns func unchanged when return type is a non-OBBject class."""
 
     class _MyClass:
         pass
@@ -328,7 +328,7 @@ def test_complete_non_obbject_return_type_returns_func():
 
 
 def test_complete_no_model_with_provider_choices_injects_dependency(monkeypatch):
-    """Line 294: inject_dependency for provider_choices when model is empty."""
+    """Test inject_dependency for provider_choices when model is empty."""
     from unittest.mock import MagicMock
 
     from openbb_core.app.provider_interface import ProviderChoices
@@ -349,7 +349,7 @@ def test_complete_no_model_with_provider_choices_injects_dependency(monkeypatch)
 
 
 def test_complete_model_missing_in_debug_mode_warns(monkeypatch):
-    """Line 249: warns when model not found and DEBUG_MODE=True."""
+    """Test warns when model not found and DEBUG_MODE=True."""
     import warnings
     from unittest.mock import MagicMock
 
@@ -373,7 +373,7 @@ def test_complete_model_missing_in_debug_mode_warns(monkeypatch):
 
 
 def test_validate_signature_missing_param_raises():
-    """Line 332: raises AttributeError when parameter is missing."""
+    """Test raises AttributeError when parameter is missing."""
 
     async def fn() -> OBBject:
         pass
@@ -383,7 +383,7 @@ def test_validate_signature_missing_param_raises():
 
 
 def test_validate_signature_wrong_type_raises():
-    """Line 337: raises TypeError when parameter type is wrong."""
+    """Test raises TypeError when parameter type is wrong."""
 
     async def fn(cc: str) -> OBBject:
         pass
@@ -393,7 +393,7 @@ def test_validate_signature_wrong_type_raises():
 
 
 def test_router_loader_from_extensions_loaderror(monkeypatch):
-    """Lines 531-536: from_extensions Exception path raises LoadingError in DEBUG_MODE."""
+    """Test from_extensions Exception path raises LoadingError in DEBUG_MODE."""
     from openbb_core.app.router import RouterLoader
     from openbb_core.env import Env
 

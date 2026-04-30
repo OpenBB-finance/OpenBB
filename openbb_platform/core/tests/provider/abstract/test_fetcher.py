@@ -65,14 +65,14 @@ def test_fetcher_data_type():
 
 @pytest.mark.requires_pandas
 def test_fetcher_test():
-    """``Fetcher.test`` runs the full pipeline (requires pandas for DataFrame assertions)."""
+    """Test ``Fetcher.test`` runs the full pipeline (requires pandas for DataFrame assertions)."""
     pytest.importorskip("pandas")
     tested = MockFetcher.test(params={})
     assert tested is None
 
 
 def test_fetcher_aextract_data_overrides_extract():
-    """Line 64: subclass implements aextract_data -> assigned to extract_data."""
+    """Test subclass implements aextract_data -> assigned to extract_data."""
 
     class AsyncFetcher(Fetcher[MockQueryParams, list[MockData]]):
         @staticmethod
@@ -91,7 +91,7 @@ def test_fetcher_aextract_data_overrides_extract():
 
 
 def test_fetcher_subclass_missing_extract_raises():
-    """Line 65-70: NotImplementedError when neither extract method implemented."""
+    """Test NotImplementedError when neither extract method implemented."""
     with pytest.raises(NotImplementedError, match="must implement"):
 
         class _Bad(Fetcher[MockQueryParams, list[MockData]]):
@@ -105,7 +105,7 @@ def test_fetcher_subclass_missing_extract_raises():
 
 
 def test_fetcher_return_type_annotated_result():
-    """Line 96: AnnotatedResult origin path. Since pydantic Generic doesn't expose
+    """Test AnnotatedResult origin path. Since pydantic Generic doesn't expose
     typing origin, this branch is structurally unreachable; verify the property
     still returns the parameterized type without crashing."""
     from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -165,7 +165,7 @@ def test_fetcher_return_type_annotated_result_branch(monkeypatch):
 
 @pytest.mark.requires_pandas
 def test_fetcher_test_dataframe_data():
-    """Line 162: DataFrame data branch in test()."""
+    """Test DataFrame data branch in test()."""
     pytest.importorskip("pandas")
     from pandas import DataFrame
 
@@ -187,7 +187,7 @@ def test_fetcher_test_dataframe_data():
 
 @pytest.mark.requires_pandas
 def test_fetcher_test_scalar_return():
-    """Lines 231-240: non-list return type branch in test()."""
+    """Test non-list return type branch in test()."""
     pytest.importorskip("pandas")
 
     class ScalarFetcher(Fetcher[MockQueryParams, MockData]):

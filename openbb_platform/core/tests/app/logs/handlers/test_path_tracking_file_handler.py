@@ -83,7 +83,7 @@ def test_clean_expired_files(handler):
 
 
 def test_settings_setter(handler, mocked_path):
-    """Line 64: settings.setter stores the settings value."""
+    """Test settings.setter stores the settings value."""
     new_settings = MagicMock(spec=MockLoggingSettings)
     new_settings.app_name = "new_app"
 

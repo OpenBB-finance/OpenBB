@@ -16,7 +16,7 @@ def test_deprecation_summary_stores_metadata():
 
 
 def test_openbb_deprecation_warning_init_defaults():
-    """Lines 52-59: __init__ sets message, since, expected_removal, long_message."""
+    """Test __init__ sets message, since, expected_removal, long_message."""
     w = OpenBBDeprecationWarning("old feature.")
     assert w.message == "old feature"
     assert isinstance(w.since, tuple)
@@ -25,7 +25,7 @@ def test_openbb_deprecation_warning_init_defaults():
 
 
 def test_openbb_deprecation_warning_str():
-    """Line 63: __str__ returns long_message."""
+    """Test __str__ returns long_message."""
     w = OpenBBDeprecationWarning("old feature", since=(4, 0), expected_removal=(5, 0))
     assert str(w) == w.long_message
     assert "V4.0" in str(w)

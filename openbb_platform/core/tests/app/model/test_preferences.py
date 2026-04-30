@@ -10,7 +10,7 @@ def test_preferences():
 
 
 def test_preferences_repr():
-    """Line 33: __repr__ returns a formatted string."""
+    """Test __repr__ returns a formatted string."""
     preferences = Preferences()
     result = repr(preferences)
     assert "Preferences" in result

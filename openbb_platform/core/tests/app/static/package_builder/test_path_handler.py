@@ -21,7 +21,7 @@ def _make_router_with_dotted_route():
 
 
 def test_build_route_map_collects_dotted_path_routes(monkeypatch):
-    """Line 105: collect_api_router_routes adds routes with dots in path that were excluded
+    """Test collect_api_router_routes adds routes with dots in path that were excluded
     from the initial route_map build."""
     r = _make_router_with_dotted_route()
     monkeypatch.setattr(
@@ -33,7 +33,7 @@ def test_build_route_map_collects_dotted_path_routes(monkeypatch):
 
 
 def test_build_route_map_skips_non_apiroute(monkeypatch):
-    """Line 113: continue when route in api_router.routes is not an APIRoute."""
+    """Test continue when route in api_router.routes is not an APIRoute."""
     from fastapi import APIRouter as FastAPIRouter
 
     async def real_endpoint() -> None:
@@ -57,7 +57,7 @@ def test_build_route_map_skips_non_apiroute(monkeypatch):
 
 
 def test_build_route_map_recurses_into_endpoint_self(monkeypatch):
-    """Line 116: collect_api_router_routes recurses when endpoint has __self__."""
+    """Test collect_api_router_routes recurses when endpoint has __self__."""
     from fastapi import APIRouter as FastAPIRouter
 
     async def inner_endpoint() -> None:
@@ -90,7 +90,7 @@ def test_build_route_map_recurses_into_endpoint_self(monkeypatch):
 
 
 def test_get_router_dependencies_skips_falsy_api_router(monkeypatch):
-    """Line 74: continue when api_router is falsy for a candidate path."""
+    """Test continue when api_router is falsy for a candidate path."""
     mock_router = MagicMock()
     mock_router.get_attr.return_value = None
     monkeypatch.setattr(
@@ -102,7 +102,7 @@ def test_get_router_dependencies_skips_falsy_api_router(monkeypatch):
 
 
 def test_get_child_path_list_adds_direct_child(monkeypatch):
-    """Line 208: direct_children.append when route_path is a direct child."""
+    """Test direct_children.append when route_path is a direct child."""
     monkeypatch.setattr(
         PathHandler,
         "build_route_map",
@@ -113,7 +113,7 @@ def test_get_child_path_list_adds_direct_child(monkeypatch):
 
 
 def test_get_router_description_returns_description(monkeypatch):
-    """Line 257: returns description when the router has one set."""
+    """Test returns description when the router has one set."""
     mock_router = MagicMock()
     mock_router.get_attr.return_value = "My router description"
     monkeypatch.setattr(

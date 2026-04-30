@@ -22,7 +22,7 @@ def test_system_settings():
 
 
 def test_system_settings_repr():
-    """Line 66: __repr__ returns formatted string with class name and fields."""
+    """Test __repr__ returns formatted string with class name and fields."""
     sys = SystemSettings()
     result = repr(sys)
     assert "SystemSettings" in result

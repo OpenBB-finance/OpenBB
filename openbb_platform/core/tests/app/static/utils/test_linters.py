@@ -40,5 +40,5 @@ def test_ruff(linters):
 
 
 def test_run_linter_not_found(linters):
-    """Line 42: logs when a linter binary is not found."""
+    """Test logs when a linter binary is not found."""
     linters.run(linter="nonexistent_linter_xyz_abc")

@@ -4,7 +4,7 @@ from openbb_core.app.model.api_settings import APISettings
 
 
 def test_api_settings_prefix():
-    """Line 49: prefix property returns formatted version string."""
+    """Test prefix property returns formatted version string."""
     settings = APISettings(version="2")
     assert settings.prefix == "/api/v2"
 
@@ -13,7 +13,7 @@ def test_api_settings_prefix():
 
 
 def test_api_settings_repr():
-    """Line 53: __repr__ returns formatted string with class name and fields."""
+    """Test __repr__ returns formatted string with class name and fields."""
     settings = APISettings(version="1")
     result = repr(settings)
     assert "APISettings" in result

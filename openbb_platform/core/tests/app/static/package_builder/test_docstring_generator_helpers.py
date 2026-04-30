@@ -429,7 +429,7 @@ def test_generate_model_docstring_format_type_union_literal():
 
 
 def test_get_field_type_beforevalidator():
-    """Line 96: BeforeValidator path -> int / Optional[int]."""
+    """Test BeforeValidator path -> int / Optional[int]."""
     from typing import Annotated
 
     from pydantic import BeforeValidator

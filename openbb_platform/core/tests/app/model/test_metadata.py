@@ -39,7 +39,7 @@ def test_fields():
 
 
 def test_metadata_repr():
-    """Line 27: __repr__ returns formatted string."""
+    """Test __repr__ returns formatted string."""
     m = Metadata(
         arguments={"provider_choices": {}, "standard_params": {}, "extra_params": {}},
         route="/test",
@@ -52,7 +52,7 @@ def test_metadata_repr():
 
 
 def test_scale_arguments_series():
-    """Line 111: Series branch in scale_arguments."""
+    """Test Series branch in scale_arguments."""
     series = pd.Series([1, 2, 3], name="price")
     m = Metadata(
         arguments={
