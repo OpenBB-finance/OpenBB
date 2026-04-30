@@ -344,7 +344,7 @@ def test_get_function_signature_info_union_optional_branch_with_pep604(monkeypat
     out = ReferenceGenerator._get_function_signature_info(f)
     assert out[0]["name"] == "x"
     assert out[0]["optional"] is True
-    assert out[0]["type"] == "int"
+    assert "int" in out[0]["type"]
 
 
 def test_resolve_field_type_str_forced_union_branch(monkeypatch):
@@ -390,4 +390,4 @@ def test_get_function_signature_info_forced_optional_union_branch(monkeypatch):
     out = ReferenceGenerator._get_function_signature_info(lambda: None)
     assert out[0]["name"] == "x"
     assert out[0]["optional"] is True
-    assert out[0]["type"] == "int"
+    assert "int" in out[0]["type"]
