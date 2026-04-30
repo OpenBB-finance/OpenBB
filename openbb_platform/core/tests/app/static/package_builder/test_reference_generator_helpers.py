@@ -315,3 +315,79 @@ def test_get_function_signature_info_typing_union_optional_branch():
     assert out[0]["name"] == "x"
     assert out[0]["optional"] is True
     assert "int" in out[0]["type"]
+
+
+def test_resolve_field_type_str_union_branch_with_pep604(monkeypatch):
+    from types import UnionType
+
+    from openbb_core.app.static.package_builder import reference_generator as rg
+
+    monkeypatch.setattr(rg, "Union", UnionType)
+
+    fi = FieldInfo(annotation=str | None, default=None)
+    type_str, is_required = ReferenceGenerator._resolve_field_type_str(fi)
+    assert is_required is False
+    assert "str" in type_str
+    assert "| None" in type_str
+
+
+def test_get_function_signature_info_union_optional_branch_with_pep604(monkeypatch):
+    from types import UnionType
+
+    from openbb_core.app.static.package_builder import reference_generator as rg
+
+    monkeypatch.setattr(rg, "Union", UnionType)
+
+    def f(x: int | None = None) -> None:
+        return None
+
+    out = ReferenceGenerator._get_function_signature_info(f)
+    assert out[0]["name"] == "x"
+    assert out[0]["optional"] is True
+    assert out[0]["type"] == "int"
+
+
+def test_resolve_field_type_str_forced_union_branch(monkeypatch):
+    from types import SimpleNamespace
+
+    from openbb_core.app.static.package_builder import reference_generator as rg
+
+    union_sentinel = object()
+    monkeypatch.setattr(rg, "Union", union_sentinel)
+    monkeypatch.setattr(rg, "get_origin", lambda _x: union_sentinel)
+    monkeypatch.setattr(rg, "get_args", lambda _x: (str, type(None)))
+
+    fi = SimpleNamespace(annotation=object(), is_required=lambda: True)
+    type_str, is_required = ReferenceGenerator._resolve_field_type_str(fi)
+
+    assert is_required is False
+    assert "str" in type_str
+    assert "| None" in type_str
+
+
+def test_get_function_signature_info_forced_optional_union_branch(monkeypatch):
+    from inspect import Parameter, Signature
+
+    from openbb_core.app.static.package_builder import reference_generator as rg
+
+    union_sentinel = object()
+
+    class _FakeOptionalType:
+        __origin__ = union_sentinel
+        __args__ = (int, type(None))
+
+    fake_param = Parameter(
+        "x",
+        kind=Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=_FakeOptionalType,
+        default=0,
+    )
+    fake_sig = Signature(parameters=[fake_param])
+
+    monkeypatch.setattr(rg, "Union", union_sentinel)
+    monkeypatch.setattr(rg, "signature", lambda _func: fake_sig)
+
+    out = ReferenceGenerator._get_function_signature_info(lambda: None)
+    assert out[0]["name"] == "x"
+    assert out[0]["optional"] is True
+    assert out[0]["type"] == "int"

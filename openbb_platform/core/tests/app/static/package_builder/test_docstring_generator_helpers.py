@@ -527,12 +527,29 @@ def test_get_field_type_openbb_path_is_shortened():
     assert out == "Data"
 
 
+def test_get_field_type_union_openbb_name_branch(monkeypatch):
+    from types import UnionType
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    class openbb_model_type:
+        pass
+
+    monkeypatch.setattr(dg, "Union", UnionType)
+    out = DocstringGenerator.get_field_type(openbb_model_type | str, is_required=True)
+    assert "openbb_model_type" in out
+
+
 def test_generate_model_docstring_provider_extraction_handles_missing_model_providers():
     from inspect import Parameter
-    from types import SimpleNamespace
+    from types import SimpleNamespace, UnionType
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
 
     original_provider_interface = DocstringGenerator.provider_interface
     try:
+        original_union = dg.Union
+        dg.Union = UnionType
         DocstringGenerator.provider_interface = SimpleNamespace(
             model_providers={},
             map={},
@@ -556,13 +573,16 @@ def test_generate_model_docstring_provider_extraction_handles_missing_model_prov
         assert "provider" in out
     finally:
         DocstringGenerator.provider_interface = original_provider_interface
+        dg.Union = original_union
 
 
 def test_generate_model_docstring_provider_choices_handles_attribute_error_in_map():
     from dataclasses import make_dataclass
     from inspect import Parameter
-    from types import SimpleNamespace
+    from types import SimpleNamespace, UnionType
     from typing import Literal
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
 
     class _BadMap:
         def get(self, *_args, **_kwargs):
@@ -570,6 +590,8 @@ def test_generate_model_docstring_provider_choices_handles_attribute_error_in_ma
 
     original_provider_interface = DocstringGenerator.provider_interface
     try:
+        original_union = dg.Union
+        dg.Union = UnionType
         ModelProviders = make_dataclass("ModelProviders", [("provider", object)])
         ProviderField = type("F", (), {"type": Literal["alpha"]})
         ModelProviders.__dataclass_fields__["provider"] = ProviderField
@@ -598,6 +620,131 @@ def test_generate_model_docstring_provider_choices_handles_attribute_error_in_ma
         assert "provider" in out
     finally:
         DocstringGenerator.provider_interface = original_provider_interface
+        dg.Union = original_union
+
+
+def test_generate_model_docstring_provider_choices_handles_missing_model_provider_entry(
+    monkeypatch,
+):
+    from inspect import Parameter
+    from types import SimpleNamespace, UnionType
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    monkeypatch.setattr(dg, "Union", UnionType)
+    monkeypatch.setattr(
+        DocstringGenerator,
+        "provider_interface",
+        SimpleNamespace(model_providers={"M": None}, map={}),
+    )
+
+    p = Parameter(
+        name="provider",
+        kind=Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=str | int,
+        default=None,
+    )
+    object.__setattr__(p, "_annotation", str | int)
+
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="M",
+        summary="S",
+        explicit_params={"provider": p},
+        kwarg_params={},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+    assert "provider" in out
+
+
+def test_generate_model_docstring_forced_union_with_missing_model_providers(
+    monkeypatch,
+):
+    from types import SimpleNamespace
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    union_sentinel = object()
+
+    class _FakeUnionType:
+        __origin__ = union_sentinel
+
+    kwarg_param = SimpleNamespace(
+        _annotation=_FakeUnionType,
+        type=_FakeUnionType,
+        default=SimpleNamespace(description="d", json_schema_extra=None),
+        annotation=_FakeUnionType,
+    )
+
+    monkeypatch.setattr(dg, "Union", union_sentinel)
+    monkeypatch.setattr(
+        DocstringGenerator,
+        "provider_interface",
+        SimpleNamespace(model_providers={}, map={}),
+    )
+
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="NoSuchModelXYZ",
+        summary="S",
+        explicit_params={},
+        kwarg_params={"x": kwarg_param},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+    assert "x" in out
+
+
+def test_generate_model_docstring_forced_union_provider_map_attribute_error(
+    monkeypatch,
+):
+    from dataclasses import make_dataclass
+    from types import SimpleNamespace
+    from typing import Literal
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    union_sentinel = object()
+
+    class _FakeUnionType:
+        __origin__ = union_sentinel
+
+    class _BadMap:
+        def get(self, *_args, **_kwargs):
+            raise AttributeError("boom")
+
+    ModelProviders = make_dataclass("ModelProvidersX", [("provider", object)])
+    ProviderField = type("F", (), {"type": Literal["alpha"]})
+    ModelProviders.__dataclass_fields__["provider"] = ProviderField
+
+    kwarg_param = SimpleNamespace(
+        _annotation=_FakeUnionType,
+        type=_FakeUnionType,
+        default=SimpleNamespace(description="d", json_schema_extra=None),
+        annotation=_FakeUnionType,
+    )
+
+    monkeypatch.setattr(dg, "Union", union_sentinel)
+    monkeypatch.setattr(
+        DocstringGenerator,
+        "provider_interface",
+        SimpleNamespace(
+            model_providers={"NoSuchModelXYZ": ModelProviders("alpha")},
+            map=_BadMap(),
+        ),
+    )
+
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="NoSuchModelXYZ",
+        summary="S",
+        explicit_params={},
+        kwarg_params={"x": kwarg_param},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+    assert "x" in out
 
 
 def test_generate_model_docstring_kwarg_provider_map_attribute_error(monkeypatch):
