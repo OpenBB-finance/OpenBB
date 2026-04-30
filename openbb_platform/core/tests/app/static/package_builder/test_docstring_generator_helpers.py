@@ -747,6 +747,48 @@ def test_generate_model_docstring_forced_union_provider_map_attribute_error(
     assert "x" in out
 
 
+def test_generate_model_docstring_forced_union_model_providers_attribute_error(
+    monkeypatch,
+):
+    from types import SimpleNamespace
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    union_sentinel = object()
+
+    class _FakeUnionType:
+        __origin__ = union_sentinel
+
+    class _BadModelProviders:
+        def get(self, *_args, **_kwargs):
+            raise AttributeError("boom")
+
+    kwarg_param = SimpleNamespace(
+        _annotation=_FakeUnionType,
+        type=_FakeUnionType,
+        default=SimpleNamespace(description="d", json_schema_extra=None),
+        annotation=_FakeUnionType,
+    )
+
+    monkeypatch.setattr(dg, "Union", union_sentinel)
+    monkeypatch.setattr(
+        DocstringGenerator,
+        "provider_interface",
+        SimpleNamespace(model_providers=_BadModelProviders(), map={}),
+    )
+
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="NoSuchModelXYZ",
+        summary="S",
+        explicit_params={},
+        kwarg_params={"x": kwarg_param},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+    assert "x" in out
+
+
 def test_generate_model_docstring_kwarg_provider_map_attribute_error(monkeypatch):
     from dataclasses import dataclass
     from types import SimpleNamespace
