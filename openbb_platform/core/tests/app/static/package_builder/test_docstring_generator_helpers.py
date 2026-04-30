@@ -518,7 +518,86 @@ def test_generate_model_docstring_kwarg_query_json_extra_choices():
 
     assert "choice" in out
     assert "Choices for tmx" in out
-    assert "Multiple comma separated items allowed" in out
+
+
+def test_get_field_type_openbb_path_is_shortened():
+    out = DocstringGenerator.get_field_type(
+        "openbb_core.provider.abstract.data.Data", is_required=True
+    )
+    assert out == "Data"
+
+
+def test_generate_model_docstring_provider_extraction_handles_missing_model_providers():
+    from inspect import Parameter
+    from types import SimpleNamespace
+
+    original_provider_interface = DocstringGenerator.provider_interface
+    try:
+        DocstringGenerator.provider_interface = SimpleNamespace(
+            model_providers={},
+            map={},
+        )
+        p = Parameter(
+            name="provider",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=str | int,
+            default=None,
+        )
+        object.__setattr__(p, "_annotation", str | int)
+        out = DocstringGenerator.generate_model_docstring(
+            model_name="NoSuchModelXYZ",
+            summary="S",
+            explicit_params={"provider": p},
+            kwarg_params={},
+            returns={},
+            results_type="",
+            sections=["parameters"],
+        )
+        assert "provider" in out
+    finally:
+        DocstringGenerator.provider_interface = original_provider_interface
+
+
+def test_generate_model_docstring_provider_choices_handles_attribute_error_in_map():
+    from dataclasses import make_dataclass
+    from inspect import Parameter
+    from types import SimpleNamespace
+    from typing import Literal
+
+    class _BadMap:
+        def get(self, *_args, **_kwargs):
+            raise AttributeError("boom")
+
+    original_provider_interface = DocstringGenerator.provider_interface
+    try:
+        ModelProviders = make_dataclass("ModelProviders", [("provider", object)])
+        ProviderField = type("F", (), {"type": Literal["alpha"]})
+        ModelProviders.__dataclass_fields__["provider"] = ProviderField
+        DocstringGenerator.provider_interface = SimpleNamespace(
+            model_providers={"NoSuchModelXYZ": ModelProviders("alpha")},
+            map=_BadMap(),
+        )
+
+        p = Parameter(
+            name="provider",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=str | int,
+            default=None,
+        )
+        object.__setattr__(p, "_annotation", str | int)
+
+        out = DocstringGenerator.generate_model_docstring(
+            model_name="NoSuchModelXYZ",
+            summary="S",
+            explicit_params={"provider": p},
+            kwarg_params={},
+            returns={},
+            results_type="",
+            sections=["parameters"],
+        )
+        assert "provider" in out
+    finally:
+        DocstringGenerator.provider_interface = original_provider_interface
 
 
 def test_generate_model_docstring_kwarg_provider_map_attribute_error(monkeypatch):

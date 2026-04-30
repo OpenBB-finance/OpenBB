@@ -5,6 +5,8 @@ import json
 import sys
 from unittest.mock import mock_open, patch
 
+from pydantic import SecretStr
+
 
 def test_credentials():
     """Test the Credentials model."""
@@ -78,3 +80,39 @@ def test_credentials_env_overrides_null():
         creds = Credentials()
 
         assert creds.econdb_api_key.get_secret_value() == "env_econdb_key"
+
+
+def test_credentials_model_post_init_uses_env_defaults_and_show_and_update():
+    for mod_name in list(sys.modules.keys()):
+        if "openbb_core.app.model.credentials" in mod_name:
+            del sys.modules[mod_name]
+
+    with (
+        patch(
+            "openbb_core.app.provider_interface.ProviderInterface"
+        ) as mock_provider_interface,
+        patch("openbb_core.app.extension_loader.ExtensionLoader") as mock_loader,
+        patch("openbb_core.app.model.credentials.Path.exists", return_value=False),
+        patch.dict("os.environ", {}, clear=True),
+    ):
+        mock_provider_interface.return_value.credentials = {"test": ["test_api_key"]}
+        mock_loader.return_value.obbject_objects = {}
+
+        import openbb_core.app.model.credentials as credentials_module
+
+        importlib.reload(credentials_module)
+        Credentials = credentials_module.Credentials
+
+        creds = Credentials(test_api_key="")
+        Credentials._env_defaults = {"test_api_key": SecretStr("from_env")}
+        creds.model_post_init(None)
+        assert creds.test_api_key.get_secret_value() == "from_env"
+
+        with patch("builtins.print") as print_mock:
+            creds.show()
+        printed = "\n".join(str(x) for x in print_mock.call_args[0])
+        assert "test_api_key: from_env" in printed
+
+        incoming = Credentials(test_api_key="updated")
+        creds.update(incoming)
+        assert creds.test_api_key.get_secret_value() == "updated"

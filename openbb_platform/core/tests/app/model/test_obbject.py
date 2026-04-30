@@ -471,3 +471,21 @@ def test_obbject_module_polars_importerror_sets_none():
             "openbb_core.app.model.obbject", run_name="__test_obbject_polars__"
         )
         assert module_ns["PolarsDataFrame"] is None
+
+
+def test_to_polars_uses_polars_from_pandas(monkeypatch):
+    class _P:
+        @staticmethod
+        def from_pandas(df):
+            return {"rows": len(df)}
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr("openbb_core.app.utils_optional.require_optional", lambda name: _P)
+        m.setattr(
+            OBBject,
+            "to_dataframe",
+            lambda self, index=None: pd.DataFrame({"a": [1], "b": [2]}),
+        )
+        co: OBBject = OBBject(results=[{"a": [1], "b": [2]}])
+        out = co.to_polars()
+        assert out == {"rows": 1}

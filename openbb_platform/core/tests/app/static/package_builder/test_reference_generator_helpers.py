@@ -298,3 +298,20 @@ def test_get_function_signature_info_skips_depends_default():
 
     out = ReferenceGenerator._get_function_signature_info(f)
     assert out == []
+
+
+def test_resolve_field_type_str_typing_union_optional_branch():
+    fi = FieldInfo(annotation=str | None, default=None)
+    type_str, is_required = ReferenceGenerator._resolve_field_type_str(fi)
+    assert is_required is False
+    assert "str" in type_str
+
+
+def test_get_function_signature_info_typing_union_optional_branch():
+    def f(x: int | None = None) -> None:
+        return None
+
+    out = ReferenceGenerator._get_function_signature_info(f)
+    assert out[0]["name"] == "x"
+    assert out[0]["optional"] is True
+    assert "int" in out[0]["type"]
