@@ -25,17 +25,6 @@ class LoggingSettings:
             if not user_settings.preferences
             else user_settings.preferences.data_directory
         )
-        hub_session = (
-            user_settings.profile.hub_session  # ty: ignore[unresolved-attribute]
-            if user_settings.profile  # ty: ignore[unresolved-attribute]
-            else None
-        )
-        if hub_session:
-            user_id = hub_session.user_uuid
-            user_email = hub_session.email
-            user_primary_usage = hub_session.primary_usage
-        else:
-            user_id, user_email, user_primary_usage = None, None, None
 
         # System
         self.app_name: str = system_settings.logging_app_name
@@ -51,7 +40,4 @@ class LoggingSettings:
         self.platform_version: str = system_settings.version
         self.logging_suppress: bool = system_settings.logging_suppress
         # User
-        self.user_id: str | None = user_id
         self.user_logs_directory: Path = get_log_dir(user_data_directory)
-        self.user_email: str | None = user_email
-        self.user_primary_usage: str | None = user_primary_usage

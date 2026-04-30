@@ -104,6 +104,15 @@ def test_filter_credentials_missing_dont_require(mock_query_executor):
     assert filtered_credentials == {}
 
 
+def test_filter_credentials_none_dont_require(mock_query_executor):
+    provider = mock_query_executor.get_provider("test_provider")
+    provider.credentials = ["test_provider_api_key"]
+
+    filtered_credentials = mock_query_executor.filter_credentials(None, provider, False)
+
+    assert filtered_credentials == {}
+
+
 @pytest.mark.asyncio
 async def test_execute_success(mock_query_executor: QueryExecutor):
     """Test if the method can execute a query successfully."""

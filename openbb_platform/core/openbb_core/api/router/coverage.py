@@ -81,7 +81,7 @@ async def get_commands_model_map(
         """Serialize the object."""
         if isinstance(obj, type):
             return str(obj)
-        return obj
+        return obj  # pragma: no cover
 
     return json.loads(json.dumps(commands_map, default=serializer, indent=4))
 

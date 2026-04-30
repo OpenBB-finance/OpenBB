@@ -31,11 +31,6 @@ def multi_registry_map(multi_provider_registry: Registry) -> RegistryMap:
     return RegistryMap(registry=multi_provider_registry)
 
 
-# ---------------------------------------------------------------------------
-# Credentials
-# ---------------------------------------------------------------------------
-
-
 def test_credentials_are_namespaced_with_provider_prefix(
     registry_map: RegistryMap,
     fake_provider_name: str,
@@ -55,11 +50,6 @@ def test_credentials_are_empty_for_provider_with_no_credentials(
     assert multi_registry_map.credentials[second_fake_provider_name] == []
 
 
-# ---------------------------------------------------------------------------
-# available_providers / models
-# ---------------------------------------------------------------------------
-
-
 def test_available_providers_is_sorted(multi_registry_map: RegistryMap):
     """``available_providers`` returns a sorted list of provider names."""
     available = multi_registry_map.available_providers
@@ -69,11 +59,6 @@ def test_available_providers_is_sorted(multi_registry_map: RegistryMap):
 def test_models_are_keys_of_standard_extra(registry_map: RegistryMap):
     """``models`` is a list view of ``standard_extra``'s top-level keys."""
     assert set(registry_map.models) == set(registry_map.standard_extra.keys())
-
-
-# ---------------------------------------------------------------------------
-# Field bucketing — the heart of provider extension
-# ---------------------------------------------------------------------------
 
 
 def test_standard_fields_land_under_openbb_bucket(
@@ -128,11 +113,6 @@ def test_inherited_query_params_are_not_duplicated(
     assert primary_query == {}
 
 
-# ---------------------------------------------------------------------------
-# Multi-provider merging
-# ---------------------------------------------------------------------------
-
-
 def test_multi_provider_same_model_each_get_their_own_bucket(
     multi_registry_map: RegistryMap,
     fake_provider_name: str,
@@ -181,11 +161,6 @@ def test_provider_specific_fields_are_isolated_between_providers(
     assert "second_extra" not in primary_fields
 
 
-# ---------------------------------------------------------------------------
-# original_models — query, data, results_type
-# ---------------------------------------------------------------------------
-
-
 def test_original_models_records_query_data_and_results_type(
     registry_map: RegistryMap,
     fake_provider_name: str,
@@ -211,11 +186,6 @@ def test_results_type_is_none_for_single_data_return(
     """A fetcher returning a single ``Data`` (not ``list[Data]``) has ``results_type=None``."""
     record = registry_map.original_models[single_result_model_name][fake_provider_name]
     assert record["results_type"] is None
-
-
-# ---------------------------------------------------------------------------
-# Validation
-# ---------------------------------------------------------------------------
 
 
 def test_validate_rejects_non_data_subclass():
@@ -290,11 +260,6 @@ def test_invalid_fetcher_data_type_fails_registry_map_construction(
         RegistryMap(registry=registry)
 
 
-# ---------------------------------------------------------------------------
-# Construction wiring
-# ---------------------------------------------------------------------------
-
-
 def test_registry_property_round_trips(
     registry_map: RegistryMap, fake_registry: Registry
 ):
@@ -323,3 +288,48 @@ def test_default_construction_uses_extension_loader(monkeypatch):
     assert rmap.available_providers == []
     assert rmap.credentials == {}
     assert rmap.models == []
+
+
+def test_update_json_schema_extra_merges_standard_and_extra_fields():
+    class _Q(QueryParams):
+        std: str
+        extra: str
+        __json_schema_extra__ = {
+            "std": {"multiple_items_allowed": True},
+            "extra": {"choices": ["a", "b"]},
+            "missing": {"ignored": True},
+        }
+
+    class _D(Data):
+        value: int
+
+    class _F(Fetcher[_Q, list[_D]]):
+        query_params_type = _Q
+        data_type = _D
+        return_type = list[_D]
+
+        @staticmethod
+        def transform_query(params: dict[str, Any]) -> _Q:
+            return _Q(**params)
+
+        @staticmethod
+        def extract_data(query: _Q, credentials: dict[str, str] | None):
+            return []
+
+        @staticmethod
+        def transform_data(query: _Q, data, **kwargs):
+            return []
+
+    model_map = {
+        "openbb": {"QueryParams": {"fields": {"std": _Q.model_fields["std"]}}},
+        "prov": {"QueryParams": {"fields": {"extra": _Q.model_fields["extra"]}}},
+    }
+
+    RegistryMap(registry=Registry())._update_json_schema_extra("prov", _F, model_map)
+
+    assert model_map["openbb"]["QueryParams"]["fields"]["std"].json_schema_extra == {
+        "prov": {"multiple_items_allowed": True}
+    }
+    assert model_map["prov"]["QueryParams"]["fields"]["extra"].json_schema_extra == {
+        "prov": {"choices": ["a", "b"]}
+    }

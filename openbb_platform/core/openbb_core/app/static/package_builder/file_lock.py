@@ -18,9 +18,9 @@ try:
     import fcntl
 
     _HAS_FCNTL = True
-except Exception:  # noqa
+except Exception:  # noqa  # pragma: no cover
     _HAS_FCNTL = False
-    import msvcrt  # noqa
+    import msvcrt  # noqa  # pragma: no cover
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",

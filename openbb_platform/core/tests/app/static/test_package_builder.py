@@ -1,5 +1,6 @@
 """Test the package_builder.py file."""
 
+import signal
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
@@ -76,6 +77,83 @@ def test_write(package_builder):
     package_builder._write(code="", name="test", extension="json")
 
 
+def test_clean_unlinks_requested_modules(tmp_openbb_dir):
+    builder = PackageBuilder(tmp_openbb_dir)
+    package_dir = tmp_openbb_dir / "package"
+    package_dir.mkdir(parents=True, exist_ok=True)
+    target = package_dir / "equity.py"
+    target.write_text("x", encoding="utf-8")
+
+    builder._clean(modules=["equity"])
+
+    assert not target.exists()
+
+
+def test_build_raises_runtime_error_when_lock_is_held(tmp_openbb_dir):
+    builder = PackageBuilder(tmp_openbb_dir)
+
+    class _HeldLock:
+        def __init__(self, _f):
+            return None
+
+        def acquire(self, blocking=False):
+            raise BlockingIOError
+
+        def release(self):
+            return None
+
+    with (
+        patch("openbb_core.app.static.package_builder.builder.FileLock", _HeldLock),
+        pytest.raises(RuntimeError, match="Another build process is running"),
+    ):
+        builder.build()
+
+
+def test_build_sigterm_handler_cleans_and_exits(tmp_openbb_dir):
+    builder = PackageBuilder(tmp_openbb_dir, lint=False)
+    calls = {"clean": 0}
+    captured = {}
+
+    class _FreeLock:
+        def __init__(self, _f):
+            return None
+
+        def acquire(self, blocking=False):
+            return None
+
+        def release(self):
+            return None
+
+    def _clean(modules=None):
+        calls["clean"] += 1
+
+    def _signal(_sig, handler):
+        if callable(handler):
+            captured["handler"] = handler
+
+    def _save_modules(_modules=None, _ext_map=None):
+        captured["handler"](signal.SIGTERM, None)
+
+    builder._clean = _clean
+    builder._get_extension_map = lambda: {}
+    builder._save_modules = _save_modules
+    builder._save_reference_file = lambda _ext_map=None: None
+    builder._save_package = lambda: None
+
+    with (
+        patch("openbb_core.app.static.package_builder.builder.FileLock", _FreeLock),
+        patch(
+            "openbb_core.app.static.package_builder.builder.signal.getsignal",
+            lambda _s: None,
+        ),
+        patch("openbb_core.app.static.package_builder.builder.signal.signal", _signal),
+        pytest.raises(SystemExit),
+    ):
+        builder.build()
+
+    assert calls["clean"] >= 1
+
+
 @pytest.fixture(scope="module")
 def module_builder():
     """Return module builder."""
@@ -102,6 +180,206 @@ def test_build(class_definition):
     """Test build."""
     code = class_definition.build("openbb_core.app.static.container.Container")
     assert code
+
+
+def test_class_definition_skips_root_command_routes(monkeypatch):
+    class _Route:
+        name = "cmd"
+        path = "/root/cmd"
+        methods = {"GET"}
+        openapi_extra = {"model": "M", "examples": ["e"]}
+
+        @staticmethod
+        def endpoint():
+            return None
+
+    monkeypatch.setattr(
+        PathHandler, "build_module_class", staticmethod(lambda path: "C")
+    )
+    monkeypatch.setattr(
+        PathHandler, "build_route_map", staticmethod(lambda: {"root/cmd": _Route()})
+    )
+    monkeypatch.setattr(
+        PathHandler, "build_path_list", staticmethod(lambda _rm: ["root/cmd"])
+    )
+    monkeypatch.setattr(
+        PathHandler, "get_child_path_list", staticmethod(lambda _p, _pl: ["root/cmd"])
+    )
+    monkeypatch.setattr(
+        PathHandler, "get_route", staticmethod(lambda _c, _rm: _Route())
+    )
+
+    called = {"command": 0}
+    monkeypatch.setattr(
+        MethodDefinition,
+        "build_command_method",
+        staticmethod(
+            lambda **_k: called.__setitem__("command", called["command"] + 1) or ""
+        ),
+    )
+
+    out = ClassDefinition.build("", None)
+    assert "Routers:" in out
+    assert called["command"] == 0
+
+
+def test_class_definition_adds_subroute_loader_for_non_command_route(monkeypatch):
+    class _Route:
+        name = "parent"
+        path = "/a/parent"
+        methods = None
+        openapi_extra = None
+        endpoint = None
+
+    route_map = {"a/parent": _Route(), "a/parent/child": object()}
+
+    monkeypatch.setattr(
+        PathHandler, "build_module_class", staticmethod(lambda path: "C")
+    )
+    monkeypatch.setattr(PathHandler, "build_route_map", staticmethod(lambda: route_map))
+    monkeypatch.setattr(
+        PathHandler, "build_path_list", staticmethod(lambda _rm: list(route_map.keys()))
+    )
+    monkeypatch.setattr(
+        PathHandler, "get_child_path_list", staticmethod(lambda _p, _pl: ["a/parent"])
+    )
+    monkeypatch.setattr(
+        PathHandler, "get_route", staticmethod(lambda _c, _rm: _Route())
+    )
+
+    monkeypatch.setattr(
+        MethodDefinition,
+        "build_class_loader_method",
+        staticmethod(
+            lambda path: (
+                f"\n    def load_{path.replace('/', '_')}(self):\n        pass\n"
+            )
+        ),
+    )
+    monkeypatch.setattr(
+        MethodDefinition,
+        "build_command_method",
+        staticmethod(lambda **_k: ""),
+    )
+
+    out = ClassDefinition.build("a", None)
+    assert "/parent" in out
+    assert "load_a_parent" in out
+
+
+def test_class_definition_includes_extensions_for_root(monkeypatch):
+    monkeypatch.setattr(
+        PathHandler, "build_module_class", staticmethod(lambda path: "C")
+    )
+    monkeypatch.setattr(PathHandler, "build_route_map", staticmethod(lambda: {}))
+    monkeypatch.setattr(PathHandler, "build_path_list", staticmethod(lambda _rm: []))
+    monkeypatch.setattr(
+        PathHandler, "get_child_path_list", staticmethod(lambda _p, _pl: [])
+    )
+
+    out = ClassDefinition.build(
+        "",
+        {
+            "openbb_core_extension": ["core_ext"],
+            "openbb_provider_extension": ["prov_ext"],
+        },
+    )
+    assert "Extensions:" in out
+    assert "core_ext" in out
+    assert "prov_ext" in out
+
+
+def test_class_definition_builds_command_method_for_non_root_path(monkeypatch):
+    class _Route:
+        name = "quote"
+        path = "/equity/quote"
+        methods = {"GET"}
+        openapi_extra = {"model": "Quote", "examples": ["ex1"]}
+
+        @staticmethod
+        def endpoint():
+            return None
+
+    monkeypatch.setattr(
+        PathHandler, "build_module_class", staticmethod(lambda path: "C")
+    )
+    monkeypatch.setattr(
+        PathHandler, "build_route_map", staticmethod(lambda: {"equity/quote": _Route()})
+    )
+    monkeypatch.setattr(
+        PathHandler, "build_path_list", staticmethod(lambda _rm: ["equity/quote"])
+    )
+    monkeypatch.setattr(
+        PathHandler,
+        "get_child_path_list",
+        staticmethod(lambda _p, _pl: ["equity/quote"]),
+    )
+    monkeypatch.setattr(
+        PathHandler, "get_route", staticmethod(lambda _c, _rm: _Route())
+    )
+
+    called = {"args": None}
+    monkeypatch.setattr(
+        MethodDefinition,
+        "build_command_method",
+        staticmethod(
+            lambda **kwargs: (
+                called.__setitem__("args", kwargs)
+                or "\n    def quote(self):\n        pass\n"
+            )
+        ),
+    )
+
+    out = ClassDefinition.build("equity", None)
+    assert "quote" in out
+    assert called["args"]["model_name"] == "Quote"
+    assert called["args"]["examples"] == ["ex1"]
+
+
+def test_class_definition_missing_route_with_subroutes_builds_loader(monkeypatch):
+    route_map = {"fx/rates": object(), "fx/rates/intraday": object()}
+
+    monkeypatch.setattr(
+        PathHandler, "build_module_class", staticmethod(lambda path: "C")
+    )
+    monkeypatch.setattr(PathHandler, "build_route_map", staticmethod(lambda: route_map))
+    monkeypatch.setattr(
+        PathHandler, "build_path_list", staticmethod(lambda _rm: list(route_map.keys()))
+    )
+    monkeypatch.setattr(
+        PathHandler, "get_child_path_list", staticmethod(lambda _p, _pl: ["fx/rates"])
+    )
+    monkeypatch.setattr(PathHandler, "get_route", staticmethod(lambda _c, _rm: None))
+    monkeypatch.setattr(
+        MethodDefinition,
+        "build_class_loader_method",
+        staticmethod(
+            lambda path: (
+                f"\n    def load_{path.replace('/', '_')}(self):\n        pass\n"
+            )
+        ),
+    )
+
+    out = ClassDefinition.build("fx", None)
+    assert "/rates" in out
+    assert "load_fx_rates" in out
+
+
+def test_module_builder_build(monkeypatch):
+    monkeypatch.setattr(
+        ImportDefinition, "build", staticmethod(lambda path: "import x\n")
+    )
+    monkeypatch.setattr(
+        ClassDefinition,
+        "build",
+        staticmethod(lambda path, ext_map=None: "class C:\n    pass\n"),
+    )
+
+    out = ModuleBuilder.build("equity.quote", {"openbb_core_extension": []})
+    assert "Autogenerated OpenBB equity.quote Module" in out
+    assert "THIS FILE IS AUTO-GENERATED" in out
+    assert "import x" in out
+    assert "class C" in out
 
 
 @pytest.fixture(scope="module")
@@ -674,7 +952,9 @@ def test_generate_model_docstring(docstring_generator, fake_model_name):
     pi = docstring_generator.provider_interface
     kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
     return_schema = pi.return_schema[model_name]
-    returns = return_schema.model_fields
+    returns = (
+        return_schema if isinstance(return_schema, type) else type(return_schema)
+    ).model_fields
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),

@@ -79,11 +79,6 @@ def test_obb_coverage_reports_fake_integration_provider(run_in_obb):
     )
 
 
-# ---------------------------------------------------------------------------
-# OBBject built-in conversion methods (require pandas)
-# ---------------------------------------------------------------------------
-
-
 pandas_required = pytest.mark.requires_pandas
 
 
@@ -141,11 +136,6 @@ def test_obbject_to_llm_emits_json_string(run_in_obb):
     assert result["is_str"] is True
     assert isinstance(result["parsed"], list)
     assert result["parsed"][0]["symbol"] == "FAKE"
-
-
-# ---------------------------------------------------------------------------
-# OBBject extension (accessor) — openbb_obbject_extension entry point
-# ---------------------------------------------------------------------------
 
 
 def test_fake_accessor_is_registered_on_obbject_class(run_in_obb):

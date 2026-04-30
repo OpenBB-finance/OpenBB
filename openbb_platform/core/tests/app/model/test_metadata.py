@@ -38,6 +38,36 @@ def test_fields():
     assert "timestamp" in fields
 
 
+def test_metadata_repr():
+    """Test __repr__ returns formatted string."""
+    m = Metadata(
+        arguments={"provider_choices": {}, "standard_params": {}, "extra_params": {}},
+        route="/test",
+        timestamp=datetime.now(),
+        duration=0,
+    )
+    result = repr(m)
+    assert "Metadata" in result
+    assert "route" in result
+
+
+def test_scale_arguments_series():
+    """Test Series branch in scale_arguments."""
+    series = pd.Series([1, 2, 3], name="price")
+    m = Metadata(
+        arguments={
+            "provider_choices": {},
+            "standard_params": {},
+            "extra_params": {"price_series": series},
+        },
+        route="/test",
+        timestamp=datetime.now(),
+        duration=0,
+    )
+    assert m.arguments["extra_params"]["price_series"]["type"] == "Series"
+    assert "price" in m.arguments["extra_params"]["price_series"]["columns"]
+
+
 @pytest.mark.parametrize(
     "input_data, expected_output",
     [

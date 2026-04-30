@@ -394,3 +394,81 @@ def test_show_chart_no_fig():
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):
         mock_instance.show()
+
+    # Use an object type that triggers TypeError inside pandas conversion path
+    class _Bad:
+        def __iter__(self):
+            raise TypeError("type bad")
+
+        def __len__(self):
+            return 1
+
+    co: OBBject = OBBject(results=_Bad())
+    with pytest.raises(OpenBBError, match="TypeError"):
+        co.to_dataframe(index=None)
+
+
+def test_to_dict_list_orient_removes_index_key():
+    co: OBBject = OBBject(results=[{"a": 1}])
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr(
+            OBBject,
+            "to_dataframe",
+            lambda self, index=None: pd.DataFrame({"index": [1], "a": [2]}),
+        )
+        out = co.to_dict(orient="list")
+
+    assert "index" not in out
+
+
+def test_to_df_alias_calls_to_dataframe():
+    co: OBBject = OBBject(results=[{"a": [1]}])
+    out = co.to_df(index=None)
+    assert isinstance(out, pd.DataFrame)
+
+
+def test_to_dataframe_dict_double_valueerror_falls_back_to_series(monkeypatch):
+    calls = {"n": 0}
+    original = pd.DataFrame.from_dict
+
+    def _boom(*args, **kwargs):
+        calls["n"] += 1
+        if calls["n"] <= 2:
+            raise ValueError("fail")
+        return original(*args, **kwargs)
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr(pd.DataFrame, "from_dict", _boom)
+        co: OBBject = OBBject(results={"a": 1})
+        out = co.to_dataframe(index=None)
+        assert list(out.columns) == ["index", "values"]
+
+
+def test_to_dataframe_wraps_valueerror_in_openbb_error(monkeypatch):
+    def _raise_value_error(*args, **kwargs):
+        raise ValueError("boom")
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr(pd.DataFrame, "sort_index", _raise_value_error)
+        co: OBBject = OBBject(results=[{"a": [1]}])
+        with pytest.raises(OpenBBError, match="ValueError: boom"):
+            co.to_dataframe(index=None)
+
+
+def test_to_polars_uses_polars_from_pandas(monkeypatch):
+    class _P:
+        @staticmethod
+        def from_pandas(df):
+            return {"rows": len(df)}
+
+    with pytest.MonkeyPatch.context() as m:
+        m.setattr("openbb_core.app.utils_optional.require_optional", lambda name: _P)
+        m.setattr(
+            OBBject,
+            "to_dataframe",
+            lambda self, index=None: pd.DataFrame({"a": [1], "b": [2]}),
+        )
+        co: OBBject = OBBject(results=[{"a": [1], "b": [2]}])
+        out = co.to_polars()
+        assert out == {"rows": 1}

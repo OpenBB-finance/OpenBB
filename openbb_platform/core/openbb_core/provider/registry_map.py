@@ -18,6 +18,12 @@ STANDARD_MODELS_FOLDER = Path(__file__).parent / "standard_models"
 SKIP = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
 
 
+def _model_fields(model_or_cls: Any):
+    """Return pydantic model fields from either a class or an instance."""
+    model_cls = model_or_cls if isinstance(model_or_cls, type) else type(model_or_cls)
+    return model_cls.model_fields
+
+
 class RegistryMap:
     """Class to store information about providers in the registry."""
 
@@ -159,7 +165,7 @@ class RegistryMap:
 
             fields = {
                 name: field
-                for name, field in child.model_fields.items()
+                for name, field in _model_fields(child).items()
                 # This ensures fields inherited by c are discarded.
                 # We need to compare child and parent __annotations__
                 # because this attribute is redirected to the parent class

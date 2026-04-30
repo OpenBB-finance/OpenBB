@@ -1,6 +1,7 @@
 """Tests for exchange_utils module."""
 
 import pytest
+from pydantic_core import core_schema
 
 from openbb_core.provider.utils.exchange_utils import Exchange
 
@@ -102,3 +103,33 @@ class TestExchange:
         assert Exchange("XNAS").mic == Exchange("xnas").mic
         assert Exchange("NASDAQ").mic == Exchange("nasdaq").mic
         assert Exchange("Nasdaq").mic == Exchange("NASDAQ").mic
+
+
+def test_lookup_exchange_uppercase_branch(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.exchange_utils._EXCHANGE_LOOKUP",
+        {"XUPP": {"mic": "XUPP", "acronym": "UPP", "name": "Upper Only"}},
+    )
+    out = Exchange._lookup_exchange("xupp")
+    assert out["mic"] == "XUPP"
+
+
+def test_lookup_exchange_original_case_branch(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_core.provider.utils.exchange_utils._EXCHANGE_LOOKUP",
+        {
+            "MixedCaseExchange": {
+                "mic": "XMIX",
+                "acronym": "MIX",
+                "name": "MixedCaseExchange",
+            }
+        },
+    )
+    out = Exchange._lookup_exchange("MixedCaseExchange")
+    assert out["mic"] == "XMIX"
+
+
+def test_exchange_pydantic_core_schema():
+    schema = Exchange.__get_pydantic_core_schema__(None, None)
+    assert schema["type"] == "function-after"
+    assert schema["schema"] == core_schema.str_schema()

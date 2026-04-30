@@ -39,6 +39,6 @@ def test_ruff(linters):
     linters.ruff()
 
 
-def test_black(linters):
-    """Test black."""
-    linters.black()
+def test_run_linter_not_found(linters):
+    """Test logs when a linter binary is not found."""
+    linters.run(linter="nonexistent_linter_xyz_abc")

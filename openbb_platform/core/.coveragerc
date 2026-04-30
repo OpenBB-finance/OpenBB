@@ -1,0 +1,26 @@
+[run]
+branch = False
+parallel = True
+source = openbb_core
+data_file = .coverage
+omit =
+    openbb_core/build.py
+    openbb_core/provider/utils/update_country_data.py
+    openbb_core/provider/utils/update_exchange_data.py
+    tests/*
+    integration/*
+
+[paths]
+source =
+    openbb_core
+    */site-packages/openbb_core
+    */openbb_platform/core/openbb_core
+
+[report]
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    if __name__ == .__main__.:
+    raise NotImplementedError

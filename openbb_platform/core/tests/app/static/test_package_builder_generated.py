@@ -44,10 +44,6 @@ from openbb_core.app.router import Router, RouterLoader
 from openbb_core.app.static.package_builder import PackageBuilder
 from openbb_core.provider.registry_map import RegistryMap
 
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
-
 
 def _reset_provider_interface() -> None:
     """Drop the ``ProviderInterface`` singleton so the next call rebuilds it."""
@@ -129,8 +125,8 @@ def multi_provider_router(
 
 def _build(tmp_path: Path) -> Path:
     """Run ``PackageBuilder.build()`` with production-equivalent lint."""
-    if not shutil.which("ruff") or not shutil.which("black"):
-        pytest.skip("ruff and black are required to lint the generated package")
+    if not shutil.which("ruff"):
+        pytest.skip("ruff is required to lint the generated package")
     builder = PackageBuilder(directory=tmp_path, lint=True, verbose=False)
     with patch.object(builder, "_save_reference_file"):
         builder.build()
@@ -147,11 +143,6 @@ def built_package_dir(tmp_path: Path, fake_router: Router) -> Path:
 def built_multi_provider_dir(tmp_path: Path, multi_provider_router: Router) -> Path:
     """Build the package using the multi-provider fixture."""
     return _build(tmp_path)
-
-
-# ---------------------------------------------------------------------------
-# 1. Generated files are valid Python
-# ---------------------------------------------------------------------------
 
 
 def _emitted_py_files(package_dir: Path) -> list[Path]:
@@ -203,11 +194,6 @@ def test_init_module_is_emitted(built_package_dir):
     init = built_package_dir / "package" / "__init__.py"
     assert init.exists()
     assert "AUTO-GENERATED" in init.read_text()
-
-
-# ---------------------------------------------------------------------------
-# 2. Generated package imports and exposes the expected API
-# ---------------------------------------------------------------------------
 
 
 def _import_module_from_path(name: str, path: Path) -> Any:
@@ -299,11 +285,6 @@ def test_generated_command_dispatches_to_container_run(
     assert route_path == "/test/fake_command", (
         f"Expected route path '/test/fake_command', got {route_path!r}"
     )
-
-
-# ---------------------------------------------------------------------------
-# 3. Behavioral contract: provider routing, dispatch payload, sub-routers
-# ---------------------------------------------------------------------------
 
 
 def _locate_container_class(package_dir: Path, method_name: str):
@@ -503,8 +484,8 @@ def test_command_docstring_preserved_in_generated_source(built_package_dir):
 
 def test_build_is_deterministic(tmp_path: Path, fake_router: Router):
     """Running ``PackageBuilder.build()`` twice over the same input must produce byte-identical output."""
-    if not shutil.which("ruff") or not shutil.which("black"):
-        pytest.skip("ruff and black are required to lint the generated package")
+    if not shutil.which("ruff"):
+        pytest.skip("ruff is required to lint the generated package")
 
     out_a = tmp_path / "a"
     out_b = tmp_path / "b"
@@ -529,11 +510,6 @@ def test_build_is_deterministic(tmp_path: Path, fake_router: Router):
         assert content_a == files_b[rel_path], (
             f"Non-deterministic output: {rel_path} differs between builds"
         )
-
-
-# ---------------------------------------------------------------------------
-# 4. Special command shapes: multiple commands per router, deprecation, raw
-# ---------------------------------------------------------------------------
 
 
 def test_router_with_two_commands_emits_both_methods(
@@ -621,10 +597,6 @@ def test_command_without_model_emits_user_signature(
     )
 
 
-# ---------------------------------------------------------------------------
-# 6. End-to-end: dependency injection wires through the generated module
-# ---------------------------------------------------------------------------
-#
 # These tests build the *real* package against a router that carries both
 # router-level and param-level FastAPI ``Depends(...)``, then read the
 # emitted ``.py`` file off disk and assert the DI wiring shows up in the
@@ -690,7 +662,10 @@ def test_generated_module_renders_router_level_dependency_wiring(
         "router-level Depends did not render the dep instantiation line in the "
         f"emitted module:\n--- source ---\n{source}\n--- end ---"
     )
-    assert 'kwargs["di_mock_dep"] = di_mock_dep' in source, (
+    assert (
+        'kwargs["di_mock_dep"] = di_mock_dep' in source
+        or "kwargs['di_mock_dep'] = di_mock_dep" in source
+    ), (
         "router-level Depends did not render the kwargs hand-off line in the "
         f"emitted module:\n--- source ---\n{source}\n--- end ---"
     )
