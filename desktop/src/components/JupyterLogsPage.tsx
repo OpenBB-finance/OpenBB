@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { useSearch } from '@tanstack/react-router';
 import SearchBar from './SearchBar';
+import CustomIcon from './Icon';
 import '../styles/jupyter-logs.css';
 
 interface LogEntry {
@@ -15,7 +16,7 @@ const JupyterLogsPage: React.FC = () => {
   // Get environment from route parameters
   const search = useSearch({ from: '/jupyter-logs' });
   const environmentName = search.environment as string;
-  
+
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,16 +24,17 @@ const JupyterLogsPage: React.FC = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [caseSensitive, setCaseSensitive] = useState(false);
+  const [logsCleared, setLogsCleared] = useState(false);
   const logContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Find all matches in the logs
   const searchMatches = useMemo(() => {
     if (!searchTerm) return [];
-    
+
     const matches: { logIndex: number; startIndex: number; endIndex: number }[] = [];
     const searchRegex = new RegExp(
-      searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 
+      searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
       caseSensitive ? 'g' : 'gi'
     );
 
@@ -65,7 +67,7 @@ const JupyterLogsPage: React.FC = () => {
         m => m.logIndex === logIndex && m.startIndex === match.startIndex
       );
       const isCurrentMatch = globalMatchIndex === currentMatchIndex;
-      
+
       highlightedContent += content.slice(lastIndex, match.startIndex);
       highlightedContent += `<span class="${isCurrentMatch ? 'search-highlight-current' : 'search-highlight'}">${content.slice(match.startIndex, match.endIndex)}</span>`;
       lastIndex = match.endIndex;
@@ -78,11 +80,11 @@ const JupyterLogsPage: React.FC = () => {
   // Scroll to current match
   const scrollToMatch = (matchIndex: number) => {
     if (matchIndex < 0 || matchIndex >= searchMatches.length || !logContainerRef.current) return;
-    
+
     const match = searchMatches[matchIndex];
     const logElements = logContainerRef.current.querySelectorAll('[data-log-index]');
     const targetElement = logElements[match.logIndex] as HTMLElement;
-    
+
     if (targetElement) {
       requestAnimationFrame(() => {
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -147,7 +149,7 @@ const JupyterLogsPage: React.FC = () => {
       scrollToMatch(currentMatchIndex);
     }
   }, [currentMatchIndex, searchMatches]);
-  
+
   useEffect(() => {
     console.log("JupyterLogsPage initialized with environment:", environmentName);
 
@@ -159,34 +161,34 @@ const JupyterLogsPage: React.FC = () => {
 
     const processId = `jupyter-${environmentName}`;
     console.log(`Fetching logs for process: ${processId}`);
-    
+
     // Register for process monitoring
     invoke("register_process_monitoring", { processId })
       .then(() => console.log(`Process ${processId} registered for monitoring`))
       .catch(err => console.error(`Failed to register process monitoring: ${err}`));
-    
+
     // Fetch initial logs
     const fetchInitialLogs = async () => {
       try {
         setLoading(true);
-        
+
         // Get logs for this specific environment/process
-        const fetchedLogs = await invoke<LogEntry[]>("get_process_logs_history", { 
-          processId 
+        const fetchedLogs = await invoke<LogEntry[]>("get_process_logs_history", {
+          processId
         });
-        
+
         console.log(`Received ${fetchedLogs?.length || 0} logs for ${environmentName}`);
-        
+
         if (fetchedLogs && Array.isArray(fetchedLogs)) {
           setLogs(fetchedLogs.map(log => ({ ...log, content: cleanLogContent(log.content) })));
-          
+
           // Check if any logs contain the specific shutdown message
           checkForShutdownMessage(fetchedLogs);
         } else {
           console.warn("No logs returned or invalid format");
           setLogs([]);
         }
-        
+
         setLoading(false);
       } catch (err) {
         console.error(`Failed to fetch logs for ${environmentName}:`, err);
@@ -194,20 +196,20 @@ const JupyterLogsPage: React.FC = () => {
         setLoading(false);
       }
     };
-    
+
     // Function to check for the specific shutdown message
     const checkForShutdownMessage = (logEntries: LogEntry[]) => {
       // Look specifically for the exact shutdown message
-      const hasShutdownMessage = logEntries.some(log => 
+      const hasShutdownMessage = logEntries.some(log =>
         log.content.includes("Shutting down on /api/shutdown request")
       );
-      
+
       if (hasShutdownMessage) {
         console.log(`Found API shutdown message for ${environmentName}, notifying parent`);
         notifyShutdown();
       }
     };
-    
+
     // Function to notify parent window about server shutdown
     const notifyShutdown = () => {
       try {
@@ -220,14 +222,14 @@ const JupyterLogsPage: React.FC = () => {
             status: 'stopped'
           }, '*');
         }
-        
+
         // Also use localStorage as a backup communication channel
         // This helps when direct window communication might fail
         const shutdownKey = `jupyter-shutdown-${environmentName}`;
         localStorage.setItem(shutdownKey, Date.now().toString());
-        
+
         console.log("Shutdown notification sent via postMessage and localStorage");
-        
+
         // If this window was opened by another window, we can close it now
         // if (window.opener) {
         //   window.close();
@@ -236,15 +238,16 @@ const JupyterLogsPage: React.FC = () => {
         console.error("Error sending shutdown notification:", err);
       }
     };
-    
+
     fetchInitialLogs();
-    
+
     // Listen for new log entries
     console.log(`Setting up process-output listener for ${processId}`);
     const unsubscribe = listen<{ processId: string, output: string, timestamp: number }>('process-output', (event) => {
       const { processId: eventProcessId, output, timestamp } = event.payload;
-      
+
       if (eventProcessId === processId) {
+        setLogsCleared(false);
         // Add the new log entry
         setLogs(prev => {
           const newLogs = [...prev, {
@@ -252,25 +255,25 @@ const JupyterLogsPage: React.FC = () => {
             content: cleanLogContent(output),
             process_id: eventProcessId
           }];
-          
+
           // Check specifically for the shutdown request message
           if (output.includes("Shutting down on /api/shutdown request")) {
             console.log("Detected Jupyter API shutdown request, notifying parent");
             notifyShutdown();
           }
-          
+
           return newLogs;
         });
       }
     });
-    
+
     // Cleanup
     return () => {
       console.log(`JupyterLogsPage unmounting for ${processId}`);
       unsubscribe.then(fn => fn()).catch(console.error);
     };
   }, [environmentName]);
-  
+
   // Auto-scroll to bottom when new logs come in
   useEffect(() => {
     if (logContainerRef.current && !searchTerm) {
@@ -287,9 +290,20 @@ const JupyterLogsPage: React.FC = () => {
   return (
     <div className="h-full w-full flex flex-col bg-theme-secondary relative flex-grow">
       {!searchVisible && (
-        <div className="search-help-container opacity-0 hover:opacity-100 transition-opacity hover:cursor-default">
-          <div className="body-xs-regular text-theme-muted items-center justify-center">
+        <div className="logs-toolbar-container opacity-0 hover:opacity-100 transition-opacity">
+          <div className="body-xs-regular text-theme-muted hover:cursor-default">
             Press Ctrl+F (Cmd+F) to search
+          </div>
+          <div className="flex items-center gap-1 hover:cursor-pointer"
+            onClick={async () => {
+              const processId = `jupyter-${environmentName}`;
+              await invoke('clear_process_logs_history', { processId });
+              setLogs([]);
+              setLogsCleared(true);
+            }}
+          >
+            <CustomIcon id="delete" className="h-3.5 w-3.5 text-theme-muted" />
+            <span className="body-xs-regular text-theme-muted">Clear logs</span>
           </div>
         </div>
       )}
@@ -310,7 +324,7 @@ const JupyterLogsPage: React.FC = () => {
 
       <div className="jupyter-logs-content-section flex-grow flex flex-col">
         <div
-          ref={logContainerRef} 
+          ref={logContainerRef}
           className="jupyter-logs-content w-full flex-grow overflow-auto bg-theme-secondary font-mono text-xs whitespace-pre-wrap"
         >
           {loading && logs.length === 0 ? (
@@ -319,13 +333,13 @@ const JupyterLogsPage: React.FC = () => {
             </div>
           ) : error ? (
             <div className="text-red-500 py-2 px-2">{error}</div>
-          ) : logs.length === 0 ? (
+          ) : logs.length === 0 && !logsCleared ? (
             <div className="text-theme-secondary">No logs available for this environment. Try starting a Jupyter server first.</div>
           ) : (
             <div>
               {logs.map((log, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="py-0.5"
                   data-log-index={index}
                   dangerouslySetInnerHTML={{

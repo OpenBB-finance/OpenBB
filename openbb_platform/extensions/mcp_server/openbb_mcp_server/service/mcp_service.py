@@ -199,7 +199,7 @@ class MCPService(metaclass=SingletonMeta):
         cli_to_settings_map = {
             "allowed_categories": "allowed_tool_categories",
             "default_categories": "default_tool_categories",
-            "no_tool_discovery": "enable_tool_discovery",
+            "tool_discovery": "enable_tool_discovery",
             "system_prompt": "system_prompt_file",
             "system-prompt": "system_prompt_file",
             "server_prompts": "server_prompts_file",
@@ -251,10 +251,7 @@ class MCPService(metaclass=SingletonMeta):
                 uvicorn_config[key] = value
             elif key in cli_to_settings_map:
                 mapped_key = cli_to_settings_map[key]
-                if mapped_key == "enable_tool_discovery":
-                    settings_overrides[mapped_key] = not value
-                else:
-                    settings_overrides[mapped_key] = value
+                settings_overrides[mapped_key] = value
             elif key in mcp_settings_fields:
                 settings_overrides[key] = value
             else:

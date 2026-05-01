@@ -27,8 +27,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Install OpenSSL 3
+        run: brew install openssl@3
+
       - name: Import Code Signing Certificate
-        uses: apple-actions/import-codesign-certs@v6
+        uses: apple-actions/import-codesign-certs@fe74d46e82474f87e1ba79832ad28a4013d0e33a # v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -64,8 +67,9 @@ jobs:
         run: npm install -g @cyclonedx/cyclonedx-npm
 
       - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@3c5f7ea28cd621ae0bf5283f0e981fb97b8a7af9 # master
         with:
+          toolchain: "stable"
           targets: "x86_64-apple-darwin"
 
       - name: Install Modules

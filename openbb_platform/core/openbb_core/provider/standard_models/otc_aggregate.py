@@ -4,7 +4,10 @@ from datetime import date as dateType
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from pydantic import Field
 
 
@@ -23,6 +26,7 @@ class OTCAggregateData(Data):
     update_date: dateType = Field(
         description="Most recent date on which total trades is updated based on data received from each ATS/OTC."
     )
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     share_quantity: float = Field(
         description="Aggregate weekly total number of shares reported by each ATS for the Symbol."
     )

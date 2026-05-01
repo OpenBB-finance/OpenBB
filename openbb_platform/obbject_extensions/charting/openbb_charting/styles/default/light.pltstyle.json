@@ -49,6 +49,7 @@
         ],
         "dragmode": "pan",
         "font": {
+            "color": "#111111",
             "family": "Arial",
             "size": 18
         },

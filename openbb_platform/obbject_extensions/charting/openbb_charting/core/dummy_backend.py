@@ -1,55 +1,31 @@
-"""Dummy backend for charting to avoid import errors."""
+"""Dummy backend when pywry is not installed."""
 
-import asyncio
-from queue import Queue
-
-import dotenv
-from openbb_core.app.constants import OPENBB_DIRECTORY
-
-SETTINGS_ENV_FILE = OPENBB_DIRECTORY / ".env"
+from typing import Any
 
 
 class DummyBackend:
-    """Dummy class to avoid import errors."""
+    """No-op backend used when pywry is not installed."""
 
-    __version__ = "0.0.0"
+    def __init__(self, **kwargs):
+        self.theme: Any = kwargs.get("theme")
 
-    max_retries = 0
-    outgoing: list[str] = []
-    init_engine: list[str] = []
-    daemon = True
-    debug = False
-    shell = False
-    base = None
-    recv: Queue = Queue()
+    def show_plotly(self, **kwargs):
+        """Raise NotImplementedError."""
+        raise NotImplementedError("pywry is not installed")
 
-    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
-        """Create a singleton instance of the backend."""
-        if not hasattr(cls, "instance"):
-            cls.instance = super().__new__(cls)  # pylint: disable=E1120
-        return cls.instance
+    def show_dataframe(self, **kwargs):
+        """Raise NotImplementedError."""
+        raise NotImplementedError("pywry is not installed")
 
-    def __init__(self, daemon: bool = True, max_retries: int = 30):
-        """Use cummy init to avoid import errors."""
-        self.daemon = daemon
-        self.max_retries = max_retries
-        try:
-            self.loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-        except RuntimeError:
-            self.loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(self.loop)
+    def show(self, content="", **kwargs):
+        """Raise NotImplementedError."""
+        raise NotImplementedError("pywry is not installed")
 
-        dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
+    def emit(self, *args, **kwargs):
+        """No-op."""
 
-    def close(self, reset: bool = False):  # pylint: disable=W0613
-        """Close the backend."""
+    def close(self, **kwargs):
+        """No-op."""
 
-    def start(self, debug: bool = False):  # pylint: disable=W0613
-        """Start the backend."""
-
-    def send_outgoing(self, outgoing: dict):
-        """Send outgoing data to the backend."""
-
-    async def check_backend(self):
-        """Check backend method to avoid errors and revert to browser."""
-        raise Exception
+    def destroy(self):
+        """No-op."""

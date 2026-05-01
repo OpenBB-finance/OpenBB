@@ -83,13 +83,16 @@ class CongressBillTextFetcher(
         results: list = []
 
         for url in urls:
-            filename = url.split("/")[-1]
+            from urllib.parse import urlparse
 
-            if "congress.gov" not in url.strip():
+            filename = urlparse(url).path.split("/")[-1]
+
+            _url_lower = url.strip().lower()
+            if "congress.gov" not in _url_lower and "govinfo.gov" not in _url_lower:
                 results.append(
                     {
                         "error_type": "invalid_url",
-                        "content": f"Invalid URL: {url}. Must be a valid Congress.gov API URL.",
+                        "content": f"Invalid URL: {url}. Must be a valid Congress.gov or GovInfo URL.",
                         "filename": filename,
                     }
                 )

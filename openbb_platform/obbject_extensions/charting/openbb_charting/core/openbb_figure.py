@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 
-from openbb_charting.core.backend import PLOTLYJS_PATH, create_backend, get_backend
+from openbb_charting.core.backend import Backend
 from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
@@ -78,8 +78,6 @@ class OpenBBFigure(go.Figure):
         Returns the figure as a subplot of another figure
     """
 
-    plotlyjs_path: Path = PLOTLYJS_PATH
-
     def __init__(self, fig: go.Figure | None = None, **kwargs) -> None:
         """Initialize the OpenBBFigure."""
         # pylint: disable=import-outside-toplevel
@@ -101,17 +99,12 @@ class OpenBBFigure(go.Figure):
         self._date_xaxs: dict = {}
         self._margin_adjusted = False
         self._feature_flags_applied = False
-        self._exported = False
         self._cmd_xshift = 0
         self._bar_width = 0.15
-        self._export_image: Path | str | None = ""
         self._subplot_xdates: dict[int, dict[int, list[Any]]] = {}
 
-        if kwargs.pop("create_backend", False):
-            create_backend(self._charting_settings)
-            get_backend().start(  # type: ignore
-                debug=getattr(self._charting_settings, "debug_mode", False)
-            )
+        if kwargs.pop("create_backend", False) and self._charting_settings:
+            Backend(self._charting_settings)
         self._theme = ChartStyle(
             getattr(self._charting_settings, "plt_style", ""),
             getattr(self._charting_settings, "user_styles_directory", None),
@@ -124,14 +117,7 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(**kwargs)
 
-        self._backend = get_backend()
-
-        if self._backend.isatty:  # type: ignore
-            self.update_layout(
-                margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
-                height=self._backend.HEIGHT,  # type: ignore
-                width=self._backend.WIDTH,  # type: ignore
-            )
+        self._backend = Backend.instance
 
     @property
     def theme(self):
@@ -829,7 +815,7 @@ class OpenBBFigure(go.Figure):
         self,
         *args,
         external: bool = False,
-        export_image: Path | str | None = "",
+        export_image: Path | str | None = "",  # pylint: disable=W0613
         **kwargs,
     ) -> "OpenBBFigure":
         """Show the figure.
@@ -849,11 +835,6 @@ class OpenBBFigure(go.Figure):
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
-        self._export_image = export_image
-
-        if export_image and not self._backend.isatty:  # type: ignore
-            export_image = Path(export_image).resolve()
-            export_image.touch()
 
         if kwargs.pop("margin", True):
             self._adjust_margins()
@@ -869,53 +850,29 @@ class OpenBBFigure(go.Figure):
             hovertemplate="%{y}",
         )
 
-        # Set modebar style
-        if self._backend.isatty:  # type: ignore
-            self.update_layout(  # type: ignore
-                newshape_line_color=(
-                    "gold" if self._theme.mapbox_style == "dark" else "#0d0887"
-                ),
-                modebar=dict(
-                    orientation="v",
-                    bgcolor="#2A2A2A" if self._theme.mapbox_style == "dark" else "gray",
-                    color="#FFFFFF" if self._theme.mapbox_style == "dark" else "black",
-                    activecolor=(
-                        "#d1030d" if self._theme.mapbox_style == "dark" else "blue"
-                    ),
-                ),
-                spikedistance=2,
-                hoverdistance=2,
-            )
+        self.update_layout(
+            newshape_line_color=(
+                "gold" if self._theme.mapbox_style == "dark" else "#0d0887"
+            ),
+            modebar=dict(orientation="v"),
+            spikedistance=2,
+            hoverdistance=2,
+        )
 
-        if external or self._exported:
+        if external:
             return self  # type: ignore
 
         if getattr(self._charting_settings, "headless", False):
             return self.to_json()  # type: ignore
 
-        kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
-        if self._backend.isatty:  # type: ignore
-            try:
-                # We check if we need to export the image
-                # This is done to avoid opening after exporting
-                if export_image:
-                    self._exported = True
-
-                # We send the figure to the backend to be displayed
-                return self._backend.send_figure(fig=self, export_image=export_image)  # type: ignore
-            except Exception as e:
-                # If the backend fails, we just show the figure normally
-                # This is a very rare case, but it's better to have a fallback
-
-                warn(f"Failed to show figure with backend. {e}")
-
-                # We check if any figures were initialized before the backend failed
-                # If so, we show them with the default plotly backend
-                queue = self._backend.get_pending()  # type: ignore
-                for pending in queue:
-                    data = json.loads(pending).get("json_data", {})
-                    if data.get("layout", {}):
-                        pio.show(data, *args, **kwargs)
+        command_location = kwargs.pop("command_location", "")
+        try:
+            if self._backend is not None:
+                return self._backend.send_figure(
+                    fig=self, command_location=command_location
+                )
+        except Exception as e:
+            warn(f"Failed to show figure with backend. {e}")
 
         return pio.show(self, *args, **kwargs)  # type: ignore
 
@@ -1184,36 +1141,6 @@ class OpenBBFigure(go.Figure):
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
-        if not self._backend.isatty and self.data[0].type != "table":  # type: ignore
-            for key, max_val in zip(["l", "r", "b", "t"], [60, 60, 80, 40]):
-                if key in self.layout.margin and (
-                    self.layout.margin[key] is None
-                    or (self.layout.margin[key] > max_val)
-                ):
-                    self.layout.margin[key] = max_val
-
-            orientation = "v" if self.layout.legend.orientation is None else "h"
-
-            for annotation in self.select_annotations(
-                selector=dict(x=0, xanchor="right")
-            ):
-                annotation.font.size = (
-                    annotation.font.size - 1.8 if annotation.font.size else 10
-                )
-
-            for trace in self.select_traces(
-                lambda trace: hasattr(trace, "legend") and trace.legend is not None
-            ):
-                if trace.legend in self.layout:
-                    self.layout[trace.legend].font.size = 12
-
-            self.update_layout(
-                legend=dict(orientation=orientation, font=dict(size=12)),
-                font=dict(size=14),
-            )
-            self.update_xaxes(tickfont=dict(size=13))
-            self.update_yaxes(tickfont=dict(size=13))
-
         return super().to_html(*args, **kwargs)
 
     def to_plotly_json(self) -> dict:
@@ -1387,28 +1314,16 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            dict(l=80, r=60, b=80, t=40, pad=0)
+            dict(l=80, r=60, b=30, t=40, pad=0)
             if not self._has_secondary_y or not self.has_subplots
-            else dict(l=60, r=50, b=85, t=40, pad=0)
+            else dict(l=60, r=50, b=35, t=40, pad=0)
         )
 
-        # We adjust margins
-        if self._backend.isatty:  # type: ignore
-            for key in ["l", "r", "b", "t", "pad"]:
-                if key in self.layout.margin and self.layout.margin[key] is not None:
-                    self.layout.margin[key] += margin_add.get(key, 0)
-                else:
-                    self.layout.margin[key] = margin_add.get(key, 0)
-
-        if not self._backend.isatty:  # type: ignore
-            org_margin = self.layout.margin
-            margin = dict(l=40, r=60, b=80, t=50)
-            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 50]):
-                org = org_margin[key] or 0
-                if (org + margin[key]) > max_val:
-                    self.layout.margin[key] = max_val
-                else:
-                    self.layout.margin[key] = org + margin[key]
+        for key in ["l", "r", "b", "t", "pad"]:
+            if key in self.layout.margin and self.layout.margin[key] is not None:
+                self.layout.margin[key] += margin_add.get(key, 0)
+            else:
+                self.layout.margin[key] = margin_add.get(key, 0)
 
         self._margin_adjusted = True
 

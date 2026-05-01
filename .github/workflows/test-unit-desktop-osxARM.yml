@@ -22,13 +22,16 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Install OpenSSL 3
+        run: brew install openssl@3
+
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: lts/*
 
       - name: Set up Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
           profile: minimal
