@@ -57,9 +57,7 @@ class Linters:
         command = [sys.executable, "-m", linter]
         if flags:
             command.extend(flags)  # type: ignore
-        subprocess.run(  # noqa: S603
-            command + files, check=False
-        )
+        subprocess.run(command + files, check=False)  # noqa: S603
 
         self.print_separator("-")
 
