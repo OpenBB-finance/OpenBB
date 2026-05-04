@@ -44,7 +44,7 @@ class Linters:
             self.console.log(f"\n* {linter} not found")
             return
 
-        files = list(self.directory.glob("*.py"))
+        files = [str(p) for p in self.directory.glob("*.py")]
         if not files:
             # No targets: don't invoke the linter with zero file args, which
             # would cause it to fall back to its default working-directory
@@ -56,8 +56,9 @@ class Linters:
 
         command = [sys.executable, "-m", linter]
         if flags:
-            command.extend(flags)  # type: ignore
-        subprocess.run(command + files, check=False)  # noqa: S603
+            command.extend(flags)
+        command.extend(files)
+        subprocess.run(command, check=False)  # noqa: S603
 
         self.print_separator("-")
 
