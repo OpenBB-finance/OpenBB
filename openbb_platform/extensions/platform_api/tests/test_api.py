@@ -8,6 +8,7 @@ from unittest.mock import AsyncMock, MagicMock, mock_open, patch
 
 import openbb_platform_api.utils.api as api_utils
 import pytest
+from fastapi import FastAPI
 from openbb_platform_api.utils.api import (
     check_port,
     get_user_settings,
@@ -168,6 +169,65 @@ def test_get_widgets_json_no_build():
             _build=False, _openapi={}, widget_exclude_filter=[]
         )
         assert widgets_json == {}
+
+
+def test_get_widgets_json_editable_merges_additional_widget_routes(
+    tmp_path, monkeypatch
+):
+    app = FastAPI()
+
+    @app.get("/widgets.json")
+    async def root_widgets():
+        return {"root": {"widgetId": "root", "endpoint": "/root"}}
+
+    @app.get("/custom/widgets.json")
+    async def custom_widgets():
+        return {
+            "custom": {
+                "widgetId": "custom",
+                "endpoint": "/data",
+                "gridData": {"w": 6, "h": 4},
+            }
+        }
+
+    widgets_path = tmp_path / "widgets.json"
+    widgets_path.write_text(
+        json.dumps({"root": {"widgetId": "root", "endpoint": "/root"}}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(api_utils, "FIRST_RUN", True)
+    monkeypatch.setattr(api_utils, "PATH_WIDGETS", {})
+    provider_helpers_module = types.ModuleType("openbb_core.provider.utils.helpers")
+
+    def _run_async_stub(callable_or_coroutine, *args, **kwargs):
+        import asyncio
+
+        result = (
+            callable_or_coroutine(*args, **kwargs)
+            if callable(callable_or_coroutine)
+            else callable_or_coroutine
+        )
+        if hasattr(result, "__await__"):
+            return asyncio.run(result)
+        return result
+
+    provider_helpers_module.run_async = _run_async_stub  # type: ignore
+
+    with patch.dict(
+        sys.modules,
+        {"openbb_core.provider.utils.helpers": provider_helpers_module},
+    ):
+        widgets_json = get_widgets_json(
+            _build=False,
+            _openapi={},
+            widget_exclude_filter=[],
+            editable=True,
+            widgets_path=str(widgets_path),
+            app=app,
+        )
+
+    assert widgets_json["custom"]["endpoint"] == "/custom/data"
+    assert widgets_json["custom"]["gridData"] == {"w": 6, "h": 4}
 
 
 def test_parse_args():

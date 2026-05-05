@@ -107,6 +107,26 @@ def get_user_settings(current_user_settings: str) -> dict:
     return user_settings
 
 
+def _merge_path_widgets(
+    widgets_json: dict, widget_exclude_filter: list, overwrite: bool = True
+) -> dict:
+    """Merge widgets loaded from additional widgets.json routes."""
+    if not PATH_WIDGETS:
+        return widgets_json
+
+    for k in PATH_WIDGETS:
+        if k in widget_exclude_filter or k + "*" in widget_exclude_filter:
+            continue
+
+        for widget_id, widget in PATH_WIDGETS[k].items():
+            if widget_id in widget_exclude_filter:
+                continue
+            if overwrite or widget_id not in widgets_json:
+                widgets_json[widget_id] = widget
+
+    return widgets_json
+
+
 def get_widgets_json(
     _build: bool,
     _openapi,
@@ -122,6 +142,8 @@ def get_widgets_json(
     from .widgets import build_json
 
     global PATH_WIDGETS  # noqa  pylint: disable=W0603
+
+    path_widget_exclude_filter = list(widget_exclude_filter)
 
     if (
         FIRST_RUN is True
@@ -195,17 +217,13 @@ def get_widgets_json(
                         if existing_widgets_json
                         else build_json(_openapi, widget_exclude_filter)
                     )
+
+        _widgets_json = _merge_path_widgets(
+            _widgets_json, path_widget_exclude_filter, overwrite=False
+        )
     else:
         _widgets_json = build_json(_openapi, widget_exclude_filter)
-
-        if PATH_WIDGETS:
-            for k in PATH_WIDGETS:
-                if k in widget_exclude_filter or k + "*" in widget_exclude_filter:
-                    continue
-
-                for widget_id, widget in PATH_WIDGETS[k].items():
-                    if widget_id not in widget_exclude_filter:
-                        _widgets_json[widget_id] = widget
+        _widgets_json = _merge_path_widgets(_widgets_json, path_widget_exclude_filter)
 
     return _widgets_json
 
