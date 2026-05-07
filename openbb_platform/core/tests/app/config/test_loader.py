@@ -6,7 +6,7 @@ push onto the singleton services.
 """
 
 import os
-from pathlib import Path
+from pathlib import PurePosixPath
 
 import pytest
 
@@ -675,4 +675,8 @@ def test_toml_quote_handles_each_supported_type():
     assert _toml_quote([1, 2]) == "[1, 2]"
     assert _toml_quote(["a", "b"]) == '["a", "b"]'
     # Other types fall through to ``str(value)`` wrapped in quotes.
-    assert _toml_quote(Path("/x")) == '"/x"'
+    # ``PurePosixPath`` is used (not ``Path``) because ``str(Path("/x"))``
+    # is platform-dependent — Windows normalizes to ``\x``, POSIX keeps
+    # ``/x``. The intent here is to verify the fallthrough branch, not
+    # platform-specific path rendering.
+    assert _toml_quote(PurePosixPath("/x")) == '"/x"'
