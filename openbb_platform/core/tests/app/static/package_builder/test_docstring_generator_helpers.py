@@ -72,7 +72,16 @@ def test_get_field_type_strips_openbb_module_path_inside_generic_container():
     the ``list[...]`` container but drops the dotted module path inside —
     the docstring shows ``list[MyData]``, not ``list[openbb_x.y.MyData]`` and
     not just the truncated tail ``MyData]``.
+
+    Uses ``typing.Union[...]`` rather than ``X | Y`` so the test lands in
+    the Union branch on every supported Python. On 3.10-3.13,
+    ``get_origin(X | Y)`` returns ``types.UnionType`` (not ``typing.Union``),
+    so ``X | Y`` syntax falls into the else branch and bypasses the
+    container-aware strip we're trying to cover here. 3.14 unified
+    ``types.UnionType`` with ``typing.Union``, masking the gap on dev
+    machines but leaving Linux/Windows CI without coverage.
     """
+    from typing import Union
 
     class MyData:
         """Stand-in provider Data class — its fully-qualified name lands
@@ -85,7 +94,9 @@ def test_get_field_type_strips_openbb_module_path_inside_generic_container():
     MyData.__module__ = "openbb_someprovider.models.my_data"
     MyData.__qualname__ = "MyData"
 
-    out = DocstringGenerator.get_field_type(list[MyData] | None, is_required=False)
+    out = DocstringGenerator.get_field_type(
+        Union[list[MyData], None], is_required=False
+    )
     # Container preserved, dotted prefix stripped.
     assert "list[MyData]" in out
     # The prefix must not leak through.
@@ -95,6 +106,35 @@ def test_get_field_type_strips_openbb_module_path_inside_generic_container():
     assert "MyData]" in out and not out.endswith(" MyData]")
     # ``None`` still appended for the optional union.
     assert out.endswith("| None")
+
+
+def test_get_field_type_pep604_union_syntax_takes_union_branch():
+    """``list[X] | None`` (PEP 604) must hit the same Union branch as
+    ``Union[list[X], None]``. On Python 3.10-3.13 the two forms produce
+    different ``get_origin`` results — ``types.UnionType`` vs
+    ``typing.Union`` — so the generator's check accepts both. Regression
+    guard for the platform-dependent coverage gap.
+    """
+    from typing import Union
+
+    class MyData:
+        """Stand-in provider Data class."""
+
+    MyData.__module__ = "openbb_someprovider.models.my_data"
+    MyData.__qualname__ = "MyData"
+
+    # Both syntaxes must produce the same docstring output.
+    union_form = DocstringGenerator.get_field_type(
+        Union[list[MyData], None],  # noqa: UP007 — explicit form is the point
+        is_required=False,
+    )
+    pep604_form = DocstringGenerator.get_field_type(
+        list[MyData] | None, is_required=False
+    )
+    assert union_form == pep604_form
+    # And the container-aware strip fired for both.
+    assert "list[MyData]" in pep604_form
+    assert "openbb_someprovider" not in pep604_form
 
 
 def test_get_field_type_strips_openbb_module_path_for_non_generic():

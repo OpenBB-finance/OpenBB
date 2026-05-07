@@ -96,7 +96,13 @@ class DocstringGenerator:
                 _type = "Optional[int]" if is_optional else "int"
 
             origin = get_origin(_type)
-            if origin is Union:
+            # On Python 3.10-3.13, ``X | Y`` produces ``types.UnionType``
+            # whose ``get_origin()`` is ``types.UnionType`` — distinct from
+            # ``typing.Union``. 3.14 unified them, but until 3.13 is gone
+            # we have to accept both so the container-aware ``openbb_*``
+            # strip below covers ``list[X] | None`` as well as
+            # ``Union[list[X], None]``.
+            if origin is Union or origin is UnionType:
                 args = get_args(_type)
                 type_names = []
                 has_none = False
