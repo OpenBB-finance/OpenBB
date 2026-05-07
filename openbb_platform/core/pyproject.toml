@@ -19,6 +19,7 @@ dependencies = [
     "aiohttp>=3.13.3",
     "ruff>=0.15,<0.16",
     "pyjwt>=2.12.0,<3.0.0",
+    "tomli>=2.0.0; python_version<'3.11'",
 ]
 
 [project.optional-dependencies]

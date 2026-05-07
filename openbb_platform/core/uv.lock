@@ -1954,7 +1954,7 @@ wheels = [
 
 [[package]]
 name = "openbb-core"
-version = "1.7.0"
+version = "2.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
@@ -1966,6 +1966,7 @@ dependencies = [
     { name = "python-multipart" },
     { name = "requests" },
     { name = "ruff" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "uuid7" },
     { name = "uvicorn" },
     { name = "websockets" },
@@ -1994,6 +1995,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.26,<0.0.27" },
     { name = "requests", specifier = ">=2.33.0,<3.0.0" },
     { name = "ruff", specifier = ">=0.15,<0.16" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.0" },
     { name = "uuid7", specifier = ">=0.1.0,<0.2.0" },
     { name = "uvicorn", specifier = ">=0.40.0,<0.41.0" },
     { name = "websockets", specifier = ">=15.0" },
