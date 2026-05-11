@@ -132,15 +132,17 @@ jobs:
           " "$WHEEL" openbb_oecd/assets/oecd_cache.json.xz
           ls -la openbb_oecd/assets/oecd_cache.json.xz
 
-      - name: Install openbb-oecd in editable mode (+ lint tools)
+      - name: Install openbb-oecd in editable mode (+ dev group)
         # ``-e .`` runs the Hatchling build hook, which reuses the
         # cache asset already on disk (seeded above). ``[tool.uv.sources]``
-        # pins openbb-core to the sibling source tree under
-        # ``../../core``, so ty sees the exact types about to ship
-        # together — not whatever stale ``openbb-core`` is on PyPI.
+        # pins openbb-core / openbb-devtools to the sibling source trees
+        # so ty sees the exact types about to ship together — not
+        # whatever's on PyPI. ``--group dev`` pulls in ``openbb-devtools``
+        # (ruff, ty, pytest-asyncio, etc.) so lint tooling versions stay
+        # pinned in one place rather than hardcoded across workflows.
         run: |
           uv pip install --system -e .
-          uv pip install --system ruff ty
+          uv pip install --system --group dev
 
       - name: ruff check
         run: ruff check openbb_oecd tests hatch_build.py
@@ -210,15 +212,17 @@ jobs:
                   shutil.copyfileobj(src, out)
           " "$WHEEL" openbb_oecd/assets/oecd_cache.json.xz
 
-      - name: Install openbb-oecd from source (+ test deps)
+      - name: Install openbb-oecd from source (+ dev group)
         # Source install via ``-e .`` reads ``[tool.uv.sources]`` and
         # resolves ``openbb-core`` from the sibling tree at ``../../core``,
         # which is the only place ``openbb-core[pandas]>=2.0.0`` exists
-        # until that version ships to PyPI. Installing the wheel directly
-        # would fail dependency resolution.
+        # until that version ships to PyPI. ``--group dev`` installs
+        # ``openbb-devtools``, which bundles pytest, pytest-asyncio,
+        # pytest-cov, pytest-recorder, etc. — the single pinned source
+        # of test-tool versions for the whole platform.
         run: |
           uv pip install --system -e .
-          uv pip install --system pytest pytest-cov pytest-recorder
+          uv pip install --system --group dev
 
       - name: Run unit tests
         run: pytest tests --cov=openbb_oecd --cov-report=term-missing --cov-fail-under=100

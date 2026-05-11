@@ -178,17 +178,19 @@ jobs:
                   shutil.copyfileobj(src, out)
           " "$WHEEL" openbb_oecd/assets/oecd_cache.json.xz
 
-      - name: Install openbb-oecd from source (+ test deps)
+      - name: Install openbb-oecd from source (+ dev group)
         # Source install via ``-e .`` reads ``[tool.uv.sources]`` and
         # resolves ``openbb-core[pandas]`` from the sibling tree at
         # ``../../core``. Installing the wheel directly would fail
         # dependency resolution until ``openbb-core>=2.0.0`` ships
         # to PyPI; the wheel is still the artifact uploaded to PyPI
         # by the ``publish`` job — this matrix just validates the
-        # source the wheel was built from.
+        # source the wheel was built from. ``--group dev`` installs
+        # ``openbb-devtools``, which bundles pytest, pytest-asyncio,
+        # pytest-cov, pytest-recorder, etc.
         run: |
           uv pip install --system -e .
-          uv pip install --system pytest pytest-cov pytest-recorder
+          uv pip install --system --group dev
 
       - name: Run unit tests
         run: pytest tests --cov=openbb_oecd --cov-report=term-missing
