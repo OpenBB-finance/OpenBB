@@ -8,16 +8,14 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
+from requests.exceptions import HTTPError
+
 from openbb_oecd.utils.metadata import OecdMetadata
 from openbb_oecd.utils.query_builder import (
     OecdQueryBuilder,
     _format_period,
     parse_time_period,
 )
-from requests.exceptions import HTTPError
-
-# pylint: disable=C1803, C0302, W0212, W0613, W0621
-# flake8: noqa: D101, D102, SIM117
 
 _FULL_ID = "DSD_TEST@DF_TEST"
 _SHORT_ID = "DF_TEST"

@@ -1,6 +1,5 @@
 """Public API mixin: listing, table map, dimension info for OecdMetadata."""
 
-# pylint: disable=R0914
 import re
 
 from openbb_oecd.utils.metadata._constants import (
@@ -9,7 +8,7 @@ from openbb_oecd.utils.metadata._constants import (
 from openbb_oecd.utils.metadata._typing import _MixinBase
 
 
-class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
+class PublicApiMixin(_MixinBase):
     """Public dataflow listing, table map, dimension info methods."""
 
     def list_dataflows(self, topic: str | None = None) -> list[dict]:
@@ -128,7 +127,6 @@ class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
 
     def _detect_country_families(self) -> dict[str, dict]:
         """Detect dataflow families that are per-country splits of the same table."""
-        # pylint: disable=import-outside-toplevel
         from collections import defaultdict
 
         dsd_groups: dict[str, list[str]] = defaultdict(list)
@@ -147,7 +145,15 @@ class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
                 fid: self.dataflows[fid].get("short_id", fid.split("@")[-1])
                 for fid in fids
             }
-            prefix = min(shorts.values(), key=len)
+            # Manual shortest-string selection: ``min(iter, key=len)``
+            # collapses to ``Sized`` under ty's overload resolution
+            # because ``len`` is typed as ``Callable[[Sized], int]``.
+            # An explicit loop keeps the iterable's element type (``str``).
+            short_values = list(shorts.values())
+            prefix = short_values[0]
+            for s in short_values[1:]:
+                if len(s) < len(prefix):
+                    prefix = s
 
             for sid in shorts.values():
                 while prefix and not sid.startswith(prefix):
@@ -184,7 +190,7 @@ class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
                 representative = (
                     non_country[0]
                     if non_country
-                    else min(fids, key=lambda f: shorts[f])  # pylint: disable=W0640
+                    else min(fids, key=lambda f: shorts[f])  # noqa: B023
                 )
 
             rep_name = self.dataflows[representative].get("name", "")
@@ -214,7 +220,7 @@ class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
         section of ``DF_TABLE1``).  Root dataflows are **not** included
         as keys — only subordinate sections.
         """
-        from collections import defaultdict  # pylint: disable=import-outside-toplevel
+        from collections import defaultdict
 
         dsd_groups: dict[str, list[str]] = defaultdict(list)
         for full_id in self.dataflows:
@@ -261,7 +267,7 @@ class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
         emitted: set[tuple[str, str]] = set()
         rows: list[dict] = []
 
-        def _make_row(  # pylint: disable=too-many-positional-arguments
+        def _make_row(
             crumb: list[str],
             id_crumb: list[str],
             table_name: str,
@@ -409,7 +415,6 @@ class PublicApiMixin(_MixinBase):  # pylint: disable=abstract-method
         topic: str | None = None,
     ) -> str:
         """Return a human-readable string of the table map."""
-        # pylint: disable=import-outside-toplevel
         from collections import OrderedDict
 
         rows = self.find_tables(query) if query else self.table_map()

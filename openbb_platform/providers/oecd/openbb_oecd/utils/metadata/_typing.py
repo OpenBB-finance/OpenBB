@@ -15,7 +15,6 @@ from pathlib import Path
 
 
 class _MixinBase:
-
     # -- instance attributes (initialised in OecdMetadata.__init__) --
     dataflows: dict[str, dict]
     datastructures: dict[str, dict]

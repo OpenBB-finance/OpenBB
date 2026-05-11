@@ -7,7 +7,6 @@ from typing import Any
 
 def _get_user_cache_file() -> Path:
     """Resolve the user-writable cache path via OpenBB core settings."""
-    # pylint: disable=import-outside-toplevel
     try:
         from openbb_core.app.utils import get_user_cache_directory
 
@@ -18,7 +17,6 @@ def _get_user_cache_file() -> Path:
 
 def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> Any:
     """Make a HTTP GET request.  Fails immediately on 429."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import make_request
 
     resp = make_request(url, headers=headers, timeout=timeout)

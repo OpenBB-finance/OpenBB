@@ -1,7 +1,5 @@
 """OECD Real GDP Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any, Literal
 
@@ -13,8 +11,9 @@ from openbb_core.provider.standard_models.gdp_real import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import GDP_REAL_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import GDP_REAL_COUNTRIES
 
 
 class OECDGdpRealQueryParams(GdpRealQueryParams):
@@ -81,7 +80,6 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]])
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -122,7 +120,6 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, list[OECDGdpRealData]])
         **kwargs: Any,
     ) -> list[OECDGdpRealData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         output: list[OECDGdpRealData] = []

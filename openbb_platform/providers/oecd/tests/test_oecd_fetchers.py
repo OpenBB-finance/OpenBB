@@ -4,6 +4,7 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+
 from openbb_oecd.models.available_indicators import OecdAvailableIndicatorsFetcher
 from openbb_oecd.models.balance_of_payments import OECDBalanceOfPaymentsFetcher
 from openbb_oecd.models.composite_leading_indicator import (

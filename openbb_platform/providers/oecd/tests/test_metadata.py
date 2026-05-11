@@ -12,6 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
+
 from openbb_oecd.utils.metadata import (
     OecdMetadata,
     _build_code_tree,
@@ -23,9 +24,6 @@ from openbb_oecd.utils.metadata import (
     _parse_search_query,
     _term_matches,
 )
-
-# pylint: disable=C1803, C0302, W0212, W0621
-# flake8: noqa: D101, D102
 
 _FULL_ID = "DSD_TEST@DF_TEST"
 _SHORT_ID = "DF_TEST"

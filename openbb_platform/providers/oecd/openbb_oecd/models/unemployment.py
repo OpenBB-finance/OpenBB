@@ -1,7 +1,5 @@
 """OECD Unemployment Data."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any, Literal
 
@@ -13,8 +11,9 @@ from openbb_core.provider.standard_models.unemployment import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import UNEMPLOYMENT_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import UNEMPLOYMENT_COUNTRIES
 
 AGES = ["total", "15-24", "25+"]
 AgesLiteral = Literal["total", "15-24", "25+"]
@@ -51,7 +50,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     age: Literal[AgesLiteral] = Field(
         description="Age group to get unemployment for. Total indicates 15 years or over",
         default="total",
-        json_schema_extra={"choices": AGES},  # type: ignore
+        json_schema_extra={"choices": AGES},
     )
     seasonal_adjustment: bool = Field(
         description="Whether to get seasonally adjusted unemployment. Defaults to False.",
@@ -96,7 +95,6 @@ class OECDUnemploymentFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -136,7 +134,6 @@ class OECDUnemploymentFetcher(
         query: OECDUnemploymentQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDUnemploymentData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         output: list[OECDUnemploymentData] = []

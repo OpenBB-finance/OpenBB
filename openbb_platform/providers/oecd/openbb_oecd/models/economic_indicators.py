@@ -1,7 +1,5 @@
 """OECD Economic Indicators Model — generic fetcher for ALL OECD dataflows."""
 
-# pylint: disable=unused-argument,too-many-branches,protected-access,too-many-instance-attributes,too-many-statements,too-many-locals,too-many-return-statements
-
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -149,7 +147,6 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     @model_validator(mode="after")
     def parse_and_validate_symbols(self):
         """Parse the symbol string into dataflow + indicator codes or table ID."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata import OecdMetadata
 
         symbol = self.symbol
@@ -157,9 +154,7 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         if not symbol:
             raise ValueError("Symbol is required.")
 
-        parts = [
-            s.strip() for s in symbol.split(",") if s.strip()  # pylint: disable=E1101
-        ]
+        parts = [s.strip() for s in symbol.split(",") if s.strip()]
         dataflows: set[str] = set()
         identifiers: list[str] = []
 
@@ -284,7 +279,6 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
     @classmethod
     def nan_to_none(cls, v):
         """Convert NaN float values to None for optional fields."""
-        # pylint: disable=import-outside-toplevel
         from math import isnan
 
         if not v:
@@ -299,7 +293,6 @@ class OecdEconomicIndicatorsData(EconomicIndicatorsData):
     @classmethod
     def _sanitize_extra_nan(cls, values):
         """Replace NaN in extra/dynamic fields so JSON serialization doesn't break."""
-        # pylint: disable=import-outside-toplevel
         from math import isnan
 
         if isinstance(values, dict):
@@ -328,7 +321,6 @@ class OecdEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Fetch data from OECD for the given indicators or table."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import (
             detect_indicator_dimensions,
             detect_transform_dimension,
@@ -525,7 +517,6 @@ class OecdEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[OecdEconomicIndicatorsData]]:
         """Transform the raw data into the output model."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         mode = data.get("mode", "indicator")

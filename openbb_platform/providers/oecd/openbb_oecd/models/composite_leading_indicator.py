@@ -1,7 +1,5 @@
 """OECD Composite Leading Indicator Data."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any, Literal
 from warnings import warn
@@ -12,8 +10,9 @@ from openbb_core.provider.standard_models.composite_leading_indicator import (
     CompositeLeadingIndicatorData,
     CompositeLeadingIndicatorQueryParams,
 )
-from openbb_oecd.utils.constants import CLI_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import CLI_COUNTRIES
 
 COUNTRY_CHOICES = list(CLI_COUNTRIES) + ["all"]
 
@@ -107,7 +106,6 @@ class OECDCompositeLeadingIndicatorFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -150,7 +148,6 @@ class OECDCompositeLeadingIndicatorFetcher(
         **kwargs: Any,
     ) -> list[OECDCompositeLeadingIndicatorData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         is_growth = query.growth_rate is True

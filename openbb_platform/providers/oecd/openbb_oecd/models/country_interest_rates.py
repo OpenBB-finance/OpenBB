@@ -1,7 +1,5 @@
 """OECD Country Interest Rates Data."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any, Literal
 
@@ -12,8 +10,9 @@ from openbb_core.provider.standard_models.country_interest_rates import (
     CountryInterestRatesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import KEI_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import KEI_COUNTRIES
 
 DURATION_DICT = {
     "immediate": "IRSTCI",
@@ -89,7 +88,6 @@ class OecdCountryInterestRatesFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -131,7 +129,6 @@ class OecdCountryInterestRatesFetcher(
         **kwargs: Any,
     ) -> list[OecdCountryInterestRatesData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         output: list[OecdCountryInterestRatesData] = []

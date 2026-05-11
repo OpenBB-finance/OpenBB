@@ -1,7 +1,5 @@
 """OECD CPI Data."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any
 
@@ -11,8 +9,9 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
-from openbb_oecd.utils.constants import CPI_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import CPI_COUNTRIES
 
 # Domain-specific expenditure mappings (COICOP codes → human labels).
 # These are NOT country dicts — they are indicator-level constants specific to the
@@ -197,7 +196,6 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -247,7 +245,6 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
         query: OECDCPIQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDCPIData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         is_pct = query.transform in ("yoy", "period")

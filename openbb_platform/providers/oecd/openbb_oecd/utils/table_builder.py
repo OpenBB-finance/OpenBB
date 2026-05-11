@@ -1,7 +1,5 @@
 """OECD Table Builder — hierarchical table data fetching with validation."""
 
-# pylint: disable=C0302,R0912,R0913,R0914,R0915,R0917,R1702,W0212,W0640
-
 from __future__ import annotations
 
 import warnings
@@ -45,7 +43,6 @@ class OecdTableBuilder:
         metadata: OecdMetadata | None = None,
         query_builder: OecdQueryBuilder | None = None,
     ) -> None:
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata import OecdMetadata as _Meta
         from openbb_oecd.utils.query_builder import OecdQueryBuilder as _QB
 
@@ -69,7 +66,8 @@ class OecdTableBuilder:
         country: str | None = None,
         frequency: str | None = None,
         use_labels: bool = True,
-        **kwargs: Any,
+        dimension_filters: dict[str, str] | None = None,
+        **kwargs: str,
     ) -> dict:
         """Fetch hierarchical table data.
 
@@ -99,15 +97,24 @@ class OecdTableBuilder:
             Frequency code (``"Q"``, ``"A"``, ``"M"``).
         use_labels : bool
             Use human-readable labels for dimension columns (default).
+        dimension_filters : dict[str, str] | None
+            Extra dimension filters as a typed mapping, e.g.
+            ``{"MEASURE": "CPI", "ADJUSTMENT": "NSA"}``.  Use this instead
+            of ``**kwargs`` when the dimension names come from runtime
+            data (e.g. user input parsed into a dict) — passing the dict
+            directly avoids the ``**`` splat unintentionally shadowing
+            typed positionals like ``depth`` / ``use_labels``.
         **kwargs
-            Extra dimension filters (e.g. ``MEASURE="CPI"``).
+            Extra dimension filters supplied as literal keyword arguments
+            (e.g. ``MEASURE="CPI"``).  Values must be strings.
 
         Returns
         -------
         dict
             ``{table_metadata, structure, data, series_metadata}``
         """
-        # pylint: disable=import-outside-toplevel
+        if dimension_filters:
+            kwargs = {**dimension_filters, **kwargs}
         from openbb_oecd.utils.metadata import (
             _NON_INDICATOR_DIMENSIONS,
             _TABLE_GROUP_CANDIDATES,
@@ -378,7 +385,7 @@ class OecdTableBuilder:
             end_date=end_date,
             limit=limit,
             _skip_validation=True,
-            **kwargs,
+            dimension_filters=kwargs,
         )
         data_rows: list[dict] = raw.get("data", [])
 
@@ -585,7 +592,7 @@ class OecdTableBuilder:
             ) -> None:
                 """Recursively emit enriched rows for *code*."""
                 info = hierarchy_order_map.get(code)
-                if not info:
+                if not info:  # pragma: no cover - defensive guard; every call site already filters codes to those present in hierarchy_order_map
                     return
                 order = parent_order if parent_order is not None else info["order"]
                 children = [
@@ -606,7 +613,7 @@ class OecdTableBuilder:
                             info["label"],
                             is_header=bool(children),
                         )
-                    if not rows:
+                    if not rows:  # pragma: no cover - defensive guard; filtered emit is only reached when (code, acct_filter) is in _ind_accts, which guarantees data rows for that combination
                         _synthetic_header(
                             code,
                             order,
@@ -694,7 +701,7 @@ class OecdTableBuilder:
                             lbl,
                             is_header=True,
                         )
-                    if not parent_rows:
+                    if not parent_rows:  # pragma: no cover - defensive guard; grouped entries are picked from non_bn which is built from accts ⊆ _ind_accts[code], guaranteeing _ind_acct[(code, acct)] is non-empty
                         _synthetic_header(
                             code,
                             info["order"],
@@ -974,12 +981,14 @@ class OecdTableBuilder:
                 _parents = self.metadata._codelist_parents.get(_cl_id, {})
                 if not _parents:
                     continue
-                # Collect codes actually present in the data.
-                _present = {row.get(cdim) for row in all_rows if row.get(cdim)}
-                _present.discard(None)
-                _present.discard("")
-                if not _present:
-                    continue
+                # Collect codes actually present in the data. Build as a
+                # typed ``set[str]`` so downstream dict lookups
+                # (``_parents.get(c)`` below) get a properly-narrowed key.
+                _present: set[str] = {
+                    v for row in all_rows if isinstance(v := row.get(cdim), str) and v
+                }
+                if not _present:  # pragma: no cover - defensive guard; varying_dims requires >=2 distinct non-None values in data_rows, and surviving all_rows always carries at least one truthy value when the dim is a compound varying dim
+                    continue  # pragma: no cover - body of pragma'd branch above
 
                 def _cdepth(code: str, depth_cache: dict[str, int]) -> int:
                     if code in depth_cache:
@@ -1001,11 +1010,11 @@ class OecdTableBuilder:
                     while p and p not in _present:
                         p = _parents.get(p)
                     if p and p in _present:
-                        _children.setdefault(p, []).append(c)  # type: ignore
+                        _children.setdefault(p, []).append(c)
                 # Determine effective roots: codes whose effective parent
                 # (after skipping absent ancestors) is not in _present.
                 _effective_roots: list = []
-                for c in sorted(_present):  # type: ignore
+                for c in sorted(_present):
                     p = _parents.get(c)
                     while p and p not in _present:
                         p = _parents.get(p)
@@ -1089,7 +1098,7 @@ class OecdTableBuilder:
                     end_date=end_date,
                     limit=limit,
                     _skip_validation=True,
-                    **_pct_kwargs,
+                    dimension_filters=_pct_kwargs,
                 )
                 _pct_rows = _pct_raw.get("data", [])
                 # Build lookup: (indicator, acct_entry, time) → value

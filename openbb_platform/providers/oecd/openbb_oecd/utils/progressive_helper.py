@@ -5,8 +5,6 @@ behaviour.  All live constraint checking is delegated to
 OecdMetadata.fetch_availability().
 """
 
-# pylint: disable=W0212
-
 from __future__ import annotations
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -46,7 +44,6 @@ class OecdParamsBuilder:
         OpenBBError
             If the dataflow cannot be resolved.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata import OecdMetadata
 
         self._metadata = OecdMetadata()
@@ -346,7 +343,6 @@ class OecdParamsBuilder:
         dict
             ``{data: [...], metadata: {...}}``.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -354,7 +350,7 @@ class OecdParamsBuilder:
             dataflow=self.dataflow_id,
             start_date=start_date,
             end_date=end_date,
-            **self.pinned,  # type: ignore[arg-type]
+            dimension_filters=self.pinned,
         )
 
     def _cache_key(self) -> frozenset:

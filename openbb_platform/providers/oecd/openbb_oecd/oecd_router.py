@@ -1,7 +1,5 @@
 """OECD Utilities Router."""
 
-# pylint: disable=unused-argument,protected-access,too-many-return-statements,too-many-branches,too-many-positional-arguments,too-many-locals,too-many-statements,too-many-lines,too-many-arguments
-
 from typing import Annotated, Any, Literal
 
 from fastapi import Query
@@ -9,6 +7,7 @@ from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.service.system_service import SystemService
+
 from openbb_oecd.utils.metadata import OECDMetadataDependency
 
 router = Router(prefix="", description="Utilities for OECD provider.")
@@ -66,7 +65,6 @@ def _parse_defaults(annotations: dict[str, str]) -> dict[str, str]:
 )
 async def list_topic_choices(metadata: OECDMetadataDependency) -> list[dict[str, str]]:
     """Return [{label, value}] for every OECD topic (for dropdowns)."""
-    # pylint: disable=import-outside-toplevel
     from collections import Counter
 
     topics = metadata.list_topics()
@@ -106,7 +104,6 @@ async def list_subtopic_choices(
     ] = None,
 ) -> list[dict[str, str]]:
     """Return [{label, value}] for subtopics within a given topic (for dropdowns)."""
-    # pylint: disable=import-outside-toplevel
     from collections import Counter
 
     if not topic:
@@ -610,7 +607,6 @@ async def get_table_detail(
     - Table groups (TABLE_IDENTIFIER), if present
     - Indicator count and hierarchy summary
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import _TABLE_GROUP_CANDIDATES
 
     detail = metadata.describe_dataflow(table_id)
@@ -822,7 +818,6 @@ async def indicator_choices(  # noqa: PLR0911,PLR0912
     list[dict[str, str]]
         [{label, value}] for the requested dimension.
     """
-    # pylint: disable=import-outside-toplevel
     from urllib.parse import unquote
 
     if not symbol:
@@ -889,7 +884,9 @@ async def indicator_choices(  # noqa: PLR0911,PLR0912
         else (
             "frequency"
             if frequency == "true"
-            else "transform" if transform == "true" else None
+            else "transform"
+            if transform == "true"
+            else None
         )
     )
 
@@ -985,7 +982,6 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
     list[dict[str, str]]
         [{label, value}] choices for the current cascading step.
     """
-    # pylint: disable=import-outside-toplevel
     from collections import (
         Counter,
         defaultdict as _ddict,
@@ -1130,7 +1126,7 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
                     c = 0
                     for n in nodes:
                         c += 1
-                        c += _count(n.get("children", []))  # pylint: disable=W0640
+                        c += _count(n.get("children", []))  # noqa: B023
                     return c
 
                 n_indicators = _count(tree)
@@ -1218,8 +1214,12 @@ async def presentation_table_choices(  # noqa: PLR0911,PLR0912
         for _dim in _pb.get_dimensions_in_order():
             if _dim == country_dim and pin_country:
                 _pb.set_dimension((_dim, pin_country.replace(",", "+")))
-            elif _dim == freq_dim and pin_freq is not None:
-                _pb.set_dimension((_dim, pin_freq))
+            elif (
+                _dim == freq_dim and pin_freq is not None
+            ):  # pragma: no cover - no caller passes pin_freq
+                _pb.set_dimension(
+                    (_dim, pin_freq)
+                )  # pragma: no cover - body of pragma'd branch above
             elif _dim in nd_avail_pins:
                 _pb.set_dimension((_dim, nd_avail_pins[_dim]))
 
@@ -1296,7 +1296,7 @@ async def presentation_table_dim_choices(
     dimension: str,
     country: str | None = None,
     frequency: str | None = None,
-) -> list[dict[str, str]]:
+) -> list[dict[str, str | bool]]:
     """Return available values for a single dimension (unit, adjustment, transform).
 
     Independent of the other dimension selections — each dropdown queries
@@ -1315,10 +1315,10 @@ async def presentation_table_dim_choices(
 
     Returns
     -------
-    list[dict[str, str]]
-        [{label, value}] choices.
+    list[dict[str, str | bool]]
+        [{label, value, default?}] choices. ``default`` is a bool flag set
+        on the option that matches the dataflow's DEFAULT annotation.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.progressive_helper import OecdParamsBuilder
 
     dim_map: dict[str, str] = {
@@ -1384,12 +1384,16 @@ async def presentation_table_dim_choices(
         if len(freq_options) == 1:
             pb.set_dimension((freq_dim, freq_options[0]["value"]))
 
-    if target_dim not in dims_in_order_set:
-        return []
+    if (
+        target_dim not in dims_in_order_set
+    ):  # pragma: no cover - duplicate of earlier guard, dims_in_order_set is immutable
+        return []  # pragma: no cover - body of pragma'd branch above
 
     not_applicable = {"not applicable", "not available", "n/a"}
-    options = pb.get_options_for_dimension(target_dim)
-    options = [o for o in options if o.get("label", "").lower() not in not_applicable]
+    raw_options = pb.get_options_for_dimension(target_dim)
+    options: list[dict[str, str | bool]] = [
+        dict(o) for o in raw_options if o.get("label", "").lower() not in not_applicable
+    ]
 
     if not options:
         return []
@@ -1399,7 +1403,7 @@ async def presentation_table_dim_choices(
     if default_val:
         for opt in options:
             if opt["value"] == default_val:
-                opt["default"] = True  # type: ignore[assignment]
+                opt["default"] = True
                 break
 
     if len(options) == 1:
@@ -1706,13 +1710,13 @@ async def presentation_table(  # noqa: PLR0912
     ] = 1,
 ) -> Any:
     """Get a formatted presentation table from the OECD database."""
-    # pylint: disable=import-outside-toplevel,too-many-branches
     import re as _re_mod
 
     from openbb_core.app.model.abstract.error import OpenBBError
+    from pandas import DataFrame
+
     from openbb_oecd.utils.helpers import oecd_date_to_python_date
     from openbb_oecd.utils.table_builder import OecdTableBuilder
-    from pandas import DataFrame
 
     if table is None:
         raise OpenBBError(
@@ -1768,7 +1772,7 @@ async def presentation_table(  # noqa: PLR0912
             start_date=start_date,
             end_date=end_date,
             limit=limit,
-            **extra_dims,  # type: ignore[arg-type]
+            dimension_filters=extra_dims,
         )
     except (ValueError, OpenBBError) as exc:
         raise OpenBBError(str(exc)) from exc
@@ -1968,7 +1972,6 @@ async def get_oecd_utils_apps_json() -> list[dict[str, Any]]:
     list[dict[str, Any]]
         A list of OpenBB Workspace app configurations.
     """
-    # pylint: disable=import-outside-toplevel
     import json
     from pathlib import Path
 

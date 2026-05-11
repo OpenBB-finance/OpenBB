@@ -1,7 +1,5 @@
 """OECD Balance of Payments (BOP6) Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -13,8 +11,9 @@ from openbb_core.provider.standard_models.balance_of_payments import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import BOP_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import BOP_COUNTRIES
 
 # Map (MEASURE, ACCOUNTING_ENTRY, UNIT_MEASURE) → BP6BopUsdData field name.
 _COL_MAP: dict[tuple[str, str, str], str] = {
@@ -137,13 +136,13 @@ class OECDBalanceOfPaymentsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return raw data from the OECD BOP endpoint."""
-        # pylint: disable=import-outside-toplevel
         from io import StringIO
 
         from openbb_core.provider.utils.helpers import make_request
-        from openbb_oecd.utils.metadata import OecdMetadata
         from pandas import read_csv, to_numeric
         from pandas.api.types import is_string_dtype
+
+        from openbb_oecd.utils.metadata import OecdMetadata
 
         meta = OecdMetadata()
         countries = meta.resolve_country_codes("DF_BOP", query.country)
@@ -231,7 +230,7 @@ class OECDBalanceOfPaymentsFetcher(
 
                 if split.shape[1] > 1:
                     df[f"{col}_label"] = split[1].str.strip()
-                else:
+                else:  # pragma: no cover - unreachable: sample check above guarantees at least one ": " match, so expand=True yields >=2 columns
                     df[f"{col}_label"] = df[col]
 
         if "OBS_VALUE" in df.columns:
@@ -246,7 +245,6 @@ class OECDBalanceOfPaymentsFetcher(
         **kwargs: Any,
     ) -> list[OECDBalanceOfPaymentsData]:
         """Pivot long OECD rows into wide BP6 format indexed by date."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         # Group values by (date, country) and map each row to its column.

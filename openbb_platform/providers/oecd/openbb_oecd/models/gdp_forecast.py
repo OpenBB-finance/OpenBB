@@ -1,7 +1,5 @@
 """OECD Forecast GDP Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import Any, Literal
 from warnings import warn
@@ -13,8 +11,9 @@ from openbb_core.provider.standard_models.gdp_forecast import (
     GdpForecastQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import GDP_FORECAST_COUNTRIES
 from pydantic import Field
+
+from openbb_oecd.utils.constants import GDP_FORECAST_COUNTRIES
 
 _MEASURE_MAP = {
     "current_prices": "GDP_USD",
@@ -95,7 +94,6 @@ class OECDGdpForecastFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -135,7 +133,6 @@ class OECDGdpForecastFetcher(
         query: OECDGdpForecastQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDGdpForecastData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         is_growth = query.units == "growth"

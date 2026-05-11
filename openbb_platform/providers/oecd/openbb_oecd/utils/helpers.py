@@ -5,8 +5,6 @@ Compatibility layer that re-exports utilities from the new infrastructure
 OecdQueryBuilder.fetch_data().
 """
 
-# pylint: disable=R0916, W0212
-
 from __future__ import annotations
 
 import re
@@ -16,6 +14,7 @@ from datetime import date
 from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+
 from openbb_oecd.utils.query_builder import parse_time_period
 
 if TYPE_CHECKING:
@@ -188,7 +187,6 @@ def _build_dimension_lookups(
         - *dimension_order*: list of dimension IDs in DSD position order
           (excluding country/frequency/time dimensions)
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import OecdMetadata
 
     if metadata is None:
@@ -271,7 +269,6 @@ def detect_indicator_dimensions(
     OpenBBError
         If any indicator code cannot be resolved for the dataflow.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import OecdMetadata
 
     if metadata is None:
@@ -326,7 +323,6 @@ def _guess_primary_dimension(
     codes_by_dimension: dict[str, set[str]],
 ) -> str:
     """Return the most likely primary indicator dimension name."""
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import _INDICATOR_DIMENSION_CANDIDATES
 
     for candidate in _INDICATOR_DIMENSION_CANDIDATES:
@@ -436,7 +432,6 @@ def detect_transform_dimension(
         ``(transform_dim, unit_dim, transform_lookup, unit_lookup)``
         where lookups map friendly names to SDMX codes.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import OecdMetadata
 
     if metadata is None:
@@ -552,7 +547,6 @@ def resolve_country_code(
     str
         Resolved country code, or upper-cased input if resolution fails.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_oecd.utils.metadata import OecdMetadata
 
     if metadata is None:

@@ -9,7 +9,7 @@ from openbb_oecd.utils.metadata._helpers import _make_request
 from openbb_oecd.utils.metadata._typing import _MixinBase
 
 
-class QueryMixin(_MixinBase):  # pylint: disable=abstract-method
+class QueryMixin(_MixinBase):
     """Dataflow triplet resolution, URL building, dimension filter, availability."""
 
     _SELECTOR_MAX = 50
@@ -45,7 +45,7 @@ class QueryMixin(_MixinBase):  # pylint: disable=abstract-method
         }
     )
 
-    def build_data_url(  # pylint: disable=too-many-positional-arguments
+    def build_data_url(
         self,
         dataflow_id: str,
         dimension_filter: str = "*",

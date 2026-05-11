@@ -1,7 +1,5 @@
 """OECD Available Indicators Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.app.service.system_service import SystemService
@@ -39,7 +37,7 @@ def _build_also_in(
         name = df_name_cache.get(other_id, "")
         if not name:
             try:
-                full_id = metadata._resolve_dataflow_id(  # noqa: SLF001  # pylint: disable=W0212
+                full_id = metadata._resolve_dataflow_id(  # noqa: SLF001
                     other_id
                 )
                 name = df_name_cache.get(full_id, "")
@@ -166,7 +164,7 @@ class OecdAvailableIndicatorsFetcher(
             _full_id,
             inds,
         ) in (
-            metadata._dataflow_indicators_cache.items()  # noqa: SLF001  # pylint: disable=W0212
+            metadata._dataflow_indicators_cache.items()  # noqa: SLF001
         ):
             for ind in inds:
                 code = ind.get("indicator", "")
@@ -203,16 +201,14 @@ class OecdAvailableIndicatorsFetcher(
         transform_labels: dict[str, list[str]] = {}  # df_id → ["G1 (Growth ...)", ...]
 
         for df_id in target_dfs:
-            full_id = (
-                metadata._short_id_map.get(  # noqa: SLF001 # pylint: disable=W0212
-                    df_id
-                )
+            full_id = metadata._short_id_map.get(  # noqa: SLF001
+                df_id
             )
             if not full_id:
                 full_id = df_id if df_id in metadata.datastructures else None
             if not full_id or full_id not in metadata.datastructures:
                 continue
-            constraints = metadata._dataflow_constraints.get(  # noqa: SLF001 # pylint: disable=W0212
+            constraints = metadata._dataflow_constraints.get(  # noqa: SLF001
                 full_id, {}
             )
             dsd = metadata.datastructures.get(full_id, {})
@@ -257,7 +253,6 @@ class OecdAvailableIndicatorsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Search OECD indicators using the metadata catalogue."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.metadata import OecdMetadata
 
         metadata = OecdMetadata()

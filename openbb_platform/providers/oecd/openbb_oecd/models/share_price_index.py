@@ -1,7 +1,5 @@
 """OECD Share Price Index Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any
 
@@ -11,8 +9,9 @@ from openbb_core.provider.standard_models.share_price_index import (
     SharePriceIndexData,
     SharePriceIndexQueryParams,
 )
-from openbb_oecd.utils.constants import FINMARK_COUNTRIES
 from pydantic import field_validator
+
+from openbb_oecd.utils.constants import FINMARK_COUNTRIES
 
 FREQUENCY_MAP = {"monthly": "M", "quarter": "Q", "annual": "A"}
 
@@ -73,7 +72,6 @@ class OECDSharePriceIndexFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -111,7 +109,6 @@ class OECDSharePriceIndexFetcher(
         query: OECDSharePriceIndexQueryParams, data: list[dict], **kwargs: Any
     ) -> list[OECDSharePriceIndexData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         output: list[OECDSharePriceIndexData] = []

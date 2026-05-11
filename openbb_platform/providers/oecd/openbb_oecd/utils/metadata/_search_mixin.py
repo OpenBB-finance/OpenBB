@@ -1,6 +1,7 @@
 """Dataflow search, indicator search, table listing mixin."""
 
 from openbb_core.app.model.abstract.error import OpenBBError
+
 from openbb_oecd.utils.metadata._constants import _TABLE_GROUP_CANDIDATES
 from openbb_oecd.utils.metadata._helpers import (
     _matches_query,
@@ -9,7 +10,7 @@ from openbb_oecd.utils.metadata._helpers import (
 from openbb_oecd.utils.metadata._typing import _MixinBase
 
 
-class SearchMixin(_MixinBase):  # pylint: disable=abstract-method
+class SearchMixin(_MixinBase):
     """Dataflow and indicator search methods."""
 
     _search_index: list[tuple[str, dict]] | None
@@ -76,23 +77,22 @@ class SearchMixin(_MixinBase):  # pylint: disable=abstract-method
         """Full-text search across dataflow indicators."""
         self._ensure_dataflows()
 
-        scoped = False
+        target_ids: list[str] | None = None
         if dataflows:
-            if isinstance(dataflows, str):
-                dataflows = [d.strip() for d in dataflows.split(",")]
-            target_ids = dataflows
-            scoped = True
+            target_ids = (
+                [d.strip() for d in dataflows.split(",")]
+                if isinstance(dataflows, str)
+                else dataflows
+            )
         elif not query and not keywords:
             raise OpenBBError(
                 "At least one of 'query', 'dataflows', or 'keywords' is required."
             )
-        else:
-            target_ids = None
 
         _table_dims = set(_TABLE_GROUP_CANDIDATES)
-        if scoped:
+        if target_ids is not None:
             all_indicators: list[dict] = []
-            for df_id in target_ids:  # type: ignore[union-attr]
+            for df_id in target_ids:
                 full_id = None
                 if df_id in self._dataflow_indicators_cache:
                     full_id = df_id

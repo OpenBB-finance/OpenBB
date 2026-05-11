@@ -5,16 +5,14 @@ Uses OecdMetadata for structural metadata (DSD-driven dimension ordering,
 codelist lookups, availability constraints) and SDMX-CSV v2 for data retrieval.
 """
 
-# pylint: disable=C0302,R0911,R0912,R0913,R0914,R0915,R0917,R1702,W0212
-# flake8: noqa: PLR0911,PLR0912,PLR0913,PLR0917
-
 import warnings
 from io import StringIO
 from typing import TYPE_CHECKING, Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_oecd.utils.metadata import OecdMetadata
 from pandas.api.types import is_string_dtype
+
+from openbb_oecd.utils.metadata import OecdMetadata
 
 if TYPE_CHECKING:
     from pandas import DataFrame  # type: ignore[import-untyped]
@@ -135,7 +133,6 @@ class OecdQueryBuilder:
         ValueError
             If any dimension value is not available given the selections.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.abstract.warning import OpenBBWarning
 
         dim_order = self.metadata.get_dimension_order(dataflow)
@@ -216,7 +213,8 @@ class OecdQueryBuilder:
         end_date: str | None = None,
         limit: int | None = None,
         _skip_validation: bool = False,
-        **kwargs: Any,
+        dimension_filters: dict[str, str] | None = None,
+        **kwargs: str,
     ) -> dict:
         """Fetch data from the OECD SDMX v2 API.
 
@@ -232,8 +230,14 @@ class OecdQueryBuilder:
             lastNObservations to limit time series depth.
         _skip_validation : bool
             Skip constraint validation (when caller already validated).
+        dimension_filters : dict[str, str] | None
+            Extra dimension filters as a typed mapping.  Use this rather
+            than ``**`` when the dimension names come from runtime data —
+            it avoids the splat unintentionally shadowing typed
+            positionals such as ``limit`` or ``_skip_validation``.
         **kwargs
-            Dimension parameters keyed by dimension ID.
+            Dimension parameters supplied as literal keyword arguments
+            (string values only).
 
         Returns
         -------
@@ -249,9 +253,11 @@ class OecdQueryBuilder:
             metadata contains:
             - dataflow_id, dataflow_name, url, row_count.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.errors import EmptyDataError
         from pandas import read_csv, to_numeric
+
+        if dimension_filters:
+            kwargs = {**dimension_filters, **kwargs}
 
         # Validate constraints (unless caller opted out).
         if not _skip_validation:
@@ -332,7 +338,6 @@ class OecdQueryBuilder:
         we split the first such dimension into individual requests
         and concatenate the CSV results.
         """
-        # pylint: disable=import-outside-toplevel
         from requests.exceptions import HTTPError
 
         try:
@@ -442,7 +447,7 @@ class OecdQueryBuilder:
                 df[col] = split[0].str.strip()
                 if split.shape[1] > 1:
                     df[f"{col}_label"] = split[1].str.strip()
-                else:
+                else:  # pragma: no cover - unreachable: when has_labels is True, str.split(..., n=1, expand=True) always yields 2 columns
                     df[f"{col}_label"] = df[col]
             else:
                 # No labels embedded — try to resolve from codelist.
@@ -520,7 +525,6 @@ class OecdQueryBuilder:
 
 def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> Any:
     """HTTP GET with raw URL support (OECD requires un-encoded brackets)."""
-    # pylint: disable=import-outside-toplevel
     import time as _time
 
     import requests as _requests  # type: ignore[import-untyped]
@@ -545,9 +549,10 @@ def _make_request(url: str, headers: dict | None = None, timeout: int = 30) -> A
         resp.raise_for_status()
         return resp
 
-    # Should not reach here, but just in case:
-    resp.raise_for_status()
-    return resp
+    # pragma: no cover - unreachable: the final iteration above always either
+    # returns or raises (the 429-retry branch only fires when attempt < max-1).
+    resp.raise_for_status()  # pragma: no cover
+    return resp  # pragma: no cover
 
 
 def _format_period(date_str: str) -> str:

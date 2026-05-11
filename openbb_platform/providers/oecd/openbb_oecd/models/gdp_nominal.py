@@ -1,7 +1,5 @@
 """OECD Nominal GDP Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date
 from typing import Any, Literal
 
@@ -13,8 +11,9 @@ from openbb_core.provider.standard_models.gdp_nominal import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_oecd.utils.constants import GDP_REAL_COUNTRIES
 from pydantic import Field, field_validator
+
+from openbb_oecd.utils.constants import GDP_REAL_COUNTRIES
 
 # Map units param to data-flow suffix and price-base code.
 _UNIT_DATAFLOW = {
@@ -101,7 +100,6 @@ class OECDGdpNominalFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.query_builder import OecdQueryBuilder
 
         qb = OecdQueryBuilder()
@@ -147,7 +145,6 @@ class OECDGdpNominalFetcher(
         **kwargs: Any,
     ) -> list[OECDGdpNominalData]:
         """Transform the data from the OECD endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_oecd.utils.helpers import oecd_date_to_python_date
 
         is_level = query.units == "level"

@@ -1,11 +1,10 @@
 """Core OecdMetadata singleton class assembled from mixins."""
 
-# pylint: disable=R0902
-
 import threading
 from typing import Annotated
 
 from fastapi import Depends
+
 from openbb_oecd.utils.metadata._cache_mixin import CacheMixin
 from openbb_oecd.utils.metadata._indicator_mixin import IndicatorMixin
 from openbb_oecd.utils.metadata._loader_mixin import LoaderMixin
@@ -61,7 +60,7 @@ class OecdMetadata(
             return
 
         with self._lock:
-            if self._initialized:
+            if self._initialized:  # pragma: no cover - TOCTOU race guard; only reached when a second thread finishes init while we wait on the lock
                 return
 
             self.dataflows: dict[str, dict] = {}

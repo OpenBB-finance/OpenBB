@@ -1,6 +1,5 @@
 """Cache management mixin for OecdMetadata."""
 
-# pylint: disable=R0902
 import gzip
 import json
 import lzma
@@ -14,7 +13,7 @@ from openbb_oecd.utils.metadata._typing import _MixinBase
 _XZ_MAGIC = b"\xfd7zXZ\x00"
 
 
-class CacheMixin(_MixinBase):  # pylint: disable=abstract-method
+class CacheMixin(_MixinBase):
     """Methods for reading, writing, and applying metadata cache blobs."""
 
     @staticmethod
@@ -105,7 +104,7 @@ class CacheMixin(_MixinBase):  # pylint: disable=abstract-method
 
                 self._dataflow_indicators_cache[full_id] = expanded
             else:
-                self._dataflow_indicators_cache[full_id] = val  # type: ignore
+                self._dataflow_indicators_cache[full_id] = val
 
         self._short_id_map.update(blob.get("short_id_map", {}))
         tax = blob.get("taxonomy_tree", [])
@@ -158,7 +157,7 @@ class CacheMixin(_MixinBase):  # pylint: disable=abstract-method
             ancestor_sets.append(set(ch))
             ordered_chains.append(ch)
 
-        if not ancestor_sets:
+        if not ancestor_sets:  # pragma: no cover - unreachable: codes is non-empty (early-return above), so the for loop always appends at least one chain
             return None
 
         common = ancestor_sets[0]

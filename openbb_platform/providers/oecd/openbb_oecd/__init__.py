@@ -1,6 +1,7 @@
 """OECD provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
+
 from openbb_oecd.models.available_indicators import OecdAvailableIndicatorsFetcher
 from openbb_oecd.models.balance_of_payments import OECDBalanceOfPaymentsFetcher
 from openbb_oecd.models.composite_leading_indicator import (
