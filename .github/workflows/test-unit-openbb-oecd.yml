@@ -193,10 +193,32 @@ jobs:
 
       - run: python -m pip install --upgrade pip uv
 
-      - name: Install the built wheel + test deps
+      - name: Seed the cache asset from the built wheel
+        # Extract the bundled cache out of the wheel into the source
+        # tree at the path the build hook checks. With the file
+        # already present, the editable install below short-circuits
+        # the hook's regenerate branch — zero chance of an OECD fetch.
         run: |
           WHEEL=$(ls dist/openbb_oecd-*.whl | head -1)
-          uv pip install --system "$WHEEL" pytest pytest-cov pytest-recorder
+          mkdir -p openbb_oecd/assets
+          python -c "
+          import sys, zipfile, shutil
+          wheel = sys.argv[1]
+          dest = sys.argv[2]
+          with zipfile.ZipFile(wheel) as z:
+              with z.open('openbb_oecd/assets/oecd_cache.json.xz') as src, open(dest, 'wb') as out:
+                  shutil.copyfileobj(src, out)
+          " "$WHEEL" openbb_oecd/assets/oecd_cache.json.xz
 
-      - name: Run unit tests against the installed wheel
+      - name: Install openbb-oecd from source (+ test deps)
+        # Source install via ``-e .`` reads ``[tool.uv.sources]`` and
+        # resolves ``openbb-core`` from the sibling tree at ``../../core``,
+        # which is the only place ``openbb-core[pandas]>=2.0.0`` exists
+        # until that version ships to PyPI. Installing the wheel directly
+        # would fail dependency resolution.
+        run: |
+          uv pip install --system -e .
+          uv pip install --system pytest pytest-cov pytest-recorder
+
+      - name: Run unit tests
         run: pytest tests --cov=openbb_oecd --cov-report=term-missing --cov-fail-under=100
