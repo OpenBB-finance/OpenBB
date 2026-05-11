@@ -15,7 +15,14 @@ from contextlib import suppress
 from pathlib import Path
 from typing import TextIO
 
-from hatchling.builders.hooks.plugin.interface import BuildHookInterface
+# ``hatchling`` is a PEP 517 build-time dependency (declared in
+# ``[build-system].requires`` of ``pyproject.toml``), not a runtime or
+# test/lint dependency. Type-check environments don't install it, so we
+# tell ty the unresolved import is intentional rather than pulling
+# hatchling into the lint env.
+from hatchling.builders.hooks.plugin.interface import (  # ty: ignore[unresolved-import]
+    BuildHookInterface,
+)
 
 _ROOT = Path(__file__).resolve().parent
 _CACHE_PATH = _ROOT / "openbb_oecd" / "assets" / "oecd_cache.json.xz"
@@ -43,6 +50,14 @@ class OecdCacheBuildHook(BuildHookInterface):
 
     PLUGIN_NAME = "oecd-cache"
 
+    # Class-level flag — Hatch runs ``build_sdist`` and ``build_wheel`` in
+    # the same Python process, so this state survives between target builds
+    # and lets the second target reuse the cache the first target just
+    # produced even when ``OPENBB_OECD_FORCE_CACHE_REBUILD=1`` is set.
+    # Without this guard a release build would fetch from OECD twice (once
+    # per target).
+    _generated_this_session: bool = False
+
     def initialize(self, version: str, build_data: dict) -> None:
         """Generate (or reuse) the cache, then mark it for inclusion."""
         # Fires for every target: sdist + wheel + editable. The cache is
@@ -68,13 +83,25 @@ class OecdCacheBuildHook(BuildHookInterface):
             sys.stderr.write(line)
             sys.stderr.flush()
 
-        force = os.environ.get(_FORCE_ENV, "").lower() in {"1", "true", "yes"}
+        cls = type(self)
+
+        # ``force`` is honored at most once per ``uv build`` process: the
+        # first target (sdist) regenerates against live OECD, then the
+        # ``_generated_this_session`` flag short-circuits the second
+        # target (wheel) into reusing the just-written file. Without
+        # this gate a release build hits OECD twice.
+        force = (
+            os.environ.get(_FORCE_ENV, "").lower() in {"1", "true", "yes"}
+            and not cls._generated_this_session
+        )
         try:
             if _CACHE_PATH.exists() and not force:
-                _say(
-                    f"oecd-cache: reusing {_CACHE_PATH.name} "
-                    f"(set {_FORCE_ENV}=1 to rebuild)"
+                reuse_reason = (
+                    "this build session already regenerated it"
+                    if cls._generated_this_session
+                    else f"set {_FORCE_ENV}=1 to rebuild"
                 )
+                _say(f"oecd-cache: reusing {_CACHE_PATH.name} ({reuse_reason})")
             else:
                 _say(
                     "oecd-cache: regenerating from OECD SDMX (~4 min, ~6 API calls)..."
@@ -121,6 +148,8 @@ class OecdCacheBuildHook(BuildHookInterface):
                         "OECD SDMX (sdmx.oecd.org) must be reachable "
                         "during build."
                     )
+
+                cls._generated_this_session = True
         finally:
             if tty is not None:
                 tty.close()
