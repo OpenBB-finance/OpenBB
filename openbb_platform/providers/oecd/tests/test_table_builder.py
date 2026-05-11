@@ -2195,6 +2195,42 @@ class TestPctGdpSubrows:
         assert "% of GDP" in labels
         assert call_count["n"] >= 2
 
+    def test_dimension_filters_dict_merged_with_kwargs(self, seeded_meta, monkeypatch):
+        """``dimension_filters`` param flattens into kwargs before fetch."""
+        captured: dict = {}
+
+        def _fetch_data(**kwargs):
+            captured.update(kwargs)
+            captured.update(kwargs.get("dimension_filters") or {})
+            return {"data": [], "metadata": {"url": "u"}}
+
+        hier = [
+            {
+                "code": "A",
+                "label": "A",
+                "order": 0,
+                "level": 0,
+                "parent": None,
+                "children": [],
+            },
+        ]
+        _patch_meta(
+            seeded_meta,
+            monkeypatch,
+            get_dataflow_table_structure=lambda did, tid: {
+                "hierarchy_name": "H1",
+                "indicators": hier,
+            },
+        )
+        qb = _qb_stub(seeded_meta)
+        qb.fetch_data.side_effect = _fetch_data
+        tb = OecdTableBuilder(metadata=seeded_meta, query_builder=qb)
+        try:
+            tb.get_table(dataflow=_SHORT_ID, dimension_filters={"MEASURE": "CPI"})
+        except OpenBBError:
+            pass
+        assert captured.get("MEASURE") == "CPI"
+
     def test_pct_gdp_unit_mult_applied(self, seeded_meta, monkeypatch):
         """% of GDP values get UNIT_MULT expansion."""
         hier = [

@@ -7,7 +7,7 @@ license = { text = "AGPL-3.0-only" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
-    "openbb-core>=2.0.0",
+    "openbb-core[pandas]>=2.0.0",
     "requests>=2.31",
 ]
 
