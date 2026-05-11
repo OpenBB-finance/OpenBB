@@ -497,8 +497,8 @@ class TestTransformDataIndicatorMode:
                 query=self._q(), data={"mode": "indicator", "data": []}
             )
 
-    def test_skips_unparseable_dates(self):
-        """Rows without a parseable TIME_PERIOD are skipped."""
+    def test_skips_unparsable_dates(self):
+        """Rows without a parsable TIME_PERIOD are skipped."""
         data = {
             "mode": "indicator",
             "data": [

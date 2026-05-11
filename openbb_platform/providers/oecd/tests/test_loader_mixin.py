@@ -399,7 +399,7 @@ class TestEnsureTaxonomy:
 class TestParseCategorisations:
     """Coverage for LoaderMixin._parse_categorisations."""
 
-    def test_unparseable_entries_skipped(self, seeded_meta):
+    def test_unparsable_entries_skipped(self, seeded_meta):
         """Entries whose source/target don't match the regex are dropped."""
         seeded_meta._df_to_categories = {}
         seeded_meta._category_to_dfs = {}

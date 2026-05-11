@@ -495,7 +495,7 @@ class TestGetIndicatorTree:
 class TestFindCodelistByPrefix:
     """Coverage for IndicatorMixin._find_codelist_by_prefix."""
 
-    def test_returns_none_on_unparseable_key(self, seeded_meta):
+    def test_returns_none_on_unparsable_key(self, seeded_meta):
         """Non-conformant codelist id returns None."""
         assert seeded_meta._find_codelist_by_prefix("not-a-codelist-key") is None
 

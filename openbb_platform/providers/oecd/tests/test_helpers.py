@@ -66,7 +66,7 @@ class TestOecdDateToPythonDate:
         assert oecd_date_to_python_date(0) is None
 
     def test_malformed_long_string_truncation_path(self):
-        """Long unparseable string falls back to first 10 chars."""
+        """Long unparsable string falls back to first 10 chars."""
         result = oecd_date_to_python_date("2024-03-15T00:00:00")
         assert result == date(2024, 3, 15)
 

@@ -421,7 +421,7 @@ class TestBalanceOfPayments:
         assert out == []
 
     def test_transform_data_skips_invalid_date(self):
-        """Row with unparseable TIME_PERIOD skipped (line 262)."""
+        """Row with unparsable TIME_PERIOD skipped (line 262)."""
         rows = [{"OBS_VALUE": 1.0, "TIME_PERIOD": "not-a-date"}]
         q = OECDBalanceOfPaymentsQueryParams()
         out = OECDBalanceOfPaymentsFetcher.transform_data(q, rows)
