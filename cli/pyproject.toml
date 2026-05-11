@@ -1,31 +1,141 @@
-[tool.poetry]
+[project]
 name = "openbb-cli"
-version = "1.4.1"
+version = "2.0.0"
 description = "Investment Research for Everyone, Anywhere."
-authors = ["OpenBB <hello@openbb.co>"]
-packages = [{ include = "openbb_cli" }]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-homepage = "https://openbb.co"
-repository = "https://github.com/OpenBB-finance/OpenBB"
-documentation = "https://docs.openbb.co/cli"
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "prompt-toolkit>=3.0.50,<4.0.0",
+    "rich>=14.0.0,<15.0.0",
+    "python-dotenv>=1.0.1,<2.0.0",
+    "openpyxl>=3.1.5,<4.0.0",
+    "httpx>=0.28.0,<1.0.0",
+    "pyyaml>=6.0",
+    "tomli>=2.0;python_version<'3.11'",
+]
 
-[tool.poetry.scripts]
-openbb = 'openbb_cli.cli:main'
+[project.optional-dependencies]
+charting = ["openbb-charting>=3.0.0"]
+interactive = ["pywry>=2.0.0"]
+all = ["openbb-charting>=3.0.0", "pywry>=2.0.0"]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
+[project.scripts]
+openbb = "openbb_cli.cli:main"
 
-# OpenBB dependencies
-openbb = { version = "^4.7.1", extras = ["all"] }
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+Documentation = "https://docs.openbb.co/cli"
 
-# CLI dependencies
-prompt-toolkit = "^3.0.50"
-rich = "^14.0.0"
-python-dotenv = "^1.0.1"
-openpyxl = "^3.1.5"
-pywry = ">=2.0.0rc7"
+[dependency-groups]
+# openbb-devtools v2 carries pytest, pytest-cov, pytest-asyncio, pytest-freezer,
+# etc. — depending on it covers the test toolchain transitively.
+dev = ["openbb-devtools>=2.0.0"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_cli"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_cli",
+    "README.md",
+    "pyproject.toml",
+]
+
+# openbb-core is path-sourced because v5's has not yet been published.
+[tool.uv.sources]
+openbb-core = { path = "../openbb_platform/core", editable = true }
+openbb-charting = { path = "../openbb_platform/obbject_extensions/charting", editable = true }
+openbb-devtools = { path = "../openbb_platform/extensions/devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "E",
+    "W",
+    "F",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+ignore = [
+    "PLR2004",
+    "PLR0913",
+    "PLR0915",
+    "PLC0415",
+    "E402",
+    "E501",
+    "D202",
+    "D203",
+    "D205",
+    "D206",
+    "D210",
+    "D212",
+    "D213",
+    "D214",
+    "D215",
+    "D300",
+    "D400",
+    "D404",
+    "D405",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D410",
+    "D411",
+    "D413",
+    "D415",
+    "D416",
+    "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"**/__init__.py" = ["F401"]
+# Protocol stubs and lazy-import shims with `...` bodies don't need per-method docstrings.
+"openbb_cli/backend.py" = ["D102"]
+"openbb_cli/controllers/platform_controller_factory.py" = ["D102"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_cli"]
+exclude = ["openbb_cli/assets", "tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"

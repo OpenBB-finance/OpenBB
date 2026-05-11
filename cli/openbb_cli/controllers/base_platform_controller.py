@@ -1,22 +1,26 @@
 """Platform Equity Controller."""
 
 import os
-from functools import partial, update_wrapper
+from functools import lru_cache, partial, update_wrapper
 from types import MethodType
+from typing import Any
 
 import pandas as pd
-from openbb import obb
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_cli.argparse_translator.argparse_class_processor import (
-    ArgparseClassProcessor,
-)
+
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
-from openbb_core.app.model.obbject import OBBject
 
 session = Session()
+
+
+@lru_cache(maxsize=1)
+def _OBBject() -> type:
+    """Return ``OBBject`` lazily; cached after first call via ``lru_cache``."""
+    from openbb_core.app.model.obbject import OBBject
+
+    return OBBject
 
 
 class DummyTranslation:
@@ -29,40 +33,76 @@ class DummyTranslation:
 
 
 class PlatformController(BaseController):
-    """Platform Controller Base class."""
+    """Platform Controller Base class.
+
+    Three construction styles are supported, in priority order:
+
+    1. Class attributes ``_factory_translators`` + ``_factory_paths`` set by
+       ``PlatformControllerFactory`` from a ``Backend`` (current default).
+    2. ``platform_target=...`` — legacy in-process ``obb`` walk via
+       ``ArgparseClassProcessor``. Imports ``obb`` lazily.
+    3. ``translators=...`` (and optionally ``paths=...``) — direct injection,
+       used by ``_generate_sub_controllers`` for nested menus.
+    """
 
     CHOICES_GENERATION = True
 
-    def __init__(  # pylint: disable=too-many-positional-arguments
+    _factory_backend: Any = None
+    _factory_translators: dict[str, Any] | None = None
+    _factory_paths: dict[str, str] | None = None
+
+    def __init__(
         self,
         name: str,
         parent_path: list[str],
         platform_target: type | None = None,
         queue: list[str] | None = None,
         translators: dict | None = None,
+        paths: dict[str, str] | None = None,
     ):
         """Construct a Platform based Controller."""
         self.PATH = f"/{'/'.join(parent_path)}/{name}/" if parent_path else f"/{name}/"
         super().__init__(queue)
         self._name = name
 
-        if not (platform_target or translators):
-            raise ValueError("Either platform_target or translators must be provided.")
+        if (
+            translators is None
+            and platform_target is None
+            and self._factory_translators is not None
+        ):
+            translators = self._factory_translators
+            if paths is None and self._factory_paths is not None:
+                paths = self._factory_paths
+            self._translated_target = DummyTranslation()
+        elif platform_target is not None:
+            from openbb import obb
 
-        self._translated_target = (
-            ArgparseClassProcessor(
-                target_class=platform_target,
-                reference=obb.reference["paths"],  # type: ignore
+            from openbb_cli.argparse_translator.argparse_class_processor import (
+                ArgparseClassProcessor,
             )
-            if platform_target
-            else DummyTranslation()
-        )
+
+            self._translated_target = ArgparseClassProcessor(
+                target_class=platform_target,
+                reference=obb.reference["paths"],  # ty: ignore[not-subscriptable]
+            )
+        elif translators is not None:
+            self._translated_target = DummyTranslation()
+        else:
+            raise ValueError(
+                "PlatformController needs one of: factory-injected translators, "
+                "platform_target, or translators=...; got none."
+            )
+
         self.translators = (
             translators
             if translators is not None
             else getattr(self._translated_target, "translators", {})
         )
-        self.paths = getattr(self._translated_target, "paths", {})
+        self.paths = (
+            paths
+            if paths is not None
+            else getattr(self._translated_target, "paths", {})
+        )
 
         if self.translators:
             self._link_obbject_to_data_processing_commands()
@@ -73,9 +113,8 @@ class PlatformController(BaseController):
     def _link_obbject_to_data_processing_commands(self):
         """Link data processing commands to OBBject registry."""
         for _, trl in self.translators.items():
-            for action in trl._parser._actions:  # pylint: disable=protected-access
+            for action in trl._parser._actions:
                 if action.dest == "data":
-                    # Generate choices by combining indexed and key-based choices
                     action.choices = [
                         "OBB" + str(i)
                         for i in range(len(session.obbject_registry.obbjects))
@@ -98,7 +137,7 @@ class PlatformController(BaseController):
                 ns_parser.data in session.obbject_registry.obbject_keys
             ):
                 obbject = session.obbject_registry.get(ns_parser.data)
-                if obbject and isinstance(obbject, OBBject):
+                if obbject and isinstance(obbject, _OBBject()):
                     setattr(ns_parser, "data", obbject.results)
 
         return ns_parser
@@ -121,15 +160,14 @@ class PlatformController(BaseController):
                     if translator_name in self.CHOICES_COMMANDS:
                         self.CHOICES_COMMANDS.remove(translator_name)
 
-            # Create the sub controller as a new class
             class_name = f"{self._name.capitalize()}{path.capitalize()}Controller"
             SubController = type(
                 class_name,
                 (PlatformController,),
                 {
                     "CHOICES_GENERATION": True,
-                    # "CHOICES_MENUS": [],
                     "CHOICES_COMMANDS": choices_commands,
+                    "_factory_backend": self._factory_backend,
                 },
             )
 
@@ -143,7 +181,6 @@ class PlatformController(BaseController):
     def _generate_commands(self):
         """Generate commands."""
         for name, translator in self.translators.items():
-            # Prepare the translator name to create a command call in the controller
             new_name = name.replace(f"{self._name}_", "")
 
             self._generate_command_call(name=new_name, translator=translator)
@@ -170,14 +207,13 @@ class PlatformController(BaseController):
 
                     obbject = translator.execute_func(parsed_args=ns_parser)
                     df: pd.DataFrame = pd.DataFrame()
-                    fig: OpenBBFigure | None = None
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
                         if isinstance(obbject, list):
-                            obbject = OBBject(results=obbject)
+                            obbject = _OBBject()(results=obbject)
 
-                        if isinstance(obbject, OBBject):
+                        if isinstance(obbject, _OBBject()):
                             if (
                                 session.max_obbjects_exceeded()
                                 and obbject.results
@@ -188,9 +224,7 @@ class PlatformController(BaseController):
                                     "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[yellow]"
                                 )
 
-                            # use the obbject to store the command so we can display it later on results
                             obbject.extra["command"] = f"{title} {' '.join(other_args)}"
-                            # if there is a registry key in the parser, store to the obbject
                             if (
                                 hasattr(ns_parser, "register_key")
                                 and ns_parser.register_key
@@ -209,15 +243,11 @@ class PlatformController(BaseController):
                                     )
 
                             if store_obbject:
-                                # store the obbject in the registry
                                 register_result = session.obbject_registry.register(
                                     obbject
                                 )
 
-                                # we need to force to re-link so that the new obbject
-                                # is immediately available for data processing commands
                                 self._link_obbject_to_data_processing_commands()
-                                # also update the completer
                                 self.update_completer(self.choices_default)
 
                                 if (
@@ -228,22 +258,23 @@ class PlatformController(BaseController):
                                         "Added `OBBject` to cached results."
                                     )
 
-                            # making the dataframe available either for printing or exporting
-                            df = obbject.to_dataframe()
+                            chart = hasattr(ns_parser, "chart") and ns_parser.chart
 
-                            if hasattr(ns_parser, "chart") and ns_parser.chart:
-                                fig = obbject.chart.fig if obbject.chart else None
-                                if not export:
-                                    obbject.show()
-                            elif session.settings.USE_INTERACTIVE_DF and not export:
-                                obbject.charting.table()  # type: ignore[attr-defined]
-                            else:
-                                if isinstance(df.columns, pd.RangeIndex):
-                                    df.columns = [str(i) for i in df.columns]
-
-                                print_rich_table(
-                                    df=df, show_index=True, title=title, export=export
-                                )
+                            if not export:
+                                try:
+                                    session.output_adapter.display(
+                                        data=obbject,
+                                        title=title,
+                                        export=export,
+                                        chart=chart,
+                                    )
+                                except Exception as e:
+                                    session.console.print(
+                                        f"[red]Display error: {e}[/red]"
+                                    )
+                                    if hasattr(obbject, "model_dump"):
+                                        results = obbject.model_dump().get("results")
+                                        session.console.print(results)
 
                         elif isinstance(obbject, dict):
                             df = pd.DataFrame.from_dict(obbject, orient="columns")
@@ -251,13 +282,20 @@ class PlatformController(BaseController):
                                 df=df, show_index=True, title=title, export=export
                             )
 
-                        elif not isinstance(obbject, OBBject):
+                        elif not isinstance(obbject, _OBBject()):
                             session.console.print(obbject)
 
                     if export and not df.empty:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
                         if sheet_name and isinstance(sheet_name, list):
                             sheet_name = sheet_name[0]
+
+                        fig = None
+                        if hasattr(ns_parser, "chart") and ns_parser.chart:
+                            from contextlib import suppress
+
+                            with suppress(Exception):
+                                fig = obbject.chart.fig if obbject.chart else None
 
                         export_data(
                             export_type=",".join(ns_parser.export),
@@ -274,11 +312,11 @@ class PlatformController(BaseController):
                     session.console.print(f"[red]{e}[/]\n")
                     return
 
-        # Bind the method to the class
         bound_method = MethodType(method, self)
 
-        # Update the wrapper and set the attribute
-        bound_method = update_wrapper(partial(bound_method, translator=translator), method)  # type: ignore
+        bound_method = update_wrapper(
+            partial(bound_method, translator=translator), method
+        )
         setattr(self, f"call_{name}", bound_method)
 
     def _generate_controller_call(self, controller, name, parent_path, translators):
@@ -294,11 +332,9 @@ class PlatformController(BaseController):
                 queue=self.queue,
             )
 
-        # Bind the method to the class
         bound_method = MethodType(method, self)
 
-        # Update the wrapper and set the attribute
-        bound_method = update_wrapper(  # type: ignore
+        bound_method = update_wrapper(
             partial(
                 bound_method,
                 name=name,
@@ -310,10 +346,32 @@ class PlatformController(BaseController):
         )
         setattr(self, f"call_{name}", bound_method)
 
+    def _get_reference_paths(self) -> dict[str, dict[str, Any]]:
+        """Return the reference path-description dict.
+
+        Pulls from the factory-injected backend when present, otherwise
+        falls back to a lazy ``LocalBackend`` over in-process ``obb``.
+        """
+        if self._factory_backend is not None:
+            return self._factory_backend.reference_paths
+        from openbb_cli.backend import LocalBackend
+
+        return LocalBackend().reference_paths
+
+    def _get_reference_routers(self) -> dict[str, dict[str, Any]]:
+        """Return the reference router-description dict (mirror of ``_get_reference_paths``)."""
+        if self._factory_backend is not None:
+            return self._factory_backend.reference_routers
+        from openbb_cli.backend import LocalBackend
+
+        return LocalBackend().reference_routers
+
     def _get_command_description(self, command: str) -> str:
         """Get command description."""
         command_description = (
-            obb.reference["paths"].get(f"{self.PATH}{command}", {}).get("description", "")  # type: ignore
+            self._get_reference_paths()
+            .get(f"{self.PATH}{command}", {})
+            .get("description", "")
         )
 
         if not command_description:
@@ -338,12 +396,13 @@ class PlatformController(BaseController):
             return commands
 
         menu_description = (
-            obb.reference["routers"].get(f"{self.PATH}{menu}", {}).get("description", "")  # type: ignore
+            self._get_reference_routers()
+            .get(f"{self.PATH}{menu}", {})
+            .get("description", "")
         ) or ""
         if menu_description:
             return menu_description.split(".")[0].lower()
 
-        # If no description is found, return the sub menu commands
         return ", ".join(_get_sub_menu_commands())
 
     def print_help(self):
@@ -371,8 +430,12 @@ class PlatformController(BaseController):
             for key, value in list(session.obbject_registry.all.items())[
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
+                # ``command`` lives under ``extra`` — the registry surfaces
+                # the full OBBject (minus ``results``), and ``command``
+                # belongs to OBBject's ``extra`` slot.
+                command = (value.get("extra") or {}).get("command", "")
                 mt.add_raw(
-                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
+                    f"[yellow]OBB{key}[/yellow]: {command}",
                     left_spacing=True,
                 )
 

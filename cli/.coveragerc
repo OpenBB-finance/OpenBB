@@ -1,0 +1,25 @@
+[run]
+branch = False
+parallel = True
+source = openbb_cli
+data_file = .coverage
+omit =
+    openbb_cli/cli.py
+    openbb_cli/assets/**
+    tests/*
+    integration/*
+
+[paths]
+source =
+    openbb_cli
+    */site-packages/openbb_cli
+    */cli/openbb_cli
+
+[report]
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    if __name__ == .__main__.:
+    raise NotImplementedError

@@ -2,7 +2,6 @@
 
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
-from starlette.routing import BaseRoute
 
 
 def has_additional_widgets(app: FastAPI) -> bool:
@@ -23,8 +22,12 @@ async def get_additional_widgets(app: FastAPI) -> dict:
     if not has_additional_widgets(app):
         return {}
 
-    widget_routes: list[BaseRoute] = []
+    # Narrow to ``APIRoute`` at collection so ``r.endpoint`` is typed
+    # below. ``BaseRoute`` doesn't expose ``endpoint``.
+    widget_routes: list[APIRoute] = []
     for d in app.routes:
+        if not isinstance(d, APIRoute):
+            continue
         d_path = getattr(d, "path", "")
         if d_path not in {"/widgets.json", ""} and d_path.endswith("widgets.json"):
             widget_routes.append(d)
@@ -38,7 +41,7 @@ async def get_additional_widgets(app: FastAPI) -> dict:
         ):
             continue
 
-        widgets = await r.endpoint()  # type: ignore
+        widgets = await r.endpoint()
 
         if not isinstance(widgets, dict):
             continue

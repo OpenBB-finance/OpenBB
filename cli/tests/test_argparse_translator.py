@@ -5,6 +5,8 @@ from datetime import date
 from typing import Literal
 
 import pytest
+from pydantic import BaseModel
+
 from openbb_cli.argparse_translator.argparse_argument import (
     ArgparseArgumentGroupModel,
     ArgparseArgumentModel,
@@ -15,12 +17,8 @@ from openbb_cli.argparse_translator.argparse_translator import (
 from openbb_cli.argparse_translator.reference_processor import (
     ReferenceToArgumentsProcessor,
 )
-from pydantic import BaseModel
-
-# pylint: disable=protected-access,unused-argument
 
 
-# Test fixtures and helper functions
 def sample_function(
     symbol: str,
     start_date: date | None = None,
@@ -41,7 +39,7 @@ def bool_function(
     adjusted: bool = False,
     extended_hours: bool | None = None,
 ) -> dict:
-    """Function with boolean parameters."""
+    """Return dict with boolean parameters."""
     return {"symbol": symbol, "adjusted": adjusted, "extended_hours": extended_hours}
 
 
@@ -49,7 +47,7 @@ def union_function(
     param1: str | int = "default",
     param2: str | int | None = None,
 ) -> dict:
-    """Function with union types."""
+    """Return dict with union type parameters."""
     return {"param1": param1, "param2": param2}
 
 
@@ -57,7 +55,7 @@ def list_function(
     symbols: list[str],
     values: list[int] | None = None,
 ) -> dict:
-    """Function with list parameters."""
+    """Return dict with list parameters."""
     return {"symbols": symbols, "values": values}
 
 
@@ -69,11 +67,253 @@ class CustomData(BaseModel):
 
 
 def custom_type_function(data: CustomData) -> dict:
-    """Function with custom type parameter."""
+    """Return dict with custom type parameter."""
     return {"data": data}
 
 
-# ArgparseArgumentModel Tests
+def test_get_action_type_for_bool_param():
+    """Plain bool → store_true."""
+
+    def f(flag: bool = False) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    assert t._get_action_type(param) == "store_true"
+
+
+def test_get_action_type_for_union_with_bool():
+    """``bool | int`` (Union containing bool) → store_true."""
+
+    def f(flag: bool | int = False) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    assert t._get_action_type(param) == "store_true"
+
+
+def test_get_action_type_for_optional_bool():
+    """``bool | None`` → store_true (the Optional[bool] special case)."""
+
+    def f(flag: bool | None = None) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    assert t._get_action_type(param) == "store_true"
+
+
+def test_get_type_and_choices_returns_str_for_str_or_int_union():
+    """``str | int`` prefers str at the base type, with empty choices."""
+
+    def f(value: str | int = "x") -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    base_type, choices = t._get_type_and_choices(param)
+    assert base_type is str
+
+
+def test_get_type_and_choices_strips_none_in_optional():
+    """``str | None`` collapses to ``str``."""
+
+    def f(value: str | None = None) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    base_type, _ = t._get_type_and_choices(param)
+    assert base_type is str
+
+
+def test_get_type_and_choices_extracts_literal_choices():
+    """``Literal[a, b]`` produces choices ``(a, b)`` and base type matches."""
+    from typing import Literal
+
+    def f(provider: Literal["fmp", "yfinance"] = "fmp") -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    base_type, choices = t._get_type_and_choices(param)
+    assert base_type is str
+    assert set(choices) == {"fmp", "yfinance"}
+
+
+def test_get_type_and_choices_handles_list_of_literal():
+    """``list[Literal[...]]`` extracts inner choices."""
+    from typing import Literal
+
+    def f(items: list[Literal["a", "b"]] | None = None) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    _, choices = t._get_type_and_choices(param)
+    assert set(choices) == {"a", "b"}
+
+
+def test_escape_help_doubles_percent_signs():
+    """``_escape_help`` escapes lone ``%`` signs to satisfy argparse's %-formatting."""
+    assert ArgparseTranslator._escape_help("100% sure") == "100%% sure"
+    assert ArgparseTranslator._escape_help(None) is None
+
+
+def test_param_is_default_detects_optional_params():
+    """Helper distinguishes required vs defaulted parameters."""
+    import inspect
+
+    def f(a: int, b: int = 5) -> dict:
+        """f."""
+        return {}
+
+    sig = inspect.signature(f)
+    params = list(sig.parameters.values())
+    assert ArgparseTranslator._param_is_default(params[0]) is False
+    assert ArgparseTranslator._param_is_default(params[1]) is True
+
+
+def test_build_description_strips_section_headers():
+    """``_build_description`` removes Parameters/Returns/Examples blocks from docstrings."""
+    docstring = (
+        "Get something.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "x : int\n"
+        "    The x value.\n\n"
+        "Returns\n"
+        "-------\n"
+        "int\n"
+        "    The result.\n"
+    )
+    result = ArgparseTranslator._build_description(docstring)
+    assert "Parameters" not in result
+    assert "Returns" not in result
+    assert "Get something." in result
+
+
+def test_build_description_empty_returns_empty():
+    """Empty docstring → empty description."""
+    assert ArgparseTranslator._build_description("") == ""
+
+
+def test_build_description_cleans_pipe_unions_in_param_lines():
+    """Pipe-style annotations in body lines are humanized to 'or'."""
+    docstring = "Get something.\n\nx: int | str | None\n"
+    result = ArgparseTranslator._build_description(docstring)
+    assert "or" in result
+
+
+def test_translator_handles_basemodel_param_flattens_fields():
+    """BaseModel-typed params have their fields flattened into separate argparse arguments."""
+    t = ArgparseTranslator(custom_type_function)
+    parser = t.parser
+    optstrings = {opt for action in parser._actions for opt in action.option_strings}
+    assert any("data" in opt and "field1" in opt for opt in optstrings)
+    assert any("data" in opt and "field2" in opt for opt in optstrings)
+
+
+def test_translator_required_vs_optional_param_routing():
+    """Required params land in the 'required arguments' group; optional in standard."""
+
+    def f(req: str, opt: int = 5) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    parser = t.parser
+    groups = {
+        g.title: [a.dest for a in g._group_actions] for g in parser._action_groups
+    }
+    assert "req" in groups.get("required arguments", [])
+    optional_dest = []
+    for title, dests in groups.items():
+        if "option" in title.lower() and title != "required arguments":
+            optional_dest.extend(dests)
+    assert "opt" in optional_dest
+
+
+def test_translator_skips_kwargs_param():
+    """A ``**kwargs`` parameter is ignored (no argparse argument generated for it)."""
+
+    def f(name: str, **kwargs) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    parser = t.parser
+    optstrings = {opt for action in parser._actions for opt in action.option_strings}
+    assert not any("kwargs" in opt for opt in optstrings)
+
+
+def test_translator_list_type_hint_uses_nargs_plus():
+    """``list[int]`` parameters become ``nargs='+'`` arguments."""
+
+    t = ArgparseTranslator(list_function)
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "symbols":
+            assert action.nargs == "+"
+            return
+    pytest.fail("symbols action not found")
+
+
+def test_translator_bool_param_gets_store_true_action():
+    """Bool params produce ``action='store_true'``."""
+
+    t = ArgparseTranslator(bool_function)
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "adjusted":
+            from argparse import _StoreTrueAction
+
+            assert isinstance(action, _StoreTrueAction)
+            return
+    pytest.fail("adjusted action not found")
+
+
+def test_translator_handle_argument_in_groups_merges_existing_argument():
+    """When the same argument is added by two providers, choices are merged."""
+
+    def f(symbol: str, provider: Literal["fmp"] = "fmp") -> dict:
+        """f."""
+        return {}
+
+    extra_group = ArgparseArgumentGroupModel(
+        name="yfinance",
+        arguments=[
+            ArgparseArgumentModel(
+                name="symbol",
+                type=str,
+                dest="symbol",
+                default=None,
+                required=True,
+                action="store",
+                help=None,
+                nargs=None,
+                choices=("AAPL", "TSLA"),
+            )
+        ],
+    )
+    t = ArgparseTranslator(f, custom_argument_groups=[extra_group])
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "symbol":
+            choices = list(action.choices or [])
+            assert "AAPL" in choices or "TSLA" in choices
+            return
+    pytest.fail("symbol action not found")
+
+
 def test_custom_argument_action_validation():
     """Test that CustomArgument raises an error for invalid actions."""
     with pytest.raises(ValueError) as excinfo:
@@ -130,7 +370,6 @@ def test_custom_argument_group():
     assert group.arguments[0].name == "test"
 
 
-# ArgparseTranslator Basic Tests
 def test_argparse_translator_setup():
     """Test the ArgparseTranslator setup."""
 
@@ -157,7 +396,6 @@ def test_argparse_translator_execution():
     assert result == 6
 
 
-# ArgparseTranslator Comprehensive Tests
 def test_basic_translation():
     """Test basic function translation."""
     translator = ArgparseTranslator(sample_function)
@@ -198,7 +436,7 @@ def test_literal_choices():
     parser = translator.parser
 
     actions = {action.dest: action for action in parser._actions}
-    assert set(actions["provider"].choices) == {"fmp", "yfinance"}  # type: ignore
+    assert set(actions["provider"].choices) == {"fmp", "yfinance"}
 
 
 def test_bool_store_true():
@@ -208,7 +446,6 @@ def test_bool_store_true():
 
     actions = {action.dest: action for action in parser._actions}
 
-    # Check the action type by checking the class name
     assert actions["adjusted"].__class__.__name__ == "_StoreTrueAction"
     assert actions["extended_hours"].__class__.__name__ == "_StoreTrueAction"
 
@@ -220,7 +457,6 @@ def test_union_type_handling():
 
     actions = {action.dest: action for action in parser._actions}
 
-    # Should default to str for Union types
     assert actions["param1"].type is str
     assert actions["param2"].type is str
 
@@ -242,9 +478,6 @@ def test_list_nargs():
     actions = {action.dest: action for action in parser._actions}
 
     assert actions["symbols"].nargs == "+"
-    # For Optional[list[int]], it should still have nargs="+" if it's a list type
-    # but the implementation might handle Optional[list] differently
-    # Let's check if it's at least recognized as a list parameter
     assert "values" in actions
 
 
@@ -289,9 +522,8 @@ def test_description_cleaning_union():
         """
 
     translator = ArgparseTranslator(func_with_union)
-    description = translator._build_description(func_with_union.__doc__)  # type: ignore
+    description = translator._build_description(func_with_union.__doc__)
 
-    # The method removes the Parameters section, so we just check it processes without error
     assert "Union[" not in description
 
 
@@ -308,9 +540,8 @@ def test_description_cleaning_optional():
         """
 
     translator = ArgparseTranslator(func_with_optional)
-    description = translator._build_description(func_with_optional.__doc__)  # type: ignore
+    description = translator._build_description(func_with_optional.__doc__)
 
-    # The method removes the Parameters section, so we just check it processes without error
     assert "Optional[" not in description
 
 
@@ -327,7 +558,7 @@ def test_description_cleaning_annotated():
         """
 
     translator = ArgparseTranslator(func_with_annotated)
-    description = translator._build_description(func_with_annotated.__doc__)  # type: ignore
+    description = translator._build_description(func_with_annotated.__doc__)
 
     assert "Annotated[" not in description
     assert "Field" not in description
@@ -346,9 +577,8 @@ def test_description_cleaning_pipe_union():
         """
 
     translator = ArgparseTranslator(func_with_pipe)
-    description = translator._build_description(func_with_pipe.__doc__)  # type: ignore
+    description = translator._build_description(func_with_pipe.__doc__)
 
-    # The method removes the Parameters section, so we just check it processes without error
     assert " | " not in description
 
 
@@ -380,7 +610,7 @@ def test_custom_argument_groups():
 
     actions = {action.dest: action for action in parser._actions}
     assert "custom_param" in actions
-    assert set(actions["custom_param"].choices) == {"a", "b", "c"}  # type: ignore
+    assert set(actions["custom_param"].choices) == {"a", "b", "c"}
 
 
 def test_provider_parameters_tracking():
@@ -412,7 +642,6 @@ def test_provider_parameters_tracking():
     assert "param1" in translator.provider_parameters["provider1"]
 
 
-# ReferenceToArgumentsProcessor Tests
 class TestReferenceToArgumentsProcessor:
     """Test the ReferenceToArgumentsProcessor class."""
 
@@ -470,7 +699,7 @@ class TestReferenceToArgumentsProcessor:
         """Test extracting choices from Literal types."""
         processor = ReferenceToArgumentsProcessor({})
         choices = processor._get_choices("Literal['a', 'b', 'c']", custom_choices=None)
-        assert set(choices) == {"a", "b", "c"}  # type: ignore
+        assert set(choices) == {"a", "b", "c"}
 
     def test_get_choices_multiple_literals(self):
         """Test extracting choices from multiple Literal types."""
@@ -478,7 +707,7 @@ class TestReferenceToArgumentsProcessor:
         choices = processor._get_choices(
             "Union[Literal['a', 'b'], Literal['c', 'd']]", custom_choices=None
         )
-        assert set(choices) == {"a", "b", "c", "d"}  # type: ignore
+        assert set(choices) == {"a", "b", "c", "d"}
 
     def test_get_choices_custom(self):
         """Test custom choices override Literal choices."""
@@ -527,7 +756,7 @@ class TestReferenceToArgumentsProcessor:
         assert arg.type is str
         assert arg.default == "1min"
         assert not arg.required
-        assert set(arg.choices) == {"1min", "5min", "15min"}  # type: ignore
+        assert set(arg.choices) == {"1min", "5min", "15min"}
 
     def test_build_custom_groups_skip_standard(self):
         """Test that standard parameters are skipped."""
@@ -562,7 +791,6 @@ class TestReferenceToArgumentsProcessor:
         processor = ReferenceToArgumentsProcessor(reference)
         groups = processor.custom_groups
 
-        # Only param2 should be included
         assert len(groups["/test/route"][0].arguments) == 1
         assert groups["/test/route"][0].arguments[0].name == "param2"
 
@@ -631,4 +859,304 @@ class TestReferenceToArgumentsProcessor:
 
         arg = groups["/test/route"][0].arguments[0]
         assert arg.action == "store_true"
-        assert arg.type is None  # Should be None for store_true
+        assert arg.type is None
+
+
+def test_handle_argument_in_groups_required_arg_merges_choices():
+    """A second provider supplying choices for a *required* argument merges
+    them onto the required action."""
+
+    def f(symbol: Literal["AAPL", "TSLA"]) -> dict:
+        """f."""
+        return {}
+
+    extra_group = ArgparseArgumentGroupModel(
+        name="provider_b",
+        arguments=[
+            ArgparseArgumentModel(
+                name="symbol",
+                type=str,
+                dest="symbol",
+                default=None,
+                required=True,
+                action="store",
+                help=None,
+                nargs=None,
+                choices=("MSFT", "AMZN"),
+            )
+        ],
+    )
+    t = ArgparseTranslator(f, custom_argument_groups=[extra_group])
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "symbol":
+            choices = list(action.choices or [])
+            assert {"AAPL", "TSLA", "MSFT", "AMZN"}.issubset(set(choices))
+            return
+    pytest.fail("symbol action missing")
+
+
+def test_handle_argument_in_groups_optional_existing_argument_merges_provider_help():
+    """A second provider re-defining an *optional* argument extends the help text
+    with provider info."""
+
+    def f(provider: Literal["fmp"] = "fmp", limit: int = 100) -> dict:
+        """f."""
+        return {}
+
+    extra_group = ArgparseArgumentGroupModel(
+        name="yfinance",
+        arguments=[
+            ArgparseArgumentModel(
+                name="limit",
+                type=int,
+                dest="limit",
+                default=50,
+                required=False,
+                action="store",
+                help="Limit override.",
+                nargs=None,
+                choices=None,
+            )
+        ],
+    )
+    t = ArgparseTranslator(f, custom_argument_groups=[extra_group])
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "limit":
+            assert action.help is not None
+            return
+    pytest.fail("limit action missing")
+
+
+def test_handle_argument_in_groups_third_group_demotes_required_arg_to_optional():
+    """When the same argument exists in multiple non-(required/optional) groups,
+    it gets removed and re-added to the optional arguments group."""
+
+    def f(symbol: Literal["AAPL"] = "AAPL") -> dict:
+        """f."""
+        return {}
+
+    group_a = ArgparseArgumentGroupModel(
+        name="provider_a",
+        arguments=[
+            ArgparseArgumentModel(
+                name="symbol",
+                type=str,
+                dest="symbol",
+                default="AAPL",
+                required=False,
+                action="store",
+                help="from a",
+                nargs=None,
+                choices=("X1",),
+            )
+        ],
+    )
+    group_b = ArgparseArgumentGroupModel(
+        name="provider_b",
+        arguments=[
+            ArgparseArgumentModel(
+                name="symbol",
+                type=str,
+                dest="symbol",
+                default="AAPL",
+                required=False,
+                action="store",
+                help="from b",
+                nargs=None,
+                choices=("X2",),
+            )
+        ],
+    )
+    t = ArgparseTranslator(f, custom_argument_groups=[group_a, group_b])
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "symbol":
+            choices = set(action.choices or [])
+            assert {"AAPL", "X1", "X2"}.issubset(choices)
+            return
+
+
+def test_get_base_type_picks_first_concrete_when_no_str_or_bool():
+    """``Union[date, int]`` picks ``date`` (first non-None concrete type) — line 264-267."""
+    from datetime import date
+
+    def f(when: date | int = date.today()) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    base, _ = t._get_type_and_choices(param)
+    assert base is date
+
+
+def test_get_base_type_for_any_returns_str():
+    """``Any`` falls through to str."""
+    from typing import Any
+
+    def f(payload: Any = "x") -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    base, _ = t._get_type_and_choices(param)
+    assert base is str
+
+
+def test_get_base_type_unknown_origin_returns_str():
+    """A non-class, non-typing-origin annotation falls through to str."""
+
+    def f(value=None) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    param = next(iter(t.signature.parameters.values()))
+    t.type_hints["value"] = object()
+    base, _ = t._get_type_and_choices(param)
+    assert base is str
+
+
+def test_execute_func_with_provider_passes_provider_args():
+    """``execute_func`` populates ``provider_args`` from the matching provider
+    bucket."""
+
+    def f(
+        symbol: str = "AAPL",
+        provider: Literal["fmp", "yf"] = "fmp",
+        interval: str | None = None,
+    ) -> dict:
+        """f."""
+        return {"symbol": symbol, "provider": provider, "interval": interval}
+
+    extra = ArgparseArgumentGroupModel(
+        name="fmp",
+        arguments=[
+            ArgparseArgumentModel(
+                name="interval",
+                type=str,
+                dest="interval",
+                default="1d",
+                required=False,
+                action="store",
+                help=None,
+                nargs=None,
+                choices=("1d", "1h"),
+            )
+        ],
+    )
+    t = ArgparseTranslator(f, custom_argument_groups=[extra])
+    parsed = t.parser.parse_args(
+        ["--symbol", "X", "--provider", "fmp", "--interval", "1h"]
+    )
+    out = t.execute_func(parsed)
+    assert out["symbol"] == "X"
+    assert out["interval"] == "1h"
+
+
+def test_execute_func_without_provider_iterates_all_providers():
+    """No matching provider → ``provider_args`` collects every group's params."""
+
+    def f(symbol: str = "AAPL", interval: str | None = None) -> dict:
+        """f."""
+        return {"symbol": symbol, "interval": interval}
+
+    extra = ArgparseArgumentGroupModel(
+        name="fmp",
+        arguments=[
+            ArgparseArgumentModel(
+                name="interval",
+                type=str,
+                dest="interval",
+                default="1d",
+                required=False,
+                action="store",
+                help=None,
+                nargs=None,
+                choices=("1d", "1h"),
+            )
+        ],
+    )
+    t = ArgparseTranslator(f, custom_argument_groups=[extra])
+    parsed = t.parser.parse_args(["--symbol", "X", "--interval", "1h"])
+    out = t.execute_func(parsed)
+    assert out["interval"] == "1h"
+
+
+def test_parse_args_and_execute_invokes_func(monkeypatch):
+    """``parse_args_and_execute`` parses ``sys.argv`` and runs ``execute_func``."""
+    import sys
+
+    def f(symbol: str = "AAPL") -> dict:
+        """f."""
+        return {"symbol": symbol}
+
+    t = ArgparseTranslator(f)
+    monkeypatch.setattr(sys, "argv", ["prog", "--symbol", "MSFT"])
+    out = t.parse_args_and_execute()
+    assert out == {"symbol": "MSFT"}
+
+
+def test_translate_returns_callable_that_runs_func(monkeypatch):
+    """``translate()`` returns a no-arg wrapper that drives ``parse_args_and_execute``."""
+    import sys
+
+    def f(symbol: str = "AAPL") -> dict:
+        """f."""
+        return {"symbol": symbol}
+
+    t = ArgparseTranslator(f)
+    wrapper = t.translate()
+    monkeypatch.setattr(sys, "argv", ["prog", "--symbol", "TSLA"])
+    out = wrapper()
+    assert out == {"symbol": "TSLA"}
+
+
+def test_get_argument_custom_choices_via_openbbfield():
+    """An ``OpenBBField`` annotation with ``choices=...`` overrides Literal choices."""
+    from typing import Annotated
+
+    from openbb_core.app.model.field import OpenBBField
+
+    def f(
+        symbol: Annotated[
+            str, OpenBBField(description="x", choices=["AAA", "BBB"])
+        ] = "AAA",
+    ) -> dict:
+        """f."""
+        return {"symbol": symbol}
+
+    t = ArgparseTranslator(f)
+    parser = t.parser
+    for action in parser._actions:
+        if action.dest == "symbol":
+            assert set(action.choices) == {"AAA", "BBB"}
+            return
+    pytest.fail("symbol action missing")
+
+
+def test_update_with_custom_types_skips_kwargs_param():
+    """``_update_with_custom_types`` skips the ``**kwargs`` placeholder."""
+
+    def f(name: str = "x", **kwargs) -> dict:
+        """f."""
+        return {"name": name, **kwargs}
+
+    t = ArgparseTranslator(f)
+    parsed = t.parser.parse_args(["--name", "y"])
+    out = t.execute_func(parsed)
+    assert out["name"] == "y"
+
+
+def test_update_with_custom_types_constructs_basemodel_for_basemodel_param():
+    """A BaseModel param has its flattened kwargs assembled into the model."""
+    t = ArgparseTranslator(custom_type_function)
+    parsed = t.parser.parse_args(["--data__field1", "hello", "--data__field2", "20"])
+    out = t.execute_func(parsed)
+    inner = out["data"]
+    assert isinstance(inner, CustomData)
+    assert inner.field1 == "hello"
+    assert inner.field2 == 20

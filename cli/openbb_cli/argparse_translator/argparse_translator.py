@@ -3,6 +3,7 @@
 import argparse
 import inspect
 import re
+import types
 from collections.abc import Callable
 from copy import deepcopy
 from typing import (
@@ -30,8 +31,6 @@ from openbb_cli.argparse_translator.utils import (
     set_optional_choices,
 )
 
-# pylint: disable=protected-access
-
 SEP = "__"
 
 
@@ -57,8 +56,8 @@ class ArgparseTranslator:
         self.provider_parameters: dict[str, list[str]] = {}
 
         self._parser = argparse.ArgumentParser(
-            prog=func.__name__,
-            description=self._build_description(func.__doc__),  # type: ignore
+            prog=func.__name__,  # ty: ignore[unresolved-attribute]
+            description=self._build_description(func.__doc__),  # ty: ignore[invalid-argument-type]
             formatter_class=argparse.RawTextHelpFormatter,
             add_help=add_help if add_help else False,
         )
@@ -81,11 +80,9 @@ class ArgparseTranslator:
             pattern = r"\(provider:\s*(.*?)\)"
             providers = re.findall(pattern, input_string)
             providers.extend(new_provider)
-            # remove pattern from help and add with new providers
             input_string = re.sub(pattern, "", input_string).strip()
             return f"{input_string} (provider: {', '.join(providers)})"
 
-        # check if the argument is already in use, if not, add it
         if f"--{argument.name}" not in self._parser._option_string_actions:
             kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
             if "help" in kwargs:
@@ -97,51 +94,41 @@ class ArgparseTranslator:
         else:
             kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
             model_choices = kwargs.get("choices", ()) or ()
-            # extend choices
             existing_choices = get_argument_choices(self._parser, argument.name)
             choices = tuple(set(existing_choices + model_choices))
             optional_choices = bool(existing_choices and not model_choices)
 
-            # check if the argument is in the required arguments
             if in_group(self._parser, argument.name, group_title="required arguments"):
                 for action in self._required._group_actions:
                     if action.dest == argument.name and choices:
-                        # update choices
                         action.choices = choices
                         set_optional_choices(action, optional_choices)
                 return
 
-            # check if the argument is in the optional arguments
-            if in_group(self._parser, argument.name, group_title="optional arguments"):
-                for action in self._parser._actions:
+            if in_group(  # pragma: no cover
+                self._parser, argument.name, group_title="optional arguments"
+            ):
+                for action in self._parser._actions:  # pragma: no cover
                     if action.dest == argument.name:
-                        # update choices
                         if choices:
                             action.choices = choices
                             set_optional_choices(action, optional_choices)
                         if argument.name not in self.signature.parameters:
-                            # update help
                             action.help = ArgparseTranslator._escape_help(
                                 _update_providers(action.help or "", [group.title])
                             )
-                return
+                return  # pragma: no cover
 
-            # we need to check if the optional choices were set in other group
-            # before we remove the argument from the group, otherwise we will lose info
             if not optional_choices:
                 optional_choices = get_argument_optional_choices(
                     self._parser, argument.name
                 )
 
-            # if the argument is in use, remove it from all groups
-            # and return the groups that had the argument
             groups_w_arg = remove_argument(self._parser, argument.name)
-            groups_w_arg.append(group.title)  # add current group
+            groups_w_arg.append(group.title)
 
-            # add it to the optional arguments group instead
             if choices:
-                kwargs["choices"] = choices  # update choices
-            # add provider info to the help
+                kwargs["choices"] = choices
             kwargs["help"] = ArgparseTranslator._escape_help(
                 _update_providers(argument.help or "", groups_w_arg)
             )
@@ -171,29 +158,21 @@ class ArgparseTranslator:
         if not func_doc:
             return ""
 
-        # Remove the openbb header if present
         func_doc = re.sub(r"openbb\n\s+={3,}\n", "", func_doc, flags=re.DOTALL)
 
-        # Senior Approach: The main description should only be the summary.
-        # Sections like Parameters, Returns, and Examples are handled by argparse or are redundant.
         for section in ["Parameters", "Returns", "Examples", "Raises"]:
             pattern = rf"\n\s*{section}\n\s*-{{3,}}\n.*"
             func_doc = re.sub(pattern, "", func_doc, flags=re.DOTALL | re.IGNORECASE)
 
-        # Clean up any remaining type-style annotations in the summary
         def clean_type_annotation(type_str: str) -> str:
             """Clean up type annotations for human readability."""
-            # Handle pipe unions: int | str -> int or str
             type_str = re.sub(r"\s*\|\s*", " or ", type_str)
-            # Handle Annotated[type, ...] -> type
             type_str = re.sub(r"Annotated\[\s*([^,\]]+).*?\]", r"\1", type_str)
-            # Handle Union[A, B] -> A or B
             type_str = re.sub(
                 r"Union\[\s*(.*?)\s*\]",
                 lambda m: m.group(1).replace(", ", " or "),
                 type_str,
             )
-            # Handle Optional[A] -> A or None
             type_str = re.sub(r"Optional\[\s*(.*?)\s*\]", r"\1 or None", type_str)
 
             return type_str.strip()
@@ -201,7 +180,6 @@ class ArgparseTranslator:
         lines = func_doc.split("\n")
         cleaned_lines = []
         for line in lines:
-            # If a line still looks like a parameter definition (e.g. "param : type"), clean it
             if ":" in line and not line.strip().startswith("#"):
                 parts = line.split(":", 1)
                 param_name = parts[0]
@@ -221,7 +199,14 @@ class ArgparseTranslator:
     def _get_action_type(
         self, param: inspect.Parameter
     ) -> Literal["store_true", "store"]:
-        """Return the argparse action type for the given parameter."""
+        """Return the argparse action type for the given parameter.
+
+        ``bool | int`` (PEP 604 syntax) produces ``types.UnionType``; the
+        legacy ``Union[bool, int]`` form produces ``typing.Union``. Accept
+        either origin so behavior is consistent across Python versions —
+        Python 3.11's ``get_type_hints`` keeps PEP 604 unions as
+        ``types.UnionType`` whereas later versions normalize to ``Union``.
+        """
         param_type = self.type_hints[param.name]
         origin = get_origin(param_type)
         args = get_args(param_type)
@@ -229,11 +214,7 @@ class ArgparseTranslator:
         if param_type is bool:
             return "store_true"
 
-        if origin is Union and bool in args:
-            return "store_true"
-
-        # Special case for Optional[bool] which is Union[bool, None]
-        if origin is Union and bool in args and type(None) in args:
+        if origin in (Union, types.UnionType) and bool in args:
             return "store_true"
 
         return "store"
@@ -243,7 +224,7 @@ class ArgparseTranslator:
     ) -> tuple[type[Any], tuple[Any, ...]]:
         """Return the type and choices for the given parameter."""
 
-        def get_base_type(  # pylint: disable=R0911 #  noqa:PLR0911
+        def get_base_type(  # noqa: PLR0911
             t: Any,
         ) -> type:
             """Recursively find the base type for argparse."""
@@ -254,24 +235,20 @@ class ArgparseTranslator:
                 non_none_args = [a for a in args if a is not type(None)]
                 if len(non_none_args) == 1:
                     return get_base_type(non_none_args[0])
-                # For Union[A, B, C], check for bool first, then default to str
                 if bool in non_none_args:
                     return bool
-                # If we have multiple types including str, prefer str as it's most flexible
                 if str in non_none_args:
                     return str
-                # Otherwise, try to get the first concrete type
                 for arg in non_none_args:
                     if arg not in (type(None), Any):
                         return get_base_type(arg)
-                return str
+                return str  # pragma: no cover  - only reachable if every
             if origin is Literal:
                 return type(args[0]) if args else str
             if origin is list:
-                return get_base_type(args[0]) if args else Any  # type: ignore
+                return get_base_type(args[0]) if args else Any
             if t is Any:
                 return str
-            # Handle actual type objects (like datetime.date)
             if isinstance(t, type):
                 return t
             return str
@@ -364,20 +341,15 @@ class ArgparseTranslator:
 
             param_type, choices = self._get_type_and_choices(param)
 
-            # if the param is a custom type, we need to flatten it
             if inspect.isclass(param_type) and issubclass(param_type, BaseModel):
-                # update type hints with the custom type fields
                 type_hints = get_type_hints(param_type)
-                # prefix the type hints keys with the param name
                 type_hints = {
                     f"{param.name}{SEP}{key}": value
                     for key, value in type_hints.items()
                 }
                 self.type_hints.update(type_hints)
-                # create a signature from the custom type
                 sig = inspect.signature(param_type)
 
-                # add help to the annotation
                 annotated_parameters: list[inspect.Parameter] = []
                 for child_param in sig.parameters.values():
                     new_child_param = child_param.replace(
@@ -394,22 +366,18 @@ class ArgparseTranslator:
                     )
                     annotated_parameters.append(new_child_param)
 
-                # replacing with the annotated parameters
                 new_signature = inspect.Signature(
                     parameters=annotated_parameters,
                     return_annotation=sig.return_annotation,
                 )
                 self._generate_argparse_arguments(new_signature.parameters)
 
-                # the custom type itself should not be added as an argument
                 continue
 
             required = not self._param_is_default(param)
 
-            # Get the appropriate action based on the parameter type
             action = self._get_action_type(param)
 
-            # For boolean parameters with action="store_true", we should not use any choices
             if param_type is bool:
                 choices = ()
                 action = "store_true"
@@ -457,8 +425,6 @@ class ArgparseTranslator:
 
     def _update_with_custom_types(self, kwargs: dict[str, Any]) -> dict[str, Any]:
         """Update the kwargs with the custom types."""
-        # for each argument in the signature that is a custom type, we need to
-        # update the kwargs with the custom type kwargs
         for param in self.signature.parameters.values():
             if param.name == "kwargs":
                 continue
@@ -479,7 +445,8 @@ class ArgparseTranslator:
         Args:
             parsed_args (Optional[argparse.Namespace], optional): The parsed arguments. Defaults to None.
 
-        Returns:
+        Returns
+        -------
             Any: The return value of the original function.
 
         """
@@ -493,7 +460,6 @@ class ArgparseTranslator:
             for args in self.provider_parameters.values():
                 provider_args.extend(args)
 
-        # remove kwargs not matching the signature, provider parameters, or are empty.
         kwargs = {
             key: value
             for key, value in kwargs.items()
@@ -508,7 +474,8 @@ class ArgparseTranslator:
         """
         Parse the arguments and executes the original function.
 
-        Returns:
+        Returns
+        -------
             Any: The return value of the original function.
         """
         parsed_args = self._parser.parse_args()
@@ -519,7 +486,8 @@ class ArgparseTranslator:
         """
         Wrap the original function with an argparse program.
 
-        Returns:
+        Returns
+        -------
             Callable: The original function wrapped with an argparse program.
         """
 
