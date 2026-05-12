@@ -12,6 +12,7 @@ from openbb_core.provider.utils.descriptions import (
 )
 from openbb_core.provider.utils.options_chains_properties import OptionsChainsProperties
 from pydantic import Field, field_validator, model_serializer
+from pydantic.json_schema import JsonSchemaValue
 
 
 class OptionsChainsQueryParams(QueryParams):
@@ -369,3 +370,91 @@ class OptionsChainsData(OptionsChainsProperties):
         records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
 
         return records
+
+    @classmethod
+    def __get_pydantic_json_schema__(cls, source, handler) -> JsonSchemaValue:
+        """Override JSON schema to match the serialized record-list format.
+
+        The model stores data in columnar format (each field is a list), but the
+        custom ``@model_serializer`` converts it to record-list wire format
+        (a list of dicts). This override transforms the JSON schema accordingly
+        so that API docs reflect the actual response shape.
+        """
+        schema = handler(source)
+
+        if "properties" not in schema:
+            return schema
+
+        items_properties = {}
+        for field_name, field_schema in schema["properties"].items():
+            items_properties[field_name] = cls._unwrap_array_schema(field_schema)
+
+        item_schema: JsonSchemaValue = {
+            "type": "object",
+            "properties": items_properties,
+        }
+
+        if title := schema.get("title"):
+            item_schema["title"] = title
+        if description := schema.get("description"):
+            item_schema["description"] = description
+        if "required" in schema:
+            item_schema["required"] = schema["required"]
+
+        return {
+            "type": "array",
+            "items": item_schema,
+            "title": schema.get("title"),
+            "description": schema.get("description", ""),
+        }
+
+    @staticmethod
+    def _unwrap_array_schema(field_schema: JsonSchemaValue) -> JsonSchemaValue:
+        """Unwrap an array schema to its inner item type.
+
+        In the columnar format each field is an array of values.
+        In the record-list format each field is a scalar — the array's *item* type.
+
+        Metadata keys (description, title, unit measurement, etc.) are preserved
+        from the parent field schema onto the unwrapped result.
+        """
+        _METADATA_KEYS = (
+            "description",
+            "title",
+            "x-unit_measurement",
+            "x-frontend_multiply",
+            "examples",
+            "deprecated",
+        )
+
+        # Drop the default (empty list) since it does not apply per-record.
+        cleaned = {k: v for k, v in field_schema.items() if k != "default"}
+
+        def _merge_metadata(target: JsonSchemaValue) -> JsonSchemaValue:
+            """Copy metadata from the parent field schema into *target*."""
+            for key in _METADATA_KEYS:
+                if key in cleaned and key not in target:
+                    target[key] = cleaned[key]
+            return target
+
+        # Simple array: {"type": "array", "items": X} → X
+        if cleaned.get("type") == "array":
+            return _merge_metadata(cleaned.get("items", cleaned))  # type: ignore[arg-type]
+
+        # Union containing arrays: {"anyOf": [{"type": "array", "items": X}, …]}
+        for key in ("anyOf", "oneOf"):
+            if key in cleaned:
+                variants: list[JsonSchemaValue] = []
+                for variant in cleaned[key]:  # type: ignore[union-attr]
+                    if variant.get("type") == "array":
+                        inner = variant.get("items", variant)
+                        variants.append(inner)
+                    else:
+                        variants.append(variant)
+                result: JsonSchemaValue = {k: v for k, v in cleaned.items() if k != key}
+                result[key] = variants
+                # Add parent metadata that may not have been carried over
+                _merge_metadata(result)
+                return result
+
+        return _merge_metadata(cleaned)
