@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+# Paths
 HOME_DIRECTORY = Path.home()
 REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
 SRC_DIRECTORY = Path(__file__).parent.parent

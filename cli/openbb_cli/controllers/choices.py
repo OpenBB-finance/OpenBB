@@ -1,4 +1,4 @@
-"""Functions to build the choice map for the controllers."""
+"""This module contains functions to build the choice map for the controllers."""
 
 from argparse import SUPPRESS, ArgumentParser
 from collections.abc import Callable
@@ -18,8 +18,8 @@ from openbb_cli.session import Session
 session = Session()
 
 
-def __mock_parse_known_args_and_warn(
-    controller,
+def __mock_parse_known_args_and_warn(  # pylint: disable=R0917
+    controller,  # pylint: disable=unused-argument
     parser: ArgumentParser,
     other_args: list[str],
     export_allowed: Literal[
@@ -176,7 +176,7 @@ def contains_functions_to_patch(command_func: Callable) -> bool:
     -------
     bool: Whether or not `command_func` contains the mocked functions.
     """
-    co_names = command_func.__code__.co_names  # ty: ignore[unresolved-attribute]
+    co_names = command_func.__code__.co_names
 
     return bool(
         "parse_simple_args" in co_names or "parse_known_args_and_warn" in co_names
@@ -234,13 +234,12 @@ def __patch_controller_functions(controller):
     for patcher in patcher_list:
         patched_function_list.append(patcher.start())
 
-    try:
-        yield patched_function_list
-    finally:
-        if not session.settings.DEBUG_MODE:
-            rich.stop()
-        for patcher in patcher_list:
-            patcher.stop()
+    yield patched_function_list
+
+    if not session.settings.DEBUG_MODE:
+        rich.stop()
+    for patcher in patcher_list:
+        patcher.stop()
 
 
 def _get_argument_parser(
@@ -293,13 +292,14 @@ def _get_argument_parser(
                 " - parse_known_args_and_warn\n"
             )
 
+    # pylint: disable=possibly-used-before-assignment
     return argument_parser
 
 
 def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
     """Build the choice map for a command."""
     choice_map: dict = {}
-    for action in argument_parser._actions:
+    for action in argument_parser._actions:  # pylint: disable=protected-access
         if action.help == SUPPRESS:
             continue
         if len(action.option_strings) == 1:

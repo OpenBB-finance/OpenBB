@@ -3,6 +3,7 @@
 import inspect
 from typing import Any
 
+# TODO: this needs to be done differently
 from openbb_core.app.static.container import Container
 
 from openbb_cli.argparse_translator.argparse_translator import ArgparseTranslator
@@ -14,6 +15,7 @@ from openbb_cli.argparse_translator.reference_processor import (
 class ArgparseClassProcessor:
     """Process a target class to create ArgparseTranslators for its methods."""
 
+    # reference variable used to create custom groups for the ArgpaseTranslators
     _reference: dict[str, Any] = {}
 
     def __init__(
@@ -76,7 +78,7 @@ class ArgparseClassProcessor:
         if not reference:
             return {}
         rp = ReferenceToArgumentsProcessor(reference)
-        return rp.custom_groups.get(route, {})  # ty: ignore[invalid-return-type]
+        return rp.custom_groups.get(route, {})  # type: ignore
 
     @classmethod
     def _process_class(
@@ -94,7 +96,7 @@ class ArgparseClassProcessor:
                 methods[f"{class_name}_{name}"] = ArgparseTranslator(
                     func=member,
                     add_help=add_help,
-                    custom_argument_groups=cls._custom_groups_from_reference(  # ty: ignore[invalid-argument-type]
+                    custom_argument_groups=cls._custom_groups_from_reference(  # type: ignore
                         class_name=class_name, function_name=name
                     ),
                 )
@@ -134,19 +136,12 @@ class ArgparseClassProcessor:
         """
         return self._translators[command]
 
-    def _build_paths(self, target: type):
-        """Record direct sub-namespaces only.
-
-        Translators are emitted recursively by ``_process_class`` (so a
-        deeply nested command like ``nyfed.rates.secured.all.latest``
-        registers as a flat ``nyfed_rates_secured_all_latest`` translator
-        under the ``rates`` sub-controller). The path table only needs the
-        direct children of ``target`` — recursing here would surface
-        grandchildren as orphan top-level menus with no translators behind
-        them.
-        """
+    def _build_paths(self, target: type, depth: int = 1):
         for name, member in inspect.getmembers(target):
-            if name.startswith("_"):
+            if name.startswith("__") or name.startswith("_"):
                 continue
-            if isinstance(member, Container):
-                self._paths[f"{name}"] = "subpath"
+            if inspect.ismethod(member):
+                pass
+            elif isinstance(member, Container):
+                self._build_paths(target=getattr(target, name), depth=depth + 1)
+                self._paths[f"{name}"] = "sub" * depth + "path"

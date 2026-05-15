@@ -1,7 +1,6 @@
 """Utils for building the widgets.json file."""
 
 from copy import deepcopy
-from typing import Any
 
 
 def deep_merge_configs(
@@ -88,7 +87,7 @@ def deep_merge_configs(
 
 def modify_query_schema(query_schema: list[dict], provider_value: str):
     """Modify query_schema and the description for the current provider."""
-
+    # pylint: disable=import-outside-toplevel
     from .openapi import (
         TO_CAPS_STRINGS,
     )
@@ -231,18 +230,17 @@ def get_form_input_paths(openapi: dict) -> dict:
     }
 
 
-def build_json(  # noqa: PLR0912
+def build_json(  # noqa: PLR0912  # pylint: disable=too-many-branches, too-many-locals, too-many-statements
     openapi: dict, widget_exclude_filter: list
 ):
     """Build the widgets.json file."""
-
+    # pylint: disable=import-outside-toplevel
     from openbb_core.app.service.system_service import SystemService  # noqa
     from .openapi import (
         TO_CAPS_STRINGS,
         data_schema_to_columns_defs,
         extract_providers,
         get_query_schema_for_widget,
-        is_ssrm_route,
         post_query_schema_for_widget,
     )
 
@@ -363,9 +361,7 @@ def build_json(  # noqa: PLR0912
             subcat = (
                 _cats[1].title().replace("_", " ")
                 if len(_cats) > 2
-                else _cats[1].replace("_", " ").title()
-                if len(_cats) > 1
-                else None
+                else _cats[1].replace("_", " ").title() if len(_cats) > 1 else None
             )
             name = (
                 widget_id.replace("fixedincome", "fixed income")
@@ -402,14 +398,7 @@ def build_json(  # noqa: PLR0912
                     .get("schema", {})
                 ):
                     schema_name = _schema.get("$ref", "").split("/")[-1]
-                    # Defensive lookup — synthetic apps (e.g. the
-                    # spec-driven proxy) can produce an openapi
-                    # document with no ``components`` block at all.
-                    var_schema = (
-                        openapi.get("components", {})
-                        .get("schemas", {})
-                        .get(schema_name, {})
-                    )
+                    var_schema = openapi["components"]["schemas"].get(schema_name, {})
 
                     if var_schema:
                         var_props = var_schema.get("properties", {})
@@ -420,14 +409,11 @@ def build_json(  # noqa: PLR0912
                 if param_names:
                     for _param in param_names:
                         post_params = post_query_schema_for_widget(
-                            openapi,
-                            post_body_source.get("operationId"),
-                            form_endpoint_path if has_form_endpoint else route,
-                            _param,
+                            openapi, post_body_source.get("operationId"), route, _param
                         )
                         modified_post_params = modify_query_schema(
-                            post_params,
-                            provider,
+                            post_params,  # type: ignore
+                            provider,  # type: ignore
                         )
 
                         if has_form_endpoint:
@@ -474,8 +460,8 @@ def build_json(  # noqa: PLR0912
                         form_endpoint_path if has_form_endpoint else route,
                     )
                     modified_post_params = modify_query_schema(
-                        post_params,
-                        provider,
+                        post_params,  # type: ignore
+                        provider,  # type: ignore
                     )
 
                     if has_form_endpoint:
@@ -605,32 +591,7 @@ def build_json(  # noqa: PLR0912
                 and response_schema.get("type") == "string"
                 else "table"
             )
-
-            # SSRM auto-promotion: a POST route whose body is
-            # ``AgGridRowsRequest`` (or subclass) and/or whose response is
-            # ``AgGridRowsResponse`` is an ag-grid SSRM endpoint. The
-            # type signature is the opt-in — the author doesn't need
-            # ``widget_config={"type": "ssrm_table"}`` on the route.
-            ssrm = is_ssrm_route(openapi, route, route_method)
-            if ssrm:
-                widget_type = "ssrm_table"
-                # SSRM responses are not OBBject-wrapped; the response
-                # IS the data, so ``dataKey`` must stay empty.
-                data_key = ""
-            # Build nested dicts as explicit ``dict[str, Any]`` so ty
-            # doesn't narrow them to ``dict[str, int]`` /
-            # ``dict[str, bool]`` from the literal values. Later code
-            # mutates them with mixed-type values (gridData["w"] from
-            # int default to a config-supplied dict-or-int, the
-            # data.table dict gains "enableAdvanced"/"columnsDefs"
-            # entries, etc.).
-            grid_data: dict[str, Any] = {"w": 40, "h": 15}
-            table_data: dict[str, Any] = {"showAll": True}
-            data_block: dict[str, Any] = {
-                "dataKey": data_key,
-                "table": table_data,
-            }
-            widget_config: dict[str, Any] = {
+            widget_config = {
                 "name": f"{name}" if name else route_api[route_method].get("summary"),
                 "description": route_api[route_method].get("description", ""),
                 "category": category.replace("_", " ").title(),
@@ -642,14 +603,14 @@ def build_json(  # noqa: PLR0912
                 },
                 "params": modified_query_schema,
                 "endpoint": route,
-                # SSRM endpoints are heavyweight server-paginated queries;
-                # auto-running on mount almost always wastes a full pull
-                # before the user has set their filters. Author-provided
-                # ``widget_config.runButton`` still wins via the
-                # deep-merge below.
-                "runButton": bool(ssrm),
-                "gridData": grid_data,
-                "data": data_block,
+                "runButton": False,
+                "gridData": {"w": 40, "h": 15},
+                "data": {
+                    "dataKey": data_key,
+                    "table": {
+                        "showAll": True,
+                    },
+                },
                 "source": [provider_name],
             }
 
@@ -675,13 +636,13 @@ def build_json(  # noqa: PLR0912
             if data_config := data_schema_to_columns_defs(
                 openapi, widget_id, provider, route, True
             ):
-                for key, value in data_config.copy().items():
+                for key, value in data_config.copy().items():  # type: ignore
                     if key.startswith("$."):
                         data_var_key[key] = value
 
                 widget_config["data"] = deep_merge_configs(
                     widget_config["data"],
-                    {k: v for k, v in data_config.items() if not k.startswith("$.")},
+                    {k: v for k, v in data_config.items() if not k.startswith("$.")},  # type: ignore
                 )
 
             if data_var_key:

@@ -1,100 +1,56 @@
-"""Platform controller factory.
+"""Platform controller factory to create a platform controller."""
 
-Builds a per-router ``PlatformController`` class with ``CHOICES_MENUS`` /
-``CHOICES_COMMANDS`` populated from a ``Backend`` (either ``LocalBackend``
-walking in-process ``obb`` or ``SpecBackend`` reading a precomputed spec).
-
-The factory exposes the per-router pre-built ``translators`` + ``paths``
-dicts on the class so the controller's ``__init__`` can pick them up
-without re-walking the source.
-"""
-
-from __future__ import annotations
-
-from typing import Any
-
-from openbb_cli.backend import Backend, LocalBackend
+from openbb_cli.argparse_translator.argparse_class_processor import (
+    ArgparseClassProcessor,
+)
 from openbb_cli.controllers.base_platform_controller import PlatformController
 
 
 class PlatformControllerFactory:
-    """Factory to create a platform controller from a ``Backend``.
+    """Factory to create a platform controller."""
 
-    Two construction styles are supported:
-
-    * ``PlatformControllerFactory(backend=..., router_name=...)`` — the new,
-      pluggable form. The backend supplies translators + sub-paths.
-    * ``PlatformControllerFactory(platform_router=..., reference=...)`` —
-      legacy form, kept for callers that still pass an in-process ``obb``
-      target. Internally wraps a ``LocalBackend``.
-    """
-
-    def __init__(
-        self,
-        platform_router: type | None = None,
-        *,
-        backend: Backend | None = None,
-        router_name: str | None = None,
-        reference: dict[str, Any] | None = None,
-    ) -> None:
-        if backend is None and platform_router is None:
-            raise ValueError("Either ``backend`` or ``platform_router`` is required.")
-
-        if backend is not None:
-            if router_name is None:
-                raise ValueError("``router_name`` is required when ``backend`` is set.")
-            self._backend: Backend = backend
-            self._router_name: str = router_name
-        else:
-            del reference
-            assert platform_router is not None  # noqa: S101 — narrowed by L40-41
-            self._backend = LocalBackend()
-            self._router_name = _derive_router_name(platform_router)
-
-        self._translators, self._paths = self._backend.get_translators_for_path(
-            self._router_name
+    def __init__(self, platform_router: type, **kwargs):
+        """Create the controller name."""
+        self.platform_router = platform_router
+        self._translated_target = ArgparseClassProcessor(
+            target_class=self.platform_router, reference=kwargs.get("reference", {})
         )
-
-    @property
-    def router_name(self) -> str:
-        return self._router_name
-
-    @property
-    def controller_name(self) -> str:
-        return f"{self._router_name.capitalize()}Controller"
+        self.router_name = (
+            str(type(self.platform_router))
+            .rsplit(".", maxsplit=1)[-1]
+            .replace("'>", "")
+            .replace("ROUTER_", "")
+            .lower()
+        )
+        self.controller_name = f"{self.router_name.capitalize()}Controller"
 
     def create(self) -> type:
-        """Create the platform controller class for this router."""
+        """Create the platform controller."""
+        ClassName = self.controller_name
+        Parents = (PlatformController,)
+        Attributes: dict[str, bool | list[str]] = {"CHOICES_GENERATION": True}
+
+        # Menu and Command choices generation
         choices_menus: list[str] = []
         choices_commands: list[str] = []
-        for key, value in self._paths.items():
+        translators = self._translated_target.translators
+        paths = self._translated_target.paths
+        # menus
+        for key, value in paths.items():
             if value == "path":
                 continue
             choices_menus.append(key)
-        for name in self._translators:
-            if any(
-                f"{self._router_name}_{path}_" in f"{name}_" for path in self._paths
-            ):
+        # commands
+        for name, _ in translators.items():
+            if any(f"{self.router_name}_{path}" in name for path in paths):
                 continue
-            choices_commands.append(name.replace(f"{self._router_name}_", ""))
+            new_name = name.replace(f"{self.router_name}_", "")
+            choices_commands.append(new_name)
 
-        attributes: dict[str, Any] = {
-            "CHOICES_GENERATION": True,
-            "CHOICES_MENUS": choices_menus,
-            "CHOICES_COMMANDS": choices_commands,
-            "_factory_backend": self._backend,
-            "_factory_translators": self._translators,
-            "_factory_paths": self._paths,
-        }
-        return type(self.controller_name, (PlatformController,), attributes)
+        Attributes["CHOICES_MENUS"] = choices_menus
+        Attributes["CHOICES_COMMANDS"] = choices_commands
 
+        # Use type to create the class
+        DynamicClass = type(ClassName, Parents, Attributes)
 
-def _derive_router_name(platform_router: type) -> str:
-    """Replicate the legacy class-name → router-name derivation."""
-    return (
-        str(type(platform_router))
-        .rsplit(".", maxsplit=1)[-1]
-        .replace("'>", "")
-        .replace("ROUTER_", "")
-        .lower()
-    )
+        return DynamicClass

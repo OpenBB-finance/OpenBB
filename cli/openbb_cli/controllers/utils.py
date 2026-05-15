@@ -6,7 +6,6 @@ import os
 import random
 import re
 import shutil
-import sqlite3
 import sys
 from contextlib import contextmanager
 from datetime import (
@@ -14,143 +13,23 @@ from datetime import (
 )
 from pathlib import Path
 from typing import TYPE_CHECKING, Optional
-from zoneinfo import ZoneInfo, available_timezones
 
 import numpy as np
 import pandas as pd
 import requests
-from openbb_core.app.model.obbject import OBBject
-
-all_timezones = available_timezones()
-from rich.table import Table
-
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
+from openbb_core.app.model.obbject import OBBject
+from pytz import all_timezones, timezone
+from rich.table import Table
 
 if TYPE_CHECKING:
-    from openbb_charting.core.openbb_figure import (  # ty: ignore[unresolved-import]
-        OpenBBFigure,
-    )
+    from openbb_charting.core.openbb_figure import OpenBBFigure
+
+# pylint: disable=R1702,R0912
 
 
-class SQLiteTable:
-    """Lazy-loading wrapper for SQLite tables.
-
-    Stores connection info and loads data only when accessed.
-    """
-
-    def __init__(self, db_path: str, table_name: str, row_count: int = 0):
-        """Initialize SQLite table wrapper.
-
-        Args:
-            db_path: Path to SQLite database file
-            table_name: Name of the table
-            row_count: Number of rows (from metadata)
-        """
-        self.db_path = db_path
-        self.table_name = table_name
-        self.row_count = row_count
-        self._cached_df: pd.DataFrame | None = None
-
-    @property
-    def _quoted_name(self) -> str:
-        """Return the table name quoted for safe SQL interpolation."""
-        return '"' + self.table_name.replace('"', '""') + '"'
-
-    def to_dataframe(self, use_cache: bool = True) -> pd.DataFrame:
-        """Load table data from SQLite database.
-
-        Args:
-            use_cache: If True, return cached DataFrame if available
-
-        Returns
-        -------
-            DataFrame containing table data
-        """
-        if use_cache and self._cached_df is not None:
-            return self._cached_df
-
-        conn = sqlite3.connect(self.db_path)
-        try:
-            sql = f"SELECT * FROM {self._quoted_name}"  # noqa: S608
-            df = pd.read_sql_query(sql, conn)
-            if use_cache:
-                self._cached_df = df
-            return df
-        finally:
-            conn.close()
-
-    def get_schema(self) -> list[tuple]:
-        """Get table schema (column names and types).
-
-        Returns
-        -------
-            List of (column_name, type, notnull, default, pk) tuples
-        """
-        conn = sqlite3.connect(self.db_path)
-        try:
-            cursor = conn.cursor()
-            cursor.execute(f"PRAGMA table_info({self._quoted_name})")
-            return cursor.fetchall()
-        finally:
-            conn.close()
-
-    def query(self, where: str = "", limit: int | None = None) -> pd.DataFrame:
-        """Execute SQL query with optional filters.
-
-        Args:
-            where: SQL WHERE clause (without WHERE keyword)
-            limit: Maximum number of rows to return
-
-        Returns
-        -------
-            DataFrame with query results
-        """
-        sql = f"SELECT * FROM {self._quoted_name}"  # noqa: S608
-        if where:
-            sql += f" WHERE {where}"
-        if limit:
-            sql += f" LIMIT {limit}"
-
-        conn = sqlite3.connect(self.db_path)
-        try:
-            return pd.read_sql_query(sql, conn)
-        finally:
-            conn.close()
-
-
-def extract_dataframe(obbject) -> pd.DataFrame:
-    """Extract DataFrame from OBBject without using to_dataframe().
-
-    This function manually extracts results from OBBject to have full control
-    over the conversion process and avoid built-in assumptions.
-
-    Args:
-        obbject: OBBject instance or other data
-
-    Returns
-    -------
-        DataFrame extracted from results
-    """
-    results = (
-        obbject.model_dump().get("results")
-        if hasattr(obbject, "model_dump")
-        else obbject
-    )
-
-    if results is None:
-        return pd.DataFrame()
-    elif isinstance(results, SQLiteTable):
-        return results.to_dataframe()
-    elif isinstance(results, pd.DataFrame):
-        return results
-    elif isinstance(results, list):
-        return pd.DataFrame(results)
-    elif isinstance(results, dict):
-        return pd.DataFrame([results])
-    else:
-        return pd.DataFrame({"value": [results]})
-
+# pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
 session = Session()
 
@@ -168,6 +47,7 @@ def remove_file(path: Path) -> bool:
     bool
         The status of the removal.
     """
+    # TODO: Check why module level import leads to circular import.
     try:
         if os.path.isfile(path):
             os.remove(path)
@@ -199,14 +79,17 @@ Please feel free to check out our other products:
 
 def bootup():
     """Bootup the cli."""
-    if sys.platform == "win32":  # pragma: no cover
-        os.system("")  # noqa: S605, S607
+    if sys.platform == "win32":
+        # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+        os.system("")  # nosec # noqa: S605,S607
 
     try:
-        if os.name == "nt":  # pragma: no cover — Windows-only stdin/stdout reconfigure
-            sys.stdin.reconfigure(encoding="utf-8")
-            sys.stdout.reconfigure(encoding="utf-8")
-    except Exception as e:  # pragma: no cover — bootup catch-all defensive path
+        if os.name == "nt":
+            # pylint: disable=E1101
+            sys.stdin.reconfigure(encoding="utf-8")  # type: ignore
+            # pylint: disable=E1101
+            sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
+    except Exception as e:
         session.console.print(e, "\n")
 
 
@@ -230,16 +113,18 @@ def reset(queue: list[str] | None = None):
     dev = session.settings.DEV_BACKEND
 
     try:
+        # we clear all openbb_cli modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
             if parts[0] == "openbb_cli":
                 del sys.modules[module]
 
-        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # ty: ignore[invalid-argument-type, no-matching-overload]
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
 
+        # pylint: disable=import-outside-toplevel
         from openbb_cli.controllers.cli_controller import main
 
-        main(debug, dev, queue_list, module="")
+        main(debug, dev, queue_list, module="")  # type: ignore
 
     except Exception as e:
         session.console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
@@ -297,17 +182,17 @@ def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
     List[str]
         Command queue as list
     """
+    # Make sure that the user can go back to the root when doing "/"
     if an_input and an_input == "/":
         an_input = "home"
 
+    # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = (
-        r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb|db|sqlite|sqlite3))"
-    )
-    optional_args = r"(?:\ [^/]+)*?"
-    unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions}{optional_args})"
+    known_extensions = r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb))"
+    unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
+    # Add custom expressions to handle edge cases of individual controllers
     custom_filter = ""
     for exp in custom_filters:
         if exp is not None:
@@ -322,7 +207,9 @@ def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
         match = re.search(pattern=slash_filter_exp, string=an_input)
         if match is not None:
             placeholder = f"{{placeholder{len(placeholders) + 1}}}"
-            placeholders[placeholder] = an_input[match.span()[0] : match.span()[1]]  # noqa:E203
+            placeholders[placeholder] = an_input[
+                match.span()[0] : match.span()[1]
+            ]  # noqa:E203
             an_input = (
                 an_input[: match.span()[0]] + placeholder + an_input[match.span()[1] :]
             )  # noqa:E203
@@ -338,7 +225,7 @@ def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
         if len(matching_placeholders) > 0:
             for tag in matching_placeholders:
                 commands[command_num] = command.replace(tag, placeholders[tag])
-    return list(filter(None, commands))
+    return commands
 
 
 def return_colored_value(value: str):
@@ -359,6 +246,7 @@ def return_colored_value(value: str):
     """
     values = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", value)
 
+    # Finds exactly 1 number in the string
     if len(values) == 1:
         if float(values[0]) > 0:
             return f"[green]{value}[/green]"
@@ -372,6 +260,7 @@ def return_colored_value(value: str):
     return f"{value}"
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
     show_index: bool = False,
@@ -422,9 +311,15 @@ def print_rich_table(  # noqa: PLR0912
     if export:
         return
 
+    MAX_COLS = session.settings.ALLOWED_NUMBER_OF_COLUMNS
+    MAX_ROWS = session.settings.ALLOWED_NUMBER_OF_ROWS
+
+    # Make a copy of the dataframe to avoid SettingWithCopyWarning
     df = df.copy()
 
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
+    #  convert non-str that are not timestamp or int into str
+    # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         if columns_keep_types is not None and col in columns_keep_types:
             continue
@@ -444,14 +339,17 @@ def print_rich_table(  # noqa: PLR0912
             output = list(_headers)
         if len(output) != len(df.columns):
             raise ValueError("Length of headers does not match length of DataFrame.")
-        return output  # ty: ignore[invalid-return-type]
+        return output  # type: ignore
 
-    if session.settings.USE_INTERACTIVE_DF and session.backend is not None:
+    if session.settings.USE_INTERACTIVE_DF:
         df_outgoing = df.copy()
+        # If headers are provided, use them
         if headers is not None:
+            # We check if headers are valid
             df_outgoing.columns = _get_headers(headers)
 
         if show_index and index_name not in df_outgoing.columns:
+            # If index name is provided, we use it
             df_outgoing.index.name = index_name or "Index"
             df_outgoing = df_outgoing.reset_index()
 
@@ -459,31 +357,47 @@ def print_rich_table(  # noqa: PLR0912
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        try:
-            session.backend.send_table(
-                df_table=df_outgoing,
-                title=title,
-                theme=session.user.preferences.table_style,
-            )
-            return
-        except Exception:  # noqa: S110
-            pass
+        session._backend.send_table(  # type: ignore  # pylint: disable=protected-access
+            df_table=df_outgoing,
+            title=title,
+            theme=session.user.preferences.table_style,
+        )
+        return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
     if automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:
+                # checks whether column exists
                 if col in df.columns:
                     df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
         if rows_to_auto_color:
             for row in rows_to_auto_color:
+                # checks whether row exists
                 if row in df.index:
                     df.loc[row] = df.loc[row].apply(
                         lambda x: return_colored_value(str(x))
                     )
 
         if columns_to_auto_color is None and rows_to_auto_color is None:
-            df = df.map(lambda x: return_colored_value(str(x)))
+            df = df.map(lambda x: return_colored_value(str(x)))  # type: ignore
+
+    exceeds_allowed_columns = len(df.columns) > MAX_COLS
+    exceeds_allowed_rows = len(df) > MAX_ROWS
+
+    if exceeds_allowed_columns:
+        original_columns = df.columns.tolist()
+        trimmed_columns = df.columns.tolist()[:MAX_COLS]
+        df = df[trimmed_columns]
+        trimmed_columns = [
+            col for col in original_columns if col not in trimmed_columns
+        ]
+
+    if exceeds_allowed_rows:
+        n_rows = len(df.index)
+        max_rows = MAX_ROWS
+        df = df[:max_rows]
+        trimmed_rows_count = n_rows - max_rows
 
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
@@ -509,6 +423,7 @@ def print_rich_table(  # noqa: PLR0912
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
             row_idx = [str(idx)] if show_index else []
             row_idx += [
                 (
@@ -530,6 +445,23 @@ def print_rich_table(  # noqa: PLR0912
         session.console.print(table)
     else:
         session.console.print(df.to_string(col_space=0))
+
+    if exceeds_allowed_columns:
+        session.console.print(
+            f"[yellow]\nAllowed number of columns exceeded ({session.settings.ALLOWED_NUMBER_OF_COLUMNS}).\n"
+            f"The following columns were removed from the output: {', '.join(trimmed_columns)}.\n[/yellow]"
+        )
+
+    if exceeds_allowed_rows:
+        session.console.print(
+            f"[yellow]\nAllowed number of rows exceeded ({session.settings.ALLOWED_NUMBER_OF_ROWS}).\n"
+            f"{trimmed_rows_count} rows were removed from the output.\n[/yellow]"
+        )
+
+    if exceeds_allowed_columns or exceeds_allowed_rows:
+        session.console.print(
+            "Use the `--export` flag to analyse the full output on a file."
+        )
 
 
 def check_non_negative(value) -> int:
@@ -557,41 +489,6 @@ def validate_register_key(value: str) -> str:
     return str(value)
 
 
-def get_user_data_directory() -> Path:
-    """Get the OpenBBUserData directory path."""
-    return Path(session.user.preferences.data_directory)
-
-
-def get_data_files_for_completion() -> list[str]:
-    """Get list of data files in OpenBBUserData for tab completion.
-
-    Returns list of file paths relative to OpenBBUserData directory.
-    Includes CSV, JSON, and Excel files.
-    """
-    try:
-        user_data_dir = get_user_data_directory()
-        if not user_data_dir.exists():
-            return []
-
-        files = []
-        for file_path in user_data_dir.rglob("*"):
-            if file_path.is_file() and file_path.suffix.lower() in [
-                ".csv",
-                ".json",
-                ".xlsx",
-                ".xls",
-                ".db",
-                ".sqlite",
-                ".sqlite3",
-            ]:
-                rel_path = file_path.relative_to(user_data_dir)
-                files.append(str(rel_path).replace("\\", "/"))
-
-        return sorted(files)
-    except Exception:
-        return []
-
-
 def get_user_agent() -> str:
     """Get a not very random user agent."""
     user_agent_strings = [
@@ -604,7 +501,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)  # noqa: S311
+    return random.choice(user_agent_strings)  # nosec # noqa: S311
 
 
 def get_flair() -> str:
@@ -618,7 +515,7 @@ def get_dtime() -> str:
     """Get a datetime string."""
     dtime = ""
     if session.settings.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
-        dtime = datetime.now(ZoneInfo(get_user_timezone())).strftime("%Y %b %d, %H:%M")
+        dtime = datetime.now(timezone(get_user_timezone())).strftime("%Y %b %d, %H:%M")
     return dtime
 
 
@@ -695,7 +592,7 @@ def check_file_type_saved(valid_types: list[str] | None = None):
             filenames to be saved separated with comma
 
         Returns
-        -------
+        ----------
         str
             valid filenames separated with comma
         """
@@ -731,10 +628,11 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     date_cols = []
     index_is_date = False
 
+    # Find columns and index containing date data
     if (
         df.index.dtype.kind == "M"
         and hasattr(df.index.dtype, "tz")
-        and df.index.dtype.tz is not None
+        and df.index.dtype.tz is not None  # type: ignore
     ):
         index_is_date = True
 
@@ -742,12 +640,13 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         if dtype.kind == "M" and hasattr(df.index.dtype, "tz") and dtype.tz is not None:
             date_cols.append(col)
 
+    # Remove the timezone information
     for col in date_cols:
         df[col] = df[col].dt.date
 
     if index_is_date:
         index_name = df.index.name
-        df.index = df.index.date  # ty: ignore[unresolved-attribute]
+        df.index = df.index.date  # type: ignore
         df.index.name = index_name
 
     return df
@@ -771,7 +670,10 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
         Path variable containing the path of the exported file
     """
     now = datetime.now()
+    # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
+    # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
+    # check if this is done in a main context to avoid saving with openbb_cli
     if resolve_path.parts[-2] == "openbb_cli":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
@@ -798,11 +700,16 @@ def ask_file_overwrite(file_path: Path) -> tuple[bool, bool]:
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
             file_path.unlink(missing_ok=True)
+            # File exists and user wants to overwrite
             return True, True
+        # File exists and user does not want to overwrite
         return True, False
+    # File does not exist
     return False, True
 
 
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated,too-many-positional-arguments
 def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=True):
     """Save a Pandas DataFrame to an Excel file.
 
@@ -839,7 +746,7 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
             with pd.ExcelWriter(
                 saved_path,
                 mode="a",
-                if_sheet_exists=overwrite_options[overwrite_option],  # ty: ignore[invalid-argument-type]
+                if_sheet_exists=overwrite_options[overwrite_option],  # type: ignore
                 engine="openpyxl",
             ) as writer:
                 df.to_excel(
@@ -851,7 +758,9 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
                 )
 
 
-def export_data(  # noqa: PLR0912
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated,too-many-positional-arguments
+def export_data(
     export_type: str,
     dir_path: str,
     func_name: str,
@@ -883,8 +792,10 @@ def export_data(  # noqa: PLR0912
         saved_path = compose_export_path(func_name, dir_path).resolve()
         saved_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
+            # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
                 saved_path = saved_path.with_name(exp_type)
+            # In this scenario we use the default filename
             else:
                 if ".OpenBB_openbb_cli" in saved_path.name:
                     saved_path = saved_path.with_name(
@@ -921,6 +832,7 @@ def export_data(  # noqa: PLR0912
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
+                # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
 
                 if sheet_name is None:  # noqa: SIM223
@@ -937,51 +849,6 @@ def export_data(  # noqa: PLR0912
                     session.console.print("No plot to export.")
                     continue
                 figure.show(export_image=saved_path, margin=margin)
-            elif saved_path.suffix in [".db", ".sqlite", ".sqlite3"]:
-                import sqlite3
-
-                table_name = sheet_name if sheet_name else "data"
-
-                conn = sqlite3.connect(saved_path)
-                try:
-                    cursor = conn.cursor()
-                    cursor.execute(
-                        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
-                        (table_name,),
-                    )
-                    table_exists = cursor.fetchone() is not None
-
-                    if table_exists:
-                        choice = input(
-                            f"\nTable '{table_name}' exists. Overwrite/Append/New? [o/a/n]: "
-                        ).lower()
-                        if choice == "o":
-                            df.to_sql(
-                                table_name, conn, if_exists="replace", index=False
-                            )
-                        elif choice == "a":
-                            df.to_sql(table_name, conn, if_exists="append", index=False)
-                        elif choice == "n":
-                            i = 1
-                            new_name = f"{table_name}_{i}"
-                            while True:
-                                cursor.execute(
-                                    "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
-                                    (new_name,),
-                                )
-                                if cursor.fetchone() is None:
-                                    break
-                                i += 1
-                                new_name = f"{table_name}_{i}"
-                            df.to_sql(new_name, conn, if_exists="fail", index=False)
-                            table_name = new_name
-                        else:
-                            session.console.print("Invalid choice. Skipping.")
-                            continue
-                    else:
-                        df.to_sql(table_name, conn, if_exists="fail", index=False)
-                finally:
-                    conn.close()
             else:
                 session.console.print("Wrong export file specified.")
                 continue
@@ -992,14 +859,15 @@ def export_data(  # noqa: PLR0912
                 session.console.print(f"Failed to save file: {saved_path}")
 
         if figure is not None:
-            figure._exported = True
+            figure._exported = True  # pylint: disable=protected-access
 
 
 def system_clear():
     """Clear screen."""
-    os.system("cls||clear")  # noqa: S605, S607
+    os.system("cls||clear")  # nosec # noqa: S605,S607
 
 
+# Write an abstract helper to make requests from a url with potential headers and params
 def request(
     url: str, method: str = "get", timeout: int = 0, **kwargs
 ) -> requests.Response:
@@ -1028,6 +896,9 @@ def request(
     method = method.lower()
     if method not in ["delete", "get", "head", "patch", "post", "put"]:
         raise ValueError(f"Invalid method: {method}")
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers", {})
     timeout = timeout or session.user.preferences.request_timeout
 
@@ -1072,46 +943,26 @@ def handle_obbject_display(
     """Handle the display of an OBBject."""
     df: pd.DataFrame = pd.DataFrame()
     fig: OpenBBFigure | None = None
-
-    if isinstance(getattr(obbject, "results", None), SQLiteTable):
-        sqlite_tbl: SQLiteTable = obbject.results  # ty: ignore[invalid-assignment]
-        obbject.results = sqlite_tbl.to_dataframe()
-
     if chart:
         try:
             if obbject.chart:
                 obbject.show(**kwargs)
             else:
-                obbject.charting.to_chart(**kwargs)  # ty: ignore[unresolved-attribute]
+                obbject.charting.to_chart(**kwargs)  # type: ignore
             if export:
-                fig = obbject.chart.fig  # ty: ignore[unresolved-attribute]
-                df = extract_dataframe(obbject)
+                fig = obbject.chart.fig  # type: ignore
+                df = obbject.to_dataframe()
         except Exception as e:
             session.console.print(f"Failed to display chart: {e}")
     elif session.settings.USE_INTERACTIVE_DF:
-        # ``charting`` is an accessor ``openbb-charting`` registers
-        # lazily on ``OBBject``. When it isn't installed (spec-mode
-        # CLI without the charting extension) the attribute access
-        # raises ``AttributeError`` from pydantic — fall back to the
-        # plain DataFrame display so ``results -i N`` still surfaces
-        # the rows.
-        try:
-            obbject.charting.table()  # ty: ignore[unresolved-attribute]
-        except AttributeError:
-            df = extract_dataframe(obbject)
-            session.output_adapter.display(
-                data=df,
-                title=obbject.extra.get("command", ""),
-                export=bool(export),
-                chart=False,
-            )
+        obbject.charting.table()  # type: ignore
     else:
-        df = extract_dataframe(obbject)
-        session.output_adapter.display(
-            data=df,
+        df = obbject.to_dataframe()
+        print_rich_table(
+            df=df,
+            show_index=True,
             title=obbject.extra.get("command", ""),
             export=bool(export),
-            chart=False,
         )
     if export and not df.empty:
         if sheet_name and isinstance(sheet_name, list):

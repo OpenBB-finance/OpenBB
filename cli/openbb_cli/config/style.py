@@ -1,5 +1,6 @@
 """Chart and style helpers for Plotly."""
 
+# pylint: disable=C0302,R0902,W3301
 import json
 from pathlib import Path
 from typing import Any
@@ -94,7 +95,9 @@ class Style:
         with open(file) as f:
             json_style: dict = json.load(f)
             for key, value in json_style.items():
-                json_style[key] = value.replace(" ", "")
+                json_style[key] = value.replace(
+                    " ", ""
+                )  # remove whitespaces so Rich can parse it
             return json_style
 
     @property

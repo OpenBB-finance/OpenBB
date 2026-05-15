@@ -288,24 +288,6 @@ def test_economy_gdp_real(params, headers):
                 "provider": "fred",
             }
         ),
-        (
-            {
-                "country": "united_states",
-                "start_date": None,
-                "end_date": None,
-                "provider": "oecd",
-                "frequency": "quarterly",
-            }
-        ),
-        (
-            {
-                "country": "united_states",
-                "start_date": None,
-                "end_date": None,
-                "provider": "oecd",
-                "frequency": "quarterly",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -600,20 +582,6 @@ def test_economy_fred_regional(params, headers):
                 "pivot": False,
             }
         ),
-        (
-            {
-                "provider": "oecd",
-                "country": "united_states",
-                "symbol": "DF_PRICES_ALL::CPI",
-                "start_date": "2026-01-01",
-                "end_date": None,
-                "frequency": "month",
-                "transform": None,
-                "dimension_values": None,
-                "limit": 1,
-                "pivot": False,
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -639,15 +607,6 @@ def test_economy_indicators(params, headers):
                 "dataflows": None,
                 "keywords": None,
                 "symbol": None,
-            }
-        ),
-        (
-            {
-                "provider": "oecd",
-                "topic": None,
-                "query": "balance+trade",
-                "dataflows": None,
-                "keywords": None,
             }
         ),
     ],

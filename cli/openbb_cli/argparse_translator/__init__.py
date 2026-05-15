@@ -1,1 +1,0 @@
-"""Argparse translator package."""

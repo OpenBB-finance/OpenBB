@@ -3,8 +3,9 @@
 from unittest.mock import patch
 
 import pytest
-
 from openbb_cli.config.setup import bootstrap
+
+# pylint: disable=unused-variable
 
 
 def test_bootstrap_creates_directory_and_file():
@@ -48,4 +49,4 @@ def test_bootstrap_permission_error():
         pytest.raises(PermissionError),
     ):
         mock_mkdir.side_effect = PermissionError("No permission to create directory")
-        bootstrap()
+        bootstrap()  # Expecting to raise a PermissionError and be caught by pytest.raises
