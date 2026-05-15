@@ -95,7 +95,8 @@ def test_get_field_type_strips_openbb_module_path_inside_generic_container():
     MyData.__qualname__ = "MyData"
 
     out = DocstringGenerator.get_field_type(
-        Union[list[MyData], None], is_required=False
+        Union[list[MyData], None],  # noqa: UP007 — explicit form is the point
+        is_required=False,
     )
     # Container preserved, dotted prefix stripped.
     assert "list[MyData]" in out
