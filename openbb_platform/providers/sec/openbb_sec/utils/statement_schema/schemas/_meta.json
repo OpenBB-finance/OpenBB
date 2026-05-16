@@ -1,0 +1,73 @@
+{
+  "version": "2.0",
+  "generated": "2026-03-17",
+  "taxonomy_sources": {
+    "us_gaap": {
+      "years": [
+        2011,
+        2026
+      ],
+      "tags_indexed": 3753
+    },
+    "ifrs": {
+      "years": [
+        2020,
+        2025
+      ],
+      "tags_indexed": 3979
+    }
+  },
+  "detection": {
+    "insurance_is_signals": [
+      "PremiumsEarnedNet",
+      "PolicyholderBenefitsAndClaimsIncurredNet",
+      "PolicyholderBenefitsAndClaimsIncurredHealthCare",
+      "BenefitsLossesAndExpenses",
+      "InsuranceRevenue",
+      "InsuranceServiceResult",
+      "InsuranceServiceExpensesFromInsuranceContractsIssued",
+      "NetEarnedPremium"
+    ],
+    "insurance_bs_signals": [
+      "LiabilityForFuturePolicyBenefits",
+      "DeferredPolicyAcquisitionCosts",
+      "InsuranceContractsThatAreLiabilities",
+      "LiabilitiesArisingFromInsuranceContracts",
+      "UnearnedPremiums"
+    ],
+    "financial_signals": [
+      "InterestIncomeExpenseNet",
+      "NoninterestIncome",
+      "ProvisionForLoanAndLeaseLosses",
+      "NetInterestIncome",
+      "InterestAndDividendIncomeOperating",
+      "FederalFundsSoldAndSecuritiesPurchasedUnderAgreementsToResell",
+      "FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss",
+      "InterestRevenueCalculatedUsingEffectiveInterestMethod",
+      "FinancialAssetsAtAmortisedCost",
+      "DepositsFromBanks",
+      "ReverseRepurchaseAgreementsAndCashCollateralOnSecuritiesBorrowed",
+      "SubordinatedLiabilities",
+      "InterestIncomeOnLoansAndReceivables",
+      "CreditrelatedFeeAndCommissionIncome",
+      "TradingIncomeExpense",
+      "BankAcceptanceAssets"
+    ],
+    "diversified_signals": [
+      "CostsAndExpenses",
+      "OperatingIncomeLoss",
+      "OperatingExpense",
+      "ProfitLossFromOperatingActivities",
+      "OtherOperatingIncomeExpense"
+    ],
+    "industrial_signals": [
+      "CostOfGoodsAndServicesSold",
+      "CostOfRevenue",
+      "CostOfGoodsSold",
+      "GrossProfit",
+      "CostOfSales"
+    ],
+    "min_financial_signals": 2,
+    "description": "Priority: insurance (>=1 IS + total>=2) > financial (>=2 fin) > industrial (has COGS/GP) > diversified (CostsAndExpenses). Includes both us-gaap and ifrs-full tag names."
+  }
+}

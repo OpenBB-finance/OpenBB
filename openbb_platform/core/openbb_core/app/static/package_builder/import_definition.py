@@ -43,6 +43,51 @@ from openbb_core.app.static.package_builder._indent import (  # noqa: F401
     TAB,
     create_indent,
 )
+
+
+def _unwrap_generic_args(annotation: Any) -> list[Any]:
+    """Recursively flatten generic type arguments out of an annotation.
+
+    Parameters
+    ----------
+    annotation : Any
+        A type annotation taken from a function signature
+        (``list[X]``, ``X | Y``, ``Annotated[list[X], ...]``, ...).
+
+    Returns
+    -------
+    list of Any
+        The element types nested inside the annotation. Used to make
+        sure import discovery picks up classes from external packages
+        that only appear as generic arguments — without this,
+        ``data: list[my_pkg.BodyItem]`` would never trigger an
+        ``import my_pkg`` line in the generated stub.
+    """
+    out: list[Any] = []
+    seen: set[int] = set()
+    stack: list[Any] = [annotation]
+    while stack:
+        node = stack.pop()
+        node_id = id(node)
+        if node_id in seen:
+            continue
+        seen.add(node_id)
+        if isinstance(node, _AnnotatedAlias):
+            inner = getattr(node, "__origin__", None)
+            if inner is not None:
+                stack.append(inner)
+            continue
+        try:
+            args = get_args(node)
+        except (TypeError, Exception):  # noqa: BLE001 — defensive
+            args = ()
+        for arg in args:
+            if isinstance(arg, type):
+                out.append(arg)
+            stack.append(arg)
+    return out
+
+
 from openbb_core.app.static.package_builder.path_handler import PathHandler
 
 
@@ -145,6 +190,13 @@ class ImportDefinition:
 
         for parameter in parameter_map.values():
             hint_type_list.append(parameter.annotation)
+            # Walk into generic type arguments (``list[X]``, ``X | Y``,
+            # ``Annotated[list[X], ...]``) so element classes from external
+            # packages get imported. Without this, generated extensions with
+            # body params like ``data: list[MyBodyItem]`` produce stubs that
+            # reference ``my_pkg.module.MyBodyItem`` without ever importing
+            # ``my_pkg``, raising NameError at first call.
+            hint_type_list.extend(_unwrap_generic_args(parameter.annotation))
 
             # Extract dependencies from Annotated metadata
             if isinstance(parameter.annotation, _AnnotatedAlias):
@@ -163,6 +215,7 @@ class ImportDefinition:
                 else return_type
             )
             hint_type_list.append(hint_type)
+            hint_type_list.extend(_unwrap_generic_args(return_type))
 
         hint_type_list = cls.filter_hint_type_list(hint_type_list)
 

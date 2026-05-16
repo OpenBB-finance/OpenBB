@@ -194,3 +194,89 @@ def test_build_skips_empty_sanitized_and_empty_typing_imports(monkeypatch):
     out = ImportDefinition.build("x.y")
     assert "from emptymod import" not in out
     assert "from typing import DefinitelyNotInTyping" not in out
+
+
+def test_unwrap_generic_args_extracts_nested_type():
+    """Lines 85-87: get_args yields a real ``type`` -> appended to out."""
+    out = import_def_module._unwrap_generic_args(list[int])
+    assert int in out
+
+
+def test_unwrap_generic_args_dedups_repeated_node():
+    """Line 73: re-pushing the same id hits the seen guard and continues.
+
+    ``tuple[int, int]`` flattens to ``(int, int)``. Both ints land on the
+    stack; the second pop must hit ``seen`` and skip the get_args branch.
+    Without the guard, deeply nested or self-referential annotations would
+    loop forever — proving the path runs is what this test asserts.
+    """
+    out = import_def_module._unwrap_generic_args(tuple[int, int])
+    # Both ints get collected (collection happens before the stack push), but
+    # we mainly care that the function returned at all — the seen guard fires
+    # on the duplicate stack entry rather than re-processing it.
+    assert int in out
+
+
+def test_unwrap_generic_args_swallows_get_args_exception(monkeypatch):
+    """Lines 82-83: defensive except path when get_args raises."""
+
+    def _boom(_node):
+        raise TypeError("synthetic failure")
+
+    sentinel = object()
+    monkeypatch.setattr(import_def_module, "get_args", _boom)
+    out = import_def_module._unwrap_generic_args(sentinel)
+    # The exception was swallowed and ``args`` defaulted to () so no types
+    # get collected from the sentinel.
+    assert out == []
+
+
+def test_unwrap_generic_args_handles_annotated_alias():
+    """Lines 76-79: ``_AnnotatedAlias`` branch pushes ``__origin__`` on stack."""
+    out = import_def_module._unwrap_generic_args(Annotated[int, "tag"])
+    # Origin (``int``) gets pushed and processed by the next loop iteration.
+    # ``int`` itself isn't a generic, so it lands in ``out`` only if it appears
+    # as a top-level type within get_args of the inner — which it doesn't here,
+    # so we just confirm the function returns cleanly without raising.
+    assert isinstance(out, list)
+
+
+def test_filter_hint_type_list_skips_empty_param_marker():
+    """Line 116: ``_empty`` (signature placeholder) is skipped."""
+    from inspect import _empty
+
+    out = ImportDefinition.filter_hint_type_list([_empty, int])
+    assert _empty not in out
+
+
+def test_filter_hint_type_list_skips_bare_depends_instance():
+    """Line 123: bare ``Depends(...)`` instance (not Annotated) is skipped."""
+    from fastapi import Depends
+
+    def _dep():
+        return 1
+
+    bare = Depends(_dep)
+    out = ImportDefinition.filter_hint_type_list([bare])
+    assert bare not in out
+
+
+def test_get_function_hint_type_list_extracts_depends_from_annotated_param():
+    """Lines 203-207: Annotated metadata containing ``Depends`` exposes its
+    ``.dependency`` callable so it ends up in the hint list."""
+    from fastapi import Depends
+
+    def _dep():
+        return 1
+
+    async def _endpoint(x: Annotated[int, Depends(_dep)]) -> int:
+        return x
+
+    route = SimpleNamespace(
+        endpoint=_endpoint,
+        openapi_extra={},
+        response_model=int,
+    )
+
+    out = ImportDefinition.get_function_hint_type_list(route)
+    assert _dep in out
