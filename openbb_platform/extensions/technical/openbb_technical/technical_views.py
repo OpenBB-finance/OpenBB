@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
-        OpenBBFigure,  # ty: ignore[unresolved-import]
+        OpenBBFigure,
     )
 
 
@@ -50,7 +50,7 @@ class TechnicalViews:
     def technical_aroon(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Technical Aroon Chart."""
         from openbb_charting.core.plotly_ta.ta_class import (
-            PlotlyTA,  # ty: ignore[unresolved-import]
+            PlotlyTA,
         )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
@@ -96,7 +96,7 @@ class TechnicalViews:
     def technical_macd(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Plot moving average convergence divergence chart."""
         from openbb_charting.core.plotly_ta.ta_class import (
-            PlotlyTA,  # ty: ignore[unresolved-import]
+            PlotlyTA,
         )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
@@ -140,7 +140,7 @@ class TechnicalViews:
     def technical_adx(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Average directional movement index chart."""
         from openbb_charting.core.plotly_ta.ta_class import (
-            PlotlyTA,  # ty: ignore[unresolved-import]
+            PlotlyTA,
         )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
@@ -181,7 +181,7 @@ class TechnicalViews:
     def technical_rsi(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Relative strength index chart."""
         from openbb_charting.core.plotly_ta.ta_class import (
-            PlotlyTA,  # ty: ignore[unresolved-import]
+            PlotlyTA,
         )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
@@ -222,10 +222,10 @@ class TechnicalViews:
     def technical_cones(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Volatility Cones Chart."""
         from openbb_charting.core.chart_style import (
-            ChartStyle,  # ty: ignore[unresolved-import]
+            ChartStyle,
         )
         from openbb_charting.core.openbb_figure import (
-            OpenBBFigure,  # ty: ignore[unresolved-import]
+            OpenBBFigure,
         )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
@@ -336,9 +336,9 @@ class TechnicalViews:
         **kwargs: Any,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Relative Rotation Chart."""
-        from openbb_charting.charts import relative_rotation  # noqa  # ty: ignore[unresolved-import]
-        from openbb_charting.core.chart_style import ChartStyle  # noqa  # ty: ignore[unresolved-import]
-        from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa  # ty: ignore[unresolved-import]
+        from openbb_charting.charts import relative_rotation  # noqa
+        from openbb_charting.core.chart_style import ChartStyle  # noqa
+        from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
 
         ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")
@@ -418,14 +418,14 @@ class TechnicalViews:
 def _ta_ma(**kwargs):
     """Plot moving average helper."""
     from openbb_charting.core.chart_style import (
-        ChartStyle,  # ty: ignore[unresolved-import]
+        ChartStyle,
     )
     from openbb_charting.core.openbb_figure import (
-        OpenBBFigure,  # ty: ignore[unresolved-import]
+        OpenBBFigure,
     )
-    from openbb_charting.core.to_chart import to_chart  # ty: ignore[unresolved-import]
+    from openbb_charting.core.to_chart import to_chart
     from openbb_charting.styles.colors import (
-        LARGE_CYCLER,  # ty: ignore[unresolved-import]
+        LARGE_CYCLER,
     )
     from openbb_core.app.utils import basemodel_to_df
     from pandas import DataFrame

@@ -62,15 +62,16 @@ jobs:
           pip install ./openbb_platform/extensions/devtools
       - name: Install openbb-core (so ty can resolve runtime deps)
         run: pip install -e "./openbb_platform/core[pandas]" numpy
-      - name: Install changed extensions/providers (so ty resolves their runtime deps)
+      - name: Install changed packages (so ty resolves their declared deps)
         if: env.diff_files != ''
         run: |
-          # Derive unique installable package directories from the diff. Each
-          # extension/provider declares its own deps (pandas-ta, scipy,
-          # statsmodels, etc.); installing the package brings them along so
-          # ty's import resolver finds them.
+          # Install each touched package so ty has the package's declared
+          # third-party deps (pandas-ta, scipy, statsmodels, etc.) available
+          # for type resolution. Optional cross-package peers (e.g.
+          # openbb_charting) that aren't installed surface as `warn`-level
+          # diagnostics under the repo-root ty.toml rather than build errors.
           touched=$(echo "${{ env.diff_files }}" | tr ' ' '\n' \
-            | grep -oE '^(openbb_platform/(extensions|providers)|cli)/[^/]+' \
+            | grep -oE '^(openbb_platform/(extensions|providers|obbject_extensions)|cli)/[^/]+' \
             | sort -u)
           for pkg in $touched; do
             if [ -f "$pkg/pyproject.toml" ]; then
