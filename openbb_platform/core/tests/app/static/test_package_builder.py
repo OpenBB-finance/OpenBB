@@ -62,6 +62,14 @@ def test_save_modules(package_builder):
     package_builder._save_modules()
 
 
+def test_save_modules_empty_path_list(tmp_openbb_dir):
+    """Test that ``_save_modules`` short-circuits when there is nothing to write."""
+    builder = PackageBuilder(tmp_openbb_dir)
+    builder.path_list = []
+    # Should return early without raising; nothing to write.
+    builder._save_modules()
+
+
 def test_save_package(package_builder):
     """Test save package."""
     package_builder._save_package()

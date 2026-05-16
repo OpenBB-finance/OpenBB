@@ -1261,6 +1261,30 @@ def test_format_params_annotated_non_depends_new_type_ellipsis(monkeypatch):
     assert "x" in out
 
 
+def test_format_params_annotated_non_depends_constrained_type(monkeypatch):
+    """An annotated, non-Depends param whose expanded type is a constrained
+    TypeVar unrolls ``__constraints__`` into a ``Union`` with the inner type.
+    """
+    from openbb_core.app.static.package_builder.path_handler import PathHandler
+
+    class _Constrained:
+        __constraints__ = (str, bytes)
+
+    p = Parameter(
+        name="x",
+        kind=Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=Annotated[int, OpenBBField(description="")],
+    )
+    monkeypatch.setattr(PathHandler, "build_route_map", staticmethod(lambda: {}))
+    monkeypatch.setattr(
+        MethodDefinition,
+        "get_expanded_type",
+        classmethod(lambda cls, *_a, **_k: _Constrained),
+    )
+    out = MethodDefinition.format_params("/x/y", {"x": p})
+    assert "x" in out
+
+
 def test_format_params_annotated_with_depends_continue(monkeypatch):
     from openbb_core.app.static.package_builder.path_handler import PathHandler
 

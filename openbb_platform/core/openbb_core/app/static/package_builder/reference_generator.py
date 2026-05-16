@@ -559,6 +559,9 @@ class ReferenceGenerator:
             description = ""
             choices = None
             default = param.default if param.default is not Parameter.empty else None
+
+            if default is PydanticUndefined:
+                default = None
             json_extra: dict = {}
 
             # Check if type is optional

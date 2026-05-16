@@ -3,41 +3,105 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/vnd.sdmx.data+csv; charset=utf-8
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
+      - application/vnd.sdmx.data+csv; version=2.0.0; labels=both
     method: GET
-    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_RHPI_TARGET@DF_RHPI_TARGET,1.0/COU.GBR.Q.RHPI.IX....?detail=dataonly&dimensionAtObservation=TIME_PERIOD&endPeriod=2024-04&startPeriod=2020-01
+    uri: https://sdmx.oecd.org/public/rest/v2/data/dataflow/OECD.SDD.TPS/DSD_RHPI_TARGET%40DF_RHPI_TARGET/1.0/COU.GBR.Q.RHPI.IX.*.*.*.*?c%5BTIME_PERIOD%5D=ge%3A2020-01%2Cle%3A2024-04&detail=full&dimensionAtObservation=TIME_PERIOD
   response:
     body:
-      string: "DATAFLOW,REF_AREA_TYPE,REF_AREA,FREQ,MEASURE,UNIT_MEASURE,ADJUSTMENT,TRANSFORMATION,VINTAGE,DWELLINGS,TIME_PERIOD,OBS_VALUE,OBS_STATUS,UNIT_MULT,DECIMALS,BASE_PER\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2020-Q3,120.812,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2022-Q1,136.43,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2020-Q4,124.248,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2021-Q1,126.185,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2021-Q2,128.433,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2021-Q3,130.745,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2021-Q4,133.186,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2022-Q2,139.995,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2022-Q3,145.294,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2022-Q4,145.455,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2023-Q1,141.858,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2023-Q2,141.215,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2023-Q3,143.72,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2023-Q4,142.468,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2024-Q1,142.179,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2020-Q1,117.108,,,,\r\nOECD.SDD.TPS:DSD_RHPI_TARGET@DF_RHPI_TARGET(1.0),COU,GBR,Q,RHPI,IX,N,_Z,_T,_T,2020-Q2,117.326,,,,\r\n"
+      string: "STRUCTURE,STRUCTURE_ID,ACTION,REF_AREA_TYPE: Reference area type,REF_AREA:
+        Reference area,FREQ: Frequency of observation,MEASURE: Measure,UNIT_MEASURE:
+        Unit of measure,ADJUSTMENT: Adjustment,TRANSFORMATION: Transformation,VINTAGE:
+        Vintage,DWELLINGS: Dwellings,TIME_PERIOD: Time period,OBS_VALUE,OBS_STATUS:
+        Observation status,UNIT_MULT: Unit multiplier,DECIMALS: Decimals,BASE_PER:
+        Base period\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2022-Q4,145.264,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2020-Q1,117.108,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2023-Q1,141.875,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2023-Q2,141.183,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2023-Q3,143.546,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2023-Q4,141.685,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2024-Q1,140.062,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2020-Q2,117.347,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2020-Q3,120.878,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2020-Q4,124.266,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2021-Q1,126.175,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2021-Q2,128.418,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2021-Q3,130.804,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2021-Q4,133.238,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2022-Q1,136.387,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2022-Q2,139.919,A: Normal value,0: Units,1: One,2015\r\nDATAFLOW,OECD.SDD.TPS:DF_RHPI_TARGET(1.0),I,COU:
+        Country,GBR: United Kingdom,Q: Quarterly,RHPI: House price index,IX: Index,N:
+        Neither seasonally adjusted nor calendar adjusted,_Z: Not applicable,_T: Total,_T:
+        Total,2022-Q3,145.168,A: Normal value,0: Units,1: One,2015\r\n"
     headers:
-      Accept-Ranges:
-      - values
+      CF-RAY:
+      - 9dc5fe2aab896052-YVR
       Cache-Control:
-      - no-store,no-cache
-      Content-Encoding:
-      - gzip
+      - public,max-age=7200
+      Connection:
+      - keep-alive
       Content-Language:
       - en,en-US
       Content-Type:
-      - application/vnd.sdmx.data+csv; charset=utf-8
+      - application/vnd.sdmx.data+csv; charset=utf-8; labels=both; version=2.0.0
       Date:
-      - Thu, 27 Jun 2024 10:14:42 GMT
-      Pragma:
-      - no-cache
+      - Sat, 14 Mar 2026 20:22:54 GMT
+      Server:
+      - cloudflare
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept,Accept-Encoding,Accept-Encoding
+      - X-Range, Accept, Accept-Language, Accept-Encoding, Accept-Charset,Accept,Accept-Encoding,Accept-Encoding
       X-Server-Node:
-      - Server 1
+      - Server 3
+      alt-svc:
+      - h3=":443"; ma=86400
       api-supported-versions:
-      - '1'
+      - '2'
+      cf-cache-status:
+      - MISS
+      last-modified:
+      - Sat, 14 Mar 2026 20:22:54 GMT
+      set-cookie:
+      - __cf_bm=dUEoyCNAW1KHcAcY7EZD7HTTG4Vuhcja0KfB1xBQzJg-1773519771.301906-1.0.1.1-td7FBazwr5zrcYRm0bW2uKvVfcEHtsduFhJZFJSxBb1.gupE.ZjZYo2KxC8BNnaUTZ5omsNc2nRHGK3SgXarKZXl7s6AadP30kveJi34Tg3aVA5PVwkM4QTleBDC6fuz;
+        HttpOnly; Secure; Path=/; Domain=oecd.org; Expires=Sat, 14 Mar 2026 20:52:54
+        GMT
+      - _cfuvid=GQkZhvyWxf0zQQ3d3TpNsfE0o6huu1KN3cII0YKJ8Kc-1773519771.301906-1.0.1.1-jVvczkuK2gXcb.FjfMfiPqo8U_hybDDG.rd.bu8whNc;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=oecd.org
     status:
       code: 200
       message: OK

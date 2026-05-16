@@ -5,6 +5,7 @@ import re
 from collections import OrderedDict
 from collections.abc import Callable
 from inspect import Parameter, isclass
+from textwrap import indent
 from types import UnionType
 from typing import (
     TYPE_CHECKING,
@@ -96,7 +97,13 @@ class DocstringGenerator:
                 _type = "Optional[int]" if is_optional else "int"
 
             origin = get_origin(_type)
-            if origin is Union:
+            # On Python 3.10-3.13, ``X | Y`` produces ``types.UnionType``
+            # whose ``get_origin()`` is ``types.UnionType`` — distinct from
+            # ``typing.Union``. 3.14 unified them, but until 3.13 is gone
+            # we have to accept both so the container-aware ``openbb_*``
+            # strip below covers ``list[X] | None`` as well as
+            # ``Union[list[X], None]``.
+            if origin is Union or origin is UnionType:
                 args = get_args(_type)
                 type_names = []
                 has_none = False
@@ -106,8 +113,11 @@ class DocstringGenerator:
                         continue
                     if get_origin(arg) is Literal:
                         continue
-                    type_name = str(arg)
-                    if hasattr(arg, "__name__"):
+                    if hasattr(arg, "__forward_arg__"):
+                        type_name = arg.__forward_arg__
+                    else:
+                        type_name = str(arg)
+                    if hasattr(arg, "__name__") and not get_args(arg):
                         type_name = arg.__name__
                     type_name = (
                         type_name.replace("typing.", "")
@@ -115,8 +125,22 @@ class DocstringGenerator:
                         .replace("datetime.datetime", "datetime")
                         .replace("datetime.date", "date")
                     )
+                    # Unwrap any ForwardRef('X') left inside a container repr,
+                    # e.g. ``list[ForwardRef('DataFrame')]`` -> ``list[DataFrame]``.
+                    type_name = re.sub(r"ForwardRef\('([^']+)'\)", r"\1", type_name)
                     if "openbb_" in type_name:
-                        type_name = type_name.rsplit(".", 1)[-1]
+                        # Strip the dotted module path but preserve any
+                        # generic-container prefix like ``list[`` so
+                        # ``list[openbb_x.y.Foo]`` becomes ``list[Foo]``,
+                        # not just ``Foo]``.
+                        bracket_idx = type_name.find("[")
+                        if bracket_idx != -1:
+                            prefix = type_name[: bracket_idx + 1]
+                            tail = type_name[bracket_idx + 1 :]
+                            tail = tail.rsplit(".", 1)[-1]
+                            type_name = prefix + tail
+                        else:
+                            type_name = type_name.rsplit(".", 1)[-1]
                     if type_name != "NoneType":
                         type_names.append(type_name)
 
@@ -143,16 +167,18 @@ class DocstringGenerator:
                     + str(_type).rsplit(".", maxsplit=1)[-1]
                 )
 
+            # Render optionality as ``X | None`` (PEP 604), not ``Optional[X]``.
             _type = (
-                f"Optional[{_type}]"
+                f"{_type} | None"
                 if is_optional
                 and "Optional" not in str(_type)
-                and " | " not in str(_type)
+                and " | None" not in str(_type)
                 else _type
             )
 
             if target == "website":
                 _type = re.sub(r"Optional\[(.*)\]", r"\1", _type)
+                _type = re.sub(r"\s*\|\s*None$", "", _type)
 
             return _type
 
@@ -494,13 +520,34 @@ class DocstringGenerator:
                         main_description = result
 
             # If no provider sections but we have choices, add them at the end
+            # Skip if the description already enumerates choices to avoid duplication.
             elif provider_choices:
-                for prov, choices in provider_choices.items():
-                    main_description += f"\n{base_indent}Choices for {prov}: {choices}"
+                already_listed = re.search(
+                    r"(?im)^\s*(choices(\s+for\s+\w+)?\s+are|choices(\s+for\s+\w+)?)\s*:",
+                    main_description,
+                )
+                if not already_listed:
+                    for prov, choices in provider_choices.items():
+                        main_description += (
+                            f"\n{base_indent}Choices for {prov}: {choices}"
+                        )
 
             # Add multiple items text at the end
             if multi_items_text:
                 main_description += f"\n{base_indent}{multi_items_text}"
+
+            # Re-indent continuation lines of the main description to align with
+            # the parameter description column (base_indent = 12 spaces). The raw
+            # field descriptions can carry their own embedded indentation that
+            # would otherwise leave continuation lines unaligned in the rendered
+            # docstring.
+            lines = main_description.splitlines()
+            if len(lines) > 1:
+                normalized = [lines[0]]
+                for ln in lines[1:]:
+                    stripped = ln.lstrip()
+                    normalized.append(f"{base_indent}{stripped}" if stripped else "")
+                main_description = "\n".join(normalized)
 
             return main_description
 
@@ -849,6 +896,16 @@ class DocstringGenerator:
             doc_has_examples = bool(
                 re.search(r"^\s*Examples\s*\n[-=~`]{3,}", doc, re.MULTILINE)
             )
+
+            if doc_has_returns:
+                doc = re.sub(
+                    r"\n[ \t]*Returns[ \t]*\n[-=~`]{3,}[ \t]*\n.*?"
+                    r"(?=\n[ \t]*[A-Z][A-Za-z ]*[ \t]*\n[-=~`]{3,}|\Z)",
+                    "\n",
+                    doc,
+                    flags=re.DOTALL,
+                )
+                doc_has_returns = False
             result_doc = doc.strip("\n")
 
             if result_doc:
@@ -886,10 +943,14 @@ class DocstringGenerator:
                     type_str = cls.get_field_type(
                         p_type, param.default is Parameter.empty
                     )
-                    param_section += f"{create_indent(1)}{param_name} : {type_str}\n"
+                    # Emit at column 0; a single blanket indent at the end of
+                    # this branch shifts the whole docstring to the method's
+                    # docstring column. Param name aligns with the header,
+                    # description sits one level in.
+                    param_section += f"{param_name} : {type_str}\n"
 
                     if description and description.strip() != '""':
-                        param_section += f"{create_indent(2)}{description}\n"
+                        param_section += f"{create_indent(1)}{description}\n"
 
                 result_doc += param_section + "\n"
 
@@ -914,6 +975,10 @@ class DocstringGenerator:
                         .replace("'>", "")
                         .replace("OBBject[T]", "OBBject")
                     )
+                    # Collapse ``OBBject[list[XxxData]]`` to ``OBBject`` — the
+                    # envelope fields below already name the ``results`` type,
+                    # and the data-model section names the row type in full.
+                    type_name = re.sub(r"OBBject\[.*\]", "OBBject", type_name)
 
                     returns_section += f"{type_name}\n"
                     is_primitive = type_name.lower() in primitive_types
@@ -937,12 +1002,12 @@ class DocstringGenerator:
                                         if field_name != "id":
                                             returns_section += "\n"
 
-                                        returns_section += f"{create_indent(2)}{field_name.strip()} : {field_type}"
+                                        returns_section += f"{create_indent(1)}{field_name.strip()} : {field_type}"
                                     else:
-                                        returns_section += f"{create_indent(2)}{field_name} : {field_type}\n"
+                                        returns_section += f"{create_indent(1)}{field_name} : {field_type}\n"
                                     if description:
                                         returns_section += (
-                                            f"\n{create_indent(3)}{description}"
+                                            f"\n{create_indent(2)}{description}"
                                         )
 
                         except (AttributeError, TypeError):
@@ -951,47 +1016,50 @@ class DocstringGenerator:
                     returns_section += "Any\n"
 
                 result_doc += returns_section + "\n"
-                result_doc = result_doc.replace("\n    ", f"\n{create_indent(2)}")
 
             doc = result_doc.rstrip()
 
-            # Check response type for OBBject types to extract inner type
-            # Expand the docstring with the schema fields like in model-based commands
+            # Append a data-model section documenting every field of the row
+            # type carried in ``OBBject.results``. The model class is taken
+            # straight from the return annotation (``OBBject[list[XxxData]]``
+            # or ``OBBject[XxxData]``) so it works for non-provider,
+            # data-processing extensions that have no standard-model registry.
             if type_name and "OBBject" in type_name:
-                type_str = str(return_annotation).replace("[T]", "")
-                match = re.search(r"OBBject\[(.*)\]", type_str)
-                inner = match.group(1) if match else ""
-                # Extract from list[Type] or dict[str, Type]
-                type_match = re.search(r"\[([^\[\]]+)\]$", inner)
-                extracted_type = type_match.group(1) if type_match else inner
+                result_model: type | None = None
+                results_field = getattr(return_annotation, "model_fields", {}).get(
+                    "results"
+                )
+                if results_field is not None:
+                    _pending = [results_field.annotation]
+                    while _pending:
+                        node = _pending.pop()
+                        if isclass(node) and hasattr(node, "model_fields"):
+                            result_model = node
+                            break
+                        _pending.extend(get_args(node))
 
-                if extracted_type and extracted_type.lower() not in primitive_types:
-                    from openbb_core.app.static.package_builder.path_handler import (
-                        PathHandler,
-                    )
-                    from openbb_core.app.static.package_builder.reference_generator import (
-                        ReferenceGenerator,
-                    )
+                if result_model is not None:
+                    model_label = result_model.__name__
+                    if doc and not doc.endswith("\n\n"):
+                        doc += "\n\n"
+                    doc += f"{model_label}\n"
+                    doc += f"{'-' * len(model_label)}\n"
 
-                    route_map = PathHandler.build_route_map()
-                    paths = ReferenceGenerator.get_paths(route_map)
-                    route_path = paths.get(path, {}).get("data", {}).get("standard", [])
+                    for field_name, field in result_model.model_fields.items():
+                        field_type = cls.get_field_type(
+                            field.annotation, field.is_required
+                        )
+                        field_description = field.description or ""
+                        doc += f"{field_name} : {field_type}\n"
+                        if field_description:
+                            doc += f"{create_indent(1)}{field_description}\n"
 
-                    if route_path:
-                        if doc and not doc.endswith("\n\n"):
-                            doc += "\n\n"
-                        doc += f"{extracted_type}\n"
-                        doc += f"{'-' * len(extracted_type)}\n"
+                    doc += "\n"
 
-                        for field in route_path:
-                            field_name = field.get("name", "")
-                            field_type = field.get("type", "Any")
-                            field_description = field.get("description", "")
-                            doc += f"{create_indent(2)}{field_name} : {field_type}\n"
-                            if field_description:
-                                doc += f"{create_indent(3)}{field_description}\n"
-
-                        doc += "\n"
+            doc_lines = doc.split("\n")
+            if len(doc_lines) > 1:
+                indented_body = indent("\n".join(doc_lines[1:]), create_indent(2))
+                doc = doc_lines[0] + "\n" + indented_body
 
             if "examples" in sections and not doc_has_examples:
                 if doc and not doc.endswith("\n\n"):

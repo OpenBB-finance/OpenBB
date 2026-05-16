@@ -72,28 +72,24 @@ class SystemSettings(Tagged):
         """Create an empty JSON file."""
         path.write_text(json.dumps(obj=template or {}, indent=4), encoding="utf-8")
 
-    # TODO: Figure out why this works only opposite to what the docs say
-    # https://docs.pydantic.dev/latest/concepts/validators/#model-validators
-    # based on docs first argument should be self, but it works only with cls
-    @model_validator(mode="after")  # type: ignore
-    @classmethod
-    def create_openbb_directory(cls, values: "SystemSettings") -> "SystemSettings":
+    @model_validator(mode="after")
+    def create_openbb_directory(self) -> "SystemSettings":
         """Create the OpenBB directory if it doesn't exist."""
-        obb_dir = Path(values.openbb_directory).resolve()
-        user_settings = Path(values.user_settings_path).resolve()
-        system_settings = Path(values.system_settings_path).resolve()
+        obb_dir = Path(self.openbb_directory).resolve()
+        user_settings = Path(self.user_settings_path).resolve()
+        system_settings = Path(self.system_settings_path).resolve()
         obb_dir.mkdir(parents=True, exist_ok=True)
 
         if not user_settings.exists():
-            cls.create_json(
+            self.create_json(
                 user_settings,
                 {"credentials": {}, "preferences": {}, "defaults": {"commands": {}}},
             )
 
         if not system_settings.exists():
-            cls.create_json(system_settings, {})
+            self.create_json(system_settings, {})
 
-        return values
+        return self
 
     @field_validator("logging_handlers")
     @classmethod

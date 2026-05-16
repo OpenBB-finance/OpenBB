@@ -2,6 +2,7 @@
 
 import contextlib
 import os
+import re
 import shutil
 import signal
 import sys
@@ -12,6 +13,8 @@ from typing import (
     TYPE_CHECKING,
     TypeVar,
 )
+
+_LIST_ANNOTATION_RE = re.compile(r"\bList\b")
 
 from importlib_metadata import entry_points
 
@@ -252,7 +255,7 @@ class PackageBuilder:
         self.console.log(str(package_path))
 
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
-            file.write(code.replace("typing.", "").replace("List", "list"))
+            file.write(_LIST_ANNOTATION_RE.sub("list", code.replace("typing.", "")))
 
     @staticmethod
     def _read(path: Path) -> dict:

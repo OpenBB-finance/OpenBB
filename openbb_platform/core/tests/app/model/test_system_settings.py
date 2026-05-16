@@ -4,15 +4,8 @@ import os
 from pathlib import Path
 
 import pytest
-from pydantic import BaseModel, ConfigDict
 
 from openbb_core.app.model.system_settings import SystemSettings
-
-
-class MockSystemSettings(BaseModel):
-    """Mock SystemSettings."""
-
-    model_config = ConfigDict(extra="allow", populate_by_name=True)
 
 
 def test_system_settings():
@@ -29,74 +22,78 @@ def test_system_settings_repr():
     assert "openbb_directory" in result
 
 
-def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
+def test_create_openbb_directory_directory_and_files_not_exist(tmpdir, monkeypatch):
     """Test the create_openbb_directory method."""
     # Arrange
-    values = MockSystemSettings(
-        **{
-            "openbb_directory": str(tmpdir.join("openbb")),
-            "user_settings_path": str(tmpdir.join("user_settings.json")),
-            "system_settings_path": str(tmpdir.join("system_settings.json")),
-        }
+    obb_dir = str(tmpdir.join("openbb"))
+    user_settings = str(tmpdir.join("user_settings.json"))
+    system_settings = str(tmpdir.join("system_settings.json"))
+
+    monkeypatch.setenv("OPENBB_DIRECTORY", obb_dir)
+    monkeypatch.setenv("USER_SETTINGS_PATH", user_settings)
+    monkeypatch.setenv("SYSTEM_SETTINGS_PATH", system_settings)
+
+    # Act - The validator runs automatically during instantiation
+    sys = SystemSettings(
+        openbb_directory=obb_dir,
+        user_settings_path=user_settings,
+        system_settings_path=system_settings,
     )
 
-    # Act
-    SystemSettings.create_openbb_directory(values)  # type: ignore[operator]
-
     # Assert
-    assert os.path.exists(values.openbb_directory)  # type: ignore[attr-defined]
-    assert os.path.exists(values.user_settings_path)  # type: ignore[attr-defined]
-    assert os.path.exists(values.system_settings_path)  # type: ignore[attr-defined]
+    assert os.path.exists(sys.openbb_directory)
+    assert os.path.exists(sys.user_settings_path)
+    assert os.path.exists(sys.system_settings_path)
 
 
 def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
     """Test the create_openbb_directory method."""
     # Arrange
-    values = MockSystemSettings(
-        **{
-            "openbb_directory": str(tmpdir.join("openbb")),
-            "user_settings_path": str(tmpdir.join("user_settings.json")),
-            "system_settings_path": str(tmpdir.join("system_settings.json")),
-        }
-    )
+    obb_dir = str(tmpdir.join("openbb"))
+    user_settings = str(tmpdir.join("user_settings.json"))
+    system_settings = str(tmpdir.join("system_settings.json"))
 
     # Create the openbb directory
-    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)  # type: ignore[attr-defined]
+    Path(obb_dir).mkdir(parents=True, exist_ok=True)
 
-    # Act
-    SystemSettings.create_openbb_directory(values)  # type: ignore[operator]
+    # Act - The validator runs automatically during instantiation
+    sys = SystemSettings(
+        openbb_directory=obb_dir,
+        user_settings_path=user_settings,
+        system_settings_path=system_settings,
+    )
 
     # Assert
-    assert os.path.exists(values.openbb_directory)  # type: ignore[attr-defined]
-    assert os.path.exists(values.user_settings_path)  # type: ignore[attr-defined]
-    assert os.path.exists(values.system_settings_path)  # type: ignore[attr-defined]
+    assert os.path.exists(sys.openbb_directory)
+    assert os.path.exists(sys.user_settings_path)
+    assert os.path.exists(sys.system_settings_path)
 
 
 def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir):
     """Test the create_openbb_directory method."""
     # Arrange
-    values = MockSystemSettings(
-        **{
-            "openbb_directory": str(tmpdir.join("openbb")),
-            "user_settings_path": str(tmpdir.join("user_settings.json")),
-            "system_settings_path": str(tmpdir.join("system_settings.json")),
-        }
-    )
+    obb_dir = str(tmpdir.join("openbb"))
+    user_settings = str(tmpdir.join("user_settings.json"))
+    system_settings = str(tmpdir.join("system_settings.json"))
 
     # Create the openbb directory
-    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)  # type: ignore[attr-defined]
+    Path(obb_dir).mkdir(parents=True, exist_ok=True)
 
     # Create the user_settings.json file
-    with open(values.user_settings_path, "w") as f:  # type: ignore[attr-defined]
+    with open(user_settings, "w") as f:
         f.write("{}")
 
-    # Act
-    SystemSettings.create_openbb_directory(values)  # type: ignore[operator]
+    # Act - The validator runs automatically during instantiation
+    sys = SystemSettings(
+        openbb_directory=obb_dir,
+        user_settings_path=user_settings,
+        system_settings_path=system_settings,
+    )
 
     # Assert
-    assert os.path.exists(values.openbb_directory)  # type: ignore[attr-defined]
-    assert os.path.exists(values.user_settings_path)  # type: ignore[attr-defined]
-    assert os.path.exists(values.system_settings_path)  # type: ignore[attr-defined]
+    assert os.path.exists(sys.openbb_directory)
+    assert os.path.exists(sys.user_settings_path)
+    assert os.path.exists(sys.system_settings_path)
 
 
 @pytest.mark.parametrize(

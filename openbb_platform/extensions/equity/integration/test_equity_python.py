@@ -47,6 +47,17 @@ def obb(pytestconfig):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -62,6 +73,17 @@ def test_equity_fundamental_balance(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -157,6 +179,17 @@ def test_equity_calendar_earnings(params, obb):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -172,6 +205,17 @@ def test_equity_fundamental_cash(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -361,6 +405,17 @@ def test_equity_estimates_historical(params, obb):
                 "period": "annual",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -374,7 +429,20 @@ def test_equity_fundamental_income(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "period": "annual", "provider": "fmp"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "period": "annual", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_income_growth(params, obb):
