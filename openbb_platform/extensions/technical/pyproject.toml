@@ -1,24 +1,101 @@
-[tool.poetry]
+[project]
 name = "openbb-technical"
-version = "1.6.1"
+version = "2.0.0"
 description = "Technical Analysis extension for OpenBB"
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_technical" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "pandas-ta-openbb>=0.4.23",
+    "scikit-learn>=1.6.0",
+    "scipy>=1.11",
+    "statsmodels>=0.14",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.3"
-pandas-ta-openbb = "^0.4.23"
-scikit-learn = "^1.6.0"
+[project.entry-points."openbb_core_extension"]
+technical = "openbb_technical.router:router"
+
+[project.entry-points."openbb_charting_extension"]
+technical = "openbb_technical.technical_views:TechnicalViews"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.plugins."openbb_core_extension"]
-technical = "openbb_technical.technical_router:router"
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_technical"]
 
-[tool.poetry.plugins."openbb_charting_extension"]
-technical = "openbb_technical.technical_views:TechnicalViews"
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_technical",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D101", "D102", "D103", "D105", "D107",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D401", "D404", "D405", "D406", "D407",
+    "D408", "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_technical/helpers.py" = ["PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917"]
+"openbb_technical/relative_rotation.py" = ["PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001", "ARG002"]
+"openbb_technical/technical_views.py" = ["PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001", "ARG002"]
+"openbb_technical/indicators/**" = ["PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001", "ARG001", "ARG002"]
+"openbb_technical/signals/**" = ["PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001", "ARG001", "ARG002", "E741"]
+"openbb_technical/multi/**" = ["PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001", "ARG001", "ARG002"]
+"tests/**" = ["S101", "S104", "S105", "S106", "S108", "D", "F841", "PLR0911", "PLW0108", "SIM105", "SIM117", "E741"]
+"integration/**" = ["S101", "S104", "S105", "S106", "S108", "D", "PLC0415", "PLR0911", "PLR0913", "PLR0914", "PLR0915", "PLR0917"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_technical"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-q --strict-markers"
+testpaths = ["tests"]
+markers = ["integration: real-data tests; not part of the default ``pytest tests`` run."]
+filterwarnings = [
+    "ignore:Inheritance class ClientSession from ClientSession is discouraged:DeprecationWarning",
+    "ignore:Using `@model_validator` with mode='after' on a classmethod is deprecated:DeprecationWarning",
+]
