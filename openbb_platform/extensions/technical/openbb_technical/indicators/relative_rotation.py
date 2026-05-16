@@ -97,4 +97,4 @@ async def relative_rotation(
     )
 
 
-__all__ = ["relative_rotation", "router"]
+__all__ = ["RelativeRotationQueryParams", "relative_rotation", "router"]

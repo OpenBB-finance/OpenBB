@@ -2,7 +2,7 @@
 
 Auto-generated from the registered router by `docs/_generate_api_reference.py`. Endpoint names match the Python interface (`obb.technical.<name>` or `obb.technical.signals.<name>`) and the HTTP path (`POST /api/v1/technical/<name>`).
 
-**Total endpoints**: 58
+**Total endpoints**: 59
 
 Each endpoint also takes `data` (the OHLC(V) price series) which is omitted from the parameter tables below. `requires_columns` lists the OHLC(V) columns the endpoint reads from `data`.
 
@@ -1393,6 +1393,32 @@ _Query parameters for the multi-indicator composition endpoint._
 |---|---|---|---|
 | `date` | `str` | no |  |
 | `values` | `str` | no |  |
+
+### `relative_rotation`
+
+_Relative Rotation Query Parameters._
+
+**Parameters** (in addition to `data`):
+
+| Name | Type | Default | Constraints | Description |
+|---|---|---|---|---|
+| `benchmark` | `str` | *required* |  | The symbol to be used as the benchmark. |
+| `study` | `Literal["price", "volume", "volatility"]` | `price` |  | The data point for the calculations. If 'price', the closing price will be used. If 'volatility', the standard deviation of the closing price will be used. If 'data' is supplied as a pivot table, the 'study' will assume the values are the closing price and 'volume' will be ignored. |
+| `long_period` | `int \| None` | `252` |  | The length of the long period for momentum calculation, by default is 252. Adjust this value, to 365, when supplying assets such as crypto. |
+| `short_period` | `int \| None` | `21` |  | The length of the short period for momentum calculation, by default is 21. Adjust this value, to 30, when supplying assets such as crypto. |
+| `window` | `int \| None` | `21` |  | The length of window for the standard deviation calculation, by default is 21. Adjust this value, to 30, when supplying assets such as crypto. |
+| `trading_periods` | `int \| None` | `252` |  | The number of trading periods per year, for the standard deviation calculation, by default is 252. Adjust this value, to 365, when supplying assets such as crypto. |
+| `chart_params` | `dict[str, Any] \| None` | *required* |  | Additional parameters to pass when `chart=True` and the `openbb-charting` extension is installed. Parameters can be passed again to redraw the chart using the charting.to_chart() method of the response.              ChartParams             -----------             date: Optional[str]                 A target end date within the data, by default is the last date in the data.             show_tails: bool                 Show the tails on the chart, by default is True.             tail_periods: Optional[int]                 Number of periods to show in the tails, by default is 16.             tail_interval: Literal['day', 'week', 'month']                 Interval to show the tails, by default is 'week'.             title: Optional[str]                 Title of the chart. |
+
+**Returns** — `OBBject` with `results` list of rows containing:
+
+| Column | Type | Nullable | Description |
+|---|---|---|---|
+| `symbols` | `str` | no |  |
+| `benchmark` | `str` | no |  |
+| `study` | `str` | no |  |
+| `rs_ratios` | `str` | no |  |
+| `rs_momentum` | `str` | no |  |
 
 ### `screen`
 

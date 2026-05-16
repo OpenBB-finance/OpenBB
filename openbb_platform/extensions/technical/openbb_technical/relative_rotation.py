@@ -374,6 +374,9 @@ def _get_type_name(t):
 class RelativeRotationQueryParams(QueryParams):
     """Relative Rotation Query Parameters."""
 
+    __category__ = "multi"
+    __output_columns__ = ("symbols", "benchmark", "study", "rs_ratios", "rs_momentum")
+
     data: list[Data] = Field(
         description="The data to be used for the relative rotation calculations."
         + " This should be the multi-symbol output from the"

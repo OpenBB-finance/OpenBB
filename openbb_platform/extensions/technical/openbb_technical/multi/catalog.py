@@ -199,16 +199,21 @@ def _default_for(field: FieldInfo) -> Any | None:
 
 
 def _module_query_params(module: Any) -> dict[str, type[QueryParams]]:
-    """Find ``XxxQueryParams`` classes defined in ``module``."""
+    """Find ``XxxQueryParams`` classes defined in or re-exported by ``module``."""
     out: dict[str, type[QueryParams]] = {}
+    declared = set(getattr(module, "__all__", ()))
     for attr_name in dir(module):
         attr = getattr(module, attr_name)
-        if (
+        if not (
             isinstance(attr, type)
             and issubclass(attr, QueryParams)
             and attr is not QueryParams
-            and attr.__module__ == module.__name__
         ):
+            continue
+        # Accept classes defined in this module, or explicitly re-exported via
+        # ``__all__`` (lets thin router shells reuse a QueryParams class
+        # defined elsewhere in the package, e.g. ``relative_rotation``).
+        if attr.__module__ == module.__name__ or attr_name in declared:
             out[attr_name] = attr
     return out
 
@@ -232,6 +237,7 @@ _FAMILY_MODULES: tuple[str, ...] = (
     "openbb_technical.indicators.trend",
     "openbb_technical.indicators.structure",
     "openbb_technical.indicators.statistics",
+    "openbb_technical.indicators.relative_rotation",
     "openbb_technical.signals.breakouts",
     "openbb_technical.signals.crossovers",
     "openbb_technical.signals.divergences",

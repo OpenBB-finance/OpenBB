@@ -56,7 +56,7 @@ def _single_overlay(
     length: int,
     offset: int,
     extra: dict | None = None,
-) -> pd.DataFrame:
+) -> "pd.DataFrame":
     """Run a single-output pandas-ta moving average on the target column.
 
     Parameters
