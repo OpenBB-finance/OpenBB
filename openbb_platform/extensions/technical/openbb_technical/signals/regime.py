@@ -135,67 +135,11 @@ class RegimeData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def regime(
-    data: list[Data],
-    index: str = "date",
-    adx_length: int = 14,
-    choppiness_length: int = 14,
-    adx_trend_threshold: float = 25.0,
-    choppiness_range_threshold: float = 61.8,
-) -> OBBject[list[Data]]:
-    """Label each bar with a market regime from ADX and Choppiness Index pairs.
-
-    A market regime summarises whether price is trending or chopping
-    sideways. This endpoint combines two complementary indicators: ADX
-    measures the absolute strength of a trend regardless of direction, and
-    the Choppiness Index measures how much of the recent range has been
-    retraced — high choppiness indicates a directionless market. Each bar
-    is classified into one of four labels. ``strong_trend`` requires both
-    high ADX and low choppiness. ``weak_trend`` is satisfied by moderate
-    ADX (above half the trend threshold) when the strong-trend conditions
-    are not met. ``ranging`` is reserved for bars with low ADX and high
-    choppiness. Everything else, including warm-up bars where either input
-    is unavailable, is labelled ``transition``.
-
-    Traders use regime labels to gate strategy logic — trend-following
-    rules run only in trending regimes; mean-reversion rules run only in
-    ranging regimes — and to size positions based on the prevailing market
-    character. The ``regime_changed`` flag is convenient for triggering
-    one-shot logic on regime transitions.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    adx_length : PositiveInt, optional
-        ADX lookback window, by default 14.
-    choppiness_length : PositiveInt, optional
-        Choppiness Index lookback window, by default 14.
-    adx_trend_threshold : PositiveFloat, optional
-        ADX cutoff for a trending bar; half this value is the weak-trend
-        cutoff, by default 25.0.
-    choppiness_range_threshold : PositiveFloat, optional
-        Choppiness cutoff for a ranging bar, by default 61.8.
-
-    Returns
-    -------
-    OBBject[list[RegimeData]]
-        Per-bar regime labels with the underlying ADX and Choppiness
-        readings and a flag marking regime transitions.
-    """
+def regime(params: RegimeQueryParams) -> OBBject[list[RegimeData]]:
+    """Label each bar with a market regime from ADX and Choppiness Index pairs."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = RegimeQueryParams(
-        data=data,
-        index=index,
-        adx_length=adx_length,
-        choppiness_length=choppiness_length,
-        adx_trend_threshold=adx_trend_threshold,
-        choppiness_range_threshold=choppiness_range_threshold,
-    )
     validate_data(params.data, [params.adx_length, params.choppiness_length])
     df = basemodel_to_df(params.data, index=params.index)
     adx_df = df.ta.adx(length=params.adx_length)
@@ -236,9 +180,7 @@ def regime(
             )
         )
         prev_regime = label
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=results)  # ty: ignore[invalid-return-type]
+    return OBBject(results=results)
 
 
 __all__ = [

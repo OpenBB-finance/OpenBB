@@ -65,7 +65,10 @@ class FibQueryParams(QueryParams):
     __output_columns__ = ("level", "price")
 
     data: list[Data] = Field(description="OHLC(V) price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     close_column: Literal["close", "adj_close"] = Field(
         default="close",
         description="Column used for high/low detection.",
@@ -110,61 +113,8 @@ class FibData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def fib(
-    data: list[Data],
-    index: str = "date",
-    close_column: Literal["close", "adj_close"] = "close",
-    period: int = 120,
-    start_date: str | None = None,
-    end_date: str | None = None,
-) -> OBBject[list[Data]]:
-    """Compute Fibonacci retracement levels between a swing high and swing low.
-
-    Fibonacci retracement marks horizontal price levels where a counter-trend
-    pullback may stall before the dominant trend resumes. The endpoint locates
-    the swing high and swing low of the chosen ``close_column`` over the last
-    ``period`` bars (or over an explicit ``start_date``/``end_date`` window) and
-    projects the canonical retracement ratios — 23.6%, 38.2%, 50%, 61.8%, and
-    78.6% — between them. The 0% and 100% anchors are the swing endpoints
-    themselves.
-
-    Traders use these levels as candidate support/resistance after an extended
-    move: a shallow pullback to 38.2% suggests trend strength, the 50%–61.8%
-    band is the most-watched continuation zone, and a clean break of 78.6%
-    typically invalidates the prior swing.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC(V) price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    close_column : {"close", "adj_close"}, optional
-        Column used for swing-high and swing-low detection,
-        by default ``"close"``.
-    period : PositiveInt, optional
-        Trailing window in bars used when explicit dates are not supplied,
-        by default 120.
-    start_date : str, optional
-        Explicit retracement start date paired with ``end_date``,
-        by default ``None``.
-    end_date : str, optional
-        Explicit retracement end date paired with ``start_date``,
-        by default ``None``.
-
-    Returns
-    -------
-    OBBject[list[FibData]]
-        One row per Fibonacci level with its percentage label and price.
-    """
-    params = FibQueryParams(
-        data=data,
-        index=index,
-        close_column=close_column,
-        period=period,
-        start_date=start_date,
-        end_date=end_date,
-    )
+def fib(params: FibQueryParams) -> OBBject[list[FibData]]:
+    """Compute Fibonacci retracement levels between a swing high and swing low."""
     df = basemodel_to_df(params.data, index=params.index)
     df_fib, _, _, _, _, _ = calculate_fib_levels(
         data=df,
@@ -202,7 +152,10 @@ class DemarkQueryParams(QueryParams):
     __output_columns__ = ("date", "up", "down")
 
     data: list[Data] = Field(description="Price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     target: str = Field(default="close", description="Column to evaluate.")
     show_all: bool = Field(
         default=True,
@@ -230,7 +183,7 @@ class DemarkData(Data):
         or ``0`` when no count is active.
     """
 
-    date: datetime | dateType | str
+    date: datetime | dateType | str = Field(description="Observation date.")
     up: int | float | None = Field(description="Upward sequential count.")
     down: int | float | None = Field(description="Downward sequential count.")
 
@@ -248,62 +201,10 @@ class DemarkData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def demark(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    show_all: bool = True,
-    asint: bool = True,
-    offset: int = 0,
-) -> OBBject[list[Data]]:
-    """Compute Tom DeMark sequential up- and down-count exhaustion indicators.
-
-    The DeMark sequential identifies points where a directional move is likely
-    exhausted and prone to reverse. Each bar's ``target`` price is compared
-    against the close four bars earlier: when the current close exceeds the
-    earlier close, the upward count advances; when it falls short, the
-    downward count advances. The classic setup completes on count 9 and the
-    countdown phase on count 13, marking progressively higher-conviction
-    exhaustion signals.
-
-    Traders read a completed setup or countdown as a contrarian alert: a 9 or
-    13 print after an extended up-move is taken as a candidate top, the
-    mirror image after a down-move as a candidate bottom. The counts do not
-    define entries on their own but are commonly combined with price-action
-    confirmation and structural levels.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Price series containing the ``target`` column.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column on which the counts are evaluated, by default ``"close"``.
-    show_all : bool, optional
-        When ``True`` show counts 1-13; when ``False`` show only counts 6-9,
-        by default ``True``.
-    asint : bool, optional
-        Cast counts to integers and fill ``NaN`` with 0, by default ``True``.
-    offset : int, optional
-        Shift the output series by this many bars, by default 0.
-
-    Returns
-    -------
-    OBBject[list[DemarkData]]
-        Time series of upward and downward sequential counts aligned to the
-        input index.
-    """
+def demark(params: DemarkQueryParams) -> OBBject[list[DemarkData]]:
+    """Compute Tom DeMark sequential up- and down-count exhaustion indicators."""
     import pandas_ta as ta
 
-    params = DemarkQueryParams(
-        data=data,
-        index=index,
-        target=target,
-        show_all=show_all,
-        asint=asint,
-        offset=offset,
-    )
     df = basemodel_to_df(params.data, index=params.index)
     series = df[params.target]
     raw = ta.exhc(
@@ -348,7 +249,10 @@ class PivotPointsQueryParams(QueryParams):
     )
 
     data: list[Data] = Field(description="OHLC price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     method: PivotMethod = Field(
         default="classic",
         description="Pivot-point family. ``camarilla`` is the only one that fills r4/s4.",
@@ -386,15 +290,29 @@ class PivotPointsData(Data):
         Fourth support band; only populated when ``method='camarilla'``.
     """
 
-    date: datetime | dateType | str
+    date: datetime | dateType | str = Field(
+        description="Period start date of the resampled pivot."
+    )
     pivot: float | None = Field(description="Central pivot price.")
-    r1: float | None = None
-    r2: float | None = None
-    r3: float | None = None
+    r1: float | None = Field(
+        default=None, description="First resistance band above the pivot."
+    )
+    r2: float | None = Field(
+        default=None, description="Second resistance band above the pivot."
+    )
+    r3: float | None = Field(
+        default=None, description="Third resistance band above the pivot."
+    )
     r4: float | None = Field(default=None, description="Only populated for camarilla.")
-    s1: float | None = None
-    s2: float | None = None
-    s3: float | None = None
+    s1: float | None = Field(
+        default=None, description="First support band below the pivot."
+    )
+    s2: float | None = Field(
+        default=None, description="Second support band below the pivot."
+    )
+    s3: float | None = Field(
+        default=None, description="Third support band below the pivot."
+    )
     s4: float | None = Field(default=None, description="Only populated for camarilla.")
 
 
@@ -411,59 +329,11 @@ class PivotPointsData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def pivot_points(
-    data: list[Data],
-    index: str = "date",
-    method: Literal[
-        "classic", "fibonacci", "woodie", "camarilla", "demark"
-    ] = "classic",
-    anchor: Literal["day", "week", "month"] = "day",
-) -> OBBject[list[Data]]:
-    """Compute pivot-point support and resistance bands under multiple methods.
-
-    Pivot points are mechanical support/resistance levels derived from the
-    prior period's high, low, and close. The central pivot anchors the
-    calculation, and a ladder of resistance levels (r1, r2, r3, optionally r4)
-    is projected above it with a mirror ladder of support levels (s1, s2, s3,
-    optionally s4) below. Five families are supported: ``classic`` uses simple
-    HLC arithmetic; ``fibonacci`` spaces the bands at 38.2%, 61.8%, and 100%
-    of the prior range; ``woodie`` overweights the close; ``camarilla`` uses
-    tighter intraday-oriented bands and is the only family that emits r4/s4;
-    ``demark`` conditions the calculation on whether the close finished above,
-    below, or equal to the open.
-
-    Intraday traders watch the first touch of a pivot band as a candidate
-    reaction level — the central pivot doubles as the day's bull/bear
-    threshold, r1/s1 are the typical first-target zones, and r3/s3 mark
-    extended-move territory. The resampling anchor (``day``, ``week``, or
-    ``month``) sets the horizon: daily for intraday tactics, weekly or
-    monthly for swing structure.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    method : PivotMethod, optional
-        Pivot-point family. ``camarilla`` is the only method that fills the
-        r4/s4 outer bands, by default ``"classic"``.
-    anchor : PivotAnchor, optional
-        Resample anchor for the pivot calculation, by default ``"day"``.
-
-    Returns
-    -------
-    OBBject[list[PivotPointsData]]
-        One row per resampled period with the central pivot and its
-        resistance/support bands. ``r4`` and ``s4`` are populated only when
-        ``method='camarilla'``.
-    """
+def pivot_points(params: PivotPointsQueryParams) -> OBBject[list[PivotPointsData]]:
+    """Compute pivot-point support and resistance bands under multiple methods."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = PivotPointsQueryParams(
-        data=data, index=index, method=method, anchor=anchor
-    )
     df = basemodel_to_df(params.data, index=params.index)
     if params.index == "date":
         df.index = pd.to_datetime(df.index)

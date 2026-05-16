@@ -52,12 +52,28 @@ class IndicatorParam(Data):
         ``multiple_of``, ``min_length``, ``max_length``) when present.
     """
 
-    name: str
-    type: str
-    default: Any | None = None
-    description: str | None = None
-    choices: list[str] | None = None
-    constraints: dict[str, Any] | None = None
+    name: str = Field(
+        description="Parameter name as accepted by the indicator endpoint."
+    )
+    type: str = Field(
+        description="Stable, human-readable rendering of the parameter's Python type annotation, e.g. ``\"int\"`` or ``\"Literal['sma', 'ema']\"``."
+    )
+    default: Any | None = Field(
+        default=None,
+        description="Default value applied when the caller omits the parameter. ``None`` for required fields or when the default is not JSON-serialisable.",
+    )
+    description: str | None = Field(
+        default=None,
+        description="Human-readable parameter description sourced from the Pydantic ``Field`` description.",
+    )
+    choices: list[str] | None = Field(
+        default=None,
+        description="Allowed values when the parameter is a ``Literal``; ``None`` otherwise.",
+    )
+    constraints: dict[str, Any] | None = Field(
+        default=None,
+        description="Pydantic numeric constraints (``gt``, ``ge``, ``lt``, ``le``, ``multiple_of``, ``min_length``, ``max_length``) when present.",
+    )
 
 
 class IndicatorOutputColumn(Data):
@@ -78,10 +94,17 @@ class IndicatorOutputColumn(Data):
         description on the data model.
     """
 
-    name: str
-    type: str
-    nullable: bool
-    description: str | None = None
+    name: str = Field(description="Output column name.")
+    type: str = Field(
+        description="Stable, human-readable rendering of the column's Python type annotation."
+    )
+    nullable: bool = Field(
+        description="``True`` when the column can produce ``None`` values (e.g. warm-up rows)."
+    )
+    description: str | None = Field(
+        default=None,
+        description="Human-readable column description sourced from the Pydantic ``Field`` description on the data model.",
+    )
 
 
 class IndicatorEntry(Data):
@@ -107,13 +130,27 @@ class IndicatorEntry(Data):
         Minimal example payload, populated from each parameter's default.
     """
 
-    name: str
-    category: str
-    description: str | None
-    requires_columns: list[str]
-    params: list[IndicatorParam]
-    output_columns: list[IndicatorOutputColumn]
-    example_call: dict[str, Any]
+    name: str = Field(
+        description="Endpoint name, matching the function name registered on the router."
+    )
+    category: str = Field(
+        description='Indicator family — e.g. ``"overlay"``, ``"oscillator"``, ``"volatility"``, ``"multi"``.'
+    )
+    description: str | None = Field(
+        description="First line of the endpoint's QueryParams docstring."
+    )
+    requires_columns: list[str] = Field(
+        description="OHLCV columns the endpoint references in its docstring, in the canonical order ``open``, ``high``, ``low``, ``close``, ``volume``."
+    )
+    params: list[IndicatorParam] = Field(
+        description="Per-parameter metadata for the endpoint's QueryParams."
+    )
+    output_columns: list[IndicatorOutputColumn] = Field(
+        description="Per-column metadata for the endpoint's emitted data rows."
+    )
+    example_call: dict[str, Any] = Field(
+        description="Minimal example payload, populated from each parameter's default."
+    )
 
 
 class IndicatorsQueryParams(QueryParams):
@@ -146,7 +183,9 @@ class IndicatorsResponse(Data):
         Catalogue entries matching the requested category.
     """
 
-    indicators: list[IndicatorEntry]
+    indicators: list[IndicatorEntry] = Field(
+        description="Catalogue entries matching the requested category."
+    )
 
 
 _OHLCV_COLUMNS = {"open", "high", "low", "close", "volume"}
@@ -402,50 +441,8 @@ _CATALOG: _CatalogProxy = _CatalogProxy()
 
 
 @router.command(methods=["POST"])
-def indicators(
-    category: Literal[
-        "overlay",
-        "oscillator",
-        "volatility",
-        "volume",
-        "trend",
-        "signal",
-        "structure",
-        "stats",
-        "multi",
-        "all",
-    ]
-    | None = "all",
-) -> OBBject:
-    """Return the catalogue of registered technical indicators.
-
-    The endpoint introspects every indicator-family module known to the
-    technical extension, pairs each registered endpoint with its
-    ``XxxQueryParams`` and ``XxxData`` classes, and emits a structured
-    description: parameter list with types, defaults, choices, and numeric
-    constraints; output columns with nullability and descriptions; required
-    OHLCV columns (parsed from the QueryParams docstring); and a minimal
-    example call. The catalogue is built lazily on the first call and cached
-    for the lifetime of the process.
-
-    Use this endpoint to drive UI form generation, validate caller-supplied
-    indicator names before dispatching to the ``multi`` or ``screen``
-    endpoints, or build documentation pages that always reflect the live
-    router configuration.
-
-    Parameters
-    ----------
-    category : CatalogCategory, optional
-        Filter to a single family, or ``"all"`` (the default) to return
-        every entry.
-
-    Returns
-    -------
-    OBBject[IndicatorsResponse]
-        Response wrapper containing the list of catalogue entries matching
-        the requested category.
-    """
-    params = IndicatorsQueryParams(category=category)
+def indicators(params: IndicatorsQueryParams) -> OBBject[IndicatorsResponse]:
+    """Return the catalogue of registered technical indicators."""
     full = _catalog()
     if params.category in (None, "all"):
         selected = list(full)

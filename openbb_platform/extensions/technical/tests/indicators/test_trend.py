@@ -32,7 +32,7 @@ def long_records(ohlcv_df):
 
 class TestMacd:
     def test_default(self, long_records):
-        result = macd(data=long_records)
+        result = macd(MacdQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, MacdData) for r in result.results)
         first = result.results[0]
@@ -41,25 +41,25 @@ class TestMacd:
         assert first.histogram is not None
 
     def test_custom_windows(self, long_records):
-        result = macd(data=long_records, fast=5, slow=13, signal=4)
+        result = macd(MacdQueryParams(data=long_records, fast=5, slow=13, signal=4))
         assert result.results
 
 
 class TestAdx:
     def test_default(self, long_records):
-        result = adx(data=long_records, length=14)
+        result = adx(AdxQueryParams(data=long_records, length=14))
         assert result.results
         assert all(isinstance(r, AdxData) for r in result.results)
         assert result.results[0].adx is not None
 
     def test_custom_scalar_and_drift(self, long_records):
-        result = adx(data=long_records, length=14, scalar=50.0, drift=2)
+        result = adx(AdxQueryParams(data=long_records, length=14, scalar=50.0, drift=2))
         assert result.results
 
 
 class TestDi:
     def test_default(self, long_records):
-        result = di(data=long_records, length=14)
+        result = di(DiQueryParams(data=long_records, length=14))
         assert result.results
         assert all(isinstance(r, DiData) for r in result.results)
         first = result.results[0]
@@ -68,7 +68,7 @@ class TestDi:
         assert first.dx is not None
 
     def test_custom_scalar(self, long_records):
-        result = di(data=long_records, length=14, scalar=200.0, drift=1)
+        result = di(DiQueryParams(data=long_records, length=14, scalar=200.0, drift=1))
         assert result.results
 
     def test_dx_handles_zero_total(self):
@@ -82,13 +82,13 @@ class TestDi:
             index=idx,
         )
         records = df_to_basemodel(df.reset_index())
-        result = di(data=records, length=14)
+        result = di(DiQueryParams(data=records, length=14))
         assert result.results or result.results == []
 
 
 class TestAroon:
     def test_default(self, long_records):
-        result = aroon(data=long_records, length=25)
+        result = aroon(AroonQueryParams(data=long_records, length=25))
         assert result.results
         assert all(isinstance(r, AroonData) for r in result.results)
         first = result.results[0]
@@ -97,19 +97,23 @@ class TestAroon:
         assert first.aroon_oscillator is not None
 
     def test_custom_scalar(self, long_records):
-        result = aroon(data=long_records, length=25, scalar=50.0)
+        result = aroon(AroonQueryParams(data=long_records, length=25, scalar=50.0))
         assert result.results
 
 
 class TestChoppiness:
     def test_default(self, long_records):
-        result = choppiness(data=long_records, length=14)
+        result = choppiness(ChoppinessQueryParams(data=long_records, length=14))
         assert result.results
         assert all(isinstance(r, ChoppinessData) for r in result.results)
         assert result.results[0].choppiness is not None
 
     def test_custom_atr_length_and_scalar(self, long_records):
-        result = choppiness(data=long_records, length=14, atr_length=3, scalar=200.0)
+        result = choppiness(
+            ChoppinessQueryParams(
+                data=long_records, length=14, atr_length=3, scalar=200.0
+            )
+        )
         assert result.results
 
 

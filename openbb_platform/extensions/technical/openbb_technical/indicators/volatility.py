@@ -175,71 +175,9 @@ class RealizedVolatilityData(Data):
     ],
 )
 def realized_volatility(
-    data: list[Data],
-    model: Literal[
-        "std",
-        "parkinson",
-        "garman_klass",
-        "hodges_tompkins",
-        "rogers_satchell",
-        "yang_zhang",
-    ] = "yang_zhang",
-    index: str = "date",
-    window: int = 30,
-    trading_periods: int | None = None,
-    is_crypto: bool = False,
-    clean: bool = True,
-) -> OBBject[list[Data]]:
-    """Calculate annualised rolling realised volatility under a chosen estimator.
-
-    Realised volatility quantifies the dispersion of returns over a trailing
-    window, scaled to an annual horizon. Six estimators are supported. The
-    close-to-close standard-deviation estimator (``std``) is the textbook choice
-    but discards intraday information. Range-based estimators (``parkinson``,
-    ``garman_klass``, ``rogers_satchell``) extract additional signal from the
-    high/low/open prices and have lower estimator variance per observation.
-    ``hodges_tompkins`` corrects the small-sample bias of the close-to-close
-    estimator; ``yang_zhang`` blends overnight, open-to-close, and Rogers-Satchell
-    drift-invariant pieces and is the minimum-variance estimator that
-    accommodates non-zero drift.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC(V) price series. Range-based estimators require ``high`` and
-        ``low``; ``garman_klass`` and ``yang_zhang`` additionally require
-        ``open``.
-    model : RealizedVolatilityModel, optional
-        Estimator to apply, by default ``"yang_zhang"``.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    window : PositiveInt, optional
-        Rolling window length in bars, by default 30.
-    trading_periods : PositiveInt, optional
-        Annualisation factor. When unset, resolves to 365 if ``is_crypto`` is
-        ``True``, otherwise 252.
-    is_crypto : bool, optional
-        When ``True`` and ``trading_periods`` is unset, annualise over 365
-        instead of 252, by default ``False``.
-    clean : bool, optional
-        Drop leading warm-up rows where the rolling window has not yet
-        filled, by default ``True``.
-
-    Returns
-    -------
-    OBBject[list[RealizedVolatilityData]]
-        Annualised volatility time series with ``model``, ``window``, and
-        ``trading_periods`` echoed on every row.
-    """
-    params = RealizedVolatilityQueryParams(
-        data=data,
-        model=model,
-        index=index,
-        window=window,
-        trading_periods=trading_periods,
-        is_crypto=is_crypto,
-        clean=clean,
-    )
+    params: RealizedVolatilityQueryParams,
+) -> OBBject[list[RealizedVolatilityData]]:
+    """Calculate annualised rolling realised volatility under a chosen estimator."""
     validate_data(params.data, [params.window])
     df = basemodel_to_df(params.data, index=params.index)
     series = _VOL_FUNCTIONS[params.model](
@@ -313,10 +251,21 @@ class RealizedVolatilityCompareQueryParams(QueryParams):
         ],
         description="Estimators to compute. Defaults to all six.",
     )
-    index: str = Field(default="date")
-    window: PositiveInt = Field(default=30)
-    trading_periods: PositiveInt | None = Field(default=None)
-    is_crypto: bool = Field(default=False)
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
+    window: PositiveInt = Field(
+        default=30, description="Rolling window length in bars, by default 30."
+    )
+    trading_periods: PositiveInt | None = Field(
+        default=None,
+        description="Annualisation factor. When unset, resolves to 365 if ``is_crypto`` is ``True``, otherwise 252.",
+    )
+    is_crypto: bool = Field(
+        default=False,
+        description="When ``True`` and ``trading_periods`` is unset, annualise over 365 instead of 252, by default ``False``.",
+    )
     clean: bool = Field(
         default=True,
         description="Drop rows where ANY requested model has not yet warmed up.",
@@ -344,13 +293,25 @@ class RealizedVolatilityCompareData(Data):
         Yang-Zhang minimum-variance volatility.
     """
 
-    date: datetime | dateType | str
-    std: float | None = None
-    parkinson: float | None = None
-    garman_klass: float | None = None
-    hodges_tompkins: float | None = None
-    rogers_satchell: float | None = None
-    yang_zhang: float | None = None
+    date: datetime | dateType | str = Field(description="Observation date.")
+    std: float | None = Field(
+        default=None, description="Close-to-close standard-deviation volatility."
+    )
+    parkinson: float | None = Field(
+        default=None, description="Parkinson range-based volatility."
+    )
+    garman_klass: float | None = Field(
+        default=None, description="Garman-Klass OHLC volatility."
+    )
+    hodges_tompkins: float | None = Field(
+        default=None, description="Bias-corrected close-to-close volatility."
+    )
+    rogers_satchell: float | None = Field(
+        default=None, description="Rogers-Satchell drift-invariant volatility."
+    )
+    yang_zhang: float | None = Field(
+        default=None, description="Yang-Zhang minimum-variance volatility."
+    )
 
 
 @router.command(
@@ -358,76 +319,11 @@ class RealizedVolatilityCompareData(Data):
     examples=[APIEx(parameters={"data": APIEx.mock_data("timeseries")})],
 )
 def realized_volatility_compare(
-    data: list[Data],
-    models: list[
-        Literal[
-            "std",
-            "parkinson",
-            "garman_klass",
-            "hodges_tompkins",
-            "rogers_satchell",
-            "yang_zhang",
-        ]
-    ]
-    | None = None,
-    index: str = "date",
-    window: int = 30,
-    trading_periods: int | None = None,
-    is_crypto: bool = False,
-    clean: bool = True,
-) -> OBBject[list[Data]]:
-    """Compute realised volatility under every requested estimator, side by side.
-
-    This endpoint returns a wide-format time series with one column per
-    estimator, aligned on a common date index. It is useful for visualising
-    estimator dispersion — range-based estimators typically respond more
-    quickly to regime shifts than close-to-close, and ``yang_zhang`` typically
-    sits between the range-based and close-to-close families.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series. All four price columns are required.
-    models : list[RealizedVolatilityModel], optional
-        Estimators to compute. ``None`` selects all six.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    window : PositiveInt, optional
-        Rolling window length in bars, by default 30.
-    trading_periods : PositiveInt, optional
-        Annualisation factor. When unset, resolves to 365 if ``is_crypto`` is
-        ``True``, otherwise 252.
-    is_crypto : bool, optional
-        When ``True`` and ``trading_periods`` is unset, annualise over 365
-        instead of 252, by default ``False``.
-    clean : bool, optional
-        Drop rows where any requested model has not yet warmed up, by default
-        ``True``.
-
-    Returns
-    -------
-    OBBject[list[RealizedVolatilityCompareData]]
-        Wide-format frame with one column per requested estimator.
-    """
+    params: RealizedVolatilityCompareQueryParams,
+) -> OBBject[list[RealizedVolatilityCompareData]]:
+    """Compute realised volatility under every requested estimator, side by side."""
     import pandas as pd
 
-    default_models: list[RealizedVolatilityModel] = [
-        "std",
-        "parkinson",
-        "garman_klass",
-        "hodges_tompkins",
-        "rogers_satchell",
-        "yang_zhang",
-    ]
-    params = RealizedVolatilityCompareQueryParams(
-        data=data,
-        models=models or default_models,
-        index=index,
-        window=window,
-        trading_periods=trading_periods,
-        is_crypto=is_crypto,
-        clean=clean,
-    )
     validate_data(params.data, [params.window])
     df = basemodel_to_df(params.data, index=params.index)
     columns: dict[str, pd.Series] = {}
@@ -488,7 +384,10 @@ class ConesQueryParams(QueryParams):
     )
 
     data: list[Data] = Field(description="OHLC price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     lower_q: float = Field(
         default=0.25,
         description="Lower quantile for the cone band (0–1, exclusive of 1).",
@@ -497,9 +396,18 @@ class ConesQueryParams(QueryParams):
         default=0.75,
         description="Upper quantile for the cone band (0–1, exclusive of 1).",
     )
-    model: RealizedVolatilityModel = Field(default="std")
-    is_crypto: bool = Field(default=False)
-    trading_periods: PositiveInt | None = Field(default=None)
+    model: RealizedVolatilityModel = Field(
+        default="std",
+        description='Estimator applied to each rolling window, by default ``"std"``.',
+    )
+    is_crypto: bool = Field(
+        default=False,
+        description="When ``True`` and ``trading_periods`` is unset, annualise over 365 instead of 252, by default ``False``.",
+    )
+    trading_periods: PositiveInt | None = Field(
+        default=None,
+        description="Annualisation factor. When unset, resolves to 365 if ``is_crypto`` is ``True``, otherwise 252.",
+    )
 
 
 class ConesData(Data):
@@ -526,11 +434,17 @@ class ConesData(Data):
 
     window: int = Field(description="Rolling window length in bars.")
     realized: float | None = Field(description="Most-recent annualised volatility.")
-    min: float | None
+    min: float | None = Field(
+        description="Historical minimum of annualised volatility at this window."
+    )
     lower: float | None = Field(description="Lower-quantile cone band.")
-    median: float | None
+    median: float | None = Field(
+        description="Historical median of annualised volatility at this window."
+    )
     upper: float | None = Field(description="Upper-quantile cone band.")
-    max: float | None
+    max: float | None = Field(
+        description="Historical maximum of annualised volatility at this window."
+    )
 
 
 @router.command(
@@ -546,66 +460,8 @@ class ConesData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def cones(
-    data: list[Data],
-    index: str = "date",
-    lower_q: float = 0.25,
-    upper_q: float = 0.75,
-    model: Literal[
-        "std",
-        "parkinson",
-        "garman_klass",
-        "hodges_tompkins",
-        "rogers_satchell",
-        "yang_zhang",
-    ] = "std",
-    is_crypto: bool = False,
-    trading_periods: int | None = None,
-) -> OBBject[list[Data]]:
-    """Build a volatility-cone snapshot summarising realised volatility by window.
-
-    A volatility cone visualises how realised volatility depends on the lookback
-    horizon. For each rolling window (10, 30, 60, …, 360 bars by default) the
-    endpoint reports the most-recent annualised volatility alongside the
-    historical minimum, lower quantile, median, upper quantile, and maximum of
-    rolling volatility at that window. The most-recent value plotted against
-    the historical band exposes whether the market is unusually quiet or
-    turbulent relative to its own past behaviour at that horizon.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    lower_q : float, optional
-        Lower quantile for the cone band, by default 0.25.
-    upper_q : float, optional
-        Upper quantile for the cone band, by default 0.75.
-    model : RealizedVolatilityModel, optional
-        Estimator to apply at each window, by default ``"std"``.
-    is_crypto : bool, optional
-        When ``True`` and ``trading_periods`` is unset, annualise over 365
-        instead of 252, by default ``False``.
-    trading_periods : PositiveInt, optional
-        Annualisation factor. When unset, resolves to 365 if ``is_crypto`` is
-        ``True``, otherwise 252.
-
-    Returns
-    -------
-    OBBject[list[ConesData]]
-        One row per analysis window with realised, min, lower, median, upper,
-        max columns.
-    """
-    params = ConesQueryParams(
-        data=data,
-        index=index,
-        lower_q=lower_q,
-        upper_q=upper_q,
-        model=model,
-        is_crypto=is_crypto,
-        trading_periods=trading_periods,
-    )
+def cones(params: ConesQueryParams) -> OBBject[list[ConesData]]:
+    """Build a volatility-cone snapshot summarising realised volatility by window."""
     df = basemodel_to_df(params.data, index=params.index)
     table = calculate_cones(
         df,
@@ -654,7 +510,10 @@ class AtrQueryParams(QueryParams):
     __output_columns__ = ("date", "atr")
 
     data: list[Data] = Field(description="OHLC price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     length: PositiveInt = Field(default=14, description="ATR lookback window.")
     mamode: Literal["sma", "ema", "wma", "rma"] = Field(
         default="rma",
@@ -663,7 +522,10 @@ class AtrQueryParams(QueryParams):
     drift: PositiveInt = Field(
         default=1, description="Difference period for true-range."
     )
-    offset: int = Field(default=0)
+    offset: int = Field(
+        default=0,
+        description="Shift the output series by this many bars, by default 0.",
+    )
 
 
 class AtrData(Data):
@@ -678,7 +540,7 @@ class AtrData(Data):
         warm-up rows preceding ``length``.
     """
 
-    date: datetime | dateType | str
+    date: datetime | dateType | str = Field(description="Observation date.")
     atr: float | None = Field(
         description="Average true range over the trailing ``length`` bars."
     )
@@ -697,56 +559,11 @@ class AtrData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries"), "length": 14}),
     ],
 )
-def atr(
-    data: list[Data],
-    index: str = "date",
-    length: int = 14,
-    mamode: Literal["sma", "ema", "wma", "rma"] = "rma",
-    drift: int = 1,
-    offset: int = 0,
-) -> OBBject[list[Data]]:
-    """Calculate the Average True Range (ATR), Wilder's volatility measure.
-
-    ATR is the trailing average of the true range, where true range on each
-    bar is the maximum of (a) high minus low, (b) absolute value of high minus
-    previous close, and (c) absolute value of low minus previous close. By
-    including gaps, true range captures volatility that close-to-close measures
-    miss. ATR is non-directional — it measures the magnitude of price
-    excursions, not their sign — and is a standard input for position-sizing
-    rules and stop-loss placement.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series; ``high``, ``low``, and ``close`` are required.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    length : PositiveInt, optional
-        ATR lookback window in bars, by default 14.
-    mamode : {"sma", "ema", "wma", "rma"}, optional
-        Smoothing applied to true-range. ``rma`` is the Wilder default,
-        by default ``"rma"``.
-    drift : PositiveInt, optional
-        Difference period for true-range, by default 1.
-    offset : int, optional
-        Shift the output series by this many bars, by default 0.
-
-    Returns
-    -------
-    OBBject[list[AtrData]]
-        ATR time series with warm-up rows dropped.
-    """
+def atr(params: AtrQueryParams) -> OBBject[list[AtrData]]:
+    """Calculate the Average True Range (ATR), Wilder's volatility measure."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = AtrQueryParams(
-        data=data,
-        index=index,
-        length=length,
-        mamode=mamode,
-        drift=drift,
-        offset=offset,
-    )
     validate_data(params.data, [params.length])
     df = basemodel_to_df(params.data, index=params.index)
     series = df.ta.atr(

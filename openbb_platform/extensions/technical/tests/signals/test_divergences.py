@@ -144,10 +144,12 @@ def random_walk_records():
 class TestDivergencesEndpoint:
     def test_regular_bullish(self, regular_bullish_records):
         result = divergences(
-            data=regular_bullish_records,
-            indicator="rsi",
-            lookback=100,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=regular_bullish_records,
+                indicator="rsi",
+                lookback=100,
+                min_swing_distance=5,
+            )
         )
         kinds = {e.kind for e in result.results}
         assert "regular_bullish" in kinds
@@ -160,10 +162,12 @@ class TestDivergencesEndpoint:
 
     def test_regular_bearish(self, regular_bearish_records):
         result = divergences(
-            data=regular_bearish_records,
-            indicator="rsi",
-            lookback=100,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=regular_bearish_records,
+                indicator="rsi",
+                lookback=100,
+                min_swing_distance=5,
+            )
         )
         kinds = {e.kind for e in result.results}
         assert "regular_bearish" in kinds
@@ -174,20 +178,24 @@ class TestDivergencesEndpoint:
 
     def test_hidden_bullish(self, hidden_bullish_records):
         result = divergences(
-            data=hidden_bullish_records,
-            indicator="rsi",
-            lookback=100,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=hidden_bullish_records,
+                indicator="rsi",
+                lookback=100,
+                min_swing_distance=5,
+            )
         )
         kinds = {e.kind for e in result.results}
         assert "hidden_bullish" in kinds
 
     def test_hidden_bearish(self, hidden_bearish_records):
         result = divergences(
-            data=hidden_bearish_records,
-            indicator="rsi",
-            lookback=100,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=hidden_bearish_records,
+                indicator="rsi",
+                lookback=100,
+                min_swing_distance=5,
+            )
         )
         kinds = {e.kind for e in result.results}
         assert "hidden_bearish" in kinds
@@ -195,29 +203,35 @@ class TestDivergencesEndpoint:
     @pytest.mark.parametrize("indicator", ["rsi", "macd", "stoch", "cci"])
     def test_every_indicator_runs(self, random_walk_records, indicator):
         result = divergences(
-            data=random_walk_records,
-            indicator=indicator,
-            lookback=100,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=random_walk_records,
+                indicator=indicator,
+                lookback=100,
+                min_swing_distance=5,
+            )
         )
         dates = [e.confirmation_date for e in result.results]
         assert dates == sorted(dates)
 
     def test_short_lookback_returns_empty(self, regular_bullish_records):
         result = divergences(
-            data=regular_bullish_records,
-            indicator="rsi",
-            lookback=8,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=regular_bullish_records,
+                indicator="rsi",
+                lookback=8,
+                min_swing_distance=5,
+            )
         )
         assert result.results == []
 
     def test_events_sorted_chronologically(self, regular_bullish_records):
         result = divergences(
-            data=regular_bullish_records,
-            indicator="rsi",
-            lookback=100,
-            min_swing_distance=5,
+            DivergencesQueryParams(
+                data=regular_bullish_records,
+                indicator="rsi",
+                lookback=100,
+                min_swing_distance=5,
+            )
         )
         dates = [e.confirmation_date for e in result.results]
         assert dates == sorted(dates)

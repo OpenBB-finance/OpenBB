@@ -68,52 +68,72 @@ def flat_records() -> list:
 class TestMethodBranches:
     @pytest.mark.parametrize("method", ["donchian", "bollinger"])
     def test_each_method_returns_breakout_events(self, regime_records, method):
-        result = breakouts(data=regime_records, method=method, length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=regime_records, method=method, length=20)
+        )
         assert result.results
         assert all(isinstance(r, BreakoutEvent) for r in result.results)
 
     def test_bollinger_uses_default_std_when_not_given(self, regime_records):
-        default = breakouts(data=regime_records, method="bollinger", length=20)
+        default = breakouts(
+            BreakoutsQueryParams(data=regime_records, method="bollinger", length=20)
+        )
         explicit = breakouts(
-            data=regime_records, method="bollinger", length=20, band_std=2.0
+            BreakoutsQueryParams(
+                data=regime_records, method="bollinger", length=20, band_std=2.0
+            )
         )
         assert len(default.results) == len(explicit.results)
 
     def test_bollinger_smaller_std_yields_more_breakouts(self, regime_records):
         wide = breakouts(
-            data=regime_records, method="bollinger", length=20, band_std=3.0
+            BreakoutsQueryParams(
+                data=regime_records, method="bollinger", length=20, band_std=3.0
+            )
         )
         narrow = breakouts(
-            data=regime_records, method="bollinger", length=20, band_std=1.0
+            BreakoutsQueryParams(
+                data=regime_records, method="bollinger", length=20, band_std=1.0
+            )
         )
         assert len(narrow.results) > len(wide.results)
 
 
 class TestSparseEmission:
     def test_flat_series_emits_no_events(self, flat_records):
-        result = breakouts(data=flat_records, method="donchian", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=flat_records, method="donchian", length=20)
+        )
         assert result.results == []
 
     def test_flat_series_emits_no_events_bollinger(self, flat_records):
-        result = breakouts(data=flat_records, method="bollinger", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=flat_records, method="bollinger", length=20)
+        )
         assert result.results == []
 
     def test_events_are_sparse_subset_of_bars(self, regime_records):
-        result = breakouts(data=regime_records, method="donchian", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=regime_records, method="donchian", length=20)
+        )
         assert 0 < len(result.results) < len(regime_records)
 
 
 class TestEventFields:
     def test_upside_direction(self, long_records):
         """A strictly monotone-rising series produces only upside breakouts."""
-        result = breakouts(data=long_records, method="donchian", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=long_records, method="donchian", length=20)
+        )
         assert result.results
         assert all(r.direction == "upside" for r in result.results)
         assert all(r.magnitude > 0 for r in result.results)
         assert all(r.price > r.band for r in result.results)
 
     def test_downside_direction(self, regime_records):
-        result = breakouts(data=regime_records, method="donchian", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=regime_records, method="donchian", length=20)
+        )
         downsides = [r for r in result.results if r.direction == "downside"]
         assert downsides
         assert all(r.magnitude < 0 for r in downsides)
@@ -121,13 +141,17 @@ class TestEventFields:
 
     def test_bars_in_range_monotone_for_first_event(self, regime_records):
         """``bars_in_range`` on the first event equals the bar index."""
-        result = breakouts(data=regime_records, method="donchian", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=regime_records, method="donchian", length=20)
+        )
         first = result.results[0]
         assert first.bars_in_range >= 0
 
     def test_bars_in_range_is_inter_event_gap(self, regime_records):
         """For each event after the first, bars_in_range = gap to prior event."""
-        result = breakouts(data=regime_records, method="donchian", length=20)
+        result = breakouts(
+            BreakoutsQueryParams(data=regime_records, method="donchian", length=20)
+        )
         assert len(result.results) >= 2
         for r in result.results[1:]:
             assert r.bars_in_range >= 1

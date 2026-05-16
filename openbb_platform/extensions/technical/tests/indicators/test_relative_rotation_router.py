@@ -6,7 +6,10 @@ import pandas as pd
 import pytest
 
 from openbb_technical.indicators.relative_rotation import relative_rotation
-from openbb_technical.relative_rotation import RelativeRotationData
+from openbb_technical.relative_rotation import (
+    RelativeRotationData,
+    RelativeRotationQueryParams,
+)
 
 
 @pytest.fixture(scope="module")
@@ -32,7 +35,9 @@ def multi_symbol_records() -> list[dict]:
 class TestRelativeRotationRouter:
     @pytest.mark.asyncio
     async def test_returns_relative_rotation_data(self, multi_symbol_records):
-        result = await relative_rotation(data=multi_symbol_records, benchmark="SPY")
+        result = await relative_rotation(
+            RelativeRotationQueryParams(data=multi_symbol_records, benchmark="SPY")
+        )
         assert isinstance(result.results, RelativeRotationData)
         assert result.results.benchmark == "SPY"
         assert "AAPL" in result.results.symbols

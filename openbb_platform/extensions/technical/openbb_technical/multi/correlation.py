@@ -99,61 +99,10 @@ class CorrelationData(Data):
 
 
 @router.command(methods=["POST"])
-def correlation(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    window: int = 60,
-    method: Literal["pearson", "spearman", "kendall"] = "pearson",
-    pairs: list[tuple[str, str]] | None = None,
-) -> OBBject[list[Data]]:
-    """Compute rolling pairwise correlation of returns across symbols.
-
-    The endpoint pivots the long-format input into a wide return matrix
-    (``pct_change`` of the chosen ``target`` column per symbol) and then
-    evaluates a rolling correlation for every requested pair. ``pearson`` uses
-    the fast ``pandas.Series.rolling.corr`` path; ``spearman`` and ``kendall``
-    fall back to a per-window evaluation because pandas does not expose a
-    rank-based rolling correlation primitive. For non-Pearson methods, any
-    NaN inside a window invalidates that window and emits ``None``.
-
-    Rolling correlation is the standard diagnostic for cross-asset
-    co-movement, regime shifts, and diversification breakdown — pairs that
-    historically decorrelate may converge during stress, and this endpoint
-    exposes the trajectory bar-by-bar.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Long-format multi-symbol price data with a ``symbol`` column.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to compute correlation on, by default ``"close"``.
-    window : PositiveInt, optional
-        Rolling window length in bars, by default 60.
-    method : {"pearson", "spearman", "kendall"}, optional
-        Correlation method, by default ``"pearson"``.
-    pairs : list[tuple[str, str]], optional
-        Explicit list of ``(symbol_a, symbol_b)`` pairs. ``None`` enumerates
-        every unique pair from the available symbols.
-
-    Returns
-    -------
-    OBBject[list[CorrelationData]]
-        Long-format time series, one row per ``(date, symbol_a, symbol_b)``
-        triple with the rolling correlation value.
-    """
+def correlation(params: CorrelationQueryParams) -> OBBject[list[CorrelationData]]:
+    """Compute rolling pairwise correlation of returns across symbols."""
     import math
 
-    params = CorrelationQueryParams(
-        data=data,
-        index=index,
-        target=target,
-        window=window,
-        method=method,
-        pairs=pairs,
-    )
     df = basemodel_to_df(params.data, index=params.index)
     if "symbol" not in df.columns:
         raise ValueError("Input data must contain a 'symbol' column.")
@@ -214,9 +163,7 @@ def correlation(
                     correlation=value,
                 )
             )
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=rows)  # ty: ignore[invalid-return-type]
+    return OBBject(results=rows)
 
 
 class CorrelationMatrixQueryParams(QueryParams):
@@ -257,7 +204,9 @@ class CorrelationMatrixQueryParams(QueryParams):
             "before ``as_of_date``. ``None`` uses every available row."
         ),
     )
-    method: Literal["pearson", "spearman", "kendall"] = Field(default="pearson")
+    method: Literal["pearson", "spearman", "kendall"] = Field(
+        default="pearson", description='Correlation method, by default ``"pearson"``.'
+    )
     as_of_date: datetime | dateType | str | None = Field(
         default=None,
         description=(
@@ -291,61 +240,13 @@ class CorrelationMatrixData(Data):
 
 @router.command(methods=["POST"])
 def correlation_matrix(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    window: int | None = None,
-    method: Literal["pearson", "spearman", "kendall"] = "pearson",
-    as_of_date: date | str | None = None,
-) -> OBBject[list[Data]]:
-    """Build a point-in-time correlation matrix across every symbol in the input.
-
-    The endpoint pivots the long-format input into wide returns, optionally
-    slices to the trailing ``window`` bars preceding ``as_of_date``, and then
-    delegates to ``pandas.DataFrame.corr`` for the chosen method. ``pearson``
-    is the linear product-moment correlation; ``spearman`` and ``kendall``
-    rank-based methods are robust to non-linear monotonic relationships and
-    to outliers.
-
-    A correlation snapshot is the canonical input for portfolio risk
-    decomposition, hierarchical clustering, and basket construction. Analysts
-    use this endpoint to inspect cross-asset structure on a given date —
-    e.g. an as-of report showing how equities and bonds were co-moving at
-    the close of a recent stress window.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Long-format multi-symbol price data with a ``symbol`` column.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to correlate, by default ``"close"``.
-    window : PositiveInt, optional
-        Trailing window length. ``None`` uses every available row.
-    method : {"pearson", "spearman", "kendall"}, optional
-        Correlation method, by default ``"pearson"``.
-    as_of_date : date | str, optional
-        Anchor date. ``None`` uses the most recent row in the input.
-
-    Returns
-    -------
-    OBBject[list[CorrelationMatrixData]]
-        A single-element list containing the symbol ordering, the
-        ``as_of_date`` actually used, and the square correlation matrix.
-    """
+    params: CorrelationMatrixQueryParams,
+) -> OBBject[list[CorrelationMatrixData]]:
+    """Build a point-in-time correlation matrix across every symbol in the input."""
     import math
 
     import pandas as pd
 
-    params = CorrelationMatrixQueryParams(
-        data=data,
-        index=index,
-        target=target,
-        window=window,
-        method=method,
-        as_of_date=as_of_date,
-    )
     df = basemodel_to_df(params.data, index=params.index)
     if "symbol" not in df.columns:
         raise ValueError("Input data must contain a 'symbol' column.")

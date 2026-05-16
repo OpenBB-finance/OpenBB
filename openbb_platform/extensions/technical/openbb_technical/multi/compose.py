@@ -53,6 +53,21 @@ def _resolve_indicator(name: str) -> Callable[..., Any] | None:
     return None  # pragma: no cover - guarded at the caller
 
 
+def _call_indicator(fn: Callable[..., Any], **kwargs: Any) -> Any:
+    """Invoke an indicator endpoint, building its QueryParams model from kwargs.
+
+    Every router endpoint takes a single ``params: XxxQueryParams`` argument.
+    The model class is read from the function signature and instantiated from
+    ``kwargs``; any kwarg the model does not declare (e.g. ``target`` for an
+    endpoint with no target field) is dropped so construction does not fail.
+    """
+    import inspect
+
+    qp_class = next(iter(inspect.signature(fn).parameters.values())).annotation
+    accepted = {k: v for k, v in kwargs.items() if k in qp_class.model_fields}
+    return fn(qp_class(**accepted))
+
+
 class MultiIndicatorRequest(QueryParams):
     """Describe one indicator the caller wants computed.
 
@@ -175,55 +190,8 @@ def _numeric_columns(row: dict[str, Any], target: str) -> dict[str, float | None
 
 
 @router.command(methods=["POST"])
-def multi(
-    data: list[Data],
-    indicators: list[dict],
-    index: str = "date",
-    target: str = "close",
-) -> OBBject[list[Data]]:
-    """Run multiple indicators on a single price series and merge them by date.
-
-    The endpoint accepts a list of indicator requests, looks each one up against
-    the registered technical router families (overlays, oscillators, volatility,
-    volume, trend, structure, statistics, signals), and dispatches them against
-    the same input series. Each indicator's numeric output columns are merged
-    onto a common date index and keyed as ``"<indicator>.<column>"`` so the
-    caller can identify which indicator produced which value.
-
-    This composition pattern lets analysts build feature frames in one round
-    trip — for example, computing RSI, MACD, and Bollinger Bands together for
-    downstream rule construction or model input — without re-uploading the same
-    OHLC(V) payload to each indicator endpoint separately. Indicators that are
-    unknown to the router are silently skipped so heterogeneous configurations
-    can be tolerated.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input OHLC(V) price series, shared by every requested indicator.
-    indicators : list[MultiIndicatorRequest]
-        Indicators to compute. Each entry names an endpoint and its keyword
-        arguments.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Target column forwarded to indicators that accept one, by default
-        ``"close"``.
-
-    Returns
-    -------
-    OBBject[list[MultiResultRow]]
-        Long-format time series. Each row carries a date and a ``values`` dict
-        containing every numeric indicator column emitted for that date.
-    """
-    params = MultiQueryParams(
-        data=data,
-        # ``indicators`` is typed ``list[dict]`` at the surface for static-package
-        # compatibility; Pydantic coerces each dict to ``MultiIndicatorRequest`` here.
-        indicators=indicators,  # ty: ignore[invalid-argument-type]
-        index=index,
-        target=target,
-    )
+def multi(params: MultiQueryParams) -> OBBject[list[MultiResultRow]]:
+    """Run multiple indicators on a single price series and merge them by date."""
 
     merged: dict[Any, dict[str, float | None]] = {}
 
@@ -231,14 +199,13 @@ def multi(
         fn = _resolve_indicator(request.indicator)
         if fn is None:
             continue
-        kwargs: dict[str, Any] = {"data": params.data, "index": params.index}
-        import inspect
-
-        sig = inspect.signature(fn)
-        if "target" in sig.parameters:
-            kwargs["target"] = params.target
-        kwargs.update(request.params)
-        result = fn(**kwargs)
+        result = _call_indicator(
+            fn,
+            data=params.data,
+            index=params.index,
+            target=params.target,
+            **request.params,
+        )
         rows = _to_records(result)
         for row in rows:
             key = _row_key(row, params.index)
@@ -254,9 +221,7 @@ def multi(
         MultiResultRow(date=key, values=merged[key])  # ty: ignore[invalid-argument-type]
         for key in ordered_keys
     ]
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=out_rows)  # ty: ignore[invalid-return-type]
+    return OBBject(results=out_rows)
 
 
 __all__ = [

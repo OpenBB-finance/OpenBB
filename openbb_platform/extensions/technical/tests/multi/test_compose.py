@@ -71,8 +71,12 @@ class TestHelpers:
 class TestMultiEndpoint:
     def test_single_indicator(self, single_symbol_records):
         out = multi(
-            data=single_symbol_records,
-            indicators=[MultiIndicatorRequest(indicator="rsi", params={"length": 14})],
+            MultiQueryParams(
+                data=single_symbol_records,
+                indicators=[
+                    MultiIndicatorRequest(indicator="rsi", params={"length": 14})
+                ],
+            )
         )
         assert out.results
         assert all(isinstance(r, MultiResultRow) for r in out.results)
@@ -80,11 +84,13 @@ class TestMultiEndpoint:
 
     def test_two_indicators_merge(self, single_symbol_records):
         out = multi(
-            data=single_symbol_records,
-            indicators=[
-                MultiIndicatorRequest(indicator="rsi", params={"length": 14}),
-                MultiIndicatorRequest(indicator="atr", params={"length": 14}),
-            ],
+            MultiQueryParams(
+                data=single_symbol_records,
+                indicators=[
+                    MultiIndicatorRequest(indicator="rsi", params={"length": 14}),
+                    MultiIndicatorRequest(indicator="atr", params={"length": 14}),
+                ],
+            )
         )
         assert out.results
         for row in out.results:
@@ -97,11 +103,13 @@ class TestMultiEndpoint:
 
     def test_unknown_indicator_skipped(self, single_symbol_records):
         out = multi(
-            data=single_symbol_records,
-            indicators=[
-                MultiIndicatorRequest(indicator="not_a_real_indicator", params={}),
-                MultiIndicatorRequest(indicator="rsi", params={"length": 14}),
-            ],
+            MultiQueryParams(
+                data=single_symbol_records,
+                indicators=[
+                    MultiIndicatorRequest(indicator="not_a_real_indicator", params={}),
+                    MultiIndicatorRequest(indicator="rsi", params={"length": 14}),
+                ],
+            )
         )
         assert out.results
         assert all(

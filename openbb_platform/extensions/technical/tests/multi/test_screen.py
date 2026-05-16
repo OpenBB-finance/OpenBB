@@ -96,16 +96,18 @@ class TestEvaluate:
 class TestScreenEndpoint:
     def test_and_combine_default(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            conditions=[
-                ScreenCondition(
-                    indicator="rsi",
-                    column="rsi",
-                    operator="gt",
-                    value=0,
-                    indicator_params={"length": 14},
-                ),
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                conditions=[
+                    ScreenCondition(
+                        indicator="rsi",
+                        column="rsi",
+                        operator="gt",
+                        value=0,
+                        indicator_params={"length": 14},
+                    ),
+                ],
+            )
         )
         assert out.results
         assert all(isinstance(r, ScreenMatch) for r in out.results)
@@ -113,85 +115,95 @@ class TestScreenEndpoint:
 
     def test_or_combine(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            combine="or",
-            conditions=[
-                ScreenCondition(
-                    indicator="rsi",
-                    column="rsi",
-                    operator="gt",
-                    value=10000,
-                    indicator_params={"length": 14},
-                ),
-                ScreenCondition(
-                    indicator="atr",
-                    column="atr",
-                    operator="gt",
-                    value=0,
-                    indicator_params={"length": 14},
-                ),
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                combine="or",
+                conditions=[
+                    ScreenCondition(
+                        indicator="rsi",
+                        column="rsi",
+                        operator="gt",
+                        value=10000,
+                        indicator_params={"length": 14},
+                    ),
+                    ScreenCondition(
+                        indicator="atr",
+                        column="atr",
+                        operator="gt",
+                        value=0,
+                        indicator_params={"length": 14},
+                    ),
+                ],
+            )
         )
         assert {m.symbol for m in out.results} == {"AAA", "BBB", "CCC"}
 
     def test_unknown_indicator_skipped(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            conditions=[
-                ScreenCondition(
-                    indicator="not_a_real_indicator",
-                    column="x",
-                    operator="gt",
-                    value=0,
-                )
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                conditions=[
+                    ScreenCondition(
+                        indicator="not_a_real_indicator",
+                        column="x",
+                        operator="gt",
+                        value=0,
+                    )
+                ],
+            )
         )
         assert out.results == []
 
     def test_unknown_column_skipped(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            conditions=[
-                ScreenCondition(
-                    indicator="rsi",
-                    column="not_a_column",
-                    operator="gt",
-                    value=0,
-                    indicator_params={"length": 14},
-                )
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                conditions=[
+                    ScreenCondition(
+                        indicator="rsi",
+                        column="not_a_column",
+                        operator="gt",
+                        value=0,
+                        indicator_params={"length": 14},
+                    )
+                ],
+            )
         )
         assert out.results == []
 
     def test_as_of_date(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            as_of_date="2021-06-30",
-            conditions=[
-                ScreenCondition(
-                    indicator="rsi",
-                    column="rsi",
-                    operator="gt",
-                    value=0,
-                    indicator_params={"length": 14},
-                )
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                as_of_date="2021-06-30",
+                conditions=[
+                    ScreenCondition(
+                        indicator="rsi",
+                        column="rsi",
+                        operator="gt",
+                        value=0,
+                        indicator_params={"length": 14},
+                    )
+                ],
+            )
         )
         assert out.results
         assert all(str(m.as_of_date) <= "2021-06-30" for m in out.results)
 
     def test_as_of_before_data_skips_symbol(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            as_of_date="1990-01-01",
-            conditions=[
-                ScreenCondition(
-                    indicator="rsi",
-                    column="rsi",
-                    operator="gt",
-                    value=0,
-                )
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                as_of_date="1990-01-01",
+                conditions=[
+                    ScreenCondition(
+                        indicator="rsi",
+                        column="rsi",
+                        operator="gt",
+                        value=0,
+                    )
+                ],
+            )
         )
         assert out.results == []
 
@@ -204,26 +216,30 @@ class TestScreenEndpoint:
         ]
         with pytest.raises(ValueError, match="symbol"):
             screen(
-                data=sym_less,
-                conditions=[
-                    ScreenCondition(
-                        indicator="rsi", column="rsi", operator="gt", value=0
-                    )
-                ],
+                ScreenQueryParams(
+                    data=sym_less,
+                    conditions=[
+                        ScreenCondition(
+                            indicator="rsi", column="rsi", operator="gt", value=0
+                        )
+                    ],
+                )
             )
 
     def test_event_op_threshold(self, multi_symbol_records):
         out = screen(
-            data=multi_symbol_records,
-            conditions=[
-                ScreenCondition(
-                    indicator="rsi",
-                    column="rsi",
-                    operator="crossed_above",
-                    value=(50.0, 30),
-                    indicator_params={"length": 14},
-                )
-            ],
+            ScreenQueryParams(
+                data=multi_symbol_records,
+                conditions=[
+                    ScreenCondition(
+                        indicator="rsi",
+                        column="rsi",
+                        operator="crossed_above",
+                        value=(50.0, 30),
+                        indicator_params={"length": 14},
+                    )
+                ],
+            )
         )
         assert isinstance(out.results, list)
 

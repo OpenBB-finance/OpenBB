@@ -26,32 +26,32 @@ def long_records(ohlcv_df):
 
 class TestFib:
     def test_default(self, long_records):
-        result = fib(data=long_records, period=50)
+        result = fib(FibQueryParams(data=long_records, period=50))
         assert result.results
         assert all(isinstance(r, FibData) for r in result.results)
         assert result.results[0].level.endswith("%")
 
     def test_alternate_period(self, long_records):
-        result = fib(data=long_records, period=30)
+        result = fib(FibQueryParams(data=long_records, period=30))
         assert result.results
 
 
 class TestDemark:
     def test_default(self, long_records):
-        result = demark(data=long_records)
+        result = demark(DemarkQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, DemarkData) for r in result.results)
 
     def test_show_all_false(self, long_records):
-        result = demark(data=long_records, show_all=False)
+        result = demark(DemarkQueryParams(data=long_records, show_all=False))
         assert result.results
 
     def test_asint_false(self, long_records):
-        result = demark(data=long_records, asint=False)
+        result = demark(DemarkQueryParams(data=long_records, asint=False))
         assert result.results
 
     def test_offset(self, long_records):
-        result = demark(data=long_records, offset=1)
+        result = demark(DemarkQueryParams(data=long_records, offset=1))
         assert result.results
 
 
@@ -60,7 +60,7 @@ class TestPivotPoints:
         "method", ["classic", "fibonacci", "woodie", "camarilla", "demark"]
     )
     def test_each_method(self, long_records, method):
-        result = pivot_points(data=long_records, method=method)
+        result = pivot_points(PivotPointsQueryParams(data=long_records, method=method))
         assert result.results
         assert all(isinstance(r, PivotPointsData) for r in result.results)
         row = result.results[0]
@@ -74,15 +74,19 @@ class TestPivotPoints:
 
     @pytest.mark.parametrize("anchor", ["day", "week", "month"])
     def test_each_anchor(self, long_records, anchor):
-        result = pivot_points(data=long_records, anchor=anchor)
+        result = pivot_points(PivotPointsQueryParams(data=long_records, anchor=anchor))
         assert result.results
 
     def test_fibonacci_has_no_r4_s4(self, long_records):
-        result = pivot_points(data=long_records, method="fibonacci")
+        result = pivot_points(
+            PivotPointsQueryParams(data=long_records, method="fibonacci")
+        )
         assert all(r.r4 is None and r.s4 is None for r in result.results)
 
     def test_demark_has_no_r2_s2(self, long_records):
-        result = pivot_points(data=long_records, method="demark")
+        result = pivot_points(
+            PivotPointsQueryParams(data=long_records, method="demark")
+        )
         assert all(r.r2 is None and r.s2 is None for r in result.results)
 
 

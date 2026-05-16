@@ -133,64 +133,11 @@ class CrossoverEvent(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def crossovers(
-    data: list[Data],
-    target: str = "close",
-    index: str = "date",
-    fast_length: int = 20,
-    slow_length: int = 50,
-    mamode: Literal["sma", "ema", "wma", "hma", "zlma"] = "sma",
-) -> OBBject[list[Data]]:
-    """Detect bullish and bearish moving-average crossover events.
-
-    A crossover occurs when a fast moving average changes sign relative to a
-    slow moving average. When the fast average rises through the slow average
-    the cross is bullish ("golden cross" in the classical 50/200 case); the
-    opposite cross is bearish ("death cross"). Both averages are computed on
-    the same target column with the selected smoother — simple, exponential,
-    weighted, Hull, or zero-lag — and the sign of their difference is checked
-    bar by bar for a strict polarity flip. Bars where either series is in its
-    warm-up window, or where the difference is exactly zero, are skipped so
-    that only confirmed flips are emitted.
-
-    Traders use crossovers as a trend-following entry or exit trigger: the
-    fast-over-slow polarity proxies the dominant trend direction and the
-    crossover bar marks the regime change. Output is sparse — one row per
-    crossover — which makes it easy to align with price-action plots or to
-    chain into a higher-level backtest.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input price series containing ``target``.
-    target : str, optional
-        Column on which to compute moving averages, by default ``"close"``.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    fast_length : PositiveInt, optional
-        Lookback for the fast moving average, by default 20.
-    slow_length : PositiveInt, optional
-        Lookback for the slow moving average, by default 50.
-    mamode : {"sma", "ema", "wma", "hma", "zlma"}, optional
-        Moving-average flavour, by default ``"sma"``.
-
-    Returns
-    -------
-    OBBject[list[CrossoverEvent]]
-        Sparse list of crossover events with direction, both moving-average
-        values, the target-column price, and the signed distance.
-    """
+def crossovers(params: CrossoversQueryParams) -> OBBject[list[CrossoverEvent]]:
+    """Detect bullish and bearish moving-average crossover events."""
     import numpy as np
     import pandas_ta as ta  # noqa: F401
 
-    params = CrossoversQueryParams(
-        data=data,
-        target=target,
-        index=index,
-        fast_length=fast_length,
-        slow_length=slow_length,
-        mamode=mamode,
-    )
     validate_data(params.data, [params.slow_length])
     df = basemodel_to_df(params.data, index=params.index)
     series = df[params.target]
@@ -219,9 +166,7 @@ def crossovers(
                 distance=d,
             )
         )
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=events)  # ty: ignore[invalid-return-type]
+    return OBBject(results=events)
 
 
 __all__ = [

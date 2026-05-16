@@ -170,65 +170,11 @@ def _compute_oscillator(df, indicator: str, length: int, target: str):
     ],
 )
 def oscillator_signals(
-    data: list[Data],
-    indicator: Literal["rsi", "mfi", "stoch", "williams_r", "cci"],
-    target: str = "close",
-    index: str = "date",
-    length: int = 14,
-    overbought_threshold: float | None = None,
-    oversold_threshold: float | None = None,
-) -> OBBject[list[Data]]:
-    """Label every bar with its oscillator regime and emit crossing events.
-
-    Bounded oscillators — RSI, Money Flow Index, stochastic %K, Williams %R,
-    and CCI — measure momentum on a scale where extremes carry an implicit
-    mean-reverting prior. This endpoint computes the chosen oscillator at the
-    requested lookback, classifies each bar as ``overbought``, ``oversold``,
-    or ``neutral`` relative to its upper and lower bands, and flags the four
-    boundary-crossing events on the bar they occur. Defaults follow the
-    textbook conventions for each indicator and can be overridden when the
-    instrument or timeframe calls for tighter or wider bands.
-
-    The dense per-bar output is convenient for plotting alongside price (the
-    regime column drives shading and the four boolean flags mark vertical
-    rules) and for backtests that condition trades on a regime transition
-    rather than the static regime alone.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input OHLC(V) price series.
-    indicator : {"rsi", "mfi", "stoch", "williams_r", "cci"}
-        Which oscillator to evaluate.
-    target : str, optional
-        Price column used for oscillators that take a single series
-        (``rsi``, ``cci``), by default ``"close"``.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    length : PositiveInt, optional
-        Lookback window for the oscillator, by default 14.
-    overbought_threshold : float, optional
-        Upper band. ``None`` resolves to the indicator default.
-    oversold_threshold : float, optional
-        Lower band. ``None`` resolves to the indicator default.
-
-    Returns
-    -------
-    OBBject[list[OscillatorSignal]]
-        One row per bar with the oscillator value, regime label, and the four
-        boundary-crossing event flags.
-    """
+    params: OscillatorSignalsQueryParams,
+) -> OBBject[list[OscillatorSignal]]:
+    """Label every bar with its oscillator regime and emit crossing events."""
     import pandas as pd
 
-    params = OscillatorSignalsQueryParams(
-        data=data,
-        target=target,
-        index=index,
-        indicator=indicator,
-        length=length,
-        overbought_threshold=overbought_threshold,
-        oversold_threshold=oversold_threshold,
-    )
     validate_data(params.data, [params.length])
     df = basemodel_to_df(params.data, index=params.index)
 

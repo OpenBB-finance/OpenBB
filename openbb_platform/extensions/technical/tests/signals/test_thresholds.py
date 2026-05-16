@@ -53,14 +53,22 @@ class TestOscillatorSignalsBranches:
 
     @pytest.mark.parametrize("indicator", list(_DEFAULT_THRESHOLDS.keys()))
     def test_each_indicator_returns_dense_series(self, long_records, indicator):
-        result = oscillator_signals(data=long_records, indicator=indicator, length=14)
+        result = oscillator_signals(
+            OscillatorSignalsQueryParams(
+                data=long_records, indicator=indicator, length=14
+            )
+        )
         assert len(result.results) == len(long_records)
         assert all(isinstance(r, OscillatorSignal) for r in result.results)
 
     @pytest.mark.parametrize("indicator", list(_DEFAULT_THRESHOLDS.keys()))
     def test_first_row_has_no_crossing_flags(self, long_records, indicator):
         """The first bar has no prior — every flag must be False."""
-        result = oscillator_signals(data=long_records, indicator=indicator, length=14)
+        result = oscillator_signals(
+            OscillatorSignalsQueryParams(
+                data=long_records, indicator=indicator, length=14
+            )
+        )
         first = result.results[0]
         assert first.crossed_into_overbought is False
         assert first.crossed_into_oversold is False
@@ -87,11 +95,13 @@ class TestThresholdDefaults:
     def test_explicit_overrides_take_precedence(self, regime_records):
         """If both thresholds are given, defaults must NOT be used."""
         result = oscillator_signals(
-            data=regime_records,
-            indicator="rsi",
-            length=14,
-            overbought_threshold=-1e9,
-            oversold_threshold=-2e9,
+            OscillatorSignalsQueryParams(
+                data=regime_records,
+                indicator="rsi",
+                length=14,
+                overbought_threshold=-1e9,
+                oversold_threshold=-2e9,
+            )
         )
         non_warmup = [r for r in result.results if r.value != 0.0]
         assert all(r.regime == "overbought" for r in non_warmup)
@@ -99,10 +109,12 @@ class TestThresholdDefaults:
     def test_overbought_only_override(self, regime_records):
         """Only setting ``overbought_threshold`` keeps the default oversold band."""
         result = oscillator_signals(
-            data=regime_records,
-            indicator="rsi",
-            length=14,
-            overbought_threshold=200.0,
+            OscillatorSignalsQueryParams(
+                data=regime_records,
+                indicator="rsi",
+                length=14,
+                overbought_threshold=200.0,
+            )
         )
         regimes = {r.regime for r in result.results}
         assert "overbought" not in regimes
@@ -111,10 +123,12 @@ class TestThresholdDefaults:
     def test_oversold_only_override(self, regime_records):
         """Only setting ``oversold_threshold`` keeps the default overbought band."""
         result = oscillator_signals(
-            data=regime_records,
-            indicator="rsi",
-            length=14,
-            oversold_threshold=-200.0,
+            OscillatorSignalsQueryParams(
+                data=regime_records,
+                indicator="rsi",
+                length=14,
+                oversold_threshold=-200.0,
+            )
         )
         regimes = {r.regime for r in result.results}
         assert "oversold" not in regimes
@@ -123,13 +137,21 @@ class TestThresholdDefaults:
 
 class TestRegimeAndCrossings:
     def test_visits_all_three_regimes(self, regime_records):
-        result = oscillator_signals(data=regime_records, indicator="rsi", length=14)
+        result = oscillator_signals(
+            OscillatorSignalsQueryParams(
+                data=regime_records, indicator="rsi", length=14
+            )
+        )
         regimes = {r.regime for r in result.results}
         assert regimes == {"overbought", "neutral", "oversold"}
 
     def test_crossing_flag_count_matches_regime_changes(self, regime_records):
         """The crossings_into_X count == number of regime->X transitions."""
-        result = oscillator_signals(data=regime_records, indicator="rsi", length=14)
+        result = oscillator_signals(
+            OscillatorSignalsQueryParams(
+                data=regime_records, indicator="rsi", length=14
+            )
+        )
         labels = [r.regime for r in result.results]
         into_ob_manual = sum(
             1
@@ -147,7 +169,11 @@ class TestRegimeAndCrossings:
         assert into_os_flag == into_os_manual
 
     def test_crossing_out_matches_regime_exits(self, regime_records):
-        result = oscillator_signals(data=regime_records, indicator="rsi", length=14)
+        result = oscillator_signals(
+            OscillatorSignalsQueryParams(
+                data=regime_records, indicator="rsi", length=14
+            )
+        )
         labels = [r.regime for r in result.results]
         out_ob_manual = sum(
             1

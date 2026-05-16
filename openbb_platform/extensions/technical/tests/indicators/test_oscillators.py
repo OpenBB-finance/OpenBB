@@ -47,31 +47,31 @@ def long_records(ohlcv_df):
 
 class TestRsi:
     def test_default(self, long_records):
-        result = rsi(data=long_records)
+        result = rsi(RsiQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, RsiData) for r in result.results)
         assert result.results[0].rsi is not None
 
     def test_custom_length(self, long_records):
-        result = rsi(data=long_records, length=20)
+        result = rsi(RsiQueryParams(data=long_records, length=20))
         assert result.results
 
     def test_custom_target(self, long_records):
-        result = rsi(data=long_records, target="high")
+        result = rsi(RsiQueryParams(data=long_records, target="high"))
         assert result.results
 
     def test_custom_scalar(self, long_records):
-        result = rsi(data=long_records, scalar=50.0)
+        result = rsi(RsiQueryParams(data=long_records, scalar=50.0))
         assert result.results
 
     def test_custom_drift(self, long_records):
-        result = rsi(data=long_records, drift=2)
+        result = rsi(RsiQueryParams(data=long_records, drift=2))
         assert result.results
 
 
 class TestStoch:
     def test_default(self, long_records):
-        result = stoch(data=long_records)
+        result = stoch(StochQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, StochData) for r in result.results)
         first = result.results[0]
@@ -79,89 +79,89 @@ class TestStoch:
         assert first.d is not None
 
     def test_custom_fast_k(self, long_records):
-        result = stoch(data=long_records, fast_k_period=10)
+        result = stoch(StochQueryParams(data=long_records, fast_k_period=10))
         assert result.results
 
     def test_custom_slow_d(self, long_records):
-        result = stoch(data=long_records, slow_d_period=5)
+        result = stoch(StochQueryParams(data=long_records, slow_d_period=5))
         assert result.results
 
     def test_custom_slow_k(self, long_records):
-        result = stoch(data=long_records, slow_k_period=4)
+        result = stoch(StochQueryParams(data=long_records, slow_k_period=4))
         assert result.results
 
 
 class TestCci:
     def test_default(self, long_records):
-        result = cci(data=long_records)
+        result = cci(CciQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, CciData) for r in result.results)
         assert result.results[0].cci is not None
 
     def test_custom_length(self, long_records):
-        result = cci(data=long_records, length=20)
+        result = cci(CciQueryParams(data=long_records, length=20))
         assert result.results
 
     def test_custom_scalar(self, long_records):
-        result = cci(data=long_records, scalar=0.02)
+        result = cci(CciQueryParams(data=long_records, scalar=0.02))
         assert result.results
 
 
 class TestFisher:
     def test_default(self, long_records):
-        result = fisher(data=long_records)
+        result = fisher(FisherQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, FisherData) for r in result.results)
         assert result.results[0].fisher is not None
 
     def test_custom_length(self, long_records):
-        result = fisher(data=long_records, length=20)
+        result = fisher(FisherQueryParams(data=long_records, length=20))
         assert result.results
 
     def test_custom_signal(self, long_records):
-        result = fisher(data=long_records, signal=3)
+        result = fisher(FisherQueryParams(data=long_records, signal=3))
         assert result.results
 
 
 class TestCg:
     def test_default(self, long_records):
-        result = cg(data=long_records)
+        result = cg(CgQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, CgData) for r in result.results)
         assert result.results[0].cg is not None
 
     def test_custom_length(self, long_records):
-        result = cg(data=long_records, length=20)
+        result = cg(CgQueryParams(data=long_records, length=20))
         assert result.results
 
 
 class TestWilliamsR:
     def test_default(self, long_records):
-        result = williams_r(data=long_records)
+        result = williams_r(WilliamsRQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, WilliamsRData) for r in result.results)
         assert result.results[0].williams_r is not None
 
     def test_custom_length(self, long_records):
-        result = williams_r(data=long_records, length=20)
+        result = williams_r(WilliamsRQueryParams(data=long_records, length=20))
         assert result.results
 
 
 class TestMfi:
     def test_default(self, long_records):
-        result = mfi(data=long_records)
+        result = mfi(MfiQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, MfiData) for r in result.results)
         assert result.results[0].mfi is not None
 
     def test_custom_length(self, long_records):
-        result = mfi(data=long_records, length=20)
+        result = mfi(MfiQueryParams(data=long_records, length=20))
         assert result.results
 
 
 class TestTrix:
     def test_default(self, long_records):
-        result = trix(data=long_records)
+        result = trix(TrixQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, TrixData) for r in result.results)
         first = result.results[0]
@@ -169,63 +169,79 @@ class TestTrix:
         assert first.signal is not None
 
     def test_custom_length(self, long_records):
-        result = trix(data=long_records, length=15)
+        result = trix(TrixQueryParams(data=long_records, length=15))
         assert result.results
 
     def test_custom_signal(self, long_records):
-        result = trix(data=long_records, signal=5)
+        result = trix(TrixQueryParams(data=long_records, signal=5))
         assert result.results
 
     def test_custom_target(self, long_records):
-        result = trix(data=long_records, target="high")
+        result = trix(TrixQueryParams(data=long_records, target="high"))
         assert result.results
 
 
 class TestUltimateOscillator:
     def test_default(self, long_records):
-        result = ultimate_oscillator(data=long_records)
+        result = ultimate_oscillator(UltimateOscillatorQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, UltimateOscillatorData) for r in result.results)
         assert result.results[0].ultimate_oscillator is not None
 
     def test_custom_fast(self, long_records):
-        result = ultimate_oscillator(data=long_records, fast=5)
+        result = ultimate_oscillator(
+            UltimateOscillatorQueryParams(data=long_records, fast=5)
+        )
         assert result.results
 
     def test_custom_medium(self, long_records):
-        result = ultimate_oscillator(data=long_records, medium=10)
+        result = ultimate_oscillator(
+            UltimateOscillatorQueryParams(data=long_records, medium=10)
+        )
         assert result.results
 
     def test_custom_slow(self, long_records):
-        result = ultimate_oscillator(data=long_records, slow=20)
+        result = ultimate_oscillator(
+            UltimateOscillatorQueryParams(data=long_records, slow=20)
+        )
         assert result.results
 
     def test_custom_fast_weight(self, long_records):
-        result = ultimate_oscillator(data=long_records, fast_weight=5.0)
+        result = ultimate_oscillator(
+            UltimateOscillatorQueryParams(data=long_records, fast_weight=5.0)
+        )
         assert result.results
 
     def test_custom_medium_weight(self, long_records):
-        result = ultimate_oscillator(data=long_records, medium_weight=3.0)
+        result = ultimate_oscillator(
+            UltimateOscillatorQueryParams(data=long_records, medium_weight=3.0)
+        )
         assert result.results
 
     def test_custom_slow_weight(self, long_records):
-        result = ultimate_oscillator(data=long_records, slow_weight=2.0)
+        result = ultimate_oscillator(
+            UltimateOscillatorQueryParams(data=long_records, slow_weight=2.0)
+        )
         assert result.results
 
 
 class TestAwesomeOscillator:
     def test_default(self, long_records):
-        result = awesome_oscillator(data=long_records)
+        result = awesome_oscillator(AwesomeOscillatorQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, AwesomeOscillatorData) for r in result.results)
         assert result.results[0].awesome_oscillator is not None
 
     def test_custom_fast(self, long_records):
-        result = awesome_oscillator(data=long_records, fast=3)
+        result = awesome_oscillator(
+            AwesomeOscillatorQueryParams(data=long_records, fast=3)
+        )
         assert result.results
 
     def test_custom_slow(self, long_records):
-        result = awesome_oscillator(data=long_records, slow=20)
+        result = awesome_oscillator(
+            AwesomeOscillatorQueryParams(data=long_records, slow=20)
+        )
         assert result.results
 
 

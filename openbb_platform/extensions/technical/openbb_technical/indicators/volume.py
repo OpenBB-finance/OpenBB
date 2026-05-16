@@ -72,43 +72,11 @@ class ObvData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def obv(
-    data: list[Data],
-    index: str = "date",
-    offset: int = 0,
-) -> OBBject[list[Data]]:
-    """Calculate On-Balance Volume (OBV), a cumulative volume-flow indicator.
-
-    OBV is a running total that adds the day's volume when the close rises and
-    subtracts the day's volume when the close falls, leaving the total unchanged
-    on flat closes. The level itself carries no absolute meaning — only changes
-    and slope matter. Originated by Joe Granville, OBV is built on the premise
-    that volume precedes price: a rising OBV alongside flat or falling price is
-    read as quiet accumulation, while a falling OBV against a rising price hints
-    at distribution.
-
-    Traders use OBV primarily to spot divergences from price and to confirm
-    breakouts; an OBV that fails to make a new high alongside price weakens the
-    bull case, and vice versa.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLCV price series; ``close`` and ``volume`` are required.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    offset : int, optional
-        Shift the output series by this many bars, by default 0.
-
-    Returns
-    -------
-    OBBject[list[ObvData]]
-        On-Balance Volume time series with warm-up rows dropped.
-    """
+def obv(params: ObvQueryParams) -> OBBject[list[ObvData]]:
+    """Calculate On-Balance Volume (OBV), a cumulative volume-flow indicator."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = ObvQueryParams(data=data, index=index, offset=offset)
     df = basemodel_to_df(params.data, index=params.index)
     series = df.ta.obv(offset=params.offset)
     out = (
@@ -138,7 +106,10 @@ class AdQueryParams(QueryParams):
     __output_columns__ = ("date", "ad")
 
     data: list[Data] = Field(description="Input OHLCV price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     offset: int = Field(default=0, description="Periods to offset the result.")
 
 
@@ -170,45 +141,11 @@ class AdData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def ad(
-    data: list[Data],
-    index: str = "date",
-    offset: int = 0,
-) -> OBBject[list[Data]]:
-    """Calculate the Accumulation/Distribution line, a volume-flow indicator.
-
-    The Accumulation/Distribution (A/D) line, developed by Marc Chaikin, refines
-    On-Balance Volume by weighting each bar's volume by the Close Location Value
-    — the position of the close within the bar's high-low range. A close near
-    the high adds nearly all of the bar's volume to the running total; a close
-    near the low subtracts nearly all of it; a close at the midpoint contributes
-    zero. The cumulative sum of these money-flow volumes forms the A/D line.
-
-    Because the A/D line uses intrabar position rather than only the
-    close-to-close direction, it is less whipsawed by gaps and is generally
-    smoother than OBV. Traders watch A/D divergences against price as a leading
-    indication of trend exhaustion and use trendline breaks on the A/D line
-    itself to confirm directional changes.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLCV price series; ``high``, ``low``, ``close``, and ``volume`` are
-        required.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    offset : int, optional
-        Shift the output series by this many bars, by default 0.
-
-    Returns
-    -------
-    OBBject[list[AdData]]
-        Accumulation/Distribution line time series with warm-up rows dropped.
-    """
+def ad(params: AdQueryParams) -> OBBject[list[AdData]]:
+    """Calculate the Accumulation/Distribution line, a volume-flow indicator."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = AdQueryParams(data=data, index=index, offset=offset)
     df = basemodel_to_df(params.data, index=params.index)
     series = df.ta.ad(offset=params.offset)
     out = (
@@ -244,7 +181,10 @@ class AdoscQueryParams(QueryParams):
     __output_columns__ = ("date", "adosc")
 
     data: list[Data] = Field(description="Input OHLCV price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     fast: PositiveInt = Field(default=3, description="Fast EMA window.")
     slow: PositiveInt = Field(default=10, description="Slow EMA window.")
     offset: int = Field(default=0, description="Periods to offset the result.")
@@ -280,52 +220,11 @@ class AdoscData(Data):
         APIEx(parameters={"fast": 2, "slow": 4, "data": APIEx.mock_data("timeseries")}),
     ],
 )
-def adosc(
-    data: list[Data],
-    index: str = "date",
-    fast: int = 3,
-    slow: int = 10,
-    offset: int = 0,
-) -> OBBject[list[Data]]:
-    """Calculate the Chaikin Accumulation/Distribution Oscillator.
-
-    The Chaikin Oscillator is the difference between a fast and a slow
-    exponential moving average of the Accumulation/Distribution line. By taking
-    a MACD-style spread over the A/D line rather than over price, the oscillator
-    measures the momentum of money flow itself — how rapidly accumulation or
-    distribution is building or fading — and oscillates around zero.
-
-    Readings above zero indicate that buying pressure (positive money flow) is
-    accelerating; readings below zero indicate accelerating selling pressure.
-    Traders use bullish and bearish crossovers of the zero line as entry
-    triggers and watch for divergences with price to anticipate reversals
-    before they appear in the price action.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLCV price series; ``high``, ``low``, ``close``, and ``volume`` are
-        required.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    fast : PositiveInt, optional
-        Fast EMA window applied to the A/D line, by default 3.
-    slow : PositiveInt, optional
-        Slow EMA window applied to the A/D line, by default 10.
-    offset : int, optional
-        Shift the output series by this many bars, by default 0.
-
-    Returns
-    -------
-    OBBject[list[AdoscData]]
-        Chaikin Oscillator time series with warm-up rows dropped.
-    """
+def adosc(params: AdoscQueryParams) -> OBBject[list[AdoscData]]:
+    """Calculate the Chaikin Accumulation/Distribution Oscillator."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = AdoscQueryParams(
-        data=data, index=index, fast=fast, slow=slow, offset=offset
-    )
     validate_data(params.data, [params.fast, params.slow])
     df = basemodel_to_df(params.data, index=params.index)
     series = df.ta.adosc(fast=params.fast, slow=params.slow, offset=params.offset)
@@ -361,7 +260,10 @@ class VwapQueryParams(QueryParams):
     __output_columns__ = ("date", "vwap")
 
     data: list[Data] = Field(description="Input OHLCV price series.")
-    index: str = Field(default="date")
+    index: str = Field(
+        default="date",
+        description='Index column name in ``data``, by default ``"date"``.',
+    )
     anchor: str = Field(
         default="D",
         description=(
@@ -401,50 +303,11 @@ class VwapData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def vwap(
-    data: list[Data],
-    index: str = "date",
-    anchor: str = "D",
-    offset: int = 0,
-) -> OBBject[list[Data]]:
-    """Calculate the Volume-Weighted Average Price (VWAP), anchored at a chosen boundary.
-
-    VWAP is the cumulative dollar volume divided by the cumulative share volume
-    over the anchor period, where the price on each bar is taken to be the
-    typical price ``(high + low + close) / 3``. Because every trade is weighted
-    by its size, VWAP reflects the average price actually paid by participants
-    rather than the simple average of quoted prices, making it the standard
-    benchmark for institutional execution quality.
-
-    The series resets at every anchor boundary (daily by default; weekly or
-    monthly are common alternatives), producing a stepped intraday band that
-    traders use as a dynamic mean. Price above VWAP indicates buyers have paid
-    above the session average and signals intraday strength; price below VWAP
-    signals weakness. Mean-reversion strategies fade extensions from VWAP, while
-    trend strategies use VWAP as a stop or trailing reference.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLCV price series; ``high``, ``low``, ``close``, and ``volume`` are
-        required. The index must be parseable as a datetime.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    anchor : str, optional
-        Pandas offset alias determining the VWAP reset boundary (e.g. ``"D"``,
-        ``"W"``, ``"ME"``), by default ``"D"``.
-    offset : int, optional
-        Shift the output series by this many bars, by default 0.
-
-    Returns
-    -------
-    OBBject[list[VwapData]]
-        Anchored VWAP time series with warm-up rows dropped.
-    """
+def vwap(params: VwapQueryParams) -> OBBject[list[VwapData]]:
+    """Calculate the Volume-Weighted Average Price (VWAP), anchored at a chosen boundary."""
     import pandas as pd
     import pandas_ta as ta  # noqa: F401
 
-    params = VwapQueryParams(data=data, index=index, anchor=anchor, offset=offset)
     df = basemodel_to_df(params.data, index=params.index)
     if params.index == "date":
         df.index = pd.to_datetime(df.index)

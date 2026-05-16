@@ -233,18 +233,18 @@ class TestCatalog:
 
 class TestIndicatorsEndpoint:
     def test_all(self):
-        out = indicators(category="all")
+        out = indicators(IndicatorsQueryParams(category="all"))
         assert isinstance(out.results, IndicatorsResponse)
         assert out.results.indicators
 
     def test_filter_volatility(self):
-        out = indicators(category="volatility")
+        out = indicators(IndicatorsQueryParams(category="volatility"))
         assert all(e.category == "volatility" for e in out.results.indicators)
         names = {e.name for e in out.results.indicators}
         assert "atr" in names
 
     def test_filter_none_treats_as_all(self):
-        out = indicators(category=None)
+        out = indicators(IndicatorsQueryParams(category=None))
         assert len(out.results.indicators) == len(_CATALOG)
 
     def test_filter_no_match(self):

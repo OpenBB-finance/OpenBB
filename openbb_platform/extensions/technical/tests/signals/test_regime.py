@@ -53,33 +53,35 @@ def choppy_records():
 
 class TestRegimeEndpoint:
     def test_returns_one_row_per_bar(self, trending_records):
-        result = regime(data=trending_records)
+        result = regime(RegimeQueryParams(data=trending_records))
         assert len(result.results) == 120
         assert all(isinstance(r, RegimeData) for r in result.results)
 
     def test_trending_data_reaches_trend_label(self, trending_records):
-        result = regime(data=trending_records)
+        result = regime(RegimeQueryParams(data=trending_records))
         labels = {r.regime for r in result.results}
         assert "strong_trend" in labels or "weak_trend" in labels
 
     def test_first_bars_are_warm_up_transition(self, trending_records):
-        result = regime(data=trending_records)
+        result = regime(RegimeQueryParams(data=trending_records))
         assert result.results[0].regime == "transition"
         assert result.results[0].regime_changed is False
         assert result.results[0].adx is None
         assert result.results[0].choppiness is None
 
     def test_choppy_data_hits_ranging(self, choppy_records):
-        result = regime(data=choppy_records)
+        result = regime(RegimeQueryParams(data=choppy_records))
         labels = {r.regime for r in result.results}
         assert "ranging" in labels
 
     def test_regime_changed_flag(self, trending_records):
-        result = regime(data=trending_records)
+        result = regime(RegimeQueryParams(data=trending_records))
         assert any(r.regime_changed for r in result.results)
 
     def test_custom_thresholds_alter_labels(self, trending_records):
-        tight = regime(data=trending_records, adx_trend_threshold=200.0)
+        tight = regime(
+            RegimeQueryParams(data=trending_records, adx_trend_threshold=200.0)
+        )
         assert "strong_trend" not in {r.regime for r in tight.results}
 
 

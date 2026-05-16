@@ -63,104 +63,104 @@ def long_records(ohlcv_df):
 
 class TestSma:
     def test_default(self, long_records):
-        result = sma(data=long_records, length=20)
+        result = sma(SmaQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, SmaData) for r in result.results)
         assert result.results[0].sma is not None
 
     def test_offset(self, long_records):
-        result = sma(data=long_records, length=20, offset=1)
+        result = sma(SmaQueryParams(data=long_records, length=20, offset=1))
         assert result.results
 
     def test_alt_target(self, long_records):
-        result = sma(data=long_records, length=20, target="open")
+        result = sma(SmaQueryParams(data=long_records, length=20, target="open"))
         assert result.results
 
 
 class TestEma:
     def test_default(self, long_records):
-        result = ema(data=long_records, length=20)
+        result = ema(EmaQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, EmaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = ema(data=long_records, length=20, offset=1)
+        result = ema(EmaQueryParams(data=long_records, length=20, offset=1))
         assert result.results
 
 
 class TestHma:
     def test_default(self, long_records):
-        result = hma(data=long_records, length=20)
+        result = hma(HmaQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, HmaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = hma(data=long_records, length=20, offset=1)
+        result = hma(HmaQueryParams(data=long_records, length=20, offset=1))
         assert result.results
 
 
 class TestWma:
     def test_default(self, long_records):
-        result = wma(data=long_records, length=20)
+        result = wma(WmaQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, WmaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = wma(data=long_records, length=20, offset=1)
+        result = wma(WmaQueryParams(data=long_records, length=20, offset=1))
         assert result.results
 
 
 class TestZlma:
     def test_default(self, long_records):
-        result = zlma(data=long_records, length=20)
+        result = zlma(ZlmaQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, ZlmaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = zlma(data=long_records, length=20, offset=1)
+        result = zlma(ZlmaQueryParams(data=long_records, length=20, offset=1))
         assert result.results
 
 
 class TestTema:
     def test_default(self, long_records):
-        result = tema(data=long_records, length=10)
+        result = tema(TemaQueryParams(data=long_records, length=10))
         assert result.results
         assert all(isinstance(r, TemaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = tema(data=long_records, length=10, offset=1)
+        result = tema(TemaQueryParams(data=long_records, length=10, offset=1))
         assert result.results
 
 
 class TestDema:
     def test_default(self, long_records):
-        result = dema(data=long_records, length=10)
+        result = dema(DemaQueryParams(data=long_records, length=10))
         assert result.results
         assert all(isinstance(r, DemaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = dema(data=long_records, length=10, offset=1)
+        result = dema(DemaQueryParams(data=long_records, length=10, offset=1))
         assert result.results
 
 
 class TestKama:
     def test_default(self, long_records):
-        result = kama(data=long_records, length=10)
+        result = kama(KamaQueryParams(data=long_records, length=10))
         assert result.results
         assert all(isinstance(r, KamaData) for r in result.results)
 
     def test_fast_slow(self, long_records):
-        result = kama(data=long_records, length=10, fast=3, slow=15)
+        result = kama(KamaQueryParams(data=long_records, length=10, fast=3, slow=15))
         assert result.results
 
     def test_offset(self, long_records):
-        result = kama(data=long_records, length=10, offset=1)
+        result = kama(KamaQueryParams(data=long_records, length=10, offset=1))
         assert result.results
 
 
 class TestFrama:
     def test_default(self, long_records):
-        result = frama(data=long_records, window=10)
+        result = frama(FramaQueryParams(data=long_records, window=10))
         assert result.results
         assert all(isinstance(r, FramaData) for r in result.results)
         assert result.results[0].frama is not None
@@ -170,24 +170,24 @@ class TestFrama:
             FramaQueryParams(data=long_records, window=9)
 
     def test_larger_even_window(self, long_records):
-        result = frama(data=long_records, window=20)
+        result = frama(FramaQueryParams(data=long_records, window=20))
         assert result.results
 
 
 class TestVwma:
     def test_default(self, long_records):
-        result = vwma(data=long_records, length=10)
+        result = vwma(VwmaQueryParams(data=long_records, length=10))
         assert result.results
         assert all(isinstance(r, VwmaData) for r in result.results)
 
     def test_offset(self, long_records):
-        result = vwma(data=long_records, length=10, offset=1)
+        result = vwma(VwmaQueryParams(data=long_records, length=10, offset=1))
         assert result.results
 
 
 class TestBbands:
     def test_default(self, long_records):
-        result = bbands(data=long_records, length=20)
+        result = bbands(BbandsQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, BbandsData) for r in result.results)
         first = result.results[0]
@@ -199,21 +199,23 @@ class TestBbands:
 
     @pytest.mark.parametrize("mamode", ["sma", "ema", "wma", "rma"])
     def test_each_mamode(self, long_records, mamode):
-        result = bbands(data=long_records, length=20, mamode=mamode)
+        result = bbands(BbandsQueryParams(data=long_records, length=20, mamode=mamode))
         assert result.results
 
     def test_std_offset(self, long_records):
-        result = bbands(data=long_records, length=20, std=2.5, offset=1)
+        result = bbands(
+            BbandsQueryParams(data=long_records, length=20, std=2.5, offset=1)
+        )
         assert result.results
 
     def test_alt_target(self, long_records):
-        result = bbands(data=long_records, length=20, target="open")
+        result = bbands(BbandsQueryParams(data=long_records, length=20, target="open"))
         assert result.results
 
 
 class TestDonchian:
     def test_default(self, long_records):
-        result = donchian(data=long_records)
+        result = donchian(DonchianQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, DonchianData) for r in result.results)
         first = result.results[0]
@@ -222,54 +224,62 @@ class TestDonchian:
         assert first.upper is not None
 
     def test_asymmetric_lengths(self, long_records):
-        result = donchian(data=long_records, lower_length=10, upper_length=30, offset=1)
+        result = donchian(
+            DonchianQueryParams(
+                data=long_records, lower_length=10, upper_length=30, offset=1
+            )
+        )
         assert result.results
 
 
 class TestKc:
     def test_default(self, long_records):
-        result = kc(data=long_records, length=20)
+        result = kc(KcQueryParams(data=long_records, length=20))
         assert result.results
         assert all(isinstance(r, KcData) for r in result.results)
 
     @pytest.mark.parametrize("mamode", ["ema", "sma"])
     def test_each_mamode(self, long_records, mamode):
-        result = kc(data=long_records, length=20, mamode=mamode)
+        result = kc(KcQueryParams(data=long_records, length=20, mamode=mamode))
         assert result.results
 
     def test_scalar_offset(self, long_records):
-        result = kc(data=long_records, length=20, scalar=2.5, offset=1)
+        result = kc(KcQueryParams(data=long_records, length=20, scalar=2.5, offset=1))
         assert result.results
 
 
 class TestIchimoku:
     def test_default(self, long_records):
-        result = ichimoku(data=long_records)
+        result = ichimoku(IchimokuQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, IchimokuData) for r in result.results)
         assert all(r.chikou_span is None for r in result.results)
 
     def test_lookahead_includes_chikou(self, long_records):
-        result = ichimoku(data=long_records, lookahead=True)
+        result = ichimoku(IchimokuQueryParams(data=long_records, lookahead=True))
         assert any(r.chikou_span is not None for r in result.results)
 
     def test_alt_periods(self, long_records):
         result = ichimoku(
-            data=long_records, conversion=5, base=10, lagging=20, offset=5
+            IchimokuQueryParams(
+                data=long_records, conversion=5, base=10, lagging=20, offset=5
+            )
         )
         assert result.results
 
 
 class TestSupertrend:
     def test_default(self, long_records):
-        result = supertrend(data=long_records, length=7)
+        result = supertrend(SupertrendQueryParams(data=long_records, length=7))
         assert result.results
         assert all(isinstance(r, SupertrendData) for r in result.results)
         directions = {r.direction for r in result.results if r.direction is not None}
         assert directions.issubset({-1, 1})
 
     def test_multiplier(self, long_records):
-        result = supertrend(data=long_records, length=7, multiplier=2.0)
+        result = supertrend(
+            SupertrendQueryParams(data=long_records, length=7, multiplier=2.0)
+        )
         assert result.results
 
     def test_short_band_path(self, ohlcv_df):
@@ -290,7 +300,9 @@ class TestSupertrend:
             index=pd.date_range("2021-01-01", periods=periods, freq="D", name="date"),
         )
         records = df_to_basemodel(df.reset_index())
-        result = supertrend(data=records, length=7, multiplier=3.0)
+        result = supertrend(
+            SupertrendQueryParams(data=records, length=7, multiplier=3.0)
+        )
         assert any(r.direction == -1 for r in result.results)
         assert any(r.short_band is not None for r in result.results)
 

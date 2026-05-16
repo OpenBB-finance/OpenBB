@@ -31,11 +31,21 @@ def _post(
     params: dict | None = None,
     allow_empty: bool = False,
 ):
-    """POST to ``{api_server}/technical/{path}`` and assert success."""
+    """POST to ``{api_server}/technical/{path}`` and assert success.
+
+    Every endpoint now declares a single ``params: XxxQueryParams`` argument,
+    which FastAPI exposes as one JSON request body. ``body`` may be the bare
+    ``data`` list or an already-assembled dict; ``params`` carries the scalar
+    arguments. Both are merged into the single ``XxxQueryParams`` body object.
+    """
     url = f"{api_server}/technical/{path}"
-    response = requests.post(
-        url, json=body, params=params or {}, timeout=DEFAULT_TIMEOUT
-    )
+    if body is None:
+        payload = dict(params or {})
+    elif isinstance(body, list):
+        payload = {"data": body, **(params or {})}
+    else:
+        payload = {**body, **(params or {})}
+    response = requests.post(url, json=payload, timeout=DEFAULT_TIMEOUT)
     assert response.status_code == 200, (
         f"POST {path} -> {response.status_code}: {response.text[:300]}"
     )

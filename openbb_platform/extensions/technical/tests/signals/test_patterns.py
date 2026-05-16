@@ -93,7 +93,9 @@ def neutral_records():
 
 class TestCandlestickEndpoint:
     def test_doji_detected(self, doji_records):
-        result = candlestick_patterns(data=doji_records, patterns=["doji"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=doji_records, patterns=["doji"])
+        )
         names = [e.pattern for e in result.results]
         assert "doji" in names
         doji_events = [e for e in result.results if e.pattern == "doji"]
@@ -101,13 +103,17 @@ class TestCandlestickEndpoint:
         assert 0.0 < doji_events[0].confidence <= 1.0
 
     def test_hammer_detected(self, hammer_records):
-        result = candlestick_patterns(data=hammer_records, patterns=["hammer"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=hammer_records, patterns=["hammer"])
+        )
         hammers = [e for e in result.results if e.pattern == "hammer"]
         assert len(hammers) == 1
         assert hammers[0].direction == "bullish"
 
     def test_marubozu_directions(self, marubozu_records):
-        result = candlestick_patterns(data=marubozu_records, patterns=["marubozu"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=marubozu_records, patterns=["marubozu"])
+        )
         marubozus = [e for e in result.results if e.pattern == "marubozu"]
         assert len(marubozus) == 2
         directions = {m.direction for m in marubozus}
@@ -115,107 +121,143 @@ class TestCandlestickEndpoint:
 
     def test_spinning_top_detected(self, spinning_top_records):
         result = candlestick_patterns(
-            data=spinning_top_records, patterns=["spinning_top"]
+            CandlestickPatternsQueryParams(
+                data=spinning_top_records, patterns=["spinning_top"]
+            )
         )
         tops = [e for e in result.results if e.pattern == "spinning_top"]
         assert len(tops) == 1
         assert tops[0].direction == "neutral"
 
     def test_engulfing_detected(self, engulfing_records):
-        result = candlestick_patterns(data=engulfing_records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(
+                data=engulfing_records, patterns=["engulfing"]
+            )
+        )
         engulfings = [e for e in result.results if e.pattern == "engulfing"]
         assert len(engulfings) == 1
         assert engulfings[0].direction == "bullish"
 
     def test_neutral_bars_produce_no_events(self, neutral_records):
-        result = candlestick_patterns(data=neutral_records)
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=neutral_records)
+        )
         assert result.results == []
 
     def test_default_patterns_runs_all(self, doji_records):
-        result = candlestick_patterns(data=doji_records)
+        result = candlestick_patterns(CandlestickPatternsQueryParams(data=doji_records))
         assert any(e.pattern == "doji" for e in result.results)
 
     def test_unsupported_pattern_silently_dropped(self, doji_records):
         result = candlestick_patterns(
-            data=doji_records, patterns=["three_white_soldiers"]
+            CandlestickPatternsQueryParams(
+                data=doji_records, patterns=["three_white_soldiers"]
+            )
         )
         assert result.results == []
 
     def test_mixed_supported_and_unsupported(self, doji_records):
         result = candlestick_patterns(
-            data=doji_records, patterns=["doji", "three_white_soldiers"]
+            CandlestickPatternsQueryParams(
+                data=doji_records, patterns=["doji", "three_white_soldiers"]
+            )
         )
         assert any(e.pattern == "doji" for e in result.results)
 
     def test_all_results_are_pattern_events(self, doji_records):
-        result = candlestick_patterns(data=doji_records)
+        result = candlestick_patterns(CandlestickPatternsQueryParams(data=doji_records))
         assert all(isinstance(e, PatternEvent) for e in result.results)
 
 
 class TestDetectorRejection:
     def test_zero_range_bar_rejected(self):
         records = _frame([_bar(100.0, 100.0, 100.0, 100.0)])
-        result = candlestick_patterns(data=records)
+        result = candlestick_patterns(CandlestickPatternsQueryParams(data=records))
         assert result.results == []
 
     def test_doji_with_large_body_rejected(self):
         records = _frame([_bar(100.0, 105.0, 100.0, 105.0)])
-        result = candlestick_patterns(data=records, patterns=["doji"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["doji"])
+        )
         assert not any(e.pattern == "doji" for e in result.results)
 
     def test_hammer_with_long_upper_shadow_rejected(self):
         records = _frame([_bar(100.0, 110.0, 99.5, 100.2)])
-        result = candlestick_patterns(data=records, patterns=["hammer"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["hammer"])
+        )
         assert not any(e.pattern == "hammer" for e in result.results)
 
     def test_hammer_short_lower_shadow_rejected(self):
         records = _frame([_bar(100.0, 100.5, 99.5, 100.2)])
-        result = candlestick_patterns(data=records, patterns=["hammer"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["hammer"])
+        )
         assert not any(e.pattern == "hammer" for e in result.results)
 
     def test_hammer_body_not_in_upper_third(self):
         records = _frame([_bar(4.0, 5.0, 1.0, 3.0)])
-        result = candlestick_patterns(data=records, patterns=["hammer"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["hammer"])
+        )
         assert not any(e.pattern == "hammer" for e in result.results)
 
     def test_marubozu_with_shadows_rejected(self):
         records = _frame([_bar(100.0, 110.0, 99.0, 109.0)])
-        result = candlestick_patterns(data=records, patterns=["marubozu"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["marubozu"])
+        )
         assert not any(e.pattern == "marubozu" for e in result.results)
 
     def test_marubozu_doji_body_rejected(self):
         records = _frame([_bar(100.0, 105.0, 95.0, 100.05)])
-        result = candlestick_patterns(data=records, patterns=["marubozu"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["marubozu"])
+        )
         assert not any(e.pattern == "marubozu" for e in result.results)
 
     def test_spinning_top_lopsided_rejected(self):
         records = _frame([_bar(100.0, 105.0, 99.9, 100.5)])
-        result = candlestick_patterns(data=records, patterns=["spinning_top"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["spinning_top"])
+        )
         assert not any(e.pattern == "spinning_top" for e in result.results)
 
     def test_spinning_top_too_large_body_rejected(self):
         records = _frame([_bar(100.0, 105.0, 100.0, 104.0)])
-        result = candlestick_patterns(data=records, patterns=["spinning_top"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["spinning_top"])
+        )
         assert not any(e.pattern == "spinning_top" for e in result.results)
 
     def test_spinning_top_tiny_body_rejected(self):
         records = _frame([_bar(100.0, 110.0, 90.0, 100.01)])
-        result = candlestick_patterns(data=records, patterns=["spinning_top"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["spinning_top"])
+        )
         assert not any(e.pattern == "spinning_top" for e in result.results)
 
     def test_spinning_top_zero_upper_shadow_rejected(self):
         records = _frame([_bar(100.0, 100.1, 99.0, 100.1)])
-        result = candlestick_patterns(data=records, patterns=["spinning_top"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["spinning_top"])
+        )
         assert not any(e.pattern == "spinning_top" for e in result.results)
 
     def test_spinning_top_zero_lower_shadow_rejected(self):
         records = _frame([_bar(100.1, 101.0, 100.0, 100.0)])
-        result = candlestick_patterns(data=records, patterns=["spinning_top"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["spinning_top"])
+        )
         assert not any(e.pattern == "spinning_top" for e in result.results)
 
     def test_engulfing_first_bar_has_no_prev(self):
         records = _frame([_bar(99.5, 102.0, 99.4, 101.5)])
-        result = candlestick_patterns(data=records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["engulfing"])
+        )
         assert not any(e.pattern == "engulfing" for e in result.results)
 
     def test_engulfing_same_direction_rejected(self):
@@ -225,7 +267,9 @@ class TestDetectorRejection:
                 _bar(99.5, 102.0, 99.4, 101.5),
             ]
         )
-        result = candlestick_patterns(data=records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["engulfing"])
+        )
         assert not any(e.pattern == "engulfing" for e in result.results)
 
     def test_engulfing_zero_body_rejected(self):
@@ -235,7 +279,9 @@ class TestDetectorRejection:
                 _bar(99.5, 102.0, 99.4, 101.5),
             ]
         )
-        result = candlestick_patterns(data=records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["engulfing"])
+        )
         assert not any(e.pattern == "engulfing" for e in result.results)
 
     def test_engulfing_current_zero_body_rejected(self):
@@ -245,7 +291,9 @@ class TestDetectorRejection:
                 _bar(99.7, 100.6, 99.4, 99.7),
             ]
         )
-        result = candlestick_patterns(data=records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["engulfing"])
+        )
         assert not any(e.pattern == "engulfing" for e in result.results)
 
     def test_engulfing_not_full_overlap_rejected(self):
@@ -255,7 +303,9 @@ class TestDetectorRejection:
                 _bar(99.6, 100.5, 99.4, 100.4),
             ]
         )
-        result = candlestick_patterns(data=records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["engulfing"])
+        )
         assert not any(e.pattern == "engulfing" for e in result.results)
 
     def test_engulfing_bearish(self):
@@ -265,7 +315,9 @@ class TestDetectorRejection:
                 _bar(101.0, 101.2, 98.5, 99.0),
             ]
         )
-        result = candlestick_patterns(data=records, patterns=["engulfing"])
+        result = candlestick_patterns(
+            CandlestickPatternsQueryParams(data=records, patterns=["engulfing"])
+        )
         bears = [e for e in result.results if e.direction == "bearish"]
         assert len(bears) == 1
 

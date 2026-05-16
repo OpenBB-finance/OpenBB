@@ -13,7 +13,11 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
 
-from openbb_technical.multi.compose import _resolve_indicator, _to_records
+from openbb_technical.multi.compose import (
+    _call_indicator,
+    _resolve_indicator,
+    _to_records,
+)
 
 # Bare 'date' alias for function signatures so the static-package builder
 # writes 'date' (which it imports from datetime) rather than 'dateType' which it does not.
@@ -236,68 +240,11 @@ def _evaluate(
 
 
 @router.command(methods=["POST"])
-def screen(
-    data: list[Data],
-    conditions: list[dict],
-    index: str = "date",
-    target: str = "close",
-    combine: Literal["and", "or"] = "and",
-    as_of_date: date | str | None = None,
-) -> OBBject[list[Data]]:
-    """Filter a multi-symbol basket by indicator-driven conditions.
-
-    The endpoint groups the long-format input by ``symbol``, computes each
-    requested indicator independently per symbol, and evaluates the supplied
-    predicates against the indicator series at the anchor row. Scalar
-    operators (``gt``, ``gte``, ``lt``, ``lte``, ``eq``, ``between``) test the
-    latest value; event operators (``crossed_above``, ``crossed_below``,
-    ``made_high``, ``made_low``) examine the trailing ``lookback`` window for
-    a crossing or extremum. Symbols that meet the ``combine`` aggregation —
-    ``"and"`` requires every condition to fire, ``"or"`` requires at least
-    one — are returned along with the indicator values that contributed.
-
-    Screening is the workhorse of systematic trade discovery: rather than
-    eyeballing charts, the analyst encodes a set of rules (e.g. "RSI(14) < 30
-    AND price crossed above the 50-day SMA in the last 5 bars") and lets the
-    endpoint scan a universe for symbols that satisfy them.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Long-format multi-symbol data with a ``symbol`` column.
-    conditions : list[ScreenCondition]
-        Predicates to evaluate against each symbol's indicators.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Default target column forwarded to indicators that accept one, by
-        default ``"close"``.
-    combine : {"and", "or"}, optional
-        How to aggregate matched conditions per symbol, by default ``"and"``.
-    as_of_date : date | str, optional
-        Anchor date for evaluation. ``None`` uses each symbol's most recent
-        row.
-
-    Returns
-    -------
-    OBBject[list[ScreenMatch]]
-        One row per matched symbol with the anchor date, the count of
-        matched conditions, and the indicator values that fired.
-    """
-    import inspect
+def screen(params: ScreenQueryParams) -> OBBject[list[ScreenMatch]]:
+    """Filter a multi-symbol basket by indicator-driven conditions."""
 
     import pandas as pd
 
-    params = ScreenQueryParams(
-        data=data,
-        # ``conditions`` is typed ``list[dict]`` at the surface for static-package
-        # compatibility; Pydantic coerces each dict to ``ScreenCondition`` here.
-        conditions=conditions,  # ty: ignore[invalid-argument-type]
-        index=index,
-        target=target,
-        combine=combine,
-        as_of_date=as_of_date,
-    )
     df = basemodel_to_df(params.data, index=params.index)
     if "symbol" not in df.columns:
         raise ValueError("Input data must contain a 'symbol' column.")
@@ -331,15 +278,13 @@ def screen(
             if fn is None:
                 any_skipped = True
                 continue
-            kwargs: dict[str, Any] = {
-                "data": symbol_records,
-                "index": params.index,
-            }
-            sig = inspect.signature(fn)
-            if "target" in sig.parameters:
-                kwargs["target"] = params.target
-            kwargs.update(condition.indicator_params)
-            indicator_result = fn(**kwargs)
+            indicator_result = _call_indicator(
+                fn,
+                data=symbol_records,
+                index=params.index,
+                target=params.target,
+                **condition.indicator_params,
+            )
             rows = _to_records(indicator_result)
             if not rows:
                 continue  # pragma: no cover - indicator returned nothing
@@ -380,10 +325,7 @@ def screen(
                     values=captured,
                 )
             )
-
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=matches)  # ty: ignore[invalid-return-type]
+    return OBBject(results=matches)
 
 
 __all__ = [

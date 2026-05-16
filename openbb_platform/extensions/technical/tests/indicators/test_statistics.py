@@ -117,7 +117,7 @@ def constant_records():
 
 class TestClenow:
     def test_default(self, long_records):
-        result = clenow(data=long_records, period=20)
+        result = clenow(ClenowQueryParams(data=long_records, period=20))
         assert len(result.results) == 20
         assert all(isinstance(r, ClenowData) for r in result.results)
         first = result.results[0]
@@ -129,7 +129,7 @@ class TestClenow:
         )
 
     def test_alternate_target(self, long_records):
-        result = clenow(data=long_records, target="open", period=20)
+        result = clenow(ClenowQueryParams(data=long_records, target="open", period=20))
         assert result.results
 
     def test_defaults_via_params(self, long_records):
@@ -140,7 +140,7 @@ class TestClenow:
 
 class TestDrawdown:
     def test_default(self, long_records):
-        result = drawdown(data=long_records)
+        result = drawdown(DrawdownQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, DrawdownData) for r in result.results)
         first = result.results[0]
@@ -148,7 +148,7 @@ class TestDrawdown:
         assert first.drawdown_duration_days == 0
 
     def test_monotone_up_has_zero_drawdown(self, monotone_up_records):
-        result = drawdown(data=monotone_up_records)
+        result = drawdown(DrawdownQueryParams(data=monotone_up_records))
         assert all(r.drawdown == pytest.approx(0.0) for r in result.results)
         assert all(r.drawdown_duration_days == 0 for r in result.results)
 
@@ -168,7 +168,7 @@ class TestDrawdown:
             ),
         )
         records = df_to_basemodel(df.reset_index())
-        result = drawdown(data=records)
+        result = drawdown(DrawdownQueryParams(data=records))
         durations = [r.drawdown_duration_days for r in result.results]
         assert durations == [0, 0, 1, 2, 3, 0]
 
@@ -179,7 +179,7 @@ class TestDrawdown:
 
 class TestReturnsStats:
     def test_summary_default(self, realistic_returns_records):
-        result = returns_stats(data=realistic_returns_records)
+        result = returns_stats(ReturnsStatsQueryParams(data=realistic_returns_records))
         assert len(result.results) == 1
         row = result.results[0]
         assert isinstance(row, ReturnsStatsData)
@@ -191,7 +191,9 @@ class TestReturnsStats:
         assert row.cvar_95 is not None
 
     def test_rolling_window(self, realistic_returns_records):
-        result = returns_stats(data=realistic_returns_records, window=20)
+        result = returns_stats(
+            ReturnsStatsQueryParams(data=realistic_returns_records, window=20)
+        )
         assert len(result.results) > 1
         assert all(isinstance(r, ReturnsStatsData) for r in result.results)
         assert result.results[0].date is not None
@@ -200,22 +202,28 @@ class TestReturnsStats:
         "frequency", ["daily", "weekly", "monthly", "quarterly", "annual"]
     )
     def test_each_frequency(self, realistic_returns_records, frequency):
-        result = returns_stats(data=realistic_returns_records, frequency=frequency)
+        result = returns_stats(
+            ReturnsStatsQueryParams(data=realistic_returns_records, frequency=frequency)
+        )
         assert result.results
 
     def test_risk_free_rate_flips_excess(self, realistic_returns_records):
-        baseline = returns_stats(data=realistic_returns_records, risk_free_rate=0.0)
-        shifted = returns_stats(data=realistic_returns_records, risk_free_rate=0.50)
+        baseline = returns_stats(
+            ReturnsStatsQueryParams(data=realistic_returns_records, risk_free_rate=0.0)
+        )
+        shifted = returns_stats(
+            ReturnsStatsQueryParams(data=realistic_returns_records, risk_free_rate=0.50)
+        )
         assert baseline.results[0].sharpe != shifted.results[0].sharpe
 
     def test_monotone_up_no_sortino_no_calmar(self, monotone_up_records):
-        result = returns_stats(data=monotone_up_records)
+        result = returns_stats(ReturnsStatsQueryParams(data=monotone_up_records))
         row = result.results[0]
         assert row.sortino is None
         assert row.calmar is None
 
     def test_constant_series(self, constant_records):
-        result = returns_stats(data=constant_records)
+        result = returns_stats(ReturnsStatsQueryParams(data=constant_records))
         row = result.results[0]
         assert row.mean_return == pytest.approx(0.0)
         assert row.std_return == pytest.approx(0.0)
@@ -235,7 +243,7 @@ class TestReturnsStats:
             index=pd.date_range("2021-01-01", periods=1, freq="D", name="date"),
         )
         records = df_to_basemodel(df.reset_index())
-        result = returns_stats(data=records)
+        result = returns_stats(ReturnsStatsQueryParams(data=records))
         row = result.results[0]
         assert row.mean_return is None
         assert row.date is None
@@ -249,42 +257,54 @@ class TestReturnsStats:
 
 class TestStationarity:
     def test_random_walk_is_non_stationary(self, random_walk_records):
-        result = stationarity(data=random_walk_records)
+        result = stationarity(StationarityQueryParams(data=random_walk_records))
         row = result.results[0]
         assert isinstance(row, StationarityData)
         assert row.overall_verdict == "non_stationary"
         assert row.adf_verdict == "non_stationary"
 
     def test_stationary_series(self, stationary_records):
-        result = stationarity(data=stationary_records, regression="c")
+        result = stationarity(
+            StationarityQueryParams(data=stationary_records, regression="c")
+        )
         row = result.results[0]
         assert row.overall_verdict == "stationary"
         assert row.adf_verdict == "stationary"
         assert row.kpss_verdict == "stationary"
 
     def test_trend_stationary_with_ct(self, trend_stationary_records):
-        result = stationarity(data=trend_stationary_records, regression="ct")
+        result = stationarity(
+            StationarityQueryParams(data=trend_stationary_records, regression="ct")
+        )
         row = result.results[0]
         assert row.overall_verdict == "trend_stationary"
 
     def test_adf_only(self, random_walk_records):
-        result = stationarity(data=random_walk_records, test="adf")
+        result = stationarity(
+            StationarityQueryParams(data=random_walk_records, test="adf")
+        )
         row = result.results[0]
         assert row.kpss_verdict == "skipped"
         assert row.adf_verdict in {"stationary", "non_stationary"}
 
     def test_kpss_only(self, random_walk_records):
-        result = stationarity(data=random_walk_records, test="kpss")
+        result = stationarity(
+            StationarityQueryParams(data=random_walk_records, test="kpss")
+        )
         row = result.results[0]
         assert row.adf_verdict == "skipped"
         assert row.kpss_verdict in {"stationary", "non_stationary"}
 
     def test_regression_n_routes_kpss_to_c(self, stationary_records):
-        result = stationarity(data=stationary_records, regression="n")
+        result = stationarity(
+            StationarityQueryParams(data=stationary_records, regression="n")
+        )
         assert result.results
 
     def test_inconclusive_branch(self, trend_stationary_records):
-        result = stationarity(data=trend_stationary_records, regression="ctt")
+        result = stationarity(
+            StationarityQueryParams(data=trend_stationary_records, regression="ctt")
+        )
         assert result.results[0].overall_verdict == "inconclusive"
 
     def test_overall_verdict_adf_only_helper(self):
@@ -303,7 +323,9 @@ class TestStationarity:
 
 class TestHurst:
     def test_rs_random_walk_is_trending(self, random_walk_records):
-        result = hurst(data=random_walk_records, method="rs", max_lag=80)
+        result = hurst(
+            HurstQueryParams(data=random_walk_records, method="rs", max_lag=80)
+        )
         row = result.results[0]
         assert isinstance(row, HurstData)
         assert row.hurst_exponent is not None
@@ -311,14 +333,16 @@ class TestHurst:
         assert row.confidence is not None
 
     def test_dfa_random_walk(self, random_walk_records):
-        result = hurst(data=random_walk_records, method="dfa", max_lag=80)
+        result = hurst(
+            HurstQueryParams(data=random_walk_records, method="dfa", max_lag=80)
+        )
         row = result.results[0]
         assert row.hurst_exponent is not None
         assert row.interpretation == "trending"
 
     def test_invalid_lag_range(self, random_walk_records):
         with pytest.raises(ValueError, match="max_lag must be greater"):
-            hurst(data=random_walk_records, min_lag=10, max_lag=5)
+            hurst(HurstQueryParams(data=random_walk_records, min_lag=10, max_lag=5))
 
     def test_interpret_helper(self):
         assert _interpret_hurst(0.7) == "trending"
@@ -352,7 +376,9 @@ class TestHurst:
             index=pd.date_range("2021-01-01", periods=50, freq="D", name="date"),
         )
         records = df_to_basemodel(df.reset_index())
-        result = hurst(data=records, method="rs", min_lag=100, max_lag=200)
+        result = hurst(
+            HurstQueryParams(data=records, method="rs", min_lag=100, max_lag=200)
+        )
         row = result.results[0]
         assert row.hurst_exponent is None
         assert row.confidence is None
@@ -367,7 +393,9 @@ class TestHurst:
 
 class TestAutocorrelation:
     def test_default_both(self, random_walk_records):
-        result = autocorrelation(data=random_walk_records, max_lag=10)
+        result = autocorrelation(
+            AutocorrelationQueryParams(data=random_walk_records, max_lag=10)
+        )
         assert len(result.results) == 11
         assert all(isinstance(r, AutocorrelationData) for r in result.results)
         row = result.results[0]
@@ -377,13 +405,21 @@ class TestAutocorrelation:
         assert row.significant is False
 
     def test_acf_only(self, random_walk_records):
-        result = autocorrelation(data=random_walk_records, max_lag=10, method="acf")
+        result = autocorrelation(
+            AutocorrelationQueryParams(
+                data=random_walk_records, max_lag=10, method="acf"
+            )
+        )
         row = result.results[1]
         assert row.acf is not None
         assert row.pacf is None
 
     def test_pacf_only(self, random_walk_records):
-        result = autocorrelation(data=random_walk_records, max_lag=10, method="pacf")
+        result = autocorrelation(
+            AutocorrelationQueryParams(
+                data=random_walk_records, max_lag=10, method="pacf"
+            )
+        )
         row = result.results[1]
         assert row.pacf is not None
         assert row.acf is None
@@ -391,7 +427,9 @@ class TestAutocorrelation:
 
     def test_use_returns_false(self, random_walk_records):
         result = autocorrelation(
-            data=random_walk_records, max_lag=10, use_returns=False
+            AutocorrelationQueryParams(
+                data=random_walk_records, max_lag=10, use_returns=False
+            )
         )
         assert result.results
 
@@ -404,14 +442,16 @@ class TestAutocorrelation:
             index=pd.date_range("2021-01-01", periods=n, freq="D", name="date"),
         )
         records = df_to_basemodel(df.reset_index())
-        result = autocorrelation(data=records, max_lag=20, use_returns=False)
+        result = autocorrelation(
+            AutocorrelationQueryParams(data=records, max_lag=20, use_returns=False)
+        )
         flags = [r.significant for r in result.results]
         assert flags[0] is False
         assert any(flags[1:])
 
     def test_short_series_raises(self, long_records):
         with pytest.raises(ValueError, match="too short"):
-            autocorrelation(data=long_records, max_lag=200)
+            autocorrelation(AutocorrelationQueryParams(data=long_records, max_lag=200))
 
     def test_defaults_via_params(self, long_records):
         params = AutocorrelationQueryParams(data=long_records)

@@ -142,58 +142,8 @@ def _channel_bands(df, method: str, length: int, band_std: float | None):
         ),
     ],
 )
-def breakouts(
-    data: list[Data],
-    index: str = "date",
-    method: Literal["donchian", "bollinger"] = "donchian",
-    length: int = 20,
-    band_std: float | None = None,
-) -> OBBject[list[Data]]:
-    """Detect channel breakouts where price closes beyond a rolling envelope.
-
-    A breakout signal fires when the current bar's close pierces an envelope
-    drawn around recent price action. Two envelopes are supported. Donchian
-    channels use the rolling maximum and minimum of the prior ``length`` bars
-    and treat any new high or new low as the breakout. Bollinger bands wrap
-    the rolling mean in plus and minus ``band_std`` standard deviations and
-    treat closes outside those bands as the breakout. In both cases the
-    comparison is against the previous bar's band so that the breakout bar
-    itself does not lift the envelope and self-cancel.
-
-    Breakouts are the canonical trend-following trigger: a close beyond an
-    established range is read as evidence that the range has resolved in
-    favour of the breakout direction. The ``bars_in_range`` column captures
-    how long the prior consolidation lasted — longer consolidations
-    historically precede more durable follow-through — and ``magnitude``
-    reports how decisively the band was breached.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input OHLC price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    method : {"donchian", "bollinger"}, optional
-        Channel definition, by default ``"donchian"``.
-    length : PositiveInt, optional
-        Lookback window for the channel, by default 20.
-    band_std : PositiveFloat, optional
-        Bollinger band multiplier. Ignored for ``donchian``. ``None``
-        resolves to 2.0 when ``method='bollinger'``.
-
-    Returns
-    -------
-    OBBject[list[BreakoutEvent]]
-        Sparse list of breakout events with direction, breached band level,
-        breakout magnitude, and bars since the prior breakout.
-    """
-    params = BreakoutsQueryParams(
-        data=data,
-        index=index,
-        method=method,
-        length=length,
-        band_std=band_std,
-    )
+def breakouts(params: BreakoutsQueryParams) -> OBBject[list[BreakoutEvent]]:
+    """Detect channel breakouts where price closes beyond a rolling envelope."""
     validate_data(params.data, [params.length])
     df = basemodel_to_df(params.data, index=params.index)
 

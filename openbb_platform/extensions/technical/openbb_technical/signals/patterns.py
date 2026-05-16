@@ -212,50 +212,9 @@ _TWO_BAR = {"engulfing"}
     ],
 )
 def candlestick_patterns(
-    data: list[Data],
-    index: str = "date",
-    patterns: list[str] | None = None,
-) -> OBBject[list[Data]]:
-    """Scan OHLC bars for classical candlestick patterns and emit one row per match.
-
-    Candlestick patterns encode multi-century intuitions about the short-term
-    balance of buying and selling pressure in the shape of a single bar (or
-    in some cases the pair of the current and previous bars). This endpoint
-    walks an OHLC series bar by bar, applies a configurable subset of
-    detectors, and emits one row per pattern that the bar matches. The five
-    supported patterns are Doji (indecision), Hammer (bullish reversal off a
-    low), Marubozu (strong directional bar with negligible shadows), Spinning
-    Top (indecision with comparable shadows), and Engulfing (two-bar reversal
-    where the current real body fully covers the previous one).
-
-    Each match is accompanied by an implied direction — bullish, bearish, or
-    neutral — and a heuristic 0-1 confidence score derived from the relative
-    body and shadow geometry. The confidence score lets downstream code
-    rank matches and discard borderline cases, while the sparse one-row-per-
-    match shape composes naturally with chart overlays and rule-based
-    strategies.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    patterns : list[str], optional
-        Subset of patterns to scan for. ``None`` runs every entry in
-        ``SUPPORTED_PATTERNS``.
-
-    Returns
-    -------
-    OBBject[list[PatternEvent]]
-        Sparse list of pattern matches with date, pattern name, implied
-        direction, and a 0-1 confidence score.
-    """
-    params = CandlestickPatternsQueryParams(
-        data=data,
-        index=index,
-        patterns=patterns,
-    )
+    params: CandlestickPatternsQueryParams,
+) -> OBBject[list[PatternEvent]]:
+    """Scan OHLC bars for classical candlestick patterns and emit one row per match."""
     requested = params.patterns or list(SUPPORTED_PATTERNS)
     requested = [p for p in requested if p in SUPPORTED_PATTERNS]
     if not requested:
@@ -285,9 +244,7 @@ def candlestick_patterns(
                 )
             )
         prev_row = row
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=events)  # ty: ignore[invalid-return-type]
+    return OBBject(results=events)
 
 
 __all__ = [

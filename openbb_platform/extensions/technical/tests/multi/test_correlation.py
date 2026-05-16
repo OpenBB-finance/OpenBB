@@ -16,7 +16,7 @@ from openbb_technical.multi.correlation import (
 
 class TestCorrelation:
     def test_default_pairs_pearson(self, multi_symbol_records):
-        out = correlation(data=multi_symbol_records, window=30)
+        out = correlation(CorrelationQueryParams(data=multi_symbol_records, window=30))
         assert out.results
         assert all(isinstance(r, CorrelationData) for r in out.results)
         pair_set = {(r.symbol_a, r.symbol_b) for r in out.results}
@@ -24,9 +24,11 @@ class TestCorrelation:
 
     def test_explicit_pairs(self, multi_symbol_records):
         out = correlation(
-            data=multi_symbol_records,
-            window=30,
-            pairs=[("AAA", "BBB"), ("XYZ", "AAA")],
+            CorrelationQueryParams(
+                data=multi_symbol_records,
+                window=30,
+                pairs=[("AAA", "BBB"), ("XYZ", "AAA")],
+            )
         )
         assert out.results
         pair_set = {(r.symbol_a, r.symbol_b) for r in out.results}
@@ -34,7 +36,9 @@ class TestCorrelation:
 
     @pytest.mark.parametrize("method", ["pearson", "spearman", "kendall"])
     def test_each_method(self, multi_symbol_records, method):
-        out = correlation(data=multi_symbol_records, window=30, method=method)
+        out = correlation(
+            CorrelationQueryParams(data=multi_symbol_records, window=30, method=method)
+        )
         assert out.results
         assert any(r.correlation is not None for r in out.results)
 
@@ -46,7 +50,7 @@ class TestCorrelation:
             for r in single_symbol_records[:5]
         ]
         with pytest.raises(ValueError, match="symbol"):
-            correlation(data=sym_less, window=5)
+            correlation(CorrelationQueryParams(data=sym_less, window=5))
 
     def test_query_params_defaults(self, multi_symbol_records):
         params = CorrelationQueryParams(data=multi_symbol_records)
@@ -58,7 +62,9 @@ class TestCorrelation:
 
 class TestCorrelationMatrix:
     def test_default_uses_last_date(self, multi_symbol_records):
-        out = correlation_matrix(data=multi_symbol_records)
+        out = correlation_matrix(
+            CorrelationMatrixQueryParams(data=multi_symbol_records)
+        )
         assert out.results
         row = out.results[0]
         assert isinstance(row, CorrelationMatrixData)
@@ -67,20 +73,26 @@ class TestCorrelationMatrix:
         assert row.matrix[1][1] == pytest.approx(1.0)
 
     def test_window_clipped(self, multi_symbol_records):
-        out = correlation_matrix(data=multi_symbol_records, window=60)
+        out = correlation_matrix(
+            CorrelationMatrixQueryParams(data=multi_symbol_records, window=60)
+        )
         assert out.results
         assert len(out.results[0].symbols) == 3
 
     def test_explicit_as_of(self, multi_symbol_records):
         out = correlation_matrix(
-            data=multi_symbol_records, window=60, as_of_date="2021-12-31"
+            CorrelationMatrixQueryParams(
+                data=multi_symbol_records, window=60, as_of_date="2021-12-31"
+            )
         )
         assert out.results
         assert str(out.results[0].as_of_date) <= "2021-12-31"
 
     @pytest.mark.parametrize("method", ["pearson", "spearman", "kendall"])
     def test_each_method(self, multi_symbol_records, method):
-        out = correlation_matrix(data=multi_symbol_records, method=method)
+        out = correlation_matrix(
+            CorrelationMatrixQueryParams(data=multi_symbol_records, method=method)
+        )
         assert out.results
 
     def test_missing_symbol_column_errors(self, single_symbol_records):
@@ -91,7 +103,7 @@ class TestCorrelationMatrix:
             for r in single_symbol_records[:5]
         ]
         with pytest.raises(ValueError, match="symbol"):
-            correlation_matrix(data=sym_less)
+            correlation_matrix(CorrelationMatrixQueryParams(data=sym_less))
 
     def test_query_params_defaults(self, multi_symbol_records):
         params = CorrelationMatrixQueryParams(data=multi_symbol_records)

@@ -29,54 +29,54 @@ def long_records(ohlcv_df):
 
 class TestObv:
     def test_default(self, long_records):
-        result = obv(data=long_records)
+        result = obv(ObvQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, ObvData) for r in result.results)
         assert result.results[0].obv is not None
 
     def test_offset(self, long_records):
-        result = obv(data=long_records, offset=1)
+        result = obv(ObvQueryParams(data=long_records, offset=1))
         assert result.results
 
 
 class TestAd:
     def test_default(self, long_records):
-        result = ad(data=long_records)
+        result = ad(AdQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, AdData) for r in result.results)
         assert result.results[0].ad is not None
 
     def test_offset(self, long_records):
-        result = ad(data=long_records, offset=1)
+        result = ad(AdQueryParams(data=long_records, offset=1))
         assert result.results
 
 
 class TestAdosc:
     def test_default(self, long_records):
-        result = adosc(data=long_records, fast=3, slow=10)
+        result = adosc(AdoscQueryParams(data=long_records, fast=3, slow=10))
         assert result.results
         assert all(isinstance(r, AdoscData) for r in result.results)
         assert result.results[0].adosc is not None
 
     def test_offset(self, long_records):
-        result = adosc(data=long_records, fast=3, slow=10, offset=1)
+        result = adosc(AdoscQueryParams(data=long_records, fast=3, slow=10, offset=1))
         assert result.results
 
 
 class TestVwap:
     def test_default(self, long_records):
-        result = vwap(data=long_records)
+        result = vwap(VwapQueryParams(data=long_records))
         assert result.results
         assert all(isinstance(r, VwapData) for r in result.results)
         assert result.results[0].vwap is not None
 
     @pytest.mark.parametrize("anchor", ["D", "W"])
     def test_each_anchor(self, long_records, anchor):
-        result = vwap(data=long_records, anchor=anchor)
+        result = vwap(VwapQueryParams(data=long_records, anchor=anchor))
         assert result.results
 
     def test_offset(self, long_records):
-        result = vwap(data=long_records, offset=1)
+        result = vwap(VwapQueryParams(data=long_records, offset=1))
         assert result.results
 
 

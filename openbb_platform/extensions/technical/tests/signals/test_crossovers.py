@@ -41,27 +41,37 @@ def sinusoidal_records():
 
 class TestCrossoversBehaviour:
     def test_default_returns_obbject(self, sinusoidal_records):
-        result = crossovers(data=sinusoidal_records, fast_length=5, slow_length=20)
+        result = crossovers(
+            CrossoversQueryParams(
+                data=sinusoidal_records, fast_length=5, slow_length=20
+            )
+        )
         assert result.results
         assert all(isinstance(r, CrossoverEvent) for r in result.results)
 
     @pytest.mark.parametrize("mamode", ["sma", "ema", "wma", "hma", "zlma"])
     def test_each_mamode_produces_events(self, sinusoidal_records, mamode):
         result = crossovers(
-            data=sinusoidal_records, fast_length=5, slow_length=20, mamode=mamode
+            CrossoversQueryParams(
+                data=sinusoidal_records, fast_length=5, slow_length=20, mamode=mamode
+            )
         )
         assert result.results
         assert all(r.direction in {"bullish", "bearish"} for r in result.results)
 
     def test_sparse_output_no_crossovers(self, monotone_records):
         """Strictly increasing series produces zero crossovers."""
-        result = crossovers(data=monotone_records, fast_length=5, slow_length=20)
+        result = crossovers(
+            CrossoversQueryParams(data=monotone_records, fast_length=5, slow_length=20)
+        )
         assert result.results == []
 
     def test_distance_sign_and_magnitude(self, sinusoidal_records):
         """`distance` equals fast - slow and matches direction polarity."""
         result = crossovers(
-            data=sinusoidal_records, fast_length=5, slow_length=20, mamode="sma"
+            CrossoversQueryParams(
+                data=sinusoidal_records, fast_length=5, slow_length=20, mamode="sma"
+            )
         )
         assert result.results
         for ev in result.results:
@@ -74,7 +84,9 @@ class TestCrossoversBehaviour:
     def test_alternating_directions(self, sinusoidal_records):
         """Adjacent crossover events must alternate direction."""
         result = crossovers(
-            data=sinusoidal_records, fast_length=5, slow_length=20, mamode="sma"
+            CrossoversQueryParams(
+                data=sinusoidal_records, fast_length=5, slow_length=20, mamode="sma"
+            )
         )
         directions = [e.direction for e in result.results]
         for prev, nxt in zip(directions, directions[1:]):
@@ -125,5 +137,9 @@ class TestCrossoversEdgeCases:
             index=pd.date_range("2020-01-01", periods=periods, freq="D", name="date"),
         )
         records = df_to_basemodel(df.reset_index())
-        result = crossovers(data=records, fast_length=5, slow_length=20, mamode="hma")
+        result = crossovers(
+            CrossoversQueryParams(
+                data=records, fast_length=5, slow_length=20, mamode="hma"
+            )
+        )
         assert result.results == []

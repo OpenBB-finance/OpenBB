@@ -51,29 +51,39 @@ def long_records_400():
 class TestRealizedVolatility:
     @pytest.mark.parametrize("model", list(_VOL_FUNCTIONS.keys()))
     def test_each_model_returns_data(self, long_records, model):
-        result = realized_volatility(data=long_records, model=model, window=20)
+        result = realized_volatility(
+            RealizedVolatilityQueryParams(data=long_records, model=model, window=20)
+        )
         assert result.results
         assert all(isinstance(r, RealizedVolatilityData) for r in result.results)
         assert result.results[0].model == model
 
     def test_is_crypto_uses_365(self, long_records):
         result = realized_volatility(
-            data=long_records, model="std", is_crypto=True, window=20
+            RealizedVolatilityQueryParams(
+                data=long_records, model="std", is_crypto=True, window=20
+            )
         )
         assert result.results[0].trading_periods == 365
 
     def test_explicit_trading_periods_override(self, long_records):
         result = realized_volatility(
-            data=long_records, model="std", trading_periods=200, window=20
+            RealizedVolatilityQueryParams(
+                data=long_records, model="std", trading_periods=200, window=20
+            )
         )
         assert result.results[0].trading_periods == 200
 
     def test_clean_false_keeps_warmup_rows(self, long_records):
         cleaned = realized_volatility(
-            data=long_records, model="std", window=20, clean=True
+            RealizedVolatilityQueryParams(
+                data=long_records, model="std", window=20, clean=True
+            )
         )
         raw = realized_volatility(
-            data=long_records, model="std", window=20, clean=False
+            RealizedVolatilityQueryParams(
+                data=long_records, model="std", window=20, clean=False
+            )
         )
         assert len(raw.results) > len(cleaned.results)
 
@@ -92,7 +102,9 @@ class TestRealizedVolatility:
 
 class TestRealizedVolatilityCompare:
     def test_default_includes_all_models(self, long_records):
-        result = realized_volatility_compare(data=long_records, window=20)
+        result = realized_volatility_compare(
+            RealizedVolatilityCompareQueryParams(data=long_records, window=20)
+        )
         row = result.results[0]
         assert isinstance(row, RealizedVolatilityCompareData)
         assert row.std is not None
@@ -100,7 +112,9 @@ class TestRealizedVolatilityCompare:
 
     def test_subset_of_models(self, long_records):
         result = realized_volatility_compare(
-            data=long_records, models=["std", "parkinson"], window=20
+            RealizedVolatilityCompareQueryParams(
+                data=long_records, models=["std", "parkinson"], window=20
+            )
         )
         assert result.results
         row = result.results[0]
@@ -109,14 +123,22 @@ class TestRealizedVolatilityCompare:
         assert row.garman_klass is None
 
     def test_clean_false_keeps_warmup(self, long_records):
-        cleaned = realized_volatility_compare(data=long_records, window=20, clean=True)
-        raw = realized_volatility_compare(data=long_records, window=20, clean=False)
+        cleaned = realized_volatility_compare(
+            RealizedVolatilityCompareQueryParams(
+                data=long_records, window=20, clean=True
+            )
+        )
+        raw = realized_volatility_compare(
+            RealizedVolatilityCompareQueryParams(
+                data=long_records, window=20, clean=False
+            )
+        )
         assert len(raw.results) >= len(cleaned.results)
 
 
 class TestCones:
     def test_default_table(self, long_records_400):
-        result = cones(data=long_records_400)
+        result = cones(ConesQueryParams(data=long_records_400))
         assert result.results
         assert all(isinstance(r, ConesData) for r in result.results)
         first = result.results[0]
@@ -126,32 +148,32 @@ class TestCones:
 
     @pytest.mark.parametrize("model", list(_VOL_FUNCTIONS.keys()))
     def test_each_model(self, long_records_400, model):
-        result = cones(data=long_records_400, model=model)
+        result = cones(ConesQueryParams(data=long_records_400, model=model))
         assert result.results
 
     def test_is_crypto_branch(self, long_records_400):
-        result = cones(data=long_records_400, is_crypto=True)
+        result = cones(ConesQueryParams(data=long_records_400, is_crypto=True))
         assert result.results
 
     def test_explicit_trading_periods(self, long_records_400):
-        result = cones(data=long_records_400, trading_periods=200)
+        result = cones(ConesQueryParams(data=long_records_400, trading_periods=200))
         assert result.results
 
 
 class TestAtr:
     def test_default(self, long_records):
-        result = atr(data=long_records, length=14)
+        result = atr(AtrQueryParams(data=long_records, length=14))
         assert result.results
         assert all(isinstance(r, AtrData) for r in result.results)
         assert result.results[0].atr is not None
 
     @pytest.mark.parametrize("mamode", ["sma", "ema", "wma", "rma"])
     def test_each_mamode(self, long_records, mamode):
-        result = atr(data=long_records, length=14, mamode=mamode)
+        result = atr(AtrQueryParams(data=long_records, length=14, mamode=mamode))
         assert result.results
 
     def test_drift_and_offset(self, long_records):
-        result = atr(data=long_records, length=14, drift=2, offset=1)
+        result = atr(AtrQueryParams(data=long_records, length=14, drift=2, offset=1))
         assert result.results
 
 

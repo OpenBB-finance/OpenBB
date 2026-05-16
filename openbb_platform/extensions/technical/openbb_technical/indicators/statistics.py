@@ -111,48 +111,8 @@ class ClenowData(Data):
         APIEx(parameters={"data": APIEx.mock_data("timeseries"), "period": 2}),
     ],
 )
-def clenow(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    period: int = 90,
-) -> OBBject[list[Data]]:
-    """Calculate Clenow Volatility-Adjusted Momentum on log prices.
-
-    Clenow momentum, introduced in Andreas Clenow's *Stocks on the Move*,
-    measures the rate at which an asset is trending while penalising the
-    noisiness of that trend. The procedure fits an ordinary least-squares
-    regression of the natural log of price against the time index over the
-    trailing ``period`` bars. The regression slope - annualised by multiplying
-    by 252 - captures the exponential growth rate, while the R-squared of the
-    fit captures how cleanly the price has tracked that exponential. The
-    annualised coefficient is then weighted by R-squared, so trends that wander
-    are penalised relative to trends that march in a straight line.
-
-    Analysts use this factor to rank a cross-section of instruments for
-    trend-following portfolios: high values flag steadily rising assets while
-    high-vol erratic movers are deprioritised even if their raw return is
-    similar. The fitted log-linear values are returned for the trailing window
-    so the regression can be visualised against the actual price.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to regress, by default ``"close"``.
-    period : PositiveInt, optional
-        Lookback window in bars for the regression, by default 90.
-
-    Returns
-    -------
-    OBBject[list[ClenowData]]
-        One row per bar in the trailing window with the fitted log-linear
-        value and the regression summary echoed on every row.
-    """
-    params = ClenowQueryParams(data=data, index=index, target=target, period=period)
+def clenow(params: ClenowQueryParams) -> OBBject[list[ClenowData]]:
+    """Calculate Clenow Volatility-Adjusted Momentum on log prices."""
     validate_data(params.data, params.period)
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
@@ -236,44 +196,8 @@ class DrawdownData(Data):
     methods=["POST"],
     examples=[APIEx(parameters={"data": APIEx.mock_data("timeseries")})],
 )
-def drawdown(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-) -> OBBject[list[Data]]:
-    """Compute cumulative return, running peak, drawdown, and underwater duration.
-
-    Drawdown is the percentage decline of an equity curve from its prior
-    high-water mark. For each observation the endpoint reports four series:
-    the cumulative return from inception, the running maximum of that
-    cumulative return (the high-water mark), the current drawdown as the
-    percentage gap between the equity curve and its peak, and the number of
-    consecutive bars the series has spent below its peak. Drawdown is zero or
-    negative by construction and resets to zero whenever a new peak is made.
-
-    Drawdown is the most direct measure of pain experienced by a buy-and-hold
-    investor, and the duration component captures how long an investor would
-    have had to wait to recover. Analysts use it to compare strategies on a
-    risk-adjusted basis - two strategies with the same annual return can have
-    drastically different worst-case drawdowns - and to validate that a live
-    portfolio's drawdown trajectory is consistent with its backtest.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to evaluate drawdowns on, by default ``"close"``.
-
-    Returns
-    -------
-    OBBject[list[DrawdownData]]
-        One row per observation with cumulative return, running peak,
-        drawdown, and underwater duration.
-    """
-    params = DrawdownQueryParams(data=data, index=index, target=target)
+def drawdown(params: DrawdownQueryParams) -> OBBject[list[DrawdownData]]:
+    """Compute cumulative return, running peak, drawdown, and underwater duration."""
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target).astype(float)
     cum = series / series.iloc[0] - 1.0
@@ -388,16 +312,34 @@ class ReturnsStatsData(Data):
     date: datetime | dateType | str | None = Field(
         default=None, description="Window end date, or ``None`` for the summary row."
     )
-    mean_return: float | None
-    std_return: float | None
-    skew: float | None
-    kurtosis: float | None
-    sharpe: float | None
-    sortino: float | None
-    calmar: float | None
-    max_drawdown: float | None
-    var_95: float | None
-    cvar_95: float | None
+    mean_return: float | None = Field(
+        description="Arithmetic mean of simple returns over the window."
+    )
+    std_return: float | None = Field(
+        description="Sample standard deviation of returns (ddof=1)."
+    )
+    skew: float | None = Field(description="Skewness of the return distribution.")
+    kurtosis: float | None = Field(
+        description="Excess kurtosis of the return distribution."
+    )
+    sharpe: float | None = Field(
+        description="Annualised Sharpe ratio of excess returns."
+    )
+    sortino: float | None = Field(
+        description="Annualised Sortino ratio using downside deviation."
+    )
+    calmar: float | None = Field(
+        description="Annualised return divided by the absolute value of max drawdown."
+    )
+    max_drawdown: float | None = Field(
+        description="Worst peak-to-trough drawdown over the window (negative)."
+    )
+    var_95: float | None = Field(
+        description="5th-percentile return - historical Value-at-Risk at 95%."
+    )
+    cvar_95: float | None = Field(
+        description="Mean of returns at or below ``var_95`` - historical Conditional VaR."
+    )
 
 
 def _stats_block(returns, periods_per_year: int, rf_per_period: float) -> dict:
@@ -464,67 +406,8 @@ def _stats_block(returns, periods_per_year: int, rf_per_period: float) -> dict:
     methods=["POST"],
     examples=[APIEx(parameters={"data": APIEx.mock_data("timeseries")})],
 )
-def returns_stats(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    frequency: Literal["daily", "weekly", "monthly", "quarterly", "annual"] = "daily",
-    risk_free_rate: float = 0.0,
-    window: int | None = None,
-) -> OBBject[list[Data]]:
-    """Calculate distributional and risk-adjusted statistics on simple returns.
-
-    This endpoint summarises the empirical return distribution and the most
-    commonly cited risk-adjusted performance ratios. Simple percent-change
-    returns are derived from ``target`` and a block of statistics is then
-    computed either over the entire sample (when ``window`` is ``None``) or as
-    a rolling time series with one row per window-end date.
-
-    The distributional block - mean, standard deviation, skewness, and excess
-    kurtosis - characterises the central tendency, dispersion, asymmetry, and
-    tail-thickness of returns. The risk-adjusted block annualises ratios by
-    ``sqrt(periods_per_year)`` and uses ``risk_free_rate`` divided by the
-    frequency factor as the per-period hurdle: Sharpe divides annualised
-    excess mean by annualised total volatility, Sortino divides by downside
-    volatility only, and Calmar is annualised return over the absolute value
-    of the worst peak-to-trough drawdown. The tail-risk block reports
-    historical 95% Value-at-Risk (the 5th-percentile single-period loss) and
-    Conditional VaR (the mean loss in that tail). Analysts use this output to
-    build risk dashboards, compare strategies on apples-to-apples
-    risk-adjusted terms, and monitor regime changes when a rolling ``window``
-    is supplied.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input price series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to evaluate returns on, by default ``"close"``.
-    frequency : Frequency, optional
-        Annualisation frequency, by default ``"daily"``.
-    risk_free_rate : float, optional
-        Annualised risk-free rate used for Sharpe and Sortino numerators,
-        by default 0.0.
-    window : PositiveInt, optional
-        Rolling window length in bars. ``None`` returns a single summary row,
-        by default ``None``.
-
-    Returns
-    -------
-    OBBject[list[ReturnsStatsData]]
-        One summary row when ``window`` is ``None``, otherwise one row per
-        rolling-window end date.
-    """
-    params = ReturnsStatsQueryParams(
-        data=data,
-        index=index,
-        target=target,
-        frequency=frequency,
-        risk_free_rate=risk_free_rate,
-        window=window,
-    )
+def returns_stats(params: ReturnsStatsQueryParams) -> OBBject[list[ReturnsStatsData]]:
+    """Calculate distributional and risk-adjusted statistics on simple returns."""
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target).astype(float)
     returns = series.pct_change().dropna()
@@ -540,9 +423,7 @@ def returns_stats(
         block = _stats_block(chunk, periods_per_year, rf_per_period)
         block["date"] = chunk.index[-1]
         out.append(ReturnsStatsData(**block))
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=out)  # ty: ignore[invalid-return-type]
+    return OBBject(results=out)
 
 
 class StationarityQueryParams(QueryParams):
@@ -627,21 +508,41 @@ class StationarityData(Data):
         Combined verdict from the available ADF and KPSS results.
     """
 
-    adf_statistic: float | None
-    adf_pvalue: float | None
-    adf_critical_1pct: float | None
-    adf_critical_5pct: float | None
-    adf_critical_10pct: float | None
-    adf_verdict: Literal["stationary", "non_stationary", "skipped"] | None
-    kpss_statistic: float | None
-    kpss_pvalue: float | None
-    kpss_critical_1pct: float | None
-    kpss_critical_5pct: float | None
-    kpss_critical_10pct: float | None
-    kpss_verdict: Literal["stationary", "non_stationary", "skipped"] | None
+    adf_statistic: float | None = Field(
+        description="Augmented Dickey-Fuller test statistic."
+    )
+    adf_pvalue: float | None = Field(description="ADF p-value.")
+    adf_critical_1pct: float | None = Field(
+        description="ADF critical value at the 1% significance level."
+    )
+    adf_critical_5pct: float | None = Field(
+        description="ADF critical value at the 5% significance level."
+    )
+    adf_critical_10pct: float | None = Field(
+        description="ADF critical value at the 10% significance level."
+    )
+    adf_verdict: Literal["stationary", "non_stationary", "skipped"] | None = Field(
+        description='ADF verdict at 5%, or ``"skipped"`` when the test was not run.'
+    )
+    kpss_statistic: float | None = Field(
+        description="Kwiatkowski-Phillips-Schmidt-Shin test statistic."
+    )
+    kpss_pvalue: float | None = Field(description="KPSS p-value.")
+    kpss_critical_1pct: float | None = Field(
+        description="KPSS critical value at the 1% significance level."
+    )
+    kpss_critical_5pct: float | None = Field(
+        description="KPSS critical value at the 5% significance level."
+    )
+    kpss_critical_10pct: float | None = Field(
+        description="KPSS critical value at the 10% significance level."
+    )
+    kpss_verdict: Literal["stationary", "non_stationary", "skipped"] | None = Field(
+        description='KPSS verdict at 5%, or ``"skipped"`` when the test was not run.'
+    )
     overall_verdict: Literal[
         "stationary", "non_stationary", "trend_stationary", "inconclusive"
-    ]
+    ] = Field(description="Combined verdict from the available ADF and KPSS results.")
 
 
 def _adf_block(values, regression: str) -> dict:
@@ -702,54 +603,8 @@ def _overall_verdict(adf, kpss_, regression: str) -> str:
     methods=["POST"],
     examples=[APIEx(parameters={"data": APIEx.mock_data("timeseries")})],
 )
-def stationarity(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    test: Literal["adf", "kpss", "both"] = "both",
-    regression: Literal["c", "ct", "ctt", "n"] = "c",
-) -> OBBject[list[Data]]:
-    """Test a series for stationarity using ADF, KPSS, or both with a combined verdict.
-
-    Stationarity is the property that a series' statistical moments - mean,
-    variance, and autocovariance - do not change over time. Many time-series
-    models (ARMA, OLS regression, mean-reversion strategies) assume a
-    stationary input, so testing for it is a standard pre-modelling check.
-
-    The Augmented Dickey-Fuller (ADF) test has a unit-root null: it asks
-    whether the series can be represented as a random walk. A small p-value
-    rejects the null and points to stationarity. The Kwiatkowski-Phillips-
-    Schmidt-Shin (KPSS) test inverts the hypotheses - its null is
-    stationarity around a level or trend - so a small p-value points to
-    non-stationarity. Running both is informative: ADF stationary plus KPSS
-    stationary is strong evidence of stationarity (or trend-stationarity when
-    ``regression`` includes a trend term); ADF non-stationary plus KPSS
-    non-stationary is strong evidence of a unit root; disagreement is
-    flagged ``"inconclusive"`` and typically motivates differencing.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to test, by default ``"close"``.
-    test : {"adf", "kpss", "both"}, optional
-        Which test(s) to run, by default ``"both"``.
-    regression : {"c", "ct", "ctt", "n"}, optional
-        Deterministic component in the regression. KPSS supports ``c`` or
-        ``ct`` only and falls back to ``c`` otherwise, by default ``"c"``.
-
-    Returns
-    -------
-    OBBject[list[StationarityData]]
-        One row with ADF/KPSS statistics, critical values, verdicts, and a
-        combined overall verdict.
-    """
-    params = StationarityQueryParams(
-        data=data, index=index, target=target, test=test, regression=regression
-    )
+def stationarity(params: StationarityQueryParams) -> OBBject[list[StationarityData]]:
+    """Test a series for stationarity using ADF, KPSS, or both with a combined verdict."""
     df = basemodel_to_df(params.data, index=params.index)
     values = get_target_column(df, params.target).astype(float).dropna().to_numpy()
     blank = {
@@ -841,8 +696,12 @@ class HurstData(Data):
         R-squared of the log-log fit used to estimate the exponent.
     """
 
-    hurst_exponent: float | None
-    interpretation: Literal["trending", "mean_reverting", "random_walk"]
+    hurst_exponent: float | None = Field(
+        description="Estimated Hurst exponent in ``[0, 1]``. ``None`` when the fit could not be computed."
+    )
+    interpretation: Literal["trending", "mean_reverting", "random_walk"] = Field(
+        description="Qualitative classification: ``trending`` for H > 0.55, ``mean_reverting`` for H < 0.45, otherwise ``random_walk``."
+    )
     confidence: float | None = Field(
         description="R-squared of the log-log fit used to estimate the exponent.",
     )
@@ -933,68 +792,8 @@ def _interpret_hurst(h: float) -> str:
     methods=["POST"],
     examples=[APIEx(parameters={"data": APIEx.mock_data("timeseries")})],
 )
-def hurst(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    method: Literal["rs", "dfa"] = "rs",
-    min_lag: int = 2,
-    max_lag: int = 100,
-) -> OBBject[list[Data]]:
-    """Estimate the Hurst exponent via Rescaled-Range analysis or DFA.
-
-    The Hurst exponent ``H`` quantifies long-range dependence in a series.
-    Values near 0.5 are consistent with a random walk; values above 0.5
-    indicate persistence (a positive move is more likely to be followed by
-    another positive move) and are interpreted as trending; values below 0.5
-    indicate anti-persistence and are interpreted as mean-reverting.
-
-    Two estimators are supported. Classical Rescaled-Range (R/S) analysis
-    partitions the series into non-overlapping windows of varying length,
-    forms the standardised range ``R/S`` for each window length, and recovers
-    ``H`` as the slope of a log-log regression of ``R/S`` on lag.
-    Detrended Fluctuation Analysis (DFA) first integrates the series, then
-    measures the root-mean-square fluctuation around a local linear trend for
-    each window size; ``H`` is again the log-log slope. DFA is less sensitive
-    to non-stationarities and slow trends and is often preferred for noisy
-    financial data. The R-squared of the underlying log-log fit is reported
-    as ``confidence`` so the estimate can be discounted when the scaling is
-    poor.
-
-    Analysts use Hurst to triage a universe by regime: trending names suit
-    momentum, mean-reverting names suit pairs and stat-arb, random-walk names
-    are typically excluded from rule-based strategies.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to evaluate, by default ``"close"``.
-    method : {"rs", "dfa"}, optional
-        Estimation method, by default ``"rs"``.
-    min_lag : PositiveInt, optional
-        Smallest window length used in the log-log fit, by default 2.
-    max_lag : PositiveInt, optional
-        Largest window length used in the log-log fit (exclusive),
-        by default 100.
-
-    Returns
-    -------
-    OBBject[list[HurstData]]
-        Single-row payload with the Hurst exponent, qualitative
-        interpretation, and the R-squared of the log-log fit.
-    """
-    params = HurstQueryParams(
-        data=data,
-        index=index,
-        target=target,
-        method=method,
-        min_lag=min_lag,
-        max_lag=max_lag,
-    )
+def hurst(params: HurstQueryParams) -> OBBject[list[HurstData]]:
+    """Estimate the Hurst exponent via Rescaled-Range analysis or DFA."""
     if params.max_lag <= params.min_lag:
         raise ValueError("max_lag must be greater than min_lag.")
     df = basemodel_to_df(params.data, index=params.index)
@@ -1082,12 +881,24 @@ class AutocorrelationData(Data):
         outside the 95% confidence band.
     """
 
-    lag: int
-    acf: float | None
-    pacf: float | None
-    acf_confidence_lower: float | None
-    acf_confidence_upper: float | None
-    significant: bool
+    lag: int = Field(
+        description="Lag in bars (0 is the series with itself, by definition 1.0 for ACF)."
+    )
+    acf: float | None = Field(
+        description="Sample autocorrelation at this lag, or ``None`` when ACF was skipped."
+    )
+    pacf: float | None = Field(
+        description="Sample partial autocorrelation at this lag, or ``None`` when PACF was skipped."
+    )
+    acf_confidence_lower: float | None = Field(
+        description="Lower bound of the 95% confidence band for the ACF estimate."
+    )
+    acf_confidence_upper: float | None = Field(
+        description="Upper bound of the 95% confidence band for the ACF estimate."
+    )
+    significant: bool = Field(
+        description="``True`` when the ACF estimate at this lag (other than lag 0) lies outside the 95% confidence band."
+    )
 
 
 @router.command(
@@ -1095,69 +906,14 @@ class AutocorrelationData(Data):
     examples=[APIEx(parameters={"data": APIEx.mock_data("timeseries")})],
 )
 def autocorrelation(
-    data: list[Data],
-    index: str = "date",
-    target: str = "close",
-    use_returns: bool = True,
-    max_lag: int = 40,
-    method: Literal["acf", "pacf", "both"] = "both",
-) -> OBBject[list[Data]]:
-    """Compute autocorrelation (ACF) and partial autocorrelation (PACF) with bands.
-
-    The autocorrelation function (ACF) at lag ``k`` measures the linear
-    correlation between the series and itself shifted by ``k`` bars - it
-    captures any linear dependence, including dependence that propagates
-    through intermediate lags. The partial autocorrelation function (PACF)
-    measures the correlation at lag ``k`` after the effect of all shorter
-    lags has been removed, isolating the direct contribution of lag ``k``.
-
-    Together ACF and PACF are the canonical diagnostics for ARMA model
-    identification: a clean cut-off in PACF after lag ``p`` with a slowly
-    decaying ACF suggests an AR(p), while the reverse pattern suggests an
-    MA(q). The 95% confidence band is computed under the white-noise null,
-    so estimates outside the band flag statistically significant
-    serial-correlation structure. Setting ``use_returns=True`` (the default)
-    differences prices into returns first, which is the appropriate input
-    when working with non-stationary price levels.
-
-    Analysts use this output to detect predictability in returns, validate
-    that residuals from a forecasting model are white, and to size lookbacks
-    for momentum or mean-reversion strategies that exploit serial dependence.
-
-    Parameters
-    ----------
-    data : list[Data]
-        Input series.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    target : str, optional
-        Column to evaluate, by default ``"close"``.
-    use_returns : bool, optional
-        Percent-change the series before computing, by default ``True``.
-    max_lag : PositiveInt, optional
-        Largest lag to compute, by default 40.
-    method : {"acf", "pacf", "both"}, optional
-        Which functions to compute, by default ``"both"``.
-
-    Returns
-    -------
-    OBBject[list[AutocorrelationData]]
-        One row per lag from 0 to ``max_lag`` with ACF, PACF, the 95%
-        confidence band, and a significance flag.
-    """
+    params: AutocorrelationQueryParams,
+) -> OBBject[list[AutocorrelationData]]:
+    """Compute autocorrelation (ACF) and partial autocorrelation (PACF) with bands."""
     from statsmodels.tsa.stattools import (
         acf as _acf,
         pacf as _pacf,
     )
 
-    params = AutocorrelationQueryParams(
-        data=data,
-        index=index,
-        target=target,
-        use_returns=use_returns,
-        max_lag=max_lag,
-        method=method,
-    )
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target).astype(float)
     series = series.pct_change().dropna() if params.use_returns else series.dropna()
@@ -1193,9 +949,7 @@ def autocorrelation(
                 significant=significant,
             )
         )
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=out)  # ty: ignore[invalid-return-type]
+    return OBBject(results=out)
 
 
 __all__ = [

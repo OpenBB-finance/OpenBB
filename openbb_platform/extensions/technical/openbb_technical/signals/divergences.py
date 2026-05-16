@@ -229,66 +229,8 @@ def _strength(
         APIEx(parameters={"data": APIEx.mock_data("timeseries"), "indicator": "rsi"}),
     ],
 )
-def divergences(
-    data: list[Data],
-    indicator: Literal["rsi", "macd", "stoch", "cci"],
-    index: str = "date",
-    indicator_length: int = 14,
-    target: str = "close",
-    lookback: int = 60,
-    min_swing_distance: int = 5,
-) -> OBBject[list[Data]]:
-    """Detect regular and hidden divergences between price swings and an oscillator.
-
-    A divergence is a disagreement in the direction of consecutive swings
-    between price and a momentum oscillator. Regular bearish divergence pairs
-    a higher price high with a lower oscillator high and is read as a
-    momentum failure preceding a reversal; regular bullish divergence is the
-    mirror at swing lows. Hidden divergences pair a lower price high with a
-    higher oscillator high (or higher price low with lower oscillator low)
-    and are read as a continuation in the prevailing trend after a pullback.
-
-    The detector walks the most recent ``lookback`` bars, locates strict
-    local maxima and minima of the target price using a ``min_swing_distance``
-    half-window, classifies each consecutive same-kind swing pair against
-    the chosen oscillator (RSI, MACD line, stochastic %K, or CCI), and emits
-    events sorted by the confirming swing's timestamp. A 0-1 strength score
-    summarises how wide the price and indicator displacements are relative
-    to their own magnitudes — useful for ranking signals or filtering noise.
-
-    Parameters
-    ----------
-    data : list[Data]
-        OHLC price series.
-    indicator : {"rsi", "macd", "stoch", "cci"}
-        Oscillator paired with price.
-    index : str, optional
-        Index column name in ``data``, by default ``"date"``.
-    indicator_length : PositiveInt, optional
-        Lookback length inside the oscillator, by default 14.
-    target : str, optional
-        Price column used for swings, by default ``"close"``.
-    lookback : PositiveInt, optional
-        Recent bars to search for swing pairs, by default 60.
-    min_swing_distance : PositiveInt, optional
-        Minimum bar separation between two swing points and half-window for
-        local-extreme detection, by default 5.
-
-    Returns
-    -------
-    OBBject[list[DivergenceEvent]]
-        Sparse list of divergence events with kind, the pair of swing dates
-        and values, and a 0-1 strength score.
-    """
-    params = DivergencesQueryParams(
-        data=data,
-        index=index,
-        indicator=indicator,
-        indicator_length=indicator_length,
-        target=target,
-        lookback=lookback,
-        min_swing_distance=min_swing_distance,
-    )
+def divergences(params: DivergencesQueryParams) -> OBBject[list[DivergenceEvent]]:
+    """Detect regular and hidden divergences between price swings and an oscillator."""
     validate_data(params.data, [params.indicator_length, params.min_swing_distance])
     df = basemodel_to_df(params.data, index=params.index)
     ind_series = _compute_indicator(
@@ -348,9 +290,7 @@ def divergences(
     _emit_pairs(price_highs, is_high=True)
     _emit_pairs(price_lows, is_high=False)
     events.sort(key=lambda e: (e.confirmation_date, e.kind))
-    # Per-endpoint Data subclass; return annotation uses base Data for
-    # static-package compatibility (list invariance prevents subtype matching).
-    return OBBject(results=events)  # ty: ignore[invalid-return-type]
+    return OBBject(results=events)
 
 
 __all__ = [
