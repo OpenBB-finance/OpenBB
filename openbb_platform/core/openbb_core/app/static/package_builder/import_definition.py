@@ -215,6 +215,7 @@ class ImportDefinition:
                 else return_type
             )
             hint_type_list.append(hint_type)
+            hint_type_list.extend(_unwrap_generic_args(return_type))
 
         hint_type_list = cls.filter_hint_type_list(hint_type_list)
 

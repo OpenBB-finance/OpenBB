@@ -24,7 +24,7 @@ def test_get_field_type_simple_required():
 
 def test_get_field_type_simple_optional_wraps_in_optional():
     out = DocstringGenerator.get_field_type(int, is_required=False)
-    assert out == "Optional[int]"
+    assert out == "int | None"
 
 
 def test_get_field_type_optional_target_website_strips_optional_wrapper():
@@ -414,30 +414,11 @@ def test_generate_returns_section_non_obbject_model_fields():
     assert "_RetModel" in out or "RetModel" in out
 
 
-def test_generate_obbject_inner_type_extraction(monkeypatch):
-    """Drive lines ~971-996 by ensuring ReferenceGenerator.get_paths returns data
-    for the function's path, so the schema fields are appended to the docstring."""
-
-    from openbb_core.app.static.package_builder import (
-        path_handler as ph_mod,
-        reference_generator as rg_mod,
-    )
-
-    fake_field = {
-        "name": "symbol",
-        "type": "str",
-        "description": "Sym field.",
-    }
-
-    def fake_paths(_route_map):
-        return {"/test/inner": {"data": {"standard": [fake_field]}}}
-
-    monkeypatch.setattr(ph_mod.PathHandler, "build_route_map", lambda: {})
-    monkeypatch.setattr(
-        rg_mod.ReferenceGenerator,
-        "get_paths",
-        classmethod(lambda cls, _rm: fake_paths(_rm)),
-    )
+def test_generate_obbject_inner_type_extraction():
+    """A ``OBBject[list[XxxData]]`` return annotation has its row model
+    introspected directly: the data-model field section is built from the
+    model class carried in ``OBBject.results``, not from ReferenceGenerator.
+    """
 
     async def _func_obbject_typed() -> OBBject[list[_RetModel]]:
         """Typed OBBject."""
@@ -449,8 +430,12 @@ def test_generate_obbject_inner_type_extraction(monkeypatch):
         formatted_params=OrderedDict(),
         model_name=None,
     )
-    assert "symbol" in out
-    assert "Sym field." in out
+    # Row model fields are documented from ``_RetModel`` itself.
+    assert "_RetModel" in out
+    assert "foo : str" in out
+    assert "The foo field." in out
+    assert "bar : int | None" in out
+    assert "A bar number." in out
 
 
 def test_generate_model_docstring_format_type_union_literal():

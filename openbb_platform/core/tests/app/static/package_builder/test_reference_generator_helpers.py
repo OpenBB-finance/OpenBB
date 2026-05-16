@@ -257,6 +257,19 @@ def test_get_function_signature_info_with_query_default():
     assert out[0]["default"] == "AAPL"
 
 
+def test_get_function_signature_info_pydantic_undefined_default_becomes_none():
+    """A parameter whose default is ``PydanticUndefined`` (e.g. a required
+    model field surfaced into the signature) is normalised to ``None``."""
+    from pydantic_core import PydanticUndefined
+
+    def f(x: int = PydanticUndefined) -> None:  # type: ignore[assignment]
+        return None
+
+    out = ReferenceGenerator._get_function_signature_info(f)
+    assert out[0]["name"] == "x"
+    assert out[0]["default"] is None
+
+
 def test_get_function_signature_info_with_annotated_metadata():
     def f(x: Annotated[int, Field(description="x val")]) -> None:
         return None

@@ -31,6 +31,7 @@ from openbb_core.app.model.example import Example
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.provider.abstract.query_params import QueryParams
 
 if TYPE_CHECKING:
     from numpy import ndarray  # noqa
@@ -307,6 +308,27 @@ class MethodDefinition:
         )
 
     @staticmethod
+    def query_params_model(annotation) -> type[QueryParams] | None:
+        """Return the ``QueryParams`` class if ``annotation`` is one (or wraps one).
+
+        Endpoints can declare a single ``params: XxxQueryParams`` argument
+        instead of listing every field; the builder flattens that model into
+        individual kwargs so the generated SDK method, docstring, and CLI all
+        expose the fields directly. ``Annotated[XxxQueryParams, ...]`` is
+        unwrapped first.
+        """
+        candidate = annotation
+        if isinstance(candidate, _AnnotatedAlias):
+            candidate = candidate.__args__[0]
+        if (
+            isclass(candidate)
+            and issubclass(candidate, QueryParams)
+            and candidate is not QueryParams
+        ):
+            return candidate
+        return None
+
+    @staticmethod
     def is_data_processing_function(path: str) -> bool:
         """Check if the function is a data processing function."""
         route = PathHandler.build_route_map().get(path)
@@ -499,7 +521,7 @@ class MethodDefinition:
         return True
 
     @staticmethod
-    def format_params(
+    def format_params(  # noqa: PLR0912
         path: str,
         parameter_map: dict[str, Parameter],
         func: Callable | None = None,
@@ -585,6 +607,45 @@ class MethodDefinition:
                 )
                 continue
 
+            # Case 3: a ``QueryParams`` model parameter — flatten its fields
+            # into individual kwargs so the generated method exposes each
+            # field directly (``method(field1=, field2=, ...)``) rather than a
+            # single opaque ``params`` argument. The method body re-packages
+            # them into the model the route expects.
+            if (
+                qp_model := MethodDefinition.query_params_model(param.annotation)
+            ) is not None:
+                for field_name, field in qp_model.model_fields.items():
+                    field_anno = field.annotation
+                    new_type = MethodDefinition.get_expanded_type(
+                        field_name, None, field_anno
+                    )
+                    if hasattr(new_type, "__constraints__"):
+                        updated_type = Union[  # noqa
+                            new_type.__constraints__ + (field_anno,)  # type: ignore
+                        ]
+                    elif new_type is ...:
+                        updated_type = field_anno
+                    else:
+                        updated_type = Union[field_anno, new_type]  # noqa
+
+                    if field.is_required():
+                        field_default: Any = Parameter.empty
+                    elif field.default_factory is not None:
+                        field_default = field.default_factory()
+                    else:
+                        field_default = field.default
+                    formatted[field_name] = Parameter(
+                        name=field_name,
+                        kind=Parameter.POSITIONAL_OR_KEYWORD,
+                        annotation=Annotated[
+                            updated_type,
+                            OpenBBField(description=field.description or ""),
+                        ],
+                        default=field_default,
+                    )
+                continue
+
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
                 var_kw.append(name)
@@ -651,13 +712,16 @@ class MethodDefinition:
                 if has_depends:
                     continue
 
-                # If not a dependency, process it as a normal parameter
+                # If not a dependency, process it as a normal parameter.
+                inner_type = param.annotation.__origin__
                 new_type = MethodDefinition.get_expanded_type(name)
-                updated_type = (
-                    param.annotation
-                    if new_type is ...
-                    else Union[param.annotation, new_type]  # noqa
-                )
+                if hasattr(new_type, "__constraints__"):
+                    types = new_type.__constraints__ + (inner_type,)  # type: ignore
+                    updated_type = Union[types]  # noqa
+                else:
+                    updated_type = (
+                        inner_type if new_type is ... else Union[inner_type, new_type]  # noqa
+                    )
 
                 metadata = getattr(param.annotation, "__metadata__", [])
                 description = (
@@ -1154,6 +1218,16 @@ class MethodDefinition:
                     code += f'                    "{k}": {v},\n'
                     if extra := MethodDefinition.get_extra(fields[k]):
                         info[k] = extra
+                code += "                },\n"
+            elif (
+                qp_model := MethodDefinition.query_params_model(param.annotation)
+            ) is not None:
+                # Re-pack the flattened kwargs into the ``QueryParams`` model
+                # the route declares — the inverse of the flattening done in
+                # ``format_params``.
+                code += f"                {name}={{\n"
+                for field_name in qp_model.model_fields:
+                    code += f'                    "{field_name}": {field_name},\n'
                 code += "                },\n"
             elif (
                 isinstance(param.annotation, _AnnotatedAlias)
