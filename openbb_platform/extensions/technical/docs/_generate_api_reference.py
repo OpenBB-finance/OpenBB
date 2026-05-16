@@ -67,7 +67,9 @@ def cell(s: str | None) -> str:
 
 
 def render() -> str:
-    catalog = obb.technical.indicators(category="all").results
+    # ``obb.technical`` is generated at runtime by the static-package builder
+    # and not visible to static type checkers.
+    catalog = obb.technical.indicators(category="all").results  # ty: ignore[unresolved-attribute]
     entries = catalog.indicators
     by_cat: dict[str, list] = {}
     for entry in entries:

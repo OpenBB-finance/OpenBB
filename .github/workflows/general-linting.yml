@@ -62,6 +62,22 @@ jobs:
           pip install ./openbb_platform/extensions/devtools
       - name: Install openbb-core (so ty can resolve runtime deps)
         run: pip install -e "./openbb_platform/core[pandas]" numpy
+      - name: Install changed extensions/providers (so ty resolves their runtime deps)
+        if: env.diff_files != ''
+        run: |
+          # Derive unique installable package directories from the diff. Each
+          # extension/provider declares its own deps (pandas-ta, scipy,
+          # statsmodels, etc.); installing the package brings them along so
+          # ty's import resolver finds them.
+          touched=$(echo "${{ env.diff_files }}" | tr ' ' '\n' \
+            | grep -oE '^(openbb_platform/(extensions|providers)|cli)/[^/]+' \
+            | sort -u)
+          for pkg in $touched; do
+            if [ -f "$pkg/pyproject.toml" ]; then
+              echo "Installing $pkg"
+              pip install -e "./$pkg" || echo "skip $pkg (install failed)"
+            fi
+          done
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: |
           # Run linters for openbb_platform | cli
