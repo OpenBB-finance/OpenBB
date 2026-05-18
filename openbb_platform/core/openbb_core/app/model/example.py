@@ -135,14 +135,10 @@ class APIEx(Example):
                 for k, v in sample.items():
                     if k == "date":
                         obs[k] = (
-                            datetime.strptime(
-                                v,  # ty: ignore[invalid-argument-type]
-                                "%Y-%m-%d",
-                            )
-                            + timedelta(days=i)
+                            datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
                         ).strftime("%Y-%m-%d")
                     else:
-                        obs[k] = round(v * s, 2)  # ty: ignore[unsupported-operator]
+                        obs[k] = round(v * s, 2)
                 result.append(obs)
             return result
         if dataset == "panel":
@@ -188,7 +184,9 @@ class APIEx(Example):
         eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
             if k in param_types and (type_ := param_types.get(k)):
-                if QUOTE_TYPES.intersection(self._unpack_type(type_)):
+                if isinstance(v, str) and QUOTE_TYPES.intersection(
+                    self._unpack_type(type_)
+                ):
                     eg += f"{k}='{v}', "
                 else:
                     eg += f"{k}={v}, "

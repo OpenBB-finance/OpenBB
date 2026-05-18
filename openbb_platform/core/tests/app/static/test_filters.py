@@ -268,3 +268,15 @@ def test_filter_inputs_no_info_list_in_standard_params_raises():
     }
     with pytest.raises(OpenBBError, match="multiple items not allowed"):
         filter_inputs(**kwargs)
+
+
+def test_filter_inputs_converts_nested_data_in_model_dict():
+    """A QueryParams model passed as a dict has its nested data field converted."""
+    result = filter_inputs(
+        True, None, params={"data": [{"a": 1}, {"a": 2}], "target": "a"}
+    )
+
+    nested = result["params"]["data"]
+    assert isinstance(nested, list)
+    assert all(isinstance(row, Data) for row in nested)
+    assert result["params"]["target"] == "a"

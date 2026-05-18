@@ -1000,15 +1000,18 @@ class ReferenceGenerator:
             result_type = "Any"  # Default fallback
 
             # Try to extract from type annotation first (more reliable)
-            origin = get_origin(return_annotation)
-            if origin is not None:
-                args = get_args(return_annotation)
+            args = get_args(return_annotation)
+            # Pydantic generic aliases are concrete classes - read their metadata.
+            if not args:
+                pgm = getattr(return_annotation, "__pydantic_generic_metadata__", {})
+                args = tuple(pgm.get("args") or ())
+            if args:
                 if len(args) > 1:
                     # For OBBject[T, SomeType], results type is SomeType
                     result_type = args[1].__name__
                 else:
                     # For OBBject[SomeType]
-                    inner_type = args[0] if args else None
+                    inner_type = args[0]
                     if inner_type is not None:
                         # Handle container types like list[Model]
                         inner_origin = get_origin(inner_type)

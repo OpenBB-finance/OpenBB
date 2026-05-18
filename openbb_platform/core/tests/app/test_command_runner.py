@@ -75,6 +75,24 @@ def mock_func():
     return mock_func
 
 
+@pytest.fixture()
+def allow_command_output_extensions(monkeypatch):
+    """Enable command-output OBBject extensions for the duration of a test."""
+    from openbb_core.app.service.system_service import SystemService
+
+    service = SystemService()
+    monkeypatch.setattr(
+        service,
+        "system_settings",
+        service.system_settings.model_copy(
+            update={
+                "allow_on_command_output": True,
+                "allow_mutable_extensions": True,
+            }
+        ),
+    )
+
+
 def test_execution_context():
     """Test execution context."""
     sys = SystemSettings(logging_suppress=False)
@@ -1020,7 +1038,9 @@ def test_command_runner_init_logging_service(monkeypatch):
     assert called["ok"] is True
 
 
-def test_trigger_callbacks_skips_non_cached_accessor(monkeypatch):
+def test_trigger_callbacks_skips_non_cached_accessor(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.extension import Extension
@@ -1040,7 +1060,9 @@ def test_trigger_callbacks_skips_non_cached_accessor(monkeypatch):
     StaticCommandRunner._trigger_command_output_callbacks("mock/route", obb)
 
 
-def test_trigger_callbacks_runs_callable_result(monkeypatch):
+def test_trigger_callbacks_runs_callable_result(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.extension import CachedAccessor, Extension
@@ -1083,7 +1105,9 @@ def test_command_runner_user_settings_setter():
     assert runner.user_settings is new_user
 
 
-def test_trigger_callbacks_identifier_and_import_path_key_paths(monkeypatch):
+def test_trigger_callbacks_identifier_and_import_path_key_paths(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.extension import Extension
@@ -1101,7 +1125,9 @@ def test_trigger_callbacks_identifier_and_import_path_key_paths(monkeypatch):
     StaticCommandRunner._trigger_command_output_callbacks("mock/route", obb)
 
 
-def test_trigger_callbacks_immutable_clone_failure_warns(monkeypatch):
+def test_trigger_callbacks_immutable_clone_failure_warns(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.extension import CachedAccessor, Extension
@@ -1133,7 +1159,9 @@ def test_trigger_callbacks_immutable_clone_failure_warns(monkeypatch):
         StaticCommandRunner._trigger_command_output_callbacks("mock/route", obb)
 
 
-def test_trigger_callbacks_command_output_paths_skip(monkeypatch):
+def test_trigger_callbacks_command_output_paths_skip(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.extension import CachedAccessor, Extension
@@ -1163,7 +1191,9 @@ def test_trigger_callbacks_command_output_paths_skip(monkeypatch):
     assert called["ok"] is False
 
 
-def test_trigger_callbacks_async_factory_path(monkeypatch):
+def test_trigger_callbacks_async_factory_path(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.extension import CachedAccessor, Extension
@@ -1196,7 +1226,9 @@ def test_trigger_callbacks_async_factory_path(monkeypatch):
     assert called["ok"] is True
 
 
-def test_trigger_callbacks_factory_exception_raises_openbb_error(monkeypatch):
+def test_trigger_callbacks_factory_exception_raises_openbb_error(
+    monkeypatch, allow_command_output_extensions
+):
     from types import SimpleNamespace
 
     from openbb_core.app.model.abstract.error import OpenBBError

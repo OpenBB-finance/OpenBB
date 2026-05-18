@@ -136,3 +136,11 @@ exclude = [
 
 [tool.ty.rules]
 unresolved-import = "warn"
+
+[[tool.ty.overrides]]
+# file_lock.py is cross-platform (fcntl/msvcrt) - silence platform-specific noise.
+include = ["**/static/package_builder/file_lock.py"]
+
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
+unused-type-ignore-comment = "ignore"

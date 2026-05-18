@@ -113,11 +113,11 @@ class DocstringGenerator:
                         continue
                     if get_origin(arg) is Literal:
                         continue
+                    type_name = str(arg)
                     if hasattr(arg, "__forward_arg__"):
+                        # Render a ForwardRef as its target name.
                         type_name = arg.__forward_arg__
-                    else:
-                        type_name = str(arg)
-                    if hasattr(arg, "__name__") and not get_args(arg):
+                    elif hasattr(arg, "__name__") and not get_args(arg):
                         type_name = arg.__name__
                     type_name = (
                         type_name.replace("typing.", "")

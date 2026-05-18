@@ -174,9 +174,7 @@ def get_requests_session(**kwargs) -> "Session":
         cert = ca_file or requests_ca_bundle
         if cert:
             bundle = requests_ca_bundle if requests_ca_bundle != cert else None
-            _session.verify = combine_certificates(  # ty: ignore[invalid-assignment]
-                cert, bundle
-            )
+            _session.verify = combine_certificates(cert, bundle)
 
     if certfile := python_settings.get("certfile"):
         keyfile = python_settings.get("keyfile")

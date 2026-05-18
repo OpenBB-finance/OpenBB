@@ -813,6 +813,27 @@ def test_format_params_query_default_value(monkeypatch):
     assert out["symbol"].default == "AAPL"
 
 
+def test_format_params_query_params_model_expanded_field(monkeypatch):
+    """A QueryParams-model field present in TYPE_EXPANSION is widened (else branch)."""
+    from openbb_core.app.static.package_builder.path_handler import PathHandler
+
+    class _ExpandedQP(QueryParams):
+        start_date: str = Field(default="", description="Start date.")
+
+    parameter_map = {
+        "params": Parameter(
+            name="params",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=_ExpandedQP,
+        ),
+    }
+    monkeypatch.setattr(PathHandler, "build_route_map", staticmethod(lambda: {}))
+    out = MethodDefinition.format_params("/x/y", parameter_map)
+
+    assert "start_date" in out
+    assert "str" in str(out["start_date"].annotation)
+
+
 def test_format_params_dataclass_annotated_field_expansion(monkeypatch):
     """Lines 623-638: is_annotated_dc branch -> field expansion."""
     from dataclasses import dataclass
