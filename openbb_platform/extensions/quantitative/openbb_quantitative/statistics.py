@@ -1,45 +1,35 @@
-"""Statistics Functions."""
+"""Statistical compute helpers for the quantitative extension."""
 
 from numpy import (
     mean as mean_np,
     ndarray,
-    std,
+    std as std_np,
     var as var_np,
 )
 from pandas import DataFrame, Series
 from scipy import stats
 
-# Because python is weird and these being the same name as the fastapi router functions
-# which overwrites the function signature, we add the _ after the function name
-
 
 def kurtosis_(data: DataFrame | Series | ndarray) -> float:
-    """Get Kurtosis.
-
-    It is a measure of the "tailedness" of the probability distribution of a real-valued random variable.
-    """
-    return stats.kurtosis(data)
+    """Compute kurtosis - the tailedness of a distribution."""
+    return float(stats.kurtosis(data))
 
 
 def skew_(data: DataFrame | Series | ndarray) -> float:
-    """Get Skewness.
-
-    It is a measure of the asymmetry of the probability distribution of a
-    real-valued random variable about its mean.
-    """
-    return stats.skew(data)
+    """Compute skewness - the asymmetry of a distribution about its mean."""
+    return float(stats.skew(data))
 
 
 def mean_(data: DataFrame | Series | ndarray) -> float:
-    """Get Mean which is the average of the numbers."""
-    return mean_np(data)
+    """Compute the arithmetic mean."""
+    return float(mean_np(data))
 
 
 def std_dev_(data: DataFrame | Series | ndarray) -> float:
-    """Get Standard deviation that is a measure of the amount of variation or dispersion of a set of values."""
-    return std(data)
+    """Compute the standard deviation - the dispersion of a set of values."""
+    return float(std_np(data))
 
 
 def var_(data: DataFrame | Series | ndarray) -> float:
-    """Get Variance that is a measure of the amount of variation or dispersion of a set of values."""
-    return var_np(data)
+    """Compute the variance - the squared dispersion of a set of values."""
+    return float(var_np(data))
