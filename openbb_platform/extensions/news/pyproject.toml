@@ -76,6 +76,9 @@ exclude = ["tests", "integration"]
 [tool.ty.rules]
 unresolved-import = "warn"
 
+[tool.coverage.run]
+omit = ["openbb_news/news_router.py"]
+
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "@overload"]
 

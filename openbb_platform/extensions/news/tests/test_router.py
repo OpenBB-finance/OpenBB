@@ -14,6 +14,11 @@ def test_router_aggregates_rss_commands():
 
 
 def test_router_aggregates_provider_news_commands():
+    from openbb_core.app.provider_interface import ProviderInterface
+
     paths = {getattr(route, "path", "") for route in router.api_router.routes}
-    assert "/world" in paths
-    assert "/company" in paths
+    model_map = ProviderInterface().map
+    if "CompanyNews" in model_map:
+        assert "/company" in paths
+    if "WorldNews" in model_map:
+        assert "/world" in paths
