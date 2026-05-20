@@ -1,209 +1,88 @@
-"""Test News API."""
+"""HTTP API integration tests."""
 
 import base64
 
 import pytest
 import requests
 from openbb_core.env import Env
-from openbb_core.provider.utils.helpers import get_querystring
+
+_BASE_URL = "http://127.0.0.1:8000/api/v1/news"
+_headers: dict = {}
 
 
-@pytest.fixture(scope="session")
-def headers():
-    """Generate headers for API requests with basic authentication."""
+def get_headers() -> dict:
+    if _headers:
+        return _headers
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
-    userpass_bytes = userpass.encode("ascii")
-    base64_bytes = base64.b64encode(userpass_bytes)
-
-    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
-
-
-# pylint: disable=redefined-outer-name
+    base64_bytes = base64.b64encode(userpass.encode("ascii"))
+    _headers["Authorization"] = f"Basic {base64_bytes.decode('ascii')}"
+    return _headers
 
 
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "display": "full",
-                "date": None,
-                "start_date": None,
-                "end_date": None,
-                "updated_since": None,
-                "published_since": None,
-                "sort": "created",
-                "order": "desc",
-                "isin": None,
-                "cusip": None,
-                "channels": "General",
-                "topics": "earnings",
-                "authors": None,
-                "content_types": "headline",
-                "provider": "benzinga",
-                "limit": 20,
-            }
-        ),
-        (
-            {
-                "provider": "fmp",
-                "limit": 30,
-                "start_date": None,
-                "end_date": None,
-                "topic": "general",
-                "page": 1,
-            }
-        ),
-        (
-            {
-                "provider": "intrinio",
-                "limit": 20,
-                "start_date": None,
-                "end_date": None,
-                "source": "yahoo",
-                "topic": None,
-                "is_spam": False,
-                "sentiment": None,
-                "language": None,
-                "word_count_greater_than": None,
-                "word_count_less_than": None,
-                "business_relevance_greater_than": None,
-                "business_relevance_less_than": None,
-            }
-        ),
-        (
-            {
-                "provider": "biztoc",
-                "source": None,
-                "term": "microsoft",
-                "start_date": None,
-                "end_date": None,
-            }
-        ),
-        (
-            {
-                "provider": "tiingo",
-                "limit": 30,
-                "source": "bloomberg.com",
-                "start_date": None,
-                "end_date": None,
-                "offset": 0,
-            }
-        ),
-    ],
-)
+def _get(path: str, params: dict | None = None) -> requests.Response:
+    return requests.get(
+        f"{_BASE_URL}/{path}", headers=get_headers(), params=params, timeout=60
+    )
+
+
 @pytest.mark.integration
-def test_news_world(params, headers):
-    """Test retrieval of world news with various parameters."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/news/world?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
+def test_rss_providers_lists_outlets():
+    result = _get("rss_providers")
     assert result.status_code == 200
+    payload = result.json()
+    assert isinstance(payload, list)
+    values = {entry["value"] for entry in payload}
+    assert "bbc" in values
+    assert "globenewswire" in values
+    assert "pr_newswire" in values
 
 
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "AAPL",
-                "limit": 20,
-                "provider": "benzinga",
-                "date": "2023-01-01",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "display": "full",
-                "date": None,
-                "start_date": "2023-06-01",
-                "end_date": "2023-06-06",
-                "updated_since": 1,
-                "published_since": 1,
-                "sort": "created",
-                "order": "asc",
-                "isin": None,
-                "cusip": None,
-                "channels": None,
-                "topics": "AAPL",
-                "authors": None,
-                "content_types": "headline",
-                "provider": "benzinga",
-                "symbol": "AAPL,MSFT",
-                "limit": 20,
-            }
-        ),
-        (
-            {
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "limit": 20,
-                "page": 1,
-                "start_date": None,
-                "end_date": None,
-                "press_release": False,
-            }
-        ),
-        (
-            {
-                "provider": "yfinance",
-                "symbol": "AAPL",
-                "limit": 20,
-                "start_date": None,
-                "end_date": None,
-            }
-        ),
-        (
-            {
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "limit": 20,
-                "start_date": "2024-01-02",
-                "end_date": "2024-01-03",
-                "source": "yahoo",
-                "topic": None,
-                "is_spam": False,
-                "sentiment": None,
-                "language": None,
-                "word_count_greater_than": None,
-                "word_count_less_than": None,
-                "business_relevance_greater_than": None,
-                "business_relevance_less_than": None,
-            }
-        ),
-        (
-            {
-                "provider": "tiingo",
-                "symbol": "AAPL,MSFT",
-                "limit": 20,
-                "source": "bloomberg.com",
-                "start_date": None,
-                "end_date": None,
-                "offset": None,
-            }
-        ),
-        (
-            {
-                "provider": "tmx",
-                "symbol": "RBC",
-                "limit": 20,
-                "page": 1,
-            }
-        ),
-    ],
-)
 @pytest.mark.integration
-def test_news_company(params, headers):
-    """Test retrieval of company-specific news with various parameters."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/news/company?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
+def test_rss_feeds_filtered_by_outlet():
+    result = _get("rss_feeds", params={"outlet": "bbc"})
     assert result.status_code == 200
+    payload = result.json()
+    assert isinstance(payload, list)
+    values = {entry["value"] for entry in payload}
+    assert "bbc_world" in values
+    assert "bbc_business" in values
+
+
+@pytest.mark.integration
+def test_rss_fetches_articles_without_body():
+    result = _get(
+        "rss",
+        params={"source": "bbc_world", "limit": 3, "fetch_body": "false"},
+    )
+    assert result.status_code == 200
+    body = result.json()
+    results = body["results"]
+    assert 1 <= len(results) <= 3
+    first = results[0]
+    assert first["title"]
+    assert first["date"]
+    assert first["author"]
+    assert "url" in first
+    assert "excerpt" in first
+    assert "body" in first
+
+
+@pytest.mark.integration
+def test_rss_returns_empty_when_no_source_and_no_outlet():
+    result = _get("rss")
+    assert result.status_code == 200
+    assert result.json()["results"] == []
+
+
+@pytest.mark.integration
+def test_rss_auto_resolves_default_when_only_outlet_given():
+    result = _get("rss", params={"outlet": "bbc", "limit": 1, "fetch_body": "false"})
+    assert result.status_code == 200
+    body = result.json()
+    assert len(body["results"]) == 1
+
+
+@pytest.mark.integration
+def test_rss_unknown_source_returns_error():
+    result = _get("rss", params={"source": "not_a_feed", "limit": 1})
+    assert result.status_code >= 400
