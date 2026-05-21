@@ -171,8 +171,8 @@ def skew(params: RollingSkewQueryParams) -> OBBject[list[RollingSkewData]]:
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
+    from openbb_quantitative._stats_helpers import skew_
     from openbb_quantitative.helpers import validate_window
-    from openbb_quantitative.statistics import skew_
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
@@ -209,8 +209,8 @@ def variance(
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
+    from openbb_quantitative._stats_helpers import var_
     from openbb_quantitative.helpers import validate_window
-    from openbb_quantitative.statistics import var_
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
@@ -245,8 +245,8 @@ def stdev(params: RollingStdevQueryParams) -> OBBject[list[RollingStdevData]]:
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
+    from openbb_quantitative._stats_helpers import std_dev_
     from openbb_quantitative.helpers import validate_window
-    from openbb_quantitative.statistics import std_dev_
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
@@ -284,8 +284,8 @@ def kurtosis(
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
+    from openbb_quantitative._stats_helpers import kurtosis_
     from openbb_quantitative.helpers import validate_window
-    from openbb_quantitative.statistics import kurtosis_
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
@@ -320,8 +320,8 @@ def mean(params: RollingMeanQueryParams) -> OBBject[list[RollingMeanData]]:
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
+    from openbb_quantitative._stats_helpers import mean_
     from openbb_quantitative.helpers import validate_window
-    from openbb_quantitative.statistics import mean_
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
@@ -382,4 +382,130 @@ def quantile(
         )
         for r in result.to_dict(orient="records")
     ]
+    return OBBject(results=out)
+
+
+class RollingFactorsQueryParams(QueryParams):
+    """Query parameters for the rolling factors endpoint."""
+
+    __category__ = "rolling"
+    __output_columns__ = ("date", "factor", "coefficient", "t_statistic")
+
+    data: list[Data] = Field(
+        description="Target time series (index column plus the target column)."
+    )
+    factors_data: list[Data] = Field(
+        description="Factor matrix (index column plus one column per factor)."
+    )
+    target: str = Field(
+        default="close",
+        description="Name of the column in `data` to regress on the factor matrix.",
+    )
+    index: str = Field(
+        default="date",
+        description="Name of the index column shared by `data` and `factors_data`.",
+    )
+    risk_free_column: str | None = Field(
+        default=None,
+        description="Optional name of the risk-free rate column in `factors_data`."
+        " When provided, the target is regressed in excess form and the column is"
+        " dropped from the regressors.",
+    )
+    window: PositiveInt = Field(
+        default=252,
+        description="Number of observations in each rolling regression window.",
+    )
+    step: PositiveInt = Field(
+        default=21,
+        description="Stride between successive windows in observations. A value of"
+        " 1 refits at every observation; larger values reduce cost on long histories.",
+    )
+
+
+class RollingFactorsData(Data):
+    """One rolling factor coefficient observation."""
+
+    date: datetime | dateType | str = Field(
+        description="End date of the rolling window."
+    )
+    factor: str = Field(
+        description="Factor name (or 'const' for the regression intercept)."
+    )
+    coefficient: float = Field(
+        description="OLS coefficient estimate for the factor at this window end."
+    )
+    t_statistic: float = Field(
+        description="t-statistic for the coefficient at this window end."
+    )
+
+
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            description="Roll a 1-year window stepping monthly across a multi-factor"
+            " regression of `close` on the supplied factor matrix.",
+            parameters={
+                "target": "close",
+                "window": 252,
+                "step": 21,
+                "data": APIEx.mock_data("timeseries", 800),
+                "factors_data": APIEx.mock_data("timeseries", 800),
+            },
+        )
+    ],
+)
+def factors(
+    params: RollingFactorsQueryParams,
+) -> OBBject[list[RollingFactorsData]]:
+    """Refit factor OLS on a rolling window and emit per-factor betas through time.
+
+    For each window end at stride `step`, runs OLS of the target on the factor
+    matrix using the trailing `window` observations and records each factor's
+    coefficient and t-statistic. Suitable for visualizing time-varying factor
+    exposures and detecting regime shifts that named-window decompositions hide.
+    """
+    import statsmodels.api as sm
+
+    from openbb_quantitative._factor_helpers import align_inputs
+
+    factor_matrix, target_series, factor_cols = align_inputs(
+        params.data,
+        params.factors_data,
+        target=params.target,
+        index=params.index,
+        risk_free_column=params.risk_free_column,
+    )
+    aligned = factor_matrix.assign(**{params.target: target_series})
+
+    if len(aligned) < params.window:
+        raise ValueError(
+            f"Rolling window '{params.window}' exceeds the aligned data length"
+            f" '{len(aligned)}'."
+        )
+
+    min_obs = len(factor_cols) + 1
+    if params.window <= min_obs:
+        raise ValueError(
+            f"Rolling window '{params.window}' must exceed the number of regressors"
+            f" plus the intercept ({min_obs})."
+        )
+
+    out: list[RollingFactorsData] = []
+    end_positions = range(params.window, len(aligned) + 1, params.step)
+    for end in end_positions:
+        slice_ = aligned.iloc[end - params.window : end]
+        x = sm.add_constant(slice_[factor_cols])
+        model = sm.OLS(slice_[params.target], x).fit()
+        window_end = slice_.index[-1]
+        for name in model.params.index:
+            out.append(
+                RollingFactorsData(
+                    date=window_end,
+                    factor=str(name),
+                    coefficient=float(model.params[name]),
+                    t_statistic=float(model.tvalues[name]),
+                )
+            )
+
     return OBBject(results=out)

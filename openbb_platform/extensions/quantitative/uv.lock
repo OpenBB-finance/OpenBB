@@ -1467,6 +1467,15 @@ wheels = [
 ]
 
 [[package]]
+name = "narwhals"
+version = "2.21.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/a0/6198c56d42ef2f3c6ed0c42ba30dbcefdc86a91262d7d449010770ae085b/narwhals-2.21.2.tar.gz", hash = "sha256:5c5b2d0b47aef7c73ea412cfcbcd467f2f2d5be73e3c2ab19d78f4a97718790a", size = 632176, upload-time = "2026-05-16T08:49:08.314Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1d/77/928ea2e70641ca177a11140062cc5840d421795f2e82749d408d0cce900a/narwhals-2.21.2-py3-none-any.whl", hash = "sha256:7bb57c3700486039215455b9bf2d64261915cc0fd845cc30272d631df696b251", size = 451201, upload-time = "2026-05-16T08:49:05.536Z" },
+]
+
+[[package]]
 name = "nest-asyncio"
 version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1643,6 +1652,25 @@ wheels = [
 ]
 
 [[package]]
+name = "openbb-charting"
+version = "3.0.0"
+source = { editable = "../../obbject_extensions/charting" }
+dependencies = [
+    { name = "openbb-core" },
+    { name = "pandas-ta-openbb" },
+    { name = "plotly" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "openbb-core", specifier = ">=1.6.8" },
+    { name = "pandas-ta-openbb", specifier = ">=0.4.24,<0.5.0" },
+    { name = "plotly", specifier = ">=6.3.1,<7.0.0" },
+    { name = "pywry", marker = "extra == 'pywry'", specifier = ">=2.0.0" },
+]
+provides-extras = ["pywry"]
+
+[[package]]
 name = "openbb-core"
 version = "2.0.0"
 source = { editable = "../../core" }
@@ -1748,6 +1776,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "openbb-charting" },
     { name = "openbb-devtools" },
 ]
 
@@ -1760,7 +1789,10 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "openbb-devtools", editable = "../devtools" }]
+dev = [
+    { name = "openbb-charting", editable = "../../obbject_extensions/charting" },
+    { name = "openbb-devtools", editable = "../devtools" },
+]
 
 [[package]]
 name = "packaging"
@@ -1910,6 +1942,24 @@ wheels = [
 ]
 
 [[package]]
+name = "pandas-ta-openbb"
+version = "0.4.24"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "pandas", version = "3.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "statsmodels" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2d/b3/c8812123c1463480085929aebfeab0f2400cce2c0803223dcfe51f1af7f2/pandas_ta_openbb-0.4.24.tar.gz", hash = "sha256:69ff98beccbbe0ab238371af25a5c0be9f123aa474888cef74892441c353da1b", size = 135689, upload-time = "2026-03-27T08:24:46.585Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/60/d785cb8519613fa50c4cda58cdcabb8078dfa414c3cb3663acebd1a4da04/pandas_ta_openbb-0.4.24-py3-none-any.whl", hash = "sha256:0e6538af573c9ab84a6b13c965ccfc0a930974b876f90473e71b49dcb7a38920", size = 259501, upload-time = "2026-03-27T08:24:47.915Z" },
+]
+
+[[package]]
 name = "parso"
 version = "0.8.7"
 source = { registry = "https://pypi.org/simple" }
@@ -1959,6 +2009,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/9f/4a/0883b8e3802965322523f0b200ecf33d31f10991d0401162f4b23c698b42/platformdirs-4.9.6.tar.gz", hash = "sha256:3bfa75b0ad0db84096ae777218481852c0ebc6c727b3168c1b9e0118e458cf0a", size = 29400, upload-time = "2026-04-09T00:04:10.812Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/75/a6/a0a304dc33b49145b21f4808d763822111e67d1c3a32b524a1baf947b6e1/platformdirs-4.9.6-py3-none-any.whl", hash = "sha256:e61adb1d5e5cb3441b4b7710bea7e4c12250ca49439228cc1021c00dcfac0917", size = 21348, upload-time = "2026-04-09T00:04:09.463Z" },
+]
+
+[[package]]
+name = "plotly"
+version = "6.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "narwhals" },
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/7f/0f100df1172aadf88a929a9dbb902656b0880ba4b960fe5224867159d8f4/plotly-6.7.0.tar.gz", hash = "sha256:45eea0ff27e2a23ccd62776f77eb43aa1ca03df4192b76036e380bb479b892c6", size = 6911286, upload-time = "2026-04-09T20:36:45.738Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/90/ad/cba91b3bcf04073e4d1655a5c1710ef3f457f56f7d1b79dcc3d72f4dd912/plotly-6.7.0-py3-none-any.whl", hash = "sha256:ac8aca1c25c663a59b5b9140a549264a5badde2e057d79b8c772ae2920e32ff0", size = 9898444, upload-time = "2026-04-09T20:36:39.812Z" },
 ]
 
 [[package]]

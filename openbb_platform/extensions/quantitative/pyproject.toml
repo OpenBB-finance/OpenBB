@@ -16,12 +16,15 @@ dependencies = [
 [project.entry-points."openbb_core_extension"]
 quantitative = "openbb_quantitative.router:router"
 
+[project.entry-points."openbb_charting_extension"]
+quantitative = "openbb_quantitative.quantitative_views:QuantitativeViews"
+
 [project.urls]
 Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.0", "openbb-charting>=3.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -36,6 +39,7 @@ include = ["openbb_quantitative", "README.md", "pyproject.toml"]
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
 openbb-devtools = { path = "../devtools", editable = true }
+openbb-charting = { path = "../../obbject_extensions/charting", editable = true }
 
 [tool.ruff]
 line-length = 88

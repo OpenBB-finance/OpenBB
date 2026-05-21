@@ -128,7 +128,7 @@ def skew(params: StatsSkewQueryParams) -> OBBject[StatsSkewData]:
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
 
-    from openbb_quantitative.statistics import skew_
+    from openbb_quantitative._stats_helpers import skew_
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
 
@@ -149,7 +149,7 @@ def variance(params: StatsVarianceQueryParams) -> OBBject[StatsVarianceData]:
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
 
-    from openbb_quantitative.statistics import var_
+    from openbb_quantitative._stats_helpers import var_
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
 
@@ -171,7 +171,7 @@ def stdev(params: StatsStdevQueryParams) -> OBBject[StatsStdevData]:
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
 
-    from openbb_quantitative.statistics import std_dev_
+    from openbb_quantitative._stats_helpers import std_dev_
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
 
@@ -193,7 +193,7 @@ def kurtosis(params: StatsKurtosisQueryParams) -> OBBject[StatsKurtosisData]:
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
 
-    from openbb_quantitative.statistics import kurtosis_
+    from openbb_quantitative._stats_helpers import kurtosis_
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
 
@@ -214,7 +214,7 @@ def mean(params: StatsMeanQueryParams) -> OBBject[StatsMeanData]:
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
 
-    from openbb_quantitative.statistics import mean_
+    from openbb_quantitative._stats_helpers import mean_
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
 

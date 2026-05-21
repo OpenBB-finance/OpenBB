@@ -115,3 +115,63 @@ def test_rolling_query_params_defaults():
     assert quantile_params.window == 21
     assert quantile_params.index == "date"
     assert quantile_params.quantile_pct == 0.5
+
+
+def test_rolling_factors_happy_path(target_returns_data, factor_matrix_data):
+    """Rolling factors emits one row per (window-end, regressor) with finite stats."""
+    params = rolling.RollingFactorsQueryParams(
+        data=target_returns_data,
+        factors_data=factor_matrix_data,
+        target="close",
+        window=252,
+        step=21,
+        risk_free_column="rf",
+    )
+    out = rolling.factors(params)
+    results = out.results
+    assert isinstance(results, list)
+    assert results
+
+    factors_set = {r.factor for r in results}
+    assert factors_set == {"const", "f1", "f2"}
+    for row in results:
+        assert isinstance(row, rolling.RollingFactorsData)
+        assert isfinite(row.coefficient)
+        assert isfinite(row.t_statistic)
+
+
+def test_rolling_factors_default_params():
+    """Default ``window`` and ``step`` match the documented values."""
+    params = rolling.RollingFactorsQueryParams(data=[], factors_data=[], target="close")
+    assert params.window == 252
+    assert params.step == 21
+    assert params.index == "date"
+    assert params.risk_free_column is None
+
+
+def test_rolling_factors_window_too_large(target_returns_data, factor_matrix_data):
+    """A window longer than the aligned data raises ValueError."""
+    import pytest
+
+    params = rolling.RollingFactorsQueryParams(
+        data=target_returns_data,
+        factors_data=factor_matrix_data,
+        target="close",
+        window=10_000,
+    )
+    with pytest.raises(ValueError, match="exceeds the aligned data length"):
+        rolling.factors(params)
+
+
+def test_rolling_factors_window_too_small(target_returns_data, factor_matrix_data):
+    """A window not large enough to fit regressors+1 raises ValueError."""
+    import pytest
+
+    params = rolling.RollingFactorsQueryParams(
+        data=target_returns_data,
+        factors_data=factor_matrix_data,
+        target="close",
+        window=3,
+    )
+    with pytest.raises(ValueError, match="must exceed the number of regressors"):
+        rolling.factors(params)

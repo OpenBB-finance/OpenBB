@@ -1,9 +1,15 @@
-"""Tests for the statistics module."""
+"""Tests for ``openbb_quantitative._stats_helpers``."""
 
 import pandas as pd
 import pytest
 
-from openbb_quantitative.statistics import kurtosis_, mean_, skew_, std_dev_, var_
+from openbb_quantitative._stats_helpers import (
+    kurtosis_,
+    mean_,
+    skew_,
+    std_dev_,
+    var_,
+)
 
 test_data = pd.Series([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
