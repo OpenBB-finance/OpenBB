@@ -1,6 +1,6 @@
 """IMF Maritime Chokepoint Info Model."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from typing import Any
 
@@ -10,8 +10,9 @@ from openbb_core.provider.standard_models.maritime_chokepoint_volume import (
     MaritimeChokePointVolumeData,
     MaritimeChokePointVolumeQueryParams,
 )
-from openbb_imf.utils.constants import CHOKEPOINTS_NAME_TO_ID, ChokepointsNames
 from pydantic import ConfigDict, Field, field_validator
+
+from openbb_imf.utils.constants import CHOKEPOINTS_NAME_TO_ID, ChokepointsNames
 
 CHOKEPOINT_DOCSTRING = (
     "\n    - " + "\n    - ".join(list(ChokepointsNames.__args__)) + "\n\n"
@@ -19,10 +20,7 @@ CHOKEPOINT_DOCSTRING = (
 
 
 class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams):
-    """IMF Maritime Chokepoint Volume Query Parameters.
-
-    Source: https://portwatch.imf.org/datasets/42132aa4e2fc4d41bdaf9a445f688931/about
-    """
+    """IMF Maritime Chokepoint Volume Query Parameters."""
 
     __json_schema_extra__ = {
         "chokepoint": {
@@ -107,10 +105,7 @@ class ImfMaritimeChokePointVolumeQueryParams(MaritimeChokePointVolumeQueryParams
 
 
 class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
-    """IMF Maritime Chokepoint Volume Data.
-
-    Source: https://portwatch.imf.org/datasets/42132aa4e2fc4d41bdaf9a445f688931/about
-    """
+    """IMF Maritime Chokepoint Volume Data."""
 
     model_config = ConfigDict(
         extra="ignore",
@@ -127,7 +122,9 @@ class ImfMaritimeChokePointVolumeData(MaritimeChokePointVolumeData):
                     " 90 thousands ships worldwide, harnessing the power of big data analytics."
                 ),
                 "$.refetchInterval": False,
-                "$.source": ["UN Global Platform; [IMF PortWatch](portwatch.imf.org)"],
+                "$.category": "IMF Utilities",
+                "$.subCategory": "Port Watch",
+                "$.source": ["UN Global Platform; IMF PortWatch"],
             }
         },
     )
@@ -280,7 +277,6 @@ class ImfMaritimeChokePointVolumeFetcher(
         **kwargs: Any,
     ) -> list:
         """Extract the raw data from the IMF Port Watch API."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_imf.utils.port_watch_helpers import (
             get_daily_chokepoint_data,
@@ -290,7 +286,9 @@ class ImfMaritimeChokePointVolumeFetcher(
         chokepoints = (
             query.chokepoint
             if isinstance(query.chokepoint, list)
-            else query.chokepoint.split(",") if query.chokepoint else []
+            else query.chokepoint.split(",")
+            if query.chokepoint
+            else []
         )
 
         if not chokepoints:
@@ -311,7 +309,6 @@ class ImfMaritimeChokePointVolumeFetcher(
             if data:
                 results.extend(data)
 
-        # Accept both keys and values from CHOKEPOINTS_NAME_TO_ID
         chokepoint_ids: list = []
         for chokepoint in chokepoints:
             if chokepoint in CHOKEPOINTS_NAME_TO_ID:

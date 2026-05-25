@@ -1,0 +1,143 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/xml
+      Accept-Encoding:
+      - gzip, deflate, zstd
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/BOP/+/JPN.NETCD_T+CD_T+DB_T.CAB+G+S+IN1+IN2.USD.Q?c%5BTIME_PERIOD%5D=ge:2023-01-01+le:2024-02-01&dimensionAtObservation=TIME_PERIOD&detail=full&includeHistory=false
+  response:
+    body:
+      string: <?xml version='1.0' encoding='UTF-8'?><message:StructureSpecificData
+        xmlns:metadata="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/metadata/generic"
+        xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:message="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xml="http://www.w3.org/XML/1998/namespace"
+        xmlns:ss="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data/structurespecific"
+        xmlns:ns1="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_BOP(24.0.0):ObsLevelDim:TIME_PERIOD"
+        xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message
+        ../../schemas/SDMXMessage.xsd"><message:Header><message:ID>IDREF6817</message:ID><message:Test>false</message:Test><message:Prepared>2026-05-25T16:20:57.872586970Z</message:Prepared><message:Sender
+        id="unknown"/><message:Structure structureID="IMF.STA.DSD_BOP.24.0.0" namespace="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_BOP(24.0.0)"
+        dimensionAtObservation="TIME_PERIOD"><common:Structure>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_BOP(24.0.0)</common:Structure></message:Structure></message:Header><message:DataSet
+        ss:structureRef="IMF.STA.DSD_BOP.24.0.0" action="Replace"><Series COUNTRY="JPN"
+        BOP_ACCOUNTING_ENTRY="CD_T" INDICATOR="G" UNIT="USD" FREQUENCY="Q" IFS_FLAG="true"
+        SCALE="6"><Obs OBS_VALUE="176525451423.4256" TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="176001211215.896" TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="177464617584.9691" TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="184812834055.3401" TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O"
+        PRECISION="6"/></Series><Series COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="CD_T"
+        INDICATOR="IN1" UNIT="USD" FREQUENCY="Q" IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="99143535295.96389"
+        TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="112271464332.6773"
+        TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="106796068852.2784"
+        TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="95383085854.50208"
+        TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O" PRECISION="6"/></Series><Series
+        COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="CD_T" INDICATOR="IN2" UNIT="USD" FREQUENCY="Q"
+        SCALE="6"><Obs OBS_VALUE="6550785257.319108" TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="8713912205.626218" TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="7828812433.603718" TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="8621766323.83278" TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O"
+        PRECISION="6"/></Series><Series COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="CD_T"
+        INDICATOR="S" UNIT="USD" FREQUENCY="Q" IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="50800756804.07077"
+        TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="50820456893.55166"
+        TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="49063415544.26676"
+        TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="57998895849.18825"
+        TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O" PRECISION="6"/></Series><Series
+        COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="DB_T" INDICATOR="G" UNIT="USD" FREQUENCY="Q"
+        IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="208626600527.8698" TIME_PERIOD="2023-Q1"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="183873359903.4262" TIME_PERIOD="2023-Q2"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="179168454876.3772" TIME_PERIOD="2023-Q3"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="191835192579.8034" TIME_PERIOD="2023-Q4"
+        DERIVATION_TYPE="O" PRECISION="6"/></Series><Series COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="DB_T"
+        INDICATOR="IN1" UNIT="USD" FREQUENCY="Q" IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="30353459154.94467"
+        TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="47514052904.05412"
+        TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="31834270025.48896"
+        TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="43006703374.02252"
+        TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O" PRECISION="6"/></Series><Series
+        COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="DB_T" INDICATOR="IN2" UNIT="USD" FREQUENCY="Q"
+        IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="16478299754.21854" TIME_PERIOD="2023-Q1"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="15147466792.53585" TIME_PERIOD="2023-Q2"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="15075040184.99786" TIME_PERIOD="2023-Q3"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="14674322608.5198" TIME_PERIOD="2023-Q4"
+        DERIVATION_TYPE="O" PRECISION="6"/></Series><Series COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="DB_T"
+        INDICATOR="S" UNIT="USD" FREQUENCY="Q" IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="58216911570.45866"
+        TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="59225464544.12093"
+        TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="57640243383.50658"
+        TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="57778067729.52082"
+        TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O" PRECISION="6"/></Series><Series
+        COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="NETCD_T" INDICATOR="CAB" UNIT="USD" FREQUENCY="Q"
+        OVERLAP="OL" SCALE="6"><Obs OBS_VALUE="19345257773.28886" TIME_PERIOD="2023-Q1"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="42046700503.61427" TIME_PERIOD="2023-Q2"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="57434905944.74753" TIME_PERIOD="2023-Q3"
+        DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="39522295790.99767" TIME_PERIOD="2023-Q4"
+        DERIVATION_TYPE="O" PRECISION="6"/></Series><Series COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="NETCD_T"
+        INDICATOR="G" UNIT="USD" FREQUENCY="Q" IFS_FLAG="true" SCALE="6"><Obs OBS_VALUE="-32101149104.44351"
+        TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="-7872148687.530501"
+        TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="-1703837291.408211"
+        TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="-7022358524.46278"
+        TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O" PRECISION="6"/></Series><Series
+        COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="NETCD_T" INDICATOR="IN1" UNIT="USD" FREQUENCY="Q"
+        SCALE="6"><Obs OBS_VALUE="68790076141.01982" TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="64757411428.62375" TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="74961798826.78912" TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="52376382480.48004" TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O"
+        PRECISION="6"/></Series><Series COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="NETCD_T"
+        INDICATOR="IN2" UNIT="USD" FREQUENCY="Q" SCALE="6"><Obs OBS_VALUE="-9927514496.899488"
+        TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="-6433554586.909641"
+        TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="-7246227751.394071"
+        TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O" PRECISION="6"/><Obs OBS_VALUE="-6052556284.686991"
+        TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O" PRECISION="6"/></Series><Series
+        COUNTRY="JPN" BOP_ACCOUNTING_ENTRY="NETCD_T" INDICATOR="S" UNIT="USD" FREQUENCY="Q"
+        SCALE="6"><Obs OBS_VALUE="-7416154766.387941" TIME_PERIOD="2023-Q1" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="-8405007650.569273" TIME_PERIOD="2023-Q2" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="-8576827839.239745" TIME_PERIOD="2023-Q3" DERIVATION_TYPE="O"
+        PRECISION="6"/><Obs OBS_VALUE="220828119.6674085" TIME_PERIOD="2023-Q4" DERIVATION_TYPE="O"
+        PRECISION="6"/></Series></message:DataSet></message:StructureSpecificData>
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/xml
+      Date:
+      - Mon, 25 May 2026 16:20:58 GMT
+      Request-Context:
+      - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
+      Set-Cookie:
+      - ApplicationGatewayAffinityCORS=dca9138616203b0df55300d07b8e6a61; Path=/; SameSite=None;
+        Secure
+      - ApplicationGatewayAffinity=dca9138616203b0df55300d07b8e6a61; Path=/
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      content-length:
+      - '7764'
+      expires:
+      - '0'
+      pragma:
+      - no-cache
+      server:
+      - istio-envoy
+      strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      vary:
+      - accept-encoding
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 443ad97d8d05ca21e95ef93d075ed3f9
+      x-envoy-upstream-service-time:
+      - '343'
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

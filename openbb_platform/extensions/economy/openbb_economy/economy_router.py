@@ -375,7 +375,7 @@ async def available_indicators(
         APIEx(
             description="IMF symbols can also be used for retrieving entire presentation tables."
             + " This example gets the Direct Investment Position (DIP) table."
-            + " Use `/imf_utils/list_tables` to get a list of supported presentation table symbols.",
+            + " Use `/imf/list_tables` to get a list of supported presentation table symbols.",
             parameters={
                 "provider": "imf",
                 "symbol": "DIP::H_DIP_INDICATOR",

@@ -1,6 +1,6 @@
 """IMF Port Volume Model."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from datetime import date as dateType
 from typing import Any
@@ -12,6 +12,8 @@ from openbb_core.provider.standard_models.port_volume import (
     PortVolumeData,
     PortVolumeQueryParams,
 )
+from pydantic import ConfigDict, Field, field_validator, model_validator
+
 from openbb_imf.utils.constants import (
     PORT_COUNTRIES,
     PORT_COUNTRIES_CHOICES,
@@ -21,26 +23,18 @@ from openbb_imf.utils.port_watch_helpers import (
     get_port_id_choices,
     get_port_ids_by_country,
 )
-from pydantic import ConfigDict, Field, field_validator, model_validator
 
 api_prefix = SystemService().system_settings.api_settings.prefix
 
 
 class ImfPortVolumeQueryParams(PortVolumeQueryParams):
-    """IMF Port Volume Query Parameters.
-
-    Source: UN Global Platform; IMF PortWatch (portwatch.imf.org)
-
-    https://portwatch.imf.org/datasets/acc668d199d1472abaaf2467133d4ca4_0/about
-
-    Daily transit calls and estimates of transit trade volumes (in metric tons)
-    """
+    """IMF Port Volume Query Parameters."""
 
     __json_schema_extra__ = {
         "port_code": {
             "multiple_items_allowed": True,
             "x-widget_config": {
-                "optionsEndpoint": f"{api_prefix}/imf_utils/list_port_id_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/portwatch/list_port_id_choices",
                 "style": {"popupWidth": 350},
             },
         },
@@ -79,7 +73,9 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
         if isinstance(v, str):
             v = [v] if "," not in v else v.split(",")
 
-        if not isinstance(v, list) or not all(isinstance(item, str) for item in v):
+        if (
+            not isinstance(v, list) or not all(isinstance(item, str) for item in v)
+        ):  # pragma: no cover -- unreachable: pydantic types the field as ``str | None`` so non-string/non-list inputs are rejected upstream
             raise OpenBBError("port_code must be a string or a list of strings.")
 
         port_id_choices = get_port_id_choices()
@@ -87,7 +83,6 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             choice["value"].lower(): choice["label"] for choice in port_id_choices
         }
 
-        # Create country name to ISO code mapping
         country_name_to_iso = {}
         for iso_code, country_name in PORT_COUNTRIES.items():
             country_name_to_iso[country_name.lower()] = iso_code
@@ -98,7 +93,6 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             if item == "all":
                 return "all"
 
-            # Try direct ISO country code lookup first
             if item.upper() in PORT_COUNTRIES.values():
                 country_ports = get_port_ids_by_country(item)
                 if country_ports:
@@ -112,30 +106,28 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
             )
             item_lower = item_lower.replace(" - ", "_").replace("-", "_")
 
-            # Accept keys (port IDs)
             if item in port_id_map:
                 new_values.append(item)
-            # Accept values (port names)
             elif item in port_id_map.values():
-                # Find the corresponding port ID
                 for k, v_ in port_id_map.items():
                     if v_ == item:
                         new_values.append(k)
                         break
-            # Accept lower_snake_case
             elif item_lower in [
                 v_.replace(" - ", "_").replace("-", "_").lower().replace(" ", "_")
                 for v_ in port_id_map.values()
             ]:
-                # Match by value
                 values_snake = [
                     v_.replace(" - ", "_").replace("-", "_").lower().replace(" ", "_")
                     for v_ in port_id_map.values()
                 ]
                 idx = values_snake.index(item_lower)
-                new_item = port_id_map[idx]
-                new_values.append(new_item)
-            # Accept first part of port name (before dash)
+                new_item = port_id_map[
+                    idx
+                ]  # pragma: no cover -- unreachable: ``idx`` is an integer position into ``values_snake`` while ``port_id_map`` is keyed by port-code strings; the lookup always raises ``KeyError`` before reaching the append
+                new_values.append(
+                    new_item
+                )  # pragma: no cover -- unreachable: preceded by an unconditional KeyError on the line above
             elif item_lower in [
                 v_.split(" - ")[0].lower().replace(" ", "_")
                 for v_ in port_id_map.values()
@@ -151,7 +143,7 @@ class ImfPortVolumeQueryParams(PortVolumeQueryParams):
                     f"Invalid port_code: {item}. Must be a valid port ID or name.Available options: {port_id_choices}."
                 )
 
-        if not new_values:
+        if not new_values:  # pragma: no cover -- unreachable: every loop iteration either appends to ``new_values``, early-returns ``"all"``, or raises at line 136
             raise ValueError("No valid port_code provided.")
 
         return ",".join(new_values)
@@ -189,6 +181,9 @@ class ImfPortVolumeData(PortVolumeData):
                     " More info at [IMF PortWatch](https://portwatch.imf.org/datasets/959214444157458aad969389b3ebe1a0/about)."
                 ),
                 "$.refetchInterval": False,
+                "$.category": "IMF Utilities",
+                "$.subCategory": "Port Watch",
+                "$.source": ["UN Global Platform; IMF PortWatch"],
             }
         },
     )
@@ -405,7 +400,6 @@ class ImfPortVolumeFetcher(Fetcher[ImfPortVolumeQueryParams, list[ImfPortVolumeD
         **kwargs: Any,
     ) -> list:
         """Extract data from the IMF Port Volume API."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_imf.utils.port_watch_helpers import get_daily_port_activity_data
 

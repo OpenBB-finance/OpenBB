@@ -19,6 +19,17 @@ Then build the Python static assets by running:
 openbb-build
 ```
 
+The package also ships a precomputed IMF SDMX metadata catalog at
+`openbb_imf/assets/imf_cache.json.xz`. Released wheels and sdists
+carry it verbatim — it is materialized from `api.imf.org/external/sdmx/3.0`
+by a Hatchling build hook (`hatch_build.py`) at packaging time. End
+users have nothing to do; developers can refresh it with either:
+
+```sh
+generate-imf-cache                                  # standalone script
+OPENBB_IMF_FORCE_CACHE_REBUILD=1 pip install -e .   # via the build hook
+```
+
 ## Quick Start
 
 The fastest way to get started is by connecting to the OpenBB Workspace as a custom backend.
@@ -92,9 +103,10 @@ Entering, `CPI::CP01`,  gets the same result as, `CPI::CPI_CP01`.
 
 `CPI::H_CPI_BY_COMPONENT` returns the entire presentation table, Consumer Price Index (CPI) by Component.
 
-Use, `obb.imf_utils.list_tables()`, for a list of tables and their symbol.
+Use, `obb.imf.list_tables()`, for a list of tables and their symbol.
 
-Use, `obb.economy.available_indicators(provider='imf', query=')`, to search for, or list all, individual time series and symbols.
+Use, `obb.economy.available_indicators(provider='imf', ...)`, to search for, or list all, individual time series and symbols within specific dataflows.
+(If `openbb-economy` is not installed, the same endpoints are aliased onto `obb.imf.available_indicators` / `obb.imf.indicators`.)
 
 This example lists all the indicators in the CPI and PI dataflows.
 
@@ -117,36 +129,66 @@ print(indicators.to_dict("records"))
   'structure_id': 'DSD_CPI',
   'dimension_id': 'COICOP_1999',
   'long_description': 'Food and non-alcholoic beverages consumer price index is produced using prices related to food items and non-alcoholic beverages such as fresh produce, packaged foods, and beverages excluding alcoholic drinks, aggregated by their respective consumer expenditure weights.',
-  'member_of': ['CPI::H_CPI_BY_COMPONENT']},
+  'member_of': ['CPI::H_CPI_BY_COMPONENT'],
+  'extra_dimensions': ['TYPE_OF_TRANSFORMATION']}
 ...
 ```
 
 ## Coverage
 
-All data available from https://data.imf.org/en/Data-Explorer can be retrieved, via `obb.economy.indicators(provider='imf', **kwargs)`.
+All data available from https://data.imf.org/en/Data-Explorer can be retrieved, via `obb.economy.indicators(provider='imf', **kwargs)`. When `openbb-economy` is not installed, the same fetcher is aliased onto `obb.imf.indicators`.
 
-Additionally, there are endpoints for some Port Watch items (not part of the Data Explorer).
+Additionally, the extension exposes IMF Port Watch endpoints under `obb.imf.portwatch.*` — these cover country activity, monthly TradeNow indices, container metrics, and disruption events / sankey / map data sourced from the UN Global Platform / IMF Port Watch (not part of the SDMX Data Explorer).
 
-The extension creates a router path, `imf_utils`, that exposes utility functions for UI integrations and metadata lookup.
+The extension creates a router path, `imf`, that exposes presentation tables, the dataflow-aware indicator catalog, choice helpers for UI widgets, and the Port Watch subrouter.
 
 ### Endpoints
 
-- `obb.economy.available_indicators`
-- `obb.economy.indicators`
-- `obb.economy.cpi`
-- `obb.economy.direction_of_trade`
-- `obb.economy.shipping.chokepoint_info`
-- `obb.economy.shipping.chokepoint_volume`
-- `obb.economy.shipping.port_info`
-- `obb.economy.shipping.port_volume`
-- `obb.imf_utils.get_dataflow_dimensions`
-- `obb.imf_utils.list_dataflow_choices`
-- `obb.imf_utils.list_dataflows`
-- `obb.imf_utils.list_indicators_by_dataflow`
-- `obb.imf_utils.list_port_id_choices`
-- `obb.imf_utils.list_table_choices`
-- `obb.imf_utils.list_tables`
-- `obb.imf_utils.presentation_table`
-- `obb.imf_utils.presentation_table_choices`
+Data endpoints exposed via the standard `openbb-economy` routes when that extension is
+installed (provider `imf`):
+
+- `obb.economy.available_indicators` (provider `imf`)
+- `obb.economy.indicators` (provider `imf`)
+- `obb.economy.balance_of_payments` (provider `imf`)
+- `obb.economy.cpi` (provider `imf`)
+- `obb.economy.direction_of_trade` (provider `imf`)
+- `obb.economy.shipping.chokepoint_info` (provider `imf`)
+- `obb.economy.shipping.chokepoint_volume` (provider `imf`)
+- `obb.economy.shipping.port_info` (provider `imf`)
+- `obb.economy.shipping.port_volume` (provider `imf`)
+
+When `openbb-economy` is absent the same fetchers register under IMF-prefixed model
+names and the IMF router exposes equivalent paths: `obb.imf.available_indicators`,
+`obb.imf.indicators`, `obb.imf.balance_of_payments`, `obb.imf.cpi`,
+`obb.imf.direction_of_trade`, `obb.imf.port_info`, `obb.imf.port_volume`,
+`obb.imf.chokepoint_info`, `obb.imf.chokepoint_volume`.
+
+IMF-native endpoints (always under `obb.imf.*`):
+
+- `obb.imf.list_dataflows`
+- `obb.imf.list_dataflow_choices`
+- `obb.imf.get_dataflow_dimensions`
+- `obb.imf.list_tables`
+- `obb.imf.list_table_choices`
+- `obb.imf.presentation_table`
+- `obb.imf.presentation_table_choices`
+- `obb.imf.indicator_choices`
+- `obb.imf.list_bop_country_choices`
+- `obb.imf.list_cpi_country_choices`
+
+IMF Port Watch endpoints (`obb.imf.portwatch.*` — UN Global Platform / IMF Port Watch
+data not part of the SDMX Data Explorer):
+
+- `obb.imf.portwatch.country_activity`
+- `obb.imf.portwatch.monthly_trade`
+- `obb.imf.portwatch.container_metrics`
+- `obb.imf.portwatch.disruption_events`
+- `obb.imf.portwatch.disruption_sankey`
+- `obb.imf.portwatch.disruptions_map`
+- `obb.imf.portwatch.list_port_id_choices`
+- `obb.imf.portwatch.list_container_port_choices`
+- `obb.imf.portwatch.list_country_choices`
+- `obb.imf.portwatch.list_disruption_event_choices`
+- `obb.imf.portwatch.list_tradenow_region_choices`
 
 "Choices" endpoints are utilized by OpenBB Workspace to populate widget dropdown menus.

@@ -1,0 +1,185 @@
+name: 🧪 test openbb-imf
+
+# PR-test for the IMF provider. Triggers when a PR touches any file
+# under ``openbb_platform/providers/imf/`` or this workflow itself.
+#
+# Build-once, test-many: a single ``build`` job materializes the IMF
+# SDMX cache (or restores it from the shared cache pool) and produces
+# the wheel; the ``test`` matrix downloads that exact wheel and runs
+# pytest under every supported (OS, Python) combination.
+#
+# The IMF cache asset is cached across runs via ``actions/cache``,
+# keyed solely on the SHA of ``generate_cache.py``. IMF metadata is
+# stable over weeks/months and the cassette-driven test suite never
+# hits the live API, so we accept arbitrary cache age — the only thing
+# that should invalidate is a logic change to the generator itself.
+# A manual override is exposed as a ``workflow_dispatch`` input for
+# emergency cache busting without having to touch the generator.
+
+on:
+  pull_request:
+    branches: [develop, main, v5]
+    paths:
+      - "openbb_platform/providers/imf/**"
+      - ".github/workflows/test-unit-openbb-imf.yml"
+  workflow_dispatch:
+    inputs:
+      force_cache_rebuild:
+        description: "Force the build hook to regenerate the IMF cache from live SDMX (ignores actions/cache)."
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  # Cancel in-flight matrix runs when a new commit lands on the same PR.
+  group: test-openbb-imf-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build sdist + wheel
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/imf
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Restore IMF SDMX cache
+        # The cache is keyed solely by the generator's content hash.
+        # Same hash → same cache, no time-based expiry. ``restore-keys``
+        # is a defensive fallback: if the exact key misses (e.g. a tiny
+        # comment-only change to generate_cache.py invalidated the
+        # hash), pull the most recent prior cache so the hook has a
+        # baseline file on disk and the worst case is the same as the
+        # current force-rebuild path.
+        id: imf-cache
+        uses: actions/cache@v4
+        with:
+          path: openbb_platform/providers/imf/openbb_imf/assets/imf_cache.json.xz
+          key: imf-sdmx-${{ hashFiles('openbb_platform/providers/imf/openbb_imf/utils/generate_cache.py') }}
+          restore-keys: |
+            imf-sdmx-
+
+      - name: Build sdist + wheel
+        # Honor the cache hit unless the manual override is set. On
+        # exact-key cache-hit, the build hook sees the file already on
+        # disk and skips the live IMF SDMX fetch.
+        env:
+          OPENBB_IMF_FORCE_CACHE_REBUILD: >-
+            ${{ (inputs.force_cache_rebuild == true || steps.imf-cache.outputs.cache-hit != 'true') && '1' || '0' }}
+        run: uv build --no-sources
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openbb-imf-dist
+          path: openbb_platform/providers/imf/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  lint:
+    name: Lint (ruff + ty)
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/imf
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-imf-dist
+          path: openbb_platform/providers/imf/dist
+
+      - name: Install dependencies then openbb-imf wheel
+        # ``openbb-core>=2.0.0`` and ``openbb-charting>=2.5.1`` aren't on
+        # PyPI yet — install them from sibling source trees first so
+        # the wheel's pinned deps resolve. ``--group dev`` brings in
+        # ruff / ty / pytest / pytest-recorder under the same pinned
+        # set used by every other provider.
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system ../../obbject_extensions/charting
+          uv pip install --system --group dev
+          uv pip install --system dist/openbb_imf-*.whl
+
+      - name: ruff check
+        run: ruff check openbb_imf tests hatch_build.py
+
+      - name: ruff format --check
+        run: ruff format --check openbb_imf tests hatch_build.py
+
+      - name: ty check
+        run: ty check openbb_imf
+
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/imf
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-imf-dist
+          path: openbb_platform/providers/imf/dist
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install dependencies then openbb-imf wheel
+        # ``openbb-core>=2.0.0`` and ``openbb-charting>=2.5.1`` aren't on
+        # PyPI yet — install them from sibling source trees first so
+        # the wheel's pinned deps resolve. ``--group dev`` brings in
+        # pytest / pytest-asyncio / pytest-cov / pytest-recorder.
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system ../../obbject_extensions/charting
+          uv pip install --system --group dev
+          uv pip install --system dist/openbb_imf-*.whl
+
+      - name: Test the installed wheel
+        # Remove the local ``openbb_imf/`` source so pytest imports the
+        # package from site-packages — i.e., the wheel artifact, not
+        # the source tree.
+        run: |
+          rm -rf openbb_imf
+          pytest tests --cov=openbb_imf --cov-report=term-missing --cov-fail-under=100
