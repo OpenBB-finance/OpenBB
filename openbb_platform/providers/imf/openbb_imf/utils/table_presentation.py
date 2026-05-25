@@ -1452,10 +1452,13 @@ def pivot_table_mode(
             dr["_grouping_dims"] = grouping_parts
 
         def row_sort_key(row: dict) -> tuple:
+            dims_present = {
+                dim_id: code for dim_id, code, _label in row.get("_grouping_dims", [])
+            }
             grouping = tuple(
-                (dim_id, code) for dim_id, code, label in row.get("_grouping_dims", [])
+                (dim_id, dims_present.get(dim_id, "")) for dim_id in multi_value_dims
             )
-            order_val = row.get("order", 0)
+            order_val = float(row.get("order") or 0)
             return grouping + (order_val,)
 
         data_rows.sort(key=row_sort_key)

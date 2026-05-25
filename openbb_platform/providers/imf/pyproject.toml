@@ -126,4 +126,8 @@ filterwarnings = [
     "error",
     "ignore::DeprecationWarning:openbb_core.provider.utils.client",
     "ignore::async_lru.AlruCacheLoopResetWarning",
+    # Plotly and asyncio leak unclosed UNIX sockets / event loops on import
+    # in older Python; pytest's ``PytestUnraisableExceptionWarning`` turns
+    # those teardown traces into failures on whichever test runs next.
+    "ignore::pytest.PytestUnraisableExceptionWarning",
 ]

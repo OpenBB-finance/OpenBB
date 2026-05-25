@@ -835,10 +835,14 @@ class TestScriptEntrypoint:
         monkeypatch.setattr(_P, "mkdir", fake_mkdir)
 
         # Stub stat so the post-write size lookup hits our tmp file.
+        # Pass-through for any other path (pathlib's ``is_dir``/``mkdir``
+        # internals also call ``Path.stat``; redirecting those breaks the
+        # ``exist_ok=True`` recovery path on Python 3.10).
         real_stat = _P.stat
 
-        def fake_stat(self, *_a, **_kw):
-            return real_stat(cache_file, *_a, **_kw)
+        def fake_stat(self, *args, **kw):
+            target = cache_file if str(self).endswith("imf_cache.json.xz") else self
+            return real_stat(target, *args, **kw)
 
         monkeypatch.setattr(_P, "stat", fake_stat)
 

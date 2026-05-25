@@ -36,8 +36,8 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
     min_size, max_size = 4, 10
 
     if "country" in df.columns and df["country"].nunique() == 1:
-        share_import = df["share_country_maritime_import"].fillna(0)
-        share_export = df["share_country_maritime_export"].fillna(0)
+        share_import = df["share_country_maritime_import"].astype(float).fillna(0)
+        share_export = df["share_country_maritime_export"].astype(float).fillna(0)
         df["import_export_share"] = share_import + share_export
         share_values = df["import_export_share"]
 
