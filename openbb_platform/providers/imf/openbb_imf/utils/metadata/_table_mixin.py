@@ -792,8 +792,8 @@ def _strip_known_ancestors(
         return out
 
     all_ancestor_parts: list[str] = []
-    for anc in ancestor_labels:
-        all_ancestor_parts.extend(split(anc))
+    for ancestor in ancestor_labels:
+        all_ancestor_parts.extend(split(ancestor))
     ancestor_normalised = {normalize(p) for p in all_ancestor_parts}
 
     child_parts = split(full_label)

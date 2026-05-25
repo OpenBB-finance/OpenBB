@@ -175,7 +175,7 @@ class TestParseStructureRef:
         }
 
     def test_invalid_returns_empty(self):
-        """Unparseable URN yields empty dict."""
+        """Unparsable URN yields empty dict."""
         assert gc._parse_structure_ref("garbage") == {}
 
     def test_none(self):
@@ -202,7 +202,7 @@ class TestParseConceptRef:
         }
 
     def test_invalid(self):
-        """Unparseable URN yields empty dict."""
+        """Unparsable URN yields empty dict."""
         assert gc._parse_concept_ref("garbage") == {}
 
 

@@ -1038,7 +1038,7 @@ class TestDimensionMapping:
         with pytest.raises(ValueError, match="No valid indicator codes"):
             builder.get_table("BOP", "H_TEST")
 
-    def test_code_urn_unparseable_warns_and_skips(self, mock_qb_factory):
+    def test_code_urn_unparsable_warns_and_skips(self, mock_qb_factory):
         """A bad ``code_urn`` emits an ``OpenBBWarning`` and skips the entry."""
         from openbb_core.app.model.abstract.warning import OpenBBWarning
 

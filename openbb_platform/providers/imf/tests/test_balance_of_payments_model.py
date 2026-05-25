@@ -281,7 +281,7 @@ class TestTransformData:
         assert out[0].balance_total_goods == 42.0
 
     def test_skips_bad_values_and_dates(self):
-        """Missing / unparseable values and empty dates are skipped."""
+        """Missing / unparsable values and empty dates are skipped."""
         rows = [
             _row("G", "NETCD_T", "2024-03-31", None),
             _row("G", "NETCD_T", "", 5.0),
