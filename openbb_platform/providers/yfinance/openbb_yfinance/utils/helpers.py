@@ -552,7 +552,14 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
 
     tickers = symbol.split(",")
     if len(tickers) == 1:
-        data = data.get(symbol, DataFrame())  # type: ignore
+        if hasattr(data.columns, "levels"):
+            try:
+                if symbol in data.columns.get_level_values(0):
+                    data = data[symbol]  # type: ignore
+                elif symbol in data.columns.get_level_values(1):
+                    data = data.xs(symbol, level=1, axis=1)  # type: ignore
+            except (KeyError, IndexError):
+                pass
     elif len(tickers) > 1:
         _data = DataFrame()
         for ticker in tickers:
@@ -571,8 +578,11 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     if data.empty:  # type: ignore
         raise EmptyDataError()
 
+    if hasattr(data.columns, "levels") and len(data.columns.names) > 1:
+        data.columns = [col[0] if isinstance(col, tuple) else col for col in data.columns]  # type: ignore
+
     data = data.reset_index()  # type: ignore
-    data = data.rename(columns={"Date": "date", "Datetime": "date"})
+    data = data.rename(columns={"Date": "date", "Datetime": "date", "index": "date"})
     data["date"] = data["date"].apply(to_datetime)
     data = data[data["Open"] > 0]
 
