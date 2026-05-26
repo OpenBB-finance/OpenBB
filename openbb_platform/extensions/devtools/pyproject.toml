@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-devtools"
-version = "1.6.6"
+version = "1.6.7"
 description = "Tools for OpenBB Platform Developers"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
