@@ -157,9 +157,7 @@ async def get_defined_screener(
     from pytz import timezone
 
     if name and name not in PREDEFINED_SCREENERS:
-        raise ValueError(
-            f"Invalid predefined screener name: {name}\n    Valid names: {PREDEFINED_SCREENERS}"
-        )
+        raise ValueError(f"Invalid predefined screener name: {name}\n    Valid names: {PREDEFINED_SCREENERS}")
 
     results: list = []
 
@@ -273,16 +271,12 @@ async def get_futures_quotes(symbols: list) -> "DataFrame":
 
     @contextmanager
     def suppress_all_output():
-        with open(os.devnull, "w") as devnull, redirect_stdout(
-            devnull
-        ), redirect_stderr(devnull):
+        with open(os.devnull, "w") as devnull, redirect_stdout(devnull), redirect_stderr(devnull):
             yield
 
     with suppress_all_output(), suppress(ClientError):
         fetcher = YFinanceEquityQuoteFetcher()
-        data = await fetcher.fetch_data(
-            params={"symbol": ",".join(symbols)}, credentials={}
-        )
+        data = await fetcher.fetch_data(params={"symbol": ",".join(symbols)}, credentials={})
 
     df = DataFrame([d.model_dump() for d in data])  # type: ignore
     prices = df[["symbol", "bid", "ask", "prev_close"]].copy()
@@ -293,9 +287,7 @@ async def get_futures_quotes(symbols: list) -> "DataFrame":
     return prices[["expiration", "price"]]  # type: ignore
 
 
-async def get_historical_futures_prices(
-    symbols: list, start_date: "date", end_date: "date"
-):
+async def get_historical_futures_prices(symbols: list, start_date: "date", end_date: "date"):
     """Get historical futures prices for the list of symbols."""
     # pylint: disable=import-outside-toplevel
     from openbb_yfinance.models.equity_historical import (  # noqa
@@ -352,9 +344,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         return futures_quotes
 
     if dates and futures_symbols:
-        historical_futures_prices = await get_historical_futures_prices(
-            futures_symbols, dates[0], dates[-1]
-        )
+        historical_futures_prices = await get_historical_futures_prices(futures_symbols, dates[0], dates[-1])
         df = DataFrame([d.model_dump() for d in historical_futures_prices])  # type: ignore
         df = df.set_index("date").sort_index()
         df.index = df.index.astype(str)
@@ -375,18 +365,14 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
         df = df.fillna("N/A").replace("N/A", None)
 
         # Flatten the DataFrame
-        flattened_data = df.reset_index().melt(
-            id_vars="date", var_name="expiration", value_name="price"
-        )
+        flattened_data = df.reset_index().melt(id_vars="date", var_name="expiration", value_name="price")
         flattened_data = flattened_data.sort_values("date")
         flattened_data["expiration"] = Categorical(
             flattened_data["expiration"],
             categories=sorted(list(expiration_dict.values())),
             ordered=True,
         )
-        flattened_data = flattened_data.sort_values(
-            by=["date", "expiration"]
-        ).reset_index(drop=True)
+        flattened_data = flattened_data.sort_values(by=["date", "expiration"]).reset_index(drop=True)
         flattened_data["date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
 
         return flattened_data
@@ -415,17 +401,13 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
 
         @contextmanager
         def suppress_all_output():
-            with open(os.devnull, "w") as devnull, redirect_stdout(
-                devnull
-            ), redirect_stderr(devnull):
+            with open(os.devnull, "w") as devnull, redirect_stdout(devnull), redirect_stderr(devnull):
                 yield
 
         with suppress_all_output():
             while empty_count < 12:
                 future = today + relativedelta(months=i)
-                future_symbol = (
-                    f"{symbol}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
-                )
+                future_symbol = f"{symbol}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
                 data = yf_download(future_symbol)
                 if data.empty:
                     empty_count += 1
@@ -446,9 +428,7 @@ async def get_futures_curve(  # pylint: disable=too-many-return-statements
                                 historical_curve.append(None)
                     else:
                         futures_index.append(future.strftime("%Y-%m"))
-                        futures_curve.append(
-                            data.query("close.notnull()")["close"].values[-1]
-                        )
+                        futures_curve.append(data.query("close.notnull()")["close"].values[-1])
 
                 i += 1
 
@@ -566,9 +546,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
             temp = data[ticker].copy().dropna(how="all")  # type: ignore
             if len(temp) > 0:
                 temp["symbol"] = ticker
-                temp = temp.reset_index().rename(
-                    columns={"Date": "date", "Datetime": "date", "index": "date"}
-                )
+                temp = temp.reset_index().rename(columns={"Date": "date", "Datetime": "date", "index": "date"})
                 _data = concat([_data, temp])
         if not _data.empty:
             index_keys = ["date", "symbol"] if "symbol" in _data.columns else "date"
@@ -578,9 +556,8 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     if data.empty:  # type: ignore
         raise EmptyDataError()
 
-    if hasattr(data.columns, "levels"):
-        if len(data.columns.names) > 1:
-            data.columns = [col[0] if isinstance(col, tuple) else col for col in data.columns]  # type: ignore
+    if hasattr(data.columns, "levels") and len(data.columns.names) > 1:
+        data.columns = [col[0] if isinstance(col, tuple) else col for col in data.columns]  # type: ignore
 
     data = data.reset_index()  # type: ignore
     data = data.rename(columns={"Date": "date", "Datetime": "date", "index": "date"})
