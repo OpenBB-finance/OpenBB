@@ -42,8 +42,16 @@ class FuturesHistoricalData(Data):
     """Futures Historical Price Data."""
 
     date: datetime | dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: float | None = Field(default=None, description=DATA_DESCRIPTIONS.get("open", ""))
-    high: float | None = Field(default=None, description=DATA_DESCRIPTIONS.get("high", ""))
-    low: float | None = Field(default=None, description=DATA_DESCRIPTIONS.get("low", ""))
+    open: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
+    )
+    high: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: float | None = Field(default=None, description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: float | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
+    )
