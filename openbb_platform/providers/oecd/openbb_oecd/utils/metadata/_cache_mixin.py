@@ -109,12 +109,21 @@ class CacheMixin(_MixinBase):
         self._short_id_map.update(blob.get("short_id_map", {}))
         tax = blob.get("taxonomy_tree", [])
 
-        if tax:
+        if tax and len(tax) >= len(self._taxonomy_tree):
             self._taxonomy_tree = tax
             self._df_to_categories.update(blob.get("df_to_categories", {}))
             self._category_to_dfs.update(blob.get("category_to_dfs", {}))
             self._category_names.update(blob.get("category_names", {}))
             self._taxonomy_loaded = True
+        elif tax:
+            self._taxonomy_loaded = True
+
+        if blob.get("descriptions_baked"):
+            self._descriptions_baked = True
+
+        topic_rows = blob.get("topic_rows")
+        if topic_rows:
+            self._topic_rows = topic_rows
 
     def _infer_orphan_parents(self) -> None:
         """Infer parent for orphan codes using COMP_RULE annotations."""

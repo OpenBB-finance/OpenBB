@@ -278,6 +278,9 @@ class LoaderMixin(_MixinBase):
 
     def _ensure_description(self, full_id: str) -> None:
         """Fetch and cache the narrative description for a single dataflow."""
+        if getattr(self, "_descriptions_baked", False):
+            return
+
         if not hasattr(self, "_description_fetched"):
             self._description_fetched: set = set()
 

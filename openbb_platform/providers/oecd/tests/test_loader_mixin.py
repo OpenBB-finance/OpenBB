@@ -513,6 +513,16 @@ class TestResolveDataflowIdNetworkFallback:
 class TestEnsureDescriptionEdgeCases:
     """Edge case branches of _ensure_description."""
 
+    def test_descriptions_baked_flag_short_circuits(self, seeded_meta):
+        """When ``_descriptions_baked`` is True, no network call is made."""
+        seeded_meta.dataflows[_FULL_ID]["description"] = ""
+        seeded_meta._descriptions_baked = True
+        with patch(
+            "openbb_oecd.utils.metadata._loader_mixin._make_request"
+        ) as mock_req:
+            seeded_meta._ensure_description(_FULL_ID)
+        mock_req.assert_not_called()
+
     def test_no_agency_or_version_skips_fetch(self, seeded_meta):
         """Missing agency_id or version short-circuits without a network call."""
         seeded_meta.dataflows[_FULL_ID]["description"] = ""

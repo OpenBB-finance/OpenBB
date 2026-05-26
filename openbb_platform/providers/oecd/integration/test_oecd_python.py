@@ -1,4 +1,4 @@
-"""OECD Utilities module integration tests."""
+"""OECD module integration tests."""
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
@@ -16,10 +16,10 @@ def obb(pytestconfig):
 
 @pytest.mark.parametrize("params", [{}])
 @pytest.mark.integration
-def test_oecd_utils_list_topic_choices(params, obb):
-    """Test oecd_utils_list_topic_choices endpoint."""
+def test_oecd_list_topic_choices(params, obb):
+    """Test oecd_list_topic_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_topic_choices(**params)
+    result = obb.oecd.list_topic_choices(**params)
     assert result
     assert isinstance(result, list)
     assert len(result) > 0
@@ -37,10 +37,10 @@ def test_oecd_utils_list_topic_choices(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_subtopic_choices(params, obb):
-    """Test oecd_utils_list_subtopic_choices endpoint."""
+def test_oecd_list_subtopic_choices(params, obb):
+    """Test oecd_list_subtopic_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_subtopic_choices(**params)
+    result = obb.oecd.list_subtopic_choices(**params)
     assert isinstance(result, list)
 
 
@@ -58,10 +58,10 @@ def test_oecd_utils_list_subtopic_choices(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_dataflows(params, obb):
-    """Test oecd_utils_list_dataflows endpoint."""
+def test_oecd_list_dataflows(params, obb):
+    """Test oecd_list_dataflows endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_dataflows(**params)
+    result = obb.oecd.list_dataflows(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0  # type: ignore
@@ -69,10 +69,10 @@ def test_oecd_utils_list_dataflows(params, obb):
 
 @pytest.mark.parametrize("params", [{}])
 @pytest.mark.integration
-def test_oecd_utils_list_dataflow_choices(params, obb):
-    """Test oecd_utils_list_dataflow_choices endpoint."""
+def test_oecd_list_dataflow_choices(params, obb):
+    """Test oecd_list_dataflow_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_dataflow_choices(**params)
+    result = obb.oecd.list_dataflow_choices(**params)
     assert result
     assert isinstance(result, list)
     assert len(result) > 0
@@ -90,10 +90,10 @@ def test_oecd_utils_list_dataflow_choices(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_topics(params, obb):
-    """Test oecd_utils_list_topics endpoint."""
+def test_oecd_list_topics(params, obb):
+    """Test oecd_list_topics endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_topics(**params)
+    result = obb.oecd.list_topics(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0  # type: ignore
@@ -113,10 +113,10 @@ def test_oecd_utils_list_topics(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_get_dataflow_parameters(params, obb):
-    """Test oecd_utils_get_dataflow_parameters endpoint."""
+def test_oecd_get_dataflow_parameters(params, obb):
+    """Test oecd_get_dataflow_parameters endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.get_dataflow_parameters(**params)
+    result = obb.oecd.get_dataflow_parameters(**params)
     assert result
     assert isinstance(result, OBBject)
     assert result.results
@@ -152,10 +152,10 @@ def test_oecd_utils_get_dataflow_parameters(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_tables(params, obb):
-    """Test oecd_utils_list_tables endpoint."""
+def test_oecd_list_tables(params, obb):
+    """Test oecd_list_tables endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_tables(**params)
+    result = obb.oecd.list_tables(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0  # type: ignore
@@ -173,10 +173,10 @@ def test_oecd_utils_list_tables(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_get_table_detail(params, obb):
-    """Test oecd_utils_get_table_detail endpoint."""
+def test_oecd_get_table_detail(params, obb):
+    """Test oecd_get_table_detail endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.get_table_detail(**params)
+    result = obb.oecd.get_table_detail(**params)
     assert result
     assert isinstance(result, OBBject)
     assert result.results
@@ -194,10 +194,10 @@ def test_oecd_utils_get_table_detail(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_table_choices(params, obb):
-    """Test oecd_utils_list_table_choices endpoint."""
+def test_oecd_list_table_choices(params, obb):
+    """Test oecd_list_table_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.list_table_choices(**params)
+    result = obb.oecd.list_table_choices(**params)
     assert result
     assert isinstance(result, list)
     assert len(result) > 0
@@ -231,10 +231,10 @@ def test_oecd_utils_list_table_choices(params, obb):
 )
 @pytest.mark.integration
 @pytest.mark.skip(reason="Not included in Python interface (include_in_schema=False)")
-def test_oecd_utils_indicator_choices(params, obb):
-    """Test oecd_utils_indicator_choices endpoint."""
+def test_oecd_indicator_choices(params, obb):
+    """Test oecd_indicator_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.indicator_choices(**params)
+    result = obb.oecd.indicator_choices(**params)
     assert isinstance(result, list)
 
 
@@ -251,10 +251,10 @@ def test_oecd_utils_indicator_choices(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_presentation_table_choices(params, obb):
-    """Test oecd_utils_presentation_table_choices endpoint."""
+def test_oecd_presentation_table_choices(params, obb):
+    """Test oecd_presentation_table_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.presentation_table_choices(**params)
+    result = obb.oecd.presentation_table_choices(**params)
     assert isinstance(result, list)
 
 
@@ -271,10 +271,10 @@ def test_oecd_utils_presentation_table_choices(params, obb):
 )
 @pytest.mark.integration
 @pytest.mark.skip(reason="Not included in Python interface (include_in_schema=False)")
-def test_oecd_utils_presentation_table_dim_choices(params, obb):
-    """Test oecd_utils_presentation_table_dim_choices endpoint."""
+def test_oecd_presentation_table_dim_choices(params, obb):
+    """Test oecd_presentation_table_dim_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.presentation_table_dim_choices(**params)
+    result = obb.oecd.presentation_table_dim_choices(**params)
     assert isinstance(result, list)
 
 
@@ -299,8 +299,8 @@ def test_oecd_utils_presentation_table_dim_choices(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_presentation_table(params, obb):
-    """Test oecd_utils_presentation_table endpoint."""
+def test_oecd_presentation_table(params, obb):
+    """Test oecd_presentation_table endpoint."""
     params = {p: v for p, v in params.items() if v}
-    result = obb.oecd_utils.presentation_table(**params)
+    result = obb.oecd.presentation_table(**params)
     assert result

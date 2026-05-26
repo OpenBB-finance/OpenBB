@@ -82,11 +82,21 @@ class OecdMetadata(
             self._category_to_dfs: dict[str, list[str]] = {}
             self._category_names: dict[str, str] = {}
             self._taxonomy_loaded: bool = False
+            self._descriptions_baked: bool = False
+            self._topic_rows: list[dict] = []
             self._cache_dirty: bool = False
             self._load_from_cache()
             self.__class__._initialized = True
 
     def __call__(self) -> "OecdMetadata":
+        return self
+
+    def __deepcopy__(self, memo: dict) -> "OecdMetadata":
+        """Singletons are not copyable — return self so the deepcopy walker stops."""
+        return self
+
+    def __copy__(self) -> "OecdMetadata":
+        """Singletons are not copyable — return self so the copy module stops."""
         return self
 
     @classmethod

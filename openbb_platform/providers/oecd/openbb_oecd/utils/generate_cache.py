@@ -83,9 +83,27 @@ def _extract_codelist_id(urn: str) -> str:
 # ---------------------------------------------------------------------------
 
 
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+_WHITESPACE_RE = re.compile(r"[ \t]+")
+
+
+def _clean_description(raw_desc: str) -> str:
+    """Strip HTML tags and collapse whitespace from an OECD description string."""
+    if not raw_desc:
+        return ""
+    cleaned = _HTML_TAG_RE.sub("", raw_desc)
+    cleaned = (
+        cleaned.replace("&nbsp;", " ")
+        .replace("&amp;", "&")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+    )
+    return _WHITESPACE_RE.sub(" ", cleaned).strip()
+
+
 def fetch_dataflows() -> tuple[dict[str, dict], dict[str, str]]:
     """Return (dataflows dict keyed by full_id, short_id_map)."""
-    raw = _get(f"{BASE_URL}/structure/dataflow")
+    raw = _get(f"{BASE_URL}/structure/dataflow?detail=full")
     dataflows: dict[str, dict] = {}
     short_id_map: dict[str, str] = {}
 
@@ -114,11 +132,17 @@ def fetch_dataflows() -> tuple[dict[str, dict], dict[str, str]]:
                     ann_text = ann_text.get("en", next(iter(ann_text.values()), ""))
                 annotations[ann_type] = str(ann_text) if ann_text else ""
 
+        desc_raw = df.get("descriptions", {})
+        bulk_desc = (
+            desc_raw.get("en", "") if isinstance(desc_raw, dict) else ""
+        ) or df.get("description", "")
+
         dataflows[full_id] = {
             "short_id": short_id,
             "agency_id": agency_id,
             "version": version,
             "name": name,
+            "description": _clean_description(bulk_desc),
             "_dsd_key": dsd_key,
             "annotations": annotations,
         }
@@ -938,6 +962,58 @@ def fetch_taxonomy(
     return tree, category_names, dict(df_to_cats), dict(cat_to_dfs)
 
 
+def _annotate_topic_counts(node: dict, category_to_dfs: dict[str, list[str]]) -> dict:
+    """Recursively annotate each taxonomy node with its dataflow count."""
+    path = node["path"]
+    direct = len(category_to_dfs.get(path, []))
+    children = [
+        _annotate_topic_counts(c, category_to_dfs) for c in node.get("children", [])
+    ]
+    children = [c for c in children if c["dataflow_count"] > 0]
+    return {
+        "id": node["id"],
+        "name": node["name"],
+        "dataflow_count": direct + sum(c["dataflow_count"] for c in children),
+        "subtopics": children,
+    }
+
+
+def _flatten_topic_rows(
+    taxonomy_tree: list[dict], category_to_dfs: dict[str, list[str]]
+) -> list[dict]:
+    """Build the flat (topic, subtopic, dataflows) rows served by ``list_topics``."""
+    annotated = [_annotate_topic_counts(t, category_to_dfs) for t in taxonomy_tree]
+    rows: list[dict] = []
+    for t in annotated:
+        if not t["dataflow_count"]:
+            continue
+        subs = t.get("subtopics", [])
+        if subs:
+            for s in subs:
+                if not s["dataflow_count"]:
+                    continue
+                rows.append(
+                    {
+                        "topic_id": t["id"],
+                        "topic": t["name"],
+                        "subtopic_id": s["id"],
+                        "subtopic": s["name"],
+                        "dataflows": s["dataflow_count"],
+                    }
+                )
+        else:
+            rows.append(
+                {
+                    "topic_id": t["id"],
+                    "topic": t["name"],
+                    "subtopic_id": "",
+                    "subtopic": "",
+                    "dataflows": t["dataflow_count"],
+                }
+            )
+    return rows
+
+
 # ---------------------------------------------------------------------------
 # Step 8 -- Fetch content constraints (batch)
 # ---------------------------------------------------------------------------
@@ -1277,6 +1353,8 @@ def main() -> None:
         "df_to_categories": df_to_categories,
         "category_to_dfs": category_to_dfs,
         "category_names": category_names,
+        "topic_rows": _flatten_topic_rows(taxonomy_tree, category_to_dfs),
+        "descriptions_baked": True,
     }
 
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)

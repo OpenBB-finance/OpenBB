@@ -8,11 +8,13 @@ import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
 
 from openbb_oecd.oecd_router import (
+    _APPS_WIDGET_ID_FALLBACK_MAP,
     _parse_annotation,
     _parse_defaults,
     _parse_not_displayed,
+    _rewrite_widget_ids,
     get_dataflow_parameters,
-    get_oecd_utils_apps_json,
+    get_oecd_apps_json,
     get_table_detail,
     indicator_choices,
     list_dataflow_choices,
@@ -1420,9 +1422,9 @@ class TestPresentationTable:
 
 
 @pytest.mark.asyncio
-class TestGetOecdUtilsAppsJson:
+class TestGetOecdAppsJson:
     async def test_returns_list(self):
-        result = await get_oecd_utils_apps_json()
+        result = await get_oecd_apps_json()
         assert isinstance(result, list)
 
     async def test_returns_empty_on_missing_file(self, monkeypatch, tmp_path):
@@ -1433,8 +1435,187 @@ class TestGetOecdUtilsAppsJson:
         monkeypatch.setattr(
             router_mod, "__file__", str(fake_apps.parent / "fake_router.py")
         )
-        result = await get_oecd_utils_apps_json()
-        # Restore - monkeypatch will handle this.
+        result = await get_oecd_apps_json()
         assert isinstance(result, list)
-        # Restore the real file path is automatic.
         router_mod.__file__ = original_init_file
+
+
+class TestRewriteWidgetIds:
+    """Tests for ``_rewrite_widget_ids`` and the apps.json fallback path."""
+
+    def test_rewrites_mapped_ids_and_preserves_unmapped(self):
+        """Only IDs in the fallback map are rewritten; everything else passes through."""
+        apps = [
+            {
+                "tabs": {
+                    "a": {
+                        "layout": [
+                            {"i": "economy_cpi_oecd_obb"},
+                            {"i": "oecd_presentation_table_custom_obb"},
+                        ]
+                    },
+                    "b": {
+                        "layout": [
+                            {"i": "economy_gdp_real_oecd_obb"},
+                        ]
+                    },
+                }
+            }
+        ]
+        out = _rewrite_widget_ids(apps)
+        layout_a = [w["i"] for w in out[0]["tabs"]["a"]["layout"]]
+        layout_b = [w["i"] for w in out[0]["tabs"]["b"]["layout"]]
+        assert layout_a == [
+            _APPS_WIDGET_ID_FALLBACK_MAP["economy_cpi_oecd_obb"],
+            "oecd_presentation_table_custom_obb",
+        ]
+        assert layout_b == [_APPS_WIDGET_ID_FALLBACK_MAP["economy_gdp_real_oecd_obb"]]
+
+    def test_tolerates_missing_tabs_and_layout(self):
+        """Apps without ``tabs`` or with ``layout=None`` are skipped gracefully."""
+        apps = [
+            {},
+            {"tabs": {}},
+            {"tabs": {"x": {}}},
+            {"tabs": {"x": {"layout": None}}},
+            {"tabs": {"x": {"layout": [{"i": "economy_cpi_oecd_obb"}]}}},
+        ]
+        out = _rewrite_widget_ids(apps)
+        rewritten = out[-1]["tabs"]["x"]["layout"][0]["i"]
+        assert rewritten == _APPS_WIDGET_ID_FALLBACK_MAP["economy_cpi_oecd_obb"]
+
+    @pytest.mark.asyncio
+    async def test_get_oecd_apps_json_rewrites_when_economy_absent(
+        self, tmp_path, monkeypatch
+    ):
+        """When ``ECONOMY_INSTALLED`` is False the served apps.json has rewritten IDs."""
+        from openbb_oecd import oecd_router as router_module
+
+        apps_path = tmp_path / "apps.json"
+        apps_path.write_text(
+            '[{"tabs": {"cpi": {"layout": [{"i": "economy_cpi_oecd_obb"}]}}}]',
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(router_module, "__file__", str(tmp_path / "oecd_router.py"))
+        monkeypatch.setattr(router_module, "ECONOMY_INSTALLED", False)
+
+        apps = await get_oecd_apps_json()
+        assert (
+            apps[0]["tabs"]["cpi"]["layout"][0]["i"]
+            == (_APPS_WIDGET_ID_FALLBACK_MAP["economy_cpi_oecd_obb"])
+        )
+
+
+def _load_standalone_router_module():
+    """Re-execute ``oecd_router`` with ``ECONOMY_INSTALLED`` forced to False.
+
+    Loaded under a private module name so the global ``openbb_oecd.oecd_router``
+    used elsewhere in the suite is untouched. ``Router.command`` is replaced
+    during load with a passthrough decorator so the fallback endpoints bind
+    without requiring the OECD-prefixed models to exist in the live provider
+    registry or FastAPI's response-model machinery.
+    """
+    import importlib.util
+    from pathlib import Path
+
+    from openbb_core.app.router import Router
+
+    import openbb_oecd
+
+    spec = importlib.util.spec_from_file_location(
+        "openbb_oecd_oecd_router_standalone",
+        Path(openbb_oecd.__file__).parent / "oecd_router.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    original_economy = openbb_oecd.ECONOMY_INSTALLED
+    original_command = Router.command
+    openbb_oecd.ECONOMY_INSTALLED = False
+
+    def _passthrough_command(self, func=None, **_kwargs):
+        """Bind ``func`` to the caller without touching the underlying FastAPI router."""
+        if func is None:
+            return lambda f: _passthrough_command(self, f, **_kwargs)
+        return func
+
+    Router.command = _passthrough_command  # type: ignore[assignment]
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        openbb_oecd.ECONOMY_INSTALLED = original_economy
+        Router.command = original_command  # type: ignore[assignment]
+    return module
+
+
+class TestStandaloneFallbackEndpoints:
+    """Tests for the twelve endpoints registered only when ``openbb-economy`` is absent."""
+
+    _STANDALONE_NAMES = (
+        "available_indicators",
+        "indicators",
+        "balance_of_payments",
+        "composite_leading_indicator",
+        "cpi",
+        "country_interest_rates",
+        "gdp_nominal",
+        "gdp_real",
+        "gdp_forecast",
+        "house_price_index",
+        "share_price_index",
+        "unemployment",
+    )
+
+    def test_standalone_module_binds_all_fallback_endpoint_names(self):
+        """All twelve fallback endpoint names exist as module attributes after reload."""
+        module = _load_standalone_router_module()
+        for name in self._STANDALONE_NAMES:
+            assert callable(getattr(module, name, None)), f"missing {name}"
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("endpoint_name", _STANDALONE_NAMES)
+    async def test_standalone_endpoint_body_delegates_to_from_query(
+        self, endpoint_name
+    ):
+        """Each fallback endpoint body calls ``OBBject.from_query(OBBQuery(**locals()))``."""
+        from unittest.mock import AsyncMock, MagicMock
+
+        module = _load_standalone_router_module()
+        fn = getattr(module, endpoint_name)
+
+        sentinel = object()
+        with (
+            patch.object(module, "OBBQuery", new=MagicMock()),
+            patch.object(
+                module.OBBject,
+                "from_query",
+                new=AsyncMock(return_value=sentinel),
+            ) as mock_from_query,
+        ):
+            out = await fn(
+                cc=MagicMock(),
+                provider_choices=MagicMock(),
+                standard_params=MagicMock(),
+                extra_params=MagicMock(),
+            )
+        assert out is sentinel
+        mock_from_query.assert_awaited_once()
+
+
+class TestWarmupHook:
+    """Coverage for the FastAPI startup warmup hook."""
+
+    def test_warm_oecd_metadata_primes_singleton_and_table_map(self, monkeypatch):
+        """``_warm_oecd_metadata`` instantiates the singleton and walks ``table_map``."""
+        from openbb_oecd import oecd_router as router_module
+        from openbb_oecd.utils import metadata as metadata_pkg
+
+        calls: list[str] = []
+
+        class _Stub:
+            def table_map(self_inner):
+                calls.append("table_map")
+                return []
+
+        stub = _Stub()
+        monkeypatch.setattr(metadata_pkg, "OecdMetadata", lambda: stub)
+        router_module._warm_oecd_metadata()
+        assert calls == ["table_map"]

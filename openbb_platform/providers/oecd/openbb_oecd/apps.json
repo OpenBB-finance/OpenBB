@@ -12,7 +12,7 @@
         "name": "Metadata",
         "layout": [
           {
-            "i": "oecd_utils_list_tables_custom_obb",
+            "i": "oecd_list_tables_custom_obb",
             "x": 0,
             "y": 13,
             "w": 22,
@@ -47,7 +47,7 @@
             "groups": []
           },
           {
-            "i": "oecd_utils_get_table_detail_custom_obb",
+            "i": "oecd_get_table_detail_custom_obb",
             "x": 22,
             "y": 13,
             "w": 18,
@@ -60,7 +60,7 @@
             "groups": []
           },
           {
-            "i": "oecd_utils_list_topics_custom_obb",
+            "i": "oecd_list_topics_custom_obb",
             "x": 0,
             "y": 2,
             "w": 40,
@@ -939,7 +939,7 @@
         "name": "Presentation Tables",
         "layout": [
           {
-            "i": "oecd_utils_presentation_table_custom_obb",
+            "i": "oecd_presentation_table_custom_obb",
             "x": 0,
             "y": 2,
             "w": 40,

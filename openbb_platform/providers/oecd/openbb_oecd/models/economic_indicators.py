@@ -33,7 +33,7 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             "x-widget_config": {
                 "type": "endpoint",
                 "multiSelect": False,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
                     "country": "true",
@@ -45,7 +45,7 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         "frequency": {
             "x-widget_config": {
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
                     "country": "$country",
@@ -57,7 +57,7 @@ class OecdEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         "transform": {
             "x-widget_config": {
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/indicator_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
                     "country": "$country",

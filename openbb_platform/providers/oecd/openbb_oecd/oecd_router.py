@@ -1,16 +1,23 @@
-"""OECD Utilities Router."""
+"""OECD Router."""
 
 from typing import Annotated, Any, Literal
 
 from fastapi import Query
+from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query as OBBQuery
 from openbb_core.app.router import Router
 from openbb_core.app.service.system_service import SystemService
 
 from openbb_oecd.utils.metadata import OECDMetadataDependency
 
-router = Router(prefix="", description="Utilities for OECD provider.")
+router = Router(prefix="", description="OECD provider router.")
 api_prefix = SystemService().system_settings.api_settings.prefix
 # Dimension IDs typically representing the country/reference area.
 _COUNTRY_DIMS = ("REF_AREA", "COUNTERPART_AREA", "JURISDICTION", "COUNTRY", "AREA")
@@ -152,7 +159,7 @@ async def list_subtopic_choices(
                 "value": None,
                 "description": "Filter by topic. Leave blank to show all.",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/list_topic_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/list_topic_choices",
                 "style": {"popupWidth": 500},
                 "optional": True,
             },
@@ -162,7 +169,7 @@ async def list_subtopic_choices(
                 "value": None,
                 "description": "Filter by subtopic (requires a topic to be selected).",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/list_subtopic_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/list_subtopic_choices",
                 "optionsParams": {"topic": "$topic"},
                 "style": {"popupWidth": 500},
                 "optional": True,
@@ -302,15 +309,28 @@ async def list_topics(
     ] = None,
 ) -> OBBject:
     """List all OECD topic categories with dataflow counts."""
-    topics = metadata.list_topics()
+    rows = metadata._topic_rows
+    if not rows:
+        rows = _build_topic_rows(metadata.list_topics())
 
-    rows = []
+    if query:
+        needle = query.lower()
+        rows = [
+            r
+            for r in rows
+            if needle in r["topic"].lower() or needle in r["subtopic"].lower()
+        ]
 
+    return OBBject(results=rows, provider="oecd")
+
+
+def _build_topic_rows(topics: list[dict]) -> list[dict]:
+    """Flatten the nested topic tree into a list of (topic, subtopic) rows."""
+    rows: list[dict] = []
     for t in topics:
         if not t["dataflow_count"]:
             continue
         subs = t.get("subtopics", [])
-
         if subs:
             for s in subs:
                 if not s["dataflow_count"]:
@@ -334,16 +354,7 @@ async def list_topics(
                     "dataflows": t["dataflow_count"],
                 }
             )
-
-    if query:
-        needle = query.lower()
-        rows = [
-            r
-            for r in rows
-            if needle in r["topic"].lower() or needle in r["subtopic"].lower()
-        ]
-
-    return OBBject(results=rows, provider="oecd")
+    return rows
 
 
 @router.command(
@@ -358,7 +369,7 @@ async def list_topics(
                 "value": "DF_PRICES_ALL",
                 "description": "The OECD dataflow to inspect.",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/list_dataflow_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/list_dataflow_choices",
                 "style": {"popupWidth": 700},
             },
             {
@@ -438,7 +449,7 @@ async def get_dataflow_parameters(
                 "value": None,
                 "description": "Filter by topic. Leave blank to show all.",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/list_topic_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/list_topic_choices",
                 "style": {"popupWidth": 700},
                 "optional": True,
             },
@@ -448,7 +459,7 @@ async def get_dataflow_parameters(
                 "value": None,
                 "description": "Filter by subtopic (requires a topic to be selected).",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/list_subtopic_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/list_subtopic_choices",
                 "optionsParams": {"topic": "$topic"},
                 "style": {"popupWidth": 500},
                 "optional": True,
@@ -560,7 +571,7 @@ async def list_tables(
                 "value": "DF_PRICES_ALL",
                 "description": "The OECD table (dataflow) to inspect.",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/list_table_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/list_table_choices",
                 "style": {"popupWidth": 950},
             },
         ],
@@ -1424,7 +1435,7 @@ async def presentation_table_dim_choices(
                 "label": "Topic",
                 "value": None,
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_choices",
                 "description": "The OECD topic.",
             },
             {
@@ -1432,7 +1443,7 @@ async def presentation_table_dim_choices(
                 "label": "Subtopic",
                 "value": None,
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
                 },
@@ -1445,7 +1456,7 @@ async def presentation_table_dim_choices(
                 "label": "Table",
                 "type": "endpoint",
                 "value": None,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
                     "subtopic": "$subtopic",
@@ -1459,7 +1470,7 @@ async def presentation_table_dim_choices(
                 "description": "Country or region for the table.",
                 "type": "endpoint",
                 "multiSelect": True,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
                     "subtopic": "$subtopic",
@@ -1471,7 +1482,7 @@ async def presentation_table_dim_choices(
                 "label": "Counterpart",
                 "type": "endpoint",
                 "multiSelect": True,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_dim_choices",
                 "optionsParams": {
                     "table": "$table",
                     "country": "$country",
@@ -1489,7 +1500,7 @@ async def presentation_table_dim_choices(
                 "paramName": "frequency",
                 "label": "Frequency",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_choices",
                 "optionsParams": {
                     "topic": "$topic",
                     "subtopic": "$subtopic",
@@ -1503,7 +1514,7 @@ async def presentation_table_dim_choices(
                 "label": "Unit Measure",
                 "type": "endpoint",
                 "value": None,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_dim_choices",
                 "optionsParams": {
                     "table": "$table",
                     "country": "$country",
@@ -1518,7 +1529,7 @@ async def presentation_table_dim_choices(
                 "label": "Adjustment",
                 "type": "endpoint",
                 "value": None,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_dim_choices",
                 "optionsParams": {
                     "table": "$table",
                     "country": "$country",
@@ -1533,7 +1544,7 @@ async def presentation_table_dim_choices(
                 "label": "Transformation",
                 "type": "endpoint",
                 "value": None,
-                "optionsEndpoint": f"{api_prefix}/oecd_utils/presentation_table_dim_choices",
+                "optionsEndpoint": f"{api_prefix}/oecd/presentation_table_dim_choices",
                 "optionsParams": {
                     "table": "$table",
                     "country": "$country",
@@ -1961,11 +1972,293 @@ async def presentation_table(  # noqa: PLR0912
     return [title_row] + records
 
 
-async def get_oecd_utils_apps_json() -> list[dict[str, Any]]:
-    """Get the OECD apps.json file.
+from openbb_oecd import ECONOMY_INSTALLED  # noqa: E402
 
-    This endpoint serves the apps.json file containing OpenBB Workspace app configurations
-    related to OECD data and utilities.
+if not ECONOMY_INSTALLED:
+
+    @router.command(
+        model="AvailableOecdIndicators",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                description="Filter by topic.",
+                parameters={"provider": "oecd", "topic": "ECO"},
+            ),
+        ],
+    )
+    async def available_indicators(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Search the OECD SDMX catalogue for indicators across all dataflows."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdIndicators",
+        examples=[
+            APIEx(
+                description="Fetch a single indicator series by ``dataflow::code`` symbol.",
+                parameters={
+                    "provider": "oecd",
+                    "symbol": "DF_KEI::ULC",
+                    "country": "united_states",
+                    "start_date": "2020-01-01",
+                },
+            ),
+        ],
+    )
+    async def indicators(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get economic indicators by country and indicator symbol from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdBalanceOfPayments",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(parameters={"provider": "oecd", "country": "brazil"}),
+        ],
+    )
+    async def balance_of_payments(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Balance of Payments reports from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdCompositeLeadingIndicator",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={"country": "all", "provider": "oecd", "growth_rate": True}
+            ),
+        ],
+    )
+    async def composite_leading_indicator(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get the OECD Composite Leading Indicator (CLI)."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdConsumerPriceIndex",
+        examples=[
+            APIEx(
+                parameters={
+                    "country": "united_states,united_kingdom",
+                    "transform": "period",
+                    "provider": "oecd",
+                },
+            ),
+        ],
+    )
+    async def cpi(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get Consumer Price Index (CPI) data by country from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdCountryInterestRates",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={
+                    "provider": "oecd",
+                    "country": "all",
+                    "duration": "immediate",
+                    "frequency": "quarter",
+                },
+            ),
+        ],
+    )
+    async def country_interest_rates(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get interest rates by country and duration from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdGdpNominal",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={
+                    "units": "capita",
+                    "country": "all",
+                    "frequency": "annual",
+                    "provider": "oecd",
+                },
+            ),
+        ],
+    )
+    async def gdp_nominal(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get Nominal GDP data from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdGdpReal",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={"country": "united_states,germany", "provider": "oecd"},
+            ),
+        ],
+    )
+    async def gdp_real(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get Real GDP data from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdGdpForecast",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={
+                    "country": "united_states,germany,france",
+                    "frequency": "annual",
+                    "units": "capita",
+                    "provider": "oecd",
+                }
+            ),
+        ],
+    )
+    async def gdp_forecast(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get Forecasted GDP data from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdHousePriceIndex",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={
+                    "country": "united_kingdom,germany",
+                    "frequency": "quarter",
+                    "provider": "oecd",
+                },
+            ),
+        ],
+    )
+    async def house_price_index(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get the House Price Index by country from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdSharePriceIndex",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={
+                    "country": "united_kingdom,germany",
+                    "frequency": "quarter",
+                    "provider": "oecd",
+                },
+            ),
+        ],
+    )
+    async def share_price_index(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get the Share Price Index by country from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="OecdUnemployment",
+        examples=[
+            APIEx(parameters={"provider": "oecd"}),
+            APIEx(
+                parameters={
+                    "country": "all",
+                    "frequency": "quarter",
+                    "provider": "oecd",
+                }
+            ),
+        ],
+    )
+    async def unemployment(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get global unemployment data from the OECD."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+
+_APPS_WIDGET_ID_FALLBACK_MAP = {
+    "economy_available_indicators_oecd_obb": "oecd_available_indicators_oecd_obb",
+    "economy_indicators_oecd_obb": "oecd_indicators_oecd_obb",
+    "economy_balance_of_payments_oecd_obb": "oecd_balance_of_payments_oecd_obb",
+    "economy_composite_leading_indicator_oecd_obb": (
+        "oecd_composite_leading_indicator_oecd_obb"
+    ),
+    "economy_cpi_oecd_obb": "oecd_cpi_oecd_obb",
+    "economy_interest_rates_oecd_obb": "oecd_country_interest_rates_oecd_obb",
+    "economy_gdp_nominal_oecd_obb": "oecd_gdp_nominal_oecd_obb",
+    "economy_gdp_real_oecd_obb": "oecd_gdp_real_oecd_obb",
+    "economy_gdp_forecast_oecd_obb": "oecd_gdp_forecast_oecd_obb",
+    "economy_house_price_index_oecd_obb": "oecd_house_price_index_oecd_obb",
+    "economy_share_price_index_oecd_obb": "oecd_share_price_index_oecd_obb",
+    "economy_unemployment_oecd_obb": "oecd_unemployment_oecd_obb",
+}
+
+
+def _rewrite_widget_ids(apps_json: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Swap ``economy_*_oecd_obb`` widget IDs for their ``oecd_*_oecd_obb`` fallbacks."""
+    for app in apps_json:
+        tabs = app.get("tabs", {}) or {}
+        for tab in tabs.values():
+            for widget in tab.get("layout", []) or []:
+                widget_id = widget.get("i")
+                if widget_id in _APPS_WIDGET_ID_FALLBACK_MAP:
+                    widget["i"] = _APPS_WIDGET_ID_FALLBACK_MAP[widget_id]
+    return apps_json
+
+
+async def get_oecd_apps_json() -> list[dict[str, Any]]:
+    """Get the OECD apps.json file.
 
     Returns
     -------
@@ -1979,14 +2272,30 @@ async def get_oecd_utils_apps_json() -> list[dict[str, Any]]:
 
     try:
         with apps_file.open("r", encoding="utf-8") as f:
-            return json.load(f)
+            apps_json = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError, OSError):
         return []
+
+    if not ECONOMY_INSTALLED:
+        apps_json = _rewrite_widget_ids(apps_json)
+
+    return apps_json
 
 
 router._api_router.add_api_route(
     path="/apps.json",
-    endpoint=get_oecd_utils_apps_json,
+    endpoint=get_oecd_apps_json,
     methods=["GET"],
     include_in_schema=False,
 )
+
+
+def _warm_oecd_metadata() -> None:
+    """Pre-load the OECD metadata singleton + table map at API startup."""
+    from openbb_oecd.utils.metadata import OecdMetadata
+
+    meta = OecdMetadata()
+    _ = meta.table_map()
+
+
+router._api_router.add_event_handler("startup", _warm_oecd_metadata)

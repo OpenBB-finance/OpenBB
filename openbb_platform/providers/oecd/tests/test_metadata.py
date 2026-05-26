@@ -440,6 +440,18 @@ class TestSingleton:
         instance2 = OecdMetadata()
         assert meta is instance2
 
+    def test_deepcopy_returns_self(self, meta):
+        """``deepcopy`` on the singleton must return the same instance, not walk it."""
+        from copy import deepcopy
+
+        assert deepcopy(meta) is meta
+
+    def test_copy_returns_self(self, meta):
+        """``copy`` on the singleton must return the same instance."""
+        from copy import copy
+
+        assert copy(meta) is meta
+
     def test_reset_creates_new_instance(self, monkeypatch):
         """After _reset, a new instance is created."""
         OecdMetadata._reset()
@@ -520,6 +532,32 @@ class TestApplyBlob:
         meta._apply_blob(blob)
         assert meta._taxonomy_loaded is True
         assert meta._taxonomy_tree[0]["id"] == "ECO"
+
+    def test_blob_descriptions_baked_flag(self, meta):
+        """``descriptions_baked: True`` sets the runtime flag."""
+        meta._descriptions_baked = False
+        meta._apply_blob({"descriptions_baked": True})
+        assert meta._descriptions_baked is True
+
+    def test_blob_smaller_taxonomy_does_not_regress(self, meta):
+        """A smaller incoming tree must not overwrite a larger already-loaded tree."""
+        meta._taxonomy_tree = [
+            {"id": "A", "name": "A", "path": "A", "children": []},
+            {"id": "B", "name": "B", "path": "B", "children": []},
+            {"id": "C", "name": "C", "path": "C", "children": []},
+        ]
+        meta._taxonomy_loaded = False
+        meta._apply_blob(
+            {
+                "taxonomy_tree": [
+                    {"id": "STUB", "name": "Stub", "path": "STUB", "children": []}
+                ],
+                "category_to_dfs": {"STUB": ["x"]},
+            }
+        )
+        assert [t["id"] for t in meta._taxonomy_tree] == ["A", "B", "C"]
+        assert meta._taxonomy_loaded is True
+        assert meta._category_to_dfs.get("STUB") is None
 
 
 class TestResolveDataflowId:

@@ -259,6 +259,11 @@ class PublicApiMixin(_MixinBase):
 
     def table_map(self, *, include_empty: bool = False) -> list[dict]:
         """Return a flat, navigable map of every OECD presentation table."""
+        cache_key = "_table_map_all" if include_empty else "_table_map_active"
+        cached = getattr(self, cache_key, None)
+        if cached is not None:
+            return cached
+
         self._ensure_dataflows()
         self._ensure_taxonomy()
         family_map = self._detect_country_families()
@@ -369,6 +374,7 @@ class PublicApiMixin(_MixinBase):
 
         rows.sort(key=lambda r: (r["path"], r["table"]))
 
+        setattr(self, cache_key, rows)
         return rows
 
     def find_tables(self, query: str) -> list[dict]:

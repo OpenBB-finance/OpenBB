@@ -18,7 +18,7 @@ generate-oecd-cache = "openbb_oecd.utils.generate_cache:main"
 oecd = "openbb_oecd:oecd_provider"
 
 [project.entry-points."openbb_core_extension"]
-oecd_utils = "openbb_oecd.oecd_router:router"
+oecd = "openbb_oecd.oecd_router:router"
 
 [project.urls]
 Homepage = "https://openbb.co"

@@ -1,4 +1,4 @@
-"""Test OECD Utils API endpoints."""
+"""Test OECD API endpoints."""
 
 import base64
 
@@ -20,12 +20,12 @@ def headers():
 
 @pytest.mark.parametrize("params", [{}])
 @pytest.mark.integration
-def test_oecd_utils_list_topic_choices(params, headers):
-    """Test oecd_utils_list_topic_choices endpoint."""
+def test_oecd_list_topic_choices(params, headers):
+    """Test oecd_list_topic_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_topic_choices?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_topic_choices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -43,12 +43,12 @@ def test_oecd_utils_list_topic_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_subtopic_choices(params, headers):
-    """Test oecd_utils_list_subtopic_choices endpoint."""
+def test_oecd_list_subtopic_choices(params, headers):
+    """Test oecd_list_subtopic_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_subtopic_choices?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_subtopic_choices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -68,12 +68,12 @@ def test_oecd_utils_list_subtopic_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_dataflows(params, headers):
-    """Test oecd_utils_list_dataflows endpoint."""
+def test_oecd_list_dataflows(params, headers):
+    """Test oecd_list_dataflows endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_dataflows?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_dataflows?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -81,12 +81,12 @@ def test_oecd_utils_list_dataflows(params, headers):
 
 @pytest.mark.parametrize("params", [{}])
 @pytest.mark.integration
-def test_oecd_utils_list_dataflow_choices(params, headers):
-    """Test oecd_utils_list_dataflow_choices endpoint."""
+def test_oecd_list_dataflow_choices(params, headers):
+    """Test oecd_list_dataflow_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_dataflow_choices?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_dataflow_choices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -104,12 +104,12 @@ def test_oecd_utils_list_dataflow_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_topics(params, headers):
-    """Test oecd_utils_list_topics endpoint."""
+def test_oecd_list_topics(params, headers):
+    """Test oecd_list_topics endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_topics?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_topics?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -129,12 +129,12 @@ def test_oecd_utils_list_topics(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_get_dataflow_parameters(params, headers):
-    """Test oecd_utils_get_dataflow_parameters endpoint."""
+def test_oecd_get_dataflow_parameters(params, headers):
+    """Test oecd_get_dataflow_parameters endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/get_dataflow_parameters?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/get_dataflow_parameters?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -170,12 +170,12 @@ def test_oecd_utils_get_dataflow_parameters(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_tables(params, headers):
-    """Test oecd_utils_list_tables endpoint."""
+def test_oecd_list_tables(params, headers):
+    """Test oecd_list_tables endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_tables?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_tables?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -193,12 +193,12 @@ def test_oecd_utils_list_tables(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_get_table_detail(params, headers):
-    """Test oecd_utils_get_table_detail endpoint."""
+def test_oecd_get_table_detail(params, headers):
+    """Test oecd_get_table_detail endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/get_table_detail?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/get_table_detail?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -216,12 +216,12 @@ def test_oecd_utils_get_table_detail(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_list_table_choices(params, headers):
-    """Test oecd_utils_list_table_choices endpoint."""
+def test_oecd_list_table_choices(params, headers):
+    """Test oecd_list_table_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/list_table_choices?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/list_table_choices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -254,12 +254,12 @@ def test_oecd_utils_list_table_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_indicator_choices(params, headers):
-    """Test oecd_utils_indicator_choices endpoint."""
+def test_oecd_indicator_choices(params, headers):
+    """Test oecd_indicator_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/indicator_choices?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/indicator_choices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -278,12 +278,12 @@ def test_oecd_utils_indicator_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_presentation_table_choices(params, headers):
-    """Test oecd_utils_presentation_table_choices endpoint."""
+def test_oecd_presentation_table_choices(params, headers):
+    """Test oecd_presentation_table_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/presentation_table_choices?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/presentation_table_choices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -301,12 +301,14 @@ def test_oecd_utils_presentation_table_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_presentation_table_dim_choices(params, headers):
-    """Test oecd_utils_presentation_table_dim_choices endpoint."""
+def test_oecd_presentation_table_dim_choices(params, headers):
+    """Test oecd_presentation_table_dim_choices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/presentation_table_dim_choices?{query_str}"
+    url = (
+        f"http://localhost:8000/api/v1/oecd/presentation_table_dim_choices?{query_str}"
+    )
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -333,12 +335,12 @@ def test_oecd_utils_presentation_table_dim_choices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_oecd_utils_presentation_table(params, headers):
-    """Test oecd_utils_presentation_table endpoint."""
+def test_oecd_presentation_table(params, headers):
+    """Test oecd_presentation_table endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/oecd_utils/presentation_table?{query_str}"
+    url = f"http://localhost:8000/api/v1/oecd/presentation_table?{query_str}"
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
