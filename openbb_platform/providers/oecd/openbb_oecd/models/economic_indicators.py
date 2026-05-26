@@ -493,7 +493,7 @@ class OecdEconomicIndicatorsFetcher(
                 end_date=end_date,
                 limit=query.limit,
                 _skip_validation=False,
-                **params,
+                dimension_filters=params,
             )
         except Exception as exc:
             raise OpenBBError(f"OECD data fetch failed: {exc}") from exc

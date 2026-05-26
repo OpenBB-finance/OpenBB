@@ -237,9 +237,10 @@ class TestExtractDataIndicatorMode:
         result = OecdEconomicIndicatorsFetcher.extract_data(
             query=query, credentials=None
         )
-        assert captured["MEASURE"] == "CPI+PPI"
-        assert captured.get("REF_AREA") == "USA"
-        assert captured.get("FREQ") == "A"
+        dim_filters = captured.get("dimension_filters", {})
+        assert dim_filters["MEASURE"] == "CPI+PPI"
+        assert dim_filters.get("REF_AREA") == "USA"
+        assert dim_filters.get("FREQ") == "A"
         assert result["mode"] == "indicator"
 
     def test_invalid_dimension_keys_raise(self, seeded_meta, monkeypatch):
@@ -330,7 +331,7 @@ class TestExtractDataIndicatorMode:
             transform="index",
         )
         OecdEconomicIndicatorsFetcher.extract_data(query=query, credentials=None)
-        assert captured.get("TRANSFORMATION") == "IX"
+        assert captured.get("dimension_filters", {}).get("TRANSFORMATION") == "IX"
 
     def test_content_dims_fallback_on_metadata_error(self, seeded_meta, monkeypatch):
         """If get_dimension_order raises, content_dims defaults to empty list."""
