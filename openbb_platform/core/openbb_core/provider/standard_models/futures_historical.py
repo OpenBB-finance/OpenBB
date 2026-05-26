@@ -45,9 +45,3 @@ class FuturesHistoricalData(Data):
     low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):
-        """Return formatted datetime."""
-        return parser.isoparse(str(v))
