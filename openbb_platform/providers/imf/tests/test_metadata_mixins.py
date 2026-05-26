@@ -107,6 +107,26 @@ class TestCoreSingleton:
 
         ImfMetadata._reset()
 
+    def test_deepcopy_returns_self(self, monkeypatch):
+        """``deepcopy`` on the singleton must return the same instance."""
+        from copy import deepcopy
+
+        ImfMetadata._reset()
+        monkeypatch.setattr(ImfMetadata, "_load_from_cache", lambda self: True)
+        m = ImfMetadata()
+        assert deepcopy(m) is m
+        ImfMetadata._reset()
+
+    def test_copy_returns_self(self, monkeypatch):
+        """``copy`` on the singleton must return the same instance."""
+        from copy import copy
+
+        ImfMetadata._reset()
+        monkeypatch.setattr(ImfMetadata, "_load_from_cache", lambda self: True)
+        m = ImfMetadata()
+        assert copy(m) is m
+        ImfMetadata._reset()
+
     def test_double_check_inside_lock(self, monkeypatch):
         """Inner ``self._initialized`` check inside the lock short-circuits init."""
         ImfMetadata._reset()

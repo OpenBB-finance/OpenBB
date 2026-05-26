@@ -70,3 +70,11 @@ class ImfMetadata(
         """Drop the singleton."""
         with cls._lock:
             cls._instance = None
+
+    def __deepcopy__(self, memo: dict) -> ImfMetadata:
+        """Singletons are not copyable — return self so the deepcopy walker stops."""
+        return self
+
+    def __copy__(self) -> ImfMetadata:
+        """Singletons are not copyable — return self so the copy module stops."""
+        return self
