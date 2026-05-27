@@ -136,7 +136,10 @@ class CongressCommitteeInfoFetcher(
             query.subcommittee if query.subcommittee else query.committee
         ).lower()
         chamber = query.chamber.lower()
-        detail_url = f"https://api.congress.gov/v3/committee/{chamber}/{system_code}?format=json&api_key={api_key}"
+        detail_url = (
+            f"https://api.congress.gov/v3/committee/{chamber}/{system_code}"
+            f"?format=json&api_key={api_key}"
+        )
 
         detail_resp, members = await asyncio.gather(
             amake_request(detail_url),
@@ -145,8 +148,8 @@ class CongressCommitteeInfoFetcher(
         )
         detail = {} if isinstance(detail_resp, Exception) else detail_resp.get("committee", {})  # type: ignore
 
-        if isinstance(members, Exception):  # type: ignore
-            members = []  # type: ignore
+        if isinstance(members, Exception):
+            members = []
 
         return {
             "chamber": chamber,
