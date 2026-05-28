@@ -7,6 +7,7 @@
 import argparse
 import contextlib
 import difflib
+import ipaddress
 import os
 import re
 import sys
@@ -17,6 +18,7 @@ from functools import partial, update_wrapper
 from pathlib import Path
 from types import MethodType
 from typing import Any
+from urllib.parse import urlparse
 
 import pandas as pd
 import requests
@@ -363,6 +365,14 @@ class CLIController(BaseController):
                 script_name = url.split("/")[-1]
                 file_name = f"{username}_{script_name}.openbb"
                 final_url = f"{url}?raw=true"
+                _hostname = urlparse(final_url).hostname or ""
+                try:
+                    _ip = ipaddress.ip_address(_hostname)
+                    if _ip.is_private or _ip.is_loopback or _ip.is_link_local:
+                        session.console.print("[red]URL points to a private network resource.[/red]")
+                        return
+                except ValueError:
+                    pass  # hostname is a domain name, not a literal IP address
                 response = requests.get(final_url, timeout=10)
                 if response.status_code != 200:
                     session.console.print(
