@@ -48,8 +48,8 @@
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@tanstack/router-vite-plugin": "^1.131.27",
-    "@tauri-apps/api": "^2.9.6",
-    "@tauri-apps/cli": "^2.9.6",
+    "@tauri-apps/api": "^2.11.0",
+    "@tauri-apps/cli": "^2.11.0",
     "@tauri-apps/plugin-shell": "^2.3.1",
     "@tauri-apps/plugin-window": "^2.0.0-alpha.1",
     "@testing-library/jest-dom": "^6.7.0",

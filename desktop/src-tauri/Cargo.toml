@@ -20,8 +20,8 @@ serde_yaml = "^0.9"
 chrono = "^0.4"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
-tauri = { version = "2.10.3", features = ["tray-icon", "devtools"] }
-tauri-cli = "^2.10.1"
+tauri = { version = "2.11.2", features = ["tray-icon", "devtools"] }
+tauri-cli = "^2.11.2"
 tauri-plugin-log = "2.8.0"
 regex = "^1.12.3"
 reqwest = { version = "^0.13.2", features = ["json"] }
