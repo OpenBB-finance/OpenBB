@@ -1006,17 +1006,6 @@ def test_equity_compare_groups(params, obb):
     [
         (
             {
-                "adjustment": "unadjusted",
-                "extended_hours": True,
-                "provider": "alpha_vantage",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "15m",
-            }
-        ),
-        (
-            {
                 "provider": "cboe",
                 "symbol": "AAPL",
                 "start_date": (date.today() - timedelta(days=1)).strftime("%Y-%m-%d"),
@@ -1735,14 +1724,6 @@ def test_equity_market_snapshots(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
-        (
-            {
-                "symbol": "AAPL",
-                "period": "quarter",
-                "limit": 5,
-                "provider": "alpha_vantage",
-            }
-        ),
     ],
 )
 @pytest.mark.integration

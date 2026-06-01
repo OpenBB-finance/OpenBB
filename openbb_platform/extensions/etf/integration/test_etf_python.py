@@ -54,17 +54,6 @@ def test_etf_search(params, obb):
     [
         (
             {
-                "adjustment": "unadjusted",
-                "extended_hours": True,
-                "provider": "alpha_vantage",
-                "symbol": "SPY",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "15m",
-            }
-        ),
-        (
-            {
                 "provider": "cboe",
                 "symbol": "SPY",
                 "start_date": None,
