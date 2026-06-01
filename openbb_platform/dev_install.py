@@ -54,7 +54,6 @@ openbb-regulators = { path = "./extensions/regulators", develop = true }
 openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
 
 # Community dependencies
-openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
