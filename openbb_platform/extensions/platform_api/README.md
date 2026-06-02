@@ -16,7 +16,7 @@ Python ≥ 3.10. Already included when you install [`openbb`](https://docs.openb
 
 To start the OpenBB Platform API, open a terminal, activate the environment where it is installed, and then enter:
 
-```
+```sh
 openbb-api
 
 # Launch your own FastAPI app
@@ -49,7 +49,8 @@ Useful for shipping a thin frontend container that talks to a managed backend in
 
 ### `[spec]` config — credentials and base-URL override
 
-A `[spec]` table in `openbb.toml` carries the path plus the bits the file alone can't provide — `base_url` overrides for staging/prod, and `headers` injected on every upstream request. Header values support the same `$VAR` substitution as `[env]`, so credentials live in environment variables (or `[env]` entries that read from them) and the TOML just maps them onto upstream header names:
+A `[spec]` table in `openbb.toml` carries the path plus the bits the file alone can't provide — `base_url` overrides for staging/prod, and `headers` injected on every upstream request.
+Header values support the same `$VAR` substitution as `[env]`, so credentials live in environment variables (or `[env]` entries that read from them) and the TOML just maps them onto upstream header names:
 
 ```toml
 [env]
@@ -109,38 +110,41 @@ The behavior of the script can be configured with the use of arguments and keywo
 
 Launcher specific arguments:
 
-    --app                           Absolute path to the Python file with the target FastAPI instance. Default is the installed OpenBB Platform API.
-    --name                          Name of the FastAPI instance in the app file. Default is 'app'.
-    --factory                       Flag to indicate if the app name is a factory function. Default is 'false'.
-    --editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
-    --build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
-    --no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
-    --exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
-    --no-filter                     Do not filter out widgets in widget_settings.json file.
-    --widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.
-    --apps-json                     Absolute/relative path to use as the apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
-    --agents-json                   Absolute/relative path to use as the agents.json file. Including this will add the /agents endpoint to the API.
-
+```text
+--app                           Absolute path to the Python file with the target FastAPI instance. Default is the installed OpenBB Platform API.
+--name                          Name of the FastAPI instance in the app file. Default is 'app'.
+--factory                       Flag to indicate if the app name is a factory function. Default is 'false'.
+--editable                      Flag to make widgets.json an editable file that can be modified during runtime. Default is 'false'.
+--build                         If the file already exists, changes prompt action to overwrite/append/ignore. Only valid when --editable true.
+--no-build                      Do not build the widgets.json file. Use this flag to load an existing widgets.json file without checking for updates.
+--exclude                       JSON encoded list of API paths to exclude from widgets.json. Disable entire routes with '*' - e.g. '["/api/v1/*"]'.
+--no-filter                     Do not filter out widgets in widget_settings.json file.
+--widgets-json                  Absolute/relative path to use as the widgets.json file. Default is ~/envs/{env}/assets/widgets.json, when --editable is 'true'.
+--apps-json                     Absolute/relative path to use as the apps.json file. Default is ~/OpenBBUserData/workspace_apps.json.
+--agents-json                   Absolute/relative path to use as the agents.json file. Including this will add the /agents endpoint to the API.
+```
 
 All other arguments will be passed to uvicorn. Here are the most common ones:
 
-    --host TEXT                     Host IP address or hostname.
-                                      [default: 127.0.0.1]
-    --port INTEGER                  Port number.
-                                      [default: 6900]
-    --ssl_keyfile TEXT              SSL key file.
-    --ssl_certfile TEXT             SSL certificate file.
-    --ssl_keyfile_password TEXT     SSL keyfile password.
-    --ssl_version INTEGER           SSL version to use.
-                                      (see stdlib ssl module's)
-                                      [default: 17]
-    --ssl_cert_reqs INTEGER         Whether client certificate is required.
-                                      (see stdlib ssl module's)
-                                      [default: 0]
-    --ssl_ca_certs TEXT             CA certificates file.
-    --ssl_ciphers TEXT              Ciphers to use.
-                                      (see stdlib ssl module's)
-                                      [default: TLSv1]
+```text
+--host TEXT                     Host IP address or hostname.
+                                  [default: 127.0.0.1]
+--port INTEGER                  Port number.
+                                  [default: 6900]
+--ssl_keyfile TEXT              SSL key file.
+--ssl_certfile TEXT             SSL certificate file.
+--ssl_keyfile_password TEXT     SSL keyfile password.
+--ssl_version INTEGER           SSL version to use.
+                                  (see stdlib ssl module's)
+                                  [default: 17]
+--ssl_cert_reqs INTEGER         Whether client certificate is required.
+                                  (see stdlib ssl module's)
+                                  [default: 0]
+--ssl_ca_certs TEXT             CA certificates file.
+--ssl_ciphers TEXT              Ciphers to use.
+                                  (see stdlib ssl module's)
+                                  [default: TLSv1]
+```
 
 Run `uvicorn --help` to get the full list of arguments.
 
@@ -170,7 +174,6 @@ A quick solution is to visit the server's URL, show the details of the warning, 
 Contact the system administrator if you are using a work device and require additional permissions to complete the configuration.
 
 ![This Connection Is Not Private](https://in.norton.com/content/dam/blogs/images/norton/am/this_connection_not_is_private.png)
-
 
 ## Example Application
 
@@ -229,13 +232,11 @@ async def data() -> list[MyRow]:
     return [MyRow(when=date.today(), pct=0.0125)]
 ```
 
-
 ### PDF Widget
 
 To create a PDF widget, import the custom response model below and define it as a return type.
 
 The model handles conversion of the document, from a bytes object, to a base64 encoded string.
-
 
 ```python
 from openbb_platform_api.response_models import PdfResponseModel
@@ -293,7 +294,6 @@ async def open_pdf(
 
 To define a chart widget, update the widget "type" and return the content from the `Figure.to_plotly_json()` method.
 
-
 ```python
 @app.get(
     "/hello_chart",
@@ -327,7 +327,6 @@ The entry in `widgets.json` will be automatically created if the conditions belo
   - `{"form_endpoint": /path_to/form_post_endpoint}`
 - POST method takes 1 positional argument, a sub-class of Pydantic BaseModel.
   - Create a model, like annotated table fields, defining all inputs to the form.
-
 
 #### Example
 
@@ -491,7 +490,6 @@ async def create_omni_widget(item: TestOmniWidgetQueryModel):
 
 ![Omni Widget](https://github.com/user-attachments/assets/6a5aa886-9701-4448-b397-ed7bab99cac7)
 
-
 ## Widget Config
 
 Any value from the [`widgets.json`](https://docs.openbb.co/terminal/custom-backend/widgets-json-reference) structure can be passed into the `@app` decorator by including an `openapi_extra` dictionary with the key, `"widget_config"`.
@@ -552,7 +550,6 @@ If you would like to construct this file manually, create the file and define th
 ```sh
 openbb-api --widgets-json /Users/some_user/path/to/widgets.json
 ```
-
 
 ### Location of `workspace_apps.json`
 
