@@ -18,9 +18,6 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-# pylint: disable=redefined-outer-name
-
-
 @pytest.mark.parametrize(
     "params",
     [
