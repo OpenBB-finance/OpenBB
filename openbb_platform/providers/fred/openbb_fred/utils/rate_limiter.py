@@ -65,7 +65,7 @@ _throttle_lock = threading.Lock()
 _last_request_at: float = 0.0
 
 _cache_lock = threading.Lock()
-_cache: "OrderedDict[str, tuple[float, Any]]" = OrderedDict()
+_cache: OrderedDict[str, tuple[float, Any]] = OrderedDict()
 
 _inflight_lock = threading.Lock()
 _inflight: dict[tuple[int, str], asyncio.Future] = {}
@@ -127,7 +127,7 @@ def cache_clear() -> None:
 
 async def acquire() -> None:
     """Enforce a minimum gap between successive FRED API requests."""
-    global _last_request_at  # noqa: PLW0603
+    global _last_request_at  # noqa: PLW0603  # pylint: disable=global-statement
     while True:
         with _throttle_lock:
             now = time.monotonic()
@@ -206,9 +206,7 @@ def _is_cacheable(value: Any) -> bool:
     """Don't cache empty / falsy payloads — they're usually transient errors."""
     if value is None:
         return False
-    if isinstance(value, (list, dict, str, bytes)) and len(value) == 0:
-        return False
-    return True
+    return not (isinstance(value, (list, dict, str, bytes)) and len(value) == 0)
 
 
 async def fred_get(
