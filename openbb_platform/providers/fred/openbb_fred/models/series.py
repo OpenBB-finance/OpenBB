@@ -74,7 +74,9 @@ class FredSeriesQueryParams(SeriesQueryParams):
         eop = End of Period
         """,
     )
-    transform: Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None = Field(
+    transform: (
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] | None
+    ) = Field(
         default=None,
         description="""Transformation type
     None = No transformation
@@ -131,14 +133,22 @@ class FredSeriesFetcher(
 
         async def fetch_one(series_id: str) -> dict:
             obs_url = f"{base_url}?series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
-            meta_url = f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}"
+            meta_url = (
+                f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}"
+            )
 
             observations_response = await fred_get(obs_url, timeout=5, **kwargs)
             metadata_response = await fred_get(meta_url, timeout=5, **kwargs)
 
-            _metadata = (metadata_response.get("seriess", [{}])[0] if isinstance(metadata_response, dict) else {}) or {}
+            _metadata = (
+                metadata_response.get("seriess", [{}])[0]
+                if isinstance(metadata_response, dict)
+                else {}
+            ) or {}
             observations = (
-                observations_response.get("observations") if isinstance(observations_response, dict) else []
+                observations_response.get("observations")
+                if isinstance(observations_response, dict)
+                else []
             ) or []
 
             try:
@@ -147,7 +157,12 @@ class FredSeriesFetcher(
                     d.pop("realtime_end")
 
                 data = (
-                    DataFrame(observations).replace(".", None).set_index("date")["value"].astype(float).dropna().to_dict()
+                    DataFrame(observations)
+                    .replace(".", None)
+                    .set_index("date")["value"]
+                    .astype(float)
+                    .dropna()
+                    .to_dict()
                 )
             except (KeyError, TypeError):
                 return {}
@@ -165,7 +180,9 @@ class FredSeriesFetcher(
 
         try:
             results: list[dict] = []
-            for result in await asyncio.gather(*[fetch_one(sid) for sid in series_ids], return_exceptions=True):
+            for result in await asyncio.gather(
+                *[fetch_one(sid) for sid in series_ids], return_exceptions=True
+            ):
                 if isinstance(result, Exception):
                     raise result
                 if result:
