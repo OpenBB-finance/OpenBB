@@ -1,21 +1,5 @@
 name: 🧪 test openbb-oecd
 
-# PR-test for the OECD provider. Triggers when a PR touches any file
-# under ``openbb_platform/providers/oecd/`` or this workflow itself.
-#
-# Build-once, test-many: a single ``build`` job materializes the OECD
-# SDMX cache (or restores it from the shared cache pool) and produces
-# the wheel; the ``test`` matrix downloads that exact wheel and runs
-# pytest under every supported (OS, Python) combination.
-#
-# The OECD cache asset is cached across runs via ``actions/cache``,
-# keyed solely on the SHA of ``generate_cache.py``. OECD metadata is
-# stable over weeks/months and the cassette-driven test suite never
-# hits the live API, so we accept arbitrary cache age — the only thing
-# that should invalidate is a logic change to the generator itself.
-# A manual override is exposed as a ``workflow_dispatch`` input for
-# emergency cache busting without having to touch the generator.
-
 on:
   pull_request:
     branches: [develop, main, v5, feature/v5-platform-api]
@@ -55,15 +39,8 @@ jobs:
       - run: python -m pip install --upgrade pip uv
 
       - name: Restore OECD SDMX cache
-        # The cache is keyed solely by the generator's content hash.
-        # Same hash → same cache, no time-based expiry. ``restore-keys``
-        # is a defensive fallback: if the exact key misses (e.g. a tiny
-        # comment-only change to generate_cache.py invalidated the
-        # hash), pull the most recent prior cache so the hook has a
-        # baseline file on disk and the worst case is the same as the
-        # current force-rebuild path.
         id: oecd-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: openbb_platform/providers/oecd/openbb_oecd/assets/oecd_cache.json.xz
           key: oecd-sdmx-${{ hashFiles('openbb_platform/providers/oecd/openbb_oecd/utils/generate_cache.py') }}
@@ -71,15 +48,11 @@ jobs:
             oecd-sdmx-
 
       - name: Build sdist + wheel
-        # Honor the cache hit unless the manual override is set. On
-        # exact-key cache-hit, the build hook sees the file already on
-        # disk and skips the 4-minute OECD fetch.
         env:
-          OPENBB_OECD_FORCE_CACHE_REBUILD: >-
-            ${{ (inputs.force_cache_rebuild == true || steps.oecd-cache.outputs.cache-hit != 'true') && '1' || '0' }}
+          OPENBB_OECD_FORCE_CACHE_REBUILD: ${{ inputs.force_cache_rebuild == true && '1' || '0' }}
         run: uv build --no-sources
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: openbb-oecd-dist
           path: openbb_platform/providers/oecd/dist/
@@ -88,11 +61,6 @@ jobs:
 
   lint:
     name: Lint (ruff + ty)
-    # ``needs: build`` is load-bearing: ``build`` is the SOLE owner of
-    # the OECD SDMX cache build. By the time this job runs, ``build``
-    # has uploaded the wheel containing a fresh cache asset, and this
-    # job consumes it — guaranteeing the build hook's regenerate path
-    # NEVER fires in this job. There is no parallel cache-fetch path.
     needs: build
     runs-on: ubuntu-latest
     defaults:
@@ -108,17 +76,12 @@ jobs:
 
       - run: python -m pip install --upgrade pip uv
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: openbb-oecd-dist
           path: openbb_platform/providers/oecd/dist
 
       - name: Seed the cache asset from the built wheel
-        # Extract the bundled cache out of the wheel into the source
-        # tree at the path the build hook checks. With the file already
-        # present, the hook's idempotent ``if _CACHE_PATH.exists() and
-        # not force: reuse`` branch fires on the editable install
-        # below — zero chance of an OECD fetch.
         run: |
           WHEEL=$(ls dist/openbb_oecd-*.whl | head -1)
           mkdir -p openbb_oecd/assets
@@ -133,13 +96,6 @@ jobs:
           ls -la openbb_oecd/assets/oecd_cache.json.xz
 
       - name: Install openbb-oecd in editable mode (+ dev group)
-        # ``-e .`` runs the Hatchling build hook, which reuses the
-        # cache asset already on disk (seeded above). ``[tool.uv.sources]``
-        # pins openbb-core / openbb-devtools to the sibling source trees
-        # so ty sees the exact types about to ship together — not
-        # whatever's on PyPI. ``--group dev`` pulls in ``openbb-devtools``
-        # (ruff, ty, pytest-asyncio, etc.) so lint tooling versions stay
-        # pinned in one place rather than hardcoded across workflows.
         run: |
           uv pip install --system -e .
           uv pip install --system --group dev
@@ -151,11 +107,6 @@ jobs:
         run: ruff format --check openbb_oecd tests hatch_build.py
 
       - name: ty check
-        # ``ty`` discovers the system Python's site-packages — the
-        # editable install above means all transitive types are
-        # importable and ty can report real semantic errors, not just
-        # "object of type X may not be iterable" warnings against
-        # unresolved bare ``Sized`` / ``Unknown``.
         run: ty check openbb_oecd
 
   test:
@@ -188,7 +139,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
           allow-prereleases: true
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: openbb-oecd-dist
           path: openbb_platform/providers/oecd/dist
@@ -196,10 +147,6 @@ jobs:
       - run: python -m pip install --upgrade pip uv
 
       - name: Seed the cache asset from the built wheel
-        # Extract the bundled cache out of the wheel into the source
-        # tree at the path the build hook checks. With the file
-        # already present, the editable install below short-circuits
-        # the hook's regenerate branch — zero chance of an OECD fetch.
         run: |
           WHEEL=$(ls dist/openbb_oecd-*.whl | head -1)
           mkdir -p openbb_oecd/assets
@@ -213,13 +160,6 @@ jobs:
           " "$WHEEL" openbb_oecd/assets/oecd_cache.json.xz
 
       - name: Install openbb-oecd from source (+ dev group)
-        # Source install via ``-e .`` reads ``[tool.uv.sources]`` and
-        # resolves ``openbb-core`` from the sibling tree at ``../../core``,
-        # which is the only place ``openbb-core[pandas]>=2.0.0`` exists
-        # until that version ships to PyPI. ``--group dev`` installs
-        # ``openbb-devtools``, which bundles pytest, pytest-asyncio,
-        # pytest-cov, pytest-recorder, etc. — the single pinned source
-        # of test-tool versions for the whole platform.
         run: |
           uv pip install --system -e .
           uv pip install --system --group dev

@@ -20,6 +20,8 @@ jobs:
   code-linting:
     name: General Code Linting
     runs-on: ubuntu-latest
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}/.uv-cache
     permissions:
       contents: read
     steps:
@@ -49,28 +51,85 @@ jobs:
 
         env:
           HEAD_REF: ${{ github.head_ref }}
-      - uses: actions/cache@v5
+      - name: Cache uv (built wheels)
+        uses: actions/cache@v4
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
+          path: ${{ github.workspace }}/.uv-cache
+          key: uv-${{ runner.os }}-py3.10-lint-${{ hashFiles('openbb_platform/**/pyproject.toml', 'cli/pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-py3.10-lint-
 
-      - run: |
-          pip install ./openbb_platform/extensions/devtools
-      - name: Install openbb-core (so ty can resolve runtime deps)
-        run: pip install -e "./openbb_platform/core[pandas]" numpy
-      - name: Install openbb-platform-api (so ty can resolve deepdiff/aiohttp)
-        run: pip install -e ./openbb_platform/extensions/platform_api
-      - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
-      - run: |
-          # Run linters for openbb_platform
-          if [ -n "${{ env.diff_files }}" ]; then
-            ruff format --check ${{ env.diff_files }}
-            ruff check ${{ env.diff_files }}
-            ty check ${{ env.diff_files }}
-          else
-            echo "No Python files changed in openbb_platform"
-          fi
+      - name: Install tooling (ruff + ty + codespell)
+        run: |
+          python -m pip install --upgrade pip uv
+          uv pip install --system -e ./openbb_platform/extensions/devtools
+
+      - name: Install changed packages (so ty resolves their declared deps)
+        if: env.diff_files != ''
+        run: |
+          # Install each touched package so ty has the package's declared
+          # third-party deps (pandas-ta, scipy, statsmodels, etc.) available
+          # for type resolution. Optional cross-package peers (e.g.
+          # openbb_charting) that aren't installed surface as `warn`-level
+          # diagnostics under the package ty.toml rather than build errors.
+          touched=$(echo "${{ env.diff_files }}" | tr ' ' '\n' \
+            | grep -oE '^(openbb_platform/(extensions|providers|obbject_extensions)|cli)/[^/]+' \
+            | sort -u)
+          for pkg in $touched; do
+            if [ -f "$pkg/pyproject.toml" ]; then
+              echo "Installing $pkg"
+              uv pip install --system -e "./$pkg" || echo "skip $pkg (install failed)"
+            fi
+          done
+
+      - name: Install openbb-core editable (resident, single identity for ty)
+        run: |
+          # Install core last and editable so the in-tree source is the resident
+          # `openbb_core`. A published wheel pulled in as a transitive dep above
+          # would otherwise shadow it and produce spurious type-identity errors.
+          uv pip install --system -e "./openbb_platform/core[pandas]" numpy
+
+      - name: codespell
+        run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
+
+      - name: ruff + ty (per package, from each package root)
+        if: env.diff_files != ''
+        run: |
+          # ty must run from each package's own root. Invoked from the repo root,
+          # an in-tree file like openbb_platform/core/openbb_core/app/router.py
+          # resolves under a different module identity than the installed
+          # `openbb_core`, yielding false "incompatible type" errors. Grouping
+          # changed files by their nearest pyproject.toml ancestor makes each
+          # package its own ty project root, so first-party imports resolve to a
+          # single identity (matching how the per-package test-unit jobs run ty).
+          status=0
+          declare -A pkg_files
+          for f in ${{ env.diff_files }}; do
+            dir=$(dirname "$f")
+            while [ "$dir" != "." ] && [ ! -f "$dir/pyproject.toml" ]; do
+              dir=$(dirname "$dir")
+            done
+            if [ -f "$dir/pyproject.toml" ]; then
+              pkg_files["$dir"]+="${f#"$dir"/} "
+            else
+              echo "::warning::no pyproject.toml ancestor for $f; checking from repo root"
+              pkg_files["."]+="$f "
+            fi
+          done
+          for pkg in "${!pkg_files[@]}"; do
+            files=${pkg_files[$pkg]}
+            echo "::group::Linting $pkg"
+            (
+              cd "$pkg"
+              rc=0
+              ruff format --check $files || rc=1
+              ruff check $files || rc=1
+              ty check $files || rc=1
+              exit $rc
+            ) || status=1
+            echo "::endgroup::"
+          done
+          exit $status
 
   markdown-link-check:
     name: Markdown Linting
@@ -83,7 +142,8 @@ jobs:
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
         with:
-          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
+          ignore: "./openbb_platform/extensions/mcp_server/openbb_mcp_server/skills/**/*.md ./openbb_platform/providers/sec/openbb_sec/utils/STATEMENT_SCHEMA_README.md"
+          args: "./*.md ./changelogs/*.md ./openbb_platform/**/*.md"
 
   json-yaml-validate:
     name: JSON Check

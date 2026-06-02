@@ -29,14 +29,6 @@ router = Router(prefix="", description="Financial market news data.")
             },
         ),
         APIEx(
-            description="Display the headlines of the news.",
-            parameters={"display": "headline", "provider": "benzinga"},
-        ),
-        APIEx(
-            description="Get news by topics.",
-            parameters={"topics": "finance", "provider": "benzinga"},
-        ),
-        APIEx(
             description="Get news by source using 'tingo' as provider.",
             parameters={"provider": "tiingo", "source": "bloomberg"},
         ),
@@ -59,8 +51,6 @@ async def world(
 @router.command(
     model="CompanyNews",
     examples=[
-        APIEx(parameters={"provider": "benzinga"}),
-        APIEx(parameters={"limit": 100, "provider": "benzinga"}),
         APIEx(
             description="Get news on the specified dates.",
             parameters={
@@ -71,24 +61,8 @@ async def world(
             },
         ),
         APIEx(
-            description="Display the headlines of the news.",
-            parameters={
-                "symbol": "AAPL",
-                "display": "headline",
-                "provider": "benzinga",
-            },
-        ),
-        APIEx(
             description="Get news for multiple symbols.",
             parameters={"symbol": "aapl,tsla", "provider": "fmp"},
-        ),
-        APIEx(
-            description="Get news company's ISIN.",
-            parameters={
-                "symbol": "NVDA",
-                "isin": "US0378331005",
-                "provider": "benzinga",
-            },
         ),
     ],
 )

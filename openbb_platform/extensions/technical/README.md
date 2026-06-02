@@ -2,8 +2,6 @@
 
 This extension provides Technical Analysis  tools for the OpenBB Platform.
 
-
-
 ## Installation
 
 To install the extension, run the following command in this folder:
@@ -13,8 +11,6 @@ pip install openbb-technical
 ```
 
 Documentation available [here](https://docs.openbb.co/odp/python/extensions/data-processing/technical)
-
-
 
 | Endpoint | Category | Description |
 |---|---|---|

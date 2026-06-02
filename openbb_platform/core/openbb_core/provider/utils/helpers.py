@@ -611,7 +611,7 @@ def filter_by_dates(
     if start_date is None and end_date is None:
         return data
 
-    def _filter(d: Data) -> bool:
+    def _filter(d: D) -> bool:
         _date = getattr(d, "date", None)
         dt = _date.date() if _date and isinstance(_date, datetime) else _date
         if dt:
@@ -624,7 +624,7 @@ def filter_by_dates(
             return True  # pragma: no cover
         return False
 
-    return list(filter(_filter, data))  # ty: ignore[invalid-return-type]
+    return list(filter(_filter, data))
 
 
 def safe_fromtimestamp(timestamp: float | int, tz: timezone | None = None) -> datetime:

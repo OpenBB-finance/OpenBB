@@ -46,7 +46,7 @@ obb.quantitative.rolling.stdev(data=prices, target="close", window=21)
 obb.quantitative.performance.sharpe_ratio(data=prices, target="close")
 ```
 
-### Factor analysis
+### Working with factors
 
 The factor endpoints take two payloads — a target series and a factor matrix —
 plus an optional risk-free column name. Pair with any factor source; for

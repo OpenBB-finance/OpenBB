@@ -37,7 +37,7 @@ def get_route_callable(app: "BaseApp", route: str) -> Callable:
     return return_callable  # type: ignore
 
 
-def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, FieldInfo]]:  # type: ignore
+def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, FieldInfo]]:
     """Convert a command signature to pydantic fields."""
     return_callable = get_route_callable(app, route)
     sig = signature(return_callable)
@@ -83,7 +83,7 @@ def create_combined_model(
     filter_by_provider: str | None = None,
 ) -> type[BaseModel]:
     """Create a combined pydantic model."""
-    combined_fields = {}
+    combined_fields: dict[str, Any] = {}
     for fields in field_sets:
         for name, (type_annotation, field) in fields.items():
             if (

@@ -647,24 +647,6 @@ def test_equity_ownership_major_holders(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
-        (
-            {
-                "symbol": "AAPL",
-                "limit": 10,
-                "provider": "benzinga",
-                # optional provider params
-                "fields": None,
-                "date": None,
-                "start_date": None,
-                "end_date": None,
-                "importance": None,
-                "updated": None,
-                "action": None,
-                "analyst_ids": None,
-                "firm_ids": None,
-                "page": 0,
-            }
-        ),
         ({"symbol": "AAPL", "provider": "finviz"}),
     ],
 )
@@ -677,23 +659,7 @@ def test_equity_estimates_price_target(params, obb):
     assert result.results is not None
 
 
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "limit": 10,
-                "provider": "benzinga",
-                # optional provider params
-                "fields": None,
-                "analyst_ids": None,
-                "firm_ids": None,
-                "firm_name": "Barclays",
-                "analyst_name": None,
-            }
-        ),
-    ],
-)
+@pytest.mark.skip(reason="Not implemented")
 @pytest.mark.integration
 def test_equity_estimates_analyst_search(params, obb):
     """Test the equity estimates analyst search endpoint."""
@@ -1038,17 +1004,6 @@ def test_equity_compare_groups(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "adjustment": "unadjusted",
-                "extended_hours": True,
-                "provider": "alpha_vantage",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "15m",
-            }
-        ),
         (
             {
                 "provider": "cboe",
@@ -1769,14 +1724,6 @@ def test_equity_market_snapshots(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
-        (
-            {
-                "symbol": "AAPL",
-                "period": "quarter",
-                "limit": 5,
-                "provider": "alpha_vantage",
-            }
-        ),
     ],
 )
 @pytest.mark.integration

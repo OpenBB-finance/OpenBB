@@ -1,7 +1,5 @@
 """Fama-French Factors Fetcher Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -10,8 +8,9 @@ from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_famafrench.utils.constants import USPortfolios, portfolio_choices
 from pydantic import Field
+
+from openbb_famafrench.utils.constants import USPortfolios, portfolio_choices
 
 
 class FamaFrenchUSPortfolioReturnsQueryParams(QueryParams):
@@ -105,7 +104,6 @@ class FamaFrenchUSPortfolioReturnsFetcher(
         **kwargs: Any,
     ) -> tuple:
         """Extract data from the Fama-French FTP."""
-        # pylint: disable=import-outside-toplevel
         from openbb_famafrench.utils.helpers import get_portfolio_data
 
         dataset = ""
@@ -125,7 +123,7 @@ class FamaFrenchUSPortfolioReturnsFetcher(
                     else query.frequency
                 ),
             )
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise OpenBBError(e) from e
 
     @staticmethod

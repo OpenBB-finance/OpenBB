@@ -1,7 +1,5 @@
 """Fama-French utilities for handling US and International portfolios and factors."""
 
-# pylint: disable=R0912,R0913,R0914,R0917,R1702,W0612,W0613
-
 from functools import lru_cache
 
 from openbb_famafrench.utils.constants import (
@@ -152,7 +150,6 @@ def download_file(dataset) -> str:
 
     Note: This function is not intended for direct use, it is called by `get_portfolio_data`.
     """
-    # pylint: disable=import-outside-toplevel
     import zipfile
     from io import BytesIO
 
@@ -177,15 +174,18 @@ def download_file(dataset) -> str:
         response = session.get(url)
         response.raise_for_status()
 
-    data = ""
+    raw_data = b""
 
-    with zipfile.ZipFile(BytesIO(response.content)) as f:
-        with f.open(f.namelist()[0]) as file:  # type: ignore
-            data = file.read()  # type: ignore
-        try:
-            data = data.decode("utf-8")  # type: ignore
-        except UnicodeDecodeError:
-            data = data.decode("latin-1")  # type: ignore
+    with (
+        zipfile.ZipFile(BytesIO(response.content)) as f,
+        f.open(f.namelist()[0]) as file,
+    ):
+        raw_data = file.read()
+
+    try:
+        data = raw_data.decode("utf-8")
+    except UnicodeDecodeError:
+        data = raw_data.decode("latin-1")
 
     return data
 
@@ -197,7 +197,6 @@ def download_international_portfolios(url):
     Note: This function is not intended for direct use,
     it is called by `get_international_portfolio`.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import get_requests_session
 
     with get_requests_session() as session:
@@ -209,7 +208,6 @@ def download_international_portfolios(url):
 
 def apply_date(x):
     """Pandas Apply helper to convert various date formats to a standard YYYY-MM-DD format."""
-    # pylint: disable=import-outside-toplevel
     from pandas import to_datetime
 
     date = str(x).replace(" ", "")
@@ -229,7 +227,6 @@ def read_csv_file(data: str):
 
     Note: This function is not intended for direct use, it is called by `get_portfolio_data`.
     """
-    # pylint: disable=import-outside-toplevel
     import re
 
     lines = data.splitlines()
@@ -330,7 +327,6 @@ def process_csv_tables(tables, general_description="") -> tuple:
 
     Note: This function is not intended for direct use, it is called by `get_portfolio_data`.
     """
-    # pylint: disable=import-outside-toplevel
     import warnings  # noqa
     from pandas import DataFrame
 
@@ -364,7 +360,7 @@ def process_csv_tables(tables, general_description="") -> tuple:
         try:
             # Convert YYYYMM format to datetime
             df["Date"] = df.Date.apply(apply_date)
-        except Exception as e:  # pylint: disable=W0718
+        except Exception as e:
             warnings.warn(f"Error parsing dates: {e}")
             df["Date"] = df["Date"].astype(str)
 
@@ -400,7 +396,6 @@ def read_dat_file(data: str) -> list:
     Note: This function is not intended for direct use,
     it is called by `get_international_portfolio`.
     """
-    # pylint: disable=import-outside-toplevel
     import re
 
     lines = data.splitlines()
@@ -521,7 +516,6 @@ def get_international_portfolio_data(
 
     Note: Not intended for direct use, this function is called by `get_international_portfolio`.
     """
-    # pylint: disable=import-outside-toplevel
     import zipfile
     from io import BytesIO
 
@@ -581,7 +575,6 @@ def process_international_portfolio_data(tables: list, dividends: bool = True) -
 
     Note: Not intended for direct use, this function is called by `get_international_portfolio`.
     """
-    # pylint: disable=import-outside-toplevel
     import re  # noqa
     import warnings
     from pandas import DataFrame, MultiIndex
@@ -611,7 +604,7 @@ def process_international_portfolio_data(tables: list, dividends: bool = True) -
         # Parse and set Date column
         try:
             df["Date"] = df["Date"].apply(apply_date)
-        except Exception as e:  # pylint: disable=W0718
+        except Exception as e:
             warnings.warn(f"Error parsing dates. Using string conversion. -> {e}")
             df["Date"] = df["Date"].astype(str)
 
@@ -895,7 +888,6 @@ def get_breakpoint_data(
     tuple
         A tuple containing a pandas DataFrames a metadata dictionary.
     """
-    # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
     from pandas import offsets, read_csv, to_datetime
 

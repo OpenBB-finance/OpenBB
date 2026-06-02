@@ -33,7 +33,6 @@ class EconometricsViews:
         layout_kwargs : Dict[str, Any]
             Additional keyword arguments to apply with figure.update_layout(), by default None.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.correlation_matrix import correlation_matrix
 
-        return correlation_matrix(**kwargs)  # type: ignore
+        return correlation_matrix(**kwargs)

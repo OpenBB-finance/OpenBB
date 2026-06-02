@@ -1,0 +1,63 @@
+TABLE 1: Job Openings estimated rate and level changes between November 2025 and December 2025,
+         and test of significance, seasonally adjusted
+
+                                                                  Rates                          Levels (in thousands)
+                                                                  =====                          =====================
+
+                                                   Estimated      Minimum   Pass test of   Estimated      Minimum   Pass test of
+                                                 over-the-month significant significance over-the-month significant significance
+           STATE                                    change        change*                  change         change*
+           
+Total U.S.                                           -0.3           0.3                     -386            466            
+           
+    Alabama                                          -0.1           0.7                       -2             14            
+    Alaska                                           -0.6           1.1                       -2              4            
+    Arizona                                          -0.7           0.7                      -23             20         YES
+    Arkansas                                         -0.2           0.7                       -3              9            
+    California                                       -0.3           0.4                      -62             60         YES
+    Colorado                                         -0.2           0.6                       -6             19            
+    Connecticut                                      -0.3           0.7                       -6             12            
+    Delaware                                         -0.1           0.9                        0              4            
+    District of Columbia                              0.8           1.0                        6              8            
+    Florida                                           0.0           0.5                       -7             47            
+    Georgia                                           0.2           0.6                       14             26            
+    Hawaii                                            0.0           1.1                        0              7            
+    Idaho                                             0.8           0.9                        8              7         YES
+    Illinois                                         -0.2           0.5                      -12             30            
+    Indiana                                          -0.6           0.6                      -21             19         YES
+    Iowa                                              0.0           0.7                        0             11            
+    Kansas                                            0.2           0.7                        2             10            
+    Kentucky                                         -0.3           0.7                       -6             14            
+    Louisiana                                        -0.3           0.7                       -7             14            
+    Maine                                            -1.0           0.8         YES           -7              5         YES
+    Maryland                                          0.1           0.7                        2             19            
+    Massachusetts                                    -0.4           0.6                      -12             23            
+    Michigan                                         -0.2           0.6                       -7             25            
+    Minnesota                                         0.2           0.6                        5             19            
+    Mississippi                                      -0.5           0.8                       -6             10            
+    Missouri                                          0.0           0.6                       -1             18            
+    Montana                                          -0.4           1.1                       -2              6            
+    Nebraska                                          0.0           0.8                       -1              8            
+    Nevada                                           -0.1           0.9                       -3             13            
+    New Hampshire                                    -1.4           0.9         YES          -11              6         YES
+    New Jersey                                       -0.8           0.6         YES          -38             24         YES
+    New Mexico                                       -0.9           0.9                       -9              8         YES
+    New York                                         -1.2           0.4         YES         -128             39         YES
+    North Carolina                                   -0.3           0.7                      -16             31            
+    North Dakota                                     -0.4           1.0                       -2              4            
+    Ohio                                              0.4           0.5                       25             29            
+    Oklahoma                                         -0.3           0.7                       -6             12            
+    Oregon                                            0.1           0.7                        2             13            
+    Pennsylvania                                      0.0           0.6                        3             33            
+    Rhode Island                                     -1.2           1.1         YES           -7              6         YES
+    South Carolina                                   -0.1           0.8                       -4             18            
+    South Dakota                                     -0.1           0.9                       -1              4            
+    Tennessee                                        -0.2           0.7                       -8             22            
+    Texas                                            -0.2           0.5                      -20             64            
+    Utah                                             -0.2           0.7                       -3             13            
+    Vermont                                          -1.5           1.1         YES           -5              3         YES
+    Virginia                                          0.1           0.6                        5             26            
+    Washington                                        0.1           0.6                        3             21            
+    West Virginia                                     0.1           0.9                        1              6            
+    Wisconsin                                        -0.1           0.6                       -5             18            
+    Wyoming                                          -0.6           1.2                       -2              3            

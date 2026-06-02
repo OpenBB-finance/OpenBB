@@ -1,8 +1,6 @@
 """Constants for the Fama French datasets API."""
 
-# pylint: disable=too-many-lines
-
-from typing import Literal
+from typing import Any, Literal
 
 BASE_URL = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
 
@@ -1086,7 +1084,7 @@ REGIONS_MAP = {
 }
 
 
-FACTOR_REGION_MAP = {
+FACTOR_REGION_MAP: dict[str, Any] = {
     "america": {
         "factors": {
             "3_Factors": "F-F_Research_Data_Factors",

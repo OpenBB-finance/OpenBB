@@ -1,10 +1,16 @@
 """BLS Provider Constants."""
 
+import os
 from typing import Literal
+
+BLS_USER_AGENT = (
+    os.environ.get("BLS_USER_AGENT") or "openbb-platform-bls/2.0 (hello@openbb.co)"
+)
 
 PPI_SURVEYS = ["WP", "PC"]
 PCE_SURVEYS = ["CX"]
-CPI_SURVEYS = ["AP", "CU", "CW", "LI", "SU", "EI"]
+CPI_SURVEYS = ["AP", "CU", "CW", "LI", "SU"]
+IMPORT_EXPORT_SURVEYS = ["EI"]
 PRODUCTIVITY_SURVEYS = ["IP", "PR", "MP"]
 LABOR_FORCE_STATISTICS = ["LN", "FM", "IN", "WS"]
 CURRENT_POPULATION_SURVEY = ["LE", "LU"]
@@ -21,6 +27,7 @@ SUPPORTED_SURVEYS = sorted(
         PPI_SURVEYS
         + PCE_SURVEYS
         + CPI_SURVEYS
+        + IMPORT_EXPORT_SURVEYS
         + PRODUCTIVITY_SURVEYS
         + LABOR_FORCE_STATISTICS
         + LOCAL_EMPLOYMENT_SURVEYS
@@ -36,6 +43,7 @@ SUPPORTED_SURVEYS = sorted(
 
 SURVEY_CATEGORY_MAP = {
     "cpi": [d.lower() for d in CPI_SURVEYS],
+    "ixp": [d.lower() for d in IMPORT_EXPORT_SURVEYS],
     "pce": [d.lower() for d in PCE_SURVEYS],
     "ppi": [d.lower() for d in PPI_SURVEYS],
     "ip": [d.lower() for d in PRODUCTIVITY_SURVEYS],
@@ -50,24 +58,29 @@ SURVEY_CATEGORY_MAP = {
     "tu": [d.lower() for d in TIME_USE_SURVEYS],
 }
 
+# Display names for each search category, corrected to match the surveys each
+# one actually resolves to in the shipped cache (the keys are cache-bound and
+# stay fixed; only the human labels are tuned here).
 SURVEY_CATEGORY_NAMES = {
     "cpi": "Consumer Price Index",
-    "pce": "Personal Consumption Expenditure",
+    "ixp": "Import/Export Price Indexes",
+    "pce": "Consumer Expenditure Survey",
     "ppi": "Producer Price Index",
-    "ip": "Industry Productivity",
+    "ip": "Productivity (Industry, Major Sector & Total Factor)",
     "jolts": "Job Openings and Labor Turnover Survey",
-    "nfp": "Nonfarm Payrolls",
+    "nfp": "Nonfarm Payrolls (Current Employment Statistics)",
     "cps": "Current Population Survey",
-    "lfs": "Labor Force Statistics",
-    "wages": "Wages",
-    "ec": "Employer Costs",
-    "sla": "State and Local Area Employment",
+    "lfs": "Labor Force Statistics & International Comparisons",
+    "wages": "Employment Cost Index & Wage Estimates",
+    "ec": "Employer Costs for Employee Compensation",
+    "sla": "State & Local Area Employment & Unemployment",
     "bed": "Business Employment Dynamics",
-    "tu": "Time Use",
+    "tu": "American Time Use Survey",
 }
 
 SURVEY_CATEGORIES = Literal[
     "cpi",
+    "ixp",
     "pce",
     "ppi",
     "ip",

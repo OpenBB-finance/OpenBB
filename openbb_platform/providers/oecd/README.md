@@ -3,7 +3,7 @@
 This package adds the `openbb-oecd` provider extension to the Open Data Platform by OpenBB.
 
 It provides everything you need — endpoints, tools, and metadata — to access and explore the entirety of
-https://data-explorer.oecd.org, without any previous experience working with it.
+<https://data-explorer.oecd.org>, without any previous experience working with it.
 
 ## Installation
 
@@ -73,7 +73,7 @@ The identifier can be either:
 - An indicator-like code, such as `CPI`, `LI`, or `B1GQ`
 - A presentation table identifier, such as `T0101`
 
-```
+```text
 DF_PRICES_ALL::CPI         — Consumer Price Index, all items
 DF_QNA::B1GQ               — GDP, expenditure approach (Quarterly National Accounts)
 DF_CLI::LI                 — Composite Leading Indicator
@@ -84,7 +84,7 @@ DF_QNA::T0101              — Quarterly National Accounts presentation table
 
 Multiple indicators from the same dataflow can be comma-separated:
 
-```
+```text
 DF_PRICES_ALL::CPI,DF_PRICES_ALL::HICP
 ```
 
@@ -110,7 +110,7 @@ settings, the fallback location is `~/.openbb_platform/cache/oecd_cache.msgpack.
 
 ## Coverage
 
-All data available from https://data-explorer.oecd.org can be retrieved via `obb.economy.indicators(provider='oecd', **kwargs)`.
+All data available from <https://data-explorer.oecd.org> can be retrieved via `obb.economy.indicators(provider='oecd', **kwargs)`.
 
 The extension also exposes specialized fetchers for the most commonly used OECD datasets.
 

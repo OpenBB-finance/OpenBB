@@ -16,12 +16,16 @@ dependencies = [
     "pytest>=9.0.3",
     "pytest-subtests>=0.11.0,<1.0.0",
     "pytest-recorder>=0.6.5",
+    # vcrpy (via pytest-recorder) references aiohttp.streams.AsyncStreamReaderMixin,
+    # removed in aiohttp 3.14.0; cap until vcrpy ships 3.14 support.
+    "aiohttp<3.14",
     "pytest-asyncio>=1.3.0,<2.0.0",
     "pytest-order>=1.3.0,<2.0.0",
     "pytest-cov>=4.1.0,<5.0.0",
     "pytest-freezer>=0.4.9,<1.0.0",
     "ipykernel>=6.30.1",
     "types-python-dateutil>=2.8.19.14,<3.0.0",
+    "types-requests>=2.32,<3.0.0",
     "types-toml>=0.10.8.7,<1.0.0",
 ]
 

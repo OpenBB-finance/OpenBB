@@ -3,7 +3,7 @@
 This package adds the `openbb-imf` provider extension to the Open Data Platform by OpenBB.
 
 It provides everything you need - endpoints, tools, and metadata - to access and explore the entirety of
-https://data.imf.org, without any previous experience working with it.
+<https://data.imf.org>, without any previous experience working with it.
 
 ## Installation
 
@@ -136,7 +136,7 @@ print(indicators.to_dict("records"))
 
 ## Coverage
 
-All data available from https://data.imf.org/en/Data-Explorer can be retrieved, via `obb.economy.indicators(provider='imf', **kwargs)`. When `openbb-economy` is not installed, the same fetcher is aliased onto `obb.imf.indicators`.
+All data available from <https://data.imf.org/en/Data-Explorer> can be retrieved, via `obb.economy.indicators(provider='imf', **kwargs)`. When `openbb-economy` is not installed, the same fetcher is aliased onto `obb.imf.indicators`.
 
 Additionally, the extension exposes IMF Port Watch endpoints under `obb.imf.portwatch.*` — these cover country activity, monthly TradeNow indices, container metrics, and disruption events / sankey / map data sourced from the UN Global Platform / IMF Port Watch (not part of the SDMX Data Explorer).
 

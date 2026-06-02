@@ -48,7 +48,7 @@ openbb-api
 
 To use the Congress Bills and Bill Summaries endpoints, you need a Congress.gov API key:
 
-1. Go to https://api.congress.gov/sign-up/
+1. Go to <https://api.congress.gov/sign-up/>
 2. Fill out the registration form
 3. Agree to the terms of service
 4. You will receive an API key via email
@@ -107,7 +107,6 @@ The `bill_text` endpoint is a POST request from the API, and expects a dictionar
     "urls": ["https://url-to-PDF-document"]
 }
 ```
-
 
 ## Usage Examples
 

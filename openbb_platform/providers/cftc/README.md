@@ -23,9 +23,9 @@ Credentials are not required, but your IP address may be subject to throttling l
 
 API requests made using an application token are not throttled.
 
-Create a free account here: https://evergreen.data.socrata.com/signup
+Create a free account here: <https://evergreen.data.socrata.com/signup>
 
-Then, generate the app_token by signing in with the credentials here: https://publicreporting.cftc.gov/profile/edit/developer_settings.
+Then, generate the app_token by signing in with the credentials here: <https://publicreporting.cftc.gov/profile/edit/developer_settings>.
 
 ### Credentials Key
 

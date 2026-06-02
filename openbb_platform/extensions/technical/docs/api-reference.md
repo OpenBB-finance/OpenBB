@@ -1444,4 +1444,3 @@ _Query parameters for the multi-symbol screen endpoint._
 | `as_of_date` | `str` | no |  |
 | `matched_conditions` | `str` | no |  |
 | `values` | `str` | no |  |
-
