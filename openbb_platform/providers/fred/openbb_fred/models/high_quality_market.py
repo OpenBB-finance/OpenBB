@@ -76,7 +76,7 @@ class FredHighQualityMarketCorporateBondFetcher(
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from dateutil import parser  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_fred.utils.rate_limiter import fred_get  # noqa
 
         api_key = credentials.get("fred_api_key") if credentials else ""
 
@@ -99,7 +99,7 @@ class FredHighQualityMarketCorporateBondFetcher(
 
         async def get_one(URL):
             """Get the observations for a single date."""
-            data = await amake_request(URL)
+            data = await fred_get(URL)
             if data:
                 elements = dict(data.get("elements", {}).items())  # type: ignore
                 for k, v in elements.items():  # pylint: disable=W0612

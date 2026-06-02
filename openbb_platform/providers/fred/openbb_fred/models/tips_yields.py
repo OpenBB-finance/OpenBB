@@ -158,7 +158,8 @@ class FredTipsYieldsFetcher(
             ids_df = await get_tips_series()
             ids = ids_df.series_id.to_list()
         except Exception as e:
-            raise OpenBBError(e) from e
+            message = str(e) or f"FRED request failed ({type(e).__name__})."
+            raise OpenBBError(message) from e
 
         # If we are looking for a specific tenor, the request will be smaller.
         if query.maturity:
@@ -197,7 +198,8 @@ class FredTipsYieldsFetcher(
             df = DataFrame([d.model_dump() for d in res.result])  # type: ignore
             meta: dict = res.metadata or {}  # type: ignore
         except Exception as e:
-            raise OpenBBError(e) from e
+            message = str(e) or f"FRED request failed ({type(e).__name__})."
+            raise OpenBBError(message) from e
 
         for k, v in title_map.items():
             if k in meta:
