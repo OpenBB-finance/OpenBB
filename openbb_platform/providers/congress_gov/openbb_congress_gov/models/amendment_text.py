@@ -78,11 +78,11 @@ class CongressAmendmentTextFetcher(
         for url in urls:
             filename = url.split("/")[-1]
 
-            if "congress.gov" not in url.strip():
+            if "govinfo.gov" not in url.strip():
                 results.append(
                     {
                         "error_type": "invalid_url",
-                        "content": f"Invalid URL: {url}. Must be a valid Congress.gov API URL.",
+                        "content": f"Invalid URL: {url}. Must be a valid GovInfo URL.",
                         "filename": filename,
                     }
                 )

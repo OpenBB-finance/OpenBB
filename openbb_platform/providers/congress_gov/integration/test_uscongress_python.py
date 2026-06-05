@@ -1,9 +1,10 @@
 """Test Government extension."""
 
 import pytest
+from openbb_core.app.model.obbject import OBBject
+
 from openbb_congress_gov.models.bill_info import CongressBillInfoData
 from openbb_congress_gov.models.bill_text import CongressBillTextData
-from openbb_core.app.model.obbject import OBBject
 
 
 @pytest.fixture(scope="session")
