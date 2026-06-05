@@ -44,3 +44,10 @@ def test_get_prompt_session_false(mock_isatty, session):
     "Test get_prompt_session method."
     prompt_session = session._get_prompt_session()
     assert prompt_session is None
+
+
+@patch("sys.stdin.isatty", side_effect=OSError("Device error"))
+def test_get_prompt_session_exception(mock_isatty, session):
+    """Test get_prompt_session handles exceptions gracefully."""
+    prompt_session = session._get_prompt_session()
+    assert prompt_session is None
