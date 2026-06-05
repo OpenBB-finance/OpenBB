@@ -109,9 +109,9 @@
           }
         ]
       },
-      "ammendments": {
-        "id": "ammendments",
-        "name": "Ammendments",
+      "amendments": {
+        "id": "amendments",
+        "name": "Amendments",
         "layout": [
           {
             "i": "uscongress_amendments_congress_gov_obb",
