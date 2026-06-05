@@ -1,7 +1,5 @@
 """Congress Member Legislation Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any
 
@@ -98,12 +96,7 @@ class CongressMemberLegislationFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract the bills a member sponsored or cosponsored from the bulk archives.
-
-        Spans every Congress the member served (their full history) unless a single
-        ``congress`` is given. No API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract the bills a member sponsored or cosponsored from the bulk archives."""
         from openbb_congress_gov.utils.bulk import (
             load_member_record,
             member_legislation,

@@ -1,7 +1,5 @@
 """Congress Members Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -132,11 +130,7 @@ class CongressMembersFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract the current members from the unitedstates legislators dataset.
-
-        No API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract the current members from the unitedstates legislators dataset."""
         from openbb_congress_gov.utils.bulk import (
             filter_members,
             load_members,

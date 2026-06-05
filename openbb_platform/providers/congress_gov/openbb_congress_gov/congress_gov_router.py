@@ -1,7 +1,5 @@
 """US Congress Router."""
 
-# pylint: disable=import-outside-toplevel,unused-argument,too-many-positional-arguments
-
 from typing import Any
 
 from fastapi.exceptions import HTTPException
@@ -263,7 +261,6 @@ async def law_text_urls(
     is_workspace: bool = False,
 ) -> list:
     """Get the document link for an enacted law, by law id (e.g. '119-1')."""
-    # pylint: disable=import-outside-toplevel
     from openbb_congress_gov.utils.helpers import get_document_choices
 
     if not law_id or "-" not in law_id:
@@ -355,7 +352,6 @@ async def calendar_urls(
     is_workspace: bool = False,
 ) -> list:
     """Get the document link for a calendar edition, by date and chamber."""
-    # pylint: disable=import-outside-toplevel
     from datetime import datetime
 
     from openbb_congress_gov.utils.bulk import _CCAL_CHAMBER_CODE
@@ -402,7 +398,6 @@ async def mandated_report_urls(
     is_workspace: bool = False,
 ) -> list:
     """Get the document link for a mandated report, by GovInfo package id."""
-    # pylint: disable=import-outside-toplevel
     from openbb_congress_gov.utils.helpers import get_document_choices
 
     return get_document_choices(package_id, is_workspace)
@@ -428,13 +423,11 @@ async def search_document_urls(
     is_workspace: bool = False,
 ) -> list:
     """Get the document link for a search result, by GovInfo package id."""
-    # pylint: disable=import-outside-toplevel
     from openbb_congress_gov.utils.helpers import get_document_choices
 
     return get_document_choices(package_id, is_workspace)
 
 
-# pylint: disable=W0212
 @router.command(
     methods=["GET"],
     examples=[
@@ -485,12 +478,7 @@ async def bill_text_urls(
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Get the available text-version document links for a bill, by bill id.
-
-    Used by the Congressional Bill Viewer widget to populate the document choices
-    for the selected bill (e.g. ``119-hr-29``). Sourced keyless from GovInfo.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Get the available text-version document links for a bill, by bill id."""
     from openbb_congress_gov.utils.helpers import get_bill_text_choices
 
     if not bill_id:
@@ -530,17 +518,7 @@ async def bill_info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get summary, status, and other metadata for a specific bill.
-
-    Enter the URL of the bill as: https://api.congress.gov/v3/bill/119/hr/131?
-
-    URLs for bills can be found from the `uscongress.bills` endpoint.
-
-    The raw JSON response from the API will be returned along with a formatted
-    text version of the key information from the raw response.
-
-    In OpenBB Workspace, this command returns as a Markdown widget.
-    """
+    """Get summary, status, and other metadata for a specific bill."""
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
@@ -568,26 +546,9 @@ async def bill_text(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:
-    """Download the content of bill(s) from a Congress.gov file.
-
-    Note: This endpoint returns only the results array of the OBBject.
-
-    Enter a list of URLs to download the bill text.
-
-    For the API, the body of the request will look like this:
-
-    ```json
-    {
-        "urls": [
-            "https://www.congress.gov/119/bills/hr1/BILLS-119hr1eh.pdf"
-        ]
-    }
-    ```
-
-    In OpenBB Workspace, this command returns as a multi-file viewer widget.
-    """
-    return (await OBBject.from_query(OpenBBQuery(**locals()))).results  # type: ignore
+) -> Any:
+    """Download the content of bill(s) from a Congress.gov file."""
+    return (await OBBject.from_query(OpenBBQuery(**locals()))).results
 
 
 @router.command(
@@ -664,13 +625,7 @@ async def amendment_text_urls(
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Get the Congressional Record document links for an amendment, by amendment id.
-
-    Used by the Congressional Amendment Viewer widget to populate the document
-    choices for the selected amendment (e.g. ``119-hamdt-2``). Resolved keyless
-    via the GovInfo link service.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Get the Congressional Record document links for an amendment, by amendment id."""
     from openbb_congress_gov.utils.helpers import get_amendment_text_choices
 
     if not amendment_id:
@@ -703,12 +658,7 @@ async def amendment_info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get details for a specific amendment.
-
-    Enter the amendment identifier as: {congress}-{type}-{number} (e.g., '119-hamdt-2').
-
-    In OpenBB Workspace, this command returns as a Markdown widget.
-    """
+    """Get details for a specific amendment."""
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
@@ -738,12 +688,9 @@ async def amendment_text(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:
-    """Download amendment document(s) from Congress.gov.
-
-    Note: This endpoint returns only the results array of the OBBject.
-    """
-    return (await OBBject.from_query(OpenBBQuery(**locals()))).results  # type: ignore
+) -> Any:
+    """Download amendment document(s) from Congress.gov."""
+    return (await OBBject.from_query(OpenBBQuery(**locals()))).results
 
 
 @router.command(
@@ -780,13 +727,7 @@ async def committee_info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get metadata and membership for a single U.S. Congressional Committee.
-
-    Fetches the committee detail (type, website, subcommittees, activity counts)
-    and current member roster with party affiliations and leadership titles.
-
-    Select a chamber, committee, and optional subcommittee to view details.
-    """
+    """Get metadata and membership for a single U.S. Congressional Committee."""
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
@@ -821,10 +762,7 @@ async def committee_documents(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get documents (reports, hearings, prints, meetings) produced by a single Congressional Committee.
-
-    Select a chamber, committee, and optional subcommittee.
-    """
+    """Get documents (reports, hearings, prints, meetings) produced by a single Congressional Committee."""
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
@@ -970,13 +908,7 @@ async def committee_document_urls(
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Get document choices for a Congressional Committee.
-
-    This endpoint populates the Committee Document Viewer file selector with the
-    committee's available documents by type (sourced keyless from GovInfo). For
-    hearings, witness statements and accompanying documents are included.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Get document choices for a Congressional Committee."""
     from datetime import datetime
 
     from openbb_congress_gov.utils.committees import get_committee_doc_choices
@@ -1008,19 +940,7 @@ async def committee_document_urls(
 
 
 async def get_congress_gov_apps_json() -> list[dict[str, Any]]:
-    """Get the Congress.gov apps.json file.
-
-    This endpoint serves the apps.json file containing OpenBB Workspace app configurations
-    related to Congress.gov legislative data.
-
-    It is automatically merged with any existing apps.json files in the Workspace and API.
-
-    Returns
-    -------
-    list[dict[str, Any]]
-        A list of OpenBB Workspace app configurations.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Get the Congress.gov apps.json file."""
     import json
     from pathlib import Path
 
@@ -1048,12 +968,7 @@ async def committee_members(
     subcommittee: str | None = None,
     theme: str | None = "dark",
 ):
-    """Render a committee's members as themed HTML cards (OpenBB Workspace HTML widget).
-
-    Returns raw HTML (not an OBBject) so the Workspace HTML widget renders the
-    member cards directly. Member photos and real party (R/D) come from the
-    keyless unitedstates dataset; the layout is theme-aware.
-    """
+    """Render a committee's members as themed HTML cards (OpenBB Workspace HTML widget)."""
     from openbb_congress_gov.utils.bulk import load_legislators
     from openbb_congress_gov.utils.committees import get_committee_members
     from openbb_congress_gov.utils.member_cards import render_member_cards
@@ -1152,14 +1067,7 @@ async def member_info(
     bioguide_id: str = "A000055",
     theme: str | None = "dark",
 ):
-    """Render a member's bio, history, and committees as a themed HTML card.
-
-    Returns raw HTML (not an OBBject) so the OpenBB Workspace HTML widget renders
-    the member's photo, party-colored heading, contact details, external profile
-    and social links, committee assignments, and full term history directly. All
-    data is keyless from the unitedstates congress-legislators datasets.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Render a member's bio, history, and committees as a themed HTML card."""
     from openbb_congress_gov.utils.bulk import (
         load_member_record,
         load_social_media,
@@ -1223,10 +1131,7 @@ async def member_votes(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get a member's roll-call votes on legislation, House and Senate.
-
-    Sourced keyless from Voteview, spanning the member's full voting history.
-    """
+    """Get a member's roll-call votes on legislation, House and Senate."""
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
@@ -1256,7 +1161,6 @@ async def member_choices(
     is_workspace: bool = False,
 ) -> list:
     """Get bioguide picker choices for the member widgets."""
-    # pylint: disable=import-outside-toplevel
     from openbb_congress_gov.utils.bulk import (
         filter_members,
         load_members,
@@ -1283,13 +1187,7 @@ async def member_choices(
 
 
 async def how_to_use(note: str = "bills") -> str:
-    """Return a tab's 'How To Use' note as Markdown (OpenBB Workspace markdown widget).
-
-    Returns the raw Markdown string for the requested tab so the Workspace
-    markdown widget renders it directly. The ``note`` parameter selects which
-    tab's instructions to serve.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Return a tab's 'How To Use' note as Markdown (OpenBB Workspace markdown widget)."""
     from openbb_congress_gov.utils.notes import HOW_TO_USE
 
     return HOW_TO_USE.get(note, "")
@@ -1321,17 +1219,11 @@ router._api_router.add_api_route(
 )
 
 
-# Keep references to background tasks so they are not garbage-collected.
 _BACKGROUND_TASKS: set = set()
 
 
 async def _preload_bills() -> None:
-    """Download and cache the current Congress bills bulk data for every bill type.
-
-    Warms BILLSTATUS (backing the bills table, bill_info, and the bill viewer) and
-    BILLSUM (the CRS summaries merged into bill_info) so all three bill widgets
-    open against a warm cache.
-    """
+    """Download and cache the current Congress bills bulk data for every bill type."""
     import asyncio
     from datetime import datetime
 
@@ -1348,12 +1240,49 @@ async def _preload_bills() -> None:
     await asyncio.gather(*tasks, return_exceptions=True)
 
 
-def _warm_bills_cache() -> None:
-    """Kick off the BILLSTATUS cache warmup in the background at API startup.
+async def _preload_members() -> None:
+    """Warm the member reference datasets and recent Voteview roll-call data."""
+    import asyncio
+    from datetime import datetime
 
-    Scheduled as a fire-and-forget task so server startup is never blocked by the
-    bulk-data downloads; the cache is populated before the first user query.
-    """
+    from openbb_congress_gov.utils.bulk import (
+        _BILLSTATUS_MIN_CONGRESS,
+        load_billstatus,
+        load_committee_membership,
+        load_committee_structure,
+        load_legislators,
+        load_members,
+        load_social_media,
+        load_voteview_members,
+        load_voteview_rollcalls,
+        load_voteview_votes,
+    )
+    from openbb_congress_gov.utils.constants import BillTypes
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    await asyncio.gather(
+        load_members(),
+        load_social_media(),
+        load_committee_membership(),
+        load_committee_structure(),
+        load_legislators(),
+        return_exceptions=True,
+    )
+
+    current = year_to_congress(datetime.now().year)
+    for congress in range(current, _BILLSTATUS_MIN_CONGRESS - 1, -1):
+        tasks: list = []
+        for chamber in ("H", "S"):
+            tasks.append(load_voteview_members(congress, chamber))
+            tasks.append(load_voteview_rollcalls(congress, chamber))
+            tasks.append(load_voteview_votes(congress, chamber))
+        for bill_type in BillTypes:
+            tasks.append(load_billstatus(congress, bill_type))
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+
+def _schedule_background(coro_factory) -> None:
+    """Schedule a warmup coroutine as a fire-and-forget background task."""
     import asyncio
 
     try:
@@ -1361,9 +1290,20 @@ def _warm_bills_cache() -> None:
     except RuntimeError:
         return
 
-    task = loop.create_task(_preload_bills())
+    task = loop.create_task(coro_factory())
     _BACKGROUND_TASKS.add(task)
     task.add_done_callback(_BACKGROUND_TASKS.discard)
 
 
+def _warm_bills_cache() -> None:
+    """Kick off the BILLSTATUS cache warmup in the background at API startup."""
+    _schedule_background(_preload_bills)
+
+
+def _warm_members_cache() -> None:
+    """Kick off the member + Voteview cache warmup in the background at startup."""
+    _schedule_background(_preload_members)
+
+
 router._api_router.add_event_handler("startup", _warm_bills_cache)
+router._api_router.add_event_handler("startup", _warm_members_cache)

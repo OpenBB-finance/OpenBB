@@ -52,13 +52,7 @@ def test_model_backed_commands(command):
 
     assert mock_query.called
     mock_obbject.from_query.assert_awaited_once()
-    # POST commands return the results list; others return the OBBject.
     assert result is not None
-
-
-# ---------------------------------------------------------------------------
-# bill_text_urls
-# ---------------------------------------------------------------------------
 
 
 def test_bill_text_urls_empty_workspace():
@@ -89,11 +83,6 @@ def test_bill_text_urls_delegates(monkeypatch):
     assert captured["bill_id"] == "119-s-1947"
 
 
-# ---------------------------------------------------------------------------
-# amendment_text_urls
-# ---------------------------------------------------------------------------
-
-
 def test_amendment_text_urls_empty_workspace():
     """An empty amendment_id in workspace mode returns a placeholder."""
     result = asyncio.run(router.amendment_text_urls(amendment_id="", is_workspace=True))
@@ -120,11 +109,6 @@ def test_amendment_text_urls_delegates(monkeypatch):
     result = asyncio.run(router.amendment_text_urls(amendment_id="119-hamdt-2"))
     assert result == [{"label": "x", "value": "y"}]
     assert captured["amendment_id"] == "119-hamdt-2"
-
-
-# ---------------------------------------------------------------------------
-# committee_choices
-# ---------------------------------------------------------------------------
 
 
 def test_committee_choices_no_chamber():
@@ -169,11 +153,6 @@ def test_committee_choices_valid_chamber():
     """A valid chamber returns its committee list."""
     result = asyncio.run(router.committee_choices(chamber="senate"))
     assert any(c["value"] == "ssaf00" for c in result)
-
-
-# ---------------------------------------------------------------------------
-# committee_document_urls
-# ---------------------------------------------------------------------------
 
 
 def test_committee_document_urls_empty_workspace():
@@ -240,11 +219,6 @@ def test_committee_document_urls_default_congress(monkeypatch):
     assert result == []
 
 
-# ---------------------------------------------------------------------------
-# get_congress_gov_apps_json
-# ---------------------------------------------------------------------------
-
-
 def test_get_congress_gov_apps_json_success():
     """The bundled apps.json is parsed and returned."""
     result = asyncio.run(router.get_congress_gov_apps_json())
@@ -273,11 +247,6 @@ def test_get_congress_gov_apps_json_missing(monkeypatch):
     monkeypatch.setattr(pathlib, "Path", lambda *a, **k: _BadPath())
     result = asyncio.run(router.get_congress_gov_apps_json())
     assert result == []
-
-
-# ---------------------------------------------------------------------------
-# document viewers: law_text_urls / calendar_urls / mandated_report_urls
-# ---------------------------------------------------------------------------
 
 
 def test_document_viewers_resolve_package_id():
@@ -311,7 +280,6 @@ def test_law_text_urls_resolves_by_law_id():
         router.law_text_urls(law_id="119-1", law_type="public", is_workspace=True)
     )
     assert ws[0]["value"].endswith("/PLAW-119publ1/pdf/PLAW-119publ1.pdf")
-    # Private laws use the 'pvtl' suffix.
     priv = asyncio.run(router.law_text_urls(law_id="119-2", law_type="private"))
     assert priv[0]["package_id"] == "PLAW-119pvtl2"
 
@@ -338,7 +306,6 @@ def test_calendar_urls_resolves_by_date():
     assert ws[0]["value"].endswith(
         "/CCAL-119hcal-2026-05-21/pdf/CCAL-119hcal-2026-05-21.pdf"
     )
-    # Senate maps to the 's' chamber code.
     sen = asyncio.run(
         router.calendar_urls(calendar_date="2026-05-21", chamber="senate", congress=119)
     )
@@ -361,11 +328,6 @@ def test_calendar_urls_empty_raises():
     """No date outside workspace raises an HTTPException."""
     with pytest.raises(HTTPException):
         asyncio.run(router.calendar_urls(calendar_date=""))
-
-
-# ---------------------------------------------------------------------------
-# startup warmup: _preload_bills / _warm_bills_cache
-# ---------------------------------------------------------------------------
 
 
 def test_preload_bills(monkeypatch):
@@ -414,16 +376,108 @@ def test_warm_bills_cache_no_running_loop():
     router._warm_bills_cache()
 
 
-# ---------------------------------------------------------------------------
-# committee_members (raw HTML widget endpoint)
-# ---------------------------------------------------------------------------
+def test_preload_members(monkeypatch):
+    """_preload_members warms reference datasets + Voteview for both chambers."""
+    ref: list = []
+    vote_calls: list = []
+
+    async def _members():
+        ref.append("members")
+        return []
+
+    async def _social():
+        ref.append("social")
+        return {}
+
+    async def _committee_membership():
+        ref.append("committee_membership")
+        return {}
+
+    async def _committee_structure():
+        ref.append("committee_structure")
+        return []
+
+    async def _legislators():
+        ref.append("legislators")
+        return {}
+
+    async def _vv_members(congress, chamber):
+        vote_calls.append(("members", congress, chamber))
+        return {}
+
+    async def _vv_rollcalls(congress, chamber):
+        vote_calls.append(("rollcalls", congress, chamber))
+        return {}
+
+    async def _vv_votes(congress, chamber):
+        vote_calls.append(("votes", congress, chamber))
+        return {}
+
+    status_calls: list = []
+
+    async def _billstatus(congress, bill_type):
+        status_calls.append((congress, bill_type))
+        return []
+
+    base = "openbb_congress_gov.utils.bulk."
+    monkeypatch.setattr(base + "load_members", _members)
+    monkeypatch.setattr(base + "load_social_media", _social)
+    monkeypatch.setattr(base + "load_committee_membership", _committee_membership)
+    monkeypatch.setattr(base + "load_committee_structure", _committee_structure)
+    monkeypatch.setattr(base + "load_legislators", _legislators)
+    monkeypatch.setattr(base + "load_voteview_members", _vv_members)
+    monkeypatch.setattr(base + "load_voteview_rollcalls", _vv_rollcalls)
+    monkeypatch.setattr(base + "load_voteview_votes", _vv_votes)
+    monkeypatch.setattr(base + "load_billstatus", _billstatus)
+
+    asyncio.run(router._preload_members())
+
+    assert set(ref) == {
+        "members",
+        "social",
+        "committee_membership",
+        "committee_structure",
+        "legislators",
+    }
+    assert {ch for _, _, ch in vote_calls} == {"H", "S"}
+    congresses = {c for _, c, _ in vote_calls}
+    assert 108 in congresses and max(congresses) >= 119
+    assert {kind for kind, _, _ in vote_calls} == {"members", "rollcalls", "votes"}
+
+    from openbb_congress_gov.utils.constants import BillTypes
+
+    assert {bt for _, bt in status_calls} == set(BillTypes)
+    assert {c for c, _ in status_calls} == congresses
+
+
+def test_warm_members_cache_schedules_task(monkeypatch):
+    """_warm_members_cache schedules the member preload on the running loop."""
+    ran: dict = {}
+
+    async def _fake_preload():
+        ran["done"] = True
+
+    monkeypatch.setattr(router, "_preload_members", _fake_preload)
+
+    async def _run():
+        router._warm_members_cache()
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+
+    asyncio.run(_run())
+    assert ran.get("done") is True
+
+
+def test_warm_members_cache_no_running_loop():
+    """Without a running event loop, the member warmup is a no-op."""
+    router._warm_members_cache()
 
 
 def test_committee_members_html_endpoint(monkeypatch):
     """The committee_members endpoint returns a raw text/html card response."""
 
     async def _members(system_code):
-        assert system_code == "hsju03"  # subcommittee preferred + lower-cased
+        assert system_code == "hsju03"
         return [{"name": "Jim Jordan", "title": "Chair", "bioguide": "J000289"}]
 
     async def _leg():
@@ -448,14 +502,9 @@ def test_committee_members_html_endpoint(monkeypatch):
     body = resp.body.decode()
     assert resp.media_type == "text/html"
     assert body.lstrip().startswith("<style>")
-    assert not body.lstrip().startswith("{")  # not a JSON envelope
+    assert not body.lstrip().startswith("{")
     assert 'src="https://x/J000289.jpg"' in body
-    assert "#c0392b" in body  # Republican accent
-
-
-# ---------------------------------------------------------------------------
-# how_to_use (markdown note endpoint)
-# ---------------------------------------------------------------------------
+    assert "#c0392b" in body
 
 
 def test_how_to_use_returns_markdown():
@@ -470,13 +519,7 @@ def test_how_to_use_returns_markdown():
     members = asyncio.run(router.how_to_use(note="members"))
     assert "Bioguide ID" in members
 
-    # An unknown note key returns an empty string rather than raising.
     assert asyncio.run(router.how_to_use(note="does_not_exist")) == ""
-
-
-# ---------------------------------------------------------------------------
-# member_choices (bioguide picker endpoint)
-# ---------------------------------------------------------------------------
 
 
 def test_member_choices(monkeypatch):
@@ -519,11 +562,6 @@ def test_member_choices_empty(monkeypatch):
     assert result == [{"label": "No members found.", "value": ""}]
 
 
-# ---------------------------------------------------------------------------
-# member_info (raw HTML widget endpoint)
-# ---------------------------------------------------------------------------
-
-
 def test_member_info_html_endpoint(monkeypatch):
     """The member_info endpoint returns a raw themed HTML bio card."""
 
@@ -563,9 +601,8 @@ def test_member_info_html_endpoint(monkeypatch):
     resp = asyncio.run(router.member_info(bioguide_id="A000055", theme="dark"))
     body = resp.body.decode()
     assert resp.media_type == "text/html"
-    assert "225x275/A000055.jpg" in body  # member photo
-    # The Wikipedia space is encoded to an underscore (valid link).
+    assert "225x275/A000055.jpg" in body
     assert "en.wikipedia.org/wiki/Robert_Aderholt" in body
     assert " " not in [h for h in re.findall(r'href="([^"]+)"', body)][0]
-    assert "#c0392b" in body  # Republican accent
-    assert "96.2% Yea" in body  # career On-Passage voting tally
+    assert "#c0392b" in body
+    assert "96.2% Yea" in body

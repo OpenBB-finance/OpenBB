@@ -1,7 +1,5 @@
 """Congress Bills Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -208,13 +206,7 @@ class CongressBillsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract bills from the GovInfo BILLSTATUS bulk archives.
-
-        The full BILLSTATUS dataset for the resolved Congress and bill type(s)
-        is downloaded (and cached), then all query parameters are applied as
-        post-fetch filters. No Congress.gov API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract bills from the GovInfo BILLSTATUS bulk archives."""
         import asyncio
 
         from openbb_congress_gov.utils.bulk import (
@@ -223,8 +215,6 @@ class CongressBillsFetcher(
             to_list_item,
         )
 
-        # Resolve the Congress number: explicit value, else derived from the
-        # date filters, else the current Congress.
         if query.congress is not None:
             congress = query.congress
         elif query.start_date is not None:
@@ -234,7 +224,6 @@ class CongressBillsFetcher(
         else:
             congress = year_to_congress(datetime.now().year)
 
-        # When no bill type is specified, load every type for the Congress.
         bill_types = (
             [query.bill_type] if query.bill_type is not None else list(BillTypes)
         )

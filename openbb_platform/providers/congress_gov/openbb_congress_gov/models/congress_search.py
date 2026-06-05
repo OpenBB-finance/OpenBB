@@ -1,7 +1,5 @@
 """Congress Full-Text Search Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -147,7 +145,6 @@ class CongressSearchFetcher(
         **kwargs: Any,
     ) -> list:
         """Search the congressional GovInfo collections (keyless)."""
-        # pylint: disable=import-outside-toplevel
         from openbb_congress_gov.utils.bulk import search_govinfo
 
         return await search_govinfo(

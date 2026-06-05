@@ -5,18 +5,11 @@ _CONGRESS_GOV_TO_THOMAS_ID: dict[str, str] = {
     "JHJE": "JSEC",
 }
 
-_GOVTRACK_DATA_CACHE: dict[str, object] = {}
+_GOVTRACK_DATA_CACHE: dict[str, dict] = {}
 
 
 def _system_code_to_thomas_id(system_code: str) -> str:
-    """Convert a Congress.gov committee systemCode to a unitedstates thomas_id.
-
-    Examples
-    --------
-    ssaf00 -> SSAF   (full committee, trailing '00' stripped)
-    ssaf13 -> SSAF13 (subcommittee, non-zero suffix kept)
-    jjec00 -> JSEC   (Joint Economic Committee - code mismatch)
-    """
+    """Convert a Congress.gov committee systemCode to a unitedstates thomas_id."""
     code = system_code.upper()
 
     if code.endswith("00"):
@@ -27,22 +20,7 @@ def _system_code_to_thomas_id(system_code: str) -> str:
 
 
 async def get_committee_members(system_code: str) -> list:
-    """Fetch current committee members from unitedstates/congress-legislators.
-
-    Data source:
-    - https://unitedstates.github.io/congress-legislators/committee-membership-current.json
-
-    Parameters
-    ----------
-    system_code : str
-        The Congress.gov committee systemCode (e.g., 'ssaf00', 'hsag00').
-
-    Returns
-    -------
-    list[dict]
-        Each dict has: name, party ("majority"/"minority"), rank, title, bioguide.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Fetch current committee members from unitedstates/congress-legislators."""
     from openbb_core.provider.utils.helpers import amake_request
 
     thomas_id = _system_code_to_thomas_id(system_code)
@@ -62,19 +40,13 @@ async def get_committee_members(system_code: str) -> list:
 
         _GOVTRACK_DATA_CACHE["committee_membership"] = data
 
-    membership: dict = _GOVTRACK_DATA_CACHE["committee_membership"]  # type: ignore
+    membership: dict = _GOVTRACK_DATA_CACHE["committee_membership"]
 
     return membership.get(thomas_id, [])
 
 
 async def get_committee_overview(system_code: str, chamber: str) -> dict:
-    """Build a committee overview (structure + members) from keyless sources.
-
-    Committee structure (name, jurisdiction, subcommittees) comes from the
-    unitedstates ``committees-current`` dataset; members from
-    ``get_committee_members``. No Congress.gov API key is required.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Build a committee overview (structure + members) from keyless sources."""
     from openbb_congress_gov.utils.bulk import load_committee_structure
 
     structure = await load_committee_structure()
@@ -142,13 +114,7 @@ async def fetch_committee_documents(
     limit: int = 20,
     offset: int = 0,
 ) -> list[dict]:
-    """Fetch a committee's documents from GovInfo (keyless, committee-indexed).
-
-    Reports (CRPT), committee prints (CPRT), hearings (CHRG), and referred
-    legislation (BILLS) are searched via the GovInfo ``wssearch`` service. No
-    Congress.gov API key is required.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Fetch a committee's documents from GovInfo (keyless, committee-indexed)."""
     import asyncio
 
     from openbb_congress_gov.utils.bulk import (
@@ -174,7 +140,6 @@ async def fetch_committee_documents(
             seen.add(record["package_id"])
             results.append(record)
 
-    # Newest first; documents without a date sort last.
     results.sort(key=lambda r: r.get("date") or "", reverse=True)
     return results
 
@@ -186,13 +151,7 @@ async def get_committee_doc_choices(
     limit: int = 20,
     is_workspace: bool = False,
 ) -> list:
-    """Document choices for a committee's viewer widget.
-
-    Returns the package PDFs plus, for hearings, any accompanying documents
-    (witness statements) parsed from the package MODS. Witness names are folded
-    into the choice labels.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Document choices for a committee's viewer widget."""
     from openbb_congress_gov.utils.bulk import fetch_package_mods, parse_mods
 
     docs = await fetch_committee_documents(system_code, congress, doc_type, limit=limit)
@@ -216,7 +175,6 @@ async def get_committee_doc_choices(
             seen.add(doc["doc_url"])
             choices.append({"label": label, "value": doc["doc_url"]})
 
-        # Hearings carry witness statements / accompanying documents in MODS.
         if doc["doc_type"] == "meeting":
             detail = parse_mods(await fetch_package_mods(package_id), package_id)
             for accompanying in detail["documents"]:

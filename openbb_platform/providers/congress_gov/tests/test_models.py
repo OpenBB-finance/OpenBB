@@ -49,11 +49,6 @@ from openbb_congress_gov.models.member_votes import CongressMemberVotesFetcher
 CREDS = {"congress_gov_api_key": "K"}
 
 
-# ===========================================================================
-# CongressBills
-# ===========================================================================
-
-
 def test_bills_query_invalid_type():
     """An invalid bill_type raises an OpenBBError from the validator."""
     with pytest.raises(OpenBBError):
@@ -172,7 +167,6 @@ def test_bills_extract_filters_applied(monkeypatch):
         sort_by="desc",
     )
     result = asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
-    # Only the 2025-02-20 record falls inside the window.
     assert [r["number"] for r in result] == [2]
 
 
@@ -233,11 +227,6 @@ def test_bills_transform_data_no_latest_action():
     ]
     result = CongressBillsFetcher.transform_data(q, data)
     assert result[0].latest_action is None
-
-
-# ===========================================================================
-# CongressBillInfo
-# ===========================================================================
 
 
 def test_bill_info_extract_found(monkeypatch):
@@ -396,11 +385,6 @@ def test_bill_info_transform_query():
     assert isinstance(q, CongressBillInfoQueryParams)
 
 
-# ===========================================================================
-# CongressBillText / CongressAmendmentText
-# ===========================================================================
-
-
 def test_bill_text_invalid_url(monkeypatch):
     """A non-congress URL is reported as invalid."""
     q = CongressBillTextQueryParams(urls=["https://example.com/x.pdf"])
@@ -522,11 +506,6 @@ def test_amendment_text_transform_query_and_data():
     assert result[0].content == "z"
 
 
-# ===========================================================================
-# CongressAmendments
-# ===========================================================================
-
-
 def _full_amendment(number, amd_type="SAMDT", **over):
     """Build a full bulk amendment record for the extract tests."""
     rec = {
@@ -586,7 +565,6 @@ def test_amendments_extract_default_congress(monkeypatch):
 
     assert captured["congress"] == year_to_congress(datetime.now().year)
     assert captured["type"] is None
-    # to_amendment_list_item projects to the slim shape.
     assert result[0]["amendment_id"].startswith("119-samdt-")
     assert "latestAction" in result[0]
 
@@ -651,7 +629,6 @@ def test_amendments_transform_data():
     assert by_id["119-hamdt-1"].sponsor == "Rep A"
     assert by_id["119-hamdt-1"].submitted_date is not None
     assert by_id["119-hamdt-1"].latest_action == "Agreed"
-    # Empty latestAction coerces to None; amended_amendment is the fallback.
     assert by_id["119-hamdt-2"].latest_action is None
     assert by_id["119-hamdt-2"].amended_bill == "Amdt. SAMDT 9"
     assert by_id["119-hamdt-2"].update_date is None
@@ -661,11 +638,6 @@ def test_amendments_transform_query():
     """transform_query builds amendment query params."""
     q = CongressAmendmentsFetcher.transform_query({"congress": 119})
     assert isinstance(q, CongressAmendmentsQueryParams)
-
-
-# ===========================================================================
-# CongressAmendmentInfo
-# ===========================================================================
 
 
 def test_amendment_info_extract(monkeypatch):
@@ -737,7 +709,6 @@ def test_amendment_info_transform_minimal_and_cosponsor_count():
     md = result.markdown_content
     assert "Amendment 119 HAMDT 2" in md
     assert "Count" in md
-    # The empty latest action is not rendered.
     assert "Latest Action" not in md
 
 
@@ -745,11 +716,6 @@ def test_amendment_info_transform_query():
     """transform_query builds amendment info query params."""
     q = CongressAmendmentInfoFetcher.transform_query({"amendment_id": "119-hamdt-2"})
     assert isinstance(q, CongressAmendmentInfoQueryParams)
-
-
-# ===========================================================================
-# CongressCommitteeInfo
-# ===========================================================================
 
 
 def test_committee_info_extract(monkeypatch):
@@ -773,7 +739,6 @@ def test_committee_info_extract(monkeypatch):
         {"chamber": "house", "committee": "HSJU00"}
     )
     result = asyncio.run(CongressCommitteeInfoFetcher.aextract_data(q, CREDS))
-    # The committee code is lower-cased before the loader call.
     assert captured["system_code"] == "hsju00"
     assert captured["chamber"] == "house"
     assert result["members"][0]["name"] == "M"
@@ -817,7 +782,7 @@ def test_committee_info_transform_full():
             "parent_name": "",
             "subcommittees": [
                 {"name": "Subcommittee on Courts", "systemCode": "hsju03"},
-                {"name": "", "systemCode": "hsju99"},  # dropped (no name)
+                {"name": "", "systemCode": "hsju99"},
             ],
         },
         "members": [
@@ -838,7 +803,6 @@ def test_committee_info_transform_full():
     assert "Subcommittee on Courts" in md
     assert "Website" in md
     assert "Members (3)" in md
-    # Members default a missing title to "Member".
     assert "| Member P | majority | Member |" in md
 
 
@@ -883,11 +847,6 @@ def test_committee_info_transform_no_name_no_members():
     md = result.markdown_content
     assert "HSAG00" in md
     assert "Member data not available" in md
-
-
-# ===========================================================================
-# CongressCommitteeDocuments
-# ===========================================================================
 
 
 def test_committee_documents_extract(monkeypatch):
@@ -973,10 +932,6 @@ def test_committee_documents_transform_data():
     assert result[0].doc_url == "https://x/CRPT-119hrpt637.pdf"
 
 
-# ---------------------------------------------------------------------------
-# CongressLaws (PLAW bulk)
-# ---------------------------------------------------------------------------
-
 _LAW_RECORDS = [
     {
         "law_id": "119-1",
@@ -1042,7 +997,6 @@ def test_laws_extract_explicit_congress(monkeypatch):
     result = asyncio.run(CongressLawsFetcher.aextract_data(q, None))
     assert calls == [(119, "public")]
     assert len(result) == 1
-    # Sorted by law number descending by default.
     assert result[0]["law_number"] == 2
 
 
@@ -1076,10 +1030,6 @@ def test_laws_transform_data():
     assert out[0].enacted_date == date(2025, 1, 29)
     assert out[0].pdf.endswith("PLAW-119publ1.pdf")
 
-
-# ---------------------------------------------------------------------------
-# CongressCalendars (CCAL sitemaps)
-# ---------------------------------------------------------------------------
 
 _CAL_RECORDS = [
     {
@@ -1139,7 +1089,7 @@ def test_calendars_extract_mostrecent(monkeypatch):
     result = asyncio.run(CongressCalendarsFetcher.aextract_data(q, None))
     assert len(result) == 1
     assert result[0]["calendar_date"] == "2025-01-07"
-    assert calls[0][0] >= 119  # current congress
+    assert calls[0][0] >= 119
     assert calls[0][1] == "house"
 
 
@@ -1158,10 +1108,6 @@ def test_calendars_transform_data(monkeypatch):
     assert out[0].package_id == "CCAL-119hcal-2025-01-07"
     assert out[0].calendar_date == date(2025, 1, 7)
 
-
-# ---------------------------------------------------------------------------
-# CongressMandatedReports (CMR)
-# ---------------------------------------------------------------------------
 
 _CMR_RECORDS = [
     {
@@ -1200,7 +1146,7 @@ def test_mandated_reports_extract_and_transform(monkeypatch):
     q = CongressMandatedReportsQueryParams(congress=119, limit=5000, offset=20)
     result = asyncio.run(CongressMandatedReportsFetcher.aextract_data(q, None))
     assert captured["congress"] == 119
-    assert captured["pagesize"] == 1000  # capped at MAX_PAGESIZE
+    assert captured["pagesize"] == 1000
     assert captured["offset"] == 20
 
     out = CongressMandatedReportsFetcher.transform_data(q, result)
@@ -1244,10 +1190,6 @@ def test_mandated_reports_default_congress(monkeypatch):
     assert captured["congress"] >= 119
     assert captured["pagesize"] == 100
 
-
-# ---------------------------------------------------------------------------
-# CongressSearch
-# ---------------------------------------------------------------------------
 
 _SEARCH_RECORDS = [
     {
@@ -1294,10 +1236,6 @@ def test_search_extract_and_transform(monkeypatch):
     assert models[0].package_id == "CHRG-119shrg1"
     assert models[0].collection == "CHRG"
 
-
-# ===========================================================================
-# CongressMembers / CongressMemberInfo / CongressMemberVotes / Legislation
-# ===========================================================================
 
 _MEMBER_RECORD = {
     "id": {"bioguide": "A000055", "govtrack": 400004, "wikipedia": "Bob Aderholt"},
@@ -1359,7 +1297,7 @@ def test_member_votes_extract_full_tenure(monkeypatch):
     captured = {}
 
     async def _record(bioguide):
-        return _MEMBER_RECORD  # rep terms in 2013 and 2025
+        return _MEMBER_RECORD
 
     async def _votes(bioguide, service, *, limit):
         captured["service"] = service
@@ -1388,14 +1326,13 @@ def test_member_votes_extract_full_tenure(monkeypatch):
                 "title": "Older Bill",
                 "question": "On Passage",
                 "result": "Failed",
-                "date": "",  # blank -> None
+                "date": "",
             },
         ]
 
     monkeypatch.setattr("openbb_congress_gov.utils.bulk.load_member_record", _record)
     monkeypatch.setattr("openbb_congress_gov.utils.bulk.member_votes", _votes)
 
-    # No congress -> span the member's full tenure across both chambers.
     q = CongressMemberVotesFetcher.transform_query({"bioguide_id": "A000055"})
     rows = CongressMemberVotesFetcher.transform_data(
         q, asyncio.run(CongressMemberVotesFetcher.aextract_data(q, None))
@@ -1404,11 +1341,9 @@ def test_member_votes_extract_full_tenure(monkeypatch):
     assert rows[0].bill_id == "119-hr-1"
     assert rows[0].chamber == "house"
     assert str(rows[0].date) == "2026-06-04"
-    assert rows[1].date is None  # blank date coerced to None
-    # The Voteview cast_code is not surfaced as a column.
+    assert rows[1].date is None
     assert not hasattr(rows[0], "cast_code") or "cast_code" not in rows[0].model_dump()
 
-    # An explicit congress restricts the scan to that one Congress.
     q2 = CongressMemberVotesFetcher.transform_query(
         {"bioguide_id": "A000055", "congress": 113}
     )
@@ -1432,7 +1367,7 @@ def test_member_legislation_extract_full_history(monkeypatch):
     captured = {}
 
     async def _record(bioguide):
-        return _MEMBER_RECORD  # rep terms in 1997 and 2025
+        return _MEMBER_RECORD
 
     async def _leg(bioguide, congresses):
         captured["congresses"] = congresses
@@ -1454,7 +1389,6 @@ def test_member_legislation_extract_full_history(monkeypatch):
     rows = CongressMemberLegislationFetcher.transform_data(
         q, asyncio.run(CongressMemberLegislationFetcher.aextract_data(q, None))
     )
-    # Spans the member's served Congresses (119th from the 2025 term, ... back).
     assert 119 in captured["congresses"] and len(captured["congresses"]) > 1
     assert rows[0].bill_id == "119-hr-1"
     assert rows[0].congress == 119

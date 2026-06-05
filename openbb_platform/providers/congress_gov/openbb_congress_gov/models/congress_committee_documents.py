@@ -1,7 +1,5 @@
 """Congress Committee Documents Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -208,7 +206,6 @@ class CongressCommitteeDocumentsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract committee documents from GovInfo (keyless)."""
-        # pylint: disable=import-outside-toplevel
         from datetime import datetime
 
         from openbb_congress_gov.utils.committees import fetch_committee_documents

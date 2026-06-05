@@ -1,7 +1,5 @@
 """Congress Amendments Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -220,13 +218,7 @@ class CongressAmendmentsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract amendments from the GovInfo BILLSTATUS bulk archives.
-
-        Amendments are published inside each bill's BILLSTATUS record; the full
-        set for the resolved Congress is aggregated and then filtered post-fetch.
-        No Congress.gov API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract amendments from the GovInfo BILLSTATUS bulk archives."""
         from openbb_congress_gov.utils.bulk import (
             filter_amendments,
             load_amendments,

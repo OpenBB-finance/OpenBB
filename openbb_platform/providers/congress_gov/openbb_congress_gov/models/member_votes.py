@@ -1,7 +1,5 @@
 """Congress Member Votes Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any
 
@@ -105,12 +103,7 @@ class CongressMemberVotesFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract a member's roll-call votes on legislation from Voteview.
-
-        Spans every Congress the member served, in either chamber, unless a single
-        ``congress`` is given. No API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract a member's roll-call votes on legislation from Voteview."""
         from openbb_congress_gov.utils.bulk import (
             load_member_record,
             member_service,

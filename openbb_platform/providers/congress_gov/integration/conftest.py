@@ -1,9 +1,4 @@
-"""Integration-test fixtures for openbb-congress-gov.
-
-The API-interface tests (``test_uscongress_api.py``) need a live HTTP server.
-This module runs ``openbb_core.api.rest_api:app`` in a background thread for
-the duration of the integration session and exposes the auth ``headers``.
-"""
+"""Integration-test fixtures for openbb-congress-gov."""
 
 import base64
 import threading

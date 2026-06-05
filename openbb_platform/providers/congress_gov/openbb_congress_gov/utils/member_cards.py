@@ -4,7 +4,6 @@ from datetime import date
 from html import escape
 from urllib.parse import quote
 
-# External profile links and their URL templates.
 _PROFILE_LINKS = {
     "wikipedia": ("Wikipedia", "https://en.wikipedia.org/wiki/{}"),
     "ballotpedia": ("Ballotpedia", "https://ballotpedia.org/{}"),
@@ -26,7 +25,6 @@ _PHOTO_URL = "https://unitedstates.github.io/images/congress/225x275/{}.jpg"
 _ROLE = {"rep": "Representative", "sen": "Senator"}
 _GENDER = {"M": "Male", "F": "Female"}
 
-# Theme-dependent colors for the card surfaces.
 _THEME = {
     "dark": {
         "bg": "transparent",
@@ -43,7 +41,6 @@ _THEME = {
         "border": "#e2e6ea",
     },
 }
-# Party accent colors (R / D / other).
 _PARTY = {
     "Republican": ("#c0392b", "R"),
     "Democrat": ("#2563c9", "D"),
@@ -52,10 +49,7 @@ _PARTY = {
 
 
 def _age(birthday: str, today: date | None = None) -> int | None:
-    """Return the member's age in whole years from a ``YYYY-MM-DD`` birthday.
-
-    Returns ``None`` when the birthday is missing or cannot be parsed.
-    """
+    """Return the member's age in whole years from a ``YYYY-MM-DD`` birthday."""
     if not birthday:
         return None
     try:
@@ -111,13 +105,7 @@ def _voting_section(voting: dict) -> str:
 def render_member_bio(
     record: dict, committees: list, social: dict, voting: dict, theme: str | None
 ) -> str:
-    """Build the themed HTML bio card for a single member.
-
-    Includes the member's official photo, party-colored heading, contact details,
-    the career On-Passage Yea/Nay voting tally, external profile and social links,
-    committee assignments, and full term history. Self-contained HTML (inline
-    ``<style>``, no JavaScript).
-    """
+    """Build the themed HTML bio card for a single member."""
     colors = _THEME["light"] if theme == "light" else _THEME["dark"]
     ids = record.get("id", {})
     name = record.get("name", {})
@@ -262,22 +250,7 @@ def _rank_key(member: dict) -> int:
 
 
 def render_member_cards(members: list, legislators: dict, theme: str | None) -> str:
-    """Build the HTML for a committee's member cards.
-
-    Parameters
-    ----------
-    members : list[dict]
-        Committee roster (``name``, ``title``, ``bioguide``).
-    legislators : dict
-        Bioguide-indexed profiles (``party``, ``state``, ``photo_url``).
-    theme : str | None
-        ``"dark"`` (default) or ``"light"`` for theme-appropriate styling.
-
-    Returns
-    -------
-    str
-        A self-contained HTML fragment (inline ``<style>`` + cards, no JavaScript).
-    """
+    """Build the HTML for a committee's member cards."""
     colors = _THEME["light"] if theme == "light" else _THEME["dark"]
 
     cards = ""

@@ -1,19 +1,4 @@
-"""GovInfo bulk-data download, cache, and parse helpers.
-
-GovInfo publishes Congressional bill data as public, keyless ZIP archives
-organized by Congress and bill type. This module downloads those archives,
-caches them on disk (re-downloading only when the upstream ZIP changed, via the
-HTTP ``ETag``/``Last-Modified`` validators), parses the per-bill XML into the
-same dict shape the models already consume, and memoizes parsed records for the
-life of the process.
-
-Collections used:
-
-- ``BILLSTATUS`` : full bill status (titles, sponsors, actions, committees,
-  related bills, subjects, summaries, latest action).
-- ``BILLSUM`` : Congressional Research Service bill summaries.
-- ``PLAW`` : enacted public and private laws (USLM documents).
-"""
+"""GovInfo bulk-data download, cache, and parse helpers."""
 
 import asyncio
 import io
@@ -29,22 +14,14 @@ from openbb_congress_gov.utils.helpers import BillsState
 GOVINFO_BASE = "https://www.govinfo.gov"
 BULKDATA_BASE = f"{GOVINFO_BASE}/bulkdata"
 
-# CCAL chamber path code and package-id pattern (e.g. CCAL-119hcal-2025-01-03).
 _CCAL_CHAMBER_CODE = {"house": "h", "senate": "s"}
 _CCAL_PKG_RE = re.compile(r"CCAL-(\d+)([hs])cal-(\d{4}-\d{2}-\d{2})")
 
-# Per-file member name pattern, e.g. BILLSTATUS-119hr29.xml / BILLSUM-119hr29.xml
 _MEMBER_RE = re.compile(r"-(\d+)([a-z]+)(\d+)\.xml$", re.IGNORECASE)
-# Bill reference inside an API/Congress.gov URL, anchored on the ``/bill/`` segment
-# so ``.../v3/bill/119/s/1947`` is not mis-parsed as ``3/bill/119``.
 _BILL_URL_RE = re.compile(r"/bill/(\d+)/([a-z]+)/(\d+)", re.IGNORECASE)
-# Bare bill id / shorthand: ``119-hr-29`` (canonical), ``119/hr/29``, or ``/119/hr/29``.
 _BILL_REF_RE = re.compile(r"^/?(\d+)[-/]([a-z]+)[-/](\d+)", re.IGNORECASE)
-# Amendment reference inside an API/Congress.gov URL, anchored on ``/amendment/``.
 _AMENDMENT_URL_RE = re.compile(r"/amendment/(\d+)/([a-z]+)/(\d+)", re.IGNORECASE)
-# Bare amendment id / shorthand: ``119-hamdt-2`` (canonical) or ``119/hamdt/2``.
 _AMENDMENT_REF_RE = re.compile(r"^/?(\d+)[-/]([a-z]+)[-/](\d+)", re.IGNORECASE)
-# GovInfo package id within a content URL, e.g. ``/content/pkg/BILLS-119hr29pcs/``.
 _PKG_RE = re.compile(r"/content/pkg/([^/]+)/")
 
 
@@ -57,11 +34,7 @@ def bulk_zip_url(collection: str, congress: int, bill_type: str) -> str:
 
 
 def parse_bill_ref(bill_ref: str) -> tuple[int, str, int]:
-    """Parse a bill reference into ``(congress, bill_type, number)``.
-
-    Accepts the canonical bill id ``119-hr-29``, a shorthand like ``119/hr/29``,
-    or a full Congress.gov / GovInfo URL.
-    """
+    """Parse a bill reference into ``(congress, bill_type, number)``."""
     match = _BILL_URL_RE.search(bill_ref) or _BILL_REF_RE.match(bill_ref)
     if not match:
         from openbb_core.app.model.abstract.error import OpenBBError
@@ -73,12 +46,7 @@ def parse_bill_ref(bill_ref: str) -> tuple[int, str, int]:
 
 
 def parse_amendment_ref(amendment_ref: str) -> tuple[int, str, str]:
-    """Parse an amendment reference into ``(congress, amendment_type, number)``.
-
-    Accepts the canonical amendment id ``119-hamdt-2``, a shorthand like
-    ``119/hamdt/2``, or a full Congress.gov / GovInfo URL. The number is kept as
-    a string to preserve any leading-zero formatting.
-    """
+    """Parse an amendment reference into ``(congress, amendment_type, number)``."""
     match = _AMENDMENT_URL_RE.search(amendment_ref) or _AMENDMENT_REF_RE.match(
         amendment_ref
     )
@@ -92,37 +60,51 @@ def parse_amendment_ref(amendment_ref: str) -> tuple[int, str, str]:
     return int(match.group(1)), match.group(2).lower(), match.group(3)
 
 
-def _cache_dir() -> str:
-    """Return the on-disk bulk-data cache directory, creating it if needed."""
-    # pylint: disable=import-outside-toplevel
+def _cache_dir() -> str | None:
+    """Return the on-disk bulk-data cache directory, or None if it is not writable."""
     from openbb_core.app.utils import get_user_cache_directory
 
     path = f"{get_user_cache_directory()}/congress_gov/bulkdata"
-    os.makedirs(path, exist_ok=True)
+    try:
+        os.makedirs(path, exist_ok=True)
+    except OSError:
+        return None
     return path
 
 
-async def _cached_get(url: str, filename: str) -> tuple[bytes, bool]:
-    """Fetch ``url`` with a conditional GET, caching the body on disk.
+def _write_cache(path: str, meta_path: str, content: bytes, headers) -> None:
+    """Persist downloaded content and conditional-GET metadata, ignoring write errors."""
+    try:
+        with open(path, "wb") as f:
+            f.write(content)
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(
+                {
+                    "etag": headers.get("ETag"),
+                    "last_modified": headers.get("Last-Modified"),
+                },
+                f,
+            )
+    except OSError:
+        pass
 
-    Returns ``(body, changed)``. ``changed`` is False when the cached copy was
-    reused (HTTP 304, or a network error with a cached fallback available).
-    """
-    # pylint: disable=import-outside-toplevel
+
+async def _cached_get(url: str, filename: str) -> tuple[bytes, bool]:
+    """Fetch ``url`` with a conditional GET, caching the body on disk when writable."""
     import aiohttp
     from openbb_core.app.model.abstract.error import OpenBBError
 
     cache_dir = _cache_dir()
-    path = f"{cache_dir}/{filename}"
-    meta_path = f"{path}.meta.json"
+    path = f"{cache_dir}/{filename}" if cache_dir else None
+    meta_path = f"{path}.meta.json" if path else None
 
     meta: dict = {}
-    if os.path.exists(meta_path):
+    if meta_path and os.path.exists(meta_path):
         with open(meta_path, encoding="utf-8") as f:
             meta = json.load(f)
 
     headers: dict = {}
-    if os.path.exists(path):
+    if path and os.path.exists(path):
         if meta.get("etag"):
             headers["If-None-Match"] = meta["etag"]
         if meta.get("last_modified"):
@@ -133,25 +115,17 @@ async def _cached_get(url: str, filename: str) -> tuple[bytes, bool]:
             aiohttp.ClientSession() as session,
             session.get(url, headers=headers) as response,
         ):
-            if response.status == 304 and os.path.exists(path):
+            if response.status == 304 and path and os.path.exists(path):
                 with open(path, "rb") as f:
                     return f.read(), False
 
             response.raise_for_status()
             content = await response.read()
-            with open(path, "wb") as f:
-                f.write(content)
-            with open(meta_path, "w", encoding="utf-8") as f:
-                json.dump(
-                    {
-                        "etag": response.headers.get("ETag"),
-                        "last_modified": response.headers.get("Last-Modified"),
-                    },
-                    f,
-                )
+            if path and meta_path:
+                _write_cache(path, meta_path, content, response.headers)
             return content, True
     except Exception as exc:  # noqa: BLE001
-        if os.path.exists(path):
+        if path and os.path.exists(path):
             with open(path, "rb") as f:
                 return f.read(), False
         raise OpenBBError(f"Failed to download data from {url} -> {exc}") from exc
@@ -183,7 +157,6 @@ def _item_dict(item) -> dict:
 
 def parse_billstatus(zip_bytes: bytes) -> list[dict]:
     """Parse a BILLSTATUS ZIP into a list of API-shaped bill records."""
-    # pylint: disable=import-outside-toplevel
     from defusedxml.ElementTree import fromstring
 
     records: list[dict] = []
@@ -206,7 +179,6 @@ def _billstatus_record(bill) -> dict:
 
     titles = [_item_dict(i) for i in bill.findall("titles/item")]
     for title in titles:
-        # transform_data reads ``type``; the XML names it ``titleType``.
         title.setdefault("type", title.get("titleType", ""))
 
     cosponsors = [_item_dict(i) for i in bill.findall("cosponsors/item")]
@@ -321,7 +293,6 @@ def _amendment_record(am) -> dict:
 
 def parse_billsum(zip_bytes: bytes) -> dict[int, list[dict]]:
     """Parse a BILLSUM ZIP into ``{bill_number: [summary, ...]}``."""
-    # pylint: disable=import-outside-toplevel
     from defusedxml.ElementTree import fromstring
 
     out: dict[int, list[dict]] = {}
@@ -349,18 +320,11 @@ def parse_billsum(zip_bytes: bytes) -> dict[int, list[dict]]:
     return out
 
 
-# Per-key locks so concurrent callers (e.g. the startup warmup and a user
-# request) share a single download/parse instead of duplicating the work.
 _LOAD_LOCKS: dict[str, asyncio.Lock] = {}
 
 
 async def _memoized(key: str, loader: Callable[[], Awaitable]):
-    """Return ``BillsState.bulk[key]``, computing it once via ``loader``.
-
-    An in-memory hit returns immediately with no network call, so a warmed cache
-    makes requests instant. A per-key lock deduplicates concurrent first loads
-    (the startup warmup and an early request await the same download).
-    """
+    """Return ``BillsState.bulk[key]``, computing it once via ``loader``."""
     state = BillsState()
     cached = state.bulk.get(key)
     if cached is not None:
@@ -407,14 +371,7 @@ def package_urls(pkg: str) -> dict:
 
 
 def derive_text_formats(version: dict) -> dict | None:
-    """Build PDF/HTM/XML URLs for a BILLSTATUS text version.
-
-    BILLSTATUS lists only the XML format URL for each version, which embeds the
-    GovInfo ``BILLS`` package id (e.g. ``.../content/pkg/BILLS-119hr29pcs/...``).
-    The sibling PDF and HTML packages follow the same predictable layout, so all
-    three format URLs are derived from that package id. Returns ``None`` when no
-    package id can be found.
-    """
+    """Build PDF/HTM/XML URLs for a BILLSTATUS text version."""
     url = next(
         (fmt.get("url") for fmt in version.get("formats") or [] if fmt.get("url")),
         None,
@@ -433,7 +390,6 @@ def derive_text_formats(version: dict) -> dict | None:
 def to_list_item(record: dict) -> dict:
     """Project a full BILLSTATUS record to the slim ``bills`` list shape."""
     return {
-        # ``update_date`` is a date field; the bulk value carries a time component.
         "updateDate": (record.get("updateDate") or "")[:10],
         "bill_id": record.get("bill_id"),
         "congress": record.get("congress"),
@@ -456,12 +412,7 @@ def filter_bills(
     offset: int | None = None,
     sort_by: str = "desc",
 ) -> list[dict]:
-    """Apply post-fetch filtering, sorting, and pagination to bill records.
-
-    Filtering uses the bill's ``updateDate`` (the last-updated date). Records are
-    sorted by latest action date (falling back to ``updateDate``) before
-    pagination so ``offset``/``limit`` are stable.
-    """
+    """Apply post-fetch filtering, sorting, and pagination to bill records."""
 
     def updated(record: dict) -> str:
         return (record.get("updateDate") or "")[:10]
@@ -489,7 +440,6 @@ def filter_bills(
 
 async def load_bill_record(bill_id: str) -> dict:
     """Load a single bill's full record, with BILLSUM summaries merged in."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.abstract.error import OpenBBError
 
     congress, bill_type, number = parse_bill_ref(bill_id)
@@ -530,14 +480,7 @@ def to_amendment_list_item(record: dict) -> dict:
 async def load_amendments(
     congress: int, amendment_type: str | None = None
 ) -> list[dict]:
-    """Load (cached) amendments for a Congress from the BILLSTATUS archives.
-
-    Amendments are published inside each bill's BILLSTATUS record, so the full
-    set for a Congress is aggregated across every bill type and de-duplicated by
-    ``(type, number)``. Pass ``amendment_type`` to keep only one chamber's
-    amendments (e.g. ``hamdt``/``samdt``).
-    """
-    # pylint: disable=import-outside-toplevel
+    """Load (cached) amendments for a Congress from the BILLSTATUS archives."""
     from openbb_congress_gov.utils.constants import BillTypes
 
     async def _load():
@@ -563,7 +506,6 @@ async def load_amendments(
 
 async def load_amendment_record(amendment_id: str) -> dict:
     """Load a single amendment's full record from the BILLSTATUS archives."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.abstract.error import OpenBBError
 
     congress, amendment_type, number = parse_amendment_ref(amendment_id)
@@ -587,11 +529,7 @@ def filter_amendments(
     offset: int | None = None,
     sort_by: str = "desc",
 ) -> list[dict]:
-    """Apply post-fetch filtering, sorting, and pagination to amendment records.
-
-    Filtering and sorting use the amendment's latest action date, falling back to
-    its ``updateDate``.
-    """
+    """Apply post-fetch filtering, sorting, and pagination to amendment records."""
 
     def updated(record: dict) -> str:
         return (record.get("updateDate") or "")[:10]
@@ -617,13 +555,7 @@ def filter_amendments(
 
 
 async def _resolve_link(url: str) -> str | None:
-    """Resolve a GovInfo link-service URL to its final document URL.
-
-    The link service answers with a 3xx redirect whose ``Location`` is the actual
-    GovInfo content URL. Returns ``None`` when the amendment was not published in
-    the Congressional Record (the service answers 400/404 with no redirect).
-    """
-    # pylint: disable=import-outside-toplevel
+    """Resolve a GovInfo link-service URL to its final document URL."""
     import aiohttp
 
     try:
@@ -639,13 +571,7 @@ async def _resolve_link(url: str) -> str | None:
 
 
 def amendment_link_base(record: dict) -> str | None:
-    """Build the GovInfo link-service base URL for an amendment record.
-
-    House amendments resolve via ``/link/crec/hamendment/{congress}/{billtype}/
-    {billnum}/{number}`` and require the amended bill's type and number; Senate
-    amendments via ``/link/crec/samendment/{congress}/{number}``. Returns ``None``
-    when a House amendment is missing its amended-bill reference.
-    """
+    """Build the GovInfo link-service base URL for an amendment record."""
     congress = record.get("congress")
     number = record.get("number")
     amd_type = (record.get("type") or "").upper()
@@ -665,12 +591,7 @@ def amendment_link_base(record: dict) -> str | None:
 
 
 async def resolve_amendment_text(record: dict) -> list[dict]:
-    """Resolve an amendment's Congressional Record documents via the link service.
-
-    Returns one entry per resolvable format (HTML, PDF) with the final GovInfo
-    content URL and the publication date parsed from that URL. Returns an empty
-    list when the amendment has no Congressional Record document.
-    """
+    """Resolve an amendment's Congressional Record documents via the link service."""
     base = amendment_link_base(record)
     if base is None:
         return []
@@ -706,13 +627,7 @@ def _local(tag: str) -> str:
 
 
 def parse_plaw(zip_bytes: bytes) -> list[dict]:
-    """Parse a PLAW ZIP into a list of enacted-law records.
-
-    Each member is a USLM document whose ``<meta>`` header carries the law
-    number, citation, title, and enacted date. PDF/HTM/XML text URLs are derived
-    from the package id (the member filename, e.g. ``PLAW-119publ1``).
-    """
-    # pylint: disable=import-outside-toplevel
+    """Parse a PLAW ZIP into a list of enacted-law records."""
     from defusedxml.ElementTree import fromstring
 
     records: list[dict] = []
@@ -744,7 +659,6 @@ def _plaw_record(meta, pkg: str) -> dict:
     congress = int(fields.get("congress") or 0)
     number = int(fields.get("docNumber") or 0)
     full_title = fields.get("title", "")
-    # The USLM title is "Public Law 119-1: <description>"; keep the description.
     title = full_title.split(": ", 1)[1] if ": " in full_title else full_title
 
     return {
@@ -798,12 +712,7 @@ def _congress_years(congress: int) -> list[int]:
 
 
 async def load_calendars(congress: int, chamber: str) -> list[dict]:
-    """Load (cached) Congressional Calendar editions for a Congress and chamber.
-
-    CCAL has no bulk-data JSON; editions are enumerated from the keyless GovInfo
-    year sitemaps. Each ``CCAL-{congress}{h|s}cal-{date}`` package id yields a
-    record with derived PDF/HTM/XML URLs.
-    """
+    """Load (cached) Congressional Calendar editions for a Congress and chamber."""
     chamber = chamber.lower()
     code = _CCAL_CHAMBER_CODE[chamber]
 
@@ -848,11 +757,7 @@ def filter_calendars(
     offset: int | None = None,
     sort_by: str = "desc",
 ) -> list[dict]:
-    """Filter calendar editions by publish date and paginate.
-
-    ``publishdate`` may be a ``YYYY-MM-DD`` value or ``"mostrecent"`` (returns the
-    single latest edition). When omitted, all editions are returned (paginated).
-    """
+    """Filter calendar editions by publish date and paginate."""
     out = sorted(records, key=lambda r: r["calendar_date"], reverse=sort_by == "desc")
 
     if publishdate == "mostrecent":
@@ -870,7 +775,6 @@ def filter_calendars(
 
 async def fetch_cmr(congress: int, pagesize: int = 100, offset: int = 0) -> list[dict]:
     """Fetch Congressionally Mandated Reports from the keyless GovInfo link API."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
 
     url = (
@@ -880,7 +784,6 @@ async def fetch_cmr(congress: int, pagesize: int = 100, offset: int = 0) -> list
     response = await amake_request(url)
     result_set = response.get("resultSet", []) if isinstance(response, dict) else []
     records = parse_cmr(result_set)
-    # Newest first; records without a date sort last.
     records.sort(key=lambda r: r.get("publication_date") or "", reverse=True)
     return records
 
@@ -908,13 +811,8 @@ def parse_cmr(result_set: list[dict]) -> list[dict]:
     return records
 
 
-# ---------------------------------------------------------------------------
-# Committees: GovInfo wssearch + MODS (keyless)
-# ---------------------------------------------------------------------------
-
 WSSEARCH_URL = f"{GOVINFO_BASE}/wssearch/search"
 
-# committee_documents doc_type -> GovInfo collection.
 DOC_TYPE_COLLECTION = {
     "report": "CRPT",
     "publication": "CPRT",
@@ -922,23 +820,15 @@ DOC_TYPE_COLLECTION = {
     "legislation": "BILLS",
 }
 
-# Citation/date scraped from a wssearch result's line1/line2.
 _CITATION_RE = re.compile(r"^(.*?)\s+-\s+", re.DOTALL)
 _DATE_RE = re.compile(r"([A-Z][a-z]+ \d{1,2}, \d{4})")
-# Package-id chamber code: the character after the congress number (h/s/j).
 _PKG_CHAMBER_RE = re.compile(r"-\d+([hsj])")
 
 
 async def wssearch(
     query: str, *, offset: int = 0, pagesize: int = 20, sort: str = "2"
 ) -> dict:
-    """Query the keyless GovInfo ``wssearch`` backend and return the parsed JSON.
-
-    This is the same public search service the GovInfo site uses; it requires no
-    API key and supports ``committee:"<systemCode>"`` and ``collection:<CODE>``
-    facets. Isolated here so any upstream change is a single-point fix.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Query the keyless GovInfo ``wssearch`` backend and return the parsed JSON."""
     import aiohttp
     from openbb_core.app.model.abstract.error import OpenBBError
 
@@ -981,7 +871,6 @@ def _wssearch_record(item: dict, doc_type: str, congress: int) -> dict:
     date = None
     date_match = _DATE_RE.search(line2)
     if date_match:
-        # pylint: disable=import-outside-toplevel
         from datetime import datetime
 
         try:
@@ -1024,7 +913,6 @@ async def search_committee_docs(
 
 async def load_committee_structure() -> list[dict]:
     """Load (cached) the unitedstates committees-current dataset."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
 
     state = BillsState()
@@ -1051,13 +939,7 @@ async def fetch_package_mods(package_id: str) -> bytes:
 
 
 def parse_mods(mods_bytes: bytes, package_id: str) -> dict:
-    """Parse a package MODS document for committee-document detail.
-
-    Returns the held dates, witnesses, and any constituent granule documents
-    (accompanying materials such as submitted witness statements), each with a
-    derived PDF URL.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Parse a package MODS document for committee-document detail."""
     from defusedxml.ElementTree import fromstring
 
     root = fromstring(mods_bytes)
@@ -1110,14 +992,6 @@ def parse_mods(mods_bytes: bytes, package_id: str) -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
-# Full-text search + legislators (keyless)
-# ---------------------------------------------------------------------------
-
-# Congressional GovInfo collections exposed by the full-text search endpoint.
-# BILLSTATUS is intentionally omitted: it is a bulk-only collection whose
-# wssearch index lacks the ``congress`` facet (combining the two errors), and
-# its text is already covered by BILLS.
 CONGRESSIONAL_COLLECTIONS = [
     "BILLS",
     "CRPT",
@@ -1139,7 +1013,6 @@ COLLECTION_LABELS = {
     "PLAW": "Public Laws",
 }
 
-# Congress number prefix in a package id, e.g. CHRG-119hhrg58430 -> 119.
 _PKG_CONGRESS_RE = re.compile(r"^[A-Z]+-(\d+)")
 
 
@@ -1171,7 +1044,6 @@ async def search_govinfo(
     offset: int = 0,
 ) -> list[dict]:
     """Full-text search across the congressional GovInfo collections (keyless)."""
-    # pylint: disable=import-outside-toplevel
     parts = [query]
 
     if collection:
@@ -1196,18 +1068,12 @@ async def search_govinfo(
     response = await wssearch(" AND ".join(parts), offset=offset, pagesize=limit)
     result_set = response.get("resultSet", []) if isinstance(response, dict) else []
     records = [_search_record(item) for item in result_set]
-    # Newest first; records without a date sort last.
     records.sort(key=lambda r: r.get("date") or "", reverse=True)
     return records
 
 
 async def load_legislators() -> dict:
-    """Load (cached) current legislators, indexed by bioguide id.
-
-    Source: ``legislators-current.json`` (unitedstates). Provides each member's
-    real party, state, full name, birthday, and official photo URL.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Load (cached) current legislators, indexed by bioguide id."""
     from openbb_core.provider.utils.helpers import amake_request
 
     state = BillsState()
@@ -1241,19 +1107,10 @@ async def load_legislators() -> dict:
     return state.bulk["legislators"]
 
 
-# ---------------------------------------------------------------------------
-# Congressional members: bio, history, committees, legislation, roll-call votes
-# ---------------------------------------------------------------------------
-
 _LEGISLATORS_BASE = "https://unitedstates.github.io/congress-legislators"
-# Earliest Congress with GovInfo BILLSTATUS bulk data (the floor for sponsored
-# legislation history).
 _BILLSTATUS_MIN_CONGRESS = 108
 
-# Voteview publishes every roll-call vote for both chambers, keyless, as static
-# CSVs mapped to bioguide ids — the source for member voting history.
 VOTEVIEW_BASE = "https://voteview.com/static/data/out"
-# Voteview cast codes -> position (1-3 Yea, 4-6 Nay, 7-8 Present, 9 Not Voting).
 _CAST_CODES = {
     "1": "Yea",
     "2": "Yea",
@@ -1267,8 +1124,6 @@ _CAST_CODES = {
 }
 _YEA_CODES = {"1", "2", "3"}
 _NAY_CODES = {"4", "5", "6"}
-# Voteview ``bill_number`` (e.g. ``HR29``, ``HRES5``, ``SCONRES1``); ``PN…``
-# nominations and blanks are not legislation.
 _BILL_NUMBER_RE = re.compile(r"^([A-Z]+)(\d+)$")
 _BILL_NUMBER_TYPES = {
     "HR",
@@ -1283,11 +1138,7 @@ _BILL_NUMBER_TYPES = {
 
 
 def _bill_number_to_id(bill_number: str, congress: int) -> str | None:
-    """Convert a Voteview ``bill_number`` to a canonical bill id.
-
-    e.g. ``"HR29"`` -> ``"119-hr-29"``. Returns ``None`` for non-legislative
-    votes (nominations ``PN…``, motions, blanks).
-    """
+    """Convert a Voteview ``bill_number`` to a canonical bill id."""
     match = _BILL_NUMBER_RE.match((bill_number or "").strip().upper())
     if not match or match.group(1) not in _BILL_NUMBER_TYPES:
         return None
@@ -1300,12 +1151,7 @@ def _chamber_from_term_type(term_type: str) -> str:
 
 
 async def load_members() -> list[dict]:
-    """Load (cached) the current members of Congress from the unitedstates dataset.
-
-    Source: ``legislators-current.json``. Each record carries the member's bio,
-    cross-reference ids, and full term history.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Load (cached) the current members of Congress from the unitedstates dataset."""
     from openbb_core.provider.utils.helpers import amake_request
 
     state = BillsState()
@@ -1321,11 +1167,7 @@ async def load_members() -> list[dict]:
 
 
 async def load_social_media() -> dict:
-    """Load (cached) members' social-media handles, indexed by bioguide id.
-
-    Source: ``legislators-social-media.json``.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Load (cached) members' social-media handles, indexed by bioguide id."""
     from openbb_core.provider.utils.helpers import amake_request
 
     state = BillsState()
@@ -1347,7 +1189,6 @@ async def load_social_media() -> dict:
 
 async def load_committee_membership() -> dict:
     """Load (cached) the current committee-membership dataset (by THOMAS id)."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_request
 
     state = BillsState()
@@ -1363,12 +1204,7 @@ async def load_committee_membership() -> dict:
 
 
 async def member_committees(bioguide: str) -> list[dict]:
-    """Return the committees and subcommittees a member sits on.
-
-    Inverts the committee-membership dataset (keyed by committee) into the
-    assignments for one member, resolving each THOMAS id to its display name via
-    the committees-current structure.
-    """
+    """Return the committees and subcommittees a member sits on."""
     membership = await load_committee_membership()
     structure = await load_committee_structure()
 
@@ -1400,7 +1236,6 @@ async def member_committees(bioguide: str) -> list[dict]:
 
 async def load_member_record(bioguide: str) -> dict:
     """Load a single current member's full record by bioguide id."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.abstract.error import OpenBBError
 
     members = await load_members()
@@ -1450,12 +1285,7 @@ def filter_members(
 
 
 def member_served_congresses(record: dict) -> list[int]:
-    """Return the Congress numbers a member served, newest first.
-
-    Derived from the member's term history and floored at the earliest Congress
-    with GovInfo BILLSTATUS bulk data (108th, 2003).
-    """
-    # pylint: disable=import-outside-toplevel
+    """Return the Congress numbers a member served, newest first."""
     from openbb_congress_gov.utils.helpers import year_to_congress
 
     congresses: set[int] = set()
@@ -1473,12 +1303,7 @@ def member_served_congresses(record: dict) -> list[int]:
 
 
 def member_service(record: dict) -> list[tuple[int, str]]:
-    """Return the ``(congress, chamber)`` pairs a member served, newest first.
-
-    Chamber is Voteview's ``H``/``S`` code, derived from each term's type. Used to
-    locate the member's roll-call votes across their full tenure.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Return the ``(congress, chamber)`` pairs a member served, newest first."""
     from openbb_congress_gov.utils.helpers import year_to_congress
 
     seen: dict[int, str] = {}
@@ -1495,13 +1320,7 @@ def member_service(record: dict) -> list[tuple[int, str]]:
 
 
 async def member_legislation(bioguide: str, congresses: list[int]) -> list[dict]:
-    """Return bills a member sponsored or cosponsored across the given Congresses.
-
-    Scans the cached BILLSTATUS archives (all bill types) for the member's
-    bioguide in each bill's sponsor and cosponsor lists, tagging each bill with
-    its Congress.
-    """
-    # pylint: disable=import-outside-toplevel
+    """Return bills a member sponsored or cosponsored across the given Congresses."""
     from openbb_congress_gov.utils.constants import BillTypes
 
     pairs = [(congress, bt) for congress in congresses for bt in BillTypes]
@@ -1547,7 +1366,6 @@ async def _voteview_text(kind: str, congress: int, chamber: str) -> str:
 
 async def load_voteview_members(congress: int, chamber: str) -> dict[str, str]:
     """Load (cached) a Voteview members file as ``{bioguide_id: icpsr}``."""
-    # pylint: disable=import-outside-toplevel
     import csv
     import io
 
@@ -1566,7 +1384,6 @@ async def load_voteview_members(congress: int, chamber: str) -> dict[str, str]:
 
 async def load_voteview_rollcalls(congress: int, chamber: str) -> dict[str, dict]:
     """Load (cached) a Voteview rollcalls file as ``{rollnumber: metadata}``."""
-    # pylint: disable=import-outside-toplevel
     import csv
     import io
 
@@ -1586,43 +1403,49 @@ async def load_voteview_rollcalls(congress: int, chamber: str) -> dict[str, dict
     return await _memoized(f"VV_ROLLCALLS_{chamber}{congress}", _load)
 
 
-async def member_congress_votes(
-    bioguide: str, congress: int, chamber: str
-) -> list[dict]:
-    """Return a member's roll-call votes for one Congress/chamber, from Voteview.
-
-    Each record carries the member's ``position`` plus the roll-call metadata
-    (bill id/number, title, question, result, date). Returns an empty list when
-    the member is not found in that Congress.
-    """
-    # pylint: disable=import-outside-toplevel
+async def load_voteview_votes(congress: int, chamber: str) -> dict[str, list[tuple]]:
+    """Load (cached) a Voteview votes file as ``{icpsr: [(rollnumber, cast_code)]}``."""
     import csv
     import io
 
+    async def _load():
+        text = await _voteview_text("votes", congress, chamber)
+        index: dict[str, list[tuple]] = {}
+        for row in csv.DictReader(io.StringIO(text)):
+            index.setdefault(row.get("icpsr", ""), []).append(
+                (row.get("rollnumber", ""), row.get("cast_code", ""))
+            )
+        return index
+
+    return await _memoized(f"VV_VOTES_{chamber}{congress}", _load)
+
+
+async def member_congress_votes(
+    bioguide: str, congress: int, chamber: str
+) -> list[dict]:
+    """Return a member's roll-call votes for one Congress/chamber, from Voteview."""
     members = await load_voteview_members(congress, chamber)
     icpsr = members.get(bioguide)
     if icpsr is None:
         return []
 
     rollcalls = await load_voteview_rollcalls(congress, chamber)
-    text = await _voteview_text("votes", congress, chamber)
+    votes = await load_voteview_votes(congress, chamber)
 
     chamber_name = "house" if chamber == "H" else "senate"
     out: list[dict] = []
-    for row in csv.DictReader(io.StringIO(text)):
-        if row.get("icpsr") != icpsr:
-            continue
-        position = _CAST_CODES.get(row.get("cast_code", ""))
+    for rollnumber, cast_code in votes.get(icpsr, []):
+        position = _CAST_CODES.get(cast_code)
         if position is None:
             continue
-        meta = rollcalls.get(row.get("rollnumber", ""), {})
+        meta = rollcalls.get(rollnumber, {})
         out.append(
             {
                 "congress": congress,
                 "chamber": chamber_name,
-                "rollnumber": int(row.get("rollnumber") or 0),
+                "rollnumber": int(rollnumber or 0),
                 "position": position,
-                "cast_code": row.get("cast_code", ""),
+                "cast_code": cast_code,
                 "bill_id": _bill_number_to_id(meta.get("bill_number", ""), congress),
                 "legislation": meta.get("bill_number") or None,
                 "title": meta.get("title") or None,
@@ -1637,11 +1460,7 @@ async def member_congress_votes(
 async def member_votes(
     bioguide: str, service: list[tuple[int, str]], *, limit: int = 25
 ) -> list[dict]:
-    """Return a member's most recent roll-call votes on legislation across tenure.
-
-    Aggregates Voteview votes over each served ``(congress, chamber)``, keeps only
-    votes tied to a bill (``bill_id``), and returns the newest ``limit`` by date.
-    """
+    """Return a member's most recent roll-call votes on legislation across tenure."""
     groups = await asyncio.gather(
         *[member_congress_votes(bioguide, c, ch) for c, ch in service]
     )
@@ -1653,13 +1472,7 @@ async def member_votes(
 
 
 async def member_passage_record(bioguide: str, service: list[tuple[int, str]]) -> dict:
-    """Tally a member's Yea/Nay record on 'On Passage' votes across their tenure.
-
-    Counts every roll call whose question begins with ``On Passage`` (House
-    ``On Passage``, Senate ``On Passage of the Bill``) over the member's full
-    history. Returns ``{"yea", "nay", "total", "yea_pct"}`` (``yea_pct`` is None
-    when there are no such votes).
-    """
+    """Tally a member's Yea/Nay record on 'On Passage' votes across their tenure."""
     groups = await asyncio.gather(
         *[member_congress_votes(bioguide, c, ch) for c, ch in service]
     )

@@ -1,7 +1,5 @@
 """Congress Calendars Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -147,11 +145,7 @@ class CongressCalendarsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract calendar editions from the GovInfo CCAL year sitemaps.
-
-        No API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract calendar editions from the GovInfo CCAL year sitemaps."""
         from openbb_congress_gov.utils.bulk import filter_calendars, load_calendars
         from openbb_congress_gov.utils.helpers import year_to_congress
 

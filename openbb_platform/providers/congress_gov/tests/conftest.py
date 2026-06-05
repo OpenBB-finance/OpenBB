@@ -26,8 +26,6 @@ def _clear_state_caches():
     def _reset():
         BillsState().bulk.clear()
         committees._GOVTRACK_DATA_CACHE.clear()
-        # Per-key load locks bind to an event loop; clear so each test's
-        # asyncio.run() starts with fresh, loop-unbound locks.
         bulk._LOAD_LOCKS.clear()
 
     _reset()

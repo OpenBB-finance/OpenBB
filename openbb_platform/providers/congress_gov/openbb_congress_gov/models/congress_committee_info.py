@@ -1,7 +1,5 @@
 """Congress Committee Info Model - Widget 2: Metadata and Members for a Single Committee."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.service.system_service import SystemService
@@ -125,7 +123,6 @@ class CongressCommitteeInfoFetcher(
         **kwargs,
     ) -> dict:
         """Extract committee structure + members from keyless sources."""
-        # pylint: disable=import-outside-toplevel
         from openbb_congress_gov.utils.committees import get_committee_overview
 
         system_code = (

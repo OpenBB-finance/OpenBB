@@ -1,7 +1,5 @@
 """Congress Laws Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -159,12 +157,7 @@ class CongressLawsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract enacted laws from the GovInfo PLAW bulk archive.
-
-        The full PLAW collection for the resolved Congress and law type is
-        downloaded (and cached), then filtered post-fetch. No API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract enacted laws from the GovInfo PLAW bulk archive."""
         from openbb_congress_gov.utils.bulk import filter_laws, load_plaw
         from openbb_congress_gov.utils.helpers import year_to_congress
 

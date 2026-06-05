@@ -7,10 +7,6 @@ from openbb_core.provider.utils import helpers as core_helpers
 from openbb_congress_gov.utils import bulk, committees
 from openbb_congress_gov.utils.helpers import BillsState
 
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
-
 _COMMITTEES_CURRENT = [
     {
         "type": "house",
@@ -20,7 +16,7 @@ _COMMITTEES_CURRENT = [
         "jurisdiction": "Judicial matters.",
         "subcommittees": [
             {"name": "Subcommittee on Courts", "thomas_id": "03"},
-            {"name": "", "thomas_id": "99"},  # dropped (no name)
+            {"name": "", "thomas_id": "99"},
         ],
     }
 ]
@@ -82,21 +78,11 @@ def _clear_caches():
     BillsState().bulk.clear()
 
 
-# ---------------------------------------------------------------------------
-# _system_code_to_thomas_id
-# ---------------------------------------------------------------------------
-
-
 def test_system_code_to_thomas_id():
     """Full committees strip '00'; subcommittees keep their suffix; JEC remaps."""
     assert committees._system_code_to_thomas_id("ssaf00") == "SSAF"
     assert committees._system_code_to_thomas_id("ssaf13") == "SSAF13"
     assert committees._system_code_to_thomas_id("jjec00") == "JSEC"
-
-
-# ---------------------------------------------------------------------------
-# get_committee_members
-# ---------------------------------------------------------------------------
 
 
 def test_get_committee_members_cold_fetch_and_cache(monkeypatch):
@@ -108,7 +94,6 @@ def test_get_committee_members_cold_fetch_and_cache(monkeypatch):
     assert result[0]["name"] == "Rep. Chair"
     assert "committee_membership" in committees._GOVTRACK_DATA_CACHE
 
-    # Second call hits the cache; no new request is issued.
     again = asyncio.run(committees.get_committee_members("hsju00"))
     assert again[0]["name"] == "Rep. Chair"
     assert calls["n"] == 1
@@ -147,11 +132,6 @@ def test_get_committee_members_missing_key(monkeypatch):
     assert asyncio.run(committees.get_committee_members("hsju00")) == []
 
 
-# ---------------------------------------------------------------------------
-# get_committee_overview
-# ---------------------------------------------------------------------------
-
-
 def _patch_overview(monkeypatch, members):
     """Patch load_committee_structure + get_committee_members for overview tests."""
 
@@ -177,7 +157,6 @@ def test_get_committee_overview_parent(monkeypatch):
     assert detail["is_subcommittee"] is False
     assert detail["website"] == "https://judiciary.house.gov"
     assert detail["jurisdiction"] == "Judicial matters."
-    # Only the named subcommittee is kept, with a reconstructed system code.
     assert detail["subcommittees"] == [
         {"name": "Subcommittee on Courts", "systemCode": "hsju03"}
     ]
@@ -214,11 +193,6 @@ def test_get_committee_overview_subcommittee_no_match(monkeypatch):
     assert detail["name"] == "House Committee on the Judiciary"
 
 
-# ---------------------------------------------------------------------------
-# fetch_committee_documents
-# ---------------------------------------------------------------------------
-
-
 def _doc(doc_type, package_id):
     """Build a minimal committee-document record."""
     return {
@@ -234,7 +208,7 @@ def _doc(doc_type, package_id):
 def test_fetch_committee_documents_all_dedupes(monkeypatch):
     """doc_type='all' fans out over four collections and dedupes by package_id."""
     by_type = {
-        "report": [_doc("report", "CRPT-1"), _doc("report", "CRPT-1")],  # dupe
+        "report": [_doc("report", "CRPT-1"), _doc("report", "CRPT-1")],
         "publication": [_doc("publication", "CPRT-1")],
         "meeting": [_doc("meeting", "CHRG-1")],
         "legislation": [_doc("legislation", "BILLS-1")],
@@ -261,11 +235,6 @@ def test_fetch_committee_documents_single_type(monkeypatch):
     result = asyncio.run(committees.fetch_committee_documents("hsju00", 119, "report"))
     assert seen_types == ["report"]
     assert result[0]["package_id"] == "CRPT-9"
-
-
-# ---------------------------------------------------------------------------
-# get_committee_doc_choices
-# ---------------------------------------------------------------------------
 
 
 def _patch_docs(monkeypatch, docs):
@@ -344,7 +313,6 @@ def test_get_committee_doc_choices_workspace_meeting_with_mods(monkeypatch):
         )
     )
     values = [c["value"] for c in result]
-    # The package PDF plus one accompanying granule PDF.
     assert "https://x/CHRG-1.pdf" in values
     assert any(v.endswith("Wstate-DoeJ-20260504.pdf") for v in values)
     assert any("Statement of Jane Doe" in c["label"] for c in result)
@@ -370,10 +338,6 @@ def test_get_committee_doc_choices_workspace_meeting_dedupes_granules(monkeypatc
     assert len(granule_values) == 1
 
 
-# ---------------------------------------------------------------------------
-# member_cards.render_member_cards (HTML widget renderer)
-# ---------------------------------------------------------------------------
-
 _MC_MEMBERS = [
     {"name": "Rep. Member", "title": "Member", "bioguide": "M001"},
     {"name": "Rep. Chair", "title": "Chair", "bioguide": "C001"},
@@ -396,7 +360,7 @@ _MC_LEG = {
     "M001": {
         "party": "Independent",
         "state": "VT",
-        "birthday": "",  # no birthday -> age omitted
+        "birthday": "",
         "photo_url": "https://x/M001.jpg",
     },
 }
@@ -407,12 +371,11 @@ def test_render_member_cards_themes_and_parties():
     from openbb_congress_gov.utils.member_cards import render_member_cards
 
     dark = render_member_cards(_MC_MEMBERS, _MC_LEG, "dark")
-    assert "#1b1f27" in dark  # dark card surface
-    assert "#c0392b" in dark and "#2563c9" in dark and "#6b7280" in dark  # R/D/I
-    assert 'src="https://x/C001.jpg"' in dark  # photo
-    assert "initials" in dark  # ZZZ (no legislator) -> initials fallback
-    assert "Age " in dark  # age shown when a birthday is known
-    # Chair sorts before Ranking before Member.
+    assert "#1b1f27" in dark
+    assert "#c0392b" in dark and "#2563c9" in dark and "#6b7280" in dark
+    assert 'src="https://x/C001.jpg"' in dark
+    assert "initials" in dark
+    assert "Age " in dark
     assert (
         dark.index("Rep. Chair")
         < dark.index("Rep. Ranking")
@@ -437,18 +400,11 @@ def test_member_cards_age():
     from openbb_congress_gov.utils.member_cards import _age
 
     today = date(2026, 6, 4)
-    # Birthday already passed this year.
     assert _age("1964-02-17", today) == 62
-    # Birthday later this year -> not yet incremented.
     assert _age("1964-12-25", today) == 61
-    # Missing and unparseable birthdays return None.
     assert _age("", today) is None
     assert _age("not-a-date", today) is None
 
-
-# ---------------------------------------------------------------------------
-# member_cards.render_member_bio (HTML bio card)
-# ---------------------------------------------------------------------------
 
 _BIO_RECORD = {
     "id": {"bioguide": "A000055", "wikipedia": "Robert Aderholt", "govtrack": 400004},
@@ -492,18 +448,16 @@ def test_render_member_bio_full():
         {"yea": 282, "nay": 11, "total": 293, "yea_pct": 96.2},
         "dark",
     )
-    assert "225x275/A000055.jpg" in html  # photo
+    assert "225x275/A000055.jpg" in html
     assert "Robert B. Aderholt" in html
     assert "Representative · AL-4 · Republican" in html
     assert "Age " in html
-    # Wikipedia space -> underscore; no spaces leak into any href.
     assert "en.wikipedia.org/wiki/Robert_Aderholt" in html
     assert all(" " not in h for h in re.findall(r'href="([^"]+)"', html))
-    # Career On-Passage voting tally is rendered.
     assert "On Passage" in html and "282 Yea" in html and "96.2% Yea" in html
     assert "Committee Assignments" in html and "Chair" in html
     assert "Term History" in html and "1997-01-07" in html
-    assert "#c0392b" in html  # Republican accent
+    assert "#c0392b" in html
 
 
 def test_render_member_bio_minimal_and_theme():
@@ -519,10 +473,9 @@ def test_render_member_bio_minimal_and_theme():
     empty_voting = {"yea": 0, "nay": 0, "total": 0, "yea_pct": None}
     light = render_member_bio(record, [], {}, empty_voting, "light")
     dark = render_member_bio(record, [], {}, empty_voting, "dark")
-    assert "color:#1b1f27" in light and light != dark  # light theme text color
-    assert "initials" in light and ">JD<" in light  # no bioguide -> initials avatar
+    assert "color:#1b1f27" in light and light != dark
+    assert "initials" in light and ">JD<" in light
     assert "Committee Assignments" not in light
     assert "Social" not in light
     assert "Senator · TX · Independent" in light
-    # No On-Passage votes -> the empty-state voting line.
     assert "No On-Passage roll-call votes on record." in light

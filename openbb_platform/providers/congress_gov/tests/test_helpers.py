@@ -8,10 +8,6 @@ from openbb_core.provider.utils import helpers as core_helpers
 
 from openbb_congress_gov.utils import bulk, congress_search, helpers
 
-# ---------------------------------------------------------------------------
-# year_to_congress
-# ---------------------------------------------------------------------------
-
 
 def test_year_to_congress_valid():
     """A known year maps to the correct congress number."""
@@ -25,11 +21,6 @@ def test_year_to_congress_too_early():
         helpers.year_to_congress(1900)
 
 
-# ---------------------------------------------------------------------------
-# BillsState singleton
-# ---------------------------------------------------------------------------
-
-
 def test_bills_state_singleton():
     """BillsState is a singleton sharing the same bulk mapping."""
     a = helpers.BillsState()
@@ -38,11 +29,6 @@ def test_bills_state_singleton():
     a.bulk["x"] = 1
     assert b.bulk["x"] == 1
     a.bulk.clear()
-
-
-# ---------------------------------------------------------------------------
-# download_bills
-# ---------------------------------------------------------------------------
 
 
 def test_download_bills_invalid_url():
@@ -95,10 +81,6 @@ def test_download_bills_download_error(monkeypatch):
     assert "network down" in result[0]["content"]
 
 
-# ---------------------------------------------------------------------------
-# get_bill_text_choices
-# ---------------------------------------------------------------------------
-
 _PKG = "https://www.govinfo.gov/content/pkg"
 _TV_RECORD = {
     "number": 29,
@@ -114,13 +96,11 @@ _TV_RECORD = {
             "formats": [{"url": f"{_PKG}/BILLS-119hr29ih/xml/BILLS-119hr29ih.xml"}],
         },
         {
-            # Duplicate package id -> deduplicated by PDF URL.
             "type": "Reprint",
             "date": "2025-01-04T00:00:00Z",
             "formats": [{"url": f"{_PKG}/BILLS-119hr29ih/xml/BILLS-119hr29ih.xml"}],
         },
         {
-            # No derivable package id -> skipped.
             "type": "No Formats",
             "date": "2025-01-01T00:00:00Z",
             "formats": [],
@@ -196,11 +176,6 @@ def test_get_bill_text_choices_workspace_no_date(monkeypatch):
     _patch_billstatus(monkeypatch, [record])
     result = asyncio.run(helpers.get_bill_text_choices("119/hr/29", is_workspace=True))
     assert result[0]["label"] == "BILLS-119hr29ih.pdf"
-
-
-# ---------------------------------------------------------------------------
-# get_amendment_text_choices (keyless, via GovInfo link service)
-# ---------------------------------------------------------------------------
 
 
 def _patch_amendment(monkeypatch, documents, record=None):
@@ -301,10 +276,6 @@ def test_get_amendment_text_choices_none_workspace(monkeypatch):
     )
     assert result[0]["value"] == ""
 
-
-# ---------------------------------------------------------------------------
-# congress_search
-# ---------------------------------------------------------------------------
 
 _RESULTS_HTML = """
 <ol class="basic-search-results-lists expanded-view results">
@@ -431,5 +402,4 @@ def test_search_async_merge_chambers(monkeypatch):
             congress=119, sources=["comreports"], committee="Armed Services"
         )
     )
-    # Same docs across 3 chambers dedupe down to the unique URLs.
     assert len(result) == 2

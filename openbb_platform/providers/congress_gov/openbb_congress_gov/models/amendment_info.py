@@ -1,7 +1,5 @@
 """Congress Amendment Info Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -78,13 +76,7 @@ class CongressAmendmentInfoFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract a single amendment's full record from the BILLSTATUS archives.
-
-        The amendment metadata (description, purpose, sponsors, cosponsors,
-        actions, amended bill/amendment, latest action) is read from the cached
-        GovInfo bulk data. No Congress.gov API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract a single amendment's full record from the BILLSTATUS archives."""
         from openbb_congress_gov.utils.bulk import load_amendment_record
 
         return await load_amendment_record(query.amendment_id)

@@ -1,7 +1,5 @@
 """Congress Gov Bills Text Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -78,32 +76,22 @@ class CongressBillInfoFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract a bill's full record from the GovInfo bulk archives.
-
-        The BILLSTATUS record (titles, sponsors, cosponsors, actions,
-        committees, related bills, subjects) is loaded from the cached bulk
-        data, and the canonical CRS summaries are merged in from BILLSUM. No
-        Congress.gov API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract a bill's full record from the GovInfo bulk archives."""
         from openbb_congress_gov.utils.bulk import load_bill_record
 
         return await load_bill_record(query.bill_id)
 
     @staticmethod
-    def transform_data(  # pylint: disable=R0912,R0914  # noqa: PLR0912,PLR0914
+    def transform_data(  # noqa: PLR0912,PLR0914
         query: CongressBillInfoQueryParams,
         data: dict,
         **kwargs: Any,
     ) -> CongressBillInfoData:
         """Transform the data into the model."""
-        # pylint: disable=import-outside-toplevel
         import re
 
-        # Regex to strip HTML tags
         html_tag_regex = re.compile(r"<[^>]+>")
 
-        # Regex to match HTML list items
         li_regex = re.compile(r"<li[^>]*>(.*?)</li>", re.DOTALL | re.IGNORECASE)
         ul_regex = re.compile(r"<ul[^>]*>(.*?)</ul>", re.DOTALL | re.IGNORECASE)
         ol_regex = re.compile(r"<ol[^>]*>(.*?)</ol>", re.DOTALL | re.IGNORECASE)
@@ -114,7 +102,6 @@ class CongressBillInfoFetcher(
 
         def html_to_markdown(text: str) -> str:
             """Convert HTML content to Markdown format."""
-            # Extract the first <strong> tag inside a <p> as the title, if present
             title = ""
             paragraphs = p_tag_regex.findall(text)
             if paragraphs:
@@ -122,13 +109,11 @@ class CongressBillInfoFetcher(
                 strong_match = strong_tag_regex.search(first_p)
                 if strong_match:
                     title = strong_match.group(1).strip()
-                    # Remove the first <p><strong>...</strong></p> from text
                     text = text.replace(f"<p><strong>{title}</strong></p>", "", 1)
                     text = text.lstrip()
                     if text.startswith(title):
                         text = text[len(title) :].lstrip()
 
-            # Convert unordered lists
             def ul_replacer(match):
                 """Replace <ul> with Markdown format."""
                 items = li_regex.findall(match.group(1))
@@ -136,7 +121,6 @@ class CongressBillInfoFetcher(
                     f"- {html_tag_regex.sub('', item).strip()}" for item in items
                 )
 
-            # Convert ordered lists
             def ol_replacer(match):
                 """Replace <ol> with Markdown format."""
                 items = li_regex.findall(match.group(1))

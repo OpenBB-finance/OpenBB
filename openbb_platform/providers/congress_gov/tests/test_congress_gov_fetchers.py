@@ -11,12 +11,23 @@ from openbb_congress_gov.models.bill_info import CongressBillInfoFetcher
 from openbb_congress_gov.models.bill_text import CongressBillTextFetcher
 from openbb_congress_gov.models.congress_amendments import CongressAmendmentsFetcher
 from openbb_congress_gov.models.congress_bills import CongressBillsFetcher
+from openbb_congress_gov.models.congress_calendars import CongressCalendarsFetcher
 from openbb_congress_gov.models.congress_committee_documents import (
     CongressCommitteeDocumentsFetcher,
 )
 from openbb_congress_gov.models.congress_committee_info import (
     CongressCommitteeInfoFetcher,
 )
+from openbb_congress_gov.models.congress_laws import CongressLawsFetcher
+from openbb_congress_gov.models.congress_mandated_reports import (
+    CongressMandatedReportsFetcher,
+)
+from openbb_congress_gov.models.congress_members import CongressMembersFetcher
+from openbb_congress_gov.models.congress_search import CongressSearchFetcher
+from openbb_congress_gov.models.member_legislation import (
+    CongressMemberLegislationFetcher,
+)
+from openbb_congress_gov.models.member_votes import CongressMemberVotesFetcher
 from openbb_congress_gov.utils.helpers import year_to_congress
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -263,5 +274,232 @@ def test_congress_committee_info_fetcher(monkeypatch, credentials=test_credentia
     }
 
     fetcher = CongressCommitteeInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+_LAW_RECORD = {
+    "law_id": "119-1",
+    "law_number": 1,
+    "law_type": "public",
+    "congress": 119,
+    "title": "Act One",
+    "citation": "Public Law 119-1",
+    "statute_citation": "139 Stat. 3",
+    "package_id": "PLAW-119publ1",
+    "enacted_date": "2025-01-29",
+    "pdf": "https://x/PLAW-119publ1.pdf",
+    "htm": "https://x/PLAW-119publ1.htm",
+    "xml": "https://x/PLAW-119publ1.xml",
+}
+
+
+def test_congress_laws_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Laws fetcher offline against the GovInfo PLAW bulk path."""
+
+    async def _fake_load_plaw(congress, law_type):
+        return [dict(_LAW_RECORD)]
+
+    monkeypatch.setattr("openbb_congress_gov.utils.bulk.load_plaw", _fake_load_plaw)
+    params = {"congress": 119, "law_type": "public", "limit": 1}
+
+    fetcher = CongressLawsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+_CALENDAR_RECORD = {
+    "package_id": "CCAL-119hcal-2025-01-07",
+    "congress": 119,
+    "chamber": "house",
+    "calendar_date": "2025-01-07",
+    "title": "House Calendar - 2025-01-07",
+    "pdf": "https://x/CCAL-119hcal-2025-01-07.pdf",
+    "htm": "https://x/CCAL-119hcal-2025-01-07.htm",
+    "xml": "https://x/CCAL-119hcal-2025-01-07.xml",
+}
+
+
+def test_congress_calendars_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Calendars fetcher offline against the GovInfo CCAL path."""
+
+    async def _fake_load_calendars(congress, chamber):
+        return [dict(_CALENDAR_RECORD)]
+
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.load_calendars", _fake_load_calendars
+    )
+    params = {"chamber": "house", "publishdate": "mostrecent"}
+
+    fetcher = CongressCalendarsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+_CMR_RECORD = {
+    "package_id": "CMR-A98-1",
+    "title": "Report One",
+    "submitting_agency": "Agency X",
+    "publication_date": "2026-03-13",
+    "date_submitted_to_congress": "2026-03-13",
+    "date_required": "2026-03-01",
+    "is_on_time": True,
+    "pdf": "https://x/CMR-A98-1.pdf",
+    "details_link": "https://x/details",
+    "mods_link": "https://x/mods.xml",
+}
+
+
+def test_congress_mandated_reports_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Mandated Reports fetcher offline against the GovInfo CMR path."""
+
+    async def _fake_fetch_cmr(congress, pagesize=100, offset=0):
+        return [dict(_CMR_RECORD)]
+
+    monkeypatch.setattr("openbb_congress_gov.utils.bulk.fetch_cmr", _fake_fetch_cmr)
+    params = {"congress": 119, "limit": 5}
+
+    fetcher = CongressMandatedReportsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+_SEARCH_RECORD = {
+    "title": "A Hearing",
+    "collection": "CHRG",
+    "date": "2026-03-25",
+    "congress": 119,
+    "citation": "S. Hrg. 119-1",
+    "package_id": "CHRG-119shrg1",
+    "doc_url": "https://x/CHRG-119shrg1.pdf",
+}
+
+
+def test_congress_search_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Search fetcher offline against the GovInfo wssearch path."""
+
+    async def _fake_search_govinfo(query, **kwargs):
+        return [dict(_SEARCH_RECORD)]
+
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.search_govinfo", _fake_search_govinfo
+    )
+    params = {"query": "immigration", "collection": "CHRG", "congress": 119}
+
+    fetcher = CongressSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+_MEMBER_RECORD = {
+    "id": {"bioguide": "A000055", "govtrack": 400004, "wikipedia": "Bob Aderholt"},
+    "name": {
+        "first": "Robert",
+        "last": "Aderholt",
+        "official_full": "Robert B. Aderholt",
+    },
+    "bio": {"birthday": "1965-07-22", "gender": "M"},
+    "terms": [
+        {
+            "type": "rep",
+            "state": "AL",
+            "district": 4,
+            "party": "Republican",
+            "start": "2013-01-03",
+            "end": "2015-01-03",
+        },
+        {
+            "type": "rep",
+            "state": "AL",
+            "district": 4,
+            "party": "Republican",
+            "start": "2025-01-03",
+            "end": "2027-01-03",
+            "url": "https://aderholt.house.gov",
+        },
+    ],
+}
+
+
+def test_congress_members_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Members fetcher offline against the legislators dataset."""
+
+    async def _fake_load_members():
+        return [dict(_MEMBER_RECORD)]
+
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.load_members", _fake_load_members
+    )
+    params = {"chamber": "house", "state": "AL", "party": "Republican"}
+
+    fetcher = CongressMembersFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_congress_member_votes_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Member Votes fetcher offline against the Voteview path."""
+
+    async def _fake_load_member_record(bioguide):
+        return dict(_MEMBER_RECORD)
+
+    async def _fake_member_votes(bioguide, service, *, limit):
+        return [
+            {
+                "congress": 119,
+                "chamber": "house",
+                "rollnumber": 207,
+                "position": "Yea",
+                "cast_code": "1",
+                "bill_id": "119-hr-1",
+                "legislation": "HR1",
+                "title": "A Bill",
+                "question": "On Passage",
+                "result": "Passed",
+                "date": "2026-06-04",
+            }
+        ]
+
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.load_member_record", _fake_load_member_record
+    )
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.member_votes", _fake_member_votes
+    )
+    params = {"bioguide_id": "A000055", "limit": 25}
+
+    fetcher = CongressMemberVotesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_congress_member_legislation_fetcher(monkeypatch, credentials=test_credentials):
+    """Test Congress Member Legislation fetcher offline against the bulk path."""
+
+    async def _fake_load_member_record(bioguide):
+        return dict(_MEMBER_RECORD)
+
+    async def _fake_member_legislation(bioguide, congresses):
+        return [
+            {
+                "bill_id": "119-hr-1",
+                "congress": 119,
+                "role": "Sponsor",
+                "title": "Bill One",
+                "introduced_date": "2025-01-03",
+                "latest_action_date": "2025-02-01",
+                "latest_action": "Referred",
+            }
+        ]
+
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.load_member_record", _fake_load_member_record
+    )
+    monkeypatch.setattr(
+        "openbb_congress_gov.utils.bulk.member_legislation", _fake_member_legislation
+    )
+    params = {"bioguide_id": "A000055"}
+
+    fetcher = CongressMemberLegislationFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

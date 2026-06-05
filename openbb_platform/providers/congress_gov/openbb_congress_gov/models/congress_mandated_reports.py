@@ -1,7 +1,5 @@
 """Congress Mandated Reports Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -135,11 +133,7 @@ class CongressMandatedReportsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract reports from the GovInfo Congressionally Mandated Reports API.
-
-        No API key is required.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Extract reports from the GovInfo Congressionally Mandated Reports API."""
         from openbb_congress_gov.utils.bulk import fetch_cmr
         from openbb_congress_gov.utils.helpers import year_to_congress
 

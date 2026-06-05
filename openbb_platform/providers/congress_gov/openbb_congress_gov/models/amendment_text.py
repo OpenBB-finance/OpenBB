@@ -1,7 +1,5 @@
 """Congress Amendment Text Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -63,7 +61,6 @@ class CongressAmendmentTextFetcher(
         **kwargs: Any,
     ) -> list:
         """Extract data from the query."""
-        # pylint: disable=import-outside-toplevel
         import base64  # noqa
         from io import BytesIO
         from openbb_core.provider.utils.helpers import make_request
@@ -115,7 +112,7 @@ class CongressAmendmentTextFetcher(
                             },
                         }
                     )
-            except Exception as exc:  # pylint: disable=broad-except
+            except Exception as exc:
                 results.append(
                     {
                         "error_type": "download_error",

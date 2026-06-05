@@ -1,11 +1,5 @@
 name: 📦 publish openbb-congress-gov
 
-# Triggers exclusively on the merge of a ``release/openbb-congress-gov-v*``
-# branch into ``develop`` (or ``v5``). No push / tag triggers. Four
-# sequential jobs — verify the version bump, build once, test the built
-# source across the full cross-platform matrix, and only publish to PyPI
-# if the entire matrix is green.
-
 on:
   pull_request:
     types: [closed]
@@ -113,13 +107,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux: full sweep across every released Python.
           - { os: ubuntu-latest, python_version: "3.10" }
           - { os: ubuntu-latest, python_version: "3.11" }
           - { os: ubuntu-latest, python_version: "3.12" }
           - { os: ubuntu-latest, python_version: "3.13" }
           - { os: ubuntu-latest, python_version: "3.14" }
-          # macOS + Windows: min and max supported.
           - { os: macos-latest, python_version: "3.10" }
           - { os: macos-latest, python_version: "3.14" }
           - { os: windows-latest, python_version: "3.10" }
@@ -153,8 +145,6 @@ jobs:
           uv pip install --system dist/openbb_congress_gov-*.whl
 
       - name: Test the installed wheel
-        # Remove the local source so pytest imports the package from
-        # site-packages — i.e., the EXACT wheel about to be uploaded to PyPI.
         run: |
           rm -rf openbb_congress_gov
           pytest tests --cov=openbb_congress_gov --cov-report=term-missing
@@ -164,7 +154,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # required for PyPI OIDC trusted publishing
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
