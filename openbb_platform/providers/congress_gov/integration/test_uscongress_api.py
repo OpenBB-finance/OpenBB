@@ -159,17 +159,15 @@ def test_uscongress_calendars(params, headers):
     [
         {
             "provider": "congress_gov",
-            "calendar_date": "2025-12-25",
-            "chamber": "house",
-            "congress": 119,
+            "package_id": "CCAL-119hcal-2025-01-03",
             "is_workspace": True,
         }
     ],
 )
 @pytest.mark.integration
-def test_uscongress_calendar_urls(params, headers):
-    """GET /calendar_urls."""
-    assert _get("calendar_urls", params, headers).status_code == 200
+def test_uscongress_calendar_document_urls(params, headers):
+    """GET /calendar_document_urls."""
+    assert _get("calendar_document_urls", params, headers).status_code == 200
 
 
 @pytest.mark.parametrize(

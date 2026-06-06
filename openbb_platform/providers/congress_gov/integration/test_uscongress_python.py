@@ -198,17 +198,15 @@ def test_uscongress_calendars(params, obb):
     [
         {
             "provider": "congress_gov",
-            "calendar_date": "2025-12-25",
-            "chamber": "house",
-            "congress": 119,
+            "package_id": "CCAL-119hcal-2025-01-03",
             "is_workspace": True,
         }
     ],
 )
 @pytest.mark.integration
-def test_uscongress_calendar_urls(params, obb):
+def test_uscongress_calendar_document_urls(params, obb):
     """Document links for a calendar edition."""
-    result = obb.uscongress.calendar_urls(**_clean(params))
+    result = obb.uscongress.calendar_document_urls(**_clean(params))
     assert isinstance(result, list)
     assert len(result) > 0
 

@@ -109,18 +109,20 @@ _TV_RECORD = {
 }
 
 
-def _patch_billstatus(monkeypatch, records):
-    """Patch bulk.load_billstatus to return canned BILLSTATUS records."""
+def _patch_billstatus(monkeypatch, record):
+    """Stub ensure_billstatus and store.get_bill to serve a single canned record."""
+    from openbb_congress_gov.utils import store
 
-    async def _fake(congress, bill_type):
-        return records
+    async def _ensure(congress, bill_type):
+        return None
 
-    monkeypatch.setattr(bulk, "load_billstatus", _fake)
+    monkeypatch.setattr(bulk, "ensure_billstatus", _ensure)
+    monkeypatch.setattr(store, "get_bill", lambda bill_id: record)
 
 
 def test_get_bill_text_choices_non_workspace(monkeypatch):
     """Non-workspace output returns versioned pdf/htm/xml dicts, deduped by PDF."""
-    _patch_billstatus(monkeypatch, [_TV_RECORD])
+    _patch_billstatus(monkeypatch, _TV_RECORD)
     result = asyncio.run(helpers.get_bill_text_choices("119/hr/29"))
     assert len(result) == 2
     assert result[0]["version_type"] == "Placed on Calendar Senate"
@@ -131,15 +133,15 @@ def test_get_bill_text_choices_non_workspace(monkeypatch):
 
 def test_get_bill_text_choices_non_workspace_empty(monkeypatch):
     """A bill with no usable text versions raises 404."""
-    _patch_billstatus(monkeypatch, [{"number": 29, "textVersions": []}])
+    _patch_billstatus(monkeypatch, {"number": 29, "textVersions": []})
     with pytest.raises(HTTPException) as exc:
         asyncio.run(helpers.get_bill_text_choices("119/hr/29"))
     assert exc.value.status_code == 404
 
 
 def test_get_bill_text_choices_bill_not_found(monkeypatch):
-    """When the bill number is absent from the bulk data, 404 is raised."""
-    _patch_billstatus(monkeypatch, [])
+    """When the bill is absent from the bulk data, 404 is raised."""
+    _patch_billstatus(monkeypatch, None)
     with pytest.raises(HTTPException) as exc:
         asyncio.run(helpers.get_bill_text_choices("119/hr/29"))
     assert exc.value.status_code == 404
@@ -147,7 +149,7 @@ def test_get_bill_text_choices_bill_not_found(monkeypatch):
 
 def test_get_bill_text_choices_workspace(monkeypatch):
     """Workspace output returns label/value choices, deduped by PDF URL."""
-    _patch_billstatus(monkeypatch, [_TV_RECORD])
+    _patch_billstatus(monkeypatch, _TV_RECORD)
     result = asyncio.run(helpers.get_bill_text_choices("119/hr/29", is_workspace=True))
     assert len(result) == 2
     assert result[0]["value"].endswith("/BILLS-119hr29pcs.pdf")
@@ -156,7 +158,7 @@ def test_get_bill_text_choices_workspace(monkeypatch):
 
 def test_get_bill_text_choices_workspace_empty(monkeypatch):
     """Workspace output with no text versions returns a placeholder choice."""
-    _patch_billstatus(monkeypatch, [{"number": 29, "textVersions": []}])
+    _patch_billstatus(monkeypatch, {"number": 29, "textVersions": []})
     result = asyncio.run(helpers.get_bill_text_choices("119/hr/29", is_workspace=True))
     assert result[0]["value"] == ""
 
@@ -173,7 +175,7 @@ def test_get_bill_text_choices_workspace_no_date(monkeypatch):
             }
         ],
     }
-    _patch_billstatus(monkeypatch, [record])
+    _patch_billstatus(monkeypatch, record)
     result = asyncio.run(helpers.get_bill_text_choices("119/hr/29", is_workspace=True))
     assert result[0]["label"] == "BILLS-119hr29ih.pdf"
 

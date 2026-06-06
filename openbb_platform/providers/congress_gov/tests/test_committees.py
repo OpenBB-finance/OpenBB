@@ -447,6 +447,7 @@ def test_render_member_bio_full():
         {"twitter": "Robert_Aderholt"},
         {"yea": 282, "nay": 11, "total": 293, "yea_pct": 96.2},
         "dark",
+        "https://unitedstates.github.io/images/congress/225x275/A000055.jpg",
     )
     assert "225x275/A000055.jpg" in html
     assert "Robert B. Aderholt" in html

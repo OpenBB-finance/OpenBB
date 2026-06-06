@@ -206,14 +206,8 @@ class CongressBillsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract bills from the GovInfo BILLSTATUS bulk archives."""
-        import asyncio
-
-        from openbb_congress_gov.utils.bulk import (
-            filter_bills,
-            load_billstatus,
-            to_list_item,
-        )
+        """Extract bills for a Congress from the BILLSTATUS database."""
+        from openbb_congress_gov.utils.bulk import list_bills
 
         if query.congress is not None:
             congress = query.congress
@@ -228,13 +222,9 @@ class CongressBillsFetcher(
             [query.bill_type] if query.bill_type is not None else list(BillTypes)
         )
 
-        groups = await asyncio.gather(
-            *[load_billstatus(congress, bt) for bt in bill_types]
-        )
-        records = [to_list_item(record) for group in groups for record in group]
-
-        return filter_bills(
-            records,
+        return await list_bills(
+            congress,
+            bill_types,
             start_date=query.start_date,
             end_date=query.end_date,
             limit=query.limit,

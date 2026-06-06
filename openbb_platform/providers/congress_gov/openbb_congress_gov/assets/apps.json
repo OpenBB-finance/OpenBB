@@ -407,15 +407,11 @@
             "h": 26,
             "state": {
               "params": {
-                "chamber": "house",
-                "congress": "119",
-                "calendar_date": "2026-06-03"
+                "package_id": "CCAL-119hcal-2025-01-03"
               }
             },
             "groups": [
-              "Group 7",
-              "Group 3",
-              "Group 10"
+              "Group 7"
             ]
           },
           {
@@ -533,7 +529,7 @@
         "name": "Group 3",
         "type": "param",
         "paramName": "chamber",
-        "defaultValue": "house"
+        "defaultValue": "both"
       },
       {
         "name": "Group 6",
@@ -544,20 +540,20 @@
       {
         "name": "Group 7",
         "type": "param",
-        "paramName": "calendar_date",
-        "defaultValue": "2026-06-03"
+        "paramName": "package_id",
+        "defaultValue": null
       },
       {
         "name": "Group 8",
         "type": "param",
         "paramName": "package_id",
-        "defaultValue": "CMR-A98-00199920"
+        "defaultValue": null
       },
       {
         "name": "Group 9",
         "type": "param",
         "paramName": "package_id",
-        "defaultValue": "CHRG-119hhrg63299"
+        "defaultValue": null
       },
       {
         "name": "Group 10",

@@ -1,5 +1,6 @@
 """US Congress Router."""
 
+import logging
 from typing import Any
 
 from fastapi.exceptions import HTTPException
@@ -25,6 +26,7 @@ from openbb_congress_gov.utils.constants import (
 NO_SUBCOMMITTEES = [{"label": "None (Parent Committee)", "value": ""}]
 router = Router(prefix="", description="Data connector to Congress.gov API.")
 api_prefix = SystemService().system_settings.api_settings.prefix
+logger = logging.getLogger("uvicorn.error")
 
 
 @router.command(
@@ -257,25 +259,37 @@ def _document_viewer_config(
 async def law_text_urls(
     law_id: str = "",
     law_type: str = "public",
+    congress: int | None = None,
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Get the document link for an enacted law, by law id (e.g. '119-1')."""
-    from openbb_congress_gov.utils.helpers import get_document_choices
+    """Resolve a law's links by law id, falling back to recent enacted laws.
 
-    if not law_id or "-" not in law_id:
-        if is_workspace is True:
-            return [{"label": "Select a law to view.", "value": ""}]
-        raise HTTPException(
-            status_code=500,
-            detail="A law_id (e.g. '119-1') is required to view a law.",
-        )
+    When no law id is supplied, the most recent public and private laws are
+    returned as choices instead of an empty selector.
+    """
+    from openbb_congress_gov.utils.helpers import (
+        document_choices_from_records,
+        get_document_choices,
+    )
 
-    congress, number = law_id.split("-", 1)
-    suffix = "pvtl" if law_type.lower() == "private" else "publ"
-    package_id = f"PLAW-{congress}{suffix}{number}"
+    if law_id and "-" in law_id:
+        cong, number = law_id.split("-", 1)
+        suffix = "pvtl" if law_type.lower() == "private" else "publ"
+        return get_document_choices(f"PLAW-{cong}{suffix}{number}", is_workspace)
 
-    return get_document_choices(package_id, is_workspace)
+    import asyncio
+    from datetime import datetime
+
+    from openbb_congress_gov.utils.bulk import load_plaw
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    cong = int(congress) if congress else year_to_congress(datetime.now().year)
+    loaded = await asyncio.gather(load_plaw(cong, "public"), load_plaw(cong, "private"))
+    records = [record for type_records in loaded for record in type_records]
+    records.sort(key=lambda record: record.get("package_id", ""), reverse=True)
+
+    return document_choices_from_records(records[:25], is_workspace)
 
 
 @router.command(
@@ -284,95 +298,50 @@ async def law_text_urls(
         APIEx(
             parameters={
                 "provider": "congress_gov",
-                "chamber": "house",
-                "calendar_date": "2025-01-03",
+                "package_id": "CCAL-119hcal-2025-01-03",
             }
         ),
     ],
-    openapi_extra={
-        "widget_config": {
-            "name": "Congressional Calendar Viewer",
-            "description": "View a House or Senate Congressional Calendar edition.",
-            "category": "Government",
-            "subCategory": "Congress",
-            "type": "multi_file_viewer",
-            "widgetId": "uscongress_calendar_viewer_congress_gov_obb",
-            "endpoint": f"{api_prefix}/uscongress/bill_text",
-            "params": [
-                {
-                    "paramName": "urls",
-                    "type": "endpoint",
-                    "optionsEndpoint": f"{api_prefix}/uscongress/calendar_urls",
-                    "optionsParams": {
-                        "calendar_date": "$calendar_date",
-                        "chamber": "$chamber",
-                        "congress": "$congress",
-                        "is_workspace": True,
-                    },
-                    "show": False,
-                    "multiSelect": True,
-                    "roles": ["fileSelector"],
-                },
-                {"paramName": "is_workspace", "value": True, "show": False},
-                {
-                    "label": "Chamber",
-                    "show": True,
-                    "paramName": "chamber",
-                    "value": "house",
-                    "options": [
-                        {"label": "House", "value": "house"},
-                        {"label": "Senate", "value": "senate"},
-                    ],
-                },
-                {
-                    "label": "Congress",
-                    "show": True,
-                    "paramName": "congress",
-                    "value": 119,
-                    "type": "number",
-                },
-                {
-                    "label": "Calendar Date",
-                    "description": "Group the Calendars table by 'Calendar Date' and"
-                    + " click a cell to load the edition.",
-                    "show": True,
-                    "paramName": "calendar_date",
-                    "value": "",
-                },
-            ],
-            "refetchInterval": False,
-        }
-    },
+    openapi_extra=_document_viewer_config(
+        "Congressional Calendar Viewer",
+        "View a House or Senate Congressional Calendar edition.",
+        "uscongress_calendar_viewer_congress_gov_obb",
+        "calendar_document_urls",
+    ),
 )
-async def calendar_urls(
-    calendar_date: str = "",
-    chamber: str = "house",
+async def calendar_document_urls(
+    package_id: str = "",
     congress: int | None = None,
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Get the document link for a calendar edition, by date and chamber."""
-    from datetime import datetime
+    """Resolve a calendar edition's links, falling back to recent editions.
 
-    from openbb_congress_gov.utils.bulk import _CCAL_CHAMBER_CODE
+    When no package id is supplied, the most recent House and Senate editions
+    are returned as choices instead of an empty selector.
+    """
     from openbb_congress_gov.utils.helpers import (
+        document_choices_from_records,
         get_document_choices,
-        year_to_congress,
     )
 
-    if not calendar_date:
-        if is_workspace is True:
-            return [{"label": "Select a calendar date to view.", "value": ""}]
-        raise HTTPException(
-            status_code=500,
-            detail="A calendar_date is required to view a calendar.",
-        )
+    if package_id:
+        return get_document_choices(package_id, is_workspace)
+
+    import asyncio
+    from datetime import datetime
+
+    from openbb_congress_gov.utils.bulk import load_calendars
+    from openbb_congress_gov.utils.helpers import year_to_congress
 
     cong = int(congress) if congress else year_to_congress(datetime.now().year)
-    code = _CCAL_CHAMBER_CODE.get(chamber.lower(), "h")
-    package_id = f"CCAL-{cong}{code}cal-{calendar_date}"
+    loaded = await asyncio.gather(
+        load_calendars(cong, "house"), load_calendars(cong, "senate")
+    )
+    records = [record for chamber_records in loaded for record in chamber_records]
+    records.sort(key=lambda record: record["calendar_date"], reverse=True)
 
-    return get_document_choices(package_id, is_workspace)
+    return document_choices_from_records(records[:25], is_workspace)
 
 
 @router.command(
@@ -394,13 +363,32 @@ async def calendar_urls(
 )
 async def mandated_report_urls(
     package_id: str = "",
+    congress: int | None = None,
     provider: str = "congress_gov",
     is_workspace: bool = False,
 ) -> list:
-    """Get the document link for a mandated report, by GovInfo package id."""
-    from openbb_congress_gov.utils.helpers import get_document_choices
+    """Resolve a mandated report's links, falling back to recent reports.
 
-    return get_document_choices(package_id, is_workspace)
+    When no package id is supplied, the most recent reports are returned as
+    choices instead of an empty selector.
+    """
+    from openbb_congress_gov.utils.helpers import (
+        document_choices_from_records,
+        get_document_choices,
+    )
+
+    if package_id:
+        return get_document_choices(package_id, is_workspace)
+
+    from datetime import datetime
+
+    from openbb_congress_gov.utils.bulk import fetch_cmr
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    cong = int(congress) if congress else year_to_congress(datetime.now().year)
+    records = await fetch_cmr(cong, pagesize=25, offset=0)
+
+    return document_choices_from_records(records, is_workspace)
 
 
 @router.command(
@@ -969,7 +957,9 @@ async def committee_members(
     theme: str | None = "dark",
 ):
     """Render a committee's members as themed HTML cards (OpenBB Workspace HTML widget)."""
-    from openbb_congress_gov.utils.bulk import load_legislators
+    import asyncio
+
+    from openbb_congress_gov.utils.bulk import load_legislators, member_photo_url
     from openbb_congress_gov.utils.committees import get_committee_members
     from openbb_congress_gov.utils.member_cards import render_member_cards
 
@@ -977,7 +967,14 @@ async def committee_members(
     members = await get_committee_members(system_code)
     legislators = await load_legislators()
 
-    return HTMLResponse(content=render_member_cards(members, legislators, theme))
+    bioguides = [m.get("bioguide", "") for m in members]
+    photos = await asyncio.gather(*[member_photo_url(b) for b in bioguides])
+    profiles = {
+        b: {**legislators.get(b, {}), "photo_url": photo}
+        for b, photo in zip(bioguides, photos)
+    }
+
+    return HTMLResponse(content=render_member_cards(members, profiles, theme))
 
 
 router._api_router.add_api_route(
@@ -1073,17 +1070,18 @@ async def member_info(
         load_social_media,
         member_committees,
         member_passage_record,
-        member_service,
+        member_photo_url,
     )
     from openbb_congress_gov.utils.member_cards import render_member_bio
 
     record = await load_member_record(bioguide_id)
     committees = await member_committees(bioguide_id)
     social = (await load_social_media()).get(bioguide_id, {})
-    voting = await member_passage_record(bioguide_id, member_service(record))
+    voting = await member_passage_record(bioguide_id)
+    photo_url = await member_photo_url(bioguide_id)
 
     return HTMLResponse(
-        content=render_member_bio(record, committees, social, voting, theme)
+        content=render_member_bio(record, committees, social, voting, theme, photo_url)
     )
 
 
@@ -1220,6 +1218,9 @@ router._api_router.add_api_route(
 
 
 _BACKGROUND_TASKS: set = set()
+_WARM_GUARD: set = set()
+_REFRESH_INTERVAL_SECONDS: int = 3600
+_PASSAGE_REFRESH_INTERVAL_SECONDS: int = 43200
 
 
 async def _preload_bills() -> None:
@@ -1227,40 +1228,55 @@ async def _preload_bills() -> None:
     import asyncio
     from datetime import datetime
 
-    from openbb_congress_gov.utils.bulk import load_billstatus, load_billsum
+    from openbb_congress_gov.utils.bulk import ensure_billstatus
     from openbb_congress_gov.utils.constants import BillTypes
     from openbb_congress_gov.utils.helpers import year_to_congress
 
     congress = year_to_congress(datetime.now().year)
-    tasks: list = []
-    for bill_type in BillTypes:
-        tasks.append(load_billstatus(congress, bill_type))
-        tasks.append(load_billsum(congress, bill_type))
+    logger.info("congress_gov: warming current Congress %d bills...", congress)
+    await asyncio.gather(
+        *[ensure_billstatus(congress, bt) for bt in BillTypes],
+        return_exceptions=True,
+    )
+    logger.info("congress_gov: current Congress %d bills ready", congress)
 
-    await asyncio.gather(*tasks, return_exceptions=True)
+
+def _served_range(members: list, current: int) -> list[int]:
+    """Return Congresses from the current one back to the earliest any member served."""
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    earliest = current
+    for member in members:
+        for term in member.get("terms") or []:
+            start = (term.get("start") or "")[:4]
+            if not start.isdigit():
+                continue
+            try:
+                earliest = min(earliest, year_to_congress(int(start)))
+            except ValueError:
+                continue
+    return list(range(current, earliest - 1, -1))
 
 
 async def _preload_members() -> None:
-    """Warm the member reference datasets and recent Voteview roll-call data."""
+    """Warm reference data, then precompute the member vote and legislation indexes."""
     import asyncio
     from datetime import datetime
 
     from openbb_congress_gov.utils.bulk import (
         _BILLSTATUS_MIN_CONGRESS,
-        load_billstatus,
+        build_passage_index,
+        ingest_billstatus_range,
         load_committee_membership,
         load_committee_structure,
         load_legislators,
         load_members,
         load_social_media,
-        load_voteview_members,
-        load_voteview_rollcalls,
-        load_voteview_votes,
     )
-    from openbb_congress_gov.utils.constants import BillTypes
     from openbb_congress_gov.utils.helpers import year_to_congress
 
-    await asyncio.gather(
+    logger.info("congress_gov: warming member reference data...")
+    results = await asyncio.gather(
         load_members(),
         load_social_media(),
         load_committee_membership(),
@@ -1269,16 +1285,20 @@ async def _preload_members() -> None:
         return_exceptions=True,
     )
 
+    members = results[0] if isinstance(results[0], list) else []
     current = year_to_congress(datetime.now().year)
-    for congress in range(current, _BILLSTATUS_MIN_CONGRESS - 1, -1):
-        tasks: list = []
-        for chamber in ("H", "S"):
-            tasks.append(load_voteview_members(congress, chamber))
-            tasks.append(load_voteview_rollcalls(congress, chamber))
-            tasks.append(load_voteview_votes(congress, chamber))
-        for bill_type in BillTypes:
-            tasks.append(load_billstatus(congress, bill_type))
-        await asyncio.gather(*tasks, return_exceptions=True)
+    congresses = _served_range(members, current)
+    legislatable = [c for c in congresses if c >= _BILLSTATUS_MIN_CONGRESS]
+
+    try:
+        await build_passage_index(congresses, keep_votes=congresses[:2])
+    except Exception as exc:  # noqa: BLE001
+        logger.error("congress_gov: passage warmup failed: %s", exc, exc_info=exc)
+
+    try:
+        await ingest_billstatus_range(legislatable)
+    except Exception as exc:  # noqa: BLE001
+        logger.error("congress_gov: legislation warmup failed: %s", exc, exc_info=exc)
 
 
 def _schedule_background(coro_factory) -> None:
@@ -1292,18 +1312,86 @@ def _schedule_background(coro_factory) -> None:
 
     task = loop.create_task(coro_factory())
     _BACKGROUND_TASKS.add(task)
-    task.add_done_callback(_BACKGROUND_TASKS.discard)
+
+    def _done(finished) -> None:
+        _BACKGROUND_TASKS.discard(finished)
+        exc = None if finished.cancelled() else finished.exception()
+        if exc is not None:
+            logger.error(
+                "congress_gov: background warmup failed: %s", exc, exc_info=exc
+            )
+
+    task.add_done_callback(_done)
 
 
-def _warm_bills_cache() -> None:
-    """Kick off the BILLSTATUS cache warmup in the background at API startup."""
-    _schedule_background(_preload_bills)
+async def _refresh_loop() -> None:
+    """Periodically re-ingest current-Congress archives that GovInfo has updated."""
+    import asyncio
+
+    from openbb_congress_gov.utils.bulk import refresh_billstatus
+
+    logger.info(
+        "congress_gov: refresh loop active (every %ds, all ingested Congresses)",
+        _REFRESH_INTERVAL_SECONDS,
+    )
+    while True:
+        try:
+            await asyncio.sleep(_REFRESH_INTERVAL_SECONDS)
+            await refresh_billstatus()
+        except asyncio.CancelledError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            logger.error("congress_gov: refresh tick failed: %s", exc, exc_info=exc)
 
 
-def _warm_members_cache() -> None:
-    """Kick off the member + Voteview cache warmup in the background at startup."""
-    _schedule_background(_preload_members)
+async def _passage_refresh_loop() -> None:
+    """Periodically re-ingest the current Congress's Voteview passage votes."""
+    import asyncio
+
+    from openbb_congress_gov.utils.bulk import refresh_passage
+
+    logger.info(
+        "congress_gov: passage refresh loop active (every %ds, current Congress)",
+        _PASSAGE_REFRESH_INTERVAL_SECONDS,
+    )
+    while True:
+        try:
+            await asyncio.sleep(_PASSAGE_REFRESH_INTERVAL_SECONDS)
+            await refresh_passage()
+        except asyncio.CancelledError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            logger.error(
+                "congress_gov: passage refresh tick failed: %s", exc, exc_info=exc
+            )
 
 
-router._api_router.add_event_handler("startup", _warm_bills_cache)
-router._api_router.add_event_handler("startup", _warm_members_cache)
+async def _warmup() -> None:
+    """Warm the current Congress first (Bills widgets), then the member data."""
+    from openbb_congress_gov.utils.bulk import seed_billstatus_markers
+
+    logger.info("congress_gov: startup cache warmup begun")
+    await _preload_bills()
+    await _preload_members()
+    await seed_billstatus_markers()
+    logger.info("congress_gov: startup cache warmup complete")
+    _schedule_background(_refresh_loop)
+    _schedule_background(_passage_refresh_loop)
+
+
+def _warm_cache() -> None:
+    """Kick off the ordered cache warmup in the background at API startup, once."""
+    if _WARM_GUARD:
+        return
+    _WARM_GUARD.add(True)
+    _schedule_background(_warmup)
+
+
+def _stop_background() -> None:
+    """Cancel any in-flight warmup/refresh tasks at API shutdown."""
+    for task in list(_BACKGROUND_TASKS):
+        task.cancel()
+
+
+router._api_router.add_event_handler("startup", _warm_cache)
+router._api_router.add_event_handler("shutdown", _stop_background)

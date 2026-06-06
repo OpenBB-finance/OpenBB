@@ -2,7 +2,7 @@
 
 import asyncio
 import io
-import json
+import logging
 import os
 import re
 import zipfile
@@ -11,13 +11,14 @@ from datetime import date as dateType
 
 from openbb_congress_gov.utils.helpers import BillsState
 
+logger = logging.getLogger("uvicorn.error")
+
 GOVINFO_BASE = "https://www.govinfo.gov"
 BULKDATA_BASE = f"{GOVINFO_BASE}/bulkdata"
 
 _CCAL_CHAMBER_CODE = {"house": "h", "senate": "s"}
 _CCAL_PKG_RE = re.compile(r"CCAL-(\d+)([hs])cal-(\d{4}-\d{2}-\d{2})")
 
-_MEMBER_RE = re.compile(r"-(\d+)([a-z]+)(\d+)\.xml$", re.IGNORECASE)
 _BILL_URL_RE = re.compile(r"/bill/(\d+)/([a-z]+)/(\d+)", re.IGNORECASE)
 _BILL_REF_RE = re.compile(r"^/?(\d+)[-/]([a-z]+)[-/](\d+)", re.IGNORECASE)
 _AMENDMENT_URL_RE = re.compile(r"/amendment/(\d+)/([a-z]+)/(\d+)", re.IGNORECASE)
@@ -64,7 +65,7 @@ def _cache_dir() -> str | None:
     """Return the on-disk bulk-data cache directory, or None if it is not writable."""
     from openbb_core.app.utils import get_user_cache_directory
 
-    path = f"{get_user_cache_directory()}/congress_gov/bulkdata"
+    path = os.path.join(get_user_cache_directory(), "congress_gov", "bulkdata")
     try:
         os.makedirs(path, exist_ok=True)
     except OSError:
@@ -72,74 +73,79 @@ def _cache_dir() -> str | None:
     return path
 
 
-def _write_cache(path: str, meta_path: str, content: bytes, headers) -> None:
-    """Persist downloaded content and conditional-GET metadata, ignoring write errors."""
-    try:
-        with open(path, "wb") as f:
-            f.write(content)
-        with open(meta_path, "w", encoding="utf-8") as f:
-            json.dump(
-                {
-                    "etag": headers.get("ETag"),
-                    "last_modified": headers.get("Last-Modified"),
-                },
-                f,
-            )
-    except OSError:
-        pass
-
-
-async def _cached_get(url: str, filename: str) -> tuple[bytes, bool]:
-    """Fetch ``url`` with a conditional GET, caching the body on disk when writable."""
+async def _download(url: str) -> bytes:
+    """Download ``url`` and return its body (no on-disk caching)."""
     import aiohttp
     from openbb_core.app.model.abstract.error import OpenBBError
-
-    cache_dir = _cache_dir()
-    path = f"{cache_dir}/{filename}" if cache_dir else None
-    meta_path = f"{path}.meta.json" if path else None
-
-    meta: dict = {}
-    if meta_path and os.path.exists(meta_path):
-        with open(meta_path, encoding="utf-8") as f:
-            meta = json.load(f)
-
-    headers: dict = {}
-    if path and os.path.exists(path):
-        if meta.get("etag"):
-            headers["If-None-Match"] = meta["etag"]
-        if meta.get("last_modified"):
-            headers["If-Modified-Since"] = meta["last_modified"]
 
     try:
         async with (
             aiohttp.ClientSession() as session,
-            session.get(url, headers=headers) as response,
+            session.get(url) as response,
         ):
-            if response.status == 304 and path and os.path.exists(path):
-                with open(path, "rb") as f:
-                    return f.read(), False
-
             response.raise_for_status()
-            content = await response.read()
-            if path and meta_path:
-                _write_cache(path, meta_path, content, response.headers)
-            return content, True
+            return await response.read()
     except Exception as exc:  # noqa: BLE001
-        if path and os.path.exists(path):
-            with open(path, "rb") as f:
-                return f.read(), False
         raise OpenBBError(f"Failed to download data from {url} -> {exc}") from exc
 
 
-async def _download_zip(
-    collection: str, congress: int, bill_type: str
-) -> tuple[bytes, bool]:
-    """Download a bulk ZIP using a conditional GET."""
-    bt = bill_type.lower()
-    return await _cached_get(
-        bulk_zip_url(collection, congress, bt),
-        f"{collection}-{congress}-{bt}.zip",
-    )
+async def _url_last_modified(url: str) -> str | None:
+    """Return a URL's ``Last-Modified`` header via a HEAD request, or None."""
+    import aiohttp
+
+    try:
+        async with (
+            aiohttp.ClientSession() as session,
+            session.head(url, allow_redirects=True) as response,
+        ):
+            if response.status >= 400:
+                return None
+            return response.headers.get("Last-Modified")
+    except Exception:  # noqa: BLE001
+        return None
+
+
+async def _billstatus_listing(congress: int) -> dict[str, str]:
+    """Return ``{bill_type: last_modified}`` from the GovInfo BILLSTATUS JSON listing.
+
+    Reads ``/bulkdata/json/BILLSTATUS/{congress}``, the authoritative directory
+    listing whose per-folder ``formattedLastModifiedTime`` reflects when GovInfo
+    last regenerated each bill type's bulk archive.
+    """
+    from openbb_core.provider.utils.helpers import amake_request
+
+    url = f"{BULKDATA_BASE}/json/BILLSTATUS/{congress}"
+    try:
+        data = await amake_request(url, timeout=30)
+    except Exception:  # noqa: BLE001
+        return {}
+
+    listing: dict[str, str] = {}
+    for entry in (data or {}).get("files", []) if isinstance(data, dict) else []:
+        name = (entry.get("justFileName") or "").lower()
+        modified = entry.get("formattedLastModifiedTime")
+        if name and modified:
+            listing[name] = modified
+    return listing
+
+
+async def _download_zip(collection: str, congress: int, bill_type: str) -> bytes:
+    """Download a bulk ZIP archive."""
+    return await _download(bulk_zip_url(collection, congress, bill_type.lower()))
+
+
+_WRITE_LOCKS: dict = {}
+
+
+async def _db_write(fn, *args) -> None:
+    """Run a store write off the loop under a single-writer lock (one writer at a time)."""
+    loop = asyncio.get_running_loop()
+    lock = _WRITE_LOCKS.get(loop)
+    if lock is None:
+        lock = asyncio.Lock()
+        _WRITE_LOCKS[loop] = lock
+    async with lock:
+        await asyncio.to_thread(fn, *args)
 
 
 def _text(element, path: str) -> str:
@@ -195,7 +201,7 @@ def _billstatus_record(bill) -> dict:
                 "actionDate": _text(summary, "actionDate"),
                 "actionDesc": _text(summary, "actionDesc"),
                 "updateDate": _text(summary, "updateDate"),
-                "text": _text(summary, "cdata/text"),
+                "text": _text(summary, "text"),
             }
         )
 
@@ -291,35 +297,6 @@ def _amendment_record(am) -> dict:
     }
 
 
-def parse_billsum(zip_bytes: bytes) -> dict[int, list[dict]]:
-    """Parse a BILLSUM ZIP into ``{bill_number: [summary, ...]}``."""
-    from defusedxml.ElementTree import fromstring
-
-    out: dict[int, list[dict]] = {}
-    with zipfile.ZipFile(io.BytesIO(zip_bytes)) as archive:
-        for name in archive.namelist():
-            match = _MEMBER_RE.search(name)
-            if not match:
-                continue
-            number = int(match.group(3))
-            root = fromstring(archive.read(name))
-            summaries: list[dict] = []
-            for item in root.findall("item"):
-                summary = item.find("summary")
-                if summary is None:
-                    continue
-                summaries.append(
-                    {
-                        "actionDate": _text(summary, "action-date"),
-                        "actionDesc": _text(summary, "action-desc"),
-                        "text": _text(summary, "summary-text"),
-                    }
-                )
-            if summaries:
-                out[number] = summaries
-    return out
-
-
 _LOAD_LOCKS: dict[str, asyncio.Lock] = {}
 
 
@@ -340,24 +317,171 @@ async def _memoized(key: str, loader: Callable[[], Awaitable]):
         return records
 
 
-async def load_billstatus(congress: int, bill_type: str) -> list[dict]:
-    """Load (cached) BILLSTATUS records for a Congress and bill type."""
+def _legislation_rows_from_records(
+    records: list[dict], congress: int, bill_type: str
+) -> list[tuple]:
+    """Derive compact sponsor/cosponsor rows from full BILLSTATUS records."""
+    rows: list[tuple] = []
+    for bill in records:
+        sponsor = next(
+            (
+                s.get("bioguideId")
+                for s in bill.get("sponsors") or []
+                if s.get("bioguideId")
+            ),
+            None,
+        )
+        members = [(sponsor, "Sponsor")] if sponsor else []
+        for cosponsor in bill.get("cosponsors") or []:
+            bioguide = cosponsor.get("bioguideId")
+            if bioguide and bioguide != sponsor:
+                members.append((bioguide, "Cosponsor"))
+        for bioguide, role in members:
+            rows.append((bioguide, congress, bill_type, bill.get("bill_id"), role))
+    return rows
+
+
+async def _ingest_billstatus(congress: int, bill_type: str) -> None:
+    """Download a BILLSTATUS archive, parse it, and store its rows in the database."""
+    import time
+
+    from openbb_congress_gov.utils import store
+
+    bt = bill_type.lower()
+    started = time.perf_counter()
+    logger.info("congress_gov: ingesting BILLSTATUS %s-%s (full)...", congress, bt)
+    zip_bytes = await _download_zip("BILLSTATUS", congress, bt)
+    records = await asyncio.to_thread(parse_billstatus, zip_bytes)
+    leg_rows = _legislation_rows_from_records(records, congress, bt)
+    await _db_write(store.ingest_bills, congress, bt, records, leg_rows)
+    logger.info(
+        "congress_gov: ingested BILLSTATUS %s-%s (%d bills, %.1fMB) in %.1fs",
+        congress,
+        bt,
+        len(records),
+        len(zip_bytes) / 1e6,
+        time.perf_counter() - started,
+    )
+
+
+async def ensure_billstatus(congress: int, bill_type: str) -> None:
+    """Ingest a Congress/type's BILLSTATUS into the database if not already present."""
+    from openbb_congress_gov.utils import store
+
+    bt = bill_type.lower()
 
     async def _load():
-        zip_bytes, _ = await _download_zip("BILLSTATUS", congress, bill_type)
-        return parse_billstatus(zip_bytes)
+        if not store.bills_loaded(congress, bt):
+            await _ingest_billstatus(congress, bt)
+        return True
 
-    return await _memoized(f"BILLSTATUS_{congress}_{bill_type.lower()}", _load)
+    await _memoized(f"BILLSTATUS_{congress}_{bt}", _load)
 
 
-async def load_billsum(congress: int, bill_type: str) -> dict[int, list[dict]]:
-    """Load (cached) BILLSUM summaries for a Congress and bill type."""
+def _loaded_archives() -> dict[int, dict[str, str]]:
+    """Map every ingested Congress to ``{bill_type: ingest_kind}``.
 
-    async def _load():
-        zip_bytes, _ = await _download_zip("BILLSUM", congress, bill_type)
-        return parse_billsum(zip_bytes)
+    ``ingest_kind`` is ``"bills"`` for archives stored with full records or
+    ``"legislation"`` for the slim member-legislation-only archives. When a
+    Congress/type exists under both, the full-record kind wins.
+    """
+    from openbb_congress_gov.utils import store
 
-    return await _memoized(f"BILLSUM_{congress}_{bill_type.lower()}", _load)
+    archives: dict[int, dict[str, str]] = {}
+    for kind in ("legislation", "bills"):
+        for key in store.loaded_keys(kind):
+            congress_str, _, bt = key.partition("-")
+            if congress_str.isdigit() and bt:
+                archives.setdefault(int(congress_str), {})[bt] = kind
+    return archives
+
+
+async def _reingest_archive(congress: int, bill_type: str, kind: str) -> None:
+    """Re-ingest one archive using the same path it was originally loaded with."""
+    if kind == "bills":
+        await _ingest_billstatus(congress, bill_type)
+    else:
+        await _ingest_legislation(congress, bill_type)
+
+
+async def seed_billstatus_markers() -> None:
+    """Record each ingested archive's listing stamp after a fresh warmup.
+
+    Stamps every loaded Congress so the first refresh tick compares equal and
+    does not needlessly re-download what was just warmed.
+    """
+    from openbb_congress_gov.utils import store
+
+    for congress in sorted(_loaded_archives()):
+        listing = await _billstatus_listing(congress)
+        for bt, modified in listing.items():
+            await _db_write(
+                store.put_parsed, f"lm:BILLSTATUS_{congress}_{bt}", modified
+            )
+
+
+async def refresh_billstatus() -> None:
+    """Re-ingest any ingested BILLSTATUS archive that GovInfo has regenerated.
+
+    GovInfo re-publishes both current and historical Congresses, so every
+    Congress we hold is polled. For each one the JSON listing is read once and
+    each bill type's ``formattedLastModifiedTime`` is compared against the stamp
+    stored at last ingest; only changed archives are re-ingested, via the same
+    path (full records or slim legislation) they were originally loaded with.
+    """
+    from openbb_congress_gov.utils import store
+
+    refreshed = 0
+    for congress, types in sorted(_loaded_archives().items()):
+        listing = await _billstatus_listing(congress)
+        if not listing:
+            continue
+        for bt, kind in types.items():
+            remote = listing.get(bt)
+            if not remote or remote == store.get_parsed(
+                f"lm:BILLSTATUS_{congress}_{bt}"
+            ):
+                continue
+            try:
+                await _reingest_archive(congress, bt, kind)
+                await _db_write(
+                    store.put_parsed, f"lm:BILLSTATUS_{congress}_{bt}", remote
+                )
+                refreshed += 1
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "congress_gov: refresh of BILLSTATUS %s-%s failed: %s",
+                    congress,
+                    bt,
+                    exc,
+                )
+    if refreshed:
+        logger.info("congress_gov: refreshed %d BILLSTATUS archive(s)", refreshed)
+
+
+async def list_bills(
+    congress: int,
+    bill_types: list[str],
+    *,
+    start_date: dateType | None = None,
+    end_date: dateType | None = None,
+    limit: int | None = None,
+    offset: int | None = None,
+    sort_by: str = "desc",
+) -> list[dict]:
+    """Ingest the Congress's archives if needed, then query the bills list."""
+    from openbb_congress_gov.utils import store
+
+    await asyncio.gather(*[ensure_billstatus(congress, bt) for bt in bill_types])
+    return store.list_bills(
+        congress,
+        [bt.lower() for bt in bill_types],
+        start_date,
+        end_date,
+        limit,
+        offset,
+        sort_by,
+    )
 
 
 def package_urls(pkg: str) -> dict:
@@ -387,74 +511,20 @@ def derive_text_formats(version: dict) -> dict | None:
     }
 
 
-def to_list_item(record: dict) -> dict:
-    """Project a full BILLSTATUS record to the slim ``bills`` list shape."""
-    return {
-        "updateDate": (record.get("updateDate") or "")[:10],
-        "bill_id": record.get("bill_id"),
-        "congress": record.get("congress"),
-        "number": record.get("number"),
-        "originChamber": record.get("originChamber"),
-        "originChamberCode": record.get("originChamberCode"),
-        "type": record.get("type"),
-        "title": record.get("title"),
-        "latestAction": record.get("latestAction", {}),
-        "updateDateIncludingText": record.get("updateDateIncludingText"),
-    }
-
-
-def filter_bills(
-    records: list[dict],
-    *,
-    start_date: dateType | None = None,
-    end_date: dateType | None = None,
-    limit: int | None = None,
-    offset: int | None = None,
-    sort_by: str = "desc",
-) -> list[dict]:
-    """Apply post-fetch filtering, sorting, and pagination to bill records."""
-
-    def updated(record: dict) -> str:
-        return (record.get("updateDate") or "")[:10]
-
-    def sort_key(record: dict) -> str:
-        latest = record.get("latestAction") or {}
-        return latest.get("actionDate") or record.get("updateDate") or ""
-
-    out = records
-    if start_date is not None:
-        out = [r for r in out if updated(r) and updated(r) >= str(start_date)]
-    if end_date is not None:
-        out = [r for r in out if updated(r) and updated(r) <= str(end_date)]
-
-    out = sorted(out, key=sort_key, reverse=sort_by == "desc")
-
-    out = out[offset or 0 :]
-
-    if limit is None:
-        return out[:100]
-    if limit == 0:
-        return out
-    return out[:limit]
-
-
 async def load_bill_record(bill_id: str) -> dict:
-    """Load a single bill's full record, with BILLSUM summaries merged in."""
+    """Load a single bill's full record by id (summaries come from BILLSTATUS)."""
     from openbb_core.app.model.abstract.error import OpenBBError
 
+    from openbb_congress_gov.utils import store
+
     congress, bill_type, number = parse_bill_ref(bill_id)
-    records = await load_billstatus(congress, bill_type)
-    record = next((r for r in records if r.get("number") == number), None)
+    await ensure_billstatus(congress, bill_type)
+    record = store.get_bill(f"{congress}-{bill_type.lower()}-{number}")
 
     if record is None:
         raise OpenBBError(
             f"Bill not found in bulk data: {congress}/{bill_type}/{number}"
         )
-
-    record = dict(record)
-    billsum = await load_billsum(congress, bill_type)
-    if number in billsum:
-        record["summaries"] = billsum[number]
 
     return record
 
@@ -477,40 +547,32 @@ def to_amendment_list_item(record: dict) -> dict:
     }
 
 
+async def _ensure_congress_billstatus(congress: int) -> None:
+    """Ingest every bill type's BILLSTATUS for a Congress (amendments live in bills)."""
+    from openbb_congress_gov.utils.constants import BillTypes
+
+    await asyncio.gather(*[ensure_billstatus(congress, bt) for bt in BillTypes])
+
+
 async def load_amendments(
     congress: int, amendment_type: str | None = None
 ) -> list[dict]:
-    """Load (cached) amendments for a Congress from the BILLSTATUS archives."""
-    from openbb_congress_gov.utils.constants import BillTypes
+    """Ingest the Congress's BILLSTATUS if needed, then return its amendments."""
+    from openbb_congress_gov.utils import store
 
-    async def _load():
-        groups = await asyncio.gather(
-            *[load_billstatus(congress, bt) for bt in BillTypes]
-        )
-        seen: dict[tuple[str, str], dict] = {}
-        for group in groups:
-            for bill in group:
-                for amendment in bill.get("amendments") or []:
-                    key = (amendment["type"], amendment["number"])
-                    seen.setdefault(key, amendment)
-        return list(seen.values())
-
-    records = await _memoized(f"AMENDMENTS_{congress}", _load)
-
-    if amendment_type is not None:
-        wanted = amendment_type.lower()
-        records = [r for r in records if (r.get("type") or "").lower() == wanted]
-
-    return records
+    await _ensure_congress_billstatus(congress)
+    return store.list_amendments(congress, amendment_type)
 
 
 async def load_amendment_record(amendment_id: str) -> dict:
-    """Load a single amendment's full record from the BILLSTATUS archives."""
+    """Load a single amendment's full record by id from the database."""
     from openbb_core.app.model.abstract.error import OpenBBError
 
+    from openbb_congress_gov.utils import store
+
     congress, amendment_type, number = parse_amendment_ref(amendment_id)
-    records = await load_amendments(congress, amendment_type)
-    record = next((r for r in records if r.get("number") == number), None)
+    await _ensure_congress_billstatus(congress)
+    record = store.get_amendment(f"{congress}-{amendment_type.lower()}-{number}")
 
     if record is None:
         raise OpenBBError(
@@ -676,12 +738,19 @@ def _plaw_record(meta, pkg: str) -> dict:
 
 
 async def load_plaw(congress: int, law_type: str) -> list[dict]:
-    """Load (cached) PLAW law records for a Congress and law type (public/private)."""
+    """Load PLAW law records for a Congress/type from the store, ingesting first."""
+    from openbb_congress_gov.utils import store
+
     lt = law_type.lower()
+    name = f"plaw-{congress}-{lt}"
 
     async def _load():
-        zip_bytes, _ = await _download_zip("PLAW", congress, lt)
-        return parse_plaw(zip_bytes)
+        records = store.get_parsed(name)
+        if records is None:
+            zip_bytes = await _download_zip("PLAW", congress, lt)
+            records = await asyncio.to_thread(parse_plaw, zip_bytes)
+            await _db_write(store.put_parsed, name, records)
+        return records
 
     return await _memoized(f"PLAW_{congress}_{lt}", _load)
 
@@ -712,18 +781,21 @@ def _congress_years(congress: int) -> list[int]:
 
 
 async def load_calendars(congress: int, chamber: str) -> list[dict]:
-    """Load (cached) Congressional Calendar editions for a Congress and chamber."""
+    """Load Congressional Calendar editions for a Congress/chamber from the store."""
+    from openbb_congress_gov.utils import store
+
     chamber = chamber.lower()
     code = _CCAL_CHAMBER_CODE[chamber]
+    name = f"ccal-{congress}-{chamber}"
 
     async def _load():
+        cached = store.get_parsed(name)
+        if cached is not None:
+            return cached
         records: list[dict] = []
         seen: set[str] = set()
         for year in _congress_years(congress):
-            body, _ = await _cached_get(
-                f"{GOVINFO_BASE}/sitemap/CCAL_{year}_sitemap.xml",
-                f"CCAL_{year}_sitemap.xml",
-            )
+            body = await _download(f"{GOVINFO_BASE}/sitemap/CCAL_{year}_sitemap.xml")
             text = body.decode("utf-8", errors="replace")
             for match in _CCAL_PKG_RE.finditer(text):
                 pkg_congress, pkg_code, date = match.groups()
@@ -744,6 +816,7 @@ async def load_calendars(congress: int, chamber: str) -> list[dict]:
                         **package_urls(match.group(0)),
                     }
                 )
+        await _db_write(store.put_parsed, name, records)
         return records
 
     return await _memoized(f"CCAL_{congress}_{chamber}", _load)
@@ -930,12 +1003,8 @@ async def load_committee_structure() -> list[dict]:
 
 
 async def fetch_package_mods(package_id: str) -> bytes:
-    """Fetch (cached) the keyless MODS metadata for a GovInfo package."""
-    body, _ = await _cached_get(
-        f"{GOVINFO_BASE}/metadata/pkg/{package_id}/mods.xml",
-        f"{package_id}.mods.xml",
-    )
-    return body
+    """Fetch the keyless MODS metadata for a GovInfo package."""
+    return await _download(f"{GOVINFO_BASE}/metadata/pkg/{package_id}/mods.xml")
 
 
 def parse_mods(mods_bytes: bytes, package_id: str) -> dict:
@@ -1072,6 +1141,35 @@ async def search_govinfo(
     return records
 
 
+_PHOTO_BASE = "https://unitedstates.github.io/images/congress/225x275"
+
+
+def photo_link(bioguide: str) -> str:
+    """Build the unitedstates portrait URL for a bioguide id."""
+    return f"{_PHOTO_BASE}/{bioguide}.jpg"
+
+
+async def member_photo_url(bioguide: str) -> str:
+    """Return the member's portrait URL if it exists, else an empty string."""
+    if not bioguide:
+        return ""
+
+    async def _load():
+        import aiohttp
+
+        url = photo_link(bioguide)
+        try:
+            async with (
+                aiohttp.ClientSession() as session,
+                session.head(url, allow_redirects=True) as response,
+            ):
+                return url if response.status == 200 else ""
+        except Exception:  # noqa: BLE001
+            return ""
+
+    return await _memoized(f"photo_{bioguide}", _load)
+
+
 async def load_legislators() -> dict:
     """Load (cached) current legislators, indexed by bioguide id."""
     from openbb_core.provider.utils.helpers import amake_request
@@ -1098,9 +1196,7 @@ async def load_legislators() -> dict:
                 "state": term.get("state", ""),
                 "full_name": member.get("name", {}).get("official_full", ""),
                 "birthday": member.get("bio", {}).get("birthday", ""),
-                "photo_url": (
-                    f"https://unitedstates.github.io/images/congress/225x275/{bioguide}.jpg"
-                ),
+                "photo_url": photo_link(bioguide),
             }
         state.bulk["legislators"] = index
 
@@ -1319,105 +1415,170 @@ def member_service(record: dict) -> list[tuple[int, str]]:
     return [(c, seen[c]) for c in sorted(seen, reverse=True)]
 
 
-async def member_legislation(bioguide: str, congresses: list[int]) -> list[dict]:
-    """Return bills a member sponsored or cosponsored across the given Congresses."""
+_INDEX_CONCURRENCY = 16
+
+
+async def _ingest_legislation(congress: int, bill_type: str) -> None:
+    """Download a BILLSTATUS archive and store only its compact legislation rows."""
+    from openbb_congress_gov.utils import store
+
+    bt = bill_type.lower()
+    zip_bytes = await _download_zip("BILLSTATUS", congress, bt)
+    records = await asyncio.to_thread(parse_billstatus, zip_bytes)
+    leg_rows = _legislation_rows_from_records(records, congress, bt)
+    await _db_write(store.ingest_legislation, congress, bt, records, leg_rows)
+
+
+async def ingest_billstatus_range(congresses: list[int]) -> None:
+    """Warm the member-legislation rows for a range of Congresses (no full records)."""
+    import time
+
+    from openbb_congress_gov.utils import store
     from openbb_congress_gov.utils.constants import BillTypes
 
-    pairs = [(congress, bt) for congress in congresses for bt in BillTypes]
-    groups = await asyncio.gather(*[load_billstatus(c, bt) for c, bt in pairs])
+    done = store.loaded_keys("bills") | store.loaded_keys("legislation")
+    units = [
+        (c, bt.lower())
+        for c in congresses
+        for bt in BillTypes
+        if f"{c}-{bt.lower()}" not in done
+    ]
+    if not units:
+        logger.info("congress_gov: legislation already warmed for %s", congresses)
+        return
+    logger.info(
+        "congress_gov: warming legislation for Congresses %s-%s (%d archives)...",
+        min(congresses),
+        max(congresses),
+        len(units),
+    )
+    started = time.perf_counter()
+    progress = {"n": 0}
+    semaphore = asyncio.Semaphore(_INDEX_CONCURRENCY)
 
-    out: list[dict] = []
-    for (congress, _), group in zip(pairs, groups):
-        for bill in group:
-            sponsored = any(
-                s.get("bioguideId") == bioguide for s in bill.get("sponsors") or []
-            )
-            cosponsored = any(
-                c.get("bioguideId") == bioguide for c in bill.get("cosponsors") or []
-            )
-            if not sponsored and not cosponsored:
-                continue
-            latest = bill.get("latestAction") or {}
-            out.append(
-                {
-                    "bill_id": bill.get("bill_id"),
-                    "congress": congress,
-                    "role": "Sponsor" if sponsored else "Cosponsor",
-                    "title": bill.get("title"),
-                    "introduced_date": bill.get("introducedDate"),
-                    "latest_action_date": latest.get("actionDate"),
-                    "latest_action": latest.get("text"),
-                }
-            )
+    async def _unit(congress: int, bill_type: str) -> None:
+        async with semaphore:
+            try:
+                await _ingest_legislation(congress, bill_type)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "congress_gov: legislation %s-%s failed: %s",
+                    congress,
+                    bill_type,
+                    exc,
+                )
+                return
+        progress["n"] += 1
+        logger.info(
+            "congress_gov: legislation %s-%s done (%d/%d)",
+            congress,
+            bill_type,
+            progress["n"],
+            len(units),
+        )
 
-    out.sort(key=lambda b: b.get("introduced_date") or "", reverse=True)
-    return out
+    await asyncio.gather(*[_unit(c, bt) for c, bt in units])
+    logger.info(
+        "congress_gov: legislation warm complete (%d archives in %.0fs)",
+        len(units),
+        time.perf_counter() - started,
+    )
+
+
+async def member_legislation(bioguide: str, congresses: list[int]) -> list[dict]:
+    """Return bills a member sponsored or cosponsored across the given Congresses."""
+    from openbb_congress_gov.utils import store
+
+    return store.get_legislation(bioguide, list(congresses))
 
 
 async def _voteview_text(kind: str, congress: int, chamber: str) -> str:
-    """Fetch (and disk-cache) a Voteview CSV for a Congress and chamber."""
+    """Download a Voteview CSV for a Congress and chamber (empty string on failure)."""
     url = f"{VOTEVIEW_BASE}/{kind}/{chamber}{congress}_{kind}.csv"
     try:
-        data, _ = await _cached_get(url, f"voteview-{kind}-{chamber}{congress}.csv")
+        data = await _download(url)
     except Exception:  # noqa: BLE001
         return ""
     return data.decode("utf-8", "replace")
 
 
-async def load_voteview_members(congress: int, chamber: str) -> dict[str, str]:
-    """Load (cached) a Voteview members file as ``{bioguide_id: icpsr}``."""
+async def _load_voteview(kind: str, congress: int, chamber: str, parser):
+    """Return a parsed Voteview file from the store, downloading and parsing first."""
+    from openbb_congress_gov.utils import store
+
+    name = f"vv-{kind}-{chamber}{congress}"
+
+    async def _load():
+        cached = store.get_parsed(name)
+        if cached is not None:
+            return cached
+        text = await _voteview_text(kind, congress, chamber)
+        parsed = await asyncio.to_thread(parser, text)
+        await _db_write(store.put_parsed, name, parsed)
+        return parsed
+
+    return await _memoized(f"VV_{kind.upper()}_{chamber}{congress}", _load)
+
+
+def _parse_voteview_members(text: str) -> dict[str, str]:
+    """Parse a Voteview members CSV into ``{bioguide_id: icpsr}``."""
     import csv
     import io
 
-    async def _load():
-        text = await _voteview_text("members", congress, chamber)
-        index: dict[str, str] = {}
-        for row in csv.DictReader(io.StringIO(text)):
-            bioguide = row.get("bioguide_id")
-            icpsr = row.get("icpsr")
-            if bioguide and icpsr:
-                index[bioguide] = icpsr
-        return index
+    index: dict[str, str] = {}
+    for row in csv.DictReader(io.StringIO(text)):
+        bioguide = row.get("bioguide_id")
+        icpsr = row.get("icpsr")
+        if bioguide and icpsr:
+            index[bioguide] = icpsr
+    return index
 
-    return await _memoized(f"VV_MEMBERS_{chamber}{congress}", _load)
+
+def _parse_voteview_rollcalls(text: str) -> dict[str, dict]:
+    """Parse a Voteview rollcalls CSV into ``{rollnumber: metadata}``."""
+    import csv
+    import io
+
+    rolls: dict[str, dict] = {}
+    for row in csv.DictReader(io.StringIO(text)):
+        rolls[row.get("rollnumber", "")] = {
+            "bill_number": row.get("bill_number", ""),
+            "question": row.get("vote_question", ""),
+            "result": row.get("vote_result", ""),
+            "title": row.get("vote_desc", ""),
+            "date": row.get("date", ""),
+        }
+    return rolls
+
+
+def _parse_voteview_votes(text: str) -> dict[str, list[tuple]]:
+    """Parse a Voteview votes CSV into ``{icpsr: [(rollnumber, cast_code)]}``."""
+    import csv
+    import io
+
+    index: dict[str, list[tuple]] = {}
+    for row in csv.DictReader(io.StringIO(text)):
+        index.setdefault(row.get("icpsr", ""), []).append(
+            (row.get("rollnumber", ""), row.get("cast_code", ""))
+        )
+    return index
+
+
+async def load_voteview_members(congress: int, chamber: str) -> dict[str, str]:
+    """Load a Voteview members file as ``{bioguide_id: icpsr}`` from the store."""
+    return await _load_voteview("members", congress, chamber, _parse_voteview_members)
 
 
 async def load_voteview_rollcalls(congress: int, chamber: str) -> dict[str, dict]:
-    """Load (cached) a Voteview rollcalls file as ``{rollnumber: metadata}``."""
-    import csv
-    import io
-
-    async def _load():
-        text = await _voteview_text("rollcalls", congress, chamber)
-        rolls: dict[str, dict] = {}
-        for row in csv.DictReader(io.StringIO(text)):
-            rolls[row.get("rollnumber", "")] = {
-                "bill_number": row.get("bill_number", ""),
-                "question": row.get("vote_question", ""),
-                "result": row.get("vote_result", ""),
-                "title": row.get("vote_desc", ""),
-                "date": row.get("date", ""),
-            }
-        return rolls
-
-    return await _memoized(f"VV_ROLLCALLS_{chamber}{congress}", _load)
+    """Load a Voteview rollcalls file as ``{rollnumber: metadata}`` from the store."""
+    return await _load_voteview(
+        "rollcalls", congress, chamber, _parse_voteview_rollcalls
+    )
 
 
 async def load_voteview_votes(congress: int, chamber: str) -> dict[str, list[tuple]]:
-    """Load (cached) a Voteview votes file as ``{icpsr: [(rollnumber, cast_code)]}``."""
-    import csv
-    import io
-
-    async def _load():
-        text = await _voteview_text("votes", congress, chamber)
-        index: dict[str, list[tuple]] = {}
-        for row in csv.DictReader(io.StringIO(text)):
-            index.setdefault(row.get("icpsr", ""), []).append(
-                (row.get("rollnumber", ""), row.get("cast_code", ""))
-            )
-        return index
-
-    return await _memoized(f"VV_VOTES_{chamber}{congress}", _load)
+    """Load a Voteview votes file as ``{icpsr: [(rollnumber, cast_code)]}`` from the store."""
+    return await _load_voteview("votes", congress, chamber, _parse_voteview_votes)
 
 
 async def member_congress_votes(
@@ -1461,31 +1622,156 @@ async def member_votes(
     bioguide: str, service: list[tuple[int, str]], *, limit: int = 25
 ) -> list[dict]:
     """Return a member's most recent roll-call votes on legislation across tenure."""
-    groups = await asyncio.gather(
-        *[member_congress_votes(bioguide, c, ch) for c, ch in service]
-    )
-    votes = [vote for group in groups for vote in group if vote.get("bill_id")]
+    votes: list[dict] = []
+    for congress, chamber in service:
+        group = await member_congress_votes(bioguide, congress, chamber)
+        votes.extend(vote for vote in group if vote.get("bill_id"))
+        if len(votes) >= limit:
+            break
     votes.sort(
         key=lambda v: (v.get("date") or "", v.get("rollnumber") or 0), reverse=True
     )
     return votes[:limit]
 
 
-async def member_passage_record(bioguide: str, service: list[tuple[int, str]]) -> dict:
-    """Tally a member's Yea/Nay record on 'On Passage' votes across their tenure."""
-    groups = await asyncio.gather(
-        *[member_congress_votes(bioguide, c, ch) for c, ch in service]
+def _is_passage_question(question: str | None) -> bool:
+    """Return True for a final-passage roll call (bill or joint/concurrent resolution)."""
+    text = (question or "").strip().lower()
+    return (
+        text.startswith(("on passage", "passage,"))
+        or "joint resolution" in text
+        or "concurrent resolution" in text
+        or "suspend the rules and pass" in text
     )
-    yea = nay = 0
-    for group in groups:
-        for vote in group:
-            if not (vote.get("question") or "").startswith("On Passage"):
-                continue
-            if vote["cast_code"] in _YEA_CODES:
-                yea += 1
-            elif vote["cast_code"] in _NAY_CODES:
-                nay += 1
 
+
+def _partial_passage_index(
+    members: dict, rollcalls: dict, votes: dict
+) -> dict[str, tuple[int, int]]:
+    """Tally each member's final-passage Yea/Nay counts for one Congress/chamber."""
+    icpsr_to_bioguide = {icpsr: bioguide for bioguide, icpsr in members.items()}
+    partial: dict[str, tuple[int, int]] = {}
+    for icpsr, casts in votes.items():
+        bioguide = icpsr_to_bioguide.get(icpsr)
+        if not bioguide:
+            continue
+        yea = nay = 0
+        for rollnumber, cast_code in casts:
+            meta = rollcalls.get(rollnumber)
+            if not meta or not _is_passage_question(meta.get("question")):
+                continue
+            if cast_code in _YEA_CODES:
+                yea += 1
+            elif cast_code in _NAY_CODES:
+                nay += 1
+        if yea or nay:
+            partial[bioguide] = (yea, nay)
+    return partial
+
+
+def _invalidate_voteview(congress: int, chamber: str) -> None:
+    """Drop cached Voteview members/rollcalls/votes so they re-download next load."""
+    from openbb_congress_gov.utils import store
+
+    state = BillsState()
+    for kind in ("members", "rollcalls", "votes"):
+        state.bulk.pop(f"VV_{kind.upper()}_{chamber}{congress}", None)
+        store.delete_parsed(f"vv-{kind}-{chamber}{congress}")
+
+
+async def _ingest_passage(congress: int, chamber: str, *, keep: bool) -> None:
+    """Compute and store one Congress/chamber's final-passage Yea/Nay tallies."""
+    from openbb_congress_gov.utils import store
+
+    members = await load_voteview_members(congress, chamber)
+    rollcalls = await load_voteview_rollcalls(congress, chamber)
+    votes = await load_voteview_votes(congress, chamber)
+    tallies = await asyncio.to_thread(_partial_passage_index, members, rollcalls, votes)
+    await _db_write(store.add_passage, congress, chamber, tallies)
+    if not keep:
+        state = BillsState()
+        state.bulk.pop(f"VV_ROLLCALLS_{chamber}{congress}", None)
+        state.bulk.pop(f"VV_VOTES_{chamber}{congress}", None)
+
+
+async def build_passage_index(
+    congresses: list[int], keep_votes: list[int] | None = None
+) -> None:
+    """Ingest each member's final-passage Yea/Nay record into the store from Voteview."""
+    import time
+
+    from openbb_congress_gov.utils import store
+
+    keep = set(congresses[:2] if keep_votes is None else keep_votes)
+    loaded = store.loaded_keys("passage")
+    units = [
+        (c, ch) for c in congresses for ch in ("H", "S") if f"{c}-{ch}" not in loaded
+    ]
+    if not units:
+        return
+    logger.info(
+        "congress_gov: warming passage votes for Congresses %s-%s (%d files)...",
+        min(congresses),
+        max(congresses),
+        len(units),
+    )
+    started = time.perf_counter()
+    semaphore = asyncio.Semaphore(_INDEX_CONCURRENCY)
+
+    async def _unit(congress: int, chamber: str) -> None:
+        async with semaphore:
+            await _ingest_passage(congress, chamber, keep=congress in keep)
+
+    await asyncio.gather(*[_unit(c, ch) for c, ch in units])
+    logger.info(
+        "congress_gov: passage votes warm complete (%d files in %.0fs)",
+        len(units),
+        time.perf_counter() - started,
+    )
+
+
+async def refresh_passage() -> None:
+    """Re-ingest the current Congress's Voteview passage votes when they change.
+
+    Voteview adds roll calls in near real time while a chamber is in session, so
+    the active Congress is re-polled on a slower cadence than the bill data. The
+    votes CSV ``Last-Modified`` gates the work: unchanged files are skipped, and
+    older Congresses (final once the term ends) are never touched here.
+    """
+    from datetime import datetime
+
+    from openbb_congress_gov.utils import store
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    congress = year_to_congress(datetime.now().year)
+    refreshed = 0
+    for chamber in ("H", "S"):
+        url = f"{VOTEVIEW_BASE}/votes/{chamber}{congress}_votes.csv"
+        remote = await _url_last_modified(url)
+        marker = f"lm:VV_{chamber}{congress}"
+        if remote is not None and remote == store.get_parsed(marker):
+            continue
+        try:
+            _invalidate_voteview(congress, chamber)
+            await _ingest_passage(congress, chamber, keep=True)
+            if remote is not None:
+                await _db_write(store.put_parsed, marker, remote)
+            refreshed += 1
+        except Exception as exc:  # noqa: BLE001
+            logger.warning(
+                "congress_gov: refresh of passage %s-%s failed: %s",
+                congress,
+                chamber,
+                exc,
+            )
+    if refreshed:
+        logger.info(
+            "congress_gov: refreshed %d current-Congress passage file(s)", refreshed
+        )
+
+
+def _passage_ratio(yea: int, nay: int) -> dict:
+    """Build the Yea/Nay summary dict from raw counts."""
     total = yea + nay
     return {
         "yea": yea,
@@ -1493,3 +1779,12 @@ async def member_passage_record(bioguide: str, service: list[tuple[int, str]]) -
         "total": total,
         "yea_pct": round(100 * yea / total, 1) if total else None,
     }
+
+
+async def member_passage_record(bioguide: str) -> dict:
+    """Return a member's career Yea/Nay record on final-passage votes from the store."""
+    from openbb_congress_gov.utils import store
+
+    row = store.get_passage(bioguide)
+    yea, nay = row if row else (0, 0)
+    return _passage_ratio(yea, nay)

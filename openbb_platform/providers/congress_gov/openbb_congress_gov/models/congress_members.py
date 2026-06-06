@@ -8,6 +8,8 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import ConfigDict, Field
 
+from openbb_congress_gov.utils.constants import state_options
+
 
 class CongressMembersQueryParams(QueryParams):
     """Congress Members Query Parameters."""
@@ -32,6 +34,13 @@ class CongressMembersQueryParams(QueryParams):
                 ],
                 "paramName": "party",
                 "label": "Party",
+            },
+        },
+        "state": {
+            "x-widget_config": {
+                "options": state_options,
+                "paramName": "state",
+                "label": "State",
             },
         },
     }

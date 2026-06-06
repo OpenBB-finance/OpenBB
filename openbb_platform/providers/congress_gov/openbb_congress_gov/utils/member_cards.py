@@ -21,7 +21,6 @@ _SOCIAL_LINKS = {
     "instagram": ("Instagram", "https://instagram.com/{}"),
     "youtube": ("YouTube", "https://youtube.com/user/{}"),
 }
-_PHOTO_URL = "https://unitedstates.github.io/images/congress/225x275/{}.jpg"
 _ROLE = {"rep": "Representative", "sen": "Senator"}
 _GENDER = {"M": "Male", "F": "Female"}
 
@@ -103,7 +102,12 @@ def _voting_section(voting: dict) -> str:
 
 
 def render_member_bio(
-    record: dict, committees: list, social: dict, voting: dict, theme: str | None
+    record: dict,
+    committees: list,
+    social: dict,
+    voting: dict,
+    theme: str | None,
+    photo_url: str = "",
 ) -> str:
     """Build the themed HTML bio card for a single member."""
     colors = _THEME["light"] if theme == "light" else _THEME["dark"]
@@ -113,7 +117,6 @@ def render_member_bio(
     terms = record.get("terms", [])
     current = terms[-1] if terms else {}
 
-    bioguide = ids.get("bioguide", "")
     full_name = escape(
         name.get("official_full")
         or f"{name.get('first', '')} {name.get('last', '')}".strip()
@@ -127,9 +130,9 @@ def render_member_bio(
         )
     )
 
-    if bioguide:
+    if photo_url:
         avatar = (
-            f'<img class="photo" src="{escape(_PHOTO_URL.format(bioguide), quote=True)}"'
+            f'<img class="photo" src="{escape(photo_url, quote=True)}"'
             f' alt="{full_name}" />'
         )
     else:

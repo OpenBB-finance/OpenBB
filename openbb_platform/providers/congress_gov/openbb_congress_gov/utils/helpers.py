@@ -71,15 +71,16 @@ def download_bills(urls: list[str]) -> list:
 
 async def get_bill_text_choices(bill_id: str, is_workspace: bool = False) -> list:
     """Fetch the direct download links for the available text versions of the specified bill."""
+    from openbb_congress_gov.utils import store
     from openbb_congress_gov.utils.bulk import (
         derive_text_formats,
-        load_billstatus,
+        ensure_billstatus,
         parse_bill_ref,
     )
 
     congress, bill_type, number = parse_bill_ref(bill_id)
-    records = await load_billstatus(congress, bill_type)
-    record = next((r for r in records if r.get("number") == number), None)
+    await ensure_billstatus(congress, bill_type)
+    record = store.get_bill(f"{congress}-{bill_type.lower()}-{number}")
     versions = record.get("textVersions", []) if record else []
 
     seen_urls: set = set()
@@ -119,6 +120,33 @@ async def get_bill_text_choices(bill_id: str, is_workspace: bool = False) -> lis
         results.append({"label": label, "value": entry["pdf"]})
 
     return results
+
+
+def document_choices_from_records(records: list, is_workspace: bool = False) -> list:
+    """Build viewer choices from a list of document records (package_id-based).
+
+    Used as an intelligent fallback when no specific package is selected: each
+    record's package id resolves to its content URLs, most-recent records first.
+    """
+    from openbb_congress_gov.utils.bulk import package_urls
+
+    if is_workspace is True:
+        choices = [
+            {
+                "label": f"{record.get('title') or record['package_id']}"
+                + f" - {record['package_id']}.pdf",
+                "value": record.get("pdf") or package_urls(record["package_id"])["pdf"],
+            }
+            for record in records
+            if record.get("package_id")
+        ]
+        return choices or [{"label": "No documents available.", "value": ""}]
+
+    return [
+        {"package_id": record["package_id"], **package_urls(record["package_id"])}
+        for record in records
+        if record.get("package_id")
+    ]
 
 
 def get_document_choices(package_id: str, is_workspace: bool = False) -> list:

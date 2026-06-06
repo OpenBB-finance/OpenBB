@@ -91,12 +91,26 @@ _BULK_BILL_RECORD = {
 def test_congress_bills_fetcher(monkeypatch, credentials=test_credentials):
     """Test Congress Bills fetcher offline against the GovInfo bulk path."""
 
-    async def _fake_load_billstatus(congress, bill_type):
-        return [dict(_BULK_BILL_RECORD)]
+    async def _fake_list_bills(congress, bill_types, **kwargs):
+        return [
+            {
+                "updateDate": "2025-11-30",
+                "bill_id": "119-s-1947",
+                "congress": 119,
+                "number": 1947,
+                "originChamber": "Senate",
+                "originChamberCode": "S",
+                "type": "S",
+                "title": "A Test Bill",
+                "latestAction": {
+                    "actionDate": "2025-02-10",
+                    "text": "Read the second time.",
+                },
+                "updateDateIncludingText": "2025-11-30T06:37:21Z",
+            }
+        ]
 
-    monkeypatch.setattr(
-        "openbb_congress_gov.utils.bulk.load_billstatus", _fake_load_billstatus
-    )
+    monkeypatch.setattr("openbb_congress_gov.utils.bulk.list_bills", _fake_list_bills)
     params = {
         "limit": 1,
     }
@@ -329,7 +343,7 @@ def test_congress_calendars_fetcher(monkeypatch, credentials=test_credentials):
     monkeypatch.setattr(
         "openbb_congress_gov.utils.bulk.load_calendars", _fake_load_calendars
     )
-    params = {"chamber": "house", "publishdate": "mostrecent"}
+    params = {"chamber": "house", "calendar_date": "mostrecent"}
 
     fetcher = CongressCalendarsFetcher()
     result = fetcher.test(params, credentials)

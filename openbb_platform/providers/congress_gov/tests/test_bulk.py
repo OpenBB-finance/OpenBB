@@ -2,7 +2,6 @@
 
 import asyncio
 import io
-import json
 import os
 import zipfile
 from datetime import date
@@ -30,7 +29,7 @@ _BILLSTATUS_29 = """<billStatus><bill>
   <relatedBills><item><title>Companion</title><congress>119</congress><number>5</number><type>S</type></item></relatedBills>
   <subjects><legislativeSubjects><item><name>Border security</name><updateDate>2025-01-08T19:36:54Z</updateDate></item></legislativeSubjects><policyArea><name>Immigration</name></policyArea></subjects>
   <titles><item><titleType>Short Title</titleType><title>Laken Riley Act</title><chamberName>Senate</chamberName><billTextVersionName>Introduced</billTextVersionName><updateDate>2025-02-12T02:53:16Z</updateDate></item><item><title>No Type Title</title></item></titles>
-  <summaries><summary><versionCode>00</versionCode><actionDate>2025-01-03</actionDate><actionDesc>Introduced in House</actionDesc><updateDate>2025-01-13T16:36:38Z</updateDate><cdata><text>&lt;p&gt;&lt;strong&gt;Laken Riley Act&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;This bill.&lt;/p&gt;</text></cdata></summary></summaries>
+  <summaries><summary><versionCode>00</versionCode><actionDate>2025-01-03</actionDate><actionDesc>Introduced in House</actionDesc><updateDate>2025-01-13T16:36:38Z</updateDate><text>&lt;p&gt;&lt;strong&gt;Laken Riley Act&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;This bill.&lt;/p&gt;</text></summary></summaries>
   <textVersions><item><type>Introduced in House</type><date>2025-01-03T05:00:00Z</date><formats><item><url>https://www.govinfo.gov/content/pkg/BILLS-119hr29ih/xml/BILLS-119hr29ih.xml</url></item></formats></item></textVersions>
   <amendments>
     <amendment>
@@ -71,11 +70,6 @@ _BILLSTATUS_5 = """<billStatus><bill>
 
 _BILLSTATUS_NO_BILL = "<billStatus><notabill/></billStatus>"
 
-_BILLSUM_29 = """<BillSummaries><item><title>Laken Riley Act</title>
-  <summary><action-date>2025-01-03</action-date><action-desc>Introduced in House</action-desc><summary-text>&lt;p&gt;&lt;strong&gt;Laken Riley Act&lt;/strong&gt;&lt;/p&gt;CRS summary.</summary-text></summary>
-</item>
-<item><title>No summary item</title></item></BillSummaries>"""
-
 
 def _zip_bytes(members: dict[str, str]) -> bytes:
     """Build an in-memory ZIP archive from ``{member_name: text}``."""
@@ -94,16 +88,6 @@ def _billstatus_zip() -> bytes:
             "BILLSTATUS-119hr5.xml": _BILLSTATUS_5,
             "BILLSTATUS-119hr7.xml": _BILLSTATUS_NO_BILL,
             "README.txt": "ignored non-xml member",
-        }
-    )
-
-
-def _billsum_zip() -> bytes:
-    """Return a BILLSUM ZIP with one summarized bill and a non-matching member."""
-    return _zip_bytes(
-        {
-            "BILLSUM-119hr29.xml": _BILLSUM_29,
-            "notamatch.txt": "ignored",
         }
     )
 
@@ -139,7 +123,7 @@ def test_cache_dir(monkeypatch, tmp_path):
 
     monkeypatch.setattr(core_utils, "get_user_cache_directory", lambda: str(tmp_path))
     path = bulk._cache_dir()
-    assert path == f"{tmp_path}/congress_gov/bulkdata"
+    assert path == os.path.join(str(tmp_path), "congress_gov", "bulkdata")
     assert os.path.isdir(path)
 
 
@@ -154,13 +138,6 @@ def test_cache_dir_not_writable(monkeypatch, tmp_path):
 
     monkeypatch.setattr(bulk.os, "makedirs", _raise)
     assert bulk._cache_dir() is None
-
-
-def test_write_cache_ignores_oserror(tmp_path):
-    """_write_cache swallows write errors so a read-only cache never breaks a fetch."""
-    path = str(tmp_path / "missing_dir" / "file.zip")
-    bulk._write_cache(path, path + ".meta.json", b"data", {})
-    assert not os.path.exists(path)
 
 
 def test_text_empty_self_closing():
@@ -234,84 +211,107 @@ def test_derive_text_formats_no_package():
     )
 
 
-def test_parse_billsum():
-    """parse_billsum keys summaries by the bill number from the member filename."""
-    out = bulk.parse_billsum(_billsum_zip())
-    assert set(out) == {29}
-    assert out[29][0]["actionDate"] == "2025-01-03"
-    assert "CRS summary" in out[29][0]["text"]
+def _window_records() -> list[dict]:
+    """Three HR bills spanning January-March 2025 for store.list_bills tests."""
+    return [
+        {
+            "bill_id": "119-hr-1",
+            "number": 1,
+            "type": "HR",
+            "title": "Jan",
+            "originChamber": "House",
+            "originChamberCode": "H",
+            "updateDate": "2025-01-10T00:00:00Z",
+            "updateDateIncludingText": "2025-01-10T00:00:00Z",
+            "latestAction": {"actionDate": "2025-01-10", "text": "Introduced"},
+        },
+        {
+            "bill_id": "119-hr-2",
+            "number": 2,
+            "type": "HR",
+            "title": "Feb",
+            "originChamber": "House",
+            "originChamberCode": "H",
+            "updateDate": "2025-02-20T00:00:00Z",
+            "updateDateIncludingText": "2025-02-20T00:00:00Z",
+            "latestAction": {"actionDate": "2025-02-20", "text": "Passed"},
+        },
+        {
+            "bill_id": "119-hr-3",
+            "number": 3,
+            "type": "HR",
+            "title": "Mar",
+            "originChamber": "House",
+            "originChamberCode": "H",
+            "updateDate": "2025-03-30T00:00:00Z",
+            "updateDateIncludingText": "2025-03-30T00:00:00Z",
+            "latestAction": {},
+        },
+    ]
 
 
-def test_to_list_item():
-    """to_list_item projects a record to the slim list shape and truncates the date."""
-    rec = bulk.parse_billstatus(_billstatus_zip())[0]
-    item = bulk.to_list_item(rec)
-    assert len(item["updateDate"]) == 10
-    assert item["bill_id"] == rec["bill_id"]
-    assert item["latestAction"] == rec["latestAction"]
-
-
-def test_to_list_item_missing_fields():
-    """to_list_item tolerates a record missing updateDate and latestAction."""
-    item = bulk.to_list_item({})
-    assert item["updateDate"] == ""
-    assert item["latestAction"] == {}
-
-
-_FILTER_RECORDS = [
-    {
-        "number": 1,
-        "updateDate": "2025-01-10T00:00:00Z",
-        "latestAction": {"actionDate": "2025-01-10"},
-    },
-    {
-        "number": 2,
-        "updateDate": "2025-02-20T00:00:00Z",
-        "latestAction": {"actionDate": "2025-02-20"},
-    },
-    {
-        "number": 3,
-        "updateDate": "2025-03-30T00:00:00Z",
-        "latestAction": {},
-    },
-]
-
-
-def test_filter_bills_window_and_sort_desc():
+def test_list_bills_window_and_sort_desc(monkeypatch, tmp_path):
     """A start/end window filters records and desc sort orders newest first."""
-    out = bulk.filter_bills(
-        _FILTER_RECORDS,
-        start_date=date(2025, 1, 15),
-        end_date=date(2025, 3, 1),
-        sort_by="desc",
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", _window_records(), [])
+    out = store.list_bills(
+        119, ["hr"], date(2025, 1, 15), date(2025, 3, 1), None, None, "desc"
     )
     assert [r["number"] for r in out] == [2]
 
 
-def test_filter_bills_sort_asc():
+def test_list_bills_sort_asc(monkeypatch, tmp_path):
     """Ascending sort orders oldest first; missing actionDate falls back to updateDate."""
-    out = bulk.filter_bills(_FILTER_RECORDS, sort_by="asc")
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", _window_records(), [])
+    out = store.list_bills(119, ["hr"], None, None, None, None, "asc")
     assert [r["number"] for r in out] == [1, 2, 3]
 
 
-def test_filter_bills_offset_and_limit():
+def test_list_bills_offset_and_limit(monkeypatch, tmp_path):
     """offset skips records and a positive limit caps the result."""
-    out = bulk.filter_bills(_FILTER_RECORDS, sort_by="asc", offset=1, limit=1)
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", _window_records(), [])
+    out = store.list_bills(119, ["hr"], None, None, 1, 1, "asc")
     assert [r["number"] for r in out] == [2]
 
 
-def test_filter_bills_limit_none_caps_at_100():
+def test_list_bills_limit_none_caps_at_100(monkeypatch, tmp_path):
     """limit=None caps the output at 100 records."""
-    records = [{"number": i, "updateDate": "2025-01-01"} for i in range(150)]
-    out = bulk.filter_bills(records, limit=None)
-    assert len(out) == 100
+    store = _point_store_at(monkeypatch, tmp_path)
+    records = [
+        {
+            "bill_id": f"119-hr-{i}",
+            "number": i,
+            "type": "HR",
+            "updateDate": "2025-01-01",
+        }
+        for i in range(150)
+    ]
+    store.ingest_bills(119, "hr", records, [])
+    assert len(store.list_bills(119, ["hr"], None, None, None, None, "desc")) == 100
 
 
-def test_filter_bills_limit_zero_no_cap():
+def test_list_bills_limit_zero_no_cap(monkeypatch, tmp_path):
     """limit=0 returns all records uncapped."""
-    records = [{"number": i, "updateDate": "2025-01-01"} for i in range(150)]
-    out = bulk.filter_bills(records, limit=0)
-    assert len(out) == 150
+    store = _point_store_at(monkeypatch, tmp_path)
+    records = [
+        {
+            "bill_id": f"119-hr-{i}",
+            "number": i,
+            "type": "HR",
+            "updateDate": "2025-01-01",
+        }
+        for i in range(150)
+    ]
+    store.ingest_bills(119, "hr", records, [])
+    assert len(store.list_bills(119, ["hr"], None, None, 0, None, "desc")) == 150
+
+
+def test_list_bills_empty_types(monkeypatch, tmp_path):
+    """An empty bill-type list short-circuits to an empty result."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    assert store.list_bills(119, [], None, None, None, None, "desc") == []
 
 
 class _FakeResponse:
@@ -361,6 +361,13 @@ class _FakeSession:
             raise self._get_exc
         return self._response
 
+    def head(self, url, allow_redirects=True, **kwargs):
+        """Return the canned response context manager (or raise)."""
+        self.requested_url = url
+        if self._get_exc is not None:
+            raise self._get_exc
+        return self._response
+
 
 def _patch_session(monkeypatch, **kwargs):
     """Patch aiohttp.ClientSession to construct the supplied fake session."""
@@ -378,179 +385,114 @@ def _cache(monkeypatch, tmp_path):
     return str(tmp_path)
 
 
-def test_download_zip_cold_200(monkeypatch, _cache):
-    """A cold 200 response writes the zip and meta file and reports changed=True."""
+def test_download_zip_returns_body(monkeypatch):
+    """_download_zip fetches the archive bytes (no on-disk caching)."""
     body = _billstatus_zip()
-    resp = _FakeResponse(
-        status=200,
-        headers={"ETag": "etag-1", "Last-Modified": "yesterday"},
-        body=body,
-    )
-    _patch_session(monkeypatch, response=resp)
-
-    content, changed = asyncio.run(bulk._download_zip("BILLSTATUS", 119, "HR"))
+    _patch_session(monkeypatch, response=_FakeResponse(status=200, body=body))
+    content = asyncio.run(bulk._download_zip("BILLSTATUS", 119, "HR"))
     assert content == body
-    assert changed is True
-
-    zip_path = os.path.join(_cache, "BILLSTATUS-119-hr.zip")
-    meta_path = zip_path + ".meta.json"
-    assert os.path.exists(zip_path)
-    with open(meta_path, encoding="utf-8") as f:
-        meta = json.load(f)
-    assert meta == {"etag": "etag-1", "last_modified": "yesterday"}
 
 
-def test_download_zip_304_returns_cached(monkeypatch, _cache):
-    """A 304 with a cached zip on disk returns the cached bytes and changed=False."""
-    body = _billstatus_zip()
-    zip_path = os.path.join(_cache, "BILLSTATUS-119-hr.zip")
-    with open(zip_path, "wb") as f:
-        f.write(body)
-    meta_path = zip_path + ".meta.json"
-    with open(meta_path, "w", encoding="utf-8") as f:
-        json.dump({"etag": "etag-1", "last_modified": "yesterday"}, f)
-
-    resp = _FakeResponse(status=304)
-    session = _patch_session(monkeypatch, response=resp)
-
-    content, changed = asyncio.run(bulk._download_zip("BILLSTATUS", 119, "HR"))
-    assert content == body
-    assert changed is False
-    assert session.requested_headers["If-None-Match"] == "etag-1"
-    assert session.requested_headers["If-Modified-Since"] == "yesterday"
-
-
-def test_download_zip_exception_with_cache(monkeypatch, _cache):
-    """A network error with a cached zip returns the cached bytes and changed=False."""
-    body = _billstatus_zip()
-    zip_path = os.path.join(_cache, "BILLSTATUS-119-hr.zip")
-    with open(zip_path, "wb") as f:
-        f.write(body)
-
-    _patch_session(monkeypatch, get_exc=RuntimeError("network down"))
-
-    content, changed = asyncio.run(bulk._download_zip("BILLSTATUS", 119, "HR"))
-    assert content == body
-    assert changed is False
-
-
-def test_download_zip_exception_no_cache(monkeypatch, _cache):
-    """A network error with no cached zip raises OpenBBError."""
+def test_download_raises_on_network_error(monkeypatch):
+    """A network error surfaces as an OpenBBError."""
     _patch_session(monkeypatch, get_exc=RuntimeError("network down"))
     with pytest.raises(OpenBBError, match="Failed to download data"):
-        asyncio.run(bulk._download_zip("BILLSTATUS", 119, "HR"))
+        asyncio.run(bulk._download("https://x/data.zip"))
 
 
-def test_cached_get_no_writable_cache(monkeypatch):
-    """With no writable cache dir, a 200 still returns content and persists nothing."""
-    monkeypatch.setattr(bulk, "_cache_dir", lambda: None)
-    body = _billstatus_zip()
-    resp = _FakeResponse(status=200, headers={"ETag": "etag-1"}, body=body)
-    session = _patch_session(monkeypatch, response=resp)
-
-    content, changed = asyncio.run(bulk._cached_get("https://x/data.zip", "data.zip"))
-    assert content == body
-    assert changed is True
-    assert session.requested_headers == {}
+def test_photo_link():
+    """photo_link builds the 225x275 portrait URL for a bioguide id."""
+    assert bulk.photo_link("A000055").endswith("/images/congress/225x275/A000055.jpg")
 
 
-def test_load_billstatus_cold_and_reuse(monkeypatch):
-    """load_billstatus parses when changed and reuses the cache when unchanged."""
+def test_member_photo_url_exists(monkeypatch):
+    """A 200 HEAD resolves to the portrait URL and is memoized."""
+    BillsState().bulk.clear()
+    _patch_session(monkeypatch, response=_FakeResponse(status=200))
+    url = asyncio.run(bulk.member_photo_url("A000055"))
+    assert url.endswith("/A000055.jpg")
+    assert BillsState().bulk["photo_A000055"] == url
+
+
+def test_member_photo_url_missing(monkeypatch):
+    """A 404 HEAD (e.g. a newly seated member) resolves to an empty string."""
+    BillsState().bulk.clear()
+    _patch_session(monkeypatch, response=_FakeResponse(status=404))
+    assert asyncio.run(bulk.member_photo_url("Z999999")) == ""
+
+
+def test_member_photo_url_error_and_empty(monkeypatch):
+    """A network error or an empty bioguide resolves to an empty string."""
+    BillsState().bulk.clear()
+    _patch_session(monkeypatch, get_exc=RuntimeError("boom"))
+    assert asyncio.run(bulk.member_photo_url("X000001")) == ""
+    assert asyncio.run(bulk.member_photo_url("")) == ""
+
+
+def test_ensure_billstatus_ingests_once_then_serves_from_store(monkeypatch, tmp_path):
+    """ensure_billstatus ingests once, memoizes in-process, then reads from the DB."""
+    store = _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
     body = _billstatus_zip()
-
     calls = {"n": 0}
 
-    async def _changed(collection, congress, bill_type):
+    async def _download(collection, congress, bill_type):
         calls["n"] += 1
-        return body, True
+        return body
 
-    monkeypatch.setattr(bulk, "_download_zip", _changed)
-    records = asyncio.run(bulk.load_billstatus(119, "hr"))
-    assert {r["number"] for r in records} == {29, 5}
+    monkeypatch.setattr(bulk, "_download_zip", _download)
+    asyncio.run(bulk.ensure_billstatus(119, "hr"))
+    rows = store.list_bills(119, ["hr"], None, None, None, None, "desc")
+    assert {r["number"] for r in rows} == {29, 5}
     assert calls["n"] == 1
 
-    parse_calls = {"n": 0}
-    real_parse = bulk.parse_billstatus
+    asyncio.run(bulk.ensure_billstatus(119, "HR"))
+    assert calls["n"] == 1
 
-    def _counting_parse(zip_bytes):
-        parse_calls["n"] += 1
-        return real_parse(zip_bytes)
-
-    monkeypatch.setattr(bulk, "parse_billstatus", _counting_parse)
-
-    async def _unchanged(collection, congress, bill_type):
-        return body, False
-
-    monkeypatch.setattr(bulk, "_download_zip", _unchanged)
-    cached = asyncio.run(bulk.load_billstatus(119, "HR"))
-    assert cached is records
-    assert parse_calls["n"] == 0
-
-
-def test_load_billsum_cold_and_reuse(monkeypatch):
-    """load_billsum parses when changed and reuses the cache when unchanged."""
     BillsState().bulk.clear()
-    body = _billsum_zip()
-
-    async def _changed(collection, congress, bill_type):
-        return body, True
-
-    monkeypatch.setattr(bulk, "_download_zip", _changed)
-    summaries = asyncio.run(bulk.load_billsum(119, "hr"))
-    assert set(summaries) == {29}
-
-    async def _unchanged(collection, congress, bill_type):
-        return body, False
-
-    monkeypatch.setattr(bulk, "_download_zip", _unchanged)
-    cached = asyncio.run(bulk.load_billsum(119, "hr"))
-    assert cached is summaries
+    asyncio.run(bulk.ensure_billstatus(119, "hr"))
+    assert calls["n"] == 1
 
 
-def test_load_bill_record_found_with_summary_merge(monkeypatch):
-    """load_bill_record finds the record and merges in BILLSUM summaries."""
+def test_list_bills_ingests_then_queries(monkeypatch, tmp_path):
+    """bulk.list_bills ensures BILLSTATUS then queries the store, lowercasing types."""
+    _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
+    body = _billstatus_zip()
 
-    async def _status(congress, bill_type):
-        return bulk.parse_billstatus(_billstatus_zip())
+    async def _download(collection, congress, bill_type):
+        return body
 
-    async def _sum(congress, bill_type):
-        return bulk.parse_billsum(_billsum_zip())
+    monkeypatch.setattr(bulk, "_download_zip", _download)
+    rows = asyncio.run(bulk.list_bills(119, ["HR"], limit=10))
+    assert {r["number"] for r in rows} == {29, 5}
 
-    monkeypatch.setattr(bulk, "load_billstatus", _status)
-    monkeypatch.setattr(bulk, "load_billsum", _sum)
 
+def test_load_bill_record_found(monkeypatch, tmp_path):
+    """load_bill_record returns the stored full record (no summary merge)."""
+    _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk.clear()
+    body = _billstatus_zip()
+
+    async def _download(collection, congress, bill_type):
+        return body
+
+    monkeypatch.setattr(bulk, "_download_zip", _download)
     record = asyncio.run(bulk.load_bill_record("119/hr/29"))
     assert record["number"] == 29
-    assert "CRS summary" in record["summaries"][0]["text"]
+    assert "Laken Riley Act" in record["summaries"][0]["text"]
 
 
-def test_load_bill_record_found_no_summary(monkeypatch):
-    """A bill with no matching BILLSUM keeps its BILLSTATUS summaries."""
-    BillsState().bulk.clear()
-
-    async def _status(congress, bill_type):
-        return bulk.parse_billstatus(_billstatus_zip())
-
-    async def _sum(congress, bill_type):
-        return {}
-
-    monkeypatch.setattr(bulk, "load_billstatus", _status)
-    monkeypatch.setattr(bulk, "load_billsum", _sum)
-
-    record = asyncio.run(bulk.load_bill_record("119/hr/5"))
-    assert record["number"] == 5
-
-
-def test_load_bill_record_not_found(monkeypatch):
+def test_load_bill_record_not_found(monkeypatch, tmp_path):
     """A missing bill number raises OpenBBError."""
+    _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
+    body = _billstatus_zip()
 
-    async def _status(congress, bill_type):
-        return bulk.parse_billstatus(_billstatus_zip())
+    async def _download(collection, congress, bill_type):
+        return body
 
-    monkeypatch.setattr(bulk, "load_billstatus", _status)
+    monkeypatch.setattr(bulk, "_download_zip", _download)
     with pytest.raises(OpenBBError, match="Bill not found in bulk data"):
         asyncio.run(bulk.load_bill_record("119/hr/999"))
 
@@ -627,34 +569,26 @@ def test_filter_laws():
     assert len(bulk.filter_laws(records, limit=0)) == 2
 
 
-def test_load_plaw_cold_and_reuse(monkeypatch):
-    """load_plaw parses when changed and reuses the cache when unchanged."""
+def test_load_plaw_ingests_then_serves_from_store(monkeypatch, tmp_path):
+    """load_plaw parses once into the store, then serves without re-downloading."""
+    _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
     body = _plaw_zip()
+    calls = {"n": 0}
 
-    async def _changed(collection, congress, law_type):
-        return body, True
+    async def _download(collection, congress, law_type):
+        calls["n"] += 1
+        return body
 
-    monkeypatch.setattr(bulk, "_download_zip", _changed)
+    monkeypatch.setattr(bulk, "_download_zip", _download)
     records = asyncio.run(bulk.load_plaw(119, "public"))
     assert {r["law_number"] for r in records} == {1, 2}
+    assert calls["n"] == 1
 
-    parse_calls = {"n": 0}
-    real_parse = bulk.parse_plaw
-
-    def _counting_parse(zip_bytes):
-        parse_calls["n"] += 1
-        return real_parse(zip_bytes)
-
-    monkeypatch.setattr(bulk, "parse_plaw", _counting_parse)
-
-    async def _unchanged(collection, congress, law_type):
-        return body, False
-
-    monkeypatch.setattr(bulk, "_download_zip", _unchanged)
-    cached = asyncio.run(bulk.load_plaw(119, "PUBLIC"))
-    assert cached is records
-    assert parse_calls["n"] == 0
+    BillsState().bulk.clear()
+    again = asyncio.run(bulk.load_plaw(119, "PUBLIC"))
+    assert {r["law_number"] for r in again} == {1, 2}
+    assert calls["n"] == 1
 
 
 _CCAL_SITEMAP = """<?xml version="1.0" encoding="UTF-8"?>
@@ -672,16 +606,17 @@ def test_congress_years():
     assert bulk._congress_years(118) == [2023, 2024]
 
 
-def test_load_calendars_filter_and_reuse(monkeypatch):
-    """load_calendars parses package ids, filters by chamber, and memoizes."""
+def test_load_calendars_filter_and_reuse(monkeypatch, tmp_path):
+    """load_calendars parses package ids into the store and serves without re-fetching."""
+    _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
     calls = {"n": 0}
 
-    async def _changed(url, filename):
+    async def _dl(url):
         calls["n"] += 1
-        return _CCAL_SITEMAP.encode("utf-8"), True
+        return _CCAL_SITEMAP.encode("utf-8")
 
-    monkeypatch.setattr(bulk, "_cached_get", _changed)
+    monkeypatch.setattr(bulk, "_download", _dl)
     house = asyncio.run(bulk.load_calendars(119, "house"))
     assert [r["package_id"] for r in house] == [
         "CCAL-119hcal-2025-01-03",
@@ -689,15 +624,12 @@ def test_load_calendars_filter_and_reuse(monkeypatch):
     ]
     assert house[0]["pdf"].endswith("/CCAL-119hcal-2025-01-03.pdf")
     assert house[0]["chamber"] == "house"
-
     assert calls["n"] == 2
 
-    async def _unchanged(url, filename):
-        return _CCAL_SITEMAP.encode("utf-8"), False
-
-    monkeypatch.setattr(bulk, "_cached_get", _unchanged)
+    BillsState().bulk.clear()
     cached = asyncio.run(bulk.load_calendars(119, "house"))
-    assert cached is house
+    assert [r["package_id"] for r in cached] == [r["package_id"] for r in house]
+    assert calls["n"] == 2
 
 
 def test_filter_calendars():
@@ -1006,19 +938,17 @@ def test_load_committee_structure_exception(monkeypatch):
 
 
 def test_fetch_package_mods(monkeypatch):
-    """fetch_package_mods returns the cached MODS body bytes."""
+    """fetch_package_mods downloads and returns the MODS body bytes."""
     captured = {}
 
-    async def _cached_get(url, filename):
+    async def _dl(url):
         captured["url"] = url
-        captured["filename"] = filename
-        return b"<mods/>", True
+        return b"<mods/>"
 
-    monkeypatch.setattr(bulk, "_cached_get", _cached_get)
+    monkeypatch.setattr(bulk, "_download", _dl)
     body = asyncio.run(bulk.fetch_package_mods("CHRG-119hhrg1"))
     assert body == b"<mods/>"
     assert captured["url"].endswith("/metadata/pkg/CHRG-119hhrg1/mods.xml")
-    assert captured["filename"] == "CHRG-119hhrg1.mods.xml"
 
 
 def test_parse_mods():
@@ -1188,8 +1118,9 @@ def test_load_legislators_download_error(monkeypatch):
     assert asyncio.run(bulk.load_legislators()) == {}
 
 
-def test_memoized_dedupes_concurrent_loads(monkeypatch):
+def test_memoized_dedupes_concurrent_loads(monkeypatch, tmp_path):
     """Concurrent loads of the same key share one download (in-flight dedup)."""
+    store = _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
     bulk._LOAD_LOCKS.clear()
     calls = {"n": 0}
@@ -1197,32 +1128,32 @@ def test_memoized_dedupes_concurrent_loads(monkeypatch):
     async def _slow_download(collection, congress, bill_type):
         calls["n"] += 1
         await asyncio.sleep(0.05)
-        return _billstatus_zip(), True
+        return _billstatus_zip()
 
     monkeypatch.setattr(bulk, "_download_zip", _slow_download)
 
     async def _run():
         return await asyncio.gather(
-            bulk.load_billstatus(119, "hr"),
-            bulk.load_billstatus(119, "hr"),
+            bulk.ensure_billstatus(119, "hr"),
+            bulk.ensure_billstatus(119, "hr"),
         )
 
-    first, second = asyncio.run(_run())
+    asyncio.run(_run())
     assert calls["n"] == 1
-    assert first is second
+    assert store.bills_loaded(119, "hr")
 
 
-def test_load_billstatus_in_memory_short_circuit(monkeypatch):
+def test_ensure_billstatus_in_memory_short_circuit(monkeypatch):
     """A warmed key returns instantly without any download."""
     BillsState().bulk.clear()
     bulk._LOAD_LOCKS.clear()
-    BillsState().bulk["BILLSTATUS_119_hr"] = [{"number": 1}]
+    BillsState().bulk["BILLSTATUS_119_hr"] = True
 
     async def _boom(*args, **kwargs):
         raise AssertionError("warmed cache must not hit the network")
 
     monkeypatch.setattr(bulk, "_download_zip", _boom)
-    assert asyncio.run(bulk.load_billstatus(119, "hr")) == [{"number": 1}]
+    asyncio.run(bulk.ensure_billstatus(119, "hr"))
 
 
 def test_parse_amendment_ref_ok():
@@ -1272,15 +1203,27 @@ def test_to_amendment_list_item():
     assert "sponsors" in item
 
 
-def test_load_amendments_aggregates_and_filters(monkeypatch):
-    """load_amendments aggregates across bill types and filters by type."""
+def _patch_congress_billstatus(monkeypatch, tmp_path):
+    """Ingest the HR fixture for one Congress, stubbing every other bill type empty."""
+    store = _point_store_at(monkeypatch, tmp_path)
     BillsState().bulk.clear()
-    records = bulk.parse_billstatus(_billstatus_zip())
+    body = _billstatus_zip()
+    real_parse = bulk.parse_billstatus
 
-    async def _status(congress, bill_type):
-        return records if bill_type == "hr" else []
+    async def _download(collection, congress, bill_type):
+        return body if bill_type == "hr" else b"empty"
 
-    monkeypatch.setattr(bulk, "load_billstatus", _status)
+    def _parse(zip_bytes):
+        return real_parse(zip_bytes) if zip_bytes == body else []
+
+    monkeypatch.setattr(bulk, "_download_zip", _download)
+    monkeypatch.setattr(bulk, "parse_billstatus", _parse)
+    return store
+
+
+def test_load_amendments_aggregates_and_filters(monkeypatch, tmp_path):
+    """load_amendments ingests every bill type then filters amendments by type."""
+    _patch_congress_billstatus(monkeypatch, tmp_path)
 
     all_amds = asyncio.run(bulk.load_amendments(119))
     assert {a["amendment_id"] for a in all_amds} == {"119-hamdt-10", "119-samdt-11"}
@@ -1289,15 +1232,9 @@ def test_load_amendments_aggregates_and_filters(monkeypatch):
     assert [a["amendment_id"] for a in hamdt] == ["119-hamdt-10"]
 
 
-def test_load_amendment_record_found_and_missing(monkeypatch):
+def test_load_amendment_record_found_and_missing(monkeypatch, tmp_path):
     """load_amendment_record finds a record by id and raises when absent."""
-    BillsState().bulk.clear()
-    records = bulk.parse_billstatus(_billstatus_zip())
-
-    async def _status(congress, bill_type):
-        return records if bill_type == "hr" else []
-
-    monkeypatch.setattr(bulk, "load_billstatus", _status)
+    _patch_congress_billstatus(monkeypatch, tmp_path)
 
     rec = asyncio.run(bulk.load_amendment_record("119-hamdt-10"))
     assert rec["number"] == "10"
@@ -1622,47 +1559,88 @@ def test_member_committees(monkeypatch):
     assert any(c["title"] == "Chair" for c in out)
 
 
-def test_member_legislation(monkeypatch):
-    """member_legislation finds sponsored/cosponsored bills and sorts newest-first."""
-    bills = [
+def _point_store_at(monkeypatch, tmp_path):
+    """Route the cache/store at an isolated temp dir and start it empty."""
+    from openbb_congress_gov.utils import store
+
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    store.reset()
+    return store
+
+
+def test_legislation_rows_from_records():
+    """Legislation rows derive from full records: sponsor + distinct cosponsors only."""
+    records = [
         {
             "bill_id": "119-hr-1",
-            "title": "Sponsored Bill",
-            "introducedDate": "2025-03-01",
-            "sponsors": [{"bioguideId": "A000055"}],
-            "cosponsors": [],
-            "latestAction": {"actionDate": "2025-04-01", "text": "Referred"},
+            "title": "Bill",
+            "introducedDate": "2025-01-01",
+            "latestAction": {"actionDate": "2025-02-01", "text": "Acted"},
+            "sponsors": [{"bioguideId": "S000001"}],
+            "cosponsors": [{"bioguideId": "C000002"}, {"bioguideId": "S000001"}],
         },
         {
             "bill_id": "119-hr-2",
-            "title": "Cosponsored Bill",
-            "introducedDate": "2025-05-01",
-            "sponsors": [{"bioguideId": "Z"}],
-            "cosponsors": [{"bioguideId": "A000055"}],
-            "latestAction": {},
-        },
-        {
-            "bill_id": "119-hr-3",
-            "title": "Unrelated",
-            "introducedDate": "2025-06-01",
-            "sponsors": [{"bioguideId": "Z"}],
+            "sponsors": [{"fullName": "No Bioguide"}],
             "cosponsors": [],
         },
     ]
+    rows = bulk._legislation_rows_from_records(records, 119, "hr")
+    assert {(r[0], r[4]) for r in rows} == {
+        ("S000001", "Sponsor"),
+        ("C000002", "Cosponsor"),
+    }
+    assert all(r[1] == 119 and r[2] == "hr" for r in rows)
 
-    seen: list = []
 
-    async def _status(congress, bill_type):
-        seen.append((congress, bill_type))
-        return bills if (congress == 119 and bill_type == "hr") else []
+def test_ingest_billstatus_and_query(monkeypatch, tmp_path):
+    """ingest_billstatus_range stores slim legislation rows; members read from the DB."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk.clear()
+    body = _billstatus_zip()
+    calls: list = []
 
-    monkeypatch.setattr(bulk, "load_billstatus", _status)
-    out = asyncio.run(bulk.member_legislation("A000055", [119, 118]))
-    assert [b["bill_id"] for b in out] == ["119-hr-2", "119-hr-1"]
-    assert out[0]["role"] == "Cosponsor"
-    assert out[1]["role"] == "Sponsor"
-    assert out[0]["congress"] == 119
-    assert {c for c, _ in seen} == {119, 118}
+    real_parse = bulk.parse_billstatus
+
+    async def _download(collection, congress, bill_type):
+        calls.append(bill_type)
+        return body if bill_type == "hr" else b"empty"
+
+    def _parse(zip_bytes):
+        return real_parse(zip_bytes) if zip_bytes == body else []
+
+    monkeypatch.setattr(bulk, "_download_zip", _download)
+    monkeypatch.setattr(bulk, "parse_billstatus", _parse)
+
+    asyncio.run(bulk.ingest_billstatus_range([119]))
+    assert "119-hr" in store.loaded_keys("legislation")
+    assert store.loaded_keys("bills") == set()
+
+    leg = asyncio.run(bulk.member_legislation("C001129", [119]))
+    assert [b["bill_id"] for b in leg] == ["119-hr-29"]
+
+    calls.clear()
+    asyncio.run(bulk.ingest_billstatus_range([119]))
+    assert calls == []
+
+
+def test_ingest_billstatus_skips_failed_archive(monkeypatch, tmp_path):
+    """A failed archive download leaves the unit un-ingested without raising."""
+    store = _point_store_at(monkeypatch, tmp_path)
+
+    async def _download(collection, congress, bill_type):
+        raise RuntimeError("network down")
+
+    monkeypatch.setattr(bulk, "_download_zip", _download)
+    asyncio.run(bulk.ingest_billstatus_range([119]))
+    assert store.loaded_keys("bills") == set()
+    assert asyncio.run(bulk.member_legislation("C001129", [119])) == []
+
+
+def test_member_legislation_empty_without_store(monkeypatch, tmp_path):
+    """With nothing ingested, member_legislation returns an empty list."""
+    _point_store_at(monkeypatch, tmp_path)
+    assert asyncio.run(bulk.member_legislation("A000055", [119])) == []
 
 
 def test_member_served_congresses():
@@ -1722,42 +1700,42 @@ _VV_VOTES = (
 )
 
 
-def _patch_voteview(monkeypatch):
-    """Patch _cached_get to serve the synthetic Voteview CSVs by filename."""
+def _patch_voteview(monkeypatch, tmp_path):
+    """Point the store at a temp DB and serve the synthetic Voteview CSV text."""
+    _point_store_at(monkeypatch, tmp_path)
+    texts = {
+        "members": _VV_MEMBERS,
+        "rollcalls": _VV_ROLLCALLS,
+        "votes": _VV_VOTES,
+    }
 
-    async def _get(url, filename):
-        if "members" in filename:
-            body = _VV_MEMBERS
-        elif "rollcalls" in filename:
-            body = _VV_ROLLCALLS
-        else:
-            body = _VV_VOTES
-        return body.encode("utf-8"), True
+    async def _text(kind, congress, chamber):
+        return texts[kind]
 
-    monkeypatch.setattr(bulk, "_cached_get", _get)
+    monkeypatch.setattr(bulk, "_voteview_text", _text)
 
 
-def test_load_voteview_members(monkeypatch):
+def test_load_voteview_members(monkeypatch, tmp_path):
     """load_voteview_members indexes bioguide -> icpsr and skips blank bioguides."""
     BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
+    _patch_voteview(monkeypatch, tmp_path)
     index = asyncio.run(bulk.load_voteview_members(119, "S"))
     assert index == {"C000127": "39310"}
 
 
-def test_load_voteview_rollcalls(monkeypatch):
+def test_load_voteview_rollcalls(monkeypatch, tmp_path):
     """load_voteview_rollcalls maps rollnumber -> metadata."""
     BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
+    _patch_voteview(monkeypatch, tmp_path)
     rolls = asyncio.run(bulk.load_voteview_rollcalls(119, "S"))
     assert rolls["1"]["bill_number"] == "S5"
     assert rolls["1"]["question"] == "On Passage of the Bill"
 
 
-def test_load_voteview_votes(monkeypatch):
+def test_load_voteview_votes(monkeypatch, tmp_path):
     """load_voteview_votes indexes (rollnumber, cast_code) by icpsr."""
     BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
+    _patch_voteview(monkeypatch, tmp_path)
     index = asyncio.run(bulk.load_voteview_votes(119, "S"))
     assert index["39310"] == [("1", "1"), ("2", "1"), ("3", "6"), ("4", "0")]
     assert index["99999"] == [("1", "1")]
@@ -1766,17 +1744,41 @@ def test_load_voteview_votes(monkeypatch):
 def test_voteview_text_download_error(monkeypatch):
     """A failed Voteview fetch degrades to an empty string."""
 
-    async def _boom(url, filename):
+    async def _boom(url):
         raise RuntimeError("down")
 
-    monkeypatch.setattr(bulk, "_cached_get", _boom)
+    monkeypatch.setattr(bulk, "_download", _boom)
     assert asyncio.run(bulk._voteview_text("members", 119, "S")) == ""
 
 
-def test_member_congress_votes(monkeypatch):
+def test_voteview_text_decodes_body(monkeypatch):
+    """A successful Voteview fetch decodes the CSV body to text."""
+
+    async def _dl(url):
+        assert url.endswith("/members/S119_members.csv")
+        return b"a,b\n1,2\n"
+
+    monkeypatch.setattr(bulk, "_download", _dl)
+    assert asyncio.run(bulk._voteview_text("members", 119, "S")) == "a,b\n1,2\n"
+
+
+def test_load_voteview_serves_cached(monkeypatch, tmp_path):
+    """A Voteview file cached in the store is returned without a download."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk.clear()
+    store.put_parsed("vv-members-S119", {"C000127": "39310"})
+
+    async def _boom(url):
+        raise AssertionError("cached Voteview must not hit the network")
+
+    monkeypatch.setattr(bulk, "_download", _boom)
+    assert asyncio.run(bulk.load_voteview_members(119, "S")) == {"C000127": "39310"}
+
+
+def test_member_congress_votes(monkeypatch, tmp_path):
     """member_congress_votes joins votes to rollcalls and maps cast codes."""
     BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
+    _patch_voteview(monkeypatch, tmp_path)
     votes = asyncio.run(bulk.member_congress_votes("C000127", 119, "S"))
     assert len(votes) == 3
     by_roll = {v["rollnumber"]: v for v in votes}
@@ -1787,37 +1789,343 @@ def test_member_congress_votes(monkeypatch):
     assert by_roll[3]["position"] == "Nay"
 
 
-def test_member_congress_votes_member_absent(monkeypatch):
+def test_member_congress_votes_member_absent(monkeypatch, tmp_path):
     """A member not present in a Congress yields no votes."""
     BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
+    _patch_voteview(monkeypatch, tmp_path)
     assert asyncio.run(bulk.member_congress_votes("ZZZ", 119, "S")) == []
 
 
-def test_member_votes(monkeypatch):
+def test_member_votes(monkeypatch, tmp_path):
     """member_votes keeps legislative votes only, newest-first, capped at limit."""
     BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
+    _patch_voteview(monkeypatch, tmp_path)
     out = asyncio.run(bulk.member_votes("C000127", [(119, "S")], limit=5))
     assert [v["bill_id"] for v in out] == ["119-s-9", "119-s-5"]
     capped = asyncio.run(bulk.member_votes("C000127", [(119, "S")], limit=1))
     assert len(capped) == 1
 
 
-def test_member_passage_record(monkeypatch):
-    """member_passage_record tallies Yea/Nay on 'On Passage' votes across tenure."""
-    BillsState().bulk.clear()
-    _patch_voteview(monkeypatch)
-    rec = asyncio.run(bulk.member_passage_record("C000127", [(119, "S")]))
-    assert rec == {"yea": 1, "nay": 1, "total": 2, "yea_pct": 50.0}
-
-
-def test_member_passage_record_empty(monkeypatch):
-    """With no On-Passage votes, the percentage is None."""
+def test_member_votes_short_circuits_old_congresses(monkeypatch):
+    """Once the limit is met, older Congresses are not loaded."""
+    loaded: list = []
 
     async def _votes(bioguide, congress, chamber):
-        return [{"question": "On the Nomination", "cast_code": "1"}]
+        loaded.append(congress)
+        return [
+            {"bill_id": f"{congress}-s-1", "date": f"{congress}", "rollnumber": 1},
+            {"bill_id": f"{congress}-s-2", "date": f"{congress}", "rollnumber": 2},
+        ]
 
     monkeypatch.setattr(bulk, "member_congress_votes", _votes)
-    rec = asyncio.run(bulk.member_passage_record("C000127", [(119, "S")]))
+    out = asyncio.run(
+        bulk.member_votes("X", [(119, "S"), (118, "S"), (117, "S")], limit=2)
+    )
+    assert loaded == [119]
+    assert [v["bill_id"] for v in out] == ["119-s-2", "119-s-1"]
+
+    loaded.clear()
+    asyncio.run(bulk.member_votes("X", [(119, "S"), (118, "S")], limit=4))
+    assert loaded == [119, 118]
+
+
+def test_member_passage_record_absent(monkeypatch, tmp_path):
+    """A member with no ingested votes yields a zeroed record."""
+    _point_store_at(monkeypatch, tmp_path)
+    rec = asyncio.run(bulk.member_passage_record("C000127"))
     assert rec == {"yea": 0, "nay": 0, "total": 0, "yea_pct": None}
+
+
+def test_is_passage_question():
+    """Final-passage questions match across both chambers; procedural ones do not."""
+    passage = [
+        "On Passage",
+        "On Passage of the Bill",
+        "Passage, Objections of the President To The Contrary Notwithstanding",
+        "On the Joint Resolution",
+        "On the Concurrent Resolution",
+        "On Agreeing to the Concurrent Resolution",
+        "On Motion to Suspend the Rules and Pass",
+        "On Motion to Suspend the Rules and Pass, as Amended",
+    ]
+    procedural = [
+        "On the Cloture Motion",
+        "On the Nomination",
+        "On the Amendment",
+        "On the Motion to Proceed",
+        "On Agreeing to the Resolution",
+        "On the Resolution",
+        "On the Motion to Recommit",
+        "",
+        None,
+    ]
+    assert all(bulk._is_passage_question(q) for q in passage)
+    assert not any(bulk._is_passage_question(q) for q in procedural)
+
+
+def test_build_passage_index(monkeypatch, tmp_path):
+    """build_passage_index sums passage Yea/Nay into the store, idempotently, and prunes."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    members = {"C000127": "39310"}
+    rollcalls = {
+        "1": {"question": "On Passage of the Bill"},
+        "2": {"question": "On the Motion to Recommit"},
+        "3": {"question": "On the Joint Resolution"},
+    }
+    votes = {
+        "39310": [("1", "1"), ("2", "6"), ("3", "4")],
+        "99999": [("1", "1")],
+    }
+
+    async def _members(congress, chamber):
+        return dict(members)
+
+    async def _rollcalls(congress, chamber):
+        return dict(rollcalls)
+
+    async def _votes(congress, chamber):
+        return {k: list(v) for k, v in votes.items()}
+
+    BillsState().bulk["VV_VOTES_S117"] = "sentinel"
+    BillsState().bulk["VV_ROLLCALLS_S117"] = "sentinel"
+    monkeypatch.setattr(bulk, "load_voteview_members", _members)
+    monkeypatch.setattr(bulk, "load_voteview_rollcalls", _rollcalls)
+    monkeypatch.setattr(bulk, "load_voteview_votes", _votes)
+
+    asyncio.run(bulk.build_passage_index([119, 118, 117]))
+    rec = asyncio.run(bulk.member_passage_record("C000127"))
+    assert rec == {"yea": 6, "nay": 6, "total": 12, "yea_pct": 50.0}
+    assert store.get_passage("99999") is None
+    assert "VV_VOTES_S117" not in BillsState().bulk
+    assert "VV_ROLLCALLS_S117" not in BillsState().bulk
+
+    asyncio.run(bulk.build_passage_index([119, 118, 117]))
+    assert asyncio.run(bulk.member_passage_record("C000127")) == rec
+
+
+def test_url_last_modified_ok(monkeypatch):
+    """_url_last_modified returns the Last-Modified header on a successful HEAD."""
+    resp = _FakeResponse(status=200, headers={"Last-Modified": "Mon, 01 Jan 2025"})
+    _patch_session(monkeypatch, response=resp)
+    assert asyncio.run(bulk._url_last_modified("https://x")) == "Mon, 01 Jan 2025"
+
+
+def test_url_last_modified_error_status(monkeypatch):
+    """A 4xx/5xx HEAD response yields None."""
+    _patch_session(monkeypatch, response=_FakeResponse(status=404))
+    assert asyncio.run(bulk._url_last_modified("https://x")) is None
+
+
+def test_url_last_modified_exception(monkeypatch):
+    """A network error during the HEAD yields None."""
+    _patch_session(monkeypatch, get_exc=RuntimeError("boom"))
+    assert asyncio.run(bulk._url_last_modified("https://x")) is None
+
+
+def test_billstatus_listing(monkeypatch):
+    """_billstatus_listing maps each bill type's folder to its last-modified stamp."""
+
+    async def _req(url, *args, **kwargs):
+        assert url.endswith("/json/BILLSTATUS/119")
+        return {
+            "files": [
+                {"justFileName": "HR", "formattedLastModifiedTime": "2025-01-01"},
+                {"justFileName": "S", "formattedLastModifiedTime": "2025-01-02"},
+                {"justFileName": "", "formattedLastModifiedTime": "2025-01-03"},
+                {"justFileName": "SRES"},
+            ]
+        }
+
+    monkeypatch.setattr(core_helpers, "amake_request", _req)
+    listing = asyncio.run(bulk._billstatus_listing(119))
+    assert listing == {"hr": "2025-01-01", "s": "2025-01-02"}
+
+
+def test_billstatus_listing_error_and_non_dict(monkeypatch):
+    """A failed request or a non-dict listing yields an empty mapping."""
+
+    async def _boom(url, *args, **kwargs):
+        raise RuntimeError("down")
+
+    monkeypatch.setattr(core_helpers, "amake_request", _boom)
+    assert asyncio.run(bulk._billstatus_listing(119)) == {}
+
+    async def _list(url, *args, **kwargs):
+        return ["not", "a", "dict"]
+
+    monkeypatch.setattr(core_helpers, "amake_request", _list)
+    assert asyncio.run(bulk._billstatus_listing(119)) == {}
+
+
+def test_loaded_archives(monkeypatch, tmp_path):
+    """_loaded_archives maps each Congress to its bill types, full records winning."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", [], [])
+    store.ingest_legislation(119, "hr", [], [])
+    store.ingest_legislation(118, "s", [], [])
+    archives = bulk._loaded_archives()
+    assert archives[119]["hr"] == "bills"
+    assert archives[118]["s"] == "legislation"
+
+
+def test_seed_billstatus_markers(monkeypatch, tmp_path):
+    """seed_billstatus_markers stamps every loaded archive's last-modified time."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", [], [])
+
+    async def _listing(congress):
+        return {"hr": "2025-01-01"}
+
+    monkeypatch.setattr(bulk, "_billstatus_listing", _listing)
+    asyncio.run(bulk.seed_billstatus_markers())
+    assert store.get_parsed("lm:BILLSTATUS_119_hr") == "2025-01-01"
+
+
+def test_refresh_billstatus_reingests_changed(monkeypatch, tmp_path):
+    """refresh_billstatus re-ingests only archives whose remote stamp changed."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", [], [])
+    store.ingest_legislation(118, "s", [], [])
+    store.put_parsed("lm:BILLSTATUS_119_hr", "old")
+    store.put_parsed("lm:BILLSTATUS_118_s", "same")
+
+    async def _listing(congress):
+        return {"hr": "new"} if congress == 119 else {"s": "same"}
+
+    reingested: list = []
+
+    async def _reingest(congress, bill_type, kind):
+        reingested.append((congress, bill_type, kind))
+
+    monkeypatch.setattr(bulk, "_billstatus_listing", _listing)
+    monkeypatch.setattr(bulk, "_reingest_archive", _reingest)
+    asyncio.run(bulk.refresh_billstatus())
+    assert reingested == [(119, "hr", "bills")]
+    assert store.get_parsed("lm:BILLSTATUS_119_hr") == "new"
+
+
+def test_refresh_billstatus_skips_empty_listing_and_errors(monkeypatch, tmp_path):
+    """An empty listing is skipped; a re-ingest error is caught and logged."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    store.ingest_bills(119, "hr", [], [])
+    store.ingest_legislation(118, "s", [], [])
+    store.put_parsed("lm:BILLSTATUS_118_s", "old")
+
+    async def _listing(congress):
+        return {} if congress == 119 else {"s": "new"}
+
+    async def _reingest(congress, bill_type, kind):
+        raise RuntimeError("ingest failed")
+
+    monkeypatch.setattr(bulk, "_billstatus_listing", _listing)
+    monkeypatch.setattr(bulk, "_reingest_archive", _reingest)
+    asyncio.run(bulk.refresh_billstatus())
+    assert store.get_parsed("lm:BILLSTATUS_118_s") == "old"
+
+
+def test_reingest_archive_dispatches(monkeypatch):
+    """_reingest_archive routes to the full or slim ingest path by kind."""
+    calls: list = []
+
+    async def _full(congress, bill_type):
+        calls.append(("full", congress, bill_type))
+
+    async def _slim(congress, bill_type):
+        calls.append(("slim", congress, bill_type))
+
+    monkeypatch.setattr(bulk, "_ingest_billstatus", _full)
+    monkeypatch.setattr(bulk, "_ingest_legislation", _slim)
+    asyncio.run(bulk._reingest_archive(119, "hr", "bills"))
+    asyncio.run(bulk._reingest_archive(118, "s", "legislation"))
+    assert calls == [("full", 119, "hr"), ("slim", 118, "s")]
+
+
+def test_invalidate_voteview(monkeypatch, tmp_path):
+    """_invalidate_voteview drops the cached Voteview blobs for a Congress/chamber."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk["VV_MEMBERS_S119"] = "x"
+    store.put_parsed("vv-members-S119", {"a": "b"})
+    bulk._invalidate_voteview(119, "S")
+    assert "VV_MEMBERS_S119" not in BillsState().bulk
+    assert store.get_parsed("vv-members-S119") is None
+
+
+def test_ingest_passage_keep_and_prune(monkeypatch, tmp_path):
+    """_ingest_passage stores tallies and prunes cached votes unless keep is set."""
+    store = _point_store_at(monkeypatch, tmp_path)
+
+    async def _members(congress, chamber):
+        return {"C000127": "39310"}
+
+    async def _rollcalls(congress, chamber):
+        return {"1": {"question": "On Passage of the Bill"}}
+
+    async def _votes(congress, chamber):
+        return {"39310": [("1", "1")]}
+
+    monkeypatch.setattr(bulk, "load_voteview_members", _members)
+    monkeypatch.setattr(bulk, "load_voteview_rollcalls", _rollcalls)
+    monkeypatch.setattr(bulk, "load_voteview_votes", _votes)
+
+    BillsState().bulk["VV_VOTES_S119"] = "x"
+    BillsState().bulk["VV_ROLLCALLS_S119"] = "x"
+    asyncio.run(bulk._ingest_passage(119, "S", keep=False))
+    assert store.get_passage("C000127") == (1, 0)
+    assert "VV_VOTES_S119" not in BillsState().bulk
+
+    BillsState().bulk["VV_VOTES_S119"] = "x"
+    asyncio.run(bulk._ingest_passage(119, "S", keep=True))
+    assert BillsState().bulk["VV_VOTES_S119"] == "x"
+
+
+def test_refresh_passage_reingests_when_changed(monkeypatch, tmp_path):
+    """refresh_passage re-ingests a chamber when its votes file changed."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    from datetime import datetime
+
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    congress = year_to_congress(datetime.now().year)
+    store.put_parsed(f"lm:VV_H{congress}", "old")
+    store.put_parsed(f"lm:VV_S{congress}", "same")
+
+    async def _last_modified(url):
+        return "same" if f"S{congress}" in url else "new"
+
+    ingested: list = []
+
+    async def _ingest(c, chamber, *, keep):
+        ingested.append((c, chamber, keep))
+
+    invalidated: list = []
+    monkeypatch.setattr(bulk, "_url_last_modified", _last_modified)
+    monkeypatch.setattr(bulk, "_ingest_passage", _ingest)
+    monkeypatch.setattr(
+        bulk, "_invalidate_voteview", lambda c, ch: invalidated.append((c, ch))
+    )
+    asyncio.run(bulk.refresh_passage())
+    assert ingested == [(congress, "H", True)]
+    assert invalidated == [(congress, "H")]
+    assert store.get_parsed(f"lm:VV_H{congress}") == "new"
+
+
+def test_refresh_passage_handles_ingest_error(monkeypatch, tmp_path):
+    """A passage re-ingest error is caught and logged; the marker is left unchanged."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    from datetime import datetime
+
+    from openbb_congress_gov.utils.helpers import year_to_congress
+
+    congress = year_to_congress(datetime.now().year)
+
+    async def _last_modified(url):
+        return "new"
+
+    async def _ingest(c, chamber, *, keep):
+        raise RuntimeError("ingest failed")
+
+    monkeypatch.setattr(bulk, "_url_last_modified", _last_modified)
+    monkeypatch.setattr(bulk, "_ingest_passage", _ingest)
+    monkeypatch.setattr(bulk, "_invalidate_voteview", lambda c, ch: None)
+    asyncio.run(bulk.refresh_passage())
+    assert store.get_parsed(f"lm:VV_H{congress}") is None

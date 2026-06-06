@@ -22,6 +22,7 @@ class CongressCalendarsQueryParams(QueryParams):
                 "options": [
                     {"label": "House", "value": "house"},
                     {"label": "Senate", "value": "senate"},
+                    {"label": "Both", "value": "both"},
                 ],
                 "paramName": "chamber",
                 "label": "Chamber",
@@ -32,16 +33,17 @@ class CongressCalendarsQueryParams(QueryParams):
         },
     }
 
-    chamber: Literal["house", "senate"] = Field(
+    chamber: Literal["house", "senate", "both"] = Field(
         default="house",
-        description="The chamber of Congress whose calendar to retrieve.",
+        description="The chamber of Congress whose calendar to retrieve."
+        + " Use 'both' for House and Senate editions together.",
     )
     congress: int | None = Field(
         default=None,
         description="Congress number (e.g., 119 for the 119th Congress)."
         + " When None, defaults to the current Congress.",
     )
-    publishdate: str | None = Field(
+    calendar_date: str | None = Field(
         default=None,
         description="Filter to a specific calendar date (YYYY-MM-DD), or"
         + " 'mostrecent' for the latest edition. When None, returns all editions.",
@@ -72,9 +74,9 @@ class CongressCalendarsData(Data):
                 "$.description": "Daily House and Senate calendar editions.",
                 "$.params": [
                     {
-                        "paramName": "calendar_date",
-                        "label": "Calendar Date",
-                        "description": "Ghost parameter to group by the calendar date."
+                        "paramName": "package_id",
+                        "label": "Package ID",
+                        "description": "Ghost parameter to group by the calendar edition."
                         + " Create a group and use the 'Congressional Calendar Viewer'"
                         + " widget to view the calendar.",
                         "type": "text",
@@ -87,21 +89,24 @@ class CongressCalendarsData(Data):
         }
     )
 
-    calendar_date: dateType = Field(
-        description="The date of the calendar edition.",
+    package_id: str = Field(
+        description="The GovInfo package identifier for the calendar edition.",
         json_schema_extra={
             "x-widget_config": {
-                "headerName": "▸ Group: Calendar Date",
-                "headerTooltip": "Click a cell here to group by this date and view the"
-                + " calendar in the 'Congressional Calendar Viewer' widget.",
+                "headerName": "▸ Group: Package ID",
+                "headerTooltip": "Click a cell here to group by this edition and view"
+                + " the calendar in the 'Congressional Calendar Viewer' widget.",
                 "pinned": "left",
                 "renderFn": "cellOnClick",
                 "renderFnParams": {
                     "actionType": "groupBy",
-                    "groupByParamName": "calendar_date",
+                    "groupByParamName": "package_id",
                 },
             },
         },
+    )
+    calendar_date: dateType = Field(
+        description="The date of the calendar edition.",
     )
     chamber: str = Field(description="The chamber of Congress.")
     congress: int = Field(
@@ -109,9 +114,6 @@ class CongressCalendarsData(Data):
         json_schema_extra={"x-widget_config": {"formatterFn": "none"}},
     )
     title: str = Field(description="The calendar edition title.")
-    package_id: str = Field(
-        description="The GovInfo package identifier for the calendar edition.",
-    )
     pdf: str = Field(
         description="URL to the calendar in PDF format.",
         json_schema_extra={"x-widget_config": {"hide": True}},
@@ -146,6 +148,8 @@ class CongressCalendarsFetcher(
         **kwargs: Any,
     ) -> list:
         """Extract calendar editions from the GovInfo CCAL year sitemaps."""
+        import asyncio
+
         from openbb_congress_gov.utils.bulk import filter_calendars, load_calendars
         from openbb_congress_gov.utils.helpers import year_to_congress
 
@@ -154,11 +158,15 @@ class CongressCalendarsFetcher(
             if query.congress is not None
             else year_to_congress(datetime.now().year)
         )
-        records = await load_calendars(congress, query.chamber)
+        chambers = ["house", "senate"] if query.chamber == "both" else [query.chamber]
+        loaded = await asyncio.gather(
+            *[load_calendars(congress, chamber) for chamber in chambers]
+        )
+        records = [record for chamber_records in loaded for record in chamber_records]
 
         return filter_calendars(
             records,
-            publishdate=query.publishdate,
+            publishdate=query.calendar_date,
             limit=query.limit,
             offset=query.offset,
             sort_by=query.sort_by,

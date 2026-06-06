@@ -97,31 +97,32 @@ def _bulk_records(congress=119, bill_type="HR"):
     ]
 
 
-def _patch_load_billstatus(monkeypatch, records=None, capture=None):
-    """Patch bulk.load_billstatus, recording each (congress, bill_type) call."""
+def _patch_list_bills(monkeypatch, records=None, capture=None):
+    """Patch bulk.list_bills, recording its (congress, bill_types, kwargs) call."""
 
-    async def _fake(congress, bill_type):
+    async def _fake(congress, bill_types, **kwargs):
         if capture is not None:
-            capture.append((congress, bill_type))
+            capture.append((congress, list(bill_types), kwargs))
         return list(records if records is not None else _bulk_records())
 
-    monkeypatch.setattr("openbb_congress_gov.utils.bulk.load_billstatus", _fake)
+    monkeypatch.setattr("openbb_congress_gov.utils.bulk.list_bills", _fake)
 
 
 def test_bills_extract_explicit_congress(monkeypatch):
-    """An explicit congress + bill_type loads exactly that one type."""
+    """An explicit congress + bill_type queries exactly that one type."""
     calls: list = []
-    _patch_load_billstatus(monkeypatch, capture=calls)
+    _patch_list_bills(monkeypatch, capture=calls)
     q = CongressBillsQueryParams(bill_type="hr", congress=119)
     result = asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
-    assert calls == [(119, "hr")]
+    assert calls[0][0] == 119
+    assert calls[0][1] == ["hr"]
     assert {r["number"] for r in result} == {1, 2}
 
 
 def test_bills_extract_congress_from_start_date(monkeypatch):
     """A start date with no congress derives congress from the start year."""
     calls: list = []
-    _patch_load_billstatus(monkeypatch, capture=calls)
+    _patch_list_bills(monkeypatch, capture=calls)
     q = CongressBillsQueryParams(bill_type="hr", start_date="1993-01-01")
     asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
     assert calls[0][0] == 103
@@ -130,7 +131,7 @@ def test_bills_extract_congress_from_start_date(monkeypatch):
 def test_bills_extract_congress_from_end_date(monkeypatch):
     """An end date with no congress/start date derives congress from the end year."""
     calls: list = []
-    _patch_load_billstatus(monkeypatch, capture=calls)
+    _patch_list_bills(monkeypatch, capture=calls)
     q = CongressBillsQueryParams(bill_type="hr", end_date="2000-12-31")
     asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
     assert calls[0][0] == 106
@@ -139,43 +140,45 @@ def test_bills_extract_congress_from_end_date(monkeypatch):
 def test_bills_extract_congress_current(monkeypatch):
     """No congress/dates resolves to the current Congress."""
     calls: list = []
-    _patch_load_billstatus(monkeypatch, capture=calls)
+    _patch_list_bills(monkeypatch, capture=calls)
     q = CongressBillsQueryParams(bill_type="hr")
     asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
     assert calls[0][0] >= 119
 
 
 def test_bills_extract_all_types(monkeypatch):
-    """No bill_type loads every bill type for the Congress."""
+    """No bill_type queries every bill type for the Congress."""
     from openbb_congress_gov.utils.constants import BillTypes
 
     calls: list = []
-    _patch_load_billstatus(monkeypatch, records=[], capture=calls)
+    _patch_list_bills(monkeypatch, records=[], capture=calls)
     q = CongressBillsQueryParams(congress=119)
     asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
-    assert {bt for _, bt in calls} == set(BillTypes)
+    assert calls[0][1] == list(BillTypes)
 
 
-def test_bills_extract_filters_applied(monkeypatch):
-    """filter_bills date-window/sort apply to the records."""
-    _patch_load_billstatus(monkeypatch)
+def test_bills_extract_params_forwarded(monkeypatch):
+    """Date window, limit, offset, and sort flow through to bulk.list_bills."""
+    from datetime import date
+
+    calls: list = []
+    _patch_list_bills(monkeypatch, capture=calls)
     q = CongressBillsQueryParams(
         bill_type="hr",
         congress=119,
         start_date="2025-02-01",
         end_date="2025-03-01",
+        limit=1,
+        offset=1,
         sort_by="desc",
     )
-    result = asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
-    assert [r["number"] for r in result] == [2]
-
-
-def test_bills_extract_limit_and_offset(monkeypatch):
-    """offset and limit page the result set."""
-    _patch_load_billstatus(monkeypatch)
-    q = CongressBillsQueryParams(bill_type="hr", congress=119, offset=1, limit=1)
-    result = asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
-    assert len(result) == 1
+    asyncio.run(CongressBillsFetcher.aextract_data(q, CREDS))
+    kwargs = calls[0][2]
+    assert kwargs["start_date"] == date(2025, 2, 1)
+    assert kwargs["end_date"] == date(2025, 3, 1)
+    assert kwargs["limit"] == 1
+    assert kwargs["offset"] == 1
+    assert kwargs["sort_by"] == "desc"
 
 
 def test_bills_transform_data():
@@ -1077,7 +1080,7 @@ def test_calendars_transform_query():
 
 
 def test_calendars_extract_mostrecent(monkeypatch):
-    """publishdate=mostrecent returns the latest edition; current congress resolves."""
+    """calendar_date=mostrecent returns the latest edition; current congress resolves."""
     from openbb_congress_gov.models.congress_calendars import (
         CongressCalendarsFetcher,
         CongressCalendarsQueryParams,
@@ -1085,12 +1088,27 @@ def test_calendars_extract_mostrecent(monkeypatch):
 
     calls: list = []
     _patch_load_calendars(monkeypatch, capture=calls)
-    q = CongressCalendarsQueryParams(chamber="house", publishdate="mostrecent")
+    q = CongressCalendarsQueryParams(chamber="house", calendar_date="mostrecent")
     result = asyncio.run(CongressCalendarsFetcher.aextract_data(q, None))
     assert len(result) == 1
     assert result[0]["calendar_date"] == "2025-01-07"
     assert calls[0][0] >= 119
     assert calls[0][1] == "house"
+
+
+def test_calendars_extract_both_chambers(monkeypatch):
+    """chamber=both loads House and Senate editions and merges them."""
+    from openbb_congress_gov.models.congress_calendars import (
+        CongressCalendarsFetcher,
+        CongressCalendarsQueryParams,
+    )
+
+    calls: list = []
+    _patch_load_calendars(monkeypatch, capture=calls)
+    q = CongressCalendarsQueryParams(chamber="both", congress=119)
+    result = asyncio.run(CongressCalendarsFetcher.aextract_data(q, None))
+    assert {c for _, c in calls} == {"house", "senate"}
+    assert len(result) == 4
 
 
 def test_calendars_transform_data(monkeypatch):
