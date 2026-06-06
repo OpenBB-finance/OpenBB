@@ -56,7 +56,7 @@ class FredEconomicCalendarFetcher(
         from io import StringIO
         from math import ceil
 
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_fred.utils.rate_limiter import fred_get
         from pandas import (
             DataFrame,
             concat,
@@ -137,13 +137,8 @@ class FredEconomicCalendarFetcher(
         ) -> DataFrame:
             """Fetch all pages of the FRED releases calendar for a single date or date range."""
             end_date = end_date or start_date
-            base_url = (
-                "https://fred.stlouisfed.org/releases/calendar"
-                f"?po=1&ptic=0&vs={start_date}&ve={end_date}&rid={rid}"
-            )
-            first_page = await amake_request(
-                base_url, response_callback=response_callback
-            )
+            base_url = f"https://fred.stlouisfed.org/releases/calendar?po=1&ptic=0&vs={start_date}&ve={end_date}&rid={rid}"
+            first_page = await fred_get(base_url, response_callback=response_callback)
             n_results = first_page.get("ptic", 0)  # type: ignore
 
             if n_results == 0:
@@ -161,7 +156,7 @@ class FredEconomicCalendarFetcher(
             ]
 
             async def _fetch_page(url: str):
-                return await amake_request(url, response_callback=response_callback)
+                return await fred_get(url, response_callback=response_callback)
 
             responses = await asyncio.gather(*[_fetch_page(u) for u in remaining_urls])
 
@@ -222,7 +217,8 @@ class FredEconomicCalendarFetcher(
         try:
             all_results = await fetch_all_pages(start_date, end_date, rid)
         except Exception as e:
-            raise OpenBBError(e) from e
+            message = str(e) or f"FRED request failed ({type(e).__name__})."
+            raise OpenBBError(message) from e
 
         if all_results.empty:
             raise OpenBBError(

@@ -278,7 +278,7 @@ class FredNonFarmPayrollsFetcher(
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_fred.utils.rate_limiter import fred_get
         from numpy import nan
         from pandas import DataFrame, to_datetime
 
@@ -304,7 +304,7 @@ class FredNonFarmPayrollsFetcher(
 
         async def get_one(URL):
             """Get the observations for a single date."""
-            response = await amake_request(URL)
+            response = await fred_get(URL)
             data = [v for v in response.get("elements", {}).values() if v.get("observation_value") != "."]  # type: ignore
             if data:
                 df = (
