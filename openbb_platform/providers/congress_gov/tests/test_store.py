@@ -95,9 +95,9 @@ def test_store_no_cache(monkeypatch):
 
 def test_store_connect_error(monkeypatch, tmp_path):
     """An unopenable database path degrades to empty results instead of raising."""
-    afile = tmp_path / "afile"
-    afile.write_text("x")
-    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(afile))
+    not_a_db = tmp_path / "blocker"
+    not_a_db.write_text("x")
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(not_a_db))
     assert store.loaded_keys("bills") == set()
     assert store.get_bill("119-hr-1") is None
     assert store.get_passage("A") is None
