@@ -282,6 +282,18 @@ def build_json(  # noqa: PLR0912
         # If a GET exists, it's the primary. Otherwise, it's a POST.
         route_method = "get" if "get" in route_api else "post"
 
+        # A `text/event-stream` response cannot be rendered as a widget;
+        response_content: dict = {}
+        for status, body in (
+            route_api.get(route_method, {}).get("responses", {}).items()
+        ):
+            if str(status).startswith("2"):
+                response_content.update(body.get("content", {}) or {})
+        if any(
+            "event-stream" in str(content_type) for content_type in response_content
+        ):
+            continue
+
         skip = False
         for starred in starred_list:
             if route.startswith(
@@ -617,13 +629,7 @@ def build_json(  # noqa: PLR0912
                 # SSRM responses are not OBBject-wrapped; the response
                 # IS the data, so ``dataKey`` must stay empty.
                 data_key = ""
-            # Build nested dicts as explicit ``dict[str, Any]`` so ty
-            # doesn't narrow them to ``dict[str, int]`` /
-            # ``dict[str, bool]`` from the literal values. Later code
-            # mutates them with mixed-type values (gridData["w"] from
-            # int default to a config-supplied dict-or-int, the
-            # data.table dict gains "enableAdvanced"/"columnsDefs"
-            # entries, etc.).
+
             grid_data: dict[str, Any] = {"w": 40, "h": 15}
             table_data: dict[str, Any] = {"showAll": True}
             data_block: dict[str, Any] = {
@@ -642,11 +648,6 @@ def build_json(  # noqa: PLR0912
                 },
                 "params": modified_query_schema,
                 "endpoint": route,
-                # SSRM endpoints are heavyweight server-paginated queries;
-                # auto-running on mount almost always wastes a full pull
-                # before the user has set their filters. Author-provided
-                # ``widget_config.runButton`` still wins via the
-                # deep-merge below.
                 "runButton": bool(ssrm),
                 "gridData": grid_data,
                 "data": data_block,

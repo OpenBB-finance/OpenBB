@@ -282,6 +282,24 @@ def test_parse_args_app_path_imports_via_bootstrap():
     assert out["app"] is fake_app
 
 
+def test_parse_args_app_path_without_colon_notation():
+    """An ``--app`` path with no colon is not module:attr notation.
+
+    ``_is_module_colon_notation`` returns False, so the name is not derived
+    from a colon split and the default ``app`` name is used.
+    """
+    fake_app = MagicMock(name="FakeApp")
+    with (
+        patch(
+            "openbb_platform_api.app.bootstrap.import_app", return_value=fake_app
+        ) as mock_import,
+        patch("sys.argv", ["openbb-api", "--app", "my.module.app"]),
+    ):
+        out = parse_args()
+    mock_import.assert_called_once_with("my.module.app", "app", False)
+    assert out["app"] is fake_app
+
+
 def test_parse_args_app_with_factory_flag():
     """``--app some.mod:make_app --factory true`` invokes import_app
     with the factory flag.
