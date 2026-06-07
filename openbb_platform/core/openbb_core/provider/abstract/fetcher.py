@@ -56,6 +56,27 @@ class Fetcher(Generic[Q, R]):
         """Transform the provider-specific data."""
         raise NotImplementedError
 
+    @staticmethod
+    def stream_data(query: Q, data: Any, **kwargs) -> R:
+        """Transform a stream of extracted items into typed data.
+
+        Override with an ``async def`` generator for streaming fetchers; ``data``
+        is the async iterator returned by ``extract_data``.
+
+        Parameters
+        ----------
+        query : Q
+            The validated query.
+        data : Any
+            Async iterator of raw items from ``extract_data``.
+
+        Returns
+        -------
+        R
+            Async iterator of typed data rows.
+        """
+        raise NotImplementedError
+
     def __init_subclass__(cls, *args, **kwargs):
         """Initialize the subclass."""
         super().__init_subclass__(*args, **kwargs)
@@ -81,7 +102,14 @@ class Fetcher(Generic[Q, R]):
         data = await maybe_coroutine(
             cls.extract_data, query=query, credentials=credentials, **kwargs
         )
+        if cls.is_streaming:
+            return cls.stream_data(query=query, data=data, **kwargs)
         return cls.transform_data(query=query, data=data, **kwargs)
+
+    @classproperty
+    def is_streaming(self) -> bool:
+        """Whether this fetcher streams its results via ``stream_data``."""
+        return self.stream_data is not Fetcher.stream_data
 
     @classproperty
     def query_params_type(self) -> Q:
@@ -103,9 +131,38 @@ class Fetcher(Generic[Q, R]):
 
     @staticmethod
     def _get_data_type(data: Any) -> D:
-        """Get the type of the data."""
-        if get_origin(data) is list:
-            data = get_args(data)[0]
+        """Get the type of the data.
+
+        Parameters
+        ----------
+        data : Any
+            The fetcher return annotation, possibly a container of the row type.
+
+        Returns
+        -------
+        D
+            The row data type, unwrapped from list or async-iterator containers.
+        """
+        from collections.abc import (
+            AsyncGenerator,
+            AsyncIterable,
+            AsyncIterator,
+            Iterable,
+            Iterator,
+        )
+
+        containers = (
+            list,
+            AsyncIterator,
+            AsyncIterable,
+            AsyncGenerator,
+            Iterator,
+            Iterable,
+        )
+        if get_origin(data) in containers:
+            args = get_args(data)
+            if args:
+                data = args[0]
         return data
 
     @classmethod
@@ -136,11 +193,6 @@ class Fetcher(Generic[Q, R]):
         DataFrame = require_optional("pandas").DataFrame  # type: ignore[union-attr]
 
         query = cls.transform_query(params=params)
-        data = run_async(
-            cls.extract_data, query=query, credentials=credentials, **kwargs
-        )
-        result = cls.transform_data(query=query, data=data, **kwargs)
-        data_type_fields = cls.data_type.model_fields
 
         # Class Assertions
         assert isinstance(cls.require_credentials, bool), (
@@ -155,6 +207,16 @@ class Fetcher(Generic[Q, R]):
         assert all(getattr(query, key) == value for key, value in params.items()), (
             f"Query must have the correct values. Expected: {params} Got: {query.__dict__}"
         )
+
+        if cls.is_streaming:
+            cls._test_stream(query, credentials, **kwargs)
+            return
+
+        data = run_async(
+            cls.extract_data, query=query, credentials=credentials, **kwargs
+        )
+        result = cls.transform_data(query=query, data=data, **kwargs)
+        data_type_fields = cls.data_type.model_fields
 
         # Data Assertions
         if not isinstance(data, DataFrame):
@@ -241,3 +303,66 @@ class Fetcher(Generic[Q, R]):
             assert issubclass(type(transformed_data), cls.return_type), (
                 f"Transformed data must be of the correct type. Expected: {cls.return_type} Got: {type(transformed_data)}"
             )
+
+    @classmethod
+    def _test_stream(
+        cls,
+        query: Q,
+        credentials: dict[str, str] | None = None,
+        max_items: int = 1,
+        **kwargs,
+    ) -> None:
+        """Test a streaming fetcher by consuming and validating stream items.
+
+        Parameters
+        ----------
+        query : Q
+            The validated query.
+        credentials : dict[str, str] or None
+            The credentials to test the fetcher with.
+        max_items : int
+            Number of items to consume before stopping.
+
+        Raises
+        ------
+        AssertionError
+            If any of the streaming tests fail.
+        """
+        data_type = cls.data_type
+        data_type_fields = data_type.model_fields
+
+        async def _run() -> None:
+            from collections.abc import AsyncIterator
+            from typing import cast
+
+            raw = await maybe_coroutine(
+                cls.extract_data, query=query, credentials=credentials, **kwargs
+            )
+            assert hasattr(raw, "__aiter__"), (
+                "extract_data must return an async iterable for a streaming fetcher."
+            )
+            stream = cls.stream_data(query=query, data=raw, **kwargs)
+            assert hasattr(stream, "__aiter__"), (
+                "stream_data must return an async iterable for a streaming fetcher."
+            )
+            iterator = cast("AsyncIterator[Any]", stream).__aiter__()
+            count = 0
+            try:
+                while count < max_items:
+                    item = await iterator.__anext__()
+                    assert issubclass(type(item), data_type), (
+                        f"Streamed item type mismatch. Expected: {data_type} Got: {type(item)}"
+                    )
+                    assert all(field in item.__dict__ for field in data_type_fields), (
+                        f"Streamed item must have the correct fields. Expected: {data_type_fields} Got: {item.__dict__}"
+                    )
+                    count += 1
+            except StopAsyncIteration:
+                pass
+            finally:
+                aclose = getattr(iterator, "aclose", None)
+                if aclose is not None:
+                    await aclose()
+            assert count > 0, "Stream must yield at least one item."
+
+        run_async(_run)

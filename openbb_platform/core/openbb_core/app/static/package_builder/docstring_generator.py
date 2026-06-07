@@ -213,6 +213,34 @@ class DocstringGenerator:
         return obbject_description
 
     @staticmethod
+    def get_OBBStream_description(model_name: str) -> str:
+        """Get the streaming command output description."""
+        indent = 2
+        stream_description = (
+            f"{create_indent(indent)}OBBStream\n"
+            f"{create_indent(indent + 1)}results : AsyncIterator[{model_name}]\n"
+            f"{create_indent(indent + 2)}Async iterator of streamed results;"
+            " use ``async for row in stream``.\n"
+            f"{create_indent(indent + 1)}id : str\n"
+            f"{create_indent(indent + 2)}Unique identifier of the stream.\n"
+            f"{create_indent(indent + 1)}provider : Optional[str]\n"
+            f"{create_indent(indent + 2)}Provider name.\n"
+            f"{create_indent(indent + 1)}warnings : Optional[list[Warning_]]\n"
+            f"{create_indent(indent + 2)}List of warnings.\n"
+            f"{create_indent(indent + 1)}extra : dict[str, Any]\n"
+            f"{create_indent(indent + 2)}Extra info.\n"
+            f"{create_indent(indent + 1)}start : (output=None, handler=None) -> OBBStream\n"
+            f"{create_indent(indent + 2)}Begin streaming on a background thread; output"
+            " defaults to STDOUT and may be a file path, file object, or socket;"
+            " handler transforms or filters each item.\n"
+            f"{create_indent(indent + 1)}stop : (timeout=5.0) -> None\n"
+            f"{create_indent(indent + 2)}Stop the stream and wait for it to wind down.\n"
+            f"{create_indent(indent + 1)}wait : (timeout=None) -> None\n"
+            f"{create_indent(indent + 2)}Block until the stream finishes.\n"
+        )
+        return stream_description.replace("NoneType", "None")
+
+    @staticmethod
     def build_examples(
         func_path: str,
         param_types: dict[str, type],
@@ -252,6 +280,7 @@ class DocstringGenerator:
         returns: dict[str, FieldInfo],
         results_type: str,
         sections: list[str],
+        is_streaming: bool = False,
     ) -> str:
         """Create the docstring for model."""
         docstring: str = "\n"
@@ -793,8 +822,11 @@ class DocstringGenerator:
             docstring += "\n"
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
-            _providers, _ = get_param_info(explicit_params.get("provider"))
-            docstring += cls.get_OBBject_description(results_type, _providers)
+            if is_streaming:
+                docstring += cls.get_OBBStream_description(model_name)
+            else:
+                _providers, _ = get_param_info(explicit_params.get("provider"))
+                docstring += cls.get_OBBject_description(results_type, _providers)
             # Schema
             underline = "-" * len(model_name)
             docstring += f"\n{create_indent(2)}{model_name}\n"
@@ -817,6 +849,7 @@ class DocstringGenerator:
         formatted_params: OrderedDict[str, Parameter],
         model_name: str | None = None,
         examples: list[Example] | None = None,
+        return_type: Any = None,
     ) -> str | None:
         """Generate the docstring for the function."""
         doc = inspect.getdoc(func) or ""
@@ -830,6 +863,18 @@ class DocstringGenerator:
         explicit_params.pop("extra_params", None)
         # Map of parameter names to types
         param_types = {k: v.annotation for k, v in explicit_params.items()}
+
+        dependency_param_names: set = set()
+        try:
+            _sig_params = inspect.signature(func).parameters
+            for _pname, _p in _sig_params.items():
+                _ann = _p.annotation
+                if isinstance(_ann, _AnnotatedAlias) and any(
+                    hasattr(_m, "dependency") for _m in _ann.__metadata__
+                ):
+                    dependency_param_names.add(_pname)
+        except (AttributeError, TypeError, ValueError):
+            pass
 
         if model_name:
             params = cls.provider_interface.params.get(model_name, {})
@@ -854,6 +899,9 @@ class DocstringGenerator:
                     and "results" in model_fields
                     else model_name
                 )
+                is_streaming = (
+                    isclass(annotation) and annotation.__name__ == "OBBStream"
+                ) or (isclass(return_type) and return_type.__name__ == "OBBStream")
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
@@ -862,6 +910,7 @@ class DocstringGenerator:
                     returns=getattr(return_schema, "model_fields", {}),
                     results_type=results_type,
                     sections=sections,
+                    is_streaming=is_streaming,
                 )
                 doc += "\n"
 
@@ -896,6 +945,16 @@ class DocstringGenerator:
             doc_has_examples = bool(
                 re.search(r"^\s*Examples\s*\n[-=~`]{3,}", doc, re.MULTILINE)
             )
+
+            if dependency_param_names and doc_has_parameters:
+                doc = re.sub(
+                    r"\n[ \t]*Parameters[ \t]*\n[-=~`]{3,}[ \t]*\n.*?"
+                    r"(?=\n[ \t]*[A-Z][A-Za-z ]*[ \t]*\n[-=~`]{3,}|\Z)",
+                    "\n",
+                    doc,
+                    flags=re.DOTALL,
+                )
+                doc_has_parameters = False
 
             if doc_has_returns:
                 doc = re.sub(
@@ -959,8 +1018,10 @@ class DocstringGenerator:
                     result_doc = result_doc.rstrip("\n") + "\n\n"
 
                 returns_section = "Returns\n-------\n"
-                sig = inspect.signature(func)
-                return_annotation = sig.return_annotation
+                if return_type is not None and return_type is not inspect._empty:
+                    return_annotation = return_type
+                else:
+                    return_annotation = inspect.signature(func).return_annotation
 
                 if return_annotation and return_annotation != inspect._empty:
                     if hasattr(return_annotation, "__name__"):

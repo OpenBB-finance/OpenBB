@@ -16,6 +16,7 @@ class _Fetcher:
     module_name: str
     fetcher_class: str
     model_name: str
+    is_streaming: bool = False
 
 
 @dataclass
@@ -106,6 +107,33 @@ def test_generate_routers_emits_top_router_with_get_command():
     assert "async def search(" in src
     assert '"""Search equities."""' in src
     # Module parses
+    ast.parse(src)
+
+
+def test_generate_routers_emits_stream_command_for_streaming_fetcher():
+    tree = nt.build_namespace_tree(
+        {"crypto.feed": {"providers": ["wargame"], "description": "Live feed"}}
+    )
+    fetchers = {
+        "crypto.feed": _Fetcher(
+            module_name="crypto_feed",
+            fetcher_class="CryptoFeedFetcher",
+            model_name="CryptoFeed",
+            is_streaming=True,
+        )
+    }
+    out = rg.generate_routers(
+        tree,
+        package_name="openbb_codegen",
+        provider_name="wargame",
+        fetchers_by_command=fetchers,
+        post_commands_by_command={},
+    )
+
+    src = out.routers[0].source
+    assert "from openbb_core.app.model.stream import OBBStream" in src
+    assert '@router.command(model="CryptoFeed")' in src
+    assert "OBBStream" in src
     ast.parse(src)
 
 

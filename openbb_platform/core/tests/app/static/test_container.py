@@ -51,6 +51,25 @@ def test_container__run(mock_sync_run, container):
     mock_sync_run.assert_called_once()
 
 
+@patch("openbb_core.app.command_runner.CommandRunner.sync_run")
+def test_container__run_wraps_stream(mock_sync_run, container):
+    """Test container _run wraps a streaming response in an OBBStream."""
+    from openbb_core.app.model.stream import OBBStream
+
+    class _StreamingResponse:
+        media_type = "text/event-stream"
+
+        def __init__(self):
+            self.body_iterator = self._gen()
+
+        async def _gen(self):
+            yield "data: 0\n\n"
+
+    mock_sync_run.return_value = _StreamingResponse()
+    result = container._run("/x/y")
+    assert isinstance(result, OBBStream)
+
+
 def test_container__check_credentials(container):
     """Test container _check_credentials method."""
     assert container._check_credentials("provider_1") is False

@@ -1,6 +1,7 @@
 """Commands: generates the command map."""
 
 import inspect
+import json
 from collections.abc import Callable
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
@@ -12,12 +13,17 @@ from fastapi.params import Depends as DependsParam
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 from pydantic import BaseModel
+from starlette.responses import (
+    Response as StarletteResponse,
+    StreamingResponse,
+)
 from typing_extensions import ParamSpec
 
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.stream import OBBStream
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
@@ -245,7 +251,7 @@ def build_api_wrapper(
     @wraps(wrapped=func)
     async def wrapper(  # noqa: PLR0912
         *args: tuple[Any], **kwargs: dict[str, Any]
-    ) -> OBBject | JSONResponse:
+    ) -> OBBject | JSONResponse | StarletteResponse:
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
@@ -312,6 +318,24 @@ def build_api_wrapper(
         execute = partial(command_runner.run, path, user_settings)
 
         output = await execute(*args, **kwargs)
+
+        if isinstance(output, StarletteResponse):
+            return output
+        if isinstance(output, OBBStream):
+            # The body is reserved for SSE chunks, so the response-level fields
+            # (id, provider, warnings) are broadcast out-of-band as headers.
+            stream_headers: dict[str, str] = {"X-OpenBB-Stream-Id": output.id}
+            if output.provider:
+                stream_headers["X-OpenBB-Provider"] = output.provider
+            if output.warnings:
+                stream_headers["X-OpenBB-Warning"] = json.dumps(
+                    jsonable_encoder(output.warnings)
+                )
+            return StreamingResponse(
+                output.aiter_bytes(),
+                media_type=output.media_type or "text/event-stream",
+                headers=stream_headers,
+            )
 
         if isinstance(output, OBBject):
             # This is where we check for `on_command_output` extensions

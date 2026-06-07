@@ -76,6 +76,30 @@ class GeneratedFetcher:
     fetcher_class: str
     source: str
     credentials_used: dict[str, dict[str, str]] = field(default_factory=dict)
+    is_streaming: bool = False
+
+
+def _command_is_streaming(cmd_spec: dict[str, Any]) -> bool:
+    """Return whether a command's success response is a stream.
+
+    Parameters
+    ----------
+    cmd_spec : dict
+        The spec command entry.
+
+    Returns
+    -------
+    bool
+        True when a 2xx response advertises ``text/event-stream``.
+    """
+    for status, content in (cmd_spec.get("response_schemas") or {}).items():
+        if (
+            str(status).startswith("2")
+            and isinstance(content, dict)
+            and any("event-stream" in str(ct) for ct in content)
+        ):
+            return True
+    return False
 
 
 def _module_name_from_command(name: str) -> str:
@@ -543,6 +567,32 @@ def generate_fetcher_module(spec: FetcherCommandSpec) -> GeneratedFetcher:
     )
     header_block = _header_dict_construction(creds)
 
+    if _command_is_streaming(spec.cmd_spec):
+        source = _render_streaming_fetcher_source(
+            spec=spec,
+            qp_class=qp_class,
+            qp_classes=qp_generated.flatten(),
+            data_class=data_class,
+            fetcher_class=fetcher_class,
+            method=method,
+            url_path_template=full_url_path,
+            base_url=base_url,
+            cred_lines=cred_lines,
+            query_block=query_block,
+            header_block=header_block,
+            description=description,
+        )
+        return GeneratedFetcher(
+            module_name=module_name,
+            model_name=model_name,
+            query_params_class=qp_class,
+            data_class=data_class,
+            fetcher_class=fetcher_class,
+            source=source,
+            credentials_used=creds,
+            is_streaming=True,
+        )
+
     source = _render_fetcher_source(
         spec=spec,
         qp_class=qp_class,
@@ -573,6 +623,155 @@ def generate_fetcher_module(spec: FetcherCommandSpec) -> GeneratedFetcher:
         source=source,
         credentials_used=creds,
     )
+
+
+def _render_streaming_fetcher_source(
+    *,
+    spec: FetcherCommandSpec,
+    qp_class: str,
+    qp_classes: list[GeneratedClass],
+    data_class: str,
+    fetcher_class: str,
+    method: str,
+    url_path_template: str,
+    base_url: str,
+    cred_lines: list[str],
+    query_block: str,
+    header_block: str,
+    description: str,
+) -> str:
+    """Format a streaming fetcher module source.
+
+    Parameters
+    ----------
+    spec : FetcherCommandSpec
+        Original command input.
+    qp_class : str
+        Query parameters class name.
+    qp_classes : list of GeneratedClass
+        Pre-flattened query parameter classes.
+    data_class : str
+        Streamed row class name.
+    fetcher_class : str
+        Fetcher class name.
+    method : str
+        HTTP verb.
+    url_path_template : str
+        URL path with placeholders intact.
+    base_url : str
+        Upstream API root, no trailing slash.
+    cred_lines : list of str
+        Credential-extraction source lines.
+    query_block : str
+        Pre-rendered query-dict source.
+    header_block : str
+        Pre-rendered headers-dict source.
+    description : str
+        First paragraph of the spec command's description.
+
+    Returns
+    -------
+    str
+        The full streaming fetcher module source.
+    """
+    transform_query_doc = render_function_docstring(
+        "Validate raw input into typed query parameters.",
+        parameters=[("params", "dict[str, Any]", "Raw user input.")],
+        returns=(qp_class, "Validated query parameters."),
+        indent="        ",
+    )
+    aextract_doc = render_function_docstring(
+        f"Open the stream at {base_url}{url_path_template}.",
+        parameters=[
+            ("query", qp_class, "Validated query parameters."),
+            ("credentials", "dict | None", "Provider credentials."),
+            ("**kwargs", "Any", "Forwarded by the provider runtime."),
+        ],
+        returns=("AsyncIterator[str]", "Async iterator of raw stream lines."),
+        indent="        ",
+    )
+    stream_data_doc = render_function_docstring(
+        f"Type each stream line as {data_class}.",
+        parameters=[
+            ("query", qp_class, "Validated query parameters."),
+            ("data", "Any", "Async iterator of raw stream lines."),
+            ("**kwargs", "Any", "Forwarded by the provider runtime."),
+        ],
+        returns=(f"AsyncIterator[{data_class}]", "Async iterator of typed rows."),
+        indent="        ",
+    )
+
+    parts: list[str] = []
+    parts.append(f'"""Streaming fetcher for {spec.name} — generated from spec."""')
+    parts.append("")
+    parts.append("from collections.abc import AsyncIterator")
+    parts.append("from typing import Any")
+    parts.append("")
+    parts.append("import httpx")
+    parts.append("")
+    parts.append("from openbb_core.provider.abstract.data import Data")
+    parts.append("from openbb_core.provider.abstract.fetcher import Fetcher")
+    parts.append("from openbb_core.provider.abstract.query_params import QueryParams")
+    parts.append("from openbb_core.provider.utils.helpers import get_querystring")
+    parts.append("")
+    parts.append("")
+    for cls in qp_classes:
+        parts.append(cls.source)
+    parts.append(f"class {data_class}(Data):")
+    parts.append(f'    """Streamed row for {spec.name}."""')
+    parts.append("")
+    parts.append("    data: str")
+    parts.append("")
+    parts.append("")
+    parts.append(
+        f"class {fetcher_class}(Fetcher[{qp_class}, AsyncIterator[{data_class}]]):"
+    )
+    parts.append(f'    """Streaming fetcher for {spec.name}."""')
+    parts.append("")
+    parts.append("    @staticmethod")
+    parts.append(f"    def transform_query(params: dict) -> {qp_class}:")
+    parts.append(transform_query_doc)
+    parts.append(f"        return {qp_class}(**params)")
+    parts.append("")
+    parts.append("    @staticmethod")
+    parts.append(
+        f"    async def aextract_data(query: {qp_class}, "
+        "credentials: dict | None, **kwargs) -> AsyncIterator[str]:"
+    )
+    parts.append(aextract_doc)
+    parts.extend(cred_lines)
+    parts.append(query_block)
+    parts.append("        _query_string = get_querystring(_query_dict, [])")
+    parts.append(
+        f'        _url = f"{base_url}{url_path_template}"'
+        ' + ("?" + _query_string if _query_string else "")'
+    )
+    parts.append(header_block)
+    parts.append("")
+    parts.append("        async def _stream() -> AsyncIterator[str]:")
+    parts.append(
+        "            async with httpx.AsyncClient(timeout=None) as _client:  # noqa: S113"
+    )
+    parts.append(
+        f'                async with _client.stream("{method.upper()}", '
+        "_url, headers=_headers) as _resp:"
+    )
+    parts.append("                    _resp.raise_for_status()")
+    parts.append("                    async for _line in _resp.aiter_lines():")
+    parts.append("                        if _line:")
+    parts.append("                            yield _line")
+    parts.append("")
+    parts.append("        return _stream()")
+    parts.append("")
+    parts.append("    @staticmethod")
+    parts.append(
+        f"    async def stream_data(query: {qp_class}, data: Any, **kwargs)"
+        f" -> AsyncIterator[{data_class}]:"
+    )
+    parts.append(stream_data_doc)
+    parts.append("        async for _line in data:")
+    parts.append(f"            yield {data_class}(data=_line)")
+    return "\n".join(parts).rstrip() + "\n"
 
 
 def _render_fetcher_source(

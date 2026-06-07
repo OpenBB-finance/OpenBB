@@ -118,6 +118,27 @@ class MethodDefinition:
     }
 
     @staticmethod
+    def _is_charting_command(path: str) -> bool:
+        """Return whether ``path`` maps to an installed charting function.
+
+        Parameters
+        ----------
+        path : str
+            The route path.
+
+        Returns
+        -------
+        bool
+            True if charting is installed and exposes a matching function.
+        """
+        if not CHARTING_INSTALLED:
+            return False
+        try:
+            return path.replace("/", "_")[1:] in Charting.functions()
+        except Exception:  # noqa: BLE001
+            return False
+
+    @staticmethod
     def _snake_case(name: str) -> str:
         if not name:
             return ""
@@ -236,11 +257,122 @@ class MethodDefinition:
         return True
 
     @staticmethod
+    def _surfaced_param_spec(param: Parameter) -> tuple[Any, Any]:
+        """Resolve the ``(annotation, default)`` to surface for a dependency param.
+
+        Unwraps ``Annotated[...]`` to the inner type, ports any description from
+        the FastAPI parameter object (``Header``/``Query``/``Cookie``/``Path``)
+        or field metadata into an ``OpenBBField``, and reads the default from the
+        FastAPI parameter object when present, so the surfaced parameter reads as
+        a plain typed, documented argument.
+        """
+        annotation = param.annotation
+        inner_type = annotation
+        metadata: tuple = ()
+        if isinstance(annotation, _AnnotatedAlias):
+            args = get_args(annotation)
+            inner_type = args[0] if args else Any
+            metadata = annotation.__metadata__
+        if inner_type is Parameter.empty:
+            inner_type = Any
+
+        default = param.default
+
+        description = ""
+        for meta in (*metadata, default):
+            candidate = getattr(meta, "description", None)
+            if candidate:
+                description = candidate
+                break
+
+        if default is not Parameter.empty and hasattr(default, "default"):
+            fastapi_default = default.default
+            default = (
+                Parameter.empty
+                if fastapi_default in (Ellipsis, PydanticUndefined)
+                else fastapi_default
+            )
+
+        annotated = Annotated[inner_type, OpenBBField(description=description)]
+        return annotated, default
+
+    @staticmethod
+    def _surface_dependency(
+        dependency_func: Callable,
+    ) -> tuple["OrderedDict[str, Parameter]", str] | None:
+        """Resolve a dependency in-process by surfacing its parameters.
+
+        A dependency is surfaceable when every parameter can be supplied by the
+        caller — i.e. none is a ``Request``/``Response``/``WebSocket`` object and
+        none is itself a nested ``Depends(...)``. Header/Cookie/Query/plain-value
+        parameters are surfaced as plain arguments on the generated command and
+        forwarded to the dependency call, so the dependency runs without an HTTP
+        request (e.g. an ``x-api-key`` header becomes an ``x_api_key`` argument).
+
+        Returns ``(surfaced_params, call_args)`` or ``None`` when the dependency
+        cannot be resolved in-process.
+        """
+        try:
+            sig = signature(dependency_func)
+        except (TypeError, ValueError):
+            return None
+
+        if MethodDefinition._is_none_like_return(sig.return_annotation):
+            return None
+
+        surfaced: OrderedDict[str, Parameter] = OrderedDict()
+        arg_pairs: list[str] = []
+        for pname, param in sig.parameters.items():
+            annotation = param.annotation
+            if MethodDefinition._has_request_bound_annotation(annotation):
+                return None
+            if isinstance(annotation, _AnnotatedAlias) and any(
+                hasattr(meta, "dependency") for meta in annotation.__metadata__
+            ):
+                return None
+            inner_type, default = MethodDefinition._surfaced_param_spec(param)
+            surfaced[pname] = Parameter(
+                name=pname,
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                annotation=inner_type,
+                default=default,
+            )
+            arg_pairs.append(f"{pname}={pname}")
+        return surfaced, ", ".join(arg_pairs)
+
+    @staticmethod
+    def _collect_surfaced_params(
+        parameter_map: dict[str, Parameter],
+    ) -> "OrderedDict[str, Parameter]":
+        """Collect parameters to surface for parameter-level dependencies.
+
+        For each ``Depends(...)`` parameter that is not already safe (resolvable
+        with no arguments) but is surfaceable, the dependency's own parameters are
+        promoted onto the generated command.
+        """
+        surfaced: OrderedDict[str, Parameter] = OrderedDict()
+        for _name, param in parameter_map.items():
+            if not isinstance(param.annotation, _AnnotatedAlias):
+                continue
+            for meta in param.annotation.__metadata__:
+                dependency_func = getattr(meta, "dependency", None)
+                if dependency_func is None:
+                    continue
+                if MethodDefinition._is_safe_dependency(dependency_func):
+                    continue
+                result = MethodDefinition._surface_dependency(dependency_func)
+                if result is not None:
+                    params, _ = result
+                    for pname, pparam in params.items():
+                        surfaced.setdefault(pname, pparam)
+        return surfaced
+
+    @staticmethod
     def build_class_loader_method(path: str) -> str:
         """Build the class loader method."""
         module_name = PathHandler.build_module_name(path=path)
         class_name = PathHandler.build_module_class(path=path)
-        function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
+        function_name = path.rsplit("/", maxsplit=1)[-1].strip("/").replace("-", "_")
         description = PathHandler.get_router_description(path)
 
         code = "\n    @property\n"
@@ -536,7 +668,7 @@ class MethodDefinition:
         path_params = PathHandler.extract_path_parameters(path)
 
         # we need to add the chart parameter here bc of the docstring generation
-        if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
+        if MethodDefinition._is_charting_command(path):
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -1112,6 +1244,7 @@ class MethodDefinition:
         formatted_params: OrderedDict[str, Parameter],
         model_name: str | None = None,
         examples: list[Example] | None = None,
+        return_type: Any = None,
     ):
         """Build the command method docstring."""
         doc = func.__doc__
@@ -1121,6 +1254,7 @@ class MethodDefinition:
             formatted_params=formatted_params,
             model_name=model_name,
             examples=examples,
+            return_type=return_type,
         )
 
         code = (
@@ -1169,11 +1303,18 @@ class MethodDefinition:
                 if not (hasattr(meta, "dependency") and meta.dependency is not None):
                     continue
                 dependency_func = meta.dependency
-                if not MethodDefinition._is_safe_dependency(dependency_func):
-                    continue
                 func_name = dependency_func.__name__
-                dependency_calls.append(f"        {name} = {func_name}()")
-                dependency_names.add(name)
+                if MethodDefinition._is_safe_dependency(dependency_func):
+                    dependency_calls.append(f"        {name} = {func_name}()")
+                    dependency_names.add(name)
+                elif (
+                    surfaced := MethodDefinition._surface_dependency(dependency_func)
+                ) is not None:
+                    _, call_args = surfaced
+                    dependency_calls.append(
+                        f"        {name} = {func_name}({call_args})"
+                    )
+                    dependency_names.add(name)
 
         return dependency_calls, dependency_names
 
@@ -1200,7 +1341,7 @@ class MethodDefinition:
         if dependency_calls:
             code += "\n".join(dependency_calls) + "\n\n"
 
-        if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
+        if MethodDefinition._is_charting_command(path):
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -1226,6 +1367,14 @@ class MethodDefinition:
         has_extra_params = False
 
         for name, param in parameter_map.items():
+            is_dependency = isinstance(param.annotation, _AnnotatedAlias) and any(
+                getattr(meta, "dependency", None) is not None
+                for meta in param.annotation.__metadata__
+            )
+            if is_dependency:
+                if name in dependency_names:
+                    code += f"                {name}={name},\n"
+                continue
             if name == "extra_params":
                 has_extra_params = True
                 fields = (
@@ -1276,24 +1425,17 @@ class MethodDefinition:
                 )
                 and not MethodDefinition.is_data_processing_function(path)
             ):
-                has_depends = any(
-                    hasattr(meta, "dependency")
-                    for meta in param.annotation.__metadata__
+                model = param.annotation.__args__[0]
+                fields = getattr(
+                    model,
+                    "model_fields",
+                    getattr(model, "__pydantic_fields__", {}),
                 )
-                if not has_depends:
-                    model = param.annotation.__args__[0]
-                    fields = getattr(
-                        model,
-                        "model_fields",
-                        getattr(model, "__pydantic_fields__", {}),
-                    )
-                    values = {k: k for k in fields}
-                    code += f"                {name}={{\n"
-                    for k, v in values.items():
-                        code += f'                    "{k}": {v},\n'
-                    code += "                },\n"
-                else:
-                    code += f"                {name}={name},\n"
+                values = {k: k for k in fields}
+                code += f"                {name}={{\n"
+                for k, v in values.items():
+                    code += f'                    "{k}": {v},\n'
+                code += "                },\n"
             elif isclass(param.annotation) and issubclass(
                 param.annotation, QueryParams
             ):
@@ -1357,11 +1499,12 @@ class MethodDefinition:
         func: Callable,
         model_name: str | None = None,
         examples: list[Example] | None = None,
+        response_model: Any = None,
     ) -> str:
         """Build the command method."""
         path_parts = [p for p in path.split("/") if p and not p.startswith("{")]
         func_name = (
-            path_parts[-1] if path_parts else func.__name__  # ty: ignore[unresolved-attribute]
+            path_parts[-1].replace("-", "_") if path_parts else func.__name__  # ty: ignore[unresolved-attribute]
         )
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -1434,6 +1577,10 @@ class MethodDefinition:
             if name not in parameter_map:
                 parameter_map[name] = param
 
+        for name, param in cls._collect_surfaced_params(parameter_map).items():
+            if name not in parameter_map:
+                parameter_map[name] = param
+
         formatted_params = cls.format_params(
             path=path, parameter_map=parameter_map, func=func
         )
@@ -1451,10 +1598,14 @@ class MethodDefinition:
                 default=Parameter.empty,
             )
 
+        return_type = sig.return_annotation
+        if return_type is signature(func).empty and response_model is not None:
+            return_type = response_model
+
         code = cls.build_command_method_signature(
             func_name=func_name,
             formatted_params=formatted_params,
-            return_type=sig.return_annotation,
+            return_type=return_type,
             path=path,
             model_name=model_name,
         )
@@ -1464,6 +1615,7 @@ class MethodDefinition:
             formatted_params=formatted_params,
             model_name=model_name,
             examples=examples,
+            return_type=return_type,
         )
 
         code += cls.build_command_method_body(

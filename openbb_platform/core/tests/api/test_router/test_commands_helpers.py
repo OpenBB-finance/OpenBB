@@ -226,6 +226,103 @@ async def test_wrapper_passes_through_non_obbject():
 
 
 @pytest.mark.asyncio
+async def test_wrapper_returns_streaming_response_for_obbstream():
+    from starlette.responses import StreamingResponse
+
+    from openbb_core.app.model.stream import OBBStream
+
+    runner = MagicMock(spec=CommandRunner)
+
+    class _Source:
+        media_type = "text/event-stream"
+
+        def __init__(self):
+            self.body_iterator = self._gen()
+
+        async def _gen(self):
+            yield "data: 0\n\n"
+
+    async def _run(path, user_settings, *args, **kwargs):
+        return OBBStream(_Source())
+
+    runner.run = _run
+
+    async def endpoint(symbol: str = "AAPL", **kwargs):
+        return OBBject(results=[])
+
+    route = _make_route(endpoint)
+    wrapper = build_api_wrapper(runner, route)
+    out = await wrapper(symbol="AAPL")
+    assert isinstance(out, StreamingResponse)
+    assert out.media_type == "text/event-stream"
+    assert out.headers["X-OpenBB-Stream-Id"]
+
+
+@pytest.mark.asyncio
+async def test_wrapper_streaming_broadcasts_warnings_and_provider_headers():
+    import json as _json
+
+    from starlette.responses import StreamingResponse
+
+    from openbb_core.app.model.abstract.warning import Warning_
+    from openbb_core.app.model.stream import OBBStream
+
+    runner = MagicMock(spec=CommandRunner)
+
+    class _Source:
+        media_type = "text/event-stream"
+
+        def __init__(self):
+            self.body_iterator = self._gen()
+
+        async def _gen(self):
+            yield "data: 0\n\n"
+
+    stream = OBBStream(_Source())
+    stream.provider = "fmp"
+    stream.warnings = [Warning_(category="OpenBBWarning", message="heads up")]
+
+    async def _run(path, user_settings, *args, **kwargs):
+        return stream
+
+    runner.run = _run
+
+    async def endpoint(symbol: str = "AAPL", **kwargs):
+        return OBBject(results=[])
+
+    route = _make_route(endpoint)
+    wrapper = build_api_wrapper(runner, route)
+    out = await wrapper(symbol="AAPL")
+    assert isinstance(out, StreamingResponse)
+    assert out.headers["X-OpenBB-Provider"] == "fmp"
+    assert out.headers["X-OpenBB-Stream-Id"] == stream.id
+    broadcast = _json.loads(out.headers["X-OpenBB-Warning"])
+    assert broadcast[0]["category"] == "OpenBBWarning"
+    assert broadcast[0]["message"] == "heads up"
+
+
+@pytest.mark.asyncio
+async def test_wrapper_passes_through_response():
+    from starlette.responses import PlainTextResponse
+
+    runner = MagicMock(spec=CommandRunner)
+    response = PlainTextResponse("hi")
+
+    async def _run(path, user_settings, *args, **kwargs):
+        return response
+
+    runner.run = _run
+
+    async def endpoint(symbol: str = "AAPL", **kwargs):
+        return OBBject(results=[])
+
+    route = _make_route(endpoint)
+    wrapper = build_api_wrapper(runner, route)
+    out = await wrapper(symbol="AAPL")
+    assert out is response
+
+
+@pytest.mark.asyncio
 async def test_wrapper_no_validate_route_returns_jsonresponse():
     runner = MagicMock(spec=CommandRunner)
 

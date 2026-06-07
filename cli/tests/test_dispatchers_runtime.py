@@ -91,6 +91,53 @@ def test_run_argv_success_writes_json_and_returns_zero(capsys):
     assert d.requests[0].params == {"provider": "oecd"}
 
 
+class _FakeStream:
+    """A lazy-stream stub exposing the start/wait/stop protocol."""
+
+    media_type = "text/event-stream"
+
+    def __init__(self) -> None:
+        self.calls: list[str] = []
+
+    def start(self) -> None:
+        self.calls.append("start")
+
+    def wait(self) -> None:
+        self.calls.append("wait")
+
+    def stop(self) -> None:
+        self.calls.append("stop")
+
+
+def test_run_argv_follows_stream_result():
+    stream = _FakeStream()
+    d = _FakeDispatcher(Response(ok=True, result=stream))
+    rc = run_argv(d, ["x.feed"])
+    assert rc == 0
+    assert stream.calls == ["start", "wait", "stop"]
+
+
+def test_follow_stream_handles_keyboard_interrupt():
+    from openbb_cli.dispatchers.runtime import _follow_stream
+
+    class _Interrupting:
+        def __init__(self) -> None:
+            self.stopped = False
+
+        def start(self) -> None: ...
+
+        def wait(self) -> None:
+            raise KeyboardInterrupt
+
+        def stop(self) -> None:
+            self.stopped = True
+
+    stream = _Interrupting()
+    rc = _follow_stream(stream)
+    assert rc == 0
+    assert stream.stopped is True
+
+
 def test_run_argv_failure_returns_one(capsys):
     d = _FakeDispatcher(
         Response(ok=False, error=ResponseError(type="X", message="nope"))
