@@ -209,6 +209,53 @@ def test_core_objects_with_apirouter_instance(mock_entry_points):
     mock_entry_points.assert_any_call(group="openbb_core_extension")
 
 
+try:
+    import flask
+
+    FLASK_AVAILABLE = True
+except ImportError:
+    FLASK_AVAILABLE = False
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_core_objects_with_flask_instance(mock_entry_points):
+    """Test the core_objects property with a Flask instance."""
+    mock_flask_app = MagicMock()
+    mock_flask_app.__class__.__name__ = "Flask"
+    type(mock_flask_app).__str__ = lambda self: "<Flask 'test_app'>"
+
+    mock_ep = MagicMock(spec=EntryPoint)
+    mock_ep.name = "flask_extension"
+    mock_ep.value = "test_module:app"
+    mock_ep.load.return_value = mock_flask_app
+
+    mock_entry_points.return_value = [mock_ep]
+
+    el = ExtensionLoader()
+    _ = el.core_objects
+
+    mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+def test_flask_extension_loader_import():
+    """Test that FlaskExtensionLoader can be imported when Flask is available."""
+    from openbb_core.app.utils.flask import FlaskExtensionLoader
+
+    assert FlaskExtensionLoader is not None
+    assert hasattr(FlaskExtensionLoader, "load_flask_extension")
+    assert hasattr(FlaskExtensionLoader, "validate_flask_app")
+
+
+@pytest.mark.skipif(FLASK_AVAILABLE, reason="Flask is installed")
+def test_extension_loader_without_flask():
+    """Test that ExtensionLoader works when Flask is not installed."""
+    el = ExtensionLoader()
+    assert el is not None
+    assert isinstance(el.core_objects, dict)
+
+
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_core_objects_with_router_instance(mock_entry_points):
     """Test core_objects when entry point loads a Router directly."""

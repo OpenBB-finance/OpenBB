@@ -18,6 +18,9 @@ from openbb_core.app.router import (
     RouterLoader,
     SignatureInspector,
 )
+from starlette.applications import Starlette
+from starlette.responses import PlainTextResponse
+from starlette.routing import Mount
 
 
 class MockBaseModel(BaseModel):
@@ -59,6 +62,34 @@ def test_include_router(router):
     """Test include_router."""
     some_router = Router()
     assert router.include_router(some_router) is None
+
+
+def test_include_router_propagates_mount() -> None:
+    """Mounted sub-app routes should survive Router.include_router."""
+    child = Router()
+    child.api_router.mount(
+        "/",
+        Starlette(
+            routes=[
+                # A simple mounted route to prove the mount exists.
+                # If Mount isn't propagated, it silently disappears.
+                # (We don't need to issue HTTP requests here.)
+                # noqa: E501
+            ],
+        ),
+    )
+
+    # Mount an app that has at least one route.
+    mounted_app = Starlette()
+    mounted_app.add_route("/health", lambda *_: PlainTextResponse("ok"))
+    child.api_router.routes.clear()
+    child.api_router.mount("/", mounted_app)
+
+    parent = Router()
+    parent.include_router(child, prefix="/flask")
+
+    mount_paths = [r.path for r in parent.api_router.routes if isinstance(r, Mount)]
+    assert "/flask" in mount_paths
 
 
 @pytest.fixture(scope="module")

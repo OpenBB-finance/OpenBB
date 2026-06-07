@@ -175,6 +175,23 @@ class ExtensionLoader(metaclass=SingletonMeta):
                     entry = entry.router
                 if isinstance(entry, APIRouter):
                     entries[ep.name] = Router.from_fastapi(entry)
+                    continue
+                if "flask" in str(type(entry)).lower():
+                    try:
+                        import flask  # noqa: F401
+                    except ImportError:
+                        continue
+                    from openbb_core.app.utils.flask import FlaskExtensionLoader
+
+                    try:
+                        flask_extension = FlaskExtensionLoader.load_flask_extension(
+                            ep.value, ep.name
+                        )
+                        if flask_extension:
+                            entries[ep.name] = flask_extension
+                    except (ModuleNotFoundError, ImportError):
+                        continue
+
             return entries
 
         def load_provider(eps: EntryPoints) -> dict[str, "Provider"]:
