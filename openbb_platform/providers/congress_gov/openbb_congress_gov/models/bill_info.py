@@ -1,7 +1,5 @@
 """Congress Gov Bills Text Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -14,21 +12,19 @@ class CongressBillInfoQueryParams(QueryParams):
     """Congress Gov Bills Info Query."""
 
     __json_schema_extra__ = {
-        "bill_url": {
+        "bill_id": {
             "x-widget_config": {
-                "label": "Bill URL",
-                "description": "Enter a base URL of a bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?')."
-                + " Alternatively, you can enter a bill number (e.g., '119/s/1947')."
-                + " Create a group on the 'Bill URL' field of the 'Congressional Bills' widget"
-                + " and click on the cell to view summary and metadata.",
-                "value": "119/hr/1",
+                "label": "Bill ID",
+                "description": "Enter a bill id (e.g., '119-hr-29'). Or group the"
+                + " 'Congressional Bills' widget by 'Bill ID' and click a cell to view"
+                + " this bill's summary and metadata.",
+                "value": "119-hr-1",
             },
         }
     }
 
-    bill_url: str = Field(
-        description="Enter a base URL of a bill (e.g., 'https://api.congress.gov/v3/bill/119/s/1947?format=json')."
-        + " Alternatively, you can enter a bill number (e.g., '119/s/1947')."
+    bill_id: str = Field(
+        description="The bill id, e.g. '119-hr-29' (congress-billtype-number)."
     )
 
 
@@ -80,130 +76,22 @@ class CongressBillInfoFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract data from the query."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.app.model.abstract.error import OpenBBError
-        from openbb_core.provider.utils.errors import UnauthorizedError
-        from openbb_core.provider.utils.helpers import amake_request
+        """Extract a bill's full record from the GovInfo bulk archives."""
+        from openbb_congress_gov.utils.bulk import load_bill_record
 
-        api_key = credentials.get("congress_gov_api_key", "") if credentials else ""
-        bill_url = query.bill_url
-        if bill_url[0].isnumeric() or (bill_url[0] == "/" and bill_url[1].isnumeric()):
-            # If the bill URL starts with a number, assume it's a congress number and construct the URL
-            bill_url = (
-                "https://api.congress.gov/v3/bill/"
-                + f"{bill_url[1:] if bill_url[0] == '/' else bill_url}?format=json"
-            )
-
-        url = bill_url + "&api_key=" + api_key
-        base_info: dict = await amake_request(url)  # type: ignore
-
-        if isinstance(base_info, dict) and (error := base_info.get("error", {})):
-            if "API_KEY" in error.get("code", ""):
-                raise UnauthorizedError(
-                    f"{error.get('code', '')} -> {error.get('message', '')}"
-                )
-            raise OpenBBError(f"{error.get('code', '')} -> {error.get('message', '')}")
-
-        base_info = base_info.get("bill", {})
-        cosponsors = base_info.get("cosponsors", {})
-
-        if cosponsors.get("count", 0) > 0:
-            cosponsors_url = (
-                base_info.get("cosponsors", {}).get("url", "") + "&api_key=" + api_key
-            )
-            cosponsors_response: dict = await amake_request(cosponsors_url)  # type: ignore
-            cosponsors_list = cosponsors_response.get("cosponsors", [])
-            base_info["cosponsors"] = cosponsors_list
-
-        subjects = base_info.get("subjects", {})
-
-        if subjects.get("count", 0) > 0:
-            subjects_url = (
-                base_info.get("subjects", {}).get("url", "") + "&api_key=" + api_key
-            )
-            subjects_response: dict = await amake_request(subjects_url)  # type: ignore
-            subjects_list = subjects_response.get("subjects", {}).get(
-                "legislativeSubjects", []
-            )
-            base_info["subjects"] = subjects_list
-
-        summaries = base_info.get("summaries", {})
-
-        if summaries.get("count", 0) > 0:
-            summaries_url = (
-                base_info.get("summaries", {}).get("url", "") + "&api_key=" + api_key
-            )
-            summaries_response: dict = await amake_request(summaries_url)  # type: ignore
-            summaries_list = summaries_response.get("summaries", [])
-
-            if summaries_list:
-                base_info["summaries"] = summaries_list
-
-        committees = base_info.get("committees", {})
-
-        if committees.get("count", 0) > 0:
-            committees_url = (
-                base_info.get("committees", {}).get("url", "") + "&api_key=" + api_key
-            )
-            committees_response: dict = await amake_request(committees_url)  # type: ignore
-            committees_list = committees_response.get("committees", [])
-
-            if committees_list:
-                base_info["committees"] = committees_list
-
-        actions = base_info.get("actions", {})
-
-        if actions.get("count", 0) > 0:
-            actions_url = (
-                base_info.get("actions", {}).get("url", "") + "&api_key=" + api_key
-            )
-            actions_response: dict = await amake_request(actions_url)  # type: ignore
-            actions_list = actions_response.get("actions", [])
-
-            if actions_list:
-                base_info["actions"] = actions_list
-
-        titles = base_info.get("titles", {})
-
-        if titles.get("count", 0) > 0:
-            titles_url = (
-                base_info.get("titles", {}).get("url", "") + "&api_key=" + api_key
-            )
-            titles_response: dict = await amake_request(titles_url)  # type: ignore
-            titles_list = titles_response.get("titles", [])
-
-            if titles_list:
-                base_info["titles"] = titles_list
-
-        related_bills = base_info.get("relatedBills", {})
-
-        if related_bills.get("count", 0) > 0:
-            related_bills_url = (
-                base_info.get("relatedBills", {}).get("url", "") + "&api_key=" + api_key
-            )
-            related_bills_response: dict = await amake_request(related_bills_url)  # type: ignore
-            related_bills_list = related_bills_response.get("relatedBills", [])
-
-            if related_bills_list:
-                base_info["relatedBills"] = related_bills_list
-
-        return base_info
+        return await load_bill_record(query.bill_id)
 
     @staticmethod
-    def transform_data(  # pylint: disable=R0912,R0914  # noqa: PLR0912,PLR0914
+    def transform_data(  # noqa: PLR0912,PLR0914
         query: CongressBillInfoQueryParams,
         data: dict,
         **kwargs: Any,
     ) -> CongressBillInfoData:
         """Transform the data into the model."""
-        # pylint: disable=import-outside-toplevel
         import re
 
-        # Regex to strip HTML tags
         html_tag_regex = re.compile(r"<[^>]+>")
 
-        # Regex to match HTML list items
         li_regex = re.compile(r"<li[^>]*>(.*?)</li>", re.DOTALL | re.IGNORECASE)
         ul_regex = re.compile(r"<ul[^>]*>(.*?)</ul>", re.DOTALL | re.IGNORECASE)
         ol_regex = re.compile(r"<ol[^>]*>(.*?)</ol>", re.DOTALL | re.IGNORECASE)
@@ -214,7 +102,6 @@ class CongressBillInfoFetcher(
 
         def html_to_markdown(text: str) -> str:
             """Convert HTML content to Markdown format."""
-            # Extract the first <strong> tag inside a <p> as the title, if present
             title = ""
             paragraphs = p_tag_regex.findall(text)
             if paragraphs:
@@ -222,13 +109,11 @@ class CongressBillInfoFetcher(
                 strong_match = strong_tag_regex.search(first_p)
                 if strong_match:
                     title = strong_match.group(1).strip()
-                    # Remove the first <p><strong>...</strong></p> from text
                     text = text.replace(f"<p><strong>{title}</strong></p>", "", 1)
                     text = text.lstrip()
                     if text.startswith(title):
                         text = text[len(title) :].lstrip()
 
-            # Convert unordered lists
             def ul_replacer(match):
                 """Replace <ul> with Markdown format."""
                 items = li_regex.findall(match.group(1))
@@ -236,7 +121,6 @@ class CongressBillInfoFetcher(
                     f"- {html_tag_regex.sub('', item).strip()}" for item in items
                 )
 
-            # Convert ordered lists
             def ol_replacer(match):
                 """Replace <ol> with Markdown format."""
                 items = li_regex.findall(match.group(1))

@@ -489,7 +489,8 @@ class FredManufacturingOutlookNYFetcher(
                 credentials,
             )
         except Exception as e:
-            raise OpenBBError(e) from e
+            message = str(e) or f"FRED request failed ({type(e).__name__})."
+            raise OpenBBError(message) from e
 
         return {
             "metadata": response.metadata,

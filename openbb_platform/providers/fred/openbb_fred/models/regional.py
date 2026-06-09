@@ -219,10 +219,8 @@ class FredRegionalDataFetcher(
     ) -> dict:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import (
-            amake_request,
-            get_querystring,
-        )
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_fred.utils.rate_limiter import fred_get
 
         api_key = credentials.get("fred_api_key") if credentials else ""
         season = query.season.upper()
@@ -254,7 +252,7 @@ class FredRegionalDataFetcher(
                 )
                 + f"&file_type=json&api_key={api_key}"
             )
-        return await amake_request(url)  # type: ignore
+        return await fred_get(url)  # type: ignore
 
     @staticmethod
     def transform_data(

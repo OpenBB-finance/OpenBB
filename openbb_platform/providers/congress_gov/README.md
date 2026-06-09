@@ -1,42 +1,61 @@
 # Congress.gov Provider
 
-This provider integrates with the Congress.gov API to provide access to U.S. legislative data and text.
+A **fully keyless** OpenBB Platform provider for U.S. legislative data. It sources
+everything from public, no-credential endpoints:
+
+- **GovInfo bulk data** — bills (`BILLSTATUS`), CRS summaries (`BILLSUM`), bill text
+  (`BILLS`), enacted laws (`PLAW`), congressional calendars (`CCAL`), and mandated
+  reports (`CMR`).
+- **GovInfo link service & `wssearch`** — full-text search and the Congressional
+  Record documents that amendment text resolves to.
+- **The unitedstates `congress-legislators` dataset** — members, committees,
+  committee membership, social handles, and member photos.
+- **Voteview** — every roll-call vote for **both chambers**, across full history,
+  mapped to bioguide ids.
+
+> No `api.congress.gov` API key is used anywhere — the provider requires **no
+> credentials**.
 
 ## Features
 
-### Congress Bills
-
-- Fetch lists of bills from the U.S. Congress.
-- Filter by congress session, bill type, date range.
-
-### Bill Summaries & Metadata
-
-- Get summaries of, and metadata for, a specific bill.
-- Lists all actions, sponsors, committees, related bills, and titles.
-- Returned as both a raw JSON object and formatted Markdown text.
-
-### Bill Text URLs and Downloads
-
-- Get URLs for different versions and file formats.
-- Download full bill text as a base64-encoded string.
+- **Bills** — list/filter bills by congress, type, and date; per-bill metadata and
+  CRS summaries (Markdown + raw JSON); text versions (PDF) in a document viewer.
+- **Amendments** — list/filter amendments; per-amendment metadata; amendment text
+  resolved to its Congressional Record document via the GovInfo link service.
+- **Enacted laws** — public and private laws with a text viewer.
+- **Congressional calendars** — daily House and Senate calendar editions.
+- **Mandated reports** — agency reports submitted to Congress.
+- **Committees** — committee/subcommittee info, documents (reports, hearings with
+  witnesses, prints), and a theme-aware HTML **member-card** widget (photos, party
+  colors, ages).
+- **Full-text search** — across the congressional GovInfo collections.
+- **Members** — roster plus, per member: an HTML **bio card** (photo, full term
+  history, committee assignments, links, and a career *On-Passage* Yea/Nay tally),
+  roll-call **votes** on legislation (House **and** Senate, full tenure), and the
+  bills they sponsored or cosponsored.
 
 ### OpenBB Workspace Application
 
-With this extension installed, along with `openbb-platform-api`,
-an OpenBB Workspace App is added to your backend.
-
-The application provides a PDF viewer, bill summaries and metadata as rendered Markdown,
-and a linked query tool for finding and reading legislation.
+With this extension and `openbb-platform-api` installed, a multi-tab OpenBB
+Workspace app is served from the backend: **Bills**, **Amendments**,
+**Committees**, **Members**, **Laws**, **Calendars**, **Mandated Reports**, and
+**Search** — each with grouped tables, document viewers, Markdown/HTML widgets, and
+"How To Use" notes.
 
 ## Installation
-
-This provider is part of the OpenBB Platform. Install it using:
 
 ```bash
 pip install openbb-congress-gov
 ```
 
-The Workspace Application can be launched as a standalone, with only `openbb-congress-gov` and `openbb-platform-api` installed. Launch it from the terminal command line with:
+Then build the Python static assets so the `uscongress` router is registered:
+
+```sh
+openbb-build
+```
+
+The Workspace app can run standalone with only `openbb-congress-gov` and
+`openbb-platform-api` installed:
 
 ```sh
 openbb-api
@@ -44,88 +63,77 @@ openbb-api
 
 ## Configuration
 
-### Congress.gov API Key
-
-To use the Congress Bills and Bill Summaries endpoints, you need a Congress.gov API key:
-
-1. Go to <https://api.congress.gov/sign-up/>
-2. Fill out the registration form
-3. Agree to the terms of service
-4. You will receive an API key via email
-
-The API key is free and provides access to all Congress.gov data.
-
-### Entering Credentials
-
-Add the credential into OpenBB Platform from any of:
-
-- Entry in `user_settings.json`
-
-```json
-{
-    "credentials" : {
-        "congress_gov_api_key": "YOUR KEY"
-    }
-}
-```
-
-- Set environment variable
-
-```env
-CONGRESS_GOV_API_KEY = "YOUR KEY"
-```
-
-- Add to the current session only
-
-```python
-from openbb import obb
-
-obb.user.credentials.congress_gov_api_key = "YOUR KEY"
-```
+**None required.** All data is public and keyless, so there are no credentials to
+set up.
 
 ## Coverage
 
-All endpoints are under the `obb.uscongress` path:
+All endpoints are under the `obb.uscongress` path. The data commands:
 
 ```python
 In [1]: from openbb import obb
 In [2]: obb.uscongress
 Out[2]:
 /uscongress
+    amendment_info
+    amendment_text
+    amendments
     bill_info
     bill_text
-    bill_text_urls
     bills
+    calendars
+    committee_documents
+    committee_info
+    laws
+    mandated_reports
+    member_legislation
+    member_votes
+    members
+    search
 ```
 
-### Bill Text
+The provider also exposes Workspace-only support endpoints (not data commands):
+`*_urls` document-viewer resolvers (`bill_text_urls`, `amendment_text_urls`,
+`law_text_urls`, `calendar_urls`, `mandated_report_urls`, `committee_document_urls`,
+`search_document_urls`), the `*_choices` dropdown endpoints (`committee_choices`,
+`member_choices`), the HTML widgets (`committee_members`, `member_info`), and the
+`how_to_use` notes.
 
-The `bill_text` endpoint is a POST request from the API, and expects a dictionary in the body of the request.
+### Bill / Amendment text downloads
+
+`bill_text` and `amendment_text` are POST endpoints that download documents from
+GovInfo. They expect a list of GovInfo URLs in the request body:
 
 ```json
 {
-    "urls": ["https://url-to-PDF-document"]
+    "urls": ["https://www.govinfo.gov/content/pkg/BILLS-119hr29ih/pdf/BILLS-119hr29ih.pdf"]
 }
 ```
 
 ## Usage Examples
 
-### Fetching Recent Bills
-
 ```python
 from openbb import obb
 
-# Get the 10 most recently updated bills
-bills = obb.uscongress.bills(limit=10)
+# Recent bills (defaults to the current Congress)
+obb.uscongress.bills(limit=10)
+
+# A specific bill's metadata + CRS summary, by bill id (congress-type-number)
+obb.uscongress.bill_info(bill_id="119-hr-1")
+
+# Amendments for the current Congress, filtered to Senate amendments
+obb.uscongress.amendments(amendment_type="samdt")
+
+# A member's full voting history on legislation (House and Senate), by bioguide id
+obb.uscongress.member_votes(bioguide_id="C000127")
+
+# Bills a member sponsored or cosponsored across every Congress they served
+obb.uscongress.member_legislation(bioguide_id="A000055")
+
+# Full-text search across the congressional GovInfo collections
+obb.uscongress.search(query="artificial intelligence", congress=119)
 ```
 
-### Getting Bill Summaries
-
-Reference individual bills by either their base URL (returned in the `obb.uscongress.bills` response),
-or by the concatenated bill number.
-
-```python
-bill_info = obb.uscongress.bill_info(bill_url="119/hr/1")
-```
-
-See the function signatures and docstrings for parameters and detailed descriptions.
+Identifiers use the canonical dash form — `bill_id` like `119-hr-29`, `amendment_id`
+like `119-hamdt-2`, and `bioguide_id` like `A000055`. See the function signatures and
+docstrings for all parameters.

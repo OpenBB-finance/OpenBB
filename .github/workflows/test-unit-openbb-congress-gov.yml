@@ -1,0 +1,121 @@
+name: 🧪 test openbb-congress-gov
+
+on:
+  pull_request:
+    branches: [develop, main, v5]
+    paths:
+      - "openbb_platform/providers/congress_gov/**"
+      - ".github/workflows/test-unit-openbb-congress-gov.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-openbb-congress-gov-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build sdist + wheel
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/congress_gov
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Build sdist + wheel
+        run: uv build --no-sources
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openbb-congress-gov-dist
+          path: openbb_platform/providers/congress_gov/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  lint:
+    name: Lint (ruff + ty)
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/congress_gov
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install openbb-core (sibling) + dev tooling
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system --group dev
+
+      - name: ruff check
+        run: ruff check openbb_congress_gov tests integration
+
+      - name: ruff format --check
+        run: ruff format --check openbb_congress_gov tests integration
+
+      - name: ty check
+        run: ty check openbb_congress_gov
+
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/congress_gov
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-congress-gov-dist
+          path: openbb_platform/providers/congress_gov/dist
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install openbb-core (sibling) + dev tooling + the built wheel
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system --group dev
+          uv pip install --system dist/openbb_congress_gov-*.whl
+
+      - name: Run unit tests against the built wheel
+        run: |
+          rm -rf openbb_congress_gov
+          pytest tests --cov=openbb_congress_gov --cov-report=term-missing --cov-fail-under=100
