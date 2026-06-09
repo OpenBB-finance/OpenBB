@@ -55,6 +55,9 @@ Data integration:
 AI Agents integration:
 
 - You can learn more about adding AI agents to the OpenBB workspace from [this open source repository](https://github.com/OpenBB-finance/agents-for-openbb).
+- After adding a custom AI agent backend, select that agent in the chat before sending a message.
+  The OpenBB Copilot daily limit applies only when the OpenBB Copilot is the selected agent;
+  custom agent backends and MCP servers do not automatically override the selected chat agent.
 
 ### Integrating Open Data Platform to the OpenBB Workspace
 
