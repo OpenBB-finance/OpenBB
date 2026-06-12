@@ -148,6 +148,55 @@ custom_auth = BearerProvider(...)
 mcp_server = create_mcp_server(settings, fastapi_app, auth=custom_auth)
 ```
 
+### Signed Audit Receipts
+
+The MCP server can emit signed JSON Lines receipts for tool calls. This is disabled by default. When enabled, each receipt records the tool name, argument hash, timestamp, outcome, duration, principal, public key, and Ed25519 signature.
+
+By default, raw tool arguments are not written to the receipt file. The server stores only `arguments_sha256`, which lets operators verify what was called without accidentally persisting secrets or sensitive query details. Set `OPENBB_MCP_AUDIT_RECEIPTS_INCLUDE_ARGUMENTS=true` only when your deployment is allowed to retain raw arguments.
+
+Generate a base64 raw Ed25519 private key:
+
+```python
+import base64
+
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+key = Ed25519PrivateKey.generate()
+raw = key.private_bytes(
+    encoding=serialization.Encoding.Raw,
+    format=serialization.PrivateFormat.Raw,
+    encryption_algorithm=serialization.NoEncryption(),
+)
+print(base64.b64encode(raw).decode("ascii"))
+```
+
+Enable receipts:
+
+```env
+OPENBB_MCP_AUDIT_RECEIPTS_ENABLED=true
+OPENBB_MCP_AUDIT_RECEIPTS_PATH="/var/log/openbb/mcp-audit.jsonl"
+OPENBB_MCP_AUDIT_RECEIPTS_PRIVATE_KEY="<base64-ed25519-private-key>"
+OPENBB_MCP_AUDIT_RECEIPTS_PRINCIPAL="research-agent"
+```
+
+Example receipt shape:
+
+```json
+{
+  "receipt_id": "8b1d9b3a-72a4-4f11-9f37-8a13cb55d984",
+  "issued_at": "2026-06-12T00:00:00+00:00",
+  "tool_name": "equity_price_historical",
+  "arguments_sha256": "7e3f...",
+  "status": "success",
+  "policy_decision": "allow",
+  "duration_ms": 21.4,
+  "principal": "research-agent",
+  "public_key": "...",
+  "signature": "..."
+}
+```
+
 ### Advanced Configuration: Lists and Dictionaries
 
 For settings that accept a list or a dictionary, you have two flexible formats for defining them in both command-line arguments and environment variables.
@@ -229,6 +278,11 @@ All settings in the `MCPSettings` model can be configured via the `mcp_settings.
 | `default_skills_dir` | `OPENBB_MCP_DEFAULT_SKILLS_DIR` | string | *(bundled skills dir)* | Path to a directory of bundled skill files. Set to `null` to disable. |
 | `skills_reload` | `OPENBB_MCP_SKILLS_RELOAD` | boolean | `False` | Reload skill files on every read (useful during development). |
 | `skills_providers` | `OPENBB_MCP_SKILLS_PROVIDERS` | list[string] | `None` | Vendor skill provider short-names to load (e.g. `["claude", "cursor"]`). |
+| `audit_receipts_enabled` | `OPENBB_MCP_AUDIT_RECEIPTS_ENABLED` | boolean | `False` | Enable signed JSONL audit receipts for MCP tool calls. |
+| `audit_receipts_path` | `OPENBB_MCP_AUDIT_RECEIPTS_PATH` | string | `None` | Path where audit receipts are appended. Required when receipts are enabled. |
+| `audit_receipts_private_key` | `OPENBB_MCP_AUDIT_RECEIPTS_PRIVATE_KEY` | string | `None` | Ed25519 signing key. Accepts PEM, base64 raw bytes, or hex raw bytes. Required when receipts are enabled. |
+| `audit_receipts_principal` | `OPENBB_MCP_AUDIT_RECEIPTS_PRINCIPAL` | string | `"unknown"` | Principal identifier written to receipts. |
+| `audit_receipts_include_arguments` | `OPENBB_MCP_AUDIT_RECEIPTS_INCLUDE_ARGUMENTS` | boolean | `False` | Include canonical raw arguments in receipts. Defaults to hashing arguments only. |
 | `cache_expiration_seconds` | `OPENBB_MCP_CACHE_EXPIRATION_SECONDS` | float | `None` | Cache expiration time in seconds. `0` to disable. |
 | `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | string | `None` | Behavior for duplicate tools (`warn`, `error`, `replace`, `ignore`). |
 | `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | string | `None` | Behavior for duplicate resources. |
