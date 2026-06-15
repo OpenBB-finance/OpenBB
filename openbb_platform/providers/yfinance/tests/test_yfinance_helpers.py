@@ -1,14 +1,21 @@
 """Test yfinance helpers."""
 
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
 import pytest
-from unittest.mock import patch, MagicMock
+from openbb_yfinance.models.equity_quote import (
+    YFinanceEquityQuoteFetcher,
+    YFinanceEquityQuoteQueryParams,
+)
 from openbb_yfinance.utils.helpers import (
     df_transform_numbers,
-    get_futures_data,
     get_custom_screener,
     get_defined_screener,
+    get_futures_data,
     get_futures_symbols,
+    normalize_yfinance_symbol,
+    normalize_yfinance_symbols,
     yf_download,
 )
 
@@ -38,6 +45,35 @@ def test_df_transform_numbers():
     transformed = df_transform_numbers(data, ["Value", "% Change"])
     assert transformed["Value"].equals(pd.Series([1e6, 2.5e9, 3e12]))
     assert transformed["% Change"].equals(pd.Series([1 / 100, -2 / 100, 3.5 / 100]))
+
+
+@pytest.mark.parametrize(
+    ("symbol", "expected"),
+    [
+        ("BRK.A", "BRK-A"),
+        ("BF.B", "BF-B"),
+        ("ABC.C", "ABC-C"),
+        ("7203.T", "7203.T"),
+        ("RY.TO", "RY.TO"),
+        ("VOD.L", "VOD.L"),
+        ("BTC-USD", "BTC-USD"),
+        ("^GSPC", "^GSPC"),
+        ("ES=F", "ES=F"),
+    ],
+)
+def test_normalize_yfinance_symbol(symbol, expected):
+    """Test class-share symbol normalization for yfinance requests."""
+    assert normalize_yfinance_symbol(symbol) == expected
+
+
+def test_normalize_yfinance_symbols():
+    """Test comma-separated class-share symbol normalization."""
+    symbols = "BRK.A,BF.B,7203.T,RY.TO,BTC-USD,^GSPC,ES=F"
+
+    assert (
+        normalize_yfinance_symbols(symbols)
+        == "BRK-A,BF-B,7203.T,RY.TO,BTC-USD,^GSPC,ES=F"
+    )
 
 
 @pytest.mark.asyncio
@@ -152,3 +188,66 @@ def test_yf_download_no_session():
             assert (
                 "session" not in call_kwargs
             ), "yf.download should not be called with session parameter"
+
+
+def test_yf_download_normalizes_class_share_symbol():
+    """Test that yf_download sends Yahoo's dash-form class-share symbol."""
+    with patch("yfinance.download") as mock_download:
+        columns = pd.MultiIndex.from_tuples(
+            [
+                ("BRK-A", "Open"),
+                ("BRK-A", "High"),
+                ("BRK-A", "Low"),
+                ("BRK-A", "Close"),
+                ("BRK-A", "Adj Close"),
+            ]
+        )
+        idx = pd.to_datetime(["2023-01-03"])
+        idx.name = "Date"
+        mock_data = pd.DataFrame([[100, 110, 90, 105, 105]], columns=columns, index=idx)
+        mock_download.return_value = mock_data
+
+        yf_download("BRK.A", start_date="2023-01-01", end_date="2023-01-10")
+
+        assert mock_download.call_args.kwargs["tickers"] == "BRK-A"
+
+
+def test_yf_download_preserves_requested_symbol_output_for_multi_symbol():
+    """Test that multi-symbol output keeps OpenBB's requested symbol format."""
+    with patch("yfinance.download") as mock_download:
+        fields = ["Open", "High", "Low", "Close", "Adj Close"]
+        columns = pd.MultiIndex.from_product([["BRK-A", "AAPL"], fields])
+        idx = pd.to_datetime(["2023-01-03"])
+        idx.name = "Date"
+        mock_data = pd.DataFrame(
+            [[100, 110, 90, 105, 105, 200, 210, 190, 205, 205]],
+            columns=columns,
+            index=idx,
+        )
+        mock_download.return_value = mock_data
+
+        data = yf_download("BRK.A,AAPL")
+
+        assert mock_download.call_args.kwargs["tickers"] == "BRK-A,AAPL"
+        assert set(data["symbol"]) == {"BRK.A", "AAPL"}
+        assert "BRK-A" not in set(data["symbol"])
+
+
+@pytest.mark.asyncio
+async def test_equity_quote_fetcher_normalizes_class_share_ticker():
+    """Test that quote requests use Yahoo's dash-form class-share symbol."""
+    with patch("yfinance.Ticker") as mock_ticker:
+        mock_ticker.return_value.get_info.return_value = {
+            "symbol": "BRK-A",
+            "longName": "Berkshire Hathaway Inc.",
+            "quoteType": "EQUITY",
+            "currentPrice": 100,
+        }
+
+        data = await YFinanceEquityQuoteFetcher.aextract_data(
+            YFinanceEquityQuoteQueryParams(symbol="BRK.A"),
+            credentials={},
+        )
+
+        mock_ticker.assert_called_once_with("BRK-A")
+        assert data[0]["symbol"] == "BRK.A"

@@ -119,9 +119,10 @@ class YFinanceShareStatisticsFetcher(
         import asyncio  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from yfinance import Ticker
 
-        symbols = query.symbol.split(",")
+        symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
         results = []
         fields = [
             "symbol",
@@ -143,11 +144,13 @@ class YFinanceShareStatisticsFetcher(
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
+            requested_symbol = symbol.upper()
+            provider_symbol = normalize_yfinance_symbol(symbol)
             result: dict = {}
             ticker: dict = {}
             try:
-                _ticker = await asyncio.to_thread(lambda: Ticker(symbol))
-                ticker = await asyncio.to_thread(lambda: _ticker.get_info())
+                _ticker = await asyncio.to_thread(lambda: Ticker(provider_symbol))
+                ticker = await asyncio.to_thread(_ticker.get_info)
                 major_holders = await asyncio.to_thread(
                     lambda: _ticker.get_major_holders(as_dict=True).get("Value")
                 )
@@ -162,6 +165,7 @@ class YFinanceShareStatisticsFetcher(
                     if field in ticker:
                         result[field] = ticker.get(field, None)
                 if result and result.get("sharesOutstanding") is not None:
+                    result["symbol"] = requested_symbol
                     results.append(result)
 
         tasks = [get_one(symbol) for symbol in symbols]

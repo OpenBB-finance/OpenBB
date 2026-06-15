@@ -87,10 +87,11 @@ class YFinanceBalanceSheetFetcher(
         from openbb_core.provider.utils.helpers import (
             to_snake_case,
         )
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from yfinance import Ticker
 
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
-        data = Ticker(query.symbol).get_balance_sheet(
+        data = Ticker(normalize_yfinance_symbol(query.symbol)).get_balance_sheet(
             as_dict=False, pretty=False, freq=period
         )
 

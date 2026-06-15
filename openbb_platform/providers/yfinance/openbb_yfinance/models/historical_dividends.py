@@ -46,10 +46,11 @@ class YFinanceHistoricalDividendsFetcher(
     ) -> list[dict]:
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from yfinance import Ticker
 
         try:
-            ticker = Ticker(query.symbol).get_dividends()
+            ticker = Ticker(normalize_yfinance_symbol(query.symbol)).get_dividends()
             if isinstance(ticker, list) and not ticker or ticker.empty:  # type: ignore
                 raise OpenBBError(f"No dividend data found for {query.symbol}")
         except Exception as e:

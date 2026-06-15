@@ -245,10 +245,11 @@ class YFinanceKeyMetricsFetcher(
         import asyncio  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from warnings import warn
         from yfinance import Ticker
 
-        symbols = query.symbol.split(",")
+        symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
         results = []
         fields = [
             "symbol",
@@ -292,10 +293,14 @@ class YFinanceKeyMetricsFetcher(
 
         async def get_one(symbol):
             """Get the data for one ticker symbol."""
+            requested_symbol = symbol.upper()
+            provider_symbol = normalize_yfinance_symbol(symbol)
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+                ticker = await asyncio.to_thread(
+                    lambda: Ticker(provider_symbol).get_info()
+                )
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"
@@ -307,6 +312,7 @@ class YFinanceKeyMetricsFetcher(
                     if field in ticker:
                         result[field] = ticker.get(field, None)
                 if result and result.get("52WeekChange") is not None:
+                    result["symbol"] = requested_symbol
                     results.append(result)
 
         tasks = [get_one(symbol) for symbol in symbols]

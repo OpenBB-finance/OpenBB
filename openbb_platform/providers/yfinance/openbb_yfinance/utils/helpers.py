@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-arguments,too-many-branches,too-many-locals,too-many-statements
 
+import re
 from typing import TYPE_CHECKING, Any, Literal, Union
 
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -73,6 +74,29 @@ SCREENER_FIELDS = [
     "exchangeTimezoneName",
     "earnings_date",
 ]
+
+# Keep this conservative; Yahoo also uses one-letter exchange suffixes like ".L".
+CLASS_SHARE_SYMBOL_REGEX = re.compile(r"^[A-Z]{1,5}\.[ABC]$")
+
+
+def normalize_yfinance_symbol(symbol: str) -> str:
+    """Convert US class-share symbols to Yahoo's dash convention."""
+    clean_symbol = symbol.strip()
+    upper_symbol = clean_symbol.upper()
+
+    if CLASS_SHARE_SYMBOL_REGEX.fullmatch(upper_symbol):
+        return upper_symbol.replace(".", "-")
+
+    return clean_symbol
+
+
+def normalize_yfinance_symbols(symbols: str) -> str:
+    """Normalize a comma-separated symbol list for yfinance requests."""
+    return ",".join(
+        normalize_yfinance_symbol(symbol)
+        for symbol in symbols.split(",")
+        if symbol.strip()
+    )
 
 
 async def get_custom_screener(
@@ -220,8 +244,8 @@ async def get_defined_screener(
 
 def get_expiration_month(symbol: str) -> str:
     """Get the expiration month for a given symbol."""
-    month = symbol.split(".")[0][-3]
-    year = "20" + symbol.split(".")[0][-2:]
+    month = symbol.split(".", maxsplit=1)[0][-3]
+    year = "20" + symbol.split(".", maxsplit=1)[0][-2:]
     return f"{year}-{MONTH_MAP[month]}"
 
 
@@ -500,7 +524,13 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     from pandas import DataFrame, concat, to_datetime
     import yfinance as yf
 
-    symbol = symbol.upper()
+    requested_tickers = [
+        ticker.strip().upper() for ticker in symbol.split(",") if ticker.strip()
+    ]
+    provider_tickers = [
+        normalize_yfinance_symbol(ticker) for ticker in requested_tickers
+    ]
+    provider_symbols = ",".join(provider_tickers)
     _start_date = start_date
     intraday = False
     if interval in ["60m", "1h"]:
@@ -529,7 +559,7 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
 
     try:
         data = yf.download(
-            tickers=symbol,
+            tickers=provider_symbols,
             start=_start_date,
             end=None,
             interval=interval,
@@ -550,22 +580,24 @@ def yf_download(  # pylint: disable=too-many-positional-arguments
     except ValueError as exc:
         raise EmptyDataError() from exc
 
-    tickers = symbol.split(",")
-    if len(tickers) == 1:
+    if len(provider_tickers) == 1:
+        provider_symbol = provider_tickers[0]
         if hasattr(data.columns, "levels"):
             try:
-                if symbol in data.columns.get_level_values(0):
-                    data = data[symbol]  # type: ignore
-                elif symbol in data.columns.get_level_values(1):
-                    data = data.xs(symbol, level=1, axis=1)  # type: ignore
+                if provider_symbol in data.columns.get_level_values(0):
+                    data = data[provider_symbol]  # type: ignore
+                elif provider_symbol in data.columns.get_level_values(1):
+                    data = data.xs(provider_symbol, level=1, axis=1)  # type: ignore
             except (KeyError, IndexError):
                 pass
-    elif len(tickers) > 1:
+    elif len(provider_tickers) > 1:
         _data = DataFrame()
-        for ticker in tickers:
-            temp = data[ticker].copy().dropna(how="all")  # type: ignore
+        for requested_ticker, provider_ticker in zip(
+            requested_tickers, provider_tickers
+        ):
+            temp = data[provider_ticker].copy().dropna(how="all")  # type: ignore
             if len(temp) > 0:
-                temp["symbol"] = ticker
+                temp["symbol"] = requested_ticker
                 temp = temp.reset_index().rename(
                     columns={"Date": "date", "Datetime": "date", "index": "date"}
                 )

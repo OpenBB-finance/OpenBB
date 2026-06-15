@@ -78,6 +78,7 @@ class YFinanceEquityQuoteFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from yfinance import Ticker
 
         symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
@@ -108,14 +109,18 @@ class YFinanceEquityQuoteFetcher(
         ]
 
         async def get_one(symbol: str) -> None:
+            provider_symbol = normalize_yfinance_symbol(symbol)
             try:
-                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+                ticker = await asyncio.to_thread(
+                    lambda: Ticker(provider_symbol).get_info()
+                )
             except Exception as e:
                 warn(f"Error getting data for {symbol}: {e}")
                 return
 
             result = {f: ticker.get(f) for f in fields if f in ticker}
             if result:
+                result["symbol"] = symbol.upper()
                 results.append(result)
 
         await asyncio.gather(*(get_one(symbol) for symbol in symbols))

@@ -59,10 +59,11 @@ class YFinanceKeyExecutivesFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from yfinance import Ticker
 
         try:
-            ticker = Ticker(query.symbol).get_info()
+            ticker = Ticker(normalize_yfinance_symbol(query.symbol)).get_info()
         except Exception as e:
             raise OpenBBError(
                 f"Error getting data for {query.symbol} -> {e.__class__.__name__}: {e}"

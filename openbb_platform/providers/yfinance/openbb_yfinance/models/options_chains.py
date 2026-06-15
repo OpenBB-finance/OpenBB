@@ -63,16 +63,18 @@ class YFinanceOptionsChainsFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from pandas import concat
         from yfinance import Ticker
         from pytz import timezone
 
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
+        provider_symbol = normalize_yfinance_symbol(symbol)
 
-        def _get_all_data(symbol: str):
+        def _get_all_data(provider_symbol: str):
             """Get all options data in a single thread-safe operation."""
-            t = Ticker(symbol)
+            t = Ticker(provider_symbol)
             expirations = list(t.options)
 
             if not expirations or len(expirations) == 0:
@@ -117,7 +119,7 @@ class YFinanceOptionsChainsFetcher(
             return underlying, chains_output, expirations
 
         underlying, chains_output, expirations = await asyncio.to_thread(
-            _get_all_data, symbol
+            _get_all_data, provider_symbol
         )
 
         if not expirations or len(expirations) == 0:

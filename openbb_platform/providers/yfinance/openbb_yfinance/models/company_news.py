@@ -60,6 +60,7 @@ class YFinanceCompanyNewsFetcher(
         from warnings import warn
 
         from openbb_core.provider.utils.errors import EmptyDataError
+        from openbb_yfinance.utils.helpers import normalize_yfinance_symbol
         from yfinance import Ticker
 
         symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
@@ -122,10 +123,11 @@ class YFinanceCompanyNewsFetcher(
 
         def _fetch_news(sym: str) -> list[dict]:
             """Fetch the data in a worker thread."""
-            raw = Ticker(sym).get_news() or []
+            provider_symbol = normalize_yfinance_symbol(sym)
+            raw = Ticker(provider_symbol).get_news() or []
             out: list[dict] = []
             for item in raw:
-                norm = _normalize_news_item(item, sym)
+                norm = _normalize_news_item(item, sym.upper())
                 if norm:
                     out.append(norm)
             return out
