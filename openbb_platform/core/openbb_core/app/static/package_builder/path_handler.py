@@ -6,9 +6,9 @@ from typing import (
     TypeVar,
 )
 
-from fastapi.routing import APIRoute
 from starlette.routing import BaseRoute
 
+from openbb_core.app.route_iter import iter_api_routes
 from openbb_core.app.router import RouterLoader
 
 if TYPE_CHECKING:
@@ -83,41 +83,16 @@ class PathHandler:
     def build_route_map() -> dict[str, BaseRoute]:
         """Build the route map."""
         router = RouterLoader.from_extensions()
-        route_map = {
-            route.path: route
-            for route in router.api_router.routes
-            if isinstance(route, APIRoute)
-            and "." not in str(route.path)
-            and getattr(route, "include_in_schema", True)
-        }
-
-        # Also include routes directly registered on _api_router instances
-        # We need to traverse the router tree to find all _api_router instances
-        def collect_api_router_routes(router_obj, collected_routes):
-            """Recursively collect routes from _api_router instances."""
-            if hasattr(router_obj, "_api_router"):
-                for inner_route in router_obj._api_router.routes:
-                    if (
-                        isinstance(inner_route, APIRoute)
-                        and getattr(inner_route, "include_in_schema", True)
-                        and (inner_route.path not in collected_routes)
-                    ):
-                        collected_routes[inner_route.path] = inner_route
-
-            # Check if this router has sub-routers
-            if hasattr(router_obj, "api_router") and hasattr(
-                router_obj.api_router, "routes"
-            ):
-                for route in router_obj.api_router.routes:
-                    if not isinstance(route, APIRoute):
-                        continue
-                    endpoint = getattr(route, "endpoint", None)
-                    if endpoint and hasattr(endpoint, "__self__"):
-                        collect_api_router_routes(endpoint.__self__, collected_routes)
-
-        collect_api_router_routes(router, route_map)
-
-        return route_map  # type: ignore
+        route_map: dict[str, BaseRoute] = {}
+        for route in iter_api_routes(router.api_router):
+            path = getattr(route, "path", None)
+            if path is None:
+                continue
+            if not getattr(route, "include_in_schema", True):
+                continue
+            if path not in route_map:
+                route_map[path] = route  # type: ignore[assignment]
+        return route_map
 
     @staticmethod
     def build_path_list(route_map: dict[str, BaseRoute]) -> list[str]:

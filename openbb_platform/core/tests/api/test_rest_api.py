@@ -19,6 +19,7 @@ from fastapi.testclient import TestClient
 
 from openbb_core.api import rest_api
 from openbb_core.api.rest_api import app, system
+from openbb_core.app.route_iter import iter_api_routes
 
 
 def test_openapi_schema_metadata_matches_system_settings():
@@ -71,7 +72,7 @@ def test_router_inclusion_invariant_commands_imply_coverage():
     The invariant we test: if there exists any command route, coverage
     routes must exist. This catches accidental removal of the conditional.
     """
-    paths = {getattr(r, "path", None) for r in app.routes}
+    paths = {getattr(r, "path", None) for r in iter_api_routes(app)}
     prefix = system.api_settings.prefix
 
     coverage_paths = {

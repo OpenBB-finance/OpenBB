@@ -19,6 +19,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.route_iter import iter_api_routes
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
@@ -353,9 +354,16 @@ def build_api_wrapper(
 def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> None:
     """Add command map to the API router."""
     plugins_router = RouterLoader.from_extensions()
-
-    for route in plugins_router.api_router.routes:
-        route.endpoint = build_api_wrapper(command_runner=command_runner, route=route)  # type: ignore # noqa
+    for effective in iter_api_routes(plugins_router.api_router):
+        leaf = getattr(effective, "original_route", effective)
+        if not isinstance(leaf, APIRoute):
+            continue
+        original_leaf_path = leaf.path
+        leaf.path = effective.path
+        try:
+            leaf.endpoint = build_api_wrapper(command_runner=command_runner, route=leaf)
+        finally:
+            leaf.path = original_leaf_path
     api_router.include_router(router=plugins_router.api_router)
 
 
