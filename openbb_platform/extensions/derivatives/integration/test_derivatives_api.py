@@ -10,6 +10,53 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
 
+SYNTHETIC_OPTIONS_CHAIN = [
+    {
+        "expiration": "2030-01-17",
+        "strike": 100,
+        "option_type": "call",
+        "open_interest": 10,
+        "volume": 5,
+        "delta": 0.6,
+        "gamma": 0.02,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+    {
+        "expiration": "2030-01-17",
+        "strike": 100,
+        "option_type": "put",
+        "open_interest": 8,
+        "volume": 4,
+        "delta": -0.4,
+        "gamma": 0.03,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+    {
+        "expiration": "2030-01-17",
+        "strike": 105,
+        "option_type": "call",
+        "open_interest": 20,
+        "volume": 10,
+        "delta": 0.4,
+        "gamma": 0.01,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+    {
+        "expiration": "2030-01-17",
+        "strike": 95,
+        "option_type": "put",
+        "open_interest": 12,
+        "volume": 7,
+        "delta": -0.25,
+        "gamma": 0.015,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+]
+
 
 @pytest.fixture(scope="session")
 def headers():
@@ -258,3 +305,25 @@ def test_derivatives_options_surface(params, headers):
     )
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.integration
+def test_derivatives_options_exposure(headers):
+    """Test the options exposure endpoint."""
+    url = "http://0.0.0.0:8000/api/v1/derivatives/options/exposure?by=strike"
+    result = requests.post(
+        url,
+        headers=headers,
+        timeout=10,
+        json={"data": SYNTHETIC_OPTIONS_CHAIN},
+    )
+
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    payload = result.json()
+    strike_100 = next(row for row in payload["results"] if row["strike"] == 100)
+
+    assert strike_100["total_open_interest"] == 18
+    assert strike_100["net_gex"] == -400
+    assert payload["extra"]["summary"]["gamma_wall"] == 105

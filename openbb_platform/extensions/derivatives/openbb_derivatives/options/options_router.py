@@ -16,6 +16,14 @@ from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.standard_models.options_chains import OptionsChainsData
 
+from openbb_derivatives.options.helpers import (
+    build_exposure_rows,
+    build_exposure_summary,
+    has_underlying_price,
+    options_data_to_df,
+    prepare_options_exposure_df,
+)
+
 router = Router(prefix="/options")
 
 # pylint: disable=unused-argument
@@ -245,6 +253,137 @@ async def surface(  # pylint: disable=R0913, R0917
     )
 
     return OBBject(results=df.to_dict(orient="records"))
+
+
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Summarize gamma, delta, open interest, and volume exposure by strike.",
+            code=[
+                "data = obb.derivatives.options.chains('AAPL', provider='cboe')",
+                "exposure = obb.derivatives.options.exposure(data=data.results, by='strike')",
+                "exposure.to_df(index=None).head()",
+                "exposure.extra['summary']",
+            ],
+        ),
+    ],
+)
+async def exposure(  # pylint: disable=R0913, R0917
+    data: list[Data] | Data,
+    underlying_price: float | None = None,
+    by: Literal["expiration", "strike"] = "strike",
+    option_type: Literal["all", "otm", "itm", "calls", "puts"] = "all",
+    dte_min: int | None = None,
+    dte_max: int | None = None,
+    moneyness: float | None = None,
+    strike_min: float | None = None,
+    strike_max: float | None = None,
+    oi: bool = False,
+    volume: bool = False,
+) -> OBBject:
+    """Summarize options chain exposure by strike or expiration.
+
+    Data posted can be an instance of OptionsChainsData,
+    a pandas DataFrame, a list of dictionaries, or the results from
+    `/derivatives/options/chains`.
+
+    The command aggregates calls and puts for:
+
+    - Open interest
+    - Volume
+    - Delta exposure (DEX), when delta and underlying price are available
+    - Gamma exposure (GEX), when gamma and underlying price are available
+
+    Gamma exposure follows the same convention as the options chain properties:
+    calls are positive and puts are negative. For DEX and GEX, `net_*` fields
+    retain this signed exposure, while `total_*` fields report gross exposure.
+    """
+    df = options_data_to_df(data, underlying_price)
+
+    if df.empty:
+        raise OpenBBError("No data to process!")
+
+    options = prepare_options_exposure_df(df, underlying_price)
+
+    if options.empty:
+        raise OpenBBError("No options records to process!")
+
+    if by not in options.columns:
+        raise OpenBBError(f"Error: No {by} field found.")
+
+    if option_type in ["otm", "itm"] and not has_underlying_price(options):
+        raise OpenBBError(
+            "Last price must be provided for OTM/ITM options filtering, "
+            "and was not found in the data."
+        )
+
+    if oi:
+        options = options[options["open_interest"] > 0]
+
+    if volume:
+        options = options[options["volume"] > 0]
+
+    if dte_min is not None:
+        if "dte" not in options.columns:
+            raise OpenBBError("Error: No dte field found.")
+        options = options[options["dte"] >= dte_min]
+
+    if dte_max is not None:
+        if "dte" not in options.columns:
+            raise OpenBBError("Error: No dte field found.")
+        options = options[options["dte"] <= dte_max]
+
+    if moneyness is not None and moneyness > 0:
+        if not has_underlying_price(options):
+            raise OpenBBError(
+                "Last price must be provided for moneyness filtering, "
+                "and was not found in the data."
+            )
+        high = (1 + (float(moneyness) / 100)) * options["underlying_price"]
+        low = (1 - (float(moneyness) / 100)) * options["underlying_price"]
+        options = options[(options["strike"] >= low) & (options["strike"] <= high)]
+
+    if strike_min is not None:
+        options = options[options["strike"] >= strike_min]
+
+    if strike_max is not None:
+        options = options[options["strike"] <= strike_max]
+
+    if option_type == "calls":
+        options = options[options["option_type"] == "call"]
+    elif option_type == "puts":
+        options = options[options["option_type"] == "put"]
+    elif option_type == "otm":
+        options = options[
+            (
+                (options["option_type"] == "call")
+                & (options["strike"] > options["underlying_price"])
+            )
+            | (
+                (options["option_type"] == "put")
+                & (options["strike"] < options["underlying_price"])
+            )
+        ]
+    elif option_type == "itm":
+        options = options[
+            (
+                (options["option_type"] == "call")
+                & (options["strike"] < options["underlying_price"])
+            )
+            | (
+                (options["option_type"] == "put")
+                & (options["strike"] > options["underlying_price"])
+            )
+        ]
+
+    if options.empty:
+        raise OpenBBError("No options records matched the filters.")
+
+    rows = build_exposure_rows(options, by)
+    summary = build_exposure_summary(options, rows, by)
+
+    return OBBject(results=rows, extra={"summary": summary})
 
 
 @router.command(

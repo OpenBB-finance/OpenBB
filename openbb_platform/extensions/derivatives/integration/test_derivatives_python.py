@@ -6,6 +6,53 @@ from openbb_core.app.model.obbject import OBBject
 # pylint: disable=too-many-lines,redefined-outer-name
 # pylint: disable=import-outside-toplevel,inconsistent-return-statements
 
+SYNTHETIC_OPTIONS_CHAIN = [
+    {
+        "expiration": "2030-01-17",
+        "strike": 100,
+        "option_type": "call",
+        "open_interest": 10,
+        "volume": 5,
+        "delta": 0.6,
+        "gamma": 0.02,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+    {
+        "expiration": "2030-01-17",
+        "strike": 100,
+        "option_type": "put",
+        "open_interest": 8,
+        "volume": 4,
+        "delta": -0.4,
+        "gamma": 0.03,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+    {
+        "expiration": "2030-01-17",
+        "strike": 105,
+        "option_type": "call",
+        "open_interest": 20,
+        "volume": 10,
+        "delta": 0.4,
+        "gamma": 0.01,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+    {
+        "expiration": "2030-01-17",
+        "strike": 95,
+        "option_type": "put",
+        "open_interest": 12,
+        "volume": 7,
+        "delta": -0.25,
+        "gamma": 0.015,
+        "underlying_price": 100,
+        "contract_size": 100,
+    },
+]
+
 
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
@@ -226,3 +273,31 @@ def test_derivatives_options_surface(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.integration
+def test_derivatives_options_exposure(obb):
+    """Test options exposure aggregation."""
+    result = obb.derivatives.options.exposure(
+        data=SYNTHETIC_OPTIONS_CHAIN,
+        by="strike",
+    )
+
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) == 3
+
+    strike_100 = next(row for row in result.results if row["strike"] == 100)
+    assert strike_100["call_open_interest"] == 10
+    assert strike_100["put_open_interest"] == 8
+    assert strike_100["total_open_interest"] == 18
+    assert strike_100["net_gex"] == -400
+    assert strike_100["net_dex"] == 28000
+
+    summary = result.extra["summary"]
+    assert summary["total_open_interest"] == 50
+    assert summary["total_gex"] == 8200
+    assert summary["net_gex"] == -200
+    assert summary["put_call_ratio_open_interest"] == 0.6667
+    assert summary["gamma_wall"] == 105
+    assert summary["put_gamma_wall"] == 100
