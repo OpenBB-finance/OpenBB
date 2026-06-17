@@ -53,6 +53,7 @@ from openbb_mcp_server.models.mcp_config import (
 from openbb_mcp_server.models.prompts import StaticPrompt
 from openbb_mcp_server.models.settings import MCPSettings
 from openbb_mcp_server.models.tools import CategoryInfo, SubcategoryInfo, ToolInfo
+from openbb_mcp_server.service.audit_receipts import create_audit_receipt_middleware
 from openbb_mcp_server.service.mcp_service import MCPService
 from openbb_mcp_server.utils.app_import import parse_args
 from openbb_mcp_server.utils.fastapi import (
@@ -532,6 +533,9 @@ def create_mcp_server(
         auth=auth_provider,
         **fastmcp_kwargs,
     )
+
+    if settings.audit_receipts_enabled:
+        mcp.add_middleware(create_audit_receipt_middleware(settings))
 
     # Disable ALL non-admin tools first, then selectively re-enable.
     all_registered = category_index.all_tool_names()

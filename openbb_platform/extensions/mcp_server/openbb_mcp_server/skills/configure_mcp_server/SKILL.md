@@ -181,6 +181,43 @@ Options: `"warn"`, `"error"`, `"replace"`, `"ignore"`
 By default, categories whose Python modules cannot be imported are excluded
 (e.g., `econometrics`, `quantitative`, `technical`, `coverage`).
 
+### Audit Receipts
+
+| Setting | Env Var | Type | Default |
+|---|---|---|---|
+| `audit_receipts_enabled` | `OPENBB_MCP_AUDIT_RECEIPTS_ENABLED` | `bool` | `false` |
+| `audit_receipts_private_key` | `OPENBB_MCP_AUDIT_RECEIPTS_PRIVATE_KEY` | `SecretStr \| None` | `None` |
+| `audit_receipts_key_id` | `OPENBB_MCP_AUDIT_RECEIPTS_KEY_ID` | `str \| None` | `None` |
+| `audit_receipts_public_keys` | `OPENBB_MCP_AUDIT_RECEIPTS_PUBLIC_KEYS` | `dict[str, str] \| None` | `None` |
+| `audit_receipts_principal` | `OPENBB_MCP_AUDIT_RECEIPTS_PRINCIPAL` | `str` | `"unknown"` |
+| `audit_receipts_policy_hash` | `OPENBB_MCP_AUDIT_RECEIPTS_POLICY_HASH` | `str \| None` | `None` |
+| `audit_receipts_catalog_version` | `OPENBB_MCP_AUDIT_RECEIPTS_CATALOG_VERSION` | `str \| None` | `None` |
+| `audit_receipts_retention_mode` | `OPENBB_MCP_AUDIT_RECEIPTS_RETENTION_MODE` | `str` | `"hash_only"` |
+| `audit_receipts_commitment_stage` | `OPENBB_MCP_AUDIT_RECEIPTS_COMMITMENT_STAGE` | `str` | `"post_normalization"` |
+| `audit_receipts_allowed_scope` | `OPENBB_MCP_AUDIT_RECEIPTS_ALLOWED_SCOPE` | `list[str] \| None` | `None` |
+| `audit_receipts_withheld_scope` | `OPENBB_MCP_AUDIT_RECEIPTS_WITHHELD_SCOPE` | `list[dict] \| None` | `None` |
+
+When enabled, every completed MCP `tools/call` result receives an
+`openbb_audit_receipt` entry in result metadata. The receipt includes request
+and normalized-result hashes, principal, policy/catalog context, retention mode,
+and an Ed25519 signature. Treat the receipt's embedded public key as
+informational only; verifiers should check signatures against a trusted public
+key or `key_id -> public_key` registry such as `OPENBB_MCP_AUDIT_RECEIPTS_PUBLIC_KEYS`.
+The private signing key is redacted from settings dumps, so configure it through
+environment variables or another secret manager.
+
+Example:
+
+```bash
+OPENBB_MCP_AUDIT_RECEIPTS_ENABLED=true
+OPENBB_MCP_AUDIT_RECEIPTS_PRIVATE_KEY="<base64-raw-ed25519-private-key-or-pem>"
+OPENBB_MCP_AUDIT_RECEIPTS_KEY_ID="prod-mcp-key-2026-06"
+OPENBB_MCP_AUDIT_RECEIPTS_PUBLIC_KEYS='{"prod-mcp-key-2026-06":"<base64-raw-ed25519-public-key>"}'
+OPENBB_MCP_AUDIT_RECEIPTS_PRINCIPAL="analyst-agent"
+OPENBB_MCP_AUDIT_RECEIPTS_ALLOWED_SCOPE="equity.prices,options.chains"
+OPENBB_MCP_AUDIT_RECEIPTS_WITHHELD_SCOPE='[{"scope":"portfolio.private","reason":"client_pii"}]'
+```
+
 ---
 
 ## Authentication

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
 
 _DEFAULT_SKILLS_DIR = str(Path(__file__).resolve().parent.parent / "skills")
 
@@ -182,6 +182,74 @@ the exact same operations available to REST clients.""",
         description="If True, show deprecation warnings in the console.",
     )
 
+    # ===== Audit Receipt Configuration =====
+
+    audit_receipts_enabled: bool = Field(
+        default=False,
+        description="If True, attach signed audit receipts to MCP tool-call result metadata.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_ENABLED",
+    )
+    audit_receipts_private_key: SecretStr | None = Field(
+        default=None,
+        description="Ed25519 private key as PEM or base64 raw private bytes for audit receipt signing.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_PRIVATE_KEY",
+    )
+    audit_receipts_key_id: str | None = Field(
+        default=None,
+        description="Optional identifier for the audit receipt signing key.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_KEY_ID",
+    )
+    audit_receipts_public_keys: dict[str, str] | None = Field(
+        default=None,
+        description="Optional trusted key registry for verifying audit receipts by key_id.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_PUBLIC_KEYS",
+    )
+    audit_receipts_principal: str = Field(
+        default="unknown",
+        description="Principal identifier to include in MCP audit receipts.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_PRINCIPAL",
+    )
+    audit_receipts_policy_hash: str | None = Field(
+        default=None,
+        description="Optional policy hash to include in MCP audit receipts.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_POLICY_HASH",
+    )
+    audit_receipts_catalog_version: str | None = Field(
+        default=None,
+        description="Optional endpoint catalog version to include in MCP audit receipts.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_CATALOG_VERSION",
+    )
+    audit_receipts_retention_mode: Literal[
+        "raw_retained",
+        "redacted_only",
+        "hash_only",
+        "unavailable",
+    ] = Field(
+        default="hash_only",
+        description="Retention mode describing how the tool response is retained.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_RETENTION_MODE",
+    )
+    audit_receipts_commitment_stage: Literal[
+        "pre_redaction",
+        "post_redaction",
+        "post_normalization",
+        "model_facing",
+    ] = Field(
+        default="post_normalization",
+        description="Stage of the response represented by the receipt commitment hash.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_COMMITMENT_STAGE",
+    )
+    audit_receipts_allowed_scope: list[str] | None = Field(
+        default=None,
+        description="Coarse scopes available to the agent or session.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_ALLOWED_SCOPE",
+    )
+    audit_receipts_withheld_scope: list[dict[str, Any]] | None = Field(
+        default=None,
+        description="Coarse scopes withheld from the agent or session with reason codes.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_WITHHELD_SCOPE",
+    )
+
     # ===== HTTP Transport Configuration =====
 
     # Uvicorn server configuration
@@ -224,6 +292,7 @@ the exact same operations available to REST clients.""",
         "allowed_tool_categories",
         "dependencies",
         "skills_providers",
+        "audit_receipts_allowed_scope",
         mode="before",
     )
     @classmethod
@@ -232,7 +301,14 @@ the exact same operations available to REST clients.""",
             return [part.strip() for part in v.split(",") if part.strip()]
         return v
 
-    @field_validator("httpx_client_kwargs", "client_auth", "server_auth", mode="before")
+    @field_validator(
+        "httpx_client_kwargs",
+        "client_auth",
+        "server_auth",
+        "audit_receipts_public_keys",
+        "audit_receipts_withheld_scope",
+        mode="before",
+    )
     @classmethod
     def _validate_json_or_tuple(cls, v):
         """Validate json or tuple."""
