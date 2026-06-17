@@ -45,7 +45,7 @@ def vcr_config():
 def test_cftc_cot_fetcher(credentials=test_credentials):
     """Test the CFTC COT fetcher."""
     params = {
-        "id": "239747",
+        "code": "239747",
         "start_date": date(2024, 8, 19),
         "end_date": date(2024, 8, 21),
     }
@@ -55,7 +55,7 @@ def test_cftc_cot_fetcher(credentials=test_credentials):
     assert result is None
 
 
-# The data for this request are local files, so we can't record them.
+@pytest.mark.record_http
 def test_cftc_cot_sarch_fetcher(credentials=test_credentials):
     """Test the CFTC COT Search fetcher."""
     params = {"query": "S&P 500"}

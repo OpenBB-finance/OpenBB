@@ -179,7 +179,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
     _url: str = PrivateAttr(default="")
     _index_headers_url: str = PrivateAttr(default="")
     _index_headers_download: str = PrivateAttr(default="")
-    _document_urls: list = PrivateAttr(default=None)
+    _document_urls: list | None = PrivateAttr(default=None)
     _filing_date: str = PrivateAttr(default="")
     _period_ending: str = PrivateAttr(default="")
     _document_type: str = PrivateAttr(default="")
@@ -191,8 +191,8 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
     _cover_page_url: str | None = PrivateAttr(default=None)
     _fiscal_year_end: str = PrivateAttr(default="")
     _fiscal_period: str = PrivateAttr(default="")
-    _cover_page: dict = PrivateAttr(default=None)
-    _trading_symbols: list = PrivateAttr(default=None)
+    _cover_page: dict | None = PrivateAttr(default=None)
+    _trading_symbols: list | None = PrivateAttr(default=None)
     _use_cache: bool = PrivateAttr(default=True)
 
     @computed_field(title="Base URL", description="Base URL of the filing.")  # type: ignore
@@ -286,7 +286,7 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
 
     @computed_field(title="Document URLs", description="List of files associated with the filing.")  # type: ignore
     @property
-    def document_urls(self) -> list:
+    def document_urls(self) -> list | None:
         """List of document URLs."""
         return self._document_urls
 

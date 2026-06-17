@@ -1,3 +1,5 @@
+"""Market State Standard Model."""
+
 from datetime import datetime
 
 from openbb_core.provider.abstract.data import Data
@@ -6,10 +8,14 @@ from pydantic import Field
 
 
 class MarketStateQueryParams(QueryParams):
+    """Market State Query."""
+
     exchange: str = Field(description="Exchange MIC, acronym, or name to check market state for.")
 
 
 class MarketStateData(Data):
+    """Market State Data."""
+
     exchange: str = Field(description="Normalized exchange acronym.")
     mic: str = Field(description="ISO 10383 MIC code for the exchange.")
     status: str = Field(description="Raw market-state status returned by the provider.")

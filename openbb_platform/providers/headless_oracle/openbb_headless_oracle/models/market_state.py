@@ -1,3 +1,5 @@
+"""Headless Oracle Market State Model."""
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -14,6 +16,8 @@ from pydantic import Field
 
 
 class HeadlessOracleMarketStateQueryParams(MarketStateQueryParams):
+    """Headless Oracle Market State Query."""
+
     exchange: Exchange = Field(description="Exchange MIC, acronym, or name to check market state for.")
 
 
@@ -23,10 +27,18 @@ class HeadlessOracleMarketStateFetcher(
         MarketStateData,
     ]
 ):
+    """Headless Oracle Market State Fetcher.
+
+    This fetcher requests demo signed market-state receipts from
+    `https://headlessoracle.com/v5/demo` and maps the receipt payload into
+    the OpenBB `MarketState` standard model.
+    """
+
     require_credentials = False
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> HeadlessOracleMarketStateQueryParams:
+        """Transform query params."""
         return HeadlessOracleMarketStateQueryParams(**params)
 
     @staticmethod
@@ -35,6 +47,7 @@ class HeadlessOracleMarketStateFetcher(
         credentials: dict[str, str] | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
+        """Extract data from the Headless Oracle market-state endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
 
@@ -57,6 +70,7 @@ class HeadlessOracleMarketStateFetcher(
         data: dict[str, Any],
         **kwargs: Any,
     ) -> MarketStateData:
+        """Transform a signed receipt payload into market-state data."""
         payload = data.get("receipt")
         if not isinstance(payload, dict):
             raise OpenBBError("Headless Oracle response did not include a valid receipt payload.")
@@ -93,6 +107,7 @@ class HeadlessOracleMarketStateFetcher(
 
     @staticmethod
     def _parse_datetime(value: Any) -> datetime | None:
+        """Parse an ISO datetime value."""
         if value in (None, ""):
             return None
         if isinstance(value, datetime):

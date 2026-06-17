@@ -19,14 +19,18 @@ To install the extension, run the following command in this folder:
 pip install openbb-charting
 ```
 
-## PyWry dependency on Linux
+To enable display in a native OS window, install the PyWry extra.
 
-The PyWry dependency handles the display of interactive charts and tables in a separate window. It is installed automatically with the OpenBB Charting extension.
+```bash
+pip install "openbb-charting[pywry]"
+```
+
+### PyWry dependency on Linux
 
 When using Linux distributions, the PyWry dependency requires certain dependencies to be installed first.
 
 - Debian-based / Ubuntu / Mint:
-`sudo apt install libwebkit2gtk-4.0-dev`
+`sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev`
 
 - Arch Linux / Manjaro:
 `sudo pacman -S webkit2gtk`
@@ -53,9 +57,7 @@ In order to display the chart, you need to call the `show()` method:
 equity_data.show()
 ```
 
-> Note: The `show()` method currently works either in a Jupyter Notebook or in a standalone python script with a PyWry based backend properly initialized.
-
-Alternatively, you can use the fact that the `openbb-charting` is an `OBBject` extension and use its available methods.
+Alternatively, `openbb-charting` is an `OBBject` accessor and its methods can be used directly from any instance.
 
 ```python
 from openbb import obb
@@ -65,9 +67,24 @@ res.charting.show()
 
 The above code will produce the same effect as the previous example.
 
+## Custom Charts and Data
+
+Various types of charts can be generated from Pandas DataFrames without needing to understand the Plotly library.
+
+The methods are exposed as part of the `OBBject` accessor class. The `data` parameter can be passed as a list object from `OBBject.results`, or any Pandas DataFrame instance.
+
+```python
+res = obb.equity.price.historical("AAPL", chart=True)
+
+surface_3d = res.charting.create_3d_surface
+bar_chart = res.charting.create_bar_chart
+line_chart = res.charting.create_line_chart
+correlation_matrix = res.charting.create_correlation_matrix
+```
+
 ### Discovering available charts
 
-Not all the endpoints are currently supported by the charting extension. To discover which endpoints are supported, you can run the following command:
+Not all the endpoints have dedicated charts. To discover which endpoints are supported, you can run the following command:
 
 ```python
 from openbb_charting import Charting
@@ -168,7 +185,7 @@ The implementation should leverage the already existing classes and methods to d
 
 Note that the return of each charting function should respect the already defined return types: `Tuple[OpenBBFigure, Dict[str, Any]]`.
 
-The returned tuple contains a `OpenBBFigure` that is an interactive plotly figure which can be used in a Python interpreter, and a `Dict[str, Any]` that contains the raw data leveraged by the API.
+The returned tuple contains a `OpenBBFigure` that is an interactive Plotly figure which can be used in a Python interpreter, and a `Dict[str, Any]` that contains the raw data leveraged by the API.
 
 After you're done implementing the charting function, you can use either the Python interface or the API to get the chart. To do so, you'll only need to set the already available `chart` argument to `True`.
-Or accessing the `charting` attribute of the `OBBject` object: `my_obbject.charting.show()`.
+Or accessing the `charting` attribute of any returned `OBBject` object: `my_obbject.charting.show()`.

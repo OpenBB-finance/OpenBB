@@ -117,12 +117,10 @@ class FredSeriesFetcher(
     ) -> list[dict]:
         """Extract data."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import (
-            ClientResponse,
-            ClientSession,
-            amake_requests,
-            get_querystring,
-        )
+        import asyncio
+
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_fred.utils.rate_limiter import fred_get
         from pandas import DataFrame
 
         api_key = credentials.get("fred_api_key") if credentials else ""
@@ -133,21 +131,15 @@ class FredSeriesFetcher(
         querystring = get_querystring(query.model_dump(), ["series_id"])
         series_ids = query.symbol.split(",") if "," in query.symbol else [query.symbol]
 
-        urls = [
-            f"{base_url}?series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
-            for series_id in series_ids
-        ]
-
-        async def callback(response: ClientResponse, session: ClientSession) -> dict:
-            observations_response = await response.json()
-            series_id = response.url.query.get("series_id")
-
-            metadata_response = await session.get_json(
-                f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
-                timeout=5,
+        async def fetch_one(series_id: str) -> dict:
+            obs_url = f"{base_url}?series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
+            meta_url = (
+                f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}"
             )
 
-            # seriess is not a typo, it's the actual key in the response
+            observations_response = await fred_get(obs_url, timeout=5, **kwargs)
+            metadata_response = await fred_get(meta_url, timeout=5, **kwargs)
+
             _metadata = (
                 metadata_response.get("seriess", [{}])[0]
                 if isinstance(metadata_response, dict)
@@ -158,6 +150,7 @@ class FredSeriesFetcher(
                 if isinstance(observations_response, dict)
                 else []
             ) or []
+
             try:
                 for d in observations:
                     d.pop("realtime_start")
@@ -186,12 +179,20 @@ class FredSeriesFetcher(
             }
 
         try:
-            results = await amake_requests(
-                urls, response_callback=callback, timeout=5, **kwargs
-            )
+            results: list[dict] = []
+            for result in await asyncio.gather(
+                *[fetch_one(sid) for sid in series_ids], return_exceptions=True
+            ):
+                if isinstance(result, Exception):
+                    raise result
+                if result:
+                    results.append(result)  # type: ignore
             return results
+        except OpenBBError:
+            raise
         except Exception as e:
-            raise OpenBBError(e) from e
+            message = str(e) or f"FRED request failed ({type(e).__name__})."
+            raise OpenBBError(message) from e
 
     @staticmethod
     def transform_data(

@@ -1,3 +1,5 @@
+"""Headless Oracle provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_headless_oracle.models.market_state import HeadlessOracleMarketStateFetcher
 

@@ -1,3 +1,5 @@
+"""Headless Oracle fetcher tests."""
+
 from datetime import datetime, timezone
 
 import pytest
@@ -7,6 +9,7 @@ from openbb_headless_oracle.models.market_state import HeadlessOracleMarketState
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [None],
@@ -15,6 +18,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_headless_oracle_market_state_fetcher():
+    """Test the Headless Oracle market state fetcher."""
     params = {"exchange": "XNYS"}
 
     fetcher = HeadlessOracleMarketStateFetcher()
@@ -23,6 +27,7 @@ def test_headless_oracle_market_state_fetcher():
 
 
 def test_headless_oracle_market_state_transform_data_fail_closed():
+    """Test UNKNOWN status transforms to a fail-closed market state."""
     query = HeadlessOracleMarketStateFetcher.transform_query({"exchange": "XNYS"})
     payload = {
         "receipt": {
@@ -59,6 +64,7 @@ def test_headless_oracle_market_state_transform_data_fail_closed():
 
 
 def test_headless_oracle_market_state_transform_data_requires_receipt_payload():
+    """Test transform_data rejects responses without a receipt payload."""
     query = HeadlessOracleMarketStateFetcher.transform_query({"exchange": "XNYS"})
 
     with pytest.raises(OpenBBError, match="did not include a valid receipt payload"):
@@ -66,6 +72,7 @@ def test_headless_oracle_market_state_transform_data_requires_receipt_payload():
 
 
 def test_headless_oracle_market_state_transform_data_requires_core_fields():
+    """Test transform_data rejects receipts missing required fields."""
     query = HeadlessOracleMarketStateFetcher.transform_query({"exchange": "XNYS"})
     payload = {
         "receipt": {

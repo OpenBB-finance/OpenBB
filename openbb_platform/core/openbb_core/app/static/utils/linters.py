@@ -1,7 +1,8 @@
 """Linters for the package."""
 
-import shutil
+import importlib.util
 import subprocess
+import sys
 from pathlib import Path
 from typing import (
     Literal,
@@ -29,21 +30,37 @@ class Linters:
         linter: Literal["black", "ruff"],
         flags: list[str] | None = None,
     ):
-        """Run linter with flags."""
-        if shutil.which(linter):
-            self.console.log(f"\n* {linter}")
-            self.print_separator("^")
+        """Run linter with flags.
 
-            command = [linter]
-            if flags:
-                command.extend(flags)  # type: ignore
-            subprocess.run(  # noqa: S603
-                command + list(self.directory.glob("*.py")), check=False
-            )
-
-            self.print_separator("-")
-        else:
+        Invokes the linter as ``python -m <linter>`` so it resolves through
+        the same Python environment as the build. Looking it up via ``PATH``
+        (the previous behavior) silently skipped lint when the venv's
+        ``bin/`` directory was not active — e.g. when invoking
+        ``.venv/bin/python`` directly without ``source activate`` — which
+        left the speculative imports emitted by ``ImportDefinition.build``
+        in the generated package and produced ``ImportError`` at first use.
+        """
+        if importlib.util.find_spec(linter) is None:
             self.console.log(f"\n* {linter} not found")
+            return
+
+        files = [str(p) for p in self.directory.glob("*.py")]
+        if not files:
+            # No targets: don't invoke the linter with zero file args, which
+            # would cause it to fall back to its default working-directory
+            # scan and touch unrelated files.
+            return
+
+        self.console.log(f"\n* {linter}")
+        self.print_separator("^")
+
+        command = [sys.executable, "-m", linter]
+        if flags:
+            command.extend(flags)
+        command.extend(files)
+        subprocess.run(command, check=False)  # noqa: S603
+
+        self.print_separator("-")
 
     def black(self):
         """Run black."""

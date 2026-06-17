@@ -357,6 +357,7 @@ class OBBject(Tagged, Generic[T]):
         # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
             raise OpenBBError("Chart not found.")
+        kwargs.setdefault("command_location", self._route or "")
         show_function: Callable = getattr(self.chart.fig, "show")
         show_function(**kwargs)
 

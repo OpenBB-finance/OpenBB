@@ -1,9 +1,16 @@
 """Tests for the SEC fetchers."""
 
+import json
 from datetime import date
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
+from openbb_sec.models.balance_sheet_growth import SecBalanceSheetGrowthFetcher
+from openbb_sec.models.cash_flow import SecCashFlowStatementFetcher
+from openbb_sec.models.cash_flow_growth import SecCashFlowStatementGrowthFetcher
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
@@ -11,6 +18,8 @@ from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.htm_file import SecHtmFileFetcher
+from openbb_sec.models.income_statement import SecIncomeStatementFetcher
+from openbb_sec.models.income_statement_growth import SecIncomeStatementGrowthFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
@@ -23,6 +32,7 @@ from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sec_filing import SecFilingFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
 from openbb_sec.models.symbol_map import SecSymbolMapFetcher
+from openbb_sec.utils.company_facts import resolve_company_facts
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 
@@ -233,4 +243,102 @@ def test_sec_htm_file_fetcher(credentials=test_credentials):
 
     fetcher = SecHtmFileFetcher()
     result = fetcher.test(params, credentials)
+    assert result is None
+
+
+# ---------------------------------------------------------------------------
+# Financial statement fetcher tests using BLK fixture (no HTTP)
+# ---------------------------------------------------------------------------
+
+_FIXTURE_DIR = Path(__file__).parent / "record"
+
+
+@pytest.fixture(scope="module")
+def blk_facts():
+    with open(_FIXTURE_DIR / "CIK0002012383.json") as f:
+        return json.load(f)
+
+
+def _mock_get_standardized(blk_facts):
+    async def _inner(
+        symbol=None,
+        cik=None,
+        fiscal_years=None,
+        period="both",
+        use_cache=True,
+        pit_mode=False,
+        include_preliminary=False,
+    ):
+        return resolve_company_facts(
+            blk_facts,
+            period=period,
+            include_preliminary=include_preliminary,
+        )
+
+    return _inner
+
+
+def test_sec_income_statement_fetcher(blk_facts, credentials=test_credentials):
+    params = {"symbol": "BLK", "period": "annual", "use_cache": False}
+    fetcher = SecIncomeStatementFetcher()
+    with patch(
+        "openbb_sec.utils.company_facts.get_standardized_financials",
+        new=_mock_get_standardized(blk_facts),
+    ):
+        result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_sec_balance_sheet_fetcher(blk_facts, credentials=test_credentials):
+    params = {"symbol": "BLK", "period": "annual", "use_cache": False}
+    fetcher = SecBalanceSheetFetcher()
+    with patch(
+        "openbb_sec.utils.company_facts.get_standardized_financials",
+        new=_mock_get_standardized(blk_facts),
+    ):
+        result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_sec_cash_flow_fetcher(blk_facts, credentials=test_credentials):
+    params = {"symbol": "BLK", "period": "annual", "use_cache": False}
+    fetcher = SecCashFlowStatementFetcher()
+    with patch(
+        "openbb_sec.utils.company_facts.get_standardized_financials",
+        new=_mock_get_standardized(blk_facts),
+    ):
+        result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_sec_income_statement_growth_fetcher(blk_facts, credentials=test_credentials):
+    params = {"symbol": "BLK", "period": "annual", "use_cache": False}
+    fetcher = SecIncomeStatementGrowthFetcher()
+    with patch(
+        "openbb_sec.utils.company_facts.get_standardized_financials",
+        new=_mock_get_standardized(blk_facts),
+    ):
+        result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_sec_balance_sheet_growth_fetcher(blk_facts, credentials=test_credentials):
+    params = {"symbol": "BLK", "period": "annual", "use_cache": False}
+    fetcher = SecBalanceSheetGrowthFetcher()
+    with patch(
+        "openbb_sec.utils.company_facts.get_standardized_financials",
+        new=_mock_get_standardized(blk_facts),
+    ):
+        result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_sec_cash_flow_growth_fetcher(blk_facts, credentials=test_credentials):
+    params = {"symbol": "BLK", "period": "annual", "use_cache": False}
+    fetcher = SecCashFlowStatementGrowthFetcher()
+    with patch(
+        "openbb_sec.utils.company_facts.get_standardized_financials",
+        new=_mock_get_standardized(blk_facts),
+    ):
+        result = fetcher.test(params, credentials)
     assert result is None

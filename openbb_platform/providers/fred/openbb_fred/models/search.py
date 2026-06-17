@@ -187,10 +187,8 @@ class FredSearchFetcher(
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import (
-            amake_request,
-            get_querystring,
-        )
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_fred.utils.rate_limiter import fred_get
 
         api_key = credentials.get("fred_api_key") if credentials else ""
 
@@ -201,7 +199,7 @@ class FredSearchFetcher(
                 """Get data for one series."""
                 data: dict = {}
                 url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
-                response = await amake_request(url)
+                response = await fred_get(url)
                 data = response.get("series_group")  # type: ignore
                 if data:
                     data.update({"series_id": _id})
@@ -215,7 +213,7 @@ class FredSearchFetcher(
 
         if query.search_type == "release" and query.release_id is None:
             url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
-            response = await amake_request(url)
+            response = await fred_get(url)
             results = response.get("releases")  # type: ignore
             if results:
                 return results
@@ -238,7 +236,7 @@ class FredSearchFetcher(
 
         querystring = get_querystring(query.model_dump(), exclude).replace(" ", "%20")
         url = url + querystring + f"&file_type=json&api_key={api_key}"
-        response = await amake_request(url)
+        response = await fred_get(url)
 
         if isinstance(response, dict) and "error_code" in response:
             raise OpenBBError(

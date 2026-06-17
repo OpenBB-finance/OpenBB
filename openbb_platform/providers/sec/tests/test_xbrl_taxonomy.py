@@ -124,9 +124,11 @@ def us_gaap_lab_bytes():
     """Raw bytes of the us-gaap 2024 label linkbase (fetched once)."""
     from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
 
-    return FASBClient().fetch_file(
-        "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
-    ).read()
+    return (
+        FASBClient()
+        .fetch_file("https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml")
+        .read()
+    )
 
 
 @pytest.fixture(scope="module")
@@ -134,9 +136,11 @@ def us_gaap_doc_bytes():
     """Raw bytes of the us-gaap 2024 documentation linkbase (fetched once)."""
     from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
 
-    return FASBClient().fetch_file(
-        "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-doc-2024.xml"
-    ).read()
+    return (
+        FASBClient()
+        .fetch_file("https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-doc-2024.xml")
+        .read()
+    )
 
 
 @pytest.fixture(scope="module")
@@ -144,9 +148,13 @@ def us_gaap_pres_bytes():
     """Raw bytes of the us-gaap sfp-cls presentation linkbase (fetched once)."""
     from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
 
-    return FASBClient().fetch_file(
-        "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-pre-2024.xml"
-    ).read()
+    return (
+        FASBClient()
+        .fetch_file(
+            "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-pre-2024.xml"
+        )
+        .read()
+    )
 
 
 @pytest.fixture(scope="module")
@@ -154,9 +162,13 @@ def us_gaap_cal_bytes():
     """Raw bytes of the us-gaap sfp-cls calculation linkbase (fetched once)."""
     from openbb_sec.utils.xbrl_taxonomy_helper import FASBClient
 
-    return FASBClient().fetch_file(
-        "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-cal-2024.xml"
-    ).read()
+    return (
+        FASBClient()
+        .fetch_file(
+            "https://xbrl.fasb.org/us-gaap/2024/stm/us-gaap-stm-sfp-cls-cal-2024.xml"
+        )
+        .read()
+    )
 
 
 @pytest.fixture(scope="module")
@@ -1044,9 +1056,7 @@ class TestUSGaapLabelsParsing:
             "doc file not loaded"
         )
 
-        has_both = [
-            eid for eid in mgr.parser.labels if eid in mgr.parser.documentation
-        ]
+        has_both = [eid for eid in mgr.parser.labels if eid in mgr.parser.documentation]
         assert (
             len(has_both) > 100
         ), f"Only {len(has_both)} elements have both label + documentation"
@@ -1056,9 +1066,7 @@ class TestUSGaapLabelsParsing:
     ):
         """Should produce a tree structure for us-gaap classified balance sheet."""
         p = XBRLParser()
-        p.parse_label_linkbase(
-            BytesIO(us_gaap_lab_bytes), TaxonomyStyle.FASB_STANDARD
-        )
+        p.parse_label_linkbase(BytesIO(us_gaap_lab_bytes), TaxonomyStyle.FASB_STANDARD)
         nodes = p.parse_presentation(
             BytesIO(us_gaap_pres_bytes), TaxonomyStyle.FASB_STANDARD
         )
@@ -1163,8 +1171,7 @@ class TestHMRCDPLNetwork:
         ), f"Expected >=170 DPL labels, got {len(dpl_labels)}"
         assert "dpl_AdministrativeExpenses" in mgr.parser.labels
         assert (
-            mgr.parser.labels["dpl_AdministrativeExpenses"]
-            == "Administrative expenses"
+            mgr.parser.labels["dpl_AdministrativeExpenses"] == "Administrative expenses"
         )
 
     def test_hmrc_dpl_element_properties(self, hmrc_dpl_loaded):

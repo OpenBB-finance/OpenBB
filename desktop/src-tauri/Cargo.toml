@@ -14,14 +14,14 @@ rust-version = "1.90.0"
 tauri-build = { version = "2.5.6", features = [] }
 
 [dependencies]
-tokio = { version = "^1.51.1", features = ["full", "test-util"] }
+tokio = { version = "^1.52.1", features = ["full", "test-util"] }
 serde_json = { version = "^1.0.149", features = ["preserve_order"] }
 serde_yaml = "^0.9"
 chrono = "^0.4"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
-tauri = { version = "2.10.3", features = ["tray-icon", "devtools"] }
-tauri-cli = "^2.10.1"
+tauri = { version = "2.11.2", features = ["tray-icon", "devtools"] }
+tauri-cli = "^2.11.2"
 tauri-plugin-log = "2.8.0"
 regex = "^1.12.3"
 reqwest = { version = "^0.13.2", features = ["json"] }
@@ -32,7 +32,7 @@ futures = "^0.3.32"
 tauri-plugin-shell = "2"
 url = "^2.5.8"
 urlencoding = "^2.1.3"
-uuid = { version = "^1.23.0", features = ["v4"] }
+uuid = { version = "^1.23.1", features = ["v4"] }
 toml = "^1.1.2"
 futures-util = "0.3"
 futures-channel = "0.3"
@@ -63,9 +63,6 @@ tauri-plugin-updater = "2"
 
 [target.'cfg(linux)'.dependencies]
 glib = "^0.21.5"
-
-[patch.crates-io]
-rustls-webpki = { version = "0.103.11" }
 
 [features]
 # This feature depends on the Tauri CLI & CLI plugin for updater

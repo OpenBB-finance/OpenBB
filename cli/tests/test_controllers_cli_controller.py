@@ -79,9 +79,7 @@ def test_execute_openbb_routine_with_mocked_requests(
     response.json.return_value = {"script": "print('Hello World')"}
     mock_get.return_value = response
     controller = CLIController()
-    controller.call_exe(
-        ["--url", "https://my.openbb.co/u/test/routine/test.openbb"]
-    )
+    controller.call_exe(["--url", "https://my.openbb.co/u/test/routine/test.openbb"])
     mock_get.assert_called_with(
         "https://my.openbb.co/u/test/routine/test.openbb?raw=true", timeout=10
     )

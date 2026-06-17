@@ -1,6 +1,10 @@
 """SEC provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
+from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
+from openbb_sec.models.balance_sheet_growth import SecBalanceSheetGrowthFetcher
+from openbb_sec.models.cash_flow import SecCashFlowStatementFetcher
+from openbb_sec.models.cash_flow_growth import SecCashFlowStatementGrowthFetcher
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
@@ -8,6 +12,8 @@ from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.htm_file import SecHtmFileFetcher
+from openbb_sec.models.income_statement import SecIncomeStatementFetcher
+from openbb_sec.models.income_statement_growth import SecIncomeStatementGrowthFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
@@ -27,6 +33,10 @@ sec_provider = Provider(
     description="SEC is the public listings regulatory body for the United States.",
     credentials=None,
     fetcher_dict={
+        "BalanceSheet": SecBalanceSheetFetcher,
+        "BalanceSheetGrowth": SecBalanceSheetGrowthFetcher,
+        "CashFlowStatement": SecCashFlowStatementFetcher,
+        "CashFlowStatementGrowth": SecCashFlowStatementGrowthFetcher,
         "CikMap": SecCikMapFetcher,
         "CompanyFilings": SecCompanyFilingsFetcher,
         "CompareCompanyFacts": SecCompareCompanyFactsFetcher,
@@ -35,6 +45,8 @@ sec_provider = Provider(
         "Filings": SecCompanyFilingsFetcher,
         "Form13FHR": SecForm13FHRFetcher,
         "SecHtmFile": SecHtmFileFetcher,
+        "IncomeStatement": SecIncomeStatementFetcher,
+        "IncomeStatementGrowth": SecIncomeStatementGrowthFetcher,
         "InsiderTrading": SecInsiderTradingFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
         "LatestFinancialReports": SecLatestFinancialReportsFetcher,

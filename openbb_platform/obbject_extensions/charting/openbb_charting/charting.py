@@ -29,7 +29,6 @@ if TYPE_CHECKING:
     from plotly.graph_objs import Figure
     from openbb_charting.core.openbb_figure import OpenBBFigure
     from openbb_charting.query_params import ChartParams
-    from openbb_charting.core.backend import Backend
 
 
 class Charting:
@@ -70,6 +69,8 @@ class Charting:
         # pylint: disable=import-outside-toplevel
         import importlib  # noqa
 
+        from openbb_charting.core.backend import Backend
+
         charting_settings_module = importlib.import_module(
             "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
         )
@@ -80,7 +81,7 @@ class Charting:
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._backend = self._handle_backend()
+        self._backend = Backend(self._charting_settings)
         self._functions: dict[str, Callable] = self._get_functions()
 
     @classmethod
@@ -110,16 +111,6 @@ class Charting:
             functions.update(get_charting_functions(view))
 
         return functions
-
-    def _handle_backend(self) -> "Backend":
-        """Create and start the backend."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.backend import create_backend, get_backend
-
-        create_backend(self._charting_settings)
-        backend = get_backend()
-        backend.start(debug=self._charting_settings.debug_mode)  # type: ignore
-        return backend  # type: ignore
 
     def _get_chart_function(self, route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
@@ -477,7 +468,7 @@ class Charting:
 
         try:
             charting_function = self._get_chart_function(
-                self._obbject._route  # pylint: disable=protected-access   # type: ignore
+                self._obbject._route or ""  # pylint: disable=protected-access
             )
             kwargs["obbject_item"] = self._obbject.results
             kwargs["charting_settings"] = self._charting_settings
@@ -495,6 +486,10 @@ class Charting:
 
             kwargs["provider"] = self._obbject.provider
             kwargs["extra"] = self._obbject.extra
+            kwargs.setdefault(
+                "command_location",
+                self._obbject._route or "",  # pylint: disable=protected-access
+            )
 
             # Handle different types of output from the charting endpoint.
             chart_response: Any = charting_function(**kwargs)
@@ -666,21 +661,12 @@ class Charting:
 
     def _set_chart_style(self, figure: "Figure"):
         """Set the user preference for light or dark mode."""
-        style = self._charting_settings.chart_style
-        font_color = "black" if style == "light" else "white"
-        paper_bgcolor = "white" if style == "light" else "black"
-        plot_bgcolor = "white" if style == "light" else "black"
-        figure = figure.update_layout(
-            dict(
-                font_color=font_color,
-                paper_bgcolor=paper_bgcolor,
-                plot_bgcolor=plot_bgcolor,
-            )
-        )  # pylint: disable=R1735
         return figure
 
     def toggle_chart_style(self):
         """Toggle the chart style between light and dark mode."""
+        import plotly.io as pio  # pylint: disable=import-outside-toplevel
+
         if not hasattr(self._obbject.chart, "fig"):
             raise ValueError(
                 "Error: No chart has been created. Please create a chart first."
@@ -688,10 +674,11 @@ class Charting:
         current = self._charting_settings.chart_style
         new = "light" if current == "dark" else "dark"
         self._charting_settings.chart_style = new
+        template_name = "plotly_white" if new == "light" else "plotly_dark"
         figure = self._obbject.chart.fig  # type: ignore[union-attr]
-        updated_figure = self._set_chart_style(figure)  # type: ignore[union-attr]
-        self._obbject.chart.fig = updated_figure  # type: ignore[union-attr]
-        self._obbject.chart.content = updated_figure.show(  # type: ignore[union-attr]
+        figure.update_layout(template=pio.templates[template_name])  # type: ignore[union-attr]
+        self._obbject.chart.fig = figure  # type: ignore[union-attr]
+        self._obbject.chart.content = figure.show(  # type: ignore[union-attr]
             external=True
         ).to_plotly_json()  # type: ignore[union-attr]
 
@@ -725,6 +712,7 @@ class Charting:
         self,
         data: Union["DataFrame", "Series"] | None = None,
         title: str = "",
+        include_query_toolbar: bool = True,
     ):
         """Display an interactive table.
 
@@ -735,6 +723,8 @@ class Charting:
             If no data is provided the OBBject results will be used.
         title : str, optional
             Title of the table, by default "".
+        include_query_toolbar : bool, optional
+            Whether to include the Pandas Query toolbar, by default True.
         """
         # pylint: disable=import-outside-toplevel
         from pandas import RangeIndex
@@ -746,26 +736,27 @@ class Charting:
             data_as_df.reset_index(inplace=True)
         for col in data_as_df.columns:
             data_as_df[col] = data_as_df[col].apply(self._convert_to_string)
-        if self._backend.isatty:
-            try:
-                self._backend.send_table(
+        try:
+            send_table = getattr(self._backend, "send_table")
+            if include_query_toolbar:
+                send_table(
                     df_table=data_as_df,
                     title=title
-                    or ""
-                    or self._obbject._route,  # pylint: disable=protected-access  # type: ignore
+                    or self._obbject._route  # pylint: disable=protected-access
+                    or "",
                     theme=self._charting_settings.table_style,  # pylint: disable=protected-access
                 )
-            except Exception as e:  # pylint: disable=W0718
-                warn(f"Failed to show figure with backend. {e}")
-
-        else:
-            from plotly import optional_imports
-
-            ipython_display = optional_imports.get_module("IPython.display")
-            if ipython_display:
-                ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
             else:
-                warn("IPython.display is not available.")
+                send_table(
+                    df_table=data_as_df,
+                    title=title
+                    or self._obbject._route  # pylint: disable=protected-access
+                    or "",
+                    theme=self._charting_settings.table_style,  # pylint: disable=protected-access
+                    include_query_toolbar=False,
+                )
+        except Exception as e:  # pylint: disable=W0718
+            warn(f"Failed to show table with backend. {e}")
 
     def url(
         self,

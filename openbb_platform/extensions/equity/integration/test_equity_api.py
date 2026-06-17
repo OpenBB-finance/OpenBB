@@ -49,6 +49,17 @@ def headers():
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -65,7 +76,20 @@ def test_equity_fundamental_balance(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_balance_growth(params, headers):
@@ -172,6 +196,17 @@ def test_equity_calendar_earnings(params, headers):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -188,7 +223,20 @@ def test_equity_fundamental_cash(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_cash_growth(params, headers):
@@ -468,6 +516,17 @@ def test_equity_estimates_forward_eps(params, headers):
                 "provider": "yfinance",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -484,7 +543,20 @@ def test_equity_fundamental_income(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [{"symbol": "AAPL", "limit": 10, "period": "annual", "provider": "fmp"}],
+    [
+        ({"symbol": "AAPL", "limit": 10, "period": "annual", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "sec",
+                "use_cache": True,
+                "include_preliminary": True,
+                "pit_mode": True,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_income_growth(params, headers):
@@ -870,7 +942,9 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/revenue_per_segment?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/equity/fundamental/revenue_per_segment?{query_str}"
+    )
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -1627,7 +1701,9 @@ def test_equity_discovery_aggressive_small_caps(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/discovery/aggressive_small_caps?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/equity/discovery/aggressive_small_caps?{query_str}"
+    )
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -1836,6 +1912,7 @@ def test_equity_fundamental_historical_eps(params, headers):
 )
 @pytest.mark.integration
 def test_equity_market_state(params, headers):
+    """Test the equity market state endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1902,7 +1979,9 @@ def test_equity_fundamental_reported_financials(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/reported_financials?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/equity/fundamental/reported_financials?{query_str}"
+    )
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

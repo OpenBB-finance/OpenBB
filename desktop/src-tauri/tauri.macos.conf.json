@@ -1,6 +1,6 @@
 {
   "build": {
-    "beforeBundleCommand": "sh /Users/runner/work/OpenBB/OpenBB/desktop/src-tauri/scripts/fix_dylibs.sh"
+    "beforeBundleCommand": "sh src-tauri/scripts/fix_dylibs.sh"
   },
   "bundle": {
     "targets": "all",
