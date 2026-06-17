@@ -1,11 +1,18 @@
 """Technical Analysis Router."""
 
-# pylint: disable=too-many-lines,unused-import,too-many-arguments,too-many-positional-arguments
+# pylint: disable=too-many-lines,unused-import,unused-argument,too-many-arguments,too-many-positional-arguments
 
 from typing import Any, Literal
 
+from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -30,6 +37,36 @@ from openbb_technical.relative_rotation import (
 
 # TODO: Split this into multiple files
 router = Router(prefix="", description="Technical Analysis tools.")
+
+
+@router.command(
+    model="ChartPatternSimilarity",
+    examples=[
+        APIEx(
+            parameters={
+                "symbol": "NVDA",
+                "date": "2025-01-15",
+                "timeframe": "rth",
+                "provider": "chartlibrary",
+            }
+        ),
+        PythonEx(
+            description="Find historical chart patterns similar to a ticker and date.",
+            code=[
+                "obb.technical.pattern_similarity("
+                + "symbol='NVDA', date='2025-01-15', provider='chartlibrary')",
+            ],
+        ),
+    ],
+)
+async def pattern_similarity(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Find historical chart patterns similar to a ticker on a given date."""
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(

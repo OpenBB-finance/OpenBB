@@ -47,6 +47,7 @@ openbb-regulators = "^1.6.2"
 openbb-alpha-vantage = { version = "^1.6.1", optional = true }
 openbb-biztoc = { version = "^1.6.1", optional = true }
 openbb-cboe = { version = "^1.6.1", optional = true }
+openbb-chartlibrary = { version = "^1.6.1", optional = true }
 openbb-deribit = { version = "^1.2.1", optional = true }
 openbb-ecb = { version = "^1.6.1", optional = true }
 openbb-famafrench = { version = "^1.2.1", optional = true }
@@ -70,6 +71,7 @@ openbb-mcp-server = { version = "^1.4.1", optional = true }
 alpha_vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
+chartlibrary = ["openbb-chartlibrary"]
 charting = ["openbb-charting"]
 deribit = ["openbb-deribit"]
 ecb = ["openbb-ecb"]
@@ -93,6 +95,7 @@ all = [
     "openbb-alpha-vantage",
     "openbb-biztoc",
     "openbb-cboe",
+    "openbb-chartlibrary",
     "openbb-charting",
     "openbb-deribit",
     "openbb-ecb",

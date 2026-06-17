@@ -55,6 +55,7 @@ These packages are not installed when `pip install openbb` is run.  They are ava
 | openbb-alpha-vantage | [Alpha Vantage](https://www.alphavantage.co/) data connector | pip install openbb-alpha-vantage | Free |
 | openbb-biztoc | [Biztoc](https://api.biztoc.com/#biztoc-default) News data connector | pip install openbb-biztoc | Free |
 | openbb-cboe | [Cboe](https://www.cboe.com/delayed_quotes/) data connector | pip install openbb-cboe | None |
+| openbb-chartlibrary | [ChartLibrary](https://chartlibrary.io/) pattern similarity connector | pip install openbb-chartlibrary | Free |
 | openbb-deribit | [Deribit](https://docs.deribit.com/) data connector | pip install openbb-deribit | None | - |
 | openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | None |
 | openbb-famafrench | [Ken French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) connector | pip install openbb-famafrench | None | - |
