@@ -13,6 +13,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import FastAPI
+from fastmcp.prompts import PromptArgument
+from fastmcp.server.providers.skills import SkillsDirectoryProvider
 from mcp.types import TextContent
 from openbb_mcp_server.app.app import create_mcp_server
 from openbb_mcp_server.models.category_index import CategoryIndex
@@ -286,14 +288,14 @@ class TestAvailableTools:
     @pytest.mark.asyncio
     async def test_unknown_category_raises(self):
         """Raise ValueError when the requested category does not exist."""
-        mcp_mock, decorated = self._setup()
+        _mcp_mock, decorated = self._setup()
         with pytest.raises(ValueError, match="not found"):
             await decorated["available_tools"](category="nonexistent")
 
     @pytest.mark.asyncio
     async def test_unknown_subcategory_raises(self):
         """Raise ValueError when the requested subcategory does not exist."""
-        mcp_mock, decorated = self._setup()
+        _mcp_mock, decorated = self._setup()
         with pytest.raises(ValueError, match="not found"):
             await decorated["available_tools"](category="equity", subcategory="options")
 
@@ -558,8 +560,6 @@ class TestTransformsAdded:
     @pytest.mark.asyncio
     async def test_static_prompt_renders_with_defaults(self):
         """StaticPrompt.render() applies argument_defaults when caller omits them."""
-        from fastmcp.prompts import PromptArgument
-
         prompt = StaticPrompt(
             name="greeting",
             content="Hello {name}, focus on {aspect}",
@@ -576,8 +576,6 @@ class TestTransformsAdded:
     @pytest.mark.asyncio
     async def test_static_prompt_caller_overrides_defaults(self):
         """Caller-supplied values override argument_defaults."""
-        from fastmcp.prompts import PromptArgument
-
         prompt = StaticPrompt(
             name="greeting",
             content="Hello {name}, focus on {aspect}",
@@ -606,6 +604,7 @@ class TestBundledSkillRendering:
         "develop_extension": "Build an OpenBB Platform Extension",
         "build_workspace_app": "Build and Run OpenBB Workspace Applications",
         "configure_mcp_server": "Configure and Build the OpenBB MCP Server",
+        "financial_rag_robustness": "Financial RAG Robustness Checks",
         "work_with_server": "Working With the OpenBB MCP Server",
     }
 
@@ -726,9 +725,7 @@ class TestSkillsIntegration:
         self, mock_from_fastapi, mock_category_index, mock_process_routes
     ):
         """Bundled skills are registered via mcp.add_provider(SkillsDirectoryProvider)."""
-        from fastmcp.server.providers.skills import SkillsDirectoryProvider
-
-        settings = MCPSettings()  # type: ignore  (uses default skills dir)
+        settings = MCPSettings()  # type: ignore
         fastapi_app = FastAPI()
 
         mock_processed_data = MagicMock()
@@ -760,6 +757,7 @@ class TestSkillsIntegration:
             "develop_extension",
             "build_workspace_app",
             "configure_mcp_server",
+            "financial_rag_robustness",
             "work_with_server",
         ]:
             skill_file = SKILLS_DIR / skill_name / "SKILL.md"
