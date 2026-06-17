@@ -2864,19 +2864,19 @@ openbb-core = ">=1.6.10,<2.0.0"
 
 [[package]]
 name = "openbb-core"
-version = "1.6.12"
+version = "1.6.13"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["main"]
 files = [
-    {file = "openbb_core-1.6.12-py3-none-any.whl", hash = "sha256:a41136dd8debfaf2084bb3faef1c261e54b9767bb8f8329513e5b76dd06965d0"},
-    {file = "openbb_core-1.6.12.tar.gz", hash = "sha256:42e62e820b2dae35ccfb1d836fdb91620e459a63b98f52ec5e349a282f35df4a"},
+    {file = "openbb_core-1.6.13-py3-none-any.whl", hash = "sha256:58917422a816ab5e5ab8c53d346005e763c48816f03997484e06ddab1109cf06"},
+    {file = "openbb_core-1.6.13.tar.gz", hash = "sha256:c26cfc2ae37c1700e01db9ca0fd2cd02118715cec2097ea870f47a70186402bb"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.14.1"
-fastapi = ">=0.136.3,<0.137.0"
+fastapi = "0.136.3"
 html5lib = ">=1.1,<2.0"
 importlib-metadata = ">=6.8.0"
 pandas = ">=1.5.3"
