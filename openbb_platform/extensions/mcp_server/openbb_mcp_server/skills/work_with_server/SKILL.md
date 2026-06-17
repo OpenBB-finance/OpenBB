@@ -505,6 +505,115 @@ The `chart` field in the response contains the Plotly figure JSON.
 
 ---
 
+## LangGraph Analyst Workflow Pattern
+
+OpenBB MCP tools can be used as data nodes in a LangGraph financial analyst
+workflow. Keep the graph responsible for orchestration, and keep financial
+calculations in deterministic Python nodes so the model does not invent numbers
+or silently transform units.
+
+### Recommended Graph Shape
+
+Use a small graph with explicit state:
+
+1. **Plan node** - decide which OpenBB categories and tools are needed.
+2. **Discover node** - call `available_categories` and `available_tools`.
+3. **Activate node** - call `activate_tools` or `activate_category`.
+4. **Fetch node** - call OpenBB data tools and store the full OBBject.
+5. **Validate node** - check provider, warnings, empty results, and `as_of`
+   dates before the model sees the data.
+6. **Compute node** - calculate ratios, returns, exposures, or summary stats in
+   code.
+7. **Draft node** - ask the model to write the memo from validated facts only.
+8. **Critic node** - reject unsupported numeric claims or missing citations.
+
+The graph state should preserve:
+
+```python
+state = {
+    "question": "...",
+    "symbols": ["AAPL", "MSFT"],
+    "active_tools": [],
+    "tool_results": {},
+    "validated_facts": [],
+    "unsupported_claims": [],
+    "memo": None,
+}
+```
+
+### Minimal Tool Node Contract
+
+Each OpenBB tool node should return a compact object that still keeps
+provenance:
+
+```python
+{
+    "tool": "equity_price_historical",
+    "arguments": {"symbol": "AAPL", "provider": "fmp"},
+    "provider": "fmp",
+    "route": "/equity/price/historical",
+    "timestamp": "2025-01-15 11:28:57.149548",
+    "warnings": None,
+    "results": [...]
+}
+```
+
+Do not pass only a natural-language summary to later graph nodes. Keep the raw
+records available for deterministic checks and audit trails.
+
+### Example Flow
+
+For a single-company analyst memo:
+
+1. Activate `equity_price_historical`, `equity_fundamental_metrics`, and
+   `news_company_news`, if installed.
+2. Fetch prices for the requested window.
+3. Fetch latest fundamentals or estimates.
+4. Fetch recent company news.
+5. Validate that every result matches the requested symbol and date range.
+6. Compute returns and valuation deltas in Python.
+7. Draft a memo with a `Sources Used` section listing each OpenBB tool call.
+8. Run a critic node that fails the memo if a number is not present in
+   `validated_facts`.
+
+### Guardrails For Financial Graphs
+
+- Require an `as_of` date for market data and macro data.
+- Refuse to answer when symbol disambiguation fails.
+- Surface provider warnings in the final memo or debug trace.
+- Treat empty `results` as a branch condition, not as a model prompt.
+- Do not let the model choose a provider if the user or workflow requires one.
+- Recompute all derived metrics outside the LLM.
+- Store route, provider, timestamp, and arguments for every tool call.
+
+### Failure Branches
+
+Common branches to add before a graph reaches the draft node:
+
+| Condition | Branch |
+|---|---|
+| Tool is inactive | Call discovery and activation again |
+| Provider credentials missing | Ask for credentials or choose an installed public provider |
+| Empty results | Try a fallback provider or narrow the requested claim |
+| Warnings present | Continue only if the warning does not affect the requested claim |
+| Date range includes future observations | Stop and ask for a valid `as_of` date |
+| Metric not found | Refuse that claim and list available fields |
+
+### Memo Acceptance Test
+
+Before returning the final answer, assert:
+
+- Every numeric claim is in `validated_facts` or was computed from them.
+- Every provider name in the memo exists in the tool result metadata.
+- Every cited date is within the requested analysis window.
+- Any missing data is reported as missing rather than filled by the model.
+- The memo includes the tool names used to produce the answer.
+
+This pattern keeps LangGraph useful as an orchestrator while OpenBB remains the
+source of financial data and deterministic calculations.
+
+---
+
 ## User Settings and Defaults
 
 The server reads user settings from `~/.openbb_platform/user_settings.json`:
