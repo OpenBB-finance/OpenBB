@@ -432,5 +432,10 @@ def test_add_command_map_wraps_and_includes_plugin_routes(monkeypatch):
     api_router = APIRouter()
     add_command_map(MagicMock(spec=CommandRunner), api_router)
 
+    from openbb_core.app.route_iter import iter_api_routes
+
     assert plugins_api_router.routes[0].endpoint is wrapped
-    assert any(getattr(route, "path", None) == "/plugin" for route in api_router.routes)
+    assert any(
+        getattr(route, "path", None) == "/plugin"
+        for route in iter_api_routes(api_router)
+    )

@@ -65,6 +65,7 @@ app = FastAPI(
         for s in system.api_settings.servers
     ],
     lifespan=lifespan,
+    strict_content_type=False,
 )
 app.add_middleware(
     CORSMiddleware,

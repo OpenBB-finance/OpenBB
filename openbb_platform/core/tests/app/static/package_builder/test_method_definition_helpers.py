@@ -1457,8 +1457,13 @@ def test_build_command_method_getsource_typeerror(monkeypatch):
     monkeypatch.setattr(
         MethodDefinition, "is_deprecated_function", staticmethod(lambda p: False)
     )
-    monkeypatch.setattr(
-        md.inspect, "getsource", lambda _f: (_ for _ in ()).throw(TypeError("x"))
-    )
+    real_getsource = md.inspect.getsource
+
+    def _patched_getsource(obj):
+        if obj is endpoint:
+            raise TypeError("x")
+        return real_getsource(obj)
+
+    monkeypatch.setattr(md.inspect, "getsource", _patched_getsource)
     code = MethodDefinition.build_command_method("/x/y", endpoint)
     assert "def y" in code

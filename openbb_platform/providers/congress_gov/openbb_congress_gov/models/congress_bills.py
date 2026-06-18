@@ -1,26 +1,24 @@
 """Congress Bills Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Literal
 
-from openbb_congress_gov.utils.constants import (
-    BillTypes,
-    base_url,
-    bill_type_docstring,
-    bill_type_options,
-)
-from openbb_congress_gov.utils.helpers import year_to_congress
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import ConfigDict, Field, model_validator
+
+from openbb_congress_gov.utils.constants import (
+    BillTypes,
+    bill_type_docstring,
+    bill_type_options,
+)
+from openbb_congress_gov.utils.helpers import year_to_congress
 
 
 class CongressBillsQueryParams(QueryParams):
@@ -85,22 +83,21 @@ class CongressBillsQueryParams(QueryParams):
     )
 
     @model_validator(mode="after")
-    @classmethod
-    def validate_query(cls, values):
+    def validate_query(self):
         """Validate the query parameters."""
-        if values.bill_type is not None and values.bill_type not in BillTypes:
+        if self.bill_type is not None and self.bill_type not in BillTypes:
             raise OpenBBError(
                 ValueError(
-                    f"Invalid bill_type: {values.bill_type}. Must be one of: {', '.join(BillTypes)}."
+                    f"Invalid bill_type: {self.bill_type}. Must be one of: {', '.join(BillTypes)}."
                 )
             )
-        if values.limit == 0 and values.bill_type is None:
+        if self.limit == 0 and self.bill_type is None:
             raise OpenBBError(
                 ValueError(
                     "'limit' cannot be set to 0 without 'bill_type' and 'congress'."
                 )
             )
-        return values
+        return self
 
 
 class CongressBillsData(Data):
@@ -109,7 +106,6 @@ class CongressBillsData(Data):
     __alias_dict__ = {
         "bill_type": "type",
         "bill_number": "number",
-        "bill_url": "url",
     }
 
     model_config = ConfigDict(
@@ -121,12 +117,12 @@ class CongressBillsData(Data):
                 "$.description": "Current and historical U.S. Congressional Bills.",
                 "$.params": [
                     {
-                        "paramName": "bill_url",
-                        "label": "Bill URL",
-                        "description": "Ghost parameter to group by the bill URL."
-                        + " Create a group and use the 'Congressional Bill Viewer' widget to view the bill."
-                        + " The 'Congressional Bill Info' widget can also be grouped by this field to provide"
-                        + " a comprehensive overview of the bill.",
+                        "paramName": "bill_id",
+                        "label": "Bill ID",
+                        "description": "Ghost parameter to group by the bill id"
+                        + " (e.g. '119-hr-29'). Create a group and use the"
+                        + " 'Congressional Bill Viewer' / 'Congressional Bill Info'"
+                        + " widgets to view the bill.",
                         "type": "text",
                         "value": None,
                         "show": True,
@@ -136,24 +132,25 @@ class CongressBillsData(Data):
             },
         }
     )
-    update_date: dateType = Field(description="The date the bill was last updated.")
-    latest_action_date: dateType | None = Field(
-        default=None, description="The date of the latest action on the bill."
-    )
-    bill_url: str = Field(
-        description="Base URL to the bill for the congress.gov API.",
+    bill_id: str = Field(
+        description="The bill identifier, e.g. '119-hr-29'.",
         json_schema_extra={
             "x-widget_config": {
-                "headerTooltip": "Create a group for the 'bill_url' parameter and then"
-                + " click in the cell to change the documents in the 'Congressional Bill Viewer'"
-                + " or 'Congression Bill Info widgets.",
+                "headerName": "▸ Group: Bill ID",
+                "headerTooltip": "Click a cell here to group by this bill and view it"
+                + " in the 'Congressional Bill Viewer' / 'Congressional Bill Info' widgets.",
+                "pinned": "left",
                 "renderFn": "cellOnClick",
                 "renderFnParams": {
                     "actionType": "groupBy",
-                    "groupByParamName": "bill_url",
+                    "groupByParamName": "bill_id",
                 },
             },
         },
+    )
+    update_date: dateType = Field(description="The date the bill was last updated.")
+    latest_action_date: dateType | None = Field(
+        default=None, description="The date of the latest action on the bill."
     )
     congress: int = Field(
         description="The congress session number.",
@@ -209,107 +206,31 @@ class CongressBillsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract data from the Congress API."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.errors import UnauthorizedError  # noqa
-        from openbb_core.provider.utils.helpers import amake_request
-        from openbb_congress_gov.utils.helpers import (
-            get_all_bills_by_type,
-        )
+        """Extract bills for a Congress from the BILLSTATUS database."""
+        from openbb_congress_gov.utils.bulk import list_bills
 
-        api_key = credentials.get("congress_gov_api_key") if credentials else ""
-
-        # Add congress number and bill type to the path parameters where required.
-        # If a bill_type is provided, we need to give the path a congress number.
-        # If no congress number is provided, we will use the current congress number
-        # or the congress number derived from the start or end date, when supplied.
-
-        if (
-            query.bill_type is not None
-            and query.start_date is None
-            and query.end_date is None
-            and query.congress is None
-        ):
-            congress = year_to_congress(datetime.now().year)
-        elif (
-            query.bill_type is not None
-            and query.congress is None
-            and query.start_date is not None
-        ):
-            congress = year_to_congress(query.start_date.year)
-        elif (
-            query.bill_type is not None
-            and query.congress is None
-            and query.end_date is not None
-            and query.start_date is None
-        ):
-            congress = year_to_congress(query.end_date.year)
-        elif (
-            query.bill_type is not None
-            and query.start_date is not None
-            and query.end_date is not None
-            and query.congress is None
-        ):
-            congress_start = year_to_congress(query.start_date.year)
-            congress = congress_start
-        elif query.bill_type is not None and query.congress is None:
-            congress = year_to_congress(datetime.now().year)
-        else:
+        if query.congress is not None:
             congress = query.congress
+        elif query.start_date is not None:
+            congress = year_to_congress(query.start_date.year)
+        elif query.end_date is not None:
+            congress = year_to_congress(query.end_date.year)
+        else:
+            congress = year_to_congress(datetime.now().year)
 
-        if query.limit == 0 and query.bill_type is not None and congress is not None:
-            # If limit is 0, we fetch all bills of the specified type for the congress
-            return await get_all_bills_by_type(
-                bill_type=query.bill_type,
-                congress=congress,
-                start_date=None,
-                end_date=None,
-            )
-        url = (
-            (
-                f"{base_url}bill/{congress}/{query.bill_type}"
-                if congress is not None and query.bill_type is not None
-                else (
-                    f"{base_url}bill/{congress}"
-                    if congress is not None
-                    else f"{base_url}bill"
-                )
-            )
-            + (
-                f"?fromDateTime={query.start_date.strftime('%Y-%m-%d') + 'T00:00:00Z'}"
-                if query.start_date
-                else ""
-            )
-            + (
-                f"&toDateTime={query.end_date.strftime('%Y-%m-%d') + 'T23:59:59Z'}"
-                if query.end_date
-                else ""
-            )
-        )
-        url += (
-            f"{'?' if '?' not in url else '&'}"
-            + f"limit={query.limit if query.limit is not None else '100'}"
-            + (f"&offset={query.offset if query.offset else '0'}")
-            + f"&sort=updateDate+{query.sort_by}"
-            + f"&format=json&api_key={api_key}"
+        bill_types = (
+            [query.bill_type] if query.bill_type is not None else list(BillTypes)
         )
 
-        try:
-            response = await amake_request(url=url)
-            if isinstance(response, dict) and (error := response.get("error", {})):
-                if "API_KEY" in error.get("code", ""):
-                    raise UnauthorizedError(
-                        f"{error.get('code', '')} -> {error.get('message', '')}"
-                    )
-                raise OpenBBError(
-                    f"{error.get('code', '')} -> {error.get('message', '')}"
-                )
-
-        except Exception as e:
-            # Handle exceptions
-            raise OpenBBError(e) from e
-
-        return response.get("bills", [])  # type: ignore
+        return await list_bills(
+            congress,
+            bill_types,
+            start_date=query.start_date,
+            end_date=query.end_date,
+            limit=query.limit,
+            offset=query.offset,
+            sort_by=query.sort_by,
+        )
 
     @staticmethod
     def transform_data(
@@ -320,8 +241,9 @@ class CongressBillsFetcher(
 
         for bill in sorted(
             data,
-            key=lambda x: x.get("latestAction", {}).get("actionDate")
-            or x.get("updateDate"),
+            key=lambda x: (
+                x.get("latestAction", {}).get("actionDate") or x.get("updateDate")
+            ),
             reverse=query.sort_by == "desc",
         ):
             latest_action = bill.pop("latestAction", {})
