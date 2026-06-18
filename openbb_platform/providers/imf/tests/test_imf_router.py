@@ -330,39 +330,45 @@ class TestAppsJson:
 class TestRouterRegistration:
     """Tests confirming the new fetcher endpoints are registered on the router."""
 
+    @staticmethod
+    def _router_paths() -> set[str]:
+        from openbb_core.app.route_iter import iter_api_routes
+
+        return {r.path for r in iter_api_routes(router.api_router)}
+
     def test_country_activity_registered(self):
         """``country_activity`` is reachable through the router's api routes."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/country_activity") for p in paths)
 
     def test_monthly_trade_registered(self):
         """``monthly_trade`` is registered."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/monthly_trade") for p in paths)
 
     def test_container_metrics_registered(self):
         """``container_metrics`` is registered."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/container_metrics") for p in paths)
 
     def test_disruption_events_registered(self):
         """``disruption_events`` is registered."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/disruption_events") for p in paths)
 
     def test_disruptions_map_registered(self):
         """``disruptions_map`` is registered."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/disruptions_map") for p in paths)
 
     def test_disruption_sankey_registered(self):
         """``disruption_sankey`` is registered."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/disruption_sankey") for p in paths)
 
     def test_choice_endpoints_registered(self):
         """The 4 ``list_*_choices`` endpoints are registered."""
-        paths = {r.path for r in router.api_router.routes}
+        paths = self._router_paths()
         assert any(p.endswith("/list_country_choices") for p in paths)
         assert any(p.endswith("/list_tradenow_region_choices") for p in paths)
         assert any(p.endswith("/list_container_port_choices") for p in paths)

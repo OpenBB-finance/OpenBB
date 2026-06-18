@@ -292,12 +292,9 @@ async def test_command_runner_results_only_extension_sets_flag(
 
 
 def _build_app_with_real_command_router(fake_router: Router) -> FastAPI:
-    """Build a FastAPI app whose routes are wrapped by the real ``build_api_wrapper``.
-
-    Mirrors ``openbb_core.api.router.commands.add_command_map`` but driven from
-    the in-memory ``fake_router`` (so we don't depend on real installed extensions).
-    """
+    """Build a FastAPI app whose routes are wrapped by ``build_api_wrapper``."""
     from openbb_core.api.router.commands import build_api_wrapper
+    from openbb_core.app.route_iter import iter_api_routes
 
     runner = CommandRunner(
         command_map=CommandMap(router=fake_router),
@@ -306,10 +303,16 @@ def _build_app_with_real_command_router(fake_router: Router) -> FastAPI:
     )
 
     api_router = APIRouter()
-    for route in fake_router.api_router.routes:
-        route.endpoint = build_api_wrapper(  # type: ignore[attr-defined]
-            command_runner=runner, route=route
-        )
+    for effective in iter_api_routes(fake_router.api_router):
+        leaf = getattr(effective, "original_route", effective)
+        original_leaf_path = leaf.path
+        leaf.path = effective.path
+        try:
+            leaf.endpoint = build_api_wrapper(  # type: ignore[attr-defined]
+                command_runner=runner, route=leaf
+            )
+        finally:
+            leaf.path = original_leaf_path
     api_router.include_router(router=fake_router.api_router)
 
     app = FastAPI()

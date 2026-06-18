@@ -70,37 +70,25 @@ A resolution affecting the House of Representatives is designated “H.Res.” f
 They are not presented to the President for action.
 
 """
-LawTypes: list = ["pub", "priv"]
+LawTypes: list = ["public", "private"]
 
 law_type_options: list[dict[str, str]] = [
-    {"label": "Public Law", "value": "pub"},
-    {"label": "Private Law", "value": "priv"},
+    {"label": "Public Law", "value": "public"},
+    {"label": "Private Law", "value": "private"},
 ]
 
-law_type_docstring = """Law type filter.
+law_type_docstring = """Law type filter. Must be one of: public, private.
 
-Must be one of: pub, priv.
+A public law affects the general public or classes of citizens and is identified
+by a number in the format "{congress}-{number}" (e.g., "119-44"). A private law
+affects specific individuals, organizations, or localities rather than the
+general public, and is far less common than public laws."""
 
-Public Laws
------------
-
-A public law is a law that affects the general public or classes of citizens.
-It is identified by a number in the format "{congress}-{number}" (e.g., "119-44").
-
-Private Laws
-------------
-
-A private law is a law that affects specific individuals, organizations, or localities
-rather than the general public. Private laws are less common than public laws.
-
-"""
-
-AmendmentTypes: list = ["hamdt", "samdt", "suamdt"]
+AmendmentTypes: list = ["hamdt", "samdt"]
 
 amendment_type_options: list[dict[str, str]] = [
     {"label": "House Amendment", "value": "hamdt"},
     {"label": "Senate Amendment", "value": "samdt"},
-    {"label": "Senate Unamended", "value": "suamdt"},
 ]
 
 amendment_type_docstring = """Amendment type (e.g., "hamdt" for House Amendments).
@@ -111,7 +99,6 @@ Must be one of:
 House amendments are identified by "H.Amdt." followed by a number.
 - samdt: An amendment offered or adopted in the Senate.
 Senate amendments are identified by "S.Amdt." followed by a number.
-- suamdt: A Senate amendment that was submitted but not subsequently amended.
 
 """
 
@@ -129,6 +116,68 @@ doc_type_options: list[dict[str, str]] = [
     {"label": "Meetings & Hearings", "value": "meeting"},
     {"label": "Publications & Prints", "value": "publication"},
     {"label": "Legislation", "value": "legislation"},
+]
+
+state_options: list[dict[str, str]] = [
+    {"label": label, "value": value}
+    for value, label in [
+        ("AL", "Alabama"),
+        ("AK", "Alaska"),
+        ("AZ", "Arizona"),
+        ("AR", "Arkansas"),
+        ("CA", "California"),
+        ("CO", "Colorado"),
+        ("CT", "Connecticut"),
+        ("DE", "Delaware"),
+        ("FL", "Florida"),
+        ("GA", "Georgia"),
+        ("HI", "Hawaii"),
+        ("ID", "Idaho"),
+        ("IL", "Illinois"),
+        ("IN", "Indiana"),
+        ("IA", "Iowa"),
+        ("KS", "Kansas"),
+        ("KY", "Kentucky"),
+        ("LA", "Louisiana"),
+        ("ME", "Maine"),
+        ("MD", "Maryland"),
+        ("MA", "Massachusetts"),
+        ("MI", "Michigan"),
+        ("MN", "Minnesota"),
+        ("MS", "Mississippi"),
+        ("MO", "Missouri"),
+        ("MT", "Montana"),
+        ("NE", "Nebraska"),
+        ("NV", "Nevada"),
+        ("NH", "New Hampshire"),
+        ("NJ", "New Jersey"),
+        ("NM", "New Mexico"),
+        ("NY", "New York"),
+        ("NC", "North Carolina"),
+        ("ND", "North Dakota"),
+        ("OH", "Ohio"),
+        ("OK", "Oklahoma"),
+        ("OR", "Oregon"),
+        ("PA", "Pennsylvania"),
+        ("RI", "Rhode Island"),
+        ("SC", "South Carolina"),
+        ("SD", "South Dakota"),
+        ("TN", "Tennessee"),
+        ("TX", "Texas"),
+        ("UT", "Utah"),
+        ("VT", "Vermont"),
+        ("VA", "Virginia"),
+        ("WA", "Washington"),
+        ("WV", "West Virginia"),
+        ("WI", "Wisconsin"),
+        ("WY", "Wyoming"),
+        ("DC", "District of Columbia"),
+        ("AS", "American Samoa"),
+        ("GU", "Guam"),
+        ("MP", "Northern Mariana Islands"),
+        ("PR", "Puerto Rico"),
+        ("VI", "U.S. Virgin Islands"),
+    ]
 ]
 
 
