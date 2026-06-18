@@ -6,7 +6,11 @@ import secrets
 
 from fastapi import HTTPException
 from fastmcp.server.auth import AuthProvider
-from mcp.server.auth.provider import AccessToken
+
+# Use fastmcp's ``AccessToken`` (which subclasses ``mcp.server.auth.provider.AccessToken``
+# with extra JWT-claim fields) so our ``verify_token`` override matches
+# ``AuthProvider.verify_token``'s signature exactly — Liskov-safe.
+from fastmcp.server.auth.auth import AccessToken
 from starlette.requests import Request
 
 from openbb_mcp_server.models.settings import MCPSettings

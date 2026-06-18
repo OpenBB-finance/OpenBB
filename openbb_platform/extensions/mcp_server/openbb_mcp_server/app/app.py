@@ -1,7 +1,5 @@
 """OpenBB MCP Server."""
 
-# pylint: disable=C0302, R0912, W0212
-
 import asyncio
 import json
 import os
@@ -45,6 +43,8 @@ from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.types import ASGIApp, Receive, Scope, Send
 
+from openbb_mcp_server.app.args import parse_args
+from openbb_mcp_server.app.cli_tools import register_cli_tools
 from openbb_mcp_server.models.category_index import CategoryIndex
 from openbb_mcp_server.models.mcp_config import (
     ArgumentDefinitionModel,
@@ -54,7 +54,6 @@ from openbb_mcp_server.models.prompts import StaticPrompt
 from openbb_mcp_server.models.settings import MCPSettings
 from openbb_mcp_server.models.tools import CategoryInfo, SubcategoryInfo, ToolInfo
 from openbb_mcp_server.service.mcp_service import MCPService
-from openbb_mcp_server.utils.app_import import parse_args
 from openbb_mcp_server.utils.fastapi import (
     get_api_prefix,
     process_fastapi_routes_for_mcp,
@@ -178,7 +177,7 @@ def _add_prompts_from_json(mcp: FastMCP, settings: MCPSettings) -> None:
     try:
         with open(settings.server_prompts_file, encoding="utf-8") as f:
             prompts_json: list = json.load(f) or []
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:  # noqa: BLE001
         logger.error("Failed to load prompts from JSON file: %s", e)
         return
 
@@ -233,7 +232,7 @@ def _add_prompts_from_json(mcp: FastMCP, settings: MCPSettings) -> None:
                         argument_defaults[validated_arg["name"]] = validated_arg[
                             "default"
                         ]
-                except Exception as e:  # pylint: disable=broad-except
+                except Exception as e:  # noqa: BLE001
                     logger.error(
                         "Skipping argument definition in server prompt, %s, due to error: %s\nDefinition: %s",
                         prompt_name,
@@ -342,7 +341,6 @@ def _add_skills_default_prompt(mcp: FastMCP) -> None:
     logger.info("Added default system prompt with skill awareness nudge.")
 
 
-# pylint: disable=R0914,R0915
 def create_mcp_server(
     settings: MCPSettings,
     fastapi_app: FastAPI,
@@ -371,7 +369,6 @@ def create_mcp_server(
     """
     auth_provider = None
     if auth and isinstance(auth, list | tuple) and len(auth) == 2 and all(auth):
-        # pylint: disable=import-outside-toplevel
         from .auth import get_auth_provider
 
         auth_provider = get_auth_provider(settings)
@@ -400,7 +397,6 @@ def create_mcp_server(
                 }
             )
 
-    # pylint: disable=R0912
     def customize_components(
         route: HTTPRoute,
         component: OpenAPITool | OpenAPIResource | OpenAPIResourceTemplate,
@@ -729,14 +725,18 @@ def create_mcp_server(
             await ctx.enable_components(names=names)
             scope = f"'{category}'" + (f"/'{subcategory}'" if subcategory else "")
             return (
-                f"Activated {len(names)} tools in {scope}"
-                f": {', '.join(sorted(names))}"
+                f"Activated {len(names)} tools in {scope}: {', '.join(sorted(names))}"
             )
 
     # Expose prompts and resources as tools via transforms so that
     # tool-only clients can list/render prompts and list/read resources.
     mcp.add_transform(PromptsAsTools(mcp))
     mcp.add_transform(ResourcesAsTools(mcp))
+
+    # Register first-class openbb-cli dispatcher tools when the
+    # optional ``[cli]`` extra is installed. No-op otherwise.
+    if settings.enable_cli_tools:
+        register_cli_tools(mcp)
 
     @mcp.tool(tags={"resource", "admin"})
     async def install_skill(
@@ -834,12 +834,14 @@ def create_mcp_server(
             file_path.write_text(content, encoding="utf-8")
             written_files.append(filename)
 
-        # Register the new skill with the provider
+        # Register the new skill with the provider. ``getattr`` (not the
+        # ``hasattr`` + private-attr access) keeps ty happy — the
+        # generic ``providers`` iterable is typed ``object``, so direct
+        # ``p._skill_path.name`` reads as an unresolved-attribute error.
         already_loaded = {
-            p._skill_path.name  # noqa: SLF001
-            for p in target_provider.providers
-            if hasattr(p, "_skill_path")
-        }
+            getattr(getattr(p, "_skill_path", None), "name", None)
+            for p in target_provider.providers  # noqa: SLF001
+        } - {None}
 
         if skill_name not in already_loaded:
             new_skill_provider = SkillProvider(skill_path=skill_dir)
@@ -939,7 +941,7 @@ async def stdio_main(mcp_server):
     def signal_handler():
         """Signal handler to exit the process immediately."""
         logger.info("Shutdown signal received. Terminating process.")
-        os._exit(0)  # pylint: disable=protected-access
+        os._exit(0)  # noqa: SLF001
 
     for sig in (signal.SIGINT, signal.SIGTERM):
         loop.add_signal_handler(sig, signal_handler)
@@ -949,60 +951,61 @@ async def stdio_main(mcp_server):
     await loop.run_in_executor(None, mcp_server.run, "stdio")
 
 
-def main():
-    """Start the OpenBB MCP server with enhanced FastAPI app import capabilities."""
-    args = parse_args()
+def launch_mcp() -> None:
+    """Launch the OpenBB MCP server.
+
+    Reads parsed CLI args (already overlaid with the layered TOML
+    cascade in ``parse_args``), loads ``MCPSettings`` with the merged
+    overrides, and runs the FastMCP server with the requested
+    transport.
+
+    Called by ``openbb_mcp_server.main:main`` after the lightweight
+    ``bootstrap_launcher_config`` phase has applied any ``[env]``
+    table.
+    """
+    parsed = parse_args()
+    target_app = parsed["app"] if parsed["app"] is not None else app
+    transport = parsed["transport"]
+
     mcp_service = MCPService()
-    # Collect all command-line overrides from parsed args
-    cli_overrides = args.uvicorn_config.copy()
-    # Add MCP-specific CLI arguments if they exist
-    if hasattr(args, "allowed_categories") and args.allowed_categories:
-        cli_overrides["allowed_categories"] = args.allowed_categories
+    cli_overrides: dict = dict(parsed["uvicorn_overrides"])
+    cli_overrides.update(parsed["mcp_overrides"])
 
-    if hasattr(args, "default_categories") and args.default_categories:
-        cli_overrides["default_categories"] = args.default_categories
-
-    if hasattr(args, "tool_discovery") and args.tool_discovery:
-        cli_overrides["tool_discovery"] = args.tool_discovery
-
-    if hasattr(args, "system_prompt") and args.system_prompt:
-        cli_overrides["system_prompt"] = args.system_prompt
-
-    if hasattr(args, "server_prompts") and args.server_prompts:
-        cli_overrides["server_prompts"] = args.server_prompts
-
-    # Load settings with proper priority order (CLI > env > config file > defaults)
     settings = mcp_service.load_with_overrides(**cli_overrides)
 
     try:
-        # Use imported app if provided, otherwise default OpenBB app
-        target_app = args.imported_app if args.imported_app else app
-
-        # Extract runtime configuration from settings
         http_run_kwargs = settings.get_http_run_kwargs()
         httpx_kwargs = settings.get_httpx_kwargs()
 
-        # Create MCP server with comprehensive configuration
         mcp_server = create_mcp_server(
             settings, target_app, httpx_kwargs, auth=settings.server_auth
         )
 
-        if args.transport == "stdio":
+        if transport == "stdio":
             asyncio.run(stdio_main(mcp_server))
         else:
             cors_middleware = _build_runtime_middleware()
 
-            # Start building arguments mcp.run
-            run_kwargs = {
-                "transport": args.transport,
-                "middleware": cors_middleware,
+            # Auth + middleware hooks from the layered TOML cascade,
+            # spliced between CORS (outermost) and the SSE shutdown
+            # wrapper (innermost). Within the hook list, auth runs
+            # before general middleware.
+            from openbb_mcp_server.app.config import get_bootstrapped_config
+            from openbb_mcp_server.app.middleware import build_hook_middleware
+
+            mcp_table = get_bootstrapped_config().get("mcp") or {}
+            hook_middleware = build_hook_middleware(
+                auth_hooks=(mcp_table.get("auth") or {}).get("hooks"),
+                middleware_hooks=(mcp_table.get("middleware") or {}).get("hooks"),
+            )
+
+            run_kwargs: dict = {
+                "transport": transport,
             }
 
-            # Extract uvicorn settings
             if http_run_kwargs.get("uvicorn_config"):
                 uvicorn_config = http_run_kwargs["uvicorn_config"].copy()
 
-                # Pop host and port to pass them as top-level args
                 if "host" in uvicorn_config:
                     run_kwargs["host"] = uvicorn_config.pop("host")
 
@@ -1010,13 +1013,12 @@ def main():
                     port = uvicorn_config.pop("port")
                     run_kwargs["port"] = int(port) if isinstance(port, str) else port
 
-                # Pass the rest of the config in the nested dict.
                 if uvicorn_config:
                     run_kwargs["uvicorn_config"] = uvicorn_config
 
-            # Add SSE shutdown handling to middleware stack
-            cors_middleware.append(Middleware(SSEShutdownWrapper))
-            run_kwargs["middleware"] = cors_middleware
+            run_kwargs["middleware"] = (
+                cors_middleware + hook_middleware + [Middleware(SSEShutdownWrapper)]
+            )
 
             mcp_server.run(**run_kwargs)
 
@@ -1028,5 +1030,16 @@ def main():
         sys.exit(1)
 
 
-if __name__ == "__main__":
+# Back-compat alias — the old ``[tool.poetry.scripts]`` entry pointed
+# at ``openbb_mcp_server.app.app:main``. The Hatchling pyproject now
+# uses ``openbb_mcp_server.main:main``, but external scripts that
+# directly imported ``main`` from here keep working.
+def main() -> None:
+    """Back-compat shim — delegates to ``openbb_mcp_server.main:main``."""
+    from openbb_mcp_server.main import main as _main
+
+    _main()
+
+
+if __name__ == "__main__":  # pragma: no cover — script entry
     main()

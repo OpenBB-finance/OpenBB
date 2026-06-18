@@ -156,7 +156,9 @@ async def surface(  # pylint: disable=R0913, R0917
         if all(isinstance(d, dict) for d in data):
             df = DataFrame(data)
         elif all(isinstance(d, Data) for d in data):
-            df = DataFrame([d.model_dump(exclude_none=True, exclude_unset=True) for d in data])  # type: ignore
+            df = DataFrame(
+                [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+            )  # type: ignore
 
     options = DataFrame(df.copy())
 
@@ -218,12 +220,20 @@ async def surface(  # pylint: disable=R0913, R0917
         )
 
     if option_type is not None and option_type == "otm":
-        otm_calls = calls.query("strike > @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
-        otm_puts = puts.query("strike < @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
+        otm_calls = calls.query("strike > @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )  # type: ignore
+        otm_puts = puts.query("strike < @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )  # type: ignore
         df = concat([otm_calls, otm_puts]).sort_index().reset_index()
     elif option_type is not None and option_type == "itm":
-        itm_calls = calls.query("strike < @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
-        itm_puts = puts.query("strike > @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
+        itm_calls = calls.query("strike < @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )  # type: ignore
+        itm_puts = puts.query("strike > @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )  # type: ignore
         df = concat([itm_calls, itm_puts]).sort_index().reset_index()
     elif option_type is not None and option_type == "calls":
         df = calls

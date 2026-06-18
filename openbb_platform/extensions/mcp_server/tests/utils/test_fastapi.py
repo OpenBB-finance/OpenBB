@@ -1,7 +1,5 @@
 """Unit tests for openapi utilities."""
 
-# pylint: disable=W0613,W0621
-
 import sys
 from unittest.mock import MagicMock, patch
 
@@ -9,6 +7,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastmcp.server.providers.openapi import MCPType
+
 from openbb_mcp_server.models.settings import MCPSettings
 from openbb_mcp_server.utils.fastapi import (
     _create_prompt_definitions_for_route,
@@ -248,3 +247,248 @@ def test_create_prompt_definitions_auto_naming():
     assert len(defs) == 2
     assert defs[0]["name"] == "category_subcategory_tool_prompt_0"
     assert defs[1]["name"] == "category_subcategory_tool_prompt_1"
+
+
+def test_get_api_prefix_strips_trailing_slash(mock_system_service):
+    """A multi-trailing-slash prefix is normalized to no trailing slash."""
+    settings = MCPSettings(api_prefix="/api/")  # type: ignore[arg-type]
+    assert get_api_prefix(settings) == "/api"
+
+
+def test_get_mcp_config_strict_rejects_non_dict():
+    """``strict=True`` with a non-dict ``mcp_config`` raises TypeError."""
+    route = APIRoute("/x", lambda: None, openapi_extra={"mcp_config": "nope"})
+    with pytest.raises(TypeError, match="must be a dictionary"):
+        get_mcp_config(route, strict=True)
+
+
+def test_get_mcp_config_strict_propagates_validation_error():
+    """``strict=True`` surfaces the underlying validation exception."""
+    route = APIRoute(
+        "/x", lambda: None, openapi_extra={"mcp_config": {"methods": ["BOGUS"]}}
+    )
+    with pytest.raises(Exception, match="Invalid HTTP method"):
+        get_mcp_config(route, strict=True)
+
+
+def test_get_mcp_config_non_strict_swallows_validation_error():
+    """``strict=False`` (default) on invalid config returns a default model."""
+    route = APIRoute(
+        "/x", lambda: None, openapi_extra={"mcp_config": {"methods": ["BOGUS"]}}
+    )
+    config = get_mcp_config(route)
+    assert config.methods is None
+
+
+def test_create_prompt_definitions_handles_signature_failure():
+    """An endpoint with no inspectable signature still returns prompt defs."""
+    route = APIRoute(
+        "/cat/sub/tool",
+        lambda: None,
+        methods=["GET"],
+        openapi_extra={
+            "mcp_config": {"prompts": [{"name": "p", "content": "hello {x}"}]}
+        },
+    )
+    with (
+        patch(
+            "openbb_mcp_server.utils.fastapi.inspect.signature",
+            side_effect=ValueError("no signature"),
+        ),
+        patch("openbb_mcp_server.utils.fastapi.get_api_prefix", return_value="/"),
+    ):
+        defs = _create_prompt_definitions_for_route(route)
+    assert len(defs) == 1
+    arg_names = {a["name"] for a in defs[0]["arguments"]}
+    assert "x" in arg_names
+
+
+def test_create_prompt_definitions_normalizes_path_without_slash():
+    """A route path without a leading slash is normalized before splitting."""
+
+    def fn(x: str):  # pragma: no cover
+        pass
+
+    route = APIRoute(
+        "/raw",
+        fn,
+        methods=["GET"],
+        openapi_extra={"mcp_config": {"prompts": [{"name": "p", "content": "hi {x}"}]}},
+    )
+    route.path = "raw"
+    with patch("openbb_mcp_server.utils.fastapi.get_api_prefix", return_value=""):
+        defs = _create_prompt_definitions_for_route(route)
+    assert defs[0]["name"] == "p"
+
+
+def test_create_prompt_definitions_single_segment_path():
+    """A single-segment local path resolves to category=segment, tool=segment."""
+
+    def fn():  # pragma: no cover
+        pass
+
+    route = APIRoute(
+        "/solo",
+        fn,
+        methods=["GET"],
+        openapi_extra={"mcp_config": {"prompts": [{"content": "go"}]}},
+    )
+    with patch("openbb_mcp_server.utils.fastapi.get_api_prefix", return_value=""):
+        defs = _create_prompt_definitions_for_route(route)
+    assert defs[0]["name"] == "solo_solo_prompt"
+
+
+def test_create_prompt_definitions_no_segments_falls_back_to_general():
+    """A path consisting only of placeholders resolves to ``general_root``."""
+
+    def fn(x: str):  # pragma: no cover
+        pass
+
+    route = APIRoute(
+        "/{x}",
+        fn,
+        methods=["GET"],
+        openapi_extra={"mcp_config": {"prompts": [{"content": "go"}]}},
+    )
+    with patch("openbb_mcp_server.utils.fastapi.get_api_prefix", return_value=""):
+        defs = _create_prompt_definitions_for_route(route)
+    assert defs[0]["name"] == "general_root_prompt"
+
+
+def test_create_prompt_definitions_skips_blank_content_entries():
+    """Defensive guard skips empty / contentless prompt dicts."""
+
+    def fn():  # pragma: no cover
+        pass
+
+    route = APIRoute("/cat/sub/tool", fn, methods=["GET"])
+    with (
+        patch(
+            "openbb_mcp_server.utils.fastapi._get_prompt_configs",
+            return_value=[
+                {},
+                {"name": "no_content"},
+                {"name": "ok", "content": "hello"},
+            ],
+        ),
+        patch("openbb_mcp_server.utils.fastapi.get_api_prefix", return_value=""),
+    ):
+        defs = _create_prompt_definitions_for_route(route)
+    assert {d["name"] for d in defs} == {"ok"}
+
+
+def test_create_prompt_definitions_unbound_var_gets_default_str():
+    """A content variable not declared as an arg or endpoint param falls back to ``str``."""
+
+    def fn():  # pragma: no cover
+        pass
+
+    route = APIRoute(
+        "/cat/sub/tool",
+        fn,
+        methods=["GET"],
+        openapi_extra={
+            "mcp_config": {"prompts": [{"name": "p", "content": "hello {orphan}"}]}
+        },
+    )
+    with patch("openbb_mcp_server.utils.fastapi.get_api_prefix", return_value=""):
+        defs = _create_prompt_definitions_for_route(route)
+    args = {a["name"]: a for a in defs[0]["arguments"]}
+    assert args["orphan"] == {"name": "orphan", "type": "str"}
+
+
+def test_normalize_methods_empty_returns_empty_list():
+    """``_normalize_methods`` returns ``[]`` for falsy input."""
+    from openbb_mcp_server.utils.fastapi import _normalize_methods
+
+    assert _normalize_methods(None) == []
+    assert _normalize_methods([]) == []
+
+
+def test_normalize_methods_filters_falsy_and_head_options():
+    """Falsy entries and HEAD/OPTIONS are dropped from the output."""
+    from openbb_mcp_server.utils.fastapi import _normalize_methods
+
+    assert _normalize_methods(["", None, "GET", "HEAD", "options"]) == ["GET"]
+
+
+def test_methods_from_config_with_wildcard_returns_star():
+    """``cfg.methods`` containing ``*`` short-circuits to ``["*"]``."""
+    from openbb_mcp_server.models.mcp_config import MCPConfigModel
+    from openbb_mcp_server.utils.fastapi import _methods_from_config_or_route
+
+    cfg = MCPConfigModel(methods="*")  # type: ignore[arg-type]
+    route = APIRoute("/x", lambda: None, methods=["GET"])
+    assert _methods_from_config_or_route(cfg, route) == ["*"]
+
+
+def test_methods_from_config_explicit_list_uses_cfg_values():
+    """A non-wildcard ``cfg.methods`` is unwrapped to its enum values."""
+    from openbb_mcp_server.models.mcp_config import MCPConfigModel
+    from openbb_mcp_server.utils.fastapi import _methods_from_config_or_route
+
+    cfg = MCPConfigModel(methods=["GET", "POST"])  # type: ignore[arg-type]
+    route = APIRoute("/x", lambda: None, methods=["DELETE"])
+    assert _methods_from_config_or_route(cfg, route) == ["GET", "POST"]
+
+
+def test_get_mcp_config_non_strict_returns_default_when_validator_raises():
+    """A bubbled exception under strict=False yields a default ``MCPConfigModel``."""
+    route = APIRoute("/x", lambda: None, openapi_extra={"mcp_config": {}})
+    with patch(
+        "openbb_mcp_server.utils.fastapi.validate_mcp_config",
+        side_effect=ValueError("forced"),
+    ):
+        config = get_mcp_config(route, strict=False)
+    from openbb_mcp_server.models.mcp_config import MCPConfigModel
+
+    assert isinstance(config, MCPConfigModel)
+    assert config.expose is None
+    assert config.methods is None
+
+
+def test_resolve_mcp_type_covers_each_branch():
+    """Each accepted alias maps to the matching MCPType enum."""
+    from openbb_mcp_server.utils.fastapi import _resolve_mcp_type
+
+    assert _resolve_mcp_type("tool") == MCPType.TOOL
+    assert _resolve_mcp_type("RESOURCE") == MCPType.RESOURCE
+    assert _resolve_mcp_type("resource_template") == MCPType.RESOURCE_TEMPLATE
+    assert _resolve_mcp_type("resource-template") == MCPType.RESOURCE_TEMPLATE
+    assert _resolve_mcp_type("nonsense") is None
+
+
+def test_should_exclude_normalizes_path_without_slash(mock_system_service):
+    """A path without leading slash gets one prepended before module-prefix match."""
+    with patch.dict(sys.modules, {"openbb_econometrics": MagicMock()}):
+        assert _should_exclude_by_module_and_path("api/econometrics/x", None)
+
+
+def test_process_routes_wildcard_methods_in_config(mock_system_service):
+    """A route whose mcp_config sets ``methods=*`` registers ``["*"]``."""
+    app = FastAPI()
+    app.add_api_route(
+        "/api/x",
+        lambda: None,
+        methods=["GET"],
+        openapi_extra={"mcp_config": {"mcp_type": "tool", "methods": "*"}},
+    )
+    processed = process_fastapi_routes_for_mcp(app, None)
+    explicit = [m for m in processed.route_maps if m.pattern != ".*"]
+    assert len(explicit) == 1
+    assert explicit[0].methods == ["*"]
+
+
+def test_process_routes_route_map_without_methods(mock_system_service):
+    """A route with only HEAD/OPTIONS still gets an explicit RouteMap registered."""
+    app = FastAPI()
+    app.add_api_route(
+        "/api/onlyhead",
+        lambda: None,
+        methods=["HEAD"],
+        openapi_extra={"mcp_config": {"mcp_type": "tool"}},
+    )
+    processed = process_fastapi_routes_for_mcp(app, None)
+    patterns = [m.pattern for m in processed.route_maps]
+    assert "^/api/onlyhead$" in patterns
+    assert ".*" in patterns

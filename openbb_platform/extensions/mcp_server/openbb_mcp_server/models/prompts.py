@@ -4,7 +4,7 @@ from typing import Any
 
 from fastmcp.exceptions import PromptError
 from fastmcp.prompts import Prompt
-from mcp.types import PromptMessage, TextContent
+from fastmcp.prompts.base import Message
 
 
 class StaticPrompt(Prompt):
@@ -16,8 +16,16 @@ class StaticPrompt(Prompt):
     async def render(
         self,
         arguments: dict[str, Any] | None = None,
-    ) -> list[PromptMessage]:
-        """Render the prompt with arguments."""
+    ) -> list[Message | str]:
+        """Render the prompt with arguments.
+
+        Return type matches an element of ``Prompt.render``'s union
+        (``str | list[Message | str] | PromptResult``) exactly —
+        ``list`` is invariant in Python's type system, so a tighter
+        ``list[Message]`` annotation would still trip the parent's
+        Liskov check even though every value we produce is a
+        ``Message``.
+        """
         # Start with stored defaults, then overlay caller-supplied values
         args = {**self.argument_defaults, **(arguments or {})}
 
@@ -33,10 +41,6 @@ class StaticPrompt(Prompt):
             rendered_content = (
                 self.content.format(**args) if self.arguments or args else self.content
             )
-            return [
-                PromptMessage(
-                    role="user", content=TextContent(type="text", text=rendered_content)
-                )
-            ]
+            return [Message(rendered_content, role="user")]
         except KeyError as e:
             raise PromptError(f"Missing argument for formatting: {e}") from e

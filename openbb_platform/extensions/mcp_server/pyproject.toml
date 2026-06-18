@@ -1,24 +1,134 @@
-[tool.poetry]
+[project]
 name = "openbb-mcp-server"
-version = "1.4.1"
-description = "OpenBB Platform MCP Server"
-authors = ["OpenBB <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+version = "2.0.0"
+description = "OpenBB Platform MCP Server: Model-Context-Protocol bridge for the Open Data Platform by OpenBB."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-homepage = "https://openbb.co"
-repository = "https://github.com/openbb-finance/openbb"
-documentation = "https://docs.openbb.co"
-packages = [{ include = "openbb_mcp_server" }]
-include = ["openbb_mcp_server/skills/**/*"]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core>=2.0.0",
+    "fastmcp>=3.2.0",
+    # Backport of stdlib ``tomllib`` for py3.10.
+    "tomli>=2.0;python_version<'3.11'",
+]
 
-[tool.poetry.scripts]
-openbb-mcp = "openbb_mcp_server.app.app:main"
+[project.optional-dependencies]
+cli = ["openbb-cli>=2.0.0"]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
-fastmcp = ">=3.2.0"
+[project.scripts]
+openbb-mcp = "openbb_mcp_server.main:main"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-mcp"
+
+[dependency-groups]
+dev = [
+    "openbb-devtools>=2.0.0",
+    "httpx>=0.28.0,<1.0.0",
+    "openbb-cli>=2.0.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_mcp_server"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_mcp_server",
+    "README.md",
+    "pyproject.toml",
+]
+
+# Sibling packages are path-sourced because v5 hasn't been published.
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-cli = { path = "../../../cli", editable = true }
+openbb-devtools = { path = "../devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "E",
+    "W",
+    "F",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+ignore = [
+    "PLR2004",
+    "PLR0913",
+    "PLR0915",
+    "PLC0415",
+    "E402",
+    "E501",
+    "D202",
+    "D203",
+    "D205",
+    "D206",
+    "D210",
+    "D212",
+    "D213",
+    "D214",
+    "D215",
+    "D300",
+    "D400",
+    "D404",
+    "D405",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D410",
+    "D411",
+    "D413",
+    "D415",
+    "D416",
+    "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_mcp_server"]
+exclude = ["openbb_mcp_server/skills", "tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"

@@ -1,20 +1,20 @@
 """Unit tests for server prompts functionality."""
 
-# pylint: disable=protected-access,unused-argument
-
 import json
 from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi import FastAPI
+
 from openbb_mcp_server.app.app import create_mcp_server
 from openbb_mcp_server.models.settings import MCPSettings
 
 
 @pytest.fixture(autouse=True)
 def _patch_transforms():
-    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
-        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    with (
+        patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()),
+        patch("openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()),
     ):
         yield
 
@@ -45,7 +45,9 @@ def test_load_prompts_from_json(
     prompts_file = tmp_path / "prompts.json"
     prompts_file.write_text(json.dumps(prompts_data))
 
-    settings = MCPSettings(server_prompts_file=str(prompts_file), default_skills_dir=None)  # type: ignore
+    settings = MCPSettings(
+        server_prompts_file=str(prompts_file), default_skills_dir=None
+    )  # type: ignore
     fastapi_app = FastAPI()
 
     mock_processed_data = MagicMock()
@@ -92,7 +94,9 @@ def test_skip_invalid_prompts(
     prompts_file = tmp_path / "prompts.json"
     prompts_file.write_text(json.dumps(prompts_data))
 
-    settings = MCPSettings(server_prompts_file=str(prompts_file), default_skills_dir=None)  # type: ignore
+    settings = MCPSettings(
+        server_prompts_file=str(prompts_file), default_skills_dir=None
+    )  # type: ignore
     fastapi_app = FastAPI()
 
     mock_processed_data = MagicMock()
@@ -136,7 +140,9 @@ def test_skip_invalid_arguments_in_prompts(
     prompts_file = tmp_path / "prompts.json"
     prompts_file.write_text(json.dumps(prompts_data))
 
-    settings = MCPSettings(server_prompts_file=str(prompts_file), default_skills_dir=None)  # type: ignore
+    settings = MCPSettings(
+        server_prompts_file=str(prompts_file), default_skills_dir=None
+    )  # type: ignore
     fastapi_app = FastAPI()
 
     mock_processed_data = MagicMock()
@@ -187,7 +193,9 @@ async def test_prompts_as_tools_transform_and_defaults(
     prompts_file = tmp_path / "prompts.json"
     prompts_file.write_text(json.dumps(prompts_data))
 
-    settings = MCPSettings(server_prompts_file=str(prompts_file), default_skills_dir=None)  # type: ignore
+    settings = MCPSettings(
+        server_prompts_file=str(prompts_file), default_skills_dir=None
+    )  # type: ignore
     fastapi_app = FastAPI()
 
     mock_processed_data = MagicMock()
@@ -217,6 +225,7 @@ async def test_prompts_as_tools_transform_and_defaults(
 async def test_static_prompt_render_applies_defaults():
     """Test that StaticPrompt.render() applies argument_defaults when caller omits them."""
     from fastmcp.prompts import PromptArgument
+
     from openbb_mcp_server.models.prompts import StaticPrompt
 
     prompt = StaticPrompt(

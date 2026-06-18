@@ -1,0 +1,24 @@
+[run]
+branch = False
+parallel = True
+source = openbb_mcp_server
+data_file = .coverage
+omit =
+    openbb_mcp_server/skills/**
+    tests/*
+    integration/*
+
+[paths]
+source =
+    openbb_mcp_server
+    */site-packages/openbb_mcp_server
+    */mcp_server/openbb_mcp_server
+
+[report]
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    if __name__ == .__main__.:
+    raise NotImplementedError

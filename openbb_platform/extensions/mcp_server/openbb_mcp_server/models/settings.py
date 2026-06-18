@@ -182,6 +182,18 @@ the exact same operations available to REST clients.""",
         description="If True, show deprecation warnings in the console.",
     )
 
+    enable_cli_tools: bool = Field(
+        default=True,
+        description=(
+            "If True (default) and ``openbb-cli`` is installed, register"
+            " first-class MCP tools (``openbb_dispatch``, ``openbb_batch_dispatch``,"
+            " ``openbb_describe_command``) that wrap the CLI's"
+            " LocalDispatcher / HttpDispatcher protocol. Set to False to"
+            " suppress registration even when openbb-cli is available."
+        ),
+        alias="OPENBB_MCP_ENABLE_CLI_TOOLS",
+    )
+
     # ===== HTTP Transport Configuration =====
 
     # Uvicorn server configuration

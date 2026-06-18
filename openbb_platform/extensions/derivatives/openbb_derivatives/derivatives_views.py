@@ -60,14 +60,19 @@ class DerivativesViews:
         --------
         ```python
         from openbb import obb
-        data = obb.derivatives.futures.curve(symbol="vx", provider="cboe", date=["2020-03-31", "2024-06-28"], chart=True)
+
+        data = obb.derivatives.futures.curve(
+            symbol="vx", provider="cboe", date=["2020-03-31", "2024-06-28"], chart=True
+        )
         data.show()
         ```
 
         Redraw the chart, from the same data, with a custom colorway and title:
 
         ```python
-        data.charting.to_chart(colors=["green", "red"], title="VIX Futures Curve - 2020 vs. 2024")
+        data.charting.to_chart(
+            colors=["green", "red"], title="VIX Futures Curve - 2020 vs. 2024"
+        )
         ```
         """
         # pylint: disable=import-outside-toplevel
@@ -85,14 +90,21 @@ class DerivativesViews:
             if isinstance(data, DataFrame) and not data.empty:  # noqa: SIM108
                 df = data
             elif isinstance(data, (list, Data)):
-                df = DataFrame([d.model_dump(exclude_none=True, exclude_unset=True) for d in data])  # type: ignore
+                df = DataFrame(
+                    [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+                )  # type: ignore
             else:
                 pass
         else:
             df = DataFrame(
-                [d.model_dump(exclude_none=True, exclude_unset=True) for d in kwargs["obbject_item"]]  # type: ignore
+                [
+                    d.model_dump(exclude_none=True, exclude_unset=True)
+                    for d in kwargs["obbject_item"]
+                ]  # type: ignore
                 if isinstance(kwargs.get("obbject_item"), list)
-                else kwargs["obbject_item"].model_dump(exclude_none=True, exclude_unset=True)  # type: ignore
+                else kwargs["obbject_item"].model_dump(
+                    exclude_none=True, exclude_unset=True
+                )  # type: ignore
             )
 
         if df.empty:

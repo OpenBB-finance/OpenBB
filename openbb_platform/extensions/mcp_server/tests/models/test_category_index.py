@@ -1,7 +1,5 @@
 """Unit tests for CategoryIndex."""
 
-# pylint: disable=redefined-outer-name
-
 import pytest
 
 from openbb_mcp_server.models.category_index import CategoryIndex, _first_sentence
@@ -125,11 +123,6 @@ def test_get_description_strips_api_sections(index):
     assert index.get_description("t2") == "Get quotes."
 
 
-# ------------------------------------------------------------------
-# _first_sentence unit tests
-# ------------------------------------------------------------------
-
-
 class TestFirstSentence:
     """Tests for the _first_sentence helper."""
 
@@ -153,6 +146,10 @@ class TestFirstSentence:
             _first_sentence("Get prices.\n\n**Query Parameters:\n- symbol")
             == "Get prices."
         )
+
+    def test_blank_after_section_strip_returns_empty(self):
+        """Text consisting only of a stripped doc section returns empty."""
+        assert _first_sentence("\n\n**Query Parameters:\n- symbol") == ""
 
     def test_none_like(self):
         assert _first_sentence(None) == ""  # type: ignore[arg-type]

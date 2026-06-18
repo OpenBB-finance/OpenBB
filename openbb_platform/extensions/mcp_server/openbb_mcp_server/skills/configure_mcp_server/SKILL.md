@@ -71,9 +71,11 @@ openbb-mcp --app ./my_app.py:create_app --factory
 
 | Argument | Description | Default |
 |---|---|---|
-| `--app <path>` | Path to FastAPI application file or `module:instance` | OpenBB default app |
+| `--app <path>` | Path to FastAPI application file or `module:instance` (mutually exclusive with `--spec`) | OpenBB default app |
 | `--name <name>` | Name of the FastAPI instance or factory function | `app` |
 | `--factory` | Treat `--name` as a factory function | `false` |
+| `--spec <path>` | Path to an `openbb-cli` generated `.spec` file. Synthesizes a FastAPI proxy app whose routes forward to the spec's `base_url`; FastMCP exposes those routes as MCP tools. Mutually exclusive with `--app`. | None |
+| `--config-file <path>` | Path to an `openbb.toml` config file. Highest-priority TOML layer in the cascade. Also honored via `OPENBB_MCP_CONFIG` / `OPENBB_API_CONFIG` / `OPENBB_CONFIG`. | None |
 | `--host <host>` | Server host | `127.0.0.1` |
 | `--port <port>` | Server port | `8001` |
 | `--transport <type>` | `streamable-http`, `sse`, or `stdio` | `streamable-http` |
@@ -87,14 +89,147 @@ Any additional `--key value` pairs are forwarded to Uvicorn as config.
 
 ---
 
+## Spec-Driven Proxy Mode
+
+Instead of importing a FastAPI app in-process, the launcher can synthesize one
+from an `openbb-cli` generated `.spec` file. Each command in the spec becomes
+a FastAPI route that proxies to the spec's recorded `base_url`. FastMCP walks
+those routes and exposes them as MCP tools — same tool surface as a normal
+`--app` install, but the heavy `import openbb` lives on the upstream server.
+
+### Generating a spec
+
+The spec is produced by `openbb-cli`:
+
+```bash
+openbb --generate-spec --server https://api.example.com --output cli.spec
+```
+
+This fetches `/openapi.json` from the server and writes a precomputed `.spec`
+file with every command's URL path, method, parameter schema, and a
+`content_sha256` integrity hash.
+
+### Single-spec launch
+
+```bash
+openbb-mcp --spec /etc/openbb/cli.spec
+```
+
+Or via TOML (`--config-file openbb.toml`):
+
+```toml
+[mcp.spec]
+path = "/etc/openbb/cli.spec"
+# Optional: override the spec's recorded base_url at deploy time.
+base_url = "https://upstream.example.com"
+# Optional: pinned SHA-256. When set, the launcher recomputes the spec's
+# canonical-JSON hash and refuses to start unless it matches — protects
+# against silent file drift when the spec is fetched at deploy time.
+content_sha256 = "abc123..."
+
+[mcp.spec.headers]
+# Static headers injected on every proxied upstream request.
+# ``$VAR`` / ``${VAR}`` are substituted from the current environment;
+# entries with unresolved variables are skipped with a warning.
+Authorization = "Bearer $OPENBB_UPSTREAM_TOKEN"
+X-API-Key     = "$OPENBB_UPSTREAM_KEY"
+```
+
+`--spec` and `--app` are mutually exclusive.
+
+### Multi-spec mounting
+
+Each `[mcp.spec.NAME]` subtable mounts an independent spec under its own
+prefix. FastMCP turns the union of all mounted routes into MCP tools; per-spec
+hooks fire on every tool dispatch into that spec's mount.
+
+```toml
+[mcp.spec.equity]
+path = "/etc/openbb/equity.spec"
+mount = "/equity"                          # optional; defaults to "/<name>"
+content_sha256 = "abc..."
+[mcp.spec.equity.headers]
+Authorization = "Bearer $EQUITY_TOKEN"
+[mcp.spec.equity.auth]
+hooks = ["my_pkg.auth:equity_token_check"]
+[mcp.spec.equity.middleware]
+hooks = ["my_pkg.middleware:equity_rate_limit"]
+
+[mcp.spec.crypto]
+path = "/etc/openbb/crypto.spec"
+[mcp.spec.crypto.headers]
+X-API-Key = "$CRYPTO_KEY"
+```
+
+---
+
+## openbb.toml Cascade
+
+The launcher reads the same layered TOML cascade openbb-core ships with:
+
+```
+pyproject.toml [tool.openbb-mcp] → user-global ~/.openbb_platform/openbb.toml
+  → project openbb.toml (walking up from CWD) → --config-file PATH (explicit)
+  → .env files → real shell env vars
+```
+
+Every layer is optional; `--config-file` (or `OPENBB_MCP_CONFIG` /
+`OPENBB_API_CONFIG` / `OPENBB_CONFIG`) is the highest-priority TOML layer.
+Real shell env vars always beat TOML. CLI flags always beat env vars.
+
+### Top-level tables
+
+| Table | Purpose |
+|---|---|
+| `[mcp]` | Default values for any of the `--*` CLI flags (CLI wins). |
+| `[mcp.spec]` | Single-spec proxy mode (path, base_url, content_sha256, headers). |
+| `[mcp.spec.NAME]` | Multi-spec mount (path, base_url, content_sha256, headers, auth, middleware). |
+| `[mcp.auth]` | Top-level auth hook list. |
+| `[mcp.middleware]` | Top-level middleware hook list. |
+| `[env]` | Env vars pushed into `os.environ` before any heavy import runs. Existing shell env vars are NEVER clobbered. Values support `$VAR` / `${VAR}` substitution. |
+
+### Auth and middleware hooks
+
+Both `[mcp.auth]` and `[mcp.middleware]` accept a `hooks` list of
+`module:attr` entry points. Each hook is a 2-arg async function
+`async def hook(request, call_next)` and is wrapped as a
+`Middleware(BaseHTTPMiddleware, dispatch=fn)` on the MCP server's ASGI stack.
+
+```toml
+[mcp.auth]
+hooks = ["my_pkg.auth:bearer_token_check"]
+
+[mcp.middleware]
+hooks = ["my_pkg.middleware:rate_limit", "my_pkg.middleware:request_logger"]
+```
+
+Auth hooks register before middleware hooks; within each list, registration
+order matches TOML order. Per-spec hooks (under `[mcp.spec.NAME.auth]` /
+`[mcp.spec.NAME.middleware]`) are scoped to that spec's mounted sub-app.
+
+### Env injection
+
+```toml
+[env]
+OPENBB_MCP_HOST = "0.0.0.0"
+# Values support shell-style $VAR / ${VAR} substitution.
+OPENBB_GITHUB_TOKEN = "$GITHUB_TOKEN"
+```
+
+Useful in containers to inject `OPENBB_*` keys without shell exports. Any key
+already present in the real environment is preserved.
+
+---
+
 ## Configuration Precedence
 
 Settings are resolved in this order (highest priority first):
 
 1. **CLI arguments** — command-line flags
-2. **Environment variables** — prefixed with `OPENBB_MCP_`
-3. **Config file** — `~/.openbb_platform/mcp_settings.json`
-4. **Defaults** — built-in MCPSettings defaults
+2. **Environment variables** — `OPENBB_MCP_` prefixed (or shell vars referenced from `[env]`)
+3. **`openbb.toml` cascade** — `--config-file PATH` > project `openbb.toml` > user-global `~/.openbb_platform/openbb.toml` > `[tool.openbb-mcp]` in `pyproject.toml`
+4. **Legacy JSON config** — `~/.openbb_platform/mcp_settings.json` (still loaded for back-compat)
+5. **Defaults** — built-in MCPSettings defaults
 
 ### Config File Example
 

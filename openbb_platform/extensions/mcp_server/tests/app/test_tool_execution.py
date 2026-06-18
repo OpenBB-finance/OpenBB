@@ -5,8 +5,6 @@ and verify that the real bundled skill files render correctly through the
 StaticPrompt pipeline.
 """
 
-# pylint: disable=protected-access,unused-argument
-
 import os
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -14,14 +12,11 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from fastapi import FastAPI
 from mcp.types import TextContent
+
 from openbb_mcp_server.app.app import create_mcp_server
 from openbb_mcp_server.models.category_index import CategoryIndex
 from openbb_mcp_server.models.prompts import StaticPrompt
 from openbb_mcp_server.models.settings import MCPSettings
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 SKILLS_DIR = Path(__file__).resolve().parent.parent.parent / (
     "openbb_mcp_server" + os.sep + "skills"
@@ -92,15 +87,11 @@ def _build_server(
 
 @pytest.fixture(autouse=True)
 def _patch_transforms():
-    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
-        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    with (
+        patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()),
+        patch("openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()),
     ):
         yield
-
-
-# ===================================================================
-# Discovery tool execution tests
-# ===================================================================
 
 
 class TestAvailableCategories:
@@ -244,7 +235,6 @@ class TestAvailableTools:
     async def test_reflects_active_state(self):
         """Tools in mcp.list_tools() are reported active=True, others active=False."""
         mcp_mock, decorated = self._setup()
-        # Only historical is visible/active
         mcp_mock.list_tools = AsyncMock(
             return_value=[
                 _make_mock_tool("equity_price_historical", "Get historical prices"),
@@ -262,7 +252,6 @@ class TestAvailableTools:
     async def test_inactive_tools_get_cached_description(self):
         """Inactive tools use the cached first-sentence description from the index."""
         mcp_mock, decorated = self._setup()
-        # Only historical is active
         mcp_mock.list_tools = AsyncMock(
             return_value=[
                 _make_mock_tool("equity_price_historical", "Get historical prices."),
@@ -273,11 +262,9 @@ class TestAvailableTools:
             category="equity", subcategory="price"
         )
         by_name = {t.name: t for t in result}
-        # Active tool gets live description
         assert (
             by_name["equity_price_historical"].description == "Get historical prices."
         )
-        # Inactive tool gets cached first-sentence from register()
         assert (
             by_name["equity_price_quote"].description
             == "Get the latest quote for a stock."
@@ -497,16 +484,6 @@ class TestToggleTools:
         assert "activate_category" not in decorated
 
 
-# ===================================================================
-# Prompt tool execution tests
-# ===================================================================
-
-
-# ===================================================================
-# PromptsAsTools transform tests
-# ===================================================================
-
-
 class TestTransformsAdded:
     """Tests verifying that PromptsAsTools and ResourcesAsTools transforms are registered."""
 
@@ -594,11 +571,6 @@ class TestTransformsAdded:
         assert rendered[0].content.text == "Hello AAPL, focus on technicals"
 
 
-# ===================================================================
-# Bundled skill rendering tests
-# ===================================================================
-
-
 class TestBundledSkillRendering:
     """Verify each real skill file renders through StaticPrompt without error."""
 
@@ -607,6 +579,7 @@ class TestBundledSkillRendering:
         "build_workspace_app": "Build and Run OpenBB Workspace Applications",
         "configure_mcp_server": "Configure and Build the OpenBB MCP Server",
         "work_with_server": "Working With the OpenBB MCP Server",
+        "use_openbb_cli": "Using the openbb-cli",
     }
 
     def test_skills_directory_exists(self):
@@ -667,7 +640,6 @@ class TestBundledSkillRendering:
             arguments=None,
             tags={"skill"},
         )
-        # This would raise KeyError if str.format() is incorrectly applied
         rendered = await prompt.render()
         assert rendered[0].content.text == content
 
@@ -684,7 +656,6 @@ class TestBundledSkillRendering:
             arguments=None,
             tags={"skill"},
         )
-        # Explicit empty dict should also be safe
         rendered = await prompt.render(arguments={})
         assert rendered[0].content.text == content
 
@@ -706,14 +677,9 @@ class TestBundledSkillRendering:
                 if not in_frontmatter and line.startswith("#"):
                     heading = line.lstrip("# ").strip()
                     break
-            assert (
-                heading == expected_heading
-            ), f"Skill '{skill_name}' heading mismatch: got '{heading}', expected '{expected_heading}'"
-
-
-# ===================================================================
-# Integration: skills loaded and accessible via prompt tools
-# ===================================================================
+            assert heading == expected_heading, (
+                f"Skill '{skill_name}' heading mismatch: got '{heading}', expected '{expected_heading}'"
+            )
 
 
 class TestSkillsIntegration:
@@ -761,13 +727,14 @@ class TestSkillsIntegration:
             "build_workspace_app",
             "configure_mcp_server",
             "work_with_server",
+            "use_openbb_cli",
         ]:
             skill_file = SKILLS_DIR / skill_name / "SKILL.md"
             assert skill_file.exists(), f"Missing: {skill_file}"
             content = skill_file.read_text(encoding="utf-8")
-            assert (
-                len(content) > 500
-            ), f"Skill '{skill_name}' SKILL.md is suspiciously short ({len(content)} chars)"
+            assert len(content) > 500, (
+                f"Skill '{skill_name}' SKILL.md is suspiciously short ({len(content)} chars)"
+            )
 
     @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
     @patch("openbb_mcp_server.app.app.CategoryIndex")
@@ -798,6 +765,6 @@ class TestSkillsIntegration:
             for c in mock_mcp_instance.add_prompt.call_args_list
             if hasattr(c[0][0], "tags") and "skill" in c[0][0].tags
         ]
-        assert (
-            skill_prompt_calls == []
-        ), "Skills should not be registered as prompts in FastMCP v3 — use add_provider instead"
+        assert skill_prompt_calls == [], (
+            "Skills should not be registered as prompts in FastMCP v3 — use add_provider instead"
+        )

@@ -3,8 +3,27 @@
 import pytest
 from fastmcp.exceptions import PromptError
 from fastmcp.prompts import PromptArgument
-from mcp.types import PromptMessage, TextContent
+from fastmcp.prompts.base import Message
+from mcp.types import TextContent
+
 from openbb_mcp_server.models.prompts import StaticPrompt
+
+
+def _assert_user_message(rendered, text: str) -> None:
+    """Assert ``rendered`` is a single fastmcp ``Message`` with ``text``.
+
+    ``StaticPrompt.render`` returns ``list[Message | str]`` (the same
+    union ``Prompt.render`` accepts). Verify the shape rather than
+    construct a comparison object — fastmcp's ``Message`` doesn't
+    implement structural equality, so an ``==`` check between two
+    instances would always fail.
+    """
+    assert len(rendered) == 1
+    msg = rendered[0]
+    assert isinstance(msg, Message)
+    assert msg.role == "user"
+    assert isinstance(msg.content, TextContent)
+    assert msg.content.text == text
 
 
 @pytest.mark.asyncio
@@ -16,11 +35,7 @@ async def test_static_prompt_render_success():
         arguments=[PromptArgument(name="name", required=True)],
     )
     rendered = await prompt.render(arguments={"name": "World"})
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, World!")
-        )
-    ]
+    _assert_user_message(rendered, "Hello, World!")
 
 
 @pytest.mark.asyncio
@@ -48,11 +63,7 @@ async def test_static_prompt_render_no_arguments():
     """Test rendering StaticPrompt with no arguments."""
     prompt = StaticPrompt(name="test_prompt", content="Hello, World!")
     rendered = await prompt.render()
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, World!")
-        )
-    ]
+    _assert_user_message(rendered, "Hello, World!")
 
 
 @pytest.mark.asyncio
@@ -64,11 +75,7 @@ async def test_static_prompt_render_optional_argument():
         arguments=[PromptArgument(name="name", required=False)],
     )
     rendered = await prompt.render(arguments={"name": "Optional"})
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, Optional!")
-        )
-    ]
+    _assert_user_message(rendered, "Hello, Optional!")
 
 
 @pytest.mark.asyncio
@@ -83,12 +90,7 @@ async def test_static_prompt_render_multiple_arguments():
         ],
     )
     rendered = await prompt.render(arguments={"name": "User", "place": "OpenBB"})
-    assert rendered == [
-        PromptMessage(
-            role="user",
-            content=TextContent(type="text", text="Hello, User! Welcome to OpenBB."),
-        )
-    ]
+    _assert_user_message(rendered, "Hello, User! Welcome to OpenBB.")
 
 
 @pytest.mark.asyncio
@@ -96,8 +98,4 @@ async def test_static_prompt_render_with_none_arguments_in_prompt():
     """Test rendering StaticPrompt when arguments attribute is None."""
     prompt = StaticPrompt(name="test_prompt", content="Hello, World!", arguments=None)
     rendered = await prompt.render()
-    assert rendered == [
-        PromptMessage(
-            role="user", content=TextContent(type="text", text="Hello, World!")
-        )
-    ]
+    _assert_user_message(rendered, "Hello, World!")

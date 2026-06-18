@@ -77,3 +77,31 @@ def test_update_settings():
     settings1.update(settings2)
     assert settings1.name == "Updated"
     assert settings1.describe_responses is True
+
+
+def test_validate_json_or_tuple_blank_string_returns_none():
+    """A blank ``server_auth`` string normalizes to None."""
+    settings = MCPSettings(server_auth="   ")  # type: ignore[arg-type]
+    assert settings.server_auth is None
+
+
+def test_validate_json_or_tuple_parses_json_list():
+    """A JSON-shaped ``server_auth`` string is decoded to a tuple."""
+    settings = MCPSettings(server_auth='["user", "pass"]')  # type: ignore[arg-type]
+    assert settings.server_auth == ("user", "pass")
+
+
+def test_validate_json_or_tuple_passthrough_for_invalid_json():
+    """Invalid JSON falls through to the raw string and fails tuple coercion."""
+    import pytest
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        MCPSettings(server_auth="not-json")  # type: ignore[arg-type]
+
+
+def test_get_httpx_kwargs_attaches_client_auth():
+    """``client_auth`` lands on the returned dict under ``auth``."""
+    settings = MCPSettings(client_auth=("u", "p"))  # type: ignore[arg-type]
+    kwargs = settings.get_httpx_kwargs()
+    assert kwargs["auth"] == ("u", "p")

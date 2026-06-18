@@ -1,13 +1,11 @@
 """Unit tests for MCPService."""
 
-# flake8: noqa=W0621
-# pylint: disable=W0621,W0212
-
 import json
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+
 from openbb_mcp_server.models.settings import MCPSettings
 from openbb_mcp_server.service.mcp_service import MCPService
 
@@ -169,3 +167,83 @@ def test_map_cli_args_to_settings_system_prompt(service: MCPService):
     server_kwargs = {"system_prompt": "/path/to/prompt.txt"}
     mapped = service._map_cli_args_to_settings(server_kwargs)
     assert mapped["system_prompt_file"] == "/path/to/prompt.txt"
+
+
+def test_merge_nested_dict_merges_inner_dicts():
+    """Two-level merge keeps existing inner keys and adds new ones."""
+    from openbb_mcp_server.service.mcp_service import _merge_nested_dict
+
+    base = {"uvicorn_config": {"host": "0.0.0.0", "port": 8000}}  # noqa: S104
+    override = {"uvicorn_config": {"port": 9000, "log_level": "debug"}}
+    _merge_nested_dict(base, override)
+    assert base == {
+        "uvicorn_config": {
+            "host": "0.0.0.0",  # noqa: S104
+            "port": 9000,
+            "log_level": "debug",
+        }
+    }
+
+
+def test_write_to_file_logs_on_oserror(service: MCPService):
+    """OSError raised by the open call is logged, not re-raised."""
+    settings = MCPSettings(name="X")  # type: ignore[arg-type]
+
+    with (
+        patch("logging.error") as mock_err,
+        patch.object(
+            type(service.MCP_SETTINGS_PATH),
+            "open",
+            side_effect=OSError("disk full"),
+        ),
+    ):
+        service.write_to_file(settings)
+    mock_err.assert_called_once()
+    assert "disk full" in str(mock_err.call_args)
+
+
+def test_load_settings_from_env_decodes_json_dict_value(service: MCPService):
+    """A JSON-shaped env value for a dict field is parsed via json.loads."""
+    env_dict = {"OPENBB_MCP_UVICORN_CONFIG": '{"host": "10.0.0.1", "port": 9100}'}
+    with patch.dict("os.environ", env_dict, clear=True):
+        out = service._load_settings_from_env()
+    assert out["uvicorn_config"] == {"host": "10.0.0.1", "port": 9100}
+
+
+def test_load_settings_from_env_parses_colon_pairs_for_dict_field(
+    service: MCPService,
+):
+    """``key:value,key2:value2`` env value populates a dict field."""
+    env_dict = {"OPENBB_MCP_UVICORN_CONFIG": "host:127.0.0.1,port:9200"}
+    with patch.dict("os.environ", env_dict, clear=True):
+        out = service._load_settings_from_env()
+    assert out["uvicorn_config"] == {"host": "127.0.0.1", "port": "9200"}
+
+
+def test_load_settings_from_env_falls_back_for_invalid_json(service: MCPService):
+    """Malformed JSON in a JSON-shaped envelope hits the except-fallback arm."""
+    env_dict = {"OPENBB_MCP_UVICORN_CONFIG": "{not-json}"}
+    with patch.dict("os.environ", env_dict, clear=True):
+        with patch("logging.warning") as mock_warn:
+            out = service._load_settings_from_env()
+    assert out == {}
+    mock_warn.assert_called_once()
+    assert "uvicorn_config" in str(mock_warn.call_args)
+
+
+def test_load_settings_from_env_logs_on_validation_failure(service: MCPService):
+    """An env value that fails pydantic validation logs a warning and returns {}."""
+    env_dict = {"OPENBB_MCP_LIST_PAGE_SIZE": "not-an-int"}
+    with patch.dict("os.environ", env_dict, clear=True):
+        with patch("logging.warning") as mock_warn:
+            out = service._load_settings_from_env()
+    assert out == {}
+    mock_warn.assert_called_once()
+
+
+def test_map_cli_args_skips_none_values(service: MCPService):
+    """Kwargs with ``None`` values are skipped during mapping."""
+    mapped = service._map_cli_args_to_settings(
+        {"host": "1.2.3.4", "port": None, "log_level": None}
+    )
+    assert mapped["uvicorn_config"] == {"host": "1.2.3.4"}

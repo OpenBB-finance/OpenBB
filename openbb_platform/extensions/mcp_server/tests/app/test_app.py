@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastmcp.server.providers.openapi import OpenAPITool
 from fastmcp.utilities.openapi import HTTPRoute
+
 from openbb_mcp_server.app.app import (
     _extract_brief_description,
     _get_mcp_config_from_route,
@@ -19,8 +20,9 @@ from openbb_mcp_server.models.settings import MCPSettings
 
 @pytest.fixture(autouse=True)
 def _patch_transforms():
-    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
-        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    with (
+        patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()),
+        patch("openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()),
     ):
         yield
 

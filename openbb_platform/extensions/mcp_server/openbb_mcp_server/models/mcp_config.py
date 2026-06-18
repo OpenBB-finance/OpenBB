@@ -247,7 +247,7 @@ def validate_mcp_config(
     """
     try:
         return MCPConfigModel.model_validate(config_dict)
-    except Exception as exc:  # pylint: disable=broad-except
+    except Exception as exc:  # noqa: BLE001
         if strict:
             raise exc from exc
         logger.warning("MCP config validation failed ->", exc_info=exc)

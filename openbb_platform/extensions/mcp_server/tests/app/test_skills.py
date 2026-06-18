@@ -1,12 +1,11 @@
 """Unit tests for skill provider loading in the MCP server."""
 
-# pylint: disable=protected-access,unused-argument
-
 from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi import FastAPI
 from fastmcp.prompts.function_prompt import FunctionPrompt
+
 from openbb_mcp_server.app.app import _VENDOR_SKILLS_PROVIDERS, create_mcp_server
 from openbb_mcp_server.models.settings import MCPSettings
 
@@ -40,15 +39,11 @@ def _make_mocks(mock_from_fastapi, mock_category_index, mock_process_routes):
 
 @pytest.fixture(autouse=True)
 def _patch_transforms():
-    with patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()), patch(
-        "openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()
+    with (
+        patch("openbb_mcp_server.app.app.PromptsAsTools", new=MagicMock()),
+        patch("openbb_mcp_server.app.app.ResourcesAsTools", new=MagicMock()),
     ):
         yield
-
-
-# ---------------------------------------------------------------------------
-# SkillsDirectoryProvider tests
-# ---------------------------------------------------------------------------
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
@@ -127,11 +122,6 @@ def test_no_provider_when_skills_dir_missing(
     assert mock_mcp.add_provider.call_count == 0
 
 
-# ---------------------------------------------------------------------------
-# Vendor provider tests
-# ---------------------------------------------------------------------------
-
-
 def test_vendor_skills_provider_map_contains_expected_keys():
     """The _VENDOR_SKILLS_PROVIDERS map contains all documented short-names."""
     expected = {
@@ -178,7 +168,9 @@ def test_multiple_vendor_providers_added(
         CursorSkillsProvider,
     )
 
-    settings = MCPSettings(default_skills_dir=None, skills_providers=["claude", "cursor"])  # type: ignore
+    settings = MCPSettings(
+        default_skills_dir=None, skills_providers=["claude", "cursor"]
+    )  # type: ignore
     mock_mcp = _make_mocks(mock_from_fastapi, mock_category_index, mock_process_routes)
 
     create_mcp_server(settings, FastAPI())
@@ -198,7 +190,9 @@ def test_unknown_vendor_provider_logs_warning(
     mock_from_fastapi, mock_category_index, mock_process_routes, mock_logger
 ):
     """Unknown provider names log a warning and do not crash."""
-    settings = MCPSettings(default_skills_dir=None, skills_providers=["unknown_provider"])  # type: ignore
+    settings = MCPSettings(
+        default_skills_dir=None, skills_providers=["unknown_provider"]
+    )  # type: ignore
     mock_mcp = _make_mocks(mock_from_fastapi, mock_category_index, mock_process_routes)
 
     create_mcp_server(settings, FastAPI())
@@ -206,7 +200,6 @@ def test_unknown_vendor_provider_logs_warning(
     assert mock_mcp.add_provider.call_count == 0
     mock_logger.warning.assert_called()
     warning_call = mock_logger.warning.call_args
-    # First positional arg is the format string
     assert "Unknown skills provider" in warning_call[0][0]
 
 
@@ -219,7 +212,9 @@ def test_skills_reload_passed_to_vendor_providers(
     """skills_reload=True is forwarded to vendor providers."""
     from fastmcp.server.providers.skills import ClaudeSkillsProvider
 
-    settings = MCPSettings(default_skills_dir=None, skills_providers=["claude"], skills_reload=True)  # type: ignore
+    settings = MCPSettings(
+        default_skills_dir=None, skills_providers=["claude"], skills_reload=True
+    )  # type: ignore
     mock_mcp = _make_mocks(mock_from_fastapi, mock_category_index, mock_process_routes)
 
     create_mcp_server(settings, FastAPI())
@@ -229,11 +224,6 @@ def test_skills_reload_passed_to_vendor_providers(
     provider = calls[0][0][0]
     assert isinstance(provider, ClaudeSkillsProvider)
     assert provider._reload is True
-
-
-# ---------------------------------------------------------------------------
-# Default system prompt nudge tests
-# ---------------------------------------------------------------------------
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
@@ -352,11 +342,6 @@ def test_explicit_instructions_not_overridden(
     assert mock_mcp.instructions == "My explicit instructions."
 
 
-# ---------------------------------------------------------------------------
-# MCPSettings integration tests
-# ---------------------------------------------------------------------------
-
-
 def test_skills_reload_default_is_false():
     """skills_reload defaults to False."""
     assert MCPSettings().skills_reload is False
@@ -378,11 +363,6 @@ def test_include_exclude_tags_removed():
     settings = MCPSettings()
     assert not hasattr(settings, "include_tags")
     assert not hasattr(settings, "exclude_tags")
-
-
-# ---------------------------------------------------------------------------
-# StaticPrompt curly-brace safety (unchanged behaviour)
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.asyncio

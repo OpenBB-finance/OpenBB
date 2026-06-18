@@ -3,6 +3,8 @@
 from unittest.mock import patch
 
 import pytest
+from pydantic import ValidationError
+
 from openbb_mcp_server.models.mcp_config import (
     ArgumentDefinitionModel,
     HTTPMethod,
@@ -11,7 +13,6 @@ from openbb_mcp_server.models.mcp_config import (
     is_valid_mcp_config,
     validate_mcp_config,
 )
-from pydantic import ValidationError
 
 
 def test_argument_definition_model():
@@ -123,3 +124,40 @@ def test_is_valid_mcp_config():
 
     invalid_config_dict = {"methods": ["INVALID"]}
     assert isinstance(is_valid_mcp_config(invalid_config_dict), Exception)
+
+
+def test_prompt_config_rejects_whitespace_only_name():
+    """A whitespace-only ``name`` fails the empty-string guard."""
+    with pytest.raises(ValidationError, match="Prompt name cannot be empty string"):
+        PromptConfigModel(name=" ", content="hello")
+
+
+def test_prompt_config_rejects_non_string_tag():
+    """The validator's defensive non-string guard fires when invoked directly."""
+    with pytest.raises(ValueError, match="Tag must be a string"):
+        PromptConfigModel.validate_tags([123])  # type: ignore[list-item]
+
+
+def test_mcp_config_methods_validator_passthrough_none():
+    """``methods=None`` short-circuits the validator and returns None."""
+    config = MCPConfigModel(methods=None)
+    assert config.methods is None
+
+
+def test_mcp_config_methods_validator_accepts_single_string():
+    """``methods="GET"`` is normalized to a single-entry list."""
+    config = MCPConfigModel(methods="GET")  # type: ignore[arg-type]
+    assert config.methods == [HTTPMethod.GET]
+
+
+def test_mcp_config_methods_validator_rejects_non_list():
+    """``methods={...}`` (not str/list) raises a TypeError-shaped ValueError."""
+    with pytest.raises(ValidationError, match="must be a list of strings"):
+        MCPConfigModel(methods={"GET"})  # type: ignore[arg-type]
+
+
+def test_mcp_config_to_dict_excludes_none():
+    """``to_dict()`` drops fields left at their None defaults."""
+    config = MCPConfigModel(expose=True)
+    out = config.to_dict()
+    assert out == {"expose": True, "prompts": []}

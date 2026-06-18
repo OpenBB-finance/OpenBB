@@ -3,8 +3,14 @@
 import json
 import logging
 import os
+import types
 from pathlib import Path
 from typing import Any, Union, get_args, get_origin
+
+# ``T | None`` (PEP 604) yields ``types.UnionType`` as ``get_origin``;
+# ``Optional[T]`` / ``Union[T, None]`` yield ``typing.Union``. Accept
+# both so the JSON env-var parsing fires for either annotation style.
+_UNION_ORIGINS = (Union, types.UnionType)
 
 from openbb_core.app.constants import OPENBB_DIRECTORY
 from openbb_core.app.model.abstract.singleton import SingletonMeta
@@ -150,7 +156,7 @@ class MCPService(metaclass=SingletonMeta):
                 is_json_field = False
                 if origin in (dict, list, tuple):
                     is_json_field = True
-                elif origin is Union:
+                elif origin in _UNION_ORIGINS:
                     is_json_field = any(
                         get_origin(arg) in (dict, list, tuple)
                         for arg in get_args(annotation)

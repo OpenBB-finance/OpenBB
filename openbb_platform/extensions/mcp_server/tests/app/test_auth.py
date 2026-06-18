@@ -4,12 +4,11 @@ from unittest.mock import patch
 
 import pytest
 from fastapi import HTTPException
-from openbb_mcp_server.app.auth import TokenAuthProvider, get_auth_provider
-from openbb_mcp_server.models.settings import MCPSettings
 from starlette.datastructures import Headers
 from starlette.requests import Request
 
-# pylint: disable=W0621
+from openbb_mcp_server.app.auth import TokenAuthProvider, get_auth_provider
+from openbb_mcp_server.models.settings import MCPSettings
 
 
 @pytest.fixture
@@ -139,3 +138,63 @@ def test_get_auth_provider(mock_settings):
     provider = get_auth_provider(mock_settings)
     assert isinstance(provider, TokenAuthProvider)
     assert provider.server_auth == ("testuser", "testpass")
+
+
+@pytest.mark.asyncio
+async def test_authorize_invalid_base64_token_raises_401(
+    mock_settings, mock_request_with_auth
+):
+    """``Bearer notbase64`` → base64 decode fails → 401."""
+    auth_provider = TokenAuthProvider(mock_settings)
+    request = Request(
+        scope={
+            "type": "http",
+            "headers": Headers({"authorization": "Bearer not%base64$"}).raw,
+        }
+    )
+    with pytest.raises(HTTPException) as excinfo:
+        await auth_provider.authorize(request)
+    assert excinfo.value.status_code == 401
+    assert "base64" in str(excinfo.value.detail).lower()
+
+
+@pytest.mark.asyncio
+async def test_verify_token_returns_none_when_no_auth(mock_settings_no_auth):
+    """No server_auth configured → verify_token short-circuits to None."""
+    auth_provider = TokenAuthProvider(mock_settings_no_auth)
+    assert await auth_provider.verify_token("anything") is None
+
+
+@pytest.mark.asyncio
+async def test_verify_token_returns_none_for_bad_base64(mock_settings):
+    """A non-base64 token → verify_token swallows the exception."""
+    auth_provider = TokenAuthProvider(mock_settings)
+    assert await auth_provider.verify_token("not%base64$") is None
+
+
+@pytest.mark.asyncio
+@patch("openbb_mcp_server.app.auth.base64")
+@patch("openbb_mcp_server.app.auth.secrets")
+async def test_verify_token_swallows_outer_exception(
+    mock_secrets, mock_base64, mock_settings
+):
+    """Outer ``except (ValueError, HTTPException)`` swallows surprise errors."""
+    mock_base64.b64decode.return_value.decode.return_value = "testuser:testpass"
+    mock_secrets.compare_digest.side_effect = ValueError("simulated")
+    auth_provider = TokenAuthProvider(mock_settings)
+    assert await auth_provider.verify_token("anything") is None
+
+
+def test_token_auth_provider_uses_https_when_ssl_configured():
+    """``ssl_keyfile`` + ``ssl_certfile`` flips the scheme to https."""
+    settings = MCPSettings(
+        uvicorn_config={
+            "host": "0.0.0.0",  # noqa: S104
+            "port": "443",
+            "ssl_keyfile": "/etc/ssl/key.pem",
+            "ssl_certfile": "/etc/ssl/cert.pem",
+        },
+        server_auth=("u", "p"),
+    )
+    provider = TokenAuthProvider(settings)
+    assert provider.resource_server_url.startswith("https://")

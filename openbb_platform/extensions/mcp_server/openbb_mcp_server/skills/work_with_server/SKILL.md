@@ -120,6 +120,85 @@ available. All tools in `default_tool_categories` are permanently active.
 
 ---
 
+## openbb-cli Dispatcher Tools
+
+When the optional `openbb-mcp-server[cli]` extra is installed (it pulls in
+`openbb-cli`), the server also registers three first-class tools that wrap
+`openbb-cli`'s NDJSON dispatcher protocol. They give an agent the same
+`obb`-namespace command surface that the `openbb` CLI exposes — without
+shelling out or standing up a Python REPL.
+
+### `openbb_dispatch`
+
+Execute a single command and return its serialized result.
+
+```json
+{
+    "name": "openbb_dispatch",
+    "arguments": {
+        "command": "equity.price.historical",
+        "params": {"symbol": "AAPL", "provider": "yfinance"},
+        "server_url": null
+    }
+}
+```
+
+| Argument | Type | Notes |
+|---|---|---|
+| `command` | `string` | Dotted command path under the `obb` namespace (e.g. `equity.price.historical`). |
+| `params` | `dict \| null` | Keyword arguments forwarded to the command. Defaults to `{}`. |
+| `server_url` | `string \| null` | When set, dispatches against a remote `openbb-platform-api` server (HTTP). When omitted, falls back to `OPENBB_SERVER_URL`, then in-process local dispatch. |
+
+The result is the standard OBBject envelope (`id`, `results`, `provider`,
+`warnings`, `chart`, `extra`) — same shape as a direct tool call.
+
+### `openbb_batch_dispatch`
+
+Execute many commands concurrently and return results in input order.
+
+```json
+{
+    "name": "openbb_batch_dispatch",
+    "arguments": {
+        "requests": [
+            {"command": "equity.price.quote", "params": {"symbol": "AAPL"}, "id": "a"},
+            {"command": "equity.price.quote", "params": {"symbol": "MSFT"}, "id": "b"}
+        ]
+    }
+}
+```
+
+Each entry needs `command` (dotted path); `params` and `id` are optional. The
+`id` is opaque correlation echoed back on the matching response. Failures
+surface as response objects with `ok=False` and a structured `error` block —
+no exception bubbles up, errors are per-request.
+
+### `openbb_describe_command`
+
+Return parameter schema, description, and provider info for one command.
+
+```json
+{
+    "name": "openbb_describe_command",
+    "arguments": {"command": "equity.price.historical"}
+}
+```
+
+Equivalent to `openbb --describe equity.price.historical` on the CLI.
+
+### Local vs remote dispatch
+
+| Mode | Trigger | Behavior |
+|---|---|---|
+| Local | No `server_url`, no `OPENBB_SERVER_URL` | `LocalDispatcher` resolves commands against the in-process `obb` namespace. Pays the heavy `import openbb` once at startup. Single-tenant. |
+| Remote | `server_url` arg or `OPENBB_SERVER_URL` env | `HttpDispatcher` proxies commands to a long-running `openbb-platform-api` server. Multi-tenant; the heavy import lives on the server. |
+
+Mode is per-call — different requests in the same session can target different
+servers. Dispatcher singletons are cached for the server's lifetime, so the
+`import openbb` cost (local) and the httpx connection (remote) are paid once.
+
+---
+
 ## Calling Data Tools
 
 ### Input Parameters
