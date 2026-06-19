@@ -1,14 +1,12 @@
 """Helper module for merging multiple Fast API endpoints returning widgets.json"""
 
 from fastapi import FastAPI
-from fastapi.routing import APIRoute
+from openbb_core.app.route_iter import iter_api_routes
 
 
 def has_additional_widgets(app: FastAPI) -> bool:
     """Check for the existence of additional widgets.json endpoints."""
-    for route in app.routes:
-        if not isinstance(route, APIRoute):
-            continue
+    for route in iter_api_routes(app):
         path = getattr(route, "path", "")
         if path == "/widgets.json":
             continue
@@ -22,31 +20,27 @@ async def get_additional_widgets(app: FastAPI) -> dict:
     if not has_additional_widgets(app):
         return {}
 
-    # Narrow to ``APIRoute`` at collection so ``r.endpoint`` is typed
-    # below. ``BaseRoute`` doesn't expose ``endpoint``.
-    widget_routes: list[APIRoute] = []
-    for d in app.routes:
-        if not isinstance(d, APIRoute):
-            continue
-        d_path = getattr(d, "path", "")
-        if d_path not in {"/widgets.json", ""} and d_path.endswith("widgets.json"):
-            widget_routes.append(d)
-
     path_widgets: dict = {}
 
-    for r in widget_routes:
-        if (
-            not getattr(r, "endpoint", None)
-            or getattr(r, "path", "") == "/widgets.json"
-        ):
+    # ``iter_api_routes`` resolves routes attached via ``include_router``,
+    # which FastAPI 0.137+ wraps in ``_IncludedRouter`` rather than
+    # flattening into ``app.routes``. ``original_route`` is the leaf
+    # ``APIRoute`` whose ``endpoint`` we invoke.
+    for route in iter_api_routes(app):
+        path = getattr(route, "path", "")
+        if path in {"/widgets.json", ""} or not path.endswith("widgets.json"):
             continue
 
-        widgets = await r.endpoint()
+        leaf = getattr(route, "original_route", route)
+        endpoint = getattr(leaf, "endpoint", None)
+        if endpoint is None:
+            continue
+
+        widgets = await endpoint()
 
         if not isinstance(widgets, dict):
             continue
 
-        path = getattr(r, "path", "")
         path_widgets[path.replace("widgets.json", "")] = dict(widgets.items())
 
     return path_widgets

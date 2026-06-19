@@ -1,7 +1,7 @@
-"""Test merge_apps module."""
+"""Test apps_service module."""
 
 import pytest
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 
 from openbb_platform_api.utils.merge_apps import (
     get_additional_apps,
@@ -16,6 +16,10 @@ def _build_app(include_extra: bool = False, extra_returns_list: bool = True) -> 
     async def root_apps():
         return [{"appId": "root", "endpoint": "/root"}]
 
+    @app.get("/health")
+    async def health():
+        return {"status": "ok"}
+
     if include_extra:
 
         @app.get("/module/apps.json")
@@ -27,6 +31,29 @@ def _build_app(include_extra: bool = False, extra_returns_list: bool = True) -> 
     return app
 
 
+def _build_included_app() -> FastAPI:
+    """Attach an apps.json route via ``include_router``.
+
+    FastAPI 0.137+ wraps included routes in ``_IncludedRouter`` instead
+    of flattening them into ``app.routes``, so the merge must walk the
+    routes through ``iter_api_routes`` to find them.
+    """
+    app = FastAPI()
+
+    @app.get("/apps.json")
+    async def root_apps():
+        return [{"appId": "root"}]
+
+    sub = APIRouter()
+
+    @sub.get("/apps.json")
+    async def sub_apps():
+        return [{"appId": "module", "endpoint": "/sub/data"}]
+
+    app.include_router(sub, prefix="/sub")
+    return app
+
+
 def test_has_additional_apps_false_without_extra_routes():
     app = _build_app(include_extra=False)
     assert not has_additional_apps(app)
@@ -34,6 +61,12 @@ def test_has_additional_apps_false_without_extra_routes():
 
 def test_has_additional_apps_true_with_extra_routes():
     app = _build_app(include_extra=True)
+    assert has_additional_apps(app)
+
+
+def test_has_additional_apps_true_with_included_router():
+    """An apps.json route attached via include_router is detected (0.137+)."""
+    app = _build_included_app()
     assert has_additional_apps(app)
 
 
@@ -54,6 +87,14 @@ async def test_get_additional_apps_collects_valid_routes():
     app = _build_app(include_extra=True)
     apps = await get_additional_apps(app)
     assert apps == {"/module/": [{"appId": "module", "endpoint": "/module/data"}]}
+
+
+@pytest.mark.asyncio
+async def test_get_additional_apps_collects_from_included_router():
+    """An apps.json route added via include_router is collected (0.137+ guard)."""
+    app = _build_included_app()
+    apps = await get_additional_apps(app)
+    assert apps == {"/sub/": [{"appId": "module", "endpoint": "/sub/data"}]}
 
 
 @pytest.mark.asyncio

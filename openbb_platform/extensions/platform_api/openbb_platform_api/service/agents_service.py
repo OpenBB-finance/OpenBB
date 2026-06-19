@@ -7,14 +7,12 @@ agent definitions into the response served at ``/agents.json``.
 """
 
 from fastapi import FastAPI
-from fastapi.routing import APIRoute
+from openbb_core.app.route_iter import iter_api_routes
 
 
 def has_additional_agents(app: FastAPI) -> bool:
     """Return ``True`` when the app has any non-root ``*agents.json`` route."""
-    for route in app.routes:
-        if not isinstance(route, APIRoute):
-            continue
+    for route in iter_api_routes(app):
         path = getattr(route, "path", "")
         if path == "/agents.json":
             continue
@@ -34,39 +32,37 @@ async def get_additional_agents(app: FastAPI) -> dict:
     if not has_additional_agents(app):
         return {}
 
-    # Narrow to ``APIRoute`` at collection time so ``r.endpoint`` is
-    # strictly typed below. Bare ``BaseRoute`` doesn't expose ``endpoint``,
-    # which is the launcher-only callable we want to invoke.
-    agents_routes: list[APIRoute] = []
-    for d in app.routes:
-        if not isinstance(d, APIRoute):
-            continue
-        d_path = getattr(d, "path", "")
-        if d_path not in {"/agents.json", ""} and d_path.endswith("agents.json"):
-            agents_routes.append(d)
-
     path_agents: dict = {}
 
-    for r in agents_routes:
-        if not getattr(r, "endpoint", None) or getattr(r, "path", "") == "/agents.json":
+    # ``iter_api_routes`` resolves routes attached via ``include_router``,
+    # which FastAPI 0.137+ wraps in ``_IncludedRouter`` rather than
+    # flattening into ``app.routes``. ``original_route`` is the leaf
+    # ``APIRoute`` whose ``endpoint`` we invoke.
+    for route in iter_api_routes(app):
+        path = getattr(route, "path", "")
+        if path in {"/agents.json", ""} or not path.endswith("agents.json"):
             continue
 
-        agents = await r.endpoint()
+        leaf = getattr(route, "original_route", route)
+        endpoint = getattr(leaf, "endpoint", None)
+        if endpoint is None:
+            continue
+
+        agents = await endpoint()
 
         if not isinstance(agents, dict):
             continue
 
-        path = getattr(r, "path", "").replace("agents.json", "")
+        path = path.replace("agents.json", "")
         for k, v in agents.copy().items():
             endpoints = v.get("endpoints", {}) if isinstance(v, dict) else {}
-            for name, endpoint in endpoints.items():
+            for name, endpoint_path in endpoints.items():
                 if (
-                    isinstance(endpoint, str)
-                    and endpoint.startswith("/")
-                    and not endpoint.startswith(path)
+                    isinstance(endpoint_path, str)
+                    and endpoint_path.startswith("/")
+                    and not endpoint_path.startswith(path)
                 ):
-                    new_endpoint = path + endpoint[1:]
-                    agents[k]["endpoints"][name] = new_endpoint
+                    agents[k]["endpoints"][name] = path + endpoint_path[1:]
 
         path_agents[path] = agents
 

@@ -1,7 +1,7 @@
-"""Test merge_agents module."""
+"""Test agents_service module."""
 
 import pytest
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 
 from openbb_platform_api.utils.merge_agents import (
     get_additional_agents,
@@ -16,6 +16,10 @@ def _build_app(include_extra: bool = False, extra_returns_dict: bool = True) -> 
     async def root_agents():
         return {"root": {"id": "root-agent"}}
 
+    @app.get("/health")
+    async def health():
+        return {"status": "ok"}
+
     if include_extra:
 
         @app.get("/module/agents.json")
@@ -27,6 +31,29 @@ def _build_app(include_extra: bool = False, extra_returns_dict: bool = True) -> 
     return app
 
 
+def _build_included_app() -> FastAPI:
+    """Attach an agents.json route via ``include_router``.
+
+    FastAPI 0.137+ wraps included routes in ``_IncludedRouter`` instead
+    of flattening them into ``app.routes``, so the merge must walk the
+    routes through ``iter_api_routes`` to find them.
+    """
+    app = FastAPI()
+
+    @app.get("/agents.json")
+    async def root_agents():
+        return {"root": {"id": "root-agent"}}
+
+    sub = APIRouter()
+
+    @sub.get("/agents.json")
+    async def sub_agents():
+        return {"module": {"id": "module-agent"}}
+
+    app.include_router(sub, prefix="/sub")
+    return app
+
+
 def test_has_additional_agents_false_without_extra_routes():
     app = _build_app(include_extra=False)
     assert not has_additional_agents(app)
@@ -34,6 +61,12 @@ def test_has_additional_agents_false_without_extra_routes():
 
 def test_has_additional_agents_true_with_extra_routes():
     app = _build_app(include_extra=True)
+    assert has_additional_agents(app)
+
+
+def test_has_additional_agents_true_with_included_router():
+    """An agents.json route attached via include_router is detected (0.137+)."""
+    app = _build_included_app()
     assert has_additional_agents(app)
 
 
@@ -48,6 +81,14 @@ async def test_get_additional_agents_collects_valid_routes():
     app = _build_app(include_extra=True)
     additional = await get_additional_agents(app)
     assert additional == {"/module/": {"module": {"id": "module-agent"}}}
+
+
+@pytest.mark.asyncio
+async def test_get_additional_agents_collects_from_included_router():
+    """An agents.json route added via include_router is collected (0.137+ guard)."""
+    app = _build_included_app()
+    additional = await get_additional_agents(app)
+    assert additional == {"/sub/": {"module": {"id": "module-agent"}}}
 
 
 @pytest.mark.asyncio
@@ -70,8 +111,7 @@ async def test_get_additional_agents_skips_routes_with_no_endpoint_or_root_path(
     async def module_agents():
         return {"module": {"id": "module-agent"}}
 
-    # Stub a route with endpoint=None to exercise the
-    # ``not getattr(r, "endpoint", None)`` skip.
+    # Stub a route with endpoint=None to exercise the endpoint skip arm.
     fake_route = APIRoute(
         path="/garbage/agents.json",
         endpoint=lambda: None,
@@ -89,8 +129,8 @@ async def test_get_additional_agents_skips_routes_with_no_endpoint_or_root_path(
 @pytest.mark.asyncio
 async def test_get_additional_agents_rewrites_relative_endpoint_paths():
     """Each agent's ``endpoints`` get prefixed with the route's path
-    (when they're absolute and not already prefixed) so Workspace can
-    call them directly.
+    (when they're absolute strings and not already prefixed) so Workspace
+    can call them directly; non-string values are left untouched.
     """
     app = FastAPI()
 
@@ -102,6 +142,7 @@ async def test_get_additional_agents_rewrites_relative_endpoint_paths():
                     "tool1": "/tool1",  # relative, will get prefixed
                     "tool2": "/myrouter/tool2",  # already prefixed, untouched
                     "tool3": "https://other-host.example/x",  # not "/", untouched
+                    "tool4": 123,  # non-string, untouched
                 }
             }
         }
@@ -111,6 +152,7 @@ async def test_get_additional_agents_rewrites_relative_endpoint_paths():
     assert rewritten["tool1"] == "/myrouter/tool1"
     assert rewritten["tool2"] == "/myrouter/tool2"
     assert rewritten["tool3"] == "https://other-host.example/x"
+    assert rewritten["tool4"] == 123
 
 
 @pytest.mark.asyncio

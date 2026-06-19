@@ -912,6 +912,32 @@ def test_build_json_skips_widget_when_starred_filter_matches_route():
     assert out == {}
 
 
+def test_build_json_skips_event_stream_responses():
+    """A route whose 2xx response is ``text/event-stream`` cannot render
+    as a widget and is skipped — exercises the SSE guard (line 295).
+    """
+    openapi = _minimal_openapi(
+        {
+            "/api/v1/stream": {
+                "get": {
+                    "operationId": "stream_op",
+                    "parameters": [],
+                    "summary": "S",
+                    "description": "D",
+                    "responses": {
+                        "200": {
+                            "content": {
+                                "text/event-stream": {"schema": {"type": "string"}}
+                            }
+                        }
+                    },
+                }
+            }
+        }
+    )
+    assert build_json(openapi, []) == {}
+
+
 def test_build_json_post_route_appends_widget_id_to_exclude_filter():
     """POST routes whose widget type isn't ssrm/omni/multi-file get
     auto-excluded from later rebuilds — exercises line 704.
