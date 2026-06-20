@@ -11,6 +11,13 @@ QUARTERLY_FORMS = frozenset({"10-Q", "10-Q/A"})
 SEMI_ANNUAL_FORMS = frozenset({"6-K", "6-K/A"})
 PRELIMINARY_FORMS = frozenset({"8-K", "8-K/A"})
 ALL_FORMS = ANNUAL_FORMS | QUARTERLY_FORMS | SEMI_ANNUAL_FORMS
+
+# Forms that may carry a full-year reporting period. Foreign private issuers
+# (20-F/40-F filers) routinely furnish their annual financial statements in 6-K
+# exhibits rather than tagging them in the 20-F/40-F itself, so a 6-K whose
+# duration is ~365 days is treated as an annual period. The ~365-day length —
+# not the form alone — is the discriminator; shorter 6-K periods remain interim.
+ANNUAL_PERIOD_FORMS = ANNUAL_FORMS | SEMI_ANNUAL_FORMS
 Frequency = Literal["annual", "quarterly"]
 StatementName = Literal["income_statement", "balance_sheet", "cash_flow"]
 CompanyType = Literal["industrial", "financial", "diversified", "insurance"]

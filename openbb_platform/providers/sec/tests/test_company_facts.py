@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 from openbb_sec.utils.company_facts import resolve_company_facts
 from openbb_sec.utils.statement_schema import StatementSchema
+from openbb_sec.utils.statement_schema._detection import get_filing_dates
 
 _FIXTURE_DIR = Path(__file__).parent / "record"
 
@@ -2131,6 +2132,8 @@ class TestCashBridgePeriodCarryover:
 
 
 class TestTTM:
+    """Trailing-twelve-month aggregation from quarterly records."""
+
     @staticmethod
     def _quarterly_revenue(years_quarters):
         entries = []
@@ -2373,6 +2376,8 @@ class TestTTM:
 
 
 class TestPctChange:
+    """Period-over-period and year-over-year percentage change."""
+
     @staticmethod
     def _annual_revenue(year_vals):
         entries = []
@@ -2617,6 +2622,8 @@ class TestPctChange:
 
 
 class TestPeriodType:
+    """period_type metadata propagation into output records."""
+
     def test_period_type_in_records(self):
         mock = create_mock_facts(
             [
@@ -2643,3 +2650,210 @@ class TestPeriodType:
         assets = [r for r in res.balance_sheet if r["tag"] == "total_assets"]
         if assets:
             assert assets[0]["period_type"] == "instant"
+
+
+def _six_k_filer_facts():
+    """Build facts for a 40-F/20-F filer that furnishes financials via 6-K.
+
+    Mirrors real foreign private issuers (e.g. Canadian National Railway):
+    most fiscal years are annual-only (the full-year statements are tagged on
+    a 6-K exhibit rather than in the 40-F/20-F), while a few earlier years
+    additionally carry genuine interim (3/6/9-month) periods on 6-K.
+    """
+    entries: list[dict] = []
+    # Annual-only years: only a full-year period is reported, via 6-K, filed
+    # ~6 weeks after year-end (as real FY 6-K exhibits are).
+    for year, assets, rev in ((2021, 23000, 7600), (2022, 24000, 8000)):
+        filed = f"{year + 1}-02-15"
+        entries += [
+            {
+                "tag": "Assets",
+                "val": assets,
+                "end": f"{year}-12-31",
+                "form": "6-K",
+                "filed": filed,
+            },
+            {
+                "tag": "Revenues",
+                "val": rev,
+                "start": f"{year}-01-01",
+                "end": f"{year}-12-31",
+                "form": "6-K",
+                "fp": "FY",
+                "filed": filed,
+            },
+            {
+                "tag": "NetCashProvidedByUsedInOperatingActivities",
+                "val": 2000,
+                "start": f"{year}-01-01",
+                "end": f"{year}-12-31",
+                "form": "6-K",
+                "fp": "FY",
+                "filed": filed,
+            },
+        ]
+    # 2023: full-year plus genuine interim periods (cumulative 3/6/9-month).
+    entries += [
+        {
+            "tag": "Assets",
+            "val": 26000,
+            "end": "2023-12-31",
+            "form": "6-K",
+            "filed": "2024-02-15",
+        },
+        {
+            "tag": "Revenues",
+            "val": 9000,
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "form": "6-K",
+            "fp": "FY",
+            "filed": "2024-02-15",
+        },
+        {
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "val": 2200,
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "form": "6-K",
+            "fp": "FY",
+            "filed": "2024-02-15",
+        },
+    ]
+    for end, filed, assets, rev, cf in (
+        ("2023-03-31", "2023-05-01", 24500, 2000, 500),  # ~90 days
+        ("2023-06-30", "2023-08-01", 25000, 4100, 1000),  # ~181 days
+        ("2023-09-30", "2023-11-01", 25500, 6200, 1500),  # ~273 days (9-month)
+    ):
+        entries += [
+            {
+                "tag": "Assets",
+                "val": assets,
+                "end": end,
+                "form": "6-K",
+                "filed": filed,
+            },
+            {
+                "tag": "Revenues",
+                "val": rev,
+                "start": "2023-01-01",
+                "end": end,
+                "form": "6-K",
+                "filed": filed,
+            },
+            {
+                "tag": "NetCashProvidedByUsedInOperatingActivities",
+                "val": cf,
+                "start": "2023-01-01",
+                "end": end,
+                "form": "6-K",
+                "filed": filed,
+            },
+        ]
+    return create_mock_facts(entries)
+
+
+def _six_k_lapsed_interim_facts():
+    """Build facts for a 6-K filer whose interim reporting lapsed.
+
+    Annual (FY) periods continue through 2024, but the only interim periods
+    are from 2020 — the quarterly series would be sparse/stale, so it must be
+    treated as no quarterly data.
+    """
+    entries: list[dict] = []
+    for year in (2020, 2021, 2022, 2023, 2024):
+        filed = f"{year + 1}-02-15"
+        entries += [
+            {
+                "tag": "Assets",
+                "val": 24000 + year,
+                "end": f"{year}-12-31",
+                "form": "6-K",
+                "filed": filed,
+            },
+            {
+                "tag": "Revenues",
+                "val": 8000,
+                "start": f"{year}-01-01",
+                "end": f"{year}-12-31",
+                "form": "6-K",
+                "fp": "FY",
+                "filed": filed,
+            },
+        ]
+    # Lone interim periods, only for 2020.
+    for end, filed in (("2020-06-30", "2020-08-01"), ("2020-09-30", "2020-11-01")):
+        entries += [
+            {"tag": "Assets", "val": 23500, "end": end, "form": "6-K", "filed": filed},
+            {
+                "tag": "Revenues",
+                "val": 2000,
+                "start": "2020-01-01",
+                "end": end,
+                "form": "6-K",
+                "filed": filed,
+            },
+        ]
+    return create_mock_facts(entries)
+
+
+class TestSixKReportingPeriods:
+    """Period detection for 40-F/20-F filers that report via 6-K exhibits."""
+
+    def test_annual_fy_periods_detected_from_6k(self):
+        facts = _six_k_filer_facts()["facts"]
+        annual = get_filing_dates(facts, "annual")
+        assert annual == {"2021-12-31", "2022-12-31", "2023-12-31"}
+
+    def test_nine_month_interim_period_detected(self):
+        facts = _six_k_filer_facts()["facts"]
+        quarterly = get_filing_dates(facts, "quarterly")
+        assert {"2023-03-31", "2023-06-30", "2023-09-30"} <= quarterly
+
+    def test_annual_only_years_excluded_from_quarterly(self):
+        # Years with no interim data must not surface as phantom Q4/H2 rows.
+        facts = _six_k_filer_facts()["facts"]
+        quarterly = get_filing_dates(facts, "quarterly")
+        assert "2021-12-31" not in quarterly
+        assert "2022-12-31" not in quarterly
+
+    def test_annual_balance_sheet_not_empty(self):
+        res = resolve_company_facts(_six_k_filer_facts(), period="annual")
+        assert res.balance_sheet, "annual balance sheet must not be empty for 6-K filer"
+        dates = {r["period_ending"] for r in res.balance_sheet}
+        assert {"2021-12-31", "2022-12-31", "2023-12-31"} <= dates
+        assert all(r["fiscal_period"] == "FY" for r in res.balance_sheet)
+
+    def test_annual_total_assets_value(self):
+        res = resolve_company_facts(_six_k_filer_facts(), period="annual")
+        ta = {
+            r["period_ending"]: r["value"]
+            for r in res.balance_sheet
+            if r["tag"] == "total_assets"
+        }
+        assert ta.get("2023-12-31") == 26000
+
+    def test_quarterly_excludes_annual_only_years(self):
+        res = resolve_company_facts(_six_k_filer_facts(), period="quarterly")
+        dates = {r["period_ending"] for r in res.balance_sheet}
+        assert "2021-12-31" not in dates
+        assert "2022-12-31" not in dates
+
+    def test_lapsed_interim_yields_no_quarterly_dates(self):
+        # Interim reporting that stopped years before the latest annual period
+        # is discontinuous and must be treated as no quarterly data.
+        facts = _six_k_lapsed_interim_facts()["facts"]
+        assert get_filing_dates(facts, "quarterly") == set()
+        assert get_filing_dates(facts, "annual") == {
+            "2020-12-31",
+            "2021-12-31",
+            "2022-12-31",
+            "2023-12-31",
+            "2024-12-31",
+        }
+
+    def test_lapsed_interim_quarterly_raises(self):
+        from openbb_core.app.model.abstract.error import OpenBBError
+
+        with pytest.raises(OpenBBError, match="quarterly"):
+            resolve_company_facts(_six_k_lapsed_interim_facts(), period="quarterly")

@@ -4,6 +4,7 @@ from openbb_sec.utils.statement_schema._schema import StatementSchema
 from openbb_sec.utils.statement_schema._types import (
     ALL_FORMS,
     ANNUAL_FORMS,
+    ANNUAL_PERIOD_FORMS,
     PRELIMINARY_FORMS,
     QUARTERLY_FORMS,
     SEMI_ANNUAL_FORMS,
@@ -19,6 +20,7 @@ from openbb_sec.utils.statement_schema._types import (
 __all__ = [
     "ALL_FORMS",
     "ANNUAL_FORMS",
+    "ANNUAL_PERIOD_FORMS",
     "CompanyType",
     "Frequency",
     "PRELIMINARY_FORMS",
