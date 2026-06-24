@@ -20,6 +20,7 @@ Open the server's URL in your browser for more information on connecting to the 
 def main():
     """Return a FastAPI app instance."""
     # pylint: disable=import-outside-toplevel
+    from contextlib import asynccontextmanager
     from datetime import datetime
     from typing import Annotated, Any, Literal
 
@@ -45,19 +46,9 @@ def main():
         reverse=True,
     )
 
-    app = FastAPI()
-
-    async def get_listings() -> DataFrame:
-        """Get the Nasdaq listings."""
-        return listings
-
-    Nasdaqlistings = Annotated[
-        DataFrame,
-        Depends(get_listings),
-    ]
-
-    async def startup_event():
-        """Startup event for the FastAPI app."""
+    @asynccontextmanager
+    async def lifespan(_: FastAPI):
+        """Lifespan event handler for the FastAPI app."""
         nonlocal listings
         fetcher = NasdaqEquitySearchFetcher()
 
@@ -71,8 +62,18 @@ def main():
             " and not name.str.contains('Warrant')"
             " and not name.str.contains('Preferred')"
         )
+        yield
 
-    app.add_event_handler("startup", startup_event)
+    app = FastAPI(lifespan=lifespan)
+
+    async def get_listings() -> DataFrame:
+        """Get the Nasdaq listings."""
+        return listings
+
+    Nasdaqlistings = Annotated[
+        DataFrame,
+        Depends(get_listings),
+    ]
 
     @app.get("/get_symbol_choices", include_in_schema=False)
     async def get_symbol_choices(

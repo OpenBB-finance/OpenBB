@@ -11,6 +11,7 @@ from typing import Any
 from openbb_sec.utils.statement_schema._types import (
     ALL_FORMS,
     ANNUAL_FORMS,
+    ANNUAL_PERIOD_FORMS,
     PRELIMINARY_FORMS,
     QUARTERLY_FORMS,
     SEMI_ANNUAL_FORMS,
@@ -113,7 +114,7 @@ def get_filing_dates(  # noqa: PLR0912
                         continue
 
                     if frequency == "annual":
-                        if form in ANNUAL_FORMS and 300 <= days <= 400:
+                        if form in ANNUAL_PERIOD_FORMS and 300 <= days <= 400:
                             filing_dates.add(end)
                         elif (
                             include_preliminary
@@ -125,7 +126,9 @@ def get_filing_dates(  # noqa: PLR0912
                         if form in QUARTERLY_FORMS and 60 <= days <= 135:
                             filing_dates.add(end)
                         if form in SEMI_ANNUAL_FORMS and (
-                            60 <= days <= 135 or 150 <= days <= 200
+                            60 <= days <= 135
+                            or 150 <= days <= 200
+                            or 240 <= days <= 310
                         ):
                             filing_dates.add(end)
                         if (
@@ -142,7 +145,33 @@ def get_filing_dates(  # noqa: PLR0912
         canonical_annual = get_filing_dates(
             facts, "annual", include_preliminary=include_preliminary
         )
-        filing_dates |= canonical_annual
+        interim_dates = filing_dates - canonical_annual
+
+        # Discontinuity guard: if interim reporting has lapsed — the most
+        # recent interim period lags the most recent annual period by more
+        # than ~15 months — the quarterly series would be sparse and stale
+        # (common for 40-F/MJDS filers that report only annually via 6-K).
+        # Treat that as no quarterly data so callers fall back to annual.
+        if interim_dates and canonical_annual:
+            latest_annual = max(canonical_annual)
+            latest_interim = max(interim_dates)
+            try:
+                lapse = (
+                    datetime.strptime(latest_annual, "%Y-%m-%d")
+                    - datetime.strptime(latest_interim, "%Y-%m-%d")
+                ).days
+            except (ValueError, TypeError):
+                lapse = 0
+            if lapse > 460:
+                return set()
+
+        # Fold a fiscal year-end into the quarterly series only when that
+        # fiscal year actually has at least one interim period.
+        sorted_annual = sorted(canonical_annual)
+        for i, annual_end in enumerate(sorted_annual):
+            fy_start = sorted_annual[i - 1] if i else ""
+            if any(fy_start < qd < annual_end for qd in interim_dates):
+                filing_dates.add(annual_end)
 
     if frequency == "annual" and len(filing_dates) > 3:
         parsed = [(d, datetime.strptime(d, "%Y-%m-%d")) for d in filing_dates]
@@ -202,7 +231,7 @@ def get_filing_dates(  # noqa: PLR0912
 
             filing_dates = filtered
 
-    assets_forms = ALL_FORMS if frequency == "quarterly" else ANNUAL_FORMS
+    assets_forms = ALL_FORMS if frequency == "quarterly" else ANNUAL_PERIOD_FORMS
     if include_preliminary:
         assets_forms = assets_forms | PRELIMINARY_FORMS
 
@@ -244,9 +273,12 @@ def get_fiscal_meta(  # noqa: PLR0912
 ) -> dict[str, dict[str, Any]]:
     """Build fiscal metadata for each period-end date."""
     annual_dates = get_filing_dates(facts, "annual")
+    _fye_counts = Counter(int(d[5:7]) for d in annual_dates)
+    fye_month = _fye_counts.most_common(1)[0][0] if _fye_counts else 12
     best_annual: dict[str, tuple[str, int, str]] = {}
     best_quarterly: dict[str, tuple[str, int, str]] = {}
     best_semi: dict[str, tuple[str, int, str]] = {}
+    best_instant: dict[str, tuple[str, int, str]] = {}
     best_preliminary: dict[str, tuple[str, int, str]] = {}
 
     for ns_facts in facts.values():
@@ -277,10 +309,42 @@ def get_fiscal_meta(  # noqa: PLR0912
                         if end not in best_quarterly or filed < best_quarterly[end][0]:
                             best_quarterly[end] = (filed, fy, fp)
                     elif form in SEMI_ANNUAL_FORMS:
-                        if fy is None or not fp:
-                            continue
-                        if end not in best_semi or filed < best_semi[end][0]:
-                            best_semi[end] = (filed, fy, fp)
+                        # A 6-K can carry quarterly, semi-annual, or full-year periods.
+                        start = entry.get("start", "")
+                        days = None
+                        if start and start != end:
+                            try:
+                                days = (
+                                    datetime.strptime(end, "%Y-%m-%d")
+                                    - datetime.strptime(start, "%Y-%m-%d")
+                                ).days
+                            except (ValueError, TypeError):
+                                days = None
+                        end_month = int(end[5:7])
+                        fis_year = (
+                            int(end[:4]) if end_month <= fye_month else int(end[:4]) + 1
+                        )
+                        fis_q = f"Q{((end_month - fye_month - 1) % 12) // 3 + 1}"
+                        q_label = fp if fp.startswith("Q") else fis_q
+                        if days is not None and 300 <= days <= 400:
+                            if end not in best_annual or filed < best_annual[end][0]:
+                                best_annual[end] = (filed, fis_year, "FY")
+                        elif days is not None and (
+                            60 <= days <= 135 or 240 <= days <= 310
+                        ):
+                            if (
+                                end not in best_quarterly
+                                or filed < best_quarterly[end][0]
+                            ):
+                                best_quarterly[end] = (filed, fis_year, q_label)
+                        elif days is not None and 150 <= days <= 200:
+                            if end not in best_semi or filed < best_semi[end][0]:
+                                best_semi[end] = (filed, fis_year, "H1")
+                        elif end not in best_instant or filed < best_instant[end][0]:
+                            # Instant (balance-sheet) 6-K snapshot with no
+                            # duration; used only when no duration period
+                            # classifies the date.
+                            best_instant[end] = (filed, fis_year, q_label)
                     elif form in PRELIMINARY_FORMS:
                         if fy is not None and fp:
                             if (
@@ -325,7 +389,7 @@ def get_fiscal_meta(  # noqa: PLR0912
                     "fiscal_period": q_info[2],
                 }
             else:
-                s_info = best_semi.get(date)
+                s_info = best_semi.get(date) or best_instant.get(date)
                 if s_info:
                     result[date] = {
                         "fiscal_year": s_info[1],
@@ -385,7 +449,6 @@ def detect_reporting_currency(facts: dict[str, Any]) -> str:
     for ns_facts in facts.values():
         for tag_data in ns_facts.values():
             for unit_key in tag_data.get("units", {}):
-
                 if unit_key in skip or "/" in unit_key:
                     continue
 
