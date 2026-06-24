@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=openbb">
+    <img src="assets/atlas-cloud-logo.png" alt="Atlas Cloud" width="140" />
+  </a>
+  <br />
+  <sub><strong>Atlas Cloud</strong> Atlas Cloud provides OpenAI-compatible LLM APIs and async image/video generation APIs for financial research reports, data visualization, and multimodal analytics workflows.</sub>
+</p>
+
 <br />
 <img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/odp-light.svg?raw=true#gh-light-mode-only" alt="Open Data Platform by OpenBB logo" width="600">
 <img src="https://github.com/OpenBB-finance/OpenBB/blob/develop/images/odp-dark.svg?raw=true#gh-dark-mode-only" alt="Open Data Platform by OpenBB logo" width="600">
