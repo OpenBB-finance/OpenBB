@@ -1,0 +1,4 @@
+"""Empty placeholder — keeps the cassette directory in version control.
+
+VCR cassettes are added in Fases 4 and 5 alongside the fetcher tests.
+"""

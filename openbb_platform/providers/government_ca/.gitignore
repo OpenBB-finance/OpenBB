@@ -1,0 +1,32 @@
+# Build artifacts — the cache is materialized by hatch_build.py at install time.
+openbb_government_ca/assets/government_ca_cache.json.xz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Type checkers
+.mypy_cache/
+.tycache/
+.pyre/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# uv
+uv.lock

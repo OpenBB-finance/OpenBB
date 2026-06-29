@@ -1,0 +1,102 @@
+{
+  "terms": {
+    "url": "https://www.bankofcanada.ca/terms/"
+  },
+  "series": {
+    "FXUSDCAD": {
+      "label": "USD/CAD",
+      "description": "Daily average exchange rate: daily value of the US dollar expressed in Canadian dollars, for 1 unit of US dollar",
+      "link": "https://www.bankofcanada.ca/valet/series/FXUSDCAD"
+    },
+    "FXEURCAD": {
+      "label": "EUR/CAD",
+      "description": "Daily average exchange rate: daily value of the Euro expressed in Canadian dollars, for 1 unit of Euro",
+      "link": "https://www.bankofcanada.ca/valet/series/FXEURCAD"
+    },
+    "FXGBPCAD": {
+      "label": "GBP/CAD",
+      "description": "Daily average exchange rate: daily value of the Pound Sterling expressed in Canadian dollars, for 1 unit of Pound Sterling",
+      "link": "https://www.bankofcanada.ca/valet/series/FXGBPCAD"
+    },
+    "FXJPYCAD": {
+      "label": "JPY/CAD",
+      "description": "Daily average exchange rate: daily value of the Japanese Yen expressed in Canadian dollars, for 1 unit of Japanese Yen",
+      "link": "https://www.bankofcanada.ca/valet/series/FXJPYCAD"
+    },
+    "FXMXNCAD": {
+      "label": "MXN/CAD",
+      "description": "Daily average exchange rate: daily value of the Mexican Peso expressed in Canadian dollars, for 1 unit of Mexican Peso",
+      "link": "https://www.bankofcanada.ca/valet/series/FXMXNCAD"
+    },
+    "FXCNYCAD": {
+      "label": "CNY/CAD",
+      "description": "Daily average exchange rate: daily value of the Chinese Renminbi expressed in Canadian dollars, for 1 unit of Chinese Renminbi",
+      "link": "https://www.bankofcanada.ca/valet/series/FXCNYCAD"
+    },
+    "FXINRCAD": {
+      "label": "INR/CAD",
+      "description": "Daily average exchange rate: daily value of the Indian Rupee expressed in Canadian dollars, for 1 unit of Indian Rupee",
+      "link": "https://www.bankofcanada.ca/valet/series/FXINRCAD"
+    },
+    "V39076": {
+      "label": "V39076",
+      "description": "Operating band - low",
+      "link": "https://www.bankofcanada.ca/valet/series/V39076"
+    },
+    "V39077": {
+      "label": "V39077",
+      "description": "Operating band - high",
+      "link": "https://www.bankofcanada.ca/valet/series/V39077"
+    },
+    "V39078": {
+      "label": "V39078",
+      "description": "Bank rate",
+      "link": "https://www.bankofcanada.ca/valet/series/V39078"
+    },
+    "V39079": {
+      "label": "V39079",
+      "description": "Target for the overnight rate",
+      "link": "https://www.bankofcanada.ca/valet/series/V39079"
+    },
+    "CBC20210": {
+      "label": "V39079",
+      "description": "Target for the overnight rate",
+      "link": "https://www.bankofcanada.ca/valet/series/CBC20210"
+    },
+    "BD.CDN.2YR.DQ.YLD": {
+      "label": "Benchmark bond yield: 2 year",
+      "description": "Benchmark bond yield: 2 year",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.2YR.DQ.YLD"
+    },
+    "BD.CDN.3YR.DQ.YLD": {
+      "label": "Benchmark bond yield: 3 year",
+      "description": "Benchmark bond yield: 3 year",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.3YR.DQ.YLD"
+    },
+    "BD.CDN.5YR.DQ.YLD": {
+      "label": "Benchmark bond yield: 5 year",
+      "description": "Benchmark bond yield: 5 year",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.5YR.DQ.YLD"
+    },
+    "BD.CDN.7YR.DQ.YLD": {
+      "label": "Benchmark bond yield: 7 year",
+      "description": "Benchmark bond yield: 7 year",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.7YR.DQ.YLD"
+    },
+    "BD.CDN.10YR.DQ.YLD": {
+      "label": "Benchmark bond yield: 10 year",
+      "description": "Benchmark bond yield: 10 year",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.10YR.DQ.YLD"
+    },
+    "BD.CDN.LONG.DQ.YLD": {
+      "label": "Benchmark bond yield: long-term",
+      "description": "Benchmark bond yield: long-term",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.LONG.DQ.YLD"
+    },
+    "BD.CDN.RRB.DQ.YLD": {
+      "label": "Real Return Bonds yield: long-term",
+      "description": "Real Return Bonds yield: long-term",
+      "link": "https://www.bankofcanada.ca/valet/series/BD.CDN.RRB.DQ.YLD"
+    }
+  }
+}

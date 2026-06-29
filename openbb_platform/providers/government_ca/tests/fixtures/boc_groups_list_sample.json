@@ -1,0 +1,12 @@
+{
+  "terms": {
+    "url": "https://www.bankofcanada.ca/terms/"
+  },
+  "groups": {
+    "FX_RATES_DAILY": {
+      "label": "Daily exchange rates",
+      "description": "The daily average exchange rates for various foreign currencies (either currently or historically published) expressed as one unit of the foreign currency converted into Canadian dollars.",
+      "link": "https://www.bankofcanada.ca/valet/groups/FX_RATES_DAILY"
+    }
+  }
+}

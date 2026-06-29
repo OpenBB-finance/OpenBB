@@ -1,0 +1,52 @@
+{
+  "terms": {
+    "url": "https://www.bankofcanada.ca/terms/"
+  },
+  "groups": {
+    "FX_RATES_DAILY": {
+      "label": "Daily exchange rates",
+      "link": "https://www.bankofcanada.ca/valet/groups/FX_RATES_DAILY",
+      "description": "The daily average exchange rates for various foreign currencies."
+    },
+    "FXAUDCAD": {
+      "label": "AUD/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXAUDCAD",
+      "description": "Daily average exchange rate: AUD to CAD"
+    },
+    "FXCNYCAD": {
+      "label": "CNY/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXCNYCAD",
+      "description": "Daily average exchange rate: CNY to CAD"
+    },
+    "FXEURCAD": {
+      "label": "EUR/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXEURCAD",
+      "description": "Daily average exchange rate: EUR to CAD"
+    },
+    "FXGBPCAD": {
+      "label": "GBP/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXGBPCAD",
+      "description": "Daily average exchange rate: GBP to CAD"
+    },
+    "FXINRCAD": {
+      "label": "INR/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXINRCAD",
+      "description": "Daily average exchange rate: INR to CAD"
+    },
+    "FXJPYCAD": {
+      "label": "JPY/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXJPYCAD",
+      "description": "Daily average exchange rate: JPY to CAD"
+    },
+    "FXMXNCAD": {
+      "label": "MXN/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXMXNCAD",
+      "description": "Daily average exchange rate: MXN to CAD"
+    },
+    "FXUSDCAD": {
+      "label": "USD/CAD",
+      "link": "https://www.bankofcanada.ca/valet/series/FXUSDCAD",
+      "description": "Daily average exchange rate: USD to CAD"
+    }
+  }
+}

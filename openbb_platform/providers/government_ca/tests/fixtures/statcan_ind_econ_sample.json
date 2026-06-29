@@ -1,0 +1,75 @@
+{
+  "results": {
+    "geo": [
+      {"geo_code": "0", "label": {"en": "Canada", "fr": "Canada"}},
+      {"geo_code": "1", "label": {"en": "Newfoundland and Labrador", "fr": "Terre-Neuve-et-Labrador"}},
+      {"geo_code": "13", "label": {"en": "Nunavut", "fr": "Nunavut"}}
+    ],
+    "themes_en": [
+      {"theme_id": "920", "label": "Agriculture"},
+      {"theme_id": "2239", "label": "Business performance and ownership"},
+      {"theme_id": "4007", "label": "Travel and tourism"}
+    ],
+    "themes_fr": [
+      {"theme_id": "920", "label": "Agriculture"},
+      {"theme_id": "60000", "label": "Commerce de detail et de gros"},
+      {"theme_id": "4007", "label": "Voyages et tourisme"}
+    ],
+    "indicators": [
+      {
+        "registry_number": "3612",
+        "indicator_number": "1",
+        "geo_code": "0",
+        "title": {"en": "Imports", "fr": "Importations"},
+        "value": {"en": "$47.6 billion", "fr": "47,6 milliards de dollars"},
+        "refper": {"en": "September 2016", "fr": "Septembre 2016"},
+        "daily_url": {"en": "/daily-quotidien/161104/dq161104b-eng.htm", "fr": "/daily-quotidien/161104/dq161104b-fra.htm"},
+        "daily_title": {"en": "Canadian international merchandise trade", "fr": "Commerce international de marchandises du Canada"},
+        "source": "2280069",
+        "themes": "*3956**1652**1130**3826*",
+        "release_date": "2016-11-04",
+        "growth_rate": {
+          "growth": {"en": "4.7%", "fr": "4,7 %"},
+          "arrow_direction": "1",
+          "details": {"en": "(monthly change)", "fr": "(variation mensuelle)"}
+        }
+      },
+      {
+        "registry_number": "3587",
+        "indicator_number": "1",
+        "geo_code": "0",
+        "title": {"en": "Employment", "fr": "Emploi"},
+        "value": {"en": "18,161,000", "fr": "18 161 000"},
+        "refper": {"en": "October 2016", "fr": "Octobre 2016"},
+        "daily_url": {"en": "/daily-quotidien/161104/dq161104a-eng.htm", "fr": "/daily-quotidien/161104/dq161104a-fra.htm"},
+        "daily_title": {"en": "Labour Force Survey", "fr": "Enquete sur la population active"},
+        "source": "2820087",
+        "themes": "*2621**1803*",
+        "release_date": "2016-11-04",
+        "growth_rate": {
+          "growth": {"en": "0.2%", "fr": "0,2 %"},
+          "arrow_direction": "1",
+          "details": {"en": "(monthly change)", "fr": "(variation mensuelle)"}
+        }
+      },
+      {
+        "registry_number": "11961",
+        "indicator_number": "2",
+        "geo_code": "0",
+        "title": {"en": "Capital expenditures: Machinery and equipment", "fr": "Depenses en immobilisations : materiel et outillage"},
+        "value": {"en": "$83,751.6 million", "fr": "83 751,6 millions de dollars"},
+        "refper": {"en": "2016", "fr": "2016"},
+        "daily_url": {"en": "/daily-quotidien/160510/dq160510a-eng.htm", "fr": "/daily-quotidien/160510/dq160510a-fra.htm"},
+        "daily_title": {"en": "Capital and Repair Expenditures Survey", "fr": "Enquete sur les depenses en immobilisations et reparations"},
+        "source": "290045",
+        "themes": "*2162*",
+        "release_date": "2016-05-10",
+        "growth_rate": {
+          "growth": {"en": "-3.9%", "fr": "-3,9 %"},
+          "arrow_direction": "2",
+          "details": {"en": "(annual change)", "fr": "(variation annuelle)"}
+        }
+      }
+    ]
+  }
+}

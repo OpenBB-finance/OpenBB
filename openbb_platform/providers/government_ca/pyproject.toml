@@ -1,0 +1,147 @@
+[project]
+name = "openbb-government-ca"
+version = "0.1.0"
+description = "Canadian government data provider extension (Bank of Canada + Statistics Canada) for the OpenBB Platform."
+authors = [{ name = "OpenBB Contributors", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
+readme = "README.md"
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "requests>=2.31",
+]
+
+[project.scripts]
+generate-government-ca-cache = "openbb_government_ca.utils.generate_cache:main"
+
+[project.entry-points."openbb_provider_extension"]
+government_ca = "openbb_government_ca:government_ca_provider"
+
+[project.entry-points."openbb_core_extension"]
+government_ca = "openbb_government_ca.government_ca_router:router"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = [
+    "openbb-devtools>=2.0.0",
+    "pytest-cov>=4.1",
+    "pytest-vcr>=1.0",
+    "vcrpy>=6.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.25", "requests>=2.31"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_government_ca"]
+
+[tool.hatch.build.targets.sdist]
+# The cache asset is gitignored; the build hook materializes it before
+# packaging so both sdist and wheel ship a self-contained artifact.
+include = [
+    "openbb_government_ca",
+    "openbb_government_ca/assets/government_ca_cache.json.xz",
+    "hatch_build.py",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+
+# ---------------------------------------------------------------------------
+# Lint / type-check / test configuration (V5 style, mirroring openbb-oecd)
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_government_ca/government_ca_router.py" = ["ARG001", "PLC0415", "SLF001", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917"]
+"openbb_government_ca/utils/generate_cache.py" = ["T201", "PLR0912", "PLR0914", "PLR0915", "PLR0917", "BLE001", "S112", "S113", "F401"]
+"openbb_government_ca/utils/helpers.py" = ["PLR0912", "PLR0911"]
+"openbb_government_ca/utils/metadata/_cache_mixin.py" = ["PLR0912"]
+"openbb_government_ca/utils/metadata/_loader_mixin.py" = ["PLR0912", "PLR0914", "PLC0415", "ARG002"]
+"openbb_government_ca/boc/*.py" = ["ARG002", "PLC0415", "PLR0912"]
+"openbb_government_ca/statscan/*.py" = ["ARG002", "PLC0415", "PLR0912", "PLR0911"]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+# Excluded from type-checking:
+# - ``tests`` / ``integration`` — not shipped, less rigorous
+# - ``generate_cache.py`` — build-time script that imports ``requests``
+#   (a build-system dep, not a lint dep). Forcing the lint env to have
+#   ``requests`` would break separation of concerns. The script is
+#   exercised by the ``test_generate_cache`` suite which mocks the
+#   network layer.
+# - ``hatch_build.py`` — same reason; imports ``hatchling`` which is a
+#   build-time dep.
+include = ["openbb_government_ca"]
+exclude = [
+    "tests",
+    "integration",
+    "openbb_government_ca/utils/generate_cache.py",
+    "hatch_build.py",
+]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --cov=openbb_government_ca --cov-report=term-missing --cov-fail-under=100"
+markers = ["record_http: VCR-backed HTTP cassette tests"]
+
+[tool.coverage.run]
+source = ["openbb_government_ca"]
+branch = true
+omit = [
+    # Build-time script — exercised via mocked tests, but its top-level
+    # ``raise SystemExit`` branch when ``requests`` is missing can't be
+    # hit in the test env. The test_generate_cache suite covers every
+    # callable function.
+    "openbb_government_ca/utils/generate_cache.py",
+    # Hatch build hook — runs only at install time, not at runtime.
+    # Excluded from coverage for the same reason it's excluded from ty.
+    "hatch_build.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
