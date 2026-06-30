@@ -125,3 +125,28 @@ def get_yield_curve_ids(
     }
 
     return dict(SERIES_IDS=YIELD_CURVE, MATURITIES=MATURITY_VALUES)
+
+
+def get_yield_curve_key(
+    rating: Literal["aaa", "all_ratings"] = "aaa",
+    yield_curve_type: Literal[
+        "spot_rate", "instantaneous_forward", "par_yield"
+    ] = "spot_rate",
+) -> tuple[str, dict[str, str], dict[str, float]]:
+    """Build a single SDMX data-API YC key covering every maturity.
+
+    Returns ``(key, datatype_to_maturity, maturity_to_years)`` where ``key`` is
+    the flow-relative key (flowRef ``YC``) with all maturities OR'd via ``+`` on
+    the ``DATA_TYPE_FM`` dimension, e.g. ``B.U2.EUR.4F.G_N_A.SV_C_YM.SR_3M+...``.
+    """
+    yield_code = YIELD_TYPE_DICT[yield_curve_type]
+    rating_code = RATING_DICT[rating]
+    maturity_codes = {"month_3": "3M", "month_6": "6M"}
+    maturity_codes.update({f"year_{i}": f"{i}Y" for i in range(1, 31)})
+    datatype_to_maturity = {
+        f"{yield_code}_{code}": maturity for maturity, code in maturity_codes.items()
+    }
+    key = f"B.U2.EUR.4F.G_N_{rating_code}.SV_C_YM." + "+".join(datatype_to_maturity)
+    maturity_to_years = {"month_3": 0.25, "month_6": 0.5}
+    maturity_to_years.update({f"year_{i}": float(i) for i in range(1, 31)})
+    return key, datatype_to_maturity, maturity_to_years

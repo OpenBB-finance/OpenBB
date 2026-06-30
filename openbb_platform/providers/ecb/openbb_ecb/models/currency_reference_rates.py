@@ -40,12 +40,11 @@ class ECBCurrencyReferenceRatesFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract the raw data from the ECB website."""
+        """Extract the raw daily reference-rate XML from the ECB website."""
         # pylint: disable=import-outside-toplevel
         import xmltodict
         from openbb_core.provider.utils.helpers import make_request
 
-        results = {}
         url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
         response = make_request(url)
         if response.status_code != 200:
@@ -53,18 +52,16 @@ class ECBCurrencyReferenceRatesFetcher(
                 "Failed to fetch data from ECB."
                 + f" -> Status Code: {response.status_code}"
             )
-        data = xmltodict.parse(response.content)
-        rates_data = data["gesmes:Envelope"]["Cube"]["Cube"]["Cube"]
-        rates = {d["@currency"]: d["@rate"] for d in rates_data}
-        results["date"] = data["gesmes:Envelope"]["Cube"]["Cube"]["@time"]
-        results["EUR"] = 1
-        results.update(rates)
-
-        return results
+        cube = xmltodict.parse(response.content)["gesmes:Envelope"]["Cube"]["Cube"]
+        return {
+            "time": cube["@time"],
+            "rates": {d["@currency"]: d["@rate"] for d in cube["Cube"]},
+        }
 
     @staticmethod
     def transform_data(
         query: ECBCurrencyReferenceRatesQueryParams, data: dict, **kwargs: Any
     ) -> ECBCurrencyReferenceRatesData:
-        """Transform data."""
-        return ECBCurrencyReferenceRatesData.model_validate(data)
+        """Shape the raw rates into the standardized record and validate."""
+        record = {"date": data["time"], "EUR": 1, **data["rates"]}
+        return ECBCurrencyReferenceRatesData.model_validate(record)

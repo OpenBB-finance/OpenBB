@@ -1,0 +1,186 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+    method: GET
+    uri: https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?detail=full&endPeriod=2024-06-07&format=jsondata&startPeriod=2024-06-03
+  response:
+    body:
+      string: "{\n    \"header\": {\n        \"id\": \"8dda1ebb-3d1e-401a-8143-361e85867c3d\",\n
+        \       \"test\": false,\n        \"prepared\": \"2026-06-25T00:28:56.426+02:00\",\n
+        \       \"sender\": {\n            \"id\": \"ECB\"\n        }\n    },\n    \"dataSets\":
+        [\n        {\n            \"action\": \"Replace\",\n            \"validFrom\":
+        \"2026-06-25T00:28:56.426+02:00\",\n            \"series\": {\n                \"0:0:0:0:0\":
+        {\n                    \"attributes\": [\n                        0,\n                        null,\n
+        \                       0,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       0,\n                        null,\n                        0,\n
+        \                       0,\n                        0,\n                        0\n
+        \                   ],\n                    \"observations\": {\n                        \"0\":
+        [\n                            1.0842,\n                            0,\n                            0,\n
+        \                           null,\n                            null\n                        ],\n
+        \                       \"1\": [\n                            1.0865,\n                            0,\n
+        \                           0,\n                            null,\n                            null\n
+        \                       ],\n                        \"2\": [\n                            1.0872,\n
+        \                           0,\n                            0,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            1.0865,\n                            0,\n                            0,\n
+        \                           null,\n                            null\n                        ],\n
+        \                       \"4\": [\n                            1.0898,\n                            0,\n
+        \                           0,\n                            null,\n                            null\n
+        \                       ]\n                    }\n                }\n            }\n
+        \       }\n    ],\n    \"structure\": {\n        \"links\": [\n            {\n
+        \               \"title\": \"Exchange Rates\",\n                \"rel\": \"dataflow\",\n
+        \               \"href\": \"https://data-api.ecb.europa.eu:443/service/dataflow/ECB/EXR/1.0\"\n
+        \           }\n        ],\n        \"name\": \"Exchange Rates\",\n        \"dimensions\":
+        {\n            \"series\": [\n                {\n                    \"id\":
+        \"FREQ\",\n                    \"name\": \"Frequency\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"D\",\n
+        \                           \"name\": \"Daily\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"CURRENCY\",\n                    \"name\": \"Currency\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"USD\",\n
+        \                           \"name\": \"US dollar\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"CURRENCY_DENOM\",\n                    \"name\": \"Currency denominator\",\n
+        \                   \"values\": [\n                        {\n                            \"id\":
+        \"EUR\",\n                            \"name\": \"Euro\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"EXR_TYPE\",\n                    \"name\": \"Exchange rate type\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"SP00\",\n
+        \                           \"name\": \"Spot\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"EXR_SUFFIX\",\n                    \"name\": \"Series variation - EXR context\",\n
+        \                   \"values\": [\n                        {\n                            \"id\":
+        \"A\",\n                            \"name\": \"Average\"\n                        }\n
+        \                   ]\n                }\n            ],\n            \"observation\":
+        [\n                {\n                    \"id\": \"TIME_PERIOD\",\n                    \"name\":
+        \"Time period or range\",\n                    \"role\": \"time\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"2024-06-03\",\n
+        \                           \"name\": \"2024-06-03\",\n                            \"start\":
+        \"2024-06-03T00:00:00.000+02:00\",\n                            \"end\": \"2024-06-03T23:59:59.999+02:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2024-06-04\",\n                            \"name\": \"2024-06-04\",\n                            \"start\":
+        \"2024-06-04T00:00:00.000+02:00\",\n                            \"end\": \"2024-06-04T23:59:59.999+02:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2024-06-05\",\n                            \"name\": \"2024-06-05\",\n                            \"start\":
+        \"2024-06-05T00:00:00.000+02:00\",\n                            \"end\": \"2024-06-05T23:59:59.999+02:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2024-06-06\",\n                            \"name\": \"2024-06-06\",\n                            \"start\":
+        \"2024-06-06T00:00:00.000+02:00\",\n                            \"end\": \"2024-06-06T23:59:59.999+02:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2024-06-07\",\n                            \"name\": \"2024-06-07\",\n                            \"start\":
+        \"2024-06-07T00:00:00.000+02:00\",\n                            \"end\": \"2024-06-07T23:59:59.999+02:00\"\n
+        \                       }\n                    ]\n                }\n            ]\n
+        \       },\n        \"attributes\": {\n            \"series\": [\n                {\n
+        \                   \"id\": \"TIME_FORMAT\",\n                    \"name\":
+        \"Time format code\",\n                    \"values\": [\n                        {\n
+        \                           \"name\": \"P1D\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"BREAKS\",\n                    \"name\": \"Breaks\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"COLLECTION\",\n                    \"name\": \"Collection indicator\",\n
+        \                   \"values\": [\n                        {\n                            \"id\":
+        \"A\",\n                            \"name\": \"Average of observations through
+        period\"\n                        }\n                    ]\n                },\n
+        \               {\n                    \"id\": \"COMPILING_ORG\",\n                    \"name\":
+        \"Compiling organisation\",\n                    \"values\": [\n                    ]\n
+        \               },\n                {\n                    \"id\": \"DISS_ORG\",\n
+        \                   \"name\": \"Data dissemination organisation\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"DOM_SER_IDS\",\n                    \"name\": \"Domestic series ids\",\n
+        \                   \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"PUBL_ECB\",\n                    \"name\":
+        \"Source publication (ECB only)\",\n                    \"values\": [\n                    ]\n
+        \               },\n                {\n                    \"id\": \"PUBL_MU\",\n
+        \                   \"name\": \"Source publication (Euro area only)\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"PUBL_PUBLIC\",\n                    \"name\": \"Source publication (public)\",\n
+        \                   \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"UNIT_INDEX_BASE\",\n                    \"name\":
+        \"Unit index base\",\n                    \"values\": [\n                        {\n
+        \                           \"name\": \"99Q1=100\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"COMPILATION\",\n                    \"name\": \"Compilation\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"COVERAGE\",\n                    \"name\": \"Coverage\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"DECIMALS\",\n                    \"name\": \"Decimals\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"4\",\n
+        \                           \"name\": \"Four\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"NAT_TITLE\",\n                    \"name\": \"National language title\",\n
+        \                   \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"SOURCE_AGENCY\",\n                    \"name\":
+        \"Source agency\",\n                    \"values\": [\n                        {\n
+        \                           \"id\": \"4F0\",\n                            \"name\":
+        \"European Central Bank (ECB)\"\n                        }\n                    ]\n
+        \               },\n                {\n                    \"id\": \"SOURCE_PUB\",\n
+        \                   \"name\": \"Publication source\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"TITLE\",\n                    \"name\": \"Title\",\n                    \"values\":
+        [\n                        {\n                            \"name\": \"US dollar/Euro
+        ECB reference exchange rate\"\n                        }\n                    ]\n
+        \               },\n                {\n                    \"id\": \"TITLE_COMPL\",\n
+        \                   \"name\": \"Title complement\",\n                    \"values\":
+        [\n                        {\n                            \"name\": \"ECB
+        reference exchange rate, US dollar/Euro, 2.15 pm (C.E.T.)\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"UNIT\",\n                    \"name\": \"Unit\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"USD\",\n
+        \                           \"name\": \"US dollar\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"UNIT_MULT\",\n                    \"name\": \"Unit multiplier\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"0\",\n
+        \                           \"name\": \"Units\"\n                        }\n
+        \                   ]\n                }\n            ],\n            \"observation\":
+        [\n                {\n                    \"id\": \"OBS_STATUS\",\n                    \"name\":
+        \"Observation status\",\n                    \"values\": [\n                        {\n
+        \                           \"id\": \"A\",\n                            \"name\":
+        \"Normal value\"\n                        }\n                    ]\n                },\n
+        \               {\n                    \"id\": \"OBS_CONF\",\n                    \"name\":
+        \"Observation confidentiality\",\n                    \"values\": [\n                        {\n
+        \                           \"id\": \"F\",\n                            \"name\":
+        \"Free\"\n                        }\n                    ]\n                },\n
+        \               {\n                    \"id\": \"OBS_PRE_BREAK\",\n                    \"name\":
+        \"Pre-break observation value\",\n                    \"values\": [\n                    ]\n
+        \               },\n                {\n                    \"id\": \"OBS_COM\",\n
+        \                   \"name\": \"Observation comment\",\n                    \"values\":
+        [\n                    ]\n                }\n            ]\n        }\n    }\n}"
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=data.json
+      Content-Type:
+      - application/vnd.sdmx.data+json;version=1.0.0-wd
+      Date:
+      - Wed, 24 Jun 2026 22:28:56 GMT
+      Expires:
+      - Wed, 24 Jun 2026 22:29:26 GMT
+      Last-Modified:
+      - Wed, 24 Jun 2026 13:57:07 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
