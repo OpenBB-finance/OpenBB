@@ -405,6 +405,32 @@ class TestFetchBytes:
         url = frq1_structure.CSV_URL.format(rssd=1447376, date="20251231")
         assert frq1_structure._fetch_bytes(url) == b"ItemName,Description,Value"
 
+    def test_lookalike_host_uses_ordinary_client(self, monkeypatch):
+        """A host with ``ffiec.gov`` only as a substring is not trusted as FFIEC.
+
+        Guards the URL-host check against incomplete substring matching: a
+        look-alike host must fall to the ordinary client, never the
+        browser-impersonating FFIEC session.
+        """
+        import requests
+
+        import openbb_federal_reserve.utils.curl_session as curl_mod
+
+        class _Resp:
+            content = b"body"
+
+            def raise_for_status(self):
+                """No-op success."""
+
+        monkeypatch.setattr(requests, "get", lambda *a, **k: _Resp())
+
+        def _forbidden(*a, **k):
+            """Fail if the FFIEC session is used for a look-alike host."""
+            raise AssertionError("look-alike host must not use the FFIEC session")
+
+        monkeypatch.setattr(curl_mod, "get_session", _forbidden)
+        assert frq1_structure._fetch_bytes("https://ffiec.gov.evil.com/x") == b"body"
+
 
 class TestSampleCsvPayloads:
     """Coverage for the per-filer latest-period CSV fetch."""

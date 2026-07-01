@@ -42,6 +42,7 @@ import json
 import re
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 GUIDE_URL = (
     "https://www.frbservices.org/binaries/content/assets/crsocms/"
@@ -143,7 +144,8 @@ def _fetch_bytes(url: str) -> bytes:
     through the shared browser-impersonating session; the public PDFs are served
     by ordinary clients.
     """
-    if "ffiec.gov" in url:
+    host = (urlparse(url).hostname or "").lower()
+    if host == "ffiec.gov" or host.endswith(".ffiec.gov"):
         from openbb_federal_reserve.utils.curl_session import get_session
 
         def warmup(session: Any) -> None:
