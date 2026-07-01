@@ -30,7 +30,7 @@ class EcbMetadata(
         """Return the singleton, creating it on first call."""
         if cls._instance is None:
             with cls._lock:
-                if cls._instance is None:  # pragma: no cover - race-only double-check
+                if cls._instance is None:  # pragma: no cover
                     cls._instance = super().__new__(cls)
                     cls._instance._initialized = False
         return cls._instance
@@ -40,7 +40,7 @@ class EcbMetadata(
         if self._initialized:
             return
         with self._lock:
-            if self._initialized:  # pragma: no cover - race-only double-check
+            if self._initialized:  # pragma: no cover
                 return
             self.dataflows = {}
             self.datastructures = {}
@@ -50,22 +50,23 @@ class EcbMetadata(
             self.dataflow_categories = {}
             self.category_dataflows = {}
             self.presentation_tables = {}
-            self.row_labels = {}
             self.dataflow_constraints = {}
+            self.dataflow_info = {}
+            self.portal_concepts = {}
             self._dataflow_parameters_cache = {}
             self._load_from_cache()
             self._initialized = True
 
     @classmethod
     def _reset(cls) -> None:
-        """Drop the singleton (used by tests)."""
+        """Drop the singleton."""
         with cls._lock:
             cls._instance = None
 
     def __deepcopy__(self, memo: dict) -> EcbMetadata:
-        """Singletons are not copyable — return self."""
+        """Return self."""
         return self
 
     def __copy__(self) -> EcbMetadata:
-        """Singletons are not copyable — return self."""
+        """Return self."""
         return self

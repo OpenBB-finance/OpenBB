@@ -1,9 +1,4 @@
-"""ECB Currency Historical Model (EXR dataflow).
-
-ECB publishes daily/monthly/quarterly/annual euro foreign-exchange reference
-rates (foreign currency per 1 EUR). EUR-based pairs are fetched directly;
-non-EUR pairs are derived as cross rates from the two euro reference series.
-"""
+"""ECB Currency Historical Model."""
 
 # pylint: disable=unused-argument
 
@@ -20,22 +15,19 @@ from pydantic import Field
 
 
 def _exr_pair_choices() -> list[str]:
-    """EUR currency pairs available in the EXR dataflow (for the symbol dropdown)."""
+    """EUR currency pairs available in the EXR dataflow."""
     try:
         from openbb_ecb.utils.metadata import EcbMetadata
 
         dims = EcbMetadata().get_dataflow_dimensions("EXR")
         currencies = next((d["values"] for d in dims if d["id"] == "CURRENCY"), [])
         return [f"EUR{v['value']}" for v in currencies if v["value"] != "EUR"]
-    except Exception:  # noqa: BLE001 - never block import on a bad/absent cache
+    except Exception:  # noqa: BLE001
         return []
 
 
 class ECBCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
-    """ECB Currency Historical Query.
-
-    Source: https://data.ecb.europa.eu/ (EXR dataflow)
-    """
+    """ECB Currency Historical Query."""
 
     __json_schema_extra__ = {
         "symbol": {"multiple_items_allowed": True, "choices": _exr_pair_choices()}
@@ -116,7 +108,7 @@ class ECBCurrencyHistoricalFetcher(
 
     @staticmethod
     def _split_pair(pair: str) -> tuple[str, str]:
-        """Split a 6-letter pair (or 3-letter currency vs EUR) into (base, quote)."""
+        """Split a pair into base and quote."""
         if len(pair) == 3:
             return "EUR", pair
         if len(pair) != 6:
@@ -129,7 +121,7 @@ class ECBCurrencyHistoricalFetcher(
     def transform_data(
         query: ECBCurrencyHistoricalQueryParams, data: list[dict], **kwargs: Any
     ) -> list[ECBCurrencyHistoricalData]:
-        """Compute (cross) rates per requested pair and standardize."""
+        """Compute rates per requested pair and standardize."""
         rates: dict[str, dict[str, float]] = {}
         for record in data:
             if record.get("OBS_VALUE") is None:

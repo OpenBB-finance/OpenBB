@@ -1,5 +1,3 @@
-"""Unit tests for the ECB available indicators model (series enumeration)."""
-
 import asyncio
 
 import pytest
@@ -35,7 +33,6 @@ def _patch_keys(monkeypatch, series=_SERIES):
 
 
 def test_requires_valid_dataflow():
-    """Missing or unknown dataflow raises — there is no series index to scan."""
     with pytest.raises(OpenBBError):
         asyncio.run(Fetcher.aextract_data(Fetcher.transform_query({}), None))
     with pytest.raises(OpenBBError):
@@ -45,7 +42,6 @@ def test_requires_valid_dataflow():
 
 
 def test_enumerate_and_transform(monkeypatch):
-    """Series enumerate into FLOW::KEY indicator rows with decoded metadata."""
     _patch_keys(monkeypatch)
     query = Fetcher.transform_query(
         {"dataflow": "ICP", "frequency": "M", "reference_area": "U2"}
@@ -66,7 +62,6 @@ def test_enumerate_and_transform(monkeypatch):
 
 
 def test_query_filter_and_empty(monkeypatch):
-    """A text query filters by name; an empty result raises (no freq/area set)."""
     _patch_keys(monkeypatch)
     query = Fetcher.transform_query(
         {"dataflow": "ICP", "query": "annual rate of change"}
@@ -84,7 +79,6 @@ def test_query_filter_and_empty(monkeypatch):
 
 
 def test_frequency_and_area_narrow_the_key(monkeypatch):
-    """``frequency`` -> FREQ and ``reference_area`` -> the geography dimension."""
     from openbb_ecb.utils import query_builder
     from openbb_ecb.utils.metadata import EcbMetadata
 
@@ -96,7 +90,6 @@ def test_frequency_and_area_narrow_the_key(monkeypatch):
 
     monkeypatch.setattr(query_builder, "fetch_series_keys", _keys)
 
-    # EXR geography dim is CURRENCY: FREQ.CURRENCY.CURRENCY_DENOM.EXR_TYPE.EXR_SUFFIX
     asyncio.run(
         Fetcher.aextract_data(
             Fetcher.transform_query(
@@ -107,7 +100,6 @@ def test_frequency_and_area_narrow_the_key(monkeypatch):
     )
     assert captured["key"] == "A.USD..."
 
-    # A dataflow with no geography dim -> reference_area is ignored.
     monkeypatch.setattr(
         EcbMetadata,
         "get_dataflow_dimensions",
@@ -125,7 +117,6 @@ def test_frequency_and_area_narrow_the_key(monkeypatch):
 
 
 def test_dimension_values_narrow_the_key(monkeypatch):
-    """Extra 'DIM:VALUE' filters parse from a string, a list, or a comma-joined item."""
     from openbb_ecb.utils import query_builder
 
     captured = {}
@@ -136,11 +127,10 @@ def test_dimension_values_narrow_the_key(monkeypatch):
 
     monkeypatch.setattr(query_builder, "fetch_series_keys", _keys)
 
-    # EXR dims: FREQ.CURRENCY.CURRENCY_DENOM.EXR_TYPE.EXR_SUFFIX
     for dim_values in (
         "EXR_TYPE:SP00,EXR_SUFFIX:A",
-        ["EXR_TYPE:SP00", "EXR_SUFFIX:A", "junk"],  # 'junk' has no ':' -> skipped
-        ["EXR_TYPE:SP00,EXR_SUFFIX:A"],  # the Workspace marshals as one joined value
+        ["EXR_TYPE:SP00", "EXR_SUFFIX:A", "junk"],
+        ["EXR_TYPE:SP00,EXR_SUFFIX:A"],
     ):
         asyncio.run(
             Fetcher.aextract_data(
@@ -158,7 +148,6 @@ def test_dimension_values_narrow_the_key(monkeypatch):
 
 
 def test_limit(monkeypatch):
-    """A positive limit caps the result; <=0 returns all."""
     _patch_keys(monkeypatch)
     capped = asyncio.run(
         Fetcher.aextract_data(

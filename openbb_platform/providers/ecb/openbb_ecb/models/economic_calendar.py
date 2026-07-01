@@ -1,9 +1,4 @@
-"""ECB Economic Calendar Model (statistical release calendar).
-
-The ECB calendar of statistical releases — when each dataset is next published.
-Sourced by scraping the statscal page (see ``utils.non_sdmx``); mapped onto the
-standard ``EconomicCalendar`` model.
-"""
+"""ECB Economic Calendar Model."""
 
 # pylint: disable=unused-argument
 
@@ -17,10 +12,6 @@ from openbb_core.provider.standard_models.economic_calendar import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field
 
-# A few statscal "Dataset" labels are domain abbreviations that differ from the
-# SDMX dataflow id the rest of the provider queries. Canonicalize them so the
-# calendar's click-to-explore flow lands on a real dataflow. (Quarterly sector
-# accounts — "QSA" — has no single ECB dataflow and is intentionally left as-is.)
 _DATAFLOW_ALIASES = {"BPS": "BOP", "GFS": "GST", "RAS": "RA"}
 
 
@@ -40,10 +31,6 @@ class ECBEconomicCalendarData(EconomicCalendarData):
     model_config = ConfigDict(
         extra="allow",
         json_schema_extra={
-            # The ``category`` cell holds the dataflow id (e.g. ``BSI``); clicking
-            # it sets the shared ``dataflow`` parameter, so the dataflow-dimensions
-            # and series-builder widgets explore that release's data. The calendar
-            # is the dashboard's entry point.
             "category": {
                 "x-widget_config": {
                     "headerName": "Dataset",

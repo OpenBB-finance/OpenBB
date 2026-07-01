@@ -1,7 +1,7 @@
 [
   {
     "name": "ECB Explorer",
-    "description": "Start from the ECB statistical release calendar — click a release's dataset to explore its dimensions, series, and data — then dive into the presentation tables, euro exchange rates, key ECB and bank interest rates, the euro short-term rate, balance of payments, ECB releases as a full-text newsfeed, and the Eurosystem list of eligible collateral assets.",
+    "description": "Start from the ECB statistical release calendar — click a release's dataset to explore its dimensions, series, and data — then dive into the presentation tables, euro exchange rates, key ECB and bank interest rates, the euro short-term rate, balance of payments, a full-content viewer for ECB releases and blog posts, and the Eurosystem list of eligible collateral assets.",
     "img": "https://www.ecb.europa.eu/home/shared/img/socialmedia/social-default.jpg",
     "allowCustomization": true,
     "tabs": {
@@ -60,6 +60,31 @@
           }
         ]
       },
+      "dataset-information": {
+        "id": "dataset-information",
+        "name": "Dataset Metadata",
+        "layout": [
+          {
+            "i": "ecb_list_concepts_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 12,
+            "groups": ["Concept"]
+          },
+          {
+            "i": "ecb_dataflow_information",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {"concept": "bank-interest-rates", "dataflow": "MIR"}
+            },
+            "groups": ["Concept"]
+          }
+        ]
+      },
       "presentation-tables": {
         "id": "presentation-tables",
         "name": "Presentation Tables",
@@ -80,7 +105,7 @@
             "h": 24,
             "state": {
               "params": {
-                "table_id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
+                "table_id": "BSI01_01"
               }
             },
             "groups": ["Table"]
@@ -117,8 +142,7 @@
             "x": 0,
             "y": 0,
             "w": 20,
-            "h": 15,
-            "state": {"params": {"interest_rate_type": "deposit"}}
+            "h": 15
           },
           {
             "i": "ecb_euro_short_term_rate_ecb_obb",
@@ -131,29 +155,28 @@
             "i": "ecb_mfi_interest_rates_ecb_obb",
             "x": 0,
             "y": 15,
-            "w": 20,
-            "h": 15,
-            "state": {"params": {"symbol": "household_loans_for_house_purchase"}}
+            "w": 40,
+            "h": 15
           },
           {
             "i": "ecb_yield_curve_ecb_obb",
-            "x": 20,
-            "y": 15,
-            "w": 20,
+            "x": 0,
+            "y": 30,
+            "w": 40,
             "h": 15
           }
         ]
       },
-      "economy": {
-        "id": "economy",
-        "name": "Economy",
+      "balance_of_payments": {
+        "id": "balance_of_payments",
+        "name": "Balance of Payments",
         "layout": [
           {
             "i": "ecb_balance_of_payments_ecb_obb",
             "x": 0,
             "y": 0,
             "w": 40,
-            "h": 18,
+            "h": 25,
             "state": {"params": {"report_type": "main"}}
           }
         ]
@@ -163,7 +186,7 @@
         "name": "Releases",
         "layout": [
           {
-            "i": "ecb_releases_ecb_obb",
+            "i": "ecb_release_document",
             "x": 0,
             "y": 0,
             "w": 40,
@@ -204,7 +227,7 @@
         "name": "Table",
         "type": "param",
         "paramName": "table_id",
-        "defaultValue": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
+        "defaultValue": "BSI01_01"
       }
     ]
   }

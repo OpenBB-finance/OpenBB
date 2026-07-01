@@ -1,5 +1,3 @@
-"""Unit tests for the ECB yield curve model."""
-
 import asyncio
 
 import pytest
@@ -19,14 +17,12 @@ def _stub(records):
 
 
 def test_transform_maps_dedupes_scales():
-    """series_key -> maturity, dedupe, nearest-date, /100 scaling."""
     query = Fetcher.transform_query({"date": "2023-11-20"})
     data = [
         {"series_key": _PREFIX + "SR_3M", "date": "2023-11-20", "OBS_VALUE": 3.8},
         {"series_key": _PREFIX + "SR_10Y", "date": "2023-11-20", "OBS_VALUE": 2.66},
-        # duplicate (overlapping window) -> deduped
         {"series_key": _PREFIX + "SR_3M", "date": "2023-11-20", "OBS_VALUE": 3.8},
-        {"series_key": _PREFIX + "ZZ", "date": "2023-11-20", "OBS_VALUE": 9},  # unknown
+        {"series_key": _PREFIX + "ZZ", "date": "2023-11-20", "OBS_VALUE": 9},
         {"series_key": _PREFIX + "SR_6M", "date": "2023-11-20", "OBS_VALUE": None},
     ]
     out = Fetcher.transform_data(query, data)
@@ -36,14 +32,12 @@ def test_transform_maps_dedupes_scales():
 
 
 def test_transform_empty_raises():
-    """No mappable rows raises."""
     query = Fetcher.transform_query({"date": "2023-11-20"})
     with pytest.raises(EmptyDataError):
         Fetcher.transform_data(query, [{"series_key": _PREFIX + "ZZ", "OBS_VALUE": 1}])
 
 
 def test_aextract(monkeypatch):
-    """Extract fetches each requested date's window and returns raw records."""
     monkeypatch.setattr(
         query_builder,
         "fetch_sdmx_data",

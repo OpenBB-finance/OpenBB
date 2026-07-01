@@ -1,5 +1,3 @@
-"""Unit tests for ``openbb_ecb.utils.generate_cache`` (mocked HTTP)."""
-
 import json
 import lzma
 
@@ -25,8 +23,8 @@ DATAFLOWS = _doc(
     '<com:Name xml:lang="en">Exchange Rates</com:Name>'
     '<str:Structure><Ref agencyID="ECB" id="ECB_EXR1" version="1.0"/></str:Structure>'
     "</str:Dataflow>"
-    '<str:Dataflow agencyID="ECB" id="NOSTRUCT" version="1.0"/>'  # no DSD ref
-    "<str:Dataflow/>"  # no id -> skipped
+    '<str:Dataflow agencyID="ECB" id="NOSTRUCT" version="1.0"/>'
+    "<str:Dataflow/>"
     "</str:Dataflows>"
 )
 DSDS = _doc(
@@ -42,24 +40,24 @@ DSDS = _doc(
     '<str:Attribute id="UNIT"><str:ConceptIdentity><Ref id="UNIT"/></str:ConceptIdentity>'
     "</str:Attribute></str:AttributeList></str:DataStructureComponents>"
     "</str:DataStructure>"
-    "<str:DataStructure/>"  # no id -> skipped
+    "<str:DataStructure/>"
     "</str:DataStructures>"
 )
 CODELISTS = _doc(
     "<str:Codelists>"
     '<str:Codelist id="CL_FREQ">'
     '<str:Code id="D"><com:Name xml:lang="en">Daily</com:Name></str:Code>'
-    '<str:Code id="X"/>'  # no name -> falls back to id
-    "<str:Code/>"  # no id -> skipped
+    '<str:Code id="X"/>'
+    "<str:Code/>"
     "</str:Codelist>"
-    "<str:Codelist/>"  # no id -> skipped
+    "<str:Codelist/>"
     "</str:Codelists>"
 )
 CONCEPTS = _doc(
     "<str:Concepts>"
     '<str:ConceptScheme id="ECB_CONCEPTS">'
     '<str:Concept id="FREQ"><com:Name xml:lang="en">Frequency</com:Name></str:Concept>'
-    "<str:Concept/>"  # no id -> skipped
+    "<str:Concept/>"
     "</str:ConceptScheme></str:Concepts>"
 )
 CATSCHEME = _doc(
@@ -69,7 +67,7 @@ CATSCHEME = _doc(
     '<com:Description xml:lang="en">desc</com:Description>'
     '<str:Category id="0101"><com:Name xml:lang="en">Sub</com:Name></str:Category>'
     "</str:Category>"
-    '<str:Category><com:Name xml:lang="en">NoId</com:Name></str:Category>'  # no id
+    '<str:Category><com:Name xml:lang="en">NoId</com:Name></str:Category>'
     "</str:CategoryScheme></str:CategorySchemes>"
 )
 CATEGORISATION = _doc(
@@ -77,42 +75,13 @@ CATEGORISATION = _doc(
     '<str:Categorisation><str:Source><Ref id="EXR" class="Dataflow"/></str:Source>'
     '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'
     '<str:Categorisation><str:Source><Ref id="EXR" class="Dataflow"/></str:Source>'
-    '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'  # duplicate -> deduped
+    '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'
     '<str:Categorisation><str:Source><Ref id="ECB_EXR1" class="DataStructure"/></str:Source>'
-    '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'  # not a Dataflow
+    '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'
     '<str:Categorisation><str:Source><Ref class="Dataflow"/></str:Source>'
-    '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'  # source has no id
-    "<str:Categorisation/>"  # no source/target -> skipped
+    '<str:Target><Ref id="01"/></str:Target></str:Categorisation>'
+    "<str:Categorisation/>"
     "</str:Categorisations>"
-)
-
-
-HCLS = _doc(
-    "<str:Codelists>"
-    '<str:Codelist id="JDF_ROW_LABELS">'
-    '<str:Code id="L1"><com:Name xml:lang="en">Assets</com:Name></str:Code>'
-    "<str:Code/>"  # no id -> skipped
-    "</str:Codelist>"
-    '<str:Codelist id="OTHER"/>'  # not JDF_ROW_LABELS -> ignored
-    "</str:Codelists>"
-    "<str:HierarchicalCodelists>"
-    '<str:HierarchicalCodelist agencyID="ECB.DISS" id="HCL_JDF_EXR_HCI_CPI@HCL_EXR">'
-    '<com:Name xml:lang="en">Hierarchy for the HCL_JDF_EXR_HCI_CPI dataflow</com:Name>'
-    '<str:Hierarchy><str:HierarchicalCode id="1">'
-    '<str:Code><Ref maintainableParentID="JDF_ROW_LABELS" agencyID="ECB.DISS" id="L1"/></str:Code>'
-    '<str:HierarchicalCode id="2">'
-    '<str:Code><Ref maintainableParentID="CL_FREQ" agencyID="ECB" id="D"/></str:Code>'
-    "</str:HierarchicalCode>"
-    "</str:HierarchicalCode>"
-    '<str:HierarchicalCode id="3"/>'  # no Code ref -> None fields
-    "</str:Hierarchy>"
-    "</str:HierarchicalCodelist>"
-    '<str:HierarchicalCodelist agencyID="ECB.DISS" id="NO_SUFFIX">'  # no @HCL_ -> skipped
-    '<com:Name xml:lang="en">skip</com:Name></str:HierarchicalCodelist>'
-    '<str:HierarchicalCodelist agencyID="ECB.DISS" id="HCL_JDF_NOHIER@HCL_EXR">'  # no Hierarchy
-    '<com:Name xml:lang="en">empty</com:Name></str:HierarchicalCodelist>'
-    "<str:HierarchicalCodelist/>"  # no id -> skipped
-    "</str:HierarchicalCodelists>"
 )
 CONTENT_CONSTRAINTS = _doc(
     "<str:Constraints>"
@@ -122,27 +91,69 @@ CONTENT_CONSTRAINTS = _doc(
     '<str:CubeRegion include="true">'
     '<com:KeyValue id="FREQ"><com:Value>D</com:Value><com:Value>M</com:Value></com:KeyValue>'
     '<com:KeyValue id="CURRENCY"><com:Value>USD</com:Value></com:KeyValue>'
-    '<com:KeyValue id="EMPTY"></com:KeyValue>'  # no values -> skipped
+    '<com:KeyValue id="EMPTY"></com:KeyValue>'
     "</str:CubeRegion></str:ContentConstraint>"
-    '<str:ContentConstraint id="EXCLUDED">'  # include=false -> skipped
+    '<str:ContentConstraint id="EXCLUDED">'
     '<str:ConstraintAttachment><str:Dataflow><Ref id="FOO" class="Dataflow"/>'
     "</str:Dataflow></str:ConstraintAttachment>"
     '<str:CubeRegion include="false">'
     '<com:KeyValue id="FREQ"><com:Value>D</com:Value></com:KeyValue>'
     "</str:CubeRegion></str:ContentConstraint>"
-    '<str:ContentConstraint id="NOFLOW">'  # no dataflow ref -> skipped
+    '<str:ContentConstraint id="NOFLOW">'
     '<str:CubeRegion include="true">'
     '<com:KeyValue id="FREQ"><com:Value>D</com:Value></com:KeyValue>'
     "</str:CubeRegion></str:ContentConstraint>"
-    '<str:ContentConstraint id="NOCUBE">'  # no CubeRegion -> skipped
+    '<str:ContentConstraint id="NOCUBE">'
     '<str:ConstraintAttachment><str:Dataflow><Ref id="BAR" class="Dataflow"/>'
     "</str:Dataflow></str:ConstraintAttachment></str:ContentConstraint>"
-    '<str:ContentConstraint id="NOCODES">'  # cube with no usable codes -> skipped
+    '<str:ContentConstraint id="NOCODES">'
     '<str:ConstraintAttachment><str:Dataflow><Ref id="BAZ" class="Dataflow"/>'
     "</str:Dataflow></str:ConstraintAttachment>"
     '<str:CubeRegion include="true"><com:KeyValue id="X"></com:KeyValue>'
     "</str:CubeRegion></str:ContentConstraint>"
     "</str:Constraints>"
+)
+
+_PUB_TABLE_HTML = (
+    "<html><head><title>Test Table | ECB Data Portal</title></head><body>"
+    '<nav aria-label="breadcrumb"><ol>'
+    '<li><a href="/">Home</a></li>'
+    '<li><a href="/publications">Publications</a></li>'
+    '<li><a href="/publications/money-credit-and-banking">Money, credit and banking</a></li>'
+    '<li><a href="/publications/money-credit-and-banking/1">Monetary aggregates</a></li>'
+    "<li><a>Browse data</a></li>"
+    "</ol></nav>"
+    '<script type="application/json" data-drupal-selector="drupal-settings-json">'
+    '{"async_series_obs":{"series_keys":{'
+    '"111":{"serieskey":"BSI.M.U2.X"},'
+    '"112":{"serieskey":"BSI.M.U2.Y"},'
+    '"113":{"serieskey":"BSI.M.U2.X"},'
+    '"114":{"serieskey":"NODOT"},'
+    '"115":"notadict"}}}'
+    "</script></body></html>"
+)
+_PUB_CATEGORY_HTML = '<a href="/data/publications/TBL01">t</a>'
+
+_DSET_INFO_HTML = (
+    "<html><head><title>Exchange Rates - EXR | ECB Data Portal</title></head><body>"
+    '<a href="/data/datasets/exr/download">CSV</a>'
+    '<div class="dataset__field-m-dsetinfo-scope">'
+    '<div class="field__label">Scope</div>'
+    '<div class="field__item"><p>Summary <a href="/x">EXR</a>.</p><button>x</button>'
+    "</div></div>"
+    '<div class="dataset__field-m-dsetinfo-legal">'
+    '<div class="field__label">Legal</div>'
+    '<div class="field__item"><p>Regulation.</p></div></div>'
+    '<div class="dataset__field-m-dsetinfo-empty">'
+    '<div class="field__label">Empty</div><button>only</button></div>'
+    "</body></html>"
+)
+_CONCEPTS_INDEX_HTML = (
+    '<a href="/data/concepts/exchange-rates">x</a><a href="/data/concepts/loans">y</a>'
+)
+_CONCEPT_HTML = (
+    "<html><head><title>Exchange rates | ECB Data Portal</title></head>"
+    '<body><a href="/data/datasets/exr/">x</a></body></html>'
 )
 
 
@@ -151,75 +162,38 @@ class _FakeResp:
         self.status_code = status_code
         self.content = content
 
+    @property
+    def text(self):
+        return self.content.decode("utf-8")
+
     def raise_for_status(self):
         if self.status_code >= 400:
             raise requests.HTTPError(str(self.status_code))
 
 
-class _FakeJsonResp:
-    def __init__(self, status_code=200, payload=None):
-        self.status_code = status_code
-        self._payload = payload if payload is not None else {}
-
-    def json(self):
-        return self._payload
-
-
-# A small table: ITEM is the row dim (every leaf); SECTOR and MATURITY are partial
-# (each pinned by one leaf, so the others need an aggregate); AREA is the context
-# slice. The optimal slice (SECTOR=T, MATURITY=A) fills both partial rows but is
-# split across two series, so only coordinate-ascent finds it.
-_TABLE_DSD = [
-    {"id": "ITEM", "codelist_id": "CL_ITEM"},
-    {"id": "SECTOR", "codelist_id": "CL_SEC"},
-    {"id": "MATURITY", "codelist_id": "CL_MAT"},
-    {"id": "AREA", "codelist_id": "CL_AREA"},
-]
-_TABLE = {
-    "dataflow_id": "TST",
-    "tree": [
-        {
-            "code": "A20",
-            "codelist_id": "CL_ITEM",
-            "children": [
-                {"code": "1000", "codelist_id": "CL_SEC", "children": []},
-                {"code": "D", "codelist_id": "CL_MAT", "children": []},
-            ],
-        },
-        {"code": "A21", "codelist_id": "CL_ITEM", "children": []},
-        # A pure row-label leaf (no dimension code) is not a data row.
-        {"code": "L0", "codelist_id": "JDF_ROW_LABELS", "children": []},
-    ],
-}
-_TABLE_SERIESKEYS = {
-    "dataSets": [
-        {"series": {"0:0:0:0": {}, "0:1:1:0": {}, "0:0:0:1": {}, "0:0:2:2": {}}}
-    ],
-    "structure": {
-        "dimensions": {
-            "series": [
-                {"id": "ITEM", "values": [{"id": "A20"}, {"id": "A21"}]},
-                {"id": "SECTOR", "values": [{"id": "1000"}, {"id": "T"}]},
-                {"id": "MATURITY", "values": [{"id": "A"}, {"id": "D"}, {"id": "K"}]},
-                {"id": "AREA", "values": [{"id": "U2"}, {"id": "US"}, {"id": "ZZ"}]},
-            ]
-        }
-    },
+_HTML_ROUTES = (
+    (("/data/concepts/", "data-information"), _CONCEPT_HTML),
+    (("/data/concepts",), _CONCEPTS_INDEX_HTML),
+    (("/data/datasets/", "data-information"), _DSET_INFO_HTML),
+    (("/data/publications/",), _PUB_TABLE_HTML),
+    (("/publications/",), _PUB_CATEGORY_HTML),
+)
+_XML_ROUTES = {
+    "/dataflow/": DATAFLOWS,
+    "/datastructure/": DSDS,
+    "/codelist/": CODELISTS,
+    "/conceptscheme/": CONCEPTS,
+    "/categoryscheme/": CATSCHEME,
+    "/categorisation/": CATEGORISATION,
+    "/contentconstraint/": CONTENT_CONSTRAINTS,
 }
 
 
 def _dispatch(url, **kwargs):
-    table = {
-        "/dataflow/": DATAFLOWS,
-        "/datastructure/": DSDS,
-        "/codelist/": CODELISTS,
-        "/conceptscheme/": CONCEPTS,
-        "/categoryscheme/": CATSCHEME,
-        "/categorisation/": CATEGORISATION,
-        "/hierarchicalcodelist/": HCLS,
-        "/contentconstraint/": CONTENT_CONSTRAINTS,
-    }
-    for fragment, body in table.items():
+    for fragments, body in _HTML_ROUTES:
+        if all(fragment in url for fragment in fragments):
+            return _FakeResp(200, body.encode())
+    for fragment, body in _XML_ROUTES.items():
         if fragment in url:
             return _FakeResp(200, body)
     return _FakeResp(404, b"")
@@ -229,23 +203,18 @@ def _dispatch(url, **kwargs):
 def _mock_session(monkeypatch):
     monkeypatch.setattr(gc._session, "get", _dispatch)
     monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
-    # serieskeysonly (per-table context derivation) goes through requests.get.
-    monkeypatch.setattr(gc.requests, "get", lambda *a, **k: _FakeJsonResp(404, {}))
 
 
 def test_get_success(_mock_session):
-    """A 200 returns a parsed element."""
     assert gc._get(f"{gc.BASE_URL}/dataflow/ECB") is not None
 
 
 def test_get_404_returns_none(monkeypatch):
-    """A 404 returns None without raising."""
     monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(404))
     assert gc._get("http://x") is None
 
 
 def test_get_429_then_success(monkeypatch):
-    """A 429 retries, then succeeds."""
     monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
     seq = [_FakeResp(429), _FakeResp(200, DATAFLOWS)]
     monkeypatch.setattr(gc._session, "get", lambda *a, **k: seq.pop(0))
@@ -253,7 +222,6 @@ def test_get_429_then_success(monkeypatch):
 
 
 def test_get_retries_then_raises(monkeypatch):
-    """Persistent request errors raise after exhausting retries."""
     monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
 
     def _boom(*a, **k):
@@ -265,7 +233,6 @@ def test_get_retries_then_raises(monkeypatch):
 
 
 def test_get_all_429_exhausts(monkeypatch):
-    """Continuous 429s exhaust the retries and raise."""
     monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
     monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(429))
     with pytest.raises(requests.RequestException):
@@ -273,7 +240,6 @@ def test_get_all_429_exhausts(monkeypatch):
 
 
 def test_en_helper():
-    """``_en`` returns '' for None and prefers the English text."""
     import xml.etree.ElementTree as ET
 
     assert gc._en(None, "Name") == ""
@@ -290,7 +256,6 @@ def test_en_helper():
 
 
 def test_fetch_functions(_mock_session):
-    """Each fetch_* parser produces the expected catalog pieces."""
     dataflows = gc.fetch_dataflows()
     assert dataflows["EXR"]["dsd_id"] == "ECB_EXR1"
     assert dataflows["NOSTRUCT"]["dsd_id"] is None
@@ -313,50 +278,195 @@ def test_fetch_functions(_mock_session):
 
 
 def test_fetch_functions_empty(monkeypatch):
-    """When the API yields nothing the parsers return empties."""
     monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(404))
+    monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
     assert gc.fetch_dataflows() == {}
     assert gc.fetch_datastructures() == {}
     assert gc.fetch_codelists() == {}
     assert gc.fetch_concepts() == {}
     assert gc.fetch_categories() == ({}, {}, {})
-    assert gc.fetch_presentation_tables() == ({}, {})
+    assert gc.fetch_presentation_tables() == {}
     assert gc.fetch_content_constraints() == {}
+    assert gc.fetch_dataflow_info(["X"]) == {}
+    assert gc.fetch_portal_concepts(set()) == {}
 
 
 def test_fetch_content_constraints(_mock_session):
-    """Content-constraint CubeRegions parse into per-dataflow allowed codes."""
     out = gc.fetch_content_constraints()
-    # Only the included cube with a dataflow ref and real codes is kept.
     assert out == {"EXR": {"FREQ": ["D", "M"], "CURRENCY": ["USD"]}}
 
 
-def test_fetch_presentation_tables(_mock_session):
-    """Presentation-table HCLs parse into trees mapped to their dataflow."""
-    tables, row_labels = gc.fetch_presentation_tables()
-    assert row_labels == {"L1": "Assets"}
-
-    table = tables["HCL_JDF_EXR_HCI_CPI@HCL_EXR"]
-    assert table["dataflow_id"] == "EXR"
-    node = table["tree"][0]
-    assert node["code"] == "L1"
-    assert node["codelist_id"] == "JDF_ROW_LABELS"
-    assert node["agency"] == "ECB.DISS"
-    child = node["children"][0]
-    assert (child["code"], child["codelist_id"], child["agency"]) == (
-        "D",
-        "CL_FREQ",
-        "ECB",
+def test_get_text_success(monkeypatch):
+    monkeypatch.setattr(
+        gc._session, "get", lambda *a, **k: _FakeResp(200, b"<p>hi</p>")
     )
-    # A HierarchicalCode with no Code ref yields None fields.
-    assert table["tree"][1]["code"] is None
-    # No <Hierarchy> -> empty tree; no "@HCL_" -> skipped; no id -> skipped.
-    assert tables["HCL_JDF_NOHIER@HCL_EXR"]["tree"] == []
-    assert "NO_SUFFIX" not in tables
+    assert gc._get_text("http://x") == "<p>hi</p>"
+
+
+def test_get_text_non_200(monkeypatch):
+    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(404))
+    assert gc._get_text("http://x") == ""
+
+
+def test_get_text_retry_then_success(monkeypatch):
+    monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
+    seq = [_FakeResp(503), _FakeResp(200, b"ok")]
+    monkeypatch.setattr(gc._session, "get", lambda *a, **k: seq.pop(0))
+    assert gc._get_text("http://x") == "ok"
+
+
+def test_get_text_all_5xx(monkeypatch):
+    monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
+    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(500))
+    assert gc._get_text("http://x", retries=2) == ""
+
+
+def test_get_text_request_error(monkeypatch):
+    monkeypatch.setattr(gc.time, "sleep", lambda *a, **k: None)
+    calls = {"n": 0}
+
+    def _boom(*a, **k):
+        calls["n"] += 1
+        raise requests.ConnectionError("down")
+
+    monkeypatch.setattr(gc._session, "get", _boom)
+    assert gc._get_text("http://x", retries=2) == ""
+    assert calls["n"] == 2
+
+
+def test_clean_html():
+    assert gc._clean_html("<b>Hi  there</b>\n<i>x</i>") == "Hi there x"
+
+
+def test_crawl_publication_tree(monkeypatch):
+    category_html = (
+        '<a href="/data/publications/TBL01">t</a>'
+        '<a href="/publications/money-credit-and-banking/1">a</a>'
+        '<a href="/publications/empty-branch/9">e</a>'
+    )
+    pages = {f"/publications/{c}": category_html for c in gc.PUBLICATION_CATEGORIES}
+    pages["/publications/money-credit-and-banking/1"] = (
+        '<a href="/data/publications/TBL02">t</a>'
+        '<a href="/publications/money-credit-and-banking/2">b</a>'
+    )
+    pages["/publications/money-credit-and-banking/2"] = (
+        '<a href="/publications/money-credit-and-banking/1">a</a>'
+    )
+    monkeypatch.setattr(
+        gc, "_get_text", lambda url: pages.get(url.replace(gc.PORTAL_URL, ""), "")
+    )
+    assert gc._crawl_publication_tree() == {"TBL01", "TBL02"}
+
+
+_PARSE_PAGES = {
+    "GOOD": _PUB_TABLE_HTML,
+    "NOSCRIPT": "<title>X | ECB</title><p>no settings</p>",
+    "BADJSON": '<script data-drupal-selector="drupal-settings-json">{bad</script>',
+    "NOKEYS": '<script data-drupal-selector="drupal-settings-json">'
+    '{"async_series_obs":{"series_keys":{}}}</script>',
+    "NOTITLE": '<script data-drupal-selector="drupal-settings-json">'
+    '{"async_series_obs":{"series_keys":{"1":{"serieskey":"X.a.b"}}}}</script>',
+    "ONECRUMB": "<title>Solo | ECB</title>"
+    '<nav aria-label="breadcrumb"><ol>'
+    '<li><a href="/">Home</a></li>'
+    '<li><a href="/publications">Publications</a></li>'
+    '<li><a href="/publications/solo">Solo Category</a></li>'
+    "<li><a>Browse data</a></li></ol></nav>"
+    '<script data-drupal-selector="drupal-settings-json">'
+    '{"async_series_obs":{"series_keys":{"1":{"serieskey":"X.a.b"}}}}</script>',
+}
+
+
+def test_parse_publication_table(monkeypatch):
+    monkeypatch.setattr(
+        gc, "_get_text", lambda url: _PARSE_PAGES.get(url.rsplit("/", 1)[-1], "")
+    )
+    good = gc._parse_publication_table("GOOD")
+    assert good["title"] == "Test Table"
+    assert good["category"] == "Money, credit and banking"
+    assert good["subcategory"] == "Monetary aggregates"
+    assert good["rows"] == [
+        {"flow": "BSI", "key": "M.U2.X"},
+        {"flow": "BSI", "key": "M.U2.Y"},
+    ]
+    assert gc._parse_publication_table("MISSING") is None
+    assert gc._parse_publication_table("NOSCRIPT") is None
+    assert gc._parse_publication_table("BADJSON") is None
+    assert gc._parse_publication_table("NOKEYS") is None
+    notitle = gc._parse_publication_table("NOTITLE")
+    assert notitle["title"] == "NOTITLE"
+    assert notitle["category"] == "" and notitle["subcategory"] == ""
+    one = gc._parse_publication_table("ONECRUMB")
+    assert one["category"] == "Solo Category" and one["subcategory"] == ""
+
+
+def test_fetch_presentation_tables(_mock_session):
+    tables = gc.fetch_presentation_tables()
+    assert set(tables) == {"TBL01"}
+    assert tables["TBL01"]["title"] == "Test Table"
+    assert tables["TBL01"]["rows"][0] == {"flow": "BSI", "key": "M.U2.X"}
+
+
+def test_fetch_presentation_tables_drops_unparsed(monkeypatch):
+    monkeypatch.setattr(gc, "_crawl_publication_tree", lambda: {"A", "B"})
+    monkeypatch.setattr(
+        gc,
+        "_parse_publication_table",
+        lambda tid: {"id": tid, "rows": [1]} if tid == "A" else None,
+    )
+    assert set(gc.fetch_presentation_tables()) == {"A"}
+
+
+def test_sanitize_dsetinfo():
+    out = gc._sanitize_dsetinfo(
+        '<button>x</button><p class="c">Hi <a href="/y">L</a></p>'
+        '<span>z</span> <div class="'
+    )
+    assert out == '<p>Hi <a href="https://data.ecb.europa.eu/y">L</a></p>z'
+
+
+def test_extract_dataset_info():
+    info = gc._extract_dataset_info(_DSET_INFO_HTML)
+    assert info["title"] == "Exchange Rates - EXR"
+    assert [f["label"] for f in info["fields"]] == ["Scope", "Legal"]
+    scope = info["fields"][0]["html"]
+    assert scope == '<p>Summary <a href="https://data.ecb.europa.eu/x">EXR</a>.</p>'
+    assert "<button" not in scope and "<div" not in scope
+    assert info["catalogue"] == "https://data.ecb.europa.eu/data/datasets/exr/download"
+    assert gc._extract_dataset_info("<html>nothing</html>") is None
+
+
+def test_fetch_dataflow_info(monkeypatch):
+    pages = {"EXR": _DSET_INFO_HTML, "EMPTY": "<html>no fields</html>"}
+
+    def fake(url):
+        flow = url.split("/data/datasets/")[1].split("/")[0].upper()
+        return pages.get(flow, "")
+
+    monkeypatch.setattr(gc, "_get_text", fake)
+    out = gc.fetch_dataflow_info(["EXR", "EMPTY", "MISSING"])
+    assert set(out) == {"EXR"}
+    assert out["EXR"]["title"] == "Exchange Rates - EXR"
+    assert [f["key"] for f in out["EXR"]["fields"]] == ["scope", "legal"]
+
+
+def test_fetch_portal_concepts(monkeypatch):
+
+    def fake(url):
+        if url.endswith("/data/concepts"):
+            return _CONCEPTS_INDEX_HTML
+        if "/data/concepts/" in url:
+            return _CONCEPT_HTML
+        return ""
+
+    monkeypatch.setattr(gc, "_get_text", fake)
+    out = gc.fetch_portal_concepts({"EXR"})
+    assert set(out) == {"exchange-rates", "loans"}
+    assert out["exchange-rates"]["name"] == "Exchange rates"
+    assert out["exchange-rates"]["datasets"] == ["EXR"]
 
 
 def test_main_writes_cache(_mock_session, monkeypatch, tmp_path):
-    """``main`` assembles and writes a compressed cache blob."""
     monkeypatch.setattr(gc, "ASSETS_DIR", tmp_path)
     monkeypatch.setattr(gc, "CACHE_FILE", tmp_path / "ecb_cache.json.xz")
     gc.main()
@@ -365,174 +475,10 @@ def test_main_writes_cache(_mock_session, monkeypatch, tmp_path):
     assert "EXR" in blob["dataflows"]
     assert blob["codelists"]["CL_FREQ"]["D"] == "Daily"
     assert blob["dataflow_categories"] == {"EXR": ["01"]}
-    assert "HCL_JDF_EXR_HCI_CPI@HCL_EXR" in blob["presentation_tables"]
-    assert blob["row_labels"] == {"L1": "Assets"}
+    assert "TBL01" in blob["presentation_tables"]
+    assert "row_labels" not in blob
     assert blob["dataflow_constraints"] == {
         "EXR": {"FREQ": ["D", "M"], "CURRENCY": ["USD"]}
     }
-
-
-def test_serieskeysonly_records(monkeypatch):
-    """serieskeysonly jsondata parses to one ``{dim: code}`` per series."""
-    edge = {
-        "dataSets": [{"series": {"0:0:0:0:9": {}, "0:9:0:0": {}}}],
-        "structure": {
-            "dimensions": {
-                "series": [
-                    {"id": "FREQ", "values": [{"id": "M"}]},
-                    {"id": "ITEM", "values": [{"id": "A20"}]},
-                    {"id": "SECTOR", "values": [{"id": "1000"}]},
-                    {"id": "AREA", "values": [{"id": "U2"}]},
-                ]
-            }
-        },
-    }
-    monkeypatch.setattr(gc.requests, "get", lambda *a, **k: _FakeJsonResp(200, edge))
-    records = gc._serieskeysonly_records("TST", ".A20.1000.")
-    # extra index breaks; out-of-range ITEM index is skipped.
-    assert records == [
-        {"FREQ": "M", "ITEM": "A20", "SECTOR": "1000", "AREA": "U2"},
-        {"FREQ": "M", "SECTOR": "1000", "AREA": "U2"},
-    ]
-
-
-def test_serieskeysonly_records_failures(monkeypatch):
-    """Non-200, request errors, bad JSON and empty datasets all return []."""
-    monkeypatch.setattr(gc.requests, "get", lambda *a, **k: _FakeJsonResp(404, {}))
-    assert gc._serieskeysonly_records("T", ".") == []
-
-    def _boom(*a, **k):
-        raise requests.ConnectionError("down")
-
-    monkeypatch.setattr(gc.requests, "get", _boom)
-    assert gc._serieskeysonly_records("T", ".") == []
-
-    class _BadJson:
-        status_code = 200
-
-        def json(self):
-            raise ValueError("bad")
-
-    monkeypatch.setattr(gc.requests, "get", lambda *a, **k: _BadJson())
-    assert gc._serieskeysonly_records("T", ".") == []
-
-    monkeypatch.setattr(
-        gc.requests, "get", lambda *a, **k: _FakeJsonResp(200, {"dataSets": []})
-    )
-    assert gc._serieskeysonly_records("T", ".") == []
-
-
-def test_context_score():
-    """Euro-area / monthly / unadjusted slices score higher; None is skipped."""
-    high = gc._context_score(("U2", "M", "N"), ["REF_AREA", "FREQ", "ADJUSTMENT"])
-    low = gc._context_score(("US", "A", "Y"), ["REF_AREA", "FREQ", "ADJUSTMENT"])
-    assert high > low
-    assert gc._context_score((None,), ["FREQ"]) == 0
-
-
-def test_derive_table_context(monkeypatch):
-    """Row/partial dims classify; the slice + partial aggregate maximize coverage."""
-    monkeypatch.setattr(
-        gc.requests, "get", lambda *a, **k: _FakeJsonResp(200, _TABLE_SERIESKEYS)
-    )
-    valid, default = gc._derive_table_context(_TABLE, _TABLE_DSD)
-    # Coordinate-ascent finds SECTOR=T + MATURITY=A (filling both partial rows);
-    # AREA stays U2. ZZ fills nothing so it is dropped from the valid slice.
-    assert default == {"SECTOR": "T", "MATURITY": "A", "AREA": "U2"}
-    assert valid == {"AREA": ["U2", "US"]}
-
-
-def test_derive_table_context_empty(monkeypatch):
-    """No hierarchy, or no series returned, yields empty context."""
-    assert gc._derive_table_context({"dataflow_id": "T", "tree": []}, _TABLE_DSD) == (
-        {},
-        {},
-    )
-    monkeypatch.setattr(gc.requests, "get", lambda *a, **k: _FakeJsonResp(404, {}))
-    assert gc._derive_table_context(_TABLE, _TABLE_DSD) == ({}, {})
-
-
-def test_fetch_table_contexts(monkeypatch):
-    """Heuristic resolves rows; the content constraint overrides context dims."""
-    monkeypatch.setattr(
-        gc.requests, "get", lambda *a, **k: _FakeJsonResp(200, _TABLE_SERIESKEYS)
-    )
-
-    def _run(area_values):
-        monkeypatch.setattr(
-            gc,
-            "fetch_jdf_constraints",
-            lambda tables: {
-                "HCL_JDF_TST@HCL_T": {"AREA": area_values, "ITEM": ["A20"], "EMPTY": []}
-            },
-        )
-        tbls = {"T": {**_TABLE, "id": "HCL_JDF_TST@HCL_T"}}
-        gc.fetch_table_contexts(
-            tbls, {"TST": {"dsd_id": "D1"}}, {"D1": {"dimensions": _TABLE_DSD}}
-        )
-        return tbls["T"]
-
-    # Row/partial dims stay from the heuristic; AREA (a context dim) is overridden
-    # by the constraint, while ITEM (a tree dim) and EMPTY (no values) are ignored.
-    over = _run(["US"])
-    assert over["default_context"]["SECTOR"] == "T"
-    assert over["valid_context"]["AREA"] == ["US"]
-    assert over["default_context"]["AREA"] == "US"
-    # A heuristic default that is already valid under the constraint is kept.
-    assert _run(["U2", "US"])["default_context"]["AREA"] == "U2"
-
-    monkeypatch.setattr(gc, "fetch_jdf_constraints", lambda tables: {})
-    # A table with no matching constraint keeps the heuristic context unchanged.
-    plain = {"P": {**_TABLE, "id": "HCL_OTHER@HCL_X"}}
-    assert (
-        gc.fetch_table_contexts(
-            plain, {"TST": {"dsd_id": "D1"}}, {"D1": {"dimensions": _TABLE_DSD}}
-        )
-        == 1
-    )
-    assert plain["P"]["valid_context"] == {"AREA": ["U2", "US"]}
-    # Missing dataflow / DSD, or an empty hierarchy, is skipped.
-    assert (
-        gc.fetch_table_contexts({"X": {"dataflow_id": "NONE", "tree": []}}, {}, {}) == 0
-    )
-    assert (
-        gc.fetch_table_contexts(
-            {"Y": {"dataflow_id": "TST", "tree": []}}, {"TST": {"dsd_id": "MISS"}}, {}
-        )
-        == 0
-    )
-    assert (
-        gc.fetch_table_contexts(
-            {"Z": {"dataflow_id": "TST", "tree": []}},
-            {"TST": {"dsd_id": "D1"}},
-            {"D1": {"dimensions": _TABLE_DSD}},
-        )
-        == 0
-    )
-
-
-def test_fetch_jdf_constraints(monkeypatch):
-    """Per-table content constraints parse into {table_id: {dim: values}}."""
-    monkeypatch.setattr(
-        gc._session, "get", lambda *a, **k: _FakeResp(200, CONTENT_CONSTRAINTS)
-    )
-    # The fixture's EXR constraint attaches to dataflow 'EXR' -> the table whose
-    # id core (after 'HCL_') is 'EXR'. Empty-valued dims are dropped.
-    out = gc.fetch_jdf_constraints({"HCL_EXR@HCL_X": {}})
-    assert out == {"HCL_EXR@HCL_X": {"CURRENCY": ["USD"], "FREQ": ["D", "M"]}}
-    # A DataKeySet with a blank <Value/> drops that dimension (empty-value branch).
-    blank = _doc(
-        '<str:Constraints><str:ContentConstraint id="C">'
-        '<str:ConstraintAttachment><str:Dataflow><Ref id="EXR" class="Dataflow"/>'
-        "</str:Dataflow></str:ConstraintAttachment><str:DataKeySet><str:Key>"
-        '<str:KeyValue id="FREQ"><str:Value>A</str:Value></str:KeyValue>'
-        '<str:KeyValue id="REF_AREA"><str:Value></str:Value></str:KeyValue>'
-        "</str:Key></str:DataKeySet></str:ContentConstraint></str:Constraints>"
-    )
-    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(200, blank))
-    assert gc.fetch_jdf_constraints({"HCL_EXR@HCL_X": {}}) == {
-        "HCL_EXR@HCL_X": {"FREQ": ["A"]}
-    }
-    # No structures -> empty.
-    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _FakeResp(404))
-    assert gc.fetch_jdf_constraints({"HCL_EXR@HCL_X": {}}) == {}
+    assert "EXR" in blob["dataflow_info"]
+    assert set(blob["portal_concepts"]) == {"exchange-rates", "loans"}

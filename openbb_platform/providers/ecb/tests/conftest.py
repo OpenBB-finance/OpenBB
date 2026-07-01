@@ -1,5 +1,3 @@
-"""Shared pytest fixtures for the ECB provider."""
-
 from __future__ import annotations
 
 from typing import Any
@@ -9,11 +7,6 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def _ecb_test_env(monkeypatch) -> Any:
-    """Bypass the parsed-data disk cache and reset the metadata singleton.
-
-    Disabling the disk cache keeps VCR in sole control of HTTP so cassette
-    record/replay is deterministic regardless of any on-disk cache state.
-    """
     from openbb_ecb.utils.metadata import EcbMetadata
 
     monkeypatch.setenv("OPENBB_ECB_NO_CACHE", "1")

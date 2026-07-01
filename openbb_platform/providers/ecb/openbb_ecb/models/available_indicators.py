@@ -1,18 +1,4 @@
-"""ECB Available Indicators Model.
-
-In OpenBB terms an *indicator* is an individual time series; a *dataflow* is the
-table that contains them. ECB series are identified by a multi-dimensional SDMX
-key (there is no single ``INDICATOR`` dimension), so each indicator's symbol is
-``FLOW::KEY`` (e.g. ``ICP::M.U2.N.000000.4.ANR``) and its "transformation"
-(index level, annual rate of change, …) is encoded in the key's dimensions.
-
-A single dataflow can hold tens of thousands of series and the full catalogue
-runs to millions, so enumeration is scoped to a ``dataflow`` (optionally narrowed
-by a partial key) and resolved live via the SDMX ``serieskeysonly`` query — there
-is no shippable series index to cache. Discover dataflows with
-``list_dataflows`` / ``search_dataflows``; fetch a chosen series with
-``indicators`` using its ``FLOW::KEY`` symbol.
-"""
+"""ECB Available Indicators Model."""
 
 # pylint: disable=unused-argument
 
@@ -27,8 +13,6 @@ from openbb_core.provider.standard_models.available_indicators import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field
 
-# The dataflow's "geography" dimension, in preference order — what the
-# ``reference_area`` parameter maps to (a dataflow has at most one).
 _GEOGRAPHY_DIMS = ("REF_AREA", "COUNT_AREA", "CURRENCY")
 
 
@@ -112,14 +96,11 @@ class ECBAvailableIndicatorsQueryParams(AvailableIndicesQueryParams):
 
 
 class ECBAvailableIndicatorsData(AvailableIndicatorsData):
-    """ECB Available Indicators Data (one row per series/indicator)."""
+    """ECB Available Indicators Data."""
 
     model_config = ConfigDict(
         extra="allow",
         json_schema_extra={
-            # Clicking a series' symbol cell sets the shared ``symbol`` parameter,
-            # so the ``indicators`` widget on the same dashboard fetches it — this
-            # table IS the series builder.
             "symbol": {
                 "x-widget_config": {
                     "renderFn": "cellOnClick",
@@ -144,7 +125,7 @@ class ECBAvailableIndicatorsData(AvailableIndicatorsData):
 class ECBAvailableIndicatorsFetcher(
     Fetcher[ECBAvailableIndicatorsQueryParams, list[ECBAvailableIndicatorsData]]
 ):
-    """Enumerate the ECB series (indicators) within a dataflow."""
+    """Enumerate the ECB series within a dataflow."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> ECBAvailableIndicatorsQueryParams:
@@ -175,9 +156,6 @@ class ECBAvailableIndicatorsFetcher(
             )
 
         dimensions = metadata.get_dataflow_dimensions(dataflow)
-        # Narrow the enumerated key by the frequency / reference area dropdowns and
-        # any 'DIM:VALUE' filters typed for the dataflow's other dimensions; every
-        # unset dimension is left wild and filtered by ``query``.
         chosen: dict[str, str] = {}
         if query.frequency:
             chosen["FREQ"] = query.frequency
@@ -190,8 +168,6 @@ class ECBAvailableIndicatorsFetcher(
         raw_values = query.dimension_values or []
         if isinstance(raw_values, str):
             raw_values = [raw_values]
-        # The Workspace marshals a multi-text field as one comma-joined value, so
-        # split each item on commas before the 'DIM:VALUE' split.
         for item in raw_values:
             for raw_entry in str(item).split(","):
                 entry = raw_entry.strip()

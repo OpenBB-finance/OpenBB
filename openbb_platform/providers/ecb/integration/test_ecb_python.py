@@ -195,14 +195,14 @@ def test_ecb_balance_of_payments(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize("params", [{"category": "blog", "limit": 3}])
+@pytest.mark.parametrize("params", [{"category": "blog"}])
 @pytest.mark.integration
-def test_ecb_releases(params, obb):
-    """Test ecb releases endpoint — each row carries a full markdown body."""
-    result = obb.ecb.releases(**params)
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert any(r.body for r in result.results)
+def test_ecb_release_choices(params, obb):
+    """Test ecb release_choices endpoint (the release viewer's dropdown source)."""
+    result = obb.ecb.release_choices(**params)
+    assert isinstance(result, list)
+    assert len(result) > 0
+    assert all("label" in r and "value" in r for r in result)
 
 
 @pytest.mark.parametrize("params", [{}])

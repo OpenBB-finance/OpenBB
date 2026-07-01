@@ -1,12 +1,14 @@
-"""ECB category-scheme (topic) helpers."""
+"""ECB category-scheme and data-portal concept helpers."""
 
 from __future__ import annotations
+
+from openbb_core.app.model.abstract.error import OpenBBError
 
 from openbb_ecb.utils.metadata._typing import MetadataBase
 
 
 class CategoryMixin(MetadataBase):
-    """Group dataflows by ECB topic (category scheme)."""
+    """Group dataflows by ECB topic and data-portal concept."""
 
     def list_topics(self) -> list[dict]:
         """Return ``[{label, value, count}]`` for topics that have dataflows."""
@@ -39,3 +41,38 @@ class CategoryMixin(MetadataBase):
             if cat and cat.get("name"):
                 names.append(cat["name"])
         return names
+
+    def list_concepts(self) -> list[dict]:
+        """Return ``[{value, label, name, datasets, count}]`` for portal concepts."""
+        out = [
+            {
+                "value": slug,
+                "label": concept.get("name") or slug,
+                "name": concept.get("name") or slug,
+                "datasets": concept.get("datasets", []),
+                "count": len(concept.get("datasets", [])),
+            }
+            for slug, concept in self.portal_concepts.items()
+        ]
+        return sorted(out, key=lambda c: c["name"])
+
+    def get_concept(self, slug: str) -> dict:
+        """Return the cached data-portal concept or raise."""
+        concept = self.portal_concepts.get(slug)
+        if concept is None:
+            raise OpenBBError(
+                f"Unknown ECB concept '{slug}'. Use `list_concepts` to see them."
+            )
+        return concept
+
+    def get_dataflow_info(self, dataflow_id: str) -> dict | None:
+        """Return a dataflow's rich ``data-information`` metadata, if published."""
+        return self.dataflow_info.get(dataflow_id)
+
+    def concepts_for_dataflow(self, dataflow_id: str) -> list[str]:
+        """Return the names of the concepts that include a dataflow's dataset."""
+        return sorted(
+            concept.get("name") or slug
+            for slug, concept in self.portal_concepts.items()
+            if dataflow_id in concept.get("datasets", [])
+        )

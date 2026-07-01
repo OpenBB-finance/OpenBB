@@ -1,9 +1,4 @@
-"""ECB Economic Indicators Model.
-
-Fetch any ECB SDMX series by a ``FLOW::KEY`` symbol, e.g.
-``EXR::D.USD.EUR.SP00.A`` or ``BSI::M.U2.Y.V.M30.X.1.U2.2300.Z01.E``. The key
-is the dot-joined dimension key; ``+`` is OR and an empty segment is a wildcard.
-"""
+"""ECB Economic Indicators Model."""
 
 # pylint: disable=unused-argument
 
@@ -44,7 +39,7 @@ class ECBEconomicIndicatorsData(EconomicIndicatorsData):
 
 
 def _build_title(record: dict) -> str:
-    """Compose a readable title from a record's dimension labels (not attributes)."""
+    """Compose a title from a record's dimension labels."""
     parts = []
     for dim in record.get("_dim_ids", []):
         if dim in _FREQ_DIMS:
@@ -71,7 +66,7 @@ class ECBEconomicIndicatorsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch each symbol's series, with disk caching per symbol."""
+        """Fetch each symbol's series."""
         # pylint: disable=import-outside-toplevel
         import asyncio
 

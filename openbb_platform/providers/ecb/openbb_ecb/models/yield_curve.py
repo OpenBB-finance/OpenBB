@@ -78,7 +78,7 @@ class ECBYieldCurveFetcher(
         )
 
         async def get_window(date_str: str) -> list[dict]:
-            """Fetch a small window around one requested date (all maturities)."""
+            """Fetch a window around a requested date."""
             target = datetime.strptime(date_str.strip(), "%Y-%m-%d")
             start = (target - timedelta(days=14)).strftime("%Y-%m-%d")
             end = (target + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -102,7 +102,7 @@ class ECBYieldCurveFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[ECBYieldCurveData]:
-        """Map maturities, pick the nearest date(s), scale, and validate."""
+        """Map maturities, pick the nearest dates, scale, and validate."""
         # pylint: disable=import-outside-toplevel
         from openbb_ecb.utils.yield_curve_series import (  # noqa
             MATURITIES,
@@ -114,7 +114,6 @@ class ECBYieldCurveFetcher(
             rating=query.rating,
             yield_curve_type=query.yield_curve_type,
         )
-        # Map DATA_TYPE -> maturity and dedupe overlapping windows on (date, maturity).
         seen: dict[tuple, float] = {}
         for record in data:
             maturity = datatype_to_maturity.get(record["series_key"].split(".")[-1])
@@ -135,7 +134,6 @@ class ECBYieldCurveFetcher(
         )
         dates_list = DatetimeIndex(dates)
 
-        # Find the nearest date to the requested one.
         df = DataFrame(data).set_index("date").query("`rate`.notnull()")
         df.index = DatetimeIndex(df.index)
         df_unique_dates = df[~df.index.duplicated(keep="first")].sort_index()

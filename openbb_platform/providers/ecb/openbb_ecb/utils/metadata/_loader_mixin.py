@@ -1,4 +1,4 @@
-"""Live SDMX 2.1 structure fallbacks (codelists, availability)."""
+"""Live SDMX 2.1 structure fallbacks."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ class LoaderMixin(MetadataBase):
             if response.status_code != 200:
                 return {}
             root = DET.fromstring(response.content)
-        except Exception:  # noqa: BLE001 - best-effort fallback
+        except Exception:  # noqa: BLE001
             return {}
 
         out: dict[str, str] = {}
@@ -39,12 +39,7 @@ class LoaderMixin(MetadataBase):
     def _fetch_available_constraint(
         self, flow_ref: str, key: str
     ) -> dict[str, list[str]]:
-        """Return ``{dimension_id: [available_value, ...]}`` for a partial key.
-
-        Uses the SDMX 2.1 ``availableconstraint`` endpoint to narrow dimension
-        options given prior selections. Best-effort: returns ``{}`` on any
-        failure so callers can fall back to full codelists.
-        """
+        """Return ``{dimension_id: [available_value, ...]}`` for a partial key."""
         from defusedxml import ElementTree as DET
         from openbb_core.provider.utils.helpers import make_request
 
@@ -57,7 +52,7 @@ class LoaderMixin(MetadataBase):
             if response.status_code != 200:
                 return {}
             root = DET.fromstring(response.content)
-        except Exception:  # noqa: BLE001 - best-effort fallback
+        except Exception:  # noqa: BLE001
             return {}
 
         out: dict[str, list[str]] = {}

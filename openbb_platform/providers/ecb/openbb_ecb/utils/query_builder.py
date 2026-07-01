@@ -1,4 +1,4 @@
-"""Build and execute ECB SDMX 2.1 data queries (``format=jsondata``)."""
+"""Build and execute ECB SDMX 2.1 data queries."""
 
 from __future__ import annotations
 
@@ -6,6 +6,10 @@ from openbb_ecb.utils.metadata._constants import BASE_URL
 
 DATA_HEADERS = {
     "Accept": "application/json",
+    "User-Agent": "OpenBB Platform - ECB",
+}
+CSV_HEADERS = {
+    "Accept": "text/csv",
     "User-Agent": "OpenBB Platform - ECB",
 }
 
@@ -19,14 +23,10 @@ def build_data_url(
     first_n: int | None = None,
     last_n: int | None = None,
     include_history: bool = False,
+    data_format: str = "jsondata",
 ) -> str:
-    """Construct an ECB SDMX 2.1 data-query URL returning SDMX-JSON.
-
-    ``flow_ref`` is a dataflow id (``EXR``) or full ``AGENCY,FLOW,VERSION``.
-    ``key`` is the dot-joined dimension key (``D.USD.EUR.SP00.A``); ``+``
-    means OR and an empty segment is a wildcard.
-    """
-    params: list[str] = ["format=jsondata", f"detail={detail}"]
+    """Construct an ECB SDMX 2.1 data-query URL."""
+    params: list[str] = [f"format={data_format}", f"detail={detail}"]
     if start_date:
         params.append(f"startPeriod={start_date}")
     if end_date:
@@ -41,17 +41,13 @@ def build_data_url(
 
 
 async def _request_sdmx(url: str, raise_empty: bool) -> dict | None:
-    """GET an SDMX-JSON message; return the dict, or None on a 404 no-raise.
-
-    Raises ``OpenBBError`` on a 404 (when ``raise_empty``) or any other error
-    status. A non-dict body resolves to ``None``.
-    """
+    """GET an SDMX-JSON message; return the dict, or None on a 404 no-raise."""
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.provider.utils.errors import EmptyDataError
     from openbb_core.provider.utils.helpers import amake_request
 
     async def _response_callback(response, _):
-        """Return JSON, or text/status for non-JSON (e.g. 404 'No results')."""
+        """Return JSON, or text/status for non-JSON responses."""
         if response.status == 200:
             return await response.json()
         return {"_status": response.status, "_text": await response.text()}
@@ -88,7 +84,7 @@ async def fetch_sdmx_data(
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.provider.utils.errors import EmptyDataError
 
-    from openbb_ecb.utils.helpers import parse_sdmx_json
+    from openbb_ecb.utils.helpers import parse_sdmx_csv, parse_sdmx_json
 
     url = build_data_url(
         flow_ref,
@@ -99,11 +95,37 @@ async def fetch_sdmx_data(
         first_n=first_n,
         last_n=last_n,
     )
-    message = await _request_sdmx(url, raise_empty)
+    message = await _request_sdmx(url, raise_empty=False)
     records = parse_sdmx_json(message) if message else []
+    if not records:
+        csv_url = build_data_url(
+            flow_ref,
+            key,
+            start_date=start_date,
+            end_date=end_date,
+            detail=detail,
+            first_n=first_n,
+            last_n=last_n,
+            data_format="csvdata",
+        )
+        text = await _request_sdmx_text(csv_url)
+        records = parse_sdmx_csv(text, flow_ref) if text else []
     if not records and raise_empty:
         raise OpenBBError(EmptyDataError(f"No data found for the query. URL -> {url}"))
     return records
+
+
+async def _request_sdmx_text(url: str) -> str | None:
+    """GET an SDMX ``csvdata`` response as raw text."""
+    from openbb_core.provider.utils.helpers import amake_request
+
+    async def _response_callback(response, _):
+        return await response.text() if response.status == 200 else None
+
+    text = await amake_request(
+        url, headers=CSV_HEADERS, response_callback=_response_callback
+    )
+    return text if isinstance(text, str) else None
 
 
 async def fetch_series_keys(
@@ -111,11 +133,7 @@ async def fetch_series_keys(
     key: str = "",
     raise_empty: bool = False,
 ) -> list[dict]:
-    """Enumerate the existing series in a dataflow (``detail=serieskeysonly``).
-
-    Returns one record per actual series (key + decoded dimension labels), with
-    no observations — the SDMX way to list every series in (a slice of) a flow.
-    """
+    """Enumerate the existing series in a dataflow."""
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.provider.utils.errors import EmptyDataError
 

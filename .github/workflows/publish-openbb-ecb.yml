@@ -96,19 +96,12 @@ jobs:
       - run: python -m pip install --upgrade pip uv
 
       - name: Restore ECB SDMX cache (warming pool for PR workflow)
-        # Releases always force-rebuild (see env below); this step exists
-        # so the post-build ``save`` writes the fresh artifact back into
-        # the shared cache pool keyed by ``generate_cache.py``'s hash.
-        # The PR-test workflow reads from the same pool.
         uses: actions/cache@v4
         with:
           path: openbb_platform/providers/ecb/openbb_ecb/assets/ecb_cache.json.xz
           key: ecb-sdmx-${{ hashFiles('openbb_platform/providers/ecb/openbb_ecb/utils/generate_cache.py') }}
 
       - name: Build sdist + wheel (fresh ECB cache)
-        # ``OPENBB_ECB_FORCE_CACHE_REBUILD=1`` makes the build hook bypass
-        # its idempotent skip and regenerate against live ECB SDMX so the
-        # published artifact is always current.
         env:
           OPENBB_ECB_FORCE_CACHE_REBUILD: "1"
         run: uv build --no-sources

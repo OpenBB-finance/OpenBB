@@ -211,12 +211,24 @@ def test_ecb_balance_of_payments(params, headers):
     _assert_rows("balance_of_payments", params, headers)
 
 
-@pytest.mark.parametrize("params", [{"category": "blog", "limit": 3}])
+@pytest.mark.parametrize("params", [{"category": "blog"}])
 @pytest.mark.integration
-def test_ecb_releases(params, headers):
-    """Test ecb releases endpoint — newsfeed rows carry a markdown body."""
-    rows = _assert_rows("releases", params, headers)
-    assert any(r.get("body") for r in rows), "no article body fetched"
+def test_ecb_release_choices(params, headers):
+    """Test ecb release_choices dropdown endpoint (feeds the release viewer)."""
+    rows = _assert_rows("release_choices", params, headers)
+    assert all("label" in r and "value" in r for r in rows)
+
+
+@pytest.mark.parametrize("params", [{"category": "blog"}])
+@pytest.mark.integration
+def test_ecb_release_document(params, headers):
+    """Test ecb release_document HTML widget endpoint — returns a rendered page."""
+    query_str = get_querystring(params, [])
+    url = f"http://localhost:8000/api/v1/ecb/release_document?{query_str}"
+    result = requests.get(url, headers=headers, timeout=60)
+    assert result.status_code == 200
+    assert "text/html" in result.headers.get("content-type", "")
+    assert "<html" in result.text.lower()
 
 
 @pytest.mark.parametrize("params", [{}])

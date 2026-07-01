@@ -26,10 +26,7 @@ class SearchMixin(MetadataBase):
         return sorted(out, key=lambda d: d["value"])
 
     def search_dataflows(self, query: str) -> list[dict]:
-        """Return dataflows whose id/name/description match ``query``.
-
-        ``query`` supports ``+`` (AND), ``|`` (OR) and ``"quoted phrases"``.
-        """
+        """Return dataflows whose id/name/description match ``query``."""
         parsed = parse_search_query(query)
         results: list[dict] = []
         for df_id, df in self.dataflows.items():

@@ -129,7 +129,6 @@ class ECBBalanceOfPaymentsFetcher(
         if not data:
             raise OpenBBError(EmptyDataError("No balance of payments data found."))
 
-        # Items whose key used '+' yield multiple series; sum them by period.
         items: dict[str, dict[str, float]] = {}
         for record in data:
             value = record.get("OBS_VALUE")

@@ -1,5 +1,3 @@
-"""Unit tests for ``openbb_ecb.utils.non_sdmx`` (mocked HTTP)."""
-
 import asyncio
 import gzip
 from datetime import date
@@ -25,42 +23,43 @@ class _FakeResp:
 
 
 def test_strip_html():
-    """Tags are removed and whitespace collapsed."""
     assert non_sdmx._strip_html("<b>a   b</b>\n c") == "a b c"
 
 
 def test_parse_ea_date():
-    """DD/MM/YYYY dates parse; bad input is None."""
     assert non_sdmx._parse_ea_date("15/12/2026 00:00:00") == "2026-12-15"
     assert non_sdmx._parse_ea_date("bad") is None
 
 
-def test_article_to_markdown():
-    """``<main>`` renders to markdown; image/link URLs become absolute; no main -> ''."""
+def test_article_to_html():
     base = "https://www.ecb.europa.eu/press/blog/x.en.html"
     html = (
-        "<html><body><main>"
+        "<html><head>"
+        '<link rel="stylesheet" href="/shared/style.css">'
+        "</head><body><main>"
         "<nav>sitemenu</nav>"
         "<h2>Chart 1</h2><p>Some body text here, long enough to read.</p>"
-        '<img src="img/chart.png" alt="c">'
-        '<img alt="no-src">'  # image without src -> left untouched
+        '<img src="img/chart.png">'
         '<a href="/more">link</a>'
-        "<a>no-href</a>"  # anchor without href -> left untouched
+        '<table class="table-chart-duo"><tbody><tr><td>'
+        '<img src="img/panel0.png"></td></tr></tbody></table>'
         "</main></body></html>"
     )
-    md = non_sdmx._article_to_markdown(html, base)
-    assert "Chart 1" in md and "Some body text" in md
-    assert "sitemenu" not in md  # chrome inside <main> is stripped
-    # page-relative image -> page folder; root-relative link -> origin
-    assert "https://www.ecb.europa.eu/press/blog/img/chart.png" in md
-    assert "https://www.ecb.europa.eu/more" in md
-    assert (
-        non_sdmx._article_to_markdown("<html><body>no main</body></html>", base) == ""
+    out = non_sdmx._article_to_html(html, base)
+    assert "sitemenu" in out and "table-chart-duo" in out and 'rel="stylesheet"' in out
+    assert f'<base href="{base}"' in out
+    assert 'href="https://www.ecb.europa.eu/shared/style.css"' in out
+    assert 'src="https://www.ecb.europa.eu/press/blog/img/chart.png"' in out
+    assert 'src="https://www.ecb.europa.eu/press/blog/img/panel0.png"' in out
+    assert 'href="https://www.ecb.europa.eu/more"' in out
+    no_head = non_sdmx._article_to_html(
+        "<html><body><main><p>Body</p></main></body></html>", base
     )
+    assert "Body" in no_head and "<base" not in no_head
+    assert non_sdmx._article_to_html("<html><body>no main</body></html>", base) == ""
 
 
-def test_fetch_release_body(monkeypatch):
-    """Fetches + converts an ECB page; non-ECB URL or fetch error -> '' (SSRF guard)."""
+def test_fetch_release_html(monkeypatch):
 
     async def _text(url):
         return (
@@ -69,45 +68,46 @@ def test_fetch_release_body(monkeypatch):
         )
 
     monkeypatch.setattr(non_sdmx, "_aget_text", _text)
-    md = asyncio.run(
-        non_sdmx.fetch_release_body("https://www.ecb.europa.eu/press/x.en.html")
+    out = asyncio.run(
+        non_sdmx.fetch_release_html("https://www.ecb.europa.eu/press/x.en.html")
     )
-    assert "Body content" in md
-    assert "https://www.ecb.europa.eu/press/a.png" in md
+    assert "Body content" in out
+    assert 'src="https://www.ecb.europa.eu/press/a.png"' in out
 
     for bad in ("https://evil.example.com/x", "http://www.ecb.europa.eu/x"):
-        assert asyncio.run(non_sdmx.fetch_release_body(bad)) == ""
+        assert asyncio.run(non_sdmx.fetch_release_html(bad)) == ""
 
     async def _boom(url):
         raise RuntimeError("network")
 
     monkeypatch.setattr(non_sdmx, "_aget_text", _boom)
-    assert asyncio.run(non_sdmx.fetch_release_body("https://www.ecb.europa.eu/x")) == ""
+    assert asyncio.run(non_sdmx.fetch_release_html("https://www.ecb.europa.eu/x")) == ""
 
 
-def test_release_excerpt():
-    """Excerpt is the first substantial paragraph, truncated; preamble is skipped."""
-    body = "\n".join(
-        [
-            "* THE ECB BLOG",  # nav bullet
-            "# A title heading",  # heading
-            "29 May 2026",  # short
-            "By Jane Doe, John Roe",  # byline
-            "![](https://x/img.png)",  # image
-            "This is the first real summary paragraph here, and it is comfortably"
-            " long enough to qualify as the excerpt.",
-        ]
-    )
-    assert non_sdmx.release_excerpt(body).startswith("This is the first real summary")
-    # long paragraph is truncated at a word boundary with an ellipsis
-    out = non_sdmx.release_excerpt("word " * 100, limit=40)
-    assert out.endswith("…") and len(out) <= 41
-    # a heading over the length threshold is still skipped -> nothing substantial
-    assert non_sdmx.release_excerpt("# " + "x" * 90) == ""
+def test_fetch_release_html_pdf(monkeypatch):
+    pdf_url = "https://www.ecb.europa.eu/pub/pdf/other/report.en.pdf"
+
+    async def _ok(url):
+        return 200, b"%PDF-1.4 fake bytes"
+
+    monkeypatch.setattr(non_sdmx, "_aget_bytes", _ok)
+    out = asyncio.run(non_sdmx.fetch_release_html(pdf_url))
+    assert "<embed" in out and "data:application/pdf;base64," in out
+
+    async def _missing(url):
+        return 404, b""
+
+    monkeypatch.setattr(non_sdmx, "_aget_bytes", _missing)
+    assert asyncio.run(non_sdmx.fetch_release_html(pdf_url)) == ""
+
+    async def _boom(url):
+        raise RuntimeError("network")
+
+    monkeypatch.setattr(non_sdmx, "_aget_bytes", _boom)
+    assert asyncio.run(non_sdmx.fetch_release_html(pdf_url)) == ""
 
 
 def test_parse_eligible_assets_csv():
-    """UTF-16 tab-delimited collateral CSV parses; bad floats become None."""
     header = (
         "ISIN_CODE\tTYPE\tDENOMINATION\tMATURITY_DATE\t"
         "COUPON_RATE (%)\tHAIRCUT\tCLIMATE_FACTOR"
@@ -115,18 +115,17 @@ def test_parse_eligible_assets_csv():
     rows = [
         "XS1\tAT01\tEUR\t15/12/2026 00:00:00\t1.5\tbad\t1",
         "XS2\tAT02\tUSD\t\t\t2.0\t",
-        "\tAT03\tEUR\t\t\t\t",  # no ISIN -> dropped
+        "\tAT03\tEUR\t\t\t\t",
     ]
     raw = ("\n".join([header, *rows])).encode("utf-16")
     records = non_sdmx._parse_eligible_assets_csv(raw)
     assert [r["isin"] for r in records] == ["XS1", "XS2"]
     assert records[0]["coupon_rate"] == 1.5
-    assert records[0]["haircut"] is None  # bad float coerced to None
+    assert records[0]["haircut"] is None
     assert records[0]["maturity_date"] == "2026-12-15"
 
 
 def test_fetch_rss_items(monkeypatch):
-    """RSS items parse; a missing pubDate yields a None date."""
     xml = (
         '<?xml version="1.0"?><rss><channel>'
         "<item><title>T</title><link>http://x</link>"
@@ -144,12 +143,11 @@ def test_fetch_rss_items(monkeypatch):
     items = asyncio.run(non_sdmx.fetch_rss_items("press_releases"))
     assert items[0]["title"] == "T" and items[0]["date"]
     assert items[0]["category"] == "press_releases"
-    assert items[1]["date"] is None  # missing pubDate
-    assert items[2]["date"] is None  # unparseable pubDate
+    assert items[1]["date"] is None
+    assert items[2]["date"] is None
 
 
 def test_fetch_release_calendar(monkeypatch):
-    """The statscal dt/dd pairs parse into calendar rows; bad dates are skipped."""
     html = (
         "<dt>24/06/2026 10:00 CET</dt>"
         "<dd>Some statistic (Dataset: BSI) Reference period: May-2026 "
@@ -170,7 +168,6 @@ def test_fetch_release_calendar(monkeypatch):
 
 
 def test_fetch_eligible_assets_walks_back(monkeypatch):
-    """A missing first day is skipped; the gz file on the prior day is used."""
     raw = ("ISIN_CODE\tTYPE\tDENOMINATION\nXS1\tAT01\tEUR").encode("utf-16")
     gz = gzip.compress(raw)
     calls = {"n": 0}
@@ -189,7 +186,6 @@ def test_fetch_eligible_assets_walks_back(monkeypatch):
 
 
 def test_fetch_eligible_assets_uncompressed(monkeypatch):
-    """A non-gzip 200 payload falls through to raw decoding (default date)."""
     raw = ("ISIN_CODE\tTYPE\nXS9\tAT01").encode("utf-16")
 
     async def fake(url, headers=None, response_callback=None, **kwargs):
@@ -201,7 +197,6 @@ def test_fetch_eligible_assets_uncompressed(monkeypatch):
 
 
 def test_fetch_eligible_assets_not_found(monkeypatch):
-    """All days missing raises an error."""
 
     async def fake(url, headers=None, response_callback=None, **kwargs):
         return await response_callback(_FakeResp(status=404), None)
@@ -209,3 +204,19 @@ def test_fetch_eligible_assets_not_found(monkeypatch):
     monkeypatch.setattr(core_helpers, "amake_request", fake)
     with pytest.raises(OpenBBError):
         asyncio.run(non_sdmx.fetch_eligible_assets(date(2026, 6, 24)))
+
+
+def test_render_dataflow_info():
+    info = {
+        "title": "MFI Rates - MIR",
+        "catalogue": "https://data.ecb.europa.eu/data/datasets/mir/download",
+        "fields": [{"label": "Scope", "html": "<p>Hi</p>"}],
+    }
+    html = non_sdmx.render_dataflow_info("MIR", info, ["Bank interest rates"])
+    assert "<h1>MFI Rates - MIR" in html and "MIR</span>" in html
+    assert "<h2>Scope</h2>" in html and "<p>Hi</p>" in html
+    assert "Bank interest rates" in html
+    assert 'href="https://data.ecb.europa.eu/data/datasets/mir/download"' in html
+    bare = non_sdmx.render_dataflow_info("ZZZ", {"fields": []})
+    assert "<h1>ZZZ" in bare
+    assert "Topics:" not in bare and "series catalogue" not in bare

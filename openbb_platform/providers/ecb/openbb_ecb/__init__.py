@@ -8,7 +8,6 @@ from openbb_ecb.models.balance_of_payments import ECBBalanceOfPaymentsFetcher
 from openbb_ecb.models.currency_historical import ECBCurrencyHistoricalFetcher
 from openbb_ecb.models.currency_reference_rates import ECBCurrencyReferenceRatesFetcher
 from openbb_ecb.models.ecb_interest_rates import ECBInterestRatesFetcher
-from openbb_ecb.models.ecb_releases import ECBReleasesFetcher
 from openbb_ecb.models.economic_calendar import ECBEconomicCalendarFetcher
 from openbb_ecb.models.economic_indicators import ECBEconomicIndicatorsFetcher
 from openbb_ecb.models.eligible_assets import ECBEligibleAssetsFetcher
@@ -25,7 +24,6 @@ rates, the euro short-term rate (€STR), MFI/bank interest rates, the statistic
 release calendar, ECB releases & publications, and the Eurosystem list of eligible
 collateral assets.""",
     fetcher_dict={
-        # --- Generic SDMX catalogue (owned by economy) ---
         economy_key("AvailableIndicators", "AvailableEcbIndicators"): (
             ECBAvailableIndicatorsFetcher
         ),
@@ -38,24 +36,18 @@ collateral assets.""",
         economy_key("EconomicCalendar", "EcbReleaseCalendar"): (
             ECBEconomicCalendarFetcher
         ),
-        # --- Currency (owned by currency) ---
         currency_key("CurrencyHistorical", "EcbCurrencyHistorical"): (
             ECBCurrencyHistoricalFetcher
         ),
         currency_key("CurrencyReferenceRates", "EcbCurrencyReferenceRates"): (
             ECBCurrencyReferenceRatesFetcher
         ),
-        # --- Rates / fixed income (owned by fixedincome) ---
         fixedincome_key("YieldCurve", "EcbYieldCurve"): ECBYieldCurveFetcher,
-        fixedincome_key("EuropeanCentralBankInterestRates", "EcbKeyInterestRates"): (
-            ECBInterestRatesFetcher
-        ),
         fixedincome_key("EuroShortTermRate", "EcbEuroShortTermRate"): (
             ECBEuroShortTermRateFetcher
         ),
-        # --- ECB-specific (no owning extension; always in the ecb namespace) ---
+        "EcbKeyInterestRates": ECBInterestRatesFetcher,
         "EcbMfiInterestRates": ECBMfiInterestRatesFetcher,
-        "EcbReleases": ECBReleasesFetcher,
         "EcbEligibleAssets": ECBEligibleAssetsFetcher,
     },
     repr_name="European Central Bank (ECB)",

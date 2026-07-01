@@ -1,25 +1,14 @@
-#!/usr/bin/env python
-"""Generate the shipped ``ecb_cache.json.xz`` SDMX metadata baseline.
-
-Run at build time by ``hatch_build.py`` (and exposed as the
-``generate-ecb-cache`` console script). The ECB Data Portal serves
-structural metadata as **SDMX-ML 2.1 (XML)** only — JSON is rejected with
-HTTP 406 — so this script parses XML with the standard library
-``xml.etree.ElementTree`` to avoid adding a non-stdlib parser to the
-isolated PEP 517 build environment (whose only third-party package is
-``requests``, declared in ``[build-system].requires``).
-
-The catalog is assembled from six bulk structure calls and written
-LZMA-compressed to ``openbb_ecb/assets/ecb_cache.json.xz``.
-"""
+"""Generate the shipped ``ecb_cache.json.xz`` SDMX metadata baseline."""
 
 from __future__ import annotations
 
 import json
 import lzma
+import re
 import sys
 import time
-import xml.etree.ElementTree as ET  # noqa: S405 - trusted ECB build-time responses
+import xml.etree.ElementTree as ET  # noqa: S405
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import requests
@@ -28,7 +17,39 @@ ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 CACHE_FILE = ASSETS_DIR / "ecb_cache.json.xz"
 BASE_URL = "https://data-api.ecb.europa.eu/service"
 AGENCY = "ECB"
-HCL_AGENCY = "ECB.DISS"  # presentation-table hierarchical code lists live here
+
+PORTAL_URL = "https://data.ecb.europa.eu"
+PUBLICATION_CATEGORIES = (
+    "macroeconomic-and-sectoral-statistics",
+    "money-credit-and-banking",
+    "financial-markets-and-interest-rates-0",
+    "balance-payments-and-other-external-statistics",
+    "ecbeurosystem-policy-and-exchange-rates",
+    "payments-statistics",
+    "supervisory-banking-statistics",
+    "non-bank-financial-corporations",
+)
+_TABLE_ID_RE = re.compile(r"/data/publications/([A-Za-z0-9_]+)")
+_SUBNODE_RE = re.compile(r"/publications/[a-z0-9\-]+/\d+")
+_DRUPAL_RE = re.compile(
+    r'data-drupal-selector="drupal-settings-json"[^>]*>(.*?)</script>', re.S
+)
+_TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
+_BREADCRUMB_RE = re.compile(r"breadcrumb.*?</(?:nav|ol|ul)>", re.S)
+_ANCHOR_RE = re.compile(r"<a[^>]*>(.*?)</a>", re.S)
+
+_DSETINFO_RE = re.compile(
+    r'dataset__field-m-dsetinfo-([a-z\-]+)"(.*?)'
+    r"(?=dataset__field-m-dsetinfo-|group-data-information-footer|</footer>|\Z)",
+    re.S,
+)
+_FIELD_LABEL_RE = re.compile(r"field__label[^>]*>(.*?)</div>", re.S)
+_KEEP_TAG_RE = re.compile(r"</?(?:p|a|ul|ol|li|br|strong|b|em)\b[^>]*>", re.I)
+_STRIP_BLOCK_RE = re.compile(r"<(script|button|svg|style)\b.*?</\1>", re.S | re.I)
+_ATTR_RE = re.compile(r'\s+(?!href)[a-zA-Z\-]+="[^"]*"')
+_DOWNLOAD_RE = re.compile(r'href="/data/datasets/([a-z0-9]+)/download"')
+_DATASET_REF_RE = re.compile(r'/data/datasets/([a-z0-9]+)(?:/|")')
+_CONCEPT_REF_RE = re.compile(r"/data/concepts/([a-z0-9\-]+)")
 
 _NS = {
     "mes": "http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message",
@@ -53,7 +74,7 @@ def _get(url: str, retries: int = 5, backoff: float = 3.0) -> ET.Element | None:
             if resp.status_code in (400, 404):
                 return None
             resp.raise_for_status()
-            return ET.fromstring(resp.content)  # noqa: S314 - trusted ECB response
+            return ET.fromstring(resp.content)  # noqa: S314
         except requests.RequestException:
             if attempt == retries - 1:
                 raise
@@ -62,7 +83,7 @@ def _get(url: str, retries: int = 5, backoff: float = 3.0) -> ET.Element | None:
 
 
 def _en(elem: ET.Element | None, tag: str) -> str:
-    """Return the English (or first) text of the ``com:`` child ``tag``."""
+    """Return the English text of the ``com:`` child ``tag``."""
     if elem is None:
         return ""
     found = None
@@ -123,7 +144,7 @@ def _component(comp: ET.Element) -> dict:
 
 
 def fetch_datastructures() -> dict[str, dict]:
-    """Return DSDs keyed by id (dimensions, time dimension, attributes)."""
+    """Return DSDs keyed by id."""
     print("[2/6] Fetching data structures...", flush=True)
     structures = _structures(
         _get(f"{BASE_URL}/datastructure/{AGENCY}?detail=full&references=none")
@@ -188,7 +209,7 @@ def fetch_codelists() -> dict[str, dict]:
 
 
 def fetch_concepts() -> dict[str, str]:
-    """Return ``{concept_id: name}`` for the ECB concept scheme(s)."""
+    """Return ``{concept_id: name}`` for the ECB concept schemes."""
     print("[4/6] Fetching concept schemes...", flush=True)
     structures = _structures(_get(f"{BASE_URL}/conceptscheme/{AGENCY}?detail=full"))
     out: dict[str, str] = {}
@@ -254,71 +275,125 @@ def fetch_categories() -> tuple[dict[str, dict], dict[str, list], dict[str, list
     return categories, df_to_cat, cat_to_df
 
 
-def _parse_hierarchical_code(hcode: ET.Element) -> dict:
-    """Parse a ``HierarchicalCode`` node (with its children) into the cached shape."""
-    ref = hcode.find("str:Code/Ref", _NS)
+def _get_text(url: str, retries: int = 6, backoff: float = 2.0) -> str:
+    """GET ``url`` and return the decoded body, or ``""`` on a non-200/error."""
+    for attempt in range(retries):
+        try:
+            resp = _session.get(url, headers={"Accept": "text/html"}, timeout=120)
+            if resp.status_code == 429 or resp.status_code >= 500:
+                time.sleep(max(5, backoff * (attempt + 1)))
+                continue
+            if resp.status_code != 200:
+                return ""
+            return resp.text
+        except requests.RequestException:
+            if attempt == retries - 1:
+                return ""
+            time.sleep(backoff * (attempt + 1))
+    return ""
+
+
+def _clean_html(fragment: str) -> str:
+    """Strip tags and collapse whitespace from an HTML fragment."""
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", fragment)).strip()
+
+
+def _crawl_publication_tree() -> set[str]:
+    """Return every ``/data/publications`` table id under the category trees."""
+    seen: set[str] = set()
+    frontier = [f"/publications/{c}" for c in PUBLICATION_CATEGORIES]
+    table_ids: set[str] = set()
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        while frontier:
+            batch = [p for p in frontier if p not in seen]
+            seen.update(batch)
+            next_frontier: set[str] = set()
+            for html in pool.map(lambda p: _get_text(PORTAL_URL + p), batch):
+                if not html:
+                    continue
+                table_ids.update(_TABLE_ID_RE.findall(html))
+                next_frontier.update(
+                    sub for sub in _SUBNODE_RE.findall(html) if sub not in seen
+                )
+            frontier = sorted(next_frontier)
+    return table_ids
+
+
+def _parse_publication_table(table_id: str) -> dict | None:
+    """Return the cached record for one ``/data/publications/<ID>`` table, or None."""
+    html = _get_text(f"{PORTAL_URL}/data/publications/{table_id}")
+    if not html:
+        return None
+    settings_match = _DRUPAL_RE.search(html)
+    if not settings_match:
+        return None
+    try:
+        settings = json.loads(settings_match.group(1))
+    except ValueError:
+        return None
+    series_keys = (settings.get("async_series_obs") or {}).get("series_keys") or {}
+    rows: list[dict] = []
+    seen_keys: set[str] = set()
+    for obj in series_keys.values():
+        serieskey = obj.get("serieskey") if isinstance(obj, dict) else None
+        if not serieskey or serieskey in seen_keys:
+            continue
+        seen_keys.add(serieskey)
+        flow, _, key = serieskey.partition(".")
+        if flow and key:
+            rows.append({"flow": flow, "key": key})
+    if not rows:
+        return None
+    title_match = _TITLE_RE.search(html)
+    title = (
+        _clean_html(title_match.group(1)).split(" | ")[0].strip()
+        if title_match
+        else table_id
+    )
+    crumbs: list[str] = []
+    crumb_match = _BREADCRUMB_RE.search(html)
+    if crumb_match:
+        crumbs = [
+            c
+            for c in (_clean_html(a) for a in _ANCHOR_RE.findall(crumb_match.group(0)))
+            if c
+        ]
+    meaningful = [c for c in crumbs if c not in ("Home", "Publications", "Browse data")]
     return {
-        "code": ref.get("id") if ref is not None else None,
-        "codelist_id": ref.get("maintainableParentID") if ref is not None else None,
-        "agency": ref.get("agencyID") if ref is not None else None,
-        "children": [
-            _parse_hierarchical_code(child)
-            for child in hcode.findall("str:HierarchicalCode", _NS)
-        ],
+        "id": table_id,
+        "title": title,
+        "category": meaningful[0] if meaningful else "",
+        "subcategory": meaningful[-1] if len(meaningful) > 1 else "",
+        "breadcrumb": crumbs,
+        "rows": rows,
     }
 
 
-def fetch_presentation_tables() -> tuple[dict[str, dict], dict[str, str]]:
-    """Return ``(presentation_tables, row_labels)`` from the ECB.DISS HCLs."""
-    print("[7/7] Fetching presentation tables...", flush=True)
-    structures = _structures(
-        _get(f"{BASE_URL}/hierarchicalcodelist/{HCL_AGENCY}?references=all")
-    )
+def fetch_presentation_tables() -> dict[str, dict]:
+    """Return the ECB data-portal presentation tables keyed by id."""
+    print("[7/7] Crawling ECB data-portal publication tables...", flush=True)
+    table_ids = _crawl_publication_tree()
+    print(f"      {len(table_ids)} candidate tables discovered", flush=True)
     tables: dict[str, dict] = {}
-    row_labels: dict[str, str] = {}
-    if structures is None:
-        return tables, row_labels
-    for cl in structures.findall(".//str:Codelist", _NS):
-        if cl.get("id") != "JDF_ROW_LABELS":
-            continue
-        for code in cl.findall("str:Code", _NS):
-            code_id = code.get("id")
-            if code_id:
-                row_labels[code_id] = _en(code, "Name") or code_id
-    for hcl in structures.findall(".//str:HierarchicalCodelist", _NS):
-        hid = hcl.get("id")
-        if not hid or "@HCL_" not in hid:
-            continue
-        hierarchy = hcl.find("str:Hierarchy", _NS)
-        tree = (
-            [
-                _parse_hierarchical_code(hc)
-                for hc in hierarchy.findall("str:HierarchicalCode", _NS)
-            ]
-            if hierarchy is not None
-            else []
-        )
-        tables[hid] = {
-            "id": hid,
-            "name": _en(hcl, "Name"),
-            "dataflow_id": hid.split("@HCL_")[-1],
-            "tree": tree,
-        }
+    pending = sorted(table_ids)
+    for _ in range(3):
+        if not pending:
+            break
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            for record in pool.map(_parse_publication_table, pending):
+                if record:
+                    tables[record["id"]] = record
+        pending = [tid for tid in pending if tid not in tables]
+    total_rows = sum(len(t["rows"]) for t in tables.values())
     print(
-        f"      {len(tables)} presentation tables, {len(row_labels)} row labels",
+        f"      {len(tables)} publication tables, {total_rows} series rows",
         flush=True,
     )
-    return tables, row_labels
+    return tables
 
 
 def fetch_content_constraints() -> dict[str, dict[str, list[str]]]:
-    """Return ``{dataflow_id: {dim_id: [allowed_code, ...]}}`` from constraints.
-
-    A dataflow's content constraint (a CubeRegion of allowed key values) is the
-    source of truth for which codes are actually valid per dimension — the
-    shared codelists (e.g. CL_AREA's ~900 areas) are far broader than any single
-    dataflow permits.
-    """
+    """Return ``{dataflow_id: {dim_id: [allowed_code, ...]}}`` from constraints."""
     print("[8/8] Fetching content constraints...", flush=True)
     structures = _structures(_get(f"{BASE_URL}/contentconstraint/{AGENCY}"))
     out: dict[str, dict[str, list[str]]] = {}
@@ -351,250 +426,101 @@ def fetch_content_constraints() -> dict[str, dict[str, list[str]]]:
     return out
 
 
-def _serieskeysonly_records(dataflow_id: str, key: str) -> list[dict]:
-    """Return ``[{dim_id: code}]`` for every existing series under ``key``."""
-    url = f"{BASE_URL}/data/{dataflow_id}/{key}?detail=serieskeysonly&format=jsondata"
-    try:
-        resp = requests.get(
-            url,
-            headers={"Accept": "application/json", "User-Agent": "openbb-ecb build"},
-            timeout=240,
-        )
-    except requests.RequestException:
-        return []
-    if resp.status_code != 200:
-        return []
-    try:
-        message = resp.json()
-    except ValueError:
-        return []
-    datasets = message.get("dataSets") or []
-    if not datasets:
-        return []
-    series_dims = message.get("structure", {}).get("dimensions", {}).get("series", [])
-    records: list[dict] = []
-    for series_key in datasets[0].get("series", {}):
-        record: dict = {}
-        for pos, raw_idx in enumerate(series_key.split(":")):
-            if pos >= len(series_dims):
-                break
-            values = series_dims[pos].get("values", [])
-            idx = int(raw_idx)
-            if 0 <= idx < len(values):
-                record[series_dims[pos].get("id")] = values[idx].get("id")
-        records.append(record)
-    return records
+def _sanitize_dsetinfo(fragment: str) -> str:
+    """Reduce a data-information fragment to safe inline HTML with absolute links."""
+    fragment = _STRIP_BLOCK_RE.sub(" ", fragment)
+    fragment = fragment.replace('href="/', f'href="{PORTAL_URL}/')
+    out: list[str] = []
+    for token in re.split(r"(<[^>]+>)", fragment):
+        if token.startswith("<"):
+            if _KEEP_TAG_RE.match(token):
+                out.append(_ATTR_RE.sub("", token))
+        else:
+            out.append(token)
+    text = re.sub(r"<[^>]*$", "", "".join(out))
+    return re.sub(r"\s+", " ", text).strip()
 
 
-def _context_score(combo: tuple, ctx_dims: list[str]) -> int:
-    """Score a context slice — prefer euro-area, monthly, unadjusted defaults."""
-    score = 0
-    for dim, value in zip(ctx_dims, combo):
-        if value is None:
-            continue
-        if dim.endswith("AREA") and value in ("U2", "I8", "I9", "EA"):
-            score += 10
-        if dim == "FREQ":
-            score += {"M": 5, "Q": 3, "A": 1}.get(value, 0)
-        if dim == "ADJUSTMENT" and value in ("N", "NSA"):
-            score += 1
-    return score
-
-
-def _derive_table_context(table: dict, dsd_dims: list[dict]) -> tuple[dict, dict]:
-    """Return ``(valid_context, default_context)`` from a table's real series.
-
-    Classifies each hierarchy dimension by how many leaf rows pin it:
-      * *row* dims (every leaf) define the rows;
-      * *partial* dims (some leaves) need an aggregate for the rows that don't
-        pin them (e.g. a balance-sheet item with no maturity breakdown takes the
-        total maturity).
-    The non-hierarchy *context* dims are the user-selectable slice; their valid
-    values and a best default come from the slices that cover the most rows
-    (which drops incidental single-row series — e.g. spot FX under an HCI table).
-    The default also pins each partial dim to the value covering the most rows.
-    """
-    dims_order = [d.get("id") for d in dsd_dims]
-    codelist_to_dim = {
-        d.get("codelist_id"): d.get("id") for d in dsd_dims if d.get("codelist_id")
-    }
-    hierarchy: dict[str, set] = {}
-    leaves: list[dict] = []
-
-    def walk(nodes: list[dict], path: dict) -> None:
-        for node in nodes:
-            local = dict(path)
-            dim = codelist_to_dim.get(node.get("codelist_id"))
-            code = node.get("code")
-            if dim and code:
-                hierarchy.setdefault(dim, set()).add(code)
-                local[dim] = code
-            children = node.get("children", [])
-            if not children and local:
-                leaves.append(local)
-            walk(children, local)
-
-    walk(table.get("tree", []), {})
-    if not hierarchy or not leaves:
-        return {}, {}
-    leaf_fixes: dict[str, int] = {}
-    for leaf in leaves:
-        for fixed in leaf:
-            leaf_fixes[fixed] = leaf_fixes.get(fixed, 0) + 1
-    row_dims = {d for d in hierarchy if leaf_fixes.get(d) == len(leaves)}
-    ctx_dims = [d for d in dims_order if d not in hierarchy]
-    # Fetch the series for the row items with the partial/context dimensions left
-    # open, so a partial dim's aggregate value (e.g. the total maturity that the
-    # un-broken-down rows use, which is not among the hierarchy's maturity codes)
-    # is included. Fall back to the full hierarchy when there is no row dim.
-    fetch_dims = row_dims or set(hierarchy)
-    key = ".".join(
-        "+".join(sorted(hierarchy[d])) if d in fetch_dims else "" for d in dims_order
-    )
-    records = _serieskeysonly_records(table["dataflow_id"], key)
-    if not records:
-        return {}, {}
-    series_set = {tuple(r.get(d) for d in dims_order) for r in records}
-
-    def _filled(candidate: dict) -> int:
-        """How many leaf rows resolve to a real series under this full slice."""
-        return sum(
-            tuple(leaf.get(d, candidate.get(d)) for d in dims_order) in series_set
-            for leaf in leaves
-        )
-
-    non_row = [d for d in dims_order if d not in row_dims]
-    pools = {
-        d: sorted({r.get(d) for r in records if r.get(d) is not None}) for d in non_row
-    }
-    # Seed from the single existing series that already fills the most rows, then
-    # coordinate-ascend each non-row dimension independently — the optimal slice
-    # combines values (e.g. the *total* maturity for un-broken-down rows) that may
-    # not co-occur in any single series.
-    seed = max(
-        records,
-        key=lambda r: (
-            _filled(r),
-            _context_score(tuple(r.get(d) for d in ctx_dims), ctx_dims),
+def _extract_dataset_info(html: str) -> dict | None:
+    """Parse a dataset ``data-information`` page into title + fields, or None."""
+    fields: list[dict] = []
+    for match in _DSETINFO_RE.finditer(html):
+        key, body = match.group(1), match.group(2)
+        label_match = _FIELD_LABEL_RE.search(body)
+        label = _clean_html(label_match.group(1)) if label_match else key
+        content = body[label_match.end() :] if label_match else body
+        content = _sanitize_dsetinfo(content)[:4000]
+        if content:
+            fields.append({"key": key, "label": label, "html": content})
+    if not fields:
+        return None
+    title_match = _TITLE_RE.search(html)
+    title = _clean_html(title_match.group(1)).split(" | ")[0] if title_match else ""
+    download = _DOWNLOAD_RE.search(html)
+    return {
+        "title": title,
+        "catalogue": (
+            f"{PORTAL_URL}/data/datasets/{download.group(1)}/download"
+            if download
+            else ""
         ),
-    )
-    candidate = {d: seed.get(d) for d in dims_order}
-    for _ in range(3):  # three coordinate-ascent passes converge in practice
-        for d in non_row:
-            best_value, best_value_rank = candidate.get(d), (-1, -1)
-            for value in pools[d]:
-                candidate[d] = value
-                rank = (_filled(candidate), _context_score((value,), (d,)))
-                if rank > best_value_rank:
-                    best_value_rank, best_value = rank, value
-            candidate[d] = best_value
-    best_fill = _filled(candidate)
-    default = {
-        d: candidate[d]
-        for d in dims_order
-        if d not in row_dims and candidate.get(d) is not None
+        "fields": fields,
     }
-    # Valid slice values = the values a user can swap into each context dimension
-    # and still get data (filling a meaningful share of rows).
-    threshold = max(1, best_fill // 3)
-    valid: dict[str, list] = {}
-    for d in ctx_dims:
-        valid[d] = [
-            value for value in pools[d] if _filled({**candidate, d: value}) >= threshold
-        ]
-    return valid, default
 
 
-def fetch_jdf_constraints(presentation_tables: dict) -> dict[str, dict[str, list[str]]]:
-    """Return ``{table_id: {dim_id: [values]}}`` from the per-table content
-    constraints (agency ``ECB.DISS``).
+def fetch_dataflow_info(dataflow_ids: list[str]) -> dict[str, dict]:
+    """Return the ``data-information`` metadata for each dataflow that has it."""
+    print("[8/10] Fetching dataflow data-information...", flush=True)
 
-    Each presentation table has its own content constraint whose ``DataKeySet``
-    enumerates the exact series the table publishes — so the values pinned per
-    dimension are the *authoritative* slice (e.g. the PSS measure: ``NT`` number
-    vs ``VT`` value vs ``NP`` share), which a data-fill heuristic cannot tell
-    apart for tables that share a row hierarchy.
-    """
-    print("[9/10] Fetching JDF table constraints...", flush=True)
-    core_to_table = {
-        tid.split("@", 1)[0][len("HCL_") :]: tid
-        for tid in presentation_tables
-        if tid.split("@", 1)[0].startswith("HCL_")
-    }
-    structures = _structures(_get(f"{BASE_URL}/contentconstraint/{HCL_AGENCY}"))
-    out: dict[str, dict[str, set]] = {}
-    if structures is not None:
-        for cc in structures.findall(".//str:ContentConstraint", _NS):
-            ref = cc.find(".//str:ConstraintAttachment/str:Dataflow/Ref", _NS)
-            table_id = core_to_table.get(ref.get("id")) if ref is not None else None
-            if not table_id:
-                continue
-            dims = out.setdefault(table_id, {})
-            for kv in cc.iter():
-                if kv.tag.endswith("}KeyValue") and kv.get("id"):
-                    for value in kv:
-                        if value.tag.endswith("}Value") and value.text:
-                            dims.setdefault(kv.get("id"), set()).add(value.text)
-    result = {t: {d: sorted(v) for d, v in dims.items()} for t, dims in out.items()}
-    print(f"      {len(result)} tables with a content constraint", flush=True)
-    return result
+    def _one(flow_id: str) -> tuple[str, dict | None]:
+        html = _get_text(
+            f"{PORTAL_URL}/data/datasets/{flow_id.lower()}/data-information?layerType=KL"
+        )
+        return flow_id, (_extract_dataset_info(html) if html else None)
+
+    out: dict[str, dict] = {}
+    pending = list(dataflow_ids)
+    for _ in range(3):
+        if not pending:
+            break
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            for flow_id, info in pool.map(_one, pending):
+                if info:
+                    out[flow_id] = info
+        pending = [flow_id for flow_id in pending if flow_id not in out]
+    print(f"      {len(out)} dataflows with data-information", flush=True)
+    return out
 
 
-def _tree_dims(table: dict, dsd_dims: list[dict]) -> set[str]:
-    """Return the DSD dimensions that appear in a table's row hierarchy."""
-    codelist_to_dim = {
-        d.get("codelist_id"): d.get("id") for d in dsd_dims if d.get("codelist_id")
-    }
-    found: set[str] = set()
+def fetch_portal_concepts(dataflow_ids: set[str]) -> dict[str, dict]:
+    """Return the ECB data-portal concepts with their dataset members."""
+    print("[9/10] Fetching data-portal concepts...", flush=True)
+    index = _get_text(f"{PORTAL_URL}/data/concepts")
+    slugs = sorted(set(_CONCEPT_REF_RE.findall(index)))
 
-    def walk(nodes: list[dict]) -> None:
-        for node in nodes:
-            dim = codelist_to_dim.get(node.get("codelist_id"))
-            if dim:
-                found.add(dim)
-            walk(node.get("children", []))
+    def _one(slug: str) -> tuple[str, dict]:
+        html = _get_text(
+            f"{PORTAL_URL}/data/concepts/{slug}/data-information?layerType=KL"
+        )
+        title_match = _TITLE_RE.search(html)
+        name = (
+            _clean_html(title_match.group(1)).split(" | ")[0] if title_match else slug
+        )
+        datasets = sorted(
+            {
+                d.upper()
+                for d in _DATASET_REF_RE.findall(html)
+                if d.upper() in dataflow_ids
+            }
+        )
+        return slug, {"slug": slug, "name": name, "datasets": datasets}
 
-    walk(table.get("tree", []))
-    return found
-
-
-def fetch_table_contexts(
-    presentation_tables: dict, dataflows: dict, datastructures: dict
-) -> int:
-    """Derive and attach ``valid_context``/``default_context`` to each table.
-
-    The fill heuristic resolves the row/aggregate dimensions; the per-table
-    content constraint then overrides the non-row (context) dimensions with the
-    exact values the table pins — the authoritative source of truth.
-    """
-    constraints = fetch_jdf_constraints(presentation_tables)
-    print("[10/10] Deriving presentation-table contexts...", flush=True)
-    derived = 0
-    for table in presentation_tables.values():
-        dataflow = dataflows.get(table.get("dataflow_id"))
-        if not dataflow:
-            continue
-        dsd = datastructures.get(dataflow.get("dsd_id"))
-        if not dsd:
-            continue
-        dsd_dims = dsd.get("dimensions", [])
-        valid, default = _derive_table_context(table, dsd_dims)
-        if not valid:
-            continue
-        constraint = constraints.get(table.get("id"))
-        if constraint:
-            tree_dims = _tree_dims(table, dsd_dims)
-            for dim, values in constraint.items():
-                if dim in tree_dims or not values:
-                    continue
-                valid[dim] = values
-                if default.get(dim) not in values:
-                    default[dim] = values[0]
-        table["valid_context"] = valid
-        table["default_context"] = default
-        derived += 1
-    print(f"      {derived} tables with derived context", flush=True)
-    return derived
+    out: dict[str, dict] = {}
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        for slug, record in pool.map(_one, slugs):
+            out[slug] = record
+    print(f"      {len(out)} concepts", flush=True)
+    return out
 
 
 def main() -> None:
@@ -607,9 +533,10 @@ def main() -> None:
     codelists = fetch_codelists()
     concepts = fetch_concepts()
     categories, df_to_cat, cat_to_df = fetch_categories()
-    presentation_tables, row_labels = fetch_presentation_tables()
+    presentation_tables = fetch_presentation_tables()
     dataflow_constraints = fetch_content_constraints()
-    fetch_table_contexts(presentation_tables, dataflows, datastructures)
+    dataflow_info = fetch_dataflow_info(list(dataflows))
+    portal_concepts = fetch_portal_concepts(set(dataflows))
 
     blob = {
         "dataflows": dataflows,
@@ -620,8 +547,9 @@ def main() -> None:
         "dataflow_categories": df_to_cat,
         "category_dataflows": cat_to_df,
         "presentation_tables": presentation_tables,
-        "row_labels": row_labels,
         "dataflow_constraints": dataflow_constraints,
+        "dataflow_info": dataflow_info,
+        "portal_concepts": portal_concepts,
         "dataflow_parameters": {},
     }
 
@@ -640,7 +568,9 @@ def main() -> None:
         f"{len(codelists)} codelists, {len(concepts)} concepts, "
         f"{len(categories)} categories, "
         f"{len(presentation_tables)} presentation tables, "
-        f"{len(dataflow_constraints)} constrained dataflows.",
+        f"{len(dataflow_constraints)} constrained dataflows, "
+        f"{len(dataflow_info)} data-information sheets, "
+        f"{len(portal_concepts)} concepts.",
         flush=True,
     )
 

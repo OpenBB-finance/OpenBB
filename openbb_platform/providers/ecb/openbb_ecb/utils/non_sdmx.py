@@ -1,18 +1,10 @@
-"""Fetchers/parsers for ECB data published outside the SDMX API.
-
-Three sources, each isolated here so a website change is a one-file fix:
-  * RSS feeds (press releases, publications, blog) — stable XML.
-  * The statistical release calendar (statscal) — HTML scrape (fragile).
-  * Eurosystem eligible marketable assets (collateral) — MID bulk CSV.
-"""
+"""Fetchers/parsers for ECB data published outside the SDMX API."""
 
 from __future__ import annotations
 
 import re
 from datetime import date as dateType
 from typing import cast
-
-# --- RSS feeds (releases / documents) --------------------------------------
 
 RSS_FEEDS: dict[str, str] = {
     "press_releases": "https://www.ecb.europa.eu/rss/press.html",
@@ -54,69 +46,101 @@ async def _aget_bytes(url: str) -> tuple[int, bytes]:
 RELEASE_HOSTS = {"www.ecb.europa.eu", "ecb.europa.eu"}
 
 
-def _article_to_markdown(html: str, base_url: str) -> str:
-    """Render an ECB article page's ``<main>`` content as markdown.
-
-    Image and link URLs are resolved to **absolute** against the page URL — a
-    page-relative chart ``src`` (e.g. ``blog.../img1.jpeg``) resolves to the
-    page's folder, a root-relative ``/shared/...`` to the origin — so the images
-    render inline in the newsfeed. Returns "" when there is no article body.
-    """
+def _article_to_html(html: str, base_url: str) -> str:
+    """Return the ECB article page with resource URLs made absolute."""
     from urllib.parse import urljoin
 
     from bs4 import BeautifulSoup
-    from markdownify import markdownify
 
-    main = BeautifulSoup(html, "html.parser").find("main")
-    if main is None:
+    soup = BeautifulSoup(html, "html.parser")
+    if soup.find("main") is None:
         return ""
-    for tag in main.select("script, style, nav, header, footer, form, button, svg"):
-        tag.decompose()
-    for img in main.find_all("img"):
-        src = img.get("src")
-        if src:
-            img["src"] = urljoin(base_url, str(src))
-    for anchor in main.find_all("a"):
-        href = anchor.get("href")
-        if href:
-            anchor["href"] = urljoin(base_url, str(href))
-    markdown = markdownify(str(main), heading_style="ATX", strip=["svg"])
-    return re.sub(r"\n{3,}", "\n\n", markdown).strip()
+    for tag in soup.find_all(href=True):
+        tag["href"] = urljoin(base_url, str(tag["href"]))
+    for tag in soup.find_all(src=True):
+        tag["src"] = urljoin(base_url, str(tag["src"]))
+    head = soup.find("head")
+    if head is not None:
+        head.insert(0, soup.new_tag("base", href=base_url))
+    return str(soup).strip()
 
 
-async def fetch_release_body(url: str) -> str:
-    """Fetch an ECB release page and return its article body as markdown.
+_INFO_CSS = (
+    "body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;margin:0;"
+    "padding:1.25rem 1.5rem;background:#0f1116;color:#e6e6e6;line-height:1.5}"
+    "h1{font-size:1.35rem;margin:0 0 .25rem}"
+    "h2{font-size:1.05rem;margin:1.4rem 0 .4rem;color:#8ab4ff;"
+    "border-bottom:1px solid #2a2f3a;padding-bottom:.2rem}"
+    ".badge{font-size:.7rem;background:#2a2f3a;color:#9aa0aa;padding:.15rem .4rem;"
+    "border-radius:.3rem;vertical-align:middle;margin-left:.4rem}"
+    ".meta{color:#9aa0aa;font-size:.85rem;margin:.15rem 0 .6rem}"
+    "a{color:#8ab4ff}p{margin:.4rem 0}"
+)
 
-    Validated to ecb.europa.eu (SSRF guard). Returns "" for any non-ECB URL or
-    when the page can't be fetched/parsed, so one bad article never empties the
-    feed.
-    """
+
+def render_dataflow_info(
+    dataflow_id: str, info: dict, concepts: list[str] | None = None
+) -> str:
+    """Render a dataflow's cached ``data-information`` into an HTML page."""
+    from html import escape
+
+    title = info.get("title") or dataflow_id
+    parts = [
+        f'<h1>{escape(title)}<span class="badge">{escape(dataflow_id)}</span></h1>'
+    ]
+    if concepts:
+        parts.append(
+            '<p class="meta">Topics: ' + ", ".join(escape(c) for c in concepts) + "</p>"
+        )
+    catalogue = info.get("catalogue")
+    if catalogue:
+        parts.append(
+            f'<p class="meta"><a href="{escape(catalogue)}">'
+            "Download the full series catalogue (CSV, zipped)</a></p>"
+        )
+    for field in info.get("fields") or []:
+        parts.append(f"<h2>{escape(field.get('label') or '')}</h2>")
+        parts.append(f"<div>{field.get('html') or ''}</div>")
+    body = "".join(parts)
+    return (
+        f'<!doctype html><html><head><meta charset="utf-8">'
+        f"<style>{_INFO_CSS}</style></head><body><article>{body}</article></body></html>"
+    )
+
+
+async def fetch_release_html(url: str) -> str:
+    """Fetch an ECB release page and return the full page as HTML."""
     from urllib.parse import urlparse
 
     parsed = urlparse(url)
     if parsed.scheme != "https" or (parsed.hostname or "").lower() not in RELEASE_HOSTS:
         return ""
+    if parsed.path.lower().endswith(".pdf"):
+        return await _embed_pdf(url)
     try:
         html = await _aget_text(url)
-    except Exception:  # noqa: BLE001 - a bad page shouldn't break the feed
+    except Exception:  # noqa: BLE001
         return ""
-    return _article_to_markdown(html, url)
+    return _article_to_html(html, url)
 
 
-def release_excerpt(body: str, limit: int = 280) -> str:
-    """Return the first substantial paragraph of a markdown body, truncated.
+async def _embed_pdf(url: str) -> str:
+    """Fetch an ECB PDF and embed it as a base64 data URI."""
+    import base64
 
-    Skips the page's preamble — nav bullets, the title/section headings, the date,
-    the byline, images and tables — to land on the first real sentence.
-    """
-    skip = ("![", "#", "|", "*", "-", ">", "By ")
-    for line in body.splitlines():
-        text = line.strip()
-        if len(text) >= 80 and not text.startswith(skip):
-            if len(text) <= limit:
-                return text
-            return text[:limit].rsplit(" ", 1)[0].rstrip(",.;:") + "…"
-    return ""
+    try:
+        status, raw = await _aget_bytes(url)
+    except Exception:  # noqa: BLE001
+        return ""
+    if status != 200 or not raw:
+        return ""
+    encoded = base64.b64encode(raw).decode("ascii")
+    return (
+        '<html><body style="margin:0;height:100vh">'
+        f'<embed src="data:application/pdf;base64,{encoded}"'
+        ' type="application/pdf" style="width:100%;height:100%;border:0"/>'
+        "</body></html>"
+    )
 
 
 async def fetch_rss_items(feed: str) -> list[dict]:
@@ -140,18 +164,17 @@ async def fetch_rss_items(feed: str) -> list[dict]:
             stamp = parsedate_to_datetime(pub) if pub else None
         except (TypeError, ValueError):
             stamp = None
+        link = re.sub(r"(https?://[^/]+)//+", r"\1/", _t("link"))
         items.append(
             {
                 "date": stamp.isoformat() if stamp else None,
                 "title": _t("title"),
-                "url": _t("link"),
+                "url": link,
                 "category": feed,
             }
         )
     return items
 
-
-# --- Statistical release calendar (statscal) -------------------------------
 
 _STATSCAL_URL = "https://www.ecb.europa.eu/press/calendars/statscal/html/index.en.html"
 _DT_DD_RE = re.compile(r"<dt[^>]*>(.*?)</dt>\s*<dd[^>]*>(.*?)</dd>", re.S)
@@ -166,10 +189,7 @@ def _strip_html(text: str) -> str:
 
 
 async def fetch_release_calendar() -> list[dict]:
-    """Scrape the ECB statistical release calendar into calendar rows.
-
-    Fragile by nature (HTML scrape); the parsing is confined to this function.
-    """
+    """Scrape the ECB statistical release calendar into calendar rows."""
     html = await _aget_text(_STATSCAL_URL)
     rows: list[dict] = []
     for dt_raw, dd_raw in _DT_DD_RE.findall(html):
@@ -195,10 +215,7 @@ async def fetch_release_calendar() -> list[dict]:
     return rows
 
 
-# --- Eurosystem eligible assets (collateral) -------------------------------
-
 _EA_BASE = "https://www.ecb.europa.eu/paym/coll/assets/html/dla/ea_MID"
-# CSV column -> standardized field name.
 _EA_FIELDS: dict[str, str] = {
     "ISIN_CODE": "isin",
     "HAIRCUT_CATEGORY": "haircut_category",
@@ -262,11 +279,7 @@ def _parse_eligible_assets_csv(raw: bytes) -> list[dict]:
 async def fetch_eligible_assets(
     snapshot_date: dateType | None,
 ) -> tuple[str, list[dict]]:
-    """Download the eligible marketable assets list for the nearest available day.
-
-    Returns ``(file_date_iso, records)``. Walks back up to 7 days from
-    ``snapshot_date`` (or today) to skip non-TARGET days.
-    """
+    """Download the eligible marketable assets list for the nearest available day."""
     import contextlib
     import gzip
     from datetime import timedelta

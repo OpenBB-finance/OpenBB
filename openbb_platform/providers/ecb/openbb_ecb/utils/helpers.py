@@ -7,13 +7,7 @@ from datetime import date
 
 
 def parse_sdmx_period(period: str, start: str | None = None) -> str:
-    """Normalize an SDMX TIME_PERIOD to an ISO ``YYYY-MM-DD`` string.
-
-    Prefers the observation's ``start`` timestamp when the JSON provides it
-    (exact for every frequency). Otherwise derives the period-*start* date
-    from the period id, supporting ``YYYY``, ``YYYY-MM``, ``YYYY-Qn``,
-    ``YYYY-Sn``, ``YYYY-Wnn`` and ``YYYY-MM-DD``.
-    """
+    """Normalize an SDMX TIME_PERIOD to an ISO ``YYYY-MM-DD`` string."""
     if start:
         return start[:10]
     if not period:
@@ -39,7 +33,7 @@ def parse_sdmx_period(period: str, start: str | None = None) -> str:
 
 
 def period_end(period: str, end: str | None = None) -> str:
-    """Return the period-*ending* ISO date for an SDMX TIME_PERIOD."""
+    """Return the period-ending ISO date for an SDMX TIME_PERIOD."""
     if end:
         return end[:10]
     if not period:
@@ -63,12 +57,7 @@ def period_end(period: str, end: str | None = None) -> str:
 
 
 def parse_series_keys(message: dict) -> list[dict]:
-    """Flatten a ``serieskeysonly`` SDMX-JSON message into one record per series.
-
-    Each record carries every series dimension (``<DIM>`` = code,
-    ``<DIM>__label`` = name), the dot-joined ``series_key``, and a human
-    ``name`` built from the dimension labels. There are no observations.
-    """
+    """Flatten a ``serieskeysonly`` SDMX-JSON message into one record per series."""
     datasets = message.get("dataSets") or []
     if not datasets:
         return []
@@ -102,13 +91,7 @@ def parse_series_keys(message: dict) -> list[dict]:
 
 
 def parse_sdmx_json(message: dict) -> list[dict]:
-    """Flatten an ECB SDMX-JSON ``data`` message into observation records.
-
-    Each record carries every series dimension (``<DIM>`` = code,
-    ``<DIM>__label`` = name), the dot-joined ``series_key``, decoded
-    series/observation attributes (by id), ``period`` (raw TIME_PERIOD),
-    ``date`` (period-start ISO), and ``OBS_VALUE``.
-    """
+    """Flatten an ECB SDMX-JSON ``data`` message into observation records."""
     datasets = message.get("dataSets") or []
     if not datasets:
         return []
@@ -174,4 +157,33 @@ def parse_sdmx_json(message: dict) -> list[dict]:
                         if code is not None:
                             row[o_attr.get("id")] = code
                 rows.append(row)
+    return rows
+
+
+def parse_sdmx_csv(text: str, flow_ref: str = "") -> list[dict]:
+    """Flatten an ECB SDMX ``format=csvdata`` response into observation records."""
+    import csv
+    from io import StringIO
+
+    rows: list[dict] = []
+    for raw in csv.DictReader(StringIO(text)):
+        record: dict = {}
+        for column, value in raw.items():
+            if column in (None, "", "KEY", "TIME_PERIOD", "OBS_VALUE") or not value:
+                continue
+            record[column] = value
+        key = raw.get("KEY") or ""
+        parts = key.split(".")
+        record["series_key"] = (
+            ".".join(parts[1:]) if len(parts) > 1 and parts[0] == flow_ref else key
+        )
+        period = raw.get("TIME_PERIOD") or ""
+        record["period"] = period
+        record["date"] = parse_sdmx_period(period, None)
+        obs = raw.get("OBS_VALUE")
+        try:
+            record["OBS_VALUE"] = float(obs) if obs else None
+        except ValueError:
+            record["OBS_VALUE"] = None
+        rows.append(record)
     return rows

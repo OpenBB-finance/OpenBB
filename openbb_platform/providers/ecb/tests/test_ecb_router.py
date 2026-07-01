@@ -1,5 +1,3 @@
-"""Unit tests for ``openbb_ecb.ecb_router``."""
-
 import asyncio
 import json
 
@@ -10,41 +8,34 @@ _META = EcbMetadata()
 
 
 def test_list_and_search_dataflows():
-    """Catalogue listing and search; an empty query lists every dataflow."""
     every = asyncio.run(router_module.list_dataflows(_META))
     assert any(d["value"] == "EXR" for d in every)
     assert any(
         d["value"] == "EXR"
         for d in asyncio.run(router_module.search_dataflows(_META, "exchange"))
     )
-    # No query -> the full catalogue (the `dataflow` arg is a click-to-group target).
     assert len(asyncio.run(router_module.search_dataflows(_META, None))) == len(every)
 
 
 def test_topics_commands():
-    """Topic listing and topic->dataflows commands (rows render as a table)."""
     topics = asyncio.run(router_module.list_topics(_META))
     assert topics
     rows = asyncio.run(router_module.topic_dataflows(_META, topics[0]["value"]))
     assert rows
-    # rows are dataflow records (dicts), not bare ids, so the widget can render.
     assert all(isinstance(r, dict) and "value" in r for r in rows)
 
 
 def test_get_dataflow_dimensions():
-    """Dimension discovery returns the EXR dimensions."""
     dims = asyncio.run(router_module.get_dataflow_dimensions(_META, "EXR"))
     assert [d["id"] for d in dims][0] == "FREQ"
 
 
 def test_dimension_choices_no_selections():
-    """Without selections the full codelist is returned."""
     out = asyncio.run(router_module.dimension_choices(_META, "EXR", "CURRENCY", None))
     assert out == _META.resolve_dimension_values("EXR", "CURRENCY")
 
 
 def test_dimension_choices_narrowed(monkeypatch):
-    """With selections, availability narrows the options."""
     monkeypatch.setattr(
         _META, "_fetch_available_constraint", lambda flow, key: {"CURRENCY": ["USD"]}
     )
@@ -55,7 +46,6 @@ def test_dimension_choices_narrowed(monkeypatch):
 
 
 def test_dimension_choices_no_availability(monkeypatch):
-    """When availability is empty, the full codelist is returned."""
     monkeypatch.setattr(_META, "_fetch_available_constraint", lambda flow, key: {})
     out = asyncio.run(
         router_module.dimension_choices(_META, "EXR", "CURRENCY", "FREQ=D")
@@ -64,7 +54,6 @@ def test_dimension_choices_no_availability(monkeypatch):
 
 
 def test_model_commands(monkeypatch):
-    """Every model-driven command delegates to OBBject.from_query."""
 
     class _FakeOBBject:
         @staticmethod
@@ -84,7 +73,6 @@ def test_model_commands(monkeypatch):
         router_module.key_interest_rates,
         router_module.euro_short_term_rate,
         router_module.mfi_interest_rates,
-        router_module.releases,
         router_module.eligible_assets,
     ]
     for command in commands:
@@ -93,61 +81,38 @@ def test_model_commands(monkeypatch):
 
 
 def test_indicator_dimension_dropdowns(monkeypatch):
-    """``available_indicators`` frequency / reference-area dropdowns per dataflow."""
     assert asyncio.run(router_module.indicator_frequencies(_META, None)) == []
     assert asyncio.run(router_module.indicator_frequencies(_META, "ZZZ")) == []
 
     freqs = asyncio.run(router_module.indicator_frequencies(_META, "EXR"))
-    assert any(o["value"] == "D" for o in freqs)  # EXR is daily
+    assert any(o["value"] == "D" for o in freqs)
 
     areas = asyncio.run(router_module.indicator_areas(_META, "EXR"))
-    assert areas and any(o["value"] == "USD" for o in areas)  # EXR geography = CURRENCY
+    assert areas and any(o["value"] == "USD" for o in areas)
 
-    # A dataflow with no geography dimension -> no options.
     monkeypatch.setattr(
         _META, "get_dataflow_dimensions", lambda flow: [{"id": "FREQ", "values": []}]
     )
     assert asyncio.run(router_module.indicator_areas(_META, "EXR")) == []
 
 
-_BSI_TABLE = "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
+_BSI_TABLE = "BSI01_01"
 
 
 def test_table_listing_commands():
-    """``list_tables`` / ``list_table_choices`` expose dataflow-backed tables."""
     tables = asyncio.run(router_module.list_tables(_META))
     assert tables and any(t["value"] == _BSI_TABLE for t in tables)
 
     all_choices = asyncio.run(router_module.list_table_choices(_META, None))
     assert any(c["value"] == _BSI_TABLE for c in all_choices)
+    assert all(set(c) == {"label", "value"} for c in all_choices)
 
     bsi_choices = asyncio.run(router_module.list_table_choices(_META, "BSI"))
-    assert bsi_choices and all("BSI" in c["value"] for c in bsi_choices)
+    assert bsi_choices and any(c["value"] == _BSI_TABLE for c in bsi_choices)
     assert len(bsi_choices) < len(all_choices)
 
 
-def test_presentation_table_slice_choices(monkeypatch):
-    """The frequency / reference-area dropdowns offer the table's valid values."""
-    assert asyncio.run(router_module.presentation_table_frequencies(_META, None)) == []
-    assert (
-        asyncio.run(router_module.presentation_table_frequencies(_META, "NOPE")) == []
-    )
-    assert asyncio.run(router_module.presentation_table_areas(_META, None)) == []
-
-    freqs = asyncio.run(router_module.presentation_table_frequencies(_META, _BSI_TABLE))
-    assert {o["value"] for o in freqs} == set(
-        _META.get_table_valid_context(_BSI_TABLE)["FREQ"]
-    )
-    areas = asyncio.run(router_module.presentation_table_areas(_META, _BSI_TABLE))
-    assert areas and any(o["label"] == "Germany" for o in areas)
-
-    # No candidate geography dimension in the valid context -> no options.
-    monkeypatch.setattr(_META, "get_table_valid_context", lambda tid: {"FREQ": ["M"]})
-    assert asyncio.run(router_module.presentation_table_areas(_META, _BSI_TABLE)) == []
-
-
 def test_presentation_table(monkeypatch):
-    """Resolves rows + values; frequency / reference area override the default slice."""
     from openbb_ecb.utils import query_builder
 
     assert asyncio.run(router_module.presentation_table(_META, "NOPE")) == []
@@ -155,62 +120,127 @@ def test_presentation_table(monkeypatch):
     captured = {}
 
     async def _fetch(flow_ref, key, **kwargs):
-        captured["key"] = key
+        captured["flow"] = flow_ref
+        captured["last_n"] = kwargs.get("last_n")
         return [
             {
-                "BS_ITEM": "A20",
-                "BS_COUNT_SECTOR": "1000",
-                "MATURITY_ORIG": "A",
+                "series_key": "M.U2.X",
+                "_dim_ids": ["FREQ", "ITEM"],
+                "FREQ__label": "Monthly",
+                "ITEM__label": "M3",
+                "UNIT__label": "Euro",
+                "UNIT_MULT": "6",
                 "OBS_VALUE": 9.0,
                 "date": "2024-01-01",
-                "series_key": "k",
             }
         ]
 
     monkeypatch.setattr(query_builder, "fetch_sdmx_data", _fetch)
-
-    # No overrides -> the cached default slice (REF_AREA=U2) is used.
-    rows = asyncio.run(router_module.presentation_table(_META, _BSI_TABLE))
-    assert rows and any(r.get("2024-01-01") == 9.0 for r in rows)
-    assert all("title" in r for r in rows)  # pivoted, indented title rows
-    assert captured["key"].split(".")[:2] == ["M", "U2"]
-
-    # Overriding frequency + reference area changes those key segments only.
-    asyncio.run(
-        router_module.presentation_table(
-            _META, _BSI_TABLE, frequency="Q", reference_area="DE"
-        )
+    monkeypatch.setattr(
+        _META, "get_table_rows", lambda tid: [{"flow": "BSI", "key": "M.U2.X"}]
     )
-    assert captured["key"].split(".")[:2] == ["Q", "DE"]
+    rows = asyncio.run(router_module.presentation_table(_META, _BSI_TABLE, limit=3))
+    assert captured["flow"] == "BSI" and captured["last_n"] == 3
+    assert rows[0]["2024-01-01"] == 9_000_000.0
+    assert rows[0]["unit"] == "Euro" and "title" in rows[0]
 
 
-def test_presentation_table_no_geography(monkeypatch):
-    """A reference area is ignored when the table has no geography dimension."""
-    from openbb_ecb.utils import query_builder
+def test_concept_commands():
+    concepts = asyncio.run(router_module.list_concepts(_META))
+    assert concepts and any(c["value"] == "bank-interest-rates" for c in concepts)
 
-    captured = {}
+    choices = asyncio.run(router_module.concept_choices(_META))
+    assert all(set(c) == {"label", "value"} for c in choices)
+    assert any(c["value"] == "bank-interest-rates" for c in choices)
 
-    async def _fetch(flow_ref, key, **kwargs):
-        captured["key"] = key
-        return []
-
-    monkeypatch.setattr(query_builder, "fetch_sdmx_data", _fetch)
-    monkeypatch.setattr(_META, "get_table_valid_context", lambda tid: {"FREQ": ["M"]})
-    asyncio.run(
-        router_module.presentation_table(_META, _BSI_TABLE, reference_area="DE")
+    all_flows = asyncio.run(router_module.dataflow_info_choices(_META, None))
+    assert all_flows and all(set(c) == {"label", "value"} for c in all_flows)
+    filtered = asyncio.run(
+        router_module.dataflow_info_choices(_META, "bank-interest-rates")
     )
-    assert "DE" not in captured["key"].split(".")
+    assert [c["value"] for c in filtered] == ["MIR"]
+    unknown = asyncio.run(router_module.dataflow_info_choices(_META, "does-not-exist"))
+    assert len(unknown) == len(all_flows)
+
+
+def test_dataflow_information():
+    by_flow = asyncio.run(router_module.dataflow_information(dataflow="MIR"))
+    body = by_flow.body.decode()
+    assert "MIR</span>" in body and "<h2>Scope</h2>" in body
+    by_concept = asyncio.run(
+        router_module.dataflow_information(concept="bank-interest-rates")
+    )
+    assert "MIR</span>" in by_concept.body.decode()
+    empty = asyncio.run(router_module.dataflow_information(concept="car-registrations"))
+    assert "No data information" in empty.body.decode()
+    missing = asyncio.run(router_module.dataflow_information(dataflow="NOPE_XYZ"))
+    assert "No data information" in missing.body.decode()
 
 
 def test_get_apps_json():
-    """The bundled apps.json is served."""
     apps = asyncio.run(router_module.get_ecb_apps_json())
     assert apps[0]["name"] == "ECB Explorer"
     assert "catalogue" in apps[0]["tabs"]
 
 
+def _patch_feeds(monkeypatch, rss, html=None):
+    from openbb_ecb.utils import data_cache, non_sdmx
+
+    async def _passthrough(dataset, key, loader):
+        return await loader()
+
+    monkeypatch.setattr(non_sdmx, "fetch_rss_items", rss)
+    monkeypatch.setattr(data_cache, "cached_records", _passthrough)
+    if html is not None:
+        monkeypatch.setattr(non_sdmx, "fetch_release_html", html)
+
+
+def test_release_choices(monkeypatch):
+
+    async def _rss(feed):
+        return [
+            {"date": "2026-06-20T10:00:00", "title": "Old", "url": "https://x/a"},
+            {"date": "2026-06-24T10:00:00", "title": "New", "url": "https://x/b"},
+            {"date": None, "title": "NoUrl", "url": ""},
+        ]
+
+    _patch_feeds(monkeypatch, _rss)
+    out = asyncio.run(router_module.release_choices("blog"))
+    assert [o["value"] for o in out] == ["https://x/b", "https://x/a"]
+    assert out[0]["label"] == "2026-06-24 · New"
+    assert asyncio.run(router_module.release_choices("bogus"))
+
+
+def test_release_document(monkeypatch):
+
+    async def _rss(feed):
+        return [{"date": "2026-06-24T10:00:00", "title": "New", "url": "https://x/b"}]
+
+    async def _html(url):
+        return f"<html><body>ARTICLE {url}</body></html>"
+
+    _patch_feeds(monkeypatch, _rss, _html)
+    resp = asyncio.run(router_module.release_document(release="https://x/given"))
+    assert resp.status_code == 200 and b"ARTICLE https://x/given" in resp.body
+    resp2 = asyncio.run(router_module.release_document(release="", category="blog"))
+    assert b"ARTICLE https://x/b" in resp2.body
+
+    async def _empty(url):
+        return ""
+
+    _patch_feeds(monkeypatch, _rss, _empty)
+    resp3 = asyncio.run(router_module.release_document(release="https://x/given"))
+    assert b"No release content available" in resp3.body
+
+    async def _empty_rss(feed):
+        return []
+
+    _patch_feeds(monkeypatch, _empty_rss, _empty)
+    resp4 = asyncio.run(router_module.release_document(release="", category="bogus"))
+    assert b"No release content available" in resp4.body
+
+
 def test_get_apps_json_error(monkeypatch):
-    """A corrupt/unreadable apps.json yields an empty list."""
 
     def _raise(*args, **kwargs):
         raise ValueError("corrupt")
@@ -220,14 +250,13 @@ def test_get_apps_json_error(monkeypatch):
 
 
 def test_rewrite_widget_ids(monkeypatch):
-    """Widget ids are remapped to owner namespaces when the map is populated."""
     apps = [
         {
             "tabs": {
                 "t": {
                     "layout": [
                         {"i": "ecb_exchange_rates_ecb_obb"},
-                        {"i": "ecb_releases_ecb_obb"},
+                        {"i": "ecb_release_document"},
                     ]
                 }
             }
@@ -240,14 +269,13 @@ def test_rewrite_widget_ids(monkeypatch):
     )
     out = router_module._rewrite_widget_ids(apps)
     ids = [item["i"] for item in out[0]["tabs"]["t"]["layout"]]
-    assert ids == ["currency_price_historical_ecb_obb", "ecb_releases_ecb_obb"]
+    assert ids == ["currency_price_historical_ecb_obb", "ecb_release_document"]
 
     monkeypatch.setattr(router_module, "_OWNER_WIDGET_MAP", {})
     assert router_module._rewrite_widget_ids(apps) is apps
 
 
 def test_owner_installed_namespacing(monkeypatch):
-    """With owners installed, the owner widget map fills and commands defer."""
     import importlib
 
     from openbb_ecb import _installed
@@ -258,10 +286,10 @@ def test_owner_installed_namespacing(monkeypatch):
     try:
         reloaded = importlib.reload(router_module)
         owner_map = reloaded._OWNER_WIDGET_MAP
-        assert "ecb_exchange_rates_ecb_obb" in owner_map  # currency
-        assert "ecb_balance_of_payments_ecb_obb" in owner_map  # economy
-        assert "ecb_available_indicators_ecb_obb" in owner_map  # economy
-        assert "ecb_yield_curve_ecb_obb" in owner_map  # fixedincome
+        assert "ecb_exchange_rates_ecb_obb" in owner_map
+        assert "ecb_balance_of_payments_ecb_obb" in owner_map
+        assert "ecb_available_indicators_ecb_obb" in owner_map
+        assert "ecb_yield_curve_ecb_obb" in owner_map
         assert len(owner_map) == 9
     finally:
         monkeypatch.undo()

@@ -1,5 +1,3 @@
-"""Test ECB Fetchers."""
-
 import datetime
 
 import pytest
@@ -10,7 +8,6 @@ from openbb_ecb.models.balance_of_payments import ECBBalanceOfPaymentsFetcher
 from openbb_ecb.models.currency_historical import ECBCurrencyHistoricalFetcher
 from openbb_ecb.models.currency_reference_rates import ECBCurrencyReferenceRatesFetcher
 from openbb_ecb.models.ecb_interest_rates import ECBInterestRatesFetcher
-from openbb_ecb.models.ecb_releases import ECBReleasesFetcher
 from openbb_ecb.models.economic_calendar import ECBEconomicCalendarFetcher
 from openbb_ecb.models.economic_indicators import ECBEconomicIndicatorsFetcher
 from openbb_ecb.models.euro_short_term_rate import ECBEuroShortTermRateFetcher
@@ -24,7 +21,6 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
-    """VCR config."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -35,7 +31,6 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_ecb_available_indicators_fetcher(credentials=test_credentials):
-    """Test ECB Available Indicators Fetcher (enumerate series via serieskeysonly)."""
     params = {
         "dataflow": "EXR",
         "frequency": "A",
@@ -50,7 +45,6 @@ def test_ecb_available_indicators_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_currency_reference_rates_fetcher(credentials=test_credentials):
-    """Test ECB Currency Reference Rates Fetcher."""
     params = {}
 
     fetcher = ECBCurrencyReferenceRatesFetcher()
@@ -60,7 +54,6 @@ def test_ecb_currency_reference_rates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_currency_historical_fetcher(credentials=test_credentials):
-    """Test ECB Currency Historical Fetcher."""
     params = {
         "symbol": "EURUSD",
         "start_date": datetime.date(2024, 6, 3),
@@ -75,7 +68,6 @@ def test_ecb_currency_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_economic_indicators_fetcher(credentials=test_credentials):
-    """Test ECB Economic Indicators Fetcher."""
     params = {
         "symbol": "EXR::D.USD.EUR.SP00.A",
         "start_date": datetime.date(2024, 6, 3),
@@ -90,9 +82,7 @@ def test_ecb_economic_indicators_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_interest_rates_fetcher(credentials=test_credentials):
-    """Test ECB Key Interest Rates Fetcher."""
     params = {
-        "interest_rate_type": "deposit",
         "start_date": datetime.date(2025, 1, 1),
         "end_date": datetime.date(2025, 1, 10),
         "use_cache": False,
@@ -105,7 +95,6 @@ def test_ecb_interest_rates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_euro_short_term_rate_fetcher(credentials=test_credentials):
-    """Test ECB Euro Short-Term Rate Fetcher."""
     params = {
         "start_date": datetime.date(2025, 1, 2),
         "end_date": datetime.date(2025, 1, 10),
@@ -119,7 +108,6 @@ def test_ecb_euro_short_term_rate_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_mfi_interest_rates_fetcher(credentials=test_credentials):
-    """Test ECB MFI Interest Rates Fetcher."""
     params = {
         "symbol": "household_loans_for_house_purchase",
         "start_date": datetime.date(2025, 1, 1),
@@ -134,7 +122,6 @@ def test_ecb_mfi_interest_rates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_balance_of_payments_fetcher(credentials=test_credentials):
-    """Test ECB Balance Of Payments Fetcher."""
     params = {
         "report_type": "main",
         "start_date": datetime.date(2023, 1, 1),
@@ -149,7 +136,6 @@ def test_ecb_balance_of_payments_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_ecb_yield_curve_fetcher(credentials=test_credentials):
-    """Test ECB Yield Curve Fetcher."""
     params = {"date": "2023-11-20", "use_cache": False}
 
     fetcher = ECBYieldCurveFetcher()
@@ -158,18 +144,7 @@ def test_ecb_yield_curve_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_ecb_releases_fetcher(credentials=test_credentials):
-    """Test ECB Releases Fetcher."""
-    params = {"category": "press_releases", "limit": 5}
-
-    fetcher = ECBReleasesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_ecb_economic_calendar_fetcher(credentials=test_credentials):
-    """Test ECB Economic Calendar Fetcher."""
     params = {}
 
     fetcher = ECBEconomicCalendarFetcher()

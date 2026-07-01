@@ -1,43 +1,70 @@
-"""ECB Key Interest Rates Model (FM dataflow).
-
-The three key ECB policy rates: the deposit facility, the marginal lending
-facility, and the main refinancing operations (fixed) rate. ECB stores these
-as sparse step-functions (one observation per rate change), so the full
-change-point series is fetched and forward-filled to a daily series over the
-requested window.
-"""
+"""ECB Key Interest Rates Model."""
 
 # pylint: disable=unused-argument
 
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.ecb_interest_rates import (
-    EuropeanCentralBankInterestRatesData,
-    EuropeanCentralBankInterestRatesParams,
-)
+from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
+from openbb_ecb.utils.series_keys import FM_RATE_CODES
 
-class ECBInterestRatesQueryParams(EuropeanCentralBankInterestRatesParams):
+_KEY_RATES = {
+    "DFR": "deposit_facility",
+    "MRR_FR": "main_refinancing",
+    "MLFR": "marginal_lending",
+}
+_KEY_RATES_KEY = "B.U2.EUR.4F.KR." + "+".join(FM_RATE_CODES.values()) + ".LEV"
+
+
+def _rate(label: str):
+    """Build a percent-valued policy-rate column."""
+    return Field(
+        default=None,
+        description=f"{label}, in percent.",
+        json_schema_extra={
+            "x-widget_config": {"headerName": label},
+            "x-unit_measurement": "percent",
+        },
+    )
+
+
+class ECBInterestRatesQueryParams(QueryParams):
     """ECB Key Interest Rates Query."""
 
+    start_date: dateType | None = Field(
+        default=None, description="Start date of the data window."
+    )
+    end_date: dateType | None = Field(
+        default=None, description="End date of the data window."
+    )
     use_cache: bool = Field(
         default=True,
         description="If true, cache parsed results on disk for the dataset TTL.",
     )
 
 
-class ECBInterestRatesData(EuropeanCentralBankInterestRatesData):
+class ECBInterestRatesData(Data):
     """ECB Key Interest Rates Data."""
+
+    date: dateType = Field(description="The date of the rates.")
+    deposit_facility: float | None = _rate("Deposit facility")
+    main_refinancing: float | None = _rate("Main refinancing operations")
+    marginal_lending: float | None = _rate("Marginal lending facility")
 
 
 class ECBInterestRatesFetcher(
     Fetcher[ECBInterestRatesQueryParams, list[ECBInterestRatesData]]
 ):
-    """Fetch a key ECB interest rate from the FM dataflow."""
+    """Fetch the key ECB interest rates from the FM dataflow."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> ECBInterestRatesQueryParams:
@@ -50,64 +77,64 @@ class ECBInterestRatesFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch the full change-point series for the requested key rate."""
+        """Fetch the change-point series for the key rates."""
         # pylint: disable=import-outside-toplevel
         from openbb_ecb.utils.data_cache import cached_records, make_key
         from openbb_ecb.utils.query_builder import fetch_sdmx_data
-        from openbb_ecb.utils.series_keys import FM_RATE_CODES, fm_key
-
-        code = FM_RATE_CODES[query.interest_rate_type]
 
         async def loader() -> list[dict]:
-            # No date filter — the series is sparse; fetch every change point.
-            return await fetch_sdmx_data("FM", fm_key(code), raise_empty=False)
+            return await fetch_sdmx_data("FM", _KEY_RATES_KEY, raise_empty=False)
 
-        cache_key = make_key("fm", code=code)
         records = await cached_records(
-            "fm", cache_key, loader, use_cache=query.use_cache
+            "fm",
+            make_key("fm", key=_KEY_RATES_KEY),
+            loader,
+            use_cache=query.use_cache,
         )
         if not records:
-            raise OpenBBError(
-                EmptyDataError("No data found for the requested ECB key rate.")
-            )
+            raise OpenBBError(EmptyDataError("No data found for the ECB key rates."))
         return records
 
     @staticmethod
     def transform_data(
         query: ECBInterestRatesQueryParams, data: list[dict], **kwargs: Any
     ) -> list[ECBInterestRatesData]:
-        """Forward-fill the step changes to a daily series over the window."""
+        """Pivot the rates and forward-fill to a daily series."""
         # pylint: disable=import-outside-toplevel
-        from datetime import date as dateType
+        from pandas import DataFrame, Timestamp, date_range, isna, to_datetime
 
-        from pandas import DataFrame, Timestamp, date_range, to_datetime
-
-        frame = DataFrame(
-            [
-                {"date": r["date"], "rate": r["OBS_VALUE"]}
-                for r in data
-                if r.get("OBS_VALUE") is not None
-            ]
-        )
+        rows = [
+            {
+                "date": record["date"],
+                "field": _KEY_RATES.get(record.get("PROVIDER_FM_ID") or ""),
+                "rate": record["OBS_VALUE"],
+            }
+            for record in data
+            if record.get("OBS_VALUE") is not None
+        ]
+        frame = DataFrame([row for row in rows if row["field"]])
         if frame.empty:
-            raise EmptyDataError("No data found for the requested ECB key rate.")
+            raise EmptyDataError("No data found for the ECB key rates.")
         frame["date"] = to_datetime(frame["date"])
-        frame = frame.drop_duplicates("date").set_index("date").sort_index()
+        pivot = frame.pivot_table(
+            index="date", columns="field", values="rate", aggfunc="last"
+        ).sort_index()
 
-        start = Timestamp(query.start_date) if query.start_date else frame.index.min()
+        start = Timestamp(query.start_date) if query.start_date else pivot.index.min()
         end = (
-            Timestamp(query.end_date) if query.end_date else Timestamp(dateType.today())
+            Timestamp(query.end_date)
+            if query.end_date
+            else Timestamp(datetime.now().date())
         )
         daily = date_range(start=start, end=end, freq="D")
-        series = (
-            frame["rate"]
-            .reindex(frame.index.union(daily))
-            .ffill()
-            .reindex(daily)
-            .dropna()
-        )
-        records = [
-            {"date": idx.strftime("%Y-%m-%d"), "rate": float(value)}
-            for idx, value in series.items()
-        ]
+        pivot = pivot.reindex(pivot.index.union(daily)).ffill().reindex(daily)
+
+        records: list[dict] = []
+        for idx in daily:
+            row = pivot.loc[idx]
+            record: dict = {"date": idx.strftime("%Y-%m-%d")}
+            for field in _KEY_RATES.values():
+                value = row.get(field)
+                record[field] = None if value is None or isna(value) else float(value)
+            records.append(record)
         return [ECBInterestRatesData.model_validate(r) for r in records]

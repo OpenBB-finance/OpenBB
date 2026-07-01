@@ -1,5 +1,3 @@
-"""Unit tests for the ECB currency reference rates model."""
-
 import openbb_core.provider.utils.helpers as core_helpers
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -24,7 +22,6 @@ class _FakeResp:
 
 
 def test_extract_and_transform(monkeypatch):
-    """The daily XML extracts to raw rates and transforms to a record."""
     monkeypatch.setattr(
         core_helpers, "make_request", lambda *a, **k: _FakeResp(200, _XML)
     )
@@ -38,7 +35,6 @@ def test_extract_and_transform(monkeypatch):
 
 
 def test_extract_non_200_raises(monkeypatch):
-    """A non-200 response raises."""
     monkeypatch.setattr(core_helpers, "make_request", lambda *a, **k: _FakeResp(503))
     with pytest.raises(OpenBBError):
         Fetcher.extract_data(Fetcher.transform_query({}), None)

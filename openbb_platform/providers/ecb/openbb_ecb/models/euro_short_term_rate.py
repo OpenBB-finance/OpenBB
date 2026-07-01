@@ -1,9 +1,4 @@
-"""ECB Euro Short-Term Rate (€STR) Model (EST dataflow).
-
-The ECB is the primary source for the €STR and publishes its full daily
-detail: the rate, 25th/75th volume percentiles, total volume, number of
-transactions and banks, and the share of the five largest banks.
-"""
+"""ECB Euro Short-Term Rate Model."""
 
 # pylint: disable=unused-argument
 
@@ -18,7 +13,6 @@ from openbb_core.provider.standard_models.euro_short_term_rate import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
-# Fields stored as decimal fractions (ECB publishes them as percent).
 _PERCENT_FIELDS = {
     "rate",
     "percentile_25",
@@ -57,7 +51,7 @@ class ECBEuroShortTermRateFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch every €STR data type in a single request."""
+        """Fetch the €STR data types."""
         # pylint: disable=import-outside-toplevel
         from openbb_ecb.utils.data_cache import cached_records, make_key
         from openbb_ecb.utils.query_builder import fetch_sdmx_data

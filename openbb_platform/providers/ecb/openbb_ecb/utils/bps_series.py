@@ -1,12 +1,4 @@
-"""Definitions and helpers for the BPS (Balance of Payments) ECB series.
-
-Series keys target the SDMX 2.1 data API (flowRef ``BPS``); the leading
-``BPS.`` flowRef is therefore omitted from each key. The ``+`` operator inside a
-key selects multiple series whose observations are summed by the fetcher (used
-for aggregate items such as financial / other services). Field names match the
-standardized ``balance_of_payments`` model exactly (including its existing
-``portofolio_investment_debt_instruments_debit`` spelling).
-"""
+"""Definitions and helpers for the BPS ECB series."""
 
 from typing import Any, Literal
 
@@ -59,7 +51,7 @@ def generate_bps_series_ids(
     report_type: BPS_REPORT_TYPES = "main",
     country: BPS_COUNTRIES | None = None,
 ) -> Any:
-    """Generate SDMX data keys (flow ``BPS``) for euro area balance of payments."""
+    """Generate SDMX data keys for euro area balance of payments."""
 
     freq = (
         BPS_FREQUENCIES_DICT[frequency]

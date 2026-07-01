@@ -1,12 +1,4 @@
-"""Detect which "owning" sibling extensions are installed.
-
-ECB models map onto standard models owned by the economy, currency, and
-fixedincome extensions. When an owner is installed, the ECB fetcher registers
-under the *standard* model name (so e.g. ``obb.economy.balance_of_payments(
-provider='ecb')`` works) and the ECB router does not re-register that command.
-When the owner is absent, the fetcher registers under an ECB *alias* and the
-router exposes the command in the ``obb.ecb.*`` namespace.
-"""
+"""Detect which "owning" sibling extensions are installed."""
 
 from __future__ import annotations
 

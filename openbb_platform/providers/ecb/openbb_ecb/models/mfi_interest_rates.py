@@ -1,42 +1,103 @@
-"""ECB MFI (bank) Interest Rates Model (MIR dataflow).
-
-MFI interest rate statistics — the rates euro-area banks charge/pay households
-and non-financial corporations on loans and deposits. These are economic
-indicator series, so the model reuses the standard ``EconomicIndicators``
-model; the ``symbol`` parameter is constrained to a curated set of headline
-series so callers don't need to know raw MIR dimension keys.
-"""
+"""ECB MFI Interest Rates Model."""
 
 # pylint: disable=unused-argument
 
+from datetime import date as dateType
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_indicators import (
-    EconomicIndicatorsData,
     EconomicIndicatorsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import Field, field_validator
 
 from openbb_ecb.utils.series_keys import MIR_SERIES
 
-MFI_SERIES_CHOICES = list(MIR_SERIES)
-DEFAULT_MFI_SYMBOL = "household_loans_for_house_purchase"
+_MFI_LABELS: dict[str, str] = {
+    "household_overnight_deposits": "Households – overnight deposits",
+    "household_deposits_with_agreed_maturity": (
+        "Households – deposits with agreed maturity"
+    ),
+    "household_deposits_redeemable_at_notice": (
+        "Households – deposits redeemable at notice"
+    ),
+    "household_loans_for_house_purchase": "Households – loans for house purchase",
+    "household_loans_for_house_purchase_cost_of_borrowing": (
+        "Households – house purchase (cost of borrowing)"
+    ),
+    "household_consumer_credit": "Households – consumer credit",
+    "household_other_loans": "Households – other loans",
+    "corporate_overnight_deposits": "NFCs – overnight deposits",
+    "corporate_deposits_with_agreed_maturity": ("NFCs – deposits with agreed maturity"),
+    "corporate_loans": "NFCs – loans",
+    "corporate_loans_cost_of_borrowing": "NFCs – loans (cost of borrowing)",
+    "household_loans_outstanding": "Households – loans outstanding",
+    "household_house_purchase_outstanding": "Households – house purchase outstanding",
+    "household_consumer_and_other_outstanding": (
+        "Households – consumer & other outstanding"
+    ),
+}
+MFI_SERIES_CHOICES = list(_MFI_LABELS)
+DEFAULT_MFI_SYMBOL = ",".join(MFI_SERIES_CHOICES)
+_MIR_AREAS = [
+    "U2",
+    "AT",
+    "BE",
+    "BG",
+    "CY",
+    "CZ",
+    "DE",
+    "DK",
+    "EE",
+    "ES",
+    "FI",
+    "FR",
+    "GR",
+    "HR",
+    "HU",
+    "IE",
+    "IT",
+    "LT",
+    "LU",
+    "LV",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SE",
+    "SI",
+    "SK",
+]
+
+
+def _rate(label: str):
+    """Build a percent-valued rate column."""
+    return Field(
+        default=None,
+        description=f"{label}, in percent.",
+        json_schema_extra={
+            "x-widget_config": {"headerName": label},
+            "x-unit_measurement": "percent",
+        },
+    )
 
 
 class ECBMfiInterestRatesQueryParams(EconomicIndicatorsQueryParams):
     """ECB MFI Interest Rates Query."""
 
     __json_schema_extra__ = {
-        "symbol": {"multiple_items_allowed": True, "choices": MFI_SERIES_CHOICES}
+        "symbol": {"multiple_items_allowed": True, "choices": MFI_SERIES_CHOICES},
+        "country": {"choices": _MIR_AREAS},
     }
 
     symbol: str = Field(
         default=DEFAULT_MFI_SYMBOL,
-        description="The headline MFI interest rate series to fetch. One or more of: "
-        + ", ".join(MFI_SERIES_CHOICES),
+        description="Headline MFI rate series to include as columns (default: all)."
+        " One or more of: " + ", ".join(MFI_SERIES_CHOICES),
     )
     country: str | None = Field(
         default="U2",
@@ -66,10 +127,48 @@ class ECBMfiInterestRatesQueryParams(EconomicIndicatorsQueryParams):
         return ",".join(cleaned)
 
 
-class ECBMfiInterestRatesData(EconomicIndicatorsData):
+class ECBMfiInterestRatesData(Data):
     """ECB MFI Interest Rates Data."""
 
-    model_config = ConfigDict(extra="allow")
+    date: dateType = Field(description="Observation date.")
+    household_overnight_deposits: float | None = _rate(
+        _MFI_LABELS["household_overnight_deposits"]
+    )
+    household_deposits_with_agreed_maturity: float | None = _rate(
+        _MFI_LABELS["household_deposits_with_agreed_maturity"]
+    )
+    household_deposits_redeemable_at_notice: float | None = _rate(
+        _MFI_LABELS["household_deposits_redeemable_at_notice"]
+    )
+    household_loans_for_house_purchase: float | None = _rate(
+        _MFI_LABELS["household_loans_for_house_purchase"]
+    )
+    household_loans_for_house_purchase_cost_of_borrowing: float | None = _rate(
+        _MFI_LABELS["household_loans_for_house_purchase_cost_of_borrowing"]
+    )
+    household_consumer_credit: float | None = _rate(
+        _MFI_LABELS["household_consumer_credit"]
+    )
+    household_other_loans: float | None = _rate(_MFI_LABELS["household_other_loans"])
+    corporate_overnight_deposits: float | None = _rate(
+        _MFI_LABELS["corporate_overnight_deposits"]
+    )
+    corporate_deposits_with_agreed_maturity: float | None = _rate(
+        _MFI_LABELS["corporate_deposits_with_agreed_maturity"]
+    )
+    corporate_loans: float | None = _rate(_MFI_LABELS["corporate_loans"])
+    corporate_loans_cost_of_borrowing: float | None = _rate(
+        _MFI_LABELS["corporate_loans_cost_of_borrowing"]
+    )
+    household_loans_outstanding: float | None = _rate(
+        _MFI_LABELS["household_loans_outstanding"]
+    )
+    household_house_purchase_outstanding: float | None = _rate(
+        _MFI_LABELS["household_house_purchase_outstanding"]
+    )
+    household_consumer_and_other_outstanding: float | None = _rate(
+        _MFI_LABELS["household_consumer_and_other_outstanding"]
+    )
 
 
 class ECBMfiInterestRatesFetcher(
@@ -121,7 +220,6 @@ class ECBMfiInterestRatesFetcher(
             )
             for record in records:
                 record["_series_name"] = series_name
-                record["_key"] = key
             return records
 
         gathered = await asyncio.gather(*[get_one(s) for s in series_list])
@@ -136,20 +234,17 @@ class ECBMfiInterestRatesFetcher(
     def transform_data(
         query: ECBMfiInterestRatesQueryParams, data: list[dict], **kwargs: Any
     ) -> list[ECBMfiInterestRatesData]:
-        """Standardize into the EconomicIndicators model."""
-        rows = []
+        """Pivot the per-series records into one wide row per date."""
+        by_date: dict[str, dict] = {}
         for record in data:
-            if record.get("OBS_VALUE") is None:
+            value = record.get("OBS_VALUE")
+            series = record.get("_series_name")
+            if value is None or series not in _MFI_LABELS:
                 continue
-            rows.append(
-                {
-                    "date": record["date"],
-                    "symbol_root": record.get("_series_name"),
-                    "symbol": f"MIR::{record.get('_key', '')}",
-                    "country": record.get("REF_AREA__label") or query.country,
-                    "value": record.get("OBS_VALUE"),
-                    "title": record.get("TITLE") or record.get("BS_ITEM__label"),
-                }
-            )
-        rows.sort(key=lambda r: (r["symbol_root"] or "", r["date"]))
+            row = by_date.setdefault(record["date"], {"date": record["date"]})
+            row[series] = float(value)
+
+        if not by_date:
+            raise EmptyDataError("No MFI interest rate data found for the query.")
+        rows = sorted(by_date.values(), key=lambda r: r["date"])
         return [ECBMfiInterestRatesData.model_validate(r) for r in rows]

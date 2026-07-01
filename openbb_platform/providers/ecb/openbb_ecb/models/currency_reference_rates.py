@@ -13,11 +13,7 @@ from openbb_core.provider.standard_models.currency_reference_rates import (
 
 
 class ECBCurrencyReferenceRatesQueryParams(CurrencyReferenceRatesQueryParams):
-    """
-    ECB Currency Reference Rates Query.
-
-    source: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/
-    """
+    """ECB Currency Reference Rates Query."""
 
 
 class ECBCurrencyReferenceRatesData(CurrencyReferenceRatesData):

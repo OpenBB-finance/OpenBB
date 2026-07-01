@@ -8,12 +8,7 @@ from openbb_ecb.utils.metadata._constants import NS, XML_LANG
 
 
 def parse_search_query(query: str) -> list[list[str]]:
-    """Parse a search string into an OR-of-AND term matrix.
-
-    ``+`` (or whitespace) is AND, ``|`` is OR, and double quotes group a
-    phrase. ``'gdp "per capita" | income'`` -> ``[['gdp', 'per capita'],
-    ['income']]``. An empty query yields ``[]`` (matches everything).
-    """
+    """Parse a search string into an OR-of-AND term matrix."""
     query = (query or "").strip().lower()
     if not query:
         return []
@@ -40,7 +35,7 @@ def matches_query(haystack: str, parsed_query: list[list[str]]) -> bool:
 
 
 def en_text(elem, tag: str) -> str:
-    """Return the English (or first) text of a ``com:`` child of ``elem``."""
+    """Return the English text of a ``com:`` child of ``elem``."""
     if elem is None:
         return ""
     found = None

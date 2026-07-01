@@ -13,13 +13,7 @@ class CacheMixin(MetadataBase):
     """Hydrate the singleton from ``ecb_cache.json.xz``."""
 
     def _load_from_cache(self) -> bool:
-        """Populate the in-memory catalog from the shipped cache.
-
-        Returns False (leaving empty caches) when the asset is missing —
-        e.g. a source checkout that has not run the build hook — so the
-        package still imports. A live fallback in the loader mixin covers
-        individual codelist misses.
-        """
+        """Populate the in-memory catalog from the shipped cache."""
         if not SHIPPED_CACHE_FILE.exists():
             import warnings
 
@@ -42,6 +36,7 @@ class CacheMixin(MetadataBase):
         self.dataflow_categories = blob.get("dataflow_categories", {})
         self.category_dataflows = blob.get("category_dataflows", {})
         self.presentation_tables = blob.get("presentation_tables", {})
-        self.row_labels = blob.get("row_labels", {})
         self.dataflow_constraints = blob.get("dataflow_constraints", {})
+        self.dataflow_info = blob.get("dataflow_info", {})
+        self.portal_concepts = blob.get("portal_concepts", {})
         return True

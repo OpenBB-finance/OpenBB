@@ -33,7 +33,7 @@ class QueryMixin(MetadataBase):
         return dsd
 
     def concept_name(self, concept_id: str | None) -> str:
-        """Return the human label for a concept id (fallback: the id)."""
+        """Return the human label for a concept id."""
         if not concept_id:
             return ""
         return self.concepts.get(concept_id, concept_id)
@@ -48,15 +48,7 @@ class QueryMixin(MetadataBase):
         return self._fetch_codelist_live(codelist_id, agency=agency)
 
     def get_dataflow_dimensions(self, dataflow_id: str) -> list[dict]:
-        """Return ordered queryable dimensions with their *valid* values.
-
-        Each entry: ``{id, name, position, codelist_id, n_values, values:
-        [{value, label}], truncated}``. The shared codelist is restricted to the
-        codes the dataflow's content constraint actually permits (its source of
-        truth — e.g. ICB's REF_AREA is ~20 areas, not CL_AREA's ~900); only when
-        a dimension is unconstrained is the full codelist used. ``values`` is
-        capped at ``MAX_DIMENSION_VALUES``.
-        """
+        """Return ordered queryable dimensions with their valid values."""
         dsd = self.get_dsd_for_dataflow(dataflow_id)
         constraints = self.dataflow_constraints.get(dataflow_id, {})
         result: list[dict] = []

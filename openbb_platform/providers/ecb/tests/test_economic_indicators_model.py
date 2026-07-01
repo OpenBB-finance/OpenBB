@@ -1,5 +1,3 @@
-"""Unit tests for the ECB generic economic indicators model."""
-
 import asyncio
 
 import pytest
@@ -20,20 +18,17 @@ def _stub(records):
 
 
 def test_build_title_uses_dimension_labels_only():
-    """Title joins dimension labels, excluding frequency and attributes."""
     record = {
         "_dim_ids": ["FREQ", "CURRENCY", "EXR_TYPE", "MISSING"],
         "FREQ__label": "Daily",
         "CURRENCY__label": "US dollar",
         "EXR_TYPE__label": "Spot",
-        # MISSING has no label -> skipped
-        "UNIT__label": "USD",  # attribute, not a dimension -> excluded
+        "UNIT__label": "USD",
     }
     assert _build_title(record) == "US dollar - Spot"
 
 
 def test_transform_standardizes():
-    """Records standardize to EconomicIndicators fields."""
     query = Fetcher.transform_query({"symbol": "EXR::D.USD.EUR.SP00.A"})
     data = [
         {
@@ -58,7 +53,6 @@ def test_transform_standardizes():
 
 
 def test_aextract_valid(monkeypatch):
-    """A valid FLOW::KEY symbol is fetched and tagged."""
     monkeypatch.setattr(
         query_builder,
         "fetch_sdmx_data",
@@ -80,7 +74,6 @@ def test_aextract_valid(monkeypatch):
 
 
 def test_aextract_invalid_symbol_and_flow(monkeypatch):
-    """Missing '::' or an unknown dataflow raises."""
     monkeypatch.setattr(query_builder, "fetch_sdmx_data", _stub([]))
     with pytest.raises(OpenBBError):
         asyncio.run(
@@ -98,7 +91,6 @@ def test_aextract_invalid_symbol_and_flow(monkeypatch):
 
 
 def test_aextract_empty_raises(monkeypatch):
-    """A valid symbol that returns nothing raises."""
     monkeypatch.setattr(query_builder, "fetch_sdmx_data", _stub([]))
     with pytest.raises(OpenBBError):
         asyncio.run(
