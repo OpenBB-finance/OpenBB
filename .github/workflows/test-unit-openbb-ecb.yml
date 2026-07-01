@@ -44,8 +44,6 @@ jobs:
         with:
           path: openbb_platform/providers/ecb/openbb_ecb/assets/ecb_cache.json.xz
           key: ecb-sdmx-${{ hashFiles('openbb_platform/providers/ecb/openbb_ecb/utils/generate_cache.py') }}
-          restore-keys: |
-            ecb-sdmx-
 
       - name: Build sdist + wheel
         env:
