@@ -223,12 +223,47 @@ def test_en_text():
 
 
 _BSI_TABLE = "BSI01_01"
+_FAKE_TABLES = {
+    "BSI01_01": {
+        "id": "BSI01_01",
+        "title": "Monetary aggregates",
+        "category": "Money, credit and banking",
+        "subcategory": "Monetary aggregates",
+        "rows": [{"flow": "BSI", "key": "M.U2.X"}, {"flow": "BSI", "key": "M.U2.Y"}],
+    },
+    "HICP01_01": {
+        "id": "HICP01_01",
+        "title": "HICP",
+        "category": "Macroeconomic and sectoral statistics",
+        "subcategory": "HICP",
+        "rows": [{"flow": "HICP", "key": "M.U2.Z"}],
+    },
+}
+_FAKE_CONCEPTS = {
+    "bank-interest-rates": {
+        "slug": "bank-interest-rates",
+        "name": "Bank interest rates",
+        "datasets": ["MIR"],
+    },
+    "car-registrations": {
+        "slug": "car-registrations",
+        "name": "Car registrations",
+        "datasets": [],
+    },
+}
+_FAKE_INFO = {
+    "MIR": {
+        "title": "MFI Interest Rate Statistics - MIR",
+        "catalogue": "",
+        "fields": [{"key": "scope", "label": "Scope", "html": "<p>x</p>"}],
+    },
+}
 
 
-def test_table_mixin_list():
+def test_table_mixin_list(monkeypatch):
     meta = EcbMetadata()
+    monkeypatch.setattr(meta, "presentation_tables", _FAKE_TABLES)
     tables = meta.list_tables()
-    assert tables
     entry = next(t for t in tables if t["value"] == _BSI_TABLE)
     assert entry["title"] == "Monetary aggregates"
     assert entry["category"] == "Money, credit and banking"
@@ -237,8 +272,9 @@ def test_table_mixin_list():
     assert keys == sorted(keys)
 
 
-def test_table_mixin_list_for_dataflow():
+def test_table_mixin_list_for_dataflow(monkeypatch):
     meta = EcbMetadata()
+    monkeypatch.setattr(meta, "presentation_tables", _FAKE_TABLES)
     by_flow = meta.list_tables_for_dataflow("BSI")
     assert by_flow and any(t["value"] == _BSI_TABLE for t in by_flow)
     for table in by_flow:
@@ -252,8 +288,9 @@ def test_table_mixin_label():
     assert meta._table_label({"id": "X"}) == "X"
 
 
-def test_table_mixin_get_table_and_rows():
+def test_table_mixin_get_table_and_rows(monkeypatch):
     meta = EcbMetadata()
+    monkeypatch.setattr(meta, "presentation_tables", _FAKE_TABLES)
     with pytest.raises(OpenBBError):
         meta.get_table("DOES_NOT_EXIST")
     with pytest.raises(OpenBBError):
@@ -281,10 +318,11 @@ def test_dimensions_unconstrained_uses_full_codelist(monkeypatch):
     assert currency["n_values"] == len(meta.get_codelist(currency["codelist_id"]))
 
 
-def test_concept_accessors():
+def test_concept_accessors(monkeypatch):
     meta = EcbMetadata()
+    monkeypatch.setattr(meta, "portal_concepts", _FAKE_CONCEPTS)
+    monkeypatch.setattr(meta, "dataflow_info", _FAKE_INFO)
     concepts = meta.list_concepts()
-    assert concepts and any(c["value"] == "bank-interest-rates" for c in concepts)
     bir = next(c for c in concepts if c["value"] == "bank-interest-rates")
     assert bir["datasets"] == ["MIR"] and bir["count"] == 1
     assert [c["name"] for c in concepts] == sorted(c["name"] for c in concepts)

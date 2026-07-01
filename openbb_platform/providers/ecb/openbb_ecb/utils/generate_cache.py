@@ -138,8 +138,9 @@ def _component(comp: ET.Element) -> dict:
         "concept_id": concept.get("id") if concept is not None else None,
         "codelist_id": codelist.get("id") if codelist is not None else None,
     }
-    if comp.get("position"):
-        entry["position"] = int(comp.get("position"))
+    position = comp.get("position")
+    if position:
+        entry["position"] = int(position)
     return entry
 
 
@@ -404,11 +405,11 @@ def fetch_content_constraints() -> dict[str, dict[str, list[str]]]:
         if cube is None or cube.get("include") == "false":
             continue
         flow_ids = [
-            ref.get("id")
+            flow_id
             for ref in constraint.findall(
                 "str:ConstraintAttachment/str:Dataflow/Ref", _NS
             )
-            if ref.get("id")
+            if (flow_id := ref.get("id"))
         ]
         if not flow_ids:
             continue

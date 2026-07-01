@@ -97,11 +97,47 @@ def test_indicator_dimension_dropdowns(monkeypatch):
 
 
 _BSI_TABLE = "BSI01_01"
+_FAKE_TABLES = {
+    "BSI01_01": {
+        "id": "BSI01_01",
+        "title": "Monetary aggregates",
+        "category": "Money, credit and banking",
+        "subcategory": "Monetary aggregates",
+        "rows": [{"flow": "BSI", "key": "M.U2.X"}],
+    },
+    "EXR01_01": {
+        "id": "EXR01_01",
+        "title": "Exchange rates",
+        "category": "Exchange rates",
+        "subcategory": "Exchange rates",
+        "rows": [{"flow": "EXR", "key": "D.USD"}],
+    },
+}
+_FAKE_CONCEPTS = {
+    "bank-interest-rates": {
+        "slug": "bank-interest-rates",
+        "name": "Bank interest rates",
+        "datasets": ["MIR"],
+    },
+    "car-registrations": {
+        "slug": "car-registrations",
+        "name": "Car registrations",
+        "datasets": [],
+    },
+}
+_FAKE_INFO = {
+    "MIR": {
+        "title": "MFI Interest Rate Statistics - MIR",
+        "catalogue": "",
+        "fields": [{"key": "scope", "label": "Scope", "html": "<p>x</p>"}],
+    },
+}
 
 
-def test_table_listing_commands():
+def test_table_listing_commands(monkeypatch):
+    monkeypatch.setattr(_META, "presentation_tables", _FAKE_TABLES)
     tables = asyncio.run(router_module.list_tables(_META))
-    assert tables and any(t["value"] == _BSI_TABLE for t in tables)
+    assert any(t["value"] == _BSI_TABLE for t in tables)
 
     all_choices = asyncio.run(router_module.list_table_choices(_META, None))
     assert any(c["value"] == _BSI_TABLE for c in all_choices)
@@ -115,6 +151,7 @@ def test_table_listing_commands():
 def test_presentation_table(monkeypatch):
     from openbb_ecb.utils import query_builder
 
+    monkeypatch.setattr(_META, "presentation_tables", _FAKE_TABLES)
     assert asyncio.run(router_module.presentation_table(_META, "NOPE")) == []
 
     captured = {}
@@ -145,9 +182,11 @@ def test_presentation_table(monkeypatch):
     assert rows[0]["unit"] == "Euro" and "title" in rows[0]
 
 
-def test_concept_commands():
+def test_concept_commands(monkeypatch):
+    monkeypatch.setattr(_META, "portal_concepts", _FAKE_CONCEPTS)
+    monkeypatch.setattr(_META, "dataflow_info", _FAKE_INFO)
     concepts = asyncio.run(router_module.list_concepts(_META))
-    assert concepts and any(c["value"] == "bank-interest-rates" for c in concepts)
+    assert any(c["value"] == "bank-interest-rates" for c in concepts)
 
     choices = asyncio.run(router_module.concept_choices(_META))
     assert all(set(c) == {"label", "value"} for c in choices)
@@ -163,7 +202,9 @@ def test_concept_commands():
     assert len(unknown) == len(all_flows)
 
 
-def test_dataflow_information():
+def test_dataflow_information(monkeypatch):
+    monkeypatch.setattr(_META, "portal_concepts", _FAKE_CONCEPTS)
+    monkeypatch.setattr(_META, "dataflow_info", _FAKE_INFO)
     by_flow = asyncio.run(router_module.dataflow_information(dataflow="MIR"))
     body = by_flow.body.decode()
     assert "MIR</span>" in body and "<h2>Scope</h2>" in body

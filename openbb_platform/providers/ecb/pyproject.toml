@@ -102,7 +102,7 @@ python-version = "3.10"
 
 [tool.ty.src]
 include = ["openbb_ecb"]
-exclude = ["tests", "integration", "openbb_ecb/utils/generate_cache.py"]
+exclude = ["tests", "integration"]
 
 [tool.ty.rules]
 unresolved-import = "warn"
