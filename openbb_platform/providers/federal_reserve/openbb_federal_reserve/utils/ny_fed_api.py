@@ -1,7 +1,5 @@
 """NY Federal Reserve API Utilities."""
 
-# pylint: disable=too-many-arguments,too-many-locals,unused-argument
-
 from typing import Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -78,7 +76,7 @@ HOLDING_TYPE_CHOICES = [
 ]
 
 
-def _get_endpoints(  # pylint: disable=R0917
+def _get_endpoints(
     category: CategoryChoices | None = None,
     start_date: str | None = "",
     end_date: str | None = "",
@@ -296,24 +294,24 @@ def _get_endpoints(  # pylint: disable=R0917
             f"{description}",
         },
     }
-    return end_points if category is None else end_points[category]  # type: ignore
+    return end_points if category is None else end_points[category]  # ty: ignore[invalid-return-type]
 
 
 async def fetch_data(url: str) -> dict:
     """Fetch the JSON response from the API."""
     try:
         response = await amake_request(url, timeout=30)
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         raise e from e
-    return response  # type: ignore
+    return response  # ty: ignore[invalid-return-type]
 
 
 def get_nearest_date(dates: list[str], target_date: str) -> str:
     """Get the nearest date in the list of dates to the target date."""
     df = DataFrame(dates, columns=["dates"])
     df["dates"] = DatetimeIndex(df["dates"])
-    target_date = to_datetime(target_date)  # type: ignore
-    differences = (df.dates - target_date).abs()  # type: ignore
+    target_date = to_datetime(target_date)  # ty: ignore[invalid-assignment]
+    differences = (df.dates - target_date).abs()
     nearest_date_index = differences.argmin()
     nearest_date = df.index[nearest_date_index]
     return df.iloc[nearest_date]["dates"].strftime("%Y-%m-%d")
@@ -459,9 +457,7 @@ class SomaHoldings:
         if wam is True:
             url = _get_endpoints(
                 date=as_of,
-            )[
-                "soma_holdings"
-            ]["agency_debts"]
+            )["soma_holdings"]["agency_debts"]
             response = await fetch_data(url)
             return [response.get("soma", {})]
         url = _get_endpoints(date=as_of)["soma_holdings"]["get_as_of"]
@@ -482,7 +478,7 @@ class SomaHoldings:
 
         return holdings
 
-    async def get_treasury_holdings(  # pylint: disable=R0917
+    async def get_treasury_holdings(
         self,
         as_of: str | None = None,
         cusip: str | None = None,
@@ -531,9 +527,7 @@ class SomaHoldings:
         if wam is True:
             url = _get_endpoints(
                 date=as_of,
-            )[
-                "soma_holdings"
-            ]["get_treasury_debts"]
+            )["soma_holdings"]["get_treasury_debts"]
             response = await fetch_data(url)
             return [response.get("soma", {})]
 

@@ -1,7 +1,5 @@
 """Federal Reserve SOFR Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import Any
 
@@ -77,7 +75,6 @@ class FederalReserveSOFRFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
 
         url = (
@@ -86,7 +83,7 @@ class FederalReserveSOFRFetcher(
         )
         results: list[dict] = []
         response = await amake_request(url, **kwargs)
-        results = response.get("refRates")  # type: ignore
+        results = response.get("refRates")  # ty: ignore[invalid-assignment, unresolved-attribute]
         if not results:
             raise EmptyDataError()
         return results

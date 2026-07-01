@@ -1,7 +1,5 @@
 """Federal Reserve FOMC documents model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -13,8 +11,9 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_federal_reserve.utils.fomc_documents import FomcDocumentType
 from pydantic import ConfigDict, Field, field_validator
+
+from openbb_federal_reserve.utils.fomc_documents import FomcDocumentType
 
 api_prefix = (
     SystemService()
@@ -91,6 +90,8 @@ class FederalReserveFomcDocumentsData(Data):
             "x-widget_config": {
                 "$.type": "multi_file_viewer",
                 "$.name": "FOMC PDF Document Viewer",
+                "$.category": "Federal Reserve",
+                "$.subCategory": "FRB",
                 "$.description": "Current and historical FOMC PDF materials.",
                 "$.gridData": {
                     "w": 30,
@@ -153,7 +154,6 @@ class FederalReserveFomcDocumentsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
         from openbb_federal_reserve.utils.fomc_documents import (
             get_fomc_documents_by_year,
         )

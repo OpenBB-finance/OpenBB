@@ -1,0 +1,328 @@
+{
+  "stl_fred_md_federal_reserve_obb": {
+    "name": "FRED-MD Monthly Macro Panel, St. Louis Fed",
+    "description": "The McCracken-Ng monthly database of 120+ U.S. macroeconomic series as a wide panel, one column per series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "stl_fred_md_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "stl_fred_md"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Comma-separated FRED series codes (panel columns) to return; the default returns every series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "series"
+      },
+      {
+        "label": "Transform",
+        "description": "Apply each series' recommended stationarity transformation (its transform code) instead of returning raw levels.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "transform"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "fred_md",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Saint Louis"
+  },
+  "stl_fred_qd_federal_reserve_obb": {
+    "name": "FRED-QD Quarterly Macro Panel, St. Louis Fed",
+    "description": "The McCracken-Ng quarterly database of 200+ U.S. macroeconomic series as a wide panel, one column per series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "stl_fred_qd_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "stl_fred_qd"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Comma-separated FRED series codes (panel columns) to return; the default returns every series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "series"
+      },
+      {
+        "label": "Transform",
+        "description": "Apply each series' recommended stationarity transformation (its transform code) instead of returning raw levels.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "transform"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "fred_qd",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Saint Louis"
+  },
+  "stl_national_index_federal_reserve_obb": {
+    "name": "St. Louis Fed National Indexes",
+    "description": "A selected St. Louis Fed national index: the Financial Stress Index, the Price Pressures Measure, or the Economic News nowcast.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "stl_national_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "stl_national_index"
+    },
+    "params": [
+      {
+        "label": "Index",
+        "description": "The index to return: 'financial_stress_index' (STLFSI4, weekly), 'price_pressures' (STLPPM, monthly), or 'economic_news_index' (STLENI, quarterly).",
+        "optional": true,
+        "type": "text",
+        "value": "financial_stress_index",
+        "show": true,
+        "options": [
+          {
+            "label": "Economic News Index",
+            "value": "economic_news_index"
+          },
+          {
+            "label": "Financial Stress Index",
+            "value": "financial_stress_index"
+          },
+          {
+            "label": "Price Pressures",
+            "value": "price_pressures"
+          }
+        ],
+        "paramName": "index"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "national_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "index",
+            "formatterFn": null,
+            "headerName": "Index",
+            "headerTooltip": "The requested index name.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "value",
+            "formatterFn": "none",
+            "headerName": "Value",
+            "headerTooltip": "The index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Saint Louis"
+  },
+  "stl_publications_federal_reserve_obb": {
+    "name": "St. Louis Fed Publications",
+    "description": "St. Louis Fed Economic Synopses articles. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "stl_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "stl_publications"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "stl"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of St. Louis"
+    ],
+    "subCategory": "Saint Louis",
+    "refetchInterval": false
+  }
+}

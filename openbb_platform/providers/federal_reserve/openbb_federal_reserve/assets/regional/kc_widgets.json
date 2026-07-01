@@ -1,0 +1,1145 @@
+{
+  "kc_financial_stress_index_federal_reserve_obb": {
+    "name": "KC Fed Financial Stress Index (KCFSI)",
+    "description": "Monthly index of stress in the U.S. financial system; zero is the long-run average and positive values mark above-average stress.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_financial_stress_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_financial_stress_index"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "financial_stress_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "kcfsi",
+            "formatterFn": "none",
+            "headerName": "KCFSI",
+            "headerTooltip": "The Kansas City Financial Stress Index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_risk_index_federal_reserve_obb": {
+    "name": "KC Fed Risk-On/Risk-Off Index (RORO)",
+    "description": "Composite measure of investor risk appetite and its four standardized components; positive values flag risk-off conditions.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_risk_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_risk_index"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Frequency",
+        "description": "The observation frequency.",
+        "optional": true,
+        "type": "text",
+        "value": "daily",
+        "show": true,
+        "options": [
+          {
+            "label": "Daily",
+            "value": "daily"
+          },
+          {
+            "label": "Weekly",
+            "value": "weekly"
+          }
+        ],
+        "paramName": "frequency"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "risk_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "roro",
+            "formatterFn": "none",
+            "headerName": "RORO",
+            "headerTooltip": "The composite Risk-On/Risk-Off index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "spreads",
+            "formatterFn": "none",
+            "headerName": "Credit Spreads",
+            "headerTooltip": "The standardized credit-spreads component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "equities",
+            "formatterFn": "none",
+            "headerName": "Equities",
+            "headerTooltip": "The standardized equities component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "liquidity",
+            "formatterFn": "none",
+            "headerName": "Liquidity",
+            "headerTooltip": "The standardized liquidity component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "gold_currency",
+            "formatterFn": "none",
+            "headerName": "Gold & Currency",
+            "headerTooltip": "The standardized gold and currency component.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_policy_rate_uncertainty_federal_reserve_obb": {
+    "name": "KC Fed Policy Rate Uncertainty (KCPRU & KCPRS)",
+    "description": "Daily option-implied uncertainty (KCPRU) about the expected federal funds rate path and the skew (KCPRS) of that distribution.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_policy_rate_uncertainty_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_policy_rate_uncertainty"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "policy_rate_uncertainty",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "kcpru",
+            "formatterFn": "none",
+            "headerName": "KCPRU",
+            "headerTooltip": "The Policy Rate Uncertainty index level (KCPRU).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "kcprs",
+            "formatterFn": "none",
+            "headerName": "KCPRS",
+            "headerTooltip": "The Policy Rate Uncertainty skew (KCPRS).",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_natural_rate_federal_reserve_obb": {
+    "name": "KC Fed Model-Based Natural Rates (r-star & u-star)",
+    "description": "Monthly model-based estimates of the natural rate of interest (r-star) and the natural rate of unemployment (u-star), with 68% bands.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_natural_rate_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_natural_rate"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "natural_rate",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "rstar",
+            "formatterFn": "percent",
+            "headerName": "r-star",
+            "headerTooltip": "The natural rate of interest (r-star) estimate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "rstar_lower",
+            "formatterFn": "percent",
+            "headerName": "r-star Lower",
+            "headerTooltip": "The lower bound of the r-star 68% band.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "rstar_upper",
+            "formatterFn": "percent",
+            "headerName": "r-star Upper",
+            "headerTooltip": "The upper bound of the r-star 68% band.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ustar",
+            "formatterFn": "percent",
+            "headerName": "u-star",
+            "headerTooltip": "The natural rate of unemployment (u-star) estimate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ustar_lower",
+            "formatterFn": "percent",
+            "headerName": "u-star Lower",
+            "headerTooltip": "The lower bound of the u-star 68% band.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ustar_upper",
+            "formatterFn": "percent",
+            "headerName": "u-star Upper",
+            "headerTooltip": "The upper bound of the u-star 68% band.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_divisional_lmci_federal_reserve_obb": {
+    "name": "KC Fed Divisional Labor Market Conditions (DIV-LMCI)",
+    "description": "Labor market conditions index by the U.S. and the nine Census divisions, as either the level of activity or its momentum.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_divisional_lmci_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_divisional_lmci"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Indicator",
+        "description": "The LMCI indicator to return.",
+        "optional": true,
+        "type": "text",
+        "value": "level_of_activity",
+        "show": true,
+        "options": [
+          {
+            "label": "Level of Activity",
+            "value": "level_of_activity"
+          },
+          {
+            "label": "Momentum",
+            "value": "momentum"
+          }
+        ],
+        "paramName": "indicator"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "divisional_lmci",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_ag_credit_survey_federal_reserve_obb": {
+    "name": "KC Fed Tenth District Agricultural Credit Survey",
+    "description": "Quarterly Tenth District farm credit diffusion indexes and farmland value changes by land class, by series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_ag_credit_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_ag_credit_survey"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "Farmland value changes by land class, or the diffusion indexes of farm credit conditions.",
+        "optional": true,
+        "type": "text",
+        "value": "land_values",
+        "show": true,
+        "options": [
+          {
+            "label": "Credit Conditions",
+            "value": "credit_conditions"
+          },
+          {
+            "label": "Land Values",
+            "value": "land_values"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_credit_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_ag_interest_rates_federal_reserve_obb": {
+    "name": "KC Fed Farm Loan Interest Rates",
+    "description": "Quarterly average fixed and variable farm loan interest rates by state and district from the Tenth District credit survey.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_ag_interest_rates_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_ag_interest_rates"
+    },
+    "params": [
+      {
+        "label": "Rate Type",
+        "description": "Variable or fixed interest rates.",
+        "optional": true,
+        "type": "text",
+        "value": "variable",
+        "show": true,
+        "options": [
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          },
+          {
+            "label": "Variable",
+            "value": "variable"
+          }
+        ],
+        "paramName": "rate_type"
+      },
+      {
+        "label": "Loan Type",
+        "description": "The loan type: operating, intermediate, or real estate.",
+        "optional": true,
+        "type": "text",
+        "value": "operating",
+        "show": true,
+        "options": [
+          {
+            "label": "Intermediate",
+            "value": "intermediate"
+          },
+          {
+            "label": "Operating",
+            "value": "operating"
+          },
+          {
+            "label": "Real Estate",
+            "value": "real_estate"
+          }
+        ],
+        "paramName": "loan_type"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_interest_rates",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_ag_finance_databook_federal_reserve_obb": {
+    "name": "KC Fed Ag Finance Databook",
+    "description": "Quarterly history of agricultural lending at U.S. commercial banks from Call Reports: loan volumes, delinquency shares, and ratios.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_ag_finance_databook_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_ag_finance_databook"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The full coded historical series, or a published Databook table: farm debt at all banks, farm debt at agricultural banks, or agricultural bank performance ratios.",
+        "optional": true,
+        "type": "text",
+        "value": "historical",
+        "show": true,
+        "options": [
+          {
+            "label": "Ag Bank Performance",
+            "value": "ag_bank_performance"
+          },
+          {
+            "label": "Farm Debt Ag Banks",
+            "value": "farm_debt_ag_banks"
+          },
+          {
+            "label": "Farm Debt All Banks",
+            "value": "farm_debt_all_banks"
+          },
+          {
+            "label": "Historical",
+            "value": "historical"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_finance_databook",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_ag_terms_of_lending_federal_reserve_obb": {
+    "name": "KC Fed National Survey of Terms of Lending to Farmers",
+    "description": "Quarterly non-real-estate farm loan volumes, sizes, maturities, and effective interest rates by loan purpose and size.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_ag_terms_of_lending_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_ag_terms_of_lending"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_terms_of_lending",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_ag_district_surveys_federal_reserve_obb": {
+    "name": "Federal Reserve District Surveys of Ag Credit Conditions",
+    "description": "Combined quarterly diffusion indexes of farm loan demand, repayment, fund availability, and farmland values across districts.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_ag_district_surveys_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_ag_district_surveys"
+    },
+    "params": [
+      {
+        "label": "District",
+        "description": "Filter to a single Federal Reserve district by name (e.g. Chicago, Dallas, Kansas City, Minneapolis, Richmond, San Francisco).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "district"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_district_surveys",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_ag_databook_archived_federal_reserve_obb": {
+    "name": "KC Fed Archived Ag Finance Databook",
+    "description": "Discontinued pre-2018 databook: annual and quarterly series on farm debt, lending terms, and the condition of agricultural banks.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "kc_ag_databook_archived_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_ag_databook_archived"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The archived databook table. Section A tables cover farm debt outstanding, section B interest rates and terms, and section C the condition of agricultural banks.",
+        "optional": true,
+        "type": "text",
+        "value": "afdr_a1",
+        "show": true,
+        "options": [
+          {
+            "label": "Table A.1",
+            "value": "afdr_a1"
+          },
+          {
+            "label": "Table A.10",
+            "value": "afdr_a10"
+          },
+          {
+            "label": "Table A.11",
+            "value": "afdr_a11"
+          },
+          {
+            "label": "Table A.12",
+            "value": "afdr_a12"
+          },
+          {
+            "label": "Table A.13",
+            "value": "afdr_a13"
+          },
+          {
+            "label": "Table A.14",
+            "value": "afdr_a14"
+          },
+          {
+            "label": "Table A.2",
+            "value": "afdr_a2"
+          },
+          {
+            "label": "Table A.3",
+            "value": "afdr_a3"
+          },
+          {
+            "label": "Table A.4",
+            "value": "afdr_a4"
+          },
+          {
+            "label": "Table A.5",
+            "value": "afdr_a5"
+          },
+          {
+            "label": "Table A.6",
+            "value": "afdr_a6"
+          },
+          {
+            "label": "Table A.7",
+            "value": "afdr_a7"
+          },
+          {
+            "label": "Table A.8",
+            "value": "afdr_a8"
+          },
+          {
+            "label": "Table A.9",
+            "value": "afdr_a9"
+          },
+          {
+            "label": "Table B.1",
+            "value": "afdr_b1"
+          },
+          {
+            "label": "Table B.2",
+            "value": "afdr_b2"
+          },
+          {
+            "label": "Table B.3",
+            "value": "afdr_b3"
+          },
+          {
+            "label": "Table B.4",
+            "value": "afdr_b4"
+          },
+          {
+            "label": "Table B.5",
+            "value": "afdr_b5"
+          },
+          {
+            "label": "Table B.6",
+            "value": "afdr_b6"
+          },
+          {
+            "label": "Table B.7",
+            "value": "afdr_b7"
+          },
+          {
+            "label": "Table B.8",
+            "value": "afdr_b8"
+          },
+          {
+            "label": "Table B.9",
+            "value": "afdr_b9"
+          },
+          {
+            "label": "Table C.1",
+            "value": "afdr_c1"
+          },
+          {
+            "label": "Table C.2",
+            "value": "afdr_c2"
+          },
+          {
+            "label": "Table C.3",
+            "value": "afdr_c3"
+          },
+          {
+            "label": "Table C.4",
+            "value": "afdr_c4"
+          },
+          {
+            "label": "Table C.5",
+            "value": "afdr_c5"
+          },
+          {
+            "label": "Table C.6",
+            "value": "afdr_c6"
+          },
+          {
+            "label": "Table C.7",
+            "value": "afdr_c7"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_databook_archived",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation period-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "frequency",
+            "formatterFn": null,
+            "headerName": "Frequency",
+            "headerTooltip": "The observation frequency, either 'annual' or 'quarter'. The archived sheets stack annual averages and quarterly observations, whose year-end and Q4 dates coincide.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "section",
+            "formatterFn": "int",
+            "headerName": "Section",
+            "headerTooltip": "The report section within the sheet (1-based). The detailed survey tables stack several sections that reuse the same row labels under a different, unlabeled statistic; this keeps each one distinct.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Kansas City"
+  },
+  "kc_publications_federal_reserve_obb": {
+    "name": "KC Fed Agricultural Bulletins",
+    "description": "Kansas City Fed quarterly Tenth District Agricultural Bulletins. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "kc_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "kc_publications"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "kc"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Kansas City"
+    ],
+    "subCategory": "Kansas City",
+    "refetchInterval": false
+  }
+}

@@ -1,0 +1,239 @@
+[
+  {
+    "name": "New York Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/2013_Federal_Reserve_Bank_of_New_York_from_west.jpg/960px-2013_Federal_Reserve_Bank_of_New_York_from_west.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/2013_Federal_Reserve_Bank_of_New_York_from_west.jpg/960px-2013_Federal_Reserve_Bank_of_New_York_from_west.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/2013_Federal_Reserve_Bank_of_New_York_from_west.jpg/960px-2013_Federal_Reserve_Bank_of_New_York_from_west.jpg",
+    "description": "The New York Fed's reference rates and market plumbing - SOFR, the effective fed funds and overnight bank funding rates, SOMA holdings, and primary-dealer statistics - plus the Global Supply Chain Pressure Index, Multivariate Core Trend inflation, the Survey of Consumer Expectations, the Empire State manufacturing survey, and the Household Debt and Credit report.",
+    "allowCustomization": true,
+    "tabs": {
+      "inflation": {
+        "id": "inflation",
+        "name": "Inflation",
+        "layout": [
+          {
+            "i": "ny_supply_chain_pressure_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_core_trend_inflation_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "household-credit": {
+        "id": "household-credit",
+        "name": "Household & Credit",
+        "layout": [
+          {
+            "i": "ny_corporate_bond_distress_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_household_debt_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "consumer-surveys": {
+        "id": "consumer-surveys",
+        "name": "Consumer Surveys",
+        "layout": [
+          {
+            "i": "ny_consumer_expectations_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_consumer_labor_market_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_consumer_housing_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_consumer_credit_access_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "business-surveys": {
+        "id": "business-surveys",
+        "name": "Business Surveys",
+        "layout": [
+          {
+            "i": "ny_business_leaders_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_empire_state_manufacturing_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_empire_state_reports_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "rates-markets": {
+        "id": "rates-markets",
+        "name": "Rates & Markets",
+        "layout": [
+          {
+            "i": "ny_market_expectations_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_sofr_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_effr_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_overnight_bank_funding_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_central_bank_holdings_federal_reserve_obb",
+            "x": 0,
+            "y": 72,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_primary_dealer_positioning_federal_reserve_obb",
+            "x": 0,
+            "y": 90,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_primary_dealer_fails_federal_reserve_obb",
+            "x": 0,
+            "y": 108,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "ny_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

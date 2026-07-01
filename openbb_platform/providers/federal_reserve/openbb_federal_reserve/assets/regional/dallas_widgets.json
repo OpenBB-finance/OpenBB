@@ -1,0 +1,1360 @@
+{
+  "dallas_manufacturing_federal_reserve_obb": {
+    "name": "Dallas Fed Texas Manufacturing Outlook Survey (TMOS)",
+    "description": "Monthly diffusion indexes for Texas manufacturers, by indicator.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_manufacturing_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_manufacturing"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "manufacturing",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_service_sector_federal_reserve_obb": {
+    "name": "Dallas Fed Texas Service Sector Outlook Survey (TSSOS)",
+    "description": "Monthly diffusion indexes for Texas service-sector firms, by indicator.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_service_sector_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_service_sector"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "service_sector",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_retail_federal_reserve_obb": {
+    "name": "Dallas Fed Texas Retail Outlook Survey (TROS)",
+    "description": "Monthly diffusion indexes and response shares for Texas retailers, by indicator, horizon, and response component.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_retail_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_retail"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "retail",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_banking_conditions_federal_reserve_obb": {
+    "name": "Dallas Fed Banking Conditions Survey (BCS)",
+    "description": "Diffusion indexes of Eleventh District banking conditions, by indicator and horizon.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_banking_conditions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_banking_conditions"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "banking_conditions",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey period end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_energy_survey_federal_reserve_obb": {
+    "name": "Dallas Fed Energy Survey",
+    "description": "Quarterly Eleventh District oil and gas diffusion indexes, response shares, and price forecasts, by indicator.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_energy_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_energy_survey"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The diffusion indexes, the full data including response shares, the oil and gas price expectations, or the price-level forecasts (reference, average, median, range).",
+        "optional": true,
+        "type": "text",
+        "value": "index",
+        "show": true,
+        "options": [
+          {
+            "label": "All Data",
+            "value": "all_data"
+          },
+          {
+            "label": "Diffusion Indexes",
+            "value": "index"
+          },
+          {
+            "label": "Price Expectations",
+            "value": "price_expectations"
+          },
+          {
+            "label": "Price Forecasts",
+            "value": "price_forecasts"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Transform",
+        "description": "Compare to the prior quarter or to a year ago. Ignored for the price tables.",
+        "optional": true,
+        "type": "text",
+        "value": "quarter_over_quarter",
+        "show": true,
+        "options": [
+          {
+            "label": "Quarter Over Quarter",
+            "value": "quarter_over_quarter"
+          },
+          {
+            "label": "Year Over Year",
+            "value": "year_over_year"
+          }
+        ],
+        "paramName": "transform"
+      },
+      {
+        "label": "Firm Group",
+        "description": "The respondent firm group: all firms, exploration and production firms, or oilfield services firms. The price forecasts cover all firms only.",
+        "optional": true,
+        "type": "text",
+        "value": "all",
+        "show": true,
+        "options": [
+          {
+            "label": "All Firms",
+            "value": "all"
+          },
+          {
+            "label": "E+P Firms",
+            "value": "exploration_production"
+          },
+          {
+            "label": "O+G Support Services Firms",
+            "value": "support_services"
+          }
+        ],
+        "paramName": "firm_group"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "energy_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_trimmed_mean_pce_federal_reserve_obb": {
+    "name": "Dallas Fed Trimmed Mean PCE (PCE)",
+    "description": "Annualized one-, six-, and twelve-month trimmed mean PCE inflation rates.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_trimmed_mean_pce_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_trimmed_mean_pce"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "trimmed_mean_pce",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "one_month",
+            "formatterFn": "percent",
+            "headerName": "One-Month",
+            "headerTooltip": "The one-month annualized trimmed mean PCE rate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "six_month",
+            "formatterFn": "percent",
+            "headerName": "Six-Month",
+            "headerTooltip": "The six-month annualized trimmed mean PCE rate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "twelve_month",
+            "formatterFn": "percent",
+            "headerName": "Twelve-Month",
+            "headerTooltip": "The twelve-month trimmed mean PCE rate.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_weekly_economic_index_federal_reserve_obb": {
+    "name": "Dallas Fed Weekly Economic Index (WEI)",
+    "description": "The weekly composite index of U.S. real economic activity, scaled to four-quarter GDP growth.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_weekly_economic_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_weekly_economic_index"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "weekly_economic_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The week-ending observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "wei",
+            "formatterFn": "none",
+            "headerName": "WEI",
+            "headerTooltip": "The Weekly Economic Index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_leading_index_federal_reserve_obb": {
+    "name": "Dallas Fed Texas Leading Index (TLI)",
+    "description": "The Texas Leading Index level (1987 = 100) with its annual average and year-over-year and December-to-December percent changes.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_leading_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_leading_index"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "leading_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "index",
+            "formatterFn": "none",
+            "headerName": "Index",
+            "headerTooltip": "The Texas Leading Index level (1987 = 100).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "annual_average",
+            "formatterFn": "none",
+            "headerName": "Annual Average",
+            "headerTooltip": "The annual average index level.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "yoy_change",
+            "formatterFn": "percent",
+            "headerName": "Year/Year % Change",
+            "headerTooltip": "The year-over-year percent change.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "dec_dec_change",
+            "formatterFn": "percent",
+            "headerName": "Dec/Dec % Change",
+            "headerTooltip": "The December-to-December percent change.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_global_economic_indicators_federal_reserve_obb": {
+    "name": "Dallas Fed Global Economic Indicators (DGEI)",
+    "description": "Country-aggregate series for the selected global indicator and weighting scheme, by series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_global_economic_indicators_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_global_economic_indicators"
+    },
+    "params": [
+      {
+        "label": "Indicator",
+        "description": "The global indicator: real GDP, CPI, core CPI, exports, imports, industrial production, long-term interest rates, the nominal exchange rate, or policy rates.",
+        "optional": true,
+        "type": "text",
+        "value": "gdp",
+        "show": true,
+        "options": [
+          {
+            "label": "Core CPI",
+            "value": "core_cpi"
+          },
+          {
+            "label": "CPI",
+            "value": "cpi"
+          },
+          {
+            "label": "Exports",
+            "value": "exports"
+          },
+          {
+            "label": "Real GDP",
+            "value": "gdp"
+          },
+          {
+            "label": "Imports",
+            "value": "imports"
+          },
+          {
+            "label": "Industrial Production",
+            "value": "industrial_production"
+          },
+          {
+            "label": "Long-Term Interest Rates",
+            "value": "long_term_rates"
+          },
+          {
+            "label": "Nominal Exchange Rate",
+            "value": "nominal_exchange_rate"
+          },
+          {
+            "label": "Policy Rates",
+            "value": "policy_rates"
+          }
+        ],
+        "paramName": "indicator"
+      },
+      {
+        "label": "Weighting",
+        "description": "The country-aggregation weighting scheme.",
+        "optional": true,
+        "type": "text",
+        "value": "world_trade",
+        "show": true,
+        "options": [
+          {
+            "label": "Nominal GDP Weights",
+            "value": "nominal_gdp"
+          },
+          {
+            "label": "PPP GDP Weights",
+            "value": "ppp_gdp"
+          },
+          {
+            "label": "US Trade Weights",
+            "value": "us_trade"
+          },
+          {
+            "label": "World Trade Weights",
+            "value": "world_trade"
+          }
+        ],
+        "paramName": "weighting"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "global_economic_indicators",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_global_real_economic_activity_federal_reserve_obb": {
+    "name": "Dallas Fed Index of Global Real Economic Activity (IGREA)",
+    "description": "The monthly Kilian index of real activity in global industrial-commodity markets.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_global_real_economic_activity_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_global_real_economic_activity"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "global_real_economic_activity",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "value",
+            "formatterFn": "none",
+            "headerName": "IGREA",
+            "headerTooltip": "The index value, in percent deviation from trend.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_government_debt_federal_reserve_obb": {
+    "name": "Dallas Fed U.S. Government Debt",
+    "description": "Monthly par and market value of U.S. federal debt in billions of dollars, by series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_government_debt_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_government_debt"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "government_debt",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_agricultural_survey_federal_reserve_obb": {
+    "name": "Dallas Fed Eleventh District Agricultural Survey",
+    "description": "Quarterly diffusion indexes, response shares, and reported land values from the Eleventh District agricultural survey, by series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_agricultural_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_agricultural_survey"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The survey table: anticipated farm credit conditions, loan demand and lending, interest rates, cash rents, land values, or loan volume.",
+        "optional": true,
+        "type": "text",
+        "value": "credit",
+        "show": true,
+        "options": [
+          {
+            "label": "Cash Rents",
+            "value": "cash_rents"
+          },
+          {
+            "label": "Farm Credit Conditions",
+            "value": "credit"
+          },
+          {
+            "label": "Interest Rates",
+            "value": "interest_rates"
+          },
+          {
+            "label": "Land Values",
+            "value": "land_values"
+          },
+          {
+            "label": "Loan Demand and Lending",
+            "value": "lending"
+          },
+          {
+            "label": "Loan Volume",
+            "value": "loan_volume"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "agricultural_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_breakeven_prices_federal_reserve_obb": {
+    "name": "Dallas Fed Energy Survey Oil Break-Even Prices",
+    "description": "The WTI break-even oil price in dollars per barrel, by major U.S. shale play.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_breakeven_prices_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_breakeven_prices"
+    },
+    "params": [
+      {
+        "label": "Well Type",
+        "description": "Break-even price to profitably operate existing wells or to profitably drill new wells.",
+        "optional": true,
+        "type": "text",
+        "value": "new",
+        "show": true,
+        "options": [
+          {
+            "label": "Existing Wells",
+            "value": "existing"
+          },
+          {
+            "label": "New Wells",
+            "value": "new"
+          }
+        ],
+        "paramName": "well_type"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "breakeven_prices",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "play",
+            "formatterFn": null,
+            "headerName": "Play",
+            "headerTooltip": "The shale play or region.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "value",
+            "formatterFn": "none",
+            "headerName": "Break-Even Price ($/bbl)",
+            "headerTooltip": "The average break-even WTI price, in dollars per barrel.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_gigafactory_map_federal_reserve_obb": {
+    "name": "Dallas Fed U.S. Gigafactory Map",
+    "description": "Geolocated U.S. battery (gigafactory) manufacturing facilities, with operator, state, and coordinates.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_gigafactory_map_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_gigafactory_map"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "Battery cell and pack plants, or cathode and chemical plants.",
+        "optional": true,
+        "type": "text",
+        "value": "battery_cells",
+        "show": true,
+        "options": [
+          {
+            "label": "Battery Cells",
+            "value": "battery_cells"
+          },
+          {
+            "label": "Cathode",
+            "value": "cathode"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "gigafactory_map",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "facility_name",
+            "formatterFn": null,
+            "headerName": "Facility Name",
+            "headerTooltip": "The facility name.",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "operator",
+            "formatterFn": null,
+            "headerName": "Operator",
+            "headerTooltip": "The plant operator.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "state",
+            "formatterFn": null,
+            "headerName": "State",
+            "headerTooltip": "The U.S. state.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "latitude",
+            "formatterFn": "none",
+            "headerName": "Latitude",
+            "headerTooltip": "The latitude.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "longitude",
+            "formatterFn": "none",
+            "headerName": "Longitude",
+            "headerTooltip": "The longitude.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_lithium_map_federal_reserve_obb": {
+    "name": "Dallas Fed U.S. Lithium Projects Map",
+    "description": "Geolocated U.S. lithium resource projects, with company, resource type, development stage, and coordinates.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "dallas_lithium_map_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_lithium_map"
+    },
+    "params": [
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "lithium_map",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "project_name",
+            "formatterFn": null,
+            "headerName": "Project Name",
+            "headerTooltip": "The project name.",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "company",
+            "formatterFn": null,
+            "headerName": "Company",
+            "headerTooltip": "The developer.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "type",
+            "formatterFn": null,
+            "headerName": "Type",
+            "headerTooltip": "The lithium resource type.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "stage",
+            "formatterFn": null,
+            "headerName": "Stage",
+            "headerTooltip": "The development stage.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "latitude",
+            "formatterFn": "none",
+            "headerName": "Latitude",
+            "headerTooltip": "The latitude.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "longitude",
+            "formatterFn": "none",
+            "headerName": "Longitude",
+            "headerTooltip": "The longitude.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Dallas"
+  },
+  "dallas_publications_federal_reserve_obb": {
+    "name": "Dallas Fed Publications",
+    "description": "Dallas Fed Working Papers and Southwest Economy issues. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "dallas_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "dallas_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Working Papers",
+            "value": "working_papers"
+          },
+          {
+            "label": "Southwest Economy",
+            "value": "southwest_economy"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "dallas"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Dallas"
+    ],
+    "subCategory": "Dallas",
+    "refetchInterval": false
+  }
+}

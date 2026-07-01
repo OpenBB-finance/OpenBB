@@ -1,0 +1,786 @@
+{
+  "sf_news_sentiment_federal_reserve_obb": {
+    "name": "SF Fed Daily News Sentiment Index",
+    "description": "Daily, high-frequency measure of economic sentiment built from the tone of economics coverage in major U.S. newspapers.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_news_sentiment_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_news_sentiment"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "news_sentiment",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "news_sentiment",
+            "formatterFn": "none",
+            "headerName": "News Sentiment",
+            "headerTooltip": "The Daily News Sentiment Index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_proxy_funds_rate_federal_reserve_obb": {
+    "name": "SF Fed Proxy Funds Rate",
+    "description": "Single funds-rate-equivalent gauge of the overall stance of monetary policy, reported alongside the effective federal funds rate.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_proxy_funds_rate_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_proxy_funds_rate"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Frequency",
+        "description": "The observation frequency.",
+        "optional": true,
+        "type": "text",
+        "value": "monthly",
+        "show": true,
+        "options": [
+          {
+            "label": "Monthly",
+            "value": "monthly"
+          },
+          {
+            "label": "Weekly",
+            "value": "weekly"
+          }
+        ],
+        "paramName": "frequency"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "proxy_funds_rate",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "effective_funds_rate",
+            "formatterFn": "percent",
+            "headerName": "Effective Funds Rate",
+            "headerTooltip": "The effective federal funds rate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "proxy_funds_rate",
+            "formatterFn": "percent",
+            "headerName": "Proxy Funds Rate",
+            "headerTooltip": "The proxy funds rate.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_cyclical_pce_federal_reserve_obb": {
+    "name": "SF Fed Cyclical & Acyclical Core PCE Inflation",
+    "description": "Monthly decomposition of core PCE inflation into cyclical and acyclical components, as inflation rates and contributions.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_cyclical_pce_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_cyclical_pce"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "cyclical_pce",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "cyclical_inflation_yoy",
+            "formatterFn": "percent",
+            "headerName": "Cyclical Inflation (YoY)",
+            "headerTooltip": "Cyclical core PCE inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_inflation_yoy",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Inflation (YoY)",
+            "headerTooltip": "Acyclical core PCE inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cyclical_contribution_yoy",
+            "formatterFn": "percent",
+            "headerName": "Cyclical Contribution (YoY)",
+            "headerTooltip": "Cyclical contribution to core PCE inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_contribution_yoy",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Contribution (YoY)",
+            "headerTooltip": "Acyclical contribution to core PCE inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_healthcare_contribution_yoy",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Health-Care Contribution (YoY)",
+            "headerTooltip": "Health-care services portion of the acyclical contribution, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_non_healthcare_contribution_yoy",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Non-Health-Care Contribution (YoY)",
+            "headerTooltip": "Non-health-care portion of the acyclical contribution, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cyclical_inflation_mom",
+            "formatterFn": "percent",
+            "headerName": "Cyclical Inflation (MoM, AR)",
+            "headerTooltip": "Cyclical core PCE inflation, month-over-month annualized.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_inflation_mom",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Inflation (MoM, AR)",
+            "headerTooltip": "Acyclical core PCE inflation, month-over-month annualized.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cyclical_contribution_mom",
+            "formatterFn": "percent",
+            "headerName": "Cyclical Contribution (MoM, AR)",
+            "headerTooltip": "Cyclical contribution to core PCE inflation, month-over-month annualized.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_contribution_mom",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Contribution (MoM, AR)",
+            "headerTooltip": "Acyclical contribution to core PCE inflation, month-over-month annualized.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_healthcare_contribution_mom",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Health-Care Contribution (MoM, AR)",
+            "headerTooltip": "Health-care services portion of the acyclical contribution, month-over-month annualized.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "acyclical_non_healthcare_contribution_mom",
+            "formatterFn": "percent",
+            "headerName": "Acyclical Non-Health-Care Contribution (MoM, AR)",
+            "headerTooltip": "Non-health-care portion of the acyclical contribution, month-over-month annualized.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_supply_demand_pce_federal_reserve_obb": {
+    "name": "SF Fed Supply & Demand-Driven PCE Inflation",
+    "description": "Monthly decomposition of core and headline PCE inflation into supply-driven, demand-driven, and ambiguous portions.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_supply_demand_pce_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_supply_demand_pce"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "supply_demand_pce",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "demand_core_yoy",
+            "formatterFn": "percent",
+            "headerName": "Demand-Driven Core (YoY)",
+            "headerTooltip": "Demand-driven core inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ambiguous_core_yoy",
+            "formatterFn": "percent",
+            "headerName": "Ambiguous Core (YoY)",
+            "headerTooltip": "Ambiguous core inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "supply_core_yoy",
+            "formatterFn": "percent",
+            "headerName": "Supply-Driven Core (YoY)",
+            "headerTooltip": "Supply-driven core inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "demand_core_mom",
+            "formatterFn": "percent",
+            "headerName": "Demand-Driven Core (MoM)",
+            "headerTooltip": "Demand-driven core inflation, month-over-month.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ambiguous_core_mom",
+            "formatterFn": "percent",
+            "headerName": "Ambiguous Core (MoM)",
+            "headerTooltip": "Ambiguous core inflation, month-over-month.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "supply_core_mom",
+            "formatterFn": "percent",
+            "headerName": "Supply-Driven Core (MoM)",
+            "headerTooltip": "Supply-driven core inflation, month-over-month.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "demand_headline_yoy",
+            "formatterFn": "percent",
+            "headerName": "Demand-Driven Headline (YoY)",
+            "headerTooltip": "Demand-driven headline inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ambiguous_headline_yoy",
+            "formatterFn": "percent",
+            "headerName": "Ambiguous Headline (YoY)",
+            "headerTooltip": "Ambiguous headline inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "supply_headline_yoy",
+            "formatterFn": "percent",
+            "headerName": "Supply-Driven Headline (YoY)",
+            "headerTooltip": "Supply-driven headline inflation, year-over-year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "demand_headline_mom",
+            "formatterFn": "percent",
+            "headerName": "Demand-Driven Headline (MoM)",
+            "headerTooltip": "Demand-driven headline inflation, month-over-month.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ambiguous_headline_mom",
+            "formatterFn": "percent",
+            "headerName": "Ambiguous Headline (MoM)",
+            "headerTooltip": "Ambiguous headline inflation, month-over-month.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "supply_headline_mom",
+            "formatterFn": "percent",
+            "headerName": "Supply-Driven Headline (MoM)",
+            "headerTooltip": "Supply-driven headline inflation, month-over-month.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_total_factor_productivity_federal_reserve_obb": {
+    "name": "SF Fed Quarterly TFP (Fernald)",
+    "description": "Fernald growth-accounting decomposition of U.S. business-sector output, including utilization-adjusted TFP, as annualized percent growth.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_total_factor_productivity_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_total_factor_productivity"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The quarterly growth-accounting series, its annualized counterpart, or the capital-input composition detail.",
+        "optional": true,
+        "type": "text",
+        "value": "quarterly",
+        "show": true,
+        "options": [
+          {
+            "label": "Annual",
+            "value": "annual"
+          },
+          {
+            "label": "Capital Input Details",
+            "value": "capital_input_details"
+          },
+          {
+            "label": "Quarterly",
+            "value": "quarterly"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "total_factor_productivity",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The period-end observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_term_premium_federal_reserve_obb": {
+    "name": "SF Fed Treasury Term Premium",
+    "description": "Daily decomposition of the zero-coupon Treasury yield into the expected short-rate component and the term premium.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_term_premium_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_term_premium"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Maturity",
+        "description": "The Treasury maturity, in years. One of 2 or 10.",
+        "optional": true,
+        "type": "number",
+        "value": 10,
+        "show": true,
+        "paramName": "maturity",
+        "options": [
+          {
+            "label": "2-Year",
+            "value": 2
+          },
+          {
+            "label": "10-Year",
+            "value": 10
+          }
+        ]
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "term_premium",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "yield_zero_coupon",
+            "formatterFn": "percent",
+            "headerName": "Zero-Coupon Yield",
+            "headerTooltip": "The zero-coupon Treasury yield, in percent.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "expected_short_rate",
+            "formatterFn": "percent",
+            "headerName": "Expected Short Rate",
+            "headerTooltip": "The average expected short-rate component, in percent.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "term_premium",
+            "formatterFn": "percent",
+            "headerName": "Term Premium",
+            "headerTooltip": "The term premium, in percent.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_short_rate_path_federal_reserve_obb": {
+    "name": "SF Fed Estimated Short-Rate Path",
+    "description": "Model-implied expected path of the short-term interest rate by horizon, for the most-recent and FOMC scenarios.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "sf_short_rate_path_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_short_rate_path"
+    },
+    "params": [
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "short_rate_path",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "maturity",
+            "formatterFn": null,
+            "headerName": "Maturity",
+            "headerTooltip": "The horizon ahead, in years.",
+            "cellDataType": "number",
+            "pinned": "left",
+            "sort": "asc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "San Francisco"
+  },
+  "sf_publications_federal_reserve_obb": {
+    "name": "SF Fed Publications",
+    "description": "FRBSF Economic Letter and SF FedViews releases. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "sf_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sf_publications"
+    },
+    "params": [
+      {
+        "label": "Publication Type",
+        "description": "The publication series to index; all series when unset.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Economic Letter",
+            "value": "economic_letter"
+          },
+          {
+            "label": "FedViews",
+            "value": "fedviews"
+          }
+        ],
+        "paramName": "publication_type"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "sf"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of San Francisco"
+    ],
+    "subCategory": "San Francisco",
+    "refetchInterval": false
+  }
+}

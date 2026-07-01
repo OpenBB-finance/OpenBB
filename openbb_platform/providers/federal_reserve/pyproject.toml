@@ -1,27 +1,105 @@
-[tool.poetry]
+[project]
 name = "openbb-federal-reserve"
-version = "1.6.2"
-description = "US Federal Reserve Data Extension for OpenBB"
-authors = ["OpenBB <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+version = "2.0.0"
+description = "US Federal Reserve provider extension for OpenBB. Data, documents, indicators, and research from the Federal Reserve System, FOMC, FRB, and twelve regional districts."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_federal_reserve" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "openpyxl>=3.1.5",
+    "beautifulsoup4>=4.13",
+    "diskcache>=5.6",
+    "defusedxml>=0.7",
+    "curl-cffi>=0.7",
+    "pdfplumber>=0.11",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openpyxl = "^3.1.5"
-openbb-core = "^1.6.10"
-openbb-economy = "^1.6.1"
-openbb-fixedincome = "^1.6.1"
-openbb-platform-api = "^1.3.5"
-beautifulsoup4 = "^4.13.4"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."openbb_provider_extension"]
+[project.entry-points."openbb_provider_extension"]
 federal_reserve = "openbb_federal_reserve:federal_reserve_provider"
 
-[tool.poetry.plugins."openbb_core_extension"]
-federal_reserve = "openbb_federal_reserve.router:router"
+[project.entry-points."openbb_core_extension"]
+federal_reserve = "openbb_federal_reserve.federal_reserve_router:router"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0", "openbb-platform-api>=2.0.0"]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_federal_reserve"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_federal_reserve",
+    "openbb_federal_reserve/assets/apps.json",
+    "openbb_federal_reserve/assets/ffiec/apps.json",
+    "openbb_federal_reserve/assets/ffiec/widgets.json",
+    "openbb_federal_reserve/assets/historical_releases.json",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+openbb-platform-api = { path = "../../extensions/platform_api", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_federal_reserve/federal_reserve_router.py" = ["ARG001", "PLC0415"]
+"openbb_federal_reserve/models/*.py" = ["ARG002", "PLC0415", "PLR0912"]
+"openbb_federal_reserve/utils/*.py" = ["PLR0912", "PLR0914", "PLR0915", "PLR0917"]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_federal_reserve"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "@overload"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "record_http: VCR-backed HTTP cassette tests",
+    "integration: end-to-end tests that hit live services (excluded from the coverage gate)",
+]

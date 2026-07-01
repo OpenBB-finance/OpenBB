@@ -1,7 +1,5 @@
 """FederalReserve Yield Curve Model."""
 
-# pylint: disable=unused-argument
-
 from typing import TYPE_CHECKING, Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,7 +9,7 @@ from openbb_core.provider.standard_models.yield_curve import (
 )
 
 if TYPE_CHECKING:
-    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
 
 maturities = [
     "month_1",
@@ -58,11 +56,11 @@ class FederalReserveYieldCurveFetcher(
         **kwargs: Any,
     ) -> "DataFrame":
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
-        from io import BytesIO  # noqa
-        from numpy import nan  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from pandas import read_csv  # noqa
+        from io import BytesIO
+
+        from numpy import nan
+        from openbb_core.provider.utils.helpers import make_request
+        from pandas import read_csv
 
         url = (
             "https://www.federalreserve.gov/datadownload/Output.aspx?"
@@ -81,12 +79,11 @@ class FederalReserveYieldCurveFetcher(
         query: FederalReserveYieldCurveQueryParams, data: "DataFrame", **kwargs: Any
     ) -> list[FederalReserveYieldCurveData]:
         """Return the transformed data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DatetimeIndex
 
         df = data.copy()
         df.set_index("date", inplace=True)
-        dates = query.date.split(",") if query.date else [df.index.max()]  # type: ignore
+        dates = query.date.split(",") if query.date else [df.index.max()]  # ty: ignore[unresolved-attribute]
         df.index = DatetimeIndex(df.index)
         dates_list = DatetimeIndex(dates)
         df.columns.name = "maturity"

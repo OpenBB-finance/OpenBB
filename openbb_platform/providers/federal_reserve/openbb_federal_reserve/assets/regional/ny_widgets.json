@@ -1,0 +1,2864 @@
+{
+  "ny_supply_chain_pressure_federal_reserve_obb": {
+    "name": "NY Fed Global Supply Chain Pressure Index (GSCPI)",
+    "description": "Monthly composite of global supply chain conditions, in standard deviations from its historical average.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_supply_chain_pressure_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_supply_chain_pressure"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "supply_chain_pressure",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "gscpi",
+            "formatterFn": "none",
+            "headerName": "GSCPI",
+            "headerTooltip": "The Global Supply Chain Pressure Index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_corporate_bond_distress_federal_reserve_obb": {
+    "name": "NY Fed Corporate Bond Market Distress Index (CMDI)",
+    "description": "Weekly index of distress in the U.S. corporate bond market, for the aggregate market and the IG and HY segments.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_corporate_bond_distress_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_corporate_bond_distress"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "corporate_bond_distress",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The end-of-week (Friday) observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "market",
+            "formatterFn": "none",
+            "headerName": "Market",
+            "headerTooltip": "The aggregate market CMDI.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "investment_grade",
+            "formatterFn": "none",
+            "headerName": "Investment Grade",
+            "headerTooltip": "The investment-grade CMDI.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "high_yield",
+            "formatterFn": "none",
+            "headerName": "High Yield",
+            "headerTooltip": "The high-yield CMDI.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_consumer_expectations_federal_reserve_obb": {
+    "name": "NY Fed Survey of Consumer Expectations (SCE)",
+    "description": "Monthly Survey of Consumer Expectations results, one column per series, for the selected topic sheet.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_consumer_expectations_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_consumer_expectations"
+    },
+    "params": [
+      {
+        "label": "Topic",
+        "description": "The survey topic sheet. Topics ending in '_demo' break the series down by respondent demographics; '_distr' topics give the distribution of responses.",
+        "optional": true,
+        "type": "text",
+        "value": "inflation_expectations",
+        "show": true,
+        "options": [
+          {
+            "label": "Commodity Expectations",
+            "value": "commodity_expectations"
+          },
+          {
+            "label": "Credit Availability",
+            "value": "credit_availability"
+          },
+          {
+            "label": "Delinquency Expectations",
+            "value": "delinquency_expectations"
+          },
+          {
+            "label": "Delinquency Expectations (Demographics)",
+            "value": "delinquency_expectations_demo"
+          },
+          {
+            "label": "Earnings Growth",
+            "value": "earnings_growth"
+          },
+          {
+            "label": "Earnings Growth (Demographics)",
+            "value": "earnings_growth_demo"
+          },
+          {
+            "label": "Earnings Uncertainty",
+            "value": "earnings_uncertainty"
+          },
+          {
+            "label": "Earnings Uncertainty (Demographics)",
+            "value": "earnings_uncertainty_demo"
+          },
+          {
+            "label": "Five Year Ahead Infl Exp",
+            "value": "five_year_ahead_infl_exp"
+          },
+          {
+            "label": "Five Year Ahead Infl Exp (Demographics)",
+            "value": "five_year_ahead_infl_exp_demo"
+          },
+          {
+            "label": "Government Debt",
+            "value": "government_debt"
+          },
+          {
+            "label": "Government Debt (Demographics)",
+            "value": "government_debt_demo"
+          },
+          {
+            "label": "Hh Income Change",
+            "value": "hh_income_change"
+          },
+          {
+            "label": "Hh Income Change (Demographics)",
+            "value": "hh_income_change_demo"
+          },
+          {
+            "label": "Hh Spending Change",
+            "value": "hh_spending_change"
+          },
+          {
+            "label": "Hh Spending Change (Demographics)",
+            "value": "hh_spending_change_demo"
+          },
+          {
+            "label": "Home Price Expectations",
+            "value": "home_price_expectations"
+          },
+          {
+            "label": "Home Price Expectations (Demographics)",
+            "value": "home_price_expectations_demo"
+          },
+          {
+            "label": "Home Price Uncertainty",
+            "value": "home_price_uncertainty"
+          },
+          {
+            "label": "Home Price Uncertainty (Demographics)",
+            "value": "home_price_uncertainty_demo"
+          },
+          {
+            "label": "Household Financial Situation",
+            "value": "household_financial_situation"
+          },
+          {
+            "label": "Inflation Expectations",
+            "value": "inflation_expectations"
+          },
+          {
+            "label": "Inflation Expectations (Demographics)",
+            "value": "inflation_expectations_demo"
+          },
+          {
+            "label": "Inflation Expectations Distr",
+            "value": "inflation_expectations_distr"
+          },
+          {
+            "label": "Inflation Uncertainty",
+            "value": "inflation_uncertainty"
+          },
+          {
+            "label": "Inflation Uncertainty (Demographics)",
+            "value": "inflation_uncertainty_demo"
+          },
+          {
+            "label": "Interest Rate Expectations",
+            "value": "interest_rate_expectations"
+          },
+          {
+            "label": "Interest Rate Expectations (Demographics)",
+            "value": "interest_rate_expectations_demo"
+          },
+          {
+            "label": "Job Finding Expectations",
+            "value": "job_finding_expectations"
+          },
+          {
+            "label": "Job Finding Expectations (Demographics)",
+            "value": "job_finding_expectations_demo"
+          },
+          {
+            "label": "Job Separation Expectation",
+            "value": "job_separation_expectation"
+          },
+          {
+            "label": "Job Separation Expectation (Demographics)",
+            "value": "job_separation_expectation_demo"
+          },
+          {
+            "label": "Moving Expectations",
+            "value": "moving_expectations"
+          },
+          {
+            "label": "Moving Expectations (Demographics)",
+            "value": "moving_expectations_demo"
+          },
+          {
+            "label": "Prob of Infl Outcome",
+            "value": "prob_of_infl_outcome"
+          },
+          {
+            "label": "Prob of Infl Outcome (Demographics)",
+            "value": "prob_of_infl_outcome_demo"
+          },
+          {
+            "label": "Stock Prices",
+            "value": "stock_prices"
+          },
+          {
+            "label": "Stock Prices (Demographics)",
+            "value": "stock_prices_demo"
+          },
+          {
+            "label": "Taxes Change",
+            "value": "taxes_change"
+          },
+          {
+            "label": "Taxes Change (Demographics)",
+            "value": "taxes_change_demo"
+          },
+          {
+            "label": "Unemployment Expectations",
+            "value": "unemployment_expectations"
+          },
+          {
+            "label": "Unemployment Expectations (Demographics)",
+            "value": "unemployment_expectations_demo"
+          }
+        ],
+        "paramName": "topic"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "consumer_expectations",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_business_leaders_federal_reserve_obb": {
+    "name": "NY Fed Business Leaders Survey",
+    "description": "Monthly diffusion indexes of current and six-month-ahead expected business activity for regional service-sector firms.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_business_leaders_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_business_leaders"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "business_leaders",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "current",
+            "formatterFn": "percent",
+            "headerName": "Current",
+            "headerTooltip": "The current business activity diffusion index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "expected",
+            "formatterFn": "percent",
+            "headerName": "Expected",
+            "headerTooltip": "The six-month-ahead expected business activity diffusion index.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_empire_state_manufacturing_federal_reserve_obb": {
+    "name": "NY Fed Empire State Manufacturing Survey",
+    "description": "Monthly diffusion indexes and response shares for the Empire State Manufacturing Survey, one column per indicator-horizon-measure series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_empire_state_manufacturing_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_empire_state_manufacturing"
+    },
+    "params": [
+      {
+        "label": "Dataset",
+        "description": "The published file to retrieve. The '_diffusion' files give one diffusion index per indicator; the '_all_series' files add the up / down / same response shares behind each index.",
+        "optional": true,
+        "type": "text",
+        "value": "seasonally_adjusted_diffusion",
+        "show": true,
+        "options": [
+          {
+            "label": "Not Seasonally Adjusted All Series",
+            "value": "not_seasonally_adjusted_all_series"
+          },
+          {
+            "label": "Not Seasonally Adjusted Diffusion",
+            "value": "not_seasonally_adjusted_diffusion"
+          },
+          {
+            "label": "Seasonally Adjusted All Series",
+            "value": "seasonally_adjusted_all_series"
+          },
+          {
+            "label": "Seasonally Adjusted Diffusion",
+            "value": "seasonally_adjusted_diffusion"
+          }
+        ],
+        "paramName": "dataset"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "empire_state_manufacturing",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month, as the month-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_consumer_labor_market_federal_reserve_obb": {
+    "name": "NY Fed SCE Labor Market Survey \u2014 Reservation Wage",
+    "description": "Average reservation wage from the triannual SCE Labor Market Survey, in U.S. dollars.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_consumer_labor_market_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_consumer_labor_market"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "consumer_labor_market",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "average_reservation_wage",
+            "formatterFn": "none",
+            "headerName": "Average Reservation Wage",
+            "headerTooltip": "The average reservation wage, in U.S. dollars.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_consumer_housing_federal_reserve_obb": {
+    "name": "NY Fed SCE Housing Survey",
+    "description": "Annual SCE Housing Survey results, one column per series, for the selected topic sheet.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_consumer_housing_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_consumer_housing"
+    },
+    "params": [
+      {
+        "label": "Topic",
+        "description": "The housing survey topic sheet. Topics ending in '_demo' break the series down by respondent demographics; '_distr' topics give the distribution of responses.",
+        "optional": true,
+        "type": "text",
+        "value": "home_price_expectations",
+        "show": true,
+        "options": [
+          {
+            "label": "Ease of Obtaining Mortgage",
+            "value": "ease_of_obtaining_mortgage"
+          },
+          {
+            "label": "Ease of Obtaining Mortgage (Demographics)",
+            "value": "ease_of_obtaining_mortgage_demo"
+          },
+          {
+            "label": "Home Price Change Distr",
+            "value": "home_price_change_distr"
+          },
+          {
+            "label": "Home Price Change Distr (Demographics)",
+            "value": "home_price_change_distr_demo"
+          },
+          {
+            "label": "Home Price Expectations",
+            "value": "home_price_expectations"
+          },
+          {
+            "label": "Home Price Expectations (Demographics)",
+            "value": "home_price_expectations_demo"
+          },
+          {
+            "label": "Home Tenure Expectations",
+            "value": "home_tenure_expectations"
+          },
+          {
+            "label": "Home Tenure Expectations (Demographics)",
+            "value": "home_tenure_expectations_demo"
+          },
+          {
+            "label": "Housing As Investment",
+            "value": "housing_as_investment"
+          },
+          {
+            "label": "Housing As Investment (Demographics)",
+            "value": "housing_as_investment_demo"
+          },
+          {
+            "label": "Preference for Owning",
+            "value": "preference_for_owning"
+          },
+          {
+            "label": "Preference for Owning (Demographics)",
+            "value": "preference_for_owning_demo"
+          },
+          {
+            "label": "Prob of Home Investments",
+            "value": "prob_of_home_investments"
+          },
+          {
+            "label": "Prob of Home Investments (Demographics)",
+            "value": "prob_of_home_investments_demo"
+          },
+          {
+            "label": "Probability of Buying",
+            "value": "probability_of_buying"
+          },
+          {
+            "label": "Probability of Buying (Demographics)",
+            "value": "probability_of_buying_demo"
+          },
+          {
+            "label": "Probability of Moving",
+            "value": "probability_of_moving"
+          },
+          {
+            "label": "Probability of Moving (Demographics)",
+            "value": "probability_of_moving_demo"
+          },
+          {
+            "label": "Probability of Refinancing",
+            "value": "probability_of_refinancing"
+          },
+          {
+            "label": "Probability of Refinancing (Demographics)",
+            "value": "probability_of_refinancing_demo"
+          },
+          {
+            "label": "Rate Distribution",
+            "value": "rate_distribution"
+          },
+          {
+            "label": "Rate Distribution (Demographics)",
+            "value": "rate_distribution_demo"
+          },
+          {
+            "label": "Rate Expectations",
+            "value": "rate_expectations"
+          },
+          {
+            "label": "Rate Expectations (Demographics)",
+            "value": "rate_expectations_demo"
+          },
+          {
+            "label": "Rate Perceptions",
+            "value": "rate_perceptions"
+          },
+          {
+            "label": "Rate Perceptions (Demographics)",
+            "value": "rate_perceptions_demo"
+          },
+          {
+            "label": "Rent Change Expectations",
+            "value": "rent_change_expectations"
+          },
+          {
+            "label": "Rent Change Expectations (Demographics)",
+            "value": "rent_change_expectations_demo"
+          },
+          {
+            "label": "Renters Prob of Buying",
+            "value": "renters_prob_of_buying"
+          },
+          {
+            "label": "Renters Prob of Buying (Demographics)",
+            "value": "renters_prob_of_buying_demo"
+          }
+        ],
+        "paramName": "topic"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "consumer_housing",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_consumer_credit_access_federal_reserve_obb": {
+    "name": "NY Fed SCE Credit Access Survey",
+    "description": "Triannual SCE Credit Access Survey application, acceptance, rejection, and expectation series, one column per series, by respondent group and category.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_consumer_credit_access_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_consumer_credit_access"
+    },
+    "params": [
+      {
+        "label": "Breakdown",
+        "description": "The overall (all respondents) series, or the breakdown by respondent age and credit-score group.",
+        "optional": true,
+        "type": "text",
+        "value": "overall",
+        "show": true,
+        "options": [
+          {
+            "label": "Demographics",
+            "value": "demographics"
+          },
+          {
+            "label": "Overall",
+            "value": "overall"
+          }
+        ],
+        "paramName": "breakdown"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "consumer_credit_access",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "group",
+            "formatterFn": null,
+            "headerName": "Group",
+            "headerTooltip": "The respondent grouping.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "category",
+            "formatterFn": null,
+            "headerName": "Category",
+            "headerTooltip": "The respondent category.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_household_debt_federal_reserve_obb": {
+    "name": "NY Fed Household Debt and Credit",
+    "description": "Quarterly Report on Household Debt and Credit, one column per series, for the selected report table.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_household_debt_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_household_debt"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The report table to retrieve. Each table corresponds to one chart in the Quarterly Report on Household Debt and Credit, including national, by-age, and by-state breakdowns.",
+        "optional": true,
+        "type": "text",
+        "value": "total_debt_balance",
+        "show": true,
+        "options": [
+          {
+            "label": "Auto Loan Originations by Age",
+            "value": "auto_loan_originations_by_age"
+          },
+          {
+            "label": "Auto Loan Originations by Credit Score",
+            "value": "auto_loan_originations_by_credit_score"
+          },
+          {
+            "label": "Composition of Debt Balance per Capita by State",
+            "value": "composition_of_debt_balance_per_capita_by_state"
+          },
+          {
+            "label": "Credit Limit and Balance Cards and He Revolving",
+            "value": "credit_limit_and_balance_cards_and_he_revolving"
+          },
+          {
+            "label": "Credit Score at Origination Auto Loans",
+            "value": "credit_score_at_origination_auto_loans"
+          },
+          {
+            "label": "Credit Score at Origination Mortgages",
+            "value": "credit_score_at_origination_mortgages"
+          },
+          {
+            "label": "Debt Share by Product Type and Age",
+            "value": "debt_share_by_product_type_and_age"
+          },
+          {
+            "label": "Delinquency Status per Capita by State Prior",
+            "value": "delinquency_status_per_capita_by_state_prior"
+          },
+          {
+            "label": "Delinquency Status per Capita by State Recent",
+            "value": "delinquency_status_per_capita_by_state_recent"
+          },
+          {
+            "label": "Flow Into Early Delinquency by Loan Type",
+            "value": "flow_into_early_delinquency_by_loan_type"
+          },
+          {
+            "label": "Flow Into Serious Delinquency by Loan Type",
+            "value": "flow_into_serious_delinquency_by_loan_type"
+          },
+          {
+            "label": "Mortgage Originations by Age",
+            "value": "mortgage_originations_by_age"
+          },
+          {
+            "label": "Mortgage Originations by Credit Score",
+            "value": "mortgage_originations_by_credit_score"
+          },
+          {
+            "label": "New and Closed Accounts and Inquiries",
+            "value": "new_and_closed_accounts_and_inquiries"
+          },
+          {
+            "label": "New Bankruptcies by Age",
+            "value": "new_bankruptcies_by_age"
+          },
+          {
+            "label": "New Foreclosures and Bankruptcies",
+            "value": "new_foreclosures_and_bankruptcies"
+          },
+          {
+            "label": "New Foreclosures by Age",
+            "value": "new_foreclosures_by_age"
+          },
+          {
+            "label": "Number of Accounts by Loan Type",
+            "value": "number_of_accounts_by_loan_type"
+          },
+          {
+            "label": "Percent of Balance 90 Days Delinquent by Loan Type",
+            "value": "percent_of_balance_90_days_delinquent_by_loan_type"
+          },
+          {
+            "label": "Percent of Balance 90 Days Late by State",
+            "value": "percent_of_balance_90_days_late_by_state"
+          },
+          {
+            "label": "Percent of Consumers With New Bankruptcies by State",
+            "value": "percent_of_consumers_with_new_bankruptcies_by_state"
+          },
+          {
+            "label": "Percent of Consumers With New Foreclosures by State",
+            "value": "percent_of_consumers_with_new_foreclosures_by_state"
+          },
+          {
+            "label": "Percent of Mortgage Debt 90 Days Late by State",
+            "value": "percent_of_mortgage_debt_90_days_late_by_state"
+          },
+          {
+            "label": "Third Party Collections",
+            "value": "third_party_collections"
+          },
+          {
+            "label": "Total Balance by Delinquency Status",
+            "value": "total_balance_by_delinquency_status"
+          },
+          {
+            "label": "Total Debt Balance",
+            "value": "total_debt_balance"
+          },
+          {
+            "label": "Total Debt Balance by Age",
+            "value": "total_debt_balance_by_age"
+          },
+          {
+            "label": "Transition Into Serious Delinquency Auto Loans by Age",
+            "value": "transition_into_serious_delinquency_auto_loans_by_age"
+          },
+          {
+            "label": "Transition Into Serious Delinquency by Age",
+            "value": "transition_into_serious_delinquency_by_age"
+          },
+          {
+            "label": "Transition Into Serious Delinquency Credit Cards by Age",
+            "value": "transition_into_serious_delinquency_credit_cards_by_age"
+          },
+          {
+            "label": "Transition Into Serious Delinquency Mortgages by Age",
+            "value": "transition_into_serious_delinquency_mortgages_by_age"
+          },
+          {
+            "label": "Transition Into Serious Delinquency Student Loans by Age",
+            "value": "transition_into_serious_delinquency_student_loans_by_age"
+          },
+          {
+            "label": "Transition Rates 30 60 Day Late Mortgage Accounts",
+            "value": "transition_rates_30_60_day_late_mortgage_accounts"
+          },
+          {
+            "label": "Transition Rates Current Mortgage Accounts",
+            "value": "transition_rates_current_mortgage_accounts"
+          },
+          {
+            "label": "Transition Rates Into 30 Days Late by State",
+            "value": "transition_rates_into_30_days_late_by_state"
+          },
+          {
+            "label": "Transition Rates Into 90 Days Late by State",
+            "value": "transition_rates_into_90_days_late_by_state"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "household_debt",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The quarter, as the quarter-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_core_trend_inflation_federal_reserve_obb": {
+    "name": "NY Fed Multivariate Core Trend (MCT) Inflation",
+    "description": "Monthly model-based estimate of core PCE trend inflation, with uncertainty bands and the sector decomposition, in annualized percent.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_core_trend_inflation_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_core_trend_inflation"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "core_trend_inflation",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The reference month, as the month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "mct",
+            "formatterFn": "percent",
+            "headerName": "MCT",
+            "headerTooltip": "The Multivariate Core Trend inflation estimate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "mct_upper",
+            "formatterFn": "percent",
+            "headerName": "MCT Upper",
+            "headerTooltip": "The upper uncertainty band of the MCT estimate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "mct_upper_2",
+            "formatterFn": "percent",
+            "headerName": "MCT Upper (Outer)",
+            "headerTooltip": "The outer upper uncertainty band of the MCT estimate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "mct_lower",
+            "formatterFn": "percent",
+            "headerName": "MCT Lower",
+            "headerTooltip": "The lower uncertainty band of the MCT estimate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "headline_pce",
+            "formatterFn": "percent",
+            "headerName": "Headline PCE",
+            "headerTooltip": "Year-over-year headline PCE inflation.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "core_pce",
+            "formatterFn": "percent",
+            "headerName": "Core PCE",
+            "headerTooltip": "Year-over-year core PCE inflation.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "goods",
+            "formatterFn": "percent",
+            "headerName": "Goods",
+            "headerTooltip": "The goods sector contribution to trend inflation.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "services_ex_housing",
+            "formatterFn": "percent",
+            "headerName": "Services ex-Housing",
+            "headerTooltip": "The services-ex-housing contribution to trend inflation.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "housing",
+            "formatterFn": "percent",
+            "headerName": "Housing",
+            "headerTooltip": "The housing contribution to trend inflation.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "goods_common",
+            "formatterFn": "percent",
+            "headerName": "Goods (Common)",
+            "headerTooltip": "The common component of the goods sector contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "goods_sector_specific",
+            "formatterFn": "percent",
+            "headerName": "Goods (Sector-Specific)",
+            "headerTooltip": "The sector-specific component of the goods sector contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "services_ex_housing_common",
+            "formatterFn": "percent",
+            "headerName": "Services ex-Housing (Common)",
+            "headerTooltip": "The common component of the services-ex-housing contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "services_ex_housing_sector_specific",
+            "formatterFn": "percent",
+            "headerName": "Services ex-Housing (Sector-Specific)",
+            "headerTooltip": "The sector-specific component of the services-ex-housing contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "housing_common",
+            "formatterFn": "percent",
+            "headerName": "Housing (Common)",
+            "headerTooltip": "The common component of the housing contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "housing_sector_specific",
+            "formatterFn": "percent",
+            "headerName": "Housing (Sector-Specific)",
+            "headerTooltip": "The sector-specific component of the housing contribution.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_empire_state_reports_federal_reserve_obb": {
+    "name": "NY Fed Empire State Survey Report Index",
+    "description": "Catalog of published Empire State Manufacturing Survey monthly report PDFs, with a direct link to each document.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_empire_state_reports_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_empire_state_reports"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "empire_state_reports",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month, as the month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "period",
+            "formatterFn": null,
+            "headerName": "Period",
+            "headerTooltip": "The report period as ``YYYYMM``.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "url",
+            "formatterFn": null,
+            "headerName": "URL",
+            "headerTooltip": "The direct URL to the PDF document.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_market_expectations_federal_reserve_obb": {
+    "name": "NY Fed Survey of Market Expectations Index",
+    "description": "Catalog of the pre-FOMC Surveys of Primary Dealers and Market Participants, with a direct link to each PDF.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_market_expectations_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_market_expectations"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Kind",
+        "description": "Filter the catalog by document kind.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Results",
+            "value": "results"
+          },
+          {
+            "label": "Questionnaire",
+            "value": "questionnaire"
+          }
+        ],
+        "paramName": "kind"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "market_expectations",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "kind",
+            "formatterFn": null,
+            "headerName": "Kind",
+            "headerTooltip": "The document kind, 'results' or 'questionnaire'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "subtype",
+            "formatterFn": null,
+            "headerName": "Panel",
+            "headerTooltip": "The respondent panel: 'combined', 'primary_dealers', or 'market_participants'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "title",
+            "formatterFn": null,
+            "headerName": "Title",
+            "headerTooltip": "The human-readable document title.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "url",
+            "formatterFn": null,
+            "headerName": "URL",
+            "headerTooltip": "The direct URL to the PDF document.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_publications_federal_reserve_obb": {
+    "name": "New York Fed Reports",
+    "description": "New York Fed Empire State Survey, Business Leaders Survey, Household Debt and Credit, and Survey of Market Expectations report PDFs. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "ny_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by report series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Empire State Manufacturing Survey",
+            "value": "empire_state_report"
+          },
+          {
+            "label": "Business Leaders Survey",
+            "value": "business_leaders_report"
+          },
+          {
+            "label": "Business Leaders Survey (Supplemental)",
+            "value": "business_leaders_supplemental_report"
+          },
+          {
+            "label": "Household Debt & Credit Report",
+            "value": "household_debt_report"
+          },
+          {
+            "label": "Survey of Market Expectations",
+            "value": "market_expectations_report"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "ny"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of New York"
+    ],
+    "subCategory": "New York",
+    "refetchInterval": false
+  },
+  "ny_sofr_federal_reserve_obb": {
+    "name": "Secured Overnight Financing Rate (SOFR)",
+    "description": "Daily SOFR benchmark rate and its percentile distribution, in percent, with transaction volume.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_sofr_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_sofr"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "sofr",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The date of the data.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "rate",
+            "formatterFn": "percent",
+            "headerName": "Rate",
+            "headerTooltip": "Effective federal funds rate.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_1",
+            "formatterFn": "percent",
+            "headerName": "1st Percentile",
+            "headerTooltip": "1st percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_25",
+            "formatterFn": "percent",
+            "headerName": "25th Percentile",
+            "headerTooltip": "25th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_75",
+            "formatterFn": "percent",
+            "headerName": "75th Percentile",
+            "headerTooltip": "75th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_99",
+            "formatterFn": "percent",
+            "headerName": "99th Percentile",
+            "headerTooltip": "99th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "volume",
+            "formatterFn": "none",
+            "headerName": "Volume",
+            "headerTooltip": "The trading volume.The notional volume of transactions (Billions of $).",
+            "cellDataType": "number",
+            "prefix": "$",
+            "suffix": "B"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_effr_federal_reserve_obb": {
+    "name": "Effective Federal Funds Rate (EFFR)",
+    "description": "Daily effective federal funds rate, target range, and percentile distribution, in percent, with transaction volume.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_effr_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_effr"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "effr",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The date of the data.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "rate",
+            "formatterFn": "percent",
+            "headerName": "Rate",
+            "headerTooltip": "Effective federal funds rate.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "target_range_upper",
+            "formatterFn": "percent",
+            "headerName": "Target Range Upper",
+            "headerTooltip": "Upper bound of the target range.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "target_range_lower",
+            "formatterFn": "percent",
+            "headerName": "Target Range Lower",
+            "headerTooltip": "Lower bound of the target range.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_1",
+            "formatterFn": "percent",
+            "headerName": "1st Percentile",
+            "headerTooltip": "1st percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_25",
+            "formatterFn": "percent",
+            "headerName": "25th Percentile",
+            "headerTooltip": "25th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_75",
+            "formatterFn": "percent",
+            "headerName": "75th Percentile",
+            "headerTooltip": "75th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_99",
+            "formatterFn": "percent",
+            "headerName": "99th Percentile",
+            "headerTooltip": "99th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "volume",
+            "formatterFn": "none",
+            "headerName": "Volume",
+            "headerTooltip": "The trading volume.The notional volume of transactions (Billions of $).",
+            "cellDataType": "number",
+            "prefix": "$",
+            "suffix": "B"
+          },
+          {
+            "field": "intraday_low",
+            "formatterFn": "percent",
+            "headerName": "Intraday Low",
+            "headerTooltip": "Intraday low. This field is only present for data before 2016.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "intraday_high",
+            "formatterFn": "percent",
+            "headerName": "Intraday High",
+            "headerTooltip": "Intraday high. This field is only present for data before 2016.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "standard_deviation",
+            "formatterFn": "percent",
+            "headerName": "Standard Deviation",
+            "headerTooltip": "Standard deviation. This field is only present for data before 2016.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "revision_indicator",
+            "formatterFn": null,
+            "headerName": "Revision Indicator",
+            "headerTooltip": "Indicates a revision of the data for that date.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_overnight_bank_funding_federal_reserve_obb": {
+    "name": "Overnight Bank Funding Rate (OBFR)",
+    "description": "Daily OBFR benchmark rate and its percentile distribution, in percent, with transaction volume.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_overnight_bank_funding_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_overnight_bank_funding"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "overnight_bank_funding",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The date of the data.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "rate",
+            "formatterFn": "percent",
+            "headerName": "Rate",
+            "headerTooltip": "Overnight Bank Funding Rate.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_1",
+            "formatterFn": "percent",
+            "headerName": "1st Percentile",
+            "headerTooltip": "1st percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_25",
+            "formatterFn": "percent",
+            "headerName": "25th Percentile",
+            "headerTooltip": "25th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_75",
+            "formatterFn": "percent",
+            "headerName": "75th Percentile",
+            "headerTooltip": "75th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percentile_99",
+            "formatterFn": "percent",
+            "headerName": "99th Percentile",
+            "headerTooltip": "99th percentile of the distribution.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "volume",
+            "formatterFn": "none",
+            "headerName": "Volume",
+            "headerTooltip": "The trading volume.The notional volume of transactions (Billions of $).",
+            "cellDataType": "number",
+            "prefix": "$",
+            "suffix": "B"
+          },
+          {
+            "field": "revision_indicator",
+            "formatterFn": null,
+            "headerName": "Revision Indicator",
+            "headerTooltip": "Indicates a revision of the data for that date.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_central_bank_holdings_federal_reserve_obb": {
+    "name": "System Open Market Account (SOMA) Holdings",
+    "description": "Treasury and Agency securities held by the Federal Reserve and managed by the New York Fed, in USD.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_central_bank_holdings_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_central_bank_holdings"
+    },
+    "params": [
+      {
+        "label": "Date",
+        "description": "A specific date to get data for.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "date"
+      },
+      {
+        "label": "Holding Type",
+        "description": "Type of holdings to return.",
+        "optional": true,
+        "type": "text",
+        "value": "all_treasury",
+        "show": true,
+        "options": [
+          {
+            "label": "Agency debts",
+            "value": "agency_debts"
+          },
+          {
+            "label": "All Agency securities",
+            "value": "all_agency"
+          },
+          {
+            "label": "All Treasury securities",
+            "value": "all_treasury"
+          },
+          {
+            "label": "Treasury bills",
+            "value": "bills"
+          },
+          {
+            "label": "Agency commercial mortgage-backed securities (CMBS)",
+            "value": "cmbs"
+          },
+          {
+            "label": "Treasury floating rate notes (FRN)",
+            "value": "frn"
+          },
+          {
+            "label": "Agency mortgage-backed securities (MBS)",
+            "value": "mbs"
+          },
+          {
+            "label": "Treasury notes and bonds",
+            "value": "notesbonds"
+          },
+          {
+            "label": "Treasury inflation-protected securities (TIPS)",
+            "value": "tips"
+          }
+        ],
+        "paramName": "holding_type"
+      },
+      {
+        "label": "Summary",
+        "description": "If True, returns historical weekly summary by holding type. This parameter takes priority over other parameters.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "summary"
+      },
+      {
+        "label": "CUSIP",
+        "description": " Multiple comma separated items allowed.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "multiSelect": true,
+        "paramName": "cusip",
+        "multiple": true,
+        "style": {
+          "popupWidth": 400
+        }
+      },
+      {
+        "label": "Wam",
+        "description": "If True, returns weighted average maturity aggregated by agency or treasury securities. This parameter takes priority over `holding_type`, `cusip`, and `monthly`.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "wam"
+      },
+      {
+        "label": "Monthly",
+        "description": "If True, returns historical data for all Treasury securities at a monthly interval. This parameter takes priority over other parameters, except `wam`. Only valid when `holding_type` is set to: 'all_treasury', 'bills', 'notesbonds', 'frn', 'tips'.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "monthly"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "central_bank_holdings",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The date of the data.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "security_type",
+            "formatterFn": null,
+            "headerName": "Security Type",
+            "headerTooltip": "Type of security - i.e. TIPs, FRNs, etc.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "description",
+            "formatterFn": null,
+            "headerName": "Description",
+            "headerTooltip": "Description of the security. Only returned for Agency securities.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_aggregated",
+            "formatterFn": null,
+            "headerName": "Is Aggregated",
+            "headerTooltip": "Whether the security is aggregated. Only returned for Agency securities.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "cusip",
+            "formatterFn": "none",
+            "headerName": "CUSIP",
+            "headerTooltip": "",
+            "cellDataType": "text",
+            "renderFn": null
+          },
+          {
+            "field": "issuer",
+            "formatterFn": null,
+            "headerName": "Issuer",
+            "headerTooltip": "Issuer of the security.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "maturity_date",
+            "formatterFn": null,
+            "headerName": "Maturity Date",
+            "headerTooltip": "Maturity date of the security.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "term",
+            "formatterFn": null,
+            "headerName": "Term",
+            "headerTooltip": "Term of the security. Only returned for Agency securities.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "face_value",
+            "formatterFn": "int",
+            "headerName": "Face Value",
+            "headerTooltip": "Current face value of the security ($USD). Current face value of the securities, which is the remaining principal balance of the securities.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "par_value",
+            "formatterFn": "int",
+            "headerName": "Par Value",
+            "headerTooltip": "Par value of the security ($USD). Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "coupon",
+            "formatterFn": "percent",
+            "headerName": "Coupon",
+            "headerTooltip": "Coupon rate of the security.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "spread",
+            "formatterFn": "percent",
+            "headerName": "Spread",
+            "headerTooltip": "Spread to the current reference rate, as determined at each security's initial auction.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "percent_outstanding",
+            "formatterFn": "percent",
+            "headerName": "Percent Outstanding",
+            "headerTooltip": "Total percent of the outstanding CUSIP issuance.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "bills",
+            "formatterFn": "int",
+            "headerName": "Bills",
+            "headerTooltip": "Treasury bills amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "frn",
+            "formatterFn": "int",
+            "headerName": "FRN",
+            "headerTooltip": "Floating rate Treasury notes amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "notes_and_bonds",
+            "formatterFn": "int",
+            "headerName": "Notes & Bonds",
+            "headerTooltip": "Treasuy Notes and bonds amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "tips",
+            "formatterFn": "int",
+            "headerName": "TIPS",
+            "headerTooltip": "Treasury inflation-protected securities amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "mbs",
+            "formatterFn": "int",
+            "headerName": "MBS",
+            "headerTooltip": "Mortgage-backed securities amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cmbs",
+            "formatterFn": "int",
+            "headerName": "CMBS",
+            "headerTooltip": "Commercial mortgage-backed securities amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "agencies",
+            "formatterFn": "int",
+            "headerName": "Agencies",
+            "headerTooltip": "Agency securities amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "total",
+            "formatterFn": "int",
+            "headerName": "Total",
+            "headerTooltip": "Total SOMA holdings amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "inflation_compensation",
+            "formatterFn": null,
+            "headerName": "Inflationcompensation",
+            "headerTooltip": "Treasury inflation-protected securities inflation compensation amount ($USD). Only returned when 'summary' is True.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "change_prior_week",
+            "formatterFn": "int",
+            "headerName": "Change Prior Week",
+            "headerTooltip": "Change in SOMA holdings from the prior week ($USD).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "change_prior_year",
+            "formatterFn": "int",
+            "headerName": "Change Prior Year",
+            "headerTooltip": "Change in SOMA holdings from the prior year ($USD).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "tips_inflation_compensation",
+            "headerName": "TIPS Inflation Compensation",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_primary_dealer_positioning_federal_reserve_obb": {
+    "name": "Primary Dealer Positioning",
+    "description": "Weekly net positions (long minus short) reported by primary dealers, by series, in millions of USD.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_primary_dealer_positioning_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_primary_dealer_positioning"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Category",
+        "description": "The category of asset to return, defaults to 'treasuries'.",
+        "optional": true,
+        "type": "text",
+        "value": "treasuries",
+        "show": true,
+        "options": [
+          {
+            "label": "Asset-backed securities (ABS)",
+            "value": "abs"
+          },
+          {
+            "label": "Treasury bills",
+            "value": "bills"
+          },
+          {
+            "label": "Commercial mortgage-backed securities (CMBS)",
+            "value": "cmbs"
+          },
+          {
+            "label": "Commercial paper",
+            "value": "commercial_paper"
+          },
+          {
+            "label": "Corporate securities",
+            "value": "corporate"
+          },
+          {
+            "label": "Investment-grade corporate bonds",
+            "value": "corporate_ig"
+          },
+          {
+            "label": "Below-investment-grade corporate bonds",
+            "value": "corporate_junk"
+          },
+          {
+            "label": "Treasury coupons",
+            "value": "coupons"
+          },
+          {
+            "label": "Mortgage-backed securities (MBS)",
+            "value": "mbs"
+          },
+          {
+            "label": "Municipal securities",
+            "value": "municipal"
+          },
+          {
+            "label": "Treasury notes and bonds",
+            "value": "notes"
+          },
+          {
+            "label": "Treasury inflation-protected securities (TIPS)",
+            "value": "tips"
+          },
+          {
+            "label": "U.S. Treasury securities",
+            "value": "treasuries"
+          }
+        ],
+        "paramName": "category"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "primary_dealer_positioning",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "bills",
+            "headerName": "Bills (Ex-TIPS)",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_lte_2_years",
+            "headerName": "Coupons <=2Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_gt_2_years_lt_3_years",
+            "headerName": "Coupons 2-3Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_gt_3_years_lt_6_years",
+            "headerName": "Coupons 3-6Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_gt_6_years_lt_7_years",
+            "headerName": "Coupons 6-7Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_gt_7_years_lt_11_years",
+            "headerName": "Coupons 7-11Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_gt_11_years_lt_21_years",
+            "headerName": "Coupons 11-21Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_gt_21_years",
+            "headerName": "Coupons 21Y+",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "tips_lt_2_years",
+            "headerName": "TIPS <=2Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "tips_gt_2_years_lt_6_years",
+            "headerName": "TIPS 2-6Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "tips_gt_6_years_lt_11_years",
+            "headerName": "TIPS 6-11Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "tips_gt_11_years",
+            "headerName": "TIPS 11Y+",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "floating_rate_notes",
+            "headerName": "Floating Rate Notes",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "discount_notes",
+            "headerName": "Agency & GSE Discount Notes",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "coupons_agency",
+            "headerName": "Agency & GSE Coupons",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "mbs_agency_and_gse_tba",
+            "headerName": "MBS Agency & GSE TBAs",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "mbs_agency_and_gse_other_residential",
+            "headerName": "MBS Agency & GSE Other Residential",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "mbs_agency_and_gse_specified_pools",
+            "headerName": "MBS Agency & GSE Specified Pools",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "mbs_non_agency_residential",
+            "headerName": "MBS Non-Agency Residential",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "cmbs_agency_and_gse",
+            "headerName": "CMBS Agency & GSE",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "cmbs_non_agency",
+            "headerName": "CMBS Non-Agency",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "municipal_lt_13_months",
+            "headerName": "Municipal <=13M",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "municipal_gt_13_months_lt_5_years",
+            "headerName": "Municipal 13M-5Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "municipal_gt_5_years_lt_10_years",
+            "headerName": "Municipal 5-10Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "municipal_gt_10_years",
+            "headerName": "Municipal 10Y+",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "commercial_paper",
+            "headerName": "Commercial Paper",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_investment_grade_lt_13_months",
+            "headerName": "Corporate IG <=13M",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_investment_grade_gt_13_months_lt_5_years",
+            "headerName": "Corporate IG 13M-5Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_investment_grade_gt_5_years_lt_10_years",
+            "headerName": "Corporate IG 5-10Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_investment_grade_gt_10_years",
+            "headerName": "Corporate IG 10Y+",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_junk_lt_13_months",
+            "headerName": "Corporate HY <=13M",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_junk_gt_13_months_lt_5_years",
+            "headerName": "Corporate HY 13M-5Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_junk_gt_5_years_lt_10_years",
+            "headerName": "Corporate HY 5-10Y",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "corporate_junk_gt_10_years",
+            "headerName": "Corporate HY 10Y+",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "abs_autos",
+            "headerName": "ABS Autos",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "abs_credit_cards",
+            "headerName": "ABS Credit Cards",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "abs_student_loans",
+            "headerName": "ABS Student Loans",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          },
+          {
+            "field": "abs_other",
+            "headerName": "ABS Other",
+            "cellDataType": "number",
+            "formatterFn": "int"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  },
+  "ny_primary_dealer_fails_federal_reserve_obb": {
+    "name": "Primary Dealer Fails to Deliver and Receive",
+    "description": "Weekly settlement fails reported by primary dealers, by series, in millions of USD or as a share of total fails.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_primary_dealer_fails_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_primary_dealer_fails"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Asset Class",
+        "description": "Asset class to return, default is 'all'.",
+        "optional": true,
+        "type": "text",
+        "value": "all",
+        "show": true,
+        "options": [
+          {
+            "label": "All asset classes",
+            "value": "all"
+          },
+          {
+            "label": "U.S. Treasury securities (ex-TIPS)",
+            "value": "treasuries"
+          },
+          {
+            "label": "Treasury inflation-protected securities (TIPS)",
+            "value": "tips"
+          },
+          {
+            "label": "Federal agency securities (ex-MBS)",
+            "value": "agency"
+          },
+          {
+            "label": "Mortgage-backed securities (MBS)",
+            "value": "mbs"
+          },
+          {
+            "label": "Corporate securities",
+            "value": "corporate"
+          }
+        ],
+        "paramName": "asset_class"
+      },
+      {
+        "label": "Unit",
+        "description": "Unit of the data returned to the 'value' field. Default is 'value', which represents millions of USD. 'percent' returns data as the percentage of the total fails-to-receive and fails-to-deliver, by asset class.",
+        "optional": true,
+        "type": "text",
+        "value": "value",
+        "show": true,
+        "options": [
+          {
+            "label": "Value (millions of USD)",
+            "value": "value"
+          },
+          {
+            "label": "Percent of total fails",
+            "value": "percent"
+          }
+        ],
+        "paramName": "unit"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "primary_dealer_fails",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc",
+            "chartDataType": "time"
+          },
+          {
+            "field": "FTD Treasury Securities (Ex-TIPS)",
+            "headerName": "FTD Treasury Securities (Ex-TIPS)",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTD TIPS",
+            "headerName": "FTD TIPS",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTD Agency and GSE Securities (Ex-MBS)",
+            "headerName": "FTD Agency and GSE Securities (Ex-MBS)",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTD Agency and GSE MBS",
+            "headerName": "FTD Agency and GSE MBS",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTD Other MBS",
+            "headerName": "FTD Other MBS",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTD Corporate Securities",
+            "headerName": "FTD Corporate Securities",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTD Total",
+            "headerName": "FTD Total",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR Treasury Securities (Ex-TIPS)",
+            "headerName": "FTR Treasury Securities (Ex-TIPS)",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR TIPS",
+            "headerName": "FTR TIPS",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR Agency and GSE Securities (Ex-MBS)",
+            "headerName": "FTR Agency and GSE Securities (Ex-MBS)",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR Agency and GSE MBS",
+            "headerName": "FTR Agency and GSE MBS",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR Other MBS",
+            "headerName": "FTR Other MBS",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR Corporate Securities",
+            "headerName": "FTR Corporate Securities",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          },
+          {
+            "field": "FTR Total",
+            "headerName": "FTR Total",
+            "cellDataType": "number",
+            "chartDataType": "series"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "New York"
+  }
+}

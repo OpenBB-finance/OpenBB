@@ -1,0 +1,502 @@
+{
+  "cleveland_inflation_expectations_federal_reserve_obb": {
+    "name": "Cleveland Fed Inflation Expectations",
+    "description": "Model-based estimates of expected average annual inflation and the implied real interest rate, by horizon.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "cleveland_inflation_expectations_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "cleveland_inflation_expectations"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "Model-implied expected inflation by horizon, the model's real interest rate by horizon, or the ten-year decomposition into expected inflation, real risk premium, and inflation risk premium.",
+        "optional": true,
+        "type": "text",
+        "value": "expected_inflation",
+        "show": true,
+        "options": [
+          {
+            "label": "Expected Inflation",
+            "value": "expected_inflation"
+          },
+          {
+            "label": "Real Interest Rate",
+            "value": "real_interest_rate"
+          },
+          {
+            "label": "Ten-year Expected Chart",
+            "value": "ten_year_decomposition"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "inflation_expectations",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The model output month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Cleveland"
+  },
+  "cleveland_inflation_nowcast_federal_reserve_obb": {
+    "name": "Cleveland Fed Inflation Nowcast",
+    "description": "Model nowcasts of CPI, core CPI, PCE, and core PCE inflation by target period, alongside the actual figure once released.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "cleveland_inflation_nowcast_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "cleveland_inflation_nowcast"
+    },
+    "params": [
+      {
+        "label": "Frequency",
+        "description": "The nowcast horizon: month-over-month, quarterly annualized, or year-over-year.",
+        "optional": true,
+        "type": "text",
+        "value": "month",
+        "show": true,
+        "options": [
+          {
+            "label": "Month-over-Month",
+            "value": "month"
+          },
+          {
+            "label": "Quarterly Annualized",
+            "value": "quarter"
+          },
+          {
+            "label": "Year-over-Year",
+            "value": "year"
+          }
+        ],
+        "paramName": "frequency"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "inflation_nowcast",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The target period being nowcast.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Cleveland"
+  },
+  "cleveland_median_cpi_federal_reserve_obb": {
+    "name": "Cleveland Fed Median CPI",
+    "description": "Median and 16% trimmed-mean CPI inflation, with headline and core CPI, by series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "cleveland_median_cpi_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "cleveland_median_cpi"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The headline summary (Median, Trimmed-Mean, CPI, Core, 12-month), or the full revised history of the median CPI, the 16% trimmed-mean CPI, the CPI, or the core CPI.",
+        "optional": true,
+        "type": "text",
+        "value": "summary",
+        "show": true,
+        "options": [
+          {
+            "label": "Core CPI",
+            "value": "core_cpi"
+          },
+          {
+            "label": "CPI",
+            "value": "cpi"
+          },
+          {
+            "label": "Median CPI (Revised History)",
+            "value": "median_cpi"
+          },
+          {
+            "label": "Summary",
+            "value": "summary"
+          },
+          {
+            "label": "16% Trimmed-Mean CPI (Revised History)",
+            "value": "trimmed_mean"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "median_cpi",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Cleveland"
+  },
+  "cleveland_median_cpi_components_federal_reserve_obb": {
+    "name": "Cleveland Fed Median CPI Components",
+    "description": "The latest month's CPI expenditure categories ranked by 1-month annualized price change, with relative importance weights.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "cleveland_median_cpi_components_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "cleveland_median_cpi_components"
+    },
+    "params": [
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "median_cpi_components",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "component",
+            "formatterFn": null,
+            "headerName": "Component",
+            "headerTooltip": "The CPI expenditure category.",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "change",
+            "formatterFn": "percent",
+            "headerName": "1-Month Annualized Percent Change",
+            "headerTooltip": "The category's 1-month annualized percent change.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "relative_importance",
+            "formatterFn": "percent",
+            "headerName": "Relative Importance",
+            "headerTooltip": "The category's normalized relative importance, in percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cumulative_relative_importance",
+            "formatterFn": "percent",
+            "headerName": "Cumulative Relative Importance",
+            "headerTooltip": "The cumulative relative importance through this category, sorted by price change, in percent.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Cleveland"
+  },
+  "cleveland_systemic_risk_federal_reserve_obb": {
+    "name": "Cleveland Fed Systemic Risk Indicator",
+    "description": "A daily gauge of U.S. banking-system stress, the average distance to default minus the portfolio distance to default.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "cleveland_systemic_risk_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "cleveland_systemic_risk"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "systemic_risk",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Cleveland"
+  },
+  "cleveland_publications_federal_reserve_obb": {
+    "name": "Cleveland Fed Publications",
+    "description": "Cleveland Fed Economic Commentary, Working Papers, Policy Discussion Papers, District Data Briefs, Annual Reports, Regional Policy Reports, and Economic Review. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "cleveland_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "cleveland_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Economic Commentary",
+            "value": "economic_commentary"
+          },
+          {
+            "label": "Working Paper",
+            "value": "working_paper"
+          },
+          {
+            "label": "Policy Discussion Paper",
+            "value": "policy_discussion_papers"
+          },
+          {
+            "label": "Cleveland Fed District Data Brief",
+            "value": "district_data_brief"
+          },
+          {
+            "label": "Annual Report",
+            "value": "annual_report"
+          },
+          {
+            "label": "Regional Policy Report",
+            "value": "regional_policy_report"
+          },
+          {
+            "label": "Economic Review",
+            "value": "economic_review"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "cleveland"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Cleveland"
+    ],
+    "subCategory": "Cleveland",
+    "refetchInterval": false
+  }
+}

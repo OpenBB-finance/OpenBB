@@ -1,7 +1,5 @@
 """FederalReserve Treasury Rates Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
@@ -13,7 +11,7 @@ from openbb_core.provider.standard_models.treasury_rates import (
 from pydantic import field_validator
 
 if TYPE_CHECKING:
-    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
 
 maturities = [
     "month_1",
@@ -39,7 +37,7 @@ class FederalReserveTreasuryRatesData(TreasuryRatesData):
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
@@ -57,7 +55,6 @@ class FederalReserveTreasuryRatesFetcher(
         params: dict[str, Any],
     ) -> FederalReserveTreasuryRatesQueryParams:
         """Transform the query params. Start and end dates are set to a 90 day interval."""
-        # pylint: disable=import-outside-toplevel
         from datetime import timedelta
 
         transformed_params = params
@@ -78,11 +75,11 @@ class FederalReserveTreasuryRatesFetcher(
         **kwargs: Any,
     ) -> "DataFrame":
         """Return the raw data from the FederalReserve endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from io import BytesIO  # noqa
-        from openbb_core.provider.utils.helpers import make_request  # noqa
-        from numpy import nan  # noqa
-        from pandas import DataFrame, read_csv  # noqa
+        from io import BytesIO
+
+        from numpy import nan
+        from openbb_core.provider.utils.helpers import make_request
+        from pandas import read_csv
 
         url = (
             "https://www.federalreserve.gov/datadownload/Output.aspx?"
@@ -103,13 +100,12 @@ class FederalReserveTreasuryRatesFetcher(
         query: FederalReserveTreasuryRatesQueryParams, data: "DataFrame", **kwargs: Any
     ) -> list[FederalReserveTreasuryRatesData]:
         """Return the transformed data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import to_datetime
 
         df = data.copy()
         df = df[
-            (to_datetime(df.date) >= to_datetime(query.start_date))  # type: ignore
-            & (to_datetime(df.date) <= to_datetime(query.end_date))  # type: ignore
+            (to_datetime(df.date) >= to_datetime(query.start_date))  # ty: ignore[no-matching-overload]
+            & (to_datetime(df.date) <= to_datetime(query.end_date))  # ty: ignore[no-matching-overload]
         ]
         for col in maturities:
             df[col] = df[col].astype(float) / 100

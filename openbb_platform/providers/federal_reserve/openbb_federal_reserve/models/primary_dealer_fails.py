@@ -1,18 +1,18 @@
 """Federal Reserve Primary Dealer Fails Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.primary_dealer_fails import (
-    PrimaryDealerFailsData,
     PrimaryDealerFailsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_federal_reserve.utils.primary_dealer_statistics import FAILS_SERIES_TO_TITLE
 from pydantic import Field
+
+from openbb_federal_reserve.utils.primary_dealer_statistics import FAILS_SERIES_TO_TITLE
 
 
 class FederalReservePrimaryDealerFailsQueryParams(PrimaryDealerFailsQueryParams):
@@ -22,10 +22,32 @@ class FederalReservePrimaryDealerFailsQueryParams(PrimaryDealerFailsQueryParams)
         "asset_class": {
             "multiple_items_allowed": False,
             "choices": ["all", "treasuries", "tips", "agency", "mbs", "corporate"],
+            "x-widget_config": {
+                "options": [
+                    {"label": "All asset classes", "value": "all"},
+                    {
+                        "label": "U.S. Treasury securities (ex-TIPS)",
+                        "value": "treasuries",
+                    },
+                    {
+                        "label": "Treasury inflation-protected securities (TIPS)",
+                        "value": "tips",
+                    },
+                    {"label": "Federal agency securities (ex-MBS)", "value": "agency"},
+                    {"label": "Mortgage-backed securities (MBS)", "value": "mbs"},
+                    {"label": "Corporate securities", "value": "corporate"},
+                ]
+            },
         },
         "unit": {
             "multiple_items_allowed": False,
             "choices": ["value", "percent"],
+            "x-widget_config": {
+                "options": [
+                    {"label": "Value (millions of USD)", "value": "value"},
+                    {"label": "Percent of total fails", "value": "percent"},
+                ]
+            },
         },
     }
 
@@ -44,14 +66,10 @@ class FederalReservePrimaryDealerFailsQueryParams(PrimaryDealerFailsQueryParams)
     )
 
 
-class FederalReservePrimaryDealerFailsData(PrimaryDealerFailsData):
+class FederalReservePrimaryDealerFailsData(Data):
     """Federal Reserve Primary Dealer Fails Data."""
 
-    title: str = Field(description="Title of the series' symbol.")
-    value: int | float = Field(
-        description="Value of the data returned, in millions of USD if the `unit`"
-        + " parameter is 'value' else a normalized percent."
-    )
+    date: dateType = Field(description="The observation date.")
 
 
 class FederalReservePrimaryDealerFailsFetcher(
@@ -76,8 +94,8 @@ class FederalReservePrimaryDealerFailsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Federal Reserve endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from datetime import datetime  # noqa
+        from datetime import datetime
+
         from openbb_core.provider.utils.helpers import amake_request
 
         url = (
@@ -87,7 +105,7 @@ class FederalReservePrimaryDealerFailsFetcher(
         )
         try:
             response = await amake_request(url, **kwargs)
-            data = response.get("pd", {}).get("timeseries", [])  # type: ignore
+            data = response.get("pd", {}).get("timeseries", [])  # ty: ignore[unresolved-attribute]
             if query.start_date and query.start_date < datetime(2013, 4, 1).date():
                 # The data is broken into different series and the structure of the data is different over time.
                 if query.start_date < datetime(2001, 7, 1).date():
@@ -96,15 +114,15 @@ class FederalReservePrimaryDealerFailsFetcher(
                         + "_PDFASFAFDA_PDFASFAFRA_PDFASMBFDA_PDFASMBFRA.json"
                     )
                     response = await amake_request(url2, **kwargs)
-                    data += response.get("pd", {}).get("timeseries", [])  # type: ignore
+                    data += response.get("pd", {}).get("timeseries", [])  # ty: ignore[unresolved-attribute]
                 url = (
                     "https://markets.newyorkfed.org/api/pd/get/SBP2013/timeseries/"
                     + "PDFASCFRA_PDFASCFDA_PDFASFAFRA_PDFASFAFDA_PDFASMBFRA_PDFASMBFDA_PDFASUFRA_PDFASUFDA.json"
                 )
                 response = await amake_request(url, **kwargs)
-                data += response.get("pd", {}).get("timeseries", [])  # type: ignore
+                data += response.get("pd", {}).get("timeseries", [])  # ty: ignore[unresolved-attribute]
             return data
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise OpenBBError(
                 "Failed to fetch data from the Federal Reserve API."
             ) from e
@@ -116,8 +134,9 @@ class FederalReservePrimaryDealerFailsFetcher(
         **kwargs: Any,
     ) -> list[FederalReservePrimaryDealerFailsData]:
         """Transform the raw data into the standard format."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import NA, DataFrame, concat, to_datetime
+        from math import isnan
+
+        from pandas import DataFrame, concat, to_datetime
 
         if not data:
             raise EmptyDataError("No data returned from the Federal Reserve API.")
@@ -161,25 +180,24 @@ class FederalReservePrimaryDealerFailsFetcher(
         if query.asset_class == "corporate":
             new_data = new_data[[d for d in new_data.columns if "Corporate" in d]]
 
-        new_data = new_data.T.unstack().reset_index()
-        new_data.columns = ["date", "title", "value"]
-        new_data["symbol"] = new_data.title.map(
-            {v: k for k, v in FAILS_SERIES_TO_TITLE.items()}
-        ).replace({NA: "--"})
-        new_data = new_data.dropna()
-
-        if query.unit == "value":
-            new_data["value"] = new_data.value.astype(int)
-
-        new_data["date"] = to_datetime(new_data.date).dt.date
+        wide = new_data.reset_index().rename(columns={"asofdate": "date"})
+        wide["date"] = to_datetime(wide.date).dt.date
 
         if query.start_date:
-            new_data = new_data[new_data.date >= query.start_date]
-
+            wide = wide[wide.date >= query.start_date]
         if query.end_date:
-            new_data = new_data[new_data.date <= query.end_date]
+            wide = wide[wide.date <= query.end_date]
+
+        records = wide.to_dict(orient="records")
+        for row in records:
+            for key, val in list(row.items()):
+                if key == "date":
+                    continue
+                if isinstance(val, float) and isnan(val):
+                    row[key] = None
+                elif query.unit == "value" and val is not None:
+                    row[key] = int(val)
 
         return [
-            FederalReservePrimaryDealerFailsData.model_validate(r)
-            for r in new_data.dropna().to_dict(orient="records")
+            FederalReservePrimaryDealerFailsData.model_validate(row) for row in records
         ]

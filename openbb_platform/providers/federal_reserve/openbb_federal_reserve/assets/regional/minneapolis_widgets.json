@@ -1,0 +1,1037 @@
+{
+  "minneapolis_business_conditions_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Business Conditions Survey",
+    "description": "Monthly diffusion indexes from the Ninth District business conditions survey, each the net percentage of respondents reporting an increase over the prior three months.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_business_conditions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_business_conditions"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "business_conditions",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "is_flash",
+            "formatterFn": null,
+            "headerName": "Is Flash",
+            "headerTooltip": "Whether the reading is a flash (forecast) estimate rather than a final survey result.",
+            "cellDataType": "boolean"
+          },
+          {
+            "field": "benefits",
+            "formatterFn": "percent",
+            "headerName": "Benefits",
+            "headerTooltip": "Diffusion index for benefits costs.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "input_prices",
+            "formatterFn": "percent",
+            "headerName": "Input Prices",
+            "headerTooltip": "Diffusion index for input prices.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "sales_prices",
+            "formatterFn": "percent",
+            "headerName": "Sales Prices",
+            "headerTooltip": "Diffusion index for sales prices.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "wages",
+            "formatterFn": "percent",
+            "headerName": "Wages",
+            "headerTooltip": "Diffusion index for wages.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "investment",
+            "formatterFn": "percent",
+            "headerName": "Investment",
+            "headerTooltip": "Diffusion index for capital investment.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "headcount",
+            "formatterFn": "percent",
+            "headerName": "Headcount",
+            "headerTooltip": "Diffusion index for headcount.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "hiring",
+            "formatterFn": "percent",
+            "headerName": "Hiring Difficulty",
+            "headerTooltip": "Diffusion index for hiring difficulty.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "inventories",
+            "formatterFn": "percent",
+            "headerName": "Inventories",
+            "headerTooltip": "Diffusion index for inventories.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "profits",
+            "formatterFn": "percent",
+            "headerName": "Profits",
+            "headerTooltip": "Diffusion index for profits.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "sales",
+            "formatterFn": "percent",
+            "headerName": "Sales",
+            "headerTooltip": "Diffusion index for sales revenue.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_regional_employment_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Regional Employment",
+    "description": "Monthly total nonfarm employment indexed to 100 at the series start for each Ninth District state and the United States.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_regional_employment_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_regional_employment"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "regional_employment",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "MN",
+            "headerName": "Minnesota",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "MT",
+            "headerName": "Montana",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "ND",
+            "headerName": "North Dakota",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "SD",
+            "headerName": "South Dakota",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "WI",
+            "headerName": "Wisconsin",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "US",
+            "headerName": "United States",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_regional_unemployment_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Unemployment Rate",
+    "description": "The monthly unemployment rate, in percent, for each Ninth District state and the United States.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_regional_unemployment_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_regional_unemployment"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "regional_unemployment",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "MN",
+            "headerName": "Minnesota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "MT",
+            "headerName": "Montana",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "ND",
+            "headerName": "North Dakota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "SD",
+            "headerName": "South Dakota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "WI",
+            "headerName": "Wisconsin",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "US",
+            "headerName": "United States",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_labor_force_participation_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Labor Force Participation",
+    "description": "The monthly labor force participation rate, in percent, for each Ninth District state and the United States.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_labor_force_participation_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_labor_force_participation"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "labor_force_participation",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "MN",
+            "headerName": "Minnesota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "MT",
+            "headerName": "Montana",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "ND",
+            "headerName": "North Dakota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "SD",
+            "headerName": "South Dakota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "WI",
+            "headerName": "Wisconsin",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "US",
+            "headerName": "United States",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_quits_rate_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Quits Rate",
+    "description": "The monthly quits rate, in percent, for each Ninth District state and the United States, smoothed as a trailing three-month average.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_quits_rate_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_quits_rate"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "quits_rate",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "MN",
+            "headerName": "Minnesota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "MT",
+            "headerName": "Montana",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "ND",
+            "headerName": "North Dakota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "SD",
+            "headerName": "South Dakota",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "WI",
+            "headerName": "Wisconsin",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "US",
+            "headerName": "United States",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_regional_gdp_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Regional Real GDP",
+    "description": "Quarterly inflation-adjusted gross domestic product indexed to 100 at the series start for each Ninth District state and the United States.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_regional_gdp_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_regional_gdp"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "regional_gdp",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The start of the observation quarter.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "MN",
+            "headerName": "Minnesota",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "MT",
+            "headerName": "Montana",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "ND",
+            "headerName": "North Dakota",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "SD",
+            "headerName": "South Dakota",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "WI",
+            "headerName": "Wisconsin",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          },
+          {
+            "field": "US",
+            "headerName": "United States",
+            "cellDataType": "number",
+            "formatterFn": "none"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_regional_cpi_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Regional CPI Inflation",
+    "description": "Monthly year-over-year CPI inflation, in percent, for the United States and the Census divisions that overlap the Ninth District, by headline and core measure.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_regional_cpi_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_regional_cpi"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "regional_cpi",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "CPI-U US",
+            "headerName": "CPI-U US",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "CPI-U West North Central",
+            "headerName": "CPI-U West North Central",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "CPI-U Mountain",
+            "headerName": "CPI-U Mountain",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "Core US",
+            "headerName": "Core US",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "Core West North Central",
+            "headerName": "Core West North Central",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "Core Mountain",
+            "headerName": "Core Mountain",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_unemployment_claims_federal_reserve_obb": {
+    "name": "Minneapolis Fed Minnesota Unemployment Claims",
+    "description": "Weekly Minnesota initial and continued unemployment-insurance claims, indexed by the week-ending date.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_unemployment_claims_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_unemployment_claims"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "unemployment_claims",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The week-ending date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "initial_claims",
+            "formatterFn": "int",
+            "headerName": "Initial Claims",
+            "headerTooltip": "Initial unemployment insurance claims.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "continued_claims",
+            "formatterFn": "int",
+            "headerName": "Continued Claims",
+            "headerTooltip": "Continued unemployment insurance claims.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_job_openings_hiring_federal_reserve_obb": {
+    "name": "Minneapolis Fed Ninth District Job Openings and Hiring",
+    "description": "Monthly job opening and hiring rates, in percent, by Ninth District state.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "minneapolis_job_openings_hiring_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_job_openings_hiring"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "job_openings_hiring",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "MN Job Opening Rate",
+            "headerName": "MN Job Opening Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "MN Hiring Rate",
+            "headerName": "MN Hiring Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "MT Job Opening Rate",
+            "headerName": "MT Job Opening Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "MT Hiring Rate",
+            "headerName": "MT Hiring Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "ND Job Opening Rate",
+            "headerName": "ND Job Opening Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "ND Hiring Rate",
+            "headerName": "ND Hiring Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "SD Job Opening Rate",
+            "headerName": "SD Job Opening Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "SD Hiring Rate",
+            "headerName": "SD Hiring Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "WI Job Opening Rate",
+            "headerName": "WI Job Opening Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          },
+          {
+            "field": "WI Hiring Rate",
+            "headerName": "WI Hiring Rate",
+            "cellDataType": "number",
+            "formatterFn": "percent"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Minneapolis"
+  },
+  "minneapolis_publications_federal_reserve_obb": {
+    "name": "Minneapolis Fed Publications",
+    "description": "Minneapolis Fed Working Papers, Institute Working Papers, CICD Working Papers, Staff Reports, and Quarterly Review. Select one or more PDFs to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "minneapolis_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "minneapolis_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Working Paper",
+            "value": "working_paper"
+          },
+          {
+            "label": "Institute Working Paper",
+            "value": "institute_working_paper"
+          },
+          {
+            "label": "CICD Working Paper",
+            "value": "cicd_working_paper"
+          },
+          {
+            "label": "Staff Report",
+            "value": "staff_report"
+          },
+          {
+            "label": "Quarterly Review",
+            "value": "quarterly_review"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "minneapolis"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Minneapolis"
+    ],
+    "subCategory": "Minneapolis",
+    "refetchInterval": false
+  }
+}

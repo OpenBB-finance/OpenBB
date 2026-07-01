@@ -1,0 +1,143 @@
+[
+  {
+    "name": "Atlanta Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg/960px-Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg/960px-Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg/960px-Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg",
+    "description": "The Atlanta Fed's real-time growth and inflation toolkit: the GDPNow nowcast, Sticky-Price CPI, Business Inflation Expectations, the Wage Growth Tracker, the Survey of Business Uncertainty, the Market Probability Tracker, and Taylor Rule utilities.",
+    "allowCustomization": true,
+    "tabs": {
+      "growth-activity": {
+        "id": "growth-activity",
+        "name": "Growth & Activity",
+        "layout": [
+          {
+            "i": "atlanta_gdpnow_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "wages-uncertainty": {
+        "id": "wages-uncertainty",
+        "name": "Wages & Uncertainty",
+        "layout": [
+          {
+            "i": "atlanta_wage_growth_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "atlanta_business_uncertainty_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "inflation": {
+        "id": "inflation",
+        "name": "Inflation",
+        "layout": [
+          {
+            "i": "atlanta_sticky_cpi_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "atlanta_business_inflation_expectations_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "monetary-policy": {
+        "id": "monetary-policy",
+        "name": "Monetary Policy",
+        "layout": [
+          {
+            "i": "atlanta_market_probability_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "atlanta_taylor_rule_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "atlanta_taylor_rule_measures_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "atlanta_taylor_rule_heatmap_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "atlanta_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

@@ -1,7 +1,5 @@
 """Federal Reserve Central Bank Holdings Model."""
 
-# pylint: disable=unused-argument,too-many-branches,too-many-statements,too-many-return-statements
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -60,6 +58,30 @@ class FederalReserveCentralBankHoldingsQueryParams(CentralBankHoldingsQueryParam
 
     __json_schema_extra__ = {
         "cusip": {"multiple_items_allowed": True},
+        "holding_type": {
+            "x-widget_config": {
+                "options": [
+                    {"label": "All Agency securities", "value": "all_agency"},
+                    {"label": "Agency debts", "value": "agency_debts"},
+                    {
+                        "label": "Agency mortgage-backed securities (MBS)",
+                        "value": "mbs",
+                    },
+                    {
+                        "label": "Agency commercial mortgage-backed securities (CMBS)",
+                        "value": "cmbs",
+                    },
+                    {"label": "All Treasury securities", "value": "all_treasury"},
+                    {"label": "Treasury bills", "value": "bills"},
+                    {"label": "Treasury notes and bonds", "value": "notesbonds"},
+                    {"label": "Treasury floating rate notes (FRN)", "value": "frn"},
+                    {
+                        "label": "Treasury inflation-protected securities (TIPS)",
+                        "value": "tips",
+                    },
+                ]
+            }
+        },
     }
 
     holding_type: HoldingTypes = Field(
@@ -134,21 +156,13 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
     )
     face_value: float | None = Field(
         default=None,
-        description="Current face value of the security (Thousands of $USD)."
+        description="Current face value of the security ($USD)."
         + " Current face value of the securities, which is the remaining principal balance of the securities.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     par_value: float | None = Field(
         default=None,
-        description="Par value of the security (Thousands of $USD)."
+        description="Par value of the security ($USD)."
         + " Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     coupon: float | None = Field(
         default=None,
@@ -167,101 +181,57 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
     )
     bills: float | None = Field(
         default=None,
-        description="Treasury bills amount (Thousands of $USD)."
+        description="Treasury bills amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     frn: float | None = Field(
         default=None,
-        description="Floating rate Treasury notes amount (Thousands of $USD)."
+        description="Floating rate Treasury notes amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     notes_and_bonds: float | None = Field(
         default=None,
-        description="Treasuy Notes and bonds amount (Thousands of $USD)."
+        description="Treasuy Notes and bonds amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     tips: float | None = Field(
         default=None,
-        description="Treasury inflation-protected securities amount (Thousands of $USD)."
+        description="Treasury inflation-protected securities amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     mbs: float | None = Field(
         default=None,
-        description="Mortgage-backed securities amount (Thousands of $USD)."
+        description="Mortgage-backed securities amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     cmbs: float | None = Field(
         default=None,
-        description="Commercial mortgage-backed securities amount (Thousands of $USD)."
+        description="Commercial mortgage-backed securities amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     agencies: float | None = Field(
         default=None,
-        description="Agency securities amount (Thousands of $USD)."
+        description="Agency securities amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     total: float | None = Field(
         default=None,
-        description="Total SOMA holdings amount (Thousands of $USD)."
+        description="Total SOMA holdings amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
     )
     tips_inflation_compensation: float | None = Field(
         default=None,
-        description="Treasury inflation-protected securities inflation compensation amount (Thousands of $USD)."
+        description="Treasury inflation-protected securities inflation compensation amount ($USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
         alias="inflationCompensation",
     )
     change_prior_week: float | None = Field(
         default=None,
-        description="Change in SOMA holdings from the prior week (Thousands of $USD).",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
+        description="Change in SOMA holdings from the prior week ($USD).",
     )
     change_prior_year: float | None = Field(
         default=None,
-        description="Change in SOMA holdings from the prior year (Thousands of $USD).",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1000,
-        },
+        description="Change in SOMA holdings from the prior year ($USD).",
     )
 
     @field_validator("security_type", mode="before", check_fields=False)
@@ -313,7 +283,6 @@ class FederalReserveCentralBankHoldingsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FederalReserve endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_federal_reserve.utils.ny_fed_api import SomaHoldings
 
         hold_type = "all" if "all" in query.holding_type else query.holding_type
@@ -323,12 +292,12 @@ class FederalReserveCentralBankHoldingsFetcher(
             query.holding_type == "all_agency"
             or query.holding_type in AGENCY_HOLDING_TYPES
         ):
-            security_type = "agency"  # type: ignore
+            security_type = "agency"
         if (
             query.holding_type == "all_treasury"
             or query.holding_type in TREASURY_HOLDING_TYPES
         ):
-            security_type = "treasury"  # type: ignore
+            security_type = "treasury"
         if query.cusip is not None:
             cusips = (
                 query.cusip if isinstance(query.cusip, str) else ",".join(query.cusip)
