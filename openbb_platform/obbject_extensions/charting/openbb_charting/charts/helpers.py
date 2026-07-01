@@ -1,7 +1,5 @@
 """Helper functions for charting."""
 
-# pylint: disable=R0917
-
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
@@ -11,7 +9,6 @@ if TYPE_CHECKING:
 
 def get_charting_functions(view: type) -> dict[str, Callable]:
     """Discover charting functions."""
-    # pylint: disable=import-outside-toplevel
     from inspect import getmembers, getsource, isfunction
 
     implemented_functions: dict[str, Callable] = {}
@@ -46,7 +43,6 @@ def should_share_axis(
     df: "DataFrame", col1: str, col2: str, threshold: float = 0.15
 ) -> bool:
     """Determine whether two columns should share an axis."""
-    # pylint: disable=import-outside-toplevel
     from pandas import Series
 
     try:
@@ -54,12 +50,12 @@ def should_share_axis(
             df = df.to_frame()
         range1 = df[col1].max() - df[col1].min()
         range2 = df[col2].max() - df[col2].min()
-        # Calculate the ratio of the two ranges
         ratio = max(range1, range2) / min(range1, range2)
-        # If the ratio is less than the threshold, the two columns can share an axis
         if ratio == 1:
             return True
-        return ratio < threshold
+        # Coerce to a built-in bool: callers use ``is True`` / ``is False``
+        # identity checks, which a numpy bool would always fail.
+        return bool(ratio < threshold)
     except Exception:
         return False
 
@@ -77,7 +73,6 @@ def heikin_ashi(data: "DataFrame") -> "DataFrame":
     DataFrame
         DataFrame copy with Heikin Ashi candle calculations.
     """
-    # pylint: disable=import-outside-toplevel
     from pandas_ta import candles
 
     df = data.copy()
@@ -115,7 +110,7 @@ def duration_sorter(durations: list) -> list:
         for i in range(0, len(parts), 2):
             number = int(parts[i + 1])
             if parts[i] == "year":
-                number *= 12  # Convert years to months
+                number *= 12
             months += number
         return months
 

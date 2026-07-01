@@ -19,6 +19,7 @@ from starlette.responses import (
 )
 from typing_extensions import ParamSpec
 
+from openbb_core.app.charting import ChartingManager
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
@@ -30,18 +31,14 @@ from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
-from openbb_core.app.utils_optional import is_installed
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import to_snake_case
 
-CHARTING_INSTALLED = is_installed("openbb_charting")
-Charting = None
-if CHARTING_INSTALLED:
-    import importlib
-
-    Charting = getattr(
-        importlib.import_module("openbb_charting"), "Charting"
-    )  # pragma: no cover
+# Resolved through the charting manager so a drop-in engine override is honored
+# instead of importing ``openbb_charting`` by name. ``Charting`` is the resolved
+# engine accessor class (or ``None`` when no engine is installed).
+Charting = ChartingManager.get_charting_class()
+CHARTING_INSTALLED = Charting is not None
 
 T = TypeVar("T")
 P = ParamSpec("P")
