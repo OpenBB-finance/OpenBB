@@ -1,12 +1,4 @@
-"""Chicago Fed publication-archive (PDF) indexing and presentation.
-
-The Chicago Fed publishes its AgLetter, Chicago Fed Letter, Economic Perspectives,
-and Working Papers as per-issue PDFs catalogued through the site's NewsFeed API.
-That endpoint is a ``POST`` to ``/forms/NewsFeed/Index`` with a JSON body of
-``{}`` and a cumulative ``page`` parameter. This module enumerates each series'
-catalog and serves a selected document as a base64-encoded PDF suitable for an
-OpenBB Workspace PDF widget.
-"""
+"""Chicago Fed publication-archive (PDF) indexing and presentation."""
 
 from __future__ import annotations
 
@@ -40,11 +32,7 @@ _MAX_PAGES = 60
 
 
 def _parse_date(value: str | None) -> dateType | None:
-    """Parse a feed date string into a ``date``, or ``None``.
-
-    The NewsFeed ``Date`` field varies by series between ``YYYY``, ``YYYYMM``,
-    and ``YYYYMMDD``; missing month and day components default to January 1.
-    """
+    """Parse a feed date string into a ``date``, or ``None``."""
     if not value or not value.isdigit() or len(value) not in (4, 6, 8):
         return None
     year = int(value[:4])
@@ -101,11 +89,7 @@ def list_publications(series: str | None = None) -> list[dict[str, Any]]:
     targets = [series] if series else list(_SERIES)
 
     def _producer() -> list[dict[str, Any]]:
-        """Page each target series' NewsFeed and classify every entry.
-
-        The feed returns a fixed window per page rather than a cumulative list,
-        so pages are walked until one yields no new records.
-        """
+        """Page each target series' NewsFeed and classify every entry."""
         records: dict[tuple[str, str], dict[str, Any]] = {}
         for name in targets:
             for page in range(1, _MAX_PAGES + 1):

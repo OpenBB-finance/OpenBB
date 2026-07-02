@@ -1,13 +1,4 @@
-"""Federal Reserve Bank of Boston publication-archive (PDF) helpers.
-
-The Boston Fed hosts New England Economic Conditions (NEEC) as monthly PDFs at a
-deterministic Sitecore media path, ``/-/media/Documents/neec/{YYYY}/{YYYYMM}NEEC
-.pdf``. The listing page renders its links via JavaScript, so the catalog is
-built by constructing candidate URLs over a year-by-month grid and verifying each
-against a real PDF magic-number (the host answers missing files with a 200 HTML
-soft-404). Verified URLs are served as base64-encoded PDFs for an OpenBB
-Workspace PDF widget. Access goes through a single patchable ``fetch_bytes``.
-"""
+"""Federal Reserve Bank of Boston publication-archive (PDF) helpers."""
 
 from __future__ import annotations
 
@@ -44,8 +35,7 @@ def fetch_bytes(url: str) -> bytes:
     Returns
     -------
     bytes
-        The response body. Wrapped in one helper so a browser-impersonating
-        fallback can be substituted if the host begins rejecting plain clients.
+        The response body.
     """
     from openbb_core.provider.utils.helpers import make_request
 
@@ -60,7 +50,7 @@ def _neec_url(year: int, month: int) -> str:
 
 
 def _is_pdf(content: bytes) -> bool:
-    """Return whether the response body is a real PDF rather than a soft-404."""
+    """Return whether the response body is a real PDF."""
     return content[:5] == b"%PDF-"
 
 

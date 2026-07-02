@@ -1,14 +1,4 @@
-"""Minneapolis Fed research-archive indexing and PDF presentation.
-
-The Minneapolis Fed publishes its Working Papers, Institute Working Papers, CICD
-Working Papers, Staff Reports, and Quarterly Review on a Sitecore/Next.js site
-whose series listings are rendered client-side. The research hub page, however,
-links every recent item across these series to a server-rendered landing page
-that carries the direct PDF link, the publication date, the title, and the
-author block. This module discovers those landing pages, resolves each to its
-real PDF, and classifies them into catalog records served as base64-encoded PDFs
-in the multi-file viewer.
-"""
+"""Minneapolis Fed research-archive indexing and PDF presentation."""
 
 from __future__ import annotations
 

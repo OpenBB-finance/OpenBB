@@ -21,12 +21,7 @@ class FederalReserveSanFranciscoShortRatePathQueryParams(QueryParams):
 
 
 class FederalReserveSanFranciscoShortRatePathData(Data):
-    """San Francisco Fed Estimated Short-Rate Path Data.
-
-    One row per horizon, with one column per estimate scenario carrying that
-    scenario's expected short rate, in percent. The scenarios are pivoted to
-    wide, so the columns are dynamic.
-    """
+    """San Francisco Fed Estimated Short-Rate Path Data."""
 
     maturity: float = Field(description="The horizon ahead, in years.")
 

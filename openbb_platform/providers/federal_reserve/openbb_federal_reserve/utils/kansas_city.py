@@ -1,12 +1,4 @@
-"""Federal Reserve Bank of Kansas City HTTP client.
-
-The Kansas City Fed main site (``www.kansascityfed.org``) sits behind Akamai bot
-management that hangs ordinary HTTP clients. Access requires a browser-TLS
--impersonating session (``curl_cffi``) warmed up against the site home page. The
-research data host (``kcresearch-share.kansascityfed.org``) serves clean CSVs and
-is fetched through the same session for safety. All upstream byte fetches funnel
-through :func:`fetch_kansas_city` so tests can monkeypatch a single seam.
-"""
+"""Federal Reserve Bank of Kansas City HTTP client."""
 
 from __future__ import annotations
 

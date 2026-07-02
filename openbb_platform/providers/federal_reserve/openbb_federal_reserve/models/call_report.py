@@ -164,8 +164,6 @@ class FederalReserveCallReportFetcher(
                     f"Could not resolve FDIC certificate '{query.fdic_cert}'."
                 )
         elif rssd_id:
-            # A holding-company RSSD resolves to its lead subsidiary bank, the
-            # entity that actually files the Call Report.
             rssd_id = lead_subsidiary_bank(str(rssd_id), filers, period) or rssd_id
 
         parsed = parse_xbrl_instance(content, str(rssd_id))
@@ -176,8 +174,6 @@ class FederalReserveCallReportFetcher(
         if not items:
             raise EmptyDataError("The request was returned empty.")
 
-        # Every fact is kept; each carries its own period (the current and the
-        # prior-period comparison values are distinct dates, not duplicates).
         out: list[dict] = []
         for item in items:
             period = item.pop("period", None)
@@ -205,7 +201,6 @@ class FederalReserveCallReportFetcher(
         from openbb_federal_reserve.utils.ffiec import entity_type
         from openbb_federal_reserve.utils.mdrm import fetch_mdrm_dictionary
 
-        # Call Report codes are the R-prefixed MDRM mnemonics (RCON, RCFD, RIAD, ...).
         as_of = max((row["date"] for row in data if row.get("date")), default=None)
         form_type = data[0].get("form_type") if data else None
         rssd_id = data[0].get("rssd_id") if data else None
@@ -229,7 +224,6 @@ class FederalReserveCallReportFetcher(
             code = str(row["mdrm"]).upper()
             node = hierarchy.get(code, {})
             section = node.get("section")
-            # The bank-demographic cover page is metadata, not a table line item.
             if section and "Demographic" in section:
                 key = _METADATA_FIELDS.get(code)
                 if key:
@@ -247,7 +241,6 @@ class FederalReserveCallReportFetcher(
             if row["_section"] is None:
                 unmapped.append(row)
 
-        # Items on no schedule (computed/supplemental) form a final table.
         for position, row in enumerate(
             sorted(unmapped, key=lambda row: str(row["mdrm"])), start=1
         ):
@@ -257,8 +250,6 @@ class FederalReserveCallReportFetcher(
             row["order"] = position
             row["_section"] = schedule_count + 1
 
-        # Group the line items into their schedules (each section is a table),
-        # ordered by where each schedule appears, then by its own 1..N order.
         rows.sort(key=lambda row: (row["_section"], row["order"]))
         for row in rows:
             row.pop("_section", None)

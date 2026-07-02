@@ -1,8 +1,4 @@
-"""FFIEC UBPR per-page descriptions, keyed by report section.
-
-The UBPR User's Guide "Summary of UBPR Page Content" describes what each page
-presents. These supply the hover-card text on a section's leading (header) row.
-"""
+"""FFIEC UBPR per-page descriptions, keyed by report section."""
 
 UBPR_PAGE_DESCRIPTIONS = {
     "Summary Ratios": (

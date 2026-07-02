@@ -1,15 +1,4 @@
-"""FRBNY Empire State Manufacturing Survey diffusion-data parsing.
-
-The survey publishes four CSV files at rotating Sitecore hashes: a seasonally
-adjusted and a not-seasonally adjusted variant of both a diffusion-only file (one
-diffusion index per indicator) and an all-series file (the up / down / same
-response shares plus the diffusion index per indicator). Each column code is
-``<indicator><tense><measure><adjustment>`` where ``indicator`` is a two-letter
-code, ``tense`` is ``C`` (current) or ``F`` (six-months-ahead), ``measure`` is
-``D`` / ``I`` / ``N`` / ``DI`` and ``adjustment`` is ``SA`` / ``NA``. ``parse``
-melts any of the files to long ``(date, indicator, horizon, measure, series,
-value)`` records so every column is exposed.
-"""
+"""FRBNY Empire State Manufacturing Survey diffusion-data parsing."""
 
 from __future__ import annotations
 

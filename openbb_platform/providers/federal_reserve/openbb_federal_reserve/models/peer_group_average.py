@@ -71,13 +71,7 @@ class FederalReservePeerGroupAverageQueryParams(QueryParams):
 
 
 class FederalReservePeerGroupAverageData(Data):
-    """FFIEC UBPR Peer Group Average Report Data.
-
-    One row per report line item; each reporting quarter (the five most recent by
-    default, or the full history when ``all_periods`` is set) contributes an
-    ISO-date keyed column carrying the peer group average, in the report's own
-    section layout.
-    """
+    """FFIEC UBPR Peer Group Average Report Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(

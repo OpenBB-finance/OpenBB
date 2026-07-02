@@ -1,5 +1,6 @@
 """Federal Reserve BHCPR (Bank Holding Company Performance Report) Data Model."""
 
+import re
 from datetime import (
     date as dateType,
     datetime,
@@ -15,15 +16,25 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
 _NBSP = " "
+_UNIT_MARKER = re.compile(r"\s*\((?:\$\s*000s?|in thousands)\)", re.IGNORECASE)
+_SUBCOLUMNS = (("amount", ""), ("bhc", "BHC"), ("peer", "Peer #"), ("pct", "Pct"))
 
 
-def _sections() -> list[str]:
-    """Return the BHCPR section titles in the report's table-of-contents order."""
-    import json
-    from pathlib import Path
+def _unit(basis: str | None) -> str:
+    """Return the value type a line item's guide basis renders as."""
+    text = basis or ""
+    if text == "Dollar Amount in Thousands":
+        return "USD"
+    if "(x" in text.lower():
+        return "ratio"
+    if text == "Number":
+        return "number"
+    return "percent"
 
-    asset = Path(__file__).resolve().parents[2] / "assets" / "bhcpr" / "sections.json"
-    return [entry["section"] for entry in json.loads(asset.read_text(encoding="utf-8"))]
+
+def _iso_to_display(date: str) -> str:
+    """Render an ISO ``YYYY-MM-DD`` period as ``MM/DD/YYYY``."""
+    return f"{date[5:7]}/{date[8:10]}/{date[:4]}"
 
 
 def _quarter_end(year: int, quarter: int) -> str:
@@ -37,7 +48,7 @@ def _default_period() -> tuple[int, int]:
     today = datetime.now().date()
     year = today.year
     quarter = (today.month - 1) // 3 + 1
-    for _ in range(6):
+    while True:
         available_month = 3 * quarter + 2
         available_year = year + (available_month - 1) // 12
         available_month = (available_month - 1) % 12 + 1
@@ -46,25 +57,6 @@ def _default_period() -> tuple[int, int]:
         quarter -= 1
         if quarter == 0:
             quarter, year = 4, year - 1
-    # Unreachable: walking back at most six quarters from any month always lands
-    # on a filed quarter, so the loop returns before this fallback.
-    return year, quarter  # pragma: no cover
-
-
-def _resolve_period(period: str | None, filed: list[str]) -> str:
-    """Resolve a ``YYYYMMDD`` period, defaulting to the firm's latest filed period.
-
-    A firm files on its own cadence, so the default is its most recent filed
-    period-end (``filed`` is newest-first). Only when no filed period is known does
-    it fall back to the most recent calendar quarter whose BHCPR is likely out.
-    """
-    text = (period or "").strip()
-    if text:
-        return text
-    if filed:
-        return filed[0]
-    year, quarter = _default_period()
-    return _quarter_end(year, quarter)
 
 
 def _filed_periods(rssd: str) -> list[str]:
@@ -83,6 +75,17 @@ def _filed_periods(rssd: str) -> list[str]:
         _quarter_end(int(period["year"]), int(period["quarter"]))
         for period in reports.get("BHCPR", {}).get("periods", [])
     ]
+
+
+def _resolve_period(period: str | None, filed: list[str]) -> str:
+    """Resolve a ``YYYYMMDD`` period, defaulting to the firm's latest filed period."""
+    text = (period or "").strip()
+    if text:
+        return text
+    if filed:
+        return filed[0]
+    year, quarter = _default_period()
+    return _quarter_end(year, quarter)
 
 
 class FederalReserveBhcprQueryParams(QueryParams):
@@ -121,19 +124,7 @@ class FederalReserveBhcprQueryParams(QueryParams):
 
 
 class FederalReserveBhcprData(Data):
-    """Federal Reserve BHCPR Data.
-
-    One row per BHCPR line item, grouped by report section. Section and
-    sub-header rows are emitted as ``is_header`` rows carrying no values. Each
-    metric row carries the current-period holding-company value (``BHC``), the
-    peer-group average (``Peer Group``), and the percentile rank (``Percentile``),
-    plus the holding-company value for each prior period as an ISO-date-keyed
-    column. Those value columns are dynamic (they vary by report and period) and
-    are emitted as extra fields rather than a fixed schema, so the Workspace table
-    renders every one under ``showAll`` — a fixed numeric column declared here
-    would instead collide with ``showAll`` and drop. Dollar amounts are reported in
-    full U.S. dollars; ratios, percents, and ranks are as filed.
-    """
+    """Federal Reserve BHCPR Data."""
 
     label: str = Field(
         description="The line item, indented under its section or sub-header.",
@@ -144,8 +135,13 @@ class FederalReserveBhcprData(Data):
     )
     narrative: str | None = Field(
         default=None,
-        description="The BHCPR User's Guide definition of the line item, where one"
-        " is published; shown in the hover card.",
+        description="The BHCPR User's Guide definition of the line item, shown in the"
+        " hover card.",
+    )
+    unit: str | None = Field(
+        default=None,
+        description="The line item's value type: 'USD' (full dollars), 'percent',"
+        " 'ratio' (a multiple), or 'number' (a count).",
     )
 
 
@@ -168,13 +164,7 @@ class FederalReserveBhcprFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict[str, Any]:
-        """Fetch and parse the holding company's BHCPR PDF for the period.
-
-        The BHCPR is a holding-company report; a bank RSSD is resolved to its
-        top-tier holder (the entity whose BHCPR is published) so the shared firm
-        selector never lands on an institution with no report. The period defaults
-        to the resolved firm's latest filed period.
-        """
+        """Fetch and read the holding company's BHCPR report for the period."""
         from openbb_federal_reserve.utils.ffiec import (
             fetch_bhcpr,
             resolve_bhcpr_holder,
@@ -184,7 +174,7 @@ class FederalReserveBhcprFetcher(
         period = _resolve_period(query.period, _filed_periods(rssd))
 
         data = fetch_bhcpr(rssd, period)
-        if not data.get("sections"):
+        if not data.get("values"):
             raise EmptyDataError("The request was returned empty.")
         return data
 
@@ -194,87 +184,111 @@ class FederalReserveBhcprFetcher(
         data: dict[str, Any],
         **kwargs: Any,
     ) -> AnnotatedResult[list[FederalReserveBhcprData]]:
-        """Render the selected section's header and metric rows."""
-        from openbb_federal_reserve.utils.bhcpr_guide import (
-            bhcpr_narrative,
-            fetch_bhcpr_definitions,
-        )
+        """Render the selected section's rows from the schema and coded CSV values."""
+        from openbb_federal_reserve.utils.bhcpr_csv import PERIOD_SUFFIXES
+        from openbb_federal_reserve.utils.bhcpr_schema import load_schema
 
-        try:
-            guide = fetch_bhcpr_definitions()
-        except Exception:  # noqa: BLE001
-            guide = {}
+        schema = load_schema()
+        values = data.get("values", {})
+        period_by_suffix = data.get("periods", {})
+        period_cols: list[tuple[str, str]] = []
+        for suffix in PERIOD_SUFFIXES:
+            raw = period_by_suffix.get(suffix)
+            if raw and len(raw) == 8:
+                period_cols.append((suffix, f"{raw[:4]}-{raw[4:6]}-{raw[6:8]}"))
 
         section = (query.section or "").strip()
         select_all = not section or section.lower() == "all sections"
-        titles = {
-            entry["section"].lower(): entry["section"] for entry in data["sections"]
-        }
-        if not select_all and section.lower() not in titles:
+        by_title = {entry["section"].lower(): entry for entry in schema}
+        if not select_all and section.lower() not in by_title:
             raise OpenBBError(
                 f"Unknown section '{query.section}'. Choose one of:"
-                f" {', '.join(entry['section'] for entry in data['sections'])}."
+                f" {', '.join(entry['section'] for entry in schema)}."
             )
+        chosen = schema if select_all else [by_title[section.lower()]]
 
-        period_dates: list[str] = data.get("period_dates", [])
-        prior_dates = period_dates[1:]
+        raw_rows: list[tuple[str, bool, str | None, str | None, dict[Any, Any]]] = []
+        present: set[Any] = set()
+        for entry in chosen:
+            raw_rows.append((entry["section"], True, None, None, {}))
+            for item in entry["entries"]:
+                indent = _NBSP * 2 * (item["level"] + 1)
+                if item["kind"] == "subheader":
+                    raw_rows.append((indent + item["label"], True, None, None, {}))
+                    continue
+                cells: dict[Any, Any] = {}
+                code = item.get("code")
+                unit = _unit(item.get("basis")) if code else None
+                if code:
+                    digits = "".join(
+                        character for character in code if character.isdigit()
+                    )
+                    peer = (
+                        values.get(f"PHSR{digits}", {})
+                        if code.startswith("BHSR")
+                        else {}
+                    )
+                    pct = (
+                        values.get(f"RKSR{digits}", {})
+                        if code.startswith("BHSR")
+                        else {}
+                    )
+                    primary = values.get(code, {})
+                    scale = 1000 if unit == "USD" else 1
+                    for suffix, _date in period_cols:
+                        bhc, peer_value = primary.get(suffix), peer.get(suffix)
+                        if peer or pct:
+                            columns = (
+                                ("bhc", bhc * scale if bhc is not None else None),
+                                (
+                                    "peer",
+                                    peer_value * scale
+                                    if peer_value is not None
+                                    else None,
+                                ),
+                                ("pct", pct.get(suffix)),
+                            )
+                        else:
+                            columns = (
+                                ("amount", bhc * scale if bhc is not None else None),
+                            )
+                        for sub, value in columns:
+                            if value is not None:
+                                cells[(suffix, sub)] = value
+                                present.add((suffix, sub))
+                label = _UNIT_MARKER.sub("", item["label"]).strip()
+                raw_rows.append(
+                    (">" + indent + label, False, item["definition"], unit, cells)
+                )
 
-        value_columns = ["BHC", "Peer Group", "Percentile", *prior_dates]
+        columns: list[Any] = []
+        for suffix, date in period_cols:
+            for sub, _label in _SUBCOLUMNS:
+                if (suffix, sub) in present:
+                    columns.append((suffix, sub, date))
 
-        def _row(
-            label: str, is_header: bool, narrative: str | None, values: dict[str, Any]
-        ) -> FederalReserveBhcprData:
-            """Build a rectangular row carrying every value column.
+        labels = {sub: text for sub, text in _SUBCOLUMNS}
 
-            The Workspace derives the table's columns from the first row, so header
-            rows must declare the same value columns (as ``None``) as metric rows;
-            a ragged header would hide every value column under ``showAll``.
-            """
+        def _name(key: Any) -> str:
+            """Render a ``(suffix, sub, date)`` column key as its display header."""
+            return f"{_iso_to_display(key[2])} {labels[key[1]]}".strip()
+
+        rows: list[FederalReserveBhcprData] = []
+        for label, is_header, narrative, unit, cells in raw_rows:
             row: dict[str, Any] = {
                 "label": label,
                 "is_header": is_header,
                 "narrative": narrative,
+                "unit": unit,
             }
-            for column in value_columns:
-                row[column] = values.get(column)
-            return FederalReserveBhcprData.model_validate(row)
-
-        rows: list[FederalReserveBhcprData] = []
-        for entry in data["sections"]:
-            if not select_all and entry["section"].lower() != section.lower():
-                continue
-            rows.append(_row(entry["section"], True, None, {}))
-            for record in entry["rows"]:
-                if record["is_header"]:
-                    rows.append(_row(_NBSP * 2 + record["label"], True, None, {}))
-                    continue
-                bank = record["bank"]
-                values: dict[str, Any] = {
-                    "BHC": bank[0] if bank else None,
-                    "Peer Group": record.get("peer"),
-                    "Percentile": record.get("percentile"),
-                }
-                for prior_date, value in zip(prior_dates, bank[1:]):
-                    values[prior_date] = value
-                rows.append(
-                    _row(
-                        ">" + _NBSP * 2 + record["label"],
-                        False,
-                        bhcpr_narrative(guide, entry["section"], record["label"]),
-                        values,
-                    )
-                )
-
-        if not rows:  # pragma: no cover
-            # Defensive: ``extract_data`` rejects an empty ``sections`` payload and
-            # every rendered section emits at least its header, so this guards only
-            # a payload mutated between the two stages.
-            raise EmptyDataError("The request was returned empty.")
+            for key in columns:
+                row[_name(key)] = cells.get((key[0], key[1]))
+            rows.append(FederalReserveBhcprData.model_validate(row))
 
         identity = data.get("identity", {})
         report_date: dateType | None = None
-        if period_dates:
-            report_date = datetime.strptime(period_dates[0], "%Y-%m-%d").date()
+        if period_cols:
+            report_date = datetime.strptime(period_cols[0][1], "%Y-%m-%d").date()
 
         return AnnotatedResult(
             result=rows,
@@ -285,9 +299,7 @@ class FederalReserveBhcprFetcher(
                     "name": identity.get("institution_name"),
                     "city_state": identity.get("city_state"),
                     "section": query.section,
-                    "reporting_date": (
-                        report_date.isoformat() if report_date else None
-                    ),
+                    "reporting_date": report_date.isoformat() if report_date else None,
                 }.items()
                 if value
             },

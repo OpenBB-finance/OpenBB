@@ -413,13 +413,7 @@ _STATIC_RECORDS: dict[str, dict[str, Any]] = {
 
 
 def fetch_peer_groups(cycle_id: str | int) -> dict[str, dict[str, Any]]:
-    """Return the live peer-group registry for a reporting cycle, keyed by name.
-
-    Each value is ``{"peergroupid", "description", "conceptname"}``. The router's
-    ``PGSelector`` request with ``MinMembersReqd`` ``"0"`` returns the full,
-    unfiltered list (~187 groups). On a failed or empty response the baked
-    :data:`STATIC_PEER_GROUPS` snapshot is returned instead.
-    """
+    """Return the live peer-group registry for a reporting cycle, keyed by name."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
     from openbb_federal_reserve.utils.ubpr_report import _post
 
@@ -476,11 +470,7 @@ def resolve_peer_group_id(name: str, *, cycle_id: str | int | None = None) -> in
 def peer_group_options(
     concepts: tuple[str, ...] | None = None,
 ) -> list[dict[str, str]]:
-    """Build dropdown options from the baked snapshot, value = peer-group name.
-
-    The option label expands to ``"name -- description"``. When ``concepts`` is
-    given only peer groups in those ``conceptname`` categories are included.
-    """
+    """Build dropdown options from the baked snapshot, value = peer-group name."""
     options: list[dict[str, str]] = []
     for name, record in _STATIC_RECORDS.items():
         if concepts is not None and record["conceptname"] not in concepts:

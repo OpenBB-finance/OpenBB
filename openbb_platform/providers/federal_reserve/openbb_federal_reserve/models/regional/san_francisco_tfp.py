@@ -12,7 +12,6 @@ from pydantic import Field
 
 URL = "https://www.frbsf.org/wp-content/uploads/quarterly_tfp.xlsx"
 
-# Labels taken from the workbook's own "readme" tab (Fernald growth accounting).
 _LABELS = {
     "dY_prod": "Business Output (Product Side)",
     "dY_inc": "Business Output (Income Side)",
@@ -77,13 +76,7 @@ class FederalReserveSanFranciscoTfpQueryParams(QueryParams):
 
 
 class FederalReserveSanFranciscoTfpData(Data):
-    """San Francisco Fed Total Factor Productivity (Fernald) Data.
-
-    One row per period-end observation date, with one column per growth-accounting
-    series carrying that series' annualized percent-change growth rate. The series
-    are pivoted to wide, so the columns vary with the selected table (quarterly,
-    annual, or capital-input detail).
-    """
+    """San Francisco Fed Total Factor Productivity (Fernald) Data."""
 
     date: dateType = Field(description="The period-end observation date.")
 
@@ -164,7 +157,6 @@ class FederalReserveSanFranciscoTfpFetcher(
             dates = [stamp.date() for stamp in stamps]
         frame["date"] = dates
 
-        # Every value column is kept; section-marker columns hold no numbers.
         value_columns = []
         for column in frame.columns:
             if column == "date":

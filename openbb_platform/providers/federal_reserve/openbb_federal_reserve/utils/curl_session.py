@@ -1,11 +1,4 @@
-"""Shared process-cached ``curl_cffi`` browser-impersonating sessions.
-
-Several Federal Reserve and FFIEC endpoints sit behind bot management that
-rejects ordinary HTTP clients and require a browser-TLS-impersonating session
-(``curl_cffi``), sometimes after a warm-up request that primes a Cloudflare or
-Akamai cookie. This module keys one such session per caller so the warm-up runs
-at most once per process per key.
-"""
+"""Shared process-cached ``curl_cffi`` browser-impersonating sessions."""
 
 from __future__ import annotations
 

@@ -1,10 +1,4 @@
-"""Dallas Fed workbook parsing helpers.
-
-Several Dallas Fed research workbooks share a two-level header (a forward-filled
-group row above the column-label row) over a date-indexed body. ``melt_two_level``
-turns any such sheet into long ``(date, series, value)`` rows; ``quarter_to_date``
-decodes the ``YYYY:QN`` period labels some of them use.
-"""
+"""Dallas Fed workbook parsing helpers."""
 
 from __future__ import annotations
 
@@ -30,13 +24,7 @@ def parse_dgei(
     start_date: dateType | None = None,
     end_date: dateType | None = None,
 ) -> list[dict[str, Any]]:
-    """Melt a DGEI sheet's side-by-side measure blocks to long records.
-
-    Each sheet stacks one or more measure blocks (percent change, index, level)
-    horizontally, every block led by its own ``Date`` column with the measure name
-    on the row above and country-aggregate columns (World, Advanced, Emerging, US).
-    Series are named ``"{aggregate} - {measure}"``.
-    """
+    """Melt a DGEI sheet's side-by-side measure blocks to long records."""
     from io import BytesIO
 
     from pandas import isna, notna, read_excel, to_datetime, to_numeric
@@ -150,12 +138,7 @@ def melt_two_level(
     start_date: dateType | None = None,
     end_date: dateType | None = None,
 ) -> list[dict[str, Any]]:
-    """Melt a two-level-header, date-indexed sheet to long records.
-
-    ``label_row`` is the zero-based column-label row; the row above carries the
-    forward-filled group label. ``date_kind`` selects how the first column decodes:
-    ``datetime`` (a real date), ``quarter`` (``YYYY:QN``), or ``yyyymm``.
-    """
+    """Melt a two-level-header, date-indexed sheet to long records."""
     from io import BytesIO
 
     from pandas import isna, notna, read_excel, to_datetime, to_numeric

@@ -1,11 +1,4 @@
-"""FFIEC CDR report-router client for the UBPR State Average report.
-
-Fetches the UBPR State Average report (the state-level peer-group averages, every
-section, across recent periods) from the ASP.NET ``UbprReport.aspx`` report page.
-The State Average report (``rptid=286``) is keyed on a state peer-group id rather
-than an institution; each section is rendered server-side via a WebForms postback
-whose grid carries one averaged value per period.
-"""
+"""FFIEC CDR report-router client for the UBPR State Average report."""
 
 from __future__ import annotations
 
@@ -23,8 +16,6 @@ _HEADERS = {
 _DATE = re.compile(r"^\d{1,2}/\d{1,2}/\d{4}$")
 _MAX_COLUMNS = 5
 
-# state code -> (legacy commercial peer-group id, state name). The id is retained
-# for reference only; the live ``peergroupid`` is resolved by peer-group name.
 _STATES: dict[str, tuple[int, str]] = {
     "AL": (236, "Alabama"),
     "AK": (237, "Alaska"),
@@ -89,12 +80,7 @@ _GROUP_SUFFIX = {"commercial": "COM", "savings": "SVG"}
 
 
 def peer_group_id(state: str, group_type: str = "commercial") -> int:
-    """Resolve a state code and group type to its State Average peer-group id.
-
-    The per-state peer-group ``peergroupid`` is resolved from the live
-    ``PGSelector`` registry keyed on the ``{STATE}{COM|SVG}`` peer-group name
-    (the ``UBPPF863`` category) for the latest reporting cycle.
-    """
+    """Resolve a state code and group type to its State Average peer-group id."""
     from openbb_federal_reserve.utils.peer_groups import (
         resolve_peer_group_id as _resolve,
     )
@@ -218,13 +204,7 @@ def fetch_state_average_section(
     periods: int = 5,
     all_periods: bool = False,
 ) -> dict[str, Any]:
-    """Fetch one State Average report section as wide rows across recent periods.
-
-    Returns ``{section, state, rows}`` where each row is ``{label, is_header,
-    <ISO date>}`` and the period columns hold the single averaged value. When
-    ``all_periods`` is True every reported cycle is returned rather than only the
-    most recent ``periods``.
-    """
+    """Fetch one State Average report section as wide rows across recent periods."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
     from openbb_federal_reserve.utils.cdr import _get_session
     from openbb_federal_reserve.utils.concepts import (

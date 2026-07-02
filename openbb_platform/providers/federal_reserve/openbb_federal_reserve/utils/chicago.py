@@ -1,11 +1,4 @@
-"""Federal Reserve Bank of Chicago HTTP access.
-
-The Chicago Fed data hosts (``api.data.chicagofed.org`` and ``www.chicagofed.org``)
-serve plain CSV/XLSX downloads and a JSON publication feed. Ordinary HTTP clients
-succeed today, but the hosts can reject non-browser clients with a 403; this
-module centralizes access so the transport is patchable in one place and falls
-back to a browser-TLS-impersonating ``curl_cffi`` session on a 403.
-"""
+"""Federal Reserve Bank of Chicago HTTP access."""
 
 from __future__ import annotations
 
@@ -71,9 +64,6 @@ def get_text(url: str) -> str:
 
 def post_newsfeed(series_id: str, page: int = 1) -> list[dict[str, Any]]:
     """Return the cumulative NewsFeed publication list for a series.
-
-    The endpoint requires a ``POST`` with a JSON body of ``{}``; ``page`` is
-    cumulative, so a higher page returns all earlier records too.
 
     Parameters
     ----------

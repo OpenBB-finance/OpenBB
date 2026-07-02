@@ -1,41 +1,4 @@
-"""FFIEC 002 report structure generator.
-
-Parses the FFIEC 002 (Report of Assets and Liabilities of U.S. Branches and
-Agencies of Foreign Banks) Reporting Central user guide PDF into an ordered list
-of report items so the model can render the form grouped by schedule. The parsed
-result is committed as a static asset (``assets/ffiec002/structure.json``); the
-live model loads that asset rather than re-parsing the PDF at request time.
-
-The FFIEC 002 user guide's Appendix A is not the captioned, schedule-banner
-layout used by the FR Y-9C / FFIEC 101 guides; it is the Reporting Central CIPS
-*data format* listing, broken into ``SUB IDENTIFIER`` blocks (RCFD, RCFN, RCON,
-RCXX, RCXY, TEXT) whose rows carry only structure -- ``RC ITEM IDENTIFIER``
-(MDRM), occurrence, a ``Y`` text-item flag, and the form ``SCHEDULE`` / ``LINE``
-/ ``COLUMN`` references. There are no captions in the guide; each MDRM's caption
-is sourced from the live per-institution ``ReturnFinancialReportCSV`` feed. A
-form line reported across several columns prints one row per column; each becomes
-its own item with the column letter folded into its ``line`` reference so every
-reported value renders rather than hiding behind the first column. Both inputs
-are authoritative reporting artifacts; no structure is fabricated.
-
-The guide's field listing also enumerates confidential CIPS grids and form rows
-that no public filing ever populates. Only MDRMs that a sampled per-institution
-filing actually reports are emitted, so the committed structure carries no
-permanently-empty row. The membership sample is the union of the value-bearing
-codes across :data:`VALIDATION_RSSDS` (the ``ReturnFinancialReportCSV`` identity
-and administrative rows are never structure items). Each caption's column-context
-trailer -- ``(BANK U.S.+FOREIGN OFC)`` and friends, which the form already
-encodes through the cell's column letter -- is stripped so no glued descriptor
-leaks into the rendered caption.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.ffiec002_structure
-
-Pass ``--pdf <path>`` to parse a local copy of the user guide instead of fetching
-the canonical URL, and ``--csv <path>`` to supply a saved per-institution CSV for
-caption recovery instead of fetching it live.
-"""
+"""FFIEC 002 report structure generator."""
 
 from __future__ import annotations
 
@@ -61,22 +24,11 @@ USER_GUIDE_URL = (
 
 VALIDATION_RPT = "FFIEC002"
 
-# The per-institution filings whose value-bearing codes define the public report's
-# true item set. A filer that the FFIEC 002 endpoint does not serve (the request
-# returns the NIC error page rather than a CSV) contributes nothing and is skipped;
-# the membership sample is the union across the filings that do resolve.
 VALIDATION_RSSDS = (317810, 413208)
 
 ASSET_PATH = asset_path("ffiec002")
 
 
-# The trailing column-context descriptor the CSV glues onto every caption -- one
-# of "(BANK U.S.+FOREIGN OFC)", "(BANK FOREIGN OFC ONLY)", "(BANK U.S. OFC ONLY)",
-# including the source's spacing slips (a fixed-width wrap can split any token,
-# e.g. "OF C" or "U .S.") and its occasional doubled repeat. The form already
-# encodes the column through the cell's column letter, so the trailer is dropped
-# from the caption rather than rendered as glued junk. ``\s*`` between every
-# character of the descriptor tokens absorbs those wrap splits.
 def _spaced(token: str) -> str:
     """Build a pattern matching ``token`` with optional whitespace between chars."""
     return r"\s*".join(re.escape(char) for char in token)
@@ -107,21 +59,12 @@ _CONTEXT_TRAILER = re.compile(
     re.IGNORECASE,
 )
 
-# The detailed field specifications open at the Appendix A banner; Appendix B
-# (the separate FFIEC 002S supplement) closes it.
 _APPENDIX_BANNER = "ffiec 002 report detailed field specifications"
 _APPENDIX_END = "ffiec 002s report detailed field specifications"
 
-# A SUB IDENTIFIER data row opens with a sub-series MDRM prefix: the RCFD/RCFN/
-# RCON branch codes, the RCXX/RCXY derived series, the CRCB confidential series,
-# and the TEXT free-text series.
 _MDRM_PREFIX = r"(?:RCFD|RCFN|RCON|RCXX|RCXY|CRCB|TEXT)"
 _MDRM_LINE = re.compile(rf"^({_MDRM_PREFIX}[A-Z0-9]{{4}})\b")
 
-# The schedule references printed in the SCHEDULE NAME column. The multi-part
-# schedules (C, M, Q) print "X, Part N"; the guide is inconsistent on Schedule C's
-# separator ("C." vs "C,") and abbreviates "Cover Page" to "Cover" in places.
-# Matched longest-first so a part qualifier wins over the bare schedule letter.
 _SCHEDULE_VOCAB = sorted(
     {
         "Cover Page",
@@ -155,7 +98,6 @@ _SCHEDULE_VOCAB = sorted(
     reverse=True,
 )
 
-# The official FFIEC 002 schedule titles, keyed by the normalized schedule code.
 _SCHEDULE_TITLES = {
     "Cover Page": "Cover Page",
     "RAL": "Schedule RAL - Assets and Liabilities",
@@ -184,7 +126,6 @@ _SCHEDULE_TITLES = {
     "T": "Schedule T - Fiduciary and Related Services",
 }
 
-# The order schedules are rendered in, following the form's own sequence.
 _SCHEDULE_ORDER = [
     "Cover Page",
     "RAL",
@@ -232,13 +173,12 @@ def _fetch_validation_csvs() -> list[str]:
 
 def _appendix_lines(pdf_bytes: bytes) -> list[str]:
     """Return the Appendix A physical lines, stripped and non-empty, in order."""
-    from pypdf import PdfReader
+    from openbb_federal_reserve.utils.report_structure import read_pdf_pages
 
-    reader = PdfReader(io.BytesIO(pdf_bytes))
     lines: list[str] = []
     in_appendix = False
-    for page in reader.pages:
-        for raw in (page.extract_text() or "").splitlines():
+    for text in read_pdf_pages(pdf_bytes):
+        for raw in text.splitlines():
             stripped = raw.strip()
             if not stripped:
                 continue
@@ -254,12 +194,7 @@ def _appendix_lines(pdf_bytes: bytes) -> list[str]:
 
 
 def _normalize_schedule(schedule: str) -> str:
-    """Normalize a printed schedule reference to its canonical code.
-
-    Collapses the guide's "Cover"/"Cover Page" and "C."/"C," variants, and folds
-    every Schedule Q part qualifier into the bare "Q" code (the part is already
-    encoded in the line reference).
-    """
+    """Normalize a printed schedule reference to its canonical code."""
     schedule = schedule.strip()
     if schedule in ("Cover", "Cover Page"):
         return "Cover Page"
@@ -271,14 +206,7 @@ def _normalize_schedule(schedule: str) -> str:
 
 
 def _logical_rows(lines: list[str]) -> list[tuple[str, str]]:
-    """Group the physical lines into ``(mdrm, body)`` logical data rows.
-
-    A data row opens at a sub-series MDRM line. The guide wraps some rows so the
-    occurrence and schedule/line/column references print on the physical lines
-    that follow the bare MDRM; those continuation lines are absorbed until the row
-    carries an occurrence plus at least one structure token or the next MDRM
-    begins.
-    """
+    """Group the physical lines into ``(mdrm, body)`` logical data rows."""
     rows: list[tuple[str, str]] = []
     index = 0
     count = len(lines)
@@ -303,25 +231,14 @@ def _logical_rows(lines: list[str]) -> list[tuple[str, str]]:
 
 
 def _needs_continuation(body: str) -> bool:
-    """Return ``True`` while a wrapped row still lacks its structure tokens.
-
-    A complete row body is "OCCURRENCE [Y] SCHEDULE LINE [COLUMN]"; stripping the
-    leading occurrence and optional text flag must leave at least the schedule and
-    line tokens. Fewer than two remaining tokens means the references have not yet
-    wrapped in.
-    """
+    """Return ``True`` while a wrapped row still lacks its structure tokens."""
     remainder = re.sub(r"^(?:\d+\s+)?(?:Y\s+)?", "", body)
     return len(remainder.split()) < 2
 
 
 def _parse_row(code: str, body: str) -> tuple[str, str | None, str | None] | None:
-    """Resolve a logical row into ``(schedule, line, column)``.
-
-    Returns ``None`` when the row carries no schedule reference at all (an
-    under-specified guide row); the caller keeps such an MDRM unscheduled so its
-    caption can still resolve.
-    """
-    body = re.sub(r"\+[A-Z0-9]+", "", body)  # stray superscript glitch ("RAL+D47")
+    """Resolve a logical row into ``(schedule, line, column)``."""
+    body = re.sub(r"\+[A-Z0-9]+", "", body)
     body = re.sub(r"^(\d+)\s+", "", body)  # occurrence column
     body = re.sub(r"^Y\s+", "", body).strip()  # text-item flag
     schedule: str | None = None
@@ -332,11 +249,8 @@ def _parse_row(code: str, body: str) -> tuple[str, str | None, str | None] | Non
             tail = body[len(candidate) :].strip()
             break
     if schedule is None:
-        # Wrapped Schedule Q rows print "Q," with the part qualifier dropped.
         comma_q = re.match(r"^Q,?\s+(.*)$", body)
         if not comma_q:
-            # No schedule reference: an under-specified guide row whose MDRM is
-            # still kept (unscheduled) so its caption can resolve from the CSV.
             return None
         schedule = "Q"
         tail = comma_q.group(1).strip()
@@ -357,13 +271,7 @@ def _clean_caption(caption: str) -> str:
 
 
 def _captions(csv_texts: list[str]) -> dict[str, str]:
-    """Map each value-bearing MDRM to its cleaned caption across the filings.
-
-    The value-bearing rows of every supplied ``ReturnFinancialReportCSV`` payload
-    are unioned; identity and administrative rows (``ID_RSSD`` and the plain-text
-    cover fields, none of which match the MDRM shape) are skipped. The first
-    filing to report an MDRM fixes its caption.
-    """
+    """Map each value-bearing MDRM to its cleaned caption across the filings."""
     captions: dict[str, str] = {}
     for csv_text in csv_texts:
         for row in list(csv.reader(io.StringIO(csv_text)))[1:]:
@@ -432,12 +340,7 @@ def parse_structure(
 
 
 def _line_reference(line: str | None, column: str | None) -> str | None:
-    """Combine a form line and column letter into one line reference.
-
-    A cell reported in a specific column folds the column letter into the line
-    (``"1A"`` column ``"B"`` -> ``"1A.B"``) so each column's MDRM stays a distinct
-    item that the model can render with its own value.
-    """
+    """Combine a form line and column letter into one line reference."""
     if line is None:
         return None
     return f"{line}.{column}" if column else line
@@ -448,18 +351,7 @@ def _build_items(
     captions: dict[str, str],
     filter_to_sample: bool,
 ) -> list[dict[str, Any]]:
-    """Emit one report item per reported MDRM in document order.
-
-    Each parsed cell becomes its own single-MDRM item; the form line and column
-    are folded into the ``line`` reference. Keeping one MDRM per item means every
-    reported value renders -- a form line reported across the consolidated (RCFD)
-    and foreign-office (RCFN) columns is two items, not one whose foreign-office
-    figure would be hidden behind the consolidated cell.
-
-    When ``filter_to_sample`` is set, ``captions`` is the sampled-filing membership
-    set: a parsed MDRM absent from it is a confidential or permanently-empty grid
-    row and is dropped so the structure carries only codes a public filing reports.
-    """
+    """Emit one report item per reported MDRM in document order."""
     items: list[dict[str, Any]] = []
     for schedule, line, column, code in parsed:
         caption = captions.get(code)
@@ -483,13 +375,7 @@ def _build_items(
 def generate(
     pdf_path: str | None = None, csv_paths: list[str] | None = None
 ) -> dict[str, Any]:
-    """Parse the user guide and return the structured asset payload.
-
-    The sampled filings define the report's item set, so a non-empty sample is
-    required: emitting the guide's full field listing would carry the confidential
-    and permanently-empty grids the form never populates. When ``csv_paths`` is
-    omitted the sample is fetched live for :data:`VALIDATION_RSSDS`.
-    """
+    """Parse the user guide and return the structured asset payload."""
     pdf_bytes = (
         Path(pdf_path).read_bytes() if pdf_path else fetch_pdf_bytes(USER_GUIDE_URL)
     )

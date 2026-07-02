@@ -12,7 +12,6 @@ from pydantic import Field
 
 URL = "https://api.data.chicagofed.org/CFLMI/chi-labor-market-indicators.xlsx"
 
-# table -> (sheet, grouped two-row header?)
 _TABLES = {
     "rates": ("1. Rates", False),
     "realtime_unemployment": ("2. Chicago Fed Real-Time UR", False),
@@ -62,13 +61,7 @@ class FederalReserveChicagoLaborMarketQueryParams(QueryParams):
 
 
 class FederalReserveChicagoLaborMarketData(Data):
-    """Chicago Fed Labor Market Indicators Data.
-
-    One row per observation month and estimate vintage, with one column per
-    indicator within the table carrying that indicator's value. The table's
-    indicators are pivoted to wide, so the columns vary with the selected
-    ``table``.
-    """
+    """Chicago Fed Labor Market Indicators Data."""
 
     date: dateType = Field(description="The observation month.")
     release: str | None = Field(

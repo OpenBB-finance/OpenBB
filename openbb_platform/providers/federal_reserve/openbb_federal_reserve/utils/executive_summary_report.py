@@ -1,11 +1,4 @@
-"""FFIEC CDR report-router client for the Executive Summary Report (ESR).
-
-Fetches the full Executive Summary Report (report type 367) from
-``POST /Public/router/Search``. The ESR exposes eight generic sections
-(``SectionA`` .. ``SectionH``) that are concatenated into a single report, with
-one value per reporting period rather than the UBPR bank/peer/percentile
-triplet.
-"""
+"""FFIEC CDR report-router client for the Executive Summary Report (ESR)."""
 
 from __future__ import annotations
 
@@ -59,16 +52,7 @@ def _section_rows(
     iso: dict[str, str],
     index: dict[str, dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    """Fetch and shape one ESR section's rows across the recent periods.
-
-    Each line item's ``conceptname`` (a UBPR concept code) keys the concept
-    index for its full name and monetary flag; monetary values are scaled out
-    of thousands into actual dollars. The per-line concept code, indentation
-    caption, MDRM name, and report line id are carried on each non-header row
-    under ``_concept``, ``_caption``, ``_meta_name``, and ``_lineid`` so the
-    caller can resolve the guide Description (label) and Narrative - addressed by
-    the ESR's own line ids - once across every section.
-    """
+    """Fetch and shape one ESR section's rows across the recent periods."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> list[dict]:
@@ -119,15 +103,7 @@ def _section_rows(
 def fetch_executive_summary(
     rssd_id: str, *, periods: int = 5, all_periods: bool = False
 ) -> list[dict[str, Any]]:
-    """Fetch the Executive Summary Report as concatenated section rows.
-
-    Returns one row per line item across all eight sections; each row is
-    ``{label, is_header, narrative, <ISO date>: value}`` for the most recent
-    ``periods`` reporting cycles, newest first. When ``all_periods`` is True the
-    recent-periods cap is removed and every reported cycle is returned. Each
-    non-header line's ``narrative`` is the FFIEC Interactive User's Guide
-    definition of its concept.
-    """
+    """Fetch the Executive Summary Report as concatenated section rows."""
     from openbb_federal_reserve.utils.concepts import clean_name, concept_index
     from openbb_federal_reserve.utils.guide import fetch_guide_concepts
 

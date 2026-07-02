@@ -802,29 +802,26 @@ class TestFetchFinancialReport:
 class TestFetchBhcpr:
     """Tests for ``fetch_bhcpr``."""
 
-    def test_fetches_pdf_and_parses_sections(self, monkeypatch):
-        """The BHCPR PDF is fetched, parsed into sections, and cached daily."""
+    def test_fetches_csv_and_parses_coded_values(self, monkeypatch):
+        """The BHCPR CSV is fetched, parsed into coded values, and cached daily."""
         captured: dict = {}
 
         def _fetch(path, referer=None):
-            """Capture the request path and return placeholder PDF bytes."""
+            """Capture the request path and return placeholder CSV bytes."""
             captured["path"] = path
-            return b"%PDF-1.7 BHCPR"
+            return (
+                "﻿MDRM,Description,Value\r\n"
+                "Institution Name,,JPMORGAN CHASE & CO.\r\n"
+                "DT,Current,20250331\r\n"
+                "BHCK2170,TOTAL ASSETS (BHC CONSOLIDATED),4900475\r\n"
+            ).encode()
 
-        parsed = {
-            "identity": {"institution_name": "JPMORGAN CHASE & CO."},
-            "period_dates": ["2025-03-31"],
-            "sections": [{"section": "Summary Ratios", "rows": []}],
-        }
         monkeypatch.setattr(ffiec, "_fetch_bytes", _fetch)
-        monkeypatch.setattr(
-            "openbb_federal_reserve.utils.bhcpr.parse_bhcpr_pdf",
-            lambda content: {**parsed, "content": content},
-        )
         data = ffiec.fetch_bhcpr(" 1039502 ", "20250331")
-        assert "ReturnFinancialReportPDF" in captured["path"]
+        assert "ReturnFinancialReportCSV" in captured["path"]
         assert "rpt=BHCPR" in captured["path"]
         assert "id=1039502" in captured["path"]
         assert "dt=20250331" in captured["path"]
-        assert data["content"] == b"%PDF-1.7 BHCPR"
-        assert data["sections"][0]["section"] == "Summary Ratios"
+        assert data["identity"]["institution_name"] == "JPMORGAN CHASE & CO."
+        assert data["periods"][""] == "20250331"
+        assert data["values"]["BHCK2170"][""] == 4900475

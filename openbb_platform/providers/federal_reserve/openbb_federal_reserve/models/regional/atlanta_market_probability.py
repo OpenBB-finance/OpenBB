@@ -22,12 +22,7 @@ _BIN_PATTERN = re.compile(r"^Prob: (\d+)bps - (\d+)bps$")
 
 
 def _meetings_with_distribution(latest_frame: Any) -> list[dateType]:
-    """Return the ascending reference meetings that carry probability bins.
-
-    Far-out meetings publish only rate statistics (mean, mode, percentiles); only
-    meetings with the ``Prob: Xbps - Ybps`` target-range bins can be charted, so
-    the rest are excluded from the selector and the nearest-meeting fallback.
-    """
+    """Return the ascending reference meetings that carry probability bins."""
     with_bins = latest_frame[
         latest_frame["field"].astype(str).str.match(_BIN_PATTERN.pattern)
     ]
@@ -93,12 +88,7 @@ class FederalReserveAtlantaMarketProbabilityQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaMarketProbabilityData(Data):
-    """Atlanta Fed Market Probability Tracker Data.
-
-    One row per target-rate-range bin, sorted ascending by rate, carrying the
-    implied probability for that bin at the selected reference FOMC meeting on the
-    latest observation date.
-    """
+    """Atlanta Fed Market Probability Tracker Data."""
 
     target_range: str = Field(
         description="The target federal-funds-rate range label for the bin."

@@ -30,12 +30,7 @@ class FederalReserveMinneapolisEmploymentQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisEmploymentData(Data):
-    """Minneapolis Fed Regional Employment Data.
-
-    One row per observation month, with one column per Ninth District state and
-    the United States carrying total nonfarm employment indexed to 100 at the
-    series start.
-    """
+    """Minneapolis Fed Regional Employment Data."""
 
     date: dateType = Field(description="The observation month.")
 

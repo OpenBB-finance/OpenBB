@@ -1,31 +1,4 @@
-"""FR Y-9C report structure generator.
-
-Parses the FR Y-9C Reporting Central user guide PDF (Appendix A, the detailed
-field specifications) into an ordered, hierarchical list of report items so the
-model can render the form grouped by schedule and indent depth like UBPR, then
-reconciles the parsed layout against the public report as actually filed.
-
-The user guide is the caption and ordering authority; a sample of real filings
-(see ``SAMPLE_FILERS``) is the truth filter for which items a public FR Y-9C
-carries. Reconciliation (:func:`reconcile`) keeps the guide's structure but
-drops any value item whose MDRM columns are absent from every sampled filing
-(non-applicable form rows and confidential grids), emits the free-text
-``TEXTxxxx`` description half of each itemization pair that the filings report,
-inserts the handful of filed codes the guide's appendix omits, and repairs the
-appendix's mis-OCR'd column codes.
-
-The reconciled result is committed as a static asset
-(``assets/fry9c/structure.json``); the live model loads that asset rather than
-re-parsing the PDF at request time.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.fry9c_structure
-
-Pass ``--pdf <path>`` to parse a local copy instead of fetching the canonical
-URL. Reconciliation fetches the sampled filings over the network unless
-``--offline`` is given, in which case the raw guide layout is written as-is.
-"""
+"""FR Y-9C report structure generator."""
 
 from __future__ import annotations
 
@@ -45,23 +18,11 @@ ASSET_PATH = (
     Path(__file__).resolve().parent.parent / "assets" / "fry9c" / "structure.json"
 )
 
-# Large top-tier filers whose public FR Y-9C, taken in union, defines the
-# report's true item set for reconciliation. JPMorgan Chase & Co. and Bank of
-# America Corporation between them populate the broad set of schedules a public
 # FR Y-9C carries.
 SAMPLE_FILERS = ("1039502", "1073757")
 
-# The reporting period the committed structure is reconciled against: the latest
-# filing both sample filers report under the current form revision. Pinned rather
-# than tracking the current quarter so the asset is reproducible and stable, but
-# advanced to each new revision so the committed structure covers every line the
-# form adds (the March 2026 revision introduced the nondepository-financial-
-# institution and structured-product breakouts now carried here).
 SAMPLE_PERIOD = "20260331"
 
-# ``ItemName`` values in the CSV that are reporting-entity identity or
-# administrative metadata, never report line items; excluded from the filed item
-# set and never rendered. ``DT`` / ``DT_*`` date stamps are handled separately.
 _ADMIN_ITEMS = frozenset(
     {
         "INSTITUTION NAME",
@@ -79,38 +40,19 @@ _ADMIN_ITEMS = frozenset(
     }
 )
 
-# Appendix column codes the guide PDF mis-OCR'd: the printed prefix differs by
-# one letter from the MDRM the report actually files. Mapped to the filed code.
 _CODE_RENAME = {"BHCTG512": "BHCKG512"}
 
-# ``(code, schedule, line)`` occurrences where the guide appendix repeats a code
-# onto a second, wrong row (a PDF column-spacing artifact); dropped so each code
-# maps to exactly one item.
 _DROP_OCCURRENCE = frozenset(
     {("BHCKF632", "HC-D", "M.1.a.(2)"), ("BHCKG518", "HC-Q", "11")}
 )
 
-# ``(schedule, line, code) -> code`` substitutions repairing an appendix grid row
-# whose printed column code belongs to a different line. HC-Q item 11's fourth
-# printed column is the mis-placed ``BHCKG518`` (Other trading liabilities); the
-# filed code for that cell is ``BHCKG522``.
 _REPLACE_COLUMN = {("HC-Q", "11", "BHCKG518"): "BHCKG522"}
 
-# Filed codes the guide appendix omits entirely, placed at their schedule line
-# with a caption taken from the filing's own ``Description`` column. Keyed by
-# code -> ``(schedule, schedule_name, line, level)``.
 _MISSING_ITEMS = {
     "BHCKHT67": ("HC-D", "Trading Assets and Liabilities", "M.1.b", 2),
     "BHCKJ458": ("HC-L", "Derivatives and Off-Balance-Sheet Items", "1.e.(2)", 3),
 }
 
-# The Schedule HC-M Memoranda item 2 external-auditor block is a run of free-text
-# items with no paired numeric amount, so the appendix parser (which keeps only
-# the amount half of an itemization pair) drops it wholesale. The filings report
-# it out of form order, late in the record, so it is restored from the guide here
-# rather than anchored on a filed neighbor. Each entry is the guide's line and
-# caption; unfiled members are dropped by the filed-set prune. Inserted before the
-# first item of the schedule named by ``_GUIDE_TEXT_BEFORE``.
 _GUIDE_TEXT_SCHEDULE = ("HC-M", "Memoranda")
 _GUIDE_TEXT_BEFORE = "HC-B"
 _GUIDE_TEXT_ITEMS = (
@@ -122,21 +64,14 @@ _GUIDE_TEXT_ITEMS = (
     ("M.2.b.(2)", "(2) E-mail Address", "TEXTC705", 4),
 )
 
-# An 8-character MDRM item code: a 4-letter prefix then 4 alphanumerics.
 _MDRM = re.compile(r"\b[A-Z]{4}[A-Z0-9]{4}\b")
 
-# Spreadsheet-style column labels ("Column A", "Column B", ...) that appear
-# inline in the HC-R Part II risk-weighting grid alongside the column MDRMs.
 _COLUMN_LABEL = re.compile(r"\bColumn\s+[A-Z]\b")
 
-# A leading report-form line reference, e.g. "1.", "1.a.", "1.b.(1)",
-# "1.e.(3)(a)", "M.2.", "M.6.a.". The optional single-letter schedule prefix
-# (e.g. "A." in Schedule HC-R) is also accepted.
 _LINE_REF = re.compile(
     r"^(?:(?:M|[A-Z])\.)?\d+(?:\.[a-z])*(?:\.\(\d+\))*(?:\([a-z]\))*\.?(?:;)?"
 )
 
-# Page running heads and column banners to drop entirely.
 _NOISE = {
     "report form",
     "line number",
@@ -146,8 +81,6 @@ _NOISE = {
     "fr y-9c report detailed field specifications",
 }
 
-# The income statement (Schedule HI) has no explicit "Schedule HI -" banner in
-# the appendix; it begins immediately after the cover-page contact block.
 _FIRST_SCHEDULE = ("HI", "Consolidated Income Statement")
 _COVER_SCHEDULE = ("COVER", "Cover Page")
 
@@ -155,8 +88,6 @@ _SCHEDULE_HEADER = re.compile(r"^Schedule\s+([A-Z]{1,2}(?:-[A-Z0-9]+)?)\b[.,]?\s
 
 _APPENDIX_BANNER = "fr y-9c report detailed field specifications"
 
-# Appendix B is the nonstandard-items / text-character-limits reference table
-# that follows the form; it is not part of the report structure.
 _APPENDIX_END = "fr y-9c nonstandard financial items and text item character limits"
 
 
@@ -171,25 +102,20 @@ def _fetch_pdf_bytes() -> bytes:
 
 def _pdf_lines(pdf_bytes: bytes) -> list[str]:
     """Extract the appendix text as a flat list of stripped, non-empty lines."""
-    from pypdf import PdfReader
+    from openbb_federal_reserve.utils.report_structure import read_pdf_pages
 
-    reader = PdfReader(io.BytesIO(pdf_bytes))
     lines: list[str] = []
     in_appendix = False
-    for page in reader.pages:
-        text = page.extract_text() or ""
+    for text in read_pdf_pages(pdf_bytes):
         for raw in text.splitlines():
             stripped = raw.strip()
             if not stripped:
                 continue
             if not in_appendix:
-                # The field specifications begin at the Appendix A banner; the
-                # preceding pages are submission-process prose, not form items.
                 if stripped.lower() == _APPENDIX_BANNER:
                     in_appendix = True
                 continue
             if stripped.lower() == _APPENDIX_END:
-                # Appendix B (the text-item reference table) follows the form.
                 return lines
             lines.append(stripped)
     return lines
@@ -266,8 +192,6 @@ def _flush_row(  # noqa: PLR0913
         and all(code.startswith("TEXT") for code in codes)
         and re.search(r"\bDescription\b", caption)
     ):
-        # The free-text half of an itemization pair; the paired numeric amount
-        # row (BHCxxxx) carries the value we keep.
         return
     is_header = not codes
     if reference is not None:
@@ -324,8 +248,6 @@ def parse_structure(pdf_bytes: bytes) -> list[dict[str, Any]]:
         pending = []
 
     for raw_line in lines:
-        # Strip the HC-R grid's inline "Column A".."Column S" labels so a line's
-        # only meaningful content is its caption and MDRM codes.
         line = _COLUMN_LABEL.sub("", raw_line).strip()
         line = re.sub(r"\s+", " ", line)
         if not line:
@@ -346,8 +268,6 @@ def parse_structure(pdf_bytes: bytes) -> list[dict[str, Any]]:
             schedule_name = name or schedule
             continue
 
-        # Drop the free-text description half of an itemization pair; the paired
-        # numeric amount row carries the BHCxxxx code we keep.
         if re.match(r"^(?:(?:M|[A-Z])\.\S+\s+)?TEXT\b", line) and not re.search(
             r"\b(?:BH|RSSD)", line
         ):
@@ -357,17 +277,12 @@ def parse_structure(pdf_bytes: bytes) -> list[dict[str, Any]]:
         if not seen_first_line_ref and not re.match(
             r"^(?:TEXT|INTEGER|PERCENT|DATE|NUMBER)\b", line
         ):
-            # The cover-page block is the run of TEXT/INTEGER contact fields; the
-            # income statement begins at the first non-cover line.
             flush_pending()
             schedule, schedule_name = _FIRST_SCHEDULE
             seen_first_line_ref = True
 
         codes_only = _is_codes_only(line)
         if codes_only and not pending and items:
-            # A wide HC-R grid row whose column MDRMs are emitted on their own
-            # physical line(s), detached from the caption; attach these columns
-            # to the row just flushed rather than dropping them.
             previous = items[-1]
             previous_columns = list(previous["columns"] or [])
             previous_columns.extend(_MDRM.findall(line))
@@ -377,29 +292,17 @@ def parse_structure(pdf_bytes: bytes) -> list[dict[str, Any]]:
             continue
 
         if _is_header_line(line):
-            # A code-less caption terminated by the PDF's space-dash continuation
-            # marker is a standalone section header (e.g. "2. Interest expense -",
-            # "a. Interest on deposits: -"). It must be emitted as its own header
-            # row, never buffered onto the following line item, so the Schedule HI
-            # sub-headers stay distinct from the items they introduce.
             flush_pending()
             reference, caption = _split_reference(line)
             _flush_row(schedule, schedule_name, reference, caption, [], items)
             continue
 
         if _MDRM.search(line):
-            # The terminal physical line of a logical row: append and emit.
             pending.append(line)
             flush_pending()
             continue
 
-        # A code-less line is a section header unless it opens a wrapped item
-        # whose MDRM lands on a following physical line. A wrapped item is
-        # distinguished by a leading line reference and a non-colon ending; a
-        # header has no reference or ends in a colon/qualifier.
         if pending:
-            # Already mid-buffer (the open item is still waiting for its code):
-            # this is a wrapped continuation line.
             pending.append(line)
             continue
         if _opens_wrapped_item(line):
@@ -420,11 +323,7 @@ def _is_codes_only(line: str) -> bool:
 
 
 def _is_schedule_banner(header_match: re.Match[str]) -> bool:
-    """Return ``True`` when a ``Schedule X -`` line is a real schedule banner.
-
-    Excludes in-caption cross references ("Schedule HC, item 7 ...") and page
-    sub-banners ("Schedule HC-M Items 1-7 ...", "Schedule HC-R Part II ...").
-    """
+    """Return ``True`` when a ``Schedule X -`` line is a real schedule banner."""
     keyword = header_match.group(2).strip().lower()
     if keyword.startswith(("item", "items", "table", "part")):
         return False
@@ -432,26 +331,12 @@ def _is_schedule_banner(header_match: re.Match[str]) -> bool:
 
 
 def _is_header_line(line: str) -> bool:
-    """Return ``True`` when a code-less line is a standalone section header.
-
-    The user guide marks a caption that introduces indented sub-items with a
-    trailing space-dash (``" -"``) continuation glyph, e.g.
-    ``"2. Interest expense -"`` or ``"(1) In domestic offices: -"``. Word-wrap
-    hyphens within a continued caption attach to the preceding word with no
-    space (``"mortgage-"``, ``"available-"``), so the space distinguishes a
-    header from a mid-caption line break. A header therefore never carries an
-    MDRM code on its own physical line.
-    """
+    """Return ``True`` when a code-less line is a standalone section header."""
     return bool(re.search(r"\s-$", line)) and not _MDRM.search(line)
 
 
 def _opens_wrapped_item(line: str) -> bool:
-    """Return ``True`` when a code-less line is the first line of a wrapped item.
-
-    A wrapped item carries a leading line reference (its MDRM sits on the next
-    physical line) and does not end in a colon, which would mark a section
-    header introducing indented sub-items.
-    """
+    """Return ``True`` when a code-less line is the first line of a wrapped item."""
     reference, _ = _split_reference(line)
     return reference is not None and not line.rstrip().endswith(":")
 
@@ -544,13 +429,7 @@ def _apply_code_repairs(items: list[dict[str, Any]]) -> None:
 def _insert_text_descriptions(
     items: list[dict[str, Any]], filed: set[str]
 ) -> list[dict[str, Any]]:
-    """Emit each filed itemization ``TEXTxxxx`` description before its amount row.
-
-    The guide drops the free-text description half of an itemization pair, keeping
-    only the paired numeric ``BHCKxxxx`` amount. A filed public report carries
-    both, so for every amount row whose ``TEXTxxxx`` sibling appears in the
-    filings, a ``Description`` value item is inserted immediately above it.
-    """
+    """Emit each filed itemization ``TEXTxxxx`` description before its amount row."""
     out: list[dict[str, Any]] = []
     for item in items:
         codes = _codes_of(item)
@@ -601,12 +480,7 @@ def _insert_missing_items(
 
 
 def _insert_guide_text_block(items: list[dict[str, Any]]) -> None:
-    """Restore the all-text HC-M auditor block the appendix parser drops.
-
-    The block has no numeric amount to anchor on and is filed out of form order,
-    so it is rebuilt from the guide and inserted before the first item of
-    ``_GUIDE_TEXT_BEFORE``. The filed-set prune then drops any unfiled member.
-    """
+    """Restore the all-text HC-M auditor block the appendix parser drops."""
     schedule, schedule_name = _GUIDE_TEXT_SCHEDULE
     anchor = next(
         (i for i, item in enumerate(items) if item["schedule"] == _GUIDE_TEXT_BEFORE),
@@ -633,12 +507,7 @@ def _insert_guide_text_block(items: list[dict[str, Any]]) -> None:
 def _prune_to_filed(
     items: list[dict[str, Any]], filed: set[str]
 ) -> list[dict[str, Any]]:
-    """Drop value columns and rows absent from every sampled filing.
-
-    A value item keeps only its filed columns; an item left with no filed column
-    is removed. A section header is removed when no value item survives beneath it
-    before the next header at its level or above.
-    """
+    """Drop value columns and rows absent from every sampled filing."""
     kept: list[dict[str, Any]] = []
     for item in items:
         if item.get("is_header"):

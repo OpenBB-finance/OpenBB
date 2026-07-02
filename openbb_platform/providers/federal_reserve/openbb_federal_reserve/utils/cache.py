@@ -1,18 +1,4 @@
-"""Unified on-disk cache for Federal Reserve data downloads.
-
-A single ``diskcache.Cache`` persists raw upstream payloads so repeat requests
-within a dataset's release window avoid re-downloading. The cache directory is
-resolved from, highest priority first:
-
-1. the ``OPENBB_FEDERAL_RESERVE_CACHE_DIR`` environment variable,
-2. ``preferences.cache_directory`` from the layered OpenBB config
-   (``UserService().default_user_settings.preferences``), and
-3. the OpenBB default user cache directory.
-
-Each entry is stored with a time-to-live aligned to its dataset's real release
-cadence (see ``seconds_until_next_release``) so it expires when fresh data is
-expected to be available rather than on a flat timer.
-"""
+"""Unified on-disk cache for Federal Reserve data downloads."""
 
 from __future__ import annotations
 
@@ -73,7 +59,7 @@ def reset_cache() -> None:
 
 
 def now_eastern() -> datetime:
-    """Return the current time in US/Eastern, the Fed's publication timezone."""
+    """Return the current time in US/Eastern."""
     return datetime.now(tz=EASTERN)
 
 
@@ -83,9 +69,7 @@ def seconds_until_next_release(cadence: str, *, now: datetime | None = None) -> 
     Parameters
     ----------
     cadence : str
-        One of ``"daily"``, ``"weekly"``, or ``"quarterly"``. Daily expires at
-        the next US/Eastern midnight, weekly seven days out, quarterly at the
-        start of the next calendar quarter. Any other value falls back to daily.
+        One of ``"daily"``, ``"weekly"``, or ``"quarterly"``.
     now : datetime | None
         Reference time; defaults to the current US/Eastern time.
 
@@ -116,13 +100,7 @@ def seconds_until_next_release(cadence: str, *, now: datetime | None = None) -> 
 def cached(
     key: Any, ttl: float | Callable[[], float], producer: Callable[[], Any]
 ) -> Any:
-    """Return the cached value for ``key`` or produce, store, and return it.
-
-    The ``ttl`` (seconds) may be a callable evaluated only on a cache miss, so
-    an availability lookup runs at most once per stored entry. Falsy producer
-    results are not cached, so a failed or empty upstream response is retried
-    on the next call.
-    """
+    """Return the cached value for ``key`` or produce, store, and return it."""
     cache = get_cache()
     value = cache.get(key, default=_MISS)
     if value is not _MISS:

@@ -1,12 +1,4 @@
-"""FRBNY Survey of Consumer Expectations workbook parsing.
-
-Every SCE topic sheet shares one layout: a title in the first rows, an optional
-group label on row 2 (e.g. ``Year ago`` / ``Year ahead`` or a metric spanning a
-demographic block), the column labels on row 3, then monthly data from row 4 with
-the date as ``YYYYMM`` in the first column. ``parse_sce`` melts any such sheet to
-long ``(date, series, value)`` rows, joining the forward-filled group label onto
-the column label so every series is uniquely named.
-"""
+"""FRBNY Survey of Consumer Expectations workbook parsing."""
 
 from __future__ import annotations
 
@@ -14,7 +6,6 @@ import re
 from datetime import date as dateType
 from typing import Any
 
-# The inflation workbook's data sheets, in publication order.
 INFLATION_SHEETS = [
     "Inflation expectations",
     "Inflation expectations Demo",
@@ -61,7 +52,6 @@ INFLATION_SHEETS = [
 ]
 
 
-# The housing-survey workbook's data sheets, in publication order.
 HOUSING_SHEETS = [
     "Home Price Expectations",
     "Home Price Expectations Demo",
@@ -113,11 +103,7 @@ def parse_sce(
     end_date: dateType | None = None,
     header_row: int = 3,
 ) -> list[dict[str, Any]]:
-    """Melt one SCE topic sheet into long ``(date, series, value)`` records.
-
-    ``header_row`` is the zero-based index of the column-label row; the row above
-    it carries the (forward-filled) group label and data begins on the row below.
-    """
+    """Melt one SCE topic sheet into long ``(date, series, value)`` records."""
     from io import BytesIO
 
     from pandas import isna, notna, read_excel, to_datetime, to_numeric
@@ -152,9 +138,6 @@ def parse_sce(
             column_series[index] = text
         column_block[index] = block
 
-    # Demographic sheets stack the same labels in several side-by-side blocks
-    # (one estimate each), separated by blank columns. Disambiguate any label
-    # that repeats across blocks so each estimate stays a distinct series.
     if block > 1:
         block_membership: dict[str, set[int]] = {}
         for index, name in column_series.items():

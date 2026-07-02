@@ -28,12 +28,7 @@ class FederalReserveDallasBankingQueryParams(QueryParams):
 
 
 class FederalReserveDallasBankingData(Data):
-    """Dallas Fed Banking Conditions Survey Data.
-
-    One row per survey period-end date, with one column per indicator-and-horizon
-    carrying that reading's diffusion index value. The current and six-month-ahead
-    readings of every indicator are pivoted to wide.
-    """
+    """Dallas Fed Banking Conditions Survey Data."""
 
     date: dateType = Field(description="The survey period end date.")
 

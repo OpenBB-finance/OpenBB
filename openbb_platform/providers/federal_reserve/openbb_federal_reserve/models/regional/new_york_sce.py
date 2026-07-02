@@ -186,11 +186,7 @@ class FederalReserveNewYorkConsumerExpectationsQueryParams(QueryParams):
 
 
 class FederalReserveNewYorkConsumerExpectationsData(Data):
-    """New York Fed Survey of Consumer Expectations Data.
-
-    One row per survey month, with one column per series within the topic. The
-    series are pivoted to wide, so the columns vary with the selected topic sheet.
-    """
+    """New York Fed Survey of Consumer Expectations Data."""
 
     date: dateType = Field(description="The survey month.")
 

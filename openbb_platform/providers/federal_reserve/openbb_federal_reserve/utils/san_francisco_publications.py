@@ -1,12 +1,4 @@
-"""San Francisco Fed publications enumeration and PDF presentation.
-
-The FRBSF Economic Letter and SF FedViews are published as per-release PDFs and
-catalogued through the WordPress REST API. This module enumerates that catalog
-via the ``sffed_publications`` endpoint and serves a selected publication as a
-base64-encoded PDF for an OpenBB Workspace PDF widget. Each entry's PDF URL is
-derived from its release metadata and, when the derived name is wrong (revised
-or suffixed files), resolved by scraping the entry's landing page.
-"""
+"""San Francisco Fed publications enumeration and PDF presentation."""
 
 from __future__ import annotations
 

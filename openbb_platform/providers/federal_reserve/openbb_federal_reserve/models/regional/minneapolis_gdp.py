@@ -30,11 +30,7 @@ class FederalReserveMinneapolisGdpQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisGdpData(Data):
-    """Minneapolis Fed Regional GDP Data.
-
-    One row per observation quarter, with one column per Ninth District state and
-    the United States carrying real GDP indexed to 100 at the series start.
-    """
+    """Minneapolis Fed Regional GDP Data."""
 
     date: dateType = Field(description="The start of the observation quarter.")
 

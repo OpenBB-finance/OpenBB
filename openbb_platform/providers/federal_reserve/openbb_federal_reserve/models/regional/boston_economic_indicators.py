@@ -33,17 +33,7 @@ class FederalReserveBostonEconomicIndicatorsQueryParams(QueryParams):
 
 
 class FederalReserveBostonEconomicIndicatorsData(Data):
-    """Boston Fed New England Economic Indicators Data.
-
-    One row per observation date, with one clean column label per series carrying
-    that series' value. Every constituent series of the selected chart - across all
-    geographies and categories - is pivoted to wide, so the columns vary with the
-    requested indicator. Charts with a single series per geography are labelled by
-    geography (for example ``United States`` or ``Massachusetts``); multi-category
-    charts keep the descriptive measure label so geography and category stay
-    distinct. Index and year-over-year charts carry an explicit ``(Index)`` or
-    ``(YoY %)`` marker so the displayed number is never mistaken for a raw level.
-    """
+    """Boston Fed New England Economic Indicators Data."""
 
     date: dateType = Field(description="The observation date.")
 

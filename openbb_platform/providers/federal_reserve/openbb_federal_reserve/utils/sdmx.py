@@ -1,14 +1,4 @@
-"""Parser for the Federal Reserve Data Download Program (DDP) SDMX-ML feed.
-
-DDP downloads (``Output.aspx?...&filetype=sdmx``) return a compact SDMX-ML
-document where each ``Series`` element carries its dimensions as attributes
-(``SERIES_NAME`` plus release-specific dimensions such as ``INSTRUMENT`` or
-``LOANTYPE``), ``Annotations`` (short/long descriptions), and a list of ``Obs``
-observations. The dimension values are codes; their human-readable labels live
-in the release's structure file (``parse_structure``), a separate, observation-
-free SDMX structure document carrying the data structure definition and its
-codelists.
-"""
+"""Parser for the Federal Reserve Data Download Program (DDP) SDMX-ML feed."""
 
 from __future__ import annotations
 
@@ -18,18 +8,11 @@ from xml.etree.ElementTree import Element, ParseError
 
 from defusedxml.ElementTree import fromstring
 
-# Codelists made up entirely of these codes carry only seasonal adjustment, so
-# they collapse into the boolean ``seasonally_adjusted`` field.
 _PURE_SEASONAL = {"SA", "SAAR", "NSA"}
 
 
 def _seasonal_flag(code: str) -> bool | None:
-    """Map a dimension code to a seasonal-adjustment boolean, where it carries one.
-
-    Handles the bare codes (``SA``/``NSA``) and the suffixed forms other releases
-    use (``SA_BA``, ``NSA_NBA``, ``SAAR``); codes without seasonal meaning (a
-    break-adjustment-only ``BA``, ``NA``) return ``None``.
-    """
+    """Map a dimension code to a seasonal-adjustment boolean, where it carries one."""
     if re.match(r"NSA($|_)", code):
         return False
     if re.match(r"SAAR$", code) or re.match(r"SA($|_)", code):
@@ -37,23 +20,15 @@ def _seasonal_flag(code: str) -> bool | None:
     return None
 
 
-# Sentinel observation values the DDP emits for missing data.
 MISSING_VALUES = {"-9999", "-99999", "-9999.99", "-99999.99"}
 
 _NON_DIMENSION_ATTRS = {"SERIES_NAME", "FREQ", "UNIT", "UNIT_MULT", "CURRENCY"}
 
-# DDP ``UNIT_MULT`` factors that carry no scale (the value is as published).
 _NO_SCALE_MULTIPLIERS = {"", "1", "1.0", "One", "Units", "Not Applicable"}
 
 
 def _scale_word(unit_mult: str | None, labels: dict[str, str]) -> str | None:
-    """Resolve a ``UNIT_MULT`` factor to its scale word (``Millions``), else ``None``.
-
-    The DDP emits ``UNIT_MULT`` as a multiplicative factor string (``"1000000"``)
-    whose codelist label is the scale word (``"Millions"``). Some payloads render
-    a billions factor in float form (``"1e+09"``); it is normalized back to the
-    integer key before lookup. A factor of one (or missing) carries no scale.
-    """
+    """Resolve a ``UNIT_MULT`` factor to its scale word (``Millions``), else ``None``."""
     if not unit_mult:
         return None
     key = unit_mult
@@ -69,11 +44,6 @@ def _scale_word(unit_mult: str | None, labels: dict[str, str]) -> str | None:
     return word
 
 
-# Keywords whose presence in a resolved UNIT label marks it as a normalized or
-# relative measure, for which a UNIT_MULT scale word (Millions/Billions) is
-# meaningless. The DDP attaches a scale factor to some of these series anyway
-# (e.g. Z.1 "Debt Growth" rates carry UNIT_MULT=Millions), so the scale must be
-# dropped rather than prefixed onto the label.
 _NON_SCALABLE_KEYWORDS = (
     "percent",
     "index",
@@ -82,21 +52,13 @@ _NON_SCALABLE_KEYWORDS = (
     "basis point",
 )
 
-# Resolved UNIT labels that are bare counts: a scale word is valid (a million of
-# something) but "<scale> of Number" reads poorly, so the noun is dropped.
 _COUNT_LABELS = {"number", "count", "units", "unit"}
 
 _BASE_YEAR_RE = re.compile(r"base\s*=?\s*(\d{4})", re.IGNORECASE)
 
 
 def _currency_noun(currency_label: str | None) -> str | None:
-    """Reduce a currency codelist label to its plural noun (``Dollars``), else ``None``.
-
-    Labels take the form ``"United States / United States Dollar"``; the part
-    after the final ``/`` (less any parenthetical) is the currency name. US
-    dollar variants collapse to the Fed's bare ``"Dollars"``; other currencies
-    pluralize their final word.
-    """
+    """Reduce a currency codelist label to its plural noun (``Dollars``), else ``None``."""
     if not currency_label or currency_label == "Not Applicable":
         return None
     name = currency_label.rsplit("/", 1)[-1].split("(")[0].strip()
@@ -115,16 +77,7 @@ def _unit_label(
     scale: str | None,
     codelists: dict[str, dict[str, str]],
 ) -> str | None:
-    """Build a human-readable unit label, e.g. ``"Millions of Dollars"``.
-
-    The raw ``UNIT`` code is resolved to its codelist label (``"Currency"`` ->
-    ``"Currency"``, ``"Percent:_Per_Year"`` -> ``"Percent: Per Year"``). The
-    scale word is applied only to *absolute* quantities: monetary units (the
-    ``Currency`` family) keep ``"<scale> of <noun>"`` and counts keep just the
-    scale, while normalized or relative units (percent, index, rate, ratio,
-    basis point) drop the scale entirely - a Z.1 rate carrying ``UNIT_MULT`` of
-    millions must read ``"Percent"``, never ``"Millions of Percent"``.
-    """
+    """Build a human-readable unit label, e.g. ``"Millions of Dollars"``."""
     unit_labels = codelists.get("unit", {})
     currency_labels = codelists.get("currency", {})
     resolved = unit_labels.get(unit, unit) if unit else None
@@ -244,19 +197,10 @@ def parse_series(xml_text: str) -> list[dict[str, Any]]:
 
 
 def parse_structure(xml_text: str) -> dict[str, dict[str, str]]:
-    """Parse a DDP structure file into each dimension's codelist labels.
-
-    The structure file (``{REL}_struct.xml``) carries the release's data
-    structure definition: its dimensions/attributes each reference a codelist,
-    and each codelist maps a code to its description. Returns
-    ``{dimension: {code: label}}`` keyed by lower-cased concept, so dimension
-    codes in the data (``LOANTYPE="CI"``) can be resolved to their official
-    Federal Reserve labels (``"Commercial & Industrial loans"``).
-    """
+    """Parse a DDP structure file into each dimension's codelist labels."""
     if not xml_text or not xml_text.strip():
         return {}
     try:
-        # Some releases prefix the document with a UTF-8 BOM.
         root = fromstring(xml_text.lstrip("﻿"))
     except ParseError:
         return {}
@@ -299,19 +243,7 @@ def to_rows(
     series: list[dict[str, Any]],
     codelists: dict[str, dict[str, str]] | None = None,
 ) -> list[dict[str, Any]]:
-    """Flatten parsed series into long-format observation rows.
-
-    Each row carries the observation's ``date``/``value`` alongside the series
-    metadata (``series_id``, ``title``, ``frequency``, ``unit``). Dimension
-    codes are resolved to their codelist labels, and the seasonal-adjustment
-    dimension becomes a boolean ``seasonally_adjusted`` field.
-
-    The raw DDP ``UNIT``/``UNIT_MULT``/``CURRENCY`` codes are combined into an
-    unambiguous, human-readable ``unit`` label (e.g. ``"Millions of Dollars"``
-    for Z.1, ``"Percent: Per Year"`` for H.15 rates), with the resolved scale
-    word kept separately as ``unit_multiplier`` (``"Millions"``). Published
-    values are never rescaled - only labelled.
-    """
+    """Flatten parsed series into long-format observation rows."""
     codelists = codelists or {}
     freq_labels = codelists.get("freq", {})
     unit_mult_labels = codelists.get("unit_mult", {})
@@ -323,7 +255,6 @@ def to_rows(
             if seasonally_adjusted is None:
                 seasonally_adjusted = _seasonal_flag(code)
             labels = codelists.get(dimension, {})
-            # A purely-seasonal dimension is represented by the boolean instead.
             if labels and set(labels).issubset(_PURE_SEASONAL):
                 continue
             dimensions[dimension] = labels.get(code, code)

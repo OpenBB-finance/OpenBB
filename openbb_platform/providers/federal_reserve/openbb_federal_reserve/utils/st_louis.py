@@ -1,14 +1,4 @@
-"""Federal Reserve Bank of St. Louis data client.
-
-The St. Louis Fed data hosts vary in their bot protection. ``www.stlouisfed.org``
-sits behind Akamai bot management and ``fred.stlouisfed.org`` rejects ordinary
-HTTP clients on a TLS-fingerprint basis; both require a browser-impersonating
-``curl_cffi`` session warmed against the host home page (the same technique used
-for the FFIEC NIC client). ``fraser.stlouisfed.org`` serves its archive PDFs only
-after the session is warmed as well. A single warmed session therefore backs
-every St. Louis download, and payloads are disk-cached at each dataset's release
-cadence.
-"""
+"""Federal Reserve Bank of St. Louis data client."""
 
 from __future__ import annotations
 

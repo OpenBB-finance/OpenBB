@@ -1,7 +1,6 @@
 """Tests for the FFIEC 101 report structure generator."""
 
 import json
-from types import SimpleNamespace
 
 from openbb_federal_reserve.utils import ffiec101_structure
 from openbb_federal_reserve.utils.ffiec101_structure import (
@@ -78,18 +77,13 @@ _PDF_PAGES = [
 ]
 
 
-def _fake_reader(pages):
-    """Build a stand-in ``PdfReader`` whose pages yield the given text."""
-    return SimpleNamespace(
-        pages=[SimpleNamespace(extract_text=lambda text=text: text) for text in pages]
-    )
-
-
 def _patch_reader(monkeypatch, pages):
-    """Patch the lazily imported ``PdfReader`` to return ``pages``."""
-    import pypdf
+    """Patch the shared ``read_pdf_pages`` to return the synthetic page text."""
+    from openbb_federal_reserve.utils import report_structure
 
-    monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: _fake_reader(pages))
+    monkeypatch.setattr(
+        report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+    )
 
 
 def _csv(rows):
@@ -201,8 +195,8 @@ class TestPdfLines:
         assert "FFIEC101 Report Detailed Field Specifications" not in lines
 
     def test_handles_empty_page_text(self, monkeypatch):
-        """A page whose ``extract_text`` returns ``None`` contributes no lines."""
-        _patch_reader(monkeypatch, [None])
+        """A page whose extracted text is empty contributes no lines."""
+        _patch_reader(monkeypatch, [""])
         assert ffiec101_structure._pdf_lines(b"%PDF-1.7") == []
 
 

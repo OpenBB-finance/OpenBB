@@ -15,7 +15,6 @@ URL = (
     "/downloads/data/frbny-sce-credit-access-data.xlsx?sc_lang=en"
 )
 
-# Readable labels for the headline metrics; other columns keep their source name.
 _LABELS = {
     "Observations": "Observations",
     "Applied_Accepted": "Applied and Accepted",
@@ -54,12 +53,7 @@ class FederalReserveNewYorkConsumerCreditAccessQueryParams(QueryParams):
 
 
 class FederalReserveNewYorkConsumerCreditAccessData(Data):
-    """New York Fed SCE Credit Access Survey Data.
-
-    One row per ``(date, group, category)`` combination, with one column per
-    credit-access series carrying its value. The series are pivoted to wide; the
-    group and category dimensions stay as row-group columns.
-    """
+    """New York Fed SCE Credit Access Survey Data."""
 
     date: dateType = Field(description="The survey month.")
     group: str | None = Field(default=None, description="The respondent grouping.")

@@ -1,9 +1,8 @@
 """Tests for the FR Y-15 report structure generator."""
 
 import json
-from types import SimpleNamespace
 
-from openbb_federal_reserve.utils import fry15_structure
+from openbb_federal_reserve.utils import fry15_structure, report_structure
 from openbb_federal_reserve.utils.fry15_structure import (
     _clean_caption,
     _csv_descriptions,
@@ -102,32 +101,25 @@ _CSV_FBO = "\n".join(
 )
 
 
-def _fake_reader(pages):
-    """Build a stand-in ``PdfReader`` whose pages yield the given joined text."""
-    return SimpleNamespace(
-        pages=[
-            SimpleNamespace(extract_text=lambda text="\n".join(page): text)
-            for page in pages
-        ]
-    )
+def _page_texts(pages):
+    """Join each page's line list into the single page-text ``read_pdf_pages`` yields."""
+    return ["\n".join(page) for page in pages]
 
 
 def _patch_readers(monkeypatch, guide_pages, form_pages):
-    """Patch ``PdfReader`` to dispatch on the stream's leading bytes.
+    """Patch ``read_pdf_pages`` to dispatch on the PDF bytes' marker.
 
     ``build_items`` reads the guide once and the form twice (titles, then
-    sub-headers), so the reader is selected by the synthetic stream marker rather
-    than by call order.
+    sub-headers), so the page-text list is selected by the synthetic byte marker
+    rather than by call order.
     """
-    import pypdf
 
-    def _reader(stream):
-        """Return the guide or form fake reader by the stream's marker bytes."""
-        marker = stream.getvalue() if hasattr(stream, "getvalue") else stream
-        pages = form_pages if b"form" in bytes(marker) else guide_pages
-        return _fake_reader(pages)
+    def _read(pdf_bytes):
+        """Return the guide or form page texts by the bytes' marker."""
+        pages = form_pages if b"form" in bytes(pdf_bytes) else guide_pages
+        return _page_texts(pages)
 
-    monkeypatch.setattr(pypdf, "PdfReader", _reader)
+    monkeypatch.setattr(report_structure, "read_pdf_pages", _read)
 
 
 class TestParsers:
@@ -149,10 +141,10 @@ class TestParsers:
 
     def test_schedule_titles(self, monkeypatch):
         """Schedule titles parse, dropping ``(continued)`` and fixing artifacts."""
-        import pypdf
-
         monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_FORM_PAGES)
+            report_structure,
+            "read_pdf_pages",
+            lambda _pdf_bytes: _page_texts(_FORM_PAGES),
         )
         titles = _schedule_titles(b"%PDF")
         assert titles["A"] == "Size Indicator"
@@ -160,10 +152,10 @@ class TestParsers:
 
     def test_form_subheaders(self, monkeypatch):
         """Colon-terminated numbered/lettered captions become the whitelist."""
-        import pypdf
-
         monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_FORM_PAGES)
+            report_structure,
+            "read_pdf_pages",
+            lambda _pdf_bytes: _page_texts(_FORM_PAGES),
         )
         subheaders = _form_subheaders(b"%PDF")
         assert subheaders["derivative exposures"] == "Derivative exposures"
@@ -273,7 +265,7 @@ class TestBuildItems:
     """End-to-end assembly over the synthetic guide, form, and CSVs."""
 
     def _build(self, monkeypatch):
-        """Build items by patching the guide and form ``PdfReader`` calls."""
+        """Build items by patching the guide and form ``read_pdf_pages`` calls."""
         _patch_readers(monkeypatch, _GUIDE_PAGES, _FORM_PAGES)
         return build_items(
             b"%PDF-guide",

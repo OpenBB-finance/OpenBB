@@ -12,18 +12,12 @@ from pydantic import Field
 
 
 def _apply_transform(series, code: int | None):
-    """Apply a FRED-MD/QD stationarity transformation code to a series.
-
-    Codes follow McCracken & Ng: 1=level, 2=first difference, 3=second
-    difference, 4=log, 5=first difference of log, 6=second difference of log,
-    7=first difference of the simple growth rate.
-    """
+    """Apply a FRED-MD/QD stationarity transformation code to a series."""
     from numpy import log
 
     if code == 7:
         return (series / series.shift(1) - 1).diff()
     if code in (4, 5, 6):
-        # Codes 4/5/6 are the log of codes 1/2/3.
         series = log(series)
         code -= 3
     if code == 2:
@@ -40,11 +34,7 @@ def _parse_panel(
     series_filter: set[str] | None,
     apply: bool,
 ) -> list[dict[str, Any]]:
-    """Parse a FRED panel into wide ``(date, series columns)`` rows.
-
-    Each panel column becomes its own field on the row, optionally transformed by
-    its recommended stationarity code.
-    """
+    """Parse a FRED panel into wide ``(date, series columns)`` rows."""
     from io import StringIO
 
     from pandas import isna, read_csv, to_datetime, to_numeric
@@ -121,10 +111,7 @@ class FederalReserveStLouisFredMdQueryParams(QueryParams):
 
 
 class FederalReserveStLouisFredMdData(Data):
-    """St. Louis Fed FRED-MD Monthly Macro Panel Data.
-
-    One row per observation date; each requested FRED series is a dynamic column.
-    """
+    """St. Louis Fed FRED-MD Monthly Macro Panel Data."""
 
     date: dateType = Field(description="The observation date.")
 
@@ -201,10 +188,7 @@ class FederalReserveStLouisFredQdQueryParams(QueryParams):
 
 
 class FederalReserveStLouisFredQdData(Data):
-    """St. Louis Fed FRED-QD Quarterly Macro Panel Data.
-
-    One row per observation date; each requested FRED series is a dynamic column.
-    """
+    """St. Louis Fed FRED-QD Quarterly Macro Panel Data."""
 
     date: dateType = Field(description="The observation date.")
 
@@ -244,11 +228,7 @@ class FederalReserveStLouisFredQdFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReserveStLouisFredQdData]:
-        """Pivot the panel wide (optionally transforming) and apply the filters.
-
-        FRED-QD prefixes the data with a ``factors`` row then a ``transform``
-        row, so the transform codes are the second metadata row.
-        """
+        """Pivot the panel wide (optionally transforming) and apply the filters."""
         series_filter = (
             {s.strip() for s in query.series.split(",") if s.strip()}
             if query.series

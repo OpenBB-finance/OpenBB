@@ -20,8 +20,6 @@ _TABLES = {
     "real_interest_rate": "Real Interest Rate",
     "ten_year_decomposition": "Ten-year Expected Chart",
 }
-# The ten-year chart sheet is published in percent, not the decimal convention
-# used by the other two sheets; scale it so every table is comparable.
 _PERCENT_TABLES = {"ten_year_decomposition"}
 
 
@@ -55,12 +53,7 @@ class FederalReserveClevelandInflationQueryParams(QueryParams):
 
 
 class FederalReserveClevelandInflationData(Data):
-    """Cleveland Fed Inflation Expectations Data.
-
-    One row per model output month, with one column per horizon series carrying
-    that series' decimal-rate estimate (0.025 = 2.5%). The selected table's
-    series are pivoted to wide, so the columns vary with the requested table.
-    """
+    """Cleveland Fed Inflation Expectations Data."""
 
     date: dateType = Field(description="The model output month.")
 

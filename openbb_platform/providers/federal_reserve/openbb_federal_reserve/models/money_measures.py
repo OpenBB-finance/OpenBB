@@ -68,7 +68,7 @@ class FederalReserveMoneyMeasuresFetcher(
     def transform_query(
         params: dict[str, Any],
     ) -> FederalReserveMoneyMeasuresQueryParams:
-        """Transform the query params. Start and end dates are set to a 90 day interval."""
+        """Transform the query params."""
         from datetime import timedelta
 
         transformed_params = params
@@ -113,7 +113,6 @@ class FederalReserveMoneyMeasuresFetcher(
             (to_datetime(df.month) >= to_datetime(query.start_date))  # ty: ignore[no-matching-overload]
             & (to_datetime(df.month) <= to_datetime(query.end_date))  # ty: ignore[no-matching-overload]
         ].set_index("month")
-        # Needs the date to not be in the columns
         df = df.map(lambda x: float(x) if x != "-" and x is not None else x)
         df = df.reset_index(drop=False)
 
@@ -123,7 +122,7 @@ class FederalReserveMoneyMeasuresFetcher(
     def transform_data(
         query: FederalReserveMoneyMeasuresQueryParams, data: list[dict], **kwargs: Any
     ) -> list[FederalReserveMoneyMeasuresData]:
-        """Return the transformed data, expanded from billions to full dollars."""
+        """Return the transformed data."""
         from pandas import isna
 
         money_fields = list(titles.values())

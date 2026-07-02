@@ -1,12 +1,4 @@
-"""FRB Enhanced Financial Accounts: International Portfolio Investment.
-
-The EFA International Portfolio Investment project publishes nine historical CSV
-tables of cross-border holdings of long-term securities. Each table is one
-measure with a ``Date`` row index and a column per country (region paths like
-``Africa; Algeria``); the cells are holdings in millions of dollars, ``--`` for
-missing. All melt to ``(date, country, label, value)`` where the label is the
-table's measure.
-"""
+"""FRB Enhanced Financial Accounts: International Portfolio Investment."""
 
 from __future__ import annotations
 
@@ -14,7 +6,6 @@ from typing import Any
 
 BASE_URL = "https://www.federalreserve.gov/releases/efa"
 
-# Friendly table key -> (CSV filename, measure label).
 TABLES = {
     "table1": (
         "international-portfolio-investment-table1-historical.csv",

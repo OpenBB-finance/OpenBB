@@ -118,11 +118,7 @@ def _page_id(section: str | None) -> tuple[str, str]:
 def fetch_peer_group_bank_report(
     rssd_id: str, section: str | None = "Summary Ratios"
 ) -> dict[str, Any]:
-    """Fetch one report section as wide per-bank rows for the bank's peer group.
-
-    Returns ``{section, peer_group, columns, rows}`` where each row is ``{label,
-    is_header, <bank cols>}`` and the bank columns are ``"<bank name> (<RSSD>)"``.
-    """
+    """Fetch one report section as wide per-bank rows for the bank's peer group."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
     from openbb_federal_reserve.utils.concepts import (
         clean_name,
@@ -279,12 +275,7 @@ class FederalReservePeerGroupBankQueryParams(QueryParams):
 
 
 class FederalReservePeerGroupBankData(Data):
-    """FFIEC UBPR Peer Group Bank Report Data.
-
-    One row per report line item; each member bank of the subject bank's peer
-    group contributes a column (``"<bank name> (<RSSD>)"``) for the latest period,
-    in the report's own section layout.
-    """
+    """FFIEC UBPR Peer Group Bank Report Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(
@@ -322,12 +313,7 @@ class FederalReservePeerGroupBankFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch the peer group bank report section from the FFIEC CDR router.
-
-        A holding-company RSSD has no assigned UBPR peer group, so it is resolved
-        to its lead filing bank; the resolved bank is surfaced through the leading
-        row's ``_rssd``/``_name`` metadata keys.
-        """
+        """Fetch the peer group bank report section from the FFIEC CDR router."""
         from openbb_federal_reserve.models.peer_group_bank import (
             fetch_peer_group_bank_report,
         )

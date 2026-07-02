@@ -28,12 +28,7 @@ class FederalReserveDallasManufacturingQueryParams(QueryParams):
 
 
 class FederalReserveDallasManufacturingData(Data):
-    """Dallas Fed Texas Manufacturing Outlook Survey Data.
-
-    One row per survey month, with one column per indicator-and-horizon carrying
-    that reading's diffusion index value. The current and six-month-ahead readings
-    of every indicator are pivoted to wide.
-    """
+    """Dallas Fed Texas Manufacturing Outlook Survey Data."""
 
     date: dateType = Field(description="The survey month.")
 

@@ -15,7 +15,6 @@ URL = (
     "/Ag_Finance_Databook_Archived_-_Historical_Data.xlsx"
 )
 
-# The archived databook's annual data sheets, by section (A debt, B rates, C banks).
 _TABLES = (
     [f"afdr_a{index}" for index in range(1, 15)]
     + [f"afdr_b{index}" for index in range(1, 10)]
@@ -81,12 +80,7 @@ class FederalReserveKansasCityAgDatabookArchivedQueryParams(QueryParams):
 
 
 class FederalReserveKansasCityAgDatabookArchivedData(Data):
-    """Kansas City Fed Archived Ag Finance Databook Data.
-
-    One row per ``(date, frequency, section)``, with one column per databook series
-    carrying that series' value; the series of the selected table are pivoted to
-    wide.
-    """
+    """Kansas City Fed Archived Ag Finance Databook Data."""
 
     date: dateType = Field(description="The observation period-end date.")
     frequency: str = Field(

@@ -2,11 +2,10 @@
 
 import json
 import re
-from types import SimpleNamespace
 
 import pytest
 
-from openbb_federal_reserve.utils import fry9lp_structure
+from openbb_federal_reserve.utils import fry9lp_structure, report_structure
 from openbb_federal_reserve.utils.fry9lp_structure import (
     _csv_mdrms,
     _hoist_cover_items,
@@ -79,18 +78,11 @@ _CSV_2 = "\n".join(
 )
 
 
-def _fake_reader(lines):
-    """Build a stand-in ``PdfReader`` whose single page yields the given text."""
-    return SimpleNamespace(
-        pages=[SimpleNamespace(extract_text=lambda: "\n".join(lines))]
-    )
-
-
 def _patch_reader(monkeypatch, lines=_APPENDIX):
-    """Patch the lazily imported ``PdfReader`` to yield the synthetic appendix."""
-    import pypdf
-
-    monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: _fake_reader(lines))
+    """Patch ``read_pdf_pages`` to yield the synthetic appendix as one page."""
+    monkeypatch.setattr(
+        report_structure, "read_pdf_pages", lambda _pdf_bytes: ["\n".join(lines)]
+    )
 
 
 class TestBuildItems:

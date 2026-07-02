@@ -1,11 +1,4 @@
-"""Shared parsing for Federal Reserve statistical workbooks.
-
-District publications ship the same shape repeatedly: an Excel sheet with a few
-source/note rows, one or two header rows, an unlabeled date column, and a block
-of measure columns (often with a trailing "Last updated" note). ``melt_sheet``
-detects that structure and returns tidy long ``(date, series, value)`` records,
-combining a grouped two-row header into a single series label when present.
-"""
+"""Shared parsing for Federal Reserve statistical workbooks."""
 
 from __future__ import annotations
 
@@ -135,17 +128,7 @@ def pivot_wide(
     column: str = "series",
     value: str = "value",
 ) -> list[dict[str, Any]]:
-    """Pivot tidy long ``(index, column, value)`` records into wide rows.
-
-    Returns one row per distinct ``index`` value (ordered by first appearance),
-    each carrying one field per distinct ``column`` value with the series order
-    preserved. ``index`` may be a single field or a tuple of fields (e.g.
-    ``("date", "country")``) — the extra index fields stay as columns and serve as
-    table row groups. A ``(index, column)`` pair absent from the input is simply
-    omitted from that row, leaving a blank table cell. Rows whose every non-index
-    value is ``None`` are dropped, so leading periods that predate any observation
-    do not surface as all-blank table rows.
-    """
+    """Pivot tidy long ``(index, column, value)`` records into wide rows."""
     index_cols = (index,) if isinstance(index, str) else tuple(index)
     rows: dict[Any, dict[str, Any]] = {}
     for record in records:

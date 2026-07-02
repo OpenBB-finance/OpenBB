@@ -121,14 +121,7 @@ class FederalReserveRichmondCFOQueryParams(QueryParams):
 
 
 class FederalReserveRichmondCFOData(Data):
-    """Richmond Fed CFO Survey Data.
-
-    One row per (date, category), with one column per measure (series) within the
-    selected table carrying that measure's value. The measures are pivoted to wide,
-    so the measure columns are dynamic. ``category`` is the breakdown the row
-    applies to where the table is disaggregated (firm size, sector, employment
-    category, or the expectation measure); null for undisaggregated tables.
-    """
+    """Richmond Fed CFO Survey Data."""
 
     date: dateType = Field(description="The survey quarter start date.")
     category: str | None = Field(
@@ -200,9 +193,6 @@ class FederalReserveRichmondCFOFetcher(
             date_cls(int(year), (int(quarter) - 1) * 3 + 1, 1)
             for year, quarter in zip(frame["year"], frame["quarter"])
         ]
-        # A column that holds no numeric values is a breakdown dimension (firm
-        # size, sector, expectation measure, ...) carried as rows; keeping it as a
-        # key stops several rows per quarter collapsing onto one (date, series).
         value_columns: list[str] = []
         category_columns: list[str] = []
         for column in frame.columns:

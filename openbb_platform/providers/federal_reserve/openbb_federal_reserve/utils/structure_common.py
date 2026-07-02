@@ -1,12 +1,4 @@
-"""Shared helpers for the committed financial-report structure generators.
-
-The per-report structure generators (``fry9c_structure``, ``ffiec101_structure``,
-``ffiec102_structure``, ``fry15_structure``, ``ffiec002_structure``) each parse a
-Reporting Central user guide into the same ordered ``{schedule, schedule_name,
-line, caption, mdrm, columns, level, is_header}`` item shape and commit it as a
-static ``structure.json`` asset. This module holds the pieces common to those
-generators so each report module carries only its own parsing logic.
-"""
+"""Shared helpers for the committed financial-report structure generators."""
 
 from __future__ import annotations
 
@@ -15,7 +7,6 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-# An 8-character MDRM item code: a 4-letter prefix then 4 alphanumerics.
 MDRM = re.compile(r"\b[A-Z]{4}[A-Z0-9]{4}\b")
 
 

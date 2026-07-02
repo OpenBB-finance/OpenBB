@@ -83,12 +83,7 @@ class FederalReserveMoneyMarketFundsQueryParams(QueryParams):
 
 
 class FederalReserveMoneyMarketFundsData(Data):
-    """Federal Reserve Money Market Funds Holdings Data.
-
-    The base ``Data`` model allows extra fields, so the ``detail`` table's
-    ``country`` and the pivoted category columns flow through as dynamic
-    columns; non-detail tables carry no ``country`` column at all.
-    """
+    """Federal Reserve Money Market Funds Holdings Data."""
 
     date: dateType = Field(description="The observation date.")
 
@@ -119,8 +114,6 @@ class FederalReserveMoneyMarketFundsFetcher(
 
         rows = parse_mmf(fetch_mmf(query.table))
         if query.country:
-            # Detail-table countries are region paths (e.g. "Asia and Pacific;
-            # Japan"), so match the term anywhere in the path.
             wanted = query.country.strip().lower()
             rows = [
                 row
@@ -141,12 +134,7 @@ class FederalReserveMoneyMarketFundsFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReserveMoneyMarketFundsData]:
-        """Pivot the long rows to wide category columns.
-
-        The ``detail`` table is keyed by ``(date, country)`` so the country
-        dimension survives as a row-group column; every other table is keyed by
-        ``date`` alone and therefore has no country column.
-        """
+        """Pivot the long rows to wide category columns."""
         from openbb_federal_reserve.utils.workbook import pivot_wide
 
         index: str | tuple[str, ...] = (

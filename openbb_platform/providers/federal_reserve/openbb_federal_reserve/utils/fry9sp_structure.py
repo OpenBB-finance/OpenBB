@@ -1,29 +1,4 @@
-"""FR Y-9SP report structure generator.
-
-Builds the ordered, hierarchical item list for the FR Y-9SP (Parent Company Only
-Financial Statements for Small Holding Companies) so the model can render the
-form grouped by schedule and indent depth like the other FFIEC report
-structures. The committed result is the static asset
-``assets/fry9sp/structure.json``; the live model loads that asset.
-
-The form layout (schedule, line reference, caption, MDRM and indent depth) is
-the curated ``_FORM`` table, transcribed from the FR Y-9SP Reporting Central
-upload user guide (Appendix A) with the wrapped multi-line captions reassembled.
-The emitted structure is then restricted to the item set that the public
-per-institution feed actually carries: the union of the value-bearing MDRM codes
-filed by the sampled small holding companies, taken across their filed periods
-and excluding the institution-identity and submission-administration rows. A
-value item whose code is absent from every sampled filing (a permanently-empty
-confidential or large-filer-only row) is dropped, and a section header is kept
-only when a filed value item nests under it.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.fry9sp_structure
-
-Pass ``--csv`` one or more times to validate against local CSV copies instead of
-fetching the canonical per-institution feed.
-"""
+"""FR Y-9SP report structure generator."""
 
 from __future__ import annotations
 
@@ -44,8 +19,6 @@ CSV_URL = (
     "?rpt=FRY9SP&id={rssd}&dt={date}"
 )
 
-# The small parent-only holding companies sampled to derive the public report's
-# true item set, each across its filed periods.
 SAMPLE_RSSDS: tuple[str, ...] = ("1020395", "2334062")
 SAMPLE_DATES: tuple[str, ...] = ("20251231", "20250630", "20241231", "20231231")
 
@@ -61,8 +34,6 @@ _SCHEDULE_NAMES: dict[str, str] = {
     "NOTES": "Notes to the Financial Statements",
 }
 
-# An institution-identity or submission-administration ItemName, never a filed
-# financial metric, excluded from the value-bearing union and never rendered.
 _IDENTITY_NAMES = {
     "INSTITUTION NAME",
     "CITY AND STATE",
@@ -80,8 +51,6 @@ _IDENTITY_NAMES = {
 
 _MDRM_NAME = re.compile(r"[A-Z]{4}[A-Z0-9]{4}")
 
-# (schedule, line, caption, mdrm, level, is_header). Captions are the user-guide
-# form text with wrapped lines reassembled; ``None`` mdrm marks a section header.
 _FORM: tuple[tuple[str, str | None, str, str | None, int, bool], ...] = (
     (
         "COVER",
@@ -751,11 +720,7 @@ _FORM: tuple[tuple[str, str | None, str, str | None, int, bool], ...] = (
 
 
 def _fetch_bytes(url: str) -> bytes:
-    """Download a canonical source URL as raw bytes.
-
-    The FFIEC per-institution CSV endpoint sits behind Cloudflare and is fetched
-    through the shared browser-impersonating session.
-    """
+    """Download a canonical source URL as raw bytes."""
     from openbb_federal_reserve.utils.curl_session import get_session
 
     def warmup(session: Any) -> None:
@@ -770,13 +735,7 @@ def _fetch_bytes(url: str) -> bytes:
 
 
 def _csv_value_codes(csv_bytes: bytes) -> set[str]:
-    """Return the value-bearing MDRM codes in one per-institution CSV.
-
-    Institution-identity and submission-administration rows (``Institution
-    Name``, the address block, ``ID_RSSD``, ``Report Date``) carry the entity's
-    profile rather than a filed metric and are excluded; only rows whose
-    ``ItemName`` is an eight-character MDRM code are kept.
-    """
+    """Return the value-bearing MDRM codes in one per-institution CSV."""
     import csv as _csv
     import io
 
@@ -802,13 +761,7 @@ def _filed_union(csv_payloads: list[bytes]) -> set[str]:
 
 
 def _build_items(filed: set[str]) -> list[dict[str, Any]]:
-    """Project the curated form onto the filed item set in form order.
-
-    A value row is kept only when its MDRM is in ``filed``; a section header is
-    kept only when a kept value row nests under it (the next shallower-or-equal
-    sibling closes the section). The cover block keeps only its filed contact and
-    confidential-treatment rows.
-    """
+    """Project the curated form onto the filed item set in form order."""
     keep = [False] * len(_FORM)
     for index, row in enumerate(_FORM):
         if not row[5] and row[3] in filed:

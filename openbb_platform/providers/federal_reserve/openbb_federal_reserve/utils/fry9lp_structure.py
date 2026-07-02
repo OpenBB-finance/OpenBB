@@ -1,31 +1,4 @@
-"""FR Y-9LP report structure generator.
-
-Parses the FR Y-9LP (Parent Company Only Financial Statements for Large Holding
-Companies) Reporting Central user guide PDF (Appendix A, the detailed field
-specifications) into an ordered, hierarchical list of report items so the model
-can render the form grouped by schedule and indent depth like the FR Y-9C
-structure. The parsed result is committed as a static asset
-(``assets/fry9lp/structure.json``); the live model loads that asset rather than
-re-parsing the PDF at request time.
-
-The FR Y-9LP appendix shares the FR Y-9C single-MDRM-per-line layout (no wide
-column grids), so the shared :mod:`report_structure` Appendix A parser is reused
-and driven by an FR Y-9LP :class:`~.report_structure.ReportConfig`; only the
-report-specific banners, noise lines, schedule pattern and instructional-prose
-filter live here. The public report's true item set is the union of the
-value-bearing, non-admin codes across the sampled filers' latest-period
-``ReturnFinancialReportCSV`` feeds; value-items whose code appears in no sampled
-CSV (permanently-empty confidential and cover-page identity rows) are pruned so
-the structure carries no dead, always-blank rows.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.fry9lp_structure
-
-Pass ``--pdf <path>`` to parse a local copy instead of fetching the canonical
-URL, and ``--csv <path>`` (repeatable) to supply saved per-institution CSVs for
-the coverage union instead of fetching them live.
-"""
+"""FR Y-9LP report structure generator."""
 
 from __future__ import annotations
 
@@ -46,14 +19,9 @@ USER_GUIDE_URL = (
     "central-bank/reporting-central/fry-9lp-user-guide.pdf"
 )
 
-# The large holding companies whose latest-period CSVs define the public report's
-# true item set: the union of their value-bearing, non-admin codes.
 VALIDATION_RPT = "FRY9LP"
 VALIDATION_RSSDS = (1039502, 1073757)
 
-# Cover/admin rows that never represent a public report value-item: institution
-# identity and the report-date keys. Matched case-insensitively, with any
-# ``DT``/``DT_*Q`` reporting-date row excluded by prefix.
 _ADMIN_ITEM_NAMES = {
     "INSTITUTION NAME",
     "CITY AND STATE",
@@ -73,8 +41,6 @@ ASSET_PATH = (
     Path(__file__).resolve().parent.parent / "assets" / "fry9lp" / "structure.json"
 )
 
-# A schedule banner, e.g. "Schedule PI - Parent Company Only Income Statement",
-# "Schedule PC-A - Investments in Subsidiaries and Associated Companies".
 _SCHEDULE_HEADER = re.compile(r"^Schedule\s+([A-Z]{2}(?:-[A-Z])?)\s*[-–]\s*(.+)$")
 
 _NOISE = {
@@ -128,7 +94,6 @@ def _latest_quarter_end() -> str:
     today = date.today()
     quarter = (today.month - 1) // 3 + 1
     year = today.year
-    # Step back to the prior quarter to land on a filed, available period.
     quarter -= 1
     if quarter == 0:
         quarter, year = 4, year - 1
@@ -137,13 +102,7 @@ def _latest_quarter_end() -> str:
 
 
 def _hoist_cover_items(items: list[dict[str, Any]]) -> None:
-    """Re-tag the trailing flat ``Cover Page`` block as its own COVER schedule.
-
-    The cover-page contact and identification fields print as a flat
-    "Cover Page <caption> <MDRM>" run after the numbered schedules; the shared
-    parser leaves them under the active schedule, so move them into a dedicated
-    ``COVER`` schedule and strip the redundant "Cover Page" caption prefix.
-    """
+    """Re-tag the trailing flat ``Cover Page`` block as its own COVER schedule."""
     code, name = _COVER_SCHEDULE
     for item in items:
         caption = item["caption"]
@@ -163,12 +122,7 @@ def build_items(pdf_bytes: bytes) -> list[dict[str, Any]]:
 
 
 def _csv_mdrms(csv_text: str) -> set[str]:
-    """Return the value-bearing item codes in one filer's report CSV.
-
-    Identity/admin rows (institution identity, the report-date keys, and any
-    ``DT``/``DT_*Q`` row) are excluded, and only rows carrying a non-empty value
-    are kept, so the result is the filer's true public value-item set.
-    """
+    """Return the value-bearing item codes in one filer's report CSV."""
     import csv
     import io
 
@@ -198,22 +152,12 @@ def _union_mdrms(csv_texts: list[str]) -> set[str]:
 def _prune_permanent_empties(
     items: list[dict[str, Any]], union: set[str]
 ) -> list[dict[str, Any]]:
-    """Drop value-items whose code appears in no sampled CSV.
-
-    These are permanently-empty form rows (confidential indicators and the
-    cover-page legal-title/address identity fields), which the public CSV feed
-    never returns; keeping them would render dead, always-blank rows.
-    """
+    """Drop value-items whose code appears in no sampled CSV."""
     return [item for item in items if not (item["mdrm"] and item["mdrm"] not in union)]
 
 
 def validate(items: list[dict[str, Any]], csv_texts: list[str]) -> dict[str, Any]:
-    """Compare the structure's codes against the sampled filers' union.
-
-    Reports both directions: ``coverage`` is the share of the union mapped to a
-    structure value-item, and ``permanent_empty`` lists structure codes that
-    appear in no sampled CSV (which must be empty).
-    """
+    """Compare the structure's codes against the sampled filers' union."""
     structure_mdrms = {item["mdrm"] for item in items if item["mdrm"]}
     union = _union_mdrms(csv_texts)
     covered = union & structure_mdrms
@@ -295,7 +239,6 @@ def _main() -> None:
     )
 
 
-# Re-export for symmetry with the sibling generators and direct test access.
 __all__ = [
     "MDRM",
     "USER_GUIDE_URL",

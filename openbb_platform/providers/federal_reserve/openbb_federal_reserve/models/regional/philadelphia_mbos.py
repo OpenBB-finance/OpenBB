@@ -27,11 +27,7 @@ class FederalReservePhiladelphiaManufacturingQueryParams(QueryParams):
 
 
 class FederalReservePhiladelphiaManufacturingData(Data):
-    """Philadelphia Fed Manufacturing Business Outlook Survey Data.
-
-    One row per survey month, with one column per diffusion-index code carrying
-    that code's value.
-    """
+    """Philadelphia Fed Manufacturing Business Outlook Survey Data."""
 
     date: dateType = Field(description="The survey month, as a month-start date.")
 

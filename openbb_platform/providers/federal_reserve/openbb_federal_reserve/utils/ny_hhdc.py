@@ -1,12 +1,4 @@
-"""New York Fed Household Debt and Credit (HHDC) discovery, parsing, and PDF helpers.
-
-The Quarterly Report on Household Debt and Credit publishes a data workbook and a
-full PDF report per quarter, at stable un-hashed URLs keyed by the quarter. The
-workbook has one ``Page N Data`` sheet per chart in the report, listed in its
-table of contents. This module discovers the latest quarter, enumerates the
-archive, melts any data sheet to long ``(date, series, value)`` records, and
-serves a selected report PDF.
-"""
+"""New York Fed Household Debt and Credit (HHDC) discovery, parsing, and PDF helpers."""
 
 from __future__ import annotations
 
@@ -24,9 +16,6 @@ XLSX_URL = (
 )
 PDF_URL = BASE_URL + "/medialibrary/interactives/householdcredit/data/pdf/HHDC_{}.pdf"
 
-# Stable table keys mapped to the workbook page number that carries the data.
-# Keys are quarter-agnostic, so they hold across releases even when the report's
-# cross-section snapshot titles change quarter.
 TABLES = {
     "total_debt_balance": 3,
     "number_of_accounts_by_loan_type": 4,
@@ -91,7 +80,7 @@ def _coerce_date(value: Any) -> dateType | None:
     from pandas import Timestamp, isna
 
     if isinstance(value, Timestamp):  # pragma: no cover - Timestamp subclasses
-        return value.date()  # datetime.datetime, so the branch above always wins.
+        return value.date()
     if isna(value):
         return None
     return None
@@ -119,13 +108,7 @@ def parse_hhdc_sheet(
     start_date: dateType | None = None,
     end_date: dateType | None = None,
 ) -> list[dict[str, Any]]:
-    """Melt one HHDC ``Page N Data`` sheet into long ``(date, series, value)`` records.
-
-    Three sheet layouts are handled: period-in-rows (a quarter or date in the
-    first column with category columns), period-in-columns (a header row of
-    quarters with category rows, used by the by-state charts), and a single-period
-    cross-section snapshot (the quarter comes from the sheet title).
-    """
+    """Melt one HHDC ``Page N Data`` sheet into long ``(date, series, value)`` records."""
     from io import BytesIO
 
     from pandas import isna, read_excel

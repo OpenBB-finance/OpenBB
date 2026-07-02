@@ -1,12 +1,4 @@
-"""Federal Reserve Data Download Program (DDP) catalog and client.
-
-The set of published statistical releases is a fixed, known list - it is encoded
-as ``RELEASES`` rather than discovered at runtime, so selecting a dataset never
-triggers any catalog or freshness network calls. Each release exposes one or
-more preformatted *packages* (data tables) addressed by an opaque hash; the
-hashes for a single release are scraped from its ``Choose.aspx`` page once and
-cached. Payloads are SDMX-ML, parsed by ``openbb_federal_reserve.utils.sdmx``.
-"""
+"""Federal Reserve Data Download Program (DDP) catalog and client."""
 
 from __future__ import annotations
 
@@ -18,8 +10,6 @@ STRUCTURE_URL = (
     "https://www.federalreserve.gov/datadownload/Output/{rel}/Metadata/{rel}_struct.xml"
 )
 
-# The fixed set of currently-published DDP releases: normalized code ->
-# (original-case rel code, display name, public dotted code). Discontinued
 # releases are omitted.
 RELEASES: dict[str, tuple[str, str, str]] = {
     "H6": ("H6", "Money Stock Measures", "H.6"),
@@ -54,11 +44,8 @@ RELEASES: dict[str, tuple[str, str, str]] = {
     ),
 }
 
-# Literal-typed user-facing dataset codes (the public release codes).
 DATASET_CHOICES = tuple(public for _, _, public in RELEASES.values())
 
-# The Fed statistical release schedule feed (UTF-8 BOM), distinct from the
-# newsevents calendar; powers ``federalreserve.gov/data/releaseschedule.htm``.
 SCHEDULE_URL = "https://www.federalreserve.gov/data/statcalendar.json"
 
 
@@ -68,13 +55,7 @@ def _normalize_release(value: str) -> str:
 
 
 def match_release_title(title: str) -> str | None:
-    """Map a release-schedule event title to a DDP public code, else ``None``.
-
-    Titles take the form ``"H.15 - Selected Interest Rates"`` (code prefix),
-    ``"... (SLOOS)"`` (parenthetical code), or a code-less name. A leading code
-    that is not a current DDP release (e.g. the discontinued ``G.5``/``H.3``)
-    returns ``None`` rather than falling through to a same-named release.
-    """
+    """Map a release-schedule event title to a DDP public code, else ``None``."""
     import re
 
     upper = title.strip().upper()
@@ -104,12 +85,7 @@ def list_releases() -> list[dict[str, str]]:
 
 
 def fetch_release_schedule() -> list[dict[str, Any]]:
-    """Return the Federal Reserve statistical release schedule (cached daily).
-
-    Each scheduled release event is expanded to one row per date, carrying the
-    matched DDP public code (``release``) when the event corresponds to a
-    currently-published release.
-    """
+    """Return the Federal Reserve statistical release schedule (cached daily)."""
     import json
 
     from openbb_core.provider.utils.helpers import make_request
@@ -175,9 +151,6 @@ def release_packages(release: str) -> list[dict[str, str]]:
         response = make_request(f"{CHOOSE_URL}?rel={original}", timeout=30)
         response.raise_for_status()
         text = unescape(response.text)
-        # Small releases list packages as radio inputs with a trailing <label>;
-        # large releases (e.g. Z.1) list them as <option>s. Both carry the table
-        # name immediately before a ``[csv, ...]`` size annotation.
         pattern = (
             r"series=([0-9a-f]{16,})[^\"]*\"[^>]*>"
             r"(?:\s*<label[^>]*>)?\s*([^[<]+?)\s*\["
@@ -208,12 +181,7 @@ def list_datasets(dataset: str) -> list[dict[str, str]]:
 
 
 def resolve_dataset(release: str, table: str | None = None) -> tuple[str, str]:
-    """Resolve a release (and optional table) to a ``(release, package)`` pair.
-
-    Selecting a dataset scrapes only that one release's tables (cached) - no
-    catalog or freshness calls. With no ``table`` the release's first table is
-    used; otherwise the table is matched by name (exact-first, then substring).
-    """
+    """Resolve a release (and optional table) to a ``(release, package)`` pair."""
     code = _normalize_release(release)
     if code not in RELEASES:
         valid = ", ".join(DATASET_CHOICES)
@@ -244,16 +212,9 @@ def build_url(
     end_date: str | None = None,
     last_obs: int | None = None,
 ) -> str:
-    """Build a DDP SDMX-ML download URL for a release package.
-
-    An empty ``lastobs=`` is read by the DDP as zero observations, so the limit
-    and date-window parameters are OMITTED entirely when unset — a request with
-    none of them returns the full series, which is what ``limit=None``/``0`` means.
-    """
+    """Build a DDP SDMX-ML download URL for a release package."""
     from urllib.parse import urlencode
 
-    # With a date window the DDP needs BOTH bounds (a missing one is filled with
-    # a wide sentinel it clamps to the series' range).
     if start_date and not end_date:
         end_date = "2099-12-31"
     elif end_date and not start_date:
@@ -278,12 +239,7 @@ def build_url(
 
 
 def fetch_structure(release: str) -> dict[str, dict[str, str]]:
-    """Return a release's dimension codelists from its structure file (cached).
-
-    The structure file is a small, observation-free SDMX document; parsing it
-    yields ``{dimension: {code: label}}`` for resolving the data's dimension
-    codes to their official Federal Reserve labels.
-    """
+    """Return a release's dimension codelists from its structure file (cached)."""
     from openbb_core.provider.utils.helpers import make_request
 
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
@@ -296,7 +252,6 @@ def fetch_structure(release: str) -> dict[str, dict[str, str]]:
         response = make_request(STRUCTURE_URL.format(rel=code), timeout=30)
         if response.status_code != 200:
             return {}
-        # The DDP serves UTF-8 (some files with a BOM) but sets no charset.
         return parse_structure(response.content.decode("utf-8-sig", "replace"))
 
     return cached(
@@ -329,13 +284,7 @@ def fetch_dataset(
     end_date: str | None = None,
     limit: int | None = None,
 ) -> list[dict[str, Any]]:
-    """Download and parse one DDP data table into long-format rows (cached).
-
-    ``limit`` maps to the DDP ``lastNObservations`` parameter; ``0`` or ``None``
-    returns the full series. When the full series is already cached it is sliced
-    from the cache rather than re-fetched; otherwise only the last ``limit``
-    observations are downloaded.
-    """
+    """Download and parse one DDP data table into long-format rows (cached)."""
     from openbb_core.provider.utils.helpers import make_request
 
     from openbb_federal_reserve.utils.cache import (
@@ -353,7 +302,6 @@ def fetch_dataset(
             build_url(release, package, start_date, end_date, last_obs), timeout=60
         )
         response.raise_for_status()
-        # The DDP serves UTF-8 (some files with a BOM) but sets no charset.
         xml = response.content.decode("utf-8-sig", "replace")
         return to_rows(parse_series(xml), fetch_structure(release))
 

@@ -58,13 +58,7 @@ class FederalReserveNewYorkEmpireStateQueryParams(QueryParams):
 
 
 class FederalReserveNewYorkEmpireStateData(Data):
-    """New York Fed Empire State Manufacturing Survey Data.
-
-    One row per survey month, with one column per combined indicator, horizon,
-    and measure identifier carrying that series' value. The series are pivoted to
-    wide, so the columns vary with the selected dataset (diffusion-only or the
-    all-series response shares).
-    """
+    """New York Fed Empire State Manufacturing Survey Data."""
 
     date: dateType = Field(description="The survey month, as the month-end date.")
 

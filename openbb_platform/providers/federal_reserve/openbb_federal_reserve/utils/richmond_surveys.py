@@ -1,14 +1,4 @@
-"""Richmond Fed Fifth District survey download, parsing, and PDF helpers.
-
-The Richmond Fed publishes its Fifth District business surveys (manufacturing,
-non-manufacturing, and the per-state Carolinas/Maryland/Virginia variants) as
-monthly historical-series workbooks, and each release as a per-month PDF linked
-from a survey archive page. This module centralises the HTTP access (through a
-single patchable ``request_bytes`` so a browser-impersonating fallback can be
-swapped in if the site rejects a plain client), the workbook download/parse, and
-the PDF archive index, which folds in the static Regional Economic Snapshots for
-the multi-file viewer.
-"""
+"""Richmond Fed Fifth District survey download, parsing, and PDF helpers."""
 
 from __future__ import annotations
 
@@ -179,8 +169,6 @@ def parse_survey_records(
 
 _ADJUSTMENTS = {"nsa": "Not Seasonally Adjusted", "sa": "Seasonally Adjusted"}
 _HORIZONS = {"c": "Current", "e": "Expectations (Six Months Ahead)"}
-# Survey infixes that sit between the adjustment prefix and the indicator; the
-# per-state surveys omit it, so only a known infix is stripped.
 _INFIXES = {"mfg", "nmf", "svc", "car", "mar", "md", "va"}
 _INDICATORS = {
     "ship": "Shipments",
@@ -277,12 +265,7 @@ def parse_survey_wide(
     start_date: dateType | None = None,
     end_date: dateType | None = None,
 ) -> list[dict[str, Any]]:
-    """Decode a survey sheet into wide rows, one indicator column per series.
-
-    Pivots the long records onto ``(date, adjustment, horizon)``, so each row
-    carries one field per survey indicator holding that indicator's diffusion
-    index. The indicator columns are dynamic.
-    """
+    """Decode a survey sheet into wide rows, one indicator column per series."""
     from openbb_federal_reserve.utils.workbook import pivot_wide
 
     records = parse_survey_long(content, sheet, start_date, end_date)
@@ -316,10 +299,7 @@ def _classify_release(survey: str, href: str) -> dict[str, Any] | None:
 
 
 def _snapshot_records() -> list[dict[str, Any]]:
-    """Return the static Regional Economic Snapshot catalog records.
-
-    Dated today so the always-current snapshots sort to the top of the catalog.
-    """
+    """Return the static Regional Economic Snapshot catalog records."""
     today = dateType.today().isoformat()
     return [
         {

@@ -30,12 +30,7 @@ class FederalReserveRichmondManufacturingQueryParams(QueryParams):
 
 
 class FederalReserveRichmondManufacturingData(Data):
-    """Richmond Fed Fifth District Manufacturing Survey Data.
-
-    One row per (date, adjustment, horizon), with one column per survey indicator
-    carrying that indicator's diffusion-index value. The indicators are pivoted to
-    wide, so the indicator columns are dynamic.
-    """
+    """Richmond Fed Fifth District Manufacturing Survey Data."""
 
     date: dateType = Field(description="The survey month.")
     adjustment: str | None = Field(

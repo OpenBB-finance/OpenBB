@@ -15,7 +15,6 @@ from openbb_federal_reserve.utils.philadelphia import MEDIA_URL
 
 URL = f"{MEDIA_URL}/surveys-and-data/nbos/nboshistory.xlsx"
 
-# adjustment -> (sheet, seasonal adjustment label)
 _TABLES = {
     "sa": ("Responses_and_diffusion", "Seasonally Adjusted"),
     "nsa": ("NSA", "Not Seasonally Adjusted"),
@@ -37,8 +36,6 @@ _INDICATORS = {
     "cp": "Capital Expenditures - Physical Plant",
     "ce": "Capital Expenditures - Equipment and Software",
 }
-# The general-activity questions also carry a six-month-ahead (future) variant,
-# encoded by appending ``f`` to the prefix.
 _FUTURE = {"garf": "General Activity (Region)", "gaf": "General Activity (Firm)"}
 _RESPONSES = {
     "inc": "increase",
@@ -98,12 +95,7 @@ class FederalReservePhiladelphiaNonmanufacturingQueryParams(QueryParams):
 
 
 class FederalReservePhiladelphiaNonmanufacturingData(Data):
-    """Philadelphia Fed Nonmanufacturing Business Outlook Survey Data.
-
-    One row per survey month, with one column per
-    ``indicator - horizon - response`` series carrying that series' value for the
-    selected seasonal adjustment. The series are pivoted to wide columns.
-    """
+    """Philadelphia Fed Nonmanufacturing Business Outlook Survey Data."""
 
     date: dateType = Field(description="The survey month, as a month-start date.")
 
@@ -143,7 +135,7 @@ class FederalReservePhiladelphiaNonmanufacturingFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReservePhiladelphiaNonmanufacturingData]:
-        """Decode the sheet, then pivot the series to wide ``date`` rows."""
+        """Decode and pivot survey sheet to wide date rows."""
         from pandas import isna, to_datetime, to_numeric
 
         from openbb_federal_reserve.utils.philadelphia import read_workbook

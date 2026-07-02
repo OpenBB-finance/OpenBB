@@ -183,12 +183,7 @@ class FederalReserveNewYorkHouseholdDebtQueryParams(QueryParams):
 
 
 class FederalReserveNewYorkHouseholdDebtData(Data):
-    """New York Fed Household Debt and Credit Data.
-
-    One row per quarter, with one column per series within the requested table.
-    The series are pivoted to wide, so the columns vary with the selected report
-    table.
-    """
+    """New York Fed Household Debt and Credit Data."""
 
     date: dateType = Field(description="The quarter, as the quarter-end date.")
 

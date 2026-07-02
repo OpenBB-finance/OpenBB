@@ -1,12 +1,4 @@
-"""Kansas City Fed agricultural-data workbook parsing.
-
-The Quarterly Agricultural Credit Survey workbooks lay each table out as a
-``Year`` / ``Qtr.`` index (the year is only printed on the first quarter, so it is
-forward-filled) followed by one column per region or category, with descriptive
-title rows above each block; a sheet may stack more than one block. The Ag Finance
-Databook historical workbook is a ``Date`` column of ``YYYYQn`` labels with coded
-``A0nn`` series resolved through its companion ``Descriptions`` sheet.
-"""
+"""Kansas City Fed agricultural-data workbook parsing."""
 
 from __future__ import annotations
 
@@ -22,12 +14,7 @@ _INDEX_URL = (
 
 
 def resolve_kc_ag_url(document_id: int) -> str:
-    """Resolve a stable document id to its current (quarter-versioned) file URL.
-
-    The Center for Agriculture data index links each workbook by a stable document
-    id under a filename that changes every quarter, so the live URL is looked up
-    from the index page rather than hard-coded.
-    """
+    """Resolve a stable document id to its current (quarter-versioned) file URL."""
     import re
 
     from openbb_federal_reserve.utils.kansas_city import fetch_kansas_city
@@ -57,14 +44,7 @@ def _quarter_end(year: Any, quarter: Any) -> dateType | None:
 def _quarterly_column_labels(
     raw: Any, header_row: int, skip_rows: set[int]
 ) -> dict[int, str]:
-    """Build a distinct label for each value column from the multi-row header.
-
-    Survey sheets stack several header rows above the ``Year`` row: merged group
-    super-headers (one value spanning a block of columns) and per-column label
-    lines. Each column's label is the join of its own header cells; any label
-    shared by two columns is then disambiguated with the forward-filled group
-    super-header so nothing collapses to a single series.
-    """
+    """Build a distinct label for each value column from the multi-row header."""
     from pandas import notna
 
     def _filled(row: int, column: int) -> str:
@@ -88,8 +68,6 @@ def _quarterly_column_labels(
         super_rows.append(row)
     super_rows.reverse()
 
-    # Dense rows are per-column label lines (combine into each column's name);
-    # sparse rows are merged group super-headers (used only to break ties).
     label_lines: list[int] = []
     group_rows: list[int] = []
     for row in super_rows:
@@ -290,14 +268,7 @@ def parse_kc_annual_table(
     start_date: dateType | None = None,
     end_date: dateType | None = None,
 ) -> list[dict[str, Any]]:
-    """Melt an archived databook sheet to long records.
-
-    Handles both sheet layouts: a ``Period`` index in the first column with
-    breakdown categories across the rest, and sheets that lead with one or more
-    characteristic columns (e.g. ``Loan Characteristic``, ``Term``) before the
-    ``Period`` column. The latter stack several measures in one sheet, so each
-    row's characteristic is folded into the series label to keep it distinct.
-    """
+    """Melt an archived databook sheet to long records."""
     import re
     from io import BytesIO
 
@@ -319,8 +290,6 @@ def parse_kc_annual_table(
 
     labels = raw.iloc[header_row]
     body = raw.iloc[header_row + 1 :].reset_index(drop=True)
-    # Characteristic columns precede the period column and qualify each row;
-    # forward-fill them so merged-cell blocks carry their label down.
     characteristic_columns = list(range(period_col))
     if characteristic_columns:
         filled = body.iloc[:, characteristic_columns].ffill()
@@ -360,9 +329,6 @@ def parse_kc_annual_table(
             and str(body.iloc[position, column]).strip()
         ]
         prefix = " - ".join(prefix_parts)
-        # Layout-2 sheets stack several report sections that reuse the same
-        # characteristic labels under a different (unlabeled) statistic. A repeated
-        # characteristic marks the next section, keeping every observation distinct.
         if prefix and prefix != previous_prefix:
             if prefix in seen_in_section:
                 section += 1

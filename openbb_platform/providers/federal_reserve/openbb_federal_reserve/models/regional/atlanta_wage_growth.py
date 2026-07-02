@@ -15,10 +15,6 @@ URL = (
     "/datafiles/chcs/wage-growth-tracker/wage-growth-data.xlsx"
 )
 
-# The Wage Growth Tracker workbook breaks the tracker out across many sheets;
-# each ``cut`` selects one breakdown whose category columns differ. The demographic
-# cuts are 12-month moving averages; the overall variants carry the non-smoothed,
-# distribution, zero-change, weighted, 1983-history, and alternative measures.
 _CUTS: dict[str, str] = {
     "overall": "data_overall",
     "race": "Race",
@@ -41,8 +37,6 @@ _CUTS: dict[str, str] = {
     "alternative": "Alternative WGT",
 }
 
-# The "Recession" column on the overall chart sheets is a 0/1 chart-shading flag,
-# not a wage-growth series.
 _DROP_SERIES = frozenset({"Recession"})
 
 
@@ -110,12 +104,7 @@ class FederalReserveAtlantaWageGrowthQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaWageGrowthData(Data):
-    """Atlanta Fed Wage Growth Tracker Data.
-
-    One row per observation month, with one column per category carrying that
-    category's median wage growth, in percent. The categories of the selected cut
-    are pivoted to wide, so the columns vary with the chosen breakdown.
-    """
+    """Atlanta Fed Wage Growth Tracker Data."""
 
     date: dateType = Field(description="The observation month.")
 

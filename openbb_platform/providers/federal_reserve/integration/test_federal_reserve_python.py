@@ -201,6 +201,27 @@ def test_federal_reserve_bhcpr_report(params, obb):
 
 @pytest.mark.parametrize(
     "params",
+    [
+        {
+            "rssd_id": "1039502",
+            "section": "Summary Ratios",
+            "period": None,
+            "provider": "federal_reserve",
+        }
+    ],
+)
+@pytest.mark.integration
+def test_federal_reserve_bhcpr(params, obb):
+    """Test the federal_reserve.ffiec.bhcpr endpoint."""
+    params = {p: v for p, v in params.items() if v is not None}
+    result = obb.federal_reserve.ffiec.bhcpr(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
     [{"indicator": "payroll_employment", "provider": "federal_reserve"}],
 )
 @pytest.mark.integration

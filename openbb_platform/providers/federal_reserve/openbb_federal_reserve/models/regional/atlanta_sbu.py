@@ -15,10 +15,6 @@ URL = (
     "/datafiles/research/surveys/business-uncertainty/sbu-data.xlsx"
 )
 
-# Table -> (sheet name, whether the sheet uses a grouped two-row header). The
-# smoothed/unsmoothed pairs and the distribution sheets all share a date column
-# followed by measure columns; the discontinued sheet groups its duplicated
-# percent columns under smoothed/unsmoothed banners.
 _TABLES: dict[str, tuple[str, bool]] = {
     "index_smoothed": ("Index Values (smoothed)", False),
     "index_unsmoothed": ("Index Values (unsmoothed) ", False),

@@ -1,12 +1,4 @@
-"""FFIEC CDR client for the UBPR Peer Group Average Distribution report.
-
-Fetches the percentile distribution of a UBPR ratio page across every bank in a
-peer group from the ``UbprReport.aspx`` WebForms report (report type 285). The
-public router exposes the page list, but the grid itself is an ASP.NET postback:
-load the report shell for its view state, then post back the page's table-of-
-contents link to render the distribution table (1st .. 99th percentiles and the
-trimmed average) for the selected reporting period.
-"""
+"""FFIEC CDR client for the UBPR Peer Group Average Distribution report."""
 
 from __future__ import annotations
 
@@ -95,14 +87,7 @@ def _number(text: str) -> float | None:
 
 
 def _concept_map(section: str, cycle_ids: str) -> dict[str, str]:
-    """Map a section's trimmed line captions to their UBPR concept codes.
-
-    The distribution report (rptid 285) renders only abbreviated captions, so the
-    concept code is recovered from the single-bank UBPR report (rptid 283), whose
-    ``MyUbprLinesData`` payload carries both the same captions and the code. The
-    first occurrence of a caption wins, which resolves the rare captions the report
-    repeats verbatim under different sub-headers.
-    """
+    """Map a section's trimmed line captions to their UBPR concept codes."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
     from openbb_federal_reserve.utils.ubpr_report import (
         _concept_code,
@@ -145,13 +130,7 @@ def _concept_map(section: str, cycle_ids: str) -> dict[str, str]:
 
 
 def _row_concept(row: dict[str, Any], codes: dict[str, str]) -> str:
-    """Resolve a row's concept code from its trimmed caption.
-
-    Memo footer rows (those carrying a ``PEER GROUP`` aggregate) resolve via the
-    pinned :data:`_MEMO_CONCEPTS` so their dollar concept is not shadowed by the
-    same-captioned distributed ratio line; all other rows resolve via the
-    caption-to-code map.
-    """
+    """Resolve a row's concept code from its trimmed caption."""
     text = re.sub(rf">?[\s{_NBSP}]*", "", str(row["label"]), count=1)
     if PEER_GROUP_COLUMN in row and text in _MEMO_CONCEPTS:
         return _MEMO_CONCEPTS[text]
@@ -186,13 +165,7 @@ def _enrich(
 
 
 def _set_page_narrative(rows: list[dict[str, Any]], section: str) -> None:
-    """Set the leading header row's narrative to the section's page description.
-
-    The first row of a rendered page is a section header carrying no period
-    values; its hover card shows the FFIEC "Summary of UBPR Page Content"
-    description for the page when one is mapped, leaving line-item narratives
-    untouched.
-    """
+    """Set the leading header row's narrative to the section's page description."""
     if not rows:
         return
     head = rows[0]
@@ -204,13 +177,7 @@ def _set_page_narrative(rows: list[dict[str, Any]], section: str) -> None:
 
 
 def _grid(html: str) -> list[dict[str, Any]]:
-    """Parse the rendered distribution table into wide percentile rows.
-
-    The memo footer rows (peer-group average assets, net income, and bank count)
-    render their single peer-group aggregate in the first data column; they are
-    keyed to a ``PEER GROUP`` column instead of misreading the value as the 1st
-    percentile.
-    """
+    """Parse the rendered distribution table into wide percentile rows."""
     match = re.search(
         r'<table[^>]*id="tableReportData"[^>]*>(.*?)</table>', html, re.DOTALL
     )

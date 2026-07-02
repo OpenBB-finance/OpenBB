@@ -21,13 +21,7 @@ def _pdf_url(base_url: str, code: str, rssd: str, period: dict[str, Any]) -> str
 
 
 def _pdf_choices(rssd_id: str, report_type: str | None) -> list[dict[str, Any]]:
-    """Build the filed-PDF choices for a firm.
-
-    With a report type, every filed period of that report is offered, newest
-    first, labelled ``"YYYY Qn"``. With no report type, the single most recent
-    filed PDF of EACH report the firm files is offered (labelled by report and
-    period), so the default view surfaces the latest document of each type.
-    """
+    """Build the filed-PDF choices for a firm."""
     from openbb_federal_reserve.utils.ffiec import (
         BASE_URL,
         READY_REPORTS,

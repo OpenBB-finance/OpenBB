@@ -22,7 +22,6 @@ router = Router(prefix="", description="Federal Reserve provider router.")
 _FR_META = {"category": "Federal Reserve", "subCategory": "FRB"}
 
 
-# Host widget id -> federal_reserve fallback id, used when the host extension is absent.
 _ECONOMY_WIDGET_ID_FALLBACK_MAP = {
     "economy_money_measures_federal_reserve_obb": "federal_reserve_money_measures_federal_reserve_obb",
     "economy_central_bank_holdings_federal_reserve_obb": "ny_central_bank_holdings_federal_reserve_obb",
@@ -76,8 +75,6 @@ async def get_apps_json() -> list[dict[str, Any]]:
 
 async def fomc_documents_download(params: Annotated[dict, Body()]) -> list:
     """Download FOMC documents from the Federal Reserve's website.
-
-    PDFs are base64 encoded under the `content` key in the response.
 
     Parameters
     ----------
@@ -185,9 +182,6 @@ async def fomc_documents_choices(
     return choices_list
 
 
-# Regional publication viewers all share one download + one choices endpoint on
-# the main router (BHCPR-style full paths). The choices endpoint dispatches to a
-# district's publications fetcher, normalising every catalog to {label, url}.
 _PUB_FETCHERS: dict[str, tuple[str, str]] = {
     "atlanta": ("atlanta_publications", "FederalReserveAtlantaPublicationsFetcher"),
     "boston": ("boston_publications", "FederalReserveBostonPublicationsFetcher"),
@@ -293,10 +287,6 @@ async def regional_publications_choices(district: str) -> list:
 
 async def market_probability_meetings() -> list:
     """List the latest date's reference FOMC meetings as dropdown choices.
-
-    The Atlanta Fed Market Probability Tracker rolls its reference meetings
-    forward on each release, so the ``meeting`` selector is backed dynamically by
-    this endpoint rather than a static enum.
 
     Returns
     -------

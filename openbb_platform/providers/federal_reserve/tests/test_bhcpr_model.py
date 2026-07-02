@@ -1,6 +1,7 @@
 """Tests for the per-institution BHCPR data fetcher model."""
 
 from datetime import datetime
+from pathlib import Path
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -9,18 +10,19 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ValidationError
 
 from openbb_federal_reserve.models.ffiec.bhcpr import (
+    FederalReserveBhcprData,
     FederalReserveBhcprFetcher,
     _default_period,
     _filed_periods,
+    _iso_to_display,
     _quarter_end,
     _resolve_period,
-    _sections,
+    _unit,
 )
 
 _NBSP = " "
+_FIXTURE = Path(__file__).parent / "fixtures" / "bhcpr" / "1039502_20260331.csv"
 
-# The firm's filed reports as parsed from its NIC profile: it files the BHCPR
-# quarterly, newest period first.
 _REPORTS = {
     "BHCPR": {
         "name": "BHCPR",
@@ -31,127 +33,158 @@ _REPORTS = {
     }
 }
 
-# The guide's parsed definitions, keyed ``"norm-section\x1enorm-item"``; only the
-# taxable-equivalent net interest income line carries a published definition here.
-_GUIDE_DEFS = {
-    "summary ratios\x1enet interest income tax equivalent": (
-        "NII on a TE basis divided by average assets."
-    ),
-}
+_SCHEMA = [
+    {
+        "section": "Summary Ratios",
+        "entries": [
+            {"kind": "subheader", "label": "Earnings and Profitability", "level": 0},
+            {
+                "kind": "item",
+                "label": "Net Interest Income (Tax Equivalent)",
+                "level": 1,
+                "code": "BHSR028",
+                "basis": "Percent of Average Assets",
+                "definition": "NII on a TE basis divided by average assets.",
+            },
+            {
+                "kind": "item",
+                "label": "Average Assets ($000)",
+                "level": 1,
+                "code": "BHSR029",
+                "basis": "Dollar Amount in Thousands",
+                "definition": None,
+            },
+            {
+                "kind": "item",
+                "label": "Operating Income",
+                "level": 1,
+                "code": None,
+                "basis": None,
+                "definition": None,
+            },
+        ],
+    },
+    {
+        "section": "Assets",
+        "entries": [
+            {
+                "kind": "item",
+                "label": "Total Assets",
+                "level": 0,
+                "code": "BHCK2170",
+                "basis": "Dollar Amount in Thousands",
+                "definition": None,
+            },
+        ],
+    },
+]
 
-# A parsed BHCPR payload mirroring ``fetch_bhcpr``: identity, the five ISO period
-# dates, and two sections -- a ratio section (a sub-header, a triplet metric with
-# history, and a bank-only row) and a dollar section (a single amount metric).
 _DATA = {
     "identity": {
         "institution_name": "JPMORGAN CHASE & CO.",
         "city_state": "NEW YORK, NY",
         "rssd_id": "1039502",
     },
-    "period_dates": [
-        "2026-03-31",
-        "2025-03-31",
-        "2025-12-31",
-        "2024-12-31",
-        "2023-12-31",
-    ],
-    "sections": [
-        {
-            "section": "Summary Ratios",
-            "rows": [
-                {"label": "Earnings and Profitability:", "is_header": True},
-                {
-                    "label": "Net interest income (tax equivalent)",
-                    "is_header": False,
-                    "bank": [2.15, 2.22, 2.17, 2.29, 2.35],
-                    "peer": 3.08,
-                    "percentile": 11,
-                },
-                {
-                    "label": "Average assets ($000)",
-                    "is_header": False,
-                    "bank": [4759098000000, None, None, None, None],
-                    "peer": None,
-                    "percentile": None,
-                },
-            ],
-        },
-        {
-            "section": "Assets",
-            "rows": [
-                {
-                    "label": "Real estate loans",
-                    "is_header": False,
-                    "bank": [504352000000, 490921000000, None, None, None],
-                    "peer": None,
-                    "percentile": None,
-                },
-            ],
-        },
-    ],
+    "periods": {
+        "": "20260331",
+        "_4Q": "20250331",
+        "_1Y": "20251231",
+        "_2Y": "20241231",
+        "_3Y": "20231231",
+    },
+    "values": {
+        "BHSR028": {"": 2.15, "_4Q": 2.22, "_1Y": 2.17, "_2Y": 2.29, "_3Y": 2.35},
+        "PHSR028": {"": 3.08},
+        "RKSR028": {"": 11},
+        "BHSR029": {"": 4759098000},
+        "BHCK2170": {"": 4900475000, "_4Q": 4357856000},
+    },
+    "descriptions": {},
 }
 
 
 def _patch(monkeypatch, data=None, reports=None):
-    """Patch the BHCPR fetch and the firm profile lookup to offline fixtures."""
+    """Patch the BHCPR fetch, holder resolution, profile lookup, and schema loader."""
+    monkeypatch.setattr(
+        "openbb_federal_reserve.utils.ffiec.resolve_bhcpr_holder",
+        lambda rssd: rssd,
+    )
     monkeypatch.setattr(
         "openbb_federal_reserve.utils.ffiec.fetch_bhcpr",
-        lambda rssd_id, date: dict(data or _DATA),
+        lambda rssd_id, date: dict(data if data is not None else _DATA),
     )
     monkeypatch.setattr(
         "openbb_federal_reserve.utils.ffiec.fetch_institution_financial_reports",
         lambda rssd: dict(reports if reports is not None else _REPORTS),
     )
     monkeypatch.setattr(
-        "openbb_federal_reserve.utils.bhcpr_guide.fetch_bhcpr_definitions",
-        lambda: dict(_GUIDE_DEFS),
+        "openbb_federal_reserve.utils.bhcpr_schema.load_schema",
+        lambda: [dict(entry) for entry in _SCHEMA],
     )
 
 
-class TestHelpers:
-    """Tests for the module-level helpers."""
+class TestUnit:
+    """Tests for the ``_unit`` basis-to-value-type map."""
 
-    def test_quarter_end(self):
+    @pytest.mark.parametrize(
+        ("basis", "expected"),
+        [
+            ("Dollar Amount in Thousands", "USD"),
+            ("Multiple (X)", "ratio"),
+            ("Number", "number"),
+            ("Percent of Average Assets", "percent"),
+            (None, "percent"),
+        ],
+    )
+    def test_maps_basis_to_value_type(self, basis, expected):
+        """Each guide basis renders as its value type."""
+        assert _unit(basis) == expected
+
+
+class TestIsoToDisplay:
+    """Tests for ``_iso_to_display``."""
+
+    def test_renders_iso_as_us_date(self):
+        """An ISO date renders as ``MM/DD/YYYY``."""
+        assert _iso_to_display("2026-03-31") == "03/31/2026"
+
+
+class TestQuarterEnd:
+    """Tests for ``_quarter_end``."""
+
+    @pytest.mark.parametrize(
+        ("quarter", "expected"),
+        [(1, "20250331"), (2, "20250630"), (3, "20250930"), (4, "20251231")],
+    )
+    def test_each_quarter_maps_to_its_end(self, quarter, expected):
         """Each quarter maps to its calendar quarter-end date."""
-        assert _quarter_end(2025, 1) == "20250331"
-        assert _quarter_end(2025, 4) == "20251231"
-
-    def test_sections_first_is_summary_ratios(self):
-        """The section registry opens with Summary Ratios and is non-empty."""
-        sections = _sections()
-        assert sections[0] == "Summary Ratios"
-        assert "Parent Company Balance Sheet" in sections
+        assert _quarter_end(2025, quarter) == expected
 
 
 class TestDefaultPeriod:
     """Tests for the ``_default_period`` availability heuristic."""
 
-    def test_walks_back_within_year(self, monkeypatch):
-        """A mid-year date walks back to the latest filed quarter without wrapping."""
+    def _freeze(self, monkeypatch, when):
+        """Freeze the module clock at a fixed datetime."""
 
         class _Now:
             """Frozen clock returning a fixed date."""
 
             @staticmethod
             def now():
-                """Return a fixed datetime."""
-                return datetime(2025, 11, 10)
+                """Return the fixed datetime."""
+                return when
 
         monkeypatch.setattr("openbb_federal_reserve.models.ffiec.bhcpr.datetime", _Now)
+
+    def test_walks_back_within_year(self, monkeypatch):
+        """A mid-year date walks back to the latest filed quarter without wrapping."""
+        self._freeze(monkeypatch, datetime(2025, 11, 10))
         assert _default_period() == (2025, 3)
 
     def test_walks_back_across_year(self, monkeypatch):
         """An early-quarter date walks back across the year boundary."""
-
-        class _Now:
-            """Frozen clock returning a fixed date."""
-
-            @staticmethod
-            def now():
-                """Return a fixed datetime."""
-                return datetime(2025, 1, 10)
-
-        monkeypatch.setattr("openbb_federal_reserve.models.ffiec.bhcpr.datetime", _Now)
+        self._freeze(monkeypatch, datetime(2025, 1, 10))
         assert _default_period() == (2024, 3)
 
 
@@ -221,12 +254,17 @@ class TestTransformQuery:
         with pytest.raises(ValidationError):
             FederalReserveBhcprFetcher.transform_query({})
 
+    def test_defaults_section_to_summary_ratios(self):
+        """The section defaults to Summary Ratios."""
+        query = FederalReserveBhcprFetcher.transform_query({"rssd_id": "1039502"})
+        assert query.section == "Summary Ratios"
+
 
 class TestExtractData:
     """Tests for ``extract_data`` selection and period defaulting."""
 
-    def test_fetches_selected_period(self, monkeypatch):
-        """The RSSD and resolved period drive the fetch."""
+    def test_fetches_resolved_holder_and_period(self, monkeypatch):
+        """The resolved holder RSSD and period drive the fetch."""
         captured: dict = {}
         _patch(monkeypatch)
         monkeypatch.setattr(
@@ -240,16 +278,7 @@ class TestExtractData:
         )
         data = FederalReserveBhcprFetcher.extract_data(query, None)
         assert captured == {"rssd": "1039502", "date": "20260331"}
-        assert data["sections"][0]["section"] == "Summary Ratios"
-
-    def test_unfiled_report_raises_empty(self, monkeypatch):
-        """A payload with no sections raises ``EmptyDataError``."""
-        _patch(monkeypatch, {**_DATA, "sections": []})
-        query = FederalReserveBhcprFetcher.transform_query(
-            {"rssd_id": "1039502", "period": "20250331"}
-        )
-        with pytest.raises(EmptyDataError):
-            FederalReserveBhcprFetcher.extract_data(query, None)
+        assert data["values"]["BHSR028"][""] == 2.15
 
     def test_defaults_period_to_latest_filed_when_omitted(self, monkeypatch):
         """Omitting the period defaults it to the firm's latest filed period."""
@@ -263,29 +292,14 @@ class TestExtractData:
         FederalReserveBhcprFetcher.extract_data(query, None)
         assert captured["date"] == "20260331"
 
-    def test_resolves_non_filer_to_top_tier_holder(self, monkeypatch):
-        """A bank that files no BHCPR is resolved to its BHCPR-filing holder."""
-        captured: dict = {}
-        monkeypatch.setattr(
-            "openbb_federal_reserve.utils.ffiec.fetch_bhcpr",
-            lambda rssd_id, date: captured.update(rssd=rssd_id) or dict(_DATA),
+    def test_empty_values_raise_empty(self, monkeypatch):
+        """A payload with no coded values raises ``EmptyDataError``."""
+        _patch(monkeypatch, {**_DATA, "values": {}})
+        query = FederalReserveBhcprFetcher.transform_query(
+            {"rssd_id": "1039502", "period": "20250331"}
         )
-
-        def _reports(rssd):
-            """The bank files FFIEC 101 only; its holder files the BHCPR."""
-            return dict(_REPORTS) if rssd == "1039502" else {"FFIEC101": {}}
-
-        monkeypatch.setattr(
-            "openbb_federal_reserve.utils.ffiec.fetch_institution_financial_reports",
-            _reports,
-        )
-        monkeypatch.setattr(
-            "openbb_federal_reserve.utils.ffiec._top_tier_holder",
-            lambda rssd: "1039502",
-        )
-        query = FederalReserveBhcprFetcher.transform_query({"rssd_id": "852218"})
-        FederalReserveBhcprFetcher.extract_data(query, None)
-        assert captured["rssd"] == "1039502"
+        with pytest.raises(EmptyDataError):
+            FederalReserveBhcprFetcher.extract_data(query, None)
 
 
 class TestTransformData:
@@ -313,87 +327,91 @@ class TestTransformData:
         }
 
     def test_emits_section_header(self, monkeypatch):
-        """The selected section opens with a header row carrying no values."""
+        """The selected section opens with a header row carrying no unit."""
         rows = self._result(monkeypatch).result
         assert rows[0].label == "Summary Ratios"
         assert rows[0].is_header is True
-        assert rows[0].model_dump().get("BHC") is None
-
-    def test_rows_are_rectangular(self, monkeypatch):
-        """Every row carries the same value columns so the table renders them all.
-
-        The Workspace derives the table's columns from the first (header) row, so a
-        ragged header would hide every value column under ``showAll``.
-        """
-        rows = self._result(monkeypatch).result
-        header_keys = set(rows[0].model_dump())
-        assert {"BHC", "Peer Group", "Percentile"} <= header_keys
-        assert all(set(row.model_dump()) == header_keys for row in rows)
+        assert rows[0].unit is None
 
     def test_subheader_rendered_as_indented_header(self, monkeypatch):
-        """A section's sub-header is an indented header row carrying no values."""
+        """A section's sub-header is an indented header row."""
         rows = self._result(monkeypatch).result
-        sub = next(r for r in rows if r.label.strip() == "Earnings and Profitability:")
+        sub = next(r for r in rows if r.label.strip() == "Earnings and Profitability")
         assert sub.is_header is True
-        assert sub.label == _NBSP * 2 + "Earnings and Profitability:"
+        assert sub.label == _NBSP * 2 + "Earnings and Profitability"
 
-    def test_metric_carries_bank_peer_percentile(self, monkeypatch):
-        """A ratio row carries the BHC value, peer average, and percentile rank.
-
-        The value columns are dynamic (emitted as extra fields, not a fixed schema)
-        so ``showAll`` renders them; they are read back through ``model_dump``.
-        """
+    def test_ratio_row_carries_bhc_peer_and_percentile(self, monkeypatch):
+        """A ratio row carries the BHC value, peer average, and percentile rank."""
         rows = self._result(monkeypatch).result
-        ratio = next(r for r in rows if r.label.endswith("(tax equivalent)"))
-        assert ratio.label == ">" + _NBSP * 2 + "Net interest income (tax equivalent)"
+        ratio = next(r for r in rows if r.label.endswith("(Tax Equivalent)"))
+        assert ratio.unit == "percent"
         dumped = ratio.model_dump()
-        assert dumped["BHC"] == 2.15
-        assert dumped["Peer Group"] == 3.08
-        assert dumped["Percentile"] == 11
+        assert dumped["03/31/2026 BHC"] == 2.15
+        assert dumped["03/31/2026 Peer #"] == 3.08
+        assert dumped["03/31/2026 Pct"] == 11
+        assert dumped["03/31/2025 BHC"] == 2.22
 
-    def test_metric_carries_prior_period_history(self, monkeypatch):
-        """A row carries the bank value for each prior period as an ISO-date column."""
+    def test_dollar_row_scaled_and_unit_suffix_stripped(self, monkeypatch):
+        """A dollar row scales thousands to full dollars and drops the ``($000)``."""
         rows = self._result(monkeypatch).result
-        ratio = next(r for r in rows if r.label.endswith("(tax equivalent)"))
-        dumped = ratio.model_dump()
-        assert dumped["2025-03-31"] == 2.22
-        assert dumped["2023-12-31"] == 2.35
+        avg = next(r for r in rows if not r.is_header and "Average Assets" in r.label)
+        assert avg.unit == "USD"
+        assert "($000)" not in avg.label
+        assert avg.model_dump()["03/31/2026"] == 4759098000000
 
-    def test_missing_prior_period_is_null(self, monkeypatch):
-        """A row with fewer filed periods keeps null history columns aligned."""
+    def test_uncoded_row_has_no_unit_or_values(self, monkeypatch):
+        """A schema item with no bound code renders as a label-only row."""
         rows = self._result(monkeypatch).result
-        avg = next(r for r in rows if r.label.endswith("Average assets ($000)"))
-        dumped = avg.model_dump()
-        assert dumped["BHC"] == 4759098000000
-        assert dumped["2025-03-31"] is None
+        row = next(r for r in rows if r.label.endswith("Operating Income"))
+        assert row.is_header is False
+        assert row.unit is None
+        dumped = row.model_dump()
+        value_cols = [
+            col
+            for col in dumped
+            if col not in ("label", "is_header", "narrative", "unit")
+        ]
+        assert value_cols and all(dumped[col] is None for col in value_cols)
 
-    def test_dollar_metric_renders_in_full_dollars(self, monkeypatch):
-        """A dollar section row renders the filed full-dollar amount and history."""
+    def test_metric_carries_guide_narrative(self, monkeypatch):
+        """A metric row carries its guide definition as the narrative."""
+        rows = self._result(monkeypatch).result
+        ratio = next(r for r in rows if r.label.endswith("(Tax Equivalent)"))
+        assert ratio.narrative == "NII on a TE basis divided by average assets."
+
+    def test_metric_without_definition_has_no_narrative(self, monkeypatch):
+        """A metric with no published definition carries a null narrative."""
+        rows = self._result(monkeypatch).result
+        avg = next(r for r in rows if not r.is_header and "Average Assets" in r.label)
+        assert avg.narrative is None
+
+    def test_empty_value_columns_excluded(self, monkeypatch):
+        """A dollar-only section drops peer/percentile columns entirely."""
         rows = self._result(monkeypatch, {"section": "Assets"}).result
-        loans = next(r for r in rows if r.label.endswith("Real estate loans"))
+        loans = next(r for r in rows if r.label.endswith("Total Assets"))
         dumped = loans.model_dump()
-        assert dumped["BHC"] == 504352000000
-        assert dumped["2025-03-31"] == 490921000000
+        assert dumped["03/31/2026"] == 4900475000000
+        assert not any("BHC" in key or "Peer" in key or "Pct" in key for key in dumped)
 
-    def test_all_sections_when_section_is_all(self, monkeypatch):
-        """The 'All Sections' choice renders every section's header and rows."""
+    def test_section_selects_by_title_case_insensitively(self, monkeypatch):
+        """A section given by title selects only that section."""
+        labels = {
+            r.label for r in self._result(monkeypatch, {"section": "assets"}).result
+        }
+        assert "Assets" in labels
+        assert "Summary Ratios" not in labels
+
+    def test_all_sections_when_selected(self, monkeypatch):
+        """The 'All Sections' choice renders every section's header."""
         rows = self._result(monkeypatch, {"section": "All Sections"}).result
-        headers = {r.label for r in rows if r.is_header}
-        assert "Summary Ratios" in headers
-        assert "Assets" in headers
-
-    def test_all_sections_when_section_omitted(self, monkeypatch):
-        """An empty section also renders every section."""
-        rows = self._result(monkeypatch, {"section": ""}).result
         headers = {r.label for r in rows if r.is_header}
         assert {"Summary Ratios", "Assets"} <= headers
 
-    def test_section_selects_by_title(self, monkeypatch):
-        """A section given by title selects only that section."""
-        result = self._result(monkeypatch, {"section": "Assets"})
-        labels = {r.label for r in result.result}
-        assert "Assets" in labels
-        assert "Summary Ratios" not in labels
+    def test_all_sections_when_section_blank(self, monkeypatch):
+        """A blank section also renders every section."""
+        rows = self._result(monkeypatch, {"section": ""}).result
+        headers = {r.label for r in rows if r.is_header}
+        assert {"Summary Ratios", "Assets"} <= headers
 
     def test_unknown_section_raises(self, monkeypatch):
         """A section matching no title raises ``OpenBBError``."""
@@ -402,14 +420,7 @@ class TestTransformData:
 
     def test_falls_back_to_query_rssd_and_missing_date(self, monkeypatch):
         """Absent identity and dates, the query RSSD stands in and the date drops."""
-        _patch(
-            monkeypatch,
-            {
-                "identity": {},
-                "period_dates": [],
-                "sections": _DATA["sections"],
-            },
-        )
+        _patch(monkeypatch, {"identity": {}, "periods": {}, "values": _DATA["values"]})
         query = FederalReserveBhcprFetcher.transform_query(
             {"rssd_id": "1039502", "period": "20260331"}
         )
@@ -419,32 +430,108 @@ class TestTransformData:
         assert "reporting_date" not in result.metadata
         assert "name" not in result.metadata
 
-    def test_metric_carries_guide_narrative(self, monkeypatch):
-        """A metric row carries its BHCPR User's Guide definition as the narrative."""
-        rows = self._result(monkeypatch).result
-        ratio = next(r for r in rows if r.label.endswith("(tax equivalent)"))
-        assert ratio.narrative == "NII on a TE basis divided by average assets."
 
-    def test_metric_without_definition_has_no_narrative(self, monkeypatch):
-        """A metric with no published definition carries a null narrative."""
-        rows = self._result(monkeypatch).result
-        avg = next(r for r in rows if r.label.endswith("Average assets ($000)"))
-        assert avg.narrative is None
+class TestData:
+    """Tests for the output data model."""
 
-    def test_guide_failure_leaves_narratives_null(self, monkeypatch):
-        """An unavailable guide leaves every narrative null without failing."""
-        _patch(monkeypatch)
+    def test_accepts_dynamic_value_columns(self):
+        """Dynamic period/sub-column fields validate as extra fields."""
+        row = FederalReserveBhcprData.model_validate(
+            {"label": "x", "is_header": False, "03/31/2026 BHC": 2.15}
+        )
+        assert row.model_dump()["03/31/2026 BHC"] == 2.15
 
-        def _boom():
-            """Raise to simulate an unavailable BHCPR User's Guide."""
-            raise RuntimeError("guide down")
+
+class TestRealFixtureIntegration:
+    """End-to-end tests over a committed real BHCPR CSV and the live schema asset."""
+
+    def _fixture_bytes(self):
+        """Return the committed real JPMorgan BHCPR CSV bytes."""
+        return _FIXTURE.read_bytes()
+
+    def _patch_fetch(self, monkeypatch):
+        """Serve the real CSV through the download layer; resolve identity as-is."""
+        from openbb_federal_reserve.utils.bhcpr_csv import parse_bhcpr_csv
 
         monkeypatch.setattr(
-            "openbb_federal_reserve.utils.bhcpr_guide.fetch_bhcpr_definitions", _boom
+            "openbb_federal_reserve.utils.ffiec.resolve_bhcpr_holder",
+            lambda rssd: rssd,
         )
-        query = FederalReserveBhcprFetcher.transform_query(
-            {"rssd_id": "1039502", "period": "20260331"}
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.ffiec.fetch_institution_financial_reports",
+            lambda rssd: {"BHCPR": {"periods": [{"year": 2026, "quarter": 1}]}},
         )
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.ffiec.fetch_bhcpr",
+            lambda rssd_id, date: parse_bhcpr_csv(self._fixture_bytes()),
+        )
+
+    def test_fetch_bhcpr_parses_downloaded_csv(self, monkeypatch):
+        """``fetch_bhcpr`` downloads the CSV and parses it into coded values."""
+        from openbb_federal_reserve.utils.ffiec import fetch_bhcpr
+
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.ffiec._fetch_bytes",
+            lambda path, referer=None: self._fixture_bytes(),
+        )
+        data = fetch_bhcpr("1039502", "20260331")
+        assert data["identity"]["rssd_id"] == "1039502"
+        assert data["periods"][""] == "20260331"
+        assert data["values"]["BHCK2170"][""] == 4900475000
+
+    def test_summary_ratios_render_from_real_csv(self, monkeypatch):
+        """The live schema renders real Summary Ratios values, typed and scaled."""
+        self._patch_fetch(monkeypatch)
+        query = FederalReserveBhcprFetcher.transform_query({"rssd_id": "1039502"})
         data = FederalReserveBhcprFetcher.extract_data(query, None)
         result = FederalReserveBhcprFetcher.transform_data(query, data)
-        assert all(row.narrative is None for row in result.result)
+        assert result.metadata["rssd_id"] == "1039502"
+        assert result.metadata["name"] == "JPMORGAN CHASE & CO."
+        assert result.metadata["reporting_date"] == "2026-03-31"
+        rows = result.result
+
+        def _find(label, unit):
+            """Return the first row matching a cleaned label and value type."""
+            return next(
+                r
+                for r in rows
+                if r.label.lstrip(">").strip() == label and r.unit == unit
+            )
+
+        assert rows[0].label == "Summary Ratios"
+        assert rows[0].is_header is True
+        assert (
+            _find("Average Assets", "USD").model_dump()["03/31/2026"] == 4759098000000
+        )
+        assert _find("Net Income", "USD").model_dump()["03/31/2026"] == 16494000000
+        assert (
+            _find("Number of BHCs in Peer Group", "number").model_dump()["03/31/2026"]
+            == 130
+        )
+
+    def test_dollar_section_renders_full_dollars(self, monkeypatch):
+        """A dollar section renders thousands scaled to full dollars from real data."""
+        self._patch_fetch(monkeypatch)
+        query = FederalReserveBhcprFetcher.transform_query(
+            {"rssd_id": "1039502", "section": "Assets"}
+        )
+        data = FederalReserveBhcprFetcher.extract_data(query, None)
+        rows = FederalReserveBhcprFetcher.transform_data(query, data).result
+        loans = next(
+            r for r in rows if r.label.lstrip(">").strip() == "Real Estate Loans"
+        )
+        assert loans.unit == "USD"
+        assert loans.model_dump()["03/31/2026"] == 504352000000
+
+    def test_all_sections_render_every_section(self, monkeypatch):
+        """'All Sections' renders every schema section over the real payload."""
+        from openbb_federal_reserve.utils.bhcpr_schema import section_titles
+
+        self._patch_fetch(monkeypatch)
+        query = FederalReserveBhcprFetcher.transform_query(
+            {"rssd_id": "1039502", "section": "All Sections"}
+        )
+        data = FederalReserveBhcprFetcher.extract_data(query, None)
+        rows = FederalReserveBhcprFetcher.transform_data(query, data).result
+        headers = {r.label for r in rows if r.is_header}
+        assert set(section_titles()) <= headers

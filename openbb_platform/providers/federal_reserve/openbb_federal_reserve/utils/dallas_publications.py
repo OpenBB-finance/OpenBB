@@ -1,11 +1,4 @@
-"""Dallas Fed publication-archive (PDF) indexing and presentation.
-
-The Dallas Fed publishes its Working Papers and the Southwest Economy magazine
-as per-issue PDFs linked from archive listing pages. This module discovers those
-links, folds in the static survey questionnaires and energy-charts slide deck,
-and classifies each into a catalog record (series, id, date, url) served as a
-base64-encoded PDF in the multi-file viewer.
-"""
+"""Dallas Fed publication-archive (PDF) indexing and presentation."""
 
 from __future__ import annotations
 
@@ -54,10 +47,7 @@ _ENERGY_CHARTS_URL = f"{BASE_URL}/-/media/Documents/research/energy/energycharts
 
 
 def _static_records() -> list[dict[str, Any]]:
-    """Return the static questionnaire and energy-charts catalog records.
-
-    Dated today so the always-current static PDFs sort to the top of the catalog.
-    """
+    """Return the static questionnaire and energy-charts catalog records."""
     today = dateType.today().isoformat()
     records = [
         {

@@ -1,15 +1,4 @@
-"""FFIEC CDR Custom Peer Group (CPG) report client.
-
-The CPG report (rptid 288) renders the UBPR sections for a target bank against a
-user-defined peer group of RSSDs. It is served by the ASP.NET WebForms page
-``Reports/UbprReport.aspx``: a ``SetSessionData`` POST registers the peer-group
-RSSD list on the session, the report page is loaded for its view state, then each
-section is rendered by posting back its table-of-contents link. The rendered grid
-carries a per-line ``graph_set`` of ``{date, name, value}`` items; only the
-``BANK`` series carries data. The ``PG``/``PCT`` series the page also emits are
-always null for a custom peer group, so the report returns the target bank only,
-contributing one ``"<ISO> <bank name>"`` column per period that names the bank.
-"""
+"""FFIEC CDR Custom Peer Group (CPG) report client."""
 
 from __future__ import annotations
 
@@ -70,12 +59,7 @@ _NAME_FIXUPS = {"Jpmorgan": "JPMorgan"}
 
 
 def _bank_name(raw: str) -> str:
-    """Title-case an all-caps FFIEC institution name into a readable label.
-
-    The report prints the institution name in all caps; each word is capitalized,
-    known acronyms are kept upper, connecting small words lower, and the few mixed-
-    case bank tokens the casing cannot infer are restored from a fixups map.
-    """
+    """Title-case an all-caps FFIEC institution name into a readable label."""
     text = re.sub(r"\s+", " ", raw).strip()
     seen_first = [False]
 
@@ -95,13 +79,7 @@ def _bank_name(raw: str) -> str:
 
 
 def _extract_bank_name(html: str, rssd_id: str) -> str:
-    """Read the target bank's readable name from the rendered page's header table.
-
-    The ``id="headerTable"`` block carries the institution as a ``NAME; CITY, ST``
-    cell (e.g. ``JPMORGAN CHASE BANK, NATIONAL ASSOCIATION; COLUMBUS, OH``); the
-    name is the part before the ``;``, title-cased. The RSSD identifier is returned
-    as a fallback when the header cell is absent.
-    """
+    """Read the target bank's readable name from the rendered page's header table."""
     start = html.find('id="headerTable"')
     if start >= 0:
         match = re.search(r'<td[^>]*colspan="2"[^>]*>([^<]*;[^<]*)</td>', html[start:])
@@ -192,7 +170,6 @@ def _render_section(
         f"&rptCycleIds={cycle_ids}&title=Custom Peer Group&usetrimmed=0"
     )
     page = session.get(url, timeout=120).text
-    # Cover Page is ctl01; the first section (Summary Ratios) is ctl02.
     target = f"rptTOC$rptTOC$ctl{section_index + 2:02d}$lbItem"
     payload = {
         "__EVENTTARGET": target,
@@ -310,13 +287,7 @@ def _merge_batches(batches: list[list[dict]]) -> list[dict]:
 
 
 def _enrich(rows: list[dict]) -> list[dict]:
-    """Apply concept full names, guide narratives, and dollar scaling to rows.
-
-    The line narrative is the user-guide definition, falling back to the
-    concept-index (MDRM) narrative for Call-sourced lines (``RIAD``/``RCON`` and
-    similar) the guide carries no definition for; normal UBPR concepts keep their
-    guide narrative since their concept-index narrative is a filtered placeholder.
-    """
+    """Apply concept full names, guide narratives, and dollar scaling to rows."""
     from openbb_federal_reserve.utils.concepts import (
         clean_name,
         concept_index,
@@ -397,12 +368,7 @@ def fetch_custom_peer_group(
     cleaned = ",".join(p.strip() for p in str(peers).split(",") if p.strip())
 
     def _producer() -> list[dict]:
-        """Register the peer group then render and parse the section.
-
-        The CDR report renders at most five periods per request, so all-periods
-        mode renders the history in five-period batches and merges the parsed
-        grids before enrichment.
-        """
+        """Register the peer group then render and parse the section."""
         session = _get_session()
         session.get(_MANAGE_URL, timeout=60)
         _set_peer_group(session, cleaned, cycles[0]["reportingcycleid"])

@@ -1,38 +1,4 @@
-"""FR Y-15 report structure generator.
-
-Parses the FR Y-15 (Banking Organization Systemic Risk Report) Reporting
-Central transfer user guide PDF into an ordered, hierarchical list of report
-items so the model can render the form grouped by schedule and indent depth like
-the FR Y-9C structure. Three sources are combined:
-
-* The user guide's *Line Identifiers to be used for FRY15* table supplies the
-  ordered ``schedule``/``line``/``mdrm`` mapping for every directly reported
-  cell.
-* The user guide's *FR Y-15 Items NOT to Include in the XML File* table supplies
-  the calculated / auto-populated MDRMs that are excluded from the line table
-  but still appear in a filer's report (their cell values are derived by
-  Reporting Central or pulled from FFIEC 009 / FFIEC 101 / FR Y-9C / FR Y-9LP).
-* The official FR Y-15 blank report form PDF supplies the schedule titles, and
-  the live per-institution ``ReturnFinancialReportCSV`` feed supplies the
-  per-MDRM captions (the user guide's line table carries no captions for the
-  numbered schedule lines).
-
-The committed structure is filtered to the union of value-bearing codes the
-sampled filers actually report: a code no sampled filer reports (an IHC/FBO
-Schedule H-N column, a confidential grid, or a cover-page identity field) is a
-permanently-empty form row and is excluded.
-
-The parsed result is committed as a static asset
-(``assets/fry15/structure.json``); the live model loads that asset rather than
-re-parsing the PDFs at request time.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.fry15_structure
-
-Pass ``--guide``/``--form``/``--csv`` to parse local copies instead of fetching
-the canonical URLs.
-"""
+"""FR Y-15 report structure generator."""
 
 from __future__ import annotations
 
@@ -59,11 +25,6 @@ CSV_URL = (
     "?rpt=FRY15&id={rssd}&dt={date}"
 )
 
-# The domestic-HC filers sampled to define the public item set and source the
-# ``RISK``/``RSSD`` captions. Both are large domestic holding companies whose
-# filings carry the Schedule A-G and cover-page columns; codes neither filer
-# reports (the IHC/FBO Schedule H-N columns and confidential grids) are
-# permanently empty and excluded from the committed structure.
 VALIDATION_RSSD = 1039502
 VALIDATION_DATE = "20260331"
 CAPTION_RSSDS = (1039502, 1073757)
@@ -72,40 +33,27 @@ ASSET_PATH = (
     Path(__file__).resolve().parent.parent / "assets" / "fry15" / "structure.json"
 )
 
-# An 8-character MDRM item code: a 4-letter prefix then 4 alphanumerics.
 _MDRM = re.compile(r"^[A-Z]{4}[A-Z0-9]{4}$")
 
-# One row of the *Line Identifiers* table: the reported MDRM (optionally
-# footnote-starred), the "Schedule X, line" / "Cover Page, ..." descriptor, the
-# ``L``-prefixed line identifier (whose 8 trailing characters are the canonical
-# MDRM), and the data-value length.
 _LINE_ROW = re.compile(
     r"^([A-Z]{4}[A-Z0-9]{4})\s*\**\s+"
     r"(Schedule [A-Z][^L]*?|Cover Page,.*?|Optional Narrative Statement)\s+"
     r"L([A-Z]{4}[A-Z0-9]{4})\s+\d+\s*$"
 )
 
-# One row of the *Items NOT to Include in the XML File* table: the calculated
-# MDRM and its source series, followed by an effective start/end date pair.
 _CALC_ROW = re.compile(
     r"^([A-Z]{4}[A-Z0-9]{4})\s+"
     r"(FR Y-9C|FR Y-9LP|FFIEC 101|FFIEC 009|FR Y-15)\s+"
     r"\d+/\d+/\d+\s+\d+/\d+/\d+$"
 )
 
-# A schedule heading in the blank form, e.g. "Schedule A—Size Indicator".
 _FORM_SCHEDULE = re.compile(r"Schedule\s+([A-N])[—–-]\s*([A-Z][A-Za-z \-]+)")
 
-# The schedule/line descriptor split, e.g. "Schedule A, 1.a." or
-# "Schedule N, Part I, 2.b" or "Cover Page, Name of CFO".
 _DESCRIPTOR = re.compile(
     r"^(Schedule [A-Z](?:, Part [IVX]+)?|Cover Page|Optional Narrative Statement)"
     r"(?:,\s*(.*))?$"
 )
 
-# The reported-cell column the per-entity-type MDRM prefix denotes: domestic HC
-# (``RISK``), the IHC column (``RISI``), the FBO column (``RISO``), and the
-# cover-page identification fields (``RSSD``).
 _COLUMN_BY_PREFIX = {
     "RISK": None,
     "RISI": "IHC",
@@ -113,9 +61,6 @@ _COLUMN_BY_PREFIX = {
     "RSSD": None,
 }
 
-# CSV ``ItemName`` rows carrying institution identity or administrative metadata
-# rather than a reported value; these never become structure value-items and are
-# excluded from the value-bearing-code union that defines the public item set.
 _IDENTITY_ITEM_NAMES = frozenset(
     {
         "INSTITUTION NAME",
@@ -132,18 +77,11 @@ _IDENTITY_ITEM_NAMES = frozenset(
     }
 )
 
-# CSV ``Description`` values flagging an administrative or total-asset row whose
-# MDRM-shaped ``ItemName`` still must be excluded from the value-bearing union.
 _IDENTITY_DESCRIPTIONS = frozenset({"TOTAL ASSETS"})
 
 
 def _fetch_bytes(url: str) -> bytes:
-    """Download a canonical source URL as raw bytes.
-
-    The FFIEC per-institution CSV endpoint sits behind Cloudflare and is fetched
-    through the shared browser-impersonating session; the public PDFs are served
-    by ordinary clients.
-    """
+    """Download a canonical source URL as raw bytes."""
     host = (urlparse(url).hostname or "").lower()
     if host == "ffiec.gov" or host.endswith(".ffiec.gov"):
         from openbb_federal_reserve.utils.curl_session import get_session
@@ -167,19 +105,15 @@ def _fetch_bytes(url: str) -> bytes:
 
 def _pdf_lines(pdf_bytes: bytes) -> list[list[str]]:
     """Return each page's collapsed-whitespace, non-empty lines."""
-    from pypdf import PdfReader
+    from openbb_federal_reserve.utils.report_structure import read_pdf_pages
 
-    reader = PdfReader(io.BytesIO(pdf_bytes))
     pages: list[list[str]] = []
-    for page in reader.pages:
-        text = page.extract_text() or ""
+    for text in read_pdf_pages(pdf_bytes):
         lines = [re.sub(r"\s+", " ", raw).strip() for raw in text.splitlines()]
         pages.append([line for line in lines if line])
     return pages
 
 
-# A numbered/lettered form caption whose trailing colon marks a sub-header that
-# introduces indented child lines, e.g. "1. Derivative exposures:".
 _FORM_SUBHEADER = re.compile(r"^(?:M\.)?\d+\.\s+(.*\S):$|^[a-z]\.\s+(.*\S):$")
 
 
@@ -202,14 +136,7 @@ def _normalize(text: str) -> str:
 
 
 def _form_subheaders(form_bytes: bytes) -> dict[str, str]:
-    """Map normalized sub-header text to its canonical form caption.
-
-    The blank form marks a section sub-header with a numbered/lettered caption
-    that ends in a colon (``"1. Derivative exposures:"``). This whitelist is used
-    to confirm which CSV-description colon-prefixes are genuine sub-headers,
-    filtering out source-data typos and spurious all-caps prefixes that would
-    otherwise be misread as headers.
-    """
+    """Map normalized sub-header text to its canonical form caption."""
     headers: dict[str, str] = {}
     for line in (line for page in _pdf_lines(form_bytes) for line in page):
         clean = re.sub(r"\.{2,}.*$", "", line).strip()
@@ -221,12 +148,7 @@ def _form_subheaders(form_bytes: bytes) -> dict[str, str]:
 
 
 def _parse_line_table(guide_pages: list[list[str]]) -> list[dict[str, str]]:
-    """Parse the *Line Identifiers* table into ordered MDRM/descriptor rows.
-
-    A descriptor caption can wrap across two or three physical lines (the
-    ``L``-prefixed identifier always terminates the row), so physical lines are
-    buffered until they resolve into one complete table row.
-    """
+    """Parse the *Line Identifiers* table into ordered MDRM/descriptor rows."""
     rows: list[dict[str, str]] = []
     buffer: list[str] = []
     for page in guide_pages:
@@ -249,12 +171,7 @@ def _parse_line_table(guide_pages: list[list[str]]) -> list[dict[str, str]]:
 
 
 def _parse_calc_table(guide_pages: list[list[str]]) -> list[dict[str, str]]:
-    """Parse the *Items NOT to Include in the XML File* table.
-
-    These calculated / auto-populated MDRMs are excluded from the line table but
-    still appear in a filer's report; each row pairs an MDRM with its source
-    series.
-    """
+    """Parse the *Items NOT to Include in the XML File* table."""
     rows: list[dict[str, str]] = []
     for page in guide_pages:
         for line in page:
@@ -306,15 +223,7 @@ def _level_from_line(line: str | None) -> int:
 def _split_caption_header(
     caption: str, subheaders: dict[str, str]
 ) -> tuple[str | None, str]:
-    """Split a ``Header: leaf`` caption into its sub-header and leaf text.
-
-    Many FR Y-15 captions embed the section sub-header before a colon
-    (``"Derivative exposures: Current exposure of derivative contracts"``). The
-    sub-header is surfaced as a separate ``is_header`` item rather than
-    concatenated onto every leaf caption, but only when the prefix matches a
-    sub-header confirmed by the blank form's ``subheaders`` whitelist; otherwise
-    the colon is part of the leaf caption and is kept intact.
-    """
+    """Split a ``Header: leaf`` caption into its sub-header and leaf text."""
     head, sep, tail = caption.partition(":")
     if not sep or not tail.strip():
         return None, caption
@@ -334,12 +243,7 @@ def _merge_descriptions(caption_csvs: list[bytes]) -> dict[str, str]:
 
 
 def _value_codes(csv_bytes: bytes) -> set[str]:
-    """Return one CSV's value-bearing MDRM codes, excluding identity rows.
-
-    A value-bearing row has an MDRM-shaped ``ItemName`` and is neither an
-    identity/administrative item name nor a total-asset/administrative
-    description; the resulting set is the filer's reported public item set.
-    """
+    """Return one CSV's value-bearing MDRM codes, excluding identity rows."""
     reader = csv.reader(io.StringIO(csv_bytes.decode("utf-8-sig", "ignore")))
     codes: set[str] = set()
     for row in reader:
@@ -357,12 +261,7 @@ def _value_codes(csv_bytes: bytes) -> set[str]:
 
 
 def _value_codes_union(caption_csvs: list[bytes]) -> set[str]:
-    """Return the union of value-bearing codes across the sampled filers.
-
-    This union is the public report's true item set: a code that no sampled
-    filer reports is a permanently-empty form row (a confidential grid or an
-    other-entity-type column) and is excluded from the committed structure.
-    """
+    """Return the union of value-bearing codes across the sampled filers."""
     union: set[str] = set()
     for csv_bytes in caption_csvs:
         union |= _value_codes(csv_bytes)
@@ -370,12 +269,7 @@ def _value_codes_union(caption_csvs: list[bytes]) -> set[str]:
 
 
 def _clean_caption(caption: str) -> str:
-    """Strip source artifacts from a CSV-sourced caption.
-
-    A handful of FFIEC ``Description`` cells carry a stray leading capital glued
-    to the first word (``"DOther off-balance sheet exposures: ..."``); the stray
-    letter is removed when the remainder begins a normally-capitalised word.
-    """
+    """Strip source artifacts from a CSV-sourced caption."""
     match = re.match(r"^[A-Z]([A-Z][a-z].*)$", caption)
     if match:
         return match.group(1)
@@ -500,12 +394,7 @@ def build_items(  # noqa: PLR0912
 
 
 def _prune_empty_headers(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Drop sub-section headers left without any surviving valued descendant.
-
-    Filtering value-items to the sampled union can leave a ``is_header`` row
-    whose children were all permanently-empty other-entity-type columns; such a
-    header introduces no value and is removed so no orphan header survives.
-    """
+    """Drop sub-section headers left without any surviving valued descendant."""
     kept: list[dict[str, Any]] = []
     for index, item in enumerate(items):
         if not item["is_header"]:
@@ -526,13 +415,7 @@ def _prune_empty_headers(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def validate(items: list[dict[str, Any]], caption_csvs: list[bytes]) -> dict[str, Any]:
-    """Compare the structure's MDRMs against the sampled filers' value codes.
-
-    The ``union`` is every value-bearing code across the sampled CSVs (the public
-    item set); ``coverage`` is the share of that union mapped to a structure
-    value-item, and ``permanent_empty`` is the count of structure value-items
-    carrying a code no sampled filer reports.
-    """
+    """Compare the structure's MDRMs against the sampled filers' value codes."""
     union = _value_codes_union(caption_csvs)
     structure_mdrms = {item["mdrm"] for item in items if item["mdrm"]}
     covered = union & structure_mdrms

@@ -1,10 +1,4 @@
-"""Resolve publicly-traded bank tickers to their parent holding company RSSD.
-
-A ticker is mapped to its issuer name via the SEC EDGAR ``company_tickers.json``
-bulk file, then matched against the NIC directory restricted to *parent holding
-companies* (the publicly-traded entity is always the top-tier holding company,
-never a branch or subsidiary). Both are single bulk files; no per-entity lookups.
-"""
+"""Resolve publicly-traded bank tickers to their parent holding company RSSD."""
 
 from __future__ import annotations
 
@@ -12,7 +6,6 @@ import re
 
 SEC_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 
-# Two-letter US state codes SEC appends as incorporation suffixes (e.g. "/DE/").
 _STATES = set(
     [
         "AL",
@@ -68,7 +61,6 @@ _STATES = set(
     ]
 )
 
-# Interchangeable corporate-form words, dropped before comparison.
 _DROP = {
     "THE",
     "CORP",
@@ -164,13 +156,7 @@ def resolve_ticker_to_rssd(ticker: str) -> str | None:
 
 
 def controlled_subtree(parent_rssd: str) -> set[str]:
-    """Return every RSSD in a parent's active, controlled ownership subtree.
-
-    Walks the NIC relationship tree over currently-active control links of any
-    depth: a holding company's lead bank is frequently held through one or more
-    intermediate holding companies rather than as a direct subsidiary, so a
-    single-level lookup misses it.
-    """
+    """Return every RSSD in a parent's active, controlled ownership subtree."""
     from collections import deque
 
     from openbb_federal_reserve.utils.ffiec import fetch_relationships
@@ -200,14 +186,7 @@ def controlled_subtree(parent_rssd: str) -> set[str]:
 def lead_subsidiary_bank(
     holding_rssd: str, filers: set[str], period: str | None
 ) -> str | None:
-    """Resolve a holding company to the largest subsidiary bank that files.
-
-    Bank-level reports (Call Report, UBPR) are filed by the operating bank, not
-    its holding company. When ``holding_rssd`` is itself a filer it is returned
-    unchanged; otherwise its controlled subtree is intersected with ``filers``
-    and the largest by Call Report total assets is chosen (ties break to the
-    lowest RSSD). Returns ``None`` when no subsidiary bank files.
-    """
+    """Resolve a holding company to the largest subsidiary bank that files."""
     holding_rssd = str(holding_rssd)
     if holding_rssd in filers:
         return holding_rssd
@@ -226,12 +205,7 @@ def lead_subsidiary_bank(
 def resolve_ticker_to_bank(
     ticker: str, filers: set[str], period: str | None = None
 ) -> str | None:
-    """Resolve a ticker to the subsidiary bank RSSD present in ``filers``.
-
-    A publicly-traded bank's ticker maps to its top-tier holding company, but
-    Call Reports and UBPRs are filed by the subsidiary bank, so the holding
-    company is resolved to its largest filing bank.
-    """
+    """Resolve a ticker to the subsidiary bank RSSD present in ``filers``."""
     holding = resolve_ticker_to_rssd(ticker)
     if not holding:
         return None
@@ -239,12 +213,7 @@ def resolve_ticker_to_bank(
 
 
 def call_report_filers() -> set[str]:
-    """Return the RSSDs that file the latest single-period Call Report.
-
-    UBPR-family reports cover the same population as the Call Report (commercial
-    banks and savings institutions), so the Call Report bulk roster is the filer
-    set used to resolve a holding company to its lead filing bank.
-    """
+    """Return the RSSDs that file the latest single-period Call Report."""
     from openbb_federal_reserve.utils.cdr import bulk_rssids, fetch_bulk
 
     latest = fetch_bulk("call_single", None, fmt="xbrl")

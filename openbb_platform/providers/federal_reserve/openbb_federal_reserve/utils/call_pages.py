@@ -1,9 +1,4 @@
-"""FFIEC Call Report per-schedule descriptions, keyed by section title.
-
-The descriptions summarize what each Call Report schedule (FFIEC 031/041/051)
-collects, drawn from the schedule titles and instructions. They supply the
-hover-card text on a schedule's leading (header) row, mirroring the UBPR report.
-"""
+"""FFIEC Call Report per-schedule descriptions, keyed by section title."""
 
 CALL_PAGE_DESCRIPTIONS = {
     "Schedule RI - Income Statement": (

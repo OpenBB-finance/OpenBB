@@ -73,14 +73,7 @@ class FederalReservePeerGroupDistributionQueryParams(QueryParams):
 
 
 class FederalReservePeerGroupDistributionData(Data):
-    """FFIEC UBPR Peer Group Average Distribution Data.
-
-    One row per report line item; the percentile columns (1st .. 99th) and the
-    trimmed average describe the ratio's distribution across the peer group for
-    the reporting period. The memo footer rows (peer-group aggregate assets, net
-    income, and bank count) carry a single peer-group value in a ``PEER GROUP``
-    column rather than a percentile.
-    """
+    """FFIEC UBPR Peer Group Average Distribution Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(

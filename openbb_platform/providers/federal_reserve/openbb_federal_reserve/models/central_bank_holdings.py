@@ -46,15 +46,7 @@ TREASURY_HOLDING_TYPES = ["all", "bills", "notesbonds", "frn", "tips"]
 
 
 class FederalReserveCentralBankHoldingsQueryParams(CentralBankHoldingsQueryParams):
-    """Federal Reserve Central Bank Holdings Query.
-
-    The SOMA database contains data on the Federal Reserve's
-    domestic securities holdings from 2003 to the present.
-    SOMA holdings data is as of the close of business each Wednesday
-    and is published every Thursday by close of business.
-
-    Source: https://www.newyorkfed.org/markets/soma-holdings
-    """
+    """Federal Reserve Central Bank Holdings Query."""
 
     __json_schema_extra__ = {
         "cusip": {"multiple_items_allowed": True},

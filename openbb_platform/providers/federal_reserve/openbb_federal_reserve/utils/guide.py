@@ -1,11 +1,4 @@
-"""FFIEC UBPR Interactive User's Guide concept client.
-
-The per-concept Description (the proper full label) and Narrative (the definition)
-shown in the UBPR Interactive User's Guide are rendered per report line by the
-guide page; neither is in the static taxonomy download, and the MDRM carries only
-a placeholder for the derived UBPR concepts. This resolves each UBPR concept to
-its guide Description and Narrative, keyed by the report line it appears on.
-"""
+"""FFIEC UBPR Interactive User's Guide concept client."""
 
 from __future__ import annotations
 
@@ -14,10 +7,6 @@ import re
 GUIDE_URL = "https://cdr.ffiec.gov/Public/Reports/InteractiveUserGuide.aspx"
 _GUIDE_RSSD = "451965"
 
-# Block-level tags whose open or close marks a word/line boundary in the guide
-# content; each is replaced by a single space before inline tags are stripped so
-# text split across a block break (``fair value</div><div>as``) reads
-# ``fair value as`` rather than fusing into ``valueas``.
 _BLOCK_BREAK = re.compile(
     r"(?is)<\s*/?\s*(?:br|div|p|li|tr|td|th|h[1-6]|ul|ol|table)\b[^>]*>"
 )
@@ -26,16 +15,7 @@ _DIV_TAG = re.compile(r"(?is)<\s*(/?)div\b[^>]*>")
 
 
 def _field(segment: str, label: str) -> str:
-    """Pull one labelled field's full text out of a guide concept block.
-
-    The guide renders each field as ``<b>LABEL</b></div><div ...>TEXT</div>``.
-    The content div is captured by balancing nested ``<div>`` pairs so a field
-    holding an inner ``<div>`` is taken whole rather than truncated at the first
-    ``</div>``. Block-level breaks become spaces before inline tags are stripped
-    so words are never fused across a break, remaining inline tags are removed
-    without inserting a space, HTML entities are decoded, and whitespace is
-    collapsed.
-    """
+    """Pull one labelled field's full text out of a guide concept block."""
     import html as html_lib
 
     header = re.search(r"<b>" + re.escape(label) + r"</b></div>", segment)
@@ -83,11 +63,7 @@ def _report_date() -> str:
 
 
 def ubpr_concept_lines() -> dict[str, str]:
-    """Return a cached map of every UBPR concept code to a report line id.
-
-    The guide page is addressed by line id; this walks the UBPR report sections
-    once (newest cycle) to learn which line each concept is reported on.
-    """
+    """Return a cached map of every UBPR concept code to a report line id."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> dict[str, str]:

@@ -39,20 +39,11 @@ def _default_period() -> tuple[int, int]:
         quarter -= 1
         if quarter == 0:
             quarter, year = 4, year - 1
-    # Unreachable: walking back at most six quarters from any month always
-    # lands on a filed quarter, so the loop returns before this fallback.
     return year, quarter  # pragma: no cover
 
 
 def _latest_filed_period(rssd_id: str, report_code: str) -> str | None:
-    """Return the firm+report's latest filed ``YYYYMMDD`` period, or None.
-
-    Reads the institution's NIC profile, whose filed periods are newest-first and
-    of any cadence (quarterly, semiannual, or annual), and returns the newest
-    period the firm actually filed for the report. Returns ``None`` when the
-    profile is unavailable or the firm files no period for the report, so the
-    caller can fall back to the computed quarter-end.
-    """
+    """Return the firm+report's latest filed ``YYYYMMDD`` period, or None."""
     from openbb_federal_reserve.utils.ffiec import fetch_institution_financial_reports
 
     try:
@@ -67,13 +58,7 @@ def _latest_filed_period(rssd_id: str, report_code: str) -> str | None:
 
 
 def _resolve_period(period: str | None, rssd_id: str, report_code: str) -> str:
-    """Resolve a ``YYYYMMDD`` period, defaulting to the latest filed period.
-
-    A supplied period is used verbatim. When omitted, the firm+report's newest
-    filed period from its NIC profile is used (any cadence), so a semiannual or
-    annual filer never defaults to an unfiled computed quarter; only when the
-    profile lists no filed period does it fall back to the computed quarter-end.
-    """
+    """Resolve a ``YYYYMMDD`` period, defaulting to the latest filed period."""
     text = (period or "").strip()
     if text:
         return text
@@ -116,14 +101,7 @@ def _to_number(value: Any) -> float | None:
 
 
 def _column_suffixes(columns: list[str], names: dict[str, str]) -> list[str | None]:
-    """Derive a per-column distinguishing label from each column's MDRM name.
-
-    A grid line's columns share a common MDRM-name prefix (the row caption) and
-    differ only in a trailing clause (``"... - PAST DUE 90 DAYS OR MORE"`` versus
-    ``"... - NONACCRUAL"``). The shared leading words are dropped so each column
-    is labelled by just its differing tail; a column whose name is missing, or
-    that shares no resolvable name with its siblings, falls back to ``None``.
-    """
+    """Derive a per-column distinguishing label from each column's MDRM name."""
     resolved = [names.get(code) for code in columns]
     present = [name for name in resolved if name]
     if len(present) < 2:
@@ -144,16 +122,7 @@ def _column_suffixes(columns: list[str], names: dict[str, str]) -> list[str | No
 
 
 def _is_cover_item(item: dict[str, Any]) -> bool:
-    """Return ``True`` for an administrative cover/contact submission item.
-
-    The cover page is the submission's administrative block (contact names,
-    addresses, signatures), not financial data. Its schedule is ``"COVER"`` in the
-    Reporting Central guides and ``"Cover Page"`` in the FFIEC 002 guide; the
-    schedule name is uniform. A generator that mis-files the cover block under a
-    data schedule still flags each item with a ``"Cover Page"`` caption prefix
-    (for example ``"Cover Page Contact Name 72"``), so the caption is the robust
-    fallback signal.
-    """
+    """Return ``True`` for an administrative cover/contact submission item."""
     if item["schedule"] == "COVER" or item["schedule_name"] == "Cover Page":
         return True
     return str(item.get("caption", "")).strip().lower().startswith("cover page")
@@ -162,14 +131,7 @@ def _is_cover_item(item: dict[str, Any]) -> bool:
 def _render_nodes(
     nodes: list[dict[str, Any]],
 ) -> list["FederalReserveFinancialReportData"]:
-    """Collapse repeated schedule headers, prune empties, and emit rows.
-
-    Each structure item carries its schedule, so the node stream repeats a
-    schedule node per item; consecutive repeats collapse to a single header. A
-    line-item node with no filed value (``None``, never a filed ``0``) is dropped,
-    and a schedule or sub-section header with no surviving valued descendant is
-    dropped with it, so wholly unfiled (for example confidential) sections vanish.
-    """
+    """Collapse repeated schedule headers, prune empties, and emit rows."""
     collapsed: list[dict[str, Any]] = []
     current_schedule: str | None = None
     for node in nodes:
@@ -185,10 +147,6 @@ def _render_nodes(
         if node["kind"] != "item" or node["value"] is None:
             continue
         keep[index] = True
-        # Walk outward keeping each ancestor header: the nearest header strictly
-        # shallower than the running depth, repeating up to the schedule (level 0).
-        # Sibling sub-sections (same or deeper level) are skipped, so only the
-        # branch leading to this valued item is retained.
         needed = node["level"]
         for prior in range(index - 1, -1, -1):
             ancestor = collapsed[prior]
@@ -273,13 +231,7 @@ class FederalReserveFinancialReportQueryParams(QueryParams):
 
 
 class FederalReserveFinancialReportData(Data):
-    """Federal Reserve Unified FFIEC Financial Report Data.
-
-    One row per report line, rendered in the published schedule order. Schedule
-    and sub-section headers are emitted as ``is_header`` rows carrying no value;
-    line items carry the single selected-period value, with dollar amounts
-    reported in full U.S. dollars.
-    """
+    """Federal Reserve Unified FFIEC Financial Report Data."""
 
     label: str = Field(
         description="The line item, indented by the report hierarchy.",
@@ -335,10 +287,6 @@ class FederalReserveFinancialReportFetcher(
             )
 
         rssd_id = str(query.rssd_id).strip()
-        # The firm is selected through the shared app group, so the report_type
-        # may be unset or held over from another firm (e.g. FR Y-9C carried onto
-        # a bank that does not file it). Render the firm's first filed report so
-        # the default state always shows real data instead of an empty widget.
         try:
             filed = fetch_institution_financial_reports(rssd_id)
         except Exception:  # noqa: BLE001
@@ -389,13 +337,8 @@ class FederalReserveFinancialReportFetcher(
             value = _to_number(facts.get(code))
             if value is None:
                 return None
-            # Only monetary concepts are filed in thousands of dollars and must be
-            # scaled to whole dollars; percents, ratios, rates, years, counts, and
-            # factors are already the true value and pass through unchanged.
             if is_monetary(code, item_types.get(code)):
                 value *= 1000
-            # Emit the actual number: a whole value is an int, not a float; a
-            # rate/ratio stays the float it is.
             return int(value) if value.is_integer() else value  # ty: ignore[unresolved-attribute]
 
         nodes: list[dict[str, Any]] = []
@@ -438,11 +381,6 @@ class FederalReserveFinancialReportFetcher(
                 )
                 continue
 
-            # A grid line carries one MDRM per column (for example Schedule HC-N's
-            # past-due-30, past-due-90 and nonaccrual columns). Emit the caption as
-            # a sub-header and one indented child row per column, each labelled by
-            # its column's distinguishing MDRM-name tail (falling back to the bare
-            # column code) so every filed value renders and stays attributable.
             nodes.append({"kind": "header", "label": label, "level": level})
             child_level = level + 1
             child_indent = _NBSP * 2 * max(child_level - 1, 0)

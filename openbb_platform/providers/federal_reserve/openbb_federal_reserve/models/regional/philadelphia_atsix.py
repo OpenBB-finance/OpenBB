@@ -14,7 +14,6 @@ from openbb_federal_reserve.utils.philadelphia import MEDIA_URL
 
 URL = f"{MEDIA_URL}/surveys-and-data/atsix/ATSIX_Vintages.xlsx"
 
-# dataset -> (sheet, column prefix)
 _DATASETS = {
     "inflation": ("InfExp", "infexp"),
     "real": ("Real", "real"),
@@ -52,12 +51,7 @@ class FederalReservePhiladelphiaAtsixQueryParams(QueryParams):
 
 
 class FederalReservePhiladelphiaAtsixData(Data):
-    """Philadelphia Fed ATSIX Inflation Expectations Data.
-
-    One row per vintage month, with one column per forecast horizon (for the
-    term-structure datasets) or per Nelson-Siegel factor (for the factors
-    dataset). Rates are in percent.
-    """
+    """Philadelphia Fed ATSIX Inflation Expectations Data."""
 
     date: dateType = Field(description="The vintage month, as a month-start date.")
 

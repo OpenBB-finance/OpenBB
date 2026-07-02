@@ -30,11 +30,7 @@ class FederalReserveMinneapolisQuitsRateQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisQuitsRateData(Data):
-    """Minneapolis Fed Quits Rate Data.
-
-    One row per observation month, with one column per Ninth District state and
-    the United States carrying the quits rate, in percent.
-    """
+    """Minneapolis Fed Quits Rate Data."""
 
     date: dateType = Field(description="The observation month.")
 

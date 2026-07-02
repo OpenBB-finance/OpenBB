@@ -1,11 +1,4 @@
-"""New York Fed Empire State Manufacturing Survey full-report (PDF) helpers.
-
-The Empire State Manufacturing Survey publishes a full PDF report per monthly
-release. The archive links carry rotating Sitecore hashes and use several
-filename conventions across years; this module scrapes the archives page,
-classifies each link to a survey month, and serves a selected report as a
-base64-encoded PDF for an OpenBB Workspace PDF widget.
-"""
+"""New York Fed Empire State Manufacturing Survey full-report (PDF) helpers."""
 
 from __future__ import annotations
 

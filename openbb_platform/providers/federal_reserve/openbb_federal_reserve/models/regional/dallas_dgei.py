@@ -95,12 +95,7 @@ class FederalReserveDallasDgeiQueryParams(QueryParams):
 
 
 class FederalReserveDallasDgeiData(Data):
-    """Dallas Fed Global Economic Indicators Data.
-
-    One row per observation date, with one column per country-aggregate-and-measure
-    series carrying that series' value. The series of the selected indicator and
-    weighting scheme are pivoted to wide, so the columns vary with the request.
-    """
+    """Dallas Fed Global Economic Indicators Data."""
 
     date: dateType = Field(description="The observation date.")
 

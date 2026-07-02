@@ -25,11 +25,7 @@ class FederalReserveKansasCityAgTermsOfLendingQueryParams(QueryParams):
 
 
 class FederalReserveKansasCityAgTermsOfLendingData(Data):
-    """Kansas City Fed Ag Terms of Lending Data.
-
-    One row per survey quarter-end date, with one column per terms-of-lending
-    statistic carrying that statistic's value; the series are pivoted to wide.
-    """
+    """Kansas City Fed Ag Terms of Lending Data."""
 
     date: dateType = Field(description="The survey quarter-end date.")
 
@@ -78,7 +74,7 @@ class FederalReserveKansasCityAgTermsOfLendingFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReserveKansasCityAgTermsOfLendingData]:
-        """Melt the survey history, then pivot each series to a wide column."""
+        """Transform raw survey content into wide-format data records."""
         from openbb_federal_reserve.utils.kansas_city_ag import parse_kc_databook
         from openbb_federal_reserve.utils.workbook import pivot_wide
 

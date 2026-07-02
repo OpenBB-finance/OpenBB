@@ -167,9 +167,6 @@ class FederalReserveDataDownloadFetcher(
         except ValueError as exc:
             raise OpenBBError(exc) from exc
 
-        # A selected series takes priority over the table snapshot: its full
-        # history is fetched (ignoring ``limit``) within the date range, then
-        # filtered to the requested series.
         rows = fetch_dataset(
             release,
             package,

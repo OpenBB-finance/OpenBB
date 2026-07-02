@@ -1,9 +1,4 @@
-"""FFIEC concept metadata: full names, narratives, and value units.
-
-Joins the CDR XBRL taxonomy (each concept's data type - ``Monetary`` marks the
-dollar values the FFIEC reports in thousands) with the MDRM data dictionary (the
-official item name and definition), keyed by concept code.
-"""
+"""Build FFIEC concept metadata: full names, narratives, and value units."""
 
 from __future__ import annotations
 
@@ -77,28 +72,12 @@ _GUIDE_RESIDUAL_ABBREVIATIONS = (
 
 
 def clean_name(raw: str | None) -> str | None:
-    """Title-case an FFIEC item name (MDRM or guide Description) into a readable label.
-
-    Drops only the section-redundant Average-Assets basis (``as a percent of
-    Average Assets``, ``/PERCENT OF AVERAGE ASSETS``) the report's section already
-    conveys — a meaningful denominator the ratio is named for (``% of Tier 1
-    Capital``) is kept in full — the ``(***)`` footnote marker, and the Call Report
-    schedule cross-reference tail (``(Included in Rc-C …)``) on Call-sourced item
-    names, title-cases (keeping known acronyms upper and small words lower), then
-    expands the few abbreviations the guide Description itself leaves on the
-    quarterly-annualized concepts (``Ln&Ls``, ``Qtr``).
-    """
+    """Title-case an FFIEC item name into a readable label."""
     import re
 
     if not raw:
         return None
     text = re.sub(r"\s+", " ", raw).strip()
-    # Drop only the section-redundant Average-Assets basis (``as a percent of
-    # Average Assets``, ``% of Avg Assets``, ``/PERCENT OF AVERAGE ASSETS``),
-    # consuming the leading connective so no dangling ``as a`` remains. A
-    # meaningful denominator the ratio is named for (``% of Tier 1 Capital``,
-    # ``of Average Earning Assets``, ``of Average Total Loans``) is its identity,
-    # not section context, and is kept in full.
     text = re.sub(
         r"\s*(?:/\s*)?(?:as\s+)?(?:a\s+)?(?:percent|%)\s+of\s+(?:average|avg)\.?"
         r"(?:\s+total)?\s+assets\b.*$",
@@ -108,7 +87,6 @@ def clean_name(raw: str | None) -> str | None:
     )
     text = re.sub(r"\s*\(\$\d*s?\)", "", text)
     text = re.sub(r"\s*\(included in .*$", "", text, flags=re.IGNORECASE)
-    # Drop the trailing parent-line cross-reference footnote (``(5408)``).
     text = re.sub(r"\s*\(\d+\)\s*$", "", text)
     text = re.sub(r"\s*\(\*+\)", "", text).strip().rstrip(".").strip()
     seen_first = [False]
@@ -150,13 +128,7 @@ def indented_name(label: str | None, name: str | None) -> str | None:
 def concept_index(
     product: str = "ubpr_ratio_single", form_type: str | None = None
 ) -> dict[str, dict[str, Any]]:
-    """Return ``{CODE: {"name", "narrative", "monetary", "is_text"}}`` per concept.
-
-    ``monetary`` marks dollar concepts (the FFIEC reports these in thousands);
-    ``is_text`` marks free-text concepts (the ``TEXTxxxx`` itemization captions
-    that carry no numeric value); ``name`` is the readable MDRM item name and
-    ``narrative`` its definition.
-    """
+    """Return ``{CODE: {"name", "narrative", "monetary", "is_text"}}`` per concept."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> dict[str, dict[str, Any]]:

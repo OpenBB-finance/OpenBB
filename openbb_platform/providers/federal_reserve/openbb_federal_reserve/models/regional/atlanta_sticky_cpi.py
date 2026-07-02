@@ -16,8 +16,6 @@ URL = (
 )
 
 _NA_VALUES = ["na", ".", "#N/A", "#N/A N/A"]
-# Each measure occupies four consecutive columns in this transform order; the
-# block's first column carries the measure name and the monthly level.
 _TRANSFORMS = ["monthly", "1-month annualized", "3-month annualized", "12-month"]
 
 _TRANSFORM_OPTIONS = [
@@ -61,12 +59,7 @@ class FederalReserveAtlantaStickyCpiQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaStickyCpiData(Data):
-    """Atlanta Fed Sticky-Price CPI Data.
-
-    One row per observation month, with one column per measure (e.g. 'Sticky CPI')
-    carrying that measure's value for the selected transform. The measure blocks
-    are pivoted to wide, so the columns are the measures.
-    """
+    """Atlanta Fed Sticky-Price CPI Data."""
 
     date: dateType = Field(description="The observation month.")
 
@@ -142,9 +135,6 @@ class FederalReserveAtlantaStickyCpiFetcher(
             raise EmptyDataError("The request was returned empty.")
         header = frame.iloc[first_data - 1]
 
-        # Value columns group into blocks of four transforms; the block's first
-        # column carries the measure name. Keep only the column matching the
-        # requested transform within each measure block.
         value_columns = [
             column
             for column in frame.columns[1:]

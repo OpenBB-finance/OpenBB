@@ -229,9 +229,6 @@ class FederalReserveCallReportSectionedFetcher(
         ]
         for code in codes:
             meta = index.get(code.upper(), {})
-            # Free-text concepts (the ``TEXTxxxx`` itemization captions) carry no
-            # numeric value and duplicate the numeric amount line; drop them from
-            # the numeric grid.
             if meta.get("is_text"):
                 continue
             node = hierarchy[code.upper()]
@@ -279,8 +276,6 @@ class FederalReserveCallReportSectionedFetcher(
         periods = head.pop("_periods", None)
         reporting_date = max(periods) if periods else None
         rows = rectangularize(data)
-        # The leading (no-data) header row carries the schedule's description as
-        # its hover-card narrative, mirroring the UBPR section pages.
         if rows and rows[0].get("is_header") and not rows[0].get("narrative"):
             rows[0]["narrative"] = CALL_PAGE_DESCRIPTIONS.get(query.section)
         return AnnotatedResult(

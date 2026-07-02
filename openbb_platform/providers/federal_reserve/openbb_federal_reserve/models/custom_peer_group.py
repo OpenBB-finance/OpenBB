@@ -50,12 +50,7 @@ class FederalReserveCustomPeerGroupQueryParams(QueryParams):
 
 
 class FederalReserveCustomPeerGroupData(Data):
-    """FFIEC UBPR Custom Peer Group Report Data.
-
-    One row per report line item. Each period contributes one
-    ``"<ISO> <bank name>"`` column carrying the target bank's value, named by the
-    bank's readable name.
-    """
+    """FFIEC UBPR Custom Peer Group Report Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(
@@ -97,12 +92,7 @@ class FederalReserveCustomPeerGroupFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch the requested CPG section from the FFIEC CDR report router.
-
-        A holding-company RSSD carries no UBPR, so the target bank is resolved to
-        its lead filing bank; the resolved bank is surfaced through the leading
-        row's ``_rssd``/``_name`` metadata keys.
-        """
+        """Fetch the requested CPG section from the FFIEC CDR report router."""
         from openbb_federal_reserve.utils.custom_peer_group import (
             fetch_custom_peer_group,
         )

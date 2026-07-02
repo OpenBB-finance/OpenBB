@@ -1,11 +1,10 @@
 """Tests for the FR Y-9C report structure generator."""
 
 import json
-from types import SimpleNamespace
 
 import pytest
 
-from openbb_federal_reserve.utils import fry9c_structure
+from openbb_federal_reserve.utils import fry9c_structure, report_structure
 from openbb_federal_reserve.utils.fry9c_structure import (
     _clean_caption,
     _is_codes_only,
@@ -66,13 +65,11 @@ _APPENDIX_LINES = [
 ]
 
 
-def _fake_reader(lines, *, pages=None):
-    """Build a stand-in ``PdfReader`` whose pages yield the given text."""
+def _patch_pages(monkeypatch, lines, *, pages=None):
+    """Patch ``read_pdf_pages`` to yield the given synthetic page texts."""
     page_texts = pages if pages is not None else ["\n".join(lines)]
-    return SimpleNamespace(
-        pages=[
-            SimpleNamespace(extract_text=lambda text=text: text) for text in page_texts
-        ]
+    monkeypatch.setattr(
+        report_structure, "read_pdf_pages", lambda _pdf_bytes: list(page_texts)
     )
 
 
@@ -168,13 +165,7 @@ class TestPdfLines:
 
     def test_extracts_between_banner_and_appendix_b(self, monkeypatch):
         """Lines before the banner and after Appendix B are dropped."""
-        # PdfReader is imported lazily inside ``_pdf_lines``; patch the module the
-        # name resolves to.
-        import pypdf
-
-        monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_APPENDIX_LINES)
-        )
+        _patch_pages(monkeypatch, _APPENDIX_LINES)
         lines = _pdf_lines(b"%PDF-1.7")
         assert "Appendix A" not in lines
         assert lines[0] == "Report Form"
@@ -182,22 +173,17 @@ class TestPdfLines:
 
     def test_returns_all_when_no_appendix_b(self, monkeypatch):
         """When Appendix B never appears, the loop falls through to ``return``."""
-        import pypdf
-
         body = [
             "FR Y-9C Report Detailed Field Specifications",
             "1. Interest income BHCK4107",
         ]
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: _fake_reader(body))
+        _patch_pages(monkeypatch, body)
         lines = _pdf_lines(b"%PDF-1.7")
         assert lines == ["1. Interest income BHCK4107"]
 
     def test_handles_empty_page_text(self, monkeypatch):
-        """A page whose ``extract_text`` returns ``None`` contributes no lines."""
-        import pypdf
-
-        reader = _fake_reader([], pages=[None])
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: reader)
+        """A page with no extractable text contributes no lines."""
+        _patch_pages(monkeypatch, [], pages=[""])
         assert _pdf_lines(b"%PDF-1.7") == []
 
 
@@ -271,10 +257,8 @@ class TestParseStructure:
 
 
 def parse_structure_via_lines(monkeypatch, lines):
-    """Parse a synthetic appendix by patching the lazy ``PdfReader`` import."""
-    import pypdf
-
-    monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: _fake_reader(lines))
+    """Parse a synthetic appendix by patching ``read_pdf_pages``."""
+    _patch_pages(monkeypatch, lines)
     return parse_structure(b"%PDF-1.7")
 
 
@@ -514,11 +498,7 @@ class TestGenerateAndWrite:
 
     def test_generate_from_local_pdf(self, monkeypatch, tmp_path):
         """``generate`` reads a local PDF path and summarizes the schedules."""
-        import pypdf
-
-        monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_APPENDIX_LINES)
-        )
+        _patch_pages(monkeypatch, _APPENDIX_LINES)
         pdf = tmp_path / "guide.pdf"
         pdf.write_bytes(b"%PDF-1.7")
         payload = generate(str(pdf), offline=True)
@@ -528,11 +508,7 @@ class TestGenerateAndWrite:
 
     def test_generate_reconciles_against_filings(self, monkeypatch, tmp_path):
         """``generate`` reconciles the parsed layout against the filed item set."""
-        import pypdf
-
-        monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_APPENDIX_LINES)
-        )
+        _patch_pages(monkeypatch, _APPENDIX_LINES)
         # Only ``BHCK4107`` and ``BHCK4599`` are "filed"; every other parsed code
         # is pruned, and the missing-item insertions whose code is not filed are
         # skipped.
@@ -549,12 +525,8 @@ class TestGenerateAndWrite:
 
     def test_generate_fetches_when_no_path(self, monkeypatch):
         """Without a path, ``generate`` downloads the canonical PDF."""
-        import pypdf
-
         monkeypatch.setattr(fry9c_structure, "_fetch_pdf_bytes", lambda: b"%PDF-1.7")
-        monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_APPENDIX_LINES)
-        )
+        _patch_pages(monkeypatch, _APPENDIX_LINES)
         payload = generate(offline=True)
         assert payload["source"] == fry9c_structure.USER_GUIDE_URL
 
@@ -573,11 +545,7 @@ class TestGenerateAndWrite:
 
     def test_write_asset(self, monkeypatch, tmp_path):
         """``write_asset`` writes the payload JSON to the asset path."""
-        import pypdf
-
-        monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_APPENDIX_LINES)
-        )
+        _patch_pages(monkeypatch, _APPENDIX_LINES)
         pdf = tmp_path / "guide.pdf"
         pdf.write_bytes(b"%PDF-1.7")
         target = tmp_path / "fry9c" / "structure.json"
@@ -589,11 +557,7 @@ class TestGenerateAndWrite:
 
     def test_main_writes_and_prints(self, monkeypatch, tmp_path, capsys):
         """The CLI entry point writes the asset and prints a summary."""
-        import pypdf
-
-        monkeypatch.setattr(
-            pypdf, "PdfReader", lambda _stream: _fake_reader(_APPENDIX_LINES)
-        )
+        _patch_pages(monkeypatch, _APPENDIX_LINES)
         pdf = tmp_path / "guide.pdf"
         pdf.write_bytes(b"%PDF-1.7")
         target = tmp_path / "fry9c" / "structure.json"

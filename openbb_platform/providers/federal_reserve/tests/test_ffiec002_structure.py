@@ -1,11 +1,10 @@
 """Tests for the FFIEC 002 report structure generator."""
 
 import json
-from types import SimpleNamespace
 
 import pytest
 
-from openbb_federal_reserve.utils import ffiec002_structure
+from openbb_federal_reserve.utils import ffiec002_structure, report_structure
 from openbb_federal_reserve.utils.ffiec002_structure import (
     _appendix_lines,
     _captions,
@@ -99,18 +98,11 @@ _CSV_TEXT_SECOND = "\n".join(
 )
 
 
-def _fake_reader(pages):
-    """Build a stand-in ``PdfReader`` whose pages yield the given text."""
-    return SimpleNamespace(
-        pages=[SimpleNamespace(extract_text=lambda text=text: text) for text in pages]
-    )
-
-
 def _patch_reader(monkeypatch, pages):
-    """Patch the lazily imported ``PdfReader`` to return ``pages``."""
-    import pypdf
-
-    monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: _fake_reader(pages))
+    """Patch ``read_pdf_pages`` to return the synthetic page-text list."""
+    monkeypatch.setattr(
+        report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+    )
 
 
 class TestNormalizeSchedule:
@@ -201,8 +193,8 @@ class TestAppendixLines:
         assert lines[0] == "SUB IDENTIFIER RCFD"
 
     def test_handles_empty_page_text(self, monkeypatch):
-        """A page whose ``extract_text`` returns ``None`` contributes no lines."""
-        _patch_reader(monkeypatch, [None])
+        """A page that yields empty text contributes no lines."""
+        _patch_reader(monkeypatch, [""])
         assert _appendix_lines(b"%PDF-1.7") == []
 
 

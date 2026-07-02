@@ -1,12 +1,4 @@
-"""Federal Reserve Bank of Philadelphia publication-archive indexing.
-
-The Philadelphia Fed publishes the Survey of Professional Forecasters (SPF), the
-Manufacturing and Nonmanufacturing Business Outlook Surveys (MBOS, NBOS), and the
-Livingston Survey as per-release PDFs linked from their landing pages. This module
-discovers those links, classifies each into a catalog record (series, id, date,
-url) by parsing the filename, and serves a selected report as a base64-encoded PDF
-for an OpenBB Workspace PDF widget.
-"""
+"""Federal Reserve Bank of Philadelphia publication-archive indexing."""
 
 from __future__ import annotations
 

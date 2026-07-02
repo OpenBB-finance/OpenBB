@@ -200,9 +200,6 @@ class FederalReserveInstitutionStructureFetcher(
             else fetch_transformations()
         )
 
-        # Filter the raw records first (a cheap check of the two RSSD columns), so
-        # only the handful of matching rows are lowercased into dicts — the bulk
-        # file holds hundreds of thousands of relationships.
         if query.rssd_id:
             target = query.rssd_id.strip()
             records = [

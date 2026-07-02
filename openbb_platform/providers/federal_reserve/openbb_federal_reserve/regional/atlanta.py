@@ -13,9 +13,6 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="", description="Federal Reserve Bank of Atlanta indicators.")
 
-# A blue-to-red gradient banding the Taylor-rule prescribed rate so each gap
-# column of the heat-map table fills its cells by magnitude (the workspace
-# heat map is a table with per-cell color rules, not a chart type).
 _HEATMAP_COLOR_RULES = [
     {"condition": "lt", "value": 2, "color": "#2166ac", "fill": True},
     {

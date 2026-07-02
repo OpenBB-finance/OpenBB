@@ -30,11 +30,7 @@ class FederalReserveMinneapolisLaborForceQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisLaborForceData(Data):
-    """Minneapolis Fed Labor Force Participation Data.
-
-    One row per observation month, with one column per Ninth District state and
-    the United States carrying the labor force participation rate, in percent.
-    """
+    """Minneapolis Fed Labor Force Participation Data."""
 
     date: dateType = Field(description="The observation month.")
 

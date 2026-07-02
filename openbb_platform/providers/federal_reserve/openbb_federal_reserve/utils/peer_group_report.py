@@ -1,11 +1,4 @@
-"""FFIEC CDR client for the UBPR Peer Group Average Report.
-
-Fetches a peer group's average UBPR ratios (every section, the five most recent
-quarters by default or the full history on request, in the report's own layout)
-from the server-rendered ``UbprReport.aspx`` (``rptid=284``) — the public source
-that carries the peer-group averages keyed on a peer group, not an individual
-bank.
-"""
+"""FFIEC CDR client for the UBPR Peer Group Average Report."""
 
 from __future__ import annotations
 
@@ -82,11 +75,7 @@ def _value(token: Any) -> float | None:
 
 
 def resolve_peer_group_id(peer_group: str) -> int:
-    """Resolve a peer-group name to the report URL's ``peergroupid``.
-
-    Resolution runs against the live ``PGSelector`` registry for the latest
-    reporting cycle, keyed on the peer-group name.
-    """
+    """Resolve a peer-group name to the report URL's ``peergroupid``."""
     from openbb_federal_reserve.utils.peer_groups import (
         resolve_peer_group_id as _resolve,
     )
@@ -166,8 +155,6 @@ def report_sections(peergroupid: int) -> list[str]:
     )
 
 
-# The ``UbprReport.aspx`` grid renders at most five reporting cycles per
-# request; longer histories must be fetched one five-cycle batch at a time.
 _MAX_CYCLES_PER_REQUEST = 5
 
 

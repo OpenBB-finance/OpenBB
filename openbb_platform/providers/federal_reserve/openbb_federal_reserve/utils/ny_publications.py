@@ -1,11 +1,4 @@
-"""New York Fed publication-archive aggregation.
-
-The New York Fed publishes several report archives, each scraped by its own
-helper module: the Empire State Manufacturing Survey, the Business Leaders Survey
-and its supplement, the Quarterly Report on Household Debt and Credit, and the
-Survey of Market Expectations. This module merges all five into one catalog of
-``(date, series, title, url)`` records for a single multi-file viewer.
-"""
+"""New York Fed publication-archive aggregation."""
 
 from __future__ import annotations
 

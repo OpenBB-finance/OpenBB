@@ -19,7 +19,6 @@ _TABLES_URL = (
     "/CommercialBankCallReportDataTables.xlsx"
 )
 
-# table key -> (workbook url, sheet or None for the coded historical workbook).
 _SOURCES = {
     "historical": (_HISTORICAL_URL, None),
     "farm_debt_all_banks": (_TABLES_URL, "A"),
@@ -61,12 +60,7 @@ class FederalReserveKansasCityAgFinanceQueryParams(QueryParams):
 
 
 class FederalReserveKansasCityAgFinanceData(Data):
-    """Kansas City Fed Ag Finance Databook Data.
-
-    One row per observation quarter-end date, with one column per agricultural
-    banking statistic carrying that statistic's value; the series of the selected
-    table are pivoted to wide.
-    """
+    """Kansas City Fed Ag Finance Databook Data."""
 
     date: dateType = Field(description="The observation quarter-end date.")
 

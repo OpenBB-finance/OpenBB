@@ -1,11 +1,4 @@
-"""Kansas City Fed Agricultural Bulletin PDF indexing and presentation.
-
-The quarterly Agricultural Credit Survey Bulletin is published only as per
--quarter PDFs whose filenames are not stable. This module scrapes the
-agricultural data landing page for the PDF links, parses the quarter and year
-from each filename, and serves a selected bulletin as a base64-encoded PDF for
-an OpenBB Workspace PDF widget.
-"""
+"""Kansas City Fed Agricultural Bulletin PDF indexing and presentation."""
 
 from __future__ import annotations
 

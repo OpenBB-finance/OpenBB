@@ -1,13 +1,4 @@
-"""Generate per-district ``widgets.json`` and ``apps.json`` specifications.
-
-Widgets are produced by the official OpenBB Workspace generator
-(``openbb_platform_api.utils.widgets.build_json``), which derives each widget's
-parameters and table ``columnsDefs`` from the command's query parameters and
-response schema. The full federal_reserve widget set is then split per district:
-each district's spec is served from its own path (e.g. ``/atlanta/widgets.json``),
-so widget ``endpoint`` and ``optionsEndpoint`` references are the bare command
-name, relative to that district path.
-"""
+"""Generate per-district ``widgets.json`` and ``apps.json`` specifications."""
 
 from __future__ import annotations
 
@@ -23,9 +14,6 @@ _SEAL = (
 
 _COMMONS = "https://upload.wikimedia.org/wikipedia/commons/thumb"
 
-# Wide (landscape) banner per district keyed by slug: a photo of the Reserve
-# Bank's own headquarters building (St. Louis, which has no usable HQ photo on
-# Commons, uses the city's Gateway Arch skyline). Falls back to the System seal.
 _DISTRICT_IMAGES = {
     "atlanta": f"{_COMMONS}/8/8b/Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg/960px-Federal_Reserve_Bank_of_Atlanta_Headquarters.jpg",
     "boston": f"{_COMMONS}/f/f4/Federal_Reserve_from_South_Boston.jpg/960px-Federal_Reserve_from_South_Boston.jpg",
@@ -41,8 +29,6 @@ _DISTRICT_IMAGES = {
     "stl": f"{_COMMONS}/d/de/St_Louis_night_expblend.jpg/960px-St_Louis_night_expblend.jpg",
 }
 
-# Per-district app descriptions highlighting each Reserve Bank's signature data
-# products, keyed by slug; falls back to a generic line for unknown districts.
 _DISTRICT_DESCRIPTIONS = {
     "atlanta": (
         "The Atlanta Fed's real-time growth and inflation toolkit: the GDPNow"
@@ -141,13 +127,8 @@ def district_widgets(slug: str, full: dict | None = None) -> dict[str, Any]:
     for widget_id, source in full.items():
         endpoint = source.get("endpoint", "")
         owned = endpoint.startswith(prefix)
-        # A widget whose command lives under this subrouter is namespaced
-        # ``{slug}_...`` even when its model overrides the endpoint to a bare,
-        # router-local name (e.g. the FFIEC BHCPR multi_file_viewer, whose
-        # endpoint is ``bhcpr_report_download``). Claim it by that id prefix.
         if not owned and widget_id.startswith(f"{slug}_"):
             owned = True
-        # multi_file_viewer widgets use a shared absolute endpoint; claim by district.
         if not owned and source.get("type") == "multi_file_viewer":
             owned = any(
                 (param.get("optionsParams") or {}).get("district") == slug
@@ -165,11 +146,6 @@ def district_widgets(slug: str, full: dict | None = None) -> dict[str, Any]:
     return widgets
 
 
-# Shared main-router endpoints (publication download/choices) that every
-# district's multi_file_viewer references by absolute path. They must be rebased
-# to a bare, district-relative name so the merged backend's path-restorer
-# (``fix_router_widgets``) prepends the district path once instead of stacking it
-# on top of the already-absolute main-router path.
 _SHARED_ENDPOINTS = (
     "regional_publications_download",
     "regional_publications_choices",
@@ -180,12 +156,7 @@ _SHARED_ENDPOINTS = (
 
 
 def _district_relative(value: str, prefix: str) -> str:
-    """Rebase a widget endpoint to a bare path relative to the district.
-
-    A district-prefixed path (``/{slug}/command``) drops the prefix. A shared
-    main-router publication endpoint (absolute, outside the district) is reduced
-    to its bare last segment so the merge step resolves it under the district.
-    """
+    """Rebase a widget endpoint to a bare path relative to the district."""
     if value.startswith(prefix):
         return value[len(prefix) :]
     last = value.rsplit("/", 1)[-1]
@@ -212,13 +183,7 @@ def _tab_slug(name: str, used: set[str]) -> str:
 def build_apps(
     widgets: dict[str, Any], district: str, district_slug: str = ""
 ) -> list[dict]:
-    """Build a district apps.json with one themed tab per widget ``subCategory``.
-
-    Widgets are grouped by their ``subCategory`` (the theme set in each command's
-    ``widget_config``); each theme becomes its own tab. Regional widgets are wide
-    data tables, so every widget is laid out full-width, one per row, stacked in
-    widget order. The app icon is a wide photo of the Reserve Bank's own headquarters.
-    """
+    """Build a district apps.json with one themed tab per widget ``subCategory``."""
     image = _DISTRICT_IMAGES.get(district_slug, _SEAL)
     themes: dict[str, list[str]] = {}
     for widget_id, widget in widgets.items():
@@ -229,8 +194,6 @@ def build_apps(
     used: set[str] = set()
     for theme, widget_ids in themes.items():
         slug = _tab_slug(theme, used)
-        # Every widget is a wide data table, so each claims its own full-width
-        # row stacked by widget order.
         layout = [
             {
                 "i": widget_id,
@@ -270,29 +233,17 @@ def _assets_dir() -> Any:
 
 
 def _curated_apps_path(slug: str) -> Any:
-    """Return the path to a subrouter's hand-curated ``apps.json``.
-
-    A curated app (e.g. the multi-tab FFIEC layout) is committed under
-    ``assets/<slug>/apps.json`` and served verbatim, in contrast to the
-    auto-grouped regional apps that :func:`build_apps` derives from the widgets.
-    """
+    """Return the path to a subrouter's hand-curated ``apps.json``."""
     from pathlib import Path
 
     return Path(__file__).resolve().parent.parent / "assets" / slug / "apps.json"
 
 
-# Slugs whose widgets.json is curated and committed alongside its apps.json under
-# ``assets/<slug>/`` rather than the auto-generated regional spec directory.
 _CURATED_SLUGS = ("ffiec",)
 
 
 def _widgets_path(slug: str) -> Any:
-    """Return the read/write path for a slug's ``widgets.json``.
-
-    A curated slug (e.g. ``ffiec``) keeps its widgets spec beside its apps spec at
-    ``assets/<slug>/widgets.json``; regional slugs use the auto-generated
-    ``assets/regional/<slug>_widgets.json``.
-    """
+    """Return the read/write path for a slug's ``widgets.json``."""
     from pathlib import Path
 
     if slug in _CURATED_SLUGS:
@@ -303,13 +254,7 @@ def _widgets_path(slug: str) -> Any:
 def register_spec_routes(
     district_router: Any, slug: str, district: str, curated_apps: bool = False
 ) -> None:
-    """Attach ``/widgets.json`` and ``/apps.json`` GET routes to a district router.
-
-    The routes serve the committed asset files; if a file is missing they fall back
-    to building the spec live from the running app. When ``curated_apps`` is set the
-    ``/apps.json`` route instead serves the hand-curated app committed at
-    ``assets/<slug>/apps.json`` verbatim (it has no generated fallback).
-    """
+    """Attach ``/widgets.json`` and ``/apps.json`` GET routes to a district router."""
     api_router = district_router.api_router
 
     def _read(path: Any, builder: Any) -> Any:
@@ -350,12 +295,7 @@ def register_spec_routes(
 
 
 def _relabel_metadata(widgets: dict[str, Any], branch: str) -> dict[str, Any]:
-    """Give every widget a consistent browser category and sub-category.
-
-    ``category`` is always "Federal Reserve"; ``subCategory`` is the Reserve Bank
-    branch. The per-command theme (used by :func:`build_apps` to build the tabs)
-    is read off ``subCategory`` before this runs, so it must be called afterwards.
-    """
+    """Give every widget a consistent browser category and sub-category."""
     for widget in widgets.values():
         widget["category"] = "Federal Reserve"
         widget["subCategory"] = branch

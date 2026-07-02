@@ -51,11 +51,7 @@ class FederalReserveKansasCityAgCreditSurveyQueryParams(QueryParams):
 
 
 class FederalReserveKansasCityAgCreditSurveyData(Data):
-    """Kansas City Fed Agricultural Credit Survey Data.
-
-    One row per survey quarter-end date, with one column per survey series carrying
-    that series' value; the series of the selected table are pivoted to wide.
-    """
+    """Kansas City Fed Agricultural Credit Survey Data."""
 
     date: dateType = Field(description="The survey quarter-end date.")
 

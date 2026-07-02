@@ -160,11 +160,7 @@ class FederalReserveNewYorkConsumerHousingQueryParams(QueryParams):
 
 
 class FederalReserveNewYorkConsumerHousingData(Data):
-    """New York Fed SCE Housing Survey Data.
-
-    One row per survey month, with one column per series within the topic. The
-    series are pivoted to wide, so the columns vary with the selected topic sheet.
-    """
+    """New York Fed SCE Housing Survey Data."""
 
     date: dateType = Field(description="The survey month.")
 

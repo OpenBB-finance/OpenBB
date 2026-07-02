@@ -88,15 +88,12 @@ class FederalReserveYieldCurveFetcher(
         dates_list = DatetimeIndex(dates)
         df.columns.name = "maturity"
 
-        # Find the nearest date in the DataFrame to each date in dates_list
         nearest_dates = [df.index.asof(date) for date in dates_list]
 
-        # Filter for only the nearest dates
         df = df[df.index.isin(nearest_dates)]
 
         df = df.fillna("N/A").replace("N/A", None)
 
-        # Flatten the DataFrame
         flattened_data = df.reset_index().melt(
             id_vars="date", var_name="maturity", value_name="rate"
         )

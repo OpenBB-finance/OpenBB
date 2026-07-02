@@ -1,9 +1,4 @@
-"""FFIEC CDR report-router client for the UBPR report family.
-
-Fetches the full UBPR report (BANK, peer-group and percentile, every period, in
-the report's own section layout) from ``POST /Public/router/Search`` — the only
-public source that carries the peer-group and percentile columns.
-"""
+"""FFIEC CDR report-router client for the UBPR report family."""
 
 from __future__ import annotations
 
@@ -115,11 +110,7 @@ def _section_id(section: str | None, report_type_id: int) -> tuple[str, str]:
 
 
 def _cell_parts(cell: str | None) -> list[tuple[float | None, str | None]]:
-    """Split a period cell into its ``(value, concept-code)`` parts.
-
-    Each part is ``"<value>;<code>;<fmt>;<dec>;''"``; the value parses to a float
-    (``None`` when blank or non-numeric) and the code is the part's concept.
-    """
+    """Split a period cell into its ``(value, concept-code)`` parts."""
     parts: list[tuple[float | None, str | None]] = []
     for part in (cell or "").split(", "):
         fields = part.split(";")
@@ -136,13 +127,7 @@ def _cell_parts(cell: str | None) -> list[tuple[float | None, str | None]]:
 def _triplet(
     cell: str | None,
 ) -> tuple[float | None, float | None, float | None]:
-    """Resolve a period cell to its ``(bank, peer-group, percentile)`` values.
-
-    The bank value is part 0; the peer-group value is the part whose concept code
-    begins with ``UBPS`` and the percentile the part whose code begins with
-    ``UBPK`` (each ``None`` when absent). The dollar pages carry no ``UBPS`` part,
-    so their peer-group and percentile are ``None``.
-    """
+    """Resolve a period cell to its ``(bank, peer-group, percentile)`` values."""
     parts = _cell_parts(cell)
     bank = parts[0][0] if parts else None
     pg = next((v for v, code in parts if code and code.startswith("UBPS")), None)
@@ -191,12 +176,7 @@ def _caption(raw: str) -> str:
 
 
 def rectangularize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Give every row the union of all columns (None-filled).
-
-    Header rows carry only ``label``/``is_header``; without this the table derives
-    its columns from the leading header row and never shows the period columns the
-    line-item rows carry.
-    """
+    """Give every row the union of all columns (None-filled)."""
     keys: list[str] = []
     for row in rows:
         for key in row:
@@ -234,12 +214,7 @@ def _number(value: Any) -> float | int | None:
 
 
 def fetch_list_of_banks(peer_group: str, cycle_id: str) -> list[dict[str, Any]]:
-    """Fetch the roster of banks in a peer group for one reporting cycle.
-
-    Each record carries the bank's RSSD id, FDIC certificate, charter class,
-    name, city/state, office count, average assets and quarterly net income
-    (both in thousands of dollars), and map coordinates.
-    """
+    """Fetch the roster of banks in a peer group for one reporting cycle."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> list[dict[str, Any]]:

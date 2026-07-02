@@ -107,7 +107,6 @@ class FederalReservePrimaryDealerFailsFetcher(
             response = await amake_request(url, **kwargs)
             data = response.get("pd", {}).get("timeseries", [])  # ty: ignore[unresolved-attribute]
             if query.start_date and query.start_date < datetime(2013, 4, 1).date():
-                # The data is broken into different series and the structure of the data is different over time.
                 if query.start_date < datetime(2001, 7, 1).date():
                     url2 = (
                         "https://markets.newyorkfed.org/api/pd/get/SBP2001/timeseries/PDFASUFDA_PDFASUFRA"

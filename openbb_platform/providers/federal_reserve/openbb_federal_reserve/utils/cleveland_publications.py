@@ -1,13 +1,4 @@
-"""Federal Reserve Bank of Cleveland publication-archive indexing.
-
-The Cleveland Fed renders every publication listing through a Sitecore site-search
-JSON service at ``/frbc/sitesearch/results``. Each listing page is identified by a
-Sitecore item GUID and a ``publication`` facet filter; the service returns one
-record per publication carrying its title, release date, authors, and a
-``mediaLinks`` array that includes the direct PDF URL. This module pages that
-service per series, keeps the records that resolve to a real PDF, and classifies
-them into catalog records served as base64-encoded PDFs in the multi-file viewer.
-"""
+"""Federal Reserve Bank of Cleveland publication-archive indexing."""
 
 from __future__ import annotations
 

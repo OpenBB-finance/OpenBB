@@ -1,10 +1,4 @@
-"""FRB Enhanced Financial Accounts: Money Market Funds Investment Holdings.
-
-The EFA project publishes eight historical CSV tables of money market fund
-holdings. Most are time series (a ``Date`` column plus holding categories); the
-detail table adds a ``Country`` column. Both shapes melt to a single long-format
-shape: ``(date, country, label, value)`` with values in millions of dollars.
-"""
+"""FRB Enhanced Financial Accounts: Money Market Funds Investment Holdings."""
 
 from __future__ import annotations
 
@@ -12,7 +6,6 @@ from typing import Any
 
 BASE_URL = "https://www.federalreserve.gov/releases/efa"
 
-# Friendly table key -> the published CSV filename.
 TABLES = {
     "total": "total-money-market-funds-investment-holdings-historical.csv",
     "prime": "prime-money-market-funds-investment-holdings-historical.csv",

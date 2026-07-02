@@ -34,12 +34,7 @@ class FederalReserveClevelandSystemicRiskQueryParams(QueryParams):
 
 
 class FederalReserveClevelandSystemicRiskData(Data):
-    """Cleveland Fed Systemic Risk Indicator Data.
-
-    One row per observation date, with one column per indicator component
-    carrying that component's value, in standard deviations. The indicator and
-    its two distance-to-default legs are pivoted to wide.
-    """
+    """Cleveland Fed Systemic Risk Indicator Data."""
 
     date: dateType = Field(description="The observation date.")
 

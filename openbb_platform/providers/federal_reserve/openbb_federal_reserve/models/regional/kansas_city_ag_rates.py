@@ -68,12 +68,7 @@ class FederalReserveKansasCityAgRatesQueryParams(QueryParams):
 
 
 class FederalReserveKansasCityAgRatesData(Data):
-    """Kansas City Fed Agricultural Interest Rates Data.
-
-    One row per survey quarter-end date, with one column per state or district
-    carrying that area's average interest rate; the areas of the selected rate and
-    loan type are pivoted to wide.
-    """
+    """Kansas City Fed Agricultural Interest Rates Data."""
 
     date: dateType = Field(description="The survey quarter-end date.")
 

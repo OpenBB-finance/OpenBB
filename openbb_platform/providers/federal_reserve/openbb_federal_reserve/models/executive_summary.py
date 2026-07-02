@@ -29,12 +29,7 @@ class FederalReserveExecutiveSummaryQueryParams(QueryParams):
 
 
 class FederalReserveExecutiveSummaryData(Data):
-    """FFIEC Executive Summary Report Data.
-
-    One row per report line item; each recent period contributes a single
-    value column (ISO date keyed), concatenated across the report's eight
-    sections in their published order.
-    """
+    """FFIEC Executive Summary Report Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(
@@ -73,12 +68,7 @@ class FederalReserveExecutiveSummaryFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch the Executive Summary Report from the FFIEC CDR report router.
-
-        A holding-company RSSD carries no Executive Summary, so it is resolved to
-        its lead filing bank; the resolved bank is surfaced through the leading
-        row's ``_rssd``/``_name`` metadata keys.
-        """
+        """Fetch the Executive Summary Report from the FFIEC CDR report router."""
         from openbb_federal_reserve.utils.executive_summary_report import (
             fetch_executive_summary,
         )

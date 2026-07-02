@@ -1,27 +1,4 @@
-"""FFIEC 102 report structure generator.
-
-Builds the ordered, hierarchical item list for the FFIEC 102 Market Risk
-Regulatory Report from the form's published line layout, validated against the
-union of value-bearing item codes actually present in real per-institution
-filings (``ReturnFinancialReportCSV?rpt=FFIEC102``).
-
-The committed form table (:data:`_COVER` and :data:`_BODY`) carries every code
-that appears in the public report, each with its form line reference, the clean
-form caption, and its section grouping. Captions follow the FFIEC 102 form; the
-line numbers and section groupings are verified against the self-referencing
-item descriptions in the live CSV. Codes that the form defines but no institution
-files (confidential or conditional-approval grid rows, and cover administrative
-rows suppressed from the public download) are deliberately excluded so that no
-structure value-item is permanently empty.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.ffiec102_structure
-
-Pass ``--rssd`` one or more times to validate the table against additional
-filers; the build fails if any sampled filing carries a value-bearing code the
-table omits, or if the table carries a code absent from every sampled filing.
-"""
+"""FFIEC 102 report structure generator."""
 
 from __future__ import annotations
 
@@ -48,8 +25,6 @@ VALIDATION_RSSDS = ("852218", "480228")
 SCHEDULE_COVER = ("COVER", "Cover Page")
 SCHEDULE_BODY = ("RC", "Market Risk Regulatory Report")
 
-# Identity / administrative rows that are never report items: excluded from the
-# filed-code union and never rendered.
 _IDENTITY = frozenset(
     {
         "INSTITUTION NAME",
@@ -70,7 +45,6 @@ _IDENTITY = frozenset(
 _MDRM = re.compile(r"^[A-Z]{4}[A-Z0-9]{4}$")
 _DT_ROW = re.compile(r"^DT($|_)")
 
-# Cover page items, in form order: (mdrm, caption).
 _COVER: tuple[tuple[str, str], ...] = (
     ("MRRRC490", "Printed Name of Senior Officer"),
     ("MRRRC491", "Title of Officer"),
@@ -102,7 +76,6 @@ _AVG_VAR = (
 )
 _BACKTEST = "Backtesting (Over the Most Recent Calendar Quarter)"
 
-# Body items, in form line order: (mdrm, line, caption, section | None).
 _BODY: tuple[tuple[str, str, str, str | None], ...] = (
     ("MRRRS298", "1", "Previous day's VaR-based measure", None),
     (

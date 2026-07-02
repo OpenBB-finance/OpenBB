@@ -1,13 +1,4 @@
-"""Federal Reserve Bank of Philadelphia download and parsing helpers.
-
-The Philadelphia Fed serves its survey workbooks from the Sitecore media library
-at ``www.philadelphiafed.org/-/media/FRBP/Assets/...``. Many ``.xlsx`` files carry
-a ``docProps`` core-properties part that the installed ``openpyxl`` cannot parse,
-so the workbook bytes are repacked without that part before reading. Some files
-are legacy ``.xls`` and are read with the default engine. Invalid file/URL
-combinations are returned as HTML pages with a ``200`` status; those are detected
-and surfaced as errors rather than parsed.
-"""
+"""Federal Reserve Bank of Philadelphia download and parsing helpers."""
 
 from __future__ import annotations
 

@@ -1,13 +1,4 @@
-"""FFIEC National Information Center (NIC) client.
-
-The NIC site (``www.ffiec.gov/npw``) sits behind Cloudflare bot management that
-rejects ordinary HTTP clients. Access requires a browser-TLS-impersonating
-session (``curl_cffi``) that first warms up against the NIC home page to obtain
-the ``__cf_bm`` cookie, after which the data endpoints (FR Y-9 BHCF bulk files,
-NIC attribute/relationship CSVs, the financial download dictionary) return real
-payloads. Downloads are cached on disk with a daily expiry matching the NIC's
-weekday refresh cadence.
-"""
+"""FFIEC National Information Center (NIC) client."""
 
 from __future__ import annotations
 
@@ -24,11 +15,8 @@ from openbb_federal_reserve.utils.curl_session import (
 
 BASE_URL = "https://www.ffiec.gov/npw"
 
-# Quarter -> month/day of the period-end used in BHCF file names.
 QUARTER_END = {1: "0331", 2: "0630", 3: "0930", 4: "1231"}
 
-# BHCPR report PDFs use two filename conventions; both encode the period as a
-# calendar month or month-end date that maps to a fiscal quarter.
 _BHCPR_MONTH_TO_QUARTER = {
     "mar": 1,
     "march": 1,
@@ -158,8 +146,6 @@ def fetch_institutions(status: str = "active") -> list[dict[str, str]]:
         f"attributes_{status}",
         f"FinancialReport/{_ATTRIBUTE_ENDPOINTS[status]}",
         f"{BASE_URL}/FinancialReport/DataDownload",
-        # Closed institutions are static history; cache them quarterly so they are
-        # not re-downloaded on every daily refresh of the active directory.
         cadence="quarterly" if status == "closed" else "daily",
     )
     text = _read_single_zip_member(content).decode("utf-8", "ignore")
@@ -167,11 +153,7 @@ def fetch_institutions(status: str = "active") -> list[dict[str, str]]:
 
 
 def entity_type(rssd_id: str) -> str | None:
-    """Return an institution's NIC entity type (e.g. ``NAT``), best-effort.
-
-    Resolved from the NIC active-institution directory (cached). Returns ``None``
-    when the directory is unavailable or the institution is not listed.
-    """
+    """Return an institution's NIC entity type (e.g. ``NAT``), best-effort."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> dict[str, str]:
@@ -198,12 +180,7 @@ def rssd_names() -> dict[str, str]:
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> dict[str, str]:
-        """Build the name index from the NIC active and closed directories.
-
-        Branches are excluded: relationship offspring and ticker-resolved holding
-        companies are always entities, never branch RSSDs, so downloading the large
-        branch directory just to name them is wasted cold-start work.
-        """
+        """Build the name index from the NIC active and closed directories."""
         index: dict[str, str] = {}
         for status in ("active", "closed"):
             try:
@@ -348,9 +325,6 @@ def fetch_fry15(
     return list(csv.DictReader(io.StringIO(content.decode("utf-8-sig", "ignore"))))
 
 
-# The financial reports whose committed structures are ready to render. Each
-# maps the per-institution ReturnFinancialReportCSV ``rpt`` code to a
-# human-readable name and the asset folder holding its committed structure.json.
 READY_REPORTS: dict[str, dict[str, str]] = {
     "FRY9C": {
         "name": "FR Y-9C Consolidated Financial Statements",
@@ -390,7 +364,6 @@ READY_REPORTS: dict[str, dict[str, str]] = {
     },
 }
 
-# CSV ItemName rows that carry institution identity rather than an MDRM value.
 _REPORT_METADATA_ROWS = {
     "Institution Name": "institution_name",
     "Report Date": "report_date",
@@ -447,11 +420,6 @@ def fetch_financial_report(report_code: str, rssd_id: str, date: str) -> dict[st
     )
 
 
-# The NIC Institution Profile embeds, for each of the ten report series, a
-# guarded ``buildOptionCards`` block: ``if(<N>>0){ var dateCards = [...]; var
-# idRssd = <RSSD>; buildOptionCards(dateCards,'<CODE>',idRssd); }``. ``N`` is the
-# number of filed periods, so a non-zero guard with non-empty ``dateCards`` marks
-# a report the firm actually files.
 _PROFILE_REPORT_BLOCK = re.compile(
     r"if\(\s*(?P<count>\d+)\s*>\s*0\s*\)\s*\{\s*"
     r"var\s+dateCards\s*=\s*(?P<cards>\[.*?\])\s*;\s*"
@@ -460,14 +428,8 @@ _PROFILE_REPORT_BLOCK = re.compile(
     re.DOTALL,
 )
 
-# A reported ``monthDay`` maps to its fiscal quarter.
 _MONTH_DAY_TO_QUARTER = {"3/31": 1, "6/30": 2, "9/30": 3, "12/31": 4}
 
-# Each report series renders a collapsible section whose toggle button anchors to
-# the report code (``href="#FRY9C"``) and whose text is the report's official NIC
-# name carrying the parenthetical code, e.g. "Consolidated Financial Statements
-# for BHCs (FR Y-9C)". The parenthetical, stripped of spaces and hyphens, equals
-# the report code, so it maps the official name to the series.
 _PROFILE_REPORT_TITLE = re.compile(
     r'<button[^>]*href="#[A-Z0-9]+"[^>]*>\s*'
     r"(?P<title>[^<]*?\((?P<paren>[A-Z][^)]*)\)[^<]*?)\s*<",
@@ -476,12 +438,7 @@ _PROFILE_REPORT_TITLE = re.compile(
 
 
 def _parse_profile_report_names(html: str) -> dict[str, str]:
-    """Map each report code to its official NIC name from the profile page.
-
-    The profile renders one collapsible toggle per report series; its button text
-    is the official name with the report code in parentheses. The parenthetical,
-    stripped of spaces and hyphens, is the report code (``"FR Y-9C"`` -> ``"FRY9C"``).
-    """
+    """Map each report code to its official NIC name from the profile page."""
     names: dict[str, str] = {}
     for match in _PROFILE_REPORT_TITLE.finditer(html):
         code = re.sub(r"[^A-Z0-9]", "", match.group("paren").upper())
@@ -534,8 +491,6 @@ def fetch_institution_financial_reports(
             try:
                 date_cards = json.loads(match.group("cards"))
             except json.JSONDecodeError:  # pragma: no cover
-                # The blocks are server-rendered JSON literals; a decode failure
-                # would mean the page format changed and is handled by skipping.
                 continue
             periods: list[dict[str, Any]] = []
             for card in date_cards:
@@ -570,11 +525,7 @@ def fetch_institution_financial_reports(
 
 
 def _normalize_report_date(value: str) -> str | None:
-    """Normalize a CSV report-date cell to ``YYYYMMDD``.
-
-    Accepts the numeric ``YYYYMMDD`` form and the descriptive ``"Month DD, YYYY"``
-    form; returns ``None`` for any other value.
-    """
+    """Normalize a CSV report-date cell to ``YYYYMMDD``."""
     from datetime import datetime
 
     text = (value or "").strip()
@@ -587,15 +538,7 @@ def _normalize_report_date(value: str) -> str | None:
 
 
 def _parse_financial_report_csv(text: str) -> dict[str, Any]:
-    """Parse a ``ReturnFinancialReportCSV`` payload into identity plus facts.
-
-    The first row is the ``ItemName,Description,Value`` header; the leading rows
-    carry institution identity (name, address, report date, RSSD); the remaining
-    rows are one MDRM item code per value. A payload missing the header row (an
-    invalid period or report returns an HTML error page) yields an empty result.
-    Each value-bearing code's CSV ``Description`` is captured alongside its value
-    so codes the committed structure does not enumerate can still be labelled.
-    """
+    """Parse a ``ReturnFinancialReportCSV`` payload into identity plus facts."""
     rows = list(csv.reader(io.StringIO(text)))
     if not rows or rows[0][:3] != ["ItemName", "Description", "Value"]:
         return {
@@ -619,10 +562,6 @@ def _parse_financial_report_csv(text: str) -> dict[str, Any]:
         value = row[2].strip()
         key = _REPORT_METADATA_ROWS.get(name)
         if key is not None:
-            # FR Y-9C carries two "Report Date" rows (a descriptive
-            # "June 30, 2025" and a numeric YYYYMMDD); other reports carry only
-            # the descriptive form, or none. Normalize the date to YYYYMMDD,
-            # preferring the numeric row; for other identity fields the first
             # non-empty value wins.
             if key == "report_date":
                 normalized = _normalize_report_date(value)
@@ -640,12 +579,7 @@ def _parse_financial_report_csv(text: str) -> dict[str, Any]:
 
 
 def _parse_bhcpr_name(name: str) -> dict[str, int] | None:
-    """Parse a BHCPR PDF filename into peer group, year, and quarter.
-
-    Handles both the legacy ``PeerGroup_<n>_<Month><YYYY>.pdf`` naming and the
-    current ``BHCPR_PeerGrp<n>_<YYYYMMDD>.pdf`` naming. Returns ``None`` when the
-    filename does not match either convention.
-    """
+    """Parse a BHCPR PDF filename into peer group, year, and quarter."""
     import re
 
     legacy = re.match(r"PeerGroup_(\d+)_([A-Za-z]+)(\d{4})\.pdf$", name, re.IGNORECASE)
@@ -706,11 +640,7 @@ def list_bhcpr_reports() -> list[dict[str, Any]]:
 
 
 def download_bhcpr_pdf(url: str) -> bytes:
-    """Download a BHCPR peer-group report PDF through the warmed FFIEC session.
-
-    The static PDFs sit behind the same Cloudflare wall as the NIC data, so the
-    download must reuse the impersonating session rather than a plain request.
-    """
+    """Download a BHCPR peer-group report PDF through the warmed FFIEC session."""
     from urllib.parse import urlparse
 
     from openbb_core.provider.utils.errors import OpenBBError
@@ -730,13 +660,7 @@ def download_bhcpr_pdf(url: str) -> bytes:
 
 
 def download_financial_report_pdf(url: str) -> bytes:
-    """Download a filed FFIEC financial-report PDF through the warmed session.
-
-    The ``ReturnFinancialReportPDF`` endpoint sits behind the same Cloudflare wall
-    as the NIC data, so the download reuses the impersonating session. The URL is
-    validated to the NIC host and the ``ReturnFinancialReportPDF`` path before
-    fetching.
-    """
+    """Download a filed FFIEC financial-report PDF through the warmed session."""
     from urllib.parse import urlparse
 
     from openbb_core.provider.utils.errors import OpenBBError
@@ -760,14 +684,14 @@ def download_financial_report_pdf(url: str) -> bytes:
 
 
 def fetch_bhcpr(rssd_id: str, date: str) -> dict[str, Any]:
-    """Fetch and parse one holding company's BHCPR PDF for a reporting period.
+    """Fetch one holding company's coded BHCPR CSV for a reporting period.
 
-    Downloads the per-institution ``ReturnFinancialReportPDF?rpt=BHCPR`` report
+    Downloads the per-institution ``ReturnFinancialReportCSV?rpt=BHCPR`` payload
     for the RSSD identifier and quarter-end date and parses it into the
-    institution's identity, the five period-end dates, and the report's sections,
-    each an ordered list of header and metric rows. Cached daily so the PDF is
-    fetched and parsed once per institution and period. A holding company that did
-    not file the BHCPR for the period returns an empty ``sections`` list.
+    institution's identity, the reporting-period dates, and every value keyed by
+    its MDRM code. The committed schema binds each report line item to its code,
+    so this coded CSV -- not the PDF -- is the value source. Cached daily. A
+    holding company that did not file the BHCPR returns an empty ``values`` map.
 
     Parameters
     ----------
@@ -779,23 +703,23 @@ def fetch_bhcpr(rssd_id: str, date: str) -> dict[str, Any]:
     Returns
     -------
     dict[str, Any]
-        ``{"identity", "period_dates", "sections"}`` where ``sections`` is an
-        ordered list of ``{"section", "rows"}`` whose rows are header or metric
-        dicts carrying the per-period bank values, peer average, and percentile.
+        ``{"identity", "periods", "values", "descriptions"}`` from
+        ``parse_bhcpr_csv``: ``values`` maps each base code (e.g. ``BHSR028``) to
+        its ``{period-suffix: value}`` series.
     """
-    from openbb_federal_reserve.utils.bhcpr import parse_bhcpr_pdf
+    from openbb_federal_reserve.utils.bhcpr_csv import parse_bhcpr_csv
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     rssd = str(rssd_id).strip()
     period = str(date).strip()
 
     def _producer() -> dict[str, Any]:
-        """Download the per-institution BHCPR PDF and parse it into sections."""
+        """Download the per-institution BHCPR CSV and parse it into coded values."""
         raw = _fetch_bytes(
-            f"FinancialReport/ReturnFinancialReportPDF?rpt=BHCPR&id={rssd}&dt={period}",
+            f"FinancialReport/ReturnFinancialReportCSV?rpt=BHCPR&id={rssd}&dt={period}",
             referer=f"{BASE_URL}/FinancialReport/FinancialDataDownload",
         )
-        return parse_bhcpr_pdf(raw)
+        return parse_bhcpr_csv(raw)
 
     return cached(
         ("bhcpr_data", rssd, period),
@@ -805,12 +729,7 @@ def fetch_bhcpr(rssd_id: str, date: str) -> dict[str, Any]:
 
 
 def _top_tier_holder(rssd: str) -> str | None:
-    """Return the RSSD of an institution's top-tier holder from the NIC hierarchy.
-
-    The NIC ``BuildTier`` endpoint returns the ultimate parent of an institution
-    (``top_tier_id_rssd``), reporting the institution itself when it is already the
-    top holder. Returns ``None`` when the hierarchy cannot be resolved.
-    """
+    """Return the RSSD of an institution's top-tier holder from the NIC hierarchy."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> str | None:
@@ -839,14 +758,7 @@ def _top_tier_holder(rssd: str) -> str | None:
 
 
 def resolve_bhcpr_holder(rssd_id: str) -> str:
-    """Resolve an RSSD to the top-tier holding company that files the BHCPR.
-
-    The BHCPR is a holding-company report a commercial bank does not file. When the
-    selected institution does not file the BHCPR, its top-tier holder (from the NIC
-    hierarchy) — the entity whose BHCPR is published — is used instead. An
-    institution that already files the BHCPR, or whose hierarchy cannot be
-    resolved, is returned unchanged.
-    """
+    """Resolve an RSSD to the top-tier holding company that files the BHCPR."""
     rssd = str(rssd_id).strip()
     if not rssd:
         return rssd

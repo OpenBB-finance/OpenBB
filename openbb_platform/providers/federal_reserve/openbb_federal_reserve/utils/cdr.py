@@ -1,12 +1,4 @@
-"""FFIEC Central Data Repository (CDR) Public Data Distribution bulk client.
-
-The CDR publishes bank-level Call Report and UBPR data as bulk downloads behind
-an ASP.NET WebForms page. Retrieving a file is a three-step postback: load the
-page for its view state, select a product to populate the reporting-period
-dropdown, then post the download. The tab-delimited schedule files carry a
-two-row header - each column's MDRM code, then its description - so the line-item
-labels are embedded alongside the data.
-"""
+"""FFIEC Central Data Repository (CDR) Public Data Distribution bulk client."""
 
 from __future__ import annotations
 
@@ -20,7 +12,6 @@ from openbb_federal_reserve.utils.curl_session import get_session
 
 URL = "https://cdr.ffiec.gov/public/PWS/DownloadBulkData.aspx"
 
-# Friendly key -> the ASP.NET list-box product value.
 PRODUCTS = {
     "call_single": "ReportingSeriesSinglePeriod",
     "call_four": "ReportingSeriesSubsetSchedulesFourPeriods",
@@ -75,12 +66,7 @@ def _select_product(
 
 
 def list_periods(product: str) -> list[dict[str, str]]:
-    """Return the available reporting periods for a product (cached quarterly).
-
-    The period dropdown is sourced from the same ASP.NET postback the bulk
-    download uses, so it is disk-cached on the release cadence to avoid re-running
-    the GET/POST navigation every time the widget loads its date choices.
-    """
+    """Return the available reporting periods for a product (cached quarterly)."""
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> list[dict[str, str]]:
@@ -105,8 +91,7 @@ def fetch_bulk(product: str, period: str | None = None, fmt: str = "xbrl") -> by
     period : str | None
         The reporting period end date as ``MM/DD/YYYY``; defaults to the latest.
     fmt : str
-        ``"xbrl"`` for the XBRL instances (precise types, units, signs) or
-        ``"tsv"`` for the flat tab-delimited files.
+        ``"xbrl"`` or ``"tsv"``.
     """
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
@@ -147,12 +132,7 @@ _UNIT_LABELS = {
 
 
 def parse_xbrl_instance(content: bytes, rssd_id: str) -> dict[str, Any]:
-    """Parse one bank's XBRL instance from a bulk ZIP.
-
-    Reads the per-bank instance (named by RSSD), resolving each fact's value,
-    unit, decimals, reporting period, and period type (instant for balance-sheet
-    items, duration for income/flow items). Returns ``{name, date, items}``.
-    """
+    """Parse one bank's XBRL instance from a bulk ZIP."""
     from xml.etree import ElementTree
 
     target = str(rssd_id).strip()
@@ -172,11 +152,8 @@ def parse_xbrl_instance(content: bytes, rssd_id: str) -> dict[str, Any]:
 
     xbrli = "{http://www.xbrl.org/2003/instance}"
     raw = archive.read(member)
-    # The schemaRef names the report form (Call: report031/041/051).
     form_match = re.search(rb"report(0\d\d)", raw)
     form_type = form_match.group(1).decode() if form_match else None
-    # Source is the FFIEC CDR government endpoint; ElementTree does not resolve
-    # external entities by default.
     root = ElementTree.fromstring(raw)  # noqa: S314
 
     contexts: dict[str, tuple[str, str]] = {}
@@ -210,8 +187,6 @@ def parse_xbrl_instance(content: bytes, rssd_id: str) -> dict[str, Any]:
                 "value": (fact.text or "").strip(),
                 "unit": _UNIT_LABELS.get(unit, unit),
                 "decimals": fact.get("decimals"),
-                # The "single period" filing also carries prior-period comparison
-                # facts; each fact keeps its own period so they can be separated.
                 "period": period_date,
                 "period_type": period_type,
             }
@@ -288,7 +263,6 @@ def fetch_taxonomy(product: str, form_type: str | None = None) -> bytes:
         response = session.post(URL, data=download, timeout=300)
         if form_type is None:
             return response.content
-        # Call Reports present a form-type chooser; post that selection.
         panel = response.text
         pick = {
             **_viewstate(panel),
@@ -320,12 +294,7 @@ _TYPE_LABELS = {
 
 
 def _type_label(raw_type: str) -> str | None:
-    """Map an XBRL element type to a display label.
-
-    Falls back to the base label for any unrecognized monetary or integer variant
-    (e.g. a future ``nonPositiveMonetary``) so dollar and integer concepts are
-    never silently left unscaled.
-    """
+    """Map an XBRL element type to a display label."""
     if raw_type in _TYPE_LABELS:
         return _TYPE_LABELS[raw_type]
     lower = raw_type.lower()
@@ -337,12 +306,7 @@ def _type_label(raw_type: str) -> str | None:
 
 
 def parse_taxonomy(content: bytes) -> list[dict[str, Any]]:
-    """Parse an XBRL taxonomy ZIP into the concept schema.
-
-    Returns one record per concept with its MDRM code, data type, period type
-    (instant/duration), and debit/credit balance - the metadata needed to read
-    the corresponding XBRL values correctly.
-    """
+    """Parse an XBRL taxonomy ZIP into the concept schema."""
     archive = zipfile.ZipFile(io.BytesIO(content))
     concepts: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -384,8 +348,6 @@ def _resolve_labels(archive: zipfile.ZipFile, member: str) -> dict[str, str]:
     from xml.etree import ElementTree
 
     labels: dict[str, str] = {}
-    # Source is the FFIEC CDR government endpoint; ElementTree does not resolve
-    # external entities by default.
     root = ElementTree.fromstring(archive.read(member))  # noqa: S314
     for link in root:
         locators: dict[str, str] = {}
@@ -409,13 +371,7 @@ def _resolve_labels(archive: zipfile.ZipFile, member: str) -> dict[str, str]:
 
 
 def _clean_caption(caption: str) -> str:
-    """Normalize a presentation caption into a readable table/line label.
-
-    Strips the leading presentation marker (``#SectionTitle#`` keeps its text;
-    ``#BlankLine#`` collapses to empty so the spacer is dropped), the
-    ``(Form Type - NNN)`` suffix, the UBPR ``--Page N`` page-number suffix, and
-    a trailing dollar-amount ``$`` marker; then collapses whitespace.
-    """
+    """Normalize a presentation caption into a readable table/line label."""
     caption = re.sub(r"^#[^#]*#", "", caption)
     caption = re.sub(r"\s*\(Form Type - \d+\)\s*$", "", caption)
     caption = re.sub(r"\s*--\s*Page\s+\w+\s*$", "", caption)
@@ -455,14 +411,7 @@ def _link_children(link: Any) -> dict[str, list[tuple[float, str]]]:
 
 
 def build_presentation(content: bytes) -> dict[str, dict[str, Any]]:
-    """Build the report's line-item hierarchy from a taxonomy ZIP.
-
-    Each presentation role (a report page) is walked depth-first - the order
-    line items appear on the page - resolving every level's caption from the
-    label linkbase and collapsing the column layer (Column A, B, ...). A concept
-    appearing in more than one role keeps its richest (deepest) placement.
-    Returns ``{mdrm: {order, section, parent, label, level}}`` in report order.
-    """
+    """Build the report's line-item hierarchy from a taxonomy ZIP."""
     from collections import defaultdict
     from xml.etree import ElementTree
 
@@ -481,14 +430,10 @@ def build_presentation(content: bytes) -> dict[str, dict[str, Any]]:
     ) -> None:
         """Walk a role, accumulating the non-column caption chain."""
         caption = labels.get(node)
-        # Skip empties (e.g. dropped #BlankLine# spacers) and column headers so
-        # they never become a parent or label in the row hierarchy.
         updated = chain if not caption or _is_column(caption) else [*chain, caption]
         code = node.split("_", 1)[1] if "_" in node else ""
         if node not in children and re.fullmatch(r"[A-Z0-9]+", code):
             section = updated[0] if updated else None
-            # The section is the table, never a parent; the parent is the line
-            # above within the table (or None for a top-level line).
             parent = updated[-2] if len(updated) >= 3 else None
             placement = {
                 "order": counter[0],
@@ -503,8 +448,6 @@ def build_presentation(content: bytes) -> dict[str, dict[str, Any]]:
         for _, child in sorted(children.get(node, [])):
             descend(child, updated, children)
 
-    # Source is the FFIEC CDR government endpoint; ElementTree does not resolve
-    # external entities by default.
     root = ElementTree.fromstring(archive.read(presentation))  # noqa: S314
     for link in root:
         children = _link_children(link)
@@ -512,8 +455,6 @@ def build_presentation(content: bytes) -> dict[str, dict[str, Any]]:
         for node in sorted(n for n in children if n not in nested):
             descend(node, [], children)
 
-    # Re-number per section: each section is a table with its own 1..N order,
-    # and sections are sequenced by where they first appear in the report.
     grouped: dict[Any, list[str]] = defaultdict(list)
     for code, placement in best.items():
         grouped[placement["section"]].append(code)
@@ -561,12 +502,7 @@ def bulk_rssids(content: bytes) -> set[str]:
 def total_assets_by_rssd(
     period: str | None, rssd_ids: set[str] | list[str]
 ) -> dict[str, float]:
-    """Map each bank RSSD to its Call Report total assets for the period.
-
-    Used to choose a holding company's largest subsidiary bank. Reads RCFD2170
-    (consolidated) or RCON2170 (domestic) at the most recent reported period;
-    a missing value resolves to ``0.0``.
-    """
+    """Map each bank RSSD to its Call Report total assets for the period."""
     content = fetch_bulk("call_single", period, fmt="xbrl")
     assets: dict[str, float] = {}
     for rssd_id in rssd_ids:

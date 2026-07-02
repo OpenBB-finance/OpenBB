@@ -66,12 +66,7 @@ class FederalReserveClevelandInflationNowcastQueryParams(QueryParams):
 
 
 class FederalReserveClevelandInflationNowcastData(Data):
-    """Cleveland Fed Inflation Nowcasting Data.
-
-    One row per target period, with one column per inflation measure (or its
-    actual outturn) carrying that measure's final value, in percent. The
-    measures are pivoted to wide, so the columns vary with the requested data.
-    """
+    """Cleveland Fed Inflation Nowcasting Data."""
 
     date: dateType = Field(description="The target period being nowcast.")
 

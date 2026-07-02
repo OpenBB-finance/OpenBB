@@ -28,13 +28,7 @@ class FederalReserveDallasRetailQueryParams(QueryParams):
 
 
 class FederalReserveDallasRetailData(Data):
-    """Dallas Fed Texas Retail Outlook Survey Data.
-
-    One row per survey month, with one column per indicator-horizon-and-response
-    carrying that reading's index or share value. The current and six-month-ahead
-    net/increase/no-change/decrease readings of every indicator are pivoted to
-    wide.
-    """
+    """Dallas Fed Texas Retail Outlook Survey Data."""
 
     date: dateType = Field(description="The survey month.")
 
@@ -87,7 +81,7 @@ class FederalReserveDallasRetailFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReserveDallasRetailData]:
-        """Decode every reading, then pivot indicator-horizon-response to wide rows."""
+        """Transform and pivot survey data to wide rows."""
         from openbb_federal_reserve.utils.dallas_survey import parse_retail_survey
         from openbb_federal_reserve.utils.workbook import pivot_wide
 

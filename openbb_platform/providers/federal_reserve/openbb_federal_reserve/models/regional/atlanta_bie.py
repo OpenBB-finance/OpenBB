@@ -18,11 +18,6 @@ URL = (
 _SURVEY_SHEET = "BIE Survey results"
 _RESPONDENTS = "Number of Respondents"
 
-# The monthly survey's four questions are laid out as side-by-side column blocks
-# on the "BIE Survey results" sheet: row 2 carries a "Question N:" marker at the
-# block's first value column, row 3 the per-bucket labels, and the data begins at
-# row 4. Column 0 is the date and column 1 the shared respondent count (N). Each
-# question maps to the value->dropdown option that selects its block.
 _SURVEY_QUESTIONS: dict[str, str] = {
     "sales": "Question 1:",
     "profit": "Question 2:",
@@ -30,7 +25,6 @@ _SURVEY_QUESTIONS: dict[str, str] = {
     "projections": "Question 4:",
 }
 
-# The quarterly sheets keep the existing melt + pivot path; (sheet, grouped header).
 _QUARTERLY_TABLES: dict[str, tuple[str, bool]] = {
     "long_term_inflation": ("Quarterly - Long-Term Infl Exp", False),
     "price_change": ("Quarterly- Price Change", True),
@@ -83,13 +77,7 @@ class FederalReserveAtlantaBusinessInflationQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaBusinessInflationData(Data):
-    """Atlanta Fed Business Inflation Expectations Data.
-
-    One row per survey date, with one column per response category of the selected
-    question carrying that category's value, plus a "Number of Respondents" column
-    for the monthly survey questions. The question's categories are pivoted to
-    wide, so the columns vary with the chosen question.
-    """
+    """Atlanta Fed Business Inflation Expectations Data."""
 
     date: dateType = Field(description="The survey date.")
 
@@ -141,13 +129,7 @@ class FederalReserveAtlantaBusinessInflationFetcher(
         query: FederalReserveAtlantaBusinessInflationQueryParams,
         content: bytes,
     ) -> list[dict[str, Any]]:
-        """Pivot one monthly-survey question's block to wide ``date`` rows.
-
-        The selected question's column block is bounded by its row-2 "Question N:"
-        marker and the next question's marker; each block carries the per-bucket
-        labels from row 3. Every row keeps the shared respondent count (column 1)
-        as "Number of Respondents".
-        """
+        """Pivot one monthly-survey question's block to wide ``date`` rows."""
         from io import BytesIO
 
         from pandas import isna, read_excel, to_datetime, to_numeric

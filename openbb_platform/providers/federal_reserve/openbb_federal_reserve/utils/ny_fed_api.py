@@ -110,10 +110,7 @@ def _get_endpoints(
     treasury_status: str | None = "results",
     treasury_security_type: str | None = "",
 ) -> dict:
-    """Generate URLs to the all, or a category of, endpoints.
-
-    This function is not intended to be used directly.
-    """
+    """Generate URLs to the all, or a category of, endpoints."""
     is_latest: str = "latest"
     if ambs_security:
         ambs_security = AMBS_SECURITIES[ambs_security]

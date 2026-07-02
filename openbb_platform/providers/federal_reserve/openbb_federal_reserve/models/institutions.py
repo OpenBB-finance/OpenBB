@@ -109,10 +109,7 @@ _NIC_SENTINEL_DATES = {"99991231", "00000000", "0", ""}
 
 
 def _parse_nic_date(value: Any) -> date | None:
-    """Parse a NIC date (``YYYYMMDD`` int or ``MM/DD/YYYY HH:MM:SS``) to a date.
-
-    NIC sentinel values (``99991231``, ``00000000``, ``0``, blank) return ``None``.
-    """
+    """Parse a NIC date (``YYYYMMDD`` int or ``MM/DD/YYYY HH:MM:SS``) to a date."""
     if value in (None, ""):
         return None
     text = str(value).strip()
@@ -230,10 +227,6 @@ class FederalReserveInstitutionsFetcher(
         from openbb_federal_reserve.utils.ffiec import fetch_institutions
         from openbb_federal_reserve.utils.ticker import resolve_ticker_to_rssd
 
-        # ``rssd_id`` is the cross-widget selection (a hidden, grouped parameter);
-        # a name or ticker search ignores it so a clicked institution does not
-        # narrow the results. It only resolves a single institution when it is the
-        # sole input.
         rssd_id = None
         if query.ticker:
             rssd_id = resolve_ticker_to_rssd(query.ticker)

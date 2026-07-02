@@ -1,31 +1,4 @@
-"""FFIEC 101 report structure generator.
-
-Parses the FFIEC 101 Reporting Central user guide PDF (Appendix A, the detailed
-field specifications) and reconciles it against the live per-institution CSVs to
-produce an ordered, hierarchical list of the report's *public* items so the model
-can render the form grouped by schedule and indent depth. The parsed result is
-committed as a static asset (``assets/ffiec101/structure.json``); the live model
-loads that asset rather than re-parsing the PDF at request time.
-
-The user guide enumerates every cell of every schedule, including the
-supervisory-confidential exposure grids (Schedules C-R) whose codes are
-suppressed in the public ``ReturnFinancialReportCSV`` listing, and it omits the
-filed Schedule B detail cells (the ``AAB[A-H]...`` exposure grid, columns A-H,
-rows 1-25) because they are presented as a wide column grid rather than numbered
-data-listing rows. The public report's true item set is therefore the *union of
-value-bearing codes across sampled filers' CSVs* (excluding identity/admin rows).
-The guide supplies the caption, line reference and indent for the codes it
-enumerates; the Schedule B grid cells the guide omits are captioned from the CSV
-``Description``. No structure is fabricated and no permanently-empty (confidential
-or unfiled) form row is carried.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.ffiec101_structure
-
-Pass ``--pdf <path>`` to parse a local copy instead of fetching the canonical
-URL.
-"""
+"""FFIEC 101 report structure generator."""
 
 from __future__ import annotations
 
@@ -46,38 +19,24 @@ ASSET_PATH = (
     Path(__file__).resolve().parent.parent / "assets" / "ffiec101" / "structure.json"
 )
 
-# The filers and report code sampled to recover the public report's true item
-# set: the union of their value-bearing codes is the set of codes the public
 # report actually carries.
 VALIDATION_RPT = "FFIEC101"
 VALIDATION_RSSDS = ("852218", "480228", "451965")
 
 SCHEDULE_COVER = ("COVER", "Cover Page")
 
-# An 8-character MDRM item code: a 4-letter prefix then 4 alphanumerics. The
-# user guide flags derived (calculated) cells with a trailing "*"; it is consumed
-# (so it does not leak into captions) while only the bare code is recorded.
 _MDRM = re.compile(r"\b([A-Z]{4}[A-Z0-9]{4})\*?")
 
-# A leading report-form line reference, e.g. "1.", "1.a.", "8.c.", "1.7a",
-# "1.1.", "2.10.", "M.2." (memoranda). FFIEC 101 wholesale-grid rows print the
-# reference twice ("1. 1. 0.00 to < 0.15"); the doubled copy is collapsed first.
 _LINE_REF = re.compile(r"^(?:M\.)?(?:\d+(?:\.\d+)*[a-z]?(?:\.[a-z])*\.?|[a-z]\.)")
 
-# The PDF prints each grid line's reference twice ("26. 26. Unsettled ...",
-# "M.2. 2. Regulated ..."); the second copy may drop the "M." prefix.
 _DOUBLED_REF = re.compile(r"^(?:(M)\.)?(\d+(?:\.\d+)*[a-z]?\.?)\s+\1?\.?\s*\2\s")
 
-# Spreadsheet-style column banners ("(Column A)") that head each grid schedule.
 _COLUMN_BANNER = re.compile(r"\(Column\s+[A-Z]\)")
 
-# Inline "(x,y)" / "(x, y)" digit-limit annotations and their trailing notes
-# ("8,2", "10,4 (effective starting March 31, 2016)", "6,0 (mmyyyy)").
 _LIMIT_NOTE = re.compile(
     r"\b\d+\s*,\s*\d+\b(?:\s*\([^)]*\))?|\(effective[^)]*\)|\(mmyyyy\)", re.IGNORECASE
 )
 
-# Page running heads and column banners to drop entirely.
 _NOISE = {
     "financial data items",
     "report form",
@@ -87,54 +46,28 @@ _NOISE = {
 
 _SCHEDULE_HEADER = re.compile(r"^Schedule\s+([A-Z]{1,2})\s*[-–]\s*(.+)$")
 
-# The detailed field specifications open at the Appendix A banner; the preceding
-# pages are file-format prose, not report items.
 _APPENDIX_BANNER = "ffiec101 report detailed field specifications"
 
-# Standalone section headers that carry no line reference but introduce indented
-# blocks; they must each be emitted as their own ``is_header`` item.
 _BARE_HEADERS = {
     "memoranda",
     "financial data items",
 }
 
-# The cover/admin block's MDRMs are filed under the ``AAXX`` prefix and the guide
-# parses them under the trailing operational-risk schedule with a "Cover Page"
-# caption and a glued field-length integer ("Cover Page Contact Name 72"). They
-# belong to the submission cover, not a data schedule.
 _COVER_PREFIX = "AAXX"
 _COVER_CAPTION_PREFIX = re.compile(r"^cover page\s+", re.IGNORECASE)
 
-# Trailing field-length / format tokens glued to a parsed cover caption: a bare
-# length ("72"), a length pair ("0 or exactly 20"), or a format hint
 # ("MM/DD/YYYY").
 _COVER_LENGTH_TAIL = re.compile(
     r"\s*(?:\d+\s+or\s+exactly\s+\d+|MM/DD/YYYY|\d{1,3})\s*$", re.IGNORECASE
 )
 
-# A redundant numbered/lettered prefix the guide prints inside a sub-item caption
-# ("31. a. Credit Valuation Adjustments: Simple"); the line reference already
-# carries the number, so the prefix is stripped from the caption.
 _REDUNDANT_NUMBER_PREFIX = re.compile(r"^\d+\.\s*[a-z]\.\s*")
 
-# Schedule B grid metadata. The guide's data listing omits the wide exposure grid
-# (columns A-H, exposure rows 1-25); those cells are filed and recovered from the
-# CSV. The column letter is the fourth character of the MDRM prefix; the metric
-# name is the part of the CSV description before the first " - ".
 _SCHEDULE_B = "B"
 _GRID_PREFIX = re.compile(r"^AAB[A-H]")
 
-# The Schedule B "Other Assets" rows (26-28) the guide enumerates as two-column
-# rows ("Unsettled transactions", carrying both the Balance Sheet and RWA cells in
-# one item). The model renders only one cell per item, so these flow through the
-# grid builder instead and the guide's two-column items are suppressed.
 _GRID_TWO_COLUMN_GUIDE_CODES = frozenset({"AABBJ147", "AABBJ148", "AABBJ149"})
 
-# The Schedule B single-column tail rows (29-36) the guide enumerates as numbered
-# data-listing rows, so they are not treated as omitted grid cells. Rows 26-28
-# ("Other Assets") are two-column grid rows (Balance Sheet and RWA both filed);
-# the guide carries only the first column per row, so they flow through the grid
-# builder instead, one filed cell per item.
 _GRID_TAIL_CODES = frozenset(
     {
         "AABGJ150",
@@ -149,8 +82,6 @@ _GRID_TAIL_CODES = frozenset(
     }
 )
 
-# Acronyms that must keep their reported casing when a CSV ALL-CAPS description is
-# recased to the form's title casing.
 _ACRONYMS = {
     "PD": "PD",
     "LGD": "LGD",
@@ -173,7 +104,6 @@ _ACRONYMS = {
     "AVG": "Avg",
 }
 
-# Connector words rendered lowercase in title case unless they lead the caption.
 _LOWER_WORDS = {
     "a",
     "an",
@@ -228,8 +158,6 @@ def _fetch_validation_csv(rssd_id: str) -> str:
     return raw.decode("utf-8", "replace")
 
 
-# CSV ItemName rows that carry institution identity or submission admin rather
-# than a filed financial value; excluded when building the public item union.
 _IDENTITY_ROWS = {
     "INSTITUTION NAME",
     "CITY AND STATE",
@@ -285,13 +213,11 @@ def _csv_union(csv_texts: list[str]) -> dict[str, str]:
 
 def _pdf_lines(pdf_bytes: bytes) -> list[str]:
     """Extract the appendix text as a flat list of stripped, non-empty lines."""
-    from pypdf import PdfReader
+    from openbb_federal_reserve.utils.report_structure import read_pdf_pages
 
-    reader = PdfReader(io.BytesIO(pdf_bytes))
     lines: list[str] = []
     in_appendix = False
-    for page in reader.pages:
-        text = page.extract_text() or ""
+    for text in read_pdf_pages(pdf_bytes):
         normalized = "".join(char for char in text if char != "­")  # soft hyphens
         for raw in normalized.splitlines():
             stripped = raw.strip()
@@ -325,13 +251,7 @@ def _is_noise(line: str) -> bool:
 
 
 def _is_column_label_fragment(line: str) -> bool:
-    """Return ``True`` for a wrapped fragment of a grid's column-header labels.
-
-    Each grid schedule prints an eight-to-fourteen-cell header banner whose
-    labels word-wrap across many physical lines ("Weighted-", "Average",
-    "Probability of", "Default"). These fragments carry neither a line reference
-    nor an MDRM and sit between the schedule banner and the first numbered row.
-    """
+    """Return ``True`` for a wrapped fragment of a grid's column-header labels."""
     if _MDRM.search(line) or _LINE_REF.match(line):
         return False
     return bool(line) and not line.startswith("(")
@@ -341,7 +261,6 @@ def _level_from_reference(reference: str) -> int:
     """Derive the indent level from a line reference's nesting depth."""
     body = reference.rstrip(".")
     if re.fullmatch(r"[a-z]", body):
-        # A bare letter sub-item ("a.", "b.") sits one level under its parent.
         return 2
     depth = 1
     depth += reference.count(".") - (1 if reference.endswith(".") else 0)
@@ -353,9 +272,6 @@ def _level_from_reference(reference: str) -> int:
 def _clean_caption(caption: str) -> str:
     """Collapse whitespace and strip digit-limit notes, dashes and stray flags."""
     caption = _LIMIT_NOTE.sub("", caption)
-    # Derived-cell "*" flags that the PDF wraps onto their own physical line, or
-    # detaches from an MDRM by a space ("AAIIJ035 *"), survive into the joined
-    # caption; drop the bare markers.
     caption = re.sub(r"(?:^|\s)\*(?=\s|$)", " ", caption)
     caption = re.sub(r"\s+", " ", caption).strip()
     caption = caption.strip(" -–").strip()
@@ -363,12 +279,7 @@ def _clean_caption(caption: str) -> str:
 
 
 def _is_reference_boundary(char: str) -> bool:
-    """Return ``True`` when ``char`` legitimately follows a line reference.
-
-    A genuine reference is followed by end-of-line, whitespace, or a period; a
-    digit run trailed by ``,``/``)``/``%`` ("4, 15, and 21)", "100%") is caption
-    enumeration text, not a reference.
-    """
+    """Return ``True`` when ``char`` legitimately follows a line reference."""
     return char in {"", " ", "."}
 
 
@@ -388,12 +299,7 @@ def _split_reference(line: str) -> tuple[str | None, str]:
 
 
 def _collapse_doubled(line: str) -> str:
-    """Collapse a doubled leading line reference into a single reference.
-
-    The grids print each reference twice, optionally dropping an ``M.`` memoranda
-    prefix on the second copy ("M.2. 2. Regulated ...", "26. 26. Unsettled ...").
-    The canonical (prefixed) reference is kept.
-    """
+    """Collapse a doubled leading line reference into a single reference."""
     doubled = _DOUBLED_REF.match(line)
     if not doubled:
         return line
@@ -486,8 +392,6 @@ def parse_guide(pdf_bytes: bytes) -> list[dict[str, Any]]:
             continue
 
         if _COLUMN_BANNER.search(line) or line.startswith("(Column"):
-            # The wide-grid column-header banner opens with "(Column A)"; suppress
-            # every wrapped label fragment until the first numbered data row.
             flush_pending()
             in_banner = True
             continue
@@ -498,7 +402,6 @@ def parse_guide(pdf_bytes: bytes) -> list[dict[str, Any]]:
                 continue
 
         if _is_limit_format_row(line):
-            # A bare "(x,y)" digit-limit format row under a grid banner; not data.
             flush_pending()
             continue
 
@@ -510,37 +413,24 @@ def parse_guide(pdf_bytes: bytes) -> list[dict[str, Any]]:
         codes = _codes(line)
 
         if codes and not pending and _is_format_variant_row(line, items):
-            # The capital-ratio items print a second physical line carrying the
-            # same MDRM in its "(effective starting ...)" / alternate-precision
-            # format ("AAABP793 10,4 (effective starting March 31, 2016)"). It
-            # restates a code already captured; drop it.
             continue
 
         starts_row = _starts_new_row(line)
 
         if pending and starts_row:
-            # A new logical row begins while the buffer is still open: the buffer
-            # never acquired an MDRM, so it was a wrapped section header. Emit it
-            # as a header before opening the new row.
             flush_pending()
 
         if not codes:
             if pending and not starts_row:
-                # A wrapped continuation of the buffered caption whose MDRM has
                 # not yet appeared.
                 pending.append(line)
                 continue
             reference, caption = _split_reference(line)
             if reference is not None and not _clean_caption(caption).endswith(":"):
-                # A wrapped item whose MDRM lands on a following physical line.
                 pending.append(line)
             elif _is_column_label_fragment(line) and not pending:
-                # A stray wrapped fragment of the grid column-header banner.
                 continue
             else:
-                # A code-less, colon-terminated or reference-bearing caption is a
-                # standalone section header ("31. Credit Valuation Adjustments:",
-                # "Table 1", "Regulatory minimums ...").
                 flush_pending()
                 _flush_row(schedule, schedule_name, reference, caption, [], items)
             continue
@@ -549,10 +439,6 @@ def parse_guide(pdf_bytes: bytes) -> list[dict[str, Any]]:
             if items and _belongs_to_previous(  # pragma: no cover
                 line, items[-1]
             ):
-                # Unreachable defensive guard: any code-only line whose codes are
-                # already captured (which includes the previous row's columns) is
-                # dropped earlier by the format-variant check, so the buffer is
-                # only ever an unseen detached column row by the time we get here.
                 continue
             pending.append(line)
             flush_pending()
@@ -567,14 +453,7 @@ def parse_guide(pdf_bytes: bytes) -> list[dict[str, Any]]:
 
 
 def _starts_new_row(line: str) -> bool:
-    """Return ``True`` when a line opens a new numbered report row.
-
-    A new row begins with a line reference (possibly doubled as the wholesale
-    grids print it) immediately followed by caption text or an MDRM, not by a
-    bare continuation of a wrapped caption. A digit run followed by a comma
-    ("4, 15, and 21)") is enumeration text inside a wrapped caption, not a
-    reference, so it does not open a row.
-    """
+    """Return ``True`` when a line opens a new numbered report row."""
     collapsed = _collapse_doubled(line)
     match = _LINE_REF.match(collapsed)
     if not match or not match.group(0).rstrip("."):
@@ -583,26 +462,14 @@ def _starts_new_row(line: str) -> bool:
 
 
 def _is_limit_format_row(line: str) -> bool:
-    """Return ``True`` for a bare digit-limit format row (e.g. ``8,2 11,0 8,2``).
-
-    These per-column "(x,y)" precision banners head each grid page and may appear
-    detached from the "(Column ...)" header after a page break. They consist only
-    of comma-joined digit pairs, so a leading digit must not be misread as a line
-    reference.
-    """
+    """Return ``True`` for a bare digit-limit format row (e.g. ``8,2 11,0 8,2``)."""
     if _MDRM.search(line):
         return False
     return bool(re.fullmatch(r"(?:\d+\s*,\s*\d+\s+)*\d+\s*,\s*\d+", line.strip()))
 
 
 def _is_format_variant_row(line: str, items: list[dict[str, Any]]) -> bool:
-    """Return ``True`` for a line that only restates an already-captured MDRM.
-
-    The capital-ratio items emit a second physical line whose sole non-code
-    content is a digit-limit note ("AAABP793 10,4 (effective starting ...)").
-    Such a line carries no caption of its own and repeats an MDRM already held by
-    an earlier item, so it must not start a new row.
-    """
+    """Return ``True`` for a line that only restates an already-captured MDRM."""
     line_codes = _codes(line)
     remainder = _MDRM.sub("", line)
     remainder = _LIMIT_NOTE.sub("", remainder).strip(" -–,").strip()
@@ -620,12 +487,7 @@ def _is_codes_only(line: str) -> bool:
 
 
 def _belongs_to_previous(line: str, previous: dict[str, Any]) -> bool:
-    """Return ``True`` when a code-only line repeats the previous row's MDRM.
-
-    The capital-ratio items print a second physical line carrying the same MDRM
-    in its "(effective starting ...)" alternate format. That line must not start
-    a new row; it duplicates the code already attached to the previous item.
-    """
+    """Return ``True`` when a code-only line repeats the previous row's MDRM."""
     line_codes = _codes(line)
     previous_codes = previous.get("columns") or []
     return bool(line_codes) and set(line_codes).issubset(set(previous_codes))
@@ -687,13 +549,7 @@ def _clean_cover_caption(caption: str) -> str:
 
 
 def _grid_caption(description: str) -> str:
-    """Caption a Schedule B grid cell from its CSV description's exposure part.
-
-    A grid cell's CSV description is ``<column metric> - <exposure row>
-    (DERIVED)`` (for example ``RISK WEIGHTED ASSETS - WHOLESALE EXPOSURES:
-    CORPORATE (DERIVED)``). The column metric is carried by the sub-section
-    header, so the cell caption is the exposure-row remainder, recased.
-    """
+    """Caption a Schedule B grid cell from its CSV description's exposure part."""
     body = description.split(" - ", 1)[-1]
     body = re.sub(r"\s*\(DERIVED\)\s*$", "", body, flags=re.IGNORECASE).strip()
     return _recase(body)
@@ -819,8 +675,6 @@ def _reconcile(
         if code not in union or code in _GRID_TWO_COLUMN_GUIDE_CODES:
             continue
         if not grid_inserted and item["schedule"] == _SCHEDULE_B and grid_items:
-            # The guide's Schedule B opens at row 26 (the grid totals); the filed
-            # exposure grid (rows 1-25) precedes it.
             kept.extend(grid_items)
             grid_inserted = True
         kept.append(
@@ -834,14 +688,7 @@ def _reconcile(
 
 
 def _drop_orphan_headers(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Drop section headers with no surviving value item before the next peer.
-
-    A header introduces the block of items indented beneath it. After
-    union-filtering removed the confidential value items, a header may be left
-    with no value descendant; such a header would render as an empty section, so
-    it is dropped. Schedule-banner relocation is not affected: each surviving
-    value item still carries its own schedule.
-    """
+    """Drop section headers with no surviving value item before the next peer."""
     keep = [True] * len(items)
     for index, item in enumerate(items):
         if not item["is_header"]:

@@ -80,11 +80,7 @@ class FederalReserveStateAverageQueryParams(QueryParams):
 
 
 class FederalReserveStateAverageData(Data):
-    """FFIEC UBPR State Average Report Data.
-
-    One row per report line item; each period contributes a single averaged value
-    (ISO date keyed) in the report's own section layout.
-    """
+    """FFIEC UBPR State Average Report Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(

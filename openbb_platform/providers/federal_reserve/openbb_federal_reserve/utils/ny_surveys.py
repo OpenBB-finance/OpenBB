@@ -1,11 +1,4 @@
-"""New York Fed Survey of Market Expectations PDF indexing and presentation.
-
-The Survey of Market Expectations (formerly the separate Survey of Primary
-Dealers and Survey of Market Participants) is published only as per-FOMC-meeting
-PDFs - a results report and a blank questionnaire. The landing page links the
-full archive back to 2011; this module indexes those links and serves a selected
-report as a base64-encoded PDF for an OpenBB Workspace PDF widget.
-"""
+"""New York Fed Survey of Market Expectations PDF indexing and presentation."""
 
 from __future__ import annotations
 

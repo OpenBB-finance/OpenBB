@@ -62,12 +62,7 @@ class FederalReserveDallasAgSurveyQueryParams(QueryParams):
 
 
 class FederalReserveDallasAgSurveyData(Data):
-    """Dallas Fed Agricultural Survey Data.
-
-    One row per quarter-end date, with one column per survey series carrying that
-    series' value. The series of the selected table are pivoted to wide, so the
-    columns vary with the requested table.
-    """
+    """Dallas Fed Agricultural Survey Data."""
 
     date: dateType = Field(description="The survey quarter-end date.")
 

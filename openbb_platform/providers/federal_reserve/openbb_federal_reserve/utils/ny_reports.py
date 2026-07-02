@@ -1,10 +1,4 @@
-"""New York Fed survey full-report (PDF) helpers.
-
-The Business Leaders Survey publishes a full PDF report per monthly release. The
-report links (with their Sitecore hash query strings) are listed on the survey
-overview page; this module discovers them and serves a selected report as a
-base64-encoded PDF suitable for an OpenBB Workspace PDF widget.
-"""
+"""New York Fed survey full-report (PDF) helpers."""
 
 from __future__ import annotations
 

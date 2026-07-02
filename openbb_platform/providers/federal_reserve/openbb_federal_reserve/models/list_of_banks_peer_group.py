@@ -39,10 +39,7 @@ class FederalReserveListOfBanksPeerGroupQueryParams(QueryParams):
 
 
 class FederalReserveListOfBanksPeerGroupData(Data):
-    """FFIEC List of Banks in Peer Group Data.
-
-    One row per bank in the peer group for the selected reporting period.
-    """
+    """FFIEC List of Banks in Peer Group Data."""
 
     rssd_id: str | None = Field(default=None, description="The bank's RSSD identifier.")
     fdic_cert: str | None = Field(

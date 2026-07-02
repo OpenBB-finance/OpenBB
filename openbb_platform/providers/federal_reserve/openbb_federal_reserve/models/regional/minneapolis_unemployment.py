@@ -30,11 +30,7 @@ class FederalReserveMinneapolisUnemploymentQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisUnemploymentData(Data):
-    """Minneapolis Fed Regional Unemployment Data.
-
-    One row per observation month, with one column per Ninth District state and
-    the United States carrying the unemployment rate, in percent.
-    """
+    """Minneapolis Fed Regional Unemployment Data."""
 
     date: dateType = Field(description="The observation month.")
 

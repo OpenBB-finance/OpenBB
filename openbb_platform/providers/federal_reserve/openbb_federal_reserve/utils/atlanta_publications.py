@@ -1,11 +1,4 @@
-"""Atlanta Fed publication-archive indexing and PDF presentation.
-
-The Atlanta Fed publishes the Business Inflation Expectations Monthly Chart Pack
-and the Survey of Business Uncertainty Monthly Report as per-month PDFs linked
-from listing pages, and its Working Papers through a paged JSON feed. This module
-discovers each series, folds in the static GDPNow slide deck, and classifies them
-into catalog records served as base64-encoded PDFs in the multi-file viewer.
-"""
+"""Atlanta Fed publication-archive indexing and PDF presentation."""
 
 from __future__ import annotations
 
@@ -94,9 +87,7 @@ def _resolve_working_paper_pdf(landing_url: str) -> str | None:
     Returns
     -------
     str | None
-        The direct PDF URL, or ``None`` when the landing page exposes no PDF. The
-        resolution is disk-cached per landing page so it is not re-scraped on
-        every catalog build.
+        The direct PDF URL, or ``None`` when the landing page exposes no PDF.
     """
     from openbb_core.provider.utils.helpers import make_request
 

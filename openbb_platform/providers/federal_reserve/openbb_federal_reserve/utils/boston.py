@@ -1,15 +1,4 @@
-"""Federal Reserve Bank of Boston New England Economic Indicators helpers.
-
-The New England Economic Indicators (NEEI) dashboard, published by the Boston
-Fed's New England Public Policy Center, exposes no download file. Each chart's
-data is embedded inline in the landing page as a base64-encoded JSON blob inside
-a ``<div class="hidden series-data">`` element, one block per chart tab. This
-module fetches that page, decodes every block, and exposes every chart (keyed by
-its tab label) and every constituent series in long format. Access goes through a
-single patchable ``fetch_page`` helper so tests can feed a synthetic page and a
-browser-impersonating fallback can be swapped in if the host rejects plain
-clients.
-"""
+"""Federal Reserve Bank of Boston New England Economic Indicators helpers."""
 
 from __future__ import annotations
 
@@ -96,9 +85,6 @@ _TRANSFORMS: dict[str | None, str] = {
 }
 
 _TRANSFORM_SUFFIX: dict[str, str] = {
-    # ``Y/Y`` (not ``YoY``): the Workspace humanizes un-declared dynamic column
-    # headers and splits the camelCase ``YoY`` into ``Yo Y``. ``Y/Y`` carries no
-    # lower→upper boundary, so it renders verbatim.
     "year_over_year_percent": "(Y/Y %)",
     "index": "(Index)",
 }
@@ -115,8 +101,7 @@ def fetch_page() -> str:
     Returns
     -------
     str
-        The landing page HTML. Wrapped in one helper so a browser-impersonating
-        fallback can be substituted if the host begins rejecting plain clients.
+        The landing page HTML.
     """
     from openbb_core.provider.utils.helpers import make_request
 
@@ -160,13 +145,7 @@ def parse_islands(html: str) -> dict[str, list[dict[str, Any]]]:
 
 
 def _resolve_geography(series: dict[str, Any]) -> str | None:
-    """Resolve a series to one of :data:`GEOGRAPHIES`, or ``None`` if unknown.
-
-    The geography is identified, in order of preference, by the series'
-    numeric ``geography`` code, the textual geography qualifier in its
-    ``description``, or its short ``name`` prefix (used by description-less
-    series such as Construction Contracts).
-    """
+    """Resolve a series to one of :data:`GEOGRAPHIES`, or ``None`` if unknown."""
     code = series.get("geography")
     if code in _GEOGRAPHY_BY_CODE:
         return _GEOGRAPHY_BY_CODE[code]
@@ -189,14 +168,7 @@ def _resolve_geography(series: dict[str, Any]) -> str | None:
 
 
 def _unit_for(series: dict[str, Any]) -> str | None:
-    """Return the unit of a series' published values.
-
-    The NEEI page ships a single value per observation, already transformed by
-    the chart's ``func``. The unit therefore follows the transform, not the raw
-    source datatype: a year-over-year chart is in ``percent`` and a rebased
-    chart is in ``index``, regardless of what the underlying series measures.
-    Only level (``func`` of ``None``) series carry the source datatype's unit.
-    """
+    """Return the unit of a series' published values."""
     func = series.get("func")
     if func == "YRYR%":
         return "percent"
@@ -218,30 +190,13 @@ def _transform_for(series: dict[str, Any]) -> str:
 
 
 def _clean_description(description: str | None) -> str:
-    """Return a description with stray leading boilerplate removed.
-
-    Some series leak the source datatype as a leading ``Units`` token (the New
-    Hampshire payroll description), and the multi-category charts repeat a
-    measure-class prefix on every column (``All Employees:`` on Employment by
-    Supersector, ``Export Value:`` / ``Exp Value:`` on the export charts). Both
-    are stripped so the column shows the distinguishing category and geography,
-    not boilerplate.
-    """
+    """Return a description with stray leading boilerplate removed."""
     base = _LEADING_UNITS.sub("", (description or "").strip()).strip()
     return _BOILERPLATE_PREFIX.sub("", base).strip()
 
 
 def _column_label(description: str | None, name: str | None, transform: str) -> str:
-    """Return a clean, unambiguous column label for a pivoted series.
-
-    The source ``description`` carries a trailing seasonal-adjustment and unit
-    parenthetical (for example ``(SA, Persons)``) that describes the raw series,
-    not the published value. For index or year-over-year charts that value is no
-    longer in those units, so the parenthetical is dropped and replaced with an
-    explicit transform marker. Level series keep their description as published.
-    Description-less series (such as Construction Contracts) fall back to their
-    short ``name`` code.
-    """
+    """Return a clean, unambiguous column label for a pivoted series."""
     base = _clean_description(description)
     if not base:
         return (name or "").strip()
@@ -255,16 +210,7 @@ def _column_label(description: str | None, name: str | None, transform: str) -> 
 def _geography_label(
     geography: str | None, description: str | None, name: str | None, transform: str
 ) -> str:
-    """Return a geography-first column label for a one-series-per-geography chart.
-
-    When a chart carries at most one series per resolved geography, the geography
-    alone disambiguates the columns, so the verbose, repeated measure name is
-    replaced by the clean geography name plus a unit suffix. The suffix marks the
-    transform (``(YoY %)`` or ``(Index)``) for transformed series, or preserves
-    the description's trailing unit parenthetical (such as ``(SA, %)``) for level
-    series. A series whose geography cannot be resolved falls back to its cleaned
-    description column so it stays distinct.
-    """
+    """Return a geography-first column label for a one-series-per-geography chart."""
     if geography is None or geography not in GEOGRAPHIES:
         return _column_label(description, name, transform)
     base = GEOGRAPHIES[geography]
@@ -276,15 +222,7 @@ def _geography_label(
 
 
 def _is_geography_mode(series_list: list[dict[str, Any]]) -> bool:
-    """Return whether a chart carries at most one series per resolved geography.
-
-    Charts with a single series per geography (such as Payroll Employment or
-    Unemployment Rates) are labelled by geography; charts that pack several
-    categories into each geography (such as Employment by Supersector or Total
-    Exports by Destination) keep the descriptive label so the geography and
-    category together stay distinct. Series whose geography cannot be resolved
-    are ignored for this check, since geography-mode labels them by description.
-    """
+    """Return whether a chart carries at most one series per resolved geography."""
     seen: set[str] = set()
     for series in series_list:
         geography = _resolve_geography(series)
@@ -309,13 +247,7 @@ def _frequency_for(series: dict[str, Any]) -> str | None:
 def _series_records(
     indicator: str, series: dict[str, Any], geography_mode: bool
 ) -> list[dict[str, Any]]:
-    """Flatten one decoded series into one long-format record per observation.
-
-    When ``geography_mode`` is set the chart carries at most one series per
-    resolved geography, so each column is labelled by its geography; otherwise
-    the cleaned description plus transform marker is used to keep geography and
-    category distinct.
-    """
+    """Flatten one decoded series into one long-format record per observation."""
     geography = _resolve_geography(series)
     raw_description = series.get("description") or None
     description = _clean_description(raw_description) or None
@@ -350,15 +282,7 @@ def _series_records(
 
 
 def _strip_shared_label_prefix(records: list[dict[str, Any]]) -> None:
-    """Drop a redundant ``Category:`` prefix shared by every column label, in place.
-
-    Multi-category charts (such as the JOLTS job-openings panel) repeat a measure
-    prefix — ``JOLTS: Job Openings Rate:`` — on every series, so only the trailing
-    category distinguishes the columns. The longest label prefix common to all
-    series, trimmed to its last ``": "`` boundary, is removed so each column shows
-    just its distinguishing category. Charts whose labels share no such prefix (one
-    geography per column) are left unchanged.
-    """
+    """Drop a redundant ``Category:`` prefix shared by every column label, in place."""
     from os.path import commonprefix
 
     labels = {record["label"] for record in records}

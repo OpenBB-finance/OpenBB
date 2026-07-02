@@ -1,10 +1,4 @@
-"""Federal Reserve event calendar feed and FOMC release-availability helper.
-
-The Fed publishes its events calendar as structured JSON at
-``federalreserve.gov/json/calendar.json`` (the data behind
-``newsevents/calendar.htm``). FOMC-typed events provide the schedule used to
-expire the FOMC-document cache when the next release is actually due.
-"""
+"""Federal Reserve event calendar feed and FOMC release-availability helper."""
 
 from __future__ import annotations
 
@@ -49,11 +43,7 @@ def _event_date(event: dict) -> date | None:
 
 
 def next_fomc_release(*, now: datetime | None = None) -> date | None:
-    """Return the date of the next scheduled FOMC release, or ``None``.
-
-    Falls back to ``None`` when the calendar feed is unavailable, letting the
-    caller apply a default time-to-live.
-    """
+    """Return the date of the next scheduled FOMC release, or ``None``."""
     from openbb_federal_reserve.utils.cache import now_eastern
 
     today = (now or now_eastern()).date()
@@ -73,11 +63,7 @@ def next_fomc_release(*, now: datetime | None = None) -> date | None:
 
 
 def seconds_until_next_fomc_release(*, now: datetime | None = None) -> float:
-    """Return seconds until the next FOMC release, bounded to [1 hour, 7 days].
-
-    Uses the events calendar when available, otherwise the daily cadence. The
-    upper bound keeps newly posted, off-schedule documents from going stale.
-    """
+    """Return seconds until the next FOMC release, bounded to [1 hour, 7 days]."""
     from openbb_federal_reserve.utils.cache import (
         EASTERN,
         now_eastern,

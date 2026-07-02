@@ -70,13 +70,7 @@ def _melt_table(
 
 
 def _flat_table(grid: list[list[Any]], header_row: int) -> list[dict[str, Any]]:
-    """Build already-wide rows from a fixed-column sheet, preserving date cells.
-
-    Takes column 0 as ``date`` and emits one field per other column whose header
-    is non-empty, keeping date-valued cells as dates and coercing the rest with
-    ``_number``. Rows whose first cell is not a date (the summary rows) are
-    dropped.
-    """
+    """Build already-wide rows from a fixed-column sheet, preserving date cells."""
     header = grid[header_row]
     records: list[dict[str, Any]] = []
     for row in grid[header_row + 1 :]:
@@ -174,13 +168,7 @@ class FederalReserveAtlantaGdpNowQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaGdpNowData(Data):
-    """Atlanta Fed GDPNow Data.
-
-    One row per observation date, with one column per series carrying that series'
-    value. The series of the selected table are pivoted to wide, so the columns
-    vary with the chosen table. Tables that carry a data release add a
-    ``major_release`` column; the track-record table is already wide and adds none.
-    """
+    """Atlanta Fed GDPNow Data."""
 
     date: dateType = Field(description="The observation date.")
 

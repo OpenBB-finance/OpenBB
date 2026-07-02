@@ -74,13 +74,7 @@ class FederalReserveUBPRQueryParams(QueryParams):
 
 
 class FederalReserveUBPRData(Data):
-    """FFIEC Uniform Bank Performance Report Data.
-
-    One row per report line item, in the report's own section layout. On ratio
-    pages each period contributes a Bank, Peer-Group, and Percentile column (ISO
-    date keyed); on dollar pages, which carry no peer group, each period is a
-    single ISO-date column of the bank value.
-    """
+    """FFIEC Uniform Bank Performance Report Data."""
 
     label: str = Field(description="The line item, indented by the report hierarchy.")
     is_header: bool = Field(
@@ -114,12 +108,7 @@ class FederalReserveUBPRFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch the requested UBPR section from the FFIEC CDR report router.
-
-        A holding-company RSSD carries no UBPR, so it is resolved to its lead
-        filing bank; the resolved bank is surfaced through the leading row's
-        ``_rssd``/``_name`` metadata keys.
-        """
+        """Fetch the requested UBPR section from the FFIEC CDR report router."""
         from openbb_federal_reserve.utils.ticker import (
             resolve_rssd_to_bank,
             resolve_ticker_to_rssd,

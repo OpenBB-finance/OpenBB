@@ -1,9 +1,8 @@
 """Tests for the FR Q-1 report structure generator."""
 
 import json
-from types import SimpleNamespace
 
-from openbb_federal_reserve.utils import frq1_structure
+from openbb_federal_reserve.utils import frq1_structure, report_structure
 from openbb_federal_reserve.utils.frq1_structure import (
     _csv_value_codes,
     _is_header,
@@ -114,18 +113,11 @@ _CSV_TEXT_B = "\n".join(
 _PUBLIC_UNION = {"INSQ8901", "RSSD9110", "INSQ2170", "INSQ2950"}
 
 
-def _fake_reader(pages):
-    """Build a stand-in ``PdfReader`` whose pages yield the given text."""
-    return SimpleNamespace(
-        pages=[SimpleNamespace(extract_text=lambda text=text: text) for text in pages]
-    )
-
-
 def _patch_reader(monkeypatch, pages):
-    """Patch the lazily imported ``PdfReader`` to return ``pages``."""
-    import pypdf
-
-    monkeypatch.setattr(pypdf, "PdfReader", lambda _stream: _fake_reader(pages))
+    """Patch ``read_pdf_pages`` to return the synthetic page-text list."""
+    monkeypatch.setattr(
+        report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+    )
 
 
 class TestTableLines:
@@ -161,8 +153,8 @@ class TestTableLines:
         assert "br>" not in broken
 
     def test_handles_empty_page_text(self, monkeypatch):
-        """A page whose ``extract_text`` returns ``None`` contributes no lines."""
-        _patch_reader(monkeypatch, [None])
+        """A page yielding empty text contributes no lines."""
+        _patch_reader(monkeypatch, [""])
         assert _table_lines(b"%PDF-1.7") == []
 
 

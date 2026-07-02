@@ -33,11 +33,7 @@ class FederalReserveMinneapolisJobOpeningsQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisJobOpeningsData(Data):
-    """Minneapolis Fed Job Openings and Hiring Data.
-
-    One row per observation month, with one column per Ninth District state and
-    metric carrying the job opening rate and the hiring rate, in percent.
-    """
+    """Minneapolis Fed Job Openings and Hiring Data."""
 
     date: dateType = Field(description="The observation month.")
 

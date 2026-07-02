@@ -1,10 +1,4 @@
-"""Federal Reserve Micro Data Reference Manual (MDRM) helpers.
-
-The MDRM is the Federal Reserve's authoritative dictionary mapping every
-reporting-form item code - a mnemonic plus an item code, e.g. ``RISKM334`` or
-``BHCK2170`` - to its official line-item name. Item codes are versioned by
-effective date, so a label is resolved as-of the report period it applies to.
-"""
+"""Federal Reserve Micro Data Reference Manual (MDRM) helpers."""
 
 from __future__ import annotations
 
@@ -90,12 +84,7 @@ def fetch_mdrm_records() -> list[dict[str, Any]]:
 
 
 def fetch_mdrm_item_types() -> dict[str, str]:
-    """Return an MDRM item-code to ItemType map.
-
-    The ItemType codes each item by kind: ``F`` financial/dollar, ``P``
-    percentage/rate, ``D`` date, and ``S`` string. The last revision seen for a
-    code wins, which is sufficient as the ItemType is stable across revisions.
-    """
+    """Return an MDRM item-code to ItemType map."""
     import csv
     import io
     import zipfile
@@ -136,16 +125,7 @@ def fetch_mdrm_item_types() -> dict[str, str]:
 
 
 def _monetary_classification() -> dict[str, Any]:
-    """Load the committed Reporting Central monetary classification asset.
-
-    The asset names, per code, the non-monetary items the MDRM ItemType cannot
-    distinguish (capital ratios, buffers expressed as ratios, VaR multiplication
-    factors, backtesting ratios, derived ratios, a count) and the FFIEC 101
-    Schedule B/C advanced-IRB grid columns that hold percents or years rather
-    than dollars. It exists because the authoritative XBRL taxonomy
-    (``monetaryItemType``) is published only for the FFIEC Call Report and UBPR,
-    not for the FR Y-9C, FR Y-9LP/SP, FFIEC 002/101/102, FR Y-15, or FR Q-1.
-    """
+    """Load the committed Reporting Central monetary classification asset."""
     import json
     from pathlib import Path
 

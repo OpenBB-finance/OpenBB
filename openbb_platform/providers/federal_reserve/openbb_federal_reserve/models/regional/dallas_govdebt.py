@@ -25,12 +25,7 @@ class FederalReserveDallasGovernmentDebtQueryParams(QueryParams):
 
 
 class FederalReserveDallasGovernmentDebtData(Data):
-    """Dallas Fed Government Debt Data.
-
-    One row per observation month, with one column per valuation-basis-and-debt-
-    measure series carrying that series' amount in billions of dollars. The series
-    are pivoted to wide.
-    """
+    """Dallas Fed Government Debt Data."""
 
     date: dateType = Field(description="The observation month.")
 

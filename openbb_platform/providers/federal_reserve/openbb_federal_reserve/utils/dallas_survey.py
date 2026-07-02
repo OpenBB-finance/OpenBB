@@ -1,17 +1,10 @@
-"""Shared decoding for the Dallas Fed outlook-survey workbooks.
-
-The Texas Manufacturing, Service Sector, and Retail Outlook Surveys publish one
-diffusion-index column per indicator, with an ``F`` prefix marking the six-month-
-ahead (future) reading of the same indicator. ``parse_survey`` decodes the codes
-into labelled long ``(date, indicator, horizon, value)`` records.
-"""
+"""Shared decoding for the Dallas Fed outlook-survey workbooks."""
 
 from __future__ import annotations
 
 from datetime import date as dateType
 from typing import Any
 
-# Indicators shared by the manufacturing and service-sector surveys.
 MANUFACTURING_INDICATORS: dict[str, str] = {
     "prod": "Production",
     "capu": "Capacity Utilization",
@@ -86,7 +79,6 @@ ENERGY_INDICATORS: dict[str, str] = {
     "quncr": "Outlook Uncertainty",
 }
 
-# Banking Conditions Survey: each code is a single net diffusion index.
 BANKING_INDICATORS: dict[str, tuple[str, str]] = {
     "lvol": ("Total Loan Volume", "current"),
     "ldem": ("Loan Demand", "current"),
@@ -117,7 +109,6 @@ BANKING_INDICATORS: dict[str, tuple[str, str]] = {
 
 _RESPONSES = {"i": "increase", "n": "no change", "d": "decrease"}
 
-# Energy survey indicator stems without the quarter/year transform prefix.
 _ENERGY_STEMS = {code[1:]: label for code, label in ENERGY_INDICATORS.items()}
 _PRICE_PRODUCTS = {
     "oprc": "WTI Oil Price",
@@ -141,12 +132,7 @@ _PRICE_SHARES = {
 
 
 def decode_energy_code(code: str) -> str:
-    """Decode a Dallas Fed Energy Survey column code into a readable label.
-
-    Diffusion codes are ``[q|y]<stem>[d|i|n]`` (the bare form is the net index,
-    ``d/i/n`` the response shares). Price-expectation codes are ``f<product>[…]``
-    and price-forecast codes are ``<stat><product>``; unknown codes pass through.
-    """
+    """Decode a Dallas Fed Energy Survey column code into a readable label."""
     text = str(code).strip()
     lower = text.lower()
     if not lower or lower == "date":
@@ -216,12 +202,7 @@ def parse_energy_long(
 
 
 def _decode_retail(code: str) -> tuple[str, str, str] | None:
-    """Decode a retail code into ``(indicator, horizon, response)``.
-
-    Retail columns are ``[f]<indicator>[i|n|d]`` where the bare form is the net
-    diffusion index, ``i/n/d`` are the increase/no-change/decrease shares, and a
-    leading ``f`` marks the six-month-ahead reading.
-    """
+    """Decode a retail code into ``(indicator, horizon, response)``."""
     lowered = code.strip().lower()
     bases = sorted(RETAIL_INDICATORS, key=len, reverse=True)
     for prefix, horizon in (("f", "future"), ("", "current")):

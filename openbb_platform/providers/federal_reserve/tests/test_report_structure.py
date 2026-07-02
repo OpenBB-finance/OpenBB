@@ -71,19 +71,11 @@ _CONFIG = ReportConfig(
 )
 
 
-def _fake_reader(pages):
-    """Build a stand-in ``PdfReader`` whose pages yield the given text blocks."""
-    return SimpleNamespace(
-        pages=[SimpleNamespace(extract_text=lambda text=text: text) for text in pages]
-    )
-
-
 def _parse(monkeypatch, lines, config=_CONFIG):
-    """Parse a synthetic appendix by patching the lazy ``PdfReader`` import."""
-    import pypdf
-
+    """Parse a synthetic appendix by patching the PDF page reader."""
+    pages = ["\n".join(lines)]
     monkeypatch.setattr(
-        pypdf, "PdfReader", lambda _stream: _fake_reader(["\n".join(lines)])
+        report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
     )
     return parse_structure(b"%PDF-1.7", config)
 
@@ -210,41 +202,83 @@ class TestPdfLines:
 
     def test_extracts_between_banner_and_end(self, monkeypatch):
         """Lines before the banner and from the end banner on are dropped."""
-        import pypdf
-
         config = ReportConfig(
             appendix_banner="banner",
             schedule_header=_SCHEDULE_HEADER,
             appendix_end="the end",
         )
         pages = ["intro\nBANNER\n1. Item BHCP0001\nThe End\n2. After BHCP0002"]
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _s: _fake_reader(pages))
+        monkeypatch.setattr(
+            report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+        )
         lines = pdf_lines(b"%PDF-1.7", config)
         assert lines == ["1. Item BHCP0001"]
 
     def test_reads_to_document_end_without_end_banner(self, monkeypatch):
         """Without an end banner the listing runs to the last page."""
-        import pypdf
-
         pages = ["BANNER\n1. Item BHCP0001"]
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _s: _fake_reader(pages))
+        monkeypatch.setattr(
+            report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+        )
         assert pdf_lines(b"%PDF-1.7", _CONFIG) == ["1. Item BHCP0001"]
 
     def test_handles_empty_page_text(self, monkeypatch):
-        """A page whose ``extract_text`` returns ``None`` contributes no lines."""
-        import pypdf
-
-        reader = SimpleNamespace(pages=[SimpleNamespace(extract_text=lambda: None)])
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _s: reader)
+        """A page whose text is empty contributes no lines."""
+        pages = [""]
+        monkeypatch.setattr(
+            report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+        )
         assert pdf_lines(b"%PDF-1.7", _CONFIG) == []
 
     def test_strips_soft_hyphens(self, monkeypatch):
         """Soft hyphens inside captions are removed before joining."""
-        import pypdf
-
         pages = ["BANNER\n1. Mort­gage BHCP0001"]
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _s: _fake_reader(pages))
+        monkeypatch.setattr(
+            report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+        )
         assert pdf_lines(b"%PDF-1.7", _CONFIG) == ["1. Mortgage BHCP0001"]
+
+
+class _FakePdf:
+    """A stand-in ``pdfplumber`` document usable as a context manager."""
+
+    def __init__(self, page_texts):
+        self.pages = [
+            SimpleNamespace(extract_text=lambda text=text: text) for text in page_texts
+        ]
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_exc):
+        return False
+
+
+class TestReadPdfPages:
+    """Coverage for the shared pdfplumber reader."""
+
+    def test_extracts_each_page_text(self, monkeypatch):
+        """Each page's extracted text is returned in order."""
+        import pdfplumber
+
+        monkeypatch.setattr(
+            pdfplumber,
+            "open",
+            lambda _stream: _FakePdf(["First page", "Second page"]),
+        )
+        assert report_structure.read_pdf_pages(b"%PDF-1.7") == [
+            "First page",
+            "Second page",
+        ]
+
+    def test_none_page_text_becomes_empty_string(self, monkeypatch):
+        """A page whose ``extract_text`` returns ``None`` yields an empty string."""
+        import pdfplumber
+
+        monkeypatch.setattr(
+            pdfplumber, "open", lambda _stream: _FakePdf([None, "Text"])
+        )
+        assert report_structure.read_pdf_pages(b"%PDF-1.7") == ["", "Text"]
 
 
 class TestParseStructure:
@@ -356,10 +390,10 @@ class TestParseStructure:
 
     def test_blank_line_within_appendix(self, monkeypatch):
         """A blank physical line inside the appendix is skipped, not parsed."""
-        import pypdf
-
         pages = ["BANNER\n1. Item BHCP0001\n\n2. Item BHCP0002"]
-        monkeypatch.setattr(pypdf, "PdfReader", lambda _s: _fake_reader(pages))
+        monkeypatch.setattr(
+            report_structure, "read_pdf_pages", lambda _pdf_bytes: list(pages)
+        )
         records = parse_structure(b"%PDF-1.7", _CONFIG)
         assert {r["mdrm"] for r in records} == {"BHCP0001", "BHCP0002"}
 

@@ -12,7 +12,6 @@ from pydantic import Field
 
 BASE_URL = "https://www.clevelandfed.org/-/media/files/webcharts/mediancpi"
 
-# table key -> (csv filename, {raw column: readable series label}).
 _TABLES = {
     "summary": (
         "mediancpi_chartdata.csv",
@@ -89,12 +88,7 @@ class FederalReserveClevelandMedianCpiQueryParams(QueryParams):
 
 
 class FederalReserveClevelandMedianCpiData(Data):
-    """Cleveland Fed Median CPI Data.
-
-    One row per observation month, with one column per inflation series carrying
-    that series' reported value. The selected table's series are pivoted to wide,
-    so the columns vary with the requested table.
-    """
+    """Cleveland Fed Median CPI Data."""
 
     date: dateType = Field(description="The observation month.")
 

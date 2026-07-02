@@ -240,6 +240,28 @@ def test_federal_reserve_bhcpr_report(params, headers):
 
 @pytest.mark.parametrize(
     "params",
+    [
+        {
+            "rssd_id": "1039502",
+            "section": "Summary Ratios",
+            "period": None,
+            "provider": "federal_reserve",
+        }
+    ],
+)
+@pytest.mark.integration
+def test_federal_reserve_bhcpr(params, headers):
+    """Test the /federal_reserve/ffiec/bhcpr endpoint."""
+    params = {p: v for p, v in params.items() if v is not None}
+    query = get_querystring(params, [])
+    url = f"{BASE}/federal_reserve/ffiec/bhcpr?{query}"
+    result = requests.get(url, headers=headers, timeout=60)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
     [{"peer_group": "1", "year": 2015}],
 )
 @pytest.mark.integration

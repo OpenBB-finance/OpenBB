@@ -16,14 +16,11 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="", description="FFIEC bank-supervision reports.")
 
-# Consistent widget-browser grouping for every FFIEC widget.
 _FR_META = {"category": "Federal Reserve", "subCategory": "FFIEC Reports"}
 
 
 async def bhcpr_report_download(params: Annotated[dict, Body()]) -> list:
     """Download BHCPR peer-group report PDFs from the FFIEC.
-
-    PDFs are base64 encoded under the `content` key in the response.
 
     Parameters
     ----------
@@ -75,8 +72,7 @@ async def bhcpr_report_choices(
     Returns
     -------
     list
-        A list of file choices, each labelled by quarter and year, with the PDF
-        URL as the value.
+        File choices labelled by quarter and year with the PDF URL as the value.
     """
     from openbb_federal_reserve.utils.ffiec import list_bhcpr_reports
 
@@ -99,9 +95,6 @@ async def financial_report_pdf_choices(
 ) -> list:
     """Get the filed-report PDF choices for an institution and report type.
 
-    Reads the institution's filed periods for the report from its NIC profile and
-    builds one ``ReturnFinancialReportPDF`` URL per period.
-
     Parameters
     ----------
     rssd_id : str | None
@@ -112,15 +105,10 @@ async def financial_report_pdf_choices(
     Returns
     -------
     list
-        One ``{label, value}`` file choice per filed period, labelled ``"YYYY Qn"``
-        with the full PDF URL as the value, newest first.
+        One ``{label, value}`` file choice per filed period, newest first.
     """
     from openbb_federal_reserve.models.ffiec.financial_report_pdf import _pdf_choices
 
-    # ``report_type`` is intentionally optional: with no report selected (the
-    # widget's default state), ``_pdf_choices`` lists the latest filed PDF of each
-    # report the firm files, so the file selector is never empty for a filer. Only
-    # a missing firm yields no choices.
     if not rssd_id:
         return []
     try:
@@ -131,8 +119,6 @@ async def financial_report_pdf_choices(
 
 async def financial_report_pdf_download(params: Annotated[dict, Body()]) -> list:
     """Download filed FFIEC financial-report PDFs from the FFIEC.
-
-    PDFs are base64 encoded under the `content` key in the response.
 
     Parameters
     ----------
@@ -177,11 +163,7 @@ async def financial_report_pdf_download(params: Annotated[dict, Body()]) -> list
 
 
 def _pdf_filename(url: str) -> str:
-    """Build a descriptive filename from a ReturnFinancialReportPDF URL.
-
-    The URL carries the report code, RSSD, and period-end as query parameters; a
-    URL without them falls back to its last path segment.
-    """
+    """Build a descriptive filename from a ReturnFinancialReportPDF URL."""
     from urllib.parse import parse_qs, urlparse
 
     query = parse_qs(urlparse(url).query)
@@ -196,12 +178,6 @@ def _pdf_filename(url: str) -> str:
 async def report_types(rssd_id: str | None = None) -> list:
     """Get the regulatory reports a selected institution actually files.
 
-    The choices are the ready-to-render reports intersected with the reports the
-    institution files, read from its NIC profile. Each option is labelled by the
-    report's official NIC name from the profile, falling back to the ready-report
-    name when the profile lacks it. When no institution is selected (or its profile
-    is unavailable), every ready report is offered with its ready-report name.
-
     Parameters
     ----------
     rssd_id : str | None
@@ -210,8 +186,7 @@ async def report_types(rssd_id: str | None = None) -> list:
     Returns
     -------
     list
-        One ``{label, value}`` choice per available report, labelled by its official
-        NIC name with the FFIEC report code as the value.
+        One ``{label, value}`` choice per available report.
     """
     from openbb_federal_reserve.utils.ffiec import (
         READY_REPORTS,
@@ -225,9 +200,6 @@ async def report_types(rssd_id: str | None = None) -> list:
             filed = fetch_institution_financial_reports(rssd)
         except Exception:  # noqa: BLE001
             filed = None
-    # An options endpoint must never 500: any non-mapping result (e.g. a stale
-    # cache entry from an earlier return shape) falls back to offering every
-    # ready report rather than raising.
     if not isinstance(filed, dict):
         filed = None
 
@@ -258,8 +230,7 @@ async def report_periods(
     Returns
     -------
     list
-        One ``{label, value}`` choice per filed period, labelled ``"YYYY Qn"``
-        with the ``YYYYMMDD`` period-end as the value, newest first.
+        One ``{label, value}`` choice per filed period, newest first.
     """
     from openbb_federal_reserve.utils.ffiec import fetch_institution_financial_reports
 
@@ -295,8 +266,7 @@ async def report_sections(report_type: str = "FRY9C") -> list:
     Returns
     -------
     list
-        An "All Sections" choice followed by one ``{label, value}`` choice per
-        schedule, labelled by schedule name with the schedule code as the value.
+        An "All Sections" choice followed by one ``{label, value}`` choice per schedule.
     """
     import json
     from pathlib import Path
@@ -324,8 +294,6 @@ async def report_sections(report_type: str = "FRY9C") -> list:
 async def bhcpr_periods(rssd_id: str | None = None) -> list:
     """Get the BHCPR periods a holding company has on file.
 
-    Reads the holding company's filed BHCPR periods from its NIC profile.
-
     Parameters
     ----------
     rssd_id : str | None
@@ -334,8 +302,7 @@ async def bhcpr_periods(rssd_id: str | None = None) -> list:
     Returns
     -------
     list
-        One ``{label, value}`` choice per filed period, labelled ``"YYYY Qn"``
-        with the ``YYYYMMDD`` period-end as the value, newest first.
+        One ``{label, value}`` choice per filed period, newest first.
     """
     from openbb_federal_reserve.utils.ffiec import resolve_bhcpr_holder
 
@@ -351,17 +318,13 @@ async def bhcpr_sections() -> list:
     Returns
     -------
     list
-        An "All Sections" choice followed by one ``{label, value}`` choice per
-        BHCPR report section, each labelled and valued by its section title.
+        An "All Sections" choice followed by one ``{label, value}`` choice per BHCPR section.
     """
-    import json
-    from pathlib import Path
+    from openbb_federal_reserve.utils.bhcpr_schema import section_titles
 
-    asset = Path(__file__).resolve().parent / "assets" / "bhcpr" / "sections.json"
-    sections = json.loads(asset.read_text(encoding="utf-8"))
     choices: list = [{"label": "All Sections", "value": "All Sections"}]
-    for entry in sections:
-        choices.append({"label": entry["section"], "value": entry["section"]})
+    for title in section_titles():
+        choices.append({"label": title, "value": title})
     return choices
 
 

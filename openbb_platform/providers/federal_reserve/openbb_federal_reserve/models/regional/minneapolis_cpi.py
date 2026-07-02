@@ -32,13 +32,7 @@ class FederalReserveMinneapolisCpiQueryParams(QueryParams):
 
 
 class FederalReserveMinneapolisCpiData(Data):
-    """Minneapolis Fed Regional CPI Data.
-
-    One row per observation month, with one column per CPI measure and geography
-    carrying the year-over-year percent change. Columns are labelled by measure
-    (headline ``CPI-U`` or ``Core``) and geography (the United States or a Census
-    division that overlaps the Ninth District).
-    """
+    """Minneapolis Fed Regional CPI Data."""
 
     date: dateType = Field(description="The observation month.")
 

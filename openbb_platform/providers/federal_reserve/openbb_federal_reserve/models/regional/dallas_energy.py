@@ -12,7 +12,6 @@ from pydantic import Field
 
 BASE_URL = "https://www.dallasfed.org/~/media/Documents/research/surveys/des/documents"
 
-# (table, transform) -> workbook filename. Price tables ignore the transform.
 _FILES = {
     ("index", "quarter_over_quarter"): "index_qq.xlsx",
     ("index", "year_over_year"): "index_yy.xlsx",
@@ -93,12 +92,7 @@ class FederalReserveDallasEnergyQueryParams(QueryParams):
 
 
 class FederalReserveDallasEnergyData(Data):
-    """Dallas Fed Energy Survey Data.
-
-    One row per quarter-end date, with one column per survey indicator carrying
-    that indicator's value. The indicators of the selected table, transform, and
-    firm group are pivoted to wide, so the columns vary with the request.
-    """
+    """Dallas Fed Energy Survey Data."""
 
     date: dateType = Field(description="The survey quarter end date.")
 
@@ -159,7 +153,6 @@ class FederalReserveDallasEnergyFetcher(
         from openbb_federal_reserve.utils.dallas_survey import parse_energy_long
         from openbb_federal_reserve.utils.workbook import pivot_wide
 
-        # The price forecasts workbook carries only the all-firms sheet.
         sheet = _SHEETS[query.firm_group]
         if query.table == "price_forecasts":
             sheet = _SHEETS["all"]

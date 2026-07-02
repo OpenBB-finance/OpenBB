@@ -1,14 +1,4 @@
-"""Federal Reserve Bank of Atlanta Taylor Rule Utility Models.
-
-The Taylor Rule Utility workbook computes federal-funds-rate prescriptions under
-three rule forms from a menu of selectable input measures, and publishes two
-quarterly heat-map snapshots of the prescription across measure combinations.
-The workbook is surfaced as three commands: the rule prescriptions
-(``taylor_rule``), the menu of candidate input measures (``taylor_rule_measures``),
-and the quarterly heat map (``taylor_rule_heatmap``). The heat map is a
-two-dimensional grid of prescribed rates, the r* model on one axis and the
-resource-gap measure on the other, rendered with the workspace heat-map chart.
-"""
+"""Federal Reserve Bank of Atlanta Taylor Rule Utility Models."""
 
 from datetime import date as dateType
 from typing import Any, Literal
@@ -27,8 +17,6 @@ URL = (
 
 _NA_VALUES = ["#N/A", "#N/A N/A", "na", "."]
 
-# The headline chart overlays the actual funds rate with the prescription from
-# each of the three rule forms; field name -> source sheet.
 _CHART_SHEETS = {
     "taylor_93_unemployment": "FOMCTaylor93UR",
     "taylor_99_unemployment": "FOMCTaylor99UR",
@@ -214,12 +202,7 @@ class FederalReserveAtlantaTaylorRuleMeasuresQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaTaylorRuleMeasuresData(Data):
-    """Atlanta Fed Taylor Rule input-measures Data.
-
-    One row per observation date, with one column per input measure carrying that
-    measure's value. The measures are pivoted to wide, so the columns vary with the
-    selected measure category (r*, gap, inflation, inflation target, funds rate).
-    """
+    """Atlanta Fed Taylor Rule input-measures Data."""
 
     date: dateType = Field(description="The mid-quarter observation date.")
 
@@ -316,13 +299,7 @@ class FederalReserveAtlantaTaylorRuleHeatmapQueryParams(QueryParams):
 
 
 class FederalReserveAtlantaTaylorRuleHeatmapData(Data):
-    """Atlanta Fed Taylor Rule heat-map Data.
-
-    One row per natural-real-rate (r*) measure, with one column per resource-gap
-    measure carrying the prescribed federal funds rate at that (r*, gap)
-    combination. The grid is rendered as a heat map by the widget's column color
-    rules, which fill each gap column's cells by the prescribed rate.
-    """
+    """Atlanta Fed Taylor Rule heat-map Data."""
 
     r_star_measure: str = Field(
         description="The natural-real-rate (r*) measure labeling the row."
@@ -378,8 +355,6 @@ class FederalReserveAtlantaTaylorRuleHeatmapFetcher(
                 return ""
             return str(value).strip()
 
-        # The gap measures label the columns one row below the "Measure of Gap"
-        # banner; the r* measures label the rows beneath in the second column.
         gap_header_row = next(
             (
                 i + 1
@@ -391,8 +366,6 @@ class FederalReserveAtlantaTaylorRuleHeatmapFetcher(
         if gap_header_row is None:
             raise EmptyDataError("The request was returned empty.")
 
-        # The gap measures occupy a contiguous block from the third column; stop
-        # at the first gap so the right-hand "variable values" panel is excluded.
         gap_columns: dict[int, str] = {}
         for j in range(2, len(grid[gap_header_row])):
             label = _text(grid[gap_header_row][j])
@@ -403,8 +376,6 @@ class FederalReserveAtlantaTaylorRuleHeatmapFetcher(
         records: list[FederalReserveAtlantaTaylorRuleHeatmapData] = []
         for row in grid[gap_header_row + 1 :]:
             label = _text(row[1]) if len(row) > 1 else ""
-            # The r* rows carry a model-name label in the second column; a blank
-            # or numeric cell marks the end of the matrix.
             if not label or label.lower() == "nan":
                 continue
             if not any(ch.isalpha() for ch in label):

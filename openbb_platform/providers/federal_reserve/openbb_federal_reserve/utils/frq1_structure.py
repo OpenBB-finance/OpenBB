@@ -1,42 +1,4 @@
-"""FR Q-1 report structure generator.
-
-Parses the FR Q-1 (Capital and Asset Report for Supervised Insurance
-Organizations, Building Block Approach) Reporting Central XML File Upload Format
-Specification PDF into an ordered, hierarchical list of report items so the model
-can render the form grouped by schedule like the other FFIEC financial reports.
-The parsed result is committed as a static asset (``assets/frq1/structure.json``);
-the live model loads that asset rather than re-parsing the PDF at request time.
-
-Unlike the FR Y-9C guide (a banner-delimited, line-referenced listing) the FR Q-1
-specification publishes its layout as a flat per-schedule ``Data Items`` table::
-
-    <caption (wraps across lines)> <8-character MDRM> <Data Type> <Field Length> <Notes>
-
-The schedule is introduced by a banner line (``"Schedule VIII - Framework
-Information"``); the caption wraps across physical lines and is terminated by the
-MDRM, after which the ``Data Type``/``Field Length``/``Notes`` cells (which may
-themselves wrap onto a following physical line) are discarded.
-
-The upload specification enumerates the *full* form, including the confidential
-variable-schedule grids (Schedules VIII-XIV and their row-context MDRMs) that
-never appear in the public per-institution feed. The public FR Q-1 report is
-sparse: only the Cover Page contact/attestation block and the three Building
-Block capital figures (Schedule I to VII) are surfaced. The committed structure
-is therefore pruned to exactly the value-bearing codes that appear in at least
-one sampled filer's ``ReturnFinancialReportCSV`` payload, so no permanently-empty
-form row or confidential grid is ever rendered. The pruning is validated to 100%
-coverage of that public-code union.
-
-The shared primitives (the MDRM pattern, caption cleaning and the asset-payload
-summary) are imported from ``report_structure``.
-
-Run as a module to regenerate the asset::
-
-    python -m openbb_federal_reserve.utils.frq1_structure
-
-Pass ``--pdf`` to parse a local specification copy instead of fetching the
-canonical URL.
-"""
+"""FR Q-1 report structure generator."""
 
 from __future__ import annotations
 
@@ -64,19 +26,12 @@ CSV_URL = (
     "?rpt=FRQ1&id={rssd}&dt={date}"
 )
 
-# Supervised insurance organizations whose public FR Q-1 filings define the
-# report's true value-bearing item set. The structure is pruned to (and validated
-# against) the union of their filed codes so confidential variable-schedule grids
-# and permanently-empty form rows are never committed. United Services Automobile
-# Association and First American Financial Corporation each file the form.
 VALIDATION_RSSDS = ("1447376", "1250101")
 
 ASSET_PATH = (
     Path(__file__).resolve().parent.parent / "assets" / "frq1" / "structure.json"
 )
 
-# CSV ``ItemName`` rows carrying institution identity or submission-period
-# metadata rather than a value-bearing MDRM; excluded from the public-code union.
 _IDENTITY_ITEM_NAMES = {
     "institution name",
     "city and state",
@@ -93,23 +48,14 @@ _IDENTITY_ITEM_NAMES = {
 }
 _IDENTITY_PREFIXES = ("dt",)
 
-# The MDRM table opens at this exact heading (page 5 of the specification); the
-# preceding pages are XML-format prose. Extraction ends at the example upload.
 _TABLE_START = "FR Q-1 Item Data MDRMs"
 _TABLE_END = "Example FR Q-1 XML File Upload"
 
-# The trailing section listing each variable schedule's row-context MDRM. Its
-# codes index confidential variable-schedule occurrences and never appear in the
-# public per-institution feed, so the section is dropped at extraction.
 _CONTEXTS_MARKER = "Contexts used in variable schedules"
 
-# A schedule banner, e.g. "Schedule VIII - Framework Information" or
-# "Schedule XIII - Reinsurance Pool No. 1". The Cover Page block opens the table
-# under its own bare "Cover Page" banner.
 _SCHEDULE_BANNER = re.compile(r"^Schedule\s+([IVX]+(?:\s+to\s+[IVX]+)?)\s*-\s*(.+)$")
 _COVER_BANNER = "Cover Page"
 
-# The per-table column headers and the table title, dropped entirely.
 _HEADERS = {
     "data items",
     "mdrm",
@@ -122,12 +68,6 @@ _HEADERS = {
     _TABLE_START.lower(),
 }
 
-# The ``Data Type``/``Field Length``/``Notes`` cell that trails an MDRM wraps
-# onto its own physical lines, where it can leak forward into the next row's
-# buffered caption. Every such fragment belongs to one of a fixed boilerplate
-# vocabulary - the reporting-note sentences, the precision/length tokens, and the
-# unspaced ("0=No, 1=Yes") enumeration - none of which open a caption. A wrapped
-# *caption* enumeration is spaced ("(0 = No, 1 = Yes)"), so the two never collide.
 _NOTE_FRAGMENTS = {
     "commas and leading zeroes.",
     "maximum of 10 digits before the",
@@ -140,18 +80,11 @@ _NOTE_PREFIXES = ("reported", "every data item")
 _LENGTH_TOKEN = re.compile(r"^\d+$|^10[.,]4$")
 _UNSPACED_ENUM = re.compile(r"\b\d=(?:No|Yes|Opt)\b")
 
-# A literal HTML line break embedded in some captions ("Material Financial
-# Building Block Parent</br>(0 = No, 1 = Yes)").
 _HTML_BREAK = re.compile(r"</?br\s*/?>")
 
 
 def _fetch_bytes(url: str) -> bytes:
-    """Download a canonical source URL as raw bytes.
-
-    The FFIEC per-institution CSV endpoint sits behind Cloudflare and is fetched
-    through the shared browser-impersonating session; the public PDF is served by
-    ordinary clients.
-    """
+    """Download a canonical source URL as raw bytes."""
     host = (urlparse(url).hostname or "").lower()
     if host == "ffiec.gov" or host.endswith(".ffiec.gov"):
         from openbb_federal_reserve.utils.curl_session import get_session
@@ -174,20 +107,12 @@ def _fetch_bytes(url: str) -> bytes:
 
 
 def _table_lines(pdf_bytes: bytes) -> list[str]:
-    """Return the MDRM table's stripped, non-empty lines in document order.
+    """Return the MDRM table's stripped, non-empty lines in document order."""
+    from openbb_federal_reserve.utils.report_structure import read_pdf_pages
 
-    Extraction starts at the ``FR Q-1 Item Data MDRMs`` heading (the front matter
-    is XML-format prose) and stops at the ``Example FR Q-1 XML File Upload``
-    heading or the ``Contexts used in variable schedules`` section, whichever
-    comes first. ``</br>`` caption breaks are normalized to a space.
-    """
-    from pypdf import PdfReader
-
-    reader = PdfReader(io.BytesIO(pdf_bytes))
     lines: list[str] = []
     in_table = False
-    for page in reader.pages:
-        text = page.extract_text() or ""
+    for text in read_pdf_pages(pdf_bytes):
         for raw in text.splitlines():
             stripped = _HTML_BREAK.sub(" ", raw).strip()
             stripped = re.sub(r"\s+", " ", stripped).strip()
@@ -204,13 +129,7 @@ def _table_lines(pdf_bytes: bytes) -> list[str]:
 
 
 def _schedule_code(roman: str, name: str) -> str:
-    """Derive a stable schedule code from a banner's roman numeral and name.
-
-    The reinsurance/liquidity pool schedules (XIII, XIV) repeat their roman
-    numeral across a description block and one block per pool, so the pool number
-    (or ``DESC`` for the description block) is appended to keep the codes
-    distinct.
-    """
+    """Derive a stable schedule code from a banner's roman numeral and name."""
     code = roman.replace(" ", "-")
     pool = re.search(r"Pool No\.\s*(\d)", name)
     if pool:
@@ -226,15 +145,7 @@ def _is_header(line: str) -> bool:
 
 
 def _is_note_tail(line: str) -> bool:
-    """Return ``True`` for a wrapped ``Field Length``/``Notes`` tail fragment.
-
-    A data-items row's trailing ``Data Type``/``Field Length``/``Notes`` cell
-    wraps onto its own physical lines, where it can leak forward past the
-    MDRM-terminated caption into the next row. Each such fragment is a bare field
-    length (``"72"``), a precision token (``"10,4"``), an unspaced enumeration
-    note (``"Reported in up to 1 digit, 0=No, 1=Yes"``) or one of a fixed set of
-    reporting-note sentence fragments; none open a caption.
-    """
+    """Return ``True`` for a wrapped ``Field Length``/``Notes`` tail fragment."""
     lowered = line.lower()
     if lowered in _NOTE_FRAGMENTS:
         return True
@@ -246,15 +157,7 @@ def _is_note_tail(line: str) -> bool:
 
 
 def _parse_data_items(lines: list[str]) -> list[dict[str, Any]]:
-    """Parse the per-schedule ``Data Items`` tables into ordered report items.
-
-    Physical lines are buffered into a caption until one carries an MDRM, which
-    terminates the logical row; the caption is the text before the MDRM and the
-    trailing ``Data Type``/``Field Length``/``Notes`` cell is discarded. Because
-    that cell wraps onto following physical lines, the parser consumes (drops)
-    every wrapped note fragment after an MDRM until the next caption begins. A
-    schedule banner switches the active schedule.
-    """
+    """Parse the per-schedule ``Data Items`` tables into ordered report items."""
     items: list[dict[str, Any]] = []
     schedule = "COVER"
     schedule_name = "Cover Page"
@@ -278,9 +181,6 @@ def _parse_data_items(lines: list[str]) -> list[dict[str, Any]]:
         if _is_header(line):
             continue
         if MDRM.search(line):
-            # The MDRM terminates the logical row: emit the buffered caption and
-            # discard the trailing Data Type/Field Length/Notes cell, then consume
-            # the cell's wrapped continuation lines until the next caption begins.
             joined = " ".join([*buffer, line])
             buffer = []
             consuming_tail = True
@@ -302,7 +202,6 @@ def _parse_data_items(lines: list[str]) -> list[dict[str, Any]]:
                 )
             continue
         if consuming_tail and _is_note_tail(line):
-            # A wrapped note fragment trailing the previous row's MDRM.
             continue
         consuming_tail = False
         buffer.append(line)
@@ -331,14 +230,7 @@ def parse_structure(pdf_bytes: bytes) -> list[dict[str, Any]]:
 
 
 def _csv_value_codes(csv_bytes: bytes) -> set[str]:
-    """Return a CSV's value-bearing MDRM codes, excluding identity/admin rows.
-
-    Each data row is ``ItemName,Description,Value``. An identity or
-    submission-period ``ItemName`` (institution name, address, ``ID_RSSD``, any
-    ``DT``/``DT_*Q`` reporting date) carries entity profile rather than a filed
-    metric and is dropped; every remaining MDRM-shaped ``ItemName`` is a public
-    value-bearing code.
-    """
+    """Return a CSV's value-bearing MDRM codes, excluding identity/admin rows."""
     codes: set[str] = set()
     reader = _csv.reader(io.StringIO(csv_bytes.decode("utf-8-sig", "ignore")))
     for row in reader:
@@ -364,12 +256,7 @@ def _public_code_union(csv_payloads: list[bytes]) -> set[str]:
 def _prune_to_union(
     items: list[dict[str, Any]], union: set[str]
 ) -> list[dict[str, Any]]:
-    """Keep only structure items whose code appears in the public-code union.
-
-    Every FR Q-1 item is value-bearing (single MDRM), so an item survives only
-    when its code is in the union; this drops the confidential variable-schedule
-    grids and permanently-empty form rows the upload specification enumerates.
-    """
+    """Keep only structure items whose code appears in the public-code union."""
     return [item for item in items if item["mdrm"] in union]
 
 
@@ -413,12 +300,7 @@ def validate(items: list[dict[str, Any]], union: set[str]) -> dict[str, Any]:
 
 
 def _sample_csv_payloads() -> list[bytes]:
-    """Fetch each validation filer's latest filed FR Q-1 CSV.
-
-    Resolves each RSSD's most recent filed FR Q-1 period from its NIC Institution
-    Profile and downloads that period's ``ReturnFinancialReportCSV``. A filer with
-    no filed FR Q-1 period or an HTML error-shell response contributes nothing.
-    """
+    """Fetch each validation filer's latest filed FR Q-1 CSV."""
     from openbb_federal_reserve.utils.ffiec import (
         fetch_institution_financial_reports,
     )

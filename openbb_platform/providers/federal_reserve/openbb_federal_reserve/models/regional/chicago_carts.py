@@ -42,7 +42,6 @@ _BEA_LABELS = {
     "CARTS Nowcast": "CARTS Nowcast, m/m % chg.",
 }
 
-# figure -> (column label map, source date format)
 _TIMESERIES = {
     "weekly": (_WEEKLY_LABELS, "%Y-%m-%d"),
     "monthly": (_MONTHLY_LABELS, "%b-%Y"),
@@ -97,12 +96,7 @@ class FederalReserveChicagoRetailTradeQueryParams(QueryParams):
 
 
 class FederalReserveChicagoRetailTradeData(Data):
-    """Chicago Fed Advance Retail Trade Summary Data.
-
-    One row per observation date, with one column per series within the chosen
-    figure carrying that series' value. The figure's series are pivoted to wide,
-    so the columns vary with the selected ``figure``.
-    """
+    """Chicago Fed Advance Retail Trade Summary Data."""
 
     date: dateType = Field(description="The observation date.")
 
@@ -128,11 +122,7 @@ class FederalReserveChicagoRetailTradeFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Download the requested CARTS dashboard figure from the Chicago Fed.
-
-        The ``nowcast_contributions`` figure carries only a month name, so the
-        latest-month snapshot is fetched alongside it to recover the year.
-        """
+        """Download the requested CARTS dashboard figure from the Chicago Fed."""
         from openbb_federal_reserve.utils.cache import (
             cached,
             seconds_until_next_release,

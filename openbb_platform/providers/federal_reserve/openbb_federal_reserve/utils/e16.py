@@ -1,11 +1,4 @@
-"""FFIEC E.16 Country Exposure Lending Survey (FFIEC 009) client and parser.
-
-The E.16 statistical release publishes aggregate country-exposure tables for
-U.S. banks as a cleansed Excel workbook, zipped, at a static URL keyed by the
-release quarter. Each sheet is one table for one institution group (All Banks,
-Large Financial Institutions, All Others); rows are countries grouped by region,
-columns are exposure measures under a merged multi-level header.
-"""
+"""FFIEC E.16 Country Exposure Lending Survey (FFIEC 009) client and parser."""
 
 from __future__ import annotations
 
@@ -23,7 +16,6 @@ from openbb_federal_reserve.utils.curl_session import get_session
 BASE_URL = "https://www.ffiec.gov/sites/default/files/data/e16"
 PAGE_URL = "https://www.ffiec.gov/data/e16"
 
-# Friendly group key -> the workbook's sheet-name prefix.
 GROUPS = {"all_banks": "All Banks", "lfi": "LFI", "all_others": "All Others"}
 TABLES = ("1", "2", "3", "4.1", "4.2")
 
@@ -100,14 +92,7 @@ def _period(workbook: Any) -> dateType | None:
 def parse_sheet(
     content: bytes, sheet: str
 ) -> tuple[list[dict[str, Any]], dateType | None]:
-    """Parse one E.16 table sheet into long-format country-exposure rows.
-
-    Returns ``(rows, period)`` where each row is ``{country_group, country,
-    label, value}``. Labels combine the merged multi-level column header (the
-    table-wide title row is dropped, footnote markers stripped); countries are
-    grouped under their region header. The survey reports amounts in millions of
-    dollars; values are scaled to dollars.
-    """
+    """Parse one E.16 table sheet into long-format country-exposure rows."""
     from openpyxl import load_workbook
 
     archive = zipfile.ZipFile(io.BytesIO(content))
@@ -135,7 +120,6 @@ def parse_sheet(
     if not data_rows:
         return [], period
 
-    # Header rows are the text rows above the data, excluding the code row.
     header_rows = []
     for row in range(1, data_rows[0]):
         labels = [
@@ -156,7 +140,6 @@ def parse_sheet(
         """Build a column's full label from its merged header hierarchy."""
         parts: list[str] = []
         for row in header_rows:
-            # A value spanning every column is the table title, not a header.
             if len({str(cell(row, other)) for other in value_cols}) <= 1:
                 continue
             value = cell(row, col)
