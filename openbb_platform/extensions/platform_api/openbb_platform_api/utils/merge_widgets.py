@@ -47,67 +47,38 @@ async def get_additional_widgets(app: FastAPI) -> dict:
 
 
 def fix_router_widgets(path, widgets):
-    """Append the API prefix and path to the function, if necessary."""
+    """Restore the full API route path on every router-attached widget."""
     updated_widgets: dict = {}
+
+    def _restore(value: str) -> str:
+        if not value or "://" in value or value.startswith(path):
+            return value
+        return path + value.lstrip("/")
+
     for widget_id, widget in widgets.items():
         if not isinstance(widget, dict) or widget_id.endswith("/widgets.json"):
             continue
 
         new_widget: dict = widget.copy()
-        params = widget.get("params", [])
 
-        if (endpoint := widget.get("endpoint", "")) and not endpoint.startswith(path):
-            new_widget["endpoint"] = (
-                path + endpoint[1:] if endpoint.startswith("/") else endpoint
-            )
-
-        if (
-            (ws_endpoint := widget.get("wsEndpoint", ""))
-            and "://" not in ws_endpoint
-            and not ws_endpoint.startswith(path)
-        ):
-            new_widget["wsEndpoint"] = (
-                path + ws_endpoint[1:] if ws_endpoint.startswith("/") else ws_endpoint
-            )
-
-        if (
-            (img_url := widget.get("imgUrl", ""))
-            and "://" not in img_url
-            and not img_url.startswith(path)
-        ):
-            new_widget["imgUrl"] = (
-                path + img_url[1:] if img_url.startswith("/") else img_url
-            )
+        if endpoint := widget.get("endpoint", ""):
+            new_widget["endpoint"] = _restore(endpoint)
+        if ws_endpoint := widget.get("wsEndpoint", ""):
+            new_widget["wsEndpoint"] = _restore(ws_endpoint)
+        if img_url := widget.get("imgUrl", ""):
+            new_widget["imgUrl"] = _restore(img_url)
 
         new_params: list = []
-
-        for param in params:
+        for param in widget.get("params", []):
             new_param: dict = param.copy()
-
-            if (
-                (endpoint := param.get("endpoint", ""))
-                and "://" not in endpoint
-                and not endpoint.startswith(path)
-            ):
-                new_param["endpoint"] = (
-                    path + endpoint[1:] if endpoint.startswith("/") else endpoint
-                )
-
-            if (
-                (opt_endpoint := param.get("optionsEndpoint", ""))
-                and "://" not in opt_endpoint
-                and not opt_endpoint.startswith(path)
-            ):
-                new_param["optionsEndpoint"] = (
-                    path + opt_endpoint[1:]
-                    if opt_endpoint.startswith("/")
-                    else opt_endpoint
-                )
-
+            if endpoint := param.get("endpoint", ""):
+                new_param["endpoint"] = _restore(endpoint)
+            if opt_endpoint := param.get("optionsEndpoint", ""):
+                new_param["optionsEndpoint"] = _restore(opt_endpoint)
             new_params.append(new_param)
 
         new_widget["params"] = new_params
-        updated_widgets[new_widget.get("widgetId", new_widget["endpoint"])] = new_widget
+        updated_widgets[new_widget.get("widgetId", widget_id)] = new_widget
 
     return updated_widgets
 
