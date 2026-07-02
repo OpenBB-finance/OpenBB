@@ -417,13 +417,16 @@ def test_request_preserves_user_supplied_user_agent(mock_session):
     assert headers["User-Agent"] == "custom"
 
 
-def test_system_clear_invokes_os_system():
-    """``system_clear`` calls ``os.system`` with the cls/clear command."""
+def test_system_clear_invokes_subprocess():
+    """``system_clear`` runs the platform clear command via ``subprocess.run``."""
+    import os
+
     from openbb_cli.controllers.utils import system_clear
 
-    with patch("openbb_cli.controllers.utils.os.system") as os_system:
+    with patch("openbb_cli.controllers.utils.subprocess.run") as run:
         system_clear()
-    os_system.assert_called_once_with("cls||clear")
+    expected = "cls" if os.name == "nt" else "clear"
+    run.assert_called_once_with(expected, shell=True, check=False)  # noqa: S604
 
 
 def test_save_to_excel_creates_new_file(mock_session, tmp_path):

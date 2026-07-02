@@ -11,7 +11,6 @@ def correlation_matrix(  # noqa: PLR0912
     **kwargs,
 ) -> tuple[Union["OpenBBFigure", "Figure"], dict[str, Any]]:
     """Correlation Matrix Chart."""
-    # pylint: disable=import-outside-toplevel
     from numpy import ones_like, triu  # noqa
     from openbb_core.app.utils import basemodel_to_df  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -22,11 +21,11 @@ def correlation_matrix(  # noqa: PLR0912
     if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
         corr = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
-        corr = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
+        corr = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     else:
         corr = basemodel_to_df(
             kwargs["obbject_item"],
-            index=kwargs.get("index", "date"),  # type: ignore
+            index=kwargs.get("index", "date"),
         )
     if (
         "symbol" in corr.columns
@@ -106,6 +105,6 @@ def correlation_matrix(  # noqa: PLR0912
     if layout_kwargs:
         figure.update_layout(**layout_kwargs)
 
-    content = figure.show(external=True).to_plotly_json()  # type: ignore
+    content = figure.show(external=True).to_plotly_json()
 
     return figure, content

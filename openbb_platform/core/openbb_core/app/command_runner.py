@@ -263,10 +263,14 @@ class StaticCommandRunner:
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
+        from openbb_core.app.charting import ChartingManager
+
         try:
-            if "charting" not in obbject.accessors:
+            accessor = ChartingManager.accessor_name()
+            if accessor not in obbject.accessors:
                 raise OpenBBError(
-                    "Charting is not installed. Please install `openbb-charting`."
+                    "No charting extension is installed. Install `openbb-charting`"
+                    " or set `system_settings.charting_extension` to your engine."
                 )
             # Here we will pop the chart_params kwargs and flatten them into the kwargs.
             chart_params = {}
@@ -288,7 +292,7 @@ class StaticCommandRunner:
             if chart_params:
                 kwargs.update(chart_params)
 
-            obbject.charting.show(render=False, **kwargs)  # type: ignore[attr-defined]  # ty: ignore[unresolved-attribute]
+            getattr(obbject, accessor).show(render=False, **kwargs)
         except Exception as e:
             if Env().DEBUG_MODE:
                 raise OpenBBError(e) from e

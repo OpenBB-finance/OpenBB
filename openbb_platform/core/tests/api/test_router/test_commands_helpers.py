@@ -1,7 +1,6 @@
 """Targeted tests for ``openbb_core.api.router.commands`` helpers."""
 
 import runpy
-import sys
 from inspect import signature
 from typing import Annotated
 from unittest.mock import MagicMock, patch
@@ -34,8 +33,8 @@ def test_build_new_annotation_map_includes_return():
     assert out["return"] is bool
 
 
-def test_commands_module_imports_charting_when_installed(monkeypatch):
-    from openbb_core.app import utils_optional
+def test_commands_module_resolves_charting_engine(monkeypatch):
+    from openbb_core.app.charting import manager as charting_manager
 
     class _Charting:
         @staticmethod
@@ -44,10 +43,9 @@ def test_commands_module_imports_charting_when_installed(monkeypatch):
 
     with pytest.MonkeyPatch.context() as m:
         m.setattr(
-            utils_optional, "is_installed", lambda name: name == "openbb_charting"
-        )
-        m.setitem(
-            sys.modules, "openbb_charting", type("M", (), {"Charting": _Charting})()
+            charting_manager.ChartingManager,
+            "get_charting_class",
+            classmethod(lambda cls: _Charting),
         )
         module_ns = runpy.run_module(
             "openbb_core.api.router.commands", run_name="__test_commands_charting__"

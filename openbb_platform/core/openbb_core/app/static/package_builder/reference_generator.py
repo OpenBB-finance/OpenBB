@@ -28,10 +28,6 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
     from openbb_core.provider.abstract.data import Data  # noqa
 
-from importlib.util import find_spec
-
-CHARTING_INSTALLED = find_spec("openbb_charting") is not None
-
 try:
     _HAS_FCNTL = True
 except Exception:  # noqa  # pragma: no cover
