@@ -167,7 +167,7 @@ class Volatility(PltTA):
     @indicator()
     def plot_kc(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Add Keltner channels to plotly figure."""
-        mamode = (self.params["kc"].get_argument_values("mamode") or "ema").lower()  # type: ignore
+        mamode = (self.params["kc"].get_argument_values("mamode") or "ema").lower()  # ty: ignore[not-subscriptable, unresolved-attribute]
 
         if fig.theme.plt_style == "light":
             fillcolor = "rgba(239, 103, 137, 0.05)"

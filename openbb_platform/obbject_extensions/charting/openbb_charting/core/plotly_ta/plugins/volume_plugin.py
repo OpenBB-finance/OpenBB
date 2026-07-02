@@ -17,10 +17,6 @@ class Volume(PltTA):
 
     __subplots__ = ["ad", "adosc", "obv"]
 
-    # Useless super delegation
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
     @indicator()
     def plot_ad(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
         """Add ad to plotly figure."""

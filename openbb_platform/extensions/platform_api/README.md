@@ -1,21 +1,16 @@
-# OpenBB Platform API Launcher
+# OpenBB Platform API
 
-This package is responsible for launching and configuring an OpenBB Platform environment, or FastAPI instance, to use as an OpenBB Workspace [custom backend](https://docs.openbb.co/workspace/data-integration).
+Launcher and widgets builder for the OpenBB Workspace [custom backend](https://docs.openbb.co/workspace/data-integration). Wraps any FastAPI application with the metadata, exception handling, and `widgets.json` generation that OpenBB Workspace expects — so a regular FastAPI app becomes a Workspace data source with no glue code.
 
-## Installation
+> **Full documentation:** [docs.openbb.co/odp/python/extensions/interface/openbb-api](https://docs.openbb.co/odp/python/extensions/interface/openbb-api)
 
-This package is included when you run [`pip install openbb`](https://docs.openbb.co/platform/installation); however, it also works as a standalone package
-for creating new backends that are not part of the OpenBB GitHub [repository](https://github.com/OpenBB-finance/OpenBB/).
-
-To install as a standalone, use a Python environment between versions 3.9 and 3.12, inclusively.
+## Install
 
 ```sh
 pip install openbb-platform-api
 ```
 
-## Usage
-
-See the [keyword arguments](#keyword-arguments) section for parameters and descriptions.
+Python ≥ 3.10. Already included when you install [`openbb`](https://docs.openbb.co/platform/installation).
 
 ### Launch OpenBB Platform
 
@@ -23,31 +18,87 @@ To start the OpenBB Platform API, open a terminal, activate the environment wher
 
 ```sh
 openbb-api
+
+# Launch your own FastAPI app
+openbb-api --app /path/to/your_app.py
+
+# Factory function?
+openbb-api --app some_file.py:create_app --factory
+
+# Launch as a proxy from an openbb-cli .spec file
+openbb-api --spec /path/to/cli.spec
 ```
 
-This will launch a Fast API instance, via `uvicorn`, at `http://127.0.0.1:6900`
+`widgets.json` is auto-generated from your routes' types, response models, and docstrings. Plotly returns become chart widgets, `BaseModel` returns become tables, scalars become metrics — no manual wiring.
 
-Uvicorn can be configured by adding keyword arguments, see the section [below](#keyword-arguments)
+## Spec-driven proxy mode
 
-### Launch Custom App
-
-To run your application as an OpenBB Workspace custom backend, add the path to the Python file with the FastAPI instance to the launch command.
+Generate a spec file with `openbb-cli` against any OpenBB Platform deployment, then launch a Workspace-compatible backend that proxies every command to that upstream:
 
 ```sh
-openbb-api --app /Users/some_user/path/to/main.py
+# Generate the spec once
+openbb --generate-spec --server https://api.example.com -o cli.spec
+
+# Launch the proxy
+openbb-api --spec cli.spec
 ```
 
-#### Arbitrary Instance Name
+Each command in the spec becomes a FastAPI route at its `url_path`; the launcher forwards every request to the spec's `base_url` (preserving query, body, and non-hop-by-hop headers). `widgets.json` is generated from the spec's parameter and response-schema metadata via the same builder used for in-process apps.
 
-Define the FastAPI instance as an arbitrary name with the `--name` argument.
+Useful for shipping a thin frontend container that talks to a managed backend in another cluster, without bundling `openbb-core` or any provider extensions. `--spec` is mutually exclusive with `--app`.
 
-```sh
-openbb-api --app some_file.py --name my_app
+### `[spec]` config — credentials and base-URL override
+
+A `[spec]` table in `openbb.toml` carries the path plus the bits the file alone can't provide — `base_url` overrides for staging/prod, and `headers` injected on every upstream request.
+Header values support the same `$VAR` substitution as `[env]`, so credentials live in environment variables (or `[env]` entries that read from them) and the TOML just maps them onto upstream header names:
+
+```toml
+[env]
+OPENBB_UPSTREAM_TOKEN = "$GITHUB_TOKEN"   # or any orchestrator-injected secret
+
+[spec]
+path     = "/etc/openbb/cli.spec"
+base_url = "https://prod.example.com"     # optional; overrides spec's recorded value
+
+[spec.headers]
+Authorization = "Bearer $OPENBB_UPSTREAM_TOKEN"
+X-Tenant      = "production"
 ```
 
-#### Factory Flag
+Config-supplied headers OVERRIDE matching incoming-request headers — `[spec.headers]` is the credential-injection point, so a misbehaving client can't leak its own auth value upstream by sending the same header name.
 
-If the FastAPI instance is served via a factory function, set the `--factory` flag.
+## Custom HTTP middleware (`[middleware]`)
+
+Attach Starlette-style HTTP middleware functions from a config-supplied entrypoint — useful for auth, request logging, tracing, IP allow-listing, response transformation. Each entry is a `"module:async_callable"` reference resolved through the standard import system:
+
+```toml
+[middleware]
+hooks = [
+    "my_pkg.middleware:auth_middleware",
+    "my_pkg.middleware:request_logger",
+]
+```
+
+```python
+# my_pkg/middleware.py
+from fastapi.responses import JSONResponse
+
+async def auth_middleware(request, call_next):
+    if request.headers.get("X-API-Key") != "expected":
+        return JSONResponse({"error": "unauthorized"}, status_code=401)
+    return await call_next(request)
+
+async def request_logger(request, call_next):
+    response = await call_next(request)
+    print(f"{request.method} {request.url.path} → {response.status_code}")
+    return response
+```
+
+List order is **outermost-to-innermost**: the first entry sees the request first on the way in and the response last on the way out. Misconfigured references (missing module, wrong attribute, sync function, wrong arity) raise loudly at startup so deployments fail fast instead of silently passing requests through unauthenticated.
+
+## Single-file launch
+
+Everything in this README — app source (`--app` or `--spec`), env injection, host/port, SSL, agents, middleware, credentials — can be set in one `openbb.toml` and launched without any other CLI flags:
 
 ```sh
 openbb-api --app some_file.py:main --factory
@@ -130,214 +181,55 @@ Examples below will assume this code block is at the start of the file.
 
 ```python
 from fastapi import FastAPI
+from openbb_platform_api.response_models import (
+    Data,
+    MetricResponseModel,
+    OmniWidgetResponseModel,
+    PdfResponseModel,
+)
 
 app = FastAPI()
-```
 
-### Markdown Widget
-
-This script will create a "markdown" widget with the returned text.
-
-```python
+# Markdown — return a string
 @app.get("/hello")
 async def hello() -> str:
-    """Widget Description Generated By Docstring"""
-    return "Hello, from OpenBB!"
+    """Tooltip from the docstring."""
+    return "Hello, OpenBB!"
+
+# Table — return a list of records or a typed Data subclass
+@app.get("/rows")
+async def rows() -> list[dict]:
+    return [{"symbol": "AAPL", "price": 150.0}]
+
+# Metric — single label/value/delta
+@app.get("/score")
+async def score() -> MetricResponseModel:
+    return MetricResponseModel(label="Score", value=100, delta="1%")
+
+# Chart — return a Plotly figure JSON
+@app.get("/chart", openapi_extra={"widget_config": {"type": "chart"}})
+async def chart() -> dict:
+    from plotly.graph_objs import Bar, Figure
+    return Figure(data=[Bar(x=["A"], y=[1])]).to_plotly_json()
 ```
 
-### Table Widget
-
-Create a table widget by returning data shaped as a list of dictionaries (records)
+Annotated `Data` models drive auto-generated table column definitions:
 
 ```python
-@app.get("/hello")
-async def hello() -> list:
-    """Widget Description Generated By Docstring"""
-    return [{"Column 1": "Hello", "Column 2": "from OpenBB!"}]
-```
-
-### Metric Widget
-
-This widget displays a label, value, and optional delta.
-
-To create a metric widget, import the custom response model below and define it as a return type.
-
-```python
-from openbb_platform_api.response_models import MetricResponseModel
-
-@app.get("/hello_metric")
-async def hello_metric() -> MetricResponseModel:
-    """Widget description created by docstring."""
-    return MetricResponseModel(label="Good Vibes Score", value=100, delta="1%")
-```
-
-This type of widget can be created as an array of MetricResponseModels. Adjust the response to be a `list[MetricRespnoseModel]`
-
-### Query Parameters
-
-Function arguments will populate as widget parameters.
-
-```python
-from typing import Literal, Optional
-
-@app.get("/hello")
-async def hello(param1: Optional[str] = None, param2: Literal["Choice 1", "Choice 2"] = None, param3: bool = False) -> str:
-    """Widget Description Generated By Docstring"""
-    if not param1 and not param2 and not param3:
-        return "Enter a parameter or make a choice!"
-    if param3:
-        return f"Param3 enabled!"
-    if param2:
-        return f"You selected: {param2}"
-    if param1:
-        return f"You entered: {param1}"
-
-    return "Nothing to return!"
-```
-
-### Easy Date Picker
-
-Name the parameter "date", or include "_date" in the name, and type it as a string.
-
-Additionally, a parameter type of `datetime.date` will work.
-
-```python
-import datetime
-
-@app.get("/hello_date")
-async def hello_date(date: str) -> list:
-    """Widget description created by docstring."""
-    # Workspace returns the date as YYYY-MM-DD
-    return [{"Hello": "Row 1!"}, {"Hello": "Row 2!"}]
-
-
-@app.get("/hello_date_range")
-async def hello_date_range(start: datetime.date, end: datetime.date) -> list:
-    """Widget description created by docstring."""
-    # Workspace returns the date as YYYY-MM-DD
-    return [{"Hello": "Row 1!"}, {"Hello": "Row 2!"}]
-```
-
-This demonstrates how to define any of the basic widget parameter types, in a no-frills way. If you just need something that works, it's an easy starting point.
-
-```python
-@app.get("/hello_params")
-async def hello_params(
-    required_param: datetime.date,
-    param_1: str = "Default",
-    param_2: int = 0,
-    param_3: float = None,
-    param_4: Literal["Choice 1", "Choice 2", "Choice 3"] = "Choice 1",
-    param_5: bool = True,
-) -> list:
-    """Widget description created by docstring."""
-    # Handle the "choices" parameter inside the function to convert the displayed label to the desired one.
-    choices_dict = {"Choice 1": "do_one", "Choice 2": "do_two", "Choice 3": "do_three"}
-    choice = choices_dict.get(param_4, None)
-
-    # Do something with the parameters and return the result of work.
-    return [{"Hello": "Row 1!"}, {"Hello": "Row 2!"}]
-```
-
-### Annotated Query Params
-
-Adding helpful placeholder text and tooltips to parameters requires annotating them. This will also help code editors and improve the API documentation.
-
-Additional settings, compatible with `widgets.json`, are defined in the `json_schema_extra` dictionary, under a key, `x-widget_config`
-
-```python
-from typing import Annotated
-from fastapi import Query
-```
-
-The pattern for annotating a query parameter is:
-
-```python
-my_param: Annotated[str, Query(title="My Title", description="My custom hovertext with detailed information")] = None
-```
-
-```python
-@app.get("/hello_annotated_params")
-async def hello_annotated_params(
-    required_param: Annotated[
-        datetime.date, Query(description="The date is required.", title="Required Date")
-    ],
-    not_required_param: Annotated[
-        Literal["Choice 1", "Choice 2", "Choice 3"],
-        Query(
-            description="Choose from a list of possible choices. The default is, 'Choice 1'",
-            title="Selector",
-            json_schema_extra={"x-widget_config": {"multiSelect": True}}  # This lets you select multiple items from dropdown choices.
-        ),
-    ] = "Choice 1",
-) -> list:
-    """Widget description created by docstring."""
-
-    # Do something with the parameters and return the result of work.
-    return [{"Hello": "Row 1!"}, {"Hello": "Row 2!"}]
-```
-
-### Annotated Table Fields
-
-The procedure for annotating the output is similar to the query parameters, and involves defining a response model.
-
-A response model is a Data model of Fields. Create one by defining a new class that inherits from "Data", and then define each column as a "Field".
-
-```python
+from datetime import date
 from openbb_platform_api.response_models import Data
 from pydantic import Field
-```
 
-Optional values should be defined, as `Optional[{type}]`, with a default value of `None`.
-
-```python
-class MyData(Data):
-    """This is a custom Data model."""
-
-    # Add fields to the model.
-    column_1: datetime.date = Field(
-        description="The date column is a mandatory field.",
-        title="Some Date",
-    )
-    column_2: Optional[str] = Field(
-        default=None,
-        description="This is an optional string column.",
-        title="Some String",
-    )
-    column_3: int = Field(
-        default=-1,
-        description="This is an integer column.",
-        title="Some Integer",
-    )
-    column_4: float = Field(
-        default=10.25,
-        description="This is a float column.",
-        title="Some Float",
-    )
-    column_5: float = Field(
-        default=10.25,
-        description="This is a percent column.",
-        title="Some Percent",
-        json_schema_extra={"x-widget_config": {"formatterFn": "percent"}},
-    )
-    column_6: float = Field(
-        default=0.1025,
-        description="This is a normalized percent value adjusted for presentation.",
-        title="Some Normalized Percent",
-        json_schema_extra={
-            "x-widget_config": {
-                "formatterFn": "normalizedPercent",
-                "renderFn": "greenRed",
-            }
-        },
+class MyRow(Data):
+    when: date = Field(title="Date", description="Trading date")
+    pct:  float = Field(
+        title="Change",
+        json_schema_extra={"x-widget_config": {"formatterFn": "percent", "renderFn": "greenRed"}},
     )
 
-
-@app.get("/hello_data")
-async def hello_data() -> list[MyData]:
-    """Widget description created by docstring."""
-    # Do something with the parameters and return the result of work.
-    return [MyData(column_1=datetime.date.today(), column_2="Hello!")]
+@app.get("/data")
+async def data() -> list[MyRow]:
+    return [MyRow(when=date.today(), pct=0.0125)]
 ```
 
 ### PDF Widget
@@ -671,12 +563,8 @@ This can be changed by adding the path as an argument.
 openbb-api --apps-json /Users/some_user/path/to/workspace_apps.json
 ```
 
-The OpenBB Workspace allows you to export the current dashboard layout - when it is a custom backend - as a template.
+The browser will warn about the untrusted cert — accept once, or add `localhost.crt` to the OS trust store.
 
-To export the layout, right-click on the dashboard and select, "Export apps.json".
+## License
 
-A JSON dictionary will be exported. Insert the contents of the export into "~/OpenBBUserData/workspace_apps.json" by pasting between the JSON list markers, [ ].
-
-If there are more than one, add a comma between each dictionary entry.
-
-See the page [here](https://docs.openbb.co/workspace/apps#creating-your-own-app) for details on custom backend apps.
+AGPL-3.0-only. © OpenBB.

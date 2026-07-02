@@ -1467,3 +1467,187 @@ def test_build_command_method_getsource_typeerror(monkeypatch):
     monkeypatch.setattr(md.inspect, "getsource", _patched_getsource)
     code = MethodDefinition.build_command_method("/x/y", endpoint)
     assert "def y" in code
+
+
+def test_surface_dependency_none_like_return():
+    def dep() -> None: ...
+
+    assert MethodDefinition._surface_dependency(dep) is None
+
+
+def test_surface_dependency_request_bound_param():
+    def dep(request: Request) -> dict: ...
+
+    assert MethodDefinition._surface_dependency(dep) is None
+
+
+def test_surface_dependency_nested_depends():
+    from fastapi import Depends
+
+    def other() -> int:
+        return 1
+
+    def dep(value: Annotated[int, Depends(other)]) -> dict: ...
+
+    assert MethodDefinition._surface_dependency(dep) is None
+
+
+def test_surface_dependency_surfaceable_header():
+    from fastapi import Header
+
+    def dep(x_api_key: Annotated[str, Header()]) -> dict: ...
+
+    result = MethodDefinition._surface_dependency(dep)
+    assert result is not None
+    surfaced, call_args = result
+    assert "x_api_key" in surfaced
+    assert call_args == "x_api_key=x_api_key"
+
+
+def test_surfaced_param_spec_empty_annotation_defaults_to_any():
+    from typing import Any, get_args
+
+    param = Parameter("x", Parameter.POSITIONAL_OR_KEYWORD)
+    annotation, default = MethodDefinition._surfaced_param_spec(param)
+    assert get_args(annotation)[0] is Any
+    assert default is Parameter.empty
+
+
+def test_surfaced_param_spec_reads_fastapi_default():
+    from fastapi import Query as FastAPIQuery
+
+    param = Parameter(
+        "x",
+        Parameter.POSITIONAL_OR_KEYWORD,
+        default=FastAPIQuery(default=5),
+        annotation=int,
+    )
+    _annotation, default = MethodDefinition._surfaced_param_spec(param)
+    assert default == 5
+
+
+def test_collect_surfaced_params_promotes_header():
+    from fastapi import Depends, Header
+
+    def dep(x_api_key: Annotated[str, Header()]) -> dict: ...
+
+    parameter_map = {
+        "principal": Parameter(
+            "principal",
+            Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[dict, Depends(dep)],
+        )
+    }
+    surfaced = MethodDefinition._collect_surfaced_params(parameter_map)
+    assert "x_api_key" in surfaced
+
+
+def test_is_charting_command_without_charting():
+    with patch.object(md_module, "CHARTING_INSTALLED", False):
+        assert MethodDefinition._is_charting_command("/x/y") is False
+
+
+def test_is_charting_command_handles_exception():
+    with (
+        patch.object(md_module, "CHARTING_INSTALLED", True),
+        patch.object(md_module, "Charting", create=True) as mock_charting,
+    ):
+        mock_charting.functions.side_effect = RuntimeError("boom")
+        assert MethodDefinition._is_charting_command("/x/y") is False
+
+
+def test_format_params_flattens_query_params_model():
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    class _MyQueryParams(QueryParams):
+        symbol: str
+        limit: int = 10
+
+    parameter_map = {
+        "params": Parameter(
+            "params",
+            Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[_MyQueryParams, "meta"],
+        )
+    }
+    out = MethodDefinition.format_params("/x/y", parameter_map)
+    assert "symbol" in out
+    assert "limit" in out
+
+
+def test_build_command_method_body_query_params_model(monkeypatch):
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    class _BodyQueryParams(QueryParams):
+        symbol: str = "AAPL"
+
+    monkeypatch.setattr(
+        MethodDefinition, "is_deprecated_function", staticmethod(lambda p: False)
+    )
+
+    def endpoint(params: _BodyQueryParams):
+        return params
+
+    code = MethodDefinition.build_command_method_body("/x/y", endpoint)
+    assert '"symbol": symbol' in code
+
+
+def test_build_command_method_body_pydantic_model_param(monkeypatch):
+    from pydantic import BaseModel
+
+    class _Body(BaseModel):
+        ticker: str = "AAPL"
+
+    monkeypatch.setattr(
+        MethodDefinition, "is_deprecated_function", staticmethod(lambda p: False)
+    )
+
+    def endpoint(payload: Annotated[_Body, OpenBBField(description="body")]):
+        return payload
+
+    code = MethodDefinition.build_command_method_body("/x/y", endpoint)
+    assert '"ticker": ticker' in code
+
+
+def test_format_params_query_params_model_data_processing_path(monkeypatch):
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    class _MyQueryParams(QueryParams):
+        data: str
+        start_date: str = "2020-01-01"
+        tags: list = Field(default_factory=list)
+
+    monkeypatch.setattr(
+        MethodDefinition, "is_data_processing_function", staticmethod(lambda p: True)
+    )
+    parameter_map = {
+        "params": Parameter(
+            "params",
+            Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[_MyQueryParams, "meta"],
+        )
+    }
+    out = MethodDefinition.format_params("/x/y", parameter_map)
+    assert "data" in out
+    assert "start_date" in out
+    assert "tags" in out
+
+
+def test_build_command_method_body_raw_query_params_fallback(monkeypatch):
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    class _RawQueryParams(QueryParams):
+        symbol: str = "AAPL"
+
+    monkeypatch.setattr(
+        MethodDefinition, "is_deprecated_function", staticmethod(lambda p: False)
+    )
+    monkeypatch.setattr(
+        MethodDefinition, "query_params_model", staticmethod(lambda _a: None)
+    )
+
+    def endpoint(params: _RawQueryParams):
+        return params
+
+    code = MethodDefinition.build_command_method_body("/x/y", endpoint)
+    assert '"symbol": symbol' in code

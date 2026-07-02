@@ -29,9 +29,10 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
     from openbb_core.provider.abstract.data import Data  # noqa
 
-from importlib.util import find_spec
+from openbb_core.app.charting import ChartingManager
 
-CHARTING_INSTALLED = find_spec("openbb_charting") is not None
+# Resolved through the charting manager so a drop-in engine override is honored
+CHARTING_INSTALLED = ChartingManager.is_installed()
 
 try:
     _HAS_FCNTL = True

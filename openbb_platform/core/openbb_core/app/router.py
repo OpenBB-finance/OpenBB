@@ -135,6 +135,11 @@ class Router:
                 if not no_validate
                 else func.__annotations__["return"]
             )
+            from openbb_core.app.model.stream import OBBStream
+
+            _ret = func.__annotations__.get("return")
+            if isclass(_ret) and issubclass(_ret, OBBStream):
+                kwargs["response_model"] = None
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
             )
@@ -160,6 +165,12 @@ class Router:
                     },
                 },
             )
+
+            if isclass(_ret) and issubclass(_ret, OBBStream):
+                kwargs["responses"][200] = {
+                    "description": "Event stream",
+                    "content": {"text/event-stream": {"schema": {"type": "string"}}},
+                }
 
             # For custom deprecation
             if kwargs.get("deprecated", False):
@@ -237,8 +248,14 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Callable[P, OBBject] | None:
         """Complete function signature."""
-        if isclass(return_type := func.__annotations__["return"]) and not issubclass(
-            return_type, OBBject
+        from openbb_core.app.model.stream import OBBStream
+
+        return_type = func.__annotations__["return"]
+        is_stream = isclass(return_type) and issubclass(return_type, OBBStream)
+        if (
+            isclass(return_type)
+            and not issubclass(return_type, OBBject)
+            and not is_stream
         ):
             return func
 
@@ -281,10 +298,11 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            func = cls.inject_return_annotation(
-                func=func,
-                annotation=provider_interface.return_annotations[model],
-            )
+            if not is_stream:
+                func = cls.inject_return_annotation(
+                    func=func,
+                    annotation=provider_interface.return_annotations[model],
+                )
 
         else:
             func = cls.polish_return_schema(func)

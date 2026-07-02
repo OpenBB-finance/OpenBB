@@ -23,6 +23,14 @@ def _OBBject() -> type:
     return OBBject
 
 
+@lru_cache(maxsize=1)
+def _OBBStream() -> type:
+    """Return ``OBBStream`` lazily."""
+    from openbb_core.app.model.stream import OBBStream
+
+    return OBBStream
+
+
 class DummyTranslation:
     """Dummy Translation for testing."""
 
@@ -204,7 +212,10 @@ class PlatformController(BaseController):
                         if isinstance(obbject, list):
                             obbject = _OBBject()(results=obbject)
 
-                        if isinstance(obbject, _OBBject()):
+                        if isinstance(obbject, _OBBStream()):
+                            self._follow_stream(obbject)
+
+                        elif isinstance(obbject, _OBBject()):
                             if (
                                 session.max_obbjects_exceeded()
                                 and obbject.results
@@ -311,6 +322,24 @@ class PlatformController(BaseController):
             partial(bound_method, translator=translator), method
         )
         setattr(self, f"call_{name}", bound_method)
+
+    def _follow_stream(self, stream) -> None:
+        """Follow a streaming (e.g. SSE) result in the foreground.
+
+        Streams chunks to the console on a background thread and blocks until the
+        stream ends or the user presses Ctrl+C, then stops it cleanly.
+        """
+        session.console.print(
+            f"[cyan]Streaming {stream.media_type or 'data'} — press Ctrl+C to stop.[/cyan]"
+        )
+        stream.start()
+        try:
+            stream.wait()
+        except KeyboardInterrupt:
+            session.console.print("\n[yellow]Stream interrupted.[/yellow]")
+        finally:
+            stream.stop()
+            session.console.print("[cyan]Stream stopped.[/cyan]")
 
     def _generate_controller_call(self, controller, name, parent_path, translators):
         """Generate controller call."""

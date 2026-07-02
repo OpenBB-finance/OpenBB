@@ -162,6 +162,30 @@ def test_build_backend_returns_real_backend_on_success(session):
         assert session._build_backend() is sentinel
 
 
+def test_resolve_backend_class_prefers_registered_backend():
+    """A backend registered via the entry-point group is returned directly."""
+    sentinel = object()
+    with patch(
+        "openbb_core.app.charting.get_charting_backend_class",
+        return_value=sentinel,
+    ):
+        assert Session._resolve_backend_class() is sentinel
+
+
+def test_build_backend_returns_none_when_no_backend_resolves(session):
+    """``_build_backend`` returns None when no backend class resolves."""
+    import sys
+
+    with (
+        patch.dict(
+            sys.modules,
+            {"openbb_core.app.model.charts.charting_settings": MagicMock()},
+        ),
+        patch.object(session, "_resolve_backend_class", return_value=None),
+    ):
+        assert session._build_backend() is None
+
+
 def test_build_prompt_session_swallows_failure(session):
     """Constructing PromptSession may fail (e.g. terminal init); session degrades to None."""
     import sys
