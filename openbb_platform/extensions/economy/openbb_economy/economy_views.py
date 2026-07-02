@@ -1,8 +1,6 @@
 """Views for the Economy Extension."""
 
-# flake8: noqa: PLR0912
-# pylint: disable=too-many-branches
-
+from importlib import import_module
 from typing import TYPE_CHECKING, Any
 from warnings import warn
 
@@ -20,16 +18,16 @@ class EconomyViews:
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """FRED Series Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.generic_charts import bar_chart
-        from openbb_charting.charts.helpers import (
-            z_score_standardization,
-        )
-        from openbb_charting.core.chart_style import ChartStyle
-        from openbb_charting.core.openbb_figure import OpenBBFigure
-        from openbb_charting.styles.colors import LARGE_CYCLER
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
+
+        bar_chart = import_module("openbb_charting.charts.generic_charts").bar_chart
+        z_score_standardization = import_module(
+            "openbb_charting.charts.helpers"
+        ).z_score_standardization
+        ChartStyle = import_module("openbb_charting.core.chart_style").ChartStyle
+        OpenBBFigure = import_module("openbb_charting.core.openbb_figure").OpenBBFigure
+        LARGE_CYCLER = import_module("openbb_charting.styles.colors").LARGE_CYCLER
 
         ytitle_dict = {
             "chg": "Change",
@@ -49,7 +47,7 @@ class EconomyViews:
                 f"This charting method does not support {provider}. Supported providers: fred."
             )
 
-        columns = basemodel_to_df(kwargs["obbject_item"], index=None).columns.to_list()  # type: ignore
+        columns = basemodel_to_df(kwargs["obbject_item"], index=None).columns.to_list()
 
         allow_unsafe = kwargs.get("allow_unsafe", False)
         dropnan = kwargs.get("dropna", True)
@@ -63,7 +61,7 @@ class EconomyViews:
             df_ta = data
 
         else:
-            df_ta = basemodel_to_df(kwargs["obbject_item"], index="date")  # type: ignore
+            df_ta = basemodel_to_df(kwargs["obbject_item"], index="date")
 
         # Check for unsupported external data injection.
         if allow_unsafe is False and data_cols:
@@ -86,23 +84,28 @@ class EconomyViews:
 
         columns = df_ta.columns.to_list()
 
-        metadata = kwargs["extra"].get("results_metadata", {})  # type: ignore
+        metadata = kwargs["extra"].get("results_metadata", {})
 
         # Check if the request was transformed by the FRED API.
         params = kwargs["extra_params"] if kwargs.get("extra_params") else {}
-        has_params = hasattr(params, "transform") and params.transform is not None  # type: ignore
+        has_params = hasattr(params, "transform") and params.transform is not None
 
         # Get a unique list of all units of measurement in the DataFrame.
-        y_units = list({metadata.get(col).get("units") for col in columns if col in metadata})  # type: ignore
+        y_units = list(
+            {metadata.get(col).get("units") for col in columns if col in metadata}
+        )
         if has_params is True and not y_units:
-            y_units = [ytitle_dict.get(params.transform)]  # type: ignore
+            y_units = [ytitle_dict.get(params.transform)]  # ty: ignore[unresolved-attribute]
 
         if normalize or (
             kwargs.get("bar") is True
             and len(y_units) > 1
             and (
                 has_params is False
-                or not any(i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"])  # type: ignore
+                or not any(
+                    i in params.transform  # ty: ignore[unresolved-attribute]
+                    for i in ["pc1", "pch", "pca", "cch", "cca", "log"]
+                )
             )
         ):
             normalize = True
@@ -122,20 +125,31 @@ class EconomyViews:
         xtitle = str(kwargs.get("xtitle", ""))
 
         # If the request was transformed, the y-axis will be shared under these conditions.
-        if has_params and any(i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]):  # type: ignore
-            y1title = "Log" if params.transform == "Log" else "Percent"  # type: ignore
+        if has_params and any(
+            i in params.transform  # ty: ignore[unsupported-operator]
+            for i in ["pc1", "pch", "pca", "cch", "cca", "log"]
+        ):
+            y1title = "Log" if params.transform == "Log" else "Percent"
             y2title = None
 
         # Set the title for the chart.
         title: str = ""
         if isinstance(kwargs, dict) and title in kwargs:
-            title = kwargs["title"]  # type: ignore
+            title = kwargs["title"]
         else:
-            if metadata.get(columns[0]):  # type: ignore
-                title = metadata.get(columns[0]).get("title") if len(columns) == 1 else "FRED Series"  # type: ignore
+            if metadata.get(columns[0]):
+                title = (
+                    metadata.get(columns[0]).get("title")
+                    if len(columns) == 1
+                    else "FRED Series"
+                )
             else:
                 title = "FRED Series"
-            transform_title = ytitle_dict.get(params.transform) if has_params is True else ""  # type: ignore
+            transform_title = (
+                ytitle_dict.get(params.transform)  # ty: ignore[unresolved-attribute]
+                if has_params is True
+                else ""
+            )
             title = f"{title} - {transform_title}" if transform_title else title
 
         # Define this to use as a check.
@@ -155,18 +169,18 @@ class EconomyViews:
                     title=title,
                     xtitle=xtitle,
                     ytitle=y1title,
-                    barmode=bar_mode,  # type: ignore
-                    layout_kwargs=dict(margin=margin),  # type: ignore
+                    barmode=bar_mode,
+                    layout_kwargs=dict(margin=margin),
                 )
                 if kwargs.get("layout_kwargs"):
                     fig.update_layout(kwargs.get("layout_kwargs"))
 
                 if kwargs.get("title"):
-                    fig.set_title(str(kwargs.get("title")))  # type: ignore
+                    fig.set_title(str(kwargs.get("title")))  # ty: ignore[unresolved-attribute]
 
                 content = fig.to_plotly_json()
 
-                return fig, content  # type: ignore
+                return fig, content  # ty: ignore[invalid-return-type]
             except Exception as _:
                 warn("Bar chart failed. Attempting line chart.")
 
@@ -181,21 +195,21 @@ class EconomyViews:
             # Check if the y-axis should be shared for this series.
             on_y1 = (
                 (
-                    metadata.get(col).get("units") == y1_units  # type: ignore
-                    or y2title is None  # type: ignore
+                    metadata.get(col).get("units") == y1_units
+                    or y2title is None
                     or kwargs.get("same_axis") is True
                 )
-                if metadata.get(col)  # type: ignore
+                if metadata.get(col)
                 else False
             )
             if normalize:
                 on_y1 = True
 
             yaxes = "y2" if not on_y1 else "y1"
-            on_y3 = not metadata.get(col) and normalize is False  # type: ignore
+            on_y3 = not metadata.get(col) and normalize is False
             if on_y3:
                 yaxes = "y3"
-                y3title = df_ta[col].name  # type: ignore
+                y3title = df_ta[col].name
             fig.add_scatter(
                 x=df_ta.index,
                 y=df_ta[col],
@@ -345,13 +359,15 @@ class EconomyViews:
         layout_kwargs: Optional[dict]
             Additional keyword arguments applied to `fig.update_layout`.
         """
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.generic_charts import bar_chart, line_chart
-        from openbb_charting.charts.helpers import (
-            z_score_standardization,
-        )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
+
+        _generic_charts = import_module("openbb_charting.charts.generic_charts")
+        bar_chart = _generic_charts.bar_chart
+        line_chart = _generic_charts.line_chart
+        z_score_standardization = import_module(
+            "openbb_charting.charts.helpers"
+        ).z_score_standardization
 
         provider = kwargs.get("provider")
 
@@ -371,7 +387,7 @@ class EconomyViews:
             df = _data.reset_index() if _data.index.name == "date" else _data
         else:
             try:
-                df = basemodel_to_df(_data, index=None)  # type: ignore
+                df = basemodel_to_df(_data, index=None)  # ty: ignore[invalid-argument-type]
             except Exception as e:
                 raise RuntimeError("Unable to process supplied data.") from e
 
@@ -384,34 +400,38 @@ class EconomyViews:
             raise RuntimeError(f"Column '{target_col}' not found in the data.")
 
         new_df = df.pivot(columns="symbol", values=target_col, index="date")
-        target_symbols = kwargs.get("target_symbol", "").split(",")[:10]  # type: ignore
+        target_symbols = kwargs.get("target_symbol", "").split(",")[:10]
 
         if not target_symbols or len(target_symbols) == 0 or target_symbols[0] == "":
             target_symbols = new_df.columns.to_list()[:10]
 
-        metadata = kwargs["extra"].get("results_metadata", {})  # type: ignore
+        metadata = kwargs["extra"].get("results_metadata", {})
         ytitle = kwargs.get("ytitle", "")
 
         new_df = new_df.filter(target_symbols, axis=1)
 
-        if "percent" in target_col.lower():  # type: ignore
+        if "percent" in target_col.lower():
             ytitle = (
                 ytitle
                 if ytitle
-                else target_col.replace("change_percent_", "").replace("M", " Month") + " Change (%)"  # type: ignore
+                else target_col.replace("change_percent_", "").replace("M", " Month")
+                + " Change (%)"
             )
             new_df = new_df.apply(lambda x: x * 100)
-        elif "change" in target_col.lower() and "percent" not in target_col.lower():  # type: ignore
+        elif "change" in target_col.lower() and "percent" not in target_col.lower():
             ytitle = (
-                ytitle if ytitle else target_col.replace("change_", "").replace("M", " Month") + " Change"  # type: ignore
+                ytitle
+                if ytitle
+                else target_col.replace("change_", "").replace("M", " Month")
+                + " Change"
             )
 
         title_map: dict = {}
         for symbol in target_symbols:
             if symbol not in new_df.columns:
                 continue
-            survey_name = metadata.get(symbol, {}).get("survey_name", symbol)  # type: ignore
-            series_title = metadata.get(symbol, {}).get("series_title", symbol)  # type: ignore
+            survey_name = metadata.get(symbol, {}).get("survey_name", symbol)
+            series_title = metadata.get(symbol, {}).get("series_title", symbol)
 
             if survey_name != series_title:
                 title_map[symbol] = f"{survey_name} \n    {series_title}"
@@ -423,19 +443,21 @@ class EconomyViews:
             new_df = new_df.apply(z_score_standardization)
             same_axis = True
             if ytitle:
-                ytitle = f"Normalized {ytitle.replace('(%)', '')}"  # type: ignore
+                ytitle = f"Normalized {ytitle.replace('(%)', '')}"
 
         plot_type = kwargs.get("plot_type")
 
         if plot_type is None:
             plot_type = (
-                "line" if (len(new_df.index) > 36 and len(new_df.columns.to_list()) >= 1) else "bar"  # type: ignore
+                "line"
+                if (len(new_df.index) > 36 and len(new_df.columns.to_list()) >= 1)
+                else "bar"
             )
 
-        layout_kwargs: dict = kwargs.pop("layout_kwargs", {})  # type: ignore
-        scatter_kwargs: dict = kwargs.pop("scatter_kwargs", {})  # type: ignore
-        bar_kwargs: dict = kwargs.pop("bar_kwargs", {})  # type: ignore
-        hovertemplate = scatter_kwargs.pop("hovertemplate", None)  # type: ignore
+        layout_kwargs: dict = kwargs.pop("layout_kwargs", {})
+        scatter_kwargs: dict = kwargs.pop("scatter_kwargs", {})
+        bar_kwargs: dict = kwargs.pop("bar_kwargs", {})
+        hovertemplate = scatter_kwargs.pop("hovertemplate", None)
         trace_titles = {
             symbol: metadata.get(symbol, {})
             .get("series_title", symbol)
@@ -443,7 +465,7 @@ class EconomyViews:
             for symbol in target_symbols
         }
         new_df.columns = [trace_titles.get(col, col) for col in new_df.columns]
-        scatter_kwargs["hovertemplate"] = (  # type: ignore
+        scatter_kwargs["hovertemplate"] = (
             hovertemplate if hovertemplate else "%{fullData.name}:%{y}<extra></extra>"
         )
 
@@ -464,7 +486,7 @@ class EconomyViews:
                     data=new_df,
                     title=title,
                     ytitle=ytitle,
-                    x=new_df.index,  # type: ignore
+                    x=new_df.index,
                     y=list(trace_titles.values()),
                     layout_kwargs=layout_kwargs,
                     bar_kwargs=bar_kwargs,
@@ -472,7 +494,12 @@ class EconomyViews:
                 )
             )
         else:
-            survey_name = metadata.get(target_symbols[0], {}).get("survey_name", target_symbols[0]).split("\n")[0].strip()  # type: ignore
+            survey_name = (
+                metadata.get(target_symbols[0], {})
+                .get("survey_name", target_symbols[0])
+                .split("\n")[0]
+                .strip()
+            )
             _t = kwargs.pop("title", None)
             title = _t if _t else f"{survey_name} - {ytitle}" if ytitle else survey_name
             fig = (
@@ -492,7 +519,7 @@ class EconomyViews:
                     data=new_df,
                     title=title,
                     ytitle=ytitle,
-                    x=new_df.index,  # type: ignore
+                    x=new_df.index,
                     y=list(trace_titles.values()),
                     layout_kwargs=layout_kwargs,
                     bar_kwargs=bar_kwargs,
@@ -513,15 +540,13 @@ class EconomyViews:
         )
         content = fig.to_plotly_json()
 
-        return fig, content  # type: ignore
+        return fig, content  # ty: ignore[invalid-return-type]
 
     @staticmethod
     def economy_shipping_chokepoint_info(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Maritime Chokepoint Info Chart."""
-        # pylint: disable=import-outside-toplevel
-
         provider = kwargs.get("provider")
 
         if provider != "imf":
@@ -530,9 +555,9 @@ class EconomyViews:
             )
 
         try:
-            from openbb_imf.views.maritime_chokepoint_info import (
-                plot_chokepoint_annual_avg_vessels,
-            )
+            plot_chokepoint_annual_avg_vessels = import_module(
+                "openbb_imf.views.maritime_chokepoint_info"
+            ).plot_chokepoint_annual_avg_vessels
         except Exception as e:
             raise RuntimeError("Unable to import the required module.") from e
 
@@ -546,7 +571,7 @@ class EconomyViews:
             if "data" in kwargs and kwargs["data"] is not None
             else kwargs.get("obbject_item")
         )
-        fig = plot_chokepoint_annual_avg_vessels(data, theme=theme)  # type: ignore
+        fig = plot_chokepoint_annual_avg_vessels(data, theme=theme)
         fig.update_layout(
             margin=dict(l=25, r=25, t=50, b=0),
         )
@@ -561,8 +586,6 @@ class EconomyViews:
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Port Info Chart."""
-        # pylint: disable=import-outside-toplevel
-
         provider = kwargs.get("provider")
 
         if provider != "imf":
@@ -571,9 +594,9 @@ class EconomyViews:
             )
 
         try:
-            from openbb_imf.views.port_info import (
-                plot_port_info_map,
-            )
+            plot_port_info_map = import_module(
+                "openbb_imf.views.port_info"
+            ).plot_port_info_map
         except Exception as e:
             raise RuntimeError("Unable to import the required module.") from e
 
@@ -582,7 +605,7 @@ class EconomyViews:
             if "data" in kwargs and kwargs["data"] is not None
             else kwargs.get("obbject_item")
         )
-        fig = plot_port_info_map(data)  # type: ignore
+        fig = plot_port_info_map(data)
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
         )

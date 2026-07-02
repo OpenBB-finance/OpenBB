@@ -166,6 +166,15 @@ def _emit_router(
     parts.append("from openbb_core.app.query import Query")
     parts.append("from openbb_core.app.router import Router")
 
+    has_stream = any(
+        (fetcher := fetchers_by_command.get(child.full_path)) is not None
+        and fetcher.is_streaming
+        for child in node.children.values()
+        if child.is_command and child.cmd_spec is not None
+    )
+    if has_stream:
+        parts.append("from openbb_core.app.model.stream import OBBStream")
+
     sub_imports: list[tuple[str, str, str]] = []
     for sub_name, sub_node in sorted(node.children.items()):
         if not sub_node.is_namespace:
@@ -226,8 +235,11 @@ def _emit_router(
         description = (child.cmd_spec.get("description") or "").strip()
         fetcher = fetchers_by_command.get(child.full_path)
         if fetcher is not None:
+            renderer = (
+                _render_stream_command if fetcher.is_streaming else _render_get_command
+            )
             parts.append(
-                _render_get_command(
+                renderer(
                     fetcher,
                     function_name=function_name,
                     description=description,
@@ -285,6 +297,43 @@ def _render_get_command(
         ") -> OBBject:\n"
         f"{docstring}\n"
         "    return await OBBject.from_query(Query(**locals()))\n"
+    )
+
+
+def _render_stream_command(
+    fetcher: GeneratedFetcher,
+    *,
+    function_name: str,
+    description: str,
+) -> str:
+    """Render one ``@router.command(model=...)`` block for a streaming endpoint.
+
+    Parameters
+    ----------
+    fetcher : GeneratedFetcher
+        Per-command fetcher metadata.
+    function_name : str
+        Leaf segment of the dotted path used as the function identifier.
+    description : str
+        Spec-supplied command description.
+
+    Returns
+    -------
+    str
+        The decorator and ``async def`` block returning an OBBStream.
+    """
+    summary = description or f"{fetcher.model_name} stream."
+    docstring = _format_docstring(summary)
+    return (
+        f'@router.command(model="{fetcher.model_name}")\n'
+        f"async def {function_name}(\n"
+        "    cc: CommandContext,\n"
+        "    provider_choices: ProviderChoices,\n"
+        "    standard_params: StandardParams,\n"
+        "    extra_params: ExtraParams,\n"
+        ") -> OBBStream:\n"
+        f"{docstring}\n"
+        "    return await OBBStream.from_query(Query(**locals()))\n"
     )
 
 

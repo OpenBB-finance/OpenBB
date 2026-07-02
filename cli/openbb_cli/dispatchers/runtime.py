@@ -69,10 +69,31 @@ def _to_json_line(response: Response) -> str:
     )
 
 
+def _looks_like_stream(value: Any) -> bool:
+    """Duck-type an ``OBBStream``-like handle (lazy stream with start/stop/wait)."""
+    return all(
+        callable(getattr(value, attr, None)) for attr in ("start", "stop", "wait")
+    )
+
+
+def _follow_stream(stream: Any) -> int:
+    """Follow a streaming result to STDOUT until it ends or Ctrl+C."""
+    stream.start()
+    try:
+        stream.wait()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        stream.stop()
+    return 0
+
+
 def run_argv(dispatcher: Dispatcher, argv: Iterable[str]) -> int:
     """Dispatch a single command from argv and print the JSON response."""
     request = parse_argv(argv)
     response = asyncio.run(_run_one(dispatcher, request))
+    if response.ok and _looks_like_stream(response.result):
+        return _follow_stream(response.result)
     sys.stdout.write(_to_json_line(response) + "\n")
     sys.stdout.flush()
     return 0 if response.ok else 1

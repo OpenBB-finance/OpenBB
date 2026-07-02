@@ -17,10 +17,6 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
     from openbb_core.provider.abstract.data import Data  # noqa
 
-from importlib.util import find_spec
-
-CHARTING_INSTALLED = find_spec("openbb_charting") is not None
-
 try:
     _HAS_FCNTL = True
 except Exception:  # pragma: no cover  # noqa
@@ -185,6 +181,15 @@ class ImportDefinition:
         return_type = (
             sig.return_annotation if not no_validate else route.response_model or Any
         )
+        if return_type is sig.empty and getattr(route, "response_model", None):
+            return_type = route.response_model
+        if (
+            getattr(getattr(route, "response_class", None), "media_type", None)
+            == "text/event-stream"
+        ):
+            from openbb_core.app.model.stream import OBBStream
+
+            return_type = OBBStream
 
         hint_type_list: list = []
 

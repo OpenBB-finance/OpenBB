@@ -68,11 +68,15 @@ class ArgparseClassProcessor:
 
     @classmethod
     def _custom_groups_from_reference(cls, class_name: str, function_name: str) -> dict:
-        route = f"/{class_name.replace('_', '/')}/{function_name}"
-        reference = {route: cls._reference[route]} if route in cls._reference else {}
-        if not reference:
+        # Match by flattened route, since a namespace name may contain ``_``.
+        target = f"{class_name}_{function_name}"
+        route = next(
+            (r for r in cls._reference if r.strip("/").replace("/", "_") == target),
+            None,
+        )
+        if route is None:
             return {}
-        rp = ReferenceToArgumentsProcessor(reference)
+        rp = ReferenceToArgumentsProcessor({route: cls._reference[route]})
         return rp.custom_groups.get(route, {})  # ty: ignore[invalid-return-type]
 
     @classmethod

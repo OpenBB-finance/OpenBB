@@ -1,7 +1,5 @@
 """Backend for Plotly."""
 
-# pylint: disable=R0915,R0917,W0613,C0415
-
 from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
@@ -36,7 +34,7 @@ class Backend:
             from pywry import (
                 PyWry,
                 ThemeMode,
-            )  # pylint: disable=import-outside-toplevel
+            )
 
             theme = ThemeMode.LIGHT if chart_style == "light" else ThemeMode.DARK
             self._app = PyWry(
@@ -48,7 +46,7 @@ class Backend:
         except ImportError:
             from .dummy_backend import (
                 DummyBackend,
-            )  # pylint: disable=import-outside-toplevel
+            )
 
             self._app = DummyBackend()
 
@@ -58,12 +56,12 @@ class Backend:
     @staticmethod
     def _register_templates() -> tuple[dict, dict]:
         """Bake OpenBB styles into plotly_dark/plotly_white and return the raw dicts."""
-        import plotly.graph_objects as go  # pylint: disable=import-outside-toplevel
-        import plotly.io as pio  # pylint: disable=import-outside-toplevel
+        import plotly.graph_objects as go
+        import plotly.io as pio
 
         from openbb_charting.core.chart_style import (
             ChartStyle,
-        )  # pylint: disable=import-outside-toplevel
+        )
 
         cs = ChartStyle()
         dark = {}
@@ -203,7 +201,7 @@ class Backend:
             Button,
             Div,
             Toolbar,
-        )  # pylint: disable=import-outside-toplevel
+        )
 
         icon_label = "☀" if self._is_dark else "☾"
 
@@ -304,7 +302,7 @@ class Backend:
                 return
 
         try:
-            result = eval(  # noqa: S307  # pylint: disable=W0123
+            result = eval(  # noqa: S307
                 query_str,
                 {"__builtins__": {}},
                 {"df": self._original_df, "pd": pd},
@@ -460,7 +458,7 @@ class Backend:
         height: int | None = None,
     ):
         """Send a URL to the PyWry window."""
-        import html as html_module  # pylint: disable=import-outside-toplevel
+        import html as html_module
 
         safe_url = html_module.escape(url, quote=True)
         content = f'<meta http-equiv="refresh" content="0;url={safe_url}">'
