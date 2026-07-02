@@ -50,6 +50,7 @@ class EcbMetadata(
             self.dataflow_categories = {}
             self.category_dataflows = {}
             self.presentation_tables = {}
+            self.row_labels = {}
             self.dataflow_constraints = {}
             self.dataflow_info = {}
             self.portal_concepts = {}

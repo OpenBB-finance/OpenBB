@@ -179,6 +179,7 @@ _HTML_ROUTES = (
     (("/publications/",), _PUB_CATEGORY_HTML),
 )
 _XML_ROUTES = {
+    "/data/BSI/": b"KEY,TIME_PERIOD,OBS_VALUE\nBSI.M.U2.X,2024-01,1.0\n",
     "/dataflow/": DATAFLOWS,
     "/datastructure/": DSDS,
     "/codelist/": CODELISTS,
@@ -476,9 +477,340 @@ def test_main_writes_cache(_mock_session, monkeypatch, tmp_path):
     assert blob["codelists"]["CL_FREQ"]["D"] == "Daily"
     assert blob["dataflow_categories"] == {"EXR": ["01"]}
     assert "TBL01" in blob["presentation_tables"]
-    assert "row_labels" not in blob
+    assert blob["row_labels"] == {}
     assert blob["dataflow_constraints"] == {
         "EXR": {"FREQ": ["D", "M"], "CURRENCY": ["USD"]}
     }
     assert "EXR" in blob["dataflow_info"]
     assert set(blob["portal_concepts"]) == {"exchange-rates", "loans"}
+
+
+import xml.etree.ElementTree as ET
+
+_HCL_DOC = _doc(
+    "<str:Codelists>"
+    '<str:Codelist id="OTHER"><str:Code id="z"/></str:Codelist>'
+    '<str:Codelist id="JDF_ROW_LABELS">'
+    '<str:Code id="80997156"><com:Name xml:lang="en">Total</com:Name></str:Code>'
+    '<str:Code id="bad"/>'
+    "<str:Code/>"
+    "</str:Codelist>"
+    "</str:Codelists>"
+    "<str:HierarchicalCodelists>"
+    '<str:HierarchicalCodelist id="HCL_JDF_XX@HCL_BSI">'
+    '<com:Name xml:lang="en">Hierarchy</com:Name>'
+    "<str:Hierarchy><str:HierarchicalCode>"
+    "<str:Code>"
+    '<Ref id="80997156" maintainableParentID="JDF_ROW_LABELS" agencyID="ECB.DISS"/>'
+    "</str:Code>"
+    "<str:HierarchicalCode>"
+    '<str:Code><Ref id="A20" maintainableParentID="CL_BS_ITEM" agencyID="ECB"/></str:Code>'
+    "</str:HierarchicalCode>"
+    "</str:HierarchicalCode></str:Hierarchy>"
+    "</str:HierarchicalCodelist>"
+    '<str:HierarchicalCodelist id="NOAT"/>'
+    '<str:HierarchicalCodelist id="EU_GROUPINGS@HCL_CG"><str:Hierarchy/>'
+    "</str:HierarchicalCodelist>"
+    "</str:HierarchicalCodelists>"
+)
+
+_CC_DOC = _doc(
+    "<str:ContentConstraints><str:ContentConstraint>"
+    "<str:ConstraintAttachment><str:Dataflow>"
+    '<Ref id="JDF_XX"/>'
+    "</str:Dataflow></str:ConstraintAttachment>"
+    "<str:CubeRegion>"
+    '<com:KeyValue id="ADJUSTMENT"><com:Value>N</com:Value><com:Value/></com:KeyValue>'
+    '<com:KeyValue id="FREQ"><com:Value>M</com:Value></com:KeyValue>'
+    '<com:KeyValue id="MATURITY"><com:Value>_T</com:Value></com:KeyValue>'
+    '<com:KeyValue id="BS_ITEM"><com:Value>A20</com:Value></com:KeyValue>'
+    "</str:CubeRegion>"
+    "</str:ContentConstraint></str:ContentConstraints>"
+)
+
+_DSD_DIMS = [
+    {"id": "FREQ", "codelist_id": "CL_FREQ"},
+    {"id": "BS_ITEM", "codelist_id": "CL_BS_ITEM"},
+    {"id": "MATURITY", "codelist_id": "CL_MAT"},
+    {"id": "REF_AREA", "codelist_id": "CL_AREA"},
+]
+_KEYS_RECORDS = [
+    {"FREQ": "M", "BS_ITEM": "A20", "MATURITY": "_T", "REF_AREA": "U2"},
+    {"FREQ": "M", "BS_ITEM": "A30", "MATURITY": "M1", "REF_AREA": "U2"},
+    {"FREQ": "Q", "BS_ITEM": "A20", "MATURITY": "_T", "REF_AREA": "DE"},
+]
+
+
+class _JsonResp:
+    def __init__(self, status_code, payload):
+        self.status_code = status_code
+        self._payload = payload
+
+    def json(self):
+        if self._payload is None:
+            raise ValueError("bad json")
+        return self._payload
+
+
+def test_context_score():
+    assert gc._context_score(("U2", "M", "N"), ["REF_AREA", "FREQ", "ADJUSTMENT"]) == 16
+    assert gc._context_score(("Q",), ["FREQ"]) == 3
+    assert gc._context_score((None,), ["FREQ"]) == 0
+    assert gc._context_score(("X",), ["OTHER"]) == 0
+
+
+def test_fetch_jdf_tables(monkeypatch):
+    monkeypatch.setattr(gc, "_get", lambda *a, **k: ET.fromstring(_HCL_DOC))
+    tables, labels = gc.fetch_jdf_tables()
+    assert labels["80997156"] == "Total"
+    assert labels["bad"] == "bad"
+    assert "NOAT" not in tables
+    assert "EU_GROUPINGS@HCL_CG" not in tables
+    table = tables["HCL_JDF_XX@HCL_BSI"]
+    assert table["dataflow_id"] == "BSI"
+    assert table["source"] == "jdf"
+    root = table["tree"][0]
+    assert root["code"] == "80997156"
+    assert root["codelist_id"] == "JDF_ROW_LABELS"
+    assert root["children"][0]["code"] == "A20"
+
+
+def test_core_key():
+    assert gc._core_key("HCL_JDF_MNA_A_GDP_GROWTH_QOQ@HCL_MNA") == (
+        "HCL_JDF_MNA_GDP_GROWTH_QOQ"
+    )
+    assert gc._core_key("HCL_JDF_MNA_GDP_GROWTH_QOQ@HCL_MNA") == (
+        "HCL_JDF_MNA_GDP_GROWTH_QOQ"
+    )
+
+
+def test_fetch_jdf_tables_none(monkeypatch):
+    monkeypatch.setattr(gc, "_get", lambda *a, **k: None)
+    assert gc.fetch_jdf_tables() == ({}, {})
+
+
+def test_serieskeysonly_records(monkeypatch):
+    message = {
+        "dataSets": [{"series": {"0:0": {}, "1:0": {}, "0:0:9": {}, "0:5": {}}}],
+        "structure": {
+            "dimensions": {
+                "series": [
+                    {"id": "FREQ", "values": [{"id": "M"}, {"id": "Q"}]},
+                    {"id": "AREA", "values": [{"id": "U2"}]},
+                ]
+            }
+        },
+    }
+    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _JsonResp(200, message))
+    recs = gc._serieskeysonly_records("BSI", "M+Q..")
+    assert {"FREQ": "M", "AREA": "U2"} in recs
+    assert {"FREQ": "Q", "AREA": "U2"} in recs
+    assert {"FREQ": "M"} in recs
+    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _JsonResp(404, None))
+    assert gc._serieskeysonly_records("BSI", "x") == []
+    monkeypatch.setattr(gc._session, "get", lambda *a, **k: _JsonResp(200, None))
+    assert gc._serieskeysonly_records("BSI", "x") == []
+    monkeypatch.setattr(
+        gc._session, "get", lambda *a, **k: _JsonResp(200, {"dataSets": []})
+    )
+    assert gc._serieskeysonly_records("BSI", "x") == []
+
+    def _raise(*a, **k):
+        raise requests.RequestException("boom")
+
+    monkeypatch.setattr(gc._session, "get", _raise)
+    assert gc._serieskeysonly_records("BSI", "x") == []
+
+
+def test_derive_table_context(monkeypatch):
+    monkeypatch.setattr(
+        gc, "_serieskeysonly_records", lambda df, key: list(_KEYS_RECORDS)
+    )
+    table = {
+        "dataflow_id": "BSI",
+        "tree": [
+            {
+                "code": "80997156",
+                "codelist_id": "JDF_ROW_LABELS",
+                "children": [
+                    {"code": "A20", "codelist_id": "CL_BS_ITEM", "children": []},
+                    {
+                        "code": "A30",
+                        "codelist_id": "CL_BS_ITEM",
+                        "children": [
+                            {"code": "M1", "codelist_id": "CL_MAT", "children": []}
+                        ],
+                    },
+                ],
+            }
+        ],
+    }
+    valid, default, row_dims, records = gc._derive_table_context(table, _DSD_DIMS)
+    assert default["FREQ"] == "M"
+    assert default["REF_AREA"] == "U2"
+    assert "BS_ITEM" not in default
+    assert row_dims == {"BS_ITEM"}
+    assert len(records) == 3
+    assert "FREQ" in valid and "REF_AREA" in valid
+
+    allowed = {"FREQ": ["M"], "BS_ITEM": ["A20", "A30"], "MATURITY": ["_T", "M1"]}
+    constrained = gc._derive_table_context(table, _DSD_DIMS, allowed)
+    assert constrained[1]["FREQ"] == "M"
+    assert len(constrained[3]) == 2
+
+    off_constraint = gc._derive_table_context(table, _DSD_DIMS, {"FREQ": ["W"]})
+    assert len(off_constraint[3]) == 3
+
+    assert gc._derive_table_context({"tree": [], "dataflow_id": "BSI"}, _DSD_DIMS) == (
+        {},
+        {},
+        set(),
+        [],
+    )
+
+    disjoint = {
+        "dataflow_id": "BSI",
+        "tree": [
+            {"code": "A20", "codelist_id": "CL_BS_ITEM", "children": []},
+            {"code": "M1", "codelist_id": "CL_MAT", "children": []},
+        ],
+    }
+    assert gc._derive_table_context(disjoint, _DSD_DIMS)[1] is not None
+
+    monkeypatch.setattr(gc, "_serieskeysonly_records", lambda df, key: [])
+    assert gc._derive_table_context(table, _DSD_DIMS)[:2] == ({}, {})
+
+
+def test_resolve_leaf_keys():
+    table = {
+        "tree": [
+            {
+                "code": "80997156",
+                "codelist_id": "JDF_ROW_LABELS",
+                "children": [
+                    {"code": "A20", "codelist_id": "CL_BS_ITEM", "children": []},
+                    {"code": "A99", "codelist_id": "CL_BS_ITEM", "children": []},
+                ],
+            }
+        ]
+    }
+    candidate = {"FREQ": "M", "MATURITY": "_T", "REF_AREA": "U2"}
+    keys = gc._resolve_leaf_keys(table, _DSD_DIMS, list(_KEYS_RECORDS), candidate)
+    assert keys == [None, "M.A20._T.U2", None]
+
+
+def test_fetch_table_contexts(monkeypatch):
+    monkeypatch.setattr(
+        gc,
+        "_get",
+        lambda url, *a, **k: (
+            ET.fromstring(_CC_DOC) if "contentconstraint" in url else None
+        ),
+    )
+    monkeypatch.setattr(
+        gc, "_serieskeysonly_records", lambda df, key: list(_KEYS_RECORDS)
+    )
+    _tree = [
+        {
+            "code": "80997156",
+            "codelist_id": "JDF_ROW_LABELS",
+            "children": [
+                {"code": "A20", "codelist_id": "CL_BS_ITEM", "children": []},
+                {
+                    "code": "A30",
+                    "codelist_id": "CL_BS_ITEM",
+                    "children": [
+                        {"code": "M1", "codelist_id": "CL_MAT", "children": []}
+                    ],
+                },
+            ],
+        }
+    ]
+    tables = {
+        "HCL_JDF_XX@HCL_BSI": {
+            "id": "HCL_JDF_XX@HCL_BSI",
+            "dataflow_id": "BSI",
+            "tree": _tree,
+        },
+        "HCL_JDF_Z_XX@HCL_BSI": {
+            "id": "HCL_JDF_Z_XX@HCL_BSI",
+            "dataflow_id": "BSI",
+            "tree": _tree,
+        },
+        "HCL_JDF_YY@HCL_BSI": {
+            "id": "HCL_JDF_YY@HCL_BSI",
+            "dataflow_id": "BSI",
+            "tree": _tree,
+        },
+        "T@HCL_GONE": {"id": "T@HCL_GONE", "dataflow_id": "GONE", "tree": []},
+        "T@HCL_ZZ": {"id": "T@HCL_ZZ", "dataflow_id": "ZZ", "tree": []},
+        "T@HCL_BSI": {"id": "T@HCL_BSI", "dataflow_id": "BSI", "tree": []},
+    }
+    dataflows = {"BSI": {"dsd_id": "D1"}, "ZZ": {"dsd_id": "NOPE"}}
+    datastructures = {"D1": {"dimensions": _DSD_DIMS}}
+    derived = gc.fetch_table_contexts(tables, dataflows, datastructures)
+    assert derived == 2
+    assert "HCL_JDF_Z_XX@HCL_BSI" not in tables
+    ctx = tables["HCL_JDF_XX@HCL_BSI"]
+    assert "default_context" in ctx
+    assert ctx["valid_context"]["ADJUSTMENT"] == ["N"]
+    assert ctx["default_context"]["ADJUSTMENT"] == "N"
+    assert ctx["leaf_keys"] == [None, "M.A20._T.U2", None, None]
+    assert tables["HCL_JDF_YY@HCL_BSI"]["leaf_keys"] == [
+        None,
+        "M.A20._T.U2",
+        "M.A30.M1.U2",
+        "M.A30.M1.U2",
+    ]
+    assert "valid_context" not in tables["T@HCL_GONE"]
+
+
+def test_fetch_jdf_constraints_none(monkeypatch):
+    monkeypatch.setattr(gc, "_get", lambda *a, **k: None)
+    assert gc.fetch_jdf_constraints({}) == {}
+
+
+_CSV_RESP = b"KEY,TIME_PERIOD,OBS_VALUE\nBSI.M.U2.X,2024-01,1.0\nBSI.M.U2.Z,2024-01,\n"
+
+
+def _csv_session(monkeypatch, status=200, content=_CSV_RESP, raise_exc=False):
+    def _fake(url, **kwargs):
+        if raise_exc:
+            raise requests.RequestException("boom")
+        return _FakeResp(status, content)
+
+    monkeypatch.setattr(gc._session, "get", _fake)
+
+
+def test_table_has_data(monkeypatch):
+    table = {
+        "rows": [{"flow": "BSI", "key": "M.U2.X"}, {"flow": "BSI", "key": "M.U2.Y"}]
+    }
+    _csv_session(monkeypatch)
+    assert gc._table_has_data(table) is True
+    _csv_session(
+        monkeypatch, content=b"KEY,TIME_PERIOD,OBS_VALUE\nBSI.M.U2.Z,2024-01,2\n"
+    )
+    assert gc._table_has_data(table) is False
+    _csv_session(
+        monkeypatch, content=b"KEY,TIME_PERIOD,OBS_VALUE\nBSI.M.U2.X,2024-01,\n"
+    )
+    assert gc._table_has_data(table) is False
+    _csv_session(monkeypatch, status=404)
+    assert gc._table_has_data(table) is False
+    _csv_session(monkeypatch, status=500)
+    assert gc._table_has_data(table) is True
+    _csv_session(monkeypatch, raise_exc=True)
+    assert gc._table_has_data(table) is True
+    assert gc._table_has_data({"rows": []}) is False
+
+
+def test_prune_dead_tables(monkeypatch):
+    tables = {
+        "ALIVE": {"rows": [{"flow": "BSI", "key": "M.U2.X"}]},
+        "DEAD": {"rows": [{"flow": "BSI", "key": "M.U2.Q"}]},
+    }
+    _csv_session(monkeypatch)
+    gc.prune_dead_tables(tables)
+    assert "ALIVE" in tables
+    assert "DEAD" not in tables

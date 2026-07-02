@@ -115,6 +115,26 @@ async def fetch_sdmx_data(
     return records
 
 
+async def fetch_sdmx_data_csv(
+    flow_ref: str,
+    key: str = "",
+    detail: str = "full",
+    last_n: int | None = None,
+) -> list[dict]:
+    """Fetch a data query as ``csvdata`` records, carrying ``TITLE`` / ``UNIT``.
+
+    The ``csvdata`` response includes the per-series ``TITLE`` / ``TITLE_COMPL``
+    attributes that ``jsondata`` omits for multi-series queries.
+    """
+    from openbb_ecb.utils.helpers import parse_sdmx_csv
+
+    url = build_data_url(
+        flow_ref, key, detail=detail, last_n=last_n, data_format="csvdata"
+    )
+    text = await _request_sdmx_text(url)
+    return parse_sdmx_csv(text, flow_ref) if text else []
+
+
 async def _request_sdmx_text(url: str) -> str | None:
     """GET an SDMX ``csvdata`` response as raw text."""
     from openbb_core.provider.utils.helpers import amake_request

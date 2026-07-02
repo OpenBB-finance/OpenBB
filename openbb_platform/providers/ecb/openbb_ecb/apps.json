@@ -105,7 +105,7 @@
             "h": 24,
             "state": {
               "params": {
-                "table_id": "BSI01_01"
+                "table_id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
               }
             },
             "groups": ["Table"]
@@ -227,7 +227,7 @@
         "name": "Table",
         "type": "param",
         "paramName": "table_id",
-        "defaultValue": "BSI01_01"
+        "defaultValue": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
       }
     ]
   }

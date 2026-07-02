@@ -432,6 +432,70 @@ async def list_table_choices(
     return [{"label": t["label"], "value": t["value"]} for t in tables]
 
 
+def _table_dim_options(
+    metadata: EcbMetadata, table_id: str | None, candidates: tuple[str, ...]
+) -> list[dict[str, str]]:
+    """Return ``[{label, value}]`` for the first candidate dim in a table's context."""
+    if not table_id or table_id not in metadata.presentation_tables:
+        return []
+    valid = metadata.get_table_valid_context(table_id)
+    dim_id = next((d for d in candidates if d in valid), None)
+    dataflow_id = metadata.get_table(table_id).get("dataflow_id")
+    if not dim_id or not dataflow_id:
+        return []
+    labels = next(
+        (
+            {opt["value"]: opt["label"] for opt in dim["values"]}
+            for dim in metadata.get_dataflow_dimensions(dataflow_id)
+            if dim["id"] == dim_id
+        ),
+        {},
+    )
+    return [{"label": labels.get(code, code), "value": code} for code in valid[dim_id]]
+
+
+@router.command(
+    methods=["GET"],
+    widget_config={"exclude": True},
+    include_in_schema=False,
+    examples=[APIEx(parameters={"table_id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"})],
+)
+async def presentation_table_frequencies(
+    metadata: EcbMetadataDependency,
+    table_id: Annotated[
+        str | None, Query(description="The presentation table id.")
+    ] = None,
+) -> list[dict[str, str]]:
+    """Return the valid frequency choices for a presentation table."""
+    if not table_id or table_id not in metadata.presentation_tables:
+        return []
+    if metadata.get_table(table_id).get("source") == "jdf":
+        return _table_dim_options(metadata, table_id, ("FREQ",))
+    from openbb_ecb.utils.table_builder import publication_frequencies
+
+    labels = metadata.get_codelist("CL_FREQ")
+    return [
+        {"label": labels.get(code, code), "value": code}
+        for code in publication_frequencies(metadata, table_id)
+    ]
+
+
+@router.command(
+    methods=["GET"],
+    widget_config={"exclude": True},
+    include_in_schema=False,
+    examples=[APIEx(parameters={"table_id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"})],
+)
+async def presentation_table_areas(
+    metadata: EcbMetadataDependency,
+    table_id: Annotated[
+        str | None, Query(description="The presentation table id.")
+    ] = None,
+) -> list[dict[str, str]]:
+    """Return the valid reference-area choices for a presentation table."""
+    return _table_dim_options(metadata, table_id, _GEOGRAPHY_DIMS)
+
+
 @router.command(
     methods=["GET"],
     widget_config={
@@ -448,11 +512,28 @@ async def list_table_choices(
             {
                 "paramName": "table_id",
                 "label": "Table",
-                "value": "BSI01_01",
+                "value": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI",
                 "description": "The ECB presentation table.",
                 "type": "endpoint",
                 "optionsEndpoint": f"{api_prefix}/ecb/list_table_choices",
                 "style": {"popupWidth": 700},
+            },
+            {
+                "paramName": "frequency",
+                "label": "Frequency",
+                "description": "Observation frequency (hierarchical tables only).",
+                "type": "endpoint",
+                "optionsEndpoint": f"{api_prefix}/ecb/presentation_table_frequencies",
+                "optionsParams": {"table_id": "$table_id"},
+            },
+            {
+                "paramName": "reference_area",
+                "label": "Reference area",
+                "description": "Reference area or currency (hierarchical tables only).",
+                "type": "endpoint",
+                "optionsEndpoint": f"{api_prefix}/ecb/presentation_table_areas",
+                "optionsParams": {"table_id": "$table_id"},
+                "style": {"popupWidth": 500},
             },
             {
                 "paramName": "limit",
@@ -494,24 +575,40 @@ async def list_table_choices(
     },
     examples=[
         APIEx(
-            description="The euro area monetary aggregates (M1, M2, M3).",
-            parameters={"table_id": "BSI01_01"},
+            description="The euro area MFI balance sheet.",
+            parameters={"table_id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"},
         )
     ],
 )
 async def presentation_table(
     metadata: EcbMetadataDependency,
     table_id: Annotated[str, Query(description="The presentation table id.")],
+    frequency: Annotated[
+        str | None, Query(description="Observation frequency code (e.g. 'M').")
+    ] = None,
+    reference_area: Annotated[
+        str | None, Query(description="Reference area / currency code (e.g. 'U2').")
+    ] = None,
     limit: Annotated[
         int, Query(description="Number of recent periods to show as columns.", ge=1)
     ] = 8,
 ) -> list[dict[str, Any]]:
-    """Resolve a data-portal publication table to wide rows with recent periods."""
+    """Resolve a presentation table to indented rows with recent periods pivoted."""
     from openbb_ecb.utils.table_builder import build_presentation_table
 
     if table_id not in metadata.presentation_tables:
         return []
-    return await build_presentation_table(metadata, table_id, limit=limit)
+    context = dict(metadata.get_table_default_context(table_id))
+    if frequency:
+        context["FREQ"] = frequency
+    if reference_area:
+        valid = metadata.get_table_valid_context(table_id)
+        geography = next((d for d in _GEOGRAPHY_DIMS if d in valid), None)
+        if geography:
+            context[geography] = reference_area
+    return await build_presentation_table(
+        metadata, table_id, limit=limit, context=context
+    )
 
 
 if not ECONOMY_INSTALLED:

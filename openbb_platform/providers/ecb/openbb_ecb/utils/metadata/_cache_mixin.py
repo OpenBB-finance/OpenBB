@@ -36,6 +36,7 @@ class CacheMixin(MetadataBase):
         self.dataflow_categories = blob.get("dataflow_categories", {})
         self.category_dataflows = blob.get("category_dataflows", {})
         self.presentation_tables = blob.get("presentation_tables", {})
+        self.row_labels = blob.get("row_labels", {})
         self.dataflow_constraints = blob.get("dataflow_constraints", {})
         self.dataflow_info = blob.get("dataflow_info", {})
         self.portal_concepts = blob.get("portal_concepts", {})

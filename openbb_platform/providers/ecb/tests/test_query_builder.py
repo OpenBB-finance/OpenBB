@@ -110,6 +110,17 @@ def test_fetch_sdmx_data_csv_fallback(monkeypatch):
     assert records[0]["series_key"] == "B.U2"
 
 
+def test_fetch_sdmx_data_csv(monkeypatch):
+    csv_text = "KEY,OBS_VALUE,TIME_PERIOD,TITLE\nBSI.M.U2.X,9,2024-01-01,M3 Stocks\n"
+    _patch(monkeypatch, 200, None, csv_text)
+    records = asyncio.run(query_builder.fetch_sdmx_data_csv("BSI", "M.U2.X", last_n=1))
+    assert records[0]["series_key"] == "M.U2.X"
+    assert records[0]["TITLE"] == "M3 Stocks"
+    assert records[0]["OBS_VALUE"] == 9.0
+    _patch(monkeypatch, 404, None, "")
+    assert asyncio.run(query_builder.fetch_sdmx_data_csv("BSI", "M.U2.X")) == []
+
+
 _KEYS_MSG = {
     "dataSets": [{"series": {"0:0": {}}}],
     "structure": {

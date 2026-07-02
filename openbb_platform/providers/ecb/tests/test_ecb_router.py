@@ -112,7 +112,17 @@ _FAKE_TABLES = {
         "subcategory": "Exchange rates",
         "rows": [{"flow": "EXR", "key": "D.USD"}],
     },
+    "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI": {
+        "id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI",
+        "name": "MFI balance sheet",
+        "dataflow_id": "BSI",
+        "source": "jdf",
+        "tree": [],
+        "default_context": {"FREQ": "M", "REF_AREA": "U2"},
+        "valid_context": {"FREQ": ["M"], "REF_AREA": ["U2"]},
+    },
 }
+_JDF_TABLE = "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
 _FAKE_CONCEPTS = {
     "bank-interest-rates": {
         "slug": "bank-interest-rates",
@@ -148,6 +158,48 @@ def test_table_listing_commands(monkeypatch):
     assert len(bsi_choices) < len(all_choices)
 
 
+def test_presentation_table_jdf(monkeypatch):
+    from openbb_ecb.utils import query_builder
+
+    monkeypatch.setattr(_META, "presentation_tables", _FAKE_TABLES)
+    monkeypatch.setattr(
+        _META,
+        "get_dataflow_dimensions",
+        lambda df: [
+            {"id": "FREQ", "values": [{"value": "M", "label": "Monthly"}]},
+            {"id": "REF_AREA", "values": [{"value": "U2", "label": "Euro area"}]},
+        ],
+    )
+
+    async def _fetch(flow, key, **kwargs):
+        return []
+
+    monkeypatch.setattr(query_builder, "fetch_sdmx_data_csv", _fetch)
+
+    assert asyncio.run(router_module.presentation_table_frequencies(_META, None)) == []
+    pub_freqs = asyncio.run(
+        router_module.presentation_table_frequencies(_META, _BSI_TABLE)
+    )
+    assert [f["value"] for f in pub_freqs] == ["M"]
+    freqs = asyncio.run(router_module.presentation_table_frequencies(_META, _JDF_TABLE))
+    assert freqs == [{"label": "Monthly", "value": "M"}]
+    areas = asyncio.run(router_module.presentation_table_areas(_META, _JDF_TABLE))
+    assert areas == [{"label": "Euro area", "value": "U2"}]
+    rows = asyncio.run(
+        router_module.presentation_table(
+            _META, _JDF_TABLE, frequency="M", reference_area="U2", limit=2
+        )
+    )
+    assert rows == []
+    monkeypatch.setattr(_META, "get_table_valid_context", lambda tid: {})
+    assert (
+        asyncio.run(
+            router_module.presentation_table(_META, _JDF_TABLE, reference_area="U2")
+        )
+        == []
+    )
+
+
 def test_presentation_table(monkeypatch):
     from openbb_ecb.utils import query_builder
 
@@ -162,24 +214,24 @@ def test_presentation_table(monkeypatch):
         return [
             {
                 "series_key": "M.U2.X",
-                "_dim_ids": ["FREQ", "ITEM"],
-                "FREQ__label": "Monthly",
-                "ITEM__label": "M3",
-                "UNIT__label": "Euro",
+                "TITLE": "Monetary aggregate M3, Stocks",
+                "TITLE_COMPL": "Monetary aggregate M3, Stocks, Euro area, Monthly",
+                "UNIT": "EUR",
                 "UNIT_MULT": "6",
                 "OBS_VALUE": 9.0,
                 "date": "2024-01-01",
             }
         ]
 
-    monkeypatch.setattr(query_builder, "fetch_sdmx_data", _fetch)
+    monkeypatch.setattr(query_builder, "fetch_sdmx_data_csv", _fetch)
     monkeypatch.setattr(
         _META, "get_table_rows", lambda tid: [{"flow": "BSI", "key": "M.U2.X"}]
     )
     rows = asyncio.run(router_module.presentation_table(_META, _BSI_TABLE, limit=3))
     assert captured["flow"] == "BSI" and captured["last_n"] == 3
-    assert rows[0]["2024-01-01"] == 9_000_000.0
-    assert rows[0]["unit"] == "Euro" and "title" in rows[0]
+    leaf = next(r for r in rows if r.get("2024-01-01") == 9_000_000.0)
+    assert leaf["title"] == "Monetary aggregate M3, Stocks"
+    assert leaf["unit"] == "Euro"
 
 
 def test_concept_commands(monkeypatch):

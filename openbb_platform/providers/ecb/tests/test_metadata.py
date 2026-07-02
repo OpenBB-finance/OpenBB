@@ -223,12 +223,14 @@ def test_en_text():
 
 
 _BSI_TABLE = "BSI01_01"
+_JDF_TABLE = "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
 _FAKE_TABLES = {
     "BSI01_01": {
         "id": "BSI01_01",
         "title": "Monetary aggregates",
         "category": "Money, credit and banking",
         "subcategory": "Monetary aggregates",
+        "source": "publications",
         "rows": [{"flow": "BSI", "key": "M.U2.X"}, {"flow": "BSI", "key": "M.U2.Y"}],
     },
     "HICP01_01": {
@@ -236,7 +238,32 @@ _FAKE_TABLES = {
         "title": "HICP",
         "category": "Macroeconomic and sectoral statistics",
         "subcategory": "HICP",
+        "source": "publications",
         "rows": [{"flow": "HICP", "key": "M.U2.Z"}],
+    },
+    _JDF_TABLE: {
+        "id": _JDF_TABLE,
+        "name": "Hierarchy",
+        "dataflow_id": "BSI",
+        "source": "jdf",
+        "tree": [
+            {
+                "code": "80997156",
+                "codelist_id": "JDF_ROW_LABELS",
+                "children": [
+                    {"code": "A20", "codelist_id": "CL_BS_ITEM", "children": []},
+                ],
+            }
+        ],
+        "default_context": {"FREQ": "M", "BS_ITEM": "A20"},
+        "valid_context": {"FREQ": ["M", "Q"]},
+    },
+    "HCL_JDF_GONE@HCL_ZZZ": {
+        "id": "HCL_JDF_GONE@HCL_ZZZ",
+        "name": "Gone",
+        "dataflow_id": "ZZZ",
+        "source": "jdf",
+        "tree": [],
     },
 }
 _FAKE_CONCEPTS = {
@@ -264,11 +291,15 @@ def test_table_mixin_list(monkeypatch):
     meta = EcbMetadata()
     monkeypatch.setattr(meta, "presentation_tables", _FAKE_TABLES)
     tables = meta.list_tables()
+    values = {t["value"] for t in tables}
+    assert "HCL_JDF_GONE@HCL_ZZZ" not in values
     entry = next(t for t in tables if t["value"] == _BSI_TABLE)
-    assert entry["title"] == "Monetary aggregates"
-    assert entry["category"] == "Money, credit and banking"
+    assert entry["source"] == "publications"
     assert entry["label"] == "Money, credit and banking — Monetary aggregates"
-    keys = [(t["category"], t["title"]) for t in tables]
+    jdf = next(t for t in tables if t["value"] == _JDF_TABLE)
+    assert jdf["source"] == "jdf"
+    assert jdf["label"] == "MFI balance sheet (BSI)"
+    keys = [(t["category"], t["label"]) for t in tables]
     assert keys == sorted(keys)
 
 
@@ -276,16 +307,19 @@ def test_table_mixin_list_for_dataflow(monkeypatch):
     meta = EcbMetadata()
     monkeypatch.setattr(meta, "presentation_tables", _FAKE_TABLES)
     by_flow = meta.list_tables_for_dataflow("BSI")
-    assert by_flow and any(t["value"] == _BSI_TABLE for t in by_flow)
-    for table in by_flow:
-        assert any(r["flow"] == "BSI" for r in meta.get_table_rows(table["value"]))
+    values = {t["value"] for t in by_flow}
+    assert _BSI_TABLE in values
+    assert _JDF_TABLE in values
 
 
 def test_table_mixin_label():
     meta = EcbMetadata()
-    assert meta._table_label({"title": "T", "category": "C"}) == "C — T"
-    assert meta._table_label({"title": "T", "category": ""}) == "T"
-    assert meta._table_label({"id": "X"}) == "X"
+    assert meta._publication_label({"title": "T", "category": "C"}) == "C — T"
+    assert meta._publication_label({"title": "T", "category": ""}) == "T"
+    assert meta._publication_label({"id": "X"}) == "X"
+    assert meta._jdf_label(_JDF_TABLE, "BSI") == "MFI balance sheet (BSI)"
+    assert meta._jdf_label("HCL_JDF_BSI_CUSTOM@HCL_BSI", "BSI") == "Custom (BSI)"
+    assert meta._jdf_label("OTHER@HCL_BSI", "BSI") == "Other (BSI)"
 
 
 def test_table_mixin_get_table_and_rows(monkeypatch):
@@ -297,6 +331,48 @@ def test_table_mixin_get_table_and_rows(monkeypatch):
         meta.get_table_rows("DOES_NOT_EXIST")
     rows = meta.get_table_rows(_BSI_TABLE)
     assert rows and all("flow" in r and "key" in r for r in rows)
+
+
+def test_table_mixin_jdf(monkeypatch):
+    meta = EcbMetadata()
+    monkeypatch.setattr(meta, "presentation_tables", _FAKE_TABLES)
+    monkeypatch.setattr(meta, "row_labels", {"80997156": "Total"})
+    monkeypatch.setattr(meta, "codelists", {"CL_BS_ITEM": {"A20": "Loans"}})
+    monkeypatch.setattr(
+        meta,
+        "get_dsd_for_dataflow",
+        lambda df: {"dimensions": [{"id": "BS_ITEM", "codelist_id": "CL_BS_ITEM"}]},
+    )
+    assert meta.resolve_node_label({"code": "", "codelist_id": ""}) == ""
+    assert (
+        meta.resolve_node_label({"code": "80997156", "codelist_id": "JDF_ROW_LABELS"})
+        == "Total"
+    )
+    assert meta.resolve_node_label({"code": "A20", "codelist_id": "CL_BS_ITEM"}) == (
+        "Loans"
+    )
+    assert meta.dimension_for_codelist("BSI", None) is None
+    assert meta.dimension_for_codelist("BSI", "JDF_ROW_LABELS") is None
+    assert meta.dimension_for_codelist("BSI", "CL_BS_ITEM") == "BS_ITEM"
+    assert meta.dimension_for_codelist("BSI", "CL_MISSING") is None
+    structure = meta.get_table_structure(_JDF_TABLE)
+    assert structure[0]["label"] == "Total"
+    assert structure[0]["children"][0]["dimension_id"] == "BS_ITEM"
+    assert meta.get_table_dimensions(_JDF_TABLE) == ["BS_ITEM"]
+    assert meta.get_table_default_context(_JDF_TABLE)["FREQ"] == "M"
+    assert meta.get_table_valid_context(_JDF_TABLE)["FREQ"] == ["M", "Q"]
+
+
+def test_table_mixin_dimension_for_codelist_error(monkeypatch):
+    from openbb_core.app.model.abstract.error import OpenBBError as _Err
+
+    meta = EcbMetadata()
+
+    def _raise(df):
+        raise _Err("no dsd")
+
+    monkeypatch.setattr(meta, "get_dsd_for_dataflow", _raise)
+    assert meta.dimension_for_codelist("BSI", "CL_BS_ITEM") is None
 
 
 def test_dimensions_restricted_by_content_constraint():
