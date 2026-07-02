@@ -7,6 +7,9 @@ license = "AGPL-3.0-only"
 readme = "README.md"
 
 packages = [{ include = "openbb", from = "core" }]
+exclude = [
+    "core/openbb/**"
+]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
