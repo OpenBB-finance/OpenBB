@@ -27,7 +27,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0", "openbb-platform-api>=2.0.0"]
+dev = ["openbb-devtools>=2.0.0", "openbb-platform-api>=2.0.0", "httpx2"]
 
 [build-system]
 requires = ["hatchling>=1.25"]
@@ -35,14 +35,12 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["openbb_federal_reserve"]
+artifacts = ["openbb_federal_reserve/assets/**/*"]
 
 [tool.hatch.build.targets.sdist]
 include = [
     "openbb_federal_reserve",
-    "openbb_federal_reserve/assets/apps.json",
-    "openbb_federal_reserve/assets/ffiec/apps.json",
-    "openbb_federal_reserve/assets/ffiec/widgets.json",
-    "openbb_federal_reserve/assets/historical_releases.json",
+    "openbb_federal_reserve/assets/**/*",
     "README.md",
     "pyproject.toml",
 ]
