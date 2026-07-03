@@ -5,21 +5,12 @@ from pathlib import Path
 
 import pytest
 
+import openbb_federal_reserve
 from openbb_federal_reserve.utils.widgets import build_apps, district_widgets
 
-_ASSETS = (
-    Path(__file__).resolve().parent.parent
-    / "openbb_federal_reserve"
-    / "assets"
-    / "regional"
-)
-_FFIEC_WIDGETS = (
-    Path(__file__).resolve().parent.parent
-    / "openbb_federal_reserve"
-    / "assets"
-    / "ffiec"
-    / "widgets.json"
-)
+_PACKAGE = Path(openbb_federal_reserve.__file__).resolve().parent
+_ASSETS = _PACKAGE / "assets" / "regional"
+_FFIEC_WIDGETS = _PACKAGE / "assets" / "ffiec" / "widgets.json"
 _SLUGS = [
     "atlanta",
     "boston",
