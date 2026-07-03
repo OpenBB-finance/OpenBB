@@ -19,6 +19,7 @@ from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
 from openbb_core.app.model.extension import CachedAccessor
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.stream import OBBStream
 from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.static.package_builder import PathHandler
 from openbb_core.env import Env
@@ -247,7 +248,7 @@ class StaticCommandRunner:
     ) -> OBBject:
         """Run a command and return the output."""
         obbject = await maybe_coroutine(func, **kwargs)
-        if isinstance(obbject, OBBject):
+        if isinstance(obbject, (OBBject, OBBStream)):
             obbject.provider = getattr(
                 kwargs.get("provider_choices"),
                 "provider",
@@ -262,10 +263,14 @@ class StaticCommandRunner:
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
+        from openbb_core.app.charting import ChartingManager
+
         try:
-            if "charting" not in obbject.accessors:
+            accessor = ChartingManager.accessor_name()
+            if accessor not in obbject.accessors:
                 raise OpenBBError(
-                    "Charting is not installed. Please install `openbb-charting`."
+                    "No charting extension is installed. Install `openbb-charting`"
+                    " or set `system_settings.charting_extension` to your engine."
                 )
             # Here we will pop the chart_params kwargs and flatten them into the kwargs.
             chart_params = {}
@@ -287,7 +292,7 @@ class StaticCommandRunner:
             if chart_params:
                 kwargs.update(chart_params)
 
-            obbject.charting.show(render=False, **kwargs)  # type: ignore[attr-defined]  # ty: ignore[unresolved-attribute]
+            getattr(obbject, accessor).show(render=False, **kwargs)
         except Exception as e:
             if Env().DEBUG_MODE:
                 raise OpenBBError(e) from e
@@ -387,11 +392,9 @@ class StaticCommandRunner:
                 raised_warnings = warning_list if warning_list else []
         finally:
             if raised_warnings:
-                if isinstance(obbject, OBBject):
-                    obbject.warnings = []
+                if isinstance(obbject, (OBBject, OBBStream)):
+                    obbject.warnings = [cast_warning(w) for w in raised_warnings]
                 for w in raised_warnings:
-                    if isinstance(obbject, OBBject):
-                        obbject.warnings.append(cast_warning(w))
                     if user_settings.preferences.show_warnings:
                         showwarning(
                             message=w.message,
@@ -447,7 +450,7 @@ class StaticCommandRunner:
         duration = perf_counter_ns() - start_ns
 
         if execution_context.user_settings.preferences.metadata and isinstance(
-            obbject, OBBject
+            obbject, (OBBject, OBBStream)
         ):
             try:
                 obbject.extra["metadata"] = Metadata(
@@ -470,8 +473,9 @@ class StaticCommandRunner:
                     dep_name = to_snake_case(dep_name).replace("get_", "")
                     dependency_param_names.add(dep_name)
 
-                for dep_key in dependency_param_names:
-                    _ = obbject._extra_params.pop(dep_key, None)  # type: ignore
+                if isinstance(obbject, OBBject):
+                    for dep_key in dependency_param_names:
+                        _ = obbject._extra_params.pop(dep_key, None)  # type: ignore
 
             meta = getattr(obbject.extra.get("metadata"), "arguments", {})
 

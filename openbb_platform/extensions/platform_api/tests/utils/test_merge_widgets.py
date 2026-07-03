@@ -186,6 +186,80 @@ def test_fix_router_widgets_updates_nested_paths_without_mutating_source():
     assert widget["params"][1]["endpoint"] == "http://external/api"
 
 
+def test_fix_router_widgets_prefixes_bare_relative_endpoints():
+    """Bare (non-slash) endpoints from a standalone router get the full path.
+
+    Per-district routers serve their widgets with bare endpoints so the router
+    can be added to the Workspace as a standalone backend; merging them into the
+    root widgets.json must restore the full route path for those too, not only
+    ``/``-prefixed endpoints.
+    """
+    widgets = {
+        "kc_natural_rate": {
+            "widgetId": "kc_natural_rate",
+            "endpoint": "natural_rate",
+            "params": [{"name": "report", "optionsEndpoint": "natural_rate_choices"}],
+        }
+    }
+    updated = fix_router_widgets("/federal_reserve/kc/", widgets)
+    assert list(updated.keys()) == ["kc_natural_rate"]
+    widget = updated["kc_natural_rate"]
+    assert widget["endpoint"] == "/federal_reserve/kc/natural_rate"
+    assert (
+        widget["params"][0]["optionsEndpoint"]
+        == "/federal_reserve/kc/natural_rate_choices"
+    )
+
+
+def test_fix_router_widgets_falls_back_to_source_key_without_widget_id():
+    """A widget without a widgetId keeps its source key rather than the endpoint."""
+    widgets = {"custom_report": {"endpoint": "report"}}
+    updated = fix_router_widgets("/federal_reserve/sf/", widgets)
+    assert list(updated.keys()) == ["custom_report"]
+    assert updated["custom_report"]["endpoint"] == "/federal_reserve/sf/report"
+
+
+@pytest.mark.asyncio
+async def test_get_and_fix_widget_paths_carries_configured_api_prefix():
+    """A router mounted under an API prefix yields prefixed merged endpoints.
+
+    The merge restores the *full* route path discovered from the app, so whatever
+    prefix the platform is mounted under (e.g. ``/api/v1`` or whatever
+    ``api_settings.prefix`` dictates) flows into every merged endpoint and options
+    endpoint. The router's own widgets.json stays relative (bare) so it still
+    works as a standalone backend.
+    """
+    app = FastAPI()
+
+    @app.get("/widgets.json")
+    async def root_widgets():
+        return {"root": {"widgetId": "root", "endpoint": "/root"}}
+
+    sub = APIRouter()
+
+    @sub.get("/widgets.json")
+    async def sub_widgets():
+        return {
+            "kc_natural_rate": {
+                "widgetId": "kc_natural_rate",
+                "endpoint": "natural_rate",
+                "params": [
+                    {"paramName": "x", "optionsEndpoint": "natural_rate_choices"}
+                ],
+            }
+        }
+
+    app.include_router(sub, prefix="/api/v1/federal_reserve/kc")
+    result = await get_and_fix_widget_paths(app)
+
+    widget = result["/api/v1/federal_reserve/kc/"]["kc_natural_rate"]
+    assert widget["endpoint"] == "/api/v1/federal_reserve/kc/natural_rate"
+    assert (
+        widget["params"][0]["optionsEndpoint"]
+        == "/api/v1/federal_reserve/kc/natural_rate_choices"
+    )
+
+
 def test_fix_router_widgets_leaves_prefixed_and_missing_fields_untouched():
     """Already-prefixed or absent endpoint/wsEndpoint/imgUrl are left as-is."""
     widgets = {

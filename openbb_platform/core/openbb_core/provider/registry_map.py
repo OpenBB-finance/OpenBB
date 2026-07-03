@@ -143,8 +143,30 @@ class RegistryMap:
 
     @staticmethod
     def _get_results_type(fetcher: Fetcher) -> Any:
-        """Extract return info from fetcher."""
-        return get_origin(getattr(fetcher, "return_type", None))
+        """Extract return info from fetcher.
+
+        Parameters
+        ----------
+        fetcher : Fetcher
+            The fetcher whose return container is inspected.
+
+        Returns
+        -------
+        Any
+            The results container origin; streaming containers normalize to list.
+        """
+        from collections.abc import (
+            AsyncGenerator,
+            AsyncIterable,
+            AsyncIterator,
+            Iterable,
+            Iterator,
+        )
+
+        origin = get_origin(getattr(fetcher, "return_type", None))
+        if origin in (AsyncIterator, AsyncIterable, AsyncGenerator, Iterator, Iterable):
+            return list
+        return origin
 
     @staticmethod
     def _extract_info(

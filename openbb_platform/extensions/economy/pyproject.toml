@@ -1,22 +1,76 @@
-[tool.poetry]
+[project]
 name = "openbb-economy"
-version = "1.6.2"
+version = "2.0.0"
 description = "Economy extension for OpenBB"
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_economy" }]
+requires-python = ">=3.10,<4"
+dependencies = ["openbb-core>=2.0.0"]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."openbb_core_extension"]
+[project.entry-points."openbb_core_extension"]
 economy = "openbb_economy.economy_router:router"
 
-[tool.poetry.plugins."openbb_charting_extension"]
+[project.entry-points."openbb_charting_extension"]
 economy = "openbb_economy.economy_views:EconomyViews"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_economy"]
+
+[tool.hatch.build.targets.sdist]
+include = ["openbb_economy", "README.md", "pyproject.toml"]
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D101", "D102", "D103", "D105", "D107",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D401", "D404", "D405", "D406", "D407",
+    "D408", "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_economy/**" = ["PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "ARG001", "ARG002", "SLF001"]
+"tests/**" = ["S101", "S104", "S105", "S106", "S108", "D", "F841", "PLR0911", "PLW0108", "SIM105", "SIM117", "E741", "SLF001"]
+"integration/**" = ["S101", "S104", "S105", "S106", "S108", "D", "PLC0415", "PLR0911", "PLR0913", "PLR0914", "PLR0915", "PLR0917"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_economy"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"

@@ -260,6 +260,36 @@ def test_get_OBBject_description_default_providers():
     assert "Optional[str]" in out
 
 
+def test_get_OBBStream_description_mirrors_obbject_field_format():
+    out = DocstringGenerator.get_OBBStream_description("MyFeed")
+    assert "OBBStream" in out
+    assert "results : AsyncIterator[MyFeed]" in out
+    assert "id : str" in out
+    assert "provider : Optional[str]" in out
+    assert "warnings : Optional[list[Warning_]]" in out
+    assert "extra : dict[str, Any]" in out
+    assert "start : (output=None, handler=None) -> OBBStream" in out
+    assert "stop : (timeout=5.0) -> None" in out
+    assert "wait : (timeout=None) -> None" in out
+
+
+def test_generate_model_docstring_streaming_emits_obbstream_returns():
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="MyFeed",
+        summary="Stream it.",
+        explicit_params={},
+        kwarg_params={},
+        returns={},
+        results_type="MyFeed",
+        sections=["returns"],
+        is_streaming=True,
+    )
+    assert "OBBStream" in out
+    assert "results : AsyncIterator[MyFeed]" in out
+    # The OBBject result block must not be used for a stream.
+    assert "Serializable results." not in out
+
+
 def test_get_field_type_handles_forward_ref_extended():
     from typing import ForwardRef
 

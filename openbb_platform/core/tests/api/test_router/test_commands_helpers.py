@@ -1,7 +1,6 @@
 """Targeted tests for ``openbb_core.api.router.commands`` helpers."""
 
 import runpy
-import sys
 from inspect import signature
 from typing import Annotated
 from unittest.mock import MagicMock, patch
@@ -34,8 +33,8 @@ def test_build_new_annotation_map_includes_return():
     assert out["return"] is bool
 
 
-def test_commands_module_imports_charting_when_installed(monkeypatch):
-    from openbb_core.app import utils_optional
+def test_commands_module_resolves_charting_engine(monkeypatch):
+    from openbb_core.app.charting import manager as charting_manager
 
     class _Charting:
         @staticmethod
@@ -44,10 +43,9 @@ def test_commands_module_imports_charting_when_installed(monkeypatch):
 
     with pytest.MonkeyPatch.context() as m:
         m.setattr(
-            utils_optional, "is_installed", lambda name: name == "openbb_charting"
-        )
-        m.setitem(
-            sys.modules, "openbb_charting", type("M", (), {"Charting": _Charting})()
+            charting_manager.ChartingManager,
+            "get_charting_class",
+            classmethod(lambda cls: _Charting),
         )
         module_ns = runpy.run_module(
             "openbb_core.api.router.commands", run_name="__test_commands_charting__"
@@ -223,6 +221,103 @@ async def test_wrapper_passes_through_non_obbject():
     wrapper = build_api_wrapper(runner, route)
     out = await wrapper(symbol="AAPL")
     assert out == {"plain": "dict"}
+
+
+@pytest.mark.asyncio
+async def test_wrapper_returns_streaming_response_for_obbstream():
+    from starlette.responses import StreamingResponse
+
+    from openbb_core.app.model.stream import OBBStream
+
+    runner = MagicMock(spec=CommandRunner)
+
+    class _Source:
+        media_type = "text/event-stream"
+
+        def __init__(self):
+            self.body_iterator = self._gen()
+
+        async def _gen(self):
+            yield "data: 0\n\n"
+
+    async def _run(path, user_settings, *args, **kwargs):
+        return OBBStream(_Source())
+
+    runner.run = _run
+
+    async def endpoint(symbol: str = "AAPL", **kwargs):
+        return OBBject(results=[])
+
+    route = _make_route(endpoint)
+    wrapper = build_api_wrapper(runner, route)
+    out = await wrapper(symbol="AAPL")
+    assert isinstance(out, StreamingResponse)
+    assert out.media_type == "text/event-stream"
+    assert out.headers["X-OpenBB-Stream-Id"]
+
+
+@pytest.mark.asyncio
+async def test_wrapper_streaming_broadcasts_warnings_and_provider_headers():
+    import json as _json
+
+    from starlette.responses import StreamingResponse
+
+    from openbb_core.app.model.abstract.warning import Warning_
+    from openbb_core.app.model.stream import OBBStream
+
+    runner = MagicMock(spec=CommandRunner)
+
+    class _Source:
+        media_type = "text/event-stream"
+
+        def __init__(self):
+            self.body_iterator = self._gen()
+
+        async def _gen(self):
+            yield "data: 0\n\n"
+
+    stream = OBBStream(_Source())
+    stream.provider = "fmp"
+    stream.warnings = [Warning_(category="OpenBBWarning", message="heads up")]
+
+    async def _run(path, user_settings, *args, **kwargs):
+        return stream
+
+    runner.run = _run
+
+    async def endpoint(symbol: str = "AAPL", **kwargs):
+        return OBBject(results=[])
+
+    route = _make_route(endpoint)
+    wrapper = build_api_wrapper(runner, route)
+    out = await wrapper(symbol="AAPL")
+    assert isinstance(out, StreamingResponse)
+    assert out.headers["X-OpenBB-Provider"] == "fmp"
+    assert out.headers["X-OpenBB-Stream-Id"] == stream.id
+    broadcast = _json.loads(out.headers["X-OpenBB-Warning"])
+    assert broadcast[0]["category"] == "OpenBBWarning"
+    assert broadcast[0]["message"] == "heads up"
+
+
+@pytest.mark.asyncio
+async def test_wrapper_passes_through_response():
+    from starlette.responses import PlainTextResponse
+
+    runner = MagicMock(spec=CommandRunner)
+    response = PlainTextResponse("hi")
+
+    async def _run(path, user_settings, *args, **kwargs):
+        return response
+
+    runner.run = _run
+
+    async def endpoint(symbol: str = "AAPL", **kwargs):
+        return OBBject(results=[])
+
+    route = _make_route(endpoint)
+    wrapper = build_api_wrapper(runner, route)
+    out = await wrapper(symbol="AAPL")
+    assert out is response
 
 
 @pytest.mark.asyncio
