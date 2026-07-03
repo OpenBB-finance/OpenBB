@@ -146,18 +146,13 @@ jobs:
       - run: python -m pip install --upgrade pip uv
 
       - name: Install dependencies then openbb-federal-reserve wheel
-        # ``openbb-core>=2.0.0`` (and the dev-group ``openbb-devtools`` /
-        # ``openbb-platform-api``) aren't on PyPI yet — install core from the
-        # sibling source tree first so the wheel's pinned deps resolve, then the
-        # dev group (resolved to local editable sources via ``[tool.uv.sources]``).
         run: |
           uv pip install --system ../../core
+          uv pip install --system ../../extensions/platform_api
           uv pip install --system --group dev
           uv pip install --system dist/openbb_federal_reserve-*.whl
 
       - name: Test the installed wheel
-        # Remove the local source so pytest imports the package from site-packages
-        # — the EXACT wheel that's about to be uploaded to PyPI.
         run: |
           rm -rf openbb_federal_reserve
           pytest tests --cov=openbb_federal_reserve --cov-report=term-missing

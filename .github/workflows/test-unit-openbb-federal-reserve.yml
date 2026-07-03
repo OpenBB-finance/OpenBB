@@ -69,6 +69,7 @@ jobs:
       - name: Install dependencies then openbb-federal-reserve wheel
         run: |
           uv pip install --system ../../core
+          uv pip install --system ../../extensions/platform_api
           uv pip install --system --group dev
           uv pip install --system dist/openbb_federal_reserve-*.whl
 
