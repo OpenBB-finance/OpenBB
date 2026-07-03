@@ -2038,6 +2038,7 @@ dependencies = [
     { name = "defusedxml" },
     { name = "diskcache" },
     { name = "openbb-core", extra = ["pandas"] },
+    { name = "openbb-platform-api" },
     { name = "openpyxl" },
     { name = "pdfplumber" },
 ]
@@ -2046,7 +2047,6 @@ dependencies = [
 dev = [
     { name = "httpx2" },
     { name = "openbb-devtools" },
-    { name = "openbb-platform-api" },
 ]
 
 [package.metadata]
@@ -2056,6 +2056,7 @@ requires-dist = [
     { name = "defusedxml", specifier = ">=0.7" },
     { name = "diskcache", specifier = ">=5.6" },
     { name = "openbb-core", extras = ["pandas"], editable = "../../core" },
+    { name = "openbb-platform-api", editable = "../../extensions/platform_api" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pdfplumber", specifier = ">=0.11" },
 ]
@@ -2064,7 +2065,6 @@ requires-dist = [
 dev = [
     { name = "httpx2" },
     { name = "openbb-devtools", editable = "../../extensions/devtools" },
-    { name = "openbb-platform-api", editable = "../../extensions/platform_api" },
 ]
 
 [[package]]

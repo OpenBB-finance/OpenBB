@@ -110,9 +110,7 @@ _DISTRICT_DESCRIPTIONS = {
 def _full_widgets() -> dict[str, Any]:
     """Build every federal_reserve widget with the official ``build_json`` tool."""
     from fastapi import FastAPI
-    from openbb_platform_api.utils.widgets import (  # ty: ignore[unresolved-import]
-        build_json,
-    )
+    from openbb_platform_api.utils.widgets import build_json
 
     from openbb_federal_reserve import federal_reserve_router
 

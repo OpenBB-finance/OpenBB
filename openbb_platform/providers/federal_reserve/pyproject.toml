@@ -8,6 +8,7 @@ readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
     "openbb-core[pandas]>=2.0.0",
+    "openbb-platform-api>=2.0.0",
     "openpyxl>=3.1.5",
     "beautifulsoup4>=4.13",
     "diskcache>=5.6",
@@ -27,7 +28,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0", "openbb-platform-api>=2.0.0", "httpx2"]
+dev = ["openbb-devtools>=2.0.0", "httpx2"]
 
 [build-system]
 requires = ["hatchling>=1.25"]
