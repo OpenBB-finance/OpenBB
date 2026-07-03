@@ -305,7 +305,7 @@ async def fetch_data(url: str) -> dict:
 
 def get_nearest_date(dates: list[str], target_date: str) -> str:
     """Get the nearest date in the list of dates to the target date."""
-    df = DataFrame(dates, columns=["dates"])
+    df = DataFrame({"dates": dates})
     df["dates"] = DatetimeIndex(df["dates"])
     target_date = to_datetime(target_date)  # ty: ignore[invalid-assignment]
     differences = (df.dates - target_date).abs()
