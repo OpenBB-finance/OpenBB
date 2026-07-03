@@ -121,13 +121,11 @@ jobs:
       - name: Install dependencies then openbb-federal-reserve wheel
         run: |
           uv pip install --system ../../core
+          uv pip install --system ../../extensions/platform_api
           uv pip install --system --group dev
           uv pip install --system dist/openbb_federal_reserve-*.whl
 
       - name: Test the installed wheel
-        # Remove the local ``openbb_federal_reserve/`` source so pytest imports the
-        # package from site-packages — the EXACT wheel that would ship to PyPI —
-        # rather than letting the source tree shadow the built artifact.
         run: |
           rm -rf openbb_federal_reserve
           pytest tests --cov=openbb_federal_reserve --cov-report=term-missing --cov-fail-under=100
