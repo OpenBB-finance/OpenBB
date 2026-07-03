@@ -24,6 +24,9 @@ from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetc
 from openbb_yfinance.models.historical_dividends import (
     YFinanceHistoricalDividendsFetcher,
 )
+from openbb_yfinance.models.historical_splits import (
+    YFinanceHistoricalSplitsFetcher,
+)
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.index_historical import (
     YFinanceIndexHistoricalFetcher,
@@ -180,6 +183,16 @@ def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
     params = {"symbol": "IBM"}
 
     fetcher = YFinanceHistoricalDividendsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_curl
+def test_y_finance_historical_splits_fetcher(credentials=test_credentials):
+    """Test YFinanceHistoricalSplitsFetcher."""
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceHistoricalSplitsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

@@ -21,6 +21,9 @@ from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetc
 from openbb_yfinance.models.historical_dividends import (
     YFinanceHistoricalDividendsFetcher,
 )
+from openbb_yfinance.models.historical_splits import (
+    YFinanceHistoricalSplitsFetcher,
+)
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.index_historical import (
     YFinanceIndexHistoricalFetcher,
@@ -67,6 +70,7 @@ financial markets and assets.""",
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
         "HistoricalDividends": YFinanceHistoricalDividendsFetcher,
+        "HistoricalSplits": YFinanceHistoricalSplitsFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
         "IndexHistorical": YFinanceIndexHistoricalFetcher,
         "KeyExecutives": YFinanceKeyExecutivesFetcher,
