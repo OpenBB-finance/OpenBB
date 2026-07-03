@@ -85,11 +85,11 @@ class TestBuildItems:
     def test_drops_header_with_no_filed_child(self):
         """A section header with no surviving child is dropped."""
         # ``BHSP0508`` (SI 1.a) is filed but ``BHSP2111`` (SI 1.b) is not, so the
-        # "Income from non-bank subsidary(ies)" header (no filed child) is gone.
+        # "Income from non-bank subsidiary(ies)" header (no filed child) is gone.
         items = _build_items(_CSV_CODES)
         captions = {item["caption"] for item in items if item["is_header"]}
-        assert "Income from bank subsidary(ies)" in captions
-        assert "Income from non-bank subsidary(ies)" not in captions
+        assert "Income from bank subsidiary(ies)" in captions
+        assert "Income from non-bank subsidiary(ies)" not in captions
 
     def test_keeps_header_with_filed_child(self):
         """A section header is kept when a filed value item nests under it."""
