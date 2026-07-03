@@ -1,4 +1,4 @@
-"""Tests for the BoC runtime data fetchers (Fase 5).
+"""Tests for the BoC runtime data fetchers (Phase 5).
 
 Covers:
 - ``BankOfCanadaFXFetcher`` (obb.boc.fx → currency_historical)
@@ -9,7 +9,7 @@ These fetchers read from the shipped metadata cache AND make runtime
 HTTP calls to the BoC Valet API for observations. Tests mock
 ``http_get_json`` so no network is hit.
 
-Normalization rules verified per the Fase 5 matrix:
+Normalization rules verified per the Phase 5 matrix:
 - fx:       close = raw value (NO /100 — FX is direct price)
 - rates:    value = raw / 100 (matches OECD pattern + x-frontend_multiply:100)
 - yields:   year_N = raw / 100 (per model docstring "1% = 0.01")
@@ -237,7 +237,7 @@ class TestBankOfCanadaRatesFetcher:
     def test_prefers_cbc20210_when_both_present(self, seeded_meta):
         """When both CBC20210 and V39079 are in the cache, CBC20210 wins.
 
-        This is the user's explicit Fase 5 directive — the brief
+        This is the user's explicit Phase 5 directive — the brief
         mentions CBC20210, so we prefer it for disambiguation.
         """
         entry = BankOfCanadaRatesFetcher._resolve_target_series(seeded_meta.boc)

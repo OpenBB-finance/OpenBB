@@ -1,6 +1,6 @@
 """Bank of Canada — Benchmark Government of Canada Bond Yields.
 
-This fetcher reads from the shipped metadata cache (Fase 3) to find
+This fetcher reads from the shipped metadata cache (Phase 3) to find
 the benchmark bond yield series (2Y, 3Y, 5Y, 7Y, 10Y, 30Y/LONG),
 then makes parallel runtime HTTP calls to fetch each series'
 observations and pivots them into a single ``treasury_rates``-shaped
@@ -18,7 +18,7 @@ Maps to OpenBB's standard ``treasury_rates`` model. Per the brief:
 
 Design notes
 ------------
-- **Tenor resolution via the cache.** The cache (Fase 3) carries a
+- **Tenor resolution via the cache.** The cache (Phase 3) carries a
   derived ``tenor_years`` field on each bond series, parsed from the
   series name with a regex. The fetcher groups bond series by
   ``tenor_years`` and uses that to map directly to the

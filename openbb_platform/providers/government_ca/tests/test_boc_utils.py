@@ -28,7 +28,7 @@ class TestConstants:
     def test_series_of_interest_contains_full_v390_family(self):
         """The full V390* family is cataloged (low/high/bank/target).
 
-        Cataloging the whole family lets the Fase 5 fetcher pick the
+        Cataloging the whole family lets the Phase 5 fetcher pick the
         right one based on the official ``description`` field — that's
         the source of truth, not the series name.
         """
@@ -69,9 +69,9 @@ class TestLookupSeries:
     def test_lookup_cbc20210_is_alias_of_v39079(self, seeded_meta):
         """CBC20210 has the same label and description as V39079.
 
-        This is the empirical evidence we collected in Fase 3: both
+        This is the empirical evidence we collected in Phase 3: both
         series point to the same data (target overnight rate) and the
-        Fase 5 fetcher can use either based on the description field.
+        Phase 5 fetcher can use either based on the description field.
         """
         cbc = lookup_series("CBC20210", seeded_meta.boc)
         v = lookup_series("V39079", seeded_meta.boc)
@@ -96,7 +96,7 @@ class TestLookupSeries:
 class TestLookupByDescription:
     """``lookup_series_by_description`` finds series by semantic role.
 
-    This is the **recommended** way for the Fase 5 fetcher to pick a
+    This is the **recommended** way for the Phase 5 fetcher to pick a
     series: instead of hard-coding a series name (which might change
     in future Valet revisions), search by description substring. The
     description is the BoC's own semantic identifier.

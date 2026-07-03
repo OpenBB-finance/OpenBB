@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-# Sub-routers are wired in Fases 4 and 5. The imports below are
+# Sub-routers are wired in Phases 4 and 5. The imports below are
 # intentionally lazy-friendly — the router mounts them only if they
 # import successfully, so a partially-scaffolded extension still
 # registers its entry-point without crashing.

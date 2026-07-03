@@ -1,7 +1,7 @@
 """Statistics Canada Economic Indicators — key indicators from the homepage.
 
 This fetcher reads from the shipped metadata cache (populated at build
-time by Fase 2 of ``generate_cache.py``) and returns the latest
+time by Phase 2 of ``generate_cache.py``) and returns the latest
 published values of StatsCan's curated "Key Economic Indicators"
 homepage list (GDP, CPI, unemployment, retail sales, merchandise
 trade, manufacturing sales, wholesale trade, etc.).
@@ -20,7 +20,7 @@ Design notes
 - **Graceful degradation.** If the cache was built in degraded mode
   (StatsCan was unreachable at install time), the fetcher raises a
   clear ``OpenBBError`` instead of returning empty data — this
-  matches the user's explicit request from Fase 4.
+  matches the user's explicit request from Phase 4.
 - **Symbol resolution.** Users can pass either a vector ID
   (``"2280069"`` for Imports), a title substring (``"Imports"``), or
   the special token ``"all"`` to get every homepage indicator.

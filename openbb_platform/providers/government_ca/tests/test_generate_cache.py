@@ -77,7 +77,7 @@ class TestParseHomepageResponse:
         assert "290045" in sources  # Capital expenditures
 
     def test_builds_observations_url(self, homepage_sample):
-        """Each indicator carries a pre-built ``observations_url`` for Fase 4."""
+        """Each indicator carries a pre-built ``observations_url`` for Phase 4."""
         parsed = generate_cache._parse_homepage_response(homepage_sample)
         for ind in parsed["indicators"]:
             assert ind["observations_url"].startswith(

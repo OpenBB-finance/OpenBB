@@ -1,6 +1,6 @@
 """Bank of Canada — Policy Overnight Rate Target.
 
-This fetcher reads from the shipped metadata cache (Fase 3) to find
+This fetcher reads from the shipped metadata cache (Phase 3) to find
 the series whose official Valet description is "Target for the
 overnight rate", then makes a runtime HTTP call to fetch the actual
 time-series.
@@ -52,7 +52,7 @@ from openbb_government_ca.utils.metadata import GovernmentCaMetadata
 # The BoC's official description for the target overnight rate. We
 # search by this substring rather than hard-coding a series name, so
 # the fetcher is resilient to the BoC renaming series in future Valet
-# revisions. (Per Fase 3 investigation, both V39079 and CBC20210 carry
+# revisions. (Per Phase 3 investigation, both V39079 and CBC20210 carry
 # this description; per user direction we prefer CBC20210.)
 _TARGET_RATE_DESCRIPTION = "Target for the overnight rate"
 

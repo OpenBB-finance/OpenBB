@@ -1,7 +1,7 @@
 """Tests for ``openbb_government_ca.government_ca_router``.
 
-The router in Fase 1 only exposes a ``/_health`` endpoint — Fase 4
-and Fase 5 will mount the BoC and StatsCan sub-routers.
+The router in Phase 1 only exposes a ``/_health`` endpoint — Phase 4
+and Phase 5 will mount the BoC and StatsCan sub-routers.
 """
 
 from __future__ import annotations

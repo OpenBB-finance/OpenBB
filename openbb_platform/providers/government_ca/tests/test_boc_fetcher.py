@@ -62,7 +62,7 @@ def boc_group_members_sample() -> dict:
 class TestParseBondTenor:
     """``_parse_bond_tenor`` extracts tenor info from BoC bond series names.
 
-    This is the field that lets the Fase 5 yields fetcher map series
+    This is the field that lets the Phase 5 yields fetcher map series
     directly to ``treasury_rates.year_<N>`` fields without parsing
     the series name in the fetcher itself.
     """
@@ -125,7 +125,7 @@ class TestParseBondTenor:
 
 
 class TestNormalizeSeriesEntry:
-    """``_normalize_boc_series_entry`` produces the cache shape Fase 5 expects."""
+    """``_normalize_boc_series_entry`` produces the cache shape Phase 5 expects."""
 
     def test_preserves_label_description_link(self):
         """The raw Valet fields are preserved verbatim."""
@@ -140,7 +140,7 @@ class TestNormalizeSeriesEntry:
         assert result["link"] == "https://www.bankofcanada.ca/valet/series/FXUSDCAD"
 
     def test_builds_observations_url(self):
-        """The ``observations_url`` is pre-built for the Fase 5 fetcher."""
+        """The ``observations_url`` is pre-built for the Phase 5 fetcher."""
         result = generate_cache._normalize_boc_series_entry(
             "FXUSDCAD", {"label": "", "description": "", "link": ""}
         )
@@ -403,7 +403,7 @@ class TestFetchBoc:
 
         Without the series list we can't verify anything exists, so
         there's nothing useful to cache. The degraded blob carries a
-        ``warning`` so the Fase 5 fetcher can detect this.
+        ``warning`` so the Phase 5 fetcher can detect this.
         """
         with patch(
             "openbb_government_ca.utils.generate_cache.http_get_json",
@@ -471,7 +471,7 @@ class TestFetchBoc:
     ):
         """When a series-of-interest isn't in the catalog, it's recorded.
 
-        The Fase 5 fetcher can check ``missing_series`` to give a clear
+        The Phase 5 fetcher can check ``missing_series`` to give a clear
         error if asked for a series the BoC no longer publishes.
         """
         # Build a series list that's missing FXJPYCAD and BD.CDN.RRB.DQ.YLD

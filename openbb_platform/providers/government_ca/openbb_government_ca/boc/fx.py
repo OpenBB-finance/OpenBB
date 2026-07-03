@@ -1,6 +1,6 @@
 """Bank of Canada — Daily Exchange Rates (FX_RATES_DAILY).
 
-This fetcher reads from the shipped metadata cache (Fase 3) to resolve
+This fetcher reads from the shipped metadata cache (Phase 3) to resolve
 which FX series the user asked for, then makes a single runtime HTTP
 call to the BoC Valet observations endpoint to fetch the actual
 time-series.

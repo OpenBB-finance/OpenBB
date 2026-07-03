@@ -5,7 +5,7 @@ This module is deliberately kept separate from
 
 1. The HTTP layer can be unit-tested in isolation (mock ``requests.get``
    once, exercise all the retry / timeout / parsing logic).
-2. Both StatsCan (Fase 2) and BoC (Fase 3) fetchers share the same
+2. Both StatsCan (Phase 2) and BoC (Phase 3) fetchers share the same
    resilient HTTP machinery — same timeouts, same retry policy, same
    error shape.
 

@@ -24,12 +24,12 @@ CRITICAL DESIGN CONSTRAINTS
 
 PHASE STATUS
 ------------
-- **Fase 1**: scaffolding (done).
-- **Fase 2**: ``_fetch_statscan`` walks ``ind-econ.json`` (done).
-- **Fase 3** (this file, current): ``_fetch_boc`` walks the BoC Valet
+- **Phase 1**: scaffolding (done).
+- **Phase 2**: ``_fetch_statscan`` walks ``ind-econ.json`` (done).
+- **Phase 3** (this file, current): ``_fetch_boc`` walks the BoC Valet
   API. The catalog is intentionally agnostic about which series maps
   to which OpenBB standard model field — that decision is deferred to
-  Fase 5 (the fetcher). The cache just records every series' official
+  Phase 5 (the fetcher). The cache just records every series' official
   ``label`` and ``description`` so the fetcher can pick the right one
   at runtime.
 """
@@ -43,7 +43,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from openbb_government_ca.utils._http import NetworkError, http_get_json
+if __package__ in (None, ""):
+    # Run-by-path inside the isolated PEP 517 build env:
+    # the `openbb_government_ca` package isn't importable and its
+    # __init__.py would pull in openbb_core (not a build-time dep).
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _http import NetworkError, http_get_json
+else:
+    from openbb_government_ca.utils._http import NetworkError, http_get_json
 
 # Resolve paths relative to this file so the script works regardless
 # of the current working directory.
@@ -60,7 +67,7 @@ STATSCAN_HOMEPAGE_URL = (
 # Per-product observation URL. StatsCan's Web Data Service (WDS) uses
 # vector IDs (the ``source`` field in ind-econ.json) to fetch
 # observations. We don't fetch observations at build time — we only
-# resolve enough structural metadata to let the Fase 4 fetcher
+# resolve enough structural metadata to let the Phase 4 fetcher
 # construct the right URL at runtime.
 STATSCAN_WDS_BASE = "https://www150.statcan.gc.ca/t1/wds/rest"
 
@@ -73,16 +80,16 @@ BOC_LIST_GROUPS_URL = f"{BOC_VALET_BASE}/lists/groups/json"
 
 
 # ---------------------------------------------------------------------------
-# Series & groups of interest (Fase 3 catalog scope)
+# Series & groups of interest (Phase 3 catalog scope)
 # ---------------------------------------------------------------------------
 # This is the *only* place where the set of cataloged series is
 # defined. Adding a series here means the build hook will resolve its
 # metadata (label, description, link) and store it in the cache. The
-# Fase 5 fetcher reads from this cache to decide which specific series
+# Phase 5 fetcher reads from this cache to decide which specific series
 # to call.
 #
 # NOTE: The brief mentions ``CBC20210``, ``V39079``, and
-# ``BD.CDN.ALL.DQ.YLD``. We catalog ALL of the following so the Fase
+# ``BD.CDN.ALL.DQ.YLD``. We catalog ALL of the following so the Phase
 # 5 fetcher has the full family to choose from:
 #
 # - **FX**: the ``FX_RATES_DAILY`` group covers all daily exchange
@@ -98,7 +105,7 @@ BOC_LIST_GROUPS_URL = f"{BOC_VALET_BASE}/lists/groups/json"
 # - **Benchmark bond yields**: ``BD.CDN.ALL.DQ.YLD`` does NOT exist
 #   in the Valet catalog. The real benchmark series are
 #   ``BD.CDN.{2YR,3YR,5YR,7YR,10YR,LONG,RRB}.DQ.YLD``. We catalog all
-#   of them so the Fase 5 fetcher can map year_2 → BD.CDN.2YR.DQ.YLD,
+#   of them so the Phase 5 fetcher can map year_2 → BD.CDN.2YR.DQ.YLD,
 #   year_3 → BD.CDN.3YR.DQ.YLD, year_5 → BD.CDN.5YR.DQ.YLD,
 #   year_7 → BD.CDN.7YR.DQ.YLD, year_10 → BD.CDN.10YR.DQ.YLD,
 #   year_30 → BD.CDN.LONG.DQ.YLD. The RRB (Real Return Bonds) is
@@ -114,7 +121,7 @@ BOC_INDIVIDUAL_SERIES: tuple[str, ...] = (
     "FXCNYCAD",
     "FXINRCAD",
     # --- Policy overnight rate family (V390*) ---
-    # Catalog ALL of them so the Fase 5 fetcher can pick based on the
+    # Catalog ALL of them so the Phase 5 fetcher can pick based on the
     # ``description`` field — the descriptions are the source of truth.
     "V39076",  # Operating band - low
     "V39077",  # Operating band - high
@@ -132,7 +139,7 @@ BOC_INDIVIDUAL_SERIES: tuple[str, ...] = (
 )
 
 BOC_GROUPS_OF_INTEREST: tuple[str, ...] = (
-    # Daily exchange rates — covers all FX*CAD series. The Fase 5
+    # Daily exchange rates — covers all FX*CAD series. The Phase 5
     # fetcher resolves the symbol parameter against this group's
     # member list to validate the user's input.
     "FX_RATES_DAILY",
@@ -169,7 +176,7 @@ def _write_cache(blob: dict, path: Path | None = None) -> Path:
 
 
 # ---------------------------------------------------------------------------
-# StatsCan fetcher (Fase 2)
+# StatsCan fetcher (Phase 2)
 # ---------------------------------------------------------------------------
 def _parse_homepage_response(payload: Any) -> dict[str, Any]:
     """Parse the ``ind-econ.json`` payload into a structured blob.
@@ -181,7 +188,7 @@ def _parse_homepage_response(payload: Any) -> dict[str, Any]:
                       "indicators": [...]}}
 
     Each indicator carries a ``source`` field (a StatsCan vector ID
-    like ``"2280069"``) that the Fase 4 fetcher can use to construct
+    like ``"2280069"``) that the Phase 4 fetcher can use to construct
     observation URLs.
 
     This parser is defensive: it accepts the documented shape, but
@@ -231,7 +238,7 @@ def _parse_homepage_response(payload: Any) -> dict[str, Any]:
                 "growth_en": growth.get("en", ""),
                 "growth_arrow": str(growth_rate.get("arrow_direction", "")),
                 "growth_details_en": details.get("en", ""),
-                # Pre-computed URL the Fase 4 fetcher will use to pull
+                # Pre-computed URL the Phase 4 fetcher will use to pull
                 # observations for this indicator. The WDS endpoint
                 # takes a vector ID and a start/end date range.
                 "observations_url": (
@@ -287,7 +294,7 @@ def _fetch_statscan() -> dict:
     """Fetch Statistics Canada metadata.
 
     Walks the homepage ``ind-econ.json`` endpoint and resolves each
-    indicator into a structured cache entry. The Fase 4 fetcher will
+    indicator into a structured cache entry. The Phase 4 fetcher will
     use the ``observations_url`` field on each indicator to pull
     actual time-series observations at runtime.
 
@@ -334,11 +341,11 @@ def _fetch_statscan() -> dict:
 
 
 # ---------------------------------------------------------------------------
-# BoC fetcher (Fase 3)
+# BoC fetcher (Phase 3)
 # ---------------------------------------------------------------------------
 # Regex that extracts the numeric tenor from a benchmark bond series
 # name like ``BD.CDN.10YR.DQ.YLD``. Captures the digit run before
-# ``YR``. The Fase 5 yields fetcher uses this to map series to the
+# ``YR``. The Phase 5 yields fetcher uses this to map series to the
 # ``treasury_rates`` model fields (year_2, year_3, year_5, year_7,
 # year_10, year_30) without hard-coding series names.
 import re as _re
@@ -350,7 +357,7 @@ _BOND_TENOR_RE = _re.compile(r"^BD\.CDN\.(\d+)YR\.DQ\.YLD$")
 # on the BoC's "Canadian Bonds" methodology page and is stable across
 # Valet revisions. ``BD.CDN.RRB.DQ.YLD`` is Real Return Bonds
 # (inflation-linked) and has no nominal tenor equivalent — it gets
-# ``tenor_years=None`` so the Fase 5 yields fetcher skips it when
+# ``tenor_years=None`` so the Phase 5 yields fetcher skips it when
 # filling the ``treasury_rates`` model.
 _BOND_LONG_TENOR_YEARS = 30
 
@@ -364,13 +371,13 @@ def _parse_bond_tenor(name: str) -> tuple[str | None, int | None]:
     - ``BD.CDN.10YR.DQ.YLD``  → ``("10Y", 10)``
     - ``BD.CDN.LONG.DQ.YLD``  → ``("LONG", 30)`` — long-term benchmark
     - ``BD.CDN.RRB.DQ.YLD``   → ``("RRB", None)`` — Real Return Bonds
-      (inflation-linked, no nominal tenor equivalent — the Fase 5
+      (inflation-linked, no nominal tenor equivalent — the Phase 5
       yields fetcher ignores this when filling ``treasury_rates``)
 
     The mapping is intentionally conservative: only the canonical
     nominal benchmarks get a numeric ``tenor_years``. Anything else
     (RRB, future series we don't recognize) gets ``tenor_years=None``
-    so the Fase 5 fetcher can decide what to do.
+    so the Phase 5 fetcher can decide what to do.
     """
     upper = name.upper()
     m = _BOND_TENOR_RE.match(upper)
@@ -391,7 +398,7 @@ def _normalize_boc_series_entry(name: str, entry: dict[str, Any]) -> dict[str, A
 
         {"label": "...", "description": "...", "link": "https://..."}
 
-    We add a few derived fields that the Fase 5 fetcher will use:
+    We add a few derived fields that the Phase 5 fetcher will use:
 
     - ``observations_url``  — pre-built URL for fetching observations.
     - ``frequency``         — best-effort guess from the series name
@@ -404,7 +411,7 @@ def _normalize_boc_series_entry(name: str, entry: dict[str, Any]) -> dict[str, A
                               ``"RRB"``). ``None`` for non-bonds.
     - ``tenor_years``       — numeric years (``2``, ``10``, ``30``)
                               for nominal benchmarks; ``None`` for
-                              non-bonds or RRB. Lets the Fase 5
+                              non-bonds or RRB. Lets the Phase 5
                               yields fetcher map directly to
                               ``treasury_rates.year_<N>`` fields
                               without parsing the series name.
@@ -416,7 +423,7 @@ def _normalize_boc_series_entry(name: str, entry: dict[str, Any]) -> dict[str, A
 
     # Best-effort frequency heuristic. The Valet series-list endpoint
     # doesn't expose frequency directly, but the naming conventions
-    # are stable enough to guess. The Fase 5 fetcher can override
+    # are stable enough to guess. The Phase 5 fetcher can override
     # this by passing ``?recent=N`` or ``?start_date=...`` to the
     # observations endpoint.
     upper_name = name.upper()
@@ -482,7 +489,7 @@ def _resolve_group_members(group_name: str) -> list[str]:
     Returns a sorted list of member series names (e.g.
     ``["FXAUDCAD", "FXEURCAD", ...]``). On failure, returns an empty
     list — the cache entry is still valid, just without member
-    resolution. The Fase 5 fetcher can fall back to direct series
+    resolution. The Phase 5 fetcher can fall back to direct series
     lookups.
     """
     url = f"{BOC_VALET_BASE}/groups/{group_name}/json"
@@ -582,7 +589,7 @@ def _fetch_boc() -> dict:
 
     # Build the filtered series cache. If a series-of-interest isn't
     # found in the catalog, we record it under ``missing_series`` so
-    # the Fase 5 fetcher can detect the gap and either fall back or
+    # the Phase 5 fetcher can detect the gap and either fall back or
     # raise a clear error.
     series_cache: dict[str, dict[str, Any]] = {}
     missing_series: list[str] = []

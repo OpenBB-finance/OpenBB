@@ -25,7 +25,7 @@ class TestProviderRegistration:
         assert "Statistics Canada" in repr_name
 
     def test_fetcher_dict_is_dict(self):
-        """The fetcher dict is a dict — populated with Fase 4 fetchers."""
+        """The fetcher dict is a dict — populated with Phase 4 fetchers."""
         assert isinstance(pkg.government_ca_provider.fetcher_dict, dict)
 
     def test_fetcher_dict_contains_economic_indicators(self):

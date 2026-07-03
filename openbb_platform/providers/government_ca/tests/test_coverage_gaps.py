@@ -1,7 +1,7 @@
 """Additional tests to reach 100% coverage.
 
 These tests close the gaps identified by the coverage report on the
-first run of Fase 6. Each test is surgical — it targets a specific
+first run of Phase 6. Each test is surgical — it targets a specific
 uncovered branch or line, with a clear docstring explaining what
 behavior it verifies.
 
@@ -349,7 +349,7 @@ class TestCacheMixinLoadFromCache:
 class TestLoaderMixinStubs:
     """Cover the two stub methods in _loader_mixin.
 
-    These are no-ops today (Fase 2+ will turn them into lazy fetchers),
+    These are no-ops today (Phase 2+ will turn them into lazy fetchers),
     but they need to be called from a test so coverage doesn't flag
     them as dead code.
     """

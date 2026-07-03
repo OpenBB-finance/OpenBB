@@ -18,12 +18,12 @@ from openbb_core.provider.abstract.provider import Provider
 # the standard model) is installed, we register the fetcher under its
 # standard key; otherwise we fall back to a provider-local alias so
 # the data is still reachable.
-# BoC fetchers — Fase 5.
+# BoC fetchers — Phase 5.
 from openbb_government_ca.boc.fx import BankOfCanadaFXFetcher
 from openbb_government_ca.boc.rates import BankOfCanadaRatesFetcher
 from openbb_government_ca.boc.yields import BankOfCanadaYieldsFetcher
 
-# StatsCan fetchers — Fase 4.
+# StatsCan fetchers — Phase 4.
 from openbb_government_ca.statscan.economic_indicators import (
     StatsCanEconomicIndicatorsFetcher,
 )
@@ -52,14 +52,14 @@ Covers FX rates (FX_RATES_DAILY), the Bank of Canada policy overnight
 rate (V39079 / CBC20210), benchmark bond yields (BD.CDN.ALL...), and
 Statistics Canada key economic indicators.""",
     fetcher_dict={
-        # ---- Fase 5 — BoC fetchers ----
+        # ---- Phase 5 — BoC fetchers ----
         # Each is registered under either the standard key (when
         # ``openbb-economy`` is installed) or a provider-local alias
         # (standalone mode).
         _key("CurrencyHistorical", "BankOfCanadaFX"): BankOfCanadaFXFetcher,
         _key("CountryInterestRates", "BankOfCanadaRates"): (BankOfCanadaRatesFetcher),
         _key("TreasuryRates", "BankOfCanadaYields"): BankOfCanadaYieldsFetcher,
-        # ---- Fase 4 — StatsCan fetchers ----
+        # ---- Phase 4 — StatsCan fetchers ----
         _key("EconomicIndicators", "StatsCanEconomicIndicators"): (
             StatsCanEconomicIndicatorsFetcher
         ),

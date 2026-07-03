@@ -44,6 +44,6 @@ class _MixinBase:
         raise NotImplementedError
 
     # -- methods from LoaderMixin --
-    # (populated in Fase 2 — for now the singleton just exposes the
+    # (populated in Phase 2 — for now the singleton just exposes the
     # loaded blob as ``self.blob`` with ``.boc`` and ``.statscan``
     # accessors.)

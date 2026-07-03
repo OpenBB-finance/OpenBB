@@ -3,7 +3,7 @@
 Mirrors the layout of ``openbb_oecd.utils.metadata._constants`` but
 scoped to the two upstream APIs this extension reads (BoC Valet +
 StatsCan). Keeping the URLs here means the cache generator
-(Fase 2/3), the fetchers (Fase 4/5), and the metadata singleton all
+(Phase 2/3), the fetchers (Phase 4/5), and the metadata singleton all
 share one source of truth.
 """
 

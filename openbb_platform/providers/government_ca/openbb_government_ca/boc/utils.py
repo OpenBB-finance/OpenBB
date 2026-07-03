@@ -3,7 +3,7 @@
 Reads the BoC section of the shipped cache
 (``assets/government_ca_cache.json.xz``) without making any network
 calls. The cache itself is populated at build time by
-``openbb_government_ca.utils.generate_cache`` (Fase 3).
+``openbb_government_ca.utils.generate_cache`` (Phase 3).
 
 The BoC Valet API (https://www.bankofcanada.ca/valet/) exposes three
 relevant resource families:
@@ -53,14 +53,14 @@ from typing import Any
 
 # Series & groups explicitly required by the task brief. These tuples
 # are the **single source of truth** for what the build hook
-# catalogs. They're re-exported here so the Fase 5 fetchers can
+# catalogs. They're re-exported here so the Phase 5 fetchers can
 # iterate them without hard-coding string literals.
 #
 # NOTE on V39079 vs CBC20210: both have the same official Valet
-# description ("Target for the overnight rate"). The Fase 5 fetcher
+# description ("Target for the overnight rate"). The Phase 5 fetcher
 # for ``obb.boc.rates`` should pick one based on the ``description``
 # field of the cache entry — that's the source of truth, not the
-# series name. See the Fase 3 worklog entry for the full discussion.
+# series name. See the Phase 3 worklog entry for the full discussion.
 BOC_SERIES_OF_INTEREST: tuple[str, ...] = (
     # FX (majors against CAD)
     "FXUSDCAD",
@@ -154,7 +154,7 @@ def lookup_series_by_description(
         matches = lookup_series_by_description("Target for the overnight", boc_cache)
         # Returns [V39079 entry, CBC20210 entry] — both have that description.
 
-    The Fase 5 ``obb.boc.rates`` fetcher uses this to pick the right
+    The Phase 5 ``obb.boc.rates`` fetcher uses this to pick the right
     series without hard-coding a name that might change.
     """
     needle = description_substring.lower()
@@ -183,7 +183,7 @@ def is_degraded(cache: dict[str, Any]) -> bool:
 
     Degraded mode means the build hook couldn't reach the BoC Valet
     API when the package was installed. The cache is still valid
-    (just empty), and the Fase 5 fetcher can either fall back to
+    (just empty), and the Phase 5 fetcher can either fall back to
     direct API calls or raise a clear error.
     """
     return cache.get("status") == "degraded"
@@ -193,7 +193,7 @@ def missing_series(cache: dict[str, Any]) -> list[str]:
     """Return the list of series-of-interest that weren't in the Valet catalog.
 
     A non-empty list means we asked for series the BoC no longer
-    publishes (or never did). The Fase 5 fetcher should treat these as
+    publishes (or never did). The Phase 5 fetcher should treat these as
     permanently unavailable and raise a clear error if asked for one.
     """
     return list(cache.get("missing_series", []))

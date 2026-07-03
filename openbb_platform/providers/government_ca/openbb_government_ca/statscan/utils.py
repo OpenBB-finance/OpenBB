@@ -3,7 +3,7 @@
 Reads the StatsCan section of the shipped cache
 (``assets/government_ca_cache.json.xz``) without making any network
 calls. The cache itself is populated at build time by
-``openbb_government_ca.utils.generate_cache`` (Fase 2).
+``openbb_government_ca.utils.generate_cache`` (Phase 2).
 
 StatsCan's developer surface (https://www.statcan.gc.ca/en/developers)
 exposes several JSON endpoints. This extension consumes:
@@ -11,10 +11,10 @@ exposes several JSON endpoints. This extension consumes:
 - ``https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json``
   The curated list of "key economic indicators" shown on the StatsCan
   homepage. Each entry carries a ``source`` field (a StatsCan vector
-  ID like ``"2280069"``) that the Fase 4 fetcher can use to construct
+  ID like ``"2280069"``) that the Phase 4 fetcher can use to construct
   observation URLs via the Web Data Service (WDS).
 
-The cache we ship (produced by Fase 2) contains:
+The cache we ship (produced by Phase 2) contains:
 
 - ``homepage_url``    — the source URL
 - ``indicators``      — list of dicts, one per homepage indicator,
@@ -35,7 +35,7 @@ from __future__ import annotations
 
 from typing import Any
 
-# Special tokens that the Fase 4 fetcher can use to address cache
+# Special tokens that the Phase 4 fetcher can use to address cache
 # sections without hard-coding string literals. Adding a new curated
 # view means adding its token here.
 STATSCAN_PRODUCTS_OF_INTEREST: tuple[str, ...] = (
@@ -114,7 +114,7 @@ def is_degraded(cache: dict[str, Any]) -> bool:
 
     Degraded mode means the build hook couldn't reach StatsCan when
     the package was installed. The cache is still valid (just empty),
-    and the Fase 4 fetcher can either fall back to direct API calls
+    and the Phase 4 fetcher can either fall back to direct API calls
     or raise a clear error.
     """
     return cache.get("status") == "degraded"

@@ -1,4 +1,4 @@
-"""Tests for the StatsCan economic indicators fetcher (Fase 4).
+"""Tests for the StatsCan economic indicators fetcher (Phase 4).
 
 The fetcher reads from the shipped metadata cache (no network in the
 happy path). Tests cover:
@@ -212,7 +212,7 @@ class TestExtractData:
     def test_raises_openbb_error_in_degraded_mode(self, empty_meta):
         """A degraded cache raises ``OpenBBError`` with a clear message.
 
-        This is the user's explicit Fase 4 requirement: "si por alguna
+        This is the user's explicit Phase 4 requirement: "si por alguna
         razón el caché no cargó bien, el fetcher debe lanzar un error
         claro en lugar de hacer un crash feo de Python."
         """
