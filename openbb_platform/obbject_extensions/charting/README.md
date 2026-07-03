@@ -1,157 +1,106 @@
-# OpenBB Charting extension
+# OpenBB Charting
 
-This extension provides a charting library for OpenBB Platform.
-
-The library includes:
-
-- a charting infrastructure based on Plotly
-- a set of charting components
-- prebuilt charts for a set of commands that are built-in OpenBB extensions
-
->[!NOTE]
-> The charting library is an `OBBject` extension which means you'll have the functionality it exposes on every command result.
+Plotly-based charting for the OpenBB Platform. Installing this package registers a `charting` accessor on every `OBBject` command result and enables the `chart=True` argument on Platform endpoints that have a chart.
 
 ## Installation
-
-To install the extension, run the following command in this folder:
 
 ```bash
 pip install openbb-charting
 ```
 
-To enable display in a native OS window, install the PyWry extra.
+To display charts in a native desktop window, install the PyWry extra:
 
 ```bash
 pip install "openbb-charting[pywry]"
 ```
 
-### PyWry dependency on Linux
+On Linux, PyWry requires system WebKit/GTK libraries:
 
-When using Linux distributions, the PyWry dependency requires certain dependencies to be installed first.
-
-- Debian-based / Ubuntu / Mint:
-`sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev`
-
-- Arch Linux / Manjaro:
-`sudo pacman -S webkit2gtk`
-
-- Fedora:
-`sudo dnf install gtk3-devel webkit2gtk3-devel`
+- Debian / Ubuntu / Mint: `sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev`
+- Arch / Manjaro: `sudo pacman -S webkit2gtk`
+- Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
 
 ## Usage
 
-To use the extension, run any of the OpenBB Platform endpoints with the `chart` argument set to `True`.
-
-Here's an example of how it would look like in a python interface:
+Pass `chart=True` to an endpoint that has a chart, then call `show()` on the result:
 
 ```python
 from openbb import obb
-equity_data = obb.equity.price.historical(symbol="TSLA", chart=True)
+
+data = obb.equity.price.historical("AAPL", provider="yfinance", chart=True)
+data.show()
 ```
 
-This results in a `OBBject` object containing a `chart` attribute, which contains Plotly JSON data.
-
-In order to display the chart, you need to call the `show()` method:
+The same chart is reachable through the `charting` accessor on any result, without `chart=True`:
 
 ```python
-equity_data.show()
-```
-
-Alternatively, `openbb-charting` is an `OBBject` accessor and its methods can be used directly from any instance.
-
-```python
-from openbb import obb
-res = obb.equity.price.historical("AAPL")
+res = obb.equity.price.historical("AAPL", provider="yfinance")
 res.charting.show()
 ```
 
-The above code will produce the same effect as the previous example.
+### Which commands have a chart
 
-## Custom Charts and Data
-
-Various types of charts can be generated from Pandas DataFrames without needing to understand the Plotly library.
-
-The methods are exposed as part of the `OBBject` accessor class. The `data` parameter can be passed as a list object from `OBBject.results`, or any Pandas DataFrame instance.
-
-```python
-res = obb.equity.price.historical("AAPL", chart=True)
-
-surface_3d = res.charting.create_3d_surface
-bar_chart = res.charting.create_bar_chart
-line_chart = res.charting.create_line_chart
-correlation_matrix = res.charting.create_correlation_matrix
-```
-
-### Discovering available charts
-
-Not all the endpoints have dedicated charts. To discover which endpoints are supported, you can run the following command:
+Charts are contributed by the installed extensions. List the registered routes:
 
 ```python
 from openbb_charting import Charting
+
 Charting.functions()
 ```
 
-### Using the `to_chart` method
+### Technical-analysis overlays — `to_chart`
 
-The `to_chart` function should be taken as an advanced feature, as it requires the user to have a good understanding of the charting extension and the `OpenBBFigure` class.
+`to_chart` rebuilds the chart of a time-series (OHLCV) result with indicator overlays. Indicators and their parameters are passed through the `indicators` argument:
 
-The user can use any number of `**kwargs` that will be passed to the `PlotlyTA` class in order to build custom visualizations with custom indicators and similar.
-
-> Note that, this method will only work to some limited extent with data that is not standardized.
-> Also, it is currently designed only to handle time series (OHLCV) data.
-
-Example usage:
-
-- Plotting a time series with TA indicators
-
-  ```python
-
-    from openbb import obb
-    res = obb.equity.price.historical("AAPL")
-
-    indicators = dict(
-        sma=dict(length=[20,30,50]),
-        adx=dict(length=14),
+```python
+res = obb.equity.price.historical("AAPL", provider="yfinance")
+res.charting.to_chart(
+    indicators=dict(
+        sma=dict(length=[20, 50]),
         rsi=dict(length=14),
         macd=dict(fast=12, slow=26, signal=9),
-        bbands=dict(length=20, std=2),
-        stoch=dict(length=14),
-        ema=dict(length=[20,30,50]),
     )
-    res.charting.to_chart(**{"indicators": indicators})
+)
+res.show()
+```
 
-  ```
+List every available indicator and its parameters:
 
-- Get all the available indicators
+```python
+res.charting.indicators()    # from a result
+Charting.indicators()        # standalone
+```
 
-    ```python
+## Building charts directly from data
 
-    # if you have a command result already
-    res.charting.indicators
+The accessor exposes builders that accept a DataFrame or a list of `Data` (such as `OBBject.results`) and return an `OpenBBFigure`. Their input signatures differ; `create_line_chart` and `create_bar_chart` also display the chart by default — pass `render=False` to build it without displaying.
 
-    # or if you want to know in standalone fashion
-    from openbb_charting import Charting
-    Charting.indicators()
+```python
+res = obb.equity.price.historical("AAPL", provider="yfinance")
+df = res.to_dataframe()
 
-    ```
+fig = res.charting.create_line_chart(data=res.results, target="close", render=False)
+fig = res.charting.create_bar_chart(data=res.results, x="date", y="volume", render=False)
+fig = res.charting.create_correlation_matrix(data=res.results, method="pearson")
+fig = res.charting.create_3d_surface(X=df["open"], Y=df["high"], Z=df["close"])
+fig.show()
+```
 
-## Add a visualization to an existing Platform command
+## Adding a chart to a command
 
-To add a visualization to an existing command, you'll need to add a `poetry` plugin to your `pyproject.toml` file. The syntax should be the following:
+Register a charting-view class through the `openbb_charting_extension` entry-point group in your `pyproject.toml`:
 
 ```toml
-[tool.poetry.plugins."openbb_charting_extension"]
+[project.entry-points."openbb_charting_extension"]
 my_extension = "openbb_my_extension.my_extension_views:MyExtensionViews"
 ```
 
-Where the `openbb_charting_extension` is **mandatory**, otherwise the charting extension won't be able to find the visualization.
-
-And the suggested structure for the `my_extension_views` module is the following:
+A view method is matched to an endpoint by replacing the route's slashes with underscores: `/equity/price/historical` → `equity_price_historical`, `/technical/ema` → `technical_ema`. Each method receives the command output as `**kwargs` and returns a `tuple[OpenBBFigure, dict[str, Any]]` — the interactive figure plus the JSON content the API serializes.
 
 ```python
 """Views for MyExtension."""
 
-from typing import Any, Dict, Tuple
+from typing import Any
 
 from openbb_charting.charts.price_historical import price_historical
 from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -161,31 +110,61 @@ class MyExtensionViews:
     """MyExtension Views."""
 
     @staticmethod
-    def my_extension_price_historical(
-        **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-        """MyExtension Price Historical Chart."""
+    def my_extension_price_historical(**kwargs) -> tuple[OpenBBFigure, dict[str, Any]]:
+        """My Extension Price Historical Chart."""
         return price_historical(**kwargs)
 ```
 
-> Note that `my_extension_views` lives under the `openbb_my_extension` package.
+The chart is then produced by setting `chart=True` on the command, or via `result.charting.show()`.
 
-Afterwards, you'll need to add the visualization to your new `MyExtensionViews` class. The convention to match the endpoint with the respective charting function is the following:
+## Replacing the engine, hooks, and backend
 
-- `/equity/price/historical` -> `equity_price_historical`
-- `/technical/ema` -> `technical_ema`
-- `/my_extension/price_historical` -> `my_extension_price_historical`
+The Platform interfaces (Python, API, CLI, MCP) do not depend on `openbb-charting` by name; they resolve the active engine from whichever OBBject extension registers the `charting` accessor. Three things are pluggable through entry points alone.
 
-When you spot the charting function on the charting router file, you can add the visualization to it.
+### Replace the engine
 
-The implementation should leverage the already existing classes and methods to do so, namely:
+Ship an OBBject extension that registers the `charting` accessor:
 
-- `OpenBBFigure`
-- `PlotlyTA`
+```toml
+[project.entry-points."openbb_obbject_extension"]
+my_charting = "openbb_my_charting:ext"   # ext = Extension(name="charting")
+```
 
-Note that the return of each charting function should respect the already defined return types: `Tuple[OpenBBFigure, Dict[str, Any]]`.
+If `openbb-charting` is uninstalled, your engine is used automatically. When both are installed, select one with `system_settings.charting_extension` (or the `OPENBB_CHARTING_EXTENSION` environment variable). An engine must expose the `functions()` classmethod, and `get_backend_class()` to be usable from the CLI.
 
-The returned tuple contains a `OpenBBFigure` that is an interactive Plotly figure which can be used in a Python interpreter, and a `Dict[str, Any]` that contains the raw data leveraged by the API.
+### Chart lifecycle hooks
 
-After you're done implementing the charting function, you can use either the Python interface or the API to get the chart. To do so, you'll only need to set the already available `chart` argument to `True`.
-Or accessing the `charting` attribute of any returned `OBBject` object: `my_obbject.charting.show()`.
+Register a `ChartingHook` subclass under the `openbb_charting_hooks` group. Hooks run inside chart creation, so they fire for every interface:
+
+```toml
+[project.entry-points."openbb_charting_hooks"]
+my_hook = "openbb_my_pkg.hooks:MyHook"
+```
+
+```python
+from openbb_core.app.charting import ChartingHook
+
+
+class MyHook(ChartingHook):
+    """Watermark every figure after it is built."""
+
+    routes = ()        # empty matches all routes
+    priority = 100     # lower runs first
+
+    def post_figure(self, context):
+        context.figure.add_annotation(text="INTERNAL", opacity=0.1)
+        return context
+```
+
+Stages: `resolve_data`, `pre_figure`, `post_figure`, `pre_render`, `post_render`. A hook mutates `context` in place and/or returns a new one.
+
+### Backend override
+
+Swap the rendering backend (PyWry / browser / custom) without replacing the engine, via the `openbb_charting_backend` group:
+
+```toml
+[project.entry-points."openbb_charting_backend"]
+my_backend = "openbb_my_pkg.backend:MyBackend"
+```
+
+A backend is constructed with a single `charting_settings` argument. The override is opt-in: set `system_settings.charting_backend` (or `OPENBB_CHARTING_BACKEND`) to the registered name. Without a selection, the engine keeps its built-in backend.

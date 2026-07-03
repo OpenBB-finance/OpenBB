@@ -24,3 +24,6 @@ exclude_lines =
     if TYPE_CHECKING:
     if __name__ == .__main__.:
     raise NotImplementedError
+    ^\s*\.\.\.$
+    @(abc\.)?abstractmethod
+    @(typing\.)?overload
