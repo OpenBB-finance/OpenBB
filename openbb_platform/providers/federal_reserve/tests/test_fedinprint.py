@@ -134,8 +134,10 @@ class TestFileResolution:
         [
             ("https://x/doc.pdf", True),
             ("https://doi.org/10.20955/wp.2018.032", True),
+            ("https://dx.doi.org/10.20955/wp.2018.032", True),
             ("https://fraser.stlouisfed.org/files/x.pdf", True),
             ("https://www.stlouisfed.org/on-the-economy/article", False),
+            ("https://evil.example/path/doi.org/x", False),
         ],
     )
     def test_is_file(self, url, expected):
@@ -182,6 +184,18 @@ class TestFileResolution:
         assert fedinprint.resolve_file("https://x/item", fetch) == (
             "https://www.atlantafed.org/-/media/wp.pdf"
         )
+
+    def test_resolve_rejects_spoofed_fraser_host(self):
+        """A look-alike FRASER host is not followed and resolves to ``None``."""
+        calls = []
+
+        def fetch(url):
+            """Return an item whose citation spoofs the FRASER host."""
+            calls.append(url)
+            return _item(citation="https://fraser.stlouisfed.org.evil.example/title/9")
+
+        assert fedinprint.resolve_file("https://x/item", fetch) is None
+        assert calls == ["https://x/item"]
 
     def test_resolve_no_link_none(self):
         """An item page with no file link resolves to ``None``."""

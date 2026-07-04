@@ -9,6 +9,7 @@ from collections.abc import Callable
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 BASE = "https://fedinprint.org"
 SEARCH_URL = f"{BASE}/search"
@@ -111,10 +112,17 @@ def _first_file_link(page: str) -> str:
     return html.unescape(href.group(1)) if href else ""
 
 
+def _host(url: str) -> str:
+    """Return the lowercased hostname of a URL, or an empty string."""
+    return (urlparse(url).hostname or "").lower()
+
+
 def _is_file(url: str) -> bool:
     """Return whether a URL points at a downloadable document rather than a page."""
     low = url.lower()
-    return low.endswith(".pdf") or "doi.org" in low or "/files/" in low
+    host = _host(url)
+    is_doi = host == "doi.org" or host.endswith(".doi.org")
+    return low.endswith(".pdf") or is_doi or "/files/" in low
 
 
 _CMS_HOST = re.compile(r"^(https?://)([a-z0-9-]+)cm\.ws\.frb\.org")
@@ -135,7 +143,7 @@ def resolve_file(item_url: str, fetch: Fetch) -> str | None:
     link = _first_file_link(fetch(item_url))
     if not link:
         return None
-    if "fraser.stlouisfed.org" in link and "/files/" not in link:
+    if _host(link) == "fraser.stlouisfed.org" and "/files/" not in link:
         inner = _first_file_link(fetch(link))
         if inner:
             link = inner
