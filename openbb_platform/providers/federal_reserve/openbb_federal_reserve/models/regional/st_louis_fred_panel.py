@@ -10,6 +10,8 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
+from openbb_federal_reserve.utils.fred_md import series_options
+
 
 def _apply_transform(series, code: int | None):
     """Apply a FRED-MD/QD stationarity transformation code to a series."""
@@ -92,9 +94,19 @@ def _filter_records(
 class FederalReserveStLouisFredMdQueryParams(QueryParams):
     """St. Louis Fed FRED-MD Monthly Macro Panel Query Parameters."""
 
+    __json_schema_extra__ = {
+        "series": {
+            "multiple_items_allowed": True,
+            "x-widget_config": {
+                "options": series_options("monthly"),
+                "multiSelect": True,
+            },
+        }
+    }
+
     series: str | None = Field(
         default=None,
-        description="Comma-separated FRED series codes (panel columns) to return;"
+        description="One or more FRED series codes (panel columns) to return;"
         " the default returns every series.",
     )
     transform: bool = Field(
@@ -169,9 +181,19 @@ class FederalReserveStLouisFredMdFetcher(
 class FederalReserveStLouisFredQdQueryParams(QueryParams):
     """St. Louis Fed FRED-QD Quarterly Macro Panel Query Parameters."""
 
+    __json_schema_extra__ = {
+        "series": {
+            "multiple_items_allowed": True,
+            "x-widget_config": {
+                "options": series_options("quarterly"),
+                "multiSelect": True,
+            },
+        }
+    }
+
     series: str | None = Field(
         default=None,
-        description="Comma-separated FRED series codes (panel columns) to return;"
+        description="One or more FRED series codes (panel columns) to return;"
         " the default returns every series.",
     )
     transform: bool = Field(

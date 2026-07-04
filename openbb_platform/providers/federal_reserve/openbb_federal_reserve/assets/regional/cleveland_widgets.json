@@ -401,7 +401,7 @@
   },
   "cleveland_publications_federal_reserve_obb": {
     "name": "Cleveland Fed Publications",
-    "description": "Cleveland Fed Economic Commentary, Working Papers, Policy Discussion Papers, District Data Briefs, Annual Reports, Regional Policy Reports, and Economic Review. Select one or more PDFs to view.",
+    "description": "Cleveland Fed publications indexed on Fed in Print. Select one or more documents to view.",
     "category": "Federal Reserve",
     "type": "multi_file_viewer",
     "widgetId": "cleveland_publications_federal_reserve_obb",
@@ -423,28 +423,56 @@
             "value": "economic_commentary"
           },
           {
-            "label": "Working Paper",
-            "value": "working_paper"
+            "label": "Working Papers (Old Series)",
+            "value": "working_papers_old_series"
           },
           {
-            "label": "Policy Discussion Paper",
+            "label": "Working Papers",
+            "value": "working_papers"
+          },
+          {
+            "label": "Economic Review",
+            "value": "economic_review"
+          },
+          {
+            "label": "Proceedings",
+            "value": "proceedings"
+          },
+          {
+            "label": "Speech",
+            "value": "speech"
+          },
+          {
+            "label": "Forefront",
+            "value": "forefront"
+          },
+          {
+            "label": "Policy Discussion Papers",
             "value": "policy_discussion_papers"
-          },
-          {
-            "label": "Cleveland Fed District Data Brief",
-            "value": "district_data_brief"
           },
           {
             "label": "Annual Report",
             "value": "annual_report"
           },
           {
-            "label": "Regional Policy Report",
-            "value": "regional_policy_report"
+            "label": "Community Development Publications",
+            "value": "community_development_publications"
           },
           {
-            "label": "Economic Review",
-            "value": "economic_review"
+            "label": "Community Reinvestment Forum",
+            "value": "community_reinvestment_forum"
+          },
+          {
+            "label": "Community Reinvestment Report",
+            "value": "community_reinvestment_report"
+          },
+          {
+            "label": "Financial Services working paper",
+            "value": "financial_services_working_paper"
+          },
+          {
+            "label": "Cleveland Fed Regional Policy Report",
+            "value": "cleveland_fed_regional_policy_report"
           }
         ],
         "paramName": "series"
@@ -468,6 +496,24 @@
         "paramName": "end_date"
       },
       {
+        "label": "Limit",
+        "description": "The maximum number of documents to return.",
+        "optional": true,
+        "type": "number",
+        "value": 20,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "label": "Offset",
+        "description": "The result offset to begin from, for pagination.",
+        "optional": true,
+        "type": "number",
+        "value": 0,
+        "show": true,
+        "paramName": "offset"
+      },
+      {
         "paramName": "provider",
         "value": "federal_reserve",
         "show": false
@@ -476,7 +522,12 @@
         "multiSelect": true,
         "optionsEndpoint": "regional_publications_choices",
         "optionsParams": {
-          "district": "cleveland"
+          "district": "cleveland",
+          "end_date": "$end_date",
+          "limit": "$limit",
+          "offset": "$offset",
+          "series": "$series",
+          "start_date": "$start_date"
         },
         "paramName": "url",
         "roles": [

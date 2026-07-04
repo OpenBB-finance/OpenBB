@@ -1,9 +1,8 @@
-"""Tests for the St. Louis Fed data client and FRASER enumeration helpers."""
+"""Tests for the St. Louis Fed data client and Fed in Print search helpers."""
 
 from unittest.mock import MagicMock
 
 import pytest
-from openbb_core.app.model.abstract.error import OpenBBError
 
 from openbb_federal_reserve.utils import st_louis
 
@@ -189,169 +188,131 @@ class TestCachedDownloads:
             st_louis.fetch_fred_panel("daily")
 
 
-_BROWSE_ITEM = (
-    '<a class="list-item" data-id="{item_id}" data-type="item" '
-    'href="/title/economic-synopses-6715/{slug}-{item_id}" id="item-{item_id}">'
-    '<span class="list-item-title">{title}, {year}, No. {issue}</span></a>'
-)
+class TestSeriesSlugs:
+    """Tests for the curated series slugs and their display labels."""
+
+    def test_slugs_exclude_web_only_series(self):
+        """Web-only blog series are absent from the selectable document series."""
+        assert "on_the_economy" not in st_louis.SERIES_SLUGS
+        assert "open_vault" not in st_louis.SERIES_SLUGS
+        assert "working_papers" in st_louis.SERIES_SLUGS
+        assert "economic_synopses" in st_louis.SERIES_SLUGS
+
+    def test_choices_map_labels_to_slugs(self):
+        """Each choice pairs a display label with its slug and maps to a facet."""
+        choices = st_louis.series_choices()
+        assert {"label": "Working Papers", "value": "working_papers"} in choices
+        assert [choice["value"] for choice in choices] == list(st_louis.SERIES_SLUGS)
+        for slug in st_louis.SERIES_SLUGS:
+            assert slug in st_louis._FACET_BY_SLUG
 
 
-def _browse_html(items):
-    """Render a FRASER browse page from item tuples."""
-    return "".join(
-        _BROWSE_ITEM.format(item_id=i, slug=s, title=t, year=y, issue=n)
-        for i, s, t, y, n in items
-    )
+class TestSearchPublications:
+    """Tests for the St. Louis wrapper over the shared Fed in Print search."""
 
+    def test_maps_slug_to_facet_and_forwards(self, monkeypatch):
+        """The wrapper maps a slug to its facet and forwards paging to the util."""
+        from openbb_federal_reserve.utils import fedinprint
 
-def _landing_html(stamp: str) -> str:
-    """Render a landing page carrying a dated citation PDF URL."""
-    return (
-        '<meta name="citation_pdf_url" content="https://fraser.stlouisfed.org/files/'
-        f'docs/publications/frbsl_econosynops/economicsynopses_stls_{stamp}.pdf" />'
-    )
+        captured = {}
 
+        def _search(provider, fetch, series_facet=None, min_year="", start=0, limit=20):
+            captured.update(
+                provider=provider,
+                facet=series_facet,
+                min_year=min_year,
+                start=start,
+                limit=limit,
+            )
+            return [{"series": "Working Papers", "date": "", "title": "T", "url": "u"}]
 
-class TestListEconomicSynopses:
-    """Tests for the FRASER catalog scraper."""
-
-    def test_parses_dedups_and_sorts(self, monkeypatch):
-        """Articles parse, resolve dates, dedupe by id, and sort newest first."""
-        pages = {
-            "2020s": _browse_html(
-                [("624571", "college-wealth", "The College Wealth Divide", 2020, 1)]
-            ),
-            "2010s": _browse_html(
-                [("400001", "evolving-banks", "The Evolving Size of Banks", 2010, 1)]
-            ),
-            "2000s": _browse_html([]),
-        }
-        landings = {"624571": "20200409", "400001": "20100115"}
-
-        def _fetch(url, referer=None):
-            for decade, html in pages.items():
-                if decade in url:
-                    return html
-            for item_id, stamp in landings.items():
-                if item_id in url:
-                    return _landing_html(stamp)
-            return ""
-
-        monkeypatch.setattr(st_louis, "fetch_text", _fetch)
-        catalog = st_louis.list_economic_synopses()
-        assert [r["date"] for r in catalog] == ["2020-04-09", "2010-01-15"]
-        assert catalog[0]["year"] == 2020
-        assert catalog[0]["title"] == "The College Wealth Divide"
-        assert catalog[0]["url"].startswith("https://fraser.stlouisfed.org")
-
-    def test_unresolvable_date_is_empty(self, monkeypatch):
-        """An article whose landing page has no PDF resolves to an empty date."""
-        page = _browse_html(
-            [("1", "real", "Getting &quot;Real&quot; About Policy", 2002, 1)]
+        monkeypatch.setattr(fedinprint, "search", _search)
+        out = st_louis.search_publications("working_papers", "2024", start=10, limit=5)
+        assert captured["provider"] == st_louis.FEDINPRINT_PROVIDER
+        assert captured["facet"] == "Working Papers"
+        assert (captured["min_year"], captured["start"], captured["limit"]) == (
+            "2024",
+            10,
+            5,
         )
+        assert out[0]["title"] == "T"
 
-        def _fetch(url, referer=None):
-            if "browse" in url:
-                return page if "2000s" in url else _browse_html([])
-            return "<html></html>"
+    def test_unknown_or_absent_slug_has_no_facet(self, monkeypatch):
+        """An unknown or absent slug queries the provider with no series facet."""
+        from openbb_federal_reserve.utils import fedinprint
 
-        monkeypatch.setattr(st_louis, "fetch_text", _fetch)
-        catalog = st_louis.list_economic_synopses()
-        assert catalog[0]["title"] == 'Getting "Real" About Policy'
-        assert catalog[0]["date"] == ""
+        captured = {}
 
-    def test_title_without_issue_tail(self, monkeypatch):
-        """An entry lacking the ``YYYY, No. NN`` tail keeps a null year/issue."""
-        article = (
-            '<a class="list-item" data-id="9" data-type="item" '
-            'href="/title/economic-synopses-6715/odd-9" id="item-9">'
-            '<span class="list-item-title">An Untagged Article</span></a>'
-        )
+        def _search(provider, fetch, series_facet=None, **_):
+            captured["facet"] = series_facet
+            return []
 
-        def _fetch(url, referer=None):
-            if "browse" in url:
-                return article if "2000s" in url else _browse_html([])
-            return _landing_html("20020110")
-
-        monkeypatch.setattr(st_louis, "fetch_text", _fetch)
-        catalog = st_louis.list_economic_synopses()
-        assert catalog[0]["year"] is None
-        assert catalog[0]["issue"] is None
-        assert catalog[0]["title"] == "An Untagged Article"
-        assert catalog[0]["date"] == "2002-01-10"
-
-
-_LANDING = (
-    '<meta name="citation_pdf_url" content="https://fraser.stlouisfed.org/files/'
-    'docs/publications/frbsl_econosynops/economicsynopses_stls_20200409.pdf" />'
-)
-
-
-class TestResolveSynopsisPdfUrl:
-    """Tests for the landing-page PDF resolver."""
-
-    def test_resolves_url_and_date(self, monkeypatch):
-        """The resolver extracts the PDF URL and its filename date."""
-        monkeypatch.setattr(st_louis, "fetch_text", lambda url, referer=None: _LANDING)
-        out = st_louis.resolve_synopsis_pdf_url("https://x/landing")
-        assert out["url"].endswith("economicsynopses_stls_20200409.pdf")
-        assert out["date"] == "2020-04-09"
-
-    def test_resolves_url_without_date(self, monkeypatch):
-        """A PDF URL without the dated filename yields an empty date."""
-        html = '<meta name="citation_pdf_url" content="https://x/files/other.pdf" />'
-        monkeypatch.setattr(st_louis, "fetch_text", lambda url, referer=None: html)
-        out = st_louis.resolve_synopsis_pdf_url("https://x/landing")
-        assert out["date"] == ""
-
-    def test_missing_pdf_raises(self, monkeypatch):
-        """A landing page without a PDF link raises ``OpenBBError``."""
-        monkeypatch.setattr(
-            st_louis, "fetch_text", lambda url, referer=None: "<html></html>"
-        )
-        with pytest.raises(OpenBBError):
-            st_louis.resolve_synopsis_pdf_url("https://x/landing")
-
-
-_PUBLICATIONS = [
-    {
-        "item_id": "672949",
-        "title": "Latest",
-        "year": 2024,
-        "issue": 14,
-        "date": "2024-07-01",
-        "url": "https://x/latest-672949",
-        "pdf_url": "https://x/latest.pdf",
-    },
-    {
-        "item_id": "624571",
-        "title": "Older",
-        "year": 2020,
-        "issue": 1,
-        "date": "2020-04-09",
-        "url": "https://x/older-624571",
-        "pdf_url": "https://x/older.pdf",
-    },
-    {
-        "item_id": "111111",
-        "title": "No PDF",
-        "year": None,
-        "issue": None,
-        "date": "",
-        "url": "https://x/no-pdf-111111",
-        "pdf_url": "",
-    },
-]
+        monkeypatch.setattr(fedinprint, "search", _search)
+        st_louis.search_publications("bogus")
+        assert captured["facet"] is None
+        st_louis.search_publications(None)
+        assert captured["facet"] is None
 
 
 class TestListPublications:
-    """Tests for the publications-catalog aggregation helper."""
+    """Tests for the cached, paginated catalog entry point."""
 
-    def test_folds_pdfs_and_skips_missing(self, monkeypatch):
-        """Synopses with a PDF url become records, newest first; PDF-less ones drop."""
-        monkeypatch.setattr(st_louis, "list_economic_synopses", lambda: _PUBLICATIONS)
-        catalog = st_louis.list_publications()
-        assert [record["id"] for record in catalog] == ["672949", "624571"]
-        assert catalog[0]["series"] == "economic_synopses"
-        assert catalog[0]["url"] == "https://x/latest.pdf"
-        assert catalog[0]["date"] == "2024-07-01"
+    def test_delegates_with_validated_slug(self, monkeypatch):
+        """A valid slug, derived year, and paging are forwarded to the search."""
+        from datetime import date
+
+        captured = {}
+
+        def _search(series=None, min_year="", start=0, limit=20):
+            captured.update(series=series, min_year=min_year, start=start, limit=limit)
+            return [
+                {"series": "Review", "date": "2024-05-01", "title": "T", "url": "u"}
+            ]
+
+        monkeypatch.setattr(st_louis, "search_publications", _search)
+        out = st_louis.list_publications(
+            series="working_papers", start_date=date(2024, 5, 1), start=20, limit=5
+        )
+        assert captured == {
+            "series": "working_papers",
+            "min_year": "2024",
+            "start": 20,
+            "limit": 5,
+        }
+        assert out[0]["title"] == "T"
+
+    def test_unknown_slug_and_no_start_date(self, monkeypatch):
+        """An unknown slug and absent start date pass None and an empty year."""
+        captured = {}
+
+        def _search(series=None, min_year="", start=0, limit=20):
+            captured.update(series=series, min_year=min_year)
+            return []
+
+        monkeypatch.setattr(st_louis, "search_publications", _search)
+        st_louis.list_publications(series="bogus")
+        assert captured["series"] is None
+        assert captured["min_year"] == ""
+
+
+class TestListSeries:
+    """Tests for the supported-series directory."""
+
+    def test_merges_supported_series_with_counts(self, monkeypatch):
+        """Every supported series is returned with its live count, defaulting to 0."""
+        from openbb_federal_reserve.utils import fedinprint
+
+        monkeypatch.setattr(
+            fedinprint,
+            "series_counts",
+            lambda provider, fetch: {"Working Papers": 1850},
+        )
+        series = st_louis.list_series()
+        assert len(series) == len(st_louis.SERIES_SLUGS)
+        assert {
+            "series": "working_papers",
+            "name": "Working Papers",
+            "count": 1850,
+        } in series
+        review = next(record for record in series if record["series"] == "review")
+        assert review["count"] == 0

@@ -1,7 +1,7 @@
 """Federal Reserve Bank of St. Louis National Index Model."""
 
 from datetime import date as dateType
-from typing import Any, Literal
+from typing import Any
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,6 +22,7 @@ class FederalReserveStLouisNationalIndexQueryParams(QueryParams):
 
     __json_schema_extra__ = {
         "index": {
+            "multiple_items_allowed": True,
             "x-widget_config": {
                 "options": [
                     {
@@ -30,18 +31,17 @@ class FederalReserveStLouisNationalIndexQueryParams(QueryParams):
                     },
                     {"label": "Price Pressures", "value": "price_pressures"},
                     {"label": "Economic News Index", "value": "economic_news_index"},
-                ]
-            }
+                ],
+                "multiSelect": True,
+            },
         }
     }
 
-    index: Literal[
-        "financial_stress_index", "price_pressures", "economic_news_index"
-    ] = Field(
-        default="financial_stress_index",
-        description="The index to return: 'financial_stress_index' (STLFSI4, weekly),"
-        + " 'price_pressures' (STLPPM, monthly), or 'economic_news_index'"
-        + " (STLENI, quarterly).",
+    index: str | None = Field(
+        default=None,
+        description="One or more indexes (columns) to return; the default returns"
+        " all three: 'financial_stress_index' (STLFSI4, weekly), 'price_pressures'"
+        " (STLPPM, monthly), and 'economic_news_index' (STLENI, quarterly).",
     )
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -55,8 +55,19 @@ class FederalReserveStLouisNationalIndexData(Data):
     """St. Louis Fed National Index Data."""
 
     date: dateType = Field(description="The observation date.")
-    index: str = Field(description="The requested index name.")
-    value: float | None = Field(default=None, description="The index value.")
+    financial_stress_index: float | None = Field(
+        default=None,
+        description="St. Louis Fed Financial Stress Index (STLFSI4, weekly).",
+    )
+    price_pressures: float | None = Field(
+        default=None,
+        description="St. Louis Fed Price Pressures Measure (STLPPM, monthly).",
+    )
+    economic_news_index: float | None = Field(
+        default=None,
+        description="St. Louis Fed Economic News Index real-GDP nowcast"
+        " (STLENI, quarterly).",
+    )
 
 
 class FederalReserveStLouisNationalIndexFetcher(
@@ -80,13 +91,22 @@ class FederalReserveStLouisNationalIndexFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Download the selected index CSV from FRED."""
+        """Download each selected index CSV from FRED."""
         from openbb_federal_reserve.utils.st_louis import fetch_fred_graph_csv
 
-        text = fetch_fred_graph_csv(_INDEX_SERIES[query.index])
-        if not text:
+        requested = (
+            [name.strip() for name in query.index.split(",") if name.strip()]
+            if query.index
+            else list(_INDEX_SERIES)
+        )
+        selected = [name for name in requested if name in _INDEX_SERIES]
+        data = [
+            {"index": name, "_raw": fetch_fred_graph_csv(_INDEX_SERIES[name])}
+            for name in selected
+        ]
+        if not any(item["_raw"] for item in data):
             raise EmptyDataError("The request was returned empty.")
-        return [{"_raw": text}]
+        return data
 
     @staticmethod
     def transform_data(
@@ -94,28 +114,45 @@ class FederalReserveStLouisNationalIndexFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReserveStLouisNationalIndexData]:
-        """Parse the two-column CSV and apply the date filters."""
+        """Merge each index into wide ``(date, index columns)`` rows."""
         from io import StringIO
 
         from pandas import isna, read_csv, to_datetime, to_numeric
 
-        frame = read_csv(StringIO(data[0]["_raw"]))
-        frame.columns = ["date", "value"]
-        frame["date"] = to_datetime(frame["date"]).dt.date
-        frame["value"] = to_numeric(frame["value"].replace(".", None), errors="coerce")
-        frame["index"] = query.index
+        frames = []
+        for item in data:
+            if not item["_raw"]:
+                continue
+            frame = read_csv(StringIO(item["_raw"]))
+            frame.columns = ["date", item["index"]]
+            frame["date"] = to_datetime(frame["date"]).dt.date
+            frame[item["index"]] = to_numeric(
+                frame[item["index"]].replace(".", None), errors="coerce"
+            )
+            frames.append(frame)
+        if not frames:
+            raise EmptyDataError("The request was returned empty.")
+
+        merged = frames[0]
+        for frame in frames[1:]:
+            merged = merged.merge(frame, on="date", how="outer")
 
         if query.start_date:
-            frame = frame[frame["date"] >= query.start_date]
+            merged = merged[merged["date"] >= query.start_date]
         if query.end_date:
-            frame = frame[frame["date"] <= query.end_date]
+            merged = merged[merged["date"] <= query.end_date]
 
-        return [
-            FederalReserveStLouisNationalIndexData.model_validate(
-                {
-                    k: (None if isinstance(v, float) and isna(v) else v)
-                    for k, v in row.items()
-                }
-            )
-            for row in frame.sort_values("date").to_dict(orient="records")
-        ]
+        columns = [column for column in merged.columns if column != "date"]
+        records: list[FederalReserveStLouisNationalIndexData] = []
+        for row in merged.sort_values("date").to_dict(orient="records"):
+            record = {
+                k: (None if isinstance(v, float) and isna(v) else v)
+                for k, v in row.items()
+            }
+            if any(record[column] is not None for column in columns):
+                records.append(
+                    FederalReserveStLouisNationalIndexData.model_validate(record)
+                )
+        if not records:
+            raise EmptyDataError("The request was returned empty.")
+        return records

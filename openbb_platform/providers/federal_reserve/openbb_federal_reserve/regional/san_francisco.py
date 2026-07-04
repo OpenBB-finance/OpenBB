@@ -480,3 +480,34 @@ async def publications(
 ) -> OBBject:
     """Index the San Francisco Fed Economic Letter and FedViews PDF archives."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FederalReserveSanFranciscoPublicationSeries",
+    examples=[APIEx(parameters={"provider": "federal_reserve"})],
+    widget_config={
+        "name": "San Francisco Fed Publication Series",
+        "description": "The publication series supported by the San Francisco Fed"
+        " publications catalog, with the document count in each.",
+        "subCategory": "Publications & Reports",
+        "gridData": {"w": 20, "h": 15},
+        "data": {
+            "table": {
+                "showAll": True,
+                "columnsDefs": [
+                    {"field": "name", "headerName": "Series"},
+                    {"field": "series", "headerName": "Slug"},
+                    {"field": "count", "headerName": "Documents"},
+                ],
+            }
+        },
+    },
+)
+async def publication_series(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """List the supported San Francisco Fed publication series and their document counts."""
+    return await OBBject.from_query(Query(**locals()))

@@ -1,8 +1,7 @@
-"""Richmond Fed Fifth District survey download, parsing, and PDF helpers."""
+"""Richmond Fed Fifth District survey download and parsing helpers."""
 
 from __future__ import annotations
 
-import re
 from datetime import date as dateType
 from typing import Any
 
@@ -38,36 +37,6 @@ SURVEYS: dict[str, dict[str, str]] = {
     },
 }
 
-_ARCHIVES: dict[str, dict[str, str]] = {
-    "manufacturing": {
-        "page": (
-            f"{BASE_URL}/region_communities/regional_data_analysis/business_surveys"
-            "/manufacturing/archive?mode=archive"
-        ),
-        "prefix": "mfg",
-        "label": "Manufacturing Survey",
-    },
-    "non_manufacturing": {
-        "page": (
-            f"{BASE_URL}/region_communities/regional_data_analysis/business_surveys"
-            "/non-manufacturing?mode=archive"
-        ),
-        "prefix": "nmf",
-        "label": "Service Sector Survey",
-    },
-}
-
-_SNAPSHOTS: dict[str, str] = {
-    "district": "snapshot.pdf",
-    "dc": "snapshot_dc.pdf",
-    "md": "snapshot_md.pdf",
-    "nc": "snapshot_nc.pdf",
-    "sc": "snapshot_sc.pdf",
-    "va": "snapshot_va.pdf",
-    "wv": "snapshot_wv.pdf",
-}
-_SNAPSHOT_DIR = f"{MEDIA}/region_communities/regional_data_analysis/regional_snapshot"
-
 
 def request_bytes(url: str) -> bytes:
     """Return the raw bytes of a Richmond Fed URL.
@@ -88,11 +57,6 @@ def request_bytes(url: str) -> bytes:
     response = make_request(url)
     response.raise_for_status()
     return response.content
-
-
-def request_text(url: str) -> str:
-    """Return the decoded text body of a Richmond Fed URL."""
-    return request_bytes(url).decode("utf-8", "ignore")
 
 
 def fetch_survey_workbook(survey: str) -> bytes:
@@ -275,146 +239,3 @@ def parse_survey_wide(
         column="indicator",
         value="value",
     )
-
-
-def _classify_release(survey: str, href: str) -> dict[str, Any] | None:
-    """Classify a survey release PDF href into a catalog record."""
-    spec = _ARCHIVES[survey]
-    match = re.search(
-        rf"/(\d{{4}})/pdf/{spec['prefix']}_(\d{{2}})_(\d{{2}})_(\d{{2}})\.pdf$", href
-    )
-    if match is None:
-        return None
-    year, month, day, _yy = (int(group) for group in match.groups())
-    try:
-        release_date = dateType(year, month, day)
-    except ValueError:
-        return None
-    return {
-        "survey": survey,
-        "date": release_date.isoformat(),
-        "title": f"{spec['label']} {release_date.strftime('%B %d, %Y')}",
-        "url": f"{BASE_URL}{href}",
-    }
-
-
-def _snapshot_records() -> list[dict[str, Any]]:
-    """Return the static Regional Economic Snapshot catalog records."""
-    today = dateType.today().isoformat()
-    return [
-        {
-            "survey": "regional_snapshot",
-            "date": today,
-            "title": (
-                "Regional Economic Snapshot"
-                if area == "district"
-                else f"Regional Economic Snapshot ({area.upper()})"
-            ),
-            "url": f"{_SNAPSHOT_DIR}/{filename}",
-        }
-        for area, filename in _SNAPSHOTS.items()
-    ]
-
-
-def list_survey_releases(survey: str | None = None) -> list[dict[str, Any]]:
-    """Return the catalog of survey release PDFs, newest first.
-
-    Parameters
-    ----------
-    survey : str | None
-        One of ``"manufacturing"`` or ``"non_manufacturing"``; both, plus the
-        static Regional Economic Snapshots, if omitted.
-
-    Returns
-    -------
-    list[dict]
-        One record per release ``{survey, date, title, url}``.
-    """
-    from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
-
-    targets = [survey] if survey else list(_ARCHIVES)
-
-    def _producer() -> list[dict[str, Any]]:
-        """Scrape and classify every release PDF, folding in static snapshots."""
-        records: dict[tuple, dict[str, Any]] = {}
-        for name in targets:
-            spec = _ARCHIVES[name]
-            text = request_text(spec["page"])
-            pattern = (
-                rf"(/-/media/[^\"']*?/{name.replace('_', '-')}"
-                rf"/\d{{4}}/pdf/{spec['prefix']}_\d{{2}}_\d{{2}}_\d{{2}}[^\"']*?\.pdf)"
-            )
-            for href in re.findall(pattern, text, re.IGNORECASE):
-                record = _classify_release(name, href)
-                if record is None:
-                    continue
-                records[(record["survey"], record["date"])] = record
-        if survey is None:
-            for record in _snapshot_records():
-                records[(record["survey"], record["url"])] = record
-        return [records[key] for key in sorted(records, reverse=True)]
-
-    return cached(
-        ("richmond_survey_releases", survey),
-        lambda: seconds_until_next_release("monthly"),
-        _producer,
-    )
-
-
-def fetch_survey_release_pdf(
-    survey: str = "manufacturing", date: str | None = None
-) -> dict[str, Any]:
-    """Return a selected survey release PDF as a base64 payload.
-
-    Parameters
-    ----------
-    survey : str
-        ``"manufacturing"`` or ``"non_manufacturing"``.
-    date : str | None
-        The release date as ``YYYY-MM`` or ``YYYY-MM-DD``; the most recent
-        release in the month is used. Defaults to the latest release.
-
-    Returns
-    -------
-    dict
-        ``content`` holds the base64-encoded PDF and ``data_format`` its metadata.
-    """
-    import base64
-
-    from openbb_core.app.model.abstract.error import OpenBBError
-
-    from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
-
-    if survey not in _ARCHIVES:
-        raise OpenBBError(
-            f"No Richmond Fed survey '{survey}'. Choose from {sorted(_ARCHIVES)}."
-        )
-    catalog = [r for r in list_survey_releases(survey) if r["survey"] == survey]
-    if not catalog:
-        raise OpenBBError(f"No Richmond Fed '{survey}' survey releases are available.")
-
-    selected: dict[str, Any] | None = catalog[0]
-    if date:
-        target = date[:7]
-        selected = next((r for r in catalog if r["date"].startswith(target)), None)
-        if not selected:
-            raise OpenBBError(
-                f"No Richmond Fed '{survey}' survey release for '{date}'."
-            )
-
-    def _producer() -> str:
-        """Download and base64-encode the selected release PDF."""
-        return base64.b64encode(request_bytes(selected["url"])).decode("utf-8")
-
-    content = cached(
-        ("richmond_survey_release_pdf", selected["survey"], selected["date"]),
-        lambda: seconds_until_next_release("monthly"),
-        _producer,
-    )
-    return {
-        "content": content,
-        "data_format": {
-            "data_type": "pdf",
-            "filename": f"Richmond_{selected['survey']}_{selected['date']}.pdf",
-        },
-    }

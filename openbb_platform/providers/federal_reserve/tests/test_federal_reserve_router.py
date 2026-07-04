@@ -387,6 +387,38 @@ class TestRegionalPublicationsDownload:
         assert isinstance(out[0]["content"], str)
 
     @pytest.mark.asyncio
+    async def test_fedinprint_item_is_resolved_then_downloaded(self, monkeypatch):
+        """A Fed in Print item URL is resolved to its document before download."""
+        from openbb_federal_reserve.utils import fedinprint
+
+        monkeypatch.setattr(
+            fedinprint, "resolve_file", lambda url, fetch: "https://x/wp2608.pdf"
+        )
+        response = MagicMock()
+        response.content = b"%PDF"
+        response.raise_for_status = MagicMock()
+        with patch(
+            "openbb_core.provider.utils.helpers.make_request", return_value=response
+        ) as make:
+            out = await fr.regional_publications_download(
+                {"url": ["https://fedinprint.org/item/fedbwp/1/2"]}
+            )
+        make.assert_called_once_with("https://x/wp2608.pdf")
+        assert out[0]["data_format"]["filename"] == "wp2608.pdf"
+
+    @pytest.mark.asyncio
+    async def test_fedinprint_item_without_document_errors(self, monkeypatch):
+        """A Fed in Print item that resolves to no document reports an error."""
+        from openbb_federal_reserve.utils import fedinprint
+
+        monkeypatch.setattr(fedinprint, "resolve_file", lambda url, fetch: None)
+        out = await fr.regional_publications_download(
+            {"url": ["https://fedinprint.org/item/l00/1"]}
+        )
+        assert out[0]["error_type"] == "download_error"
+        assert "No document" in out[0]["content"]
+
+    @pytest.mark.asyncio
     async def test_download_error_with_args_is_captured(self):
         """A failure carrying args records the first arg as the message."""
         with patch(

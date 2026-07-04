@@ -12,12 +12,519 @@
     "params": [
       {
         "label": "Series",
-        "description": "Comma-separated FRED series codes (panel columns) to return; the default returns every series.",
+        "description": "One or more FRED series codes (panel columns) to return; the default returns every series. Multiple comma separated items allowed.",
         "optional": true,
         "type": "text",
         "value": null,
         "show": true,
-        "paramName": "series"
+        "multiSelect": true,
+        "paramName": "series",
+        "options": [
+          {
+            "label": "Real Personal Income",
+            "value": "RPI"
+          },
+          {
+            "label": "Real personal income ex transfer receipts",
+            "value": "W875RX1"
+          },
+          {
+            "label": "Real personal consumption expenditures",
+            "value": "DPCERA3M086SBEA"
+          },
+          {
+            "label": "Real Manu. and Trade Industries Sales",
+            "value": "CMRMTSPLx"
+          },
+          {
+            "label": "Retail and Food Services Sales",
+            "value": "RETAILx"
+          },
+          {
+            "label": "IP Index",
+            "value": "INDPRO"
+          },
+          {
+            "label": "IP: Final Products and Nonindustrial Supplies",
+            "value": "IPFPNSS"
+          },
+          {
+            "label": "IP: Final Products (Market Group)",
+            "value": "IPFINAL"
+          },
+          {
+            "label": "IP: Consumer Goods",
+            "value": "IPCONGD"
+          },
+          {
+            "label": "IP: Durable Consumer Goods",
+            "value": "IPDCONGD"
+          },
+          {
+            "label": "IP: Nondurable Consumer Goods",
+            "value": "IPNCONGD"
+          },
+          {
+            "label": "IP: Business Equipment",
+            "value": "IPBUSEQ"
+          },
+          {
+            "label": "IP: Materials",
+            "value": "IPMAT"
+          },
+          {
+            "label": "IP: Durable Materials",
+            "value": "IPDMAT"
+          },
+          {
+            "label": "IP: Nondurable Materials",
+            "value": "IPNMAT"
+          },
+          {
+            "label": "IP: Manufacturing (SIC)",
+            "value": "IPMANSICS"
+          },
+          {
+            "label": "IP: Residential Utilities",
+            "value": "IPB51222S"
+          },
+          {
+            "label": "IP: Fuels",
+            "value": "IPFUELS"
+          },
+          {
+            "label": "Capacity Utilization: Manufacturing",
+            "value": "CUMFNS"
+          },
+          {
+            "label": "Help-Wanted Index for United States",
+            "value": "HWI"
+          },
+          {
+            "label": "Ratio of Help Wanted/No. Unemployed",
+            "value": "HWIURATIO"
+          },
+          {
+            "label": "Civilian Labor Force",
+            "value": "CLF16OV"
+          },
+          {
+            "label": "Civilian Employment",
+            "value": "CE16OV"
+          },
+          {
+            "label": "Civilian Unemployment Rate",
+            "value": "UNRATE"
+          },
+          {
+            "label": "Average Duration of Unemployment (Weeks)",
+            "value": "UEMPMEAN"
+          },
+          {
+            "label": "Civilians Unemployed - Less Than 5 Weeks",
+            "value": "UEMPLT5"
+          },
+          {
+            "label": "Civilians Unemployed for 5-14 Weeks",
+            "value": "UEMP5TO14"
+          },
+          {
+            "label": "Civilians Unemployed - 15 Weeks & Over",
+            "value": "UEMP15OV"
+          },
+          {
+            "label": "Civilians Unemployed for 15-26 Weeks",
+            "value": "UEMP15T26"
+          },
+          {
+            "label": "Civilians Unemployed for 27 Weeks and Over",
+            "value": "UEMP27OV"
+          },
+          {
+            "label": "Initial Claims",
+            "value": "CLAIMSx"
+          },
+          {
+            "label": "All Employees: Total nonfarm",
+            "value": "PAYEMS"
+          },
+          {
+            "label": "All Employees: Goods-Producing Industries",
+            "value": "USGOOD"
+          },
+          {
+            "label": "All Employees: Mining and Logging: Mining",
+            "value": "CES1021000001"
+          },
+          {
+            "label": "All Employees: Construction",
+            "value": "USCONS"
+          },
+          {
+            "label": "All Employees: Manufacturing",
+            "value": "MANEMP"
+          },
+          {
+            "label": "All Employees: Durable goods",
+            "value": "DMANEMP"
+          },
+          {
+            "label": "All Employees: Nondurable goods",
+            "value": "NDMANEMP"
+          },
+          {
+            "label": "All Employees: Service-Providing Industries",
+            "value": "SRVPRD"
+          },
+          {
+            "label": "All Employees: Trade, Transportation & Utilities",
+            "value": "USTPU"
+          },
+          {
+            "label": "All Employees: Wholesale Trade",
+            "value": "USWTRADE"
+          },
+          {
+            "label": "All Employees: Retail Trade",
+            "value": "USTRADE"
+          },
+          {
+            "label": "All Employees: Financial Activities",
+            "value": "USFIRE"
+          },
+          {
+            "label": "All Employees: Government",
+            "value": "USGOVT"
+          },
+          {
+            "label": "Avg Weekly Hours : Goods-Producing",
+            "value": "CES0600000007"
+          },
+          {
+            "label": "Avg Weekly Overtime Hours : Manufacturing",
+            "value": "AWOTMAN"
+          },
+          {
+            "label": "Avg Weekly Hours : Manufacturing",
+            "value": "AWHMAN"
+          },
+          {
+            "label": "Housing Starts: Total New Privately Owned",
+            "value": "HOUST"
+          },
+          {
+            "label": "Housing Starts, Northeast",
+            "value": "HOUSTNE"
+          },
+          {
+            "label": "Housing Starts, Midwest",
+            "value": "HOUSTMW"
+          },
+          {
+            "label": "Housing Starts, South",
+            "value": "HOUSTS"
+          },
+          {
+            "label": "Housing Starts, West",
+            "value": "HOUSTW"
+          },
+          {
+            "label": "New Private Housing Permits (SAAR)",
+            "value": "PERMIT"
+          },
+          {
+            "label": "New Private Housing Permits, Northeast (SAAR)",
+            "value": "PERMITNE"
+          },
+          {
+            "label": "New Private Housing Permits, Midwest (SAAR)",
+            "value": "PERMITMW"
+          },
+          {
+            "label": "New Private Housing Permits, South (SAAR)",
+            "value": "PERMITS"
+          },
+          {
+            "label": "New Private Housing Permits, West (SAAR)",
+            "value": "PERMITW"
+          },
+          {
+            "label": "New Orders for Consumer Goods",
+            "value": "ACOGNO"
+          },
+          {
+            "label": "New Orders for Durable Goods",
+            "value": "AMDMNOx"
+          },
+          {
+            "label": "New Orders for Nondefense Capital Goods",
+            "value": "ANDENOx"
+          },
+          {
+            "label": "Unfilled Orders for Durable Goods",
+            "value": "AMDMUOx"
+          },
+          {
+            "label": "Total Business Inventories",
+            "value": "BUSINVx"
+          },
+          {
+            "label": "Total Business: Inventories to Sales Ratio",
+            "value": "ISRATIOx"
+          },
+          {
+            "label": "M1 Money Stock",
+            "value": "M1SL"
+          },
+          {
+            "label": "M2 Money Stock",
+            "value": "M2SL"
+          },
+          {
+            "label": "Real M2 Money Stock",
+            "value": "M2REAL"
+          },
+          {
+            "label": "Monetary Base",
+            "value": "BOGMBASE"
+          },
+          {
+            "label": "Total Reserves of Depository Institutions",
+            "value": "TOTRESNS"
+          },
+          {
+            "label": "Reserves Of Depository Institutions",
+            "value": "NONBORRES"
+          },
+          {
+            "label": "Commercial and Industrial Loans",
+            "value": "BUSLOANS"
+          },
+          {
+            "label": "Real Estate Loans at All Commercial Banks",
+            "value": "REALLN"
+          },
+          {
+            "label": "Total Nonrevolving Credit",
+            "value": "NONREVSL"
+          },
+          {
+            "label": "Nonrevolving consumer credit to Personal Income",
+            "value": "CONSPI"
+          },
+          {
+            "label": "S&P\u2019s Common Stock Price Index: Composite",
+            "value": "S&P 500"
+          },
+          {
+            "label": "S&P\u2019s Composite Common Stock: Dividend Yield",
+            "value": "S&P div yield"
+          },
+          {
+            "label": "S&P\u2019s Composite Common Stock: Price-Earnings Ratio",
+            "value": "S&P PE ratio"
+          },
+          {
+            "label": "Effective Federal Funds Rate",
+            "value": "FEDFUNDS"
+          },
+          {
+            "label": "3-Month AA Financial Commercial Paper Rate",
+            "value": "CP3Mx"
+          },
+          {
+            "label": "3-Month Treasury Bill:",
+            "value": "TB3MS"
+          },
+          {
+            "label": "6-Month Treasury Bill:",
+            "value": "TB6MS"
+          },
+          {
+            "label": "1-Year Treasury Rate",
+            "value": "GS1"
+          },
+          {
+            "label": "5-Year Treasury Rate",
+            "value": "GS5"
+          },
+          {
+            "label": "10-Year Treasury Rate",
+            "value": "GS10"
+          },
+          {
+            "label": "Moody\u2019s Seasoned Aaa Corporate Bond Yield",
+            "value": "AAA"
+          },
+          {
+            "label": "Moody\u2019s Seasoned Baa Corporate Bond Yield",
+            "value": "BAA"
+          },
+          {
+            "label": "3-Month Commercial Paper Minus FEDFUNDS",
+            "value": "COMPAPFFx"
+          },
+          {
+            "label": "3-Month Treasury C Minus FEDFUNDS",
+            "value": "TB3SMFFM"
+          },
+          {
+            "label": "6-Month Treasury C Minus FEDFUNDS",
+            "value": "TB6SMFFM"
+          },
+          {
+            "label": "1-Year Treasury C Minus FEDFUNDS",
+            "value": "T1YFFM"
+          },
+          {
+            "label": "5-Year Treasury C Minus FEDFUNDS",
+            "value": "T5YFFM"
+          },
+          {
+            "label": "10-Year Treasury C Minus FEDFUNDS",
+            "value": "T10YFFM"
+          },
+          {
+            "label": "Moody\u2019s Aaa Corporate Bond Minus FEDFUNDS",
+            "value": "AAAFFM"
+          },
+          {
+            "label": "Moody's Baa Corporate Bond Minus FEDFUNDS",
+            "value": "BAAFFM"
+          },
+          {
+            "label": "Trade Weighted U.S. Dollar Index",
+            "value": "TWEXAFEGSMTHx"
+          },
+          {
+            "label": "Switzerland / U.S. Foreign Exchange Rate",
+            "value": "EXSZUSx"
+          },
+          {
+            "label": "Japan / U.S. Foreign Exchange Rate",
+            "value": "EXJPUSx"
+          },
+          {
+            "label": "U.S. / U.K. Foreign Exchange Rate",
+            "value": "EXUSUKx"
+          },
+          {
+            "label": "Canada / U.S. Foreign Exchange Rate",
+            "value": "EXCAUSx"
+          },
+          {
+            "label": "PPI: Finished Goods",
+            "value": "WPSFD49207"
+          },
+          {
+            "label": "PPI: Finished Consumer Goods",
+            "value": "WPSFD49502"
+          },
+          {
+            "label": "PPI: Intermediate Materials",
+            "value": "WPSID61"
+          },
+          {
+            "label": "PPI: Crude Materials",
+            "value": "WPSID62"
+          },
+          {
+            "label": "Crude Oil, spliced WTI and Cushing",
+            "value": "OILPRICEx"
+          },
+          {
+            "label": "PPI: Metals and metal products:",
+            "value": "PPICMM"
+          },
+          {
+            "label": "CPI : All Items",
+            "value": "CPIAUCSL"
+          },
+          {
+            "label": "CPI : Apparel",
+            "value": "CPIAPPSL"
+          },
+          {
+            "label": "CPI : Transportation",
+            "value": "CPITRNSL"
+          },
+          {
+            "label": "CPI : Medical Care",
+            "value": "CPIMEDSL"
+          },
+          {
+            "label": "CPI : Commodities",
+            "value": "CUSR0000SAC"
+          },
+          {
+            "label": "CPI : Durables",
+            "value": "CUSR0000SAD"
+          },
+          {
+            "label": "CPI : Services",
+            "value": "CUSR0000SAS"
+          },
+          {
+            "label": "CPI : All Items Less Food",
+            "value": "CPIULFSL"
+          },
+          {
+            "label": "CPI : All items less shelter",
+            "value": "CUSR0000SA0L2"
+          },
+          {
+            "label": "CPI : All items less medical care",
+            "value": "CUSR0000SA0L5"
+          },
+          {
+            "label": "Personal Cons. Expend.: Chain Index",
+            "value": "PCEPI"
+          },
+          {
+            "label": "Personal Cons. Exp: Durable goods",
+            "value": "DDURRG3M086SBEA"
+          },
+          {
+            "label": "Personal Cons. Exp: Nondurable goods",
+            "value": "DNDGRG3M086SBEA"
+          },
+          {
+            "label": "Personal Cons. Exp: Services",
+            "value": "DSERRG3M086SBEA"
+          },
+          {
+            "label": "Avg Hourly Earnings : Goods-Producing",
+            "value": "CES0600000008"
+          },
+          {
+            "label": "Avg Hourly Earnings : Construction",
+            "value": "CES2000000008"
+          },
+          {
+            "label": "Avg Hourly Earnings : Manufacturing",
+            "value": "CES3000000008"
+          },
+          {
+            "label": "Consumer Sentiment Index",
+            "value": "UMCSENTx"
+          },
+          {
+            "label": "Consumer Motor Vehicle Loans Outstanding",
+            "value": "DTCOLNVHFNM"
+          },
+          {
+            "label": "Total Consumer Loans and Leases Outstanding",
+            "value": "DTCTHFNM"
+          },
+          {
+            "label": "Securities in Bank Credit at All Commercial Banks",
+            "value": "INVEST"
+          },
+          {
+            "label": "VIX",
+            "value": "VIXCLSx"
+          }
+        ]
       },
       {
         "label": "Transform",
@@ -71,6 +578,762 @@
             "headerTooltip": "The observation date.",
             "cellDataType": "date",
             "sort": "desc"
+          },
+          {
+            "field": "RPI",
+            "headerName": "Real Personal Income",
+            "headerTooltip": "RPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "W875RX1",
+            "headerName": "Real personal income ex transfer receipts",
+            "headerTooltip": "W875RX1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DPCERA3M086SBEA",
+            "headerName": "Real personal consumption expenditures",
+            "headerTooltip": "DPCERA3M086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CMRMTSPLx",
+            "headerName": "Real Manu. and Trade Industries Sales",
+            "headerTooltip": "CMRMTSPLx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "RETAILx",
+            "headerName": "Retail and Food Services Sales",
+            "headerTooltip": "RETAILx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "INDPRO",
+            "headerName": "IP Index",
+            "headerTooltip": "INDPRO",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPFPNSS",
+            "headerName": "IP: Final Products and Nonindustrial Supplies",
+            "headerTooltip": "IPFPNSS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPFINAL",
+            "headerName": "IP: Final Products (Market Group)",
+            "headerTooltip": "IPFINAL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPCONGD",
+            "headerName": "IP: Consumer Goods",
+            "headerTooltip": "IPCONGD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPDCONGD",
+            "headerName": "IP: Durable Consumer Goods",
+            "headerTooltip": "IPDCONGD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPNCONGD",
+            "headerName": "IP: Nondurable Consumer Goods",
+            "headerTooltip": "IPNCONGD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPBUSEQ",
+            "headerName": "IP: Business Equipment",
+            "headerTooltip": "IPBUSEQ",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPMAT",
+            "headerName": "IP: Materials",
+            "headerTooltip": "IPMAT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPDMAT",
+            "headerName": "IP: Durable Materials",
+            "headerTooltip": "IPDMAT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPNMAT",
+            "headerName": "IP: Nondurable Materials",
+            "headerTooltip": "IPNMAT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPMANSICS",
+            "headerName": "IP: Manufacturing (SIC)",
+            "headerTooltip": "IPMANSICS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPB51222S",
+            "headerName": "IP: Residential Utilities",
+            "headerTooltip": "IPB51222S",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPFUELS",
+            "headerName": "IP: Fuels",
+            "headerTooltip": "IPFUELS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUMFNS",
+            "headerName": "Capacity Utilization: Manufacturing",
+            "headerTooltip": "CUMFNS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HWI",
+            "headerName": "Help-Wanted Index for United States",
+            "headerTooltip": "HWI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HWIURATIO",
+            "headerName": "Ratio of Help Wanted/No. Unemployed",
+            "headerTooltip": "HWIURATIO",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CLF16OV",
+            "headerName": "Civilian Labor Force",
+            "headerTooltip": "CLF16OV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CE16OV",
+            "headerName": "Civilian Employment",
+            "headerTooltip": "CE16OV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UNRATE",
+            "headerName": "Civilian Unemployment Rate",
+            "headerTooltip": "UNRATE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMPMEAN",
+            "headerName": "Average Duration of Unemployment (Weeks)",
+            "headerTooltip": "UEMPMEAN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMPLT5",
+            "headerName": "Civilians Unemployed - Less Than 5 Weeks",
+            "headerTooltip": "UEMPLT5",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP5TO14",
+            "headerName": "Civilians Unemployed for 5-14 Weeks",
+            "headerTooltip": "UEMP5TO14",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP15OV",
+            "headerName": "Civilians Unemployed - 15 Weeks & Over",
+            "headerTooltip": "UEMP15OV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP15T26",
+            "headerName": "Civilians Unemployed for 15-26 Weeks",
+            "headerTooltip": "UEMP15T26",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP27OV",
+            "headerName": "Civilians Unemployed for 27 Weeks and Over",
+            "headerTooltip": "UEMP27OV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CLAIMSx",
+            "headerName": "Initial Claims",
+            "headerTooltip": "CLAIMSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PAYEMS",
+            "headerName": "All Employees: Total nonfarm",
+            "headerTooltip": "PAYEMS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USGOOD",
+            "headerName": "All Employees: Goods-Producing Industries",
+            "headerTooltip": "USGOOD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES1021000001",
+            "headerName": "All Employees: Mining and Logging: Mining",
+            "headerTooltip": "CES1021000001",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USCONS",
+            "headerName": "All Employees: Construction",
+            "headerTooltip": "USCONS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "MANEMP",
+            "headerName": "All Employees: Manufacturing",
+            "headerTooltip": "MANEMP",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DMANEMP",
+            "headerName": "All Employees: Durable goods",
+            "headerTooltip": "DMANEMP",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NDMANEMP",
+            "headerName": "All Employees: Nondurable goods",
+            "headerTooltip": "NDMANEMP",
+            "cellDataType": "number"
+          },
+          {
+            "field": "SRVPRD",
+            "headerName": "All Employees: Service-Providing Industries",
+            "headerTooltip": "SRVPRD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USTPU",
+            "headerName": "All Employees: Trade, Transportation & Utilities",
+            "headerTooltip": "USTPU",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USWTRADE",
+            "headerName": "All Employees: Wholesale Trade",
+            "headerTooltip": "USWTRADE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USTRADE",
+            "headerName": "All Employees: Retail Trade",
+            "headerTooltip": "USTRADE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USFIRE",
+            "headerName": "All Employees: Financial Activities",
+            "headerTooltip": "USFIRE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USGOVT",
+            "headerName": "All Employees: Government",
+            "headerTooltip": "USGOVT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES0600000007",
+            "headerName": "Avg Weekly Hours : Goods-Producing",
+            "headerTooltip": "CES0600000007",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AWOTMAN",
+            "headerName": "Avg Weekly Overtime Hours : Manufacturing",
+            "headerTooltip": "AWOTMAN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AWHMAN",
+            "headerName": "Avg Weekly Hours : Manufacturing",
+            "headerTooltip": "AWHMAN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUST",
+            "headerName": "Housing Starts: Total New Privately Owned",
+            "headerTooltip": "HOUST",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTNE",
+            "headerName": "Housing Starts, Northeast",
+            "headerTooltip": "HOUSTNE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTMW",
+            "headerName": "Housing Starts, Midwest",
+            "headerTooltip": "HOUSTMW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTS",
+            "headerName": "Housing Starts, South",
+            "headerTooltip": "HOUSTS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTW",
+            "headerName": "Housing Starts, West",
+            "headerTooltip": "HOUSTW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMIT",
+            "headerName": "New Private Housing Permits (SAAR)",
+            "headerTooltip": "PERMIT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITNE",
+            "headerName": "New Private Housing Permits, Northeast (SAAR)",
+            "headerTooltip": "PERMITNE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITMW",
+            "headerName": "New Private Housing Permits, Midwest (SAAR)",
+            "headerTooltip": "PERMITMW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITS",
+            "headerName": "New Private Housing Permits, South (SAAR)",
+            "headerTooltip": "PERMITS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITW",
+            "headerName": "New Private Housing Permits, West (SAAR)",
+            "headerTooltip": "PERMITW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ACOGNO",
+            "headerName": "New Orders for Consumer Goods",
+            "headerTooltip": "ACOGNO",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AMDMNOx",
+            "headerName": "New Orders for Durable Goods",
+            "headerTooltip": "AMDMNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ANDENOx",
+            "headerName": "New Orders for Nondefense Capital Goods",
+            "headerTooltip": "ANDENOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AMDMUOx",
+            "headerName": "Unfilled Orders for Durable Goods",
+            "headerTooltip": "AMDMUOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BUSINVx",
+            "headerName": "Total Business Inventories",
+            "headerTooltip": "BUSINVx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ISRATIOx",
+            "headerName": "Total Business: Inventories to Sales Ratio",
+            "headerTooltip": "ISRATIOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "M1SL",
+            "headerName": "M1 Money Stock",
+            "headerTooltip": "M1SL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "M2SL",
+            "headerName": "M2 Money Stock",
+            "headerTooltip": "M2SL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "M2REAL",
+            "headerName": "Real M2 Money Stock",
+            "headerTooltip": "M2REAL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BOGMBASE",
+            "headerName": "Monetary Base",
+            "headerTooltip": "BOGMBASE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TOTRESNS",
+            "headerName": "Total Reserves of Depository Institutions",
+            "headerTooltip": "TOTRESNS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NONBORRES",
+            "headerName": "Reserves Of Depository Institutions",
+            "headerTooltip": "NONBORRES",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BUSLOANS",
+            "headerName": "Commercial and Industrial Loans",
+            "headerTooltip": "BUSLOANS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "REALLN",
+            "headerName": "Real Estate Loans at All Commercial Banks",
+            "headerTooltip": "REALLN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NONREVSL",
+            "headerName": "Total Nonrevolving Credit",
+            "headerTooltip": "NONREVSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CONSPI",
+            "headerName": "Nonrevolving consumer credit to Personal Income",
+            "headerTooltip": "CONSPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "S&P 500",
+            "headerName": "S&P\u2019s Common Stock Price Index: Composite",
+            "headerTooltip": "S&P 500",
+            "cellDataType": "number"
+          },
+          {
+            "field": "S&P div yield",
+            "headerName": "S&P\u2019s Composite Common Stock: Dividend Yield",
+            "headerTooltip": "S&P div yield",
+            "cellDataType": "number"
+          },
+          {
+            "field": "S&P PE ratio",
+            "headerName": "S&P\u2019s Composite Common Stock: Price-Earnings Ratio",
+            "headerTooltip": "S&P PE ratio",
+            "cellDataType": "number"
+          },
+          {
+            "field": "FEDFUNDS",
+            "headerName": "Effective Federal Funds Rate",
+            "headerTooltip": "FEDFUNDS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CP3Mx",
+            "headerName": "3-Month AA Financial Commercial Paper Rate",
+            "headerTooltip": "CP3Mx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB3MS",
+            "headerName": "3-Month Treasury Bill:",
+            "headerTooltip": "TB3MS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB6MS",
+            "headerName": "6-Month Treasury Bill:",
+            "headerTooltip": "TB6MS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS1",
+            "headerName": "1-Year Treasury Rate",
+            "headerTooltip": "GS1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS5",
+            "headerName": "5-Year Treasury Rate",
+            "headerTooltip": "GS5",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS10",
+            "headerName": "10-Year Treasury Rate",
+            "headerTooltip": "GS10",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AAA",
+            "headerName": "Moody\u2019s Seasoned Aaa Corporate Bond Yield",
+            "headerTooltip": "AAA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BAA",
+            "headerName": "Moody\u2019s Seasoned Baa Corporate Bond Yield",
+            "headerTooltip": "BAA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "COMPAPFFx",
+            "headerName": "3-Month Commercial Paper Minus FEDFUNDS",
+            "headerTooltip": "COMPAPFFx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB3SMFFM",
+            "headerName": "3-Month Treasury C Minus FEDFUNDS",
+            "headerTooltip": "TB3SMFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB6SMFFM",
+            "headerName": "6-Month Treasury C Minus FEDFUNDS",
+            "headerTooltip": "TB6SMFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "T1YFFM",
+            "headerName": "1-Year Treasury C Minus FEDFUNDS",
+            "headerTooltip": "T1YFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "T5YFFM",
+            "headerName": "5-Year Treasury C Minus FEDFUNDS",
+            "headerTooltip": "T5YFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "T10YFFM",
+            "headerName": "10-Year Treasury C Minus FEDFUNDS",
+            "headerTooltip": "T10YFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AAAFFM",
+            "headerName": "Moody\u2019s Aaa Corporate Bond Minus FEDFUNDS",
+            "headerTooltip": "AAAFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BAAFFM",
+            "headerName": "Moody's Baa Corporate Bond Minus FEDFUNDS",
+            "headerTooltip": "BAAFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TWEXAFEGSMTHx",
+            "headerName": "Trade Weighted U.S. Dollar Index",
+            "headerTooltip": "TWEXAFEGSMTHx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXSZUSx",
+            "headerName": "Switzerland / U.S. Foreign Exchange Rate",
+            "headerTooltip": "EXSZUSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXJPUSx",
+            "headerName": "Japan / U.S. Foreign Exchange Rate",
+            "headerTooltip": "EXJPUSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXUSUKx",
+            "headerName": "U.S. / U.K. Foreign Exchange Rate",
+            "headerTooltip": "EXUSUKx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXCAUSx",
+            "headerName": "Canada / U.S. Foreign Exchange Rate",
+            "headerTooltip": "EXCAUSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSFD49207",
+            "headerName": "PPI: Finished Goods",
+            "headerTooltip": "WPSFD49207",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSFD49502",
+            "headerName": "PPI: Finished Consumer Goods",
+            "headerTooltip": "WPSFD49502",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSID61",
+            "headerName": "PPI: Intermediate Materials",
+            "headerTooltip": "WPSID61",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSID62",
+            "headerName": "PPI: Crude Materials",
+            "headerTooltip": "WPSID62",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OILPRICEx",
+            "headerName": "Crude Oil, spliced WTI and Cushing",
+            "headerTooltip": "OILPRICEx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PPICMM",
+            "headerName": "PPI: Metals and metal products:",
+            "headerTooltip": "PPICMM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIAUCSL",
+            "headerName": "CPI : All Items",
+            "headerTooltip": "CPIAUCSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIAPPSL",
+            "headerName": "CPI : Apparel",
+            "headerTooltip": "CPIAPPSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPITRNSL",
+            "headerName": "CPI : Transportation",
+            "headerTooltip": "CPITRNSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIMEDSL",
+            "headerName": "CPI : Medical Care",
+            "headerTooltip": "CPIMEDSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SAC",
+            "headerName": "CPI : Commodities",
+            "headerTooltip": "CUSR0000SAC",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SAD",
+            "headerName": "CPI : Durables",
+            "headerTooltip": "CUSR0000SAD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SAS",
+            "headerName": "CPI : Services",
+            "headerTooltip": "CUSR0000SAS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIULFSL",
+            "headerName": "CPI : All Items Less Food",
+            "headerTooltip": "CPIULFSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SA0L2",
+            "headerName": "CPI : All items less shelter",
+            "headerTooltip": "CUSR0000SA0L2",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SA0L5",
+            "headerName": "CPI : All items less medical care",
+            "headerTooltip": "CUSR0000SA0L5",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCEPI",
+            "headerName": "Personal Cons. Expend.: Chain Index",
+            "headerTooltip": "PCEPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DDURRG3M086SBEA",
+            "headerName": "Personal Cons. Exp: Durable goods",
+            "headerTooltip": "DDURRG3M086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DNDGRG3M086SBEA",
+            "headerName": "Personal Cons. Exp: Nondurable goods",
+            "headerTooltip": "DNDGRG3M086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DSERRG3M086SBEA",
+            "headerName": "Personal Cons. Exp: Services",
+            "headerTooltip": "DSERRG3M086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES0600000008",
+            "headerName": "Avg Hourly Earnings : Goods-Producing",
+            "headerTooltip": "CES0600000008",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES2000000008",
+            "headerName": "Avg Hourly Earnings : Construction",
+            "headerTooltip": "CES2000000008",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES3000000008",
+            "headerName": "Avg Hourly Earnings : Manufacturing",
+            "headerTooltip": "CES3000000008",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UMCSENTx",
+            "headerName": "Consumer Sentiment Index",
+            "headerTooltip": "UMCSENTx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DTCOLNVHFNM",
+            "headerName": "Consumer Motor Vehicle Loans Outstanding",
+            "headerTooltip": "DTCOLNVHFNM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DTCTHFNM",
+            "headerName": "Total Consumer Loans and Leases Outstanding",
+            "headerTooltip": "DTCTHFNM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "INVEST",
+            "headerName": "Securities in Bank Credit at All Commercial Banks",
+            "headerTooltip": "INVEST",
+            "cellDataType": "number"
+          },
+          {
+            "field": "VIXCLSx",
+            "headerName": "VIX",
+            "headerTooltip": "VIXCLSx",
+            "cellDataType": "number"
           }
         ],
         "enableAdvanced": true
@@ -94,12 +1357,995 @@
     "params": [
       {
         "label": "Series",
-        "description": "Comma-separated FRED series codes (panel columns) to return; the default returns every series.",
+        "description": "One or more FRED series codes (panel columns) to return; the default returns every series. Multiple comma separated items allowed.",
         "optional": true,
         "type": "text",
         "value": null,
         "show": true,
-        "paramName": "series"
+        "multiSelect": true,
+        "paramName": "series",
+        "options": [
+          {
+            "label": "Real Gross Domestic Product, 3 Decimal (Billions of Chained 2017 Dollars)",
+            "value": "GDPC1"
+          },
+          {
+            "label": "Real Personal Consumption Expenditures (Billions of Chained 2017 Dollars)",
+            "value": "PCECC96"
+          },
+          {
+            "label": "Real personal consumption expenditures: Durable goods (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "PCDGx"
+          },
+          {
+            "label": "Real Personal Consumption Expenditures: Services (Billions of 2017 Dollars), deflated using its own price index",
+            "value": "PCESVx"
+          },
+          {
+            "label": "Real Personal Consumption Expenditures: Nondurable Goods (Billions of 2017 Dollars), deflated using its own price index",
+            "value": "PCNDx"
+          },
+          {
+            "label": "Real Gross Private Domestic Investment, 3 decimal (Billions of Chained 2017 Dollars)",
+            "value": "GPDIC1"
+          },
+          {
+            "label": "Real private fixed investment (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "FPIx"
+          },
+          {
+            "label": "Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "Y033RC1Q027SBEAx"
+          },
+          {
+            "label": "Real private fixed investment: Nonresidential (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "PNFIx"
+          },
+          {
+            "label": "Real private fixed investment: Residential (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "PRFIx"
+          },
+          {
+            "label": "Shares of gross domestic product: Gross private domestic investment: Change in private inventories (Percent)",
+            "value": "A014RE1Q156NBEA"
+          },
+          {
+            "label": "Real Government Consumption Expenditures & Gross Investment (Billions of Chained 2017 Dollars)",
+            "value": "GCEC1"
+          },
+          {
+            "label": "Real Government Consumption Expenditures and Gross Investment: Federal (Percent Change from Preceding Period)",
+            "value": "A823RL1Q225SBEA"
+          },
+          {
+            "label": "Real Federal Government Current Receipts (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "FGRECPTx"
+          },
+          {
+            "label": "Real government state and local consumption expenditures (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "value": "SLCEx"
+          },
+          {
+            "label": "Real Exports of Goods & Services, 3 Decimal (Billions of Chained 2017 Dollars)",
+            "value": "EXPGSC1"
+          },
+          {
+            "label": "Real Imports of Goods & Services, 3 Decimal (Billions of Chained 2017 Dollars)",
+            "value": "IMPGSC1"
+          },
+          {
+            "label": "Real Disposable Personal Income (Billions of Chained 2017 Dollars)",
+            "value": "DPIC96"
+          },
+          {
+            "label": "Nonfarm Business Sector: Real Output (Index 2017=100)",
+            "value": "OUTNFB"
+          },
+          {
+            "label": "Business Sector: Real Output (Index 2017=100)",
+            "value": "OUTBS"
+          },
+          {
+            "label": "Manufacturing Sector: Real Output (Index 2017=100)",
+            "value": "OUTMS"
+          },
+          {
+            "label": "Industrial Production Index (Index 2017=100)",
+            "value": "INDPRO"
+          },
+          {
+            "label": "Industrial Production: Final Products (Market Group) (Index 2017=100)",
+            "value": "IPFINAL"
+          },
+          {
+            "label": "Industrial Production: Consumer Goods (Index 2017=100)",
+            "value": "IPCONGD"
+          },
+          {
+            "label": "Industrial Production: Materials (Index 2017=100)",
+            "value": "IPMAT"
+          },
+          {
+            "label": "Industrial Production: Durable Materials (Index 2017=100)",
+            "value": "IPDMAT"
+          },
+          {
+            "label": "Industrial Production: Nondurable Materials (Index 2017=100)",
+            "value": "IPNMAT"
+          },
+          {
+            "label": "Industrial Production: Durable Consumer Goods (Index 2017=100)",
+            "value": "IPDCONGD"
+          },
+          {
+            "label": "Industrial Production: Durable Goods: Automotive products (Index 2017=100)",
+            "value": "IPB51110SQ"
+          },
+          {
+            "label": "Industrial Production: Nondurable Consumer Goods (Index 2017=100)",
+            "value": "IPNCONGD"
+          },
+          {
+            "label": "Industrial Production: Business Equipment (Index 2017=100)",
+            "value": "IPBUSEQ"
+          },
+          {
+            "label": "Industrial Production: Consumer energy products (Index 2017=100)",
+            "value": "IPB51220SQ"
+          },
+          {
+            "label": "Capacity Utilization: Total Industry (Percent of Capacity)",
+            "value": "TCU"
+          },
+          {
+            "label": "Capacity Utilization: Manufacturing (SIC) (Percent of Capacity)",
+            "value": "CUMFNS"
+          },
+          {
+            "label": "All Employees: Total nonfarm (Thousands of Persons)",
+            "value": "PAYEMS"
+          },
+          {
+            "label": "All Employees: Total Private Industries (Thousands of Persons)",
+            "value": "USPRIV"
+          },
+          {
+            "label": "All Employees: Manufacturing (Thousands of Persons)",
+            "value": "MANEMP"
+          },
+          {
+            "label": "All Employees: Service-Providing Industries (Thousands of Persons)",
+            "value": "SRVPRD"
+          },
+          {
+            "label": "All Employees: Goods-Producing Industries (Thousands of Persons)",
+            "value": "USGOOD"
+          },
+          {
+            "label": "All Employees: Durable goods (Thousands of Persons)",
+            "value": "DMANEMP"
+          },
+          {
+            "label": "All Employees: Nondurable goods (Thousands of Persons)",
+            "value": "NDMANEMP"
+          },
+          {
+            "label": "All Employees: Construction (Thousands of Persons)",
+            "value": "USCONS"
+          },
+          {
+            "label": "All Employees: Education & Health Services (Thousands of Persons)",
+            "value": "USEHS"
+          },
+          {
+            "label": "All Employees: Financial Activities (Thousands of Persons)",
+            "value": "USFIRE"
+          },
+          {
+            "label": "All Employees: Information Services (Thousands of Persons)",
+            "value": "USINFO"
+          },
+          {
+            "label": "All Employees: Professional & Business Services (Thousands of Persons)",
+            "value": "USPBS"
+          },
+          {
+            "label": "All Employees: Leisure & Hospitality (Thousands of Persons)",
+            "value": "USLAH"
+          },
+          {
+            "label": "All Employees: Other Services (Thousands of Persons)",
+            "value": "USSERV"
+          },
+          {
+            "label": "All Employees: Mining and logging (Thousands of Persons)",
+            "value": "USMINE"
+          },
+          {
+            "label": "All Employees: Trade, Transportation & Utilities (Thousands of Persons)",
+            "value": "USTPU"
+          },
+          {
+            "label": "All Employees: Government (Thousands of Persons)",
+            "value": "USGOVT"
+          },
+          {
+            "label": "All Employees: Retail Trade (Thousands of Persons)",
+            "value": "USTRADE"
+          },
+          {
+            "label": "All Employees: Wholesale Trade (Thousands of Persons)",
+            "value": "USWTRADE"
+          },
+          {
+            "label": "All Employees: Government: Federal (Thousands of Persons)",
+            "value": "CES9091000001"
+          },
+          {
+            "label": "All Employees: Government: State Government (Thousands of Persons)",
+            "value": "CES9092000001"
+          },
+          {
+            "label": "All Employees: Government: Local Government (Thousands of Persons)",
+            "value": "CES9093000001"
+          },
+          {
+            "label": "Civilian Employment (Thousands of Persons)",
+            "value": "CE16OV"
+          },
+          {
+            "label": "Civilian Labor Force Participation Rate (Percent)",
+            "value": "CIVPART"
+          },
+          {
+            "label": "Civilian Unemployment Rate (Percent)",
+            "value": "UNRATE"
+          },
+          {
+            "label": "Unemployment Rate less than 27 weeks (Percent)",
+            "value": "UNRATESTx"
+          },
+          {
+            "label": "Unemployment Rate for more than 27 weeks (Percent)",
+            "value": "UNRATELTx"
+          },
+          {
+            "label": "Unemployment Rate - 16 to 19 years (Percent)",
+            "value": "LNS14000012"
+          },
+          {
+            "label": "Unemployment Rate - 20 years and over, Men (Percent)",
+            "value": "LNS14000025"
+          },
+          {
+            "label": "Unemployment Rate - 20 years and over, Women (Percent)",
+            "value": "LNS14000026"
+          },
+          {
+            "label": "Number of Civilians Unemployed - Less Than 5 Weeks (Thousands of Persons)",
+            "value": "UEMPLT5"
+          },
+          {
+            "label": "Number of Civilians Unemployed for 5 to 14 Weeks (Thousands of Persons)",
+            "value": "UEMP5TO14"
+          },
+          {
+            "label": "Number of Civilians Unemployed for 15 to 26 Weeks (Thousands of Persons)",
+            "value": "UEMP15T26"
+          },
+          {
+            "label": "Number of Civilians Unemployed for 27 Weeks and Over (Thousands of Persons)",
+            "value": "UEMP27OV"
+          },
+          {
+            "label": "Unemployment Level - Job Losers (Thousands of Persons)",
+            "value": "LNS13023621"
+          },
+          {
+            "label": "Unemployment Level - Reentrants to Labor Force (Thousands of Persons)",
+            "value": "LNS13023557"
+          },
+          {
+            "label": "Unemployment Level - Job Leavers (Thousands of Persons)",
+            "value": "LNS13023705"
+          },
+          {
+            "label": "Unemployment Level - New Entrants (Thousands of Persons)",
+            "value": "LNS13023569"
+          },
+          {
+            "label": "Employment Level - Part-Time for Economic Reasons, All Industries (Thousands of Persons)",
+            "value": "LNS12032194"
+          },
+          {
+            "label": "Business Sector: Hours of All Persons (Index 2017=100)",
+            "value": "HOABS"
+          },
+          {
+            "label": "Manufacturing Sector: Hours of All Persons (Index 2017=100)",
+            "value": "HOAMS"
+          },
+          {
+            "label": "Nonfarm Business Sector: Hours of All Persons (Index 2017=100)",
+            "value": "HOANBS"
+          },
+          {
+            "label": "Average Weekly Hours of Production and Nonsupervisory Employees: Manufacturing (Hours)",
+            "value": "AWHMAN"
+          },
+          {
+            "label": "Average Weekly Hours Of Production And Nonsupervisory Employees: Total private (Hours)",
+            "value": "AWHNONAG"
+          },
+          {
+            "label": "Average Weekly Overtime Hours of Production and Nonsupervisory Employees: Manufacturing (Hours)",
+            "value": "AWOTMAN"
+          },
+          {
+            "label": "Help-Wanted Index",
+            "value": "HWIx"
+          },
+          {
+            "label": "Housing Starts: Total: New Privately Owned Housing Units Started (Thousands of Units)",
+            "value": "HOUST"
+          },
+          {
+            "label": "Privately Owned Housing Starts: 5-Unit Structures or More (Thousands of Units)",
+            "value": "HOUST5F"
+          },
+          {
+            "label": "New Private Housing Units Authorized by Building Permits (Thousands of Units)",
+            "value": "PERMIT"
+          },
+          {
+            "label": "Housing Starts in Midwest Census Region (Thousands of Units)",
+            "value": "HOUSTMW"
+          },
+          {
+            "label": "Housing Starts in Northeast Census Region (Thousands of Units)",
+            "value": "HOUSTNE"
+          },
+          {
+            "label": "Housing Starts in South Census Region (Thousands of Units)",
+            "value": "HOUSTS"
+          },
+          {
+            "label": "Housing Starts in West Census Region (Thousands of Units)",
+            "value": "HOUSTW"
+          },
+          {
+            "label": "Real Manufacturing and Trade Industries Sales (Millions of Chained 2017 Dollars)",
+            "value": "CMRMTSPLx"
+          },
+          {
+            "label": "Real Retail and Food Services Sales (Millions of Chained 2017 Dollars), deflated by Core PCE",
+            "value": "RSAFSx"
+          },
+          {
+            "label": "Real Manufacturers' New Orders: Durable Goods (Millions of 2017 Dollars), deflated by Core PCE",
+            "value": "AMDMNOx"
+          },
+          {
+            "label": "Real Value of Manufacturers' New Orders for Consumer Goods Industries (Million of 2017 Dollars), deflated by Core PCE",
+            "value": "ACOGNOx"
+          },
+          {
+            "label": "Real Value of Manufacturers' Unfilled Orders for Durable Goods Industries (Million of 2017 Dollars), deflated by Core PCE",
+            "value": "AMDMUOx"
+          },
+          {
+            "label": "Real Value of Manufacturers' New Orders for Capital Goods: Nondefense Capital Goods Industries (Million of 2017 Dollars), deflated by Core PCE",
+            "value": "ANDENOx"
+          },
+          {
+            "label": "Real Manufacturing and Trade Inventories (Millions of 2017 Dollars)",
+            "value": "INVCQRMTSPL"
+          },
+          {
+            "label": "Personal Consumption Expenditures: Chain-type Price Index (Index 2017=100)",
+            "value": "PCECTPI"
+          },
+          {
+            "label": "Personal Consumption Expenditures Excluding Food and Energy (Chain-Type Price Index) (Index 2017=100)",
+            "value": "PCEPILFE"
+          },
+          {
+            "label": "Gross Domestic Product: Chain-type Price Index (Index 2017=100)",
+            "value": "GDPCTPI"
+          },
+          {
+            "label": "Gross Private Domestic Investment: Chain-type Price Index (Index 2017=100)",
+            "value": "GPDICTPI"
+          },
+          {
+            "label": "Business Sector: Implicit Price Deflator (Index 2017=100)",
+            "value": "IPDBS"
+          },
+          {
+            "label": "Personal consumption expenditures: Goods (chain-type price index)",
+            "value": "DGDSRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Durable goods (chain-type price index)",
+            "value": "DDURRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Services (chain-type price index)",
+            "value": "DSERRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Nondurable goods (chain-type price index)",
+            "value": "DNDGRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Services: Household consumption expenditures (chain-type price index)",
+            "value": "DHCERG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Durable goods: Motor vehicles and parts (chain-type price index)",
+            "value": "DMOTRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Durable goods: Furnishings and durable household equipment (chain-type price index)",
+            "value": "DFDHRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Durable goods: Recreational goods and vehicles (chain-type price index)",
+            "value": "DREQRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Durable goods: Other durable goods (chain-type price index)",
+            "value": "DODGRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Nondurable goods: Food and beverages purchased for off-premises consumption (chain-type price index)",
+            "value": "DFXARG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Nondurable goods: Clothing and footwear (chain-type price index)",
+            "value": "DCLORG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Nondurable goods: Gasoline and other energy goods (chain-type price index)",
+            "value": "DGOERG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Nondurable goods: Other nondurable goods (chain-type price index)",
+            "value": "DONGRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Services: Housing and utilities (chain-type price index)",
+            "value": "DHUTRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Services: Health care (chain-type price index)",
+            "value": "DHLCRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Transportation services (chain-type price index)",
+            "value": "DTRSRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Recreation services (chain-type price index)",
+            "value": "DRCARG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Services: Food services and accommodations (chain-type price index)",
+            "value": "DFSARG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Financial services and insurance (chain-type price index)",
+            "value": "DIFSRG3Q086SBEA"
+          },
+          {
+            "label": "Personal consumption expenditures: Other services (chain-type price index)",
+            "value": "DOTSRG3Q086SBEA"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: All Items (Index 1982-84=100)",
+            "value": "CPIAUCSL"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: All Items Less Food & Energy (Index 1982-84=100)",
+            "value": "CPILFESL"
+          },
+          {
+            "label": "Producer Price Index by Commodity for Finished Goods (Index 1982=100)",
+            "value": "WPSFD49207"
+          },
+          {
+            "label": "Producer Price Index for All Commodities (Index 1982=100)",
+            "value": "PPIACO"
+          },
+          {
+            "label": "Producer Price Index by Commodity for Finished Consumer Goods (Index 1982=100)",
+            "value": "WPSFD49502"
+          },
+          {
+            "label": "Producer Price Index by Commodity for Finished Consumer Foods (Index 1982=100)",
+            "value": "WPSFD4111"
+          },
+          {
+            "label": "Producer Price Index by Commodity Industrial Commodities (Index 1982=100)",
+            "value": "PPIIDC"
+          },
+          {
+            "label": "Producer Price Index by Commodity Intermediate Materials: Supplies & Components (Index 1982=100)",
+            "value": "WPSID61"
+          },
+          {
+            "label": "Producer Price Index by Commodity for Fuels and Related Products and Power: Natural Gas (Index 1982=100)",
+            "value": "WPU0531"
+          },
+          {
+            "label": "Producer Price Index by Commodity for Fuels and Related Products and Power: Crude Petroleum (Domestic Production) (Index 1982=100)",
+            "value": "WPU0561"
+          },
+          {
+            "label": "Real Crude Oil Prices: West Texas Intermediate (WTI) - Cushing, Oklahoma (2017 Dollars per Barrel), deflated by Core PCE",
+            "value": "OILPRICEx"
+          },
+          {
+            "label": "Real Average Hourly Earnings of Production and Nonsupervisory Employees: Total Private (2017 Dollars per Hour), deflated by Core PCE",
+            "value": "AHETPIx"
+          },
+          {
+            "label": "Real Average Hourly Earnings of Production and Nonsupervisory Employees: Construction (2017 Dollars per Hour), deflated by Core PCE",
+            "value": "CES2000000008x"
+          },
+          {
+            "label": "Real Average Hourly Earnings of Production and Nonsupervisory Employees: Manufacturing (2017 Dollars per Hour), deflated by Core PCE",
+            "value": "CES3000000008x"
+          },
+          {
+            "label": "Manufacturing Sector: Real Compensation Per Hour (Index 2017=100)",
+            "value": "COMPRMS"
+          },
+          {
+            "label": "Nonfarm Business Sector: Real Compensation Per Hour (Index 2017=100)",
+            "value": "COMPRNFB"
+          },
+          {
+            "label": "Business Sector: Real Compensation Per Hour (Index 2017=100)",
+            "value": "RCPHBS"
+          },
+          {
+            "label": "Manufacturing Sector: Real Output Per Hour of All Persons (Index 2017=100)",
+            "value": "OPHMFG"
+          },
+          {
+            "label": "Nonfarm Business Sector: Real Output Per Hour of All Persons (Index 2017=100)",
+            "value": "OPHNFB"
+          },
+          {
+            "label": "Business Sector: Real Output Per Hour of All Persons (Index 2017=100)",
+            "value": "OPHPBS"
+          },
+          {
+            "label": "Business Sector: Unit Labor Cost (Index 2017=100)",
+            "value": "ULCBS"
+          },
+          {
+            "label": "Manufacturing Sector: Unit Labor Cost (Index 2017=100)",
+            "value": "ULCMFG"
+          },
+          {
+            "label": "Nonfarm Business Sector: Unit Labor Cost (Index 2017=100)",
+            "value": "ULCNFB"
+          },
+          {
+            "label": "Nonfarm Business Sector: Unit Nonlabor Payments (Index 2017=100)",
+            "value": "UNLPNBS"
+          },
+          {
+            "label": "Effective Federal Funds Rate (Percent)",
+            "value": "FEDFUNDS"
+          },
+          {
+            "label": "3-Month Treasury Bill: Secondary Market Rate (Percent)",
+            "value": "TB3MS"
+          },
+          {
+            "label": "6-Month Treasury Bill: Secondary Market Rate (Percent)",
+            "value": "TB6MS"
+          },
+          {
+            "label": "1-Year Treasury Constant Maturity Rate (Percent)",
+            "value": "GS1"
+          },
+          {
+            "label": "10-Year Treasury Constant Maturity Rate (Percent)",
+            "value": "GS10"
+          },
+          {
+            "label": "30-Year Conventional Mortgage Rate\u00a9 (Percent)",
+            "value": "MORTGAGE30US"
+          },
+          {
+            "label": "Moody's Seasoned Aaa Corporate Bond Yield\u00a9 (Percent)",
+            "value": "AAA"
+          },
+          {
+            "label": "Moody's Seasoned Baa Corporate Bond Yield\u00a9 (Percent)",
+            "value": "BAA"
+          },
+          {
+            "label": "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity (Percent)",
+            "value": "BAA10YM"
+          },
+          {
+            "label": "30-Year Conventional Mortgage Rate Relative to 10-Year Treasury Constant Maturity (Percent)",
+            "value": "MORTG10YRx"
+          },
+          {
+            "label": "6-Month Treasury Bill Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "value": "TB6M3Mx"
+          },
+          {
+            "label": "1-Year Treasury Constant Maturity Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "value": "GS1TB3Mx"
+          },
+          {
+            "label": "10-Year Treasury Constant Maturity Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "value": "GS10TB3Mx"
+          },
+          {
+            "label": "3-Month Commercial Paper Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "value": "CPF3MTB3Mx"
+          },
+          {
+            "label": "St. Louis Adjusted Monetary Base (Billions of 1982-84 Dollars), deflated by CPI",
+            "value": "BOGMBASEREALx"
+          },
+          {
+            "label": "Real M1 Money Stock (Billions of 1982-84 Dollars), deflated by CPI",
+            "value": "M1REAL"
+          },
+          {
+            "label": "Real M2 Money Stock (Billions of 1982-84 Dollars), deflated by CPI",
+            "value": "M2REAL"
+          },
+          {
+            "label": "Real Commercial and Industrial Loans, All Commercial Banks (Billions of 2017 U.S. Dollars), deflated by Core PCE",
+            "value": "BUSLOANSx"
+          },
+          {
+            "label": "Real Consumer Loans at All Commercial Banks (Billions of 2017 U.S. Dollars), deflated by Core PCE",
+            "value": "CONSUMERx"
+          },
+          {
+            "label": "Total Real Nonrevolving Credit Owned and Securitized, Outstanding (Billions of Dollars), deflated by Core PCE",
+            "value": "NONREVSLx"
+          },
+          {
+            "label": "Real Real Estate Loans, All Commercial Banks (Billions of 2017 U.S. Dollars), deflated by Core PCE",
+            "value": "REALLNx"
+          },
+          {
+            "label": "Total Real Revolving Credit Owned and Securitized, Outstanding (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "REVOLSLx"
+          },
+          {
+            "label": "Total Consumer Credit Outstanding, deflated by Core PCE",
+            "value": "TOTALSLx"
+          },
+          {
+            "label": "FRB Senior Loans Officer Opions. Net Percentage of Domestic Respondents Reporting Increased Willingness to Make Consumer Installment Loans",
+            "value": "DRIWCIL"
+          },
+          {
+            "label": "Real Total Assets of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "TABSHNOx"
+          },
+          {
+            "label": "Real Total Liabilities of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "TLBSHNOx"
+          },
+          {
+            "label": "Liabilities of Households and Nonprofit Organizations Relative to Personal Disposable Income (Percent)",
+            "value": "LIABPIx"
+          },
+          {
+            "label": "Real Net Worth of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "TNWBSHNOx"
+          },
+          {
+            "label": "Net Worth of Households and Nonprofit Organizations Relative to Disposable Personal Income (Percent)",
+            "value": "NWPIx"
+          },
+          {
+            "label": "Real Assets of Households and Nonprofit Organizations excluding Real Estate Assets (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "TARESAx"
+          },
+          {
+            "label": "Real Real Estate Assets of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "HNOREMQ027Sx"
+          },
+          {
+            "label": "Real Total Financial Assets of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "value": "TFAABSHNOx"
+          },
+          {
+            "label": "CBOE Volatility Index: VIX",
+            "value": "VIXCLSx"
+          },
+          {
+            "label": "All-Transactions House Price Index for the United States (Index 1980 Q1=100)",
+            "value": "USSTHPI"
+          },
+          {
+            "label": "S&P/Case-Shiller 10-City Composite Home Price Index (Index January 2000 = 100)",
+            "value": "SPCS10RSA"
+          },
+          {
+            "label": "S&P/Case-Shiller 20-City Composite Home Price Index (Index January 2000 = 100)",
+            "value": "SPCS20RSA"
+          },
+          {
+            "label": "Trade Weighted U.S. Dollar Index: Major Currencies (Index March 1973=100)",
+            "value": "TWEXAFEGSMTHx"
+          },
+          {
+            "label": "U.S. / Euro Foreign Exchange Rate (U.S. Dollars to One Euro)",
+            "value": "EXUSEU"
+          },
+          {
+            "label": "Switzerland / U.S. Foreign Exchange Rate",
+            "value": "EXSZUSx"
+          },
+          {
+            "label": "Japan / U.S. Foreign Exchange Rate",
+            "value": "EXJPUSx"
+          },
+          {
+            "label": "U.S. / U.K. Foreign Exchange Rate",
+            "value": "EXUSUKx"
+          },
+          {
+            "label": "Canada / U.S. Foreign Exchange Rate",
+            "value": "EXCAUSx"
+          },
+          {
+            "label": "University of Michigan: Consumer Sentiment (Index 1st Quarter 1966=100)",
+            "value": "UMCSENTx"
+          },
+          {
+            "label": "Economic Policy Uncertainty Index for United States",
+            "value": "USEPUINDXM"
+          },
+          {
+            "label": "Shares of gross domestic product: Exports of goods and services (Percent)",
+            "value": "B020RE1Q156NBEA"
+          },
+          {
+            "label": "Shares of gross domestic product: Imports of goods and services (Percent)",
+            "value": "B021RE1Q156NBEA"
+          },
+          {
+            "label": "Federal Debt: Total Public Debt as Percent of GDP (Percent)",
+            "value": "GFDEGDQ188S"
+          },
+          {
+            "label": "Real Federal Debt: Total Public Debt (Millions of 2017 Dollars), deflated by PCE",
+            "value": "GFDEBTNx"
+          },
+          {
+            "label": "Industrial Production: Manufacturing (SIC) (Index 2017=100)",
+            "value": "IPMANSICS"
+          },
+          {
+            "label": "Industrial Production: Residential Utilities (Index 2017=100)",
+            "value": "IPB51222S"
+          },
+          {
+            "label": "Industrial Production: Fuels (Index 2017=100)",
+            "value": "IPFUELS"
+          },
+          {
+            "label": "Average (Mean) Duration of Unemployment (Weeks)",
+            "value": "UEMPMEAN"
+          },
+          {
+            "label": "Average Weekly Hours of Production and Nonsupervisory Employees: Goods-Producing",
+            "value": "CES0600000007"
+          },
+          {
+            "label": "Total Reserves of Depository Institutions (Billions of Dollars)",
+            "value": "TOTRESNS"
+          },
+          {
+            "label": "Reserves Of Depository Institutions, Nonborrowed (Millions of Dollars)",
+            "value": "NONBORRES"
+          },
+          {
+            "label": "5-Year Treasury Constant Maturity Rate",
+            "value": "GS5"
+          },
+          {
+            "label": "3-Month Treasury Constant Maturity Minus Federal Funds Rate",
+            "value": "TB3SMFFM"
+          },
+          {
+            "label": "5-Year Treasury Constant Maturity Minus Federal Funds Rate",
+            "value": "T5YFFM"
+          },
+          {
+            "label": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate",
+            "value": "AAAFFM"
+          },
+          {
+            "label": "Producer Price Index: Crude Materials for Further Processing (Index 1982=100)",
+            "value": "WPSID62"
+          },
+          {
+            "label": "Producer Price Index: Commodities: Metals and metal products: Primary nonferrous metals (Index 1982=100)",
+            "value": "PPICMM"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: Apparel (Index 1982-84=100)",
+            "value": "CPIAPPSL"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: Transportation (Index 1982-84=100)",
+            "value": "CPITRNSL"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: Medical Care (Index 1982-84=100)",
+            "value": "CPIMEDSL"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: Commodities (Index 1982-84=100)",
+            "value": "CUSR0000SAC"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: Durables (Index 1982-84=100)",
+            "value": "CUSR0000SAD"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: Services (Index 1982-84=100)",
+            "value": "CUSR0000SAS"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: All Items Less Food (Index 1982-84=100)",
+            "value": "CPIULFSL"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: All items less shelter (Index 1982-84=100)",
+            "value": "CUSR0000SA0L2"
+          },
+          {
+            "label": "Consumer Price Index for All Urban Consumers: All items less medical care (Index 1982-84=100)",
+            "value": "CUSR0000SA0L5"
+          },
+          {
+            "label": "Average Hourly Earnings of Production and Nonsupervisory Employees: Goods-Producing (Dollars per Hour)",
+            "value": "CES0600000008"
+          },
+          {
+            "label": "Consumer Motor Vehicle Loans Outstanding Owned by Finance Companies (Millions of Dollars)",
+            "value": "DTCOLNVHFNM"
+          },
+          {
+            "label": "Total Consumer Loans and Leases Outstanding Owned and Securitized by Finance Companies (Millions of Dollars)",
+            "value": "DTCTHFNM"
+          },
+          {
+            "label": "Securities in Bank Credit at All Commercial Banks (Billions of Dollars)",
+            "value": "INVEST"
+          },
+          {
+            "label": "Ratio of Help Wanted/No. Unemployed",
+            "value": "HWIURATIOx"
+          },
+          {
+            "label": "Initial Claims",
+            "value": "CLAIMSx"
+          },
+          {
+            "label": "Total Business Inventories (Millions of Dollars)",
+            "value": "BUSINVx"
+          },
+          {
+            "label": "Total Business: Inventories to Sales Ratio",
+            "value": "ISRATIOx"
+          },
+          {
+            "label": "Nonrevolving consumer credit to Personal Income",
+            "value": "CONSPIx"
+          },
+          {
+            "label": "3-Month AA Financial Commercial Paper Rate",
+            "value": "CP3M"
+          },
+          {
+            "label": "3-Month Commercial Paper Minus Federal Funds Rate",
+            "value": "COMPAPFF"
+          },
+          {
+            "label": "New Private Housing Units Authorized by Building Permits in the Northeast Census Region (Thousands, SAAR)",
+            "value": "PERMITNE"
+          },
+          {
+            "label": "New Private Housing Units Authorized by Building Permits in the Midwest Census Region (Thousands, SAAR)",
+            "value": "PERMITMW"
+          },
+          {
+            "label": "New Private Housing Units Authorized by Building Permits in the South Census Region (Thousands, SAAR)",
+            "value": "PERMITS"
+          },
+          {
+            "label": "New Private Housing Units Authorized by Building Permits in the West Census Region (Thousands, SAAR)",
+            "value": "PERMITW"
+          },
+          {
+            "label": "Nikkei Stock Average",
+            "value": "NIKKEI225"
+          },
+          {
+            "label": "NASDAQ Composite (Index Feb 5, 1971=100)",
+            "value": "NASDAQCOM"
+          },
+          {
+            "label": "CPI for All Urban Consumers: Owners' equivalent rent of residences (Index Dec 1982=100)",
+            "value": "CUSR0000SEHC"
+          },
+          {
+            "label": "Real Nonfinancial Corporate Business Sector Liabilities (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "value": "TLBSNNCBx"
+          },
+          {
+            "label": "Nonfinancial Corporate Business Sector Liabilities to Disposable Business Income (Percent)",
+            "value": "TLBSNNCBBDIx"
+          },
+          {
+            "label": "Real Nonfinancial Corporate Business Sector Assets (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "value": "TTAABSNNCBx"
+          },
+          {
+            "label": "Real Nonfinancial Corporate Business Sector Net Worth (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "value": "TNWMVBSNNCBx"
+          },
+          {
+            "label": "Nonfinancial Corporate Business Sector Net Worth to Disposable Business Income (Percent)",
+            "value": "TNWMVBSNNCBBDIx"
+          },
+          {
+            "label": "Real Nonfinancial Noncorporate Business Sector Liabilities (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "value": "TLBSNNBx"
+          },
+          {
+            "label": "Nonfinancial Noncorporate Business Sector Liabilities to Disposable Business Income (Percent)",
+            "value": "TLBSNNBBDIx"
+          },
+          {
+            "label": "Real Nonfinancial Noncorporate Business Sector Assets (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "value": "TABSNNBx"
+          },
+          {
+            "label": "Real Nonfinancial Noncorporate Business Sector Net Worth (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "value": "TNWBSNNBx"
+          },
+          {
+            "label": "Nonfinancial Noncorporate Business Sector Net Worth to Disposable Business Income (Percent)",
+            "value": "TNWBSNNBBDIx"
+          },
+          {
+            "label": "Real Disposable Business Income, Billions of 2017 Dollars (Corporate cash flow with IVA minus taxes on corporate income, deflated by Implicit Price Deflator for Business Sector IPDBS)",
+            "value": "CNCFx"
+          },
+          {
+            "label": "S&P's Common Stock Price Index: Composite",
+            "value": "S&P 500"
+          },
+          {
+            "label": "S&P's Composite Common Stock: Dividend Yield",
+            "value": "S&P div yield"
+          },
+          {
+            "label": "S&P's Composite Common Stock: Price-Earnings Ratio",
+            "value": "S&P PE ratio"
+          }
+        ]
       },
       {
         "label": "Transform",
@@ -153,6 +2399,1476 @@
             "headerTooltip": "The observation date.",
             "cellDataType": "date",
             "sort": "desc"
+          },
+          {
+            "field": "GDPC1",
+            "headerName": "Real Gross Domestic Product, 3 Decimal (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "GDPC1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCECC96",
+            "headerName": "Real Personal Consumption Expenditures (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "PCECC96",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCDGx",
+            "headerName": "Real personal consumption expenditures: Durable goods (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "PCDGx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCESVx",
+            "headerName": "Real Personal Consumption Expenditures: Services (Billions of 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "PCESVx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCNDx",
+            "headerName": "Real Personal Consumption Expenditures: Nondurable Goods (Billions of 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "PCNDx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GPDIC1",
+            "headerName": "Real Gross Private Domestic Investment, 3 decimal (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "GPDIC1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "FPIx",
+            "headerName": "Real private fixed investment (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "FPIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "Y033RC1Q027SBEAx",
+            "headerName": "Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "Y033RC1Q027SBEAx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PNFIx",
+            "headerName": "Real private fixed investment: Nonresidential (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "PNFIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PRFIx",
+            "headerName": "Real private fixed investment: Residential (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "PRFIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "A014RE1Q156NBEA",
+            "headerName": "Shares of gross domestic product: Gross private domestic investment: Change in private inventories (Percent)",
+            "headerTooltip": "A014RE1Q156NBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GCEC1",
+            "headerName": "Real Government Consumption Expenditures & Gross Investment (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "GCEC1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "A823RL1Q225SBEA",
+            "headerName": "Real Government Consumption Expenditures and Gross Investment: Federal (Percent Change from Preceding Period)",
+            "headerTooltip": "A823RL1Q225SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "FGRECPTx",
+            "headerName": "Real Federal Government Current Receipts (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "FGRECPTx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "SLCEx",
+            "headerName": "Real government state and local consumption expenditures (Billions of Chained 2017 Dollars), deflated using its own price index",
+            "headerTooltip": "SLCEx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXPGSC1",
+            "headerName": "Real Exports of Goods & Services, 3 Decimal (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "EXPGSC1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IMPGSC1",
+            "headerName": "Real Imports of Goods & Services, 3 Decimal (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "IMPGSC1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DPIC96",
+            "headerName": "Real Disposable Personal Income (Billions of Chained 2017 Dollars)",
+            "headerTooltip": "DPIC96",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OUTNFB",
+            "headerName": "Nonfarm Business Sector: Real Output (Index 2017=100)",
+            "headerTooltip": "OUTNFB",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OUTBS",
+            "headerName": "Business Sector: Real Output (Index 2017=100)",
+            "headerTooltip": "OUTBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OUTMS",
+            "headerName": "Manufacturing Sector: Real Output (Index 2017=100)",
+            "headerTooltip": "OUTMS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "INDPRO",
+            "headerName": "Industrial Production Index (Index 2017=100)",
+            "headerTooltip": "INDPRO",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPFINAL",
+            "headerName": "Industrial Production: Final Products (Market Group) (Index 2017=100)",
+            "headerTooltip": "IPFINAL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPCONGD",
+            "headerName": "Industrial Production: Consumer Goods (Index 2017=100)",
+            "headerTooltip": "IPCONGD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPMAT",
+            "headerName": "Industrial Production: Materials (Index 2017=100)",
+            "headerTooltip": "IPMAT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPDMAT",
+            "headerName": "Industrial Production: Durable Materials (Index 2017=100)",
+            "headerTooltip": "IPDMAT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPNMAT",
+            "headerName": "Industrial Production: Nondurable Materials (Index 2017=100)",
+            "headerTooltip": "IPNMAT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPDCONGD",
+            "headerName": "Industrial Production: Durable Consumer Goods (Index 2017=100)",
+            "headerTooltip": "IPDCONGD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPB51110SQ",
+            "headerName": "Industrial Production: Durable Goods: Automotive products (Index 2017=100)",
+            "headerTooltip": "IPB51110SQ",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPNCONGD",
+            "headerName": "Industrial Production: Nondurable Consumer Goods (Index 2017=100)",
+            "headerTooltip": "IPNCONGD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPBUSEQ",
+            "headerName": "Industrial Production: Business Equipment (Index 2017=100)",
+            "headerTooltip": "IPBUSEQ",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPB51220SQ",
+            "headerName": "Industrial Production: Consumer energy products (Index 2017=100)",
+            "headerTooltip": "IPB51220SQ",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TCU",
+            "headerName": "Capacity Utilization: Total Industry (Percent of Capacity)",
+            "headerTooltip": "TCU",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUMFNS",
+            "headerName": "Capacity Utilization: Manufacturing (SIC) (Percent of Capacity)",
+            "headerTooltip": "CUMFNS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PAYEMS",
+            "headerName": "All Employees: Total nonfarm (Thousands of Persons)",
+            "headerTooltip": "PAYEMS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USPRIV",
+            "headerName": "All Employees: Total Private Industries (Thousands of Persons)",
+            "headerTooltip": "USPRIV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "MANEMP",
+            "headerName": "All Employees: Manufacturing (Thousands of Persons)",
+            "headerTooltip": "MANEMP",
+            "cellDataType": "number"
+          },
+          {
+            "field": "SRVPRD",
+            "headerName": "All Employees: Service-Providing Industries (Thousands of Persons)",
+            "headerTooltip": "SRVPRD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USGOOD",
+            "headerName": "All Employees: Goods-Producing Industries (Thousands of Persons)",
+            "headerTooltip": "USGOOD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DMANEMP",
+            "headerName": "All Employees: Durable goods (Thousands of Persons)",
+            "headerTooltip": "DMANEMP",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NDMANEMP",
+            "headerName": "All Employees: Nondurable goods (Thousands of Persons)",
+            "headerTooltip": "NDMANEMP",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USCONS",
+            "headerName": "All Employees: Construction (Thousands of Persons)",
+            "headerTooltip": "USCONS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USEHS",
+            "headerName": "All Employees: Education & Health Services (Thousands of Persons)",
+            "headerTooltip": "USEHS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USFIRE",
+            "headerName": "All Employees: Financial Activities (Thousands of Persons)",
+            "headerTooltip": "USFIRE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USINFO",
+            "headerName": "All Employees: Information Services (Thousands of Persons)",
+            "headerTooltip": "USINFO",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USPBS",
+            "headerName": "All Employees: Professional & Business Services (Thousands of Persons)",
+            "headerTooltip": "USPBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USLAH",
+            "headerName": "All Employees: Leisure & Hospitality (Thousands of Persons)",
+            "headerTooltip": "USLAH",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USSERV",
+            "headerName": "All Employees: Other Services (Thousands of Persons)",
+            "headerTooltip": "USSERV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USMINE",
+            "headerName": "All Employees: Mining and logging (Thousands of Persons)",
+            "headerTooltip": "USMINE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USTPU",
+            "headerName": "All Employees: Trade, Transportation & Utilities (Thousands of Persons)",
+            "headerTooltip": "USTPU",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USGOVT",
+            "headerName": "All Employees: Government (Thousands of Persons)",
+            "headerTooltip": "USGOVT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USTRADE",
+            "headerName": "All Employees: Retail Trade (Thousands of Persons)",
+            "headerTooltip": "USTRADE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USWTRADE",
+            "headerName": "All Employees: Wholesale Trade (Thousands of Persons)",
+            "headerTooltip": "USWTRADE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES9091000001",
+            "headerName": "All Employees: Government: Federal (Thousands of Persons)",
+            "headerTooltip": "CES9091000001",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES9092000001",
+            "headerName": "All Employees: Government: State Government (Thousands of Persons)",
+            "headerTooltip": "CES9092000001",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES9093000001",
+            "headerName": "All Employees: Government: Local Government (Thousands of Persons)",
+            "headerTooltip": "CES9093000001",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CE16OV",
+            "headerName": "Civilian Employment (Thousands of Persons)",
+            "headerTooltip": "CE16OV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CIVPART",
+            "headerName": "Civilian Labor Force Participation Rate (Percent)",
+            "headerTooltip": "CIVPART",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UNRATE",
+            "headerName": "Civilian Unemployment Rate (Percent)",
+            "headerTooltip": "UNRATE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UNRATESTx",
+            "headerName": "Unemployment Rate less than 27 weeks (Percent)",
+            "headerTooltip": "UNRATESTx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UNRATELTx",
+            "headerName": "Unemployment Rate for more than 27 weeks (Percent)",
+            "headerTooltip": "UNRATELTx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS14000012",
+            "headerName": "Unemployment Rate - 16 to 19 years (Percent)",
+            "headerTooltip": "LNS14000012",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS14000025",
+            "headerName": "Unemployment Rate - 20 years and over, Men (Percent)",
+            "headerTooltip": "LNS14000025",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS14000026",
+            "headerName": "Unemployment Rate - 20 years and over, Women (Percent)",
+            "headerTooltip": "LNS14000026",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMPLT5",
+            "headerName": "Number of Civilians Unemployed - Less Than 5 Weeks (Thousands of Persons)",
+            "headerTooltip": "UEMPLT5",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP5TO14",
+            "headerName": "Number of Civilians Unemployed for 5 to 14 Weeks (Thousands of Persons)",
+            "headerTooltip": "UEMP5TO14",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP15T26",
+            "headerName": "Number of Civilians Unemployed for 15 to 26 Weeks (Thousands of Persons)",
+            "headerTooltip": "UEMP15T26",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMP27OV",
+            "headerName": "Number of Civilians Unemployed for 27 Weeks and Over (Thousands of Persons)",
+            "headerTooltip": "UEMP27OV",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS13023621",
+            "headerName": "Unemployment Level - Job Losers (Thousands of Persons)",
+            "headerTooltip": "LNS13023621",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS13023557",
+            "headerName": "Unemployment Level - Reentrants to Labor Force (Thousands of Persons)",
+            "headerTooltip": "LNS13023557",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS13023705",
+            "headerName": "Unemployment Level - Job Leavers (Thousands of Persons)",
+            "headerTooltip": "LNS13023705",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS13023569",
+            "headerName": "Unemployment Level - New Entrants (Thousands of Persons)",
+            "headerTooltip": "LNS13023569",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LNS12032194",
+            "headerName": "Employment Level - Part-Time for Economic Reasons, All Industries (Thousands of Persons)",
+            "headerTooltip": "LNS12032194",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOABS",
+            "headerName": "Business Sector: Hours of All Persons (Index 2017=100)",
+            "headerTooltip": "HOABS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOAMS",
+            "headerName": "Manufacturing Sector: Hours of All Persons (Index 2017=100)",
+            "headerTooltip": "HOAMS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOANBS",
+            "headerName": "Nonfarm Business Sector: Hours of All Persons (Index 2017=100)",
+            "headerTooltip": "HOANBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AWHMAN",
+            "headerName": "Average Weekly Hours of Production and Nonsupervisory Employees: Manufacturing (Hours)",
+            "headerTooltip": "AWHMAN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AWHNONAG",
+            "headerName": "Average Weekly Hours Of Production And Nonsupervisory Employees: Total private (Hours)",
+            "headerTooltip": "AWHNONAG",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AWOTMAN",
+            "headerName": "Average Weekly Overtime Hours of Production and Nonsupervisory Employees: Manufacturing (Hours)",
+            "headerTooltip": "AWOTMAN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HWIx",
+            "headerName": "Help-Wanted Index",
+            "headerTooltip": "HWIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUST",
+            "headerName": "Housing Starts: Total: New Privately Owned Housing Units Started (Thousands of Units)",
+            "headerTooltip": "HOUST",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUST5F",
+            "headerName": "Privately Owned Housing Starts: 5-Unit Structures or More (Thousands of Units)",
+            "headerTooltip": "HOUST5F",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMIT",
+            "headerName": "New Private Housing Units Authorized by Building Permits (Thousands of Units)",
+            "headerTooltip": "PERMIT",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTMW",
+            "headerName": "Housing Starts in Midwest Census Region (Thousands of Units)",
+            "headerTooltip": "HOUSTMW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTNE",
+            "headerName": "Housing Starts in Northeast Census Region (Thousands of Units)",
+            "headerTooltip": "HOUSTNE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTS",
+            "headerName": "Housing Starts in South Census Region (Thousands of Units)",
+            "headerTooltip": "HOUSTS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HOUSTW",
+            "headerName": "Housing Starts in West Census Region (Thousands of Units)",
+            "headerTooltip": "HOUSTW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CMRMTSPLx",
+            "headerName": "Real Manufacturing and Trade Industries Sales (Millions of Chained 2017 Dollars)",
+            "headerTooltip": "CMRMTSPLx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "RSAFSx",
+            "headerName": "Real Retail and Food Services Sales (Millions of Chained 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "RSAFSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AMDMNOx",
+            "headerName": "Real Manufacturers' New Orders: Durable Goods (Millions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "AMDMNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ACOGNOx",
+            "headerName": "Real Value of Manufacturers' New Orders for Consumer Goods Industries (Million of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "ACOGNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AMDMUOx",
+            "headerName": "Real Value of Manufacturers' Unfilled Orders for Durable Goods Industries (Million of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "AMDMUOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ANDENOx",
+            "headerName": "Real Value of Manufacturers' New Orders for Capital Goods: Nondefense Capital Goods Industries (Million of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "ANDENOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "INVCQRMTSPL",
+            "headerName": "Real Manufacturing and Trade Inventories (Millions of 2017 Dollars)",
+            "headerTooltip": "INVCQRMTSPL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCECTPI",
+            "headerName": "Personal Consumption Expenditures: Chain-type Price Index (Index 2017=100)",
+            "headerTooltip": "PCECTPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PCEPILFE",
+            "headerName": "Personal Consumption Expenditures Excluding Food and Energy (Chain-Type Price Index) (Index 2017=100)",
+            "headerTooltip": "PCEPILFE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GDPCTPI",
+            "headerName": "Gross Domestic Product: Chain-type Price Index (Index 2017=100)",
+            "headerTooltip": "GDPCTPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GPDICTPI",
+            "headerName": "Gross Private Domestic Investment: Chain-type Price Index (Index 2017=100)",
+            "headerTooltip": "GPDICTPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPDBS",
+            "headerName": "Business Sector: Implicit Price Deflator (Index 2017=100)",
+            "headerTooltip": "IPDBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DGDSRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Goods (chain-type price index)",
+            "headerTooltip": "DGDSRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DDURRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Durable goods (chain-type price index)",
+            "headerTooltip": "DDURRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DSERRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Services (chain-type price index)",
+            "headerTooltip": "DSERRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DNDGRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Nondurable goods (chain-type price index)",
+            "headerTooltip": "DNDGRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DHCERG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Services: Household consumption expenditures (chain-type price index)",
+            "headerTooltip": "DHCERG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DMOTRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Durable goods: Motor vehicles and parts (chain-type price index)",
+            "headerTooltip": "DMOTRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DFDHRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Durable goods: Furnishings and durable household equipment (chain-type price index)",
+            "headerTooltip": "DFDHRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DREQRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Durable goods: Recreational goods and vehicles (chain-type price index)",
+            "headerTooltip": "DREQRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DODGRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Durable goods: Other durable goods (chain-type price index)",
+            "headerTooltip": "DODGRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DFXARG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Nondurable goods: Food and beverages purchased for off-premises consumption (chain-type price index)",
+            "headerTooltip": "DFXARG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DCLORG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Nondurable goods: Clothing and footwear (chain-type price index)",
+            "headerTooltip": "DCLORG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DGOERG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Nondurable goods: Gasoline and other energy goods (chain-type price index)",
+            "headerTooltip": "DGOERG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DONGRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Nondurable goods: Other nondurable goods (chain-type price index)",
+            "headerTooltip": "DONGRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DHUTRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Services: Housing and utilities (chain-type price index)",
+            "headerTooltip": "DHUTRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DHLCRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Services: Health care (chain-type price index)",
+            "headerTooltip": "DHLCRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DTRSRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Transportation services (chain-type price index)",
+            "headerTooltip": "DTRSRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DRCARG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Recreation services (chain-type price index)",
+            "headerTooltip": "DRCARG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DFSARG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Services: Food services and accommodations (chain-type price index)",
+            "headerTooltip": "DFSARG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DIFSRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Financial services and insurance (chain-type price index)",
+            "headerTooltip": "DIFSRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DOTSRG3Q086SBEA",
+            "headerName": "Personal consumption expenditures: Other services (chain-type price index)",
+            "headerTooltip": "DOTSRG3Q086SBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIAUCSL",
+            "headerName": "Consumer Price Index for All Urban Consumers: All Items (Index 1982-84=100)",
+            "headerTooltip": "CPIAUCSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPILFESL",
+            "headerName": "Consumer Price Index for All Urban Consumers: All Items Less Food & Energy (Index 1982-84=100)",
+            "headerTooltip": "CPILFESL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSFD49207",
+            "headerName": "Producer Price Index by Commodity for Finished Goods (Index 1982=100)",
+            "headerTooltip": "WPSFD49207",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PPIACO",
+            "headerName": "Producer Price Index for All Commodities (Index 1982=100)",
+            "headerTooltip": "PPIACO",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSFD49502",
+            "headerName": "Producer Price Index by Commodity for Finished Consumer Goods (Index 1982=100)",
+            "headerTooltip": "WPSFD49502",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSFD4111",
+            "headerName": "Producer Price Index by Commodity for Finished Consumer Foods (Index 1982=100)",
+            "headerTooltip": "WPSFD4111",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PPIIDC",
+            "headerName": "Producer Price Index by Commodity Industrial Commodities (Index 1982=100)",
+            "headerTooltip": "PPIIDC",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSID61",
+            "headerName": "Producer Price Index by Commodity Intermediate Materials: Supplies & Components (Index 1982=100)",
+            "headerTooltip": "WPSID61",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPU0531",
+            "headerName": "Producer Price Index by Commodity for Fuels and Related Products and Power: Natural Gas (Index 1982=100)",
+            "headerTooltip": "WPU0531",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPU0561",
+            "headerName": "Producer Price Index by Commodity for Fuels and Related Products and Power: Crude Petroleum (Domestic Production) (Index 1982=100)",
+            "headerTooltip": "WPU0561",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OILPRICEx",
+            "headerName": "Real Crude Oil Prices: West Texas Intermediate (WTI) - Cushing, Oklahoma (2017 Dollars per Barrel), deflated by Core PCE",
+            "headerTooltip": "OILPRICEx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AHETPIx",
+            "headerName": "Real Average Hourly Earnings of Production and Nonsupervisory Employees: Total Private (2017 Dollars per Hour), deflated by Core PCE",
+            "headerTooltip": "AHETPIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES2000000008x",
+            "headerName": "Real Average Hourly Earnings of Production and Nonsupervisory Employees: Construction (2017 Dollars per Hour), deflated by Core PCE",
+            "headerTooltip": "CES2000000008x",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES3000000008x",
+            "headerName": "Real Average Hourly Earnings of Production and Nonsupervisory Employees: Manufacturing (2017 Dollars per Hour), deflated by Core PCE",
+            "headerTooltip": "CES3000000008x",
+            "cellDataType": "number"
+          },
+          {
+            "field": "COMPRMS",
+            "headerName": "Manufacturing Sector: Real Compensation Per Hour (Index 2017=100)",
+            "headerTooltip": "COMPRMS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "COMPRNFB",
+            "headerName": "Nonfarm Business Sector: Real Compensation Per Hour (Index 2017=100)",
+            "headerTooltip": "COMPRNFB",
+            "cellDataType": "number"
+          },
+          {
+            "field": "RCPHBS",
+            "headerName": "Business Sector: Real Compensation Per Hour (Index 2017=100)",
+            "headerTooltip": "RCPHBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OPHMFG",
+            "headerName": "Manufacturing Sector: Real Output Per Hour of All Persons (Index 2017=100)",
+            "headerTooltip": "OPHMFG",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OPHNFB",
+            "headerName": "Nonfarm Business Sector: Real Output Per Hour of All Persons (Index 2017=100)",
+            "headerTooltip": "OPHNFB",
+            "cellDataType": "number"
+          },
+          {
+            "field": "OPHPBS",
+            "headerName": "Business Sector: Real Output Per Hour of All Persons (Index 2017=100)",
+            "headerTooltip": "OPHPBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ULCBS",
+            "headerName": "Business Sector: Unit Labor Cost (Index 2017=100)",
+            "headerTooltip": "ULCBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ULCMFG",
+            "headerName": "Manufacturing Sector: Unit Labor Cost (Index 2017=100)",
+            "headerTooltip": "ULCMFG",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ULCNFB",
+            "headerName": "Nonfarm Business Sector: Unit Labor Cost (Index 2017=100)",
+            "headerTooltip": "ULCNFB",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UNLPNBS",
+            "headerName": "Nonfarm Business Sector: Unit Nonlabor Payments (Index 2017=100)",
+            "headerTooltip": "UNLPNBS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "FEDFUNDS",
+            "headerName": "Effective Federal Funds Rate (Percent)",
+            "headerTooltip": "FEDFUNDS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB3MS",
+            "headerName": "3-Month Treasury Bill: Secondary Market Rate (Percent)",
+            "headerTooltip": "TB3MS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB6MS",
+            "headerName": "6-Month Treasury Bill: Secondary Market Rate (Percent)",
+            "headerTooltip": "TB6MS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS1",
+            "headerName": "1-Year Treasury Constant Maturity Rate (Percent)",
+            "headerTooltip": "GS1",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS10",
+            "headerName": "10-Year Treasury Constant Maturity Rate (Percent)",
+            "headerTooltip": "GS10",
+            "cellDataType": "number"
+          },
+          {
+            "field": "MORTGAGE30US",
+            "headerName": "30-Year Conventional Mortgage Rate\u00a9 (Percent)",
+            "headerTooltip": "MORTGAGE30US",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AAA",
+            "headerName": "Moody's Seasoned Aaa Corporate Bond Yield\u00a9 (Percent)",
+            "headerTooltip": "AAA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BAA",
+            "headerName": "Moody's Seasoned Baa Corporate Bond Yield\u00a9 (Percent)",
+            "headerTooltip": "BAA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BAA10YM",
+            "headerName": "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity (Percent)",
+            "headerTooltip": "BAA10YM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "MORTG10YRx",
+            "headerName": "30-Year Conventional Mortgage Rate Relative to 10-Year Treasury Constant Maturity (Percent)",
+            "headerTooltip": "MORTG10YRx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB6M3Mx",
+            "headerName": "6-Month Treasury Bill Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "headerTooltip": "TB6M3Mx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS1TB3Mx",
+            "headerName": "1-Year Treasury Constant Maturity Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "headerTooltip": "GS1TB3Mx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS10TB3Mx",
+            "headerName": "10-Year Treasury Constant Maturity Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "headerTooltip": "GS10TB3Mx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPF3MTB3Mx",
+            "headerName": "3-Month Commercial Paper Minus 3-Month Treasury Bill, secondary market (Percent)",
+            "headerTooltip": "CPF3MTB3Mx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BOGMBASEREALx",
+            "headerName": "St. Louis Adjusted Monetary Base (Billions of 1982-84 Dollars), deflated by CPI",
+            "headerTooltip": "BOGMBASEREALx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "M1REAL",
+            "headerName": "Real M1 Money Stock (Billions of 1982-84 Dollars), deflated by CPI",
+            "headerTooltip": "M1REAL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "M2REAL",
+            "headerName": "Real M2 Money Stock (Billions of 1982-84 Dollars), deflated by CPI",
+            "headerTooltip": "M2REAL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BUSLOANSx",
+            "headerName": "Real Commercial and Industrial Loans, All Commercial Banks (Billions of 2017 U.S. Dollars), deflated by Core PCE",
+            "headerTooltip": "BUSLOANSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CONSUMERx",
+            "headerName": "Real Consumer Loans at All Commercial Banks (Billions of 2017 U.S. Dollars), deflated by Core PCE",
+            "headerTooltip": "CONSUMERx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NONREVSLx",
+            "headerName": "Total Real Nonrevolving Credit Owned and Securitized, Outstanding (Billions of Dollars), deflated by Core PCE",
+            "headerTooltip": "NONREVSLx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "REALLNx",
+            "headerName": "Real Real Estate Loans, All Commercial Banks (Billions of 2017 U.S. Dollars), deflated by Core PCE",
+            "headerTooltip": "REALLNx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "REVOLSLx",
+            "headerName": "Total Real Revolving Credit Owned and Securitized, Outstanding (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "REVOLSLx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TOTALSLx",
+            "headerName": "Total Consumer Credit Outstanding, deflated by Core PCE",
+            "headerTooltip": "TOTALSLx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DRIWCIL",
+            "headerName": "FRB Senior Loans Officer Opions. Net Percentage of Domestic Respondents Reporting Increased Willingness to Make Consumer Installment Loans",
+            "headerTooltip": "DRIWCIL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TABSHNOx",
+            "headerName": "Real Total Assets of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "TABSHNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TLBSHNOx",
+            "headerName": "Real Total Liabilities of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "TLBSHNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "LIABPIx",
+            "headerName": "Liabilities of Households and Nonprofit Organizations Relative to Personal Disposable Income (Percent)",
+            "headerTooltip": "LIABPIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TNWBSHNOx",
+            "headerName": "Real Net Worth of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "TNWBSHNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NWPIx",
+            "headerName": "Net Worth of Households and Nonprofit Organizations Relative to Disposable Personal Income (Percent)",
+            "headerTooltip": "NWPIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TARESAx",
+            "headerName": "Real Assets of Households and Nonprofit Organizations excluding Real Estate Assets (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "TARESAx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HNOREMQ027Sx",
+            "headerName": "Real Real Estate Assets of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "HNOREMQ027Sx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TFAABSHNOx",
+            "headerName": "Real Total Financial Assets of Households and Nonprofit Organizations (Billions of 2017 Dollars), deflated by Core PCE",
+            "headerTooltip": "TFAABSHNOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "VIXCLSx",
+            "headerName": "CBOE Volatility Index: VIX",
+            "headerTooltip": "VIXCLSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USSTHPI",
+            "headerName": "All-Transactions House Price Index for the United States (Index 1980 Q1=100)",
+            "headerTooltip": "USSTHPI",
+            "cellDataType": "number"
+          },
+          {
+            "field": "SPCS10RSA",
+            "headerName": "S&P/Case-Shiller 10-City Composite Home Price Index (Index January 2000 = 100)",
+            "headerTooltip": "SPCS10RSA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "SPCS20RSA",
+            "headerName": "S&P/Case-Shiller 20-City Composite Home Price Index (Index January 2000 = 100)",
+            "headerTooltip": "SPCS20RSA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TWEXAFEGSMTHx",
+            "headerName": "Trade Weighted U.S. Dollar Index: Major Currencies (Index March 1973=100)",
+            "headerTooltip": "TWEXAFEGSMTHx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXUSEU",
+            "headerName": "U.S. / Euro Foreign Exchange Rate (U.S. Dollars to One Euro)",
+            "headerTooltip": "EXUSEU",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXSZUSx",
+            "headerName": "Switzerland / U.S. Foreign Exchange Rate",
+            "headerTooltip": "EXSZUSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXJPUSx",
+            "headerName": "Japan / U.S. Foreign Exchange Rate",
+            "headerTooltip": "EXJPUSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXUSUKx",
+            "headerName": "U.S. / U.K. Foreign Exchange Rate",
+            "headerTooltip": "EXUSUKx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "EXCAUSx",
+            "headerName": "Canada / U.S. Foreign Exchange Rate",
+            "headerTooltip": "EXCAUSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UMCSENTx",
+            "headerName": "University of Michigan: Consumer Sentiment (Index 1st Quarter 1966=100)",
+            "headerTooltip": "UMCSENTx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "USEPUINDXM",
+            "headerName": "Economic Policy Uncertainty Index for United States",
+            "headerTooltip": "USEPUINDXM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "B020RE1Q156NBEA",
+            "headerName": "Shares of gross domestic product: Exports of goods and services (Percent)",
+            "headerTooltip": "B020RE1Q156NBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "B021RE1Q156NBEA",
+            "headerName": "Shares of gross domestic product: Imports of goods and services (Percent)",
+            "headerTooltip": "B021RE1Q156NBEA",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GFDEGDQ188S",
+            "headerName": "Federal Debt: Total Public Debt as Percent of GDP (Percent)",
+            "headerTooltip": "GFDEGDQ188S",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GFDEBTNx",
+            "headerName": "Real Federal Debt: Total Public Debt (Millions of 2017 Dollars), deflated by PCE",
+            "headerTooltip": "GFDEBTNx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPMANSICS",
+            "headerName": "Industrial Production: Manufacturing (SIC) (Index 2017=100)",
+            "headerTooltip": "IPMANSICS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPB51222S",
+            "headerName": "Industrial Production: Residential Utilities (Index 2017=100)",
+            "headerTooltip": "IPB51222S",
+            "cellDataType": "number"
+          },
+          {
+            "field": "IPFUELS",
+            "headerName": "Industrial Production: Fuels (Index 2017=100)",
+            "headerTooltip": "IPFUELS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "UEMPMEAN",
+            "headerName": "Average (Mean) Duration of Unemployment (Weeks)",
+            "headerTooltip": "UEMPMEAN",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES0600000007",
+            "headerName": "Average Weekly Hours of Production and Nonsupervisory Employees: Goods-Producing",
+            "headerTooltip": "CES0600000007",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TOTRESNS",
+            "headerName": "Total Reserves of Depository Institutions (Billions of Dollars)",
+            "headerTooltip": "TOTRESNS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NONBORRES",
+            "headerName": "Reserves Of Depository Institutions, Nonborrowed (Millions of Dollars)",
+            "headerTooltip": "NONBORRES",
+            "cellDataType": "number"
+          },
+          {
+            "field": "GS5",
+            "headerName": "5-Year Treasury Constant Maturity Rate",
+            "headerTooltip": "GS5",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TB3SMFFM",
+            "headerName": "3-Month Treasury Constant Maturity Minus Federal Funds Rate",
+            "headerTooltip": "TB3SMFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "T5YFFM",
+            "headerName": "5-Year Treasury Constant Maturity Minus Federal Funds Rate",
+            "headerTooltip": "T5YFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "AAAFFM",
+            "headerName": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate",
+            "headerTooltip": "AAAFFM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "WPSID62",
+            "headerName": "Producer Price Index: Crude Materials for Further Processing (Index 1982=100)",
+            "headerTooltip": "WPSID62",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PPICMM",
+            "headerName": "Producer Price Index: Commodities: Metals and metal products: Primary nonferrous metals (Index 1982=100)",
+            "headerTooltip": "PPICMM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIAPPSL",
+            "headerName": "Consumer Price Index for All Urban Consumers: Apparel (Index 1982-84=100)",
+            "headerTooltip": "CPIAPPSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPITRNSL",
+            "headerName": "Consumer Price Index for All Urban Consumers: Transportation (Index 1982-84=100)",
+            "headerTooltip": "CPITRNSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIMEDSL",
+            "headerName": "Consumer Price Index for All Urban Consumers: Medical Care (Index 1982-84=100)",
+            "headerTooltip": "CPIMEDSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SAC",
+            "headerName": "Consumer Price Index for All Urban Consumers: Commodities (Index 1982-84=100)",
+            "headerTooltip": "CUSR0000SAC",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SAD",
+            "headerName": "Consumer Price Index for All Urban Consumers: Durables (Index 1982-84=100)",
+            "headerTooltip": "CUSR0000SAD",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SAS",
+            "headerName": "Consumer Price Index for All Urban Consumers: Services (Index 1982-84=100)",
+            "headerTooltip": "CUSR0000SAS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CPIULFSL",
+            "headerName": "Consumer Price Index for All Urban Consumers: All Items Less Food (Index 1982-84=100)",
+            "headerTooltip": "CPIULFSL",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SA0L2",
+            "headerName": "Consumer Price Index for All Urban Consumers: All items less shelter (Index 1982-84=100)",
+            "headerTooltip": "CUSR0000SA0L2",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SA0L5",
+            "headerName": "Consumer Price Index for All Urban Consumers: All items less medical care (Index 1982-84=100)",
+            "headerTooltip": "CUSR0000SA0L5",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CES0600000008",
+            "headerName": "Average Hourly Earnings of Production and Nonsupervisory Employees: Goods-Producing (Dollars per Hour)",
+            "headerTooltip": "CES0600000008",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DTCOLNVHFNM",
+            "headerName": "Consumer Motor Vehicle Loans Outstanding Owned by Finance Companies (Millions of Dollars)",
+            "headerTooltip": "DTCOLNVHFNM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "DTCTHFNM",
+            "headerName": "Total Consumer Loans and Leases Outstanding Owned and Securitized by Finance Companies (Millions of Dollars)",
+            "headerTooltip": "DTCTHFNM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "INVEST",
+            "headerName": "Securities in Bank Credit at All Commercial Banks (Billions of Dollars)",
+            "headerTooltip": "INVEST",
+            "cellDataType": "number"
+          },
+          {
+            "field": "HWIURATIOx",
+            "headerName": "Ratio of Help Wanted/No. Unemployed",
+            "headerTooltip": "HWIURATIOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CLAIMSx",
+            "headerName": "Initial Claims",
+            "headerTooltip": "CLAIMSx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "BUSINVx",
+            "headerName": "Total Business Inventories (Millions of Dollars)",
+            "headerTooltip": "BUSINVx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ISRATIOx",
+            "headerName": "Total Business: Inventories to Sales Ratio",
+            "headerTooltip": "ISRATIOx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CONSPIx",
+            "headerName": "Nonrevolving consumer credit to Personal Income",
+            "headerTooltip": "CONSPIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CP3M",
+            "headerName": "3-Month AA Financial Commercial Paper Rate",
+            "headerTooltip": "CP3M",
+            "cellDataType": "number"
+          },
+          {
+            "field": "COMPAPFF",
+            "headerName": "3-Month Commercial Paper Minus Federal Funds Rate",
+            "headerTooltip": "COMPAPFF",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITNE",
+            "headerName": "New Private Housing Units Authorized by Building Permits in the Northeast Census Region (Thousands, SAAR)",
+            "headerTooltip": "PERMITNE",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITMW",
+            "headerName": "New Private Housing Units Authorized by Building Permits in the Midwest Census Region (Thousands, SAAR)",
+            "headerTooltip": "PERMITMW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITS",
+            "headerName": "New Private Housing Units Authorized by Building Permits in the South Census Region (Thousands, SAAR)",
+            "headerTooltip": "PERMITS",
+            "cellDataType": "number"
+          },
+          {
+            "field": "PERMITW",
+            "headerName": "New Private Housing Units Authorized by Building Permits in the West Census Region (Thousands, SAAR)",
+            "headerTooltip": "PERMITW",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NIKKEI225",
+            "headerName": "Nikkei Stock Average",
+            "headerTooltip": "NIKKEI225",
+            "cellDataType": "number"
+          },
+          {
+            "field": "NASDAQCOM",
+            "headerName": "NASDAQ Composite (Index Feb 5, 1971=100)",
+            "headerTooltip": "NASDAQCOM",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CUSR0000SEHC",
+            "headerName": "CPI for All Urban Consumers: Owners' equivalent rent of residences (Index Dec 1982=100)",
+            "headerTooltip": "CUSR0000SEHC",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TLBSNNCBx",
+            "headerName": "Real Nonfinancial Corporate Business Sector Liabilities (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "headerTooltip": "TLBSNNCBx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TLBSNNCBBDIx",
+            "headerName": "Nonfinancial Corporate Business Sector Liabilities to Disposable Business Income (Percent)",
+            "headerTooltip": "TLBSNNCBBDIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TTAABSNNCBx",
+            "headerName": "Real Nonfinancial Corporate Business Sector Assets (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "headerTooltip": "TTAABSNNCBx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TNWMVBSNNCBx",
+            "headerName": "Real Nonfinancial Corporate Business Sector Net Worth (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "headerTooltip": "TNWMVBSNNCBx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TNWMVBSNNCBBDIx",
+            "headerName": "Nonfinancial Corporate Business Sector Net Worth to Disposable Business Income (Percent)",
+            "headerTooltip": "TNWMVBSNNCBBDIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TLBSNNBx",
+            "headerName": "Real Nonfinancial Noncorporate Business Sector Liabilities (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "headerTooltip": "TLBSNNBx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TLBSNNBBDIx",
+            "headerName": "Nonfinancial Noncorporate Business Sector Liabilities to Disposable Business Income (Percent)",
+            "headerTooltip": "TLBSNNBBDIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TABSNNBx",
+            "headerName": "Real Nonfinancial Noncorporate Business Sector Assets (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "headerTooltip": "TABSNNBx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TNWBSNNBx",
+            "headerName": "Real Nonfinancial Noncorporate Business Sector Net Worth (Billions of 2017 Dollars), Deflated by Implicit Price Deflator for Business Sector IPDBS",
+            "headerTooltip": "TNWBSNNBx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "TNWBSNNBBDIx",
+            "headerName": "Nonfinancial Noncorporate Business Sector Net Worth to Disposable Business Income (Percent)",
+            "headerTooltip": "TNWBSNNBBDIx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "CNCFx",
+            "headerName": "Real Disposable Business Income, Billions of 2017 Dollars (Corporate cash flow with IVA minus taxes on corporate income, deflated by Implicit Price Deflator for Business Sector IPDBS)",
+            "headerTooltip": "CNCFx",
+            "cellDataType": "number"
+          },
+          {
+            "field": "S&P 500",
+            "headerName": "S&P's Common Stock Price Index: Composite",
+            "headerTooltip": "S&P 500",
+            "cellDataType": "number"
+          },
+          {
+            "field": "S&P div yield",
+            "headerName": "S&P's Composite Common Stock: Dividend Yield",
+            "headerTooltip": "S&P div yield",
+            "cellDataType": "number"
+          },
+          {
+            "field": "S&P PE ratio",
+            "headerName": "S&P's Composite Common Stock: Price-Earnings Ratio",
+            "headerTooltip": "S&P PE ratio",
+            "cellDataType": "number"
           }
         ],
         "enableAdvanced": true
@@ -176,16 +3892,14 @@
     "params": [
       {
         "label": "Index",
-        "description": "The index to return: 'financial_stress_index' (STLFSI4, weekly), 'price_pressures' (STLPPM, monthly), or 'economic_news_index' (STLENI, quarterly).",
+        "description": "One or more indexes (columns) to return; the default returns all three: 'financial_stress_index' (STLFSI4, weekly), 'price_pressures' (STLPPM, monthly), and 'economic_news_index' (STLENI, quarterly). Multiple comma separated items allowed.",
         "optional": true,
         "type": "text",
-        "value": "financial_stress_index",
+        "value": null,
         "show": true,
+        "multiSelect": true,
+        "paramName": "index",
         "options": [
-          {
-            "label": "Economic News Index",
-            "value": "economic_news_index"
-          },
           {
             "label": "Financial Stress Index",
             "value": "financial_stress_index"
@@ -193,9 +3907,12 @@
           {
             "label": "Price Pressures",
             "value": "price_pressures"
+          },
+          {
+            "label": "Economic News Index",
+            "value": "economic_news_index"
           }
-        ],
-        "paramName": "index"
+        ]
       },
       {
         "label": "Start Date",
@@ -242,17 +3959,24 @@
             "sort": "desc"
           },
           {
-            "field": "index",
-            "formatterFn": null,
-            "headerName": "Index",
-            "headerTooltip": "The requested index name.",
-            "cellDataType": "text"
+            "field": "financial_stress_index",
+            "formatterFn": "none",
+            "headerName": "Financial Stress Index",
+            "headerTooltip": "St. Louis Fed Financial Stress Index (STLFSI4, weekly).",
+            "cellDataType": "number"
           },
           {
-            "field": "value",
+            "field": "price_pressures",
             "formatterFn": "none",
-            "headerName": "Value",
-            "headerTooltip": "The index value.",
+            "headerName": "Price Pressures",
+            "headerTooltip": "St. Louis Fed Price Pressures Measure (STLPPM, monthly).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "economic_news_index",
+            "formatterFn": "none",
+            "headerName": "Economic News Index",
+            "headerTooltip": "St. Louis Fed Economic News Index real-GDP nowcast (STLENI, quarterly).",
             "cellDataType": "number"
           }
         ],
@@ -266,7 +3990,7 @@
   },
   "stl_publications_federal_reserve_obb": {
     "name": "St. Louis Fed Publications",
-    "description": "St. Louis Fed Economic Synopses articles. Select one or more PDFs to view.",
+    "description": "St. Louis Fed publications indexed on Fed in Print (Working Papers, Review, Economic Synopses, and more). Select one or more documents to view.",
     "category": "Federal Reserve",
     "type": "multi_file_viewer",
     "widgetId": "stl_publications_federal_reserve_obb",
@@ -275,6 +3999,101 @@
       "tool_id": "stl_publications"
     },
     "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Working Papers",
+            "value": "working_papers"
+          },
+          {
+            "label": "Review",
+            "value": "review"
+          },
+          {
+            "label": "Speech",
+            "value": "speech"
+          },
+          {
+            "label": "Economic Synopses",
+            "value": "economic_synopses"
+          },
+          {
+            "label": "National Economic Trends",
+            "value": "national_economic_trends"
+          },
+          {
+            "label": "Page One Economics Newsletter",
+            "value": "page_one_economics"
+          },
+          {
+            "label": "Burgundy Books",
+            "value": "burgundy_books"
+          },
+          {
+            "label": "Bridges",
+            "value": "bridges"
+          },
+          {
+            "label": "Monetary Trends",
+            "value": "monetary_trends"
+          },
+          {
+            "label": "Proceedings",
+            "value": "proceedings"
+          },
+          {
+            "label": "Community Development Publications and Reports",
+            "value": "community_development"
+          },
+          {
+            "label": "Central Banker",
+            "value": "central_banker"
+          },
+          {
+            "label": "Regional Economic Development",
+            "value": "regional_economic_development"
+          },
+          {
+            "label": "Inside the Vault",
+            "value": "inside_the_vault"
+          },
+          {
+            "label": "Annual Report",
+            "value": "annual_report"
+          },
+          {
+            "label": "International Economic Trends",
+            "value": "international_economic_trends"
+          },
+          {
+            "label": "Liber8 Economic Information Newsletter",
+            "value": "liber8"
+          },
+          {
+            "label": "In the Balance",
+            "value": "in_the_balance"
+          },
+          {
+            "label": "Economic Equity Insights",
+            "value": "economic_equity_insights"
+          },
+          {
+            "label": "Quarterly Debt Monitor",
+            "value": "quarterly_debt_monitor"
+          },
+          {
+            "label": "Demographics of Wealth",
+            "value": "demographics_of_wealth"
+          }
+        ],
+        "paramName": "series"
+      },
       {
         "label": "Start Date",
         "description": "Start date of the data, in YYYY-MM-DD format.",
@@ -294,6 +4113,24 @@
         "paramName": "end_date"
       },
       {
+        "label": "Limit",
+        "description": "The maximum number of documents to return.",
+        "optional": true,
+        "type": "number",
+        "value": 20,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "label": "Offset",
+        "description": "The result offset to begin from, for pagination.",
+        "optional": true,
+        "type": "number",
+        "value": 0,
+        "show": true,
+        "paramName": "offset"
+      },
+      {
         "paramName": "provider",
         "value": "federal_reserve",
         "show": false
@@ -302,7 +4139,12 @@
         "multiSelect": true,
         "optionsEndpoint": "regional_publications_choices",
         "optionsParams": {
-          "district": "stl"
+          "district": "stl",
+          "end_date": "$end_date",
+          "limit": "$limit",
+          "offset": "$offset",
+          "series": "$series",
+          "start_date": "$start_date"
         },
         "paramName": "url",
         "roles": [

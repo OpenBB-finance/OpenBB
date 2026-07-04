@@ -47,7 +47,11 @@ _FRED_MD_TRANSFORMS = (
     "3/1/2026,121,121,121,121,121,121,121,3\n"
 )
 
-_FREDGRAPH = "observation_date,STLFSI4\n2026-06-12,-0.95\n2026-06-19,.\n"
+_INDEX_CSV = {
+    "STLFSI4": "observation_date,STLFSI4\n2026-06-12,-0.95\n2026-06-19,.\n",
+    "STLPPM": "observation_date,STLPPM\n2026-06-01,0.83\n",
+    "STLENI": "observation_date,STLENI\n2026-04-01,2.1\n",
+}
 
 
 class TestFredMd:
@@ -192,38 +196,85 @@ class TestFredQd:
 class TestNationalIndex:
     """Tests for the national index fetcher."""
 
-    def test_parses_and_filters(self, monkeypatch):
-        """The two-column CSV parses, ``.`` is missing, and dates filter."""
+    def test_returns_indexes_as_wide_columns(self, monkeypatch):
+        """The default merges all three indexes into wide date-indexed rows."""
         monkeypatch.setattr(
             "openbb_federal_reserve.utils.st_louis.fetch_fred_graph_csv",
-            lambda sid: _FREDGRAPH,
+            lambda sid: _INDEX_CSV[sid],
         )
-        query = FederalReserveStLouisNationalIndexFetcher.transform_query(
-            {"index": "financial_stress_index", "start_date": "2026-06-15"}
-        )
+        query = FederalReserveStLouisNationalIndexFetcher.transform_query({})
         rows = FederalReserveStLouisNationalIndexFetcher.extract_data(query, None)
         result = FederalReserveStLouisNationalIndexFetcher.transform_data(query, rows)
         assert all(
             isinstance(r, FederalReserveStLouisNationalIndexData) for r in result
         )
-        assert len(result) == 1
-        assert result[0].date == date(2026, 6, 19)
-        assert result[0].index == "financial_stress_index"
-        assert result[0].value is None
+        dumped = {r.date: r.model_dump() for r in result}
+        assert set(dumped) == {date(2026, 4, 1), date(2026, 6, 1), date(2026, 6, 12)}
+        assert dumped[date(2026, 6, 12)]["financial_stress_index"] == -0.95
+        assert dumped[date(2026, 6, 1)]["price_pressures"] == 0.83
+        assert dumped[date(2026, 4, 1)]["economic_news_index"] == 2.1
 
-    def test_end_date_filter(self, monkeypatch):
-        """The end_date filter returns earlier observations only."""
+    def test_subset_returns_one_column(self, monkeypatch):
+        """Selecting one index returns only that index's observations."""
         monkeypatch.setattr(
             "openbb_federal_reserve.utils.st_louis.fetch_fred_graph_csv",
-            lambda sid: _FREDGRAPH,
+            lambda sid: _INDEX_CSV[sid],
         )
         query = FederalReserveStLouisNationalIndexFetcher.transform_query(
-            {"index": "price_pressures", "end_date": "2026-06-12"}
+            {"index": "financial_stress_index"}
         )
         rows = FederalReserveStLouisNationalIndexFetcher.extract_data(query, None)
         result = FederalReserveStLouisNationalIndexFetcher.transform_data(query, rows)
-        assert len(result) == 1
-        assert result[0].value == -0.95
+        assert [r.date for r in result] == [date(2026, 6, 12)]
+        assert result[0].financial_stress_index == -0.95
+        assert result[0].price_pressures is None
+
+    def test_date_filter(self, monkeypatch):
+        """The start_date filter narrows the merged rows."""
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.st_louis.fetch_fred_graph_csv",
+            lambda sid: _INDEX_CSV[sid],
+        )
+        query = FederalReserveStLouisNationalIndexFetcher.transform_query(
+            {"start_date": "2026-06-01"}
+        )
+        rows = FederalReserveStLouisNationalIndexFetcher.extract_data(query, None)
+        result = FederalReserveStLouisNationalIndexFetcher.transform_data(query, rows)
+        assert [r.date for r in result] == [date(2026, 6, 1), date(2026, 6, 12)]
+
+    def test_end_date_filter(self, monkeypatch):
+        """The end_date filter narrows the merged rows."""
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.st_louis.fetch_fred_graph_csv",
+            lambda sid: _INDEX_CSV[sid],
+        )
+        query = FederalReserveStLouisNationalIndexFetcher.transform_query(
+            {"end_date": "2026-05-01"}
+        )
+        rows = FederalReserveStLouisNationalIndexFetcher.extract_data(query, None)
+        result = FederalReserveStLouisNationalIndexFetcher.transform_data(query, rows)
+        assert [r.date for r in result] == [date(2026, 4, 1)]
+
+    def test_all_none_rows_raise(self, monkeypatch):
+        """A merged frame whose only values are ``.`` yields no records."""
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.st_louis.fetch_fred_graph_csv",
+            lambda sid: "observation_date,STLFSI4\n2026-06-12,.\n",
+        )
+        query = FederalReserveStLouisNationalIndexFetcher.transform_query(
+            {"index": "financial_stress_index"}
+        )
+        rows = FederalReserveStLouisNationalIndexFetcher.extract_data(query, None)
+        with pytest.raises(EmptyDataError):
+            FederalReserveStLouisNationalIndexFetcher.transform_data(query, rows)
+
+    def test_no_frames_raises(self):
+        """transform_data with only empty raw payloads raises ``EmptyDataError``."""
+        query = FederalReserveStLouisNationalIndexFetcher.transform_query({})
+        with pytest.raises(EmptyDataError):
+            FederalReserveStLouisNationalIndexFetcher.transform_data(
+                query, [{"index": "financial_stress_index", "_raw": ""}]
+            )
 
     def test_empty_raises(self, monkeypatch):
         """An empty response raises ``EmptyDataError``."""

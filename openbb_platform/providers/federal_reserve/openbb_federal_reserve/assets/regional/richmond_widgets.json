@@ -595,35 +595,55 @@
     ],
     "subCategory": "Richmond"
   },
-  "richmond_survey_releases_federal_reserve_obb": {
-    "name": "Richmond Fed Survey Releases",
-    "description": "Richmond Fed Fifth District manufacturing and service-sector survey release PDFs. Select one or more to view.",
+  "richmond_publications_federal_reserve_obb": {
+    "name": "Richmond Fed Publications",
+    "description": "Richmond Fed publications indexed on Fed in Print. Select one or more documents to view.",
     "category": "Federal Reserve",
     "type": "multi_file_viewer",
-    "widgetId": "richmond_survey_releases_federal_reserve_obb",
+    "widgetId": "richmond_publications_federal_reserve_obb",
     "mcp_tool": {
       "mcp_server": "Open Data Platform",
-      "tool_id": "richmond_survey_releases"
+      "tool_id": "richmond_publications"
     },
     "params": [
       {
-        "label": "Survey",
-        "description": "Filter the catalog by survey.",
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
         "optional": true,
         "type": "text",
         "value": null,
         "show": true,
         "options": [
           {
-            "label": "Manufacturing",
-            "value": "manufacturing"
+            "label": "Econ Focus",
+            "value": "econ_focus"
           },
           {
-            "label": "Nonmanufacturing",
-            "value": "non_manufacturing"
+            "label": "Working Paper",
+            "value": "working_paper"
+          },
+          {
+            "label": "Economic Quarterly",
+            "value": "economic_quarterly"
+          },
+          {
+            "label": "Economic Review",
+            "value": "economic_review"
+          },
+          {
+            "label": "Monograph",
+            "value": "monograph"
+          },
+          {
+            "label": "Annual Report",
+            "value": "annual_report"
+          },
+          {
+            "label": "Research Digest",
+            "value": "research_digest"
           }
         ],
-        "paramName": "survey"
+        "paramName": "series"
       },
       {
         "label": "Start Date",
@@ -644,6 +664,24 @@
         "paramName": "end_date"
       },
       {
+        "label": "Limit",
+        "description": "The maximum number of documents to return.",
+        "optional": true,
+        "type": "number",
+        "value": 20,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "label": "Offset",
+        "description": "The result offset to begin from, for pagination.",
+        "optional": true,
+        "type": "number",
+        "value": 0,
+        "show": true,
+        "paramName": "offset"
+      },
+      {
         "paramName": "provider",
         "value": "federal_reserve",
         "show": false
@@ -652,7 +690,12 @@
         "multiSelect": true,
         "optionsEndpoint": "regional_publications_choices",
         "optionsParams": {
-          "district": "richmond"
+          "district": "richmond",
+          "end_date": "$end_date",
+          "limit": "$limit",
+          "offset": "$offset",
+          "series": "$series",
+          "start_date": "$start_date"
         },
         "paramName": "url",
         "roles": [

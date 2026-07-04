@@ -125,6 +125,10 @@ def district_widgets(slug: str, full: dict | None = None) -> dict[str, Any]:
     prefix = f"/{slug}/"
     widgets: dict[str, Any] = {}
     for widget_id, source in full.items():
+        # The publication-series discovery commands stay in the Python/API
+        # interface but are not surfaced as dashboard widgets.
+        if "publication_series" in widget_id:
+            continue
         endpoint = source.get("endpoint", "")
         owned = endpoint.startswith(prefix)
         if not owned and widget_id.startswith(f"{slug}_"):

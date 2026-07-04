@@ -11,42 +11,30 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field
 
-api_prefix = (
-    SystemService()
-    .system_settings.python_settings.model_dump()
-    .get("api_settings", {})
-    .get("prefix", "")
-    or "/api/v1"
-)
+from openbb_federal_reserve.utils.fedinprint import series_choices
+
+api_prefix = SystemService().system_settings.api_settings.prefix or "/api/v1"
 
 
 class FederalReserveMinneapolisPublicationsQueryParams(QueryParams):
     """Minneapolis Fed Publications Index Query Parameters."""
 
     __json_schema_extra__ = {
-        "series": {
-            "x-widget_config": {
-                "options": [
-                    {"label": "Working Paper", "value": "working_paper"},
-                    {
-                        "label": "Institute Working Paper",
-                        "value": "institute_working_paper",
-                    },
-                    {"label": "CICD Working Paper", "value": "cicd_working_paper"},
-                    {"label": "Staff Report", "value": "staff_report"},
-                    {"label": "Quarterly Review", "value": "quarterly_review"},
-                ]
-            }
-        }
+        "series": {"x-widget_config": {"options": series_choices("minneapolis")}}
     }
 
     series: (
         Literal[
-            "working_paper",
-            "institute_working_paper",
-            "cicd_working_paper",
             "staff_report",
+            "working_papers",
             "quarterly_review",
+            "speech",
+            "discussion_paper_institute_for_empirical_macroeconomics",
+            "opportunity_and_inclusive_growth_institute_working_papers",
+            "economic_policy_paper",
+            "annual_report",
+            "community_affairs_report",
+            "center_for_indian_country_development_series",
         ]
         | None
     ) = Field(
@@ -59,6 +47,12 @@ class FederalReserveMinneapolisPublicationsQueryParams(QueryParams):
     end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
+    limit: int = Field(
+        default=20, description="The maximum number of documents to return."
+    )
+    offset: int = Field(
+        default=0, description="The result offset to begin from, for pagination."
+    )
 
 
 class FederalReserveMinneapolisPublicationsData(Data):
@@ -69,9 +63,8 @@ class FederalReserveMinneapolisPublicationsData(Data):
             "x-widget_config": {
                 "$.type": "multi_file_viewer",
                 "$.name": "Minneapolis Fed Publications",
-                "$.description": "Minneapolis Fed Working Papers, Institute Working"
-                " Papers, CICD Working Papers, Staff Reports, and Quarterly Review."
-                " Select one or more PDFs to view.",
+                "$.description": "Minneapolis Fed publications indexed on Fed in Print."
+                " Select one or more documents to view.",
                 "$.category": "Federal Reserve",
                 "$.subCategory": "Publications & Reports",
                 "$.source": ["Federal Reserve Bank of Minneapolis"],
@@ -83,7 +76,14 @@ class FederalReserveMinneapolisPublicationsData(Data):
                         "type": "endpoint",
                         "paramName": "url",
                         "optionsEndpoint": f"{api_prefix}/federal_reserve/regional_publications_choices",
-                        "optionsParams": {"district": "minneapolis"},
+                        "optionsParams": {
+                            "district": "minneapolis",
+                            "series": "$series",
+                            "start_date": "$start_date",
+                            "end_date": "$end_date",
+                            "limit": "$limit",
+                            "offset": "$offset",
+                        },
                         "show": False,
                         "multiSelect": True,
                         "roles": ["fileSelector"],
@@ -94,11 +94,10 @@ class FederalReserveMinneapolisPublicationsData(Data):
         }
     )
 
-    date: dateType = Field(description="The publication date.")
+    date: dateType | None = Field(default=None, description="The publication date.")
     series: str = Field(description="The publication series.")
     title: str = Field(description="The human-readable publication title.")
-    url: str = Field(description="The direct URL to the publication.")
-    authors: str | None = Field(default=None, description="The authors of the paper.")
+    url: str = Field(description="The Fed in Print item-page URL for the publication.")
 
 
 class FederalReserveMinneapolisPublicationsFetcher(
@@ -122,12 +121,16 @@ class FederalReserveMinneapolisPublicationsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Index the Minneapolis Fed research PDF archives."""
-        from openbb_federal_reserve.utils.minneapolis_publications import (
-            list_publications,
-        )
+        """Index Minneapolis Fed publications via the Fed in Print search."""
+        from openbb_federal_reserve.utils import fedinprint
 
-        catalog = list_publications(query.series)
+        catalog = fedinprint.list_publications(
+            "minneapolis",
+            series=query.series,
+            start_date=query.start_date,
+            start=query.offset,
+            limit=query.limit,
+        )
         if not catalog:
             raise EmptyDataError("The request was returned empty.")
         return catalog
@@ -146,17 +149,24 @@ class FederalReserveMinneapolisPublicationsFetcher(
             records = [
                 record
                 for record in records
-                if date_cls.fromisoformat(record["date"]) >= query.start_date
+                if record["date"]
+                and date_cls.fromisoformat(record["date"]) >= query.start_date
             ]
         if query.end_date:
             records = [
                 record
                 for record in records
-                if date_cls.fromisoformat(record["date"]) <= query.end_date
+                if record["date"]
+                and date_cls.fromisoformat(record["date"]) <= query.end_date
             ]
         return [
             FederalReserveMinneapolisPublicationsData.model_validate(
-                {k: v for k, v in record.items() if k != "id"}
+                {
+                    "date": record["date"] or None,
+                    "series": record["series"],
+                    "title": record["title"],
+                    "url": record["url"],
+                }
             )
             for record in records
         ]

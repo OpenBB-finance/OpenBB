@@ -79,6 +79,15 @@ class TestRegionalSpecs:
                     assert column.get("cellDataType")
                 assert "provider" in {p["paramName"] for p in widget["params"]}
 
+    def test_publication_series_excluded_from_widgets(self):
+        """The publication_series discovery command stays out of the widgets."""
+        widgets = district_widgets("stl")
+        assert widgets
+        assert not any("publication_series" in widget_id for widget_id in widgets)
+        for slug in _SLUGS:
+            spec = json.loads((_ASSETS / f"{slug}_widgets.json").read_text())
+            assert not any("publication_series" in widget_id for widget_id in spec)
+
     def test_widget_ids_globally_unique(self):
         """No widget id repeats across any two districts."""
         owner: dict[str, str] = {}

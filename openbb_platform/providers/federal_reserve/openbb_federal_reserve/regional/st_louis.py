@@ -11,6 +11,8 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
+from openbb_federal_reserve.utils.fred_md import columns_defs
+
 router = Router(
     prefix="", description="Federal Reserve Bank of Saint Louis indicators."
 )
@@ -34,15 +36,7 @@ router = Router(
         "data": {
             "table": {
                 "showAll": True,
-                "columnsDefs": [
-                    {
-                        "field": "date",
-                        "headerName": "Date",
-                        "cellDataType": "date",
-                        "pinned": "left",
-                        "sort": "desc",
-                    },
-                ],
+                "columnsDefs": columns_defs("monthly"),
             }
         },
     },
@@ -54,6 +48,37 @@ async def fred_md(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get the FRED-MD monthly macroeconomic database as a tidy long panel."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FederalReserveStLouisPublicationSeries",
+    examples=[APIEx(parameters={"provider": "federal_reserve"})],
+    widget_config={
+        "name": "St. Louis Fed Publication Series",
+        "description": "The publication series supported by the St. Louis Fed"
+        " publications catalog, with the document count in each.",
+        "subCategory": "Publications & Reports",
+        "gridData": {"w": 20, "h": 15},
+        "data": {
+            "table": {
+                "showAll": True,
+                "columnsDefs": [
+                    {"field": "name", "headerName": "Series"},
+                    {"field": "series", "headerName": "Slug"},
+                    {"field": "count", "headerName": "Documents"},
+                ],
+            }
+        },
+    },
+)
+async def publication_series(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """List the supported St. Louis Fed publication series and their document counts."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -75,15 +100,7 @@ async def fred_md(
         "data": {
             "table": {
                 "showAll": True,
-                "columnsDefs": [
-                    {
-                        "field": "date",
-                        "headerName": "Date",
-                        "cellDataType": "date",
-                        "pinned": "left",
-                        "sort": "desc",
-                    },
-                ],
+                "columnsDefs": columns_defs("quarterly"),
             }
         },
     },
@@ -135,12 +152,20 @@ async def fred_qd(
                         "sort": "desc",
                     },
                     {
-                        "field": "index",
-                        "headerName": "Index",
+                        "field": "financial_stress_index",
+                        "headerName": "Financial Stress Index",
+                        "cellDataType": "number",
+                        "formatterFn": "none",
                     },
                     {
-                        "field": "value",
-                        "headerName": "Value",
+                        "field": "price_pressures",
+                        "headerName": "Price Pressures",
+                        "cellDataType": "number",
+                        "formatterFn": "none",
+                    },
+                    {
+                        "field": "economic_news_index",
+                        "headerName": "Economic News Index",
                         "cellDataType": "number",
                         "formatterFn": "none",
                     },

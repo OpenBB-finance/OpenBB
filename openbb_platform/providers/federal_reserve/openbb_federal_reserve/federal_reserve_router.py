@@ -230,17 +230,24 @@ async def regional_publications_download(params: Annotated[dict, Body()]) -> lis
 
     from openbb_core.provider.utils.helpers import make_request
 
+    from openbb_federal_reserve.utils import fedinprint
+
     results: list = []
     for url in params.get("url", []):
         try:
-            response = make_request(url)
+            target = url
+            if "fedinprint.org/item/" in url:
+                target = fedinprint.resolve_file(url, fedinprint.fetch_text)
+                if not target:
+                    raise ValueError("No document is published for this item.")
+            response = make_request(target)
             response.raise_for_status()
             results.append(
                 {
                     "content": base64.b64encode(response.content).decode("utf-8"),
                     "data_format": {
                         "data_type": "pdf",
-                        "filename": url.split("/")[-1],
+                        "filename": target.split("/")[-1],
                     },
                 }
             )
@@ -256,8 +263,18 @@ async def regional_publications_download(params: Annotated[dict, Body()]) -> lis
     return results
 
 
-async def regional_publications_choices(district: str) -> list:
+async def regional_publications_choices(
+    district: str,
+    series: str | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    limit: int = 20,
+    offset: int = 0,
+) -> list:
     """List a Reserve Bank's publication PDFs as file-selector choices.
+
+    The catalog filters — series, date range, and paging — are applied so the
+    file list tracks the widget's parameters.
 
     Returns
     -------
@@ -271,7 +288,16 @@ async def regional_publications_choices(district: str) -> list:
         import_module(f"openbb_federal_reserve.models.regional.{module_name}"),
         fetcher_name,
     )
-    query = fetcher.transform_query({})
+    params = {
+        "series": series,
+        "start_date": start_date,
+        "end_date": end_date,
+        "limit": limit,
+        "offset": offset,
+    }
+    query = fetcher.transform_query(
+        {k: v for k, v in params.items() if v not in (None, "")}
+    )
     catalog = fetcher.transform_data(query, fetcher.extract_data(query, None))
     choices: list = []
     for record in catalog:

@@ -94,6 +94,9 @@ from openbb_federal_reserve.models.regional.atlanta_gdpnow import (
 from openbb_federal_reserve.models.regional.atlanta_market_probability import (
     FederalReserveAtlantaMarketProbabilityFetcher,
 )
+from openbb_federal_reserve.models.regional.atlanta_publication_series import (
+    FederalReserveAtlantaPublicationSeriesFetcher,
+)
 from openbb_federal_reserve.models.regional.atlanta_publications import (
     FederalReserveAtlantaPublicationsFetcher,
 )
@@ -113,6 +116,9 @@ from openbb_federal_reserve.models.regional.atlanta_wage_growth import (
 )
 from openbb_federal_reserve.models.regional.boston_economic_indicators import (
     FederalReserveBostonEconomicIndicatorsFetcher,
+)
+from openbb_federal_reserve.models.regional.boston_publication_series import (
+    FederalReserveBostonPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.boston_publications import (
     FederalReserveBostonPublicationsFetcher,
@@ -147,6 +153,9 @@ from openbb_federal_reserve.models.regional.chicago_mei import (
 from openbb_federal_reserve.models.regional.chicago_nfci import (
     FederalReserveChicagoFinancialConditionsFetcher,
 )
+from openbb_federal_reserve.models.regional.chicago_publication_series import (
+    FederalReserveChicagoPublicationSeriesFetcher,
+)
 from openbb_federal_reserve.models.regional.chicago_publications import (
     FederalReserveChicagoPublicationsFetcher,
 )
@@ -161,6 +170,9 @@ from openbb_federal_reserve.models.regional.cleveland_median_cpi import (
 )
 from openbb_federal_reserve.models.regional.cleveland_median_cpi_components import (
     FederalReserveClevelandMedianCpiComponentsFetcher,
+)
+from openbb_federal_reserve.models.regional.cleveland_publication_series import (
+    FederalReserveClevelandPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.cleveland_publications import (
     FederalReserveClevelandPublicationsFetcher,
@@ -197,6 +209,9 @@ from openbb_federal_reserve.models.regional.dallas_lithium import (
 )
 from openbb_federal_reserve.models.regional.dallas_pce import (
     FederalReserveDallasTrimmedMeanPCEFetcher,
+)
+from openbb_federal_reserve.models.regional.dallas_publication_series import (
+    FederalReserveDallasPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.dallas_publications import (
     FederalReserveDallasPublicationsFetcher,
@@ -246,6 +261,9 @@ from openbb_federal_reserve.models.regional.kansas_city_natural_rate import (
 from openbb_federal_reserve.models.regional.kansas_city_prs import (
     FederalReserveKansasCityPolicyRateUncertaintyFetcher,
 )
+from openbb_federal_reserve.models.regional.kansas_city_publication_series import (
+    FederalReserveKansasCityPublicationSeriesFetcher,
+)
 from openbb_federal_reserve.models.regional.kansas_city_publications import (
     FederalReserveKansasCityPublicationsFetcher,
 )
@@ -272,6 +290,9 @@ from openbb_federal_reserve.models.regional.minneapolis_job_openings import (
 )
 from openbb_federal_reserve.models.regional.minneapolis_labor_force import (
     FederalReserveMinneapolisLaborForceFetcher,
+)
+from openbb_federal_reserve.models.regional.minneapolis_publication_series import (
+    FederalReserveMinneapolisPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.minneapolis_publications import (
     FederalReserveMinneapolisPublicationsFetcher,
@@ -305,6 +326,9 @@ from openbb_federal_reserve.models.regional.new_york_market_expectations import 
 )
 from openbb_federal_reserve.models.regional.new_york_mct import (
     FederalReserveNewYorkCoreTrendInflationFetcher,
+)
+from openbb_federal_reserve.models.regional.new_york_publication_series import (
+    FederalReserveNewYorkPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.new_york_publications import (
     FederalReserveNewYorkPublicationsFetcher,
@@ -348,6 +372,9 @@ from openbb_federal_reserve.models.regional.philadelphia_nbos import (
 from openbb_federal_reserve.models.regional.philadelphia_partisan import (
     FederalReservePhiladelphiaPartisanFetcher,
 )
+from openbb_federal_reserve.models.regional.philadelphia_publication_series import (
+    FederalReservePhiladelphiaPublicationSeriesFetcher,
+)
 from openbb_federal_reserve.models.regional.philadelphia_publications import (
     FederalReservePhiladelphiaPublicationsFetcher,
 )
@@ -362,6 +389,9 @@ from openbb_federal_reserve.models.regional.richmond_manufacturing import (
 )
 from openbb_federal_reserve.models.regional.richmond_nei import (
     FederalReserveRichmondNonEmploymentFetcher,
+)
+from openbb_federal_reserve.models.regional.richmond_publication_series import (
+    FederalReserveRichmondPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.richmond_publications import (
     FederalReserveRichmondPublicationsFetcher,
@@ -384,6 +414,9 @@ from openbb_federal_reserve.models.regional.san_francisco_news_sentiment import 
 from openbb_federal_reserve.models.regional.san_francisco_proxy_funds_rate import (
     FederalReserveSanFranciscoProxyFundsRateFetcher,
 )
+from openbb_federal_reserve.models.regional.san_francisco_publication_series import (
+    FederalReserveSanFranciscoPublicationSeriesFetcher,
+)
 from openbb_federal_reserve.models.regional.san_francisco_publications import (
     FederalReserveSanFranciscoPublicationsFetcher,
 )
@@ -405,6 +438,9 @@ from openbb_federal_reserve.models.regional.st_louis_fred_panel import (
 )
 from openbb_federal_reserve.models.regional.st_louis_indexes import (
     FederalReserveStLouisNationalIndexFetcher,
+)
+from openbb_federal_reserve.models.regional.st_louis_publication_series import (
+    FederalReserveStLouisPublicationSeriesFetcher,
 )
 from openbb_federal_reserve.models.regional.st_louis_publications import (
     FederalReserveStLouisPublicationsFetcher,
@@ -540,6 +576,7 @@ federal_reserve_provider = Provider(
         "FederalReserveClevelandSystemicRisk": (
             FederalReserveClevelandSystemicRiskFetcher
         ),
+        "FederalReserveClevelandPublicationSeries": FederalReserveClevelandPublicationSeriesFetcher,
         "FederalReserveClevelandPublications": (
             FederalReserveClevelandPublicationsFetcher
         ),
@@ -564,6 +601,7 @@ federal_reserve_provider = Provider(
             FederalReserveDallasWeeklyEconomicFetcher
         ),
         "FederalReserveDallasLeadingIndex": FederalReserveDallasLeadingIndexFetcher,
+        "FederalReserveDallasPublicationSeries": FederalReserveDallasPublicationSeriesFetcher,
         "FederalReserveDallasPublications": FederalReserveDallasPublicationsFetcher,
         "FederalReserveMinneapolisBusinessConditions": (
             FederalReserveMinneapolisBusinessConditionsFetcher
@@ -581,6 +619,7 @@ federal_reserve_provider = Provider(
         "FederalReserveMinneapolisGdp": FederalReserveMinneapolisGdpFetcher,
         "FederalReserveMinneapolisCpi": FederalReserveMinneapolisCpiFetcher,
         "FederalReserveMinneapolisClaims": FederalReserveMinneapolisClaimsFetcher,
+        "FederalReserveMinneapolisPublicationSeries": FederalReserveMinneapolisPublicationSeriesFetcher,
         "FederalReserveMinneapolisPublications": (
             FederalReserveMinneapolisPublicationsFetcher
         ),
@@ -591,6 +630,9 @@ federal_reserve_provider = Provider(
         "FederalReserveStLouisFredQd": FederalReserveStLouisFredQdFetcher,
         "FederalReserveStLouisNationalIndex": (
             FederalReserveStLouisNationalIndexFetcher
+        ),
+        "FederalReserveStLouisPublicationSeries": (
+            FederalReserveStLouisPublicationSeriesFetcher
         ),
         "FederalReserveStLouisPublications": (FederalReserveStLouisPublicationsFetcher),
         "FederalReserveAtlantaGdpNow": FederalReserveAtlantaGdpNowFetcher,
@@ -612,6 +654,7 @@ federal_reserve_provider = Provider(
         "FederalReserveAtlantaTaylorRuleHeatmap": (
             FederalReserveAtlantaTaylorRuleHeatmapFetcher
         ),
+        "FederalReserveAtlantaPublicationSeries": FederalReserveAtlantaPublicationSeriesFetcher,
         "FederalReserveAtlantaPublications": FederalReserveAtlantaPublicationsFetcher,
         "FederalReserveKansasCityFinancialStress": (
             FederalReserveKansasCityFinancialStressFetcher
@@ -640,6 +683,7 @@ federal_reserve_provider = Provider(
         "FederalReserveKansasCityDivisionalLmci": (
             FederalReserveKansasCityDivisionalLmciFetcher
         ),
+        "FederalReserveKansasCityPublicationSeries": FederalReserveKansasCityPublicationSeriesFetcher,
         "FederalReserveKansasCityPublications": (
             FederalReserveKansasCityPublicationsFetcher
         ),
@@ -657,6 +701,7 @@ federal_reserve_provider = Provider(
         "FederalReserveRichmondRecessionIndicator": (
             FederalReserveRichmondRecessionIndicatorFetcher
         ),
+        "FederalReserveRichmondPublicationSeries": FederalReserveRichmondPublicationSeriesFetcher,
         "FederalReserveRichmondPublications": FederalReserveRichmondPublicationsFetcher,
         "FederalReserveChicagoEconomicConditions": (
             FederalReserveChicagoEconomicConditionsFetcher
@@ -674,6 +719,7 @@ federal_reserve_provider = Provider(
         "FederalReserveChicagoMidwestEconomy": (
             FederalReserveChicagoMidwestEconomyFetcher
         ),
+        "FederalReserveChicagoPublicationSeries": FederalReserveChicagoPublicationSeriesFetcher,
         "FederalReserveChicagoPublications": FederalReserveChicagoPublicationsFetcher,
         "FederalReservePhiladelphiaSpf": FederalReservePhiladelphiaSpfFetcher,
         "FederalReservePhiladelphiaAnxious": FederalReservePhiladelphiaAnxiousFetcher,
@@ -692,6 +738,7 @@ federal_reserve_provider = Provider(
             FederalReservePhiladelphiaNonmanufacturingFetcher
         ),
         "FederalReservePhiladelphiaAtsix": FederalReservePhiladelphiaAtsixFetcher,
+        "FederalReservePhiladelphiaPublicationSeries": FederalReservePhiladelphiaPublicationSeriesFetcher,
         "FederalReservePhiladelphiaPublications": (
             FederalReservePhiladelphiaPublicationsFetcher
         ),
@@ -712,10 +759,12 @@ federal_reserve_provider = Provider(
         "FederalReserveNewYorkCoreTrendInflation": (
             FederalReserveNewYorkCoreTrendInflationFetcher
         ),
+        "FederalReserveNewYorkPublicationSeries": FederalReserveNewYorkPublicationSeriesFetcher,
         "FederalReserveNewYorkPublications": (FederalReserveNewYorkPublicationsFetcher),
         "FederalReserveBostonEconomicIndicators": (
             FederalReserveBostonEconomicIndicatorsFetcher
         ),
+        "FederalReserveBostonPublicationSeries": FederalReserveBostonPublicationSeriesFetcher,
         "FederalReserveBostonPublications": FederalReserveBostonPublicationsFetcher,
         "FederalReserveSanFranciscoNewsSentiment": (
             FederalReserveSanFranciscoNewsSentimentFetcher
@@ -736,6 +785,7 @@ federal_reserve_provider = Provider(
         "FederalReserveSanFranciscoTermPremium": (
             FederalReserveSanFranciscoTermPremiumFetcher
         ),
+        "FederalReserveSanFranciscoPublicationSeries": FederalReserveSanFranciscoPublicationSeriesFetcher,
         "FederalReserveSanFranciscoPublications": (
             FederalReserveSanFranciscoPublicationsFetcher
         ),

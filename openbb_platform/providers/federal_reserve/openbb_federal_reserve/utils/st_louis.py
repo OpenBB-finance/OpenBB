@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-import html
-import re
+import threading
 from typing import Any
 
 from openbb_federal_reserve.utils.curl_session import (
@@ -20,8 +19,7 @@ FRED_QD_URL = (
     "https://www.stlouisfed.org/-/media/project/frbstl/stlouisfed/research"
     "/fred-md/quarterly/current.csv"
 )
-FRASER_BASE = "https://fraser.stlouisfed.org"
-FRASER_SYNOPSES_TITLE = f"{FRASER_BASE}/title/economic-synopses-6715"
+FEDINPRINT_PROVIDER = "Federal Reserve Bank of St. Louis"
 
 _WARMUP_HOSTS = (
     "https://www.stlouisfed.org/",
@@ -37,13 +35,13 @@ def _warmup(session: Any) -> None:
 
 
 def _get_session() -> Any:
-    """Return a ``curl_cffi`` session warmed against the St. Louis Fed hosts."""
-    return get_session("st_louis", _warmup)
+    """Return the calling thread's ``curl_cffi`` session, warmed once per thread."""
+    return get_session(f"st_louis:{threading.get_ident()}", _warmup)
 
 
 def reset_session() -> None:
-    """Drop the cached session so the next call re-warms it."""
-    _reset("st_louis")
+    """Drop the calling thread's cached session so the next call re-warms it."""
+    _reset(f"st_louis:{threading.get_ident()}")
 
 
 def fetch_text(url: str, referer: str | None = None) -> str:
@@ -143,133 +141,144 @@ def fetch_fred_panel(frequency: str) -> str:
     )
 
 
-_SYNOPSES_DECADES = ("2000s", "2010s", "2020s")
-_ITEM_PATTERN = re.compile(
-    r'data-id="(\d+)"\s+data-type="item"\s+'
-    r'href="(/title/economic-synopses-6715/[^"]+)"[^>]*>\s*'
-    r'<span class="list-item-title">(.*?)(?:</span>|</a>)',
-    re.DOTALL,
+ST_LOUIS_SERIES: tuple[tuple[str, str], ...] = (
+    ("working_papers", "Working Papers"),
+    ("review", "Review"),
+    ("speech", "Speech"),
+    ("economic_synopses", "Economic Synopses"),
+    ("national_economic_trends", "National Economic Trends"),
+    ("page_one_economics", "Page One Economics Newsletter"),
+    ("burgundy_books", "Burgundy Books"),
+    ("bridges", "Bridges"),
+    ("monetary_trends", "Monetary Trends"),
+    ("proceedings", "Proceedings"),
+    ("community_development", "Community Development Publications and Reports"),
+    ("central_banker", "Central Banker"),
+    ("regional_economic_development", "Regional Economic Development"),
+    ("inside_the_vault", "Inside the Vault"),
+    ("annual_report", "Annual Report"),
+    ("international_economic_trends", "International Economic Trends"),
+    ("liber8", "Liber8 Economic Information Newsletter"),
+    ("in_the_balance", "In the Balance"),
+    ("economic_equity_insights", "Economic Equity Insights"),
+    ("quarterly_debt_monitor", "Quarterly Debt Monitor"),
+    ("demographics_of_wealth", "Demographics of Wealth"),
 )
-_TITLE_TAIL_PATTERN = re.compile(r",\s*(\d{4}),\s*No\.\s*(\d+)\s*$")
-_PDF_META_PATTERN = re.compile(r'citation_pdf_url"\s*content="([^"]+)"')
-_PDF_DATE_PATTERN = re.compile(r"economicsynopses_stls_(\d{8})\.pdf")
+
+_FACET_BY_SLUG: dict[str, str] = {slug: facet for slug, facet in ST_LOUIS_SERIES}
+SERIES_SLUGS: tuple[str, ...] = tuple(_FACET_BY_SLUG)
+
+DEFAULT_LIMIT = 20
 
 
-def _parse_synopsis_item(item_id: str, href: str, raw_title: str) -> dict[str, Any]:
-    """Build a catalog record from a FRASER browse-list article entry."""
-    title = html.unescape(re.sub(r"\s+", " ", raw_title).strip())
-    year: int | None = None
-    issue: int | None = None
-    match = _TITLE_TAIL_PATTERN.search(title)
-    if match:
-        year, issue = int(match.group(1)), int(match.group(2))
-        title = title[: match.start()].strip()
-    return {
-        "item_id": item_id,
-        "title": title,
-        "year": year,
-        "issue": issue,
-        "url": f"{FRASER_BASE}{href}",
-    }
+def series_choices() -> list[dict[str, str]]:
+    """Return series dropdown options mapping each display label to its slug value."""
+    from openbb_federal_reserve.utils.fedinprint import clean_label
+
+    return [
+        {"label": clean_label(facet), "value": slug} for slug, facet in ST_LOUIS_SERIES
+    ]
 
 
-def list_economic_synopses() -> list[dict[str, Any]]:
-    """Return the FRASER catalog of Economic Synopses articles, newest first.
+def list_series() -> list[dict[str, Any]]:
+    """Return the supported publication series with their live document counts.
 
     Returns
     -------
     list[dict[str, Any]]
-        One record per article with ``item_id``, ``title``, ``year``, ``issue``,
-        ``date``, the FRASER landing-page ``url``, and the direct ``pdf_url``. The
-        ``date`` is the ``YYYY-MM-DD`` publication date resolved from the article's
-        PDF filename, or ``""`` when no dated PDF is published; ``pdf_url`` is the
-        direct article PDF link, or ``""`` when none is published.
+        One record per supported series with its ``series`` slug, human-readable
+        ``name``, and current document ``count``.
     """
+    from openbb_federal_reserve.utils import fedinprint
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> list[dict[str, Any]]:
-        """Scrape each decade browse page and resolve every article's PDF and date."""
-        records: dict[str, dict[str, Any]] = {}
-        for decade in _SYNOPSES_DECADES:
-            text = fetch_text(f"{FRASER_SYNOPSES_TITLE}?browse={decade}")
-            for item_id, href, raw_title in _ITEM_PATTERN.findall(text):
-                record = _parse_synopsis_item(item_id, href, raw_title)
-                records[item_id] = record
-        for record in records.values():
-            try:
-                resolved = resolve_synopsis_pdf_url(record["url"])
-                record["date"] = resolved["date"]
-                record["pdf_url"] = resolved["url"]
-            except Exception:  # noqa: BLE001, S110
-                record["date"] = ""
-                record["pdf_url"] = ""
-        return sorted(
-            records.values(),
-            key=lambda r: (r["date"], r["year"] or 0, r["issue"] or 0, r["item_id"]),
-            reverse=True,
-        )
+        counts = fedinprint.series_counts(FEDINPRINT_PROVIDER, fetch_text)
+        return [
+            {
+                "series": slug,
+                "name": fedinprint.clean_label(facet),
+                "count": counts.get(fedinprint.clean_label(facet), 0),
+            }
+            for slug, facet in ST_LOUIS_SERIES
+        ]
 
     return cached(
-        "st_louis_economic_synopses",
+        "st_louis_publication_series",
         lambda: seconds_until_next_release("weekly"),
         _producer,
     )
 
 
-def list_publications() -> list[dict[str, Any]]:
-    """Return the catalog of St. Louis Fed publication PDFs, newest first.
+def search_publications(
+    series: str | None = None,
+    min_year: str = "",
+    start: int = 0,
+    limit: int = DEFAULT_LIMIT,
+) -> list[dict[str, Any]]:
+    """Return a page of St. Louis Fed publications from the Fed in Print search.
 
-    Every St. Louis Fed PDF published to FRASER is folded into one catalog: each
-    Economic Synopses issue carrying a direct article PDF link is exposed as a
-    publication record for the multi-file viewer.
+    Parameters
+    ----------
+    series : str | None
+        A series slug to narrow to one series; ``None`` covers every series.
+    min_year : str
+        The earliest four-digit year to keep, bounding how far paging descends.
+    start : int
+        The result offset to begin from, for pagination.
+    limit : int
+        The maximum number of documents to return.
 
     Returns
     -------
     list[dict[str, Any]]
-        One record per PDF with ``series``, ``id``, ``date``, ``title``, and the
-        direct ``url`` to the publication PDF, newest first.
+        One record per publication with ``series``, ``date``, ``title``, and the
+        direct document ``url``, newest first.
     """
-    records: list[dict[str, Any]] = []
-    for article in list_economic_synopses():
-        pdf_url = article.get("pdf_url") or ""
-        if not pdf_url:
-            continue
-        records.append(
-            {
-                "series": "economic_synopses",
-                "id": article["item_id"],
-                "date": article["date"] or None,
-                "title": article["title"],
-                "url": pdf_url,
-            }
-        )
-    return records
+    from openbb_federal_reserve.utils import fedinprint
+
+    facet = _FACET_BY_SLUG.get(series) if series else None
+    return fedinprint.search(
+        FEDINPRINT_PROVIDER,
+        fetch_text,
+        series_facet=facet,
+        min_year=min_year,
+        start=start,
+        limit=limit,
+    )
 
 
-def resolve_synopsis_pdf_url(landing_url: str) -> dict[str, str]:
-    """Resolve an Economic Synopses landing page to its direct PDF URL and date.
+def list_publications(
+    series: str | None = None,
+    start_date: Any = None,
+    start: int = 0,
+    limit: int = DEFAULT_LIMIT,
+) -> list[dict[str, Any]]:
+    """Return a cached page of St. Louis Fed publications, newest first.
 
     Parameters
     ----------
-    landing_url : str
-        The FRASER article landing-page URL.
+    series : str | None
+        A series slug to narrow to one series; ``None`` covers every series.
+    start_date : datetime.date | None
+        The earliest publication date to fetch; bounds how far paging descends.
+    start : int
+        The result offset to begin from, for pagination.
+    limit : int
+        The maximum number of documents to return.
 
     Returns
     -------
-    dict[str, str]
-        ``url`` is the direct PDF link and ``date`` is the ``YYYY-MM-DD``
-        publication date parsed from the PDF filename when present.
+    list[dict[str, Any]]
+        One record per publication with ``series``, ``date``, ``title``, and the
+        direct document ``url``, newest first.
     """
-    from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
-    text = fetch_text(landing_url)
-    match = _PDF_META_PATTERN.search(text)
-    if not match:
-        raise OpenBBError(f"No PDF is published for '{landing_url}'.")
-    pdf_url = html.unescape(match.group(1))
-    date_match = _PDF_DATE_PATTERN.search(pdf_url)
-    published = ""
-    if date_match:
-        stamp = date_match.group(1)
-        published = f"{stamp[:4]}-{stamp[4:6]}-{stamp[6:]}"
-    return {"url": pdf_url, "date": published}
+    slug = series if series in _FACET_BY_SLUG else None
+    min_year = str(start_date.year) if start_date else ""
+    return cached(
+        ("st_louis_publications", slug, min_year, start, limit),
+        lambda: seconds_until_next_release("weekly"),
+        lambda: search_publications(slug, min_year, start, limit),
+    )

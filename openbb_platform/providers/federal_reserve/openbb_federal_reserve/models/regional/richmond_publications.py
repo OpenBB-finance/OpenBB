@@ -1,4 +1,4 @@
-"""Federal Reserve Bank of Richmond Survey Releases Index Model."""
+"""Federal Reserve Bank of Richmond Publications Index Model."""
 
 from datetime import date as dateType
 from typing import Any, Literal
@@ -11,32 +11,32 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field
 
-api_prefix = (
-    SystemService()
-    .system_settings.python_settings.model_dump()
-    .get("api_settings", {})
-    .get("prefix", "")
-    or "/api/v1"
-)
+from openbb_federal_reserve.utils.fedinprint import series_choices
+
+api_prefix = SystemService().system_settings.api_settings.prefix or "/api/v1"
 
 
 class FederalReserveRichmondPublicationsQueryParams(QueryParams):
-    """Richmond Fed Survey Releases Index Query Parameters."""
+    """Richmond Fed Publications Index Query Parameters."""
 
     __json_schema_extra__ = {
-        "survey": {
-            "x-widget_config": {
-                "options": [
-                    {"label": "Manufacturing", "value": "manufacturing"},
-                    {"label": "Nonmanufacturing", "value": "non_manufacturing"},
-                ]
-            }
-        }
+        "series": {"x-widget_config": {"options": series_choices("richmond")}}
     }
 
-    survey: Literal["manufacturing", "non_manufacturing"] | None = Field(
+    series: (
+        Literal[
+            "econ_focus",
+            "working_paper",
+            "economic_quarterly",
+            "economic_review",
+            "monograph",
+            "annual_report",
+            "research_digest",
+        ]
+        | None
+    ) = Field(
         default=None,
-        description="Filter the catalog by survey.",
+        description="Filter the catalog by publication series.",
     )
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -44,18 +44,24 @@ class FederalReserveRichmondPublicationsQueryParams(QueryParams):
     end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
+    limit: int = Field(
+        default=20, description="The maximum number of documents to return."
+    )
+    offset: int = Field(
+        default=0, description="The result offset to begin from, for pagination."
+    )
 
 
 class FederalReserveRichmondPublicationsData(Data):
-    """Richmond Fed Survey Releases Index Data."""
+    """Richmond Fed Publications Index Data."""
 
     model_config = ConfigDict(
         json_schema_extra={
             "x-widget_config": {
                 "$.type": "multi_file_viewer",
-                "$.name": "Richmond Fed Survey Releases",
-                "$.description": "Richmond Fed Fifth District manufacturing and"
-                " service-sector survey release PDFs. Select one or more to view.",
+                "$.name": "Richmond Fed Publications",
+                "$.description": "Richmond Fed publications indexed on Fed in Print."
+                " Select one or more documents to view.",
                 "$.category": "Federal Reserve",
                 "$.subCategory": "Publications & Reports",
                 "$.source": ["Federal Reserve Bank of Richmond"],
@@ -67,7 +73,14 @@ class FederalReserveRichmondPublicationsData(Data):
                         "type": "endpoint",
                         "paramName": "url",
                         "optionsEndpoint": f"{api_prefix}/federal_reserve/regional_publications_choices",
-                        "optionsParams": {"district": "richmond"},
+                        "optionsParams": {
+                            "district": "richmond",
+                            "series": "$series",
+                            "start_date": "$start_date",
+                            "end_date": "$end_date",
+                            "limit": "$limit",
+                            "offset": "$offset",
+                        },
                         "show": False,
                         "multiSelect": True,
                         "roles": ["fileSelector"],
@@ -78,12 +91,10 @@ class FederalReserveRichmondPublicationsData(Data):
         }
     )
 
-    date: dateType = Field(description="The survey release date.")
-    survey: str = Field(
-        description="The survey, 'manufacturing' or 'non_manufacturing'."
-    )
-    title: str = Field(description="The human-readable release title.")
-    url: str = Field(description="The direct URL to the PDF document.")
+    date: dateType | None = Field(default=None, description="The publication date.")
+    series: str = Field(description="The publication series.")
+    title: str = Field(description="The human-readable publication title.")
+    url: str = Field(description="The Fed in Print item-page URL for the publication.")
 
 
 class FederalReserveRichmondPublicationsFetcher(
@@ -92,7 +103,7 @@ class FederalReserveRichmondPublicationsFetcher(
         list[FederalReserveRichmondPublicationsData],
     ]
 ):
-    """Richmond Fed Survey Releases Index Fetcher."""
+    """Richmond Fed Publications Index Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -107,10 +118,16 @@ class FederalReserveRichmondPublicationsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Index the Richmond Fed survey release PDF archives."""
-        from openbb_federal_reserve.utils.richmond_surveys import list_survey_releases
+        """Index Richmond Fed publications via the Fed in Print search."""
+        from openbb_federal_reserve.utils import fedinprint
 
-        catalog = list_survey_releases(query.survey)
+        catalog = fedinprint.list_publications(
+            "richmond",
+            series=query.series,
+            start_date=query.start_date,
+            start=query.offset,
+            limit=query.limit,
+        )
         if not catalog:
             raise EmptyDataError("The request was returned empty.")
         return catalog
@@ -121,7 +138,7 @@ class FederalReserveRichmondPublicationsFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReserveRichmondPublicationsData]:
-        """Apply the catalog filters."""
+        """Apply the catalog date filters."""
         from datetime import date as date_cls
 
         records = data
@@ -129,15 +146,24 @@ class FederalReserveRichmondPublicationsFetcher(
             records = [
                 record
                 for record in records
-                if date_cls.fromisoformat(record["date"]) >= query.start_date
+                if record["date"]
+                and date_cls.fromisoformat(record["date"]) >= query.start_date
             ]
         if query.end_date:
             records = [
                 record
                 for record in records
-                if date_cls.fromisoformat(record["date"]) <= query.end_date
+                if record["date"]
+                and date_cls.fromisoformat(record["date"]) <= query.end_date
             ]
         return [
-            FederalReserveRichmondPublicationsData.model_validate(record)
+            FederalReserveRichmondPublicationsData.model_validate(
+                {
+                    "date": record["date"] or None,
+                    "series": record["series"],
+                    "title": record["title"],
+                    "url": record["url"],
+                }
+            )
             for record in records
         ]

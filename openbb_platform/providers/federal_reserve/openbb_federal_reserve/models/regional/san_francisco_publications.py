@@ -11,38 +11,52 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field
 
-api_prefix = (
-    SystemService()
-    .system_settings.python_settings.model_dump()
-    .get("api_settings", {})
-    .get("prefix", "")
-    or "/api/v1"
-)
+from openbb_federal_reserve.utils.fedinprint import series_choices
+
+api_prefix = SystemService().system_settings.api_settings.prefix or "/api/v1"
 
 
 class FederalReserveSanFranciscoPublicationsQueryParams(QueryParams):
     """San Francisco Fed Publications Index Query Parameters."""
 
     __json_schema_extra__ = {
-        "publication_type": {
-            "x-widget_config": {
-                "options": [
-                    {"label": "Economic Letter", "value": "economic_letter"},
-                    {"label": "FedViews", "value": "fedviews"},
-                ]
-            }
-        }
+        "series": {"x-widget_config": {"options": series_choices("sf")}}
     }
 
-    publication_type: Literal["economic_letter", "fedviews"] | None = Field(
+    series: (
+        Literal[
+            "frbsf_economic_letter",
+            "working_paper_series",
+            "proceedings",
+            "economic_review",
+            "speech",
+            "community_development_innovation_review",
+            "community_investments",
+            "working_papers_in_applied_economic_theory",
+            "pacific_basin_working_paper_series",
+            "western_economic_developments",
+            "monograph",
+            "community_development_working_paper",
+            "asia_focus",
+            "community_development_research_brief",
+            "annual_report",
+        ]
+        | None
+    ) = Field(
         default=None,
-        description="The publication series to index; all series when unset.",
+        description="Filter the catalog by publication series.",
     )
     start_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     end_date: dateType | None = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+    )
+    limit: int = Field(
+        default=20, description="The maximum number of documents to return."
+    )
+    offset: int = Field(
+        default=0, description="The result offset to begin from, for pagination."
     )
 
 
@@ -53,9 +67,9 @@ class FederalReserveSanFranciscoPublicationsData(Data):
         json_schema_extra={
             "x-widget_config": {
                 "$.type": "multi_file_viewer",
-                "$.name": "SF Fed Publications",
-                "$.description": "FRBSF Economic Letter and SF FedViews releases."
-                " Select one or more PDFs to view.",
+                "$.name": "San Francisco Fed Publications",
+                "$.description": "San Francisco Fed publications indexed on Fed in Print."
+                " Select one or more documents to view.",
                 "$.category": "Federal Reserve",
                 "$.subCategory": "Publications & Reports",
                 "$.source": ["Federal Reserve Bank of San Francisco"],
@@ -67,7 +81,14 @@ class FederalReserveSanFranciscoPublicationsData(Data):
                         "type": "endpoint",
                         "paramName": "url",
                         "optionsEndpoint": f"{api_prefix}/federal_reserve/regional_publications_choices",
-                        "optionsParams": {"district": "sf"},
+                        "optionsParams": {
+                            "district": "sf",
+                            "series": "$series",
+                            "start_date": "$start_date",
+                            "end_date": "$end_date",
+                            "limit": "$limit",
+                            "offset": "$offset",
+                        },
                         "show": False,
                         "multiSelect": True,
                         "roles": ["fileSelector"],
@@ -78,14 +99,10 @@ class FederalReserveSanFranciscoPublicationsData(Data):
         }
     )
 
-    date: dateType = Field(description="The publication release date.")
-    publication_type: str = Field(description="The publication series.")
-    title: str = Field(description="The publication title.")
-    slug: str = Field(description="The publication slug identifier.")
-    volume: str | None = Field(default=None, description="The publication volume.")
-    issue: str | None = Field(default=None, description="The publication issue number.")
-    link: str = Field(description="The publication landing-page URL.")
-    url: str | None = Field(default=None, description="The direct PDF URL.")
+    date: dateType | None = Field(default=None, description="The publication date.")
+    series: str = Field(description="The publication series.")
+    title: str = Field(description="The human-readable publication title.")
+    url: str = Field(description="The Fed in Print item-page URL for the publication.")
 
 
 class FederalReserveSanFranciscoPublicationsFetcher(
@@ -109,12 +126,16 @@ class FederalReserveSanFranciscoPublicationsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Enumerate the San Francisco Fed publications catalog."""
-        from openbb_federal_reserve.utils.san_francisco_publications import (
-            list_publications,
-        )
+        """Index San Francisco Fed publications via the Fed in Print search."""
+        from openbb_federal_reserve.utils import fedinprint
 
-        catalog = list_publications(query.publication_type)
+        catalog = fedinprint.list_publications(
+            "sf",
+            series=query.series,
+            start_date=query.start_date,
+            start=query.offset,
+            limit=query.limit,
+        )
         if not catalog:
             raise EmptyDataError("The request was returned empty.")
         return catalog
@@ -133,15 +154,24 @@ class FederalReserveSanFranciscoPublicationsFetcher(
             records = [
                 record
                 for record in records
-                if date_cls.fromisoformat(record["date"]) >= query.start_date
+                if record["date"]
+                and date_cls.fromisoformat(record["date"]) >= query.start_date
             ]
         if query.end_date:
             records = [
                 record
                 for record in records
-                if date_cls.fromisoformat(record["date"]) <= query.end_date
+                if record["date"]
+                and date_cls.fromisoformat(record["date"]) <= query.end_date
             ]
         return [
-            FederalReserveSanFranciscoPublicationsData.model_validate(record)
+            FederalReserveSanFranciscoPublicationsData.model_validate(
+                {
+                    "date": record["date"] or None,
+                    "series": record["series"],
+                    "title": record["title"],
+                    "url": record["url"],
+                }
+            )
             for record in records
         ]

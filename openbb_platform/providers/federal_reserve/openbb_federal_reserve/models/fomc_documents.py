@@ -15,13 +15,7 @@ from pydantic import ConfigDict, Field, field_validator
 
 from openbb_federal_reserve.utils.fomc_documents import FomcDocumentType
 
-api_prefix = (
-    SystemService()
-    .system_settings.python_settings.model_dump()
-    .get("api_settings", {})
-    .get("prefix", "")
-    or "/api/v1"
-)
+api_prefix = SystemService().system_settings.api_settings.prefix or "/api/v1"
 
 choice_types = list(FomcDocumentType.__args__)
 choices = [

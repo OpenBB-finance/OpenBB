@@ -314,16 +314,47 @@ async def recession_indicator(
     examples=[
         APIEx(parameters={"provider": "federal_reserve"}),
         APIEx(
-            description="Index only the manufacturing survey releases.",
-            parameters={"survey": "manufacturing", "provider": "federal_reserve"},
+            description="Index only the Econ Focus series.",
+            parameters={"series": "econ_focus", "provider": "federal_reserve"},
         ),
     ],
 )
-async def survey_releases(
+async def publications(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Index the Richmond Fed manufacturing and service-sector survey PDF archives."""
+    """Index the Richmond Fed publications catalog on Fed in Print."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FederalReserveRichmondPublicationSeries",
+    examples=[APIEx(parameters={"provider": "federal_reserve"})],
+    widget_config={
+        "name": "Richmond Fed Publication Series",
+        "description": "The publication series supported by the Richmond Fed"
+        " publications catalog, with the document count in each.",
+        "subCategory": "Publications & Reports",
+        "gridData": {"w": 20, "h": 15},
+        "data": {
+            "table": {
+                "showAll": True,
+                "columnsDefs": [
+                    {"field": "name", "headerName": "Series"},
+                    {"field": "series", "headerName": "Slug"},
+                    {"field": "count", "headerName": "Documents"},
+                ],
+            }
+        },
+    },
+)
+async def publication_series(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """List the supported Richmond Fed publication series and their document counts."""
     return await OBBject.from_query(Query(**locals()))

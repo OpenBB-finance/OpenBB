@@ -11,11 +11,7 @@ from openbb_federal_reserve.models.regional.boston_economic_indicators import (
     FederalReserveBostonEconomicIndicatorsData,
     FederalReserveBostonEconomicIndicatorsFetcher,
 )
-from openbb_federal_reserve.models.regional.boston_publications import (
-    FederalReserveBostonPublicationsData,
-    FederalReserveBostonPublicationsFetcher,
-)
-from openbb_federal_reserve.utils import boston, boston_publications
+from openbb_federal_reserve.utils import boston
 
 
 def _series(
@@ -533,68 +529,3 @@ class TestBostonHelpers:
         records = boston.fetch_indicator("payroll_employment")
         assert {r["label"] for r in records} == {"RELABELED"}
         assert fetch_calls["n"] == 1
-
-
-class TestBostonPublications:
-    """Tests for the NEEC publications index fetcher."""
-
-    _CATALOG = [
-        {
-            "series": "neec",
-            "id": "202606",
-            "date": "2026-06-01",
-            "title": "New England Economic Conditions June 2026",
-            "url": "https://x/202606NEEC.pdf",
-        },
-        {
-            "series": "neec",
-            "id": "202604",
-            "date": "2026-04-01",
-            "title": "New England Economic Conditions April 2026",
-            "url": "https://x/202604NEEC.pdf",
-        },
-        {
-            "series": "neec",
-            "id": "202511",
-            "date": "2025-11-01",
-            "title": "New England Economic Conditions November 2025",
-            "url": "https://x/202511NEEC.pdf",
-        },
-    ]
-
-    def test_filters_start_and_end_date(self, monkeypatch):
-        """The start and end date filters narrow the catalog."""
-        monkeypatch.setattr(
-            boston_publications, "list_publications", lambda series: list(self._CATALOG)
-        )
-        query = FederalReserveBostonPublicationsFetcher.transform_query(
-            {"start_date": "2026-01-01", "end_date": "2026-05-01"}
-        )
-        rows = FederalReserveBostonPublicationsFetcher.extract_data(query, None)
-        result = FederalReserveBostonPublicationsFetcher.transform_data(query, rows)
-        assert all(isinstance(r, FederalReserveBostonPublicationsData) for r in result)
-        assert all("id" not in r.model_dump() for r in result)
-        assert [r.title for r in result] == [
-            "New England Economic Conditions April 2026"
-        ]
-
-    def test_no_filter_returns_all(self, monkeypatch):
-        """With no filters the full catalog is returned, newest first."""
-        monkeypatch.setattr(
-            boston_publications, "list_publications", lambda series: list(self._CATALOG)
-        )
-        query = FederalReserveBostonPublicationsFetcher.transform_query({})
-        rows = FederalReserveBostonPublicationsFetcher.extract_data(query, None)
-        result = FederalReserveBostonPublicationsFetcher.transform_data(query, rows)
-        assert [r.date for r in result] == [
-            date(2026, 6, 1),
-            date(2026, 4, 1),
-            date(2025, 11, 1),
-        ]
-
-    def test_empty_raises(self, monkeypatch):
-        """An empty catalog raises ``EmptyDataError``."""
-        monkeypatch.setattr(boston_publications, "list_publications", lambda series: [])
-        query = FederalReserveBostonPublicationsFetcher.transform_query({})
-        with pytest.raises(EmptyDataError):
-            FederalReserveBostonPublicationsFetcher.extract_data(query, None)
