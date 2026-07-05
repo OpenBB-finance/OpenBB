@@ -10,7 +10,7 @@ from typing import Any
 if sys.version_info >= (3, 11):  # pragma: no cover
     import tomllib
 else:  # pragma: no cover
-    import tomli as tomllib  # ty: ignore[unresolved-import]
+    import tomli as tomllib
 
 DEFAULT_CONFIG_NAMES: tuple[str, ...] = ("openbb.toml", ".openbb.toml")
 PYPROJECT_NAME = "pyproject.toml"

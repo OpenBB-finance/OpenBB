@@ -453,7 +453,7 @@ def calculate_cones(
 
     df_ = [realized, min_, bottom_q, median, top_q, max_]
     df_windows = allowed_windows
-    df = DataFrame(df_, columns=df_windows)  # ty: ignore[invalid-argument-type]
+    df = DataFrame(df_, columns=df_windows)
     df = df.rename(
         index={
             0: "realized",

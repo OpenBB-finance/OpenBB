@@ -1,6 +1,6 @@
 """Views for the technical Extension."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
@@ -349,9 +349,11 @@ class TechnicalViews:
         show_tails = kwargs.get("show_tails")
         show_tails = True if show_tails is None else show_tails
         tail_periods = int(kwargs["tail_periods"]) if "tail_periods" in kwargs else 16
-        tail_interval = (
-            str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"
-        )
+        tail_interval_input = kwargs.get("tail_interval", "week")
+        if tail_interval_input not in ("day", "week", "month"):
+            tail_interval: Literal["day", "week", "month"] = "week"
+        else:
+            tail_interval = cast(Literal["day", "week", "month"], tail_interval_input)
         date = kwargs.get("date") if "date" in kwargs else None
         show_tails = False if date is not None else show_tails
         if ratios_df.empty or momentum_df.empty:
