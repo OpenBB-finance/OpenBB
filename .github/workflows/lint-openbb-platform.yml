@@ -83,7 +83,11 @@ jobs:
                 continue
               fi
 
-              has_dev_group=$(python -c 'import sys,tomllib; p=tomllib.load(open(sys.argv[1], "rb")); print("yes" if "dev" in p.get("dependency-groups", {}) else "no")' "$pkg/pyproject.toml")
+              has_dev_group="no"
+              if grep -q '^\[dependency-groups\]' "$pkg/pyproject.toml" \
+                && grep -Eq '^\s*dev\s*=' "$pkg/pyproject.toml"; then
+                has_dev_group="yes"
+              fi
 
               if [ "$has_dev_group" = "yes" ]; then
                 uv pip install --system -e "./$pkg" --group dev
