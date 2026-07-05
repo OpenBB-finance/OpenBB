@@ -141,7 +141,7 @@ async def cot(
 
 
 async def get_cftc_apps_json() -> list[dict[str, Any]]:
-    """Get the IMF apps.json file.
+    """Get the CFTC apps.json file.
 
     This endpoint serves the apps.json file containing OpenBB Workspace app configurations.
     It is automatically merged with any existing apps.json files in the Workspace and API.
