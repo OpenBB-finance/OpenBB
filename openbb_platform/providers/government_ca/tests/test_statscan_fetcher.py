@@ -1,373 +1,448 @@
-"""Tests for the StatsCan economic indicators fetcher (Phase 4).
+"""Tests for the StatsCan economic indicators fetcher.
 
-The fetcher reads from the shipped metadata cache (no network in the
-happy path). Tests cover:
+The fetcher reads observations from the StatsCan WDS REST API at
+runtime (with a diskcache TTL layer) and uses the shipped SDMX
+catalog only for parameter resolution (vector ID → cube PID, etc.).
+Tests cover:
 
-- ``_parse_value`` — extracts numeric values from human-readable strings
-- ``_parse_refper_to_date`` — parses StatsCan reference periods
 - ``StatsCanEconomicIndicatorsFetcher.transform_query`` — defaults & validation
-- ``StatsCanEconomicIndicatorsFetcher.extract_data`` — cache lookup + filtering
+- ``StatsCanEconomicIndicatorsFetcher.extract_data`` — vector / cube / homepage modes
 - ``StatsCanEconomicIndicatorsFetcher.transform_data`` — mapping to standard model
-- Degraded-mode handling — clear ``OpenBBError`` when cache is empty
-- End-to-end — full fetcher round-trip with the seeded cache
+- Degraded-mode handling — clear ``OpenBBError`` when the catalog is empty
+- End-to-end — full fetcher round-trip with a seeded catalog + mocked WDS client
 """
 
 from __future__ import annotations
 
 from datetime import date
+from unittest.mock import patch
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
 
 from openbb_government_ca.statscan.economic_indicators import (
-    StatsCanEconomicIndicatorsData,
     StatsCanEconomicIndicatorsFetcher,
     StatsCanEconomicIndicatorsQueryParams,
-    _parse_refper_to_date,
-    _parse_value,
 )
+from openbb_government_ca.utils.metadata import GovernmentCaMetadata
 
 
-# ---------------------------------------------------------------------------
-# _parse_value
-# ---------------------------------------------------------------------------
-class TestParseValue:
-    """``_parse_value`` extracts the first numeric value from a string."""
-
-    @pytest.mark.parametrize(
-        "raw,expected",
-        [
-            ("$47.6 billion", 47.6),
-            ("18,161,000", 18161000.0),
-            ("-3.9%", -3.9),
-            ("83,751.6 million", 83751.6),
-            ("0.2%", 0.2),
-            ("4.7%", 4.7),
-            ("1,234,567.89", 1234567.89),
-            ("-$1.5 billion", -1.5),
-        ],
+def _seed_catalog() -> None:
+    """Populate the singleton with a minimal SDMX catalog."""
+    GovernmentCaMetadata._reset()
+    meta = GovernmentCaMetadata()
+    meta._apply_blob(
+        {
+            "boc": {},
+            "statscan": {
+                "status": "ok",
+                "indicators": [
+                    {"source": "1", "title_en": "GDP", "geo_code": "0"},
+                ],
+                "catalog": {
+                    "cubes": {
+                        "10100139": {
+                            "pid": "10100139",
+                            "title_en": "GDP",
+                            "subject_code": "13",
+                            "frequency_code": "6",
+                            "series": [
+                                {
+                                    "vector_id": "V1",
+                                    "coordinate": "1.1.1.1",
+                                    "label_en": "GDP at basic prices",
+                                    "scalar_factor_code": "6",
+                                    "uom_code": "203",
+                                    "frequency_code": "6",
+                                },
+                                {
+                                    "vector_id": "V2",
+                                    "coordinate": "1.1.1.2",
+                                    "label_en": "GDP at market prices",
+                                    "scalar_factor_code": "6",
+                                    "uom_code": "203",
+                                    "frequency_code": "6",
+                                },
+                            ],
+                        }
+                    },
+                    "subjects": {"13": "Economic accounts"},
+                    "cube_count": 1,
+                    "series_count": 2,
+                    "status": "ok",
+                },
+            },
+        }
     )
-    def test_parses_numeric_strings(self, raw, expected):
-        """Common StatsCan/BoC value formats parse correctly."""
-        assert _parse_value(raw) == expected
-
-    @pytest.mark.parametrize(
-        "raw",
-        [
-            "",
-            "   ",
-            "..",  # StatsCan missing marker
-            "...",
-            "NaN",
-            "N/A",
-            "n/a",
-            "NA",
-            None,
-        ],
-    )
-    def test_returns_none_for_missing_or_invalid(self, raw):
-        """Missing/invalid values return ``None``."""
-        assert _parse_value(raw) is None
-
-    def test_returns_none_for_no_numeric_content(self):
-        """A string with no numeric content returns ``None``."""
-        assert _parse_value("no numbers here") is None
-
-
-# ---------------------------------------------------------------------------
-# _parse_refper_to_date
-# ---------------------------------------------------------------------------
-class TestParseRefperToDate:
-    """``_parse_refper_to_date`` parses StatsCan reference periods."""
-
-    @pytest.mark.parametrize(
-        "refper,expected",
-        [
-            ("September 2016", date(2016, 9, 1)),
-            ("October 2016", date(2016, 10, 1)),
-            ("January 2024", date(2024, 1, 1)),
-            ("December 2023", date(2023, 12, 1)),
-            ("2016", date(2016, 1, 1)),  # annual
-            ("2024", date(2024, 1, 1)),
-        ],
-    )
-    def test_parses_valid_refpers(self, refper, expected):
-        """Valid reference periods parse to the first day of the period."""
-        assert _parse_refper_to_date(refper) == expected
-
-    @pytest.mark.parametrize(
-        "refper",
-        [
-            "",
-            "   ",
-            None,
-            "not a date",
-            "Sept 2016",  # abbreviation not supported
-            "13/2016",  # not a recognized format
-        ],
-    )
-    def test_returns_none_for_invalid(self, refper):
-        """Invalid reference periods return ``None``."""
-        assert _parse_refper_to_date(refper) is None
-
-    def test_case_insensitive_month_name(self):
-        """Month name matching is case-insensitive."""
-        assert _parse_refper_to_date("SEPTEMBER 2016") == date(2016, 9, 1)
-        assert _parse_refper_to_date("september 2016") == date(2016, 9, 1)
 
 
 # ---------------------------------------------------------------------------
 # transform_query
 # ---------------------------------------------------------------------------
 class TestTransformQuery:
-    """``transform_query`` applies defaults and normalizes inputs."""
+    """``transform_query`` populates defaults and normalizes the symbol."""
 
-    def test_defaults_symbol_to_all(self):
-        """When no symbol is provided, defaults to ``'all'``."""
+    def test_default_symbol_is_homepage(self):
+        """No symbol → 'homepage' (curated indicators list)."""
         q = StatsCanEconomicIndicatorsFetcher.transform_query({})
-        assert q.symbol == "all"
+        assert q.symbol == "homepage"
 
-    def test_preserves_explicit_symbol(self):
-        """An explicit symbol is preserved."""
-        q = StatsCanEconomicIndicatorsFetcher.transform_query({"symbol": "2280069"})
-        assert q.symbol == "2280069"
-
-    def test_normalizes_country_canada_to_zero(self):
-        """The country name 'canada' is normalized to geo_code '0'."""
-        q = StatsCanEconomicIndicatorsFetcher.transform_query({"country": "canada"})
+    def test_country_canada_normalizes_to_zero(self):
+        """'canada' is normalized to geo_code '0'."""
+        q = StatsCanEconomicIndicatorsFetcher.transform_query(
+            {"symbol": "V1", "country": "canada"}
+        )
         assert q.country == "0"
 
-    def test_normalizes_country_aliases(self):
-        """Common country aliases (CA, CAN) are normalized to '0'."""
-        for alias in ("CA", "can", "Canada"):
-            q = StatsCanEconomicIndicatorsFetcher.transform_query({"country": alias})
-            assert q.country == "0"
-
-    def test_preserves_numeric_geo_code(self):
-        """A numeric geo_code is preserved as-is."""
-        q = StatsCanEconomicIndicatorsFetcher.transform_query({"country": "1"})
-        assert q.country == "1"
-
-    def test_handles_comma_separated_symbols(self):
-        """Comma-separated symbols are preserved for later splitting."""
+    def test_country_ca_normalizes_to_zero(self):
+        """'ca' is normalized to geo_code '0'."""
         q = StatsCanEconomicIndicatorsFetcher.transform_query(
-            {"symbol": "2280069,Employment"}
+            {"symbol": "V1", "country": "ca"}
         )
-        assert "2280069" in q.symbol
-        assert "Employment" in q.symbol
+        assert q.country == "0"
+
+    def test_dates_default_to_one_year_to_today(self):
+        """start_date defaults to 1 year ago; end_date to today."""
+        q = StatsCanEconomicIndicatorsFetcher.transform_query({})
+        assert q.start_date is not None
+        assert q.end_date == date.today()
+        assert (q.end_date - q.start_date).days >= 364
+
+    def test_explicit_dates_are_preserved(self):
+        """Explicit dates are not overwritten by defaults."""
+        q = StatsCanEconomicIndicatorsFetcher.transform_query(
+            {
+                "symbol": "V1",
+                "start_date": date(2020, 1, 1),
+                "end_date": date(2021, 1, 1),
+            }
+        )
+        assert q.start_date == date(2020, 1, 1)
+        assert q.end_date == date(2021, 1, 1)
 
 
 # ---------------------------------------------------------------------------
-# extract_data
+# extract_data — degraded mode
 # ---------------------------------------------------------------------------
-class TestExtractData:
-    """``extract_data`` reads from the cache and filters by query params."""
+class TestExtractDataDegradedMode:
+    """``extract_data`` raises ``OpenBBError`` when the catalog is empty."""
 
-    def test_returns_all_indicators_for_all_symbol(self, seeded_meta):
-        """The 'all' symbol returns every indicator in the cache."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="all")
-        result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        assert len(result) == 2  # seeded cache has 2 indicators
-        titles = [ind["title_en"] for ind in result]
-        assert "Imports" in titles
-        assert "Employment" in titles
+    def test_degraded_catalog_raises_openbb_error(self):
+        """A degraded catalog (no cubes) raises OpenBBError."""
+        GovernmentCaMetadata._reset()
+        meta = GovernmentCaMetadata()
+        meta._apply_blob({"boc": {}, "statscan": {"status": "degraded"}})
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            with pytest.raises(OpenBBError, match="degraded mode"):
+                StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
 
-    def test_filters_by_vector_id(self, seeded_meta):
-        """A numeric vector ID returns only the matching indicator."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069")
-        result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        assert len(result) == 1
-        assert result[0]["source"] == "2280069"
-        assert result[0]["title_en"] == "Imports"
+    def test_empty_catalog_raises_openbb_error(self):
+        """An ok-status but empty catalog still raises OpenBBError."""
+        GovernmentCaMetadata._reset()
+        meta = GovernmentCaMetadata()
+        meta._apply_blob(
+            {"boc": {}, "statscan": {"status": "ok", "catalog": {"cubes": {}}}}
+        )
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            with pytest.raises(OpenBBError, match="empty or in degraded"):
+                StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
 
-    def test_filters_by_title_substring(self, seeded_meta):
-        """A title substring returns matching indicators (case-insensitive)."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="employ")
-        result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        assert len(result) == 1
-        assert result[0]["title_en"] == "Employment"
 
-    def test_filters_by_multiple_symbols(self, seeded_meta):
-        """Comma-separated symbols match indicators by either vector ID or title."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069,Employment")
-        result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        # Both should match (2280069 = Imports, Employment = Employment).
-        assert len(result) == 2
+# ---------------------------------------------------------------------------
+# extract_data — single vector mode
+# ---------------------------------------------------------------------------
+class TestExtractDataVectorMode:
+    """``extract_data`` with a vector ID fetches a single time series."""
 
-    def test_deduplicates_by_vector_id(self, seeded_meta):
-        """When two search terms match the same indicator, it appears only once."""
-        # Both "2280069" (vector ID) and "Imports" (title) match the same indicator.
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069,Imports")
-        result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        assert len(result) == 1
-        assert result[0]["source"] == "2280069"
+    def test_single_vector_returns_observations(self):
+        """A single vector ID returns observations from the WDS API."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query({"symbol": "V1"})
+            mock_payload = [
+                {"refPer": "2024-01", "value": 100.0},
+                {"refPer": "2024-02", "value": 101.5},
+            ]
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = (
+                    mock_payload
+                )
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
 
-    def test_raises_empty_data_for_no_match(self, seeded_meta):
-        """A symbol that matches nothing raises ``EmptyDataError``."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="zzz_nonexistent_zzz")
-        with pytest.raises(EmptyDataError, match="No StatsCan indicators matched"):
-            StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            assert len(result) == 2
+            assert result[0]["_vector_id"] == "V1"
+            assert result[0]["_cube_pid"] == "10100139"
+            assert result[0]["_label_en"] == "GDP at basic prices"
+        finally:
+            GovernmentCaMetadata._reset()
 
-    def test_raises_openbb_error_in_degraded_mode(self, empty_meta):
-        """A degraded cache raises ``OpenBBError`` with a clear message.
+    def test_multiple_vectors_via_comma(self):
+        """A comma-separated list of vector IDs is split correctly."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query({"symbol": "V1,V2"})
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
 
-        This is the user's explicit Phase 4 requirement: "si por alguna
-        razón el caché no cargó bien, el fetcher debe lanzar un error
-        claro en lugar de hacer un crash feo de Python."
-        """
-        # empty_meta has statscan = {} which isn't degraded-mode per se,
-        # but list_indicators returns [] which triggers EmptyDataError.
-        # For a true degraded-mode test, we need status="degraded".
-        from openbb_government_ca.utils.metadata import GovernmentCaMetadata
+            assert len(result) == 2
+            vids = {obs["_vector_id"] for obs in result}
+            assert vids == {"V1", "V2"}
+        finally:
+            GovernmentCaMetadata._reset()
 
+    def test_unknown_vector_is_skipped(self):
+        """A vector ID not in the catalog is silently skipped."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query({"symbol": "V1,V999"})
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+
+            assert len(result) == 1
+            assert result[0]["_vector_id"] == "V1"
+        finally:
+            GovernmentCaMetadata._reset()
+
+
+# ---------------------------------------------------------------------------
+# extract_data — cube mode
+# ---------------------------------------------------------------------------
+class TestExtractDataCubeMode:
+    """``extract_data`` with ``cube:PID`` fetches every series in a cube."""
+
+    def test_cube_prefix_fetches_all_series(self):
+        """``cube:10100139`` fetches every series in cube 10100139."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:10100139"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+
+            assert len(result) == 2
+            pids = {obs["_cube_pid"] for obs in result}
+            assert pids == {"10100139"}
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_unknown_cube_raises_openbb_error(self):
+        """An unknown cube PID raises OpenBBError."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:99999999"}
+            )
+            with pytest.raises(OpenBBError):
+                StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
+
+
+# ---------------------------------------------------------------------------
+# extract_data — homepage mode
+# ---------------------------------------------------------------------------
+class TestExtractDataHomepageMode:
+    """``extract_data`` with ``homepage`` fetches the curated indicators list."""
+
+    def test_homepage_fetches_all_homepage_vectors(self):
+        """``homepage`` resolves to every vector ID in the homepage list."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "homepage"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+
+            # The seeded catalog has 1 homepage indicator → 1 vector → 1 obs.
+            assert len(result) == 1
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_empty_homepage_raises_empty_data_error(self):
+        """An empty homepage indicators list raises EmptyDataError."""
         GovernmentCaMetadata._reset()
         meta = GovernmentCaMetadata()
         meta._apply_blob(
             {
                 "boc": {},
                 "statscan": {
-                    "status": "degraded",
-                    "warning": "statscan down",
+                    "status": "ok",
                     "indicators": [],
+                    "catalog": {
+                        "cubes": {"10100139": {"pid": "10100139", "series": []}},
+                        "cube_count": 1,
+                        "series_count": 0,
+                        "status": "ok",
+                    },
                 },
             }
         )
         try:
-            q = StatsCanEconomicIndicatorsQueryParams(symbol="all")
-            with pytest.raises(OpenBBError, match="degraded mode"):
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "homepage"}
+            )
+            with pytest.raises(EmptyDataError):
                 StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
         finally:
             GovernmentCaMetadata._reset()
 
-    def test_raises_empty_data_for_empty_cache(self, empty_meta):
-        """An empty (non-degraded) cache raises ``EmptyDataError``."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="all")
-        with pytest.raises(EmptyDataError, match="contains no indicators"):
-            StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+
+# ---------------------------------------------------------------------------
+# extract_data — empty result
+# ---------------------------------------------------------------------------
+class TestExtractDataEmptyResult:
+    """``extract_data`` raises ``EmptyDataError`` when no observations come back."""
+
+    def test_no_observations_raises_empty_data_error(self):
+        """When the WDS returns no observations, EmptyDataError is raised."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query({"symbol": "V1"})
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = []
+                with pytest.raises(EmptyDataError):
+                    StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
 
 
 # ---------------------------------------------------------------------------
 # transform_data
 # ---------------------------------------------------------------------------
 class TestTransformData:
-    """``transform_data`` maps raw indicator dicts to the standard model."""
+    """``transform_data`` maps raw WDS observations to the standard model."""
 
-    def test_maps_basic_fields(self, seeded_meta):
-        """Basic fields (symbol, country, value) are mapped correctly."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069")
-        raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-        assert len(result) == 1
-        row = result[0]
-        assert row.symbol == "2280069"
-        assert row.symbol_root == "Imports"
-        assert row.country == "Canada"
+    def test_monthly_observation_maps_correctly(self):
+        """A monthly observation is parsed and mapped to the data model."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            raw = [
+                {
+                    "refPer": "2024-01",
+                    "value": 100.0,
+                    "_vector_id": "V1",
+                    "_cube_pid": "10100139",
+                    "_coordinate": "1.1.1.1",
+                    "_scalar_factor_code": "6",
+                    "_uom_code": "203",
+                    "_label_en": "GDP at basic prices",
+                }
+            ]
+            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
+            assert len(result) == 1
+            row = result[0]
+            assert row.date == date(2024, 1, 1)
+            assert row.value == 100.0
+            assert row.symbol == "V1"
+            assert row.symbol_root == "GDP at basic prices"
+            assert row.vector_id == "V1"
+            assert row.cube_pid == "10100139"
+            assert row.coordinate == "1.1.1.1"
+        finally:
+            GovernmentCaMetadata._reset()
 
-    def test_parses_value_from_value_en(self, seeded_meta):
-        """The numeric value is parsed from the ``value_en`` string."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069")
-        raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-        # value_en was "$47.6 billion" → 47.6
-        assert result[0].value == 47.6
-        # The raw string is preserved.
-        assert result[0].value_raw == "$47.6 billion"
+    def test_unparseable_value_becomes_none(self):
+        """An unparseable value becomes None in the output."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            raw = [
+                {
+                    "refPer": "2024-01",
+                    "value": "not a number",
+                    "_vector_id": "V1",
+                }
+            ]
+            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
+            assert result[0].value is None
+        finally:
+            GovernmentCaMetadata._reset()
 
-    def test_parses_date_from_refper(self, seeded_meta):
-        """The date is parsed from the ``refper_en`` string."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069")
-        raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-        # refper_en was "September 2016" → date(2016, 9, 1)
-        assert result[0].date == date(2016, 9, 1)
+    def test_quarterly_refper_parsed_to_first_day_of_quarter(self):
+        """``"2024-Q1"`` is parsed to ``date(2024, 1, 1)``."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            raw = [
+                {
+                    "refPer": "2024-Q1",
+                    "value": 100.0,
+                    "_vector_id": "V1",
+                }
+            ]
+            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
+            assert result[0].date == date(2024, 1, 1)
+        finally:
+            GovernmentCaMetadata._reset()
 
-    def test_preserves_growth_rate_fields(self, seeded_meta):
-        """Growth rate, direction, and details are preserved."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069")
-        raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-        row = result[0]
-        assert row.growth_rate == "4.7%"
-        assert row.growth_direction == "1"
-        assert row.growth_details == "(monthly change)"
-
-    def test_preserves_release_date(self, seeded_meta):
-        """The release date is preserved as a string."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="2280069")
-        raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-        assert result[0].release_date == "2016-11-04"
-
-    def test_sorts_by_date_descending(self, seeded_meta):
-        """Results are sorted by date descending (most recent first)."""
-        q = StatsCanEconomicIndicatorsQueryParams(symbol="all")
-        raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-        result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-        # Seeded indicators: Imports (Sep 2016), Employment (Oct 2016).
-        # Oct should come first.
-        assert result[0].date == date(2016, 10, 1)
-        assert result[1].date == date(2016, 9, 1)
-
-
-# ---------------------------------------------------------------------------
-# End-to-end: full fetcher round-trip via the .test() helper
-# ---------------------------------------------------------------------------
-class TestEndToEnd:
-    """Full fetcher round-trip mirroring the OECD test pattern."""
-
-    def test_full_round_trip_all_symbol(self, seeded_meta):
-        """The fetcher's ``test()`` helper runs end-to-end without error."""
-        fetcher = StatsCanEconomicIndicatorsFetcher()
-        # The OECD pattern uses fetcher.test(params, credentials) which
-        # runs transform_query → extract_data → transform_data.
-        result = fetcher.test({"symbol": "all"}, {})
-        # ``test`` returns None on success (per the OECD pattern).
-        assert result is None
-
-    def test_full_round_trip_with_vector_id(self, seeded_meta):
-        """End-to-end with a specific vector ID."""
-        fetcher = StatsCanEconomicIndicatorsFetcher()
-        result = fetcher.test({"symbol": "2280069"}, {})
-        assert result is None
-
-    def test_full_round_trip_with_default_symbol(self, seeded_meta):
-        """End-to-end with no symbol (defaults to 'all')."""
-        fetcher = StatsCanEconomicIndicatorsFetcher()
-        result = fetcher.test({}, {})
-        assert result is None
-
-
-# ---------------------------------------------------------------------------
-# Data model
-# ---------------------------------------------------------------------------
-class TestDataModel:
-    """The ``StatsCanEconomicIndicatorsData`` model accepts all extension fields."""
-
-    def test_accepts_extension_fields(self):
-        """The Data model accepts value_raw, refper, growth_rate, etc."""
-        row = StatsCanEconomicIndicatorsData(
-            date=date(2024, 1, 1),
-            symbol_root="Test",
-            symbol="12345",
-            country="Canada",
-            value=42.5,
-            value_raw="$42.5 billion",
-            refper="January 2024",
-            growth_rate="1.2%",
-            growth_direction="1",
-            growth_details="(monthly change)",
-            release_date="2024-02-01",
-            daily_url=None,
-        )
-        assert row.value == 42.5
-        assert row.value_raw == "$42.5 billion"
-        assert row.refper == "January 2024"
-
-    def test_optional_fields_default_to_none(self):
-        """All extension fields default to ``None``."""
-        row = StatsCanEconomicIndicatorsData()
-        assert row.date is None
-        assert row.value is None
-        assert row.value_raw is None
-        assert row.growth_rate is None
+    def test_results_sorted_by_symbol_then_date_desc(self):
+        """Results are sorted by symbol (asc), then date (desc)."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1,V2")
+            raw = [
+                {
+                    "refPer": "2024-02",
+                    "value": 101.0,
+                    "_vector_id": "V2",
+                },
+                {
+                    "refPer": "2024-01",
+                    "value": 100.0,
+                    "_vector_id": "V2",
+                },
+                {
+                    "refPer": "2024-01",
+                    "value": 100.0,
+                    "_vector_id": "V1",
+                },
+            ]
+            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
+            assert [r.symbol for r in result] == ["V1", "V2", "V2"]
+            assert [r.date for r in result] == [
+                date(2024, 1, 1),
+                date(2024, 2, 1),
+                date(2024, 1, 1),
+            ]
+        finally:
+            GovernmentCaMetadata._reset()

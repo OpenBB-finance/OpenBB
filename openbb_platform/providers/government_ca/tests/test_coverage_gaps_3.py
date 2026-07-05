@@ -246,106 +246,32 @@ class TestYieldsTransformQueryBranches:
 
 
 # ===========================================================================
-# statscan/economic_indicators.py — partial branches in _parse_refper_to_date
+# statscan/economic_indicators.py — partial branches in date parsing
 # ===========================================================================
 class TestParseRefperBranches:
-    """Cover the ``except ValueError`` branches in _parse_refper_to_date."""
+    """Cover the ``except ValueError`` branches in date parsing.
 
-    def test_monthly_with_zero_month_raises_value_error(self):
-        """``"2024-00"`` → month=0 → date(2024, 0, 1) raises ValueError.
+    The module was rewritten to fetch observations from the WDS REST
+    API. The old ``_parse_refper_to_date`` helper was removed; the
+    fetcher now uses ``parse_observation_date`` from
+    ``openbb_government_ca.utils.helpers`` (which already has its own
+    coverage for these branches in test_coverage_gaps.py).
+    """
 
-        This covers the ``except ValueError: return None`` branch in
-        the monthly parser.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
+    def test_parse_observation_date_invalid_month_returns_none(self):
+        """``"2024-00"`` returns None via parse_observation_date."""
+        from openbb_government_ca.utils.helpers import parse_observation_date
 
-        assert _parse_refper_to_date("2024-00") is None
+        assert parse_observation_date("2024-00") is None
 
-    def test_monthly_with_month_thirteen_raises_value_error(self):
-        """``"2024-13"`` → month=13 → date(2024, 13, 1) raises ValueError."""
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
+    def test_parse_observation_date_invalid_month_overflow_returns_none(self):
+        """``"2024-13"`` returns None via parse_observation_date."""
+        from openbb_government_ca.utils.helpers import parse_observation_date
 
-        assert _parse_refper_to_date("2024-13") is None
+        assert parse_observation_date("2024-13") is None
 
-    def test_monthly_with_year_zero_raises_value_error(self):
-        """``"0000-01"`` → year=0 → date(0, 1, 1) raises ValueError.
+    def test_parse_observation_date_year_zero_returns_none(self):
+        """``"0000"`` returns None via parse_observation_date."""
+        from openbb_government_ca.utils.helpers import parse_observation_date
 
-        This covers the same branch with a different trigger.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
-
-        assert _parse_refper_to_date("0000-01") is None
-
-    def test_monthly_with_year_overflow_raises_value_error(self):
-        """``"99999-01"`` doesn't enter the monthly branch (len != 7).
-
-        Actually, len("99999-01") == 8, so this doesn't enter monthly.
-        We need a 4-char year that overflows date(). There isn't one
-        in 4-char space (max 9999). So this branch is unreachable via
-        the monthly path — it's only reachable via the annual path,
-        which has its own except. We cover the annual except here.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
-
-        # Annual: "0000" → date(0, 1, 1) raises ValueError.
-        assert _parse_refper_to_date("0000") is None
-
-    def test_monthly_with_non_digit_year_after_month(self):
-        """``"September abcd"`` → year_str isn't digits → loop continues.
-
-        This covers the partial branch ``132->128`` (the if condition
-        was False, so we go back to the loop instead of returning).
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
-
-        assert _parse_refper_to_date("September abcd") is None
-
-    def test_monthly_with_wrong_length_year(self):
-        """``"September 201"`` → year_str is digits but len != 4 → loop continues.
-
-        This covers the same partial branch with a different trigger.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
-
-        assert _parse_refper_to_date("September 201") is None
-
-    def test_monthly_with_year_zero_after_month_name(self):
-        """``"September 0000"`` → year=0 → date(0, 1, 1) raises ValueError.
-
-        This covers the ``except ValueError: return None`` branch on
-        lines 135-136 of economic_indicators.py. The year "0000" is
-        digits and length 4, so it passes the if-check, but
-        ``date(0, 1, 1)`` raises ValueError because year 0 is out of
-        range.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
-
-        assert _parse_refper_to_date("September 0000") is None
-
-    def test_monthly_with_year_overflow_after_month_name(self):
-        """``"September 99999"`` → year_str is digits but len=5 → loop continues.
-
-        Covers the partial branch where the if is False due to length.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
-        )
-
-        # "September 99999" — len("99999")==5, so the if is False.
-        # The loop continues but no other month name matches, so
-        # returns None at the end.
-        assert _parse_refper_to_date("September 99999") is None
+        assert parse_observation_date("0000") is None

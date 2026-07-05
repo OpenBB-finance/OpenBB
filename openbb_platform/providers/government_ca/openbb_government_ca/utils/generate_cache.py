@@ -6,32 +6,14 @@ console script.
 
 CRITICAL DESIGN CONSTRAINTS
 ---------------------------
-- **Stdlib + ``requests`` only.** ``openbb_core`` is NOT a build-time
-  dependency and must not be imported here. The build hook runs in an
-  isolated PEP 517 environment that contains only what's listed in
-  ``[build-system].requires``.
-- **No state outside this file's directory.** The cache is written to
+- Stdlib + ``requests`` only. ``openbb_core`` is NOT a build-time
+  dependency and must not be imported here.
+- No state outside this file's directory. The cache is written to
   ``assets/government_ca_cache.json.xz`` relative to the package root.
-  All paths are resolved from ``__file__``.
-- **Fail soft, log loud.** If an upstream API is unreachable during
+- Fail soft, log loud. If an upstream API is unreachable during
   build, the generator writes a *partial* cache (with the missing
   section marked ``"status": "degraded"`` and a ``"warning"`` field)
-  rather than aborting the install. The runtime fetcher can then
-  either fall back to direct API calls or raise a clear error. If
-  **both** sections fail, we still write the cache (with both marked
-  degraded) and exit 0 — the user gets a working package with empty
-  metadata and a clear log trail.
-
-PHASE STATUS
-------------
-- **Phase 1**: scaffolding (done).
-- **Phase 2**: ``_fetch_statscan`` walks ``ind-econ.json`` (done).
-- **Phase 3** (this file, current): ``_fetch_boc`` walks the BoC Valet
-  API. The catalog is intentionally agnostic about which series maps
-  to which OpenBB standard model field — that decision is deferred to
-  Phase 5 (the fetcher). The cache just records every series' official
-  ``label`` and ``description`` so the fetcher can pick the right one
-  at runtime.
+  rather than aborting the install.
 """
 
 from __future__ import annotations
@@ -44,75 +26,25 @@ from pathlib import Path
 from typing import Any
 
 if __package__ in (None, ""):
-    # Run-by-path inside the isolated PEP 517 build env:
-    # the `openbb_government_ca` package isn't importable and its
-    # __init__.py would pull in openbb_core (not a build-time dep).
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from _http import NetworkError, http_get_json
 else:
     from openbb_government_ca.utils._http import NetworkError, http_get_json
 
-# Resolve paths relative to this file so the script works regardless
-# of the current working directory.
-_PKG_ROOT = Path(__file__).resolve().parent.parent  # openbb_government_ca/
+_PKG_ROOT = Path(__file__).resolve().parent.parent
 _CACHE_DIR = _PKG_ROOT / "assets"
 _CACHE_FILE = _CACHE_DIR / "government_ca_cache.json.xz"
 
-# ---------------------------------------------------------------------------
-# StatsCan endpoints
-# ---------------------------------------------------------------------------
 STATSCAN_HOMEPAGE_URL = (
     "https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json"
 )
-# Per-product observation URL. StatsCan's Web Data Service (WDS) uses
-# vector IDs (the ``source`` field in ind-econ.json) to fetch
-# observations. We don't fetch observations at build time — we only
-# resolve enough structural metadata to let the Phase 4 fetcher
-# construct the right URL at runtime.
 STATSCAN_WDS_BASE = "https://www150.statcan.gc.ca/t1/wds/rest"
 
-# ---------------------------------------------------------------------------
-# BoC endpoints
-# ---------------------------------------------------------------------------
 BOC_VALET_BASE = "https://www.bankofcanada.ca/valet"
 BOC_LIST_SERIES_URL = f"{BOC_VALET_BASE}/lists/series/json"
 BOC_LIST_GROUPS_URL = f"{BOC_VALET_BASE}/lists/groups/json"
 
-
-# ---------------------------------------------------------------------------
-# Series & groups of interest (Phase 3 catalog scope)
-# ---------------------------------------------------------------------------
-# This is the *only* place where the set of cataloged series is
-# defined. Adding a series here means the build hook will resolve its
-# metadata (label, description, link) and store it in the cache. The
-# Phase 5 fetcher reads from this cache to decide which specific series
-# to call.
-#
-# NOTE: The brief mentions ``CBC20210``, ``V39079``, and
-# ``BD.CDN.ALL.DQ.YLD``. We catalog ALL of the following so the Phase
-# 5 fetcher has the full family to choose from:
-#
-# - **FX**: the ``FX_RATES_DAILY`` group covers all daily exchange
-#   rates. We resolve it as a group so the fetcher can iterate
-#   members, AND we also catalog a handful of individual FX series
-#   (FXUSDCAD, FXEURCAD, FXGBPCAD, FXJPYCAD, FXMXNCAD, FXCNYCAD,
-#   FXINRCAD) so direct lookups by symbol work without expanding the
-#   group first.
-# - **Policy rate family**: V39076 (low band), V39077 (high band),
-#   V39078 (Bank Rate), V39079 (Target for the overnight rate per the
-#   official Valet description), and CBC20210 (alias of V39079 per
-#   Valet's own label/description).
-# - **Benchmark bond yields**: ``BD.CDN.ALL.DQ.YLD`` does NOT exist
-#   in the Valet catalog. The real benchmark series are
-#   ``BD.CDN.{2YR,3YR,5YR,7YR,10YR,LONG,RRB}.DQ.YLD``. We catalog all
-#   of them so the Phase 5 fetcher can map year_2 → BD.CDN.2YR.DQ.YLD,
-#   year_3 → BD.CDN.3YR.DQ.YLD, year_5 → BD.CDN.5YR.DQ.YLD,
-#   year_7 → BD.CDN.7YR.DQ.YLD, year_10 → BD.CDN.10YR.DQ.YLD,
-#   year_30 → BD.CDN.LONG.DQ.YLD. The RRB (Real Return Bonds) is
-#   cataloged for completeness but not mapped to a treasury_rates
-#   field — it's an inflation-linked bond, not a nominal benchmark.
 BOC_INDIVIDUAL_SERIES: tuple[str, ...] = (
-    # --- FX (selected majors against CAD) ---
     "FXUSDCAD",
     "FXEURCAD",
     "FXGBPCAD",
@@ -120,30 +52,21 @@ BOC_INDIVIDUAL_SERIES: tuple[str, ...] = (
     "FXMXNCAD",
     "FXCNYCAD",
     "FXINRCAD",
-    # --- Policy overnight rate family (V390*) ---
-    # Catalog ALL of them so the Phase 5 fetcher can pick based on the
-    # ``description`` field — the descriptions are the source of truth.
-    "V39076",  # Operating band - low
-    "V39077",  # Operating band - high
-    "V39078",  # Bank rate
-    "V39079",  # Target for the overnight rate (per Valet description)
-    "CBC20210",  # Alias of V39079 (same label & description)
-    # --- Benchmark Government of Canada bond yields ---
-    "BD.CDN.2YR.DQ.YLD",  # 2-year benchmark
-    "BD.CDN.3YR.DQ.YLD",  # 3-year benchmark
-    "BD.CDN.5YR.DQ.YLD",  # 5-year benchmark
-    "BD.CDN.7YR.DQ.YLD",  # 7-year benchmark
-    "BD.CDN.10YR.DQ.YLD",  # 10-year benchmark
-    "BD.CDN.LONG.DQ.YLD",  # Long-term benchmark (≈30y)
-    "BD.CDN.RRB.DQ.YLD",  # Real Return Bonds (inflation-linked)
+    "V39076",
+    "V39077",
+    "V39078",
+    "V39079",
+    "CBC20210",
+    "BD.CDN.2YR.DQ.YLD",
+    "BD.CDN.3YR.DQ.YLD",
+    "BD.CDN.5YR.DQ.YLD",
+    "BD.CDN.7YR.DQ.YLD",
+    "BD.CDN.10YR.DQ.YLD",
+    "BD.CDN.LONG.DQ.YLD",
+    "BD.CDN.RRB.DQ.YLD",
 )
 
-BOC_GROUPS_OF_INTEREST: tuple[str, ...] = (
-    # Daily exchange rates — covers all FX*CAD series. The Phase 5
-    # fetcher resolves the symbol parameter against this group's
-    # member list to validate the user's input.
-    "FX_RATES_DAILY",
-)
+BOC_GROUPS_OF_INTEREST: tuple[str, ...] = ("FX_RATES_DAILY",)
 
 
 def _utc_now_iso() -> str:
@@ -152,21 +75,8 @@ def _utc_now_iso() -> str:
 
 
 def _write_cache(blob: dict, path: Path | None = None) -> Path:
-    """Compress *blob* as LZMA-compressed JSON and write to *path*.
-
-    Returns the path written. Parent directories are created if
-    missing. Uses ``preset=9`` for maximum compression (the build
-    happens once per release; the cost is paid once at install time
-    and pays dividends on every wheel download).
-
-    When *path* is ``None``, the module-level ``_CACHE_FILE`` is
-    resolved **at call time** (not at function-definition time) so
-    that tests can monkey-patch ``generate_cache._CACHE_FILE`` and
-    have the change take effect.
-    """
+    """Compress *blob* as LZMA-compressed JSON and write to *path*."""
     if path is None:
-        # Read at call time so tests that monkey-patch the
-        # module-level constant work as expected.
         path = _CACHE_FILE  # type: ignore[assignment]
     path.parent.mkdir(parents=True, exist_ok=True)
     raw = json.dumps(blob, separators=(",", ":")).encode("utf-8")
@@ -176,30 +86,23 @@ def _write_cache(blob: dict, path: Path | None = None) -> Path:
 
 
 # ---------------------------------------------------------------------------
-# StatsCan fetcher (Phase 2)
+# StatsCan fetcher
 # ---------------------------------------------------------------------------
 def _parse_homepage_response(payload: Any) -> dict[str, Any]:
     """Parse the ``ind-econ.json`` payload into a structured blob.
 
-    The response shape (per StatsCan's official documentation at
-    https://www.statcan.gc.ca/en/developers/ind-econ-json) is::
+    The response shape is::
 
         {"results": {"geo": [...], "themes_en": [...], "themes_fr": [...],
                       "indicators": [...]}}
 
     Each indicator carries a ``source`` field (a StatsCan vector ID
-    like ``"2280069"``) that the Phase 4 fetcher can use to construct
+    like ``"2280069"``) used by the runtime fetcher to construct
     observation URLs.
-
-    This parser is defensive: it accepts the documented shape, but
-    also tolerates the indicator list being at the top level (some
-    StatsCan endpoints return a bare list) or under ``"indicators"``
-    without the ``"results"`` wrapper.
     """
     if payload is None:
         return _empty_homepage_blob()
 
-    # Unwrap ``{"results": {...}`` if present.
     if isinstance(payload, dict) and "results" in payload:
         payload = payload["results"]
 
@@ -233,14 +136,11 @@ def _parse_homepage_response(payload: Any) -> dict[str, Any]:
                 "value_fr": value.get("fr", ""),
                 "refper_en": refper.get("en", ""),
                 "refper_fr": refper.get("fr", ""),
-                "source": str(raw.get("source", "")),  # ← vector ID
+                "source": str(raw.get("source", "")),
                 "release_date": str(raw.get("release_date", "")),
                 "growth_en": growth.get("en", ""),
                 "growth_arrow": str(growth_rate.get("arrow_direction", "")),
                 "growth_details_en": details.get("en", ""),
-                # Pre-computed URL the Phase 4 fetcher will use to pull
-                # observations for this indicator. The WDS endpoint
-                # takes a vector ID and a start/end date range.
                 "observations_url": (
                     f"{STATSCAN_WDS_BASE}/getDataVector?vectorId="
                     f"{raw.get('source', '')}&startRefPeriod=0&endReferencePeriod=0"
@@ -290,27 +190,205 @@ def _empty_homepage_blob(warning: str = "") -> dict[str, Any]:
     return blob
 
 
-def _fetch_statscan() -> dict:
-    """Fetch Statistics Canada metadata.
+def _empty_catalog_blob(warning: str = "") -> dict[str, Any]:
+    """Return an empty SDMX catalog blob (for degraded mode)."""
+    blob: dict[str, Any] = {
+        "cubes": {},
+        "subjects": {},
+        "cube_count": 0,
+        "series_count": 0,
+    }
+    if warning:
+        blob["warning"] = warning
+    return blob
 
-    Walks the homepage ``ind-econ.json`` endpoint and resolves each
-    indicator into a structured cache entry. The Phase 4 fetcher will
-    use the ``observations_url`` field on each indicator to pull
-    actual time-series observations at runtime.
 
-    Resilience
-    ----------
-    - Network failures are caught and translated into a *degraded*
-      blob with ``"status": "degraded"`` and a ``"warning"`` field
-      describing the failure. The build hook does NOT abort — instead
-      it ships a partial cache and logs the issue. This matches the
-      user's explicit request: "si StatsCan se cae al instalar el
-      paquete, el hatch hook no deberia hacer que pip install falle
-      catastroficamente sin explicacion".
-    - The warning string is structured so the runtime fetcher can
-      detect degraded mode and either fall back to a direct API call
-      or raise a clear error.
+def _fetch_statscan_catalog() -> dict[str, Any]:
+    """Fetch the StatsCan SDMX-style catalog via the WDS REST API.
+
+    Walks two endpoints:
+
+    1. ``getAllCubesListLite`` — lightweight cube list with PID, name,
+       frequency, subject, release date. Used to populate the parent
+       dimension of the catalog (cubes → series).
+    2. ``getCubeMetadata`` — for each cube, fetches dimensions,
+       codelists, members, and series info (vector IDs). Used to
+       populate the child dimension (series within each cube).
+
+    The catalog is **pure metadata**: descriptions, dimensions,
+    codelists, and availability constraints. It carries NO series
+    values. The runtime fetcher uses it to resolve user queries
+    (lookup, list, search) and to build parameter Literal types.
+
+    Network failures degrade gracefully: a failed cube-list fetch
+    returns an empty catalog with ``"status": "degraded"``; a failed
+    per-cube metadata fetch skips just that cube.
     """
+    cubes_url = f"{STATSCAN_WDS_BASE}/getAllCubesListLite"
+    print(
+        f"generate-government-ca-cache: fetching StatsCan cube list "
+        f"from {cubes_url}...",
+        file=sys.stderr,
+    )
+    try:
+        cubes_payload = http_get_json(cubes_url, timeout=60.0)
+    except NetworkError as exc:
+        print(
+            f"generate-government-ca-cache: WARNING — StatsCan cube list "
+            f"unreachable: {exc}. Writing degraded SDMX catalog.",
+            file=sys.stderr,
+        )
+        blob = _empty_catalog_blob(
+            warning=f"statscan cube list unreachable at build time: {exc}"
+        )
+        blob["status"] = "degraded"
+        return blob
+
+    if not isinstance(cubes_payload, list):
+        msg = f"unexpected cubes payload type: {type(cubes_payload).__name__}"
+        print(f"generate-government-ca-cache: WARNING — {msg}.", file=sys.stderr)
+        blob = _empty_catalog_blob(warning=msg)
+        blob["status"] = "degraded"
+        return blob
+
+    cubes: dict[str, dict[str, Any]] = {}
+    subjects: dict[str, str] = {}
+    series_count = 0
+
+    for entry in cubes_payload:
+        if not isinstance(entry, dict):
+            continue
+        pid = str(entry.get("productId", ""))
+        if not pid:
+            continue
+        subject_code = str(entry.get("subjectCode", ""))
+        subject_label = str(entry.get("subject", ""))
+        if subject_code and subject_label:
+            subjects[subject_code] = subject_label
+
+        cubes[pid] = {
+            "pid": pid,
+            "title_en": str(entry.get("cansimTitleEn", "")),
+            "title_fr": str(entry.get("cansimTitleFr", "")),
+            "frequency_code": str(entry.get("frequencyCode", "")),
+            "subject_code": subject_code,
+            "subject_label": subject_label,
+            "release_date": str(entry.get("releaseTime", "")),
+            "cancelled": bool(entry.get("cancelled", False)),
+            "metadata_url": f"{STATSCAN_WDS_BASE}/getCubeMetadata?productId={pid}",
+            "series": [],
+        }
+
+    print(
+        f"generate-government-ca-cache: StatsCan cube list OK — "
+        f"{len(cubes)} cubes. Fetching per-cube metadata...",
+        file=sys.stderr,
+    )
+
+    for pid, cube_entry in cubes.items():
+        meta_url = cube_entry["metadata_url"]
+        try:
+            meta_payload = http_get_json(meta_url, timeout=30.0)
+        except NetworkError as exc:
+            print(
+                f"generate-government-ca-cache: WARNING — metadata for cube "
+                f"{pid} unreachable: {exc}. Skipping.",
+                file=sys.stderr,
+            )
+            continue
+
+        if not isinstance(meta_payload, list) or not meta_payload:
+            continue
+        cube_meta = meta_payload[0]
+        if not isinstance(cube_meta, dict):
+            continue
+
+        dimensions = []
+        for dim in cube_meta.get("dimension", []):
+            if not isinstance(dim, dict):
+                continue
+            members = []
+            for m in dim.get("member", []):
+                if not isinstance(m, dict):
+                    continue
+                members.append(
+                    {
+                        "id": str(m.get("memberId", "")),
+                        "code": str(m.get("memberCode", "")),
+                        "label_en": str(m.get("memberNameEn", "")),
+                        "label_fr": str(m.get("memberNameFr", "")),
+                        "parent_id": str(m.get("parentMemberId", "")) or None,
+                    }
+                )
+            dimensions.append(
+                {
+                    "id": str(dim.get("dimensionId", "")),
+                    "code": str(dim.get("dimensionNameEn", "")),
+                    "label_en": str(dim.get("dimensionNameEn", "")),
+                    "label_fr": str(dim.get("dimensionNameFr", "")),
+                    "position": int(dim.get("dimensionPositionId", 0) or 0),
+                    "members": members,
+                }
+            )
+
+        series_list = []
+        for s in cube_meta.get("series", []):
+            if not isinstance(s, dict):
+                continue
+            vector_id = str(s.get("vectorId", ""))
+            if not vector_id:
+                continue
+            series_list.append(
+                {
+                    "vector_id": vector_id,
+                    "coordinate": str(s.get("coordinate", "")),
+                    "label_en": str(s.get("seriesNameEn", "")),
+                    "label_fr": str(s.get("seriesNameFr", "")),
+                    "scalar_factor_code": str(s.get("scalerFactorCode", "")),
+                    "uom_code": str(s.get("memberUomCode", "")),
+                    "frequency_code": str(s.get("frequencyCode", "")),
+                    "release_date": str(s.get("releaseTime", "")),
+                    "observations_url": (
+                        f"{STATSCAN_WDS_BASE}/getDataFromVectorAndLatestNPeriods"
+                        f"?vectorIds={vector_id}"
+                    ),
+                }
+            )
+
+        cube_entry["dimensions"] = dimensions
+        cube_entry["series"] = series_list
+        cube_entry["cansim_id"] = str(cube_meta.get("cansimId", ""))
+        cube_entry["survey_code"] = str(cube_meta.get("surveyCode", ""))
+        cube_entry["subject_code"] = (
+            str(cube_meta.get("subjectCode", "")) or cube_entry["subject_code"]
+        )
+        cube_entry["title_en"] = (
+            str(cube_meta.get("cansimTitleEn", "")) or cube_entry["title_en"]
+        )
+        cube_entry["title_fr"] = (
+            str(cube_meta.get("cansimTitleFr", "")) or cube_entry["title_fr"]
+        )
+        cube_entry["last_published"] = str(cube_meta.get("lastPublishedCube", ""))
+        series_count += len(series_list)
+
+    blob: dict[str, Any] = {
+        "wds_url": STATSCAN_WDS_BASE,
+        "cubes": cubes,
+        "subjects": subjects,
+        "cube_count": len(cubes),
+        "series_count": series_count,
+        "status": "ok",
+    }
+    print(
+        f"generate-government-ca-cache: StatsCan SDMX catalog OK — "
+        f"{len(cubes)} cubes, {series_count} series.",
+        file=sys.stderr,
+    )
+    return blob
+
+
+def _fetch_statscan() -> dict:
+    """Fetch Statistics Canada metadata (homepage + SDMX catalog)."""
     print(
         f"generate-government-ca-cache: fetching StatsCan homepage "
         f"from {STATSCAN_HOMEPAGE_URL}...",
@@ -328,6 +406,10 @@ def _fetch_statscan() -> dict:
             warning=f"statscan homepage unreachable at build time: {exc}"
         )
         blob["status"] = "degraded"
+        blob["catalog"] = _empty_catalog_blob(
+            warning=f"statscan homepage unreachable at build time: {exc}"
+        )
+        blob["catalog"]["status"] = "degraded"
         return blob
 
     parsed = _parse_homepage_response(payload)
@@ -337,48 +419,23 @@ def _fetch_statscan() -> dict:
         f"{parsed['indicator_count']} indicators resolved.",
         file=sys.stderr,
     )
+
+    parsed["catalog"] = _fetch_statscan_catalog()
     return parsed
 
 
 # ---------------------------------------------------------------------------
-# BoC fetcher (Phase 3)
+# BoC fetcher
 # ---------------------------------------------------------------------------
-# Regex that extracts the numeric tenor from a benchmark bond series
-# name like ``BD.CDN.10YR.DQ.YLD``. Captures the digit run before
-# ``YR``. The Phase 5 yields fetcher uses this to map series to the
-# ``treasury_rates`` model fields (year_2, year_3, year_5, year_7,
-# year_10, year_30) without hard-coding series names.
 import re as _re
 
 _BOND_TENOR_RE = _re.compile(r"^BD\.CDN\.(\d+)YR\.DQ\.YLD$")
 
-# Canonical long-term mapping. The BoC publishes ``BD.CDN.LONG.DQ.YLD``
-# as the long-term benchmark (≈30 years). This mapping is documented
-# on the BoC's "Canadian Bonds" methodology page and is stable across
-# Valet revisions. ``BD.CDN.RRB.DQ.YLD`` is Real Return Bonds
-# (inflation-linked) and has no nominal tenor equivalent — it gets
-# ``tenor_years=None`` so the Phase 5 yields fetcher skips it when
-# filling the ``treasury_rates`` model.
 _BOND_LONG_TENOR_YEARS = 30
 
 
 def _parse_bond_tenor(name: str) -> tuple[str | None, int | None]:
-    """Extract ``(tenor_label, tenor_years)`` from a BoC series name.
-
-    Returns ``(None, None)`` for non-bond series. For bond series:
-
-    - ``BD.CDN.2YR.DQ.YLD``   → ``("2Y", 2)``
-    - ``BD.CDN.10YR.DQ.YLD``  → ``("10Y", 10)``
-    - ``BD.CDN.LONG.DQ.YLD``  → ``("LONG", 30)`` — long-term benchmark
-    - ``BD.CDN.RRB.DQ.YLD``   → ``("RRB", None)`` — Real Return Bonds
-      (inflation-linked, no nominal tenor equivalent — the Phase 5
-      yields fetcher ignores this when filling ``treasury_rates``)
-
-    The mapping is intentionally conservative: only the canonical
-    nominal benchmarks get a numeric ``tenor_years``. Anything else
-    (RRB, future series we don't recognize) gets ``tenor_years=None``
-    so the Phase 5 fetcher can decide what to do.
-    """
+    """Extract ``(tenor_label, tenor_years)`` from a BoC series name."""
     upper = name.upper()
     m = _BOND_TENOR_RE.match(upper)
     if m:
@@ -392,49 +449,18 @@ def _parse_bond_tenor(name: str) -> tuple[str | None, int | None]:
 
 
 def _normalize_boc_series_entry(name: str, entry: dict[str, Any]) -> dict[str, Any]:
-    """Normalize a single Valet series entry into the cache shape.
-
-    The Valet ``/lists/series/json`` returns entries of the form::
-
-        {"label": "...", "description": "...", "link": "https://..."}
-
-    We add a few derived fields that the Phase 5 fetcher will use:
-
-    - ``observations_url``  — pre-built URL for fetching observations.
-    - ``frequency``         — best-effort guess from the series name
-                              (``FX*`` → daily, ``BD.CDN.*`` → daily,
-                              ``V3907*`` → daily). This is a heuristic
-                              because Valet's series list doesn't
-                              carry an explicit frequency field.
-    - ``tenor``             — for bond series, the tenor label
-                              (``"2Y"``, ``"10Y"``, ``"LONG"``,
-                              ``"RRB"``). ``None`` for non-bonds.
-    - ``tenor_years``       — numeric years (``2``, ``10``, ``30``)
-                              for nominal benchmarks; ``None`` for
-                              non-bonds or RRB. Lets the Phase 5
-                              yields fetcher map directly to
-                              ``treasury_rates.year_<N>`` fields
-                              without parsing the series name.
-    - ``cataloged_at``      — ISO 8601 timestamp for debugging.
-    """
+    """Normalize a single Valet series entry into the cache shape."""
     label = str(entry.get("label", "")).strip()
     description = str(entry.get("description", "")).strip()
     link = str(entry.get("link", "")).strip()
 
-    # Best-effort frequency heuristic. The Valet series-list endpoint
-    # doesn't expose frequency directly, but the naming conventions
-    # are stable enough to guess. The Phase 5 fetcher can override
-    # this by passing ``?recent=N`` or ``?start_date=...`` to the
-    # observations endpoint.
     upper_name = name.upper()
     if (
         upper_name.startswith("FX")
         or upper_name.startswith("BD.CDN.")
         or upper_name.startswith("V3907")
-    ):
+    ) or upper_name.startswith("AVG."):
         frequency = "daily"
-    elif upper_name.startswith("AVG."):
-        frequency = "daily"  # CORRA and similar daily averages
     elif upper_name.startswith("A."):
         frequency = "annual"
     elif upper_name.startswith("M."):
@@ -458,15 +484,7 @@ def _normalize_boc_series_entry(name: str, entry: dict[str, Any]) -> dict[str, A
 
 
 def _normalize_boc_group_entry(name: str, entry: dict[str, Any]) -> dict[str, Any]:
-    """Normalize a single Valet group entry into the cache shape.
-
-    The Valet ``/lists/groups/json`` returns entries of the same
-    shape as series (``label``, ``description``, ``link``) but
-    without a member list. Resolving members requires a second call
-    to ``/groups/<NAME>/json`` — we do that lazily in
-    ``_resolve_group_members`` only for groups in
-    ``BOC_GROUPS_OF_INTEREST`` to keep build time bounded.
-    """
+    """Normalize a single Valet group entry into the cache shape."""
     label = str(entry.get("label", "")).strip()
     description = str(entry.get("description", "")).strip()
     link = str(entry.get("link", "")).strip()
@@ -478,20 +496,13 @@ def _normalize_boc_group_entry(name: str, entry: dict[str, Any]) -> dict[str, An
         "link": link,
         "members_url": f"{BOC_VALET_BASE}/groups/{name}/json",
         "observations_url": (f"{BOC_VALET_BASE}/observations/group/{name}/json"),
-        "members": [],  # populated by _resolve_group_members
+        "members": [],
         "cataloged_at": _utc_now_iso(),
     }
 
 
 def _resolve_group_members(group_name: str) -> list[str]:
-    """Fetch the member list for *group_name* from Valet.
-
-    Returns a sorted list of member series names (e.g.
-    ``["FXAUDCAD", "FXEURCAD", ...]``). On failure, returns an empty
-    list — the cache entry is still valid, just without member
-    resolution. The Phase 5 fetcher can fall back to direct series
-    lookups.
-    """
+    """Fetch the member list for *group_name* from Valet."""
     url = f"{BOC_VALET_BASE}/groups/{group_name}/json"
     try:
         payload = http_get_json(url, timeout=30.0)
@@ -504,38 +515,20 @@ def _resolve_group_members(group_name: str) -> list[str]:
         )
         return []
 
-    # The /groups/<NAME>/json endpoint returns the group's details
-    # with a ``groups`` key whose value is a dict mapping member
-    # series names to their (label, description, link) entries.
     groups_dict = payload.get("groups", {}) if isinstance(payload, dict) else {}
-    members = sorted(
-        m
-        for m in groups_dict
-        # Skip the group itself if it appears as a key (it sometimes
-        # does when the response echoes the requested group).
-        if m != group_name
-    )
+    members = sorted(m for m in groups_dict if m != group_name)
     return members
 
 
 def _fetch_boc_list(url: str, label: str) -> dict[str, dict[str, Any]]:
-    """Fetch a Valet list endpoint (``/lists/series`` or ``/lists/groups``).
-
-    Returns a dict mapping entry name → raw entry dict. On failure,
-    raises ``NetworkError`` — the caller decides whether to degrade
-    or abort.
-    """
+    """Fetch a Valet list endpoint (``/lists/series`` or ``/lists/groups``)."""
     print(
         f"generate-government-ca-cache: fetching BoC {label} from {url}...",
         file=sys.stderr,
     )
     payload = http_get_json(url, timeout=60.0)
-    # Both list endpoints return ``{"terms": {...}, "series": {...}}``
-    # or ``{"terms": {...}, "groups": {...}}``. We extract the
-    # relevant map and return it.
     if not isinstance(payload, dict):
         raise NetworkError(url, f"{label} payload is not a dict")
-    # The list endpoint uses ``series`` or ``groups`` as the key.
     inner = payload.get("series") or payload.get("groups") or {}
     if not isinstance(inner, dict):
         raise NetworkError(
@@ -545,29 +538,7 @@ def _fetch_boc_list(url: str, label: str) -> dict[str, dict[str, Any]]:
 
 
 def _fetch_boc() -> dict:
-    """Fetch Bank of Canada metadata from the Valet API.
-
-    Walks three endpoints:
-
-    1. ``/lists/series/json`` — full catalog of 15,642 series. We
-       filter to only those listed in ``BOC_INDIVIDUAL_SERIES`` to
-       keep the cache small.
-    2. ``/lists/groups/json`` — full catalog of 2,445 groups. We
-       filter to only those listed in ``BOC_GROUPS_OF_INTEREST``.
-    3. For each group in ``BOC_GROUPS_OF_INTEREST``, an additional
-       call to ``/groups/<NAME>/json`` resolves the member list.
-
-    Resilience
-    ----------
-    - Network failures at the top-level list endpoints (1 or 2) put
-      the whole BoC section into degraded mode. Without the list we
-      can't even verify that a series exists, so there's nothing
-      useful to cache.
-    - Failures resolving group members (3) only blank out that
-      group's ``members`` field — the group entry itself is still
-      valid.
-    """
-    # ---- Step 1: fetch the full series list & filter to interest ----
+    """Fetch Bank of Canada metadata from the Valet API."""
     try:
         all_series_raw = _fetch_boc_list(BOC_LIST_SERIES_URL, "series list")
     except NetworkError as exc:
@@ -587,10 +558,6 @@ def _fetch_boc() -> dict:
         file=sys.stderr,
     )
 
-    # Build the filtered series cache. If a series-of-interest isn't
-    # found in the catalog, we record it under ``missing_series`` so
-    # the Phase 5 fetcher can detect the gap and either fall back or
-    # raise a clear error.
     series_cache: dict[str, dict[str, Any]] = {}
     missing_series: list[str] = []
     for name in BOC_INDIVIDUAL_SERIES:
@@ -600,7 +567,6 @@ def _fetch_boc() -> dict:
             continue
         series_cache[name] = _normalize_boc_series_entry(name, raw_entry)
 
-    # ---- Step 2: fetch the full groups list & filter to interest ----
     try:
         all_groups_raw = _fetch_boc_list(BOC_LIST_GROUPS_URL, "groups list")
     except NetworkError as exc:
@@ -610,9 +576,6 @@ def _fetch_boc() -> dict:
             f"no group member resolution.",
             file=sys.stderr,
         )
-        # We still have the series list — partial success. Record the
-        # groups failure as a warning rather than degrading the whole
-        # section.
         groups_cache: dict[str, dict[str, Any]] = {}
         groups_warning = f"boc groups list unreachable at build time: {exc}"
     else:
@@ -632,7 +595,6 @@ def _fetch_boc() -> dict:
             groups_cache[name] = _normalize_boc_group_entry(name, raw_entry)
         groups_warning = ""
 
-    # ---- Step 3: resolve member lists for each group of interest ----
     if groups_cache:
         for gname, gentry in groups_cache.items():
             members = _resolve_group_members(gname)
@@ -643,7 +605,6 @@ def _fetch_boc() -> dict:
                 file=sys.stderr,
             )
 
-    # ---- Assemble the final BoC section ----
     blob: dict[str, Any] = {
         "valet_url": BOC_VALET_BASE,
         "series": series_cache,
@@ -683,20 +644,7 @@ def _empty_boc_blob(warning: str = "") -> dict[str, Any]:
 # Top-level orchestrator
 # ---------------------------------------------------------------------------
 def build_blob() -> dict:
-    """Build the complete cache blob by combining all upstream fetches.
-
-    Each sub-fetcher (``_fetch_boc``, ``_fetch_statscan``) is
-    responsible for its own error handling and returns a *degraded*
-    blob on failure rather than raising. This means ``build_blob``
-    itself never raises due to network issues — it always produces a
-    well-formed blob, possibly with one or both sections marked
-    ``"status": "degraded"``.
-
-    This is the single entry point used by both ``main()`` (CLI) and
-    ``hatch_build.py`` (build hook). Keeping it as a pure function
-    makes the cache trivially testable — call ``build_blob()`` with
-    the network mocked and assert on the returned dict.
-    """
+    """Build the complete cache blob by combining all upstream fetches."""
     return {
         "generated_at": _utc_now_iso(),
         "source": "build-hook",
@@ -706,22 +654,13 @@ def build_blob() -> dict:
 
 
 def main() -> int:
-    """CLI entry point. Returns the process exit code.
-
-    Always returns 0 unless something truly catastrophic happens
-    (e.g. the cache file can't be written to disk). Network failures
-    are handled inside ``build_blob`` and produce a degraded cache,
-    not a non-zero exit code — this is the user's explicit
-    requirement so that ``pip install openbb-government-ca`` succeeds
-    even when StatsCan or BoC is down.
-    """
+    """CLI entry point. Returns the process exit code."""
     print(
         "generate-government-ca-cache: building cache blob...",
         file=sys.stderr,
     )
     blob = build_blob()
 
-    # Light sanity check — fail loudly if the structure is wrong.
     for key in ("generated_at", "source", "boc", "statscan"):
         if key not in blob:
             print(f"ERROR: blob missing required key {key!r}", file=sys.stderr)
@@ -737,13 +676,17 @@ def main() -> int:
     n_boc_series = blob["boc"].get("series_count", 0)
     n_boc_groups = blob["boc"].get("groups_count", 0)
     n_statscan_indicators = blob["statscan"].get("indicator_count", 0)
+    catalog = blob["statscan"].get("catalog", {})
+    n_cubes = catalog.get("cube_count", 0)
+    n_catalog_series = catalog.get("series_count", 0)
     boc_status = blob["boc"].get("status", "unknown")
     statscan_status = blob["statscan"].get("status", "unknown")
     print(
         f"generate-government-ca-cache: done. "
         f"size={size_kb:.1f}KB, "
         f"boc[{boc_status}] series={n_boc_series} groups={n_boc_groups}, "
-        f"statscan[{statscan_status}] indicators={n_statscan_indicators}.",
+        f"statscan[{statscan_status}] indicators={n_statscan_indicators} "
+        f"cubes={n_cubes} catalog_series={n_catalog_series}.",
         file=sys.stderr,
     )
     return 0

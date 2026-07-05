@@ -376,68 +376,35 @@ class TestBocUtilsGaps:
 # statscan/economic_indicators.py — gap closure
 # ===========================================================================
 class TestStatsCanEconomicIndicatorsMoreGaps:
-    """Cover remaining branches in economic_indicators."""
+    """Cover remaining branches in economic_indicators.
 
-    def test_parse_value_returns_none_for_unparseable_cleaned(self):
-        """Documented: the regex-only-matches-numeric invariant means the
-        ``except ValueError`` branch in _parse_value is unreachable.
-        That branch has a ``# pragma: no cover`` so coverage doesn't
-        flag it. This test exists to verify the public contract: a
-        valid-looking string always parses.
-        """
-        from openbb_government_ca.statscan.economic_indicators import _parse_value
+    The module was rewritten to fetch observations from the WDS REST
+    API at runtime (no longer reading values from the metadata cache).
+    The old ``_parse_value`` / ``_parse_refper_to_date`` helpers were
+    replaced by ``safe_float`` and ``parse_observation_date`` from
+    ``utils.helpers``. Gap closure for those helpers lives alongside
+    the helpers tests in test_coverage_gaps.py::TestSafeFloatGaps
+    and TestParseObservationDateGaps.
+    """
 
-        # Anything the regex matches will parse successfully.
-        assert _parse_value("$47.6 billion") == 47.6
-        assert _parse_value("-3.9%") == -3.9
-
-    def test_parse_refper_returns_none_for_invalid_annual(self):
-        """An out-of-range year returns None.
-
-        ``date(-1, 1, 1)`` raises ValueError, which the parser catches.
-        """
+    def test_module_imports_cleanly(self):
+        """The rewritten module exposes the standard Fetcher triplet."""
         from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
+            StatsCanEconomicIndicatorsData,
+            StatsCanEconomicIndicatorsFetcher,
+            StatsCanEconomicIndicatorsQueryParams,
         )
 
-        # ``date(int(s), 1, 1)`` with s="-1" raises ValueError.
-        # But "-1" doesn't pass the ``s.isdigit()`` check, so the annual
-        # branch isn't entered. Instead we need a 4-digit string that
-        # represents an invalid year — there isn't one in practice,
-        # so we test the monthly path with an invalid month.
-        # "2024-00" → month=0 → date(2024, 0, 1) raises ValueError.
-        assert _parse_refper_to_date("2024-00") is None
-
-    def test_parse_refper_returns_none_for_invalid_monthly_year(self):
-        """A monthly refper with a year that overflows returns None.
-
-        ``date(99999, 1, 1)`` raises ValueError.
-        """
-        from openbb_government_ca.statscan.economic_indicators import (
-            _parse_refper_to_date,
+        assert StatsCanEconomicIndicatorsFetcher.__name__ == (
+            "StatsCanEconomicIndicatorsFetcher"
         )
-
-        # 5-digit "year" — len("99999") == 5, not 4, so the annual
-        # branch is skipped. The monthly branch requires len==7. So
-        # neither branch enters. Instead, force a year overflow in
-        # the monthly path: "9999-13" → month=13 → ValueError.
-        assert _parse_refper_to_date("9999-13") is None
-
-    def test_parse_refper_returns_none_for_monthly_invalid_year_value(self):
-        """A monthly refper where int(year) overflows returns None.
-
-        ``date(99999, 1, 1)`` raises ValueError. We need a 4-char
-        year that overflows — but 4 chars max is 9999, which is fine.
-        Instead, force the monthly path with a year that's 4 chars
-        but invalid when combined with the month. Actually, the
-        monthly branch already catches this — so we test a year that
-        makes ``int()`` succeed but ``date()`` fail. There's no such
-        year in 4-digit space. The branch ``except ValueError`` is
-        therefore unreachable in practice — we add a pragma.
-        """
-        # This test exists to document the branch. The branch is
-        # covered by the "2024-00" and "9999-13" tests above.
-        pass
+        assert issubclass(
+            StatsCanEconomicIndicatorsQueryParams,
+            StatsCanEconomicIndicatorsQueryParams.__mro__[1],
+        )
+        assert StatsCanEconomicIndicatorsData.__name__ == (
+            "StatsCanEconomicIndicatorsData"
+        )
 
 
 # ===========================================================================

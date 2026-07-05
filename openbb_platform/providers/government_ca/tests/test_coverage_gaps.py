@@ -588,15 +588,10 @@ class TestBankOfCAYieldsGaps:
 # statscan/economic_indicators.py — gap closure for geo_code fallback
 # ===========================================================================
 class TestStatsCanEconomicIndicatorsGaps:
-    """Cover the geo_code fallback and other branches."""
+    """Cover branches in the new WDS-backed economic_indicators fetcher."""
 
-    def test_geo_code_fallback_returns_all_when_no_match(self, monkeypatch):
-        """When no indicators match the requested geo_code, all are returned."""
-        from openbb_government_ca.statscan.economic_indicators import (
-            StatsCanEconomicIndicatorsFetcher,
-            StatsCanEconomicIndicatorsQueryParams,
-        )
-
+    def _seed_catalog(self) -> None:
+        """Populate the singleton with a minimal SDMX catalog."""
         GovernmentCaMetadata._reset()
         meta = GovernmentCaMetadata()
         meta._apply_blob(
@@ -605,99 +600,107 @@ class TestStatsCanEconomicIndicatorsGaps:
                 "statscan": {
                     "status": "ok",
                     "indicators": [
-                        {"source": "1", "title_en": "A", "geo_code": "0"},
-                        {"source": "2", "title_en": "B", "geo_code": "0"},
+                        {"source": "1", "title_en": "GDP", "geo_code": "0"},
                     ],
-                    "geo_lookup": {"0": "Canada"},
-                },
-            }
-        )
-        try:
-            # Request geo_code "99" — no indicators match, fallback returns all.
-            q = StatsCanEconomicIndicatorsQueryParams(symbol="all", country="99")
-            result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-            assert len(result) == 2  # fallback returned all
-        finally:
-            GovernmentCaMetadata._reset()
-
-    def test_transform_data_handles_missing_geo_lookup(self, monkeypatch):
-        """When geo_lookup is empty, the country falls back to 'Canada'."""
-        from openbb_government_ca.statscan.economic_indicators import (
-            StatsCanEconomicIndicatorsFetcher,
-            StatsCanEconomicIndicatorsQueryParams,
-        )
-
-        GovernmentCaMetadata._reset()
-        meta = GovernmentCaMetadata()
-        meta._apply_blob(
-            {
-                "boc": {},
-                "statscan": {
-                    "status": "ok",
-                    "indicators": [
-                        {
-                            "source": "1",
-                            "title_en": "Test",
-                            "value_en": "$1.0",
-                            "refper_en": "January 2024",
-                            "geo_code": "99",  # not in geo_lookup
-                            "growth_en": "",
-                            "growth_arrow": "",
-                            "growth_details_en": "",
-                            "release_date": "",
+                    "catalog": {
+                        "cubes": {
+                            "10100139": {
+                                "pid": "10100139",
+                                "title_en": "GDP",
+                                "subject_code": "13",
+                                "frequency_code": "6",
+                                "series": [
+                                    {
+                                        "vector_id": "V1",
+                                        "coordinate": "1.1.1.1",
+                                        "label_en": "GDP at basic prices",
+                                        "scalar_factor_code": "6",
+                                        "uom_code": "203",
+                                        "frequency_code": "6",
+                                    }
+                                ],
+                            }
                         },
-                    ],
-                    "geo_lookup": {},  # empty
+                        "subjects": {"13": "Economic accounts"},
+                        "cube_count": 1,
+                        "series_count": 1,
+                        "status": "ok",
+                    },
                 },
             }
         )
-        try:
-            q = StatsCanEconomicIndicatorsQueryParams(symbol="1")
-            raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
-            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
-            assert len(result) == 1
-            # Falls back to "Canada" when geo_code not in lookup.
-            assert result[0].country == "Canada"
-        finally:
-            GovernmentCaMetadata._reset()
 
     def test_transform_data_skips_unparseable_value(self, monkeypatch):
-        """An indicator with an unparseable value_en gets value=None."""
+        """An observation with an unparseable value gets value=None."""
         from openbb_government_ca.statscan.economic_indicators import (
             StatsCanEconomicIndicatorsFetcher,
             StatsCanEconomicIndicatorsQueryParams,
         )
 
-        GovernmentCaMetadata._reset()
-        meta = GovernmentCaMetadata()
-        meta._apply_blob(
-            {
-                "boc": {},
-                "statscan": {
-                    "status": "ok",
-                    "indicators": [
-                        {
-                            "source": "1",
-                            "title_en": "Test",
-                            "value_en": "no numbers here",  # unparseable
-                            "refper_en": "January 2024",
-                            "geo_code": "0",
-                            "growth_en": "",
-                            "growth_arrow": "",
-                            "growth_details_en": "",
-                            "release_date": "",
-                        },
-                    ],
-                    "geo_lookup": {"0": "Canada"},
-                },
-            }
-        )
+        self._seed_catalog()
         try:
-            q = StatsCanEconomicIndicatorsQueryParams(symbol="1")
-            raw = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            raw = [
+                {
+                    "refPer": "2024-01",
+                    "value": "not a number",
+                    "_vector_id": "V1",
+                    "_cube_pid": "10100139",
+                    "_coordinate": "1.1.1.1",
+                    "_scalar_factor_code": "6",
+                    "_uom_code": "203",
+                    "_label_en": "GDP at basic prices",
+                }
+            ]
             result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
             assert len(result) == 1
             assert result[0].value is None
-            assert result[0].value_raw == "no numbers here"
+            assert result[0].vector_id == "V1"
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_transform_data_parses_quarterly_refper(self, monkeypatch):
+        """Quarterly refPer strings are parsed to dates."""
+        from openbb_government_ca.statscan.economic_indicators import (
+            StatsCanEconomicIndicatorsFetcher,
+            StatsCanEconomicIndicatorsQueryParams,
+        )
+
+        self._seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            raw = [
+                {
+                    "refPer": "2024-Q1",
+                    "value": 100.0,
+                    "_vector_id": "V1",
+                    "_cube_pid": "10100139",
+                    "_coordinate": "1.1.1.1",
+                    "_scalar_factor_code": "6",
+                    "_uom_code": "203",
+                    "_label_en": "GDP at basic prices",
+                }
+            ]
+            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
+            assert result[0].date == date(2024, 1, 1)
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_extract_data_raises_on_empty_catalog(self, monkeypatch):
+        """An empty or degraded catalog triggers an OpenBBError."""
+        from openbb_core.app.model.abstract.error import OpenBBError
+
+        from openbb_government_ca.statscan.economic_indicators import (
+            StatsCanEconomicIndicatorsFetcher,
+            StatsCanEconomicIndicatorsQueryParams,
+        )
+
+        GovernmentCaMetadata._reset()
+        meta = GovernmentCaMetadata()
+        meta._apply_blob({"boc": {}, "statscan": {"status": "degraded"}})
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            with pytest.raises(OpenBBError):
+                StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
         finally:
             GovernmentCaMetadata._reset()

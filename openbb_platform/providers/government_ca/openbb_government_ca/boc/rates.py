@@ -1,33 +1,10 @@
 """Bank of Canada — Policy Overnight Rate Target.
 
-This fetcher reads from the shipped metadata cache (Phase 3) to find
-the series whose official Valet description is "Target for the
-overnight rate", then makes a runtime HTTP call to fetch the actual
-time-series.
-
 Maps to OpenBB's standard ``country_interest_rates`` model. The value
 is normalized to a decimal (5.00 → 0.05) per the model's
 ``x-frontend_multiply: 100`` directive, matching the OECD fetcher
 pattern.
-
-Design notes
-------------
-- **Series resolution priority.** The cache may contain multiple
-  series with the same description (V39079 and CBC20210 both have
-  description="Target for the overnight rate"). Per the brief and
-  user direction, we prefer **CBC20210** when both are present.
-- **Value normalization.** The BoC publishes the rate as a percentage
-  (5.00 for 5%). The standard ``country_interest_rates`` model
-  expects a decimal (0.05) with ``x-frontend_multiply: 100`` so the
-  frontend displays it as "5.00%". We divide by 100 to match the
-  OECD fetcher pattern.
-- **Country is always Canada.** The standard model's ``country``
-  field is set to ``"canada"`` (lowercase, per OECD convention).
-- **Date range defaults.** If the user doesn't pass ``start_date``,
-  we default to 1 year ago. If no ``end_date``, we default to today.
 """
-
-from __future__ import annotations
 
 from datetime import date, timedelta
 from typing import Any
@@ -49,15 +26,7 @@ from openbb_government_ca.boc.utils import (
 from openbb_government_ca.utils._http import NetworkError, http_get_json
 from openbb_government_ca.utils.metadata import GovernmentCaMetadata
 
-# The BoC's official description for the target overnight rate. We
-# search by this substring rather than hard-coding a series name, so
-# the fetcher is resilient to the BoC renaming series in future Valet
-# revisions. (Per Phase 3 investigation, both V39079 and CBC20210 carry
-# this description; per user direction we prefer CBC20210.)
 _TARGET_RATE_DESCRIPTION = "Target for the overnight rate"
-
-# When both candidate series are present in the cache, prefer
-# CBC20210 (the brief-original mention) over V39079.
 _PREFERRED_SERIES_NAMES = ("CBC20210", "V39079")
 
 
@@ -67,12 +36,7 @@ def _default_start_date() -> date:
 
 
 class BankOfCanadaRatesQueryParams(CountryInterestRatesQueryParams):
-    """BoC Policy Rate Query.
-
-    Extends the standard ``CountryInterestRatesQueryParams`` with BoC
-    defaults. The ``country`` field is locked to ``"canada"`` (the
-    standard model uses lowercase country names per OECD convention).
-    """
+    """BoC Policy Rate Query."""
 
     __json_schema_extra__ = {
         "country": {
@@ -99,11 +63,7 @@ class BankOfCanadaRatesQueryParams(CountryInterestRatesQueryParams):
 
 
 class BankOfCanadaRatesData(CountryInterestRatesData):
-    """BoC Policy Rate Data.
-
-    Extends the standard ``CountryInterestRatesData`` with a BoC-specific
-    extension field for the series name (useful for debugging).
-    """
+    """BoC Policy Rate Data."""
 
     series: str | None = Field(
         default=None,
@@ -120,9 +80,7 @@ class BankOfCanadaRatesFetcher(
     def transform_query(params: dict[str, Any]) -> BankOfCanadaRatesQueryParams:
         """Transform raw params into a validated query model."""
         transformed = params.copy()
-        # Force country to 'canada' — this fetcher is BoC-specific.
         transformed["country"] = "canada"
-        # Apply date defaults.
         if transformed.get("start_date") is None:
             transformed["start_date"] = _default_start_date()
         if transformed.get("end_date") is None:
@@ -131,23 +89,16 @@ class BankOfCanadaRatesFetcher(
 
     @staticmethod
     def _resolve_target_series(boc_cache: dict) -> dict[str, Any] | None:
-        """Find the target rate series in the cache, preferring CBC20210.
-
-        Searches by description substring (the BoC's own semantic
-        identifier), then picks the preferred series if multiple
-        matches exist. Returns ``None`` if no match is found.
-        """
+        """Find the target rate series in the cache, preferring CBC20210."""
         matches = lookup_series_by_description(_TARGET_RATE_DESCRIPTION, boc_cache)
         if not matches:
             return None
 
-        # Try preferred names in order.
         for preferred in _PREFERRED_SERIES_NAMES:
             for m in matches:
                 if m.get("name") == preferred:
                     return m
 
-        # Fall back to the first match if no preferred name is present.
         return matches[0]
 
     @staticmethod
@@ -156,11 +107,7 @@ class BankOfCanadaRatesFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch observations from the BoC Valet API.
-
-        Resolves the target rate series from the cache (preferring
-        CBC20210), then makes a runtime HTTP call for observations.
-        """
+        """Fetch observations from the BoC Valet API."""
         meta = GovernmentCaMetadata()
         boc_cache = meta.boc
 
@@ -172,11 +119,8 @@ class BankOfCanadaRatesFetcher(
                 "OPENBB_GOVERNMENT_CA_FORCE_CACHE_REBUILD=1 to retry."
             )
 
-        # Resolve the target rate series via description lookup.
         entry = BankOfCanadaRatesFetcher._resolve_target_series(boc_cache)
         if entry is None:
-            # Fall back to direct lookup by preferred names (in case
-            # the description field was stripped from the cache).
             for name in _PREFERRED_SERIES_NAMES:
                 try:
                     entry = lookup_series(name, boc_cache)
@@ -199,7 +143,6 @@ class BankOfCanadaRatesFetcher(
                 f"BoC series {series_name!r} has no observations_url in the cache."
             )
 
-        # ``transform_query`` always populates these with defaults.
         assert query.start_date is not None  # noqa: S101
         assert query.end_date is not None  # noqa: S101
         params: dict[str, str] = {
@@ -235,13 +178,7 @@ class BankOfCanadaRatesFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[BankOfCanadaRatesData]:
-        """Map raw Valet observations to the standard ``CountryInterestRatesData`` model.
-
-        The BoC publishes the rate as a percentage (e.g. ``"5.00"`` for
-        5%). The standard model expects a decimal (0.05) with
-        ``x-frontend_multiply: 100`` so the frontend shows "5.00%". We
-        divide by 100 to match the OECD fetcher convention.
-        """
+        """Map raw Valet observations to the standard ``CountryInterestRatesData`` model."""
         output: list[BankOfCanadaRatesData] = []
         for obs in data:
             obs_date_str = obs.get("d")
@@ -264,9 +201,6 @@ class BankOfCanadaRatesFetcher(
             except (TypeError, ValueError):
                 continue
 
-            # Normalize to decimal — 5.00 → 0.05. This matches the
-            # OECD fetcher pattern and the model's
-            # ``x-frontend_multiply: 100`` directive.
             normalized_value = raw_value / 100.0
 
             output.append(

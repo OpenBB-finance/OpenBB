@@ -1,10 +1,4 @@
-"""Core ``GovernmentCaMetadata`` singleton.
-
-Thread-safe, lazily-loaded, and served to the FastAPI router as a
-``Depends`` object so the metadata instance doesn't leak into the
-generated OpenAPI parameter schema. This is the exact pattern
-introduced by ``openbb-oecd`` (PR #7413) for OpenBB V5.
-"""
+"""Core ``GovernmentCaMetadata`` singleton."""
 
 from __future__ import annotations
 
@@ -25,14 +19,10 @@ class GovernmentCaMetadata(  # type: ignore[misc]
 ):
     """Thread-safe singleton that lazily loads and caches Government of Canada metadata.
 
-    The singleton reads the shipped cache
-    (``assets/government_ca_cache.json.xz``) on first instantiation
-    and exposes two accessor properties:
+    Exposes two accessor properties:
 
     - ``.boc``       — Bank of Canada section of the cache
     - ``.statscan``  — Statistics Canada section of the cache
-
-    All public access is safe to call from any thread.
     """
 
     _instance: GovernmentCaMetadata | None = None
@@ -43,9 +33,7 @@ class GovernmentCaMetadata(  # type: ignore[misc]
         """Ensure only one instance of ``GovernmentCaMetadata`` exists."""
         if cls._instance is None:
             with cls._lock:
-                if (
-                    cls._instance is None
-                ):  # pragma: no cover - TOCTOU race guard; only reachable under real thread contention
+                if cls._instance is None:  # pragma: no cover - TOCTOU race guard
                     inst = object.__new__(cls)
                     cls._instance = inst
         return cls._instance  # type: ignore[return-value]
@@ -60,10 +48,6 @@ class GovernmentCaMetadata(  # type: ignore[misc]
                 return
 
             self.blob: dict = {}
-            # Start with empty dicts — ``_apply_blob`` (called by
-            # ``_load_from_cache``) will materialise the canonical
-            # sub-maps. If no cache loads (empty state), the accessors
-            # return ``{}`` which callers can detect as "no data".
             self._boc: dict = {}
             self._statscan: dict = {}
             self._generated_at: str = ""
@@ -90,8 +74,6 @@ class GovernmentCaMetadata(  # type: ignore[misc]
             cls._instance = None
             cls._initialized = False
 
-    # -- public accessors (read-only views over the cache sections) --
-
     @property
     def boc(self) -> dict:
         """Return the Bank of Canada section of the cache."""
@@ -113,9 +95,6 @@ class GovernmentCaMetadata(  # type: ignore[misc]
         return self._source
 
 
-# FastAPI dependency marker. Importing this and using it as a type
-# annotation on a route handler injects the singleton without
-# exposing it as an OpenAPI parameter.
 GovernmentCaMetadataDependency = Annotated[
     GovernmentCaMetadata, Depends(GovernmentCaMetadata)
 ]

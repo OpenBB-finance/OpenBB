@@ -3,14 +3,11 @@
 Reads and writes the cache blob. Supports two on-disk formats:
 
 - ``.xz``  (LZMA-compressed JSON) — the shipped cache, produced at
-  build time by ``hatch_build.py``. Compact (~70% smaller than gzip
-  for the kind of repetitive JSON we ship) but slower to write.
+  build time by ``hatch_build.py``.
 - ``.gz``  (gzip-compressed JSON) — the user cache, written at runtime
-  when the user explicitly refreshes metadata. Faster to write, and
-  small enough at our scale that the size penalty is irrelevant.
+  when the user explicitly refreshes metadata.
 
-Both formats are auto-detected by magic bytes so the loader doesn't
-need to know which file it's reading.
+Both formats are auto-detected by magic bytes.
 """
 
 from __future__ import annotations
@@ -39,8 +36,7 @@ class CacheMixin(_MixinBase):
         """Read and return a cache blob, or ``None`` on any failure.
 
         Auto-detects LZMA vs gzip by magic bytes; falls back to plain
-        JSON if neither matches (useful for debugging — drop a plain
-        JSON file at the path and the loader will pick it up).
+        JSON if neither matches.
         """
         try:
             if not path.exists():
@@ -57,38 +53,14 @@ class CacheMixin(_MixinBase):
             return None
 
     def _apply_blob(self, blob: dict) -> None:
-        """Merge a cache *blob* into the current metadata state.
-
-        The blob schema is::
-
-            {
-              "generated_at": "2026-06-28T04:17:00Z",
-              "source": "build-hook",
-              "boc": {
-                "series": { ... },
-                "groups": { ... },
-              },
-              "statscan": {
-                "products": { ... },
-              },
-            }
-
-        Partial blobs are tolerated: missing sub-maps are filled in
-        with empty defaults so downstream callers can always rely on
-        ``self.boc["series"]`` / ``self.boc["groups"]`` /
-        ``self.statscan["products"]`` being present.
-        """
+        """Merge a cache *blob* into the current metadata state."""
         self.blob = blob
         raw_boc = blob.get("boc") or {}
         raw_statscan = blob.get("statscan") or {}
-        # Always materialise the canonical sub-maps so callers never
-        # have to defensively check for their existence.
         self._boc = {
             "series": raw_boc.get("series") or {},
             "groups": raw_boc.get("groups") or {},
         }
-        # Preserve any extra keys the generator may add later (e.g.
-        # ``valet_url``, ``note``) without clobbering them.
         for k, v in raw_boc.items():
             if k not in self._boc:
                 self._boc[k] = v
@@ -106,9 +78,6 @@ class CacheMixin(_MixinBase):
         """Load metadata from the shipped cache, then layer user cache on top.
 
         Returns ``True`` if at least one cache was loaded successfully.
-        Warns (but does not raise) if no cache is available — the
-        fetchers will then attempt to hit upstream APIs directly,
-        which is the documented V5 behavior.
         """
         loaded = False
         shipped = self._read_cache_file(_SHIPPED_CACHE_FILE)
@@ -117,7 +86,6 @@ class CacheMixin(_MixinBase):
             loaded = True
         user = self._read_cache_file(_USER_CACHE_FILE())
         if user:
-            # User cache takes precedence — it's the most recent.
             self._apply_blob(user)
             loaded = True
         if not loaded:

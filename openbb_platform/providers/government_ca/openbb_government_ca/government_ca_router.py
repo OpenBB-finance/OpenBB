@@ -1,35 +1,126 @@
-"""Top-level router for ``openbb-government-ca``.
+"""Top-level router for ``openbb-government-ca``."""
 
-Mounts two sub-routers under the ``government_ca`` core-extension
-entry-point:
+from typing import Annotated
 
-- ``/boc``       → Bank of Canada (FX, rates, yields)
-- ``/statscan``  → Statistics Canada (economic indicators, calendar)
+from fastapi import Query
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query as OBBQuery
+from openbb_core.app.router import Router
+from openbb_core.app.service.system_service import SystemService
 
-The metadata singleton is injected as a FastAPI ``Depends`` so it
-doesn't leak into the generated OpenAPI parameter schema (this is the
-fix that landed mid-PR in #7413).
-"""
+from openbb_government_ca.utils.metadata import GovernmentCaMetadataDependency
 
-from __future__ import annotations
-
-from fastapi import APIRouter
-
-# Sub-routers are wired in Phases 4 and 5. The imports below are
-# intentionally lazy-friendly — the router mounts them only if they
-# import successfully, so a partially-scaffolded extension still
-# registers its entry-point without crashing.
-
-router = APIRouter(prefix="/government_ca", tags=["Government Canada"])
+router = Router(prefix="", description="Government of Canada router")
+api_prefix = SystemService().system_settings.api_settings.prefix
 
 
-@router.get("/_health", response_model=dict)
-def _health() -> dict:
-    """Liveness probe for the extension router.
+@router.command(
+    model="AvailableIndicators",
+    examples=[
+        APIEx(parameters={"provider": "government_ca"}),
+        APIEx(
+            description="Search by series label substring.",
+            parameters={"provider": "government_ca", "query": "GDP"},
+        ),
+        APIEx(
+            description="List every series in a cube.",
+            parameters={"provider": "government_ca", "cube_pid": "10100139"},
+        ),
+    ],
+)
+async def available_indicators(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """List available StatsCan indicators (pure metadata, no observation values)."""
+    return await OBBject.from_query(OBBQuery(**locals()))
 
-    Returns a static 200 — useful for the OpenBB platform to verify
-    that the extension's router mounted successfully. The metadata
-    cache itself is verified at import time by
-    ``openbb_government_ca.utils.metadata``.
+
+@router.command(
+    path="/list_cube_choices",
+    response_model=list[dict[str, str]],
+    examples=[
+        APIEx(
+            description="List all cubes in the SDMX catalog",
+            api=f"{api_prefix}/government_ca/list_cube_choices",
+            parameters={"provider": "government_ca"},
+        ),
+        APIEx(
+            description="Search cubes by title substring",
+            api=f"{api_prefix}/government_ca/list_cube_choices?query=GDP",
+            parameters={"provider": "government_ca", "query": "GDP"},
+        ),
+        PythonEx(
+            description="List cubes via the Python API",
+            code=[
+                "obb.government_ca.list_cube_choices(query='GDP')",
+            ],
+        ),
+    ],
+)
+def list_cube_choices(
+    metadata: GovernmentCaMetadataDependency,
+    query: Annotated[
+        str | None,
+        Query(description="Case-insensitive substring filter on cube title"),
+    ] = None,
+) -> OBBject[list[dict[str, str]]]:
+    """Return ``[{pid, title_en, subject_code, frequency_code}]`` for every cube.
+
+    Pure metadata — no observation values. Use this to populate UI
+    dropdowns and ``Literal`` parameter choices for the
+    ``economic_indicators`` fetcher.
     """
-    return {"status": "ok", "provider": "government_ca"}
+    from openbb_government_ca.statscan.utils import get_catalog, list_cubes
+
+    cache = metadata.statscan
+    if not get_catalog(cache).get("cubes"):
+        return OBBject(results=[])
+
+    needle = (query or "").lower().strip()
+    results: list[dict[str, str]] = []
+    for cube in list_cubes(cache):
+        title = cube.get("title_en", "")
+        if needle and needle not in title.lower():
+            continue
+        results.append(
+            {
+                "pid": cube.get("pid", ""),
+                "title_en": title,
+                "subject_code": cube.get("subject_code", ""),
+                "frequency_code": cube.get("frequency_code", ""),
+            }
+        )
+    return OBBject(results=results)
+
+
+@router.command(
+    path="/list_subject_choices",
+    response_model=list[dict[str, str]],
+    examples=[
+        APIEx(
+            description="List all subjects in the SDMX catalog",
+            api=f"{api_prefix}/government_ca/list_subject_choices",
+            parameters={"provider": "government_ca"},
+        ),
+    ],
+)
+def list_subject_choices(
+    metadata: GovernmentCaMetadataDependency,
+) -> OBBject[list[dict[str, str]]]:
+    """Return ``[{subject_code, label}]`` for every subject in the catalog."""
+    from openbb_government_ca.statscan.utils import list_subjects
+
+    subjects = list_subjects(metadata.statscan)
+    return OBBject(
+        results=[{"subject_code": k, "label": v} for k, v in subjects.items()]
+    )

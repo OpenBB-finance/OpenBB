@@ -1,30 +1,8 @@
 """Bank of Canada — Daily Exchange Rates (FX_RATES_DAILY).
 
-This fetcher reads from the shipped metadata cache (Phase 3) to resolve
-which FX series the user asked for, then makes a single runtime HTTP
-call to the BoC Valet observations endpoint to fetch the actual
-time-series.
-
 Maps to OpenBB's standard ``currency.historical`` model. The brief
 requires ``close`` to be populated and OHLC left as ``None``.
-
-Design notes
-------------
-- **Symbol normalization.** Accepts ``USDCAD``, ``USD/CAD``,
-  ``fxusdcad``, etc. and normalizes to the BoC canonical ``FX{BASE}{QUOTE}``
-  shape via ``openbb_government_ca.utils.helpers.normalize_fx_symbol``.
-- **Group membership check.** The fetcher validates the requested
-  symbol against the ``FX_RATES_DAILY`` group's member list in the
-  cache. If the symbol isn't in the group, we still attempt the call
-  (the cache might be stale) but warn the user.
-- **No value transformation.** FX rates are direct prices — the BoC
-  publishes ``1.3316`` for USDCAD and that's exactly what we return.
-  No division, no multiplication.
-- **Date range defaults.** If the user doesn't pass ``start_date``,
-  we default to 30 days ago. If no ``end_date``, we default to today.
 """
-
-from __future__ import annotations
 
 from datetime import date, timedelta
 from typing import Any
@@ -50,13 +28,7 @@ def _default_start_date() -> date:
 
 
 class BankOfCanadaFXQueryParams(CurrencyHistoricalQueryParams):
-    """BoC FX Query.
-
-    Extends the standard ``CurrencyHistoricalQueryParams`` with BoC-specific
-    defaults. The ``symbol`` field accepts the common spellings:
-    ``USDCAD``, ``USD/CAD``, ``fxusdcad``, etc. — all normalized to
-    the BoC canonical ``FXUSDCAD`` form.
-    """
+    """BoC FX Query."""
 
     __json_schema_extra__ = {
         "symbol": {
@@ -81,11 +53,7 @@ class BankOfCanadaFXQueryParams(CurrencyHistoricalQueryParams):
 
 
 class BankOfCanadaFXData(CurrencyHistoricalData):
-    """BoC FX Data.
-
-    Extends the standard ``CurrencyHistoricalData`` with a BoC-specific
-    extension field for the series name (useful for debugging).
-    """
+    """BoC FX Data."""
 
     series: str | None = Field(
         default=None,
@@ -96,21 +64,14 @@ class BankOfCanadaFXData(CurrencyHistoricalData):
 class BankOfCanadaFXFetcher(
     Fetcher[BankOfCanadaFXQueryParams, list[BankOfCanadaFXData]]
 ):
-    """BoC FX Fetcher.
-
-    Reads the cache for series metadata, then makes a runtime HTTP
-    call to Valet for the actual observations.
-    """
+    """BoC FX Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> BankOfCanadaFXQueryParams:
         """Transform raw params into a validated query model."""
         transformed = params.copy()
-        # Normalize the symbol to BoC canonical form early so that
-        # downstream lookups (cache + URL) all use the same shape.
         if transformed.get("symbol"):
             transformed["symbol"] = normalize_fx_symbol(str(transformed["symbol"]))
-        # Apply date defaults.
         if transformed.get("start_date") is None:
             transformed["start_date"] = _default_start_date()
         if transformed.get("end_date") is None:
@@ -123,12 +84,7 @@ class BankOfCanadaFXFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch observations from the BoC Valet API.
-
-        Reads the cache to find the series' ``observations_url`` and
-        validates membership in the ``FX_RATES_DAILY`` group. Then
-        makes a single HTTP call to fetch the time-series.
-        """
+        """Fetch observations from the BoC Valet API."""
         meta = GovernmentCaMetadata()
         boc_cache = meta.boc
 
@@ -140,8 +96,6 @@ class BankOfCanadaFXFetcher(
                 "OPENBB_GOVERNMENT_CA_FORCE_CACHE_REBUILD=1 to retry."
             )
 
-        # Look up the series in the cache. This raises KeyError with a
-        # helpful "did you mean" hint if the symbol isn't recognized.
         try:
             entry = lookup_series(query.symbol, boc_cache)
         except KeyError as exc:
@@ -154,12 +108,6 @@ class BankOfCanadaFXFetcher(
                 f"The cache may be corrupted — reinstall the package."
             )
 
-        # Build the full URL with date range. The Valet API uses
-        # ``start_date`` and ``end_date`` query params in YYYY-MM-DD
-        # format. ``recent=N`` is an alternative but we prefer the
-        # date range for explicit control.
-        # ``transform_query`` always populates these with defaults, so
-        # the assert is for ty's benefit — it can't see the invariant.
         assert query.start_date is not None  # noqa: S101
         assert query.end_date is not None  # noqa: S101
         params: dict[str, str] = {
@@ -184,8 +132,6 @@ class BankOfCanadaFXFetcher(
                 f"date range {query.start_date} to {query.end_date}."
             )
 
-        # Tag each row with the series name so ``transform_data`` can
-        # populate the extension field without re-deriving it.
         for obs in observations:
             obs["_series"] = query.symbol
 
@@ -197,18 +143,7 @@ class BankOfCanadaFXFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[BankOfCanadaFXData]:
-        """Map raw Valet observations to the standard ``CurrencyHistoricalData`` model.
-
-        Each Valet observation has the shape::
-
-            {"d": "2024-01-02", "FXUSDCAD": {"v": "1.3316"}}
-
-        The ``d`` field is the ISO date; the series name (``FXUSDCAD``)
-        is a key on the same dict whose value is ``{"v": "..."}``.
-
-        Per the brief: populate ``close`` only, leave OHLC as ``None``.
-        No value transformation — the BoC rate (1.3316) is the close.
-        """
+        """Map raw Valet observations to the standard ``CurrencyHistoricalData`` model."""
         output: list[BankOfCanadaFXData] = []
         for obs in data:
             obs_date_str = obs.get("d")
@@ -225,7 +160,6 @@ class BankOfCanadaFXFetcher(
                 series_block.get("v") if isinstance(series_block, dict) else None
             )
             if value_str is None or value_str == "":
-                # BoC uses empty string for holidays/weekends — skip.
                 continue
             try:
                 close = float(value_str)
@@ -235,16 +169,15 @@ class BankOfCanadaFXFetcher(
             output.append(
                 BankOfCanadaFXData(
                     date=obs_date,
-                    open=None,  # per brief — OHLC left as None
+                    open=None,
                     high=None,
                     low=None,
-                    close=close,  # NOT normalized — FX is a direct price
+                    close=close,
                     volume=None,
                     vwap=None,
                     series=series_name or None,
                 )
             )
 
-        # Sort ascending by date — standard convention for time-series.
         output.sort(key=lambda x: x.date)
         return output
