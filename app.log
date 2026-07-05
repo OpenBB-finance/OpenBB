@@ -1,0 +1,66 @@
+2026-07-05 16:12:16,613 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:12:16,942 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/FXUSDCAD/json HTTP/1.1" 200 14521
+2026-07-05 16:12:23,192 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:12:23,468 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/FXUSDCAD/json HTTP/1.1" 200 14521
+2026-07-05 16:12:39,159 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:12:40,287 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/BD.CDN.10Y.DQ.YLD/json HTTP/1.1" 404 159
+2026-07-05 16:12:40,291 - ERROR - error: 'observations'
+2026-07-05 16:13:00,286 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:13:00,670 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/CBC20210/json HTTP/1.1" 200 22533
+2026-07-05 16:31:41,689 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:31:42,160 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/FXUSDCAD/json HTTP/1.1" 200 14521
+2026-07-05 16:31:42,164 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:31:42,426 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/CBC20210/json HTTP/1.1" 200 22533
+2026-07-05 16:31:42,479 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:31:43,485 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/BD.CDN.10Y.DQ.YLD/json HTTP/1.1" 404 159
+2026-07-05 16:31:43,486 - ERROR - error: 'observations'
+2026-07-05 16:48:23,980 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:48:24,361 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/FXUSDCAD/json HTTP/1.1" 200 14521
+2026-07-05 16:48:24,365 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:48:25,735 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/CBC20210/json HTTP/1.1" 200 22533
+2026-07-05 16:48:25,791 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:48:26,276 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.10Y.DQ.YLD/json HTTP/1.1" 404 170
+2026-07-05 16:48:26,278 - ERROR - error: 'observations'
+2026-07-05 16:52:01,337 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:52:02,464 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 16:52:02,465 - ERROR - error: 'observations'
+2026-07-05 16:54:15,376 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:54:16,915 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 16:54:16,917 - ERROR - error: 'observations'
+2026-07-05 16:54:25,224 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:54:25,850 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 16:54:25,852 - ERROR - error: 'observations'
+2026-07-05 16:56:04,171 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 16:56:04,783 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 16:56:04,784 - ERROR - error: 'observations'
+2026-07-05 17:00:50,749 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:00:52,064 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:00:52,066 - ERROR - error: 'observations'
+2026-07-05 17:01:15,688 - ERROR - error: cannot access local variable 'latest' where it is not associated with a value
+2026-07-05 17:01:55,105 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:01:55,904 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:01:55,908 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:01:56,214 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:02:01,282 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:02:01,537 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:02:01,541 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:02:01,779 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:02:41,212 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:02:41,919 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:02:41,923 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:02:42,159 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/group/BD.CDN.DQ.YLD/json HTTP/1.1" 404 166
+2026-07-05 17:03:54,815 - ERROR - error: cannot access local variable 'latest' where it is not associated with a value
+2026-07-05 17:04:43,527 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:04:44,157 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/BD.CDN.10Y.DQ.YLD/json HTTP/1.1" 404 159
+2026-07-05 17:04:44,158 - ERROR - error: 'observations'
+2026-07-05 17:05:06,758 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:05:07,390 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/BD.CDN.10Y.DQ.YLD/json HTTP/1.1" 404 159
+2026-07-05 17:05:07,393 - ERROR - error: 'observations'
+2026-07-05 17:08:53,669 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:08:55,219 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/BD.CDN.10YR.DQ.YLD/json HTTP/1.1" 200 32591
+2026-07-05 17:09:07,070 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:09:07,349 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/FXUSDCAD/json HTTP/1.1" 200 14521
+2026-07-05 17:09:07,353 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:09:07,633 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/CBC20210/json HTTP/1.1" 200 22533
+2026-07-05 17:09:07,685 - DEBUG - Starting new HTTPS connection (1): www.bankofcanada.ca:443
+2026-07-05 17:09:07,939 - DEBUG - https://www.bankofcanada.ca:443 "GET /valet/observations/BD.CDN.10YR.DQ.YLD/json HTTP/1.1" 200 32591
