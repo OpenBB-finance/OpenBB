@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import lzma
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -87,6 +88,55 @@ def _write_cache(blob: dict, path: Path | None = None) -> Path:
 
 # ---------------------------------------------------------------------------
 # StatsCan fetcher
+# ---------------------------------------------------------------------------
+# Default cap on how many cubes get full metadata resolution. StatsCan
+# publishes ~10,000 cubes; fetching every one would take hours. The
+# shipped cache targets the most-used cubes — the env var override is
+# for maintainers who want a fuller catalog.
+_STATSCAN_CUBE_LIMIT = int(
+    os.environ.get("OPENBB_GOVERNMENT_CA_STATSCAN_CUBE_LIMIT", "100")
+)
+
+# PIDs that always get full metadata, regardless of the limit. These are
+# the headline cubes referenced by the homepage indicators list plus a
+# few widely-used ones for the available_indicators endpoint tests.
+_STATSCAN_PRIORITY_PIDS: tuple[str, ...] = (
+    "10100139",  # GDP at basic prices, monthly
+    "20100008",  # CPI, monthly
+    "14100222",  # Employment by industry, monthly
+    "36100434",  # GDP expenditure-based, quarterly
+    "23100222",  # Retail trade, monthly
+    "32100132",  # Manufacturing sales, monthly
+    "12100151",  # Wholesale trade, monthly
+    "65100101",  # Labour force, monthly
+)
+
+
+def _select_cubes_for_metadata(
+    all_cubes: dict[str, dict[str, Any]],
+) -> list[str]:
+    """Return the list of PIDs to fetch full metadata for.
+
+    Always includes the priority PIDs (if present in the catalog),
+    then fills up to ``_STATSCAN_CUBE_LIMIT`` with the rest.
+    """
+    selected: list[str] = []
+    seen: set[str] = set()
+    for pid in _STATSCAN_PRIORITY_PIDS:
+        if pid in all_cubes and pid not in seen:
+            selected.append(pid)
+            seen.add(pid)
+    for pid in all_cubes:
+        if len(selected) >= _STATSCAN_CUBE_LIMIT:
+            break
+        if pid not in seen:
+            selected.append(pid)
+            seen.add(pid)
+    return selected
+
+
+# ---------------------------------------------------------------------------
+# StatsCan fetcher (cont.)
 # ---------------------------------------------------------------------------
 def _parse_homepage_response(payload: Any) -> dict[str, Any]:
     """Parse the ``ind-econ.json`` payload into a structured blob.
@@ -281,11 +331,20 @@ def _fetch_statscan_catalog() -> dict[str, Any]:
 
     print(
         f"generate-government-ca-cache: StatsCan cube list OK — "
-        f"{len(cubes)} cubes. Fetching per-cube metadata...",
+        f"{len(cubes)} cubes. Selecting up to {_STATSCAN_CUBE_LIMIT} for "
+        f"full metadata...",
         file=sys.stderr,
     )
 
-    for pid, cube_entry in cubes.items():
+    selected_pids = _select_cubes_for_metadata(cubes)
+    print(
+        f"generate-government-ca-cache: fetching metadata for "
+        f"{len(selected_pids)} cubes...",
+        file=sys.stderr,
+    )
+
+    for pid in selected_pids:
+        cube_entry = cubes[pid]
         meta_url = cube_entry["metadata_url"]
         try:
             meta_payload = http_get_json(meta_url, timeout=30.0)
