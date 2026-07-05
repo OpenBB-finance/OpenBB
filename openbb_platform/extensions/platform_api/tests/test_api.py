@@ -51,7 +51,7 @@ def _load_main_with_mocks():
                 cors=types.SimpleNamespace(
                     allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
                 ),
-                api_settings=types.SimpleNamespace(prefix="/api"),
+                api_settings=types.SimpleNamespace(prefix="/api/v1"),
             )
 
     system_service_module.SystemService = DummySystemService  # type:ignore
@@ -903,6 +903,106 @@ def test_get_widgets_json_merges_with_additional_sources(monkeypatch):
 
     assert widgets["default"] == base_widgets["default"]
     assert widgets["extra"] == additional_widgets["extra"]
+
+
+@pytest.fixture
+def check_for_platform_extensions_fn():
+    main = _load_main_with_mocks()
+    return main.check_for_platform_extensions
+
+
+@pytest.fixture
+def platform_extension_openapi_tags():
+    return [
+        {"name": "technical"},
+        {"name": "econometrics"},
+        {"name": "quantitative"},
+        {"name": "economy"},
+    ]
+
+
+@pytest.fixture
+def platform_extension_modules(monkeypatch):
+    module_names = (
+        "openbb_technical",
+        "openbb_econometrics",
+        "openbb_quantitative",
+    )
+    inserted = {
+        name: types.ModuleType(name) for name in module_names if name not in sys.modules
+    }
+    for name, module in inserted.items():
+        monkeypatch.setitem(sys.modules, name, module)
+    yield inserted
+    for name in inserted:
+        monkeypatch.delitem(sys.modules, name, raising=False)
+
+
+def _mock_fastapi_app(openapi_tags):
+    app = MagicMock()
+    app.openapi_tags = openapi_tags
+    return app
+
+
+def test_check_for_platform_extensions_excludes_loaded_modules(
+    check_for_platform_extensions_fn,
+    platform_extension_openapi_tags,
+    platform_extension_modules,
+):
+    app = _mock_fastapi_app(platform_extension_openapi_tags)
+    result = check_for_platform_extensions_fn(app, [])
+
+    assert "/api/v1/technical/*" in result
+    assert "/api/v1/econometrics/*" in result
+    assert "/api/v1/quantitative/*" in result
+    assert "/api/v1/economy/*" not in result
+
+
+def test_check_for_platform_extensions_preserves_existing_exclusions(
+    check_for_platform_extensions_fn,
+    platform_extension_openapi_tags,
+    platform_extension_modules,
+):
+    app = _mock_fastapi_app(platform_extension_openapi_tags)
+    existing = ["/api/v1/custom/*"]
+    result = check_for_platform_extensions_fn(app, existing.copy())
+
+    assert "/api/v1/custom/*" in result
+
+
+def test_check_for_platform_extensions_skips_when_modules_not_loaded(
+    check_for_platform_extensions_fn,
+    platform_extension_openapi_tags,
+):
+    app = _mock_fastapi_app(platform_extension_openapi_tags)
+    excluded = (
+        "openbb_technical",
+        "openbb_econometrics",
+        "openbb_quantitative",
+    )
+    saved = {name: sys.modules.pop(name, None) for name in excluded}
+    try:
+        result = check_for_platform_extensions_fn(app, [])
+    finally:
+        for name, module in saved.items():
+            if module is not None:
+                sys.modules[name] = module
+
+    assert result == []
+
+
+def test_check_for_platform_extensions_matches_tag_names_not_dict_identity(
+    check_for_platform_extensions_fn,
+    monkeypatch,
+):
+    app = _mock_fastapi_app([{"name": "technical"}, {"name": "economy"}])
+    monkeypatch.setitem(
+        sys.modules, "openbb_technical", types.ModuleType("openbb_technical")
+    )
+
+    result = check_for_platform_extensions_fn(app, [])
+
+    assert result == ["/api/v1/technical/*"]
 
 
 if __name__ == "__main__":
