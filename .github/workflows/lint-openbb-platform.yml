@@ -8,6 +8,10 @@ on:
     types: [opened, synchronize, edited]
     paths:
       - 'openbb_platform/**'
+      - '!openbb_platform/api/**'
+      - '!openbb_platform/extensions/**'
+      - '!openbb_platform/providers/**'
+      - '!openbb_platform/obbject_extensions/**'
       - '.github/workflows/lint-openbb-platform.yml'
   merge_group:
     types: [checks_requested]
@@ -45,8 +49,9 @@ jobs:
       - name: Get changed files in openbb_platform for PR
         if: github.event_name == 'pull_request'
         run: |
-          # "Checking PR diff"
-          echo "diff_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${HEAD_REF} | grep -E '^openbb_platform/.*\.py$' | grep -v 'openbb_platform/core/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+          # Limit this workflow to shared platform surfaces; extension/provider
+          # modules have dedicated unit+lint workflows.
+          echo "diff_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${HEAD_REF} | grep -E '^openbb_platform/.*\.py$' | grep -v '^openbb_platform/api/' | grep -v '^openbb_platform/extensions/' | grep -v '^openbb_platform/providers/' | grep -v '^openbb_platform/obbject_extensions/' | grep -v 'openbb_platform/core/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
           echo $diff_files
 
         env:
@@ -63,29 +68,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip uv
           uv pip install --system -e ./openbb_platform/extensions/devtools
-
-      - name: Install changed packages (so ty resolves their declared deps)
-        if: env.diff_files != ''
-        run: |
-          # Install each touched package so ty has the package's declared
-          # third-party deps (pandas-ta, scipy, statsmodels, etc.) available
-          # for type resolution. Optional cross-package peers (e.g.
-          # openbb_charting) that aren't installed surface as `warn`-level
-          # diagnostics under the package ty.toml rather than build errors.
-          touched=$(echo "${{ env.diff_files }}" | tr ' ' '\n' \
-            | grep -oE '^(openbb_platform/(extensions|providers|obbject_extensions)|cli)/[^/]+' \
-            | sort -u)
-          for pkg in $touched; do
-            if [ -f "$pkg/pyproject.toml" ]; then
-              echo "Installing $pkg"
-              if [ "$pkg" = "cli" ]; then
-                uv pip install --system -e "./$pkg[charting]"
-                continue
-              fi
-
-              uv pip install --system -e "./$pkg"
-            fi
-          done
 
       - name: Install openbb-core editable (resident, single identity for ty)
         run: |
