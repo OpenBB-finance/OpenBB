@@ -62,7 +62,12 @@ def _cache_key(url: str) -> str:
 
 
 def _cache_get(url: str) -> tuple[Any, bool]:
-    """Return ``(value, hit)`` from the diskcache."""
+    """Return ``(value, hit)`` from the diskcache.
+
+    ``hit`` is ``True`` only when the entry is fresh (within TTL). The
+    stale value is still returned (as the first element of the tuple)
+    so callers can fall back to it on network errors.
+    """
     path = _cache_dir() / _cache_key(url)
     if not path.exists():
         return (None, False)
@@ -72,7 +77,7 @@ def _cache_get(url: str) -> tuple[Any, bool]:
         return (None, False)
     expires_at = raw.get("expires_at", 0)
     if time.time() > expires_at:
-        return (None, False)
+        return (raw.get("value"), False)
     return (raw.get("value"), True)
 
 

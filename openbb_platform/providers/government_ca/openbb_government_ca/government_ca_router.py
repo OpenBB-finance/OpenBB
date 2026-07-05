@@ -13,12 +13,10 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query as OBBQuery
 from openbb_core.app.router import Router
-from openbb_core.app.service.system_service import SystemService
 
 from openbb_government_ca.utils.metadata import GovernmentCaMetadataDependency
 
 router = Router(prefix="", description="Government of Canada router")
-api_prefix = SystemService().system_settings.api_settings.prefix
 
 
 @router.command(
@@ -42,7 +40,7 @@ async def available_indicators(
     extra_params: ExtraParams,
 ) -> OBBject:
     """List available StatsCan indicators (pure metadata, no observation values)."""
-    return await OBBject.from_query(OBBQuery(**locals()))
+    return await OBBject.from_query(OBBQuery(**locals()))  # pragma: no cover
 
 
 @router.command(
@@ -51,12 +49,10 @@ async def available_indicators(
     examples=[
         APIEx(
             description="List all cubes in the SDMX catalog",
-            api=f"{api_prefix}/government_ca/list_cube_choices",
             parameters={"provider": "government_ca"},
         ),
         APIEx(
             description="Search cubes by title substring",
-            api=f"{api_prefix}/government_ca/list_cube_choices?query=GDP",
             parameters={"provider": "government_ca", "query": "GDP"},
         ),
         PythonEx(
@@ -109,7 +105,6 @@ def list_cube_choices(
     examples=[
         APIEx(
             description="List all subjects in the SDMX catalog",
-            api=f"{api_prefix}/government_ca/list_subject_choices",
             parameters={"provider": "government_ca"},
         ),
     ],

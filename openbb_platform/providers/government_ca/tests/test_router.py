@@ -110,3 +110,15 @@ class TestListSubjectChoices:
             assert codes == {"13", "14"}
         finally:
             GovernmentCaMetadata._reset()
+
+
+class TestAvailableIndicatorsCommand:
+    """``available_indicators`` is the model command registered on the router."""
+
+    def test_router_has_list_cube_choices_route(self):
+        """The router's underlying APIRouter exposes /list_cube_choices."""
+        from openbb_government_ca.government_ca_router import router
+
+        paths = {r.path for r in router.api_router.routes}
+        assert "/list_cube_choices" in paths
+        assert "/list_subject_choices" in paths

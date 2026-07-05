@@ -90,3 +90,150 @@ class TestConstants:
     def test_products_of_interest_contains_ind_econ(self):
         """The ``STATSCAN_PRODUCTS_OF_INTEREST`` tuple contains the homepage key."""
         assert "ind-econ" in STATSCAN_PRODUCTS_OF_INTEREST
+
+
+# ===========================================================================
+# SDMX catalog accessors (get_catalog, list_cubes, lookup_cube,
+# lookup_series_by_vector, search_series, list_subjects)
+# ===========================================================================
+class TestCatalogAccessors:
+    """Cover the SDMX catalog accessor functions."""
+
+    def test_get_catalog_returns_empty_for_no_catalog(self, empty_meta):
+        from openbb_government_ca.statscan.utils import get_catalog
+
+        assert get_catalog(empty_meta.statscan) == {}
+
+    def test_get_catalog_returns_dict_when_present(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import get_catalog
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {"cubes": {}, "subjects": {}}
+        result = get_catalog(cache)
+        assert "cubes" in result
+
+    def test_list_cubes_returns_empty_for_no_catalog(self, empty_meta):
+        from openbb_government_ca.statscan.utils import list_cubes
+
+        assert list_cubes(empty_meta.statscan) == []
+
+    def test_list_cubes_returns_cubes_list(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import list_cubes
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {
+            "cubes": {
+                "10100139": {"pid": "10100139", "title_en": "GDP"},
+                "20100008": {"pid": "20100008", "title_en": "CPI"},
+            }
+        }
+        cubes = list_cubes(cache)
+        assert len(cubes) == 2
+
+    def test_lookup_cube_returns_entry(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import lookup_cube
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {"cubes": {"10100139": {"pid": "10100139"}}}
+        cube = lookup_cube("10100139", cache)
+        assert cube["pid"] == "10100139"
+
+    def test_lookup_cube_unknown_pid_raises(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import lookup_cube
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {"cubes": {"10100139": {"pid": "10100139"}}}
+        with pytest.raises(KeyError, match="not found in catalog"):
+            lookup_cube("99999999", cache)
+
+    def test_lookup_series_by_vector_returns_match(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import lookup_series_by_vector
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {
+            "cubes": {
+                "10100139": {
+                    "pid": "10100139",
+                    "title_en": "GDP",
+                    "series": [
+                        {
+                            "vector_id": "V1",
+                            "label_en": "GDP, monthly",
+                            "coordinate": "1.1.1.1",
+                        }
+                    ],
+                }
+            }
+        }
+        series = lookup_series_by_vector("V1", cache)
+        assert series["vector_id"] == "V1"
+        assert series["cube_pid"] == "10100139"
+        assert series["cube_title_en"] == "GDP"
+
+    def test_lookup_series_by_vector_handles_lowercase_v(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import lookup_series_by_vector
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {
+            "cubes": {
+                "10100139": {
+                    "pid": "10100139",
+                    "series": [{"vector_id": "V1"}],
+                }
+            }
+        }
+        assert lookup_series_by_vector("v1", cache)["vector_id"] == "V1"
+
+    def test_lookup_series_by_vector_unknown_raises(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import lookup_series_by_vector
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {"cubes": {"10100139": {"pid": "10100139", "series": []}}}
+        with pytest.raises(KeyError, match="not found in catalog"):
+            lookup_series_by_vector("V999", cache)
+
+    def test_search_series_returns_matches(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import search_series
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {
+            "cubes": {
+                "10100139": {
+                    "pid": "10100139",
+                    "title_en": "GDP",
+                    "series": [
+                        {"vector_id": "V1", "label_en": "GDP, monthly"},
+                        {"vector_id": "V2", "label_en": "GDP, quarterly"},
+                    ],
+                },
+                "20100008": {
+                    "pid": "20100008",
+                    "title_en": "CPI",
+                    "series": [{"vector_id": "V3", "label_en": "CPI All-items"}],
+                },
+            }
+        }
+        results = search_series("GDP", cache)
+        assert len(results) == 2
+        for r in results:
+            assert "GDP" in r["label_en"]
+
+    def test_search_series_empty_query_returns_empty(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import search_series
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {"cubes": {"10100139": {"pid": "10100139", "series": []}}}
+        assert search_series("", cache) == []
+
+    def test_list_subjects_returns_dict(self, seeded_meta):
+        from openbb_government_ca.statscan.utils import list_subjects
+
+        cache = seeded_meta.statscan
+        cache["catalog"] = {"subjects": {"13": "Economic accounts"}}
+        subjects = list_subjects(cache)
+        assert subjects == {"13": "Economic accounts"}
+
+    def test_list_subjects_returns_empty_for_no_catalog(self, empty_meta):
+        from openbb_government_ca.statscan.utils import list_subjects
+
+        assert list_subjects(empty_meta.statscan) == {}

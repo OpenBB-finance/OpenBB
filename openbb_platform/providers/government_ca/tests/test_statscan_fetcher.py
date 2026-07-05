@@ -225,6 +225,25 @@ class TestExtractDataVectorMode:
         finally:
             GovernmentCaMetadata._reset()
 
+    def test_non_dict_spots_in_payload_are_skipped(self):
+        """Non-dict entries in the WDS payload are silently skipped."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query({"symbol": "V1"})
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    None,
+                    "not a dict",
+                    {"refPer": "2024-01", "value": 100.0},
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            assert len(result) == 1
+        finally:
+            GovernmentCaMetadata._reset()
+
 
 # ---------------------------------------------------------------------------
 # extract_data — cube mode
@@ -263,6 +282,165 @@ class TestExtractDataCubeMode:
             )
             with pytest.raises(OpenBBError):
                 StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_cube_with_no_series_raises_empty_data_error(self):
+        """A cube with an empty series list raises EmptyDataError."""
+        GovernmentCaMetadata._reset()
+        meta = GovernmentCaMetadata()
+        meta._apply_blob(
+            {
+                "boc": {},
+                "statscan": {
+                    "status": "ok",
+                    "catalog": {
+                        "cubes": {
+                            "99999999": {
+                                "pid": "99999999",
+                                "title_en": "Empty cube",
+                                "series": [],
+                            }
+                        },
+                        "cube_count": 1,
+                        "series_count": 0,
+                        "status": "ok",
+                    },
+                },
+            }
+        )
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:99999999"}
+            )
+            with pytest.raises(EmptyDataError, match="has no series"):
+                StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_cube_fetch_silently_skips_vector_on_network_error(self):
+        """A network error on a single vector is logged but doesn't fail the call."""
+        from openbb_government_ca.utils._http import NetworkError
+
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:10100139"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.side_effect = (
+                    NetworkError("https://x", "boom")
+                )
+                with pytest.raises(EmptyDataError):
+                    # All vectors fail → no observations → EmptyDataError
+                    StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_cube_fetch_partial_failure_returns_survivors(self):
+        """When one vector fails but others succeed, the survivors are returned."""
+        from openbb_government_ca.utils._http import NetworkError
+
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:10100139"}
+            )
+
+            call_count = [0]
+
+            def fake_call(vid, *args, **kwargs):
+                call_count[0] += 1
+                if vid == "V1":
+                    raise NetworkError("https://x", "boom")
+                return [{"refPer": "2024-01", "value": 100.0}]
+
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.side_effect = (
+                    fake_call
+                )
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+
+            # V1 raised; V2 succeeded → 1 observation
+            assert len(result) == 1
+            assert result[0]["_vector_id"] == "V2"
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_cube_fetch_skips_non_dict_spots(self):
+        """Non-dict entries in a cube fetch payload are silently skipped."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:10100139"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    None,
+                    "not a dict",
+                    {"refPer": "2024-01", "value": 100.0},
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            # 2 vectors × 1 valid spot each = 2 observations
+            assert len(result) == 2
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_cube_fetch_skips_series_without_vector_id(self):
+        """Series entries without a ``vector_id`` are skipped during cube fetch."""
+        GovernmentCaMetadata._reset()
+        meta = GovernmentCaMetadata()
+        meta._apply_blob(
+            {
+                "boc": {},
+                "statscan": {
+                    "status": "ok",
+                    "catalog": {
+                        "cubes": {
+                            "10100139": {
+                                "pid": "10100139",
+                                "title_en": "GDP",
+                                "series": [
+                                    {"vector_id": "", "label_en": "Empty"},
+                                    {
+                                        "vector_id": "V1",
+                                        "label_en": "Valid",
+                                        "frequency_code": "6",
+                                    },
+                                ],
+                            }
+                        },
+                        "subjects": {},
+                        "cube_count": 1,
+                        "series_count": 2,
+                        "status": "ok",
+                    },
+                },
+            }
+        )
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "cube:10100139"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            # Only V1 was fetched → 1 observation
+            assert len(result) == 1
         finally:
             GovernmentCaMetadata._reset()
 
@@ -322,6 +500,59 @@ class TestExtractDataHomepageMode:
         finally:
             GovernmentCaMetadata._reset()
 
+    def test_homepage_indicator_without_source_is_skipped(self):
+        """Homepage indicators with an empty ``source`` field are skipped."""
+        GovernmentCaMetadata._reset()
+        meta = GovernmentCaMetadata()
+        meta._apply_blob(
+            {
+                "boc": {},
+                "statscan": {
+                    "status": "ok",
+                    "indicators": [
+                        {"source": "", "title_en": "Empty source"},
+                        {"source": "1", "title_en": "Valid"},
+                    ],
+                    "catalog": {
+                        "cubes": {
+                            "10100139": {
+                                "pid": "10100139",
+                                "title_en": "GDP",
+                                "series": [
+                                    {
+                                        "vector_id": "1",
+                                        "label_en": "Valid",
+                                        "coordinate": "1.1",
+                                        "frequency_code": "6",
+                                    }
+                                ],
+                            }
+                        },
+                        "subjects": {},
+                        "cube_count": 1,
+                        "series_count": 1,
+                        "status": "ok",
+                    },
+                },
+            }
+        )
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "homepage"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            # Only the valid indicator (source="1") → vector "V1" → 1 observation
+            assert len(result) == 1
+        finally:
+            GovernmentCaMetadata._reset()
+
 
 # ---------------------------------------------------------------------------
 # extract_data — empty result
@@ -340,6 +571,70 @@ class TestExtractDataEmptyResult:
                 instance = MockClient.return_value
                 instance.get_data_from_vector_by_reference_period_range.return_value = []
                 with pytest.raises(EmptyDataError):
+                    StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+        finally:
+            GovernmentCaMetadata._reset()
+
+
+# ---------------------------------------------------------------------------
+# extract_data — country filter
+# ---------------------------------------------------------------------------
+class TestExtractDataCountryFilter:
+    """``extract_data`` filters observations by ``country`` (geo_code)."""
+
+    def test_country_filter_zero_matches_all_when_geo_code_absent(self):
+        """``country='0'`` matches observations without a ``_geo_code`` field."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "V1", "country": "0"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            assert len(result) == 1
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_country_filter_with_geo_code_match_returns_observations(self):
+        """Observations whose ``_geo_code`` matches the country filter are returned."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "V1", "country": "1"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0, "_geo_code": "1"}
+                ]
+                result = StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
+            assert len(result) == 1
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_country_filter_no_match_raises_empty_data_error(self):
+        """When no observations match the country filter, EmptyDataError is raised."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsFetcher.transform_query(
+                {"symbol": "V1", "country": "99"}
+            )
+            with patch(
+                "openbb_government_ca.statscan.economic_indicators.StatsCanClient"
+            ) as MockClient:
+                instance = MockClient.return_value
+                instance.get_data_from_vector_by_reference_period_range.return_value = [
+                    {"refPer": "2024-01", "value": 100.0, "_geo_code": "1"}
+                ]
+                with pytest.raises(EmptyDataError, match="country filter"):
                     StatsCanEconomicIndicatorsFetcher.extract_data(q, None)
         finally:
             GovernmentCaMetadata._reset()
@@ -444,5 +739,25 @@ class TestTransformData:
                 date(2024, 2, 1),
                 date(2024, 1, 1),
             ]
+        finally:
+            GovernmentCaMetadata._reset()
+
+    def test_non_dict_spots_are_skipped(self):
+        """``None`` and non-dict entries in the raw payload are silently skipped."""
+        _seed_catalog()
+        try:
+            q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
+            raw = [
+                None,  # non-dict, skipped
+                "not a dict",  # non-dict, skipped
+                {
+                    "refPer": "2024-01",
+                    "value": 100.0,
+                    "_vector_id": "V1",
+                },
+            ]
+            result = StatsCanEconomicIndicatorsFetcher.transform_data(q, raw)
+            assert len(result) == 1
+            assert result[0].value == 100.0
         finally:
             GovernmentCaMetadata._reset()

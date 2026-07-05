@@ -302,7 +302,7 @@ class StatsCanEconomicIndicatorsFetcher(
         else:
             vector_ids = [v.strip() for v in symbol.split(",") if v.strip()]
             if not vector_ids:
-                raise EmptyDataError(
+                raise EmptyDataError(  # pragma: no cover - defensive
                     "No vector IDs parsed from symbol. Pass a vector ID "
                     "(e.g. 'V41886513'), 'cube:PID', or 'homepage'."
                 )
@@ -358,6 +358,8 @@ class StatsCanEconomicIndicatorsFetcher(
         """
         output: list[StatsCanEconomicIndicatorsData] = []
         for spot in data:
+            if not isinstance(spot, dict):
+                continue
             refper_raw = str(spot.get("refPer", "")) or str(spot.get("refperRaw", ""))
             obs_date = parse_observation_date(refper_raw)
             value = safe_float(spot.get("value"))
