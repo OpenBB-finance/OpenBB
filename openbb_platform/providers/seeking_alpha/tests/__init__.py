@@ -1,1 +1,0 @@
-"""Seeking Alpha provider tests."""
