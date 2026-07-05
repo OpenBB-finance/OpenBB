@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, edited]
     paths:
       - 'openbb_platform/**'
-      - '.github/workflows/general-linting.yml'
+      - '.github/workflows/lint-openbb-platform.yml'
   merge_group:
     types: [checks_requested]
 
@@ -78,7 +78,18 @@ jobs:
           for pkg in $touched; do
             if [ -f "$pkg/pyproject.toml" ]; then
               echo "Installing $pkg"
-              uv pip install --system -e "./$pkg" || echo "skip $pkg (install failed)"
+              if [ "$pkg" = "cli" ]; then
+                uv pip install --system -e "./$pkg[charting]" --group dev
+                continue
+              fi
+
+              has_dev_group=$(python -c 'import sys,tomllib; p=tomllib.load(open(sys.argv[1], "rb")); print("yes" if "dev" in p.get("dependency-groups", {}) else "no")' "$pkg/pyproject.toml")
+
+              if [ "$has_dev_group" = "yes" ]; then
+                uv pip install --system -e "./$pkg" --group dev
+              else
+                uv pip install --system -e "./$pkg"
+              fi
             fi
           done
 
