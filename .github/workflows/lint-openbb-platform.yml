@@ -79,21 +79,11 @@ jobs:
             if [ -f "$pkg/pyproject.toml" ]; then
               echo "Installing $pkg"
               if [ "$pkg" = "cli" ]; then
-                uv pip install --system -e "./$pkg[charting]" --group dev
+                uv pip install --system -e "./$pkg[charting]"
                 continue
               fi
 
-              has_dev_group="no"
-              if grep -q '^\[dependency-groups\]' "$pkg/pyproject.toml" \
-                && grep -Eq '^\s*dev\s*=' "$pkg/pyproject.toml"; then
-                has_dev_group="yes"
-              fi
-
-              if [ "$has_dev_group" = "yes" ]; then
-                uv pip install --system -e "./$pkg" --group dev
-              else
-                uv pip install --system -e "./$pkg"
-              fi
+              uv pip install --system -e "./$pkg"
             fi
           done
 
