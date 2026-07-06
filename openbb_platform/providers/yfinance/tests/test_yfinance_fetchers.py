@@ -1,9 +1,11 @@
 """Tests for YFinance fetchers."""
 
 from datetime import date
+from unittest.mock import patch
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.models.active import YFActiveFetcher
 from openbb_yfinance.models.aggressive_small_caps import YFAggressiveSmallCapsFetcher
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
@@ -18,6 +20,7 @@ from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
 from openbb_yfinance.models.equity_screener import YFinanceEquityScreenerFetcher
 from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
+from openbb_yfinance.models.futures_expirations import YFinanceFuturesExpirationsFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
@@ -207,6 +210,45 @@ def test_y_finance_options_chains_fetcher(credentials=test_credentials):
     fetcher = YFinanceOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.asyncio
+async def test_y_finance_futures_expirations_fetcher():
+    """Test YFinanceFuturesExpirationsFetcher."""
+    mock_data = [
+        {
+            "symbol": "ES",
+            "contract_symbol": "ESU26.CME",
+            "expiration": date(2026, 9, 18),
+            "expiration_month": "2026-09",
+            "exchange": "CME",
+            "name": "E-Mini S&P 500 Sep 26",
+        }
+    ]
+
+    fetcher = YFinanceFuturesExpirationsFetcher()
+    query = fetcher.transform_query({"symbol": "ES"})
+
+    with patch(
+        "openbb_yfinance.utils.helpers.get_futures_expirations",
+        return_value=mock_data,
+    ):
+        data = await fetcher.aextract_data(query, {})
+        result = fetcher.transform_data(query, data)
+
+    assert len(result) == 1
+    assert result[0].symbol == "ES"
+    assert result[0].contract_symbol == "ESU26.CME"
+    assert result[0].expiration == date(2026, 9, 18)
+    assert result[0].expiration_month == "2026-09"
+    assert result[0].exchange == "CME"
+    assert result[0].name == "E-Mini S&P 500 Sep 26"
+
+    with patch(
+        "openbb_yfinance.utils.helpers.get_futures_expirations",
+        return_value=[],
+    ), pytest.raises(EmptyDataError):
+        await fetcher.aextract_data(query, {})
 
 
 @pytest.mark.skip("Unreliable amount of data while recording test.")

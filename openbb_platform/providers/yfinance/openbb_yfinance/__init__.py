@@ -15,6 +15,7 @@ from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
 from openbb_yfinance.models.equity_screener import YFinanceEquityScreenerFetcher
 from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
+from openbb_yfinance.models.futures_expirations import YFinanceFuturesExpirationsFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
@@ -64,6 +65,7 @@ financial markets and assets.""",
         "EtfHistorical": YFinanceEquityHistoricalFetcher,
         "EtfInfo": YFinanceEtfInfoFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
+        "FuturesExpirations": YFinanceFuturesExpirationsFetcher,
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
         "HistoricalDividends": YFinanceHistoricalDividendsFetcher,

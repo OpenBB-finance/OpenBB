@@ -63,6 +63,23 @@ async def curve(
 
 
 @router.command(
+    model="FuturesExpirations",
+    examples=[
+        APIEx(parameters={"symbol": "ES", "provider": "yfinance"}),
+        APIEx(parameters={"symbol": "CL", "provider": "yfinance"}),
+    ],
+)
+async def expirations(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Futures contract expiration dates."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="FuturesInstruments",
     examples=[
         APIEx(parameters={"provider": "deribit"}),

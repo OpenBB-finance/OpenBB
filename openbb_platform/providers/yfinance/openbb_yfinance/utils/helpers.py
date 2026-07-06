@@ -220,8 +220,8 @@ async def get_defined_screener(
 
 def get_expiration_month(symbol: str) -> str:
     """Get the expiration month for a given symbol."""
-    month = symbol.split(".")[0][-3]
-    year = "20" + symbol.split(".")[0][-2:]
+    month = symbol.split(".", maxsplit=1)[0][-3]
+    year = "20" + symbol.split(".", maxsplit=1)[0][-2:]
     return f"{year}-{MONTH_MAP[month]}"
 
 
@@ -255,6 +255,65 @@ def get_futures_symbols(symbol: str) -> list:
             futures_symbols = futures.get("futures", [])
 
     return futures_symbols
+
+
+def get_futures_expirations(symbol: str) -> list[dict]:
+    """Get futures contract expiration metadata from Yahoo's futuresChain module."""
+    # pylint: disable=import-outside-toplevel
+    from contextlib import suppress
+    from datetime import datetime
+
+    from yfinance.data import YfData
+
+    root = symbol.upper().replace("=F", "")
+    _symbol = root + "%3DF"
+    url = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{_symbol}"
+    params = {"modules": "futuresChain"}
+
+    response: dict = YfData().get_raw_json(url=url, params=params)
+    futures_symbols: list = []
+    details: dict = {}
+
+    if "quoteSummary" in response:
+        result = response["quoteSummary"].get("result", [])
+        if result:
+            futures_chain = result[0].get("futuresChain", {})
+            if futures_chain:
+                futures_symbols = futures_chain.get("futures", [])
+                details = futures_chain.get("futuresChainDetails", {}) or {}
+
+    if not futures_symbols:
+        raise EmptyDataError(f"No futures chain found for {symbol}")
+
+    output: list[dict] = []
+    for contract in futures_symbols:
+        contract_symbol = contract.get("symbol", "") if isinstance(contract, dict) else contract
+        if not contract_symbol:
+            continue
+
+        detail = details.get(contract_symbol, {}) if isinstance(details, dict) else {}
+        expiration = None
+        expire_iso = detail.get("expireIsoDate")
+        if expire_iso:
+            with suppress(ValueError, TypeError):
+                expiration = datetime.strptime(str(expire_iso)[:10], "%Y-%m-%d").date()
+
+        expiration_month = None
+        with suppress(IndexError, KeyError):
+            expiration_month = get_expiration_month(contract_symbol)
+
+        output.append(
+            {
+                "symbol": root,
+                "contract_symbol": contract_symbol,
+                "expiration": expiration,
+                "expiration_month": expiration_month,
+                "exchange": detail.get("exchange"),
+                "name": detail.get("shortName"),
+            }
+        )
+
+    return output
 
 
 async def get_futures_quotes(symbols: list) -> "DataFrame":

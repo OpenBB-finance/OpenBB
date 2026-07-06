@@ -1,13 +1,16 @@
 """Test yfinance helpers."""
 
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
 import pytest
-from unittest.mock import patch, MagicMock
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import (
     df_transform_numbers,
-    get_futures_data,
     get_custom_screener,
     get_defined_screener,
+    get_futures_data,
+    get_futures_expirations,
     get_futures_symbols,
     yf_download,
 )
@@ -123,6 +126,127 @@ def test_get_futures_symbols_no_session():
         assert (
             "session" not in call_kwargs
         ), "YfData should not be called with session parameter"
+
+
+def test_get_futures_expirations_maps_details():
+    """Test get_futures_expirations maps Yahoo futuresChainDetails."""
+    with patch("yfinance.data.YfData") as mock_yfdata:
+        mock_instance = MagicMock()
+        mock_instance.get_raw_json.return_value = {
+            "quoteSummary": {
+                "result": [
+                    {
+                        "futuresChain": {
+                            "futures": ["ESU26.CME", "ESZ26.CME", "CLN26.NYM"],
+                            "futuresChainDetails": {
+                                "ESU26.CME": {
+                                    "expireIsoDate": "2026-09-18T00:00:00Z",
+                                    "exchange": "CME",
+                                    "shortName": "E-Mini S&P 500 Sep 26",
+                                },
+                                "ESZ26.CME": {
+                                    "expireIsoDate": "2026-12-18T00:00:00Z",
+                                    "exchange": "CME",
+                                    "shortName": "E-Mini S&P 500 Dec 26",
+                                },
+                            },
+                        }
+                    }
+                ]
+            }
+        }
+        mock_yfdata.return_value = mock_instance
+
+        result = get_futures_expirations("ES")
+
+        assert len(result) == 3
+        assert result[0]["symbol"] == "ES"
+        assert result[0]["contract_symbol"] == "ESU26.CME"
+        assert str(result[0]["expiration"]) == "2026-09-18"
+        assert result[0]["expiration_month"] == "2026-09"
+        assert result[0]["exchange"] == "CME"
+        assert result[0]["name"] == "E-Mini S&P 500 Sep 26"
+        assert result[2]["contract_symbol"] == "CLN26.NYM"
+        assert result[2]["expiration"] is None
+        assert result[2]["expiration_month"] == "2026-07"
+        assert result[2]["exchange"] is None
+        assert result[2]["name"] is None
+
+
+def test_get_futures_expirations_empty_chain():
+    """Test get_futures_expirations raises EmptyDataError for empty chains."""
+    with patch("yfinance.data.YfData") as mock_yfdata:
+        mock_instance = MagicMock()
+        mock_instance.get_raw_json.return_value = {
+            "quoteSummary": {"result": [{"futuresChain": {"futures": []}}]}
+        }
+        mock_yfdata.return_value = mock_instance
+
+        with pytest.raises(EmptyDataError, match="No futures chain found for NQ"):
+            get_futures_expirations("NQ")
+
+
+def test_get_futures_expirations_unexpected_contract_symbol():
+    """Test get_futures_expirations tolerates unexpected contract symbol formats."""
+    with patch("yfinance.data.YfData") as mock_yfdata:
+        mock_instance = MagicMock()
+        mock_instance.get_raw_json.return_value = {
+            "quoteSummary": {
+                "result": [
+                    {
+                        "futuresChain": {
+                            "futures": ["ESU26.CME", "INVALID"],
+                            "futuresChainDetails": {},
+                        }
+                    }
+                ]
+            }
+        }
+        mock_yfdata.return_value = mock_instance
+
+        result = get_futures_expirations("ES")
+
+        assert len(result) == 2
+        assert result[0]["expiration_month"] == "2026-09"
+        assert result[1]["contract_symbol"] == "INVALID"
+        assert result[1]["expiration_month"] is None
+
+
+def test_get_futures_expirations_malformed_expire_iso_date():
+    """Test get_futures_expirations tolerates malformed expireIsoDate values."""
+    with patch("yfinance.data.YfData") as mock_yfdata:
+        mock_instance = MagicMock()
+        mock_instance.get_raw_json.return_value = {
+            "quoteSummary": {
+                "result": [
+                    {
+                        "futuresChain": {
+                            "futures": ["ESU26.CME", "ESZ26.CME"],
+                            "futuresChainDetails": {
+                                "ESU26.CME": {
+                                    "expireIsoDate": "2026-09-18T00:00:00Z",
+                                    "exchange": "CME",
+                                },
+                                "ESZ26.CME": {
+                                    "expireIsoDate": "not-a-valid-date",
+                                    "exchange": "CME",
+                                },
+                            },
+                        }
+                    }
+                ]
+            }
+        }
+        mock_yfdata.return_value = mock_instance
+
+        result = get_futures_expirations("ES")
+
+        assert len(result) == 2
+        assert str(result[0]["expiration"]) == "2026-09-18"
+        assert result[0]["expiration_month"] == "2026-09"
+        assert result[1]["expiration"] is None
+        assert result[1]["expiration_month"] == "2026-12"
+        assert result[1]["exchange"] == "CME"
 
 
 def test_yf_download_no_session():
