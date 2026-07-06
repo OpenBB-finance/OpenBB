@@ -56,9 +56,7 @@ def detect_type(
     if is_financial:
         return "financial"
 
-    has_cogs = any(
-        s in company_tags and _has_recent_data(facts, s) for s in industrial_signals
-    )
+    has_cogs = any(s in company_tags and _has_recent_data(facts, s) for s in industrial_signals)
 
     if has_cogs:
         return "industrial"
@@ -111,45 +109,28 @@ def get_filing_dates(  # noqa: PLR0912
                     if not start or not end or start == end:
                         continue
                     try:
-                        days = (
-                            datetime.strptime(end, "%Y-%m-%d")
-                            - datetime.strptime(start, "%Y-%m-%d")
-                        ).days
+                        days = (datetime.strptime(end, "%Y-%m-%d") - datetime.strptime(start, "%Y-%m-%d")).days
                     except (ValueError, TypeError):
                         continue
 
                     if frequency == "annual":
                         if form in ANNUAL_PERIOD_FORMS and 300 <= days <= 400:
                             filing_dates.add(end)
-                        elif (
-                            include_preliminary
-                            and form in PRELIMINARY_FORMS
-                            and 300 <= days <= 400
-                        ):
+                        elif include_preliminary and form in PRELIMINARY_FORMS and 300 <= days <= 400:
                             preliminary_candidates.add(end)
                     else:
                         if form in QUARTERLY_FORMS and 60 <= days <= 135:
                             filing_dates.add(end)
-                        if form in SEMI_ANNUAL_FORMS and (
-                            60 <= days <= 135
-                            or 150 <= days <= 200
-                            or 240 <= days <= 310
-                        ):
+                        if form in SEMI_ANNUAL_FORMS and (60 <= days <= 135 or 150 <= days <= 200 or 240 <= days <= 310):
                             filing_dates.add(end)
-                        if (
-                            include_preliminary
-                            and form in PRELIMINARY_FORMS
-                            and 60 <= days <= 135
-                        ):
+                        if include_preliminary and form in PRELIMINARY_FORMS and 60 <= days <= 135:
                             preliminary_candidates.add(end)
 
     if include_preliminary:
         filing_dates |= preliminary_candidates - filing_dates
 
     if frequency != "annual" and filing_dates:
-        canonical_annual = get_filing_dates(
-            facts, "annual", include_preliminary=include_preliminary
-        )
+        canonical_annual = get_filing_dates(facts, "annual", include_preliminary=include_preliminary)
         interim_dates = filing_dates - canonical_annual
 
         # Discontinuity guard: if interim reporting has lapsed — the most
@@ -162,8 +143,7 @@ def get_filing_dates(  # noqa: PLR0912
             latest_interim = max(interim_dates)
             try:
                 lapse = (
-                    datetime.strptime(latest_annual, "%Y-%m-%d")
-                    - datetime.strptime(latest_interim, "%Y-%m-%d")
+                    datetime.strptime(latest_annual, "%Y-%m-%d") - datetime.strptime(latest_interim, "%Y-%m-%d")
                 ).days
             except (ValueError, TypeError):
                 lapse = 0
@@ -249,11 +229,7 @@ def get_filing_dates(  # noqa: PLR0912
 
             for entries in assets_data.get("units", {}).values():
                 for entry in entries:
-                    if (
-                        entry.get("form", "") in assets_forms
-                        and entry.get("end") == earliest
-                        and not entry.get("start")
-                    ):
+                    if entry.get("form", "") in assets_forms and entry.get("end") == earliest and not entry.get("start"):
                         has_assets = True
                         break
 
@@ -302,15 +278,13 @@ def get_fiscal_meta(  # noqa: PLR0912
 
                     if not filed:
                         continue
+                    if fy is None or not fp:
+                        continue
 
                     if form in ANNUAL_FORMS:
-                        if fy is None or not fp:
-                            continue
                         if end not in best_annual or filed < best_annual[end][0]:
                             best_annual[end] = (filed, fy, fp)
                     elif form in QUARTERLY_FORMS:
-                        if fy is None or not fp:
-                            continue
                         if end not in best_quarterly or filed < best_quarterly[end][0]:
                             best_quarterly[end] = (filed, fy, fp)
                     elif form in SEMI_ANNUAL_FORMS:
@@ -319,28 +293,18 @@ def get_fiscal_meta(  # noqa: PLR0912
                         days = None
                         if start and start != end:
                             try:
-                                days = (
-                                    datetime.strptime(end, "%Y-%m-%d")
-                                    - datetime.strptime(start, "%Y-%m-%d")
-                                ).days
+                                days = (datetime.strptime(end, "%Y-%m-%d") - datetime.strptime(start, "%Y-%m-%d")).days
                             except (ValueError, TypeError):
                                 days = None
                         end_month = int(end[5:7])
-                        fis_year = (
-                            int(end[:4]) if end_month <= fye_month else int(end[:4]) + 1
-                        )
+                        fis_year = int(end[:4]) if end_month <= fye_month else int(end[:4]) + 1
                         fis_q = f"Q{((end_month - fye_month - 1) % 12) // 3 + 1}"
                         q_label = fp if fp.startswith("Q") else fis_q
                         if days is not None and 300 <= days <= 400:
                             if end not in best_annual or filed < best_annual[end][0]:
                                 best_annual[end] = (filed, fis_year, "FY")
-                        elif days is not None and (
-                            60 <= days <= 135 or 240 <= days <= 310
-                        ):
-                            if (
-                                end not in best_quarterly
-                                or filed < best_quarterly[end][0]
-                            ):
+                        elif days is not None and (60 <= days <= 135 or 240 <= days <= 310):
+                            if end not in best_quarterly or filed < best_quarterly[end][0]:
                                 best_quarterly[end] = (filed, fis_year, q_label)
                         elif days is not None and 150 <= days <= 200:
                             if end not in best_semi or filed < best_semi[end][0]:
@@ -352,10 +316,7 @@ def get_fiscal_meta(  # noqa: PLR0912
                             best_instant[end] = (filed, fis_year, q_label)
                     elif form in PRELIMINARY_FORMS:
                         if fy is not None and fp:
-                            if (
-                                end not in best_preliminary
-                                or filed < best_preliminary[end][0]
-                            ):
+                            if end not in best_preliminary or filed < best_preliminary[end][0]:
                                 best_preliminary[end] = (filed, fy, fp)
                         elif end not in best_preliminary:
                             month = int(end[5:7])
@@ -426,11 +387,7 @@ def get_fiscal_meta(  # noqa: PLR0912
         annual_set = set(annual_dates)
 
         for i, date in enumerate(sorted_dates):
-            if (
-                date in annual_set
-                and result[date]["fiscal_period"] in ("Q4", "H2")
-                and i > 0
-            ):
+            if date in annual_set and result[date]["fiscal_period"] in ("Q4", "H2") and i > 0:
                 prev = sorted_dates[i - 1]
                 prev_meta = result[prev]
                 if prev_meta["fiscal_period"] in ("Q1", "Q2", "Q3", "H1"):
