@@ -161,12 +161,8 @@ class TestRatesTransformQueryBranches:
         finally:
             GovernmentCaMetadata._reset()
 
-    def test_extract_data_raises_openbb_error_in_degraded_mode(self, monkeypatch):
-        """A degraded cache raises OpenBBError in the rates fetcher.
-
-        Covers the ``if is_degraded(boc_cache): raise OpenBBError(...)``
-        branch on line 168 of rates.py.
-        """
+    def test_extract_data_raises_openbb_error_on_empty_cache(self, monkeypatch):
+        """An empty cache raises OpenBBError in the rates fetcher."""
         from openbb_core.app.model.abstract.error import OpenBBError
 
         from openbb_government_ca.boc.rates import BankOfCanadaRatesFetcher
@@ -176,8 +172,6 @@ class TestRatesTransformQueryBranches:
         meta._apply_blob(
             {
                 "boc": {
-                    "status": "degraded",
-                    "warning": "boc down",
                     "series": {},
                     "groups": {},
                 },
@@ -186,7 +180,7 @@ class TestRatesTransformQueryBranches:
         )
         try:
             q = BankOfCanadaRatesFetcher.transform_query({})
-            with pytest.raises(OpenBBError, match="degraded mode"):
+            with pytest.raises(OpenBBError, match="Could not find"):
                 BankOfCanadaRatesFetcher.extract_data(q, None)
         finally:
             GovernmentCaMetadata._reset()
@@ -214,12 +208,8 @@ class TestYieldsTransformQueryBranches:
         assert q.end_date == date(2024, 1, 31)
         assert q.start_date is not None
 
-    def test_extract_data_raises_openbb_error_in_degraded_mode(self, monkeypatch):
-        """A degraded cache raises OpenBBError in the yields fetcher.
-
-        Covers the ``if is_degraded(boc_cache): raise OpenBBError(...)``
-        branch on line 202 of yields.py.
-        """
+    def test_extract_data_raises_openbb_error_on_empty_cache(self, monkeypatch):
+        """An empty cache raises OpenBBError in the yields fetcher."""
         from openbb_core.app.model.abstract.error import OpenBBError
 
         from openbb_government_ca.boc.yields import BankOfCanadaYieldsFetcher
@@ -229,8 +219,6 @@ class TestYieldsTransformQueryBranches:
         meta._apply_blob(
             {
                 "boc": {
-                    "status": "degraded",
-                    "warning": "boc down",
                     "series": {},
                     "groups": {},
                 },
@@ -239,7 +227,7 @@ class TestYieldsTransformQueryBranches:
         )
         try:
             q = BankOfCanadaYieldsFetcher.transform_query({})
-            with pytest.raises(OpenBBError, match="degraded mode"):
+            with pytest.raises(OpenBBError, match="No benchmark bond yield"):
                 BankOfCanadaYieldsFetcher.extract_data(q, None)
         finally:
             GovernmentCaMetadata._reset()

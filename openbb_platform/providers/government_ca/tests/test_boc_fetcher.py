@@ -11,7 +11,7 @@ All HTTP calls go through ``openbb_government_ca.utils._http.http_get_json``,
 which we mock at the module level. The tests cover:
 
 - Happy path (all 3 calls succeed)
-- Top-level series list fails → degraded mode
+- Top-level series list fails → empty section
 - Top-level groups list fails → partial success (series cached, groups empty)
 - Group member resolution fails → group entry has empty ``members``
 - Series-of-interest not found in catalog → ``missing_series`` populated
@@ -62,7 +62,7 @@ def boc_group_members_sample() -> dict:
 class TestParseBondTenor:
     """``_parse_bond_tenor`` extracts tenor info from BoC bond series names.
 
-    This is the field that lets the Phase 5 yields fetcher map series
+    This is the field that lets the Fase 5 yields fetcher map series
     directly to ``treasury_rates.year_<N>`` fields without parsing
     the series name in the fetcher itself.
     """
@@ -125,7 +125,7 @@ class TestParseBondTenor:
 
 
 class TestNormalizeSeriesEntry:
-    """``_normalize_boc_series_entry`` produces the cache shape Phase 5 expects."""
+    """``_normalize_boc_series_entry`` produces the cache shape Fase 5 expects."""
 
     def test_preserves_label_description_link(self):
         """The raw Valet fields are preserved verbatim."""
@@ -140,7 +140,7 @@ class TestNormalizeSeriesEntry:
         assert result["link"] == "https://www.bankofcanada.ca/valet/series/FXUSDCAD"
 
     def test_builds_observations_url(self):
-        """The ``observations_url`` is pre-built for the Phase 5 fetcher."""
+        """The ``observations_url`` is pre-built for the Fase 5 fetcher."""
         result = generate_cache._normalize_boc_series_entry(
             "FXUSDCAD", {"label": "", "description": "", "link": ""}
         )
@@ -355,7 +355,7 @@ class TestResolveGroupMembers:
 # _fetch_boc (the full BoC section builder)
 # ---------------------------------------------------------------------------
 class TestFetchBoc:
-    """``_fetch_boc`` orchestrates the 3-step BoC fetch with graceful degradation."""
+    """``_fetch_boc`` orchestrates the 3-step BoC fetch."""
 
     def test_happy_path(
         self,
@@ -378,7 +378,6 @@ class TestFetchBoc:
         ):
             result = generate_cache._fetch_boc()
 
-        assert result["status"] == "ok"
         assert result["series_count"] == 19  # 7 FX + 5 V390/CBC + 7 BD.CDN
         assert result["groups_count"] == 1
 
@@ -398,19 +397,18 @@ class TestFetchBoc:
         assert "FXUSDCAD" in group["members"]
         assert len(group["members"]) == 8
 
-    def test_series_list_failure_returns_degraded(self):
-        """When the series list fails, the whole BoC section is degraded.
+    def test_series_list_failure_returns_empty(self):
+        """When the series list fails, the whole BoC section is empty.
 
         Without the series list we can't verify anything exists, so
-        there's nothing useful to cache. The degraded blob carries a
-        ``warning`` so the Phase 5 fetcher can detect this.
+        there's nothing useful to cache. The empty blob carries a
+        ``warning`` describing the failure.
         """
         with patch(
             "openbb_government_ca.utils.generate_cache.http_get_json",
             side_effect=NetworkError("https://...", "series list down"),
         ):
             result = generate_cache._fetch_boc()
-        assert result["status"] == "degraded"
         assert result["series"] == {}
         assert result["groups"] == {}
         assert "warning" in result
@@ -435,7 +433,6 @@ class TestFetchBoc:
         ):
             result = generate_cache._fetch_boc()
 
-        assert result["status"] == "ok"
         assert result["series_count"] == 19
         assert result["groups_count"] == 0  # groups empty
         assert "warning" in result
@@ -457,7 +454,6 @@ class TestFetchBoc:
         ):
             result = generate_cache._fetch_boc()
 
-        assert result["status"] == "ok"
         assert result["groups_count"] == 1
         # Group entry exists but members is empty.
         group = result["groups"]["FX_RATES_DAILY"]
@@ -471,7 +467,7 @@ class TestFetchBoc:
     ):
         """When a series-of-interest isn't in the catalog, it's recorded.
 
-        The Phase 5 fetcher can check ``missing_series`` to give a clear
+        The Fase 5 fetcher can check ``missing_series`` to give a clear
         error if asked for a series the BoC no longer publishes.
         """
         # Build a series list that's missing FXJPYCAD and BD.CDN.RRB.DQ.YLD
@@ -492,7 +488,6 @@ class TestFetchBoc:
         ):
             result = generate_cache._fetch_boc()
 
-        assert result["status"] == "ok"
         assert "FXJPYCAD" in result["missing_series"]
         assert "BD.CDN.RRB.DQ.YLD" in result["missing_series"]
         # Series count reflects only what was actually cataloged.
@@ -530,7 +525,6 @@ class TestBuildBlobIntegration:
                 "themes_en": {},
                 "themes_fr": {},
                 "indicator_count": 0,
-                "status": "ok",
             },
         )
 
@@ -552,14 +546,13 @@ class TestBuildBlobIntegration:
                 "groups": {},
                 "series_count": 1,
                 "groups_count": 0,
-                "status": "ok",
             },
         )
         blob = generate_cache.build_blob()
-        assert blob["boc"]["status"] == "ok"
-        assert blob["statscan"]["status"] == "ok"
+        assert blob["boc"]["series_count"] == 1
+        assert blob["statscan"]["indicator_count"] == 0
 
-    def test_build_blob_with_both_degraded(self, monkeypatch):
+    def test_build_blob_with_both_failing(self, monkeypatch):
         """When both sections fail, the blob still has the right shape."""
         monkeypatch.setattr(
             generate_cache,
@@ -570,7 +563,6 @@ class TestBuildBlobIntegration:
                 "groups": {},
                 "series_count": 0,
                 "groups_count": 0,
-                "status": "degraded",
                 "warning": "boc down",
             },
         )
@@ -582,12 +574,11 @@ class TestBuildBlobIntegration:
                 "indicators": [],
                 "geo_lookup": {},
                 "indicator_count": 0,
-                "status": "degraded",
                 "warning": "statscan down",
             },
         )
         blob = generate_cache.build_blob()
-        assert blob["boc"]["status"] == "degraded"
-        assert blob["statscan"]["status"] == "degraded"
+        assert blob["boc"]["series_count"] == 0
+        assert len(blob["statscan"]["indicators"]) == 0
         assert "warning" in blob["boc"]
         assert "warning" in blob["statscan"]

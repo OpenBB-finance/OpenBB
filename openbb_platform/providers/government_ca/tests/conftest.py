@@ -22,7 +22,6 @@ _SEED_BLOB = {
         "valet_url": "https://www.bankofcanada.ca/valet",
         "series_count": 5,
         "groups_count": 1,
-        "status": "ok",
         "series": {
             "FXUSDCAD": {
                 "name": "FXUSDCAD",
@@ -172,7 +171,6 @@ _SEED_BLOB = {
         "themes_en": {"920": "Agriculture", "2239": "Business performance"},
         "themes_fr": {"920": "Agriculture"},
         "indicator_count": 2,
-        "status": "ok",
     },
 }
 

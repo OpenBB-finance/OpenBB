@@ -158,29 +158,11 @@ class TestBankOfCanadaFXFetcher:
             result = BankOfCanadaFXFetcher.transform_data(q, raw)
         assert len(result) == 1  # holiday row skipped
 
-    def test_raises_openbb_error_in_degraded_mode(self, empty_meta):
-        """A degraded cache raises ``OpenBBError`` with a clear message."""
-        from openbb_government_ca.utils.metadata import GovernmentCaMetadata
-
-        GovernmentCaMetadata._reset()
-        meta = GovernmentCaMetadata()
-        meta._apply_blob(
-            {
-                "boc": {
-                    "status": "degraded",
-                    "warning": "boc down",
-                    "series": {},
-                    "groups": {},
-                },
-                "statscan": {},
-            }
-        )
-        try:
-            q = BankOfCanadaFXFetcher.transform_query({"symbol": "FXUSDCAD"})
-            with pytest.raises(OpenBBError, match="degraded mode"):
-                BankOfCanadaFXFetcher.extract_data(q, None)
-        finally:
-            GovernmentCaMetadata._reset()
+    def test_raises_openbb_error_for_empty_cache(self, empty_meta):
+        """An empty cache raises ``OpenBBError`` when series not found."""
+        q = BankOfCanadaFXFetcher.transform_query({"symbol": "FXUSDCAD"})
+        with pytest.raises(OpenBBError, match="not found in cache"):
+            BankOfCanadaFXFetcher.extract_data(q, None)
 
     def test_raises_openbb_error_for_unknown_symbol(self, seeded_meta):
         """An unknown symbol raises ``OpenBBError`` (not bare ``KeyError``)."""

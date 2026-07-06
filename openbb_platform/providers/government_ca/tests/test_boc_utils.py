@@ -7,7 +7,6 @@ import pytest
 from openbb_government_ca.boc.utils import (
     BOC_GROUPS_OF_INTEREST,
     BOC_SERIES_OF_INTEREST,
-    is_degraded,
     list_groups,
     list_series,
     lookup_series,
@@ -175,20 +174,8 @@ class TestListAccessors:
         assert list_groups(empty_meta.boc) == []
 
 
-class TestDegradedMode:
-    """``is_degraded`` and ``missing_series`` detect degraded-mode caches."""
-
-    def test_is_degraded_false_for_ok_cache(self, seeded_meta):
-        """A cache with ``status='ok'`` is not degraded."""
-        assert is_degraded(seeded_meta.boc) is False
-
-    def test_is_degraded_true_for_degraded_cache(self):
-        """A cache with ``status='degraded'`` is degraded."""
-        assert is_degraded({"status": "degraded"}) is True
-
-    def test_is_degraded_false_for_missing_status(self):
-        """A cache without a ``status`` key is treated as not degraded."""
-        assert is_degraded({}) is False
+class TestMissingSeries:
+    """``missing_series`` reports series-of-interest not found in the Valet catalog."""
 
     def test_missing_series_returns_empty_when_not_present(self, seeded_meta):
         """``missing_series`` returns ``[]`` when the key isn't in the cache."""

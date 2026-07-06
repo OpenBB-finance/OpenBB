@@ -1,26 +1,31 @@
-"""Statistics Canada Economic Indicators.
+"""Statistics Canada Economic Indicators — key indicators from the homepage.
 
-Fetches time-series observations from the StatsCan WDS REST API.
-Supports two addressing modes:
+This fetcher reads from the shipped metadata cache (populated at build
+time by Fase 2 of ``generate_cache.py``) and returns the latest
+published values of StatsCan's curated "Key Economic Indicators"
+homepage list (GDP, CPI, unemployment, retail sales, merchandise
+trade, manufacturing sales, wholesale trade, etc.).
 
-- **Single series** — pass one or more vector IDs (e.g. ``V41886513``).
-  The fetcher calls ``getDataFromVectorByReferencePeriodRange`` for
-  each vector and concatenates the results.
-- **Full hierarchical table** — pass a cube PID (e.g. ``10100139``).
-  The fetcher calls ``getFullTableDownloadSDMX`` and returns every
-  series in the cube.
+It maps to OpenBB's standard ``economy.indicators`` model — the same
+model used by ``openbb-oecd`` (PR #7413) — so users get a consistent
+interface across Canadian and international economic data.
 
-Maps to OpenBB's standard ``economy.indicators`` model — the same
-model used by ``openbb-oecd``.
-
-The metadata cache is used only to resolve parameters (validate the
-vector ID exists, look up its cube PID, derive its frequency for the
-diskcache TTL). The observation values themselves are never read from
-the cache — they always come from the WDS API (or the diskcache layer
-in front of it).
+Design notes
+------------
+- **No network calls in the happy path.** The cache already contains
+  the latest snapshot values from the ``ind-econ.json`` endpoint (the
+  ``value_en`` field of each indicator). Fetching historical
+  time-series is a separate concern (a future ``observations``
+  fetcher that calls the WDS API).
+- **Symbol resolution.** Users can pass either a vector ID
+  (``"2280069"`` for Imports), a title substring (``"Imports"``), or
+  the special token ``"all"`` to get every homepage indicator.
 """
 
-from datetime import date, timedelta
+from __future__ import annotations
+
+import re
+from datetime import date
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -32,92 +37,178 @@ from openbb_core.provider.standard_models.economic_indicators import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
-from openbb_government_ca.statscan._client import StatsCanClient
-from openbb_government_ca.statscan.utils import (
-    get_catalog,
-    lookup_cube,
-    lookup_series_by_vector,
-)
-from openbb_government_ca.utils.helpers import parse_observation_date, safe_float
+from openbb_government_ca.statscan.utils import list_indicators
 from openbb_government_ca.utils.metadata import GovernmentCaMetadata
 
+# Regex used to extract a numeric value from the human-readable
+# ``value_en`` string (e.g. ``"$47.6 billion"`` → ``47.6``). The BoC
+# and StatsCan both use this style for headline figures. We extract
+# the first number-like token and convert to float; if parsing fails
+# we leave ``value=None`` and the raw string is preserved in
+# ``value_raw`` (an extension field on the Data model).
+_NUMERIC_RE = re.compile(r"-?\d+(?:[,\s]\d{3})*(?:\.\d+)?")
 
-def _default_start_date() -> date:
-    """Return 1 year ago as a default start_date."""
-    return date.today() - timedelta(days=365)
+
+def _parse_value(value_str: str) -> float | None:
+    """Extract the first numeric value from *value_str*, or ``None``.
+
+    Handles common StatsCan/BoC formatting conventions:
+    - ``"$47.6 billion"``     → 47.6
+    - ``"18,161,000"``        → 18161000.0
+    - ``"-3.9%"``             → -3.9
+    - ``"-$1.5 billion"``     → -1.5  (sign before currency symbol)
+    - ``"($1.5 billion)"``    → -1.5  (accounting convention for negatives)
+    - ``"83,751.6 million"``  → 83751.6
+    - ``".."`` / ``""``       → None (StatsCan missing marker)
+    """
+    if not value_str or not isinstance(value_str, str):
+        return None
+    s = value_str.strip()
+    if s in {"", "..", "...", "NaN", "N/A", "n/a", "NA"}:
+        return None
+    m = _NUMERIC_RE.search(s)
+    if m is None:
+        return None
+    # Strip thousands separators (comma or space) before float conversion.
+    cleaned = m.group(0).replace(",", "").replace(" ", "")
+    try:
+        value = float(cleaned)
+    except ValueError:  # pragma: no cover - regex only matches numeric patterns
+        return None
+    # Detect a negative sign that's separated from the digits by a
+    # currency symbol or other punctuation (e.g. "-$1.5B", "($1.5B)").
+    # We look at the substring BEFORE the matched digits; if it contains
+    # a "-" or "(" that's not part of another number, we negate.
+    prefix = s[: m.start()]
+    if "-" in prefix or "(" in prefix:
+        value = -abs(value)
+    return value
+
+
+def _parse_refper_to_date(refper: str) -> date | None:
+    """Parse a StatsCan ``refper`` string like ``"September 2016"`` to a date.
+
+    Returns the first day of the referenced month (or year, for annual
+    indicators). Returns ``None`` if parsing fails — the standard
+    model's ``date`` field is optional.
+    """
+    if not refper or not isinstance(refper, str):
+        return None
+    s = refper.strip()
+    if not s:
+        return None
+
+    # Annual: "2016"
+    if s.isdigit() and len(s) == 4:
+        try:
+            return date(int(s), 1, 1)
+        except ValueError:
+            return None
+
+    # Monthly: "September 2016"
+    month_names = [
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december",
+    ]
+    lower = s.lower()
+    for i, mname in enumerate(month_names, start=1):
+        if lower.startswith(mname):
+            # Find the year (4-digit number at the end).
+            year_str = s[len(mname) :].strip()
+            if year_str.isdigit() and len(year_str) == 4:
+                try:
+                    return date(int(year_str), i, 1)
+                except ValueError:
+                    return None
+    return None
 
 
 class StatsCanEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     """StatsCan Economic Indicators Query.
 
-    The ``symbol`` field accepts:
+    Extends the standard model with StatsCan-specific defaults and
+    validation. The ``symbol`` field accepts:
 
-    - A vector ID (``"V41886513"``) — fetches a single time series.
-    - A comma-separated list of vector IDs.
-    - A cube PID prefixed with ``cube:`` (``"cube:10100139"``) —
-      fetches every series in the cube as a hierarchical table.
-    - The special token ``"homepage"`` — fetches the curated list of
-      "key economic indicators" from the StatsCan homepage.
+    - A numeric vector ID (``"2280069"`` — matches the ``source``
+      field of an indicator in ``ind-econ.json``)
+    - A title substring (``"Imports"``, ``"Employment"`` —
+      case-insensitive match against ``title_en``)
+    - The special token ``"all"`` (returns every homepage indicator)
+    - A comma-separated list of any of the above
     """
 
     __json_schema_extra__ = {
         "symbol": {
             "multiple_items_allowed": True,
             "description": (
-                "Vector ID (e.g. 'V41886513'), comma-separated list of "
-                "vector IDs, 'cube:PID' to fetch a full hierarchical table, "
-                "or 'homepage' for the curated key-economic-indicators list."
+                "StatsCan vector ID (e.g. '2280069' for Imports), "
+                "indicator title substring (e.g. 'Imports'), or 'all' "
+                "for every homepage indicator."
             ),
         },
         "country": {
             "description": (
-                "Optional geo code filter. StatsCan geo codes: '0' = Canada, "
-                "'1' = Newfoundland and Labrador, '13' = Nunavut, etc. "
-                "Leave empty to include all geographies."
+                "StatsCan geo_code. Defaults to '0' (Canada). "
+                "Other values: '1'='Newfoundland and Labrador', "
+                "'13'='Nunavut', etc."
             ),
         },
     }
 
-    country: str | None = Field(
-        default=None,
-        description="Optional StatsCan geo_code filter (e.g. '0' for Canada).",
-    )
-    start_date: date | None = Field(
-        default=None,
-        description="Start date (YYYY-MM-DD). Defaults to 1 year ago.",
-    )
-    end_date: date | None = Field(
-        default=None,
-        description="End date (YYYY-MM-DD). Defaults to today.",
+    country: str = Field(
+        default="0",
+        description="StatsCan geo_code (default '0' = Canada).",
     )
 
 
 class StatsCanEconomicIndicatorsData(EconomicIndicatorsData):
-    """StatsCan Economic Indicators Data."""
+    """StatsCan Economic Indicators Data.
 
-    vector_id: str | None = Field(
+    Extends the standard model with StatsCan-specific fields that
+    aren't part of the OpenBB standard but are useful for users who
+    want the full context (growth rate, release date, raw value
+    string with units).
+    """
+
+    value_raw: str | None = Field(
         default=None,
-        description="StatsCan vector ID for this observation.",
+        description="The raw value string from StatsCan (e.g. '$47.6 billion').",
     )
-    cube_pid: str | None = Field(
+    refper: str | None = Field(
         default=None,
-        description="Parent cube Product ID (PID).",
+        description="The reference period as published by StatsCan (e.g. 'September 2016').",
     )
-    coordinate: str | None = Field(
+    growth_rate: str | None = Field(
         default=None,
-        description="StatsCan coordinate string (uniquely identifies the series within the cube).",
+        description="The period-over-period growth rate string (e.g. '4.7%').",
     )
-    scalar_factor_code: str | None = Field(
+    growth_direction: str | None = Field(
         default=None,
-        description="Scalar factor code applied to the value.",
+        description=(
+            "Arrow direction from StatsCan: '1' = up, '2' = down, '3' = flat."
+        ),
     )
-    uom_code: str | None = Field(
+    growth_details: str | None = Field(
         default=None,
-        description="Unit-of-measure code.",
+        description=("Context for the growth rate (e.g. '(monthly change)')."),
     )
-    refper_raw: str | None = Field(
+    release_date: str | None = Field(
         default=None,
-        description="Raw reference period string from StatsCan (e.g. '2024-01').",
+        description="ISO date when StatsCan released this indicator.",
+    )
+    daily_url: str | None = Field(
+        default=None,
+        description="URL to the StatsCan Daily article for this indicator.",
     )
 
 
@@ -127,7 +218,12 @@ class StatsCanEconomicIndicatorsFetcher(
         list[StatsCanEconomicIndicatorsData],
     ]
 ):
-    """StatsCan Economic Indicators Fetcher."""
+    """StatsCan Economic Indicators Fetcher.
+
+    Reads from the shipped metadata cache (no network in the happy
+    path). Returns the latest snapshot values of StatsCan's curated
+    homepage economic indicators.
+    """
 
     @staticmethod
     def transform_query(
@@ -135,126 +231,17 @@ class StatsCanEconomicIndicatorsFetcher(
     ) -> StatsCanEconomicIndicatorsQueryParams:
         """Transform the raw params dict into a validated query model."""
         transformed = params.copy()
+        # Default to 'all' if no symbol is provided — this matches the
+        # OECD fetcher's convention and gives users a useful default.
         if not transformed.get("symbol"):
-            transformed["symbol"] = "homepage"
+            transformed["symbol"] = "all"
+        # Normalize country: if user passes "canada", convert to geo_code "0".
         country = transformed.get("country")
         if country and isinstance(country, str):
             lower = country.lower().strip()
             if lower in {"canada", "ca", "can"}:
                 transformed["country"] = "0"
-        if transformed.get("start_date") is None:
-            transformed["start_date"] = _default_start_date()
-        if transformed.get("end_date") is None:
-            transformed["end_date"] = date.today()
         return StatsCanEconomicIndicatorsQueryParams(**transformed)
-
-    @staticmethod
-    def _resolve_homepage_vectors(cache: dict[str, Any]) -> list[str]:
-        """Return the vector IDs from the homepage indicators list."""
-        indicators = cache.get("indicators", [])
-        vectors: list[str] = []
-        for ind in indicators:
-            source = str(ind.get("source", "")).strip()
-            if source:
-                vectors.append(source if source.startswith("V") else f"V{source}")
-        return vectors
-
-    @staticmethod
-    def _fetch_vectors(
-        client: StatsCanClient,
-        vector_ids: list[str],
-        start_date: date,
-        end_date: date,
-        cache: dict[str, Any],
-    ) -> list[dict[str, Any]]:
-        """Fetch observations for each vector ID in *vector_ids*.
-
-        Each observation is enriched with its parent cube's PID, the
-        vector ID, and the series' frequency code (used by the diskcache
-        layer to set a TTL).
-        """
-        start_ref = start_date.strftime("%Y-%m")
-        end_ref = end_date.strftime("%Y-%m")
-        all_observations: list[dict[str, Any]] = []
-
-        for vid in vector_ids:
-            try:
-                series_meta = lookup_series_by_vector(vid, cache)
-            except KeyError:
-                continue
-            frequency_code = series_meta.get("frequency_code")
-            payload = client.get_data_from_vector_by_reference_period_range(
-                vid,
-                start_ref,
-                end_ref,
-                frequency_code=frequency_code,
-            )
-            for spot in payload:
-                if not isinstance(spot, dict):
-                    continue
-                enriched = dict(spot)
-                enriched["_vector_id"] = vid
-                enriched["_cube_pid"] = series_meta.get("cube_pid", "")
-                enriched["_coordinate"] = series_meta.get("coordinate", "")
-                enriched["_scalar_factor_code"] = series_meta.get(
-                    "scalar_factor_code", ""
-                )
-                enriched["_uom_code"] = series_meta.get("uom_code", "")
-                enriched["_label_en"] = series_meta.get("label_en", "")
-                all_observations.append(enriched)
-        return all_observations
-
-    @staticmethod
-    def _fetch_cube(
-        client: StatsCanClient,
-        pid: str,
-        cache: dict[str, Any],
-    ) -> list[dict[str, Any]]:
-        """Fetch every series in a cube as a hierarchical table.
-
-        Iterates the cube's catalog series list and fetches each one
-        by vector ID. Returns enriched observations.
-        """
-        try:
-            cube = lookup_cube(pid, cache)
-        except KeyError as exc:
-            raise OpenBBError(str(exc)) from exc
-
-        series_list = cube.get("series", [])
-        if not series_list:
-            raise EmptyDataError(f"StatsCan cube {pid!r} has no series in the catalog.")
-
-        today = date.today()
-        start_ref = (today - timedelta(days=365 * 5)).strftime("%Y-%m")
-        end_ref = today.strftime("%Y-%m")
-
-        all_observations: list[dict[str, Any]] = []
-        for series in series_list:
-            vid = str(series.get("vector_id", ""))
-            if not vid:
-                continue
-            frequency_code = series.get("frequency_code")
-            try:
-                payload = client.get_data_from_vector_by_reference_period_range(
-                    vid,
-                    start_ref,
-                    end_ref,
-                    frequency_code=frequency_code,
-                )
-            except Exception:  # noqa: BLE001, S112
-                continue
-            for spot in payload:
-                if not isinstance(spot, dict):
-                    continue
-                enriched = dict(spot)
-                enriched["_vector_id"] = vid
-                enriched["_cube_pid"] = pid
-                enriched["_coordinate"] = series.get("coordinate", "")
-                enriched["_scalar_factor_code"] = series.get("scalar_factor_code", "")
-                enriched["_uom_code"] = series.get("uom_code", "")
-                enriched["_label_en"] = series.get("label_en", "")
-                all_observations.append(enriched)
-        return all_observations
 
     @staticmethod
     def extract_data(
@@ -262,77 +249,66 @@ class StatsCanEconomicIndicatorsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Fetch observations from the StatsCan WDS REST API."""
+        """Return the raw indicator dicts from the cache.
+
+        No network calls — reads exclusively from the shipped metadata
+        cache.
+        """
         meta = GovernmentCaMetadata()
-        cache = meta.statscan
-        catalog = get_catalog(cache)
-        if not catalog or not catalog.get("cubes"):
-            raise OpenBBError(
-                "StatsCan SDMX catalog is empty or in degraded mode — the "
-                "package was built when www150.statcan.gc.ca was unreachable. "
-                "Reinstall openbb-government-ca with "
-                "OPENBB_GOVERNMENT_CA_FORCE_CACHE_REBUILD=1 to retry."
-            )
+        statscan_cache = meta.statscan
 
-        client = StatsCanClient()
-
-        symbol = str(query.symbol).strip()
-        assert query.start_date is not None  # noqa: S101
-        assert query.end_date is not None  # noqa: S101
-
-        if symbol.lower() == "homepage":
-            vectors = StatsCanEconomicIndicatorsFetcher._resolve_homepage_vectors(cache)
-            if not vectors:
-                raise EmptyDataError(
-                    "StatsCan homepage indicators list is empty. The cache "
-                    "may be in degraded mode — reinstall the package."
-                )
-            observations = StatsCanEconomicIndicatorsFetcher._fetch_vectors(
-                client,
-                vectors,
-                query.start_date,
-                query.end_date,
-                cache,
-            )
-        elif symbol.lower().startswith("cube:"):
-            pid = symbol.split(":", 1)[1].strip()
-            observations = StatsCanEconomicIndicatorsFetcher._fetch_cube(
-                client, pid, cache
-            )
-        else:
-            vector_ids = [v.strip() for v in symbol.split(",") if v.strip()]
-            if not vector_ids:
-                raise EmptyDataError(  # pragma: no cover - defensive
-                    "No vector IDs parsed from symbol. Pass a vector ID "
-                    "(e.g. 'V41886513'), 'cube:PID', or 'homepage'."
-                )
-            observations = StatsCanEconomicIndicatorsFetcher._fetch_vectors(
-                client,
-                vector_ids,
-                query.start_date,
-                query.end_date,
-                cache,
-            )
-
-        if not observations:
+        all_indicators = list_indicators(statscan_cache)
+        if not all_indicators:
             raise EmptyDataError(
-                f"StatsCan returned no observations for symbol={query.symbol!r} "
-                f"in the range {query.start_date} to {query.end_date}."
+                "StatsCan cache contains no indicators. The build may have "
+                "failed silently — check the build log."
             )
 
-        if query.country:
-            observations = [
-                obs
-                for obs in observations
-                if str(obs.get("_geo_code", "")) == str(query.country)
-                or (not obs.get("_geo_code") and str(query.country) == "0")
+        # Parse the symbol parameter into a list of search terms.
+        # The standard model allows comma-separated multi-value.
+        symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
+        if not symbols or "all" in [s.lower() for s in symbols]:
+            # Filter by geo_code only.
+            filtered = [
+                ind
+                for ind in all_indicators
+                if str(ind.get("geo_code", "0")) == str(query.country)
             ]
-            if not observations:
-                raise EmptyDataError(
-                    f"No observations matched country filter {query.country!r}."
-                )
+            if not filtered:
+                # If no indicators match the geo_code, return all (the
+                # homepage list is mostly Canada-level anyway).
+                filtered = list(all_indicators)
+            return filtered
 
-        return observations
+        # For each symbol term, match against vector ID (source) or
+        # title substring. Deduplicate by source vector ID.
+        matched: dict[str, dict] = {}
+        for term in symbols:
+            term_lower = term.lower()
+            for ind in all_indicators:
+                source = str(ind.get("source", ""))
+                title_en = str(ind.get("title_en", "")).lower()
+                # Match by vector ID (exact).
+                if source and source == term:
+                    matched[source] = ind
+                    continue
+                # Match by title substring.
+                if (
+                    term_lower != "all"
+                    and term_lower in title_en
+                    and source not in matched
+                ):
+                    matched[source] = ind
+
+        if not matched:
+            raise EmptyDataError(
+                f"No StatsCan indicators matched symbol={query.symbol!r}. "
+                f"Pass 'all' for every homepage indicator, or a vector ID "
+                f"(e.g. '2280069' for Imports), or a title substring "
+                f"(e.g. 'Imports')."
+            )
+
+        return list(matched.values())
 
     @staticmethod
     def transform_data(
@@ -340,52 +316,51 @@ class StatsCanEconomicIndicatorsFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[StatsCanEconomicIndicatorsData]:
-        """Map raw WDS observations to the standard ``EconomicIndicatorsData`` model.
+        """Map raw indicator dicts to the standard ``EconomicIndicatorsData`` model.
 
-        Each WDS observation has the shape::
-
-            {
-                "refPer": "2024-01",
-                "value": 47.6,
-                "scalarFactorCode": "6",
-                "decimals": 1,
-                "releaseTime": "2024-03-01",
-            }
-
-        Values are returned as-is (no scaling); the ``scalar_factor_code``
-        and ``uom_code`` extension fields let callers apply scale if
-        needed.
+        Each indicator becomes one row. The ``value`` field is parsed
+        from the human-readable ``value_en`` string (e.g. "$47.6
+        billion" → 47.6); the raw string is preserved in the
+        ``value_raw`` extension field.
         """
+        meta = GovernmentCaMetadata()
+        geo_lookup = meta.statscan.get("geo_lookup", {})
+
         output: list[StatsCanEconomicIndicatorsData] = []
-        for spot in data:
-            if not isinstance(spot, dict):
-                continue
-            refper_raw = str(spot.get("refPer", "")) or str(spot.get("refperRaw", ""))
-            obs_date = parse_observation_date(refper_raw)
-            value = safe_float(spot.get("value"))
-            label_en = str(spot.get("_label_en", ""))
+        for ind in data:
+            source = str(ind.get("source", ""))
+            title_en = str(ind.get("title_en", ""))
+            value_en = str(ind.get("value_en", ""))
+            refper_en = str(ind.get("refper_en", ""))
+            geo_code = str(ind.get("geo_code", "0"))
+
+            country_label = geo_lookup.get(geo_code, "Canada")
+            obs_date = _parse_refper_to_date(refper_en)
+            parsed_value = _parse_value(value_en)
 
             output.append(
                 StatsCanEconomicIndicatorsData(
                     date=obs_date,
-                    symbol_root=label_en or None,
-                    symbol=str(spot.get("_vector_id", "")) or None,
-                    country="Canada",
-                    value=value,
-                    vector_id=str(spot.get("_vector_id", "")) or None,
-                    cube_pid=str(spot.get("_cube_pid", "")) or None,
-                    coordinate=str(spot.get("_coordinate", "")) or None,
-                    scalar_factor_code=str(spot.get("_scalar_factor_code", "")) or None,
-                    uom_code=str(spot.get("_uom_code", "")) or None,
-                    refper_raw=refper_raw or None,
+                    symbol_root=title_en or source,
+                    symbol=source,
+                    country=country_label,
+                    value=parsed_value,
+                    value_raw=value_en or None,
+                    refper=refper_en or None,
+                    growth_rate=str(ind.get("growth_en", "")) or None,
+                    growth_direction=str(ind.get("growth_arrow", "")) or None,
+                    growth_details=str(ind.get("growth_details_en", "")) or None,
+                    release_date=str(ind.get("release_date", "")) or None,
+                    daily_url=None,  # not stored in the cache; could be added later
                 )
             )
 
+        # Sort by date descending (most recent first), then by title.
         output.sort(
             key=lambda x: (
-                x.symbol or "",
                 x.date is None,
                 -(x.date.toordinal() if x.date else 0),
+                x.symbol_root or "",
             )
         )
         return output

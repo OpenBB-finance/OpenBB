@@ -3,25 +3,45 @@
 Reads the StatsCan section of the shipped cache
 (``assets/government_ca_cache.json.xz``) without making any network
 calls. The cache itself is populated at build time by
-``openbb_government_ca.utils.generate_cache``.
+``openbb_government_ca.utils.generate_cache`` (Fase 2).
 
-The cache carries two complementary views:
+StatsCan's developer surface (https://www.statcan.gc.ca/en/developers)
+exposes several JSON endpoints. This extension consumes:
 
-- ``indicators`` — the curated "Key Economic Indicators" list from the
-  StatsCan homepage (``ind-econ.json``). Each entry has a ``source``
-  field with the vector ID used to fetch observations at runtime.
-- ``catalog`` — the SDMX-style catalog built from the WDS REST API.
-  Contains ``cubes`` (one entry per PID) with dimensions, codelists,
-  members, and series (vector IDs). This is **pure metadata**: no
-  series values. The runtime fetcher uses it for lookup, listing,
-  searching, and parameter Literal types.
+- ``https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json``
+  The curated list of "key economic indicators" shown on the StatsCan
+  homepage. Each entry carries a ``source`` field (a StatsCan vector
+  ID like ``"2280069"``) that the Fase 4 fetcher can use to construct
+  observation URLs via the Web Data Service (WDS).
+
+The cache we ship (produced by Fase 2) contains:
+
+- ``homepage_url``    — the source URL
+- ``indicators``      — list of dicts, one per homepage indicator,
+                        each with ``title_en``, ``source`` (vector ID),
+                        ``refper_en``, ``growth_en``, ``observations_url``
+- ``geo_lookup``      — ``{geo_code: english_label}``
+- ``themes_en``       — ``{theme_id: label}``
+- ``themes_fr``       — ``{theme_id: label}`` (kept for parity)
+- ``indicator_count`` — len(indicators)
+
+This module is a thin lookup layer; the actual API calls happen in
+the fetchers themselves.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-STATSCAN_PRODUCTS_OF_INTEREST: tuple[str, ...] = ("ind-econ",)
+# Special tokens that the Fase 4 fetcher can use to address cache
+# sections without hard-coding string literals. Adding a new curated
+# view means adding its token here.
+STATSCAN_PRODUCTS_OF_INTEREST: tuple[str, ...] = (
+    # Key economic indicators — GDP, CPI, unemployment, retail sales,
+    # merchandise trade, manufacturing sales, wholesale trade. This
+    # is the curated list exposed on the StatsCan homepage.
+    "ind-econ",
+)
 
 
 def lookup_product(product_id: str, cache: dict[str, Any]) -> dict[str, Any]:
@@ -30,11 +50,27 @@ def lookup_product(product_id: str, cache: dict[str, Any]) -> dict[str, Any]:
     Parameters
     ----------
     product_id
-        Either a numeric StatsCan vector ID (``"2280069"``) or the
-        special token ``"ind-econ"`` for the whole homepage section.
+        Either a numeric StatsCan vector ID (``"2280069"`` — matches
+        the ``source`` field of an indicator in ``ind-econ.json``) or
+        the special token ``"ind-econ"`` for the whole homepage
+        section.
     cache
-        The already-loaded StatsCan cache section.
+        The already-loaded StatsCan cache section (typically
+        ``GovernmentCaMetadata().statscan``).
+
+    Returns
+    -------
+    dict
+        For ``"ind-econ"``: the whole StatsCan section (with
+        ``indicators``, ``geo_lookup``, etc.).
+        For a numeric vector ID: the individual indicator dict.
+
+    Raises
+    ------
+    KeyError
+        If the product/vector is not present in the cache.
     """
+    # Special token: return the whole homepage section.
     if product_id == "ind-econ":
         if "indicators" in cache or "homepage_url" in cache:
             return cache
@@ -43,11 +79,13 @@ def lookup_product(product_id: str, cache: dict[str, Any]) -> dict[str, Any]:
             f"Available keys: {sorted(cache.keys())}"
         )
 
+    # Numeric vector ID: look it up in the indicators list.
     indicators = cache.get("indicators", [])
     for ind in indicators:
         if str(ind.get("source", "")) == str(product_id):
             return ind
 
+    # Helpful "did you mean" hint using a trivial prefix match.
     sources = [str(i.get("source", "")) for i in indicators if i.get("source")]
     candidates = sorted(s for s in sources if s.startswith(str(product_id)[:3]))
     hint = f" Did you mean one of: {', '.join(candidates[:5])}?" if candidates else ""
@@ -60,81 +98,9 @@ def lookup_product(product_id: str, cache: dict[str, Any]) -> dict[str, Any]:
 
 
 def list_indicators(cache: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return the list of homepage indicators from *cache*."""
+    """Return the list of homepage indicators from *cache*.
+
+    Convenience wrapper around ``cache.get("indicators", [])`` so
+    callers don't have to know the cache shape.
+    """
     return list(cache.get("indicators", []))
-
-
-def is_degraded(cache: dict[str, Any]) -> bool:
-    """Return ``True`` if the StatsCan cache section was built in degraded mode."""
-    return cache.get("status") == "degraded"
-
-
-def get_catalog(cache: dict[str, Any]) -> dict[str, Any]:
-    """Return the SDMX-style catalog section, or an empty dict if absent."""
-    catalog = cache.get("catalog") or {}
-    return catalog if isinstance(catalog, dict) else {}
-
-
-def list_cubes(cache: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return all cubes in the SDMX catalog as a list."""
-    catalog = get_catalog(cache)
-    return list(catalog.get("cubes", {}).values())
-
-
-def lookup_cube(pid: str, cache: dict[str, Any]) -> dict[str, Any]:
-    """Return the cube with PID *pid*, or raise ``KeyError``."""
-    catalog = get_catalog(cache)
-    cubes = catalog.get("cubes", {})
-    if pid in cubes:
-        return cubes[pid]
-    raise KeyError(
-        f"StatsCan cube PID {pid!r} not found in catalog. "
-        f"The catalog contains {len(cubes)} cubes."
-    )
-
-
-def lookup_series_by_vector(vector_id: str, cache: dict[str, Any]) -> dict[str, Any]:
-    """Return the catalog series entry for *vector_id*, or raise ``KeyError``.
-
-    Searches every cube's ``series`` list and returns the first match
-    along with the parent cube's PID in the ``cube_pid`` field.
-    """
-    needle = str(vector_id).lstrip("Vv")
-    for cube in list_cubes(cache):
-        for s in cube.get("series", []):
-            vid = str(s.get("vector_id", "")).lstrip("Vv")
-            if vid == needle:
-                merged = dict(s)
-                merged["cube_pid"] = cube.get("pid", "")
-                merged["cube_title_en"] = cube.get("title_en", "")
-                return merged
-    raise KeyError(
-        f"StatsCan vector {vector_id!r} not found in catalog. "
-        f"Searched {len(list_cubes(cache))} cubes."
-    )
-
-
-def search_series(query: str, cache: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return all catalog series whose label contains *query* (case-insensitive).
-
-    Each result is enriched with ``cube_pid`` and ``cube_title_en``.
-    """
-    needle = (query or "").lower().strip()
-    results: list[dict[str, Any]] = []
-    if not needle:
-        return results
-    for cube in list_cubes(cache):
-        for s in cube.get("series", []):
-            label = str(s.get("label_en", "")).lower()
-            if needle in label:
-                merged = dict(s)
-                merged["cube_pid"] = cube.get("pid", "")
-                merged["cube_title_en"] = cube.get("title_en", "")
-                results.append(merged)
-    return results
-
-
-def list_subjects(cache: dict[str, Any]) -> dict[str, str]:
-    """Return the ``{subject_code: label}`` mapping from the catalog."""
-    catalog = get_catalog(cache)
-    return dict(catalog.get("subjects", {}))

@@ -21,7 +21,7 @@ from openbb_core.provider.standard_models.treasury_rates import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
-from openbb_government_ca.boc.utils import is_degraded, list_series
+from openbb_government_ca.boc.utils import list_series
 from openbb_government_ca.utils._http import NetworkError, http_get_json
 from openbb_government_ca.utils.metadata import GovernmentCaMetadata
 
@@ -130,14 +130,6 @@ class BankOfCanadaYieldsFetcher(
         """Fetch observations for all bond tenors in parallel."""
         meta = GovernmentCaMetadata()
         boc_cache = meta.boc
-
-        if is_degraded(boc_cache):
-            raise OpenBBError(
-                "Bank of Canada metadata cache is in degraded mode — the "
-                "package was built when www.bankofcanada.ca was unreachable. "
-                "Reinstall openbb-government-ca with "
-                "OPENBB_GOVERNMENT_CA_FORCE_CACHE_REBUILD=1 to retry."
-            )
 
         bond_series = BankOfCanadaYieldsFetcher._resolve_bond_series(boc_cache)
         if not bond_series:

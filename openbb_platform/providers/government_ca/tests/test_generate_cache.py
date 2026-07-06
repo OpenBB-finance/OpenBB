@@ -1,7 +1,7 @@
 """Tests for ``openbb_government_ca.utils.generate_cache``.
 
 Covers:
-- ``build_blob()`` — top-level orchestrator and degraded-mode handling
+- ``build_blob()`` — top-level orchestrator
 - ``_parse_homepage_response()`` — StatsCan ind-econ.json parser
 - ``_fetch_statscan()`` — network fetcher with graceful error handling
 - ``_write_cache()`` — LZMA-compressed JSON writer
@@ -31,21 +31,6 @@ def homepage_sample() -> dict:
     """Load the synthetic ind-econ.json sample from the fixtures dir."""
     with (_FIXTURE_DIR / "statcan_ind_econ_sample.json").open() as f:
         return json.load(f)
-
-
-@pytest.fixture
-def degraded_statscan_blob() -> dict:
-    """The shape returned by ``_fetch_statscan`` when the network fails."""
-    return {
-        "homepage_url": generate_cache.STATSCAN_HOMEPAGE_URL,
-        "indicators": [],
-        "geo_lookup": {},
-        "themes_en": {},
-        "themes_fr": {},
-        "indicator_count": 0,
-        "status": "degraded",
-        "warning": "statscan homepage unreachable at build time: ...",
-    }
 
 
 # ---------------------------------------------------------------------------
@@ -205,29 +190,23 @@ class TestParseHomepageResponse:
 
 
 # ---------------------------------------------------------------------------
-# _fetch_statscan (network layer with graceful degradation)
+# _fetch_statscan (network layer with error handling)
 # ---------------------------------------------------------------------------
 class TestFetchStatscan:
     """``_fetch_statscan`` handles network failures gracefully."""
 
     def test_success_path(self, homepage_sample):
-        """A successful fetch returns a parsed blob with ``status='ok'``."""
+        """A successful fetch returns a parsed blob."""
         with patch(
             "openbb_government_ca.utils.generate_cache.http_get_json",
             return_value=homepage_sample,
         ):
             result = generate_cache._fetch_statscan()
-        assert result["status"] == "ok"
         assert result["indicator_count"] == 3
         assert "warning" not in result
 
-    def test_network_failure_returns_degraded_blob(self):
-        """A ``NetworkError`` is caught and produces a degraded blob.
-
-        This is the user's explicit requirement: "si StatsCan se cae al
-        instalar el paquete, el hatch hook no deberia hacer que pip
-        install falle catastroficamente sin explicacion".
-        """
+    def test_network_failure_returns_empty_blob(self):
+        """A ``NetworkError`` is caught and produces an empty blob."""
         with patch(
             "openbb_government_ca.utils.generate_cache.http_get_json",
             side_effect=NetworkError(
@@ -235,13 +214,12 @@ class TestFetchStatscan:
             ),
         ):
             result = generate_cache._fetch_statscan()
-        assert result["status"] == "degraded"
         assert result["indicator_count"] == 0
         assert "warning" in result
         assert "connection failed" in result["warning"]
 
-    def test_degraded_blob_has_homepage_url(self):
-        """A degraded blob still carries the homepage URL for reference."""
+    def test_failure_blob_has_homepage_url(self):
+        """On failure, the blob still carries the homepage URL for reference."""
         with patch(
             "openbb_government_ca.utils.generate_cache.http_get_json",
             side_effect=NetworkError("https://example.com", "down"),
@@ -249,8 +227,8 @@ class TestFetchStatscan:
             result = generate_cache._fetch_statscan()
         assert result["homepage_url"] == generate_cache.STATSCAN_HOMEPAGE_URL
 
-    def test_degraded_blob_has_empty_indicators(self):
-        """A degraded blob has an empty (but present) indicators list."""
+    def test_failure_blob_has_empty_indicators(self):
+        """On failure, the blob has an empty (but present) indicators list."""
         with patch(
             "openbb_government_ca.utils.generate_cache.http_get_json",
             side_effect=NetworkError("https://example.com", "down"),
@@ -283,7 +261,6 @@ class TestBuildBlob:
                 "groups": {},
                 "series_count": 0,
                 "groups_count": 0,
-                "status": "ok",
             },
         )
         monkeypatch.setattr(
@@ -296,7 +273,6 @@ class TestBuildBlob:
                 "themes_en": {},
                 "themes_fr": {},
                 "indicator_count": 0,
-                "status": "ok",
             },
         )
 
@@ -329,7 +305,7 @@ class TestBuildBlob:
         """``source`` is the literal string ``'build-hook'``."""
         assert generate_cache.build_blob()["source"] == "build-hook"
 
-    def test_both_sections_degraded_still_returns_blob(self, monkeypatch):
+    def test_both_sections_fail_still_returns_blob(self, monkeypatch):
         """When both fetchers fail, ``build_blob`` still returns a valid blob."""
         monkeypatch.setattr(
             generate_cache,
@@ -340,7 +316,6 @@ class TestBuildBlob:
                 "groups": {},
                 "series_count": 0,
                 "groups_count": 0,
-                "status": "degraded",
                 "warning": "boc down",
             },
         )
@@ -348,14 +323,13 @@ class TestBuildBlob:
             generate_cache,
             "_fetch_statscan",
             lambda: {
-                "status": "degraded",
                 "indicators": [],
                 "warning": "statscan down",
             },
         )
         blob = generate_cache.build_blob()
-        assert blob["boc"]["status"] == "degraded"
-        assert blob["statscan"]["status"] == "degraded"
+        assert blob["boc"]["series_count"] == 0
+        assert len(blob["statscan"]["indicators"]) == 0
 
     def test_partial_success(self, monkeypatch, homepage_sample):
         """When one section succeeds and the other fails, the blob carries both."""
@@ -363,13 +337,11 @@ class TestBuildBlob:
             generate_cache,
             "_fetch_statscan",
             lambda: {
-                "status": "ok",
                 "indicators": [{"source": "1", "title_en": "X"}],
                 "indicator_count": 1,
             },
         )
         blob = generate_cache.build_blob()
-        assert blob["statscan"]["status"] == "ok"
         assert blob["statscan"]["indicator_count"] == 1
 
 
@@ -421,7 +393,7 @@ class TestMainCLI:
         monkeypatch.setattr(
             generate_cache,
             "_fetch_statscan",
-            lambda: {"indicators": [], "indicator_count": 0, "status": "ok"},
+            lambda: {"indicators": [], "indicator_count": 0},
         )
         rc = generate_cache.main()
         assert rc == 0
@@ -430,18 +402,17 @@ class TestMainCLI:
     def test_returns_0_even_on_network_failure(self, monkeypatch, tmp_path: Path):
         """``main()`` returns 0 even when StatsCan is unreachable.
 
-        This is the user's explicit requirement: a network failure
-        during install must not break ``pip install``.
+        A network failure during install must not break ``pip install``.
         """
         monkeypatch.setattr(generate_cache, "_CACHE_FILE", tmp_path / "c.json.xz")
         monkeypatch.setattr(
             generate_cache,
             "_fetch_statscan",
-            lambda: {"status": "degraded", "indicators": [], "warning": "down"},
+            lambda: {"indicators": [], "warning": "down"},
         )
         rc = generate_cache.main()
         assert rc == 0
-        # The degraded cache is still written.
+        # The empty cache is still written.
         assert (tmp_path / "c.json.xz").exists()
 
     def test_returns_2_on_malformed_blob(self, monkeypatch, tmp_path: Path):

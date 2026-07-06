@@ -6,7 +6,6 @@ import pytest
 
 from openbb_government_ca.statscan.utils import (
     STATSCAN_PRODUCTS_OF_INTEREST,
-    is_degraded,
     list_indicators,
     lookup_product,
 )
@@ -66,22 +65,6 @@ class TestListIndicators:
         inds.clear()
         # The cache is untouched.
         assert len(seeded_meta.statscan["indicators"]) == 2
-
-
-class TestIsDegraded:
-    """``is_degraded`` detects degraded-mode cache sections."""
-
-    def test_returns_false_for_ok_status(self, seeded_meta):
-        """A cache with ``status='ok'`` is not degraded."""
-        assert is_degraded(seeded_meta.statscan) is False
-
-    def test_returns_true_for_degraded_status(self):
-        """A cache with ``status='degraded'`` is degraded."""
-        assert is_degraded({"status": "degraded"}) is True
-
-    def test_returns_false_for_missing_status(self):
-        """A cache without a ``status`` key is treated as not degraded."""
-        assert is_degraded({}) is False
 
 
 class TestConstants:
