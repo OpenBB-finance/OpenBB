@@ -8,7 +8,7 @@ happy path). Tests cover:
 - ``StatsCanEconomicIndicatorsFetcher.transform_query`` — defaults & validation
 - ``StatsCanEconomicIndicatorsFetcher.extract_data`` — cache lookup + filtering
 - ``StatsCanEconomicIndicatorsFetcher.transform_data`` — mapping to standard model
-- Degraded-mode handling — clear ``OpenBBError`` when cache is empty
+- Empty-cache handling — clear ``OpenBBError`` when cache is empty
 - End-to-end — full fetcher round-trip with the seeded cache
 """
 

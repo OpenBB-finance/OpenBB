@@ -687,7 +687,7 @@ class TestStatsCanEconomicIndicatorsGaps:
             GovernmentCaMetadata._reset()
 
     def test_extract_data_raises_on_empty_catalog(self, monkeypatch):
-        """An empty or degraded catalog triggers an OpenBBError."""
+        """An empty catalog triggers an OpenBBError."""
         from openbb_core.app.model.abstract.error import OpenBBError
 
         from openbb_government_ca.statscan.economic_indicators import (
@@ -697,7 +697,7 @@ class TestStatsCanEconomicIndicatorsGaps:
 
         GovernmentCaMetadata._reset()
         meta = GovernmentCaMetadata()
-        meta._apply_blob({"boc": {}, "statscan": {"status": "degraded"}})
+        meta._apply_blob({"boc": {}, "statscan": {}})
         try:
             q = StatsCanEconomicIndicatorsQueryParams(symbol="V1")
             with pytest.raises(OpenBBError):
