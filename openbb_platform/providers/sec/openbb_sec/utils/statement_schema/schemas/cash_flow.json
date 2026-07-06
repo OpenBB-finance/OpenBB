@@ -2851,10 +2851,6 @@
           "last_year": 2026
         },
         {
-          "tag": "AdjustmentsForImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss",
-          "namespace": "ifrs-full"
-        },
-        {
           "tag": "ImpairmentLossRecognisedInProfitOrLossGoodwill",
           "namespace": "ifrs-full"
         }
@@ -2889,10 +2885,6 @@
         },
         {
           "tag": "OtherAdjustmentsToReconcileProfitLoss",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AdjustmentsForProvisions",
           "namespace": "ifrs-full"
         }
       ]
