@@ -1033,6 +1033,13 @@ def _anchor(year, extra=None):
     return base
 
 
+def _pick(rows, tag, date):
+    """Return the single record matching a standardized tag and period end."""
+    matches = [r for r in rows if r["tag"] == tag and r["period_ending"] == date]
+    assert len(matches) == 1, f"expected one {tag} @ {date}, got {len(matches)}"
+    return matches[0]
+
+
 class TestFinancialIS:
     """Financial institution revenue decomposition (banks)."""
 
@@ -1127,6 +1134,211 @@ class TestFinancialIS:
         ]
         assert len(niiap) == 1
         assert niiap[0]["value"] == 55_000  # 60k - 5k
+
+
+class TestProvisionTagMigration:
+    """Modern provision-for-credit-losses tag chains (IFRS + US-GAAP CECL)."""
+
+    _NII = {
+        "tag": "InterestIncomeExpenseNet",
+        "val": 60_000,
+        "start": "2023-01-01",
+        "end": "2023-12-31",
+    }
+    _NONINT = {
+        "tag": "NoninterestIncome",
+        "val": 20_000,
+        "start": "2023-01-01",
+        "end": "2023-12-31",
+    }
+    _PRETAX = {
+        "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxes"
+        "ExtraordinaryItemsNoncontrollingInterest",
+        "val": 50_000,
+        "start": "2023-01-01",
+        "end": "2023-12-31",
+    }
+    _TAX = {
+        "tag": "IncomeTaxExpenseBenefit",
+        "val": 10_000,
+        "start": "2023-01-01",
+        "end": "2023-12-31",
+    }
+
+    def test_ifrs_adjustments_for_impairment_captures_provision(self):
+        """IFRS bank tag AdjustmentsForImpairmentLoss... yields a positive provision."""
+        mock = create_mock_facts(
+            _anchor(2023)
+            + [
+                self._NII,
+                self._NONINT,
+                {
+                    "ns": "ifrs-full",
+                    "tag": "AdjustmentsForImpairmentLossReversalOf"
+                    "ImpairmentLossRecognisedInProfitOrLoss",
+                    "val": 4_000,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                self._PRETAX,
+                self._TAX,
+            ]
+        )
+        res = resolve_company_facts(mock, period="annual")
+        assert res.company_type == "financial"
+        prov = _pick(res.income_statement, "provision_for_credit_losses", "2023-12-31")
+        assert prov["value"] == 4_000
+        assert "AdjustmentsForImpairmentLoss" in prov["source"]
+        niiap = _pick(
+            res.income_statement,
+            "net_interest_income_after_provision",
+            "2023-12-31",
+        )
+        assert niiap["value"] == 56_000  # 60k NII - 4k provision
+
+    def test_ifrs_adjustments_for_provisions_wins_over_impairment(self):
+        """BMO pattern: AdjustmentsForProvisions is preferred over the impairment tag."""
+        mock = create_mock_facts(
+            _anchor(2023)
+            + [
+                self._NII,
+                self._NONINT,
+                {
+                    "ns": "ifrs-full",
+                    "tag": "AdjustmentsForProvisions",
+                    "val": 3_700,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                {
+                    "ns": "ifrs-full",
+                    "tag": "AdjustmentsForImpairmentLossReversalOf"
+                    "ImpairmentLossRecognisedInProfitOrLoss",
+                    "val": 100,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                self._PRETAX,
+                self._TAX,
+            ]
+        )
+        res = resolve_company_facts(mock, period="annual")
+        prov = _pick(res.income_statement, "provision_for_credit_losses", "2023-12-31")
+        assert prov["value"] == 3_700
+        assert "AdjustmentsForProvisions" in prov["source"]
+
+    def test_cecl_funded_plus_unfunded_are_combined(self):
+        """BAC pattern: provision = funded + unfunded when no NII-after-provision tag."""
+        mock = create_mock_facts(
+            _anchor(2023)
+            + [
+                self._NII,
+                self._NONINT,
+                {
+                    "tag": "FinancingReceivableExcludingAccruedInterest"
+                    "CreditLossExpenseReversal",
+                    "val": 5_000,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                {
+                    "tag": "OffBalanceSheetCreditLossLiability"
+                    "CreditLossExpenseReversal",
+                    "val": -300,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                self._PRETAX,
+                self._TAX,
+            ]
+        )
+        res = resolve_company_facts(mock, period="annual")
+        prov = _pick(res.income_statement, "provision_for_credit_losses", "2023-12-31")
+        assert prov["value"] == 4_700  # 5000 funded + (-300) unfunded
+        assert "(combined)" in prov["source"]
+        cf_prov = _pick(res.cash_flow, "provision_for_loan_losses", "2023-12-31")
+        assert cf_prov["value"] == 4_700
+
+    def test_cecl_not_combined_when_nii_after_provision_reported(self):
+        """Citi pattern: funded provision left alone when NII-after-provision is tagged."""
+        mock = create_mock_facts(
+            _anchor(2023)
+            + [
+                self._NII,
+                self._NONINT,
+                {
+                    "tag": "ProvisionForLoanLossesExpensed",
+                    "val": 5_000,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                {
+                    "tag": "OffBalanceSheetCreditLossLiability"
+                    "CreditLossExpenseReversal",
+                    "val": -300,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                {
+                    "tag": "InterestIncomeExpenseAfterProvisionForLoanLoss",
+                    "val": 55_000,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                self._PRETAX,
+                self._TAX,
+            ]
+        )
+        res = resolve_company_facts(mock, period="annual")
+        prov = _pick(res.income_statement, "provision_for_credit_losses", "2023-12-31")
+        assert prov["value"] == 5_000  # funded only; unfunded NOT added
+        assert "(combined)" not in prov["source"]
+
+
+class TestBankInsuranceClassification:
+    """Tie-break between the insurance and financial company-type templates."""
+
+    def test_bank_with_insurance_subsidiary_is_financial(self, schema):
+        """More core-banking signals than insurance IS signals resolves to financial."""
+        facts = create_mock_facts(
+            [
+                {"tag": "InsuranceRevenue", "val": 1, "end": "2024-12-31"},
+                {"tag": "NetEarnedPremium", "val": 1, "end": "2024-12-31"},
+                {
+                    "tag": "InsuranceContractsThatAreLiabilities",
+                    "val": 1,
+                    "end": "2024-12-31",
+                },
+                {"tag": "InterestIncomeExpenseNet", "val": 1, "end": "2024-12-31"},
+                {"tag": "NetInterestIncome", "val": 1, "end": "2024-12-31"},
+                {"tag": "TradingIncomeExpense", "val": 1, "end": "2024-12-31"},
+            ]
+        )["facts"]
+        # ins_is=2, ins_total=3, fin=3 -> financial
+        assert schema.detect_type(facts) == "financial"
+
+    def test_genuine_insurer_stays_insurance(self, schema):
+        """Insurance IS signals outnumbering financial signals stays insurance."""
+        facts = create_mock_facts(
+            [
+                {"tag": "PremiumsEarnedNet", "val": 1, "end": "2024-12-31"},
+                {
+                    "tag": "PolicyholderBenefitsAndClaimsIncurredNet",
+                    "val": 1,
+                    "end": "2024-12-31",
+                },
+                {"tag": "InsuranceRevenue", "val": 1, "end": "2024-12-31"},
+                {
+                    "tag": "LiabilityForFuturePolicyBenefits",
+                    "val": 1,
+                    "end": "2024-12-31",
+                },
+                {"tag": "InterestIncomeExpenseNet", "val": 1, "end": "2024-12-31"},
+                {"tag": "TradingIncomeExpense", "val": 1, "end": "2024-12-31"},
+            ]
+        )["facts"]
+        # ins_is=3, fin=2 -> insurance
+        assert schema.detect_type(facts) == "insurance"
 
 
 class TestInsuranceIS:

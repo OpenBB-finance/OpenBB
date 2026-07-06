@@ -45,7 +45,12 @@ def detect_type(
     is_financial = fin_count >= min_financial_signals
 
     if is_insurance and is_financial:
-        return "insurance" if ins_total > fin_count else "financial"
+        # Both templates plausible: prefer financial when core-banking signals
+        # outnumber insurance income-statement signals. This keeps genuine
+        # insurers (few financial signals) on the insurance template while
+        # classifying banks that carry an insurance subsidiary (e.g., BMO,
+        # 5 financial vs 4 insurance-IS signals) as financial.
+        return "insurance" if ins_is >= fin_count else "financial"
     if is_insurance:
         return "insurance"
     if is_financial:
