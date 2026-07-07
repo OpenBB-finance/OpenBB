@@ -66,8 +66,12 @@ class TestRegionalSpecs:
                 file_param = next(
                     p for p in widget["params"] if p.get("roles") == ["fileSelector"]
                 )
-                assert file_param["optionsEndpoint"] == "regional_publications_choices"
-                assert file_param["optionsParams"]["district"]
+                assert file_param["optionsEndpoint"] in (
+                    "regional_publications_choices",
+                    "regional_reports_choices",
+                )
+                options_params = file_param["optionsParams"]
+                assert options_params.get("district") or options_params.get("report")
                 continue
             # A populated data table carries real column definitions, and a
             # provider-backed command always carries the provider param.

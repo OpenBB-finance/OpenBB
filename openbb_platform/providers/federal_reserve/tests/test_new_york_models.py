@@ -19,6 +19,10 @@ from openbb_federal_reserve.models.regional.new_york_gscpi import (
     FederalReserveNewYorkSupplyChainData,
     FederalReserveNewYorkSupplyChainFetcher,
 )
+from openbb_federal_reserve.models.regional.new_york_nowcast import (
+    FederalReserveNewYorkNowcastData,
+    FederalReserveNewYorkNowcastFetcher,
+)
 from openbb_federal_reserve.models.regional.new_york_sce import (
     FederalReserveNewYorkConsumerExpectationsData,
     FederalReserveNewYorkConsumerExpectationsFetcher,
@@ -104,6 +108,33 @@ def _gscpi_workbook() -> bytes:
     return buffer.getvalue()
 
 
+def _nowcast_workbook() -> bytes:
+    """Build a Nowcast workbook with the five-row branding offset."""
+    from datetime import datetime
+
+    from openpyxl import Workbook
+
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Forecasts By Horizon"
+    for _ in range(5):
+        sheet.append([None])
+    sheet.append(
+        [
+            "Forecast date",
+            "Reference quarter",
+            "Backcast (previous quarter)",
+            "Nowcast (current quarter)",
+            "Forecast (next quarter)",
+        ]
+    )
+    sheet.append([datetime(2026, 6, 19), "2026:Q2", None, 2.68, 2.45])
+    sheet.append([datetime(2026, 6, 26), "2026:Q2", None, 2.70, 2.42])
+    buffer = io.BytesIO()
+    workbook.save(buffer)
+    return buffer.getvalue()
+
+
 def _response(content: bytes) -> MagicMock:
     """Build a make_request response with the given binary body."""
     response = MagicMock()
@@ -184,6 +215,62 @@ class TestSupplyChainPressure:
         query = FederalReserveNewYorkSupplyChainFetcher.transform_query({})
         with pytest.raises(EmptyDataError):
             FederalReserveNewYorkSupplyChainFetcher.extract_data(query, None)
+
+
+class TestNowcast:
+    """Tests for the New York Fed Staff Nowcast fetcher."""
+
+    def test_parses_by_horizon(self, monkeypatch):
+        """The by-horizon sheet parses past its offset with typed values."""
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request",
+            lambda *a, **k: _response(_nowcast_workbook()),
+        )
+        query = FederalReserveNewYorkNowcastFetcher.transform_query({})
+        rows = FederalReserveNewYorkNowcastFetcher.extract_data(query, None)
+        result = FederalReserveNewYorkNowcastFetcher.transform_data(query, rows)
+        assert all(isinstance(r, FederalReserveNewYorkNowcastData) for r in result)
+        assert [r.date for r in result] == [date(2026, 6, 19), date(2026, 6, 26)]
+        assert result[0].reference_quarter == "2026:Q2"
+        assert result[0].backcast is None
+        assert result[0].nowcast == 2.68
+        assert result[1].forecast == 2.42
+
+    def test_date_filters(self, monkeypatch):
+        """The start and end date filters narrow the vintages."""
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request",
+            lambda *a, **k: _response(_nowcast_workbook()),
+        )
+        query = FederalReserveNewYorkNowcastFetcher.transform_query(
+            {"start_date": "2026-06-20", "end_date": "2026-06-30"}
+        )
+        rows = FederalReserveNewYorkNowcastFetcher.extract_data(query, None)
+        result = FederalReserveNewYorkNowcastFetcher.transform_data(query, rows)
+        assert [r.date for r in result] == [date(2026, 6, 26)]
+
+    def test_empty_content_raises(self, monkeypatch):
+        """An empty response raises ``EmptyDataError``."""
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request",
+            lambda *a, **k: _response(b""),
+        )
+        query = FederalReserveNewYorkNowcastFetcher.transform_query({})
+        with pytest.raises(EmptyDataError):
+            FederalReserveNewYorkNowcastFetcher.extract_data(query, None)
+
+    def test_no_rows_after_filter_raises(self, monkeypatch):
+        """A filter that removes every vintage raises ``EmptyDataError``."""
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request",
+            lambda *a, **k: _response(_nowcast_workbook()),
+        )
+        query = FederalReserveNewYorkNowcastFetcher.transform_query(
+            {"start_date": "2030-01-01"}
+        )
+        rows = FederalReserveNewYorkNowcastFetcher.extract_data(query, None)
+        with pytest.raises(EmptyDataError):
+            FederalReserveNewYorkNowcastFetcher.transform_data(query, rows)
 
 
 class TestCorporateBondDistress:

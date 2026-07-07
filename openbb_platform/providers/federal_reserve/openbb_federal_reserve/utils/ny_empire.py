@@ -7,6 +7,7 @@ from typing import Any
 
 BASE_URL = "https://www.newyorkfed.org"
 ARCHIVES_URL = f"{BASE_URL}/survey/empire/empiresurvey_archives"
+OVERVIEW_URL = f"{BASE_URL}/survey/empire/empiresurvey_overview"
 
 _MONTH_NAMES = (
     "January",
@@ -69,17 +70,22 @@ def list_empire_state_reports() -> list[dict[str, str]]:
     from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
 
     def _producer() -> list[dict[str, str]]:
-        """Scrape the archives page and classify each report PDF link."""
-        response = make_request(ARCHIVES_URL)
-        response.raise_for_status()
+        """Scrape the current-year and archive pages, classifying each report PDF.
+
+        The archives page stops at the prior year, so the overview page - which
+        carries the current year's releases - is scraped first.
+        """
         pattern = r"(/medialibrary/media/[Ss]urvey/[Ee]mpire/[^\"']*?\.pdf[^\"']*)"
         reports: dict[str, str] = {}
-        for href in re.findall(pattern, response.text):
-            clean = href.replace("&amp;", "&")
-            filename = clean.split("?")[0].rsplit("/", 1)[-1]
-            period = _classify(filename)
-            if period and period not in reports:
-                reports[period] = f"{BASE_URL}{clean}"
+        for url in (OVERVIEW_URL, ARCHIVES_URL):
+            response = make_request(url)
+            response.raise_for_status()
+            for href in re.findall(pattern, response.text):
+                clean = href.replace("&amp;", "&")
+                filename = clean.split("?")[0].rsplit("/", 1)[-1]
+                period = _classify(filename)
+                if period and period not in reports:
+                    reports[period] = f"{BASE_URL}{clean}"
         return [
             {"period": period, "url": url}
             for period, url in sorted(reports.items(), reverse=True)

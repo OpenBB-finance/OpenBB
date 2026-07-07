@@ -153,6 +153,7 @@ def district_widgets(slug: str, full: dict | None = None) -> dict[str, Any]:
 _SHARED_ENDPOINTS = (
     "regional_publications_download",
     "regional_publications_choices",
+    "regional_reports_choices",
     "market_probability_meetings",
     "bhcpr_report_download",
     "bhcpr_report_choices",

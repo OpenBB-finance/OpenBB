@@ -277,6 +277,86 @@ def series_choices(district: str) -> list[dict[str, str]]:
     ]
 
 
+_RESOLVE_TTL = 30 * 86400
+
+
+def _safe_resolve(url: str) -> str | None:
+    """Resolve an item URL to its document, caching the immutable mapping.
+
+    Fed in Print item pages throttle concurrent requests, so each item-to-document
+    mapping is cached for 30 days; a page's second load and its weekly refresh then
+    resolve only genuinely new items. Failures return ``None`` and are not cached,
+    so a transient error is retried on the next request.
+    """
+    from openbb_federal_reserve.utils.cache import cached
+
+    def _producer() -> str | None:
+        try:
+            return resolve_file(url, fetch_text)
+        except Exception:  # noqa: BLE001
+            return None
+
+    return cached(("fedinprint_resolve", url), _RESOLVE_TTL, _producer)
+
+
+def resolve_records(
+    records: list[dict[str, Any]], limit: int, workers: int = 10
+) -> list[dict[str, Any]]:
+    """Resolve item URLs to documents, dropping the items without a downloadable file.
+
+    Records are resolved newest-first in bounded-parallel chunks until ``limit``
+    downloadable documents are collected; each kept record's ``url`` is replaced
+    with its resolved direct-document URL so the download needs no second lookup.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    viewable: list[dict[str, Any]] = []
+    index = 0
+    while index < len(records) and len(viewable) < limit:
+        chunk = records[index : index + workers]
+        with ThreadPoolExecutor(max_workers=len(chunk)) as pool:
+            targets = list(pool.map(lambda record: _safe_resolve(record["url"]), chunk))
+        viewable.extend(
+            {**record, "url": target}
+            for record, target in zip(chunk, targets)
+            if target
+        )
+        index += workers
+    return viewable[:limit]
+
+
+def resolved_page(
+    provider_name: str,
+    facets_map: dict[str, str],
+    series: str | None,
+    min_year: str,
+    start: int,
+    limit: int,
+) -> list[dict[str, Any]]:
+    """Return one page of resolved, downloadable documents for a provider.
+
+    A known ``series`` is searched directly; otherwise the provider's primary
+    document series is used. Candidates are over-fetched and resolved so the
+    requested page holds only openable documents, with each ``url`` rewritten to
+    its resolved direct-document link.
+    """
+    facet = facets_map.get(series) if series else None
+    if facet is None:
+        facet = next(iter(facets_map.values()), None)
+    if facet is None:
+        return []
+    need = start + limit
+    candidates = search(
+        provider_name,
+        fetch_text,
+        series_facet=facet,
+        min_year=min_year,
+        start=0,
+        limit=need * 2 + PAGE_SIZE,
+    )
+    return resolve_records(candidates, need)[start:]
+
+
 def search_publications(
     district: str,
     series: str | None = None,
@@ -285,14 +365,8 @@ def search_publications(
     limit: int = 20,
 ) -> list[dict[str, Any]]:
     """Return a page of a district's publications, resolved to direct documents."""
-    facet = _facets(district).get(series) if series else None
-    return search(
-        provider(district),
-        fetch_text,
-        series_facet=facet,
-        min_year=min_year,
-        start=start,
-        limit=limit,
+    return resolved_page(
+        provider(district), _facets(district), series, min_year, start, limit
     )
 
 

@@ -324,8 +324,14 @@ from openbb_federal_reserve.models.regional.new_york_hhdc import (
 from openbb_federal_reserve.models.regional.new_york_market_expectations import (
     FederalReserveNewYorkMarketExpectationsFetcher,
 )
+from openbb_federal_reserve.models.regional.new_york_market_expectations_reports import (
+    FederalReserveNewYorkMarketExpectationsReportsFetcher,
+)
 from openbb_federal_reserve.models.regional.new_york_mct import (
     FederalReserveNewYorkCoreTrendInflationFetcher,
+)
+from openbb_federal_reserve.models.regional.new_york_nowcast import (
+    FederalReserveNewYorkNowcastFetcher,
 )
 from openbb_federal_reserve.models.regional.new_york_publication_series import (
     FederalReserveNewYorkPublicationSeriesFetcher,
@@ -565,6 +571,10 @@ federal_reserve_provider = Provider(
         "FederalReserveNewYorkMarketExpectations": (
             FederalReserveNewYorkMarketExpectationsFetcher
         ),
+        "FederalReserveNewYorkMarketExpectationsReports": (
+            FederalReserveNewYorkMarketExpectationsReportsFetcher
+        ),
+        "FederalReserveNewYorkNowcast": FederalReserveNewYorkNowcastFetcher,
         "FederalReserveClevelandInflation": FederalReserveClevelandInflationFetcher,
         "FederalReserveClevelandInflationNowcast": (
             FederalReserveClevelandInflationNowcastFetcher

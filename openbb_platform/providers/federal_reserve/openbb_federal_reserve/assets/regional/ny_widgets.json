@@ -1319,10 +1319,10 @@
     "subCategory": "New York"
   },
   "ny_empire_state_reports_federal_reserve_obb": {
-    "name": "NY Fed Empire State Survey Report Index",
-    "description": "Catalog of published Empire State Manufacturing Survey monthly report PDFs, with a direct link to each document.",
+    "name": "NY Fed Empire State Survey Reports",
+    "description": "Monthly Empire State Manufacturing Survey report PDFs. Select one or more months to view.",
     "category": "Federal Reserve",
-    "type": "table",
+    "type": "multi_file_viewer",
     "widgetId": "ny_empire_state_reports_federal_reserve_obb",
     "mcp_tool": {
       "mcp_server": "Open Data Platform",
@@ -1351,12 +1351,98 @@
         "paramName": "provider",
         "value": "federal_reserve",
         "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_reports_choices",
+        "optionsParams": {
+          "end_date": "$end_date",
+          "report": "empire_state",
+          "start_date": "$start_date"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
       }
     ],
-    "endpoint": "empire_state_reports",
+    "endpoint": "regional_publications_download",
     "runButton": false,
     "gridData": {
-      "w": 40,
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of New York"
+    ],
+    "subCategory": "New York",
+    "refetchInterval": false
+  },
+  "ny_market_expectations_federal_reserve_obb": {
+    "name": "NY Fed Survey of Market Expectations",
+    "description": "Machine-readable results of the pre-FOMC Surveys of Primary Dealers and Market Participants - aggregated responses by question, panel, and horizon.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_market_expectations_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_market_expectations"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Panel Type",
+        "description": "Filter to a single respondent panel.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Combined",
+            "value": "Combined"
+          },
+          {
+            "label": "Primary Dealers",
+            "value": "Dealer"
+          },
+          {
+            "label": "Market Participants",
+            "value": "Participant"
+          }
+        ],
+        "paramName": "panel_type"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "market_expectations",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
       "h": 20
     },
     "data": {
@@ -1369,23 +1455,149 @@
             "pinned": "left",
             "formatterFn": null,
             "headerName": "Date",
-            "headerTooltip": "The survey month, as the month-start date.",
+            "headerTooltip": "The survey release date.",
             "cellDataType": "date",
             "sort": "desc"
           },
           {
-            "field": "period",
+            "field": "survey_due_date",
             "formatterFn": null,
-            "headerName": "Period",
-            "headerTooltip": "The report period as ``YYYYMM``.",
+            "headerName": "Survey Due Date",
+            "headerTooltip": "The date responses were due.",
+            "cellDataType": "dateString"
+          },
+          {
+            "field": "panel_type",
+            "formatterFn": null,
+            "headerName": "Panel",
+            "headerTooltip": "The respondent panel: 'Combined', 'Dealer', or 'Participant'.",
             "cellDataType": "text"
           },
           {
-            "field": "url",
+            "field": "question_number",
             "formatterFn": null,
-            "headerName": "URL",
-            "headerTooltip": "The direct URL to the PDF document.",
+            "headerName": "Q#",
+            "headerTooltip": "The survey question number.",
             "cellDataType": "text"
+          },
+          {
+            "field": "theme",
+            "formatterFn": null,
+            "headerName": "Theme",
+            "headerTooltip": "The question theme.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "subject_group",
+            "formatterFn": null,
+            "headerName": "Subject Group",
+            "headerTooltip": "The question subject group.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "subject",
+            "formatterFn": null,
+            "headerName": "Subject",
+            "headerTooltip": "The question subject.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "question_type",
+            "formatterFn": null,
+            "headerName": "Question Type",
+            "headerTooltip": "The question type, e.g. 'probability' or 'point'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "question_mode",
+            "formatterFn": null,
+            "headerName": "Question Mode",
+            "headerTooltip": "The question mode, e.g. 'levels' or 'change'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "question_text",
+            "formatterFn": null,
+            "headerName": "Question",
+            "headerTooltip": "The full question text.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "question_tag",
+            "formatterFn": null,
+            "headerName": "Question Tag",
+            "headerTooltip": "The machine-readable question identifier.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "value_tag",
+            "formatterFn": null,
+            "headerName": "Value Tag",
+            "headerTooltip": "The machine-readable value identifier.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "top_header_value",
+            "formatterFn": null,
+            "headerName": "Top Header Value",
+            "headerTooltip": "The top header label for a matrix question cell.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "left_header_value",
+            "formatterFn": null,
+            "headerName": "Left Header Value",
+            "headerTooltip": "The left header label for a matrix question cell.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "horizon",
+            "formatterFn": null,
+            "headerName": "Horizon",
+            "headerTooltip": "The forecast horizon, e.g. '6months'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "horizon_date",
+            "formatterFn": null,
+            "headerName": "Horizon Date",
+            "headerTooltip": "The date the horizon resolves to.",
+            "cellDataType": "dateString"
+          },
+          {
+            "field": "bucket_range",
+            "formatterFn": null,
+            "headerName": "Bucket Range",
+            "headerTooltip": "The response bucket range label.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "bucket_low",
+            "formatterFn": null,
+            "headerName": "Bucket Low",
+            "headerTooltip": "The lower bound of the response bucket.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "bucket_high",
+            "formatterFn": null,
+            "headerName": "Bucket High",
+            "headerTooltip": "The upper bound of the response bucket.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "aggregation",
+            "formatterFn": null,
+            "headerName": "Statistic",
+            "headerTooltip": "The aggregation statistic, e.g. 'avg', 'count', or 'pctl50'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "aggregation_value",
+            "formatterFn": "none",
+            "headerName": "Value",
+            "headerTooltip": "The aggregated response value.",
+            "cellDataType": "number"
           }
         ],
         "enableAdvanced": true
@@ -1396,15 +1608,15 @@
     ],
     "subCategory": "New York"
   },
-  "ny_market_expectations_federal_reserve_obb": {
-    "name": "NY Fed Survey of Market Expectations Index",
-    "description": "Catalog of the pre-FOMC Surveys of Primary Dealers and Market Participants, with a direct link to each PDF.",
+  "ny_market_expectations_reports_federal_reserve_obb": {
+    "name": "NY Fed Survey of Market Expectations Reports",
+    "description": "Pre-FOMC Surveys of Primary Dealers and Market Participants report PDFs. Select one or more documents to view.",
     "category": "Federal Reserve",
-    "type": "table",
-    "widgetId": "ny_market_expectations_federal_reserve_obb",
+    "type": "multi_file_viewer",
+    "widgetId": "ny_market_expectations_reports_federal_reserve_obb",
     "mcp_tool": {
       "mcp_server": "Open Data Platform",
-      "tool_id": "ny_market_expectations"
+      "tool_id": "ny_market_expectations_reports"
     },
     "params": [
       {
@@ -1448,9 +1660,73 @@
         "paramName": "provider",
         "value": "federal_reserve",
         "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_reports_choices",
+        "optionsParams": {
+          "end_date": "$end_date",
+          "kind": "$kind",
+          "report": "market_expectations",
+          "start_date": "$start_date"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
       }
     ],
-    "endpoint": "market_expectations",
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of New York"
+    ],
+    "subCategory": "New York",
+    "refetchInterval": false
+  },
+  "ny_nowcast_federal_reserve_obb": {
+    "name": "NY Fed Staff Nowcast",
+    "description": "Weekly nowcast of U.S. real GDP growth (annualized percent) - the backcast, nowcast, and forecast by forecast vintage date.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ny_nowcast_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ny_nowcast"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "nowcast",
     "runButton": false,
     "gridData": {
       "w": 40,
@@ -1466,37 +1742,37 @@
             "pinned": "left",
             "formatterFn": null,
             "headerName": "Date",
-            "headerTooltip": "The survey month.",
+            "headerTooltip": "The forecast vintage date.",
             "cellDataType": "date",
             "sort": "desc"
           },
           {
-            "field": "kind",
+            "field": "reference_quarter",
             "formatterFn": null,
-            "headerName": "Kind",
-            "headerTooltip": "The document kind, 'results' or 'questionnaire'.",
+            "headerName": "Reference Quarter",
+            "headerTooltip": "The reference quarter the estimates describe, as ``YYYY:QN``.",
             "cellDataType": "text"
           },
           {
-            "field": "subtype",
-            "formatterFn": null,
-            "headerName": "Panel",
-            "headerTooltip": "The respondent panel: 'combined', 'primary_dealers', or 'market_participants'.",
-            "cellDataType": "text"
+            "field": "backcast",
+            "formatterFn": "none",
+            "headerName": "Backcast",
+            "headerTooltip": "Real GDP growth backcast for the previous quarter, annualized percent.",
+            "cellDataType": "number"
           },
           {
-            "field": "title",
-            "formatterFn": null,
-            "headerName": "Title",
-            "headerTooltip": "The human-readable document title.",
-            "cellDataType": "text"
+            "field": "nowcast",
+            "formatterFn": "none",
+            "headerName": "Nowcast",
+            "headerTooltip": "Real GDP growth nowcast for the current quarter, annualized percent.",
+            "cellDataType": "number"
           },
           {
-            "field": "url",
-            "formatterFn": null,
-            "headerName": "URL",
-            "headerTooltip": "The direct URL to the PDF document.",
-            "cellDataType": "text"
+            "field": "forecast",
+            "formatterFn": "none",
+            "headerName": "Forecast",
+            "headerTooltip": "Real GDP growth forecast for the next quarter, annualized percent.",
+            "cellDataType": "number"
           }
         ],
         "enableAdvanced": true

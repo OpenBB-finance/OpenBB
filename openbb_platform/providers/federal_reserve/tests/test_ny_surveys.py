@@ -122,8 +122,8 @@ class TestFetchMarketExpectationsPdf:
             ny_surveys.fetch_market_expectations_pdf(kind="results")
 
 
-class TestMarketExpectationsIndex:
-    """Tests for the discovery index data model."""
+class TestMarketExpectationsReports:
+    """Tests for the Survey of Market Expectations PDF-catalog model."""
 
     _CATALOG = [
         {
@@ -150,16 +150,16 @@ class TestMarketExpectationsIndex:
     ]
 
     def _patch(self, monkeypatch):
-        """Point the index model at a synthetic catalog."""
+        """Point the catalog model at a synthetic PDF index."""
         monkeypatch.setattr(
             ny_surveys, "list_market_expectations", lambda: list(self._CATALOG)
         )
 
     def test_filters_kind_and_start_date(self, monkeypatch):
         """The kind and start_date filters narrow the catalog."""
-        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
-            FederalReserveNewYorkMarketExpectationsData as DataModel,
-            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        from openbb_federal_reserve.models.regional.new_york_market_expectations_reports import (  # noqa: E501
+            FederalReserveNewYorkMarketExpectationsReportsData as DataModel,
+            FederalReserveNewYorkMarketExpectationsReportsFetcher as Fetcher,
         )
 
         self._patch(monkeypatch)
@@ -171,8 +171,8 @@ class TestMarketExpectationsIndex:
 
     def test_filters_end_date(self, monkeypatch):
         """The end_date filter narrows the catalog."""
-        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
-            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        from openbb_federal_reserve.models.regional.new_york_market_expectations_reports import (  # noqa: E501
+            FederalReserveNewYorkMarketExpectationsReportsFetcher as Fetcher,
         )
 
         self._patch(monkeypatch)
@@ -182,8 +182,8 @@ class TestMarketExpectationsIndex:
 
     def test_no_filter_returns_all(self, monkeypatch):
         """With no filters the full catalog is returned."""
-        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
-            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        from openbb_federal_reserve.models.regional.new_york_market_expectations_reports import (  # noqa: E501
+            FederalReserveNewYorkMarketExpectationsReportsFetcher as Fetcher,
         )
 
         self._patch(monkeypatch)
@@ -195,11 +195,208 @@ class TestMarketExpectationsIndex:
         """An empty catalog raises ``EmptyDataError``."""
         from openbb_core.provider.utils.errors import EmptyDataError
 
-        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
-            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        from openbb_federal_reserve.models.regional.new_york_market_expectations_reports import (  # noqa: E501
+            FederalReserveNewYorkMarketExpectationsReportsFetcher as Fetcher,
         )
 
         monkeypatch.setattr(ny_surveys, "list_market_expectations", list)
         query = Fetcher.transform_query({})
         with pytest.raises(EmptyDataError):
             Fetcher.extract_data(query, None)
+
+
+def _sme_data_workbook() -> bytes:
+    """Build a Survey of Market Expectations results workbook."""
+    import io
+    from datetime import datetime
+
+    from openpyxl import Workbook
+
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(
+        [
+            "survey_release_date",
+            "survey_due_date",
+            "panel_type",
+            "spd_question_number",
+            "theme",
+            "subject_group",
+            "subject",
+            "question_type",
+            "question_mode",
+            "question_text",
+            "question_tag",
+            "value_tag",
+            "top_header_value",
+            "left_header_value",
+            "horizon",
+            "horizon_date",
+            "bucket_range",
+            "bucket_low",
+            "bucket_high",
+            "aggregation",
+            "aggregation_value",
+        ]
+    )
+    common = [
+        "economic_outlook",
+        "recession",
+        "global_recession",
+        "probability",
+        "levels",
+        "What percent chance of recession?",
+        "globalrecession_prob_6months",
+        "globalrecession_prob_6months",
+        None,
+        "the global economy being in a recession",
+        "6months",
+        datetime(2026, 10, 20),
+        None,
+        None,
+        None,
+    ]
+    sheet.append(
+        [datetime(2026, 4, 15), datetime(2026, 4, 20), "Combined", "10", *common]
+        + ["pctl50", 0.30]
+    )
+    sheet.append(
+        [datetime(2026, 4, 15), datetime(2026, 4, 20), "Dealer", "10", *common]
+        + ["count", 62]
+    )
+    buffer = io.BytesIO()
+    workbook.save(buffer)
+    return buffer.getvalue()
+
+
+_SME_WORKBOOK = _sme_data_workbook()
+
+
+def _sme_make_request(url, *args, **kwargs):
+    """Path-aware fake: data-file HTML for the survey page, workbook bytes otherwise."""
+    response = MagicMock()
+    response.raise_for_status = MagicMock()
+    if url.endswith("survey-of-market-expectations"):
+        response.text = (
+            '<a href="/medialibrary/media/markets/survey/2026/apr-2026-data.xlsx">x</a>'
+            '<a href="/medialibrary/media/markets/survey/2026/mar-2026-data.xlsx">x</a>'
+        )
+    else:
+        response.content = _SME_WORKBOOK
+    return response
+
+
+class TestListSmeDataUrls:
+    """Tests for ``list_sme_data_urls``."""
+
+    def test_scrapes_and_orders(self, monkeypatch):
+        """Every data workbook link is returned, deduped in page order."""
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request", _sme_make_request
+        )
+        urls = ny_surveys.list_sme_data_urls()
+        assert urls == [
+            "https://www.newyorkfed.org/medialibrary/media/markets/survey"
+            "/2026/apr-2026-data.xlsx",
+            "https://www.newyorkfed.org/medialibrary/media/markets/survey"
+            "/2026/mar-2026-data.xlsx",
+        ]
+
+
+class TestParseSmeWorkbook:
+    """Tests for ``_parse_sme_workbook``."""
+
+    def test_renames_and_types_columns(self):
+        """Columns rename, dates and numbers coerce, and NA becomes None."""
+        records = ny_surveys._parse_sme_workbook(_SME_WORKBOOK)
+        assert len(records) == 2
+        first = records[0]
+        assert first["date"] == date(2026, 4, 15)
+        assert first["survey_due_date"] == date(2026, 4, 20)
+        assert first["question_number"] == "10"
+        assert first["panel_type"] == "Combined"
+        assert first["horizon_date"] == date(2026, 10, 20)
+        assert first["aggregation"] == "pctl50"
+        assert first["aggregation_value"] == 0.30
+        assert first["top_header_value"] is None
+        assert first["bucket_low"] is None
+
+
+class TestFetchSmeData:
+    """Tests for ``fetch_sme_data``."""
+
+    def test_downloads_and_concatenates(self, monkeypatch):
+        """Every workbook is downloaded, parsed, and merged newest first."""
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request", _sme_make_request
+        )
+        records = ny_surveys.fetch_sme_data()
+        assert len(records) == 4
+        assert all(r["date"] == date(2026, 4, 15) for r in records)
+        assert {r["panel_type"] for r in records} == {"Combined", "Dealer"}
+
+    def test_no_urls_returns_empty(self, monkeypatch):
+        """When no workbooks are listed, the combined result is empty."""
+        monkeypatch.setattr(ny_surveys, "list_sme_data_urls", list)
+        assert ny_surveys.fetch_sme_data() == []
+
+
+class TestMarketExpectationsData:
+    """Tests for the Survey of Market Expectations data model."""
+
+    def _records(self):
+        """Return parsed synthetic survey records."""
+        return ny_surveys._parse_sme_workbook(_SME_WORKBOOK)
+
+    def test_panel_filter(self, monkeypatch):
+        """The panel_type filter narrows to one respondent panel."""
+        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
+            FederalReserveNewYorkMarketExpectationsData as DataModel,
+            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        )
+
+        monkeypatch.setattr(ny_surveys, "fetch_sme_data", self._records)
+        query = Fetcher.transform_query({"panel_type": "Combined"})
+        rows = Fetcher.transform_data(query, Fetcher.extract_data(query, None))
+        assert all(isinstance(r, DataModel) for r in rows)
+        assert [r.panel_type for r in rows] == ["Combined"]
+        assert rows[0].aggregation_value == 0.30
+
+    def test_date_filters(self, monkeypatch):
+        """The start and end date filters narrow the releases."""
+        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
+            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        )
+
+        monkeypatch.setattr(ny_surveys, "fetch_sme_data", self._records)
+        query = Fetcher.transform_query(
+            {"start_date": "2026-04-01", "end_date": "2026-04-30"}
+        )
+        rows = Fetcher.transform_data(query, Fetcher.extract_data(query, None))
+        assert len(rows) == 2
+
+    def test_empty_raises(self, monkeypatch):
+        """An empty download raises ``EmptyDataError``."""
+        from openbb_core.provider.utils.errors import EmptyDataError
+
+        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
+            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        )
+
+        monkeypatch.setattr(ny_surveys, "fetch_sme_data", list)
+        query = Fetcher.transform_query({})
+        with pytest.raises(EmptyDataError):
+            Fetcher.extract_data(query, None)
+
+    def test_all_filtered_raises(self, monkeypatch):
+        """A filter that removes every row raises ``EmptyDataError``."""
+        from openbb_core.provider.utils.errors import EmptyDataError
+
+        from openbb_federal_reserve.models.regional.new_york_market_expectations import (
+            FederalReserveNewYorkMarketExpectationsFetcher as Fetcher,
+        )
+
+        monkeypatch.setattr(ny_surveys, "fetch_sme_data", self._records)
+        query = Fetcher.transform_query({"start_date": "2030-01-01"})
+        with pytest.raises(EmptyDataError):
+            Fetcher.transform_data(query, Fetcher.extract_data(query, None))

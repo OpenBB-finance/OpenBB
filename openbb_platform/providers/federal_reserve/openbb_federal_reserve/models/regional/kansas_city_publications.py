@@ -106,7 +106,7 @@ class FederalReserveKansasCityPublicationsData(Data):
     date: dateType | None = Field(default=None, description="The publication date.")
     series: str = Field(description="The publication series.")
     title: str = Field(description="The human-readable publication title.")
-    url: str = Field(description="The Fed in Print item-page URL for the publication.")
+    url: str = Field(description="The direct URL to the publication document.")
 
 
 class FederalReserveKansasCityPublicationsFetcher(

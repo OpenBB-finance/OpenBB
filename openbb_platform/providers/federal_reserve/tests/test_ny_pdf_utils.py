@@ -10,6 +10,10 @@ from openbb_core.provider.utils.errors import EmptyDataError
 
 from openbb_federal_reserve.utils import ny_empire, ny_hhdc, ny_reports
 
+_EMPIRE_OVERVIEW = (
+    '<a href="/medialibrary/media/Survey/Empire/empire2026/'
+    'ESMS_2026_06.pdf?sc_lang=en&amp;hash=XYZ">x</a>'
+)
 _EMPIRE_ARCHIVES = (
     '<a href="/medialibrary/media/Survey/Empire/empire2025/'
     'ESMS_2025_12.pdf?sc_lang=en&amp;hash=ABC">x</a>'
@@ -28,10 +32,12 @@ _SUPPLEMENTAL = (
 
 
 def _empire_request(url, *args, **kwargs):
-    """Path-aware fake: archives HTML for the survey page, PDF bytes otherwise."""
+    """Path-aware fake: overview/archives HTML for survey pages, PDF bytes otherwise."""
     response = MagicMock()
     response.raise_for_status = MagicMock()
-    if url.endswith("empiresurvey_archives"):
+    if url.endswith("empiresurvey_overview"):
+        response.text = _EMPIRE_OVERVIEW
+    elif url.endswith("empiresurvey_archives"):
         response.text = _EMPIRE_ARCHIVES
     else:
         response.content = b"%PDF-1.7 fake empire"
@@ -80,12 +86,17 @@ class TestListEmpireStateReports:
     """Tests for ``list_empire_state_reports``."""
 
     def test_scrapes_dedups_and_sorts(self, monkeypatch):
-        """The archives page classifies, dedups, and sorts newest first."""
+        """The overview and archives pages classify, dedup, and sort newest first."""
         monkeypatch.setattr(
             "openbb_core.provider.utils.helpers.make_request", _empire_request
         )
         reports = ny_empire.list_empire_state_reports()
-        assert [r["period"] for r in reports] == ["202512", "202511", "201101"]
+        assert [r["period"] for r in reports] == [
+            "202606",
+            "202512",
+            "202511",
+            "201101",
+        ]
         assert reports[0]["url"].startswith("https://www.newyorkfed.org/medialibrary")
 
 
@@ -98,7 +109,7 @@ class TestFetchEmpireStateReport:
             "openbb_core.provider.utils.helpers.make_request", _empire_request
         )
         out = ny_empire.fetch_empire_state_report()
-        assert out["data_format"]["filename"] == "NY_ESMS_202512.pdf"
+        assert out["data_format"]["filename"] == "NY_ESMS_202606.pdf"
         assert base64.b64decode(out["content"]).startswith(b"%PDF")
 
     def test_specific_period(self, monkeypatch):

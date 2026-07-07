@@ -237,14 +237,13 @@ def search_publications(
     """
     from openbb_federal_reserve.utils import fedinprint
 
-    facet = _FACET_BY_SLUG.get(series) if series else None
-    return fedinprint.search(
+    return fedinprint.resolved_page(
         FEDINPRINT_PROVIDER,
-        fetch_text,
-        series_facet=facet,
-        min_year=min_year,
-        start=start,
-        limit=limit,
+        _FACET_BY_SLUG,
+        series,
+        min_year,
+        start,
+        limit,
     )
 
 

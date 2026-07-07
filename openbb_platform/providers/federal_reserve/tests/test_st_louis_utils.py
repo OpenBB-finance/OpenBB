@@ -208,50 +208,36 @@ class TestSeriesSlugs:
 
 
 class TestSearchPublications:
-    """Tests for the St. Louis wrapper over the shared Fed in Print search."""
+    """Tests for the St. Louis wrapper over the shared Fed in Print resolver."""
 
-    def test_maps_slug_to_facet_and_forwards(self, monkeypatch):
-        """The wrapper maps a slug to its facet and forwards paging to the util."""
+    def test_delegates_to_resolved_page(self, monkeypatch):
+        """The wrapper forwards its provider, facet map, and paging to the resolver."""
         from openbb_federal_reserve.utils import fedinprint
 
         captured = {}
 
-        def _search(provider, fetch, series_facet=None, min_year="", start=0, limit=20):
+        def _resolved(provider, facets, series, min_year, start, limit):
             captured.update(
                 provider=provider,
-                facet=series_facet,
+                facets=facets,
+                series=series,
                 min_year=min_year,
                 start=start,
                 limit=limit,
             )
             return [{"series": "Working Papers", "date": "", "title": "T", "url": "u"}]
 
-        monkeypatch.setattr(fedinprint, "search", _search)
+        monkeypatch.setattr(fedinprint, "resolved_page", _resolved)
         out = st_louis.search_publications("working_papers", "2024", start=10, limit=5)
         assert captured["provider"] == st_louis.FEDINPRINT_PROVIDER
-        assert captured["facet"] == "Working Papers"
+        assert captured["facets"] == st_louis._FACET_BY_SLUG
+        assert captured["series"] == "working_papers"
         assert (captured["min_year"], captured["start"], captured["limit"]) == (
             "2024",
             10,
             5,
         )
         assert out[0]["title"] == "T"
-
-    def test_unknown_or_absent_slug_has_no_facet(self, monkeypatch):
-        """An unknown or absent slug queries the provider with no series facet."""
-        from openbb_federal_reserve.utils import fedinprint
-
-        captured = {}
-
-        def _search(provider, fetch, series_facet=None, **_):
-            captured["facet"] = series_facet
-            return []
-
-        monkeypatch.setattr(fedinprint, "search", _search)
-        st_louis.search_publications("bogus")
-        assert captured["facet"] is None
-        st_louis.search_publications(None)
-        assert captured["facet"] is None
 
 
 class TestListPublications:

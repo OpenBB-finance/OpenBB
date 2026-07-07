@@ -371,17 +371,12 @@ class TestRegionalPublicationsDownload:
     """Tests for the ``regional_publications_download`` utility endpoint."""
 
     @pytest.mark.asyncio
-    async def test_downloads_pdf_as_base64(self):
+    async def test_downloads_pdf_as_base64(self, monkeypatch):
         """A valid URL is fetched and returned as base64-encoded PDF content."""
-        response = MagicMock()
-        response.content = b"%PDF-1.7 regional"
-        response.raise_for_status = MagicMock()
-        with patch(
-            "openbb_core.provider.utils.helpers.make_request", return_value=response
-        ):
-            out = await fr.regional_publications_download(
-                {"url": ["https://example.com/dir/report.pdf"]}
-            )
+        monkeypatch.setattr(fr, "_download_pdf", lambda url: b"%PDF-1.7 regional")
+        out = await fr.regional_publications_download(
+            {"url": ["https://example.com/dir/report.pdf"]}
+        )
         assert out[0]["data_format"]["data_type"] == "pdf"
         assert out[0]["data_format"]["filename"] == "report.pdf"
         assert isinstance(out[0]["content"], str)
@@ -394,16 +389,17 @@ class TestRegionalPublicationsDownload:
         monkeypatch.setattr(
             fedinprint, "resolve_file", lambda url, fetch: "https://x/wp2608.pdf"
         )
-        response = MagicMock()
-        response.content = b"%PDF"
-        response.raise_for_status = MagicMock()
-        with patch(
-            "openbb_core.provider.utils.helpers.make_request", return_value=response
-        ) as make:
-            out = await fr.regional_publications_download(
-                {"url": ["https://fedinprint.org/item/fedbwp/1/2"]}
-            )
-        make.assert_called_once_with("https://x/wp2608.pdf")
+        captured = {}
+
+        def _download(url):
+            captured["url"] = url
+            return b"%PDF"
+
+        monkeypatch.setattr(fr, "_download_pdf", _download)
+        out = await fr.regional_publications_download(
+            {"url": ["https://fedinprint.org/item/fedbwp/1/2"]}
+        )
+        assert captured["url"] == "https://x/wp2608.pdf"
         assert out[0]["data_format"]["filename"] == "wp2608.pdf"
 
     @pytest.mark.asyncio
@@ -419,29 +415,31 @@ class TestRegionalPublicationsDownload:
         assert "No document" in out[0]["content"]
 
     @pytest.mark.asyncio
-    async def test_download_error_with_args_is_captured(self):
+    async def test_download_error_with_args_is_captured(self, monkeypatch):
         """A failure carrying args records the first arg as the message."""
-        with patch(
-            "openbb_core.provider.utils.helpers.make_request",
-            side_effect=RuntimeError("boom"),
-        ):
-            out = await fr.regional_publications_download(
-                {"url": ["https://example.com/x.pdf"]}
-            )
+
+        def _boom(url):
+            raise RuntimeError("boom")
+
+        monkeypatch.setattr(fr, "_download_pdf", _boom)
+        out = await fr.regional_publications_download(
+            {"url": ["https://example.com/x.pdf"]}
+        )
         assert out[0]["error_type"] == "download_error"
         assert out[0]["content"] == "RuntimeError: boom"
         assert out[0]["filename"] == "x.pdf"
 
     @pytest.mark.asyncio
-    async def test_download_error_without_args_falls_back_to_str(self):
+    async def test_download_error_without_args_falls_back_to_str(self, monkeypatch):
         """A failure with no args falls back to ``str(exc)`` for the message."""
-        with patch(
-            "openbb_core.provider.utils.helpers.make_request",
-            side_effect=RuntimeError(),
-        ):
-            out = await fr.regional_publications_download(
-                {"url": ["https://example.com/y.pdf"]}
-            )
+
+        def _boom(url):
+            raise RuntimeError()
+
+        monkeypatch.setattr(fr, "_download_pdf", _boom)
+        out = await fr.regional_publications_download(
+            {"url": ["https://example.com/y.pdf"]}
+        )
         assert out[0]["error_type"] == "download_error"
         assert out[0]["content"] == "RuntimeError: "
 
@@ -449,6 +447,95 @@ class TestRegionalPublicationsDownload:
     async def test_empty_url_list_returns_empty(self):
         """An absent ``url`` key yields an empty result list."""
         assert await fr.regional_publications_download({}) == []
+
+
+class TestDownloadPdf:
+    """Tests for the impersonating-session PDF downloader."""
+
+    def test_uses_impersonating_session(self, monkeypatch):
+        """The browser-impersonating session is used and its bytes returned."""
+        response = MagicMock()
+        response.content = b"%PDF-1.7"
+        response.raise_for_status = MagicMock()
+        session = MagicMock()
+        session.get = MagicMock(return_value=response)
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.curl_session.get_session",
+            lambda key: session,
+        )
+        assert fr._download_pdf("https://x/a.pdf") == b"%PDF-1.7"
+        session.get.assert_called_once()
+
+    def test_falls_back_to_make_request(self, monkeypatch):
+        """A session failure falls back to the standard client."""
+
+        def _boom(key):
+            raise RuntimeError("blocked")
+
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.curl_session.get_session", _boom
+        )
+        response = MagicMock()
+        response.content = b"%PDF-fallback"
+        response.raise_for_status = MagicMock()
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.make_request",
+            lambda url, timeout=30: response,
+        )
+        assert fr._download_pdf("https://x/a.pdf") == b"%PDF-fallback"
+
+
+class TestRegionalReportsChoices:
+    """The shared report-catalog choices endpoint dispatches by report key."""
+
+    @pytest.mark.asyncio
+    async def test_empire_state_builds_month_labels(self, monkeypatch):
+        """The empire_state catalog builds month-year labels with PDF values."""
+        from openbb_federal_reserve.utils import ny_empire
+
+        monkeypatch.setattr(
+            ny_empire,
+            "list_empire_state_reports",
+            lambda: [{"period": "202512", "url": "https://x/esms_2025_12.pdf"}],
+        )
+        choices = await fr.regional_reports_choices("empire_state")
+        assert choices == [
+            {"label": "December 2025", "value": "https://x/esms_2025_12.pdf"}
+        ]
+
+    @pytest.mark.asyncio
+    async def test_market_expectations_titles_and_kind(self, monkeypatch):
+        """The market_expectations catalog uses titles and forwards the kind filter."""
+        from openbb_federal_reserve.utils import ny_surveys
+
+        catalog = [
+            {
+                "date": "2026-04-01",
+                "kind": "results",
+                "subtype": "combined",
+                "title": "April 2026 Results (Combined)",
+                "url": "https://x/apr-results.pdf",
+            },
+            {
+                "date": "2026-04-01",
+                "kind": "questionnaire",
+                "subtype": "combined",
+                "title": "April 2026 Questionnaire (Combined)",
+                "url": "https://x/apr-survey.pdf",
+            },
+        ]
+        monkeypatch.setattr(
+            ny_surveys, "list_market_expectations", lambda: list(catalog)
+        )
+        choices = await fr.regional_reports_choices(
+            "market_expectations", kind="results"
+        )
+        assert choices == [
+            {
+                "label": "April 2026 Results (Combined)",
+                "value": "https://x/apr-results.pdf",
+            }
+        ]
 
 
 class TestKeyHelper:

@@ -178,6 +178,8 @@ class TestRegionalCommandBodies:
             (new_york, "consumer_expectations"),
             (new_york, "business_leaders"),
             (new_york, "market_expectations"),
+            (new_york, "market_expectations_reports"),
+            (new_york, "nowcast"),
             (new_york, "sofr"),
             (new_york, "effr"),
             (new_york, "overnight_bank_funding"),

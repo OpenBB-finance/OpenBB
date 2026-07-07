@@ -3,12 +3,15 @@
 from datetime import date as dateType
 from typing import Any
 
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from pydantic import ConfigDict, Field
+
+api_prefix = SystemService().system_settings.api_settings.prefix or "/api/v1"
 
 
 class FederalReserveNewYorkEmpireReportsQueryParams(QueryParams):
@@ -24,6 +27,41 @@ class FederalReserveNewYorkEmpireReportsQueryParams(QueryParams):
 
 class FederalReserveNewYorkEmpireReportsData(Data):
     """New York Fed Empire State Survey Report Index Data."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "x-widget_config": {
+                "$.type": "multi_file_viewer",
+                "$.name": "NY Fed Empire State Survey Reports",
+                "$.description": "Monthly Empire State Manufacturing Survey report PDFs."
+                " Select one or more months to view.",
+                "$.category": "Federal Reserve",
+                "$.subCategory": "Business Surveys",
+                "$.source": ["Federal Reserve Bank of New York"],
+                "$.gridData": {"w": 30, "h": 27},
+                "$.refetchInterval": False,
+                "$.endpoint": f"{api_prefix}/federal_reserve"
+                "/regional_publications_download",
+                "$.params": [
+                    {
+                        "type": "endpoint",
+                        "paramName": "url",
+                        "optionsEndpoint": f"{api_prefix}/federal_reserve"
+                        "/regional_reports_choices",
+                        "optionsParams": {
+                            "report": "empire_state",
+                            "start_date": "$start_date",
+                            "end_date": "$end_date",
+                        },
+                        "show": False,
+                        "multiSelect": True,
+                        "roles": ["fileSelector"],
+                    },
+                ],
+                "$.data": {},
+            }
+        }
+    )
 
     date: dateType = Field(description="The survey month, as the month-start date.")
     period: str = Field(description="The report period as ``YYYYMM``.")

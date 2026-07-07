@@ -556,29 +556,6 @@ async def core_trend_inflation(
 @router.command(
     model="FederalReserveNewYorkEmpireReports",
     examples=[APIEx(parameters={"provider": "federal_reserve"})],
-    widget_config={
-        "name": "NY Fed Empire State Survey Report Index",
-        "description": "Catalog of published Empire State Manufacturing Survey monthly"
-        " report PDFs, with a direct link to each document.",
-        "subCategory": "Business Surveys",
-        "gridData": {"w": 40, "h": 20},
-        "data": {
-            "table": {
-                "showAll": True,
-                "columnsDefs": [
-                    {
-                        "field": "date",
-                        "headerName": "Date",
-                        "cellDataType": "date",
-                        "pinned": "left",
-                        "sort": "desc",
-                    },
-                    {"field": "period", "headerName": "Period"},
-                    {"field": "url", "headerName": "URL"},
-                ],
-            }
-        },
-    },
 )
 async def empire_state_reports(
     cc: CommandContext,
@@ -595,14 +572,82 @@ async def empire_state_reports(
     examples=[
         APIEx(parameters={"provider": "federal_reserve"}),
         APIEx(
+            description="Return only the combined panel.",
+            parameters={"panel_type": "Combined", "provider": "federal_reserve"},
+        ),
+    ],
+    widget_config={
+        "name": "NY Fed Survey of Market Expectations",
+        "description": "Machine-readable results of the pre-FOMC Surveys of Primary"
+        " Dealers and Market Participants - aggregated responses by question, panel,"
+        " and horizon.",
+        "subCategory": "Rates & Markets",
+        "gridData": {"w": 50, "h": 20},
+        "data": {
+            "table": {
+                "showAll": True,
+                "columnsDefs": [
+                    {
+                        "field": "date",
+                        "headerName": "Date",
+                        "cellDataType": "date",
+                        "pinned": "left",
+                        "sort": "desc",
+                    },
+                    {"field": "panel_type", "headerName": "Panel"},
+                    {"field": "question_number", "headerName": "Q#"},
+                    {"field": "subject", "headerName": "Subject"},
+                    {"field": "question_text", "headerName": "Question"},
+                    {"field": "horizon", "headerName": "Horizon"},
+                    {"field": "aggregation", "headerName": "Statistic"},
+                    {
+                        "field": "aggregation_value",
+                        "headerName": "Value",
+                        "cellDataType": "number",
+                        "formatterFn": "none",
+                    },
+                ],
+            }
+        },
+    },
+)
+async def market_expectations(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the New York Fed Survey of Market Expectations results data."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FederalReserveNewYorkMarketExpectationsReports",
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(
             description="Index only the results reports.",
             parameters={"kind": "results", "provider": "federal_reserve"},
         ),
     ],
+)
+async def market_expectations_reports(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Index the New York Fed Survey of Market Expectations PDF archive."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FederalReserveNewYorkNowcast",
+    examples=[APIEx(parameters={"provider": "federal_reserve"})],
     widget_config={
-        "name": "NY Fed Survey of Market Expectations Index",
-        "description": "Catalog of the pre-FOMC Surveys of Primary Dealers and Market"
-        " Participants, with a direct link to each PDF.",
+        "name": "NY Fed Staff Nowcast",
+        "description": "Weekly nowcast of U.S. real GDP growth (annualized percent) -"
+        " the backcast, nowcast, and forecast by forecast vintage date.",
         "subCategory": "Rates & Markets",
         "gridData": {"w": 40, "h": 20},
         "data": {
@@ -616,22 +661,37 @@ async def empire_state_reports(
                         "pinned": "left",
                         "sort": "desc",
                     },
-                    {"field": "kind", "headerName": "Kind"},
-                    {"field": "subtype", "headerName": "Panel"},
-                    {"field": "title", "headerName": "Title"},
-                    {"field": "url", "headerName": "URL"},
+                    {"field": "reference_quarter", "headerName": "Reference Quarter"},
+                    {
+                        "field": "backcast",
+                        "headerName": "Backcast",
+                        "cellDataType": "number",
+                        "formatterFn": "none",
+                    },
+                    {
+                        "field": "nowcast",
+                        "headerName": "Nowcast",
+                        "cellDataType": "number",
+                        "formatterFn": "none",
+                    },
+                    {
+                        "field": "forecast",
+                        "headerName": "Forecast",
+                        "cellDataType": "number",
+                        "formatterFn": "none",
+                    },
                 ],
             }
         },
     },
 )
-async def market_expectations(
+async def nowcast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Index the New York Fed Survey of Market Expectations PDF archive."""
+    """Get the New York Fed Staff Nowcast of U.S. real GDP growth."""
     return await OBBject.from_query(Query(**locals()))
 
 

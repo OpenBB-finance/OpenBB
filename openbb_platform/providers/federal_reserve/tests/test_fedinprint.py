@@ -209,6 +209,143 @@ class TestFileResolution:
         assert fedinprint.resolve_file("https://x/item", fetch) is None
 
 
+class TestSafeResolve:
+    """Tests for the cached, exception-swallowing single-item resolver."""
+
+    def test_returns_resolved_document(self, monkeypatch):
+        """A successful resolution is returned through the cache."""
+        monkeypatch.setattr(
+            fedinprint, "resolve_file", lambda url, fetch: "https://x/a.pdf"
+        )
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.cache.cached",
+            lambda key, ttl, producer: producer(),
+        )
+        assert fedinprint._safe_resolve("item") == "https://x/a.pdf"
+
+    def test_exception_returns_none(self, monkeypatch):
+        """Any resolution error is swallowed to ``None``."""
+
+        def _boom(url, fetch):
+            raise RuntimeError("nope")
+
+        monkeypatch.setattr(fedinprint, "resolve_file", _boom)
+        monkeypatch.setattr(
+            "openbb_federal_reserve.utils.cache.cached",
+            lambda key, ttl, producer: producer(),
+        )
+        assert fedinprint._safe_resolve("item") is None
+
+
+class TestResolveRecords:
+    """Tests for the bounded-parallel, early-stopping resolution filter."""
+
+    def test_drops_unresolved_and_rewrites_url(self, monkeypatch):
+        """Non-resolving records drop; kept records carry the resolved URL."""
+        resolved = {"a": "https://x/a.pdf", "c": "https://x/c.pdf"}
+        monkeypatch.setattr(fedinprint, "_safe_resolve", resolved.get)
+        records = [
+            {"series": "S", "date": "2026-01", "title": "A", "url": "a"},
+            {"series": "S", "date": "2025-12", "title": "B", "url": "b"},
+            {"series": "S", "date": "2025-11", "title": "C", "url": "c"},
+        ]
+        out = fedinprint.resolve_records(records, 5)
+        assert [(r["title"], r["url"]) for r in out] == [
+            ("A", "https://x/a.pdf"),
+            ("C", "https://x/c.pdf"),
+        ]
+
+    def test_stops_at_limit(self, monkeypatch):
+        """Resolution halts once ``limit`` documents are collected."""
+        monkeypatch.setattr(fedinprint, "_safe_resolve", lambda url: f"{url}.pdf")
+        records = [
+            {"series": "S", "date": "", "title": str(i), "url": str(i)}
+            for i in range(30)
+        ]
+        out = fedinprint.resolve_records(records, 5, workers=4)
+        assert len(out) == 5
+        assert [r["title"] for r in out] == ["0", "1", "2", "3", "4"]
+
+    def test_empty_records(self):
+        """No records yields an empty page."""
+        assert fedinprint.resolve_records([], 5) == []
+
+
+class TestResolvedPage:
+    """Tests for the district-agnostic resolved-page assembler."""
+
+    _FACETS = {"wp": "Working Papers", "rev": "Review"}
+
+    def _identity_resolver(self, monkeypatch):
+        """Make resolve_records return its candidates with a ``.pdf`` URL suffix."""
+        monkeypatch.setattr(
+            fedinprint,
+            "resolve_records",
+            lambda cands, need: [{**c, "url": f"{c['url']}.pdf"} for c in cands][:need],
+        )
+
+    def test_known_series_searches_its_facet(self, monkeypatch):
+        """A known slug searches only that series' facet."""
+        captured = {}
+
+        def _search(prov, fetch, series_facet=None, min_year="", start=0, limit=20):
+            captured.update(facet=series_facet, min_year=min_year, start=start)
+            return [{"series": "S", "date": "2026-01", "title": "A", "url": "a"}]
+
+        monkeypatch.setattr(fedinprint, "search", _search)
+        self._identity_resolver(monkeypatch)
+        out = fedinprint.resolved_page("Prov", self._FACETS, "wp", "2024", 0, 5)
+        assert captured["facet"] == "Working Papers"
+        assert (captured["min_year"], captured["start"]) == ("2024", 0)
+        assert out[0]["url"] == "a.pdf"
+
+    def test_absent_series_uses_flagship(self, monkeypatch):
+        """A ``None`` series falls back to the first (flagship) series."""
+        captured = {}
+        monkeypatch.setattr(
+            fedinprint,
+            "search",
+            lambda prov, fetch, series_facet=None, **k: (
+                captured.update(facet=series_facet) or []
+            ),
+        )
+        self._identity_resolver(monkeypatch)
+        fedinprint.resolved_page("Prov", self._FACETS, None, "", 0, 5)
+        assert captured["facet"] == "Working Papers"
+
+    def test_unknown_series_uses_flagship(self, monkeypatch):
+        """An unknown slug also falls back to the flagship series."""
+        captured = {}
+        monkeypatch.setattr(
+            fedinprint,
+            "search",
+            lambda prov, fetch, series_facet=None, **k: (
+                captured.update(facet=series_facet) or []
+            ),
+        )
+        self._identity_resolver(monkeypatch)
+        fedinprint.resolved_page("Prov", self._FACETS, "bogus", "", 0, 5)
+        assert captured["facet"] == "Working Papers"
+
+    def test_empty_facets_returns_empty(self):
+        """A provider with no document series yields an empty page."""
+        assert fedinprint.resolved_page("Prov", {}, None, "", 0, 5) == []
+
+    def test_start_offset_slices_resolved_page(self, monkeypatch):
+        """The offset slices into the resolved, newest-first documents."""
+        monkeypatch.setattr(
+            fedinprint,
+            "search",
+            lambda *a, **k: [
+                {"series": "S", "date": "", "title": str(i), "url": str(i)}
+                for i in range(10)
+            ],
+        )
+        self._identity_resolver(monkeypatch)
+        out = fedinprint.resolved_page("Prov", self._FACETS, "wp", "", 2, 3)
+        assert [r["title"] for r in out] == ["2", "3", "4"]
+
+
 class TestSearch:
     """Tests for the fast paginated metadata search (no resolution in the list path)."""
 
@@ -356,20 +493,26 @@ class TestDistrictApi:
         slugs = [slug for slug, _ in fedinprint.load_registry()["boston"]["series"]]
         assert [c["value"] for c in choices] == slugs
 
-    def test_search_publications_maps_slug_to_facet(self, monkeypatch):
-        """The district search maps a slug to its facet and passes the provider."""
+    def test_search_publications_delegates_to_resolved_page(self, monkeypatch):
+        """The district search forwards its provider, facet map, and paging."""
         captured = {}
 
-        def _search(prov, fetch, series_facet=None, min_year="", start=0, limit=20):
-            captured.update(provider=prov, facet=series_facet, start=start, limit=limit)
+        def _resolved(prov, facets, series, min_year, start, limit):
+            captured.update(
+                provider=prov, facets=facets, series=series, start=start, limit=limit
+            )
             return [{"series": "x", "date": "", "title": "t", "url": "u"}]
 
-        monkeypatch.setattr(fedinprint, "search", _search)
-        slug, facet = fedinprint.load_registry()["boston"]["series"][0]
+        monkeypatch.setattr(fedinprint, "resolved_page", _resolved)
+        slug, _facet = fedinprint.load_registry()["boston"]["series"][0]
         fedinprint.search_publications("boston", series=slug, start=5, limit=3)
         assert captured["provider"] == "Federal Reserve Bank of Boston"
-        assert captured["facet"] == facet
-        assert (captured["start"], captured["limit"]) == (5, 3)
+        assert captured["facets"] == fedinprint._facets("boston")
+        assert (captured["series"], captured["start"], captured["limit"]) == (
+            slug,
+            5,
+            3,
+        )
 
     def test_list_publications_derives_year_and_slug(self, monkeypatch):
         """The cached wrapper validates the slug and derives the start year."""

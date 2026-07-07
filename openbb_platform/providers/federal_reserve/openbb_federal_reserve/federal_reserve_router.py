@@ -212,6 +212,41 @@ _PUB_FETCHERS: dict[str, tuple[str, str]] = {
     "stl": ("st_louis_publications", "FederalReserveStLouisPublicationsFetcher"),
 }
 
+_REPORT_FETCHERS: dict[str, tuple[str, str]] = {
+    "empire_state": (
+        "new_york_empire_reports",
+        "FederalReserveNewYorkEmpireReportsFetcher",
+    ),
+    "market_expectations": (
+        "new_york_market_expectations_reports",
+        "FederalReserveNewYorkMarketExpectationsReportsFetcher",
+    ),
+}
+
+
+def _download_pdf(url: str) -> bytes:
+    """Fetch a PDF by URL as bytes.
+
+    A browser-impersonating ``curl_cffi`` session is tried first because some
+    Reserve Bank hosts (e.g. Kansas City behind Akamai) reject or time out plain
+    HTTP clients; the standard client is the fallback.
+    """
+    import threading
+
+    from openbb_federal_reserve.utils.curl_session import get_session
+
+    try:
+        session = get_session(f"publications_download:{threading.get_ident()}")
+        response = session.get(url, timeout=60)
+        response.raise_for_status()
+        return response.content
+    except Exception:  # noqa: BLE001
+        from openbb_core.provider.utils.helpers import make_request
+
+        response = make_request(url, timeout=30)
+        response.raise_for_status()
+        return response.content
+
 
 async def regional_publications_download(params: Annotated[dict, Body()]) -> list:
     """Download regional publication PDFs as base64-encoded content.
@@ -228,8 +263,6 @@ async def regional_publications_download(params: Annotated[dict, Body()]) -> lis
     """
     import base64
 
-    from openbb_core.provider.utils.helpers import make_request
-
     from openbb_federal_reserve.utils import fedinprint
 
     results: list = []
@@ -240,11 +273,10 @@ async def regional_publications_download(params: Annotated[dict, Body()]) -> lis
                 target = fedinprint.resolve_file(url, fedinprint.fetch_text)
                 if not target:
                     raise ValueError("No document is published for this item.")
-            response = make_request(target)
-            response.raise_for_status()
+            content = _download_pdf(target)
             results.append(
                 {
-                    "content": base64.b64encode(response.content).decode("utf-8"),
+                    "content": base64.b64encode(content).decode("utf-8"),
                     "data_format": {
                         "data_type": "pdf",
                         "filename": target.split("/")[-1],
@@ -311,6 +343,52 @@ async def regional_publications_choices(
     return choices
 
 
+async def regional_reports_choices(
+    report: str,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    kind: str | None = None,
+) -> list:
+    """List a report catalog's PDFs as file-selector choices.
+
+    Parameters
+    ----------
+    report : str
+        The report catalog key, e.g. ``"empire_state"``.
+    start_date, end_date : str | None
+        Optional inclusive date bounds applied to the catalog.
+    kind : str | None
+        An optional catalog-specific document-kind filter.
+
+    Returns
+    -------
+    list
+        A list of ``{label, value}`` choices, the PDF URL as each value.
+    """
+    from importlib import import_module
+
+    module_name, fetcher_name = _REPORT_FETCHERS[report]
+    fetcher = getattr(
+        import_module(f"openbb_federal_reserve.models.regional.{module_name}"),
+        fetcher_name,
+    )
+    params = {"start_date": start_date, "end_date": end_date, "kind": kind}
+    query = fetcher.transform_query(
+        {k: v for k, v in params.items() if v not in (None, "")}
+    )
+    catalog = fetcher.transform_data(query, fetcher.extract_data(query, None))
+    choices: list = []
+    for record in catalog:
+        item = record.model_dump()
+        label = item.get("title")
+        if not label and item.get("date"):
+            label = item["date"].strftime("%B %Y")
+        choices.append(
+            {"label": label or item["url"].split("/")[-1], "value": item["url"]}
+        )
+    return choices
+
+
 async def market_probability_meetings() -> list:
     """List the latest date's reference FOMC meetings as dropdown choices.
 
@@ -342,6 +420,12 @@ router._api_router.add_api_route(
 router._api_router.add_api_route(
     path="/regional_publications_choices",
     endpoint=regional_publications_choices,
+    methods=["GET"],
+    include_in_schema=False,
+)
+router._api_router.add_api_route(
+    path="/regional_reports_choices",
+    endpoint=regional_reports_choices,
     methods=["GET"],
     include_in_schema=False,
 )
@@ -1077,6 +1161,12 @@ for _district_router, _slug, _district_name in _REGIONAL_DISTRICTS:
     _district_router.api_router.add_api_route(
         path="/regional_publications_choices",
         endpoint=regional_publications_choices,
+        methods=["GET"],
+        include_in_schema=False,
+    )
+    _district_router.api_router.add_api_route(
+        path="/regional_reports_choices",
+        endpoint=regional_reports_choices,
         methods=["GET"],
         include_in_schema=False,
     )

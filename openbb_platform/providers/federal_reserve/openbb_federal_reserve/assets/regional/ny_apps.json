@@ -156,7 +156,7 @@
             }
           },
           {
-            "i": "ny_sofr_federal_reserve_obb",
+            "i": "ny_market_expectations_reports_federal_reserve_obb",
             "x": 0,
             "y": 18,
             "w": 40,
@@ -166,7 +166,7 @@
             }
           },
           {
-            "i": "ny_effr_federal_reserve_obb",
+            "i": "ny_nowcast_federal_reserve_obb",
             "x": 0,
             "y": 36,
             "w": 40,
@@ -176,7 +176,7 @@
             }
           },
           {
-            "i": "ny_overnight_bank_funding_federal_reserve_obb",
+            "i": "ny_sofr_federal_reserve_obb",
             "x": 0,
             "y": 54,
             "w": 40,
@@ -186,7 +186,7 @@
             }
           },
           {
-            "i": "ny_central_bank_holdings_federal_reserve_obb",
+            "i": "ny_effr_federal_reserve_obb",
             "x": 0,
             "y": 72,
             "w": 40,
@@ -196,7 +196,7 @@
             }
           },
           {
-            "i": "ny_primary_dealer_positioning_federal_reserve_obb",
+            "i": "ny_overnight_bank_funding_federal_reserve_obb",
             "x": 0,
             "y": 90,
             "w": 40,
@@ -206,9 +206,29 @@
             }
           },
           {
-            "i": "ny_primary_dealer_fails_federal_reserve_obb",
+            "i": "ny_central_bank_holdings_federal_reserve_obb",
             "x": 0,
             "y": 108,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_primary_dealer_positioning_federal_reserve_obb",
+            "x": 0,
+            "y": 126,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ny_primary_dealer_fails_federal_reserve_obb",
+            "x": 0,
+            "y": 144,
             "w": 40,
             "h": 18,
             "state": {

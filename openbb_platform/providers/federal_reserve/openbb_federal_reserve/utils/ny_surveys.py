@@ -178,3 +178,102 @@ def fetch_market_expectations_pdf(
             "filename": f"NY_SME_{selected['date']}_{selected['kind']}.pdf",
         },
     }
+
+
+_SME_DATE_COLUMNS = ("date", "survey_due_date", "horizon_date")
+_SME_NUMERIC_COLUMNS = ("bucket_low", "bucket_high", "aggregation_value")
+
+
+def list_sme_data_urls() -> list[str]:
+    """Return every Survey of Market Expectations data workbook URL, newest first."""
+    from openbb_core.provider.utils.helpers import make_request
+
+    from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
+
+    def _producer() -> list[str]:
+        """Scrape the landing page for the per-survey data workbooks."""
+        response = make_request(SME_URL)
+        response.raise_for_status()
+        pattern = r"/medialibrary/media/markets/survey/(\d{4})/([a-z0-9-]+?-data)\.xlsx"
+        urls: dict[str, None] = {}
+        for year, stem in re.findall(pattern, response.text, re.IGNORECASE):
+            urls[f"{BASE_URL}/medialibrary/media/markets/survey/{year}/{stem}.xlsx"] = (
+                None
+            )
+        return list(urls)
+
+    return cached(
+        "ny_sme_data_urls",
+        lambda: seconds_until_next_release("weekly"),
+        _producer,
+    )
+
+
+def _parse_sme_workbook(content: bytes) -> list[dict[str, Any]]:
+    """Parse one Survey of Market Expectations data workbook into long records."""
+    from io import BytesIO
+
+    from pandas import isna, read_excel, to_datetime, to_numeric
+
+    frame = read_excel(BytesIO(content))
+    frame = frame.rename(
+        columns={
+            "survey_release_date": "date",
+            "spd_question_number": "question_number",
+        }
+    )
+    for column in _SME_DATE_COLUMNS:
+        if column in frame.columns:
+            frame[column] = to_datetime(frame[column], errors="coerce").dt.date
+    for column in _SME_NUMERIC_COLUMNS:
+        if column in frame.columns:
+            frame[column] = to_numeric(frame[column], errors="coerce")
+    string_columns = [
+        column
+        for column in frame.columns
+        if column not in _SME_DATE_COLUMNS and column not in _SME_NUMERIC_COLUMNS
+    ]
+    for column in string_columns:
+        frame[column] = frame[column].map(lambda v: None if isna(v) else str(v))
+    return [
+        {k: (None if isna(v) else v) for k, v in row.items()}
+        for row in frame.to_dict(orient="records")
+    ]
+
+
+def fetch_sme_data() -> list[dict[str, Any]]:
+    """Return the combined Survey of Market Expectations results, newest first."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    from openbb_core.provider.utils.helpers import make_request
+
+    from openbb_federal_reserve.utils.cache import cached, seconds_until_next_release
+
+    def _producer() -> list[dict[str, Any]]:
+        """Download and concatenate every survey's results workbook."""
+        urls = list_sme_data_urls()
+
+        def _download(url: str) -> list[dict[str, Any]]:
+            """Fetch and parse one workbook."""
+            response = make_request(url)
+            response.raise_for_status()
+            return _parse_sme_workbook(response.content)
+
+        with ThreadPoolExecutor(max_workers=min(len(urls) or 1, 8)) as pool:
+            pages = list(pool.map(_download, urls))
+        records = [record for page in pages for record in page]
+        records.sort(
+            key=lambda r: (
+                str(r.get("date") or ""),
+                str(r.get("question_number") or ""),
+                str(r.get("aggregation") or ""),
+            ),
+            reverse=True,
+        )
+        return records
+
+    return cached(
+        "ny_sme_data",
+        lambda: seconds_until_next_release("weekly"),
+        _producer,
+    )
