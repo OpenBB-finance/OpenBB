@@ -45,7 +45,12 @@ def detect_type(
     is_financial = fin_count >= min_financial_signals
 
     if is_insurance and is_financial:
-        return "insurance" if ins_total > fin_count else "financial"
+        # Both templates plausible: prefer financial when core-banking signals
+        # outnumber insurance income-statement signals. This keeps genuine
+        # insurers (few financial signals) on the insurance template while
+        # classifying banks that carry an insurance subsidiary (e.g., BMO,
+        # 5 financial vs 4 insurance-IS signals) as financial.
+        return "insurance" if ins_is >= fin_count else "financial"
     if is_insurance:
         return "insurance"
     if is_financial:
@@ -297,15 +302,13 @@ def get_fiscal_meta(  # noqa: PLR0912
 
                     if not filed:
                         continue
+                    if fy is None or not fp:
+                        continue
 
                     if form in ANNUAL_FORMS:
-                        if fy is None or not fp:
-                            continue
                         if end not in best_annual or filed < best_annual[end][0]:
                             best_annual[end] = (filed, fy, fp)
                     elif form in QUARTERLY_FORMS:
-                        if fy is None or not fp:
-                            continue
                         if end not in best_quarterly or filed < best_quarterly[end][0]:
                             best_quarterly[end] = (filed, fy, fp)
                     elif form in SEMI_ANNUAL_FORMS:
