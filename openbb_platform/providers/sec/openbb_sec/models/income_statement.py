@@ -152,6 +152,11 @@ class SecIncomeStatementData(IncomeStatementData):
         description="Amount of amortization expense for finite-lived intangible asset. Excludes goodwill and capitalized "
         "cost for software to be sold, leased, or marketed.",
     )
+    depreciation_and_amortization: float | None = Field(
+        default=None,
+        description="The aggregate expense recognized in the current period that allocates the cost of tangible and "
+        "intangible assets over their useful lives.",
+    )
     depletion_expense: float | None = Field(
         default=None,
         description="The noncash expense charged against earnings to recognize the consumption of natural resources.",
@@ -266,21 +271,50 @@ class SecIncomeStatementData(IncomeStatementData):
         default=None,
         description="Amount of interest income (expense) classified as operating.",
     )
+    revenues_excl_interest_dividends: float | None = Field(
+        default=None,
+        description="Revenue excluding interest and dividend income (securities firms).",
+    )
+    trust_fee_income: float | None = Field(
+        default=None,
+        description="Revenue recognized in the period for (1) performance (incentive) fees based on the investment "
+        "results achieved for management of certain institutional accounts and hedge funds, (2) schedule-based fees "
+        "earned for management of mutual funds and closed-end funds, based either on average daily net assets or on a "
+        "combination of the average daily net assets and gross income, and (3) other investment management and advisory "
+        "fees.",
+    )
+    service_charges_on_deposits_income: float | None = Field(
+        default=None,
+        description="Includes amounts charged depositors for: (1) maintenance of their accounts (maintenance charges); "
+        "(2) failure to maintain specified minimum balances on account; (3) exceeding the number of checks or "
+        "transactions allowed to be processed in a given period; (4) checks drawn on no minimum balance deposit "
+        "accounts; (5) withdrawals from nontransaction deposit accounts; (6) closing savings accounts before a "
+        "specified minimum period of time has elapsed; (7) accounts which have remained inactive for extended periods "
+        "of time or which have become dormant; (8) use of automated teller machines or remote service units; (9) checks "
+        "drawn against insufficient funds that the bank assesses regardless of whether it decides to pay, return or hold "
+        "the check; (10) issuing stop payment orders; (11) certifying checks; and (12) accumulating or disbursing funds "
+        "deposited in IRAs or Keogh Plan accounts when not handled by the bank's trust department. This item does not "
+        "include penalties assessed on the early withdrawal of time deposits.",
+    )
+    other_service_charge_income: float | None = Field(
+        default=None,
+        description="Fee and commission revenue earned from sources not otherwise specified in the existing taxonomy.",
+    )
+    net_realized_capital_gains: float | None = Field(
+        default=None,
+        description="Amount of realized and unrealized gain (loss) on investment.",
+    )
+    premiums_earned: float | None = Field(
+        default=None,
+        description="Amount, after premiums ceded to other entities and premiums assumed by the entity, of premiums "
+        "earned.",
+    )
     investment_banking_income: float | None = Field(
         default=None,
         description="Amount of fees and commissions from banking, advisory, brokerage, and securities underwriting "
         "activities. Activities include, but are not limited to, underwriting securities, private placements of "
         "securities, investment advisory and management services, merger and acquisition services, sale and servicing of "
         "mutual funds, and other related consulting fees.",
-    )
-    trading_revenue: float | None = Field(
-        default=None,
-        description="Amount of revenue from trading activities, including gains and losses on trading assets and "
-        "liabilities, and principal transactions.",
-    )
-    securities_gains: float | None = Field(
-        default=None,
-        description="Amount of realized and unrealized gain (loss) on debt and equity securities.",
     )
     other_noninterest_income: float | None = Field(
         default=None,
