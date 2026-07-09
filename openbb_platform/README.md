@@ -61,6 +61,7 @@ These packages are not installed when `pip install openbb` is run.  They are ava
 | openbb-federal-reserve | [Federal Reserve](https://www.federalreserve.gov/) data connector | pip install openbb-federal-reserve | None |
 | openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | None / Free |
 | openbb-finviz | [Finviz](https://finviz.com) data connector | pip install openbb-finviz | None |
+| fxmacrodata | [FXMacroData](https://fxmacrodata.com) macro indicators, release calendars, FX spot, COT positioning, and commodities for FX research | pip install fxmacrodata | Free / Paid |
 | openbb-government-us | [US Government](https://data.gov) data connector | pip install openbb-us-government | None |
 | openbb-nasdaq | [Nasdaq Data Link](https://data.nasdaq.com/) connector | pip install openbb-nasdaq | None / Free |
 | openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector | pip install openbb-seeking-alpha | None |
