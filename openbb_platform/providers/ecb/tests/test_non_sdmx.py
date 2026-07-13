@@ -36,27 +36,53 @@ def test_article_to_html():
     html = (
         "<html><head>"
         '<link rel="stylesheet" href="/shared/style.css">'
-        "</head><body><main>"
-        "<nav>sitemenu</nav>"
+        "</head><body>"
+        "<header>site banner</header>"
+        "<nav>site menu</nav>"
+        "<main>"
+        "<header></header>"
+        '<div class="pub print-hidden">Publications Loading…</div>'
+        '<nav class="pub-side-nav">toc</nav>'
+        "<script>window.x=1</script>"
+        "<form>search</form>"
+        '<div class="title"><h1>Article title</h1></div>'
+        '<div class="section">'
         "<h2>Chart 1</h2><p>Some body text here, long enough to read.</p>"
         '<img src="img/chart.png">'
         '<a href="/more">link</a>'
         '<table class="table-chart-duo"><tbody><tr><td>'
         '<img src="img/panel0.png"></td></tr></tbody></table>'
-        "</main></body></html>"
+        "</div>"
+        '<div class="related-topics"><a class="tag" href="/topics">Related topics</a></div>'
+        '<div class="address-box"><p class="line">CONTACT</p></div>'
+        "</main>"
+        "<footer>site footer</footer>"
+        "</body></html>"
     )
     out = non_sdmx._article_to_html(html, base)
-    assert "sitemenu" in out and "table-chart-duo" in out and 'rel="stylesheet"' in out
-    assert f'<base href="{base}"' in out
-    assert 'href="https://www.ecb.europa.eu/shared/style.css"' in out
+    assert "Article title" in out and "table-chart-duo" in out
+    assert "site banner" not in out
+    assert "site menu" not in out
+    assert "site footer" not in out
+    assert "Loading" not in out
+    assert "toc" not in out
+    assert "window.x" not in out
+    assert "search" not in out
+    assert "Related topics" not in out
+    assert "CONTACT" not in out
+    assert 'rel="stylesheet"' not in out
+    assert "<base" not in out
     assert 'src="https://www.ecb.europa.eu/press/blog/img/chart.png"' in out
     assert 'src="https://www.ecb.europa.eu/press/blog/img/panel0.png"' in out
     assert 'href="https://www.ecb.europa.eu/more"' in out
-    no_head = non_sdmx._article_to_html(
-        "<html><body><main><p>Body</p></main></body></html>", base
-    )
-    assert "Body" in no_head and "<base" not in no_head
+    assert 'target="_blank"' in out
     assert non_sdmx._article_to_html("<html><body>no main</body></html>", base) == ""
+    assert (
+        non_sdmx._article_to_html(
+            "<html><body><main><nav>only chrome</nav></main></body></html>", base
+        )
+        == ""
+    )
 
 
 def test_fetch_release_html(monkeypatch):

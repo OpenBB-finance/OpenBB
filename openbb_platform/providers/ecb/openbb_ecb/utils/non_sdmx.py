@@ -45,24 +45,68 @@ async def _aget_bytes(url: str) -> tuple[int, bytes]:
 
 RELEASE_HOSTS = {"www.ecb.europa.eu", "ecb.europa.eu"}
 
+_CHROME_TAGS = (
+    "script",
+    "style",
+    "noscript",
+    "form",
+    "iframe",
+    "nav",
+    "header",
+    "footer",
+    "aside",
+    "button",
+)
+_CHROME_CLASSES = {
+    "print-hidden",
+    "related-topics",
+    "address-box",
+    "breadcrumb",
+    "cookieconsent",
+    "ecb-shares",
+    "loading",
+}
+_ARTICLE_CSS = (
+    "body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;margin:0 auto;"
+    "max-width:56rem;padding:1.5rem 2rem;background:#fff;color:#1d1d1f;"
+    "line-height:1.6}"
+    "h1{font-size:1.6rem;line-height:1.25}h2{font-size:1.25rem}"
+    "img{max-width:100%;height:auto}figure{margin:1rem 0}"
+    "table{border-collapse:collapse;width:100%}"
+    "td,th{border:1px solid #d5d9e2;padding:.3rem .5rem}"
+    "a{color:#003299}.title .category{color:#5c6570;font-size:.8rem}"
+)
+
 
 def _article_to_html(html: str, base_url: str) -> str:
-    """Return the ECB article page with resource URLs made absolute."""
+    """Return an ECB release page's article content as a standalone document."""
     from urllib.parse import urljoin
 
     from bs4 import BeautifulSoup
 
     soup = BeautifulSoup(html, "html.parser")
-    if soup.find("main") is None:
+    main = soup.find("main")
+    if main is None:
         return ""
-    for tag in soup.find_all(href=True):
+    for tag in main.find_all(_CHROME_TAGS):
+        tag.decompose()
+    for tag in list(main.find_all(True)):
+        classes = {str(cls).lower() for cls in (tag.attrs or {}).get("class") or []}
+        if classes & _CHROME_CLASSES:
+            tag.decompose()
+    for tag in main.find_all(href=True):
         tag["href"] = urljoin(base_url, str(tag["href"]))
-    for tag in soup.find_all(src=True):
+        tag["target"] = "_blank"
+        tag["rel"] = "noopener"
+    for tag in main.find_all(src=True):
         tag["src"] = urljoin(base_url, str(tag["src"]))
-    head = soup.find("head")
-    if head is not None:
-        head.insert(0, soup.new_tag("base", href=base_url))
-    return str(soup).strip()
+    body = main.decode_contents().strip()
+    if not body:
+        return ""
+    return (
+        '<!doctype html><html><head><meta charset="utf-8">'
+        f"<style>{_ARTICLE_CSS}</style></head><body>{body}</body></html>"
+    )
 
 
 _INFO_CSS = (
