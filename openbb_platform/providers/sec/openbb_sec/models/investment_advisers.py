@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from html.parser import HTMLParser
 from io import BytesIO
+from json import JSONDecodeError, loads
 from pathlib import Path
 from re import sub
 from typing import Any
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlencode, urljoin, urlparse
 from zipfile import ZipFile
 
 import pandas as pd
@@ -16,11 +18,13 @@ from defusedxml import ElementTree
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from openbb_sec.utils.definitions import HEADERS
 
 ADVISER_REPORTS_URL = "https://www.sec.gov/help/foiadocsinvafoiahtm.html"
+IAPD_FIRM_SEARCH_URL = "https://api.adviserinfo.sec.gov/search/firm"
+_CURRENT_DATA_CACHE_SECONDS = 24 * 60 * 60
 
 
 @dataclass(frozen=True)
@@ -35,7 +39,8 @@ class AdviserReportLink:
 class SecInvestmentAdvisersQueryParams(QueryParams):
     """SEC investment advisers query.
 
-    Source: https://www.sec.gov/help/foiadocsinvafoiahtm.html
+    Sources: https://api.adviserinfo.sec.gov/search/firm and
+    https://www.sec.gov/help/foiadocsinvafoiahtm.html
     """
 
     query: str | None = Field(
@@ -55,10 +60,31 @@ class SecInvestmentAdvisersQueryParams(QueryParams):
         description="Maximum number of adviser records to return.",
         ge=1,
     )
+    include_all: bool = Field(
+        default=False,
+        description=(
+            "Whether to return the current SEC registered and exempt adviser "
+            "snapshot without a search selector."
+        ),
+    )
     use_cache: bool = Field(
         default=True,
         description="Whether or not to use cache.",
     )
+
+    @model_validator(mode="after")
+    def validate_selector(self) -> SecInvestmentAdvisersQueryParams:
+        """Require a selector unless the full current snapshot is explicit."""
+        selectors = (self.query, self.crd, self.sec_number)
+        if self.include_all and any(selectors):
+            raise ValueError(
+                "include_all cannot be combined with query, crd, or sec_number"
+            )
+        if not self.include_all and not any(selectors):
+            raise ValueError(
+                "One of query, crd, sec_number, or include_all is required."
+            )
+        return self
 
 
 class SecInvestmentAdvisersData(Data):
@@ -150,10 +176,18 @@ class SecInvestmentAdvisersFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return raw SEC investment adviser records."""
-        records = load_investment_adviser_records(
-            use_cache=query.use_cache,
-            **kwargs,
-        )
+        if query.include_all:
+            records = load_investment_adviser_records(
+                use_cache=query.use_cache,
+                **kwargs,
+            )
+        else:
+            records = search_investment_adviser_records(
+                query=query.crd or query.sec_number or query.query or "",
+                limit=query.limit,
+                use_cache=query.use_cache,
+                **kwargs,
+            )
         records = _filter_adviser_records(records, query)
         return records[: query.limit]
 
@@ -173,27 +207,178 @@ def load_investment_adviser_records(
     **kwargs: Any,
 ) -> list[dict[str, Any]]:
     """Load current SEC investment adviser report records."""
-    from openbb_sec.utils.ratelimit import sec_make_request
-
-    page_url = kwargs.get("page_url", ADVISER_REPORTS_URL)
+    page_url = str(kwargs.get("page_url") or ADVISER_REPORTS_URL)
     session = kwargs.get("session")
-    request_kwargs: dict[str, Any] = {"headers": HEADERS}
-    if session is not None:
-        request_kwargs["session"] = session
-    response = sec_make_request(page_url, **request_kwargs)
-    response.raise_for_status()
-    links = parse_adviser_report_links(response.text, base_url=page_url)
+    page_html = _cached_adviser_text(
+        page_url,
+        use_cache=use_cache,
+        expire=_CURRENT_DATA_CACHE_SECONDS,
+        session=session,
+    )
+    links = parse_adviser_report_links(page_html, base_url=page_url)
     records: list[dict[str, Any]] = []
     for link in select_current_adviser_report_links(links):
-        report_response = sec_make_request(link.url, **request_kwargs)
-        report_response.raise_for_status()
         records.extend(
             normalize_adviser_report_bytes(
-                report_response.content,
+                _cached_adviser_bytes(
+                    link.url,
+                    use_cache=use_cache,
+                    session=session,
+                ),
                 file_name=_download_filename(link),
             )
         )
     return records
+
+
+def search_investment_adviser_records(
+    *,
+    query: str,
+    limit: int,
+    use_cache: bool = True,
+    **kwargs: object,
+) -> list[dict[str, object]]:
+    """Search adviser firms through the public SEC IAPD API."""
+    session = kwargs.get("session")
+    params = {
+        "query": query,
+        "hl": "true",
+        "includePrevious": "true",
+        "nrows": limit,
+        "start": 0,
+        "r": limit,
+        "sort": "score desc",
+        "wt": "json",
+    }
+    url = f"{IAPD_FIRM_SEARCH_URL}?{urlencode(params)}"
+    try:
+        payload = loads(
+            _cached_adviser_text(
+                url,
+                use_cache=use_cache,
+                expire=_CURRENT_DATA_CACHE_SECONDS,
+                session=session,
+            )
+        )
+    except JSONDecodeError:
+        return []
+    if not isinstance(payload, dict):
+        return []
+    hits_container = payload.get("hits")
+    if not isinstance(hits_container, dict):
+        return []
+    hits = hits_container.get("hits")
+    if not isinstance(hits, list):
+        return []
+    records = [
+        record
+        for hit in hits
+        if isinstance(hit, dict)
+        and isinstance(hit.get("_source"), dict)
+        and (record := _iapd_firm_record(hit["_source"])) is not None
+    ]
+    return records
+
+
+def _cached_adviser_text(
+    url: str,
+    *,
+    use_cache: bool,
+    expire: int | None = None,
+    session: object = None,
+) -> str:
+    """Read adviser text while omitting an absent requests session."""
+    from openbb_sec.utils.cache import cached_text
+
+    if session is None:
+        return cached_text(
+            url,
+            use_cache=use_cache,
+            expire=expire,
+            headers=HEADERS,
+        )
+    return cached_text(
+        url,
+        use_cache=use_cache,
+        expire=expire,
+        headers=HEADERS,
+        session=session,
+    )
+
+
+def _cached_adviser_bytes(
+    url: str,
+    *,
+    use_cache: bool,
+    session: object = None,
+) -> bytes:
+    """Read adviser bytes while omitting an absent requests session."""
+    from openbb_sec.utils.cache import cached_bytes
+
+    if session is None:
+        return cached_bytes(
+            url,
+            use_cache=use_cache,
+            headers=HEADERS,
+        )
+    return cached_bytes(
+        url,
+        use_cache=use_cache,
+        headers=HEADERS,
+        session=session,
+    )
+
+
+def _iapd_firm_record(
+    source: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Normalize one IAPD investment adviser firm search result."""
+    sec_number = _clean_text(source.get("firm_ia_full_sec_number"))
+    if sec_number is None:
+        return None
+    legal_name = _clean_text(source.get("firm_name"))
+    other_names = source.get("firm_other_names")
+    business_name = (
+        _clean_text(other_names[0])
+        if isinstance(other_names, list) and other_names
+        else legal_name
+    )
+    address_details = _iapd_address_details(source.get("firm_ia_address_details"))
+    office = _string_key_dict(address_details.get("officeAddress"))
+    return {
+        "crd": _clean_identifier(source.get("firm_source_id")),
+        "sec_number": sec_number,
+        "legal_name": legal_name,
+        "primary_business_name": business_name,
+        "status": _clean_text(source.get("firm_ia_scope")),
+        "city": _clean_text(office.get("city")),
+        "state": _clean_text(office.get("state")),
+        "country": _clean_text(office.get("country")),
+        "phone": _clean_text(
+            address_details.get("businessPhoneNumber")
+            or office.get("businessPhoneNumber")
+        ),
+    }
+
+
+def _iapd_address_details(value: object) -> dict[str, object]:
+    """Return decoded IAPD address details."""
+    if isinstance(value, dict):
+        return _string_key_dict(value)
+    if not isinstance(value, str) or not value:
+        return {}
+    try:
+        decoded = loads(value)
+    except JSONDecodeError:
+        return {}
+    return _string_key_dict(decoded)
+
+
+def _string_key_dict(value: object) -> dict[str, object]:
+    """Return dictionary entries with string keys."""
+    if not isinstance(value, dict):
+        return {}
+    return {key: item for key, item in value.items() if isinstance(key, str)}
 
 
 def parse_adviser_report_links(
@@ -295,24 +480,14 @@ def _filter_adviser_records(
     records: list[dict[str, Any]],
     query: SecInvestmentAdvisersQueryParams,
 ) -> list[dict[str, Any]]:
-    """Apply client-side name and identifier filters."""
+    """Apply exact client-side identifier filters."""
     filtered = records
-    if query.query:
-        needle = query.query.casefold()
-        filtered = [
-            record
-            for record in filtered
-            if needle
-            in " ".join(
-                str(record.get(field) or "")
-                for field in ("legal_name", "primary_business_name")
-            ).casefold()
-        ]
     if query.crd:
         filtered = [
             record
             for record in filtered
-            if _normalize_identifier(record.get("crd")) == _normalize_identifier(query.crd)
+            if _normalize_identifier(record.get("crd"))
+            == _normalize_identifier(query.crd)
         ]
     if query.sec_number:
         filtered = [
@@ -480,13 +655,13 @@ def _normalize_column(value: Any) -> str:
     return sub(r"[^a-z0-9]+", "", str(value).strip().lower())
 
 
-def _clean_text(value: str) -> str | None:
+def _clean_text(value: object) -> str | None:
     """Trim text and return None for empty values."""
     cleaned = " ".join(str(value or "").split())
     return cleaned or None
 
 
-def _clean_identifier(value: str) -> str | None:
+def _clean_identifier(value: object) -> str | None:
     """Trim identifier-like fields without numeric coercion."""
     cleaned = _clean_text(value)
     if cleaned is None:

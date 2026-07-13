@@ -315,9 +315,7 @@ class SecCompanyFilingsFetcher(
                 for form_type in query.form_type.replace("_", " ").split(",")
                 if form_type
             }
-            filings = filings[
-                filings.form.map(_base_form).isin(form_types)
-            ]
+            filings = filings[filings.form.map(_base_form).isin(form_types)]
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
 

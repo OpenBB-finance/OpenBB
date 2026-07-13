@@ -3,7 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+from json import dumps
+from urllib.parse import parse_qs, urlparse
 
+import pytest
+
+from openbb_sec.models import investment_advisers
 from openbb_sec.models.investment_advisers import (
     AdviserReportLink,
     SecInvestmentAdvisersFetcher,
@@ -14,8 +19,37 @@ from openbb_sec.models.investment_advisers import (
 )
 
 
+def test_investment_advisers_requires_selector_or_explicit_snapshot() -> None:
+    """Adviser lookup should not bulk-load the current snapshot by accident."""
+    with pytest.raises(ValueError, match="query, crd, sec_number, or include_all"):
+        SecInvestmentAdvisersQueryParams()
+    with pytest.raises(ValueError, match="include_all cannot be combined"):
+        SecInvestmentAdvisersQueryParams(query="blackrock", include_all=True)
+
+
+def test_investment_advisers_include_all_allows_snapshot(monkeypatch) -> None:
+    """Full current adviser snapshots require an explicit opt-in."""
+    records = [
+        {
+            "crd": "123",
+            "sec_number": "801-123",
+            "legal_name": "Acme Capital Management LP",
+        }
+    ]
+
+    monkeypatch.setattr(
+        "openbb_sec.models.investment_advisers.load_investment_adviser_records",
+        lambda **_kwargs: records,
+    )
+
+    query = SecInvestmentAdvisersQueryParams(include_all=True)
+    data = asyncio.run(SecInvestmentAdvisersFetcher.aextract_data(query, None))
+
+    assert data == records
+
+
 def test_investment_advisers_fetcher_filters_by_query_and_limit(monkeypatch) -> None:
-    """Adviser records can be filtered by name-like query."""
+    """Targeted adviser searches use IAPD instead of current roster files."""
     records = [
         {
             "crd": "123",
@@ -34,8 +68,12 @@ def test_investment_advisers_fetcher_filters_by_query_and_limit(monkeypatch) -> 
     ]
 
     monkeypatch.setattr(
-        "openbb_sec.models.investment_advisers.load_investment_adviser_records",
+        "openbb_sec.models.investment_advisers.search_investment_adviser_records",
         lambda **_kwargs: records,
+    )
+    monkeypatch.setattr(
+        "openbb_sec.models.investment_advisers.load_investment_adviser_records",
+        lambda **_kwargs: pytest.fail("targeted search loaded current roster files"),
     )
 
     query = SecInvestmentAdvisersQueryParams(query="capital", limit=1)
@@ -46,6 +84,24 @@ def test_investment_advisers_fetcher_filters_by_query_and_limit(monkeypatch) -> 
     assert result[0].crd == "123"
     assert result[0].legal_name == "Acme Capital Management LP"
     assert "source_snapshot" not in result[0].model_dump()
+
+
+def test_investment_advisers_preserves_iapd_phrase_matches(monkeypatch) -> None:
+    """IAPD ranking is not discarded by punctuation-sensitive local filtering."""
+    record = {
+        "crd": "164594",
+        "sec_number": "801-76926",
+        "legal_name": "BLACKROCK (SINGAPORE) LIMITED",
+    }
+    monkeypatch.setattr(
+        "openbb_sec.models.investment_advisers.search_investment_adviser_records",
+        lambda **_kwargs: [record],
+    )
+
+    query = SecInvestmentAdvisersQueryParams(query="blackrock singapore")
+    data = asyncio.run(SecInvestmentAdvisersFetcher.aextract_data(query, None))
+
+    assert data == [record]
 
 
 def test_investment_advisers_fetcher_filters_by_identifiers(monkeypatch) -> None:
@@ -64,7 +120,7 @@ def test_investment_advisers_fetcher_filters_by_identifiers(monkeypatch) -> None
     ]
 
     monkeypatch.setattr(
-        "openbb_sec.models.investment_advisers.load_investment_adviser_records",
+        "openbb_sec.models.investment_advisers.search_investment_adviser_records",
         lambda **_kwargs: records,
     )
 
@@ -74,7 +130,86 @@ def test_investment_advisers_fetcher_filters_by_identifiers(monkeypatch) -> None
     assert data == [records[1]]
 
 
-def test_select_current_adviser_report_links_keeps_latest_registered_and_exempt() -> None:
+def test_search_investment_adviser_records_normalizes_iapd_response(
+    monkeypatch,
+) -> None:
+    """IAPD firm search rows map to the public adviser model fields."""
+    payload = dumps(
+        {
+            "hits": {
+                "hits": [
+                    {
+                        "_source": {
+                            "firm_source_id": "164594",
+                            "firm_ia_full_sec_number": "801-76926",
+                            "firm_name": "BLACKROCK (SINGAPORE) LIMITED",
+                            "firm_other_names": ["BLACKROCK (SINGAPORE) LIMITED"],
+                            "firm_ia_scope": "ACTIVE",
+                            "firm_ia_address_details": (
+                                '{"officeAddress":{"city":"SINGAPORE",'
+                                '"country":"Singapore"}}'
+                            ),
+                        }
+                    },
+                    {
+                        "_source": {
+                            "firm_source_id": "38642",
+                            "firm_bd_full_sec_number": "8-48436",
+                            "firm_name": "BLACKROCK INVESTMENTS, LLC",
+                        }
+                    },
+                ]
+            }
+        }
+    )
+
+    calls: list[tuple[str, dict[str, object]]] = []
+
+    def fake_cached_text(url: str, **kwargs: object) -> str:
+        calls.append((url, kwargs))
+        return payload
+
+    monkeypatch.setattr(
+        "openbb_sec.utils.cache.cached_text",
+        fake_cached_text,
+    )
+
+    records = investment_advisers.search_investment_adviser_records(
+        query="blackrock",
+        limit=12,
+        use_cache=False,
+    )
+
+    assert records == [
+        {
+            "crd": "164594",
+            "sec_number": "801-76926",
+            "legal_name": "BLACKROCK (SINGAPORE) LIMITED",
+            "primary_business_name": "BLACKROCK (SINGAPORE) LIMITED",
+            "status": "ACTIVE",
+            "city": "SINGAPORE",
+            "state": None,
+            "country": "Singapore",
+            "phone": None,
+        }
+    ]
+    assert calls[0][0].startswith("https://api.adviserinfo.sec.gov/search/firm?")
+    assert parse_qs(urlparse(calls[0][0]).query) == {
+        "query": ["blackrock"],
+        "hl": ["true"],
+        "includePrevious": ["true"],
+        "nrows": ["12"],
+        "start": ["0"],
+        "r": ["12"],
+        "sort": ["score desc"],
+        "wt": ["json"],
+    }
+    assert calls[0][1]["use_cache"] is False
+
+
+def test_select_current_adviser_report_links_keeps_latest_registered_and_exempt() -> (
+    None
+):
     """Only the latest registered and exempt report links are selected."""
     links = [
         AdviserReportLink(
@@ -147,7 +282,7 @@ def test_normalize_adviser_report_bytes_accepts_current_sec_roster_aliases() -> 
 def test_load_investment_adviser_records_default_reads_registered_and_exempt(
     monkeypatch,
 ) -> None:
-    """The cache flag does not change adviser report coverage."""
+    """Current adviser report discovery and archives honor the cache flag."""
     links = [
         AdviserReportLink(
             url="https://www.sec.gov/files/registered.csv",
@@ -161,30 +296,38 @@ def test_load_investment_adviser_records_default_reads_registered_and_exempt(
         ),
     ]
 
-    class Response:
-        def __init__(self, *, text: str = "", content: bytes = b"") -> None:
-            self.text = text
-            self.content = content
+    calls: list[tuple[str, bool]] = []
 
-        def raise_for_status(self) -> None:
-            return None
+    def fake_cached_text(url: str, **kwargs: object) -> str:
+        calls.append((url, bool(kwargs["use_cache"])))
+        return "<html />"
 
-    def fake_sec_make_request(url: str, **_kwargs: object) -> Response:
+    def fake_cached_bytes(url: str, **kwargs: object) -> bytes:
+        calls.append((url, bool(kwargs["use_cache"])))
         if url.endswith("registered.csv"):
-            return Response(content=b"CRD Number,SEC Number,Legal Name\n1,801-1,Reg")
+            return b"CRD Number,SEC Number,Legal Name\n1,801-1,Reg"
         if url.endswith("exempt.csv"):
-            return Response(content=b"CRD Number,SEC Number,Legal Name\n2,802-2,Exempt")
-        return Response(text="<html />")
+            return b"CRD Number,SEC Number,Legal Name\n2,802-2,Exempt"
+        raise AssertionError(f"Unexpected adviser archive URL: {url}")
 
     monkeypatch.setattr(
         "openbb_sec.models.investment_advisers.parse_adviser_report_links",
         lambda *_args, **_kwargs: links,
     )
     monkeypatch.setattr(
-        "openbb_sec.utils.ratelimit.sec_make_request",
-        fake_sec_make_request,
+        "openbb_sec.utils.cache.cached_text",
+        fake_cached_text,
+    )
+    monkeypatch.setattr(
+        "openbb_sec.utils.cache.cached_bytes",
+        fake_cached_bytes,
     )
 
     records = load_investment_adviser_records(use_cache=True)
 
     assert [record["legal_name"] for record in records] == ["Reg", "Exempt"]
+    assert calls == [
+        (investment_advisers.ADVISER_REPORTS_URL, True),
+        ("https://www.sec.gov/files/registered.csv", True),
+        ("https://www.sec.gov/files/exempt.csv", True),
+    ]

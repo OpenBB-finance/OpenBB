@@ -1,8 +1,22 @@
 """Utility functions for parsing SEC Form 13F-HR."""
 
+import asyncio
 from typing import Any
+from xml.parsers.expat import ExpatError
 
 from openbb_core.app.model.abstract.error import OpenBBError
+
+_COMPLETE_SUBMISSION_ATTEMPTS = 3
+_FORM_HEADER_PARSE_ERROR = (
+    "Failed to parse the form header."
+    + " Check the `filing_str` to for the tag, 'headerData'."
+)
+_INFO_TABLE_PARSE_ERROR = (
+    "Failed to parse the 13F-HR information table."
+    + " Check the `filing_str` to make sure it is valid and contains the tag 'informationTable'."
+    + " Documents filed before Q2 2013 are not supported."
+)
+_TRANSIENT_SEC_STATUS_CODES = (429, 500, 502, 503, 504)
 
 
 def date_to_quarter_end(date: str) -> str:
@@ -62,8 +76,27 @@ async def get_complete_submission(url: str):
     from openbb_sec.utils.definitions import HEADERS
     from openbb_sec.utils.ratelimit import sec_amake_request as amake_request
 
-    return await amake_request(
-        url, headers=HEADERS, response_callback=complete_submission_callback
+    for attempt in range(_COMPLETE_SUBMISSION_ATTEMPTS):
+        try:
+            return await amake_request(
+                url, headers=HEADERS, response_callback=complete_submission_callback
+            )
+        except OpenBBError as error:
+            if (
+                not _is_transient_sec_response(error)
+                or attempt == _COMPLETE_SUBMISSION_ATTEMPTS - 1
+            ):
+                raise
+            await asyncio.sleep(2**attempt)
+
+    raise RuntimeError("Unreachable complete submission retry state.")
+
+
+def _is_transient_sec_response(error: OpenBBError) -> bool:
+    message = str(error)
+    return any(
+        f"status code {status_code}" in message
+        for status_code in _TRANSIENT_SEC_STATUS_CODES
     )
 
 
@@ -81,15 +114,15 @@ def parse_header(filing_str: str) -> dict:
     try:
         header_xml = soup.find("headerData")
         header_dict = xmltodict.parse(str(header_xml))["headerData"]
-    except KeyError:
-        header_xml = soup.find("type")
-        header_dict = xmltodict.parse(str(header_xml)).get("type")
+    except (KeyError, ExpatError):
+        try:
+            header_xml = soup.find("type")
+            header_dict = xmltodict.parse(str(header_xml)).get("type")
+        except ExpatError as error:
+            raise OpenBBError(_FORM_HEADER_PARSE_ERROR) from error
     if header_dict:
         return header_dict
-    raise OpenBBError(
-        "Failed to parse the form header."
-        + " Check the `filing_str` to for the tag, 'headerData'."
-    )
+    raise OpenBBError(_FORM_HEADER_PARSE_ERROR)
 
 
 def get_submission_type(filing_str: str):
@@ -141,25 +174,34 @@ async def parse_13f_hr(filing: str, use_cache: bool = True):
     text = filing.replace("ns1:", "").replace("n1:", "")
     match = re.search(r"<informationTable[\s>][\s\S]*</informationTable>", text)
     if match:
-        parsed_xml = xmltodict.parse(match.group(0))["informationTable"]["infoTable"]
+        try:
+            parsed_xml = xmltodict.parse(match.group(0))["informationTable"][
+                "infoTable"
+            ]
+        except (KeyError, ExpatError) as error:
+            raise OpenBBError(_INFO_TABLE_PARSE_ERROR) from error
     else:
         from bs4 import BeautifulSoup
 
         soup = BeautifulSoup(filing, "xml")
         info_table = soup.find_all("informationTable") or soup.find_all("table")[-1:]
-        parsed_xml = xmltodict.parse(
-            str(info_table[0]).replace("ns1:", "").replace("n1:", "")
-        )["informationTable"]["infoTable"]
+        try:
+            parsed_xml = xmltodict.parse(
+                str(info_table[0]).replace("ns1:", "").replace("n1:", "")
+            )["informationTable"]["infoTable"]
+        except (IndexError, KeyError, ExpatError) as error:
+            raise OpenBBError(_INFO_TABLE_PARSE_ERROR) from error
 
     if parsed_xml is None:
-        raise OpenBBError(
-            "Failed to parse the 13F-HR information table."
-            + " Check the `filing_str` to make sure it is valid and contains the tag 'informationTable'."
-            + " Documents filed before Q2 2013 are not supported."
-        )
+        raise OpenBBError(_INFO_TABLE_PARSE_ERROR)
 
     periods = re.findall(r"<periodOfReport>([^<]+)</periodOfReport>", text)
-    period_ending = periods[0] if periods else get_period_ending(text)
+    try:
+        period_ending = periods[0] if periods else get_period_ending(text)
+    except OpenBBError as error:
+        raise OpenBBError(_INFO_TABLE_PARSE_ERROR) from error
+    if not period_ending:
+        raise OpenBBError(_INFO_TABLE_PARSE_ERROR)
     data = (
         DataFrame(parsed_xml)
         if isinstance(parsed_xml, list)

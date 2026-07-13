@@ -1328,7 +1328,7 @@ def test_aextract_calendar_period_only_uses_today():
             assert res["report_type"] == "10-Q"
         except OpenBBError as exc:
             # Acceptable when today's quarter window excludes the fixture.
-            assert "Could not find a filing" in str(exc.value)
+            assert "Could not find a filing" in str(exc)
 
 
 class _Boom(Exception):

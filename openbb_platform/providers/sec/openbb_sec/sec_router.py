@@ -209,6 +209,7 @@ async def institutions_search(
     examples=[
         APIEx(parameters={"query": "blackrock", "provider": "sec"}),
         APIEx(parameters={"crd": "105046", "provider": "sec"}),
+        APIEx(parameters={"include_all": True, "limit": 1000, "provider": "sec"}),
     ],
 )
 async def investment_advisers(
@@ -222,133 +223,24 @@ async def investment_advisers(
 
 
 @router.command(
-    model="SecInvestmentAdviserPeople",
-    examples=[
-        APIEx(parameters={"crd": "105046", "provider": "sec"}),
-        APIEx(parameters={"query": "blackrock", "provider": "sec"}),
-    ],
-)
-async def investment_adviser_people(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Search SEC Form ADV related people by adviser name, CRD, or SEC number."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecFilingIndex",
+    model="SecFormD",
     examples=[
         APIEx(
             parameters={
-                "form_type": "D",
-                "start_date": "2025-01-01",
-                "end_date": "2025-03-31",
+                "cik": "0001841359",
+                "accession_number": "0001841359-24-000001",
                 "provider": "sec",
             }
         ),
     ],
 )
-async def filing_index(
+async def form_d(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get SEC EDGAR filing index rows by form type and filing date."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecInstitutionalManagers",
-    examples=[
-        APIEx(parameters={"query": "berkshire", "provider": "sec"}),
-        APIEx(parameters={"cik": "1067983", "provider": "sec"}),
-    ],
-)
-async def institutional_managers(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Search SEC Form 13F institutional manager records by name, CIK, or period."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecInstitutionalReportingPeriods",
-    examples=[
-        APIEx(parameters={"provider": "sec"}),
-        APIEx(parameters={"years": 3, "provider": "sec"}),
-    ],
-)
-async def institutional_reporting_periods(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get published SEC structured Form 13F reporting periods."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecInstitutionalHoldings",
-    examples=[
-        APIEx(parameters={"period": "2024-12-31", "cik": "1067983", "provider": "sec"}),
-        APIEx(
-            parameters={
-                "period": "2024-12-31",
-                "accession_number": "0000950123-25-001234",
-                "provider": "sec",
-            }
-        ),
-    ],
-)
-async def institutional_holdings(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get institutional holdings from SEC Form 13F structured data."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecPrivateOfferings",
-    examples=[
-        APIEx(parameters={"cik": "1841359", "provider": "sec"}),
-        APIEx(parameters={"cik": "1841359", "start_date": "2024-01-01", "provider": "sec"}),
-    ],
-)
-async def private_offerings(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get private offering details from SEC Form D filings."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecPrivateOfferingPeople",
-    examples=[
-        APIEx(parameters={"cik": "1841359", "provider": "sec"}),
-        APIEx(parameters={"cik": "1841359", "start_date": "2024-01-01", "provider": "sec"}),
-    ],
-)
-async def private_offering_people(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get related people disclosed in SEC Form D filings."""
+    """Get one exact SEC Form D filing by issuer CIK and accession number."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -1709,9 +1601,7 @@ async def get_widgets_json() -> dict:
         # "/api/v{version}" and the version is configurable, so a literal path
         # silently matches nothing — dropping every generated SEC widget —
         # whenever the prefix differs from the default.
-        sec_prefix = (
-            f"{SystemService().system_settings.api_settings.prefix}/sec/"
-        )
+        sec_prefix = f"{SystemService().system_settings.api_settings.prefix}/sec/"
         generated = build_json(rest_app.openapi(), [])
         widgets = {
             key: value

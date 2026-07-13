@@ -1,10 +1,8 @@
-"""SEC private offerings from Form D filings."""
+"""SEC Form D exact filing lookup."""
 
 from __future__ import annotations
 
-import inspect
 import re
-from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal, InvalidOperation
 from typing import TYPE_CHECKING, Any
@@ -21,37 +19,14 @@ if TYPE_CHECKING:
     from xml.etree.ElementTree import Element
 
 
-@dataclass(frozen=True)
-class NormalizedFormD:
-    """Normalized Form D offering and related-person rows."""
+class SecFormDQueryParams(QueryParams):
+    """SEC Form D exact filing query."""
 
-    offering: dict[str, Any]
-    people: list[dict[str, Any]]
-
-
-class SecPrivateOfferingsQueryParams(QueryParams):
-    """SEC private offerings query."""
-
-    cik: str | int | None = Field(
-        default=None,
+    cik: str = Field(
         description="Central Index Key (CIK) for the Form D issuer.",
     )
-    issuer: str | None = Field(
-        default=None,
-        description="Search text matched against the issuer name.",
-    )
-    start_date: date | None = Field(
-        default=None,
-        description="Start date for Form D filing dates.",
-    )
-    end_date: date | None = Field(
-        default=None,
-        description="End date for Form D filing dates.",
-    )
-    limit: int | None = Field(
-        default=100,
-        description="Maximum number of Form D offering rows to return.",
-        ge=1,
+    accession_number: str = Field(
+        description="SEC accession number for one exact Form D filing.",
     )
     use_cache: bool = Field(
         default=True,
@@ -59,8 +34,8 @@ class SecPrivateOfferingsQueryParams(QueryParams):
     )
 
 
-class SecPrivateOfferingsData(Data):
-    """SEC private offering row."""
+class SecFormDData(Data):
+    """SEC Form D offering row with related people."""
 
     issuer_cik: str | None = Field(
         default=None,
@@ -76,7 +51,7 @@ class SecPrivateOfferingsData(Data):
     )
     filing_date: date | None = Field(
         default=None,
-        description="Date the Form D filing was submitted to EDGAR.",
+        description="Date the Form D filing was submitted to EDGAR when available.",
     )
     first_sale_date: date | None = Field(
         default=None,
@@ -106,214 +81,268 @@ class SecPrivateOfferingsData(Data):
         default=None,
         description="Whether the offering appears to be a private fund offering.",
     )
+    related_people: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="Related people disclosed in the Form D filing.",
+    )
 
 
-class SecPrivateOfferingsFetcher(
-    Fetcher[
-        SecPrivateOfferingsQueryParams,
-        list[SecPrivateOfferingsData],
-    ]
-):
-    """SEC private offerings fetcher."""
+class SecFormDFetcher(Fetcher[SecFormDQueryParams, list[SecFormDData]]):
+    """SEC Form D exact filing fetcher."""
 
     @staticmethod
-    def transform_query(params: dict[str, Any]) -> SecPrivateOfferingsQueryParams:
+    def transform_query(params: dict[str, Any]) -> SecFormDQueryParams:
         """Transform query parameters."""
-        return SecPrivateOfferingsQueryParams(**params)
+        return SecFormDQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: SecPrivateOfferingsQueryParams,
+        query: SecFormDQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return normalized Form D offering rows."""
-        loaded = load_private_offering_records(
+        """Return one normalized Form D filing."""
+        record = await load_form_d_record(
             cik=query.cik,
-            issuer=query.issuer,
-            start_date=query.start_date,
-            end_date=query.end_date,
-            limit=query.limit,
+            accession_number=query.accession_number,
             use_cache=query.use_cache,
             **kwargs,
         )
-        records = await loaded if inspect.isawaitable(loaded) else loaded
-        return records
+        if not record:
+            raise OpenBBError("No Form D filing was found for the accession number.")
+        return [record]
 
     @staticmethod
     def transform_data(
-        query: SecPrivateOfferingsQueryParams,
+        query: SecFormDQueryParams,
         data: list[dict],
         **kwargs: Any,
-    ) -> list[SecPrivateOfferingsData]:
+    ) -> list[SecFormDData]:
         """Transform raw data to the model format."""
-        return [SecPrivateOfferingsData.model_validate(d) for d in data]
+        return [SecFormDData.model_validate(d) for d in data]
 
 
-def load_private_offering_records(
+async def load_form_d_record(
     *,
-    cik: str | int | None = None,
-    issuer: str | None = None,
-    start_date: date | None = None,
-    end_date: date | None = None,
-    limit: int | None = 100,
-    use_cache: bool = True,
-    **kwargs: Any,
-) -> Any:
-    """Load Form D offering records."""
-    return _aload_private_offering_records(
-        cik=cik,
-        issuer=issuer,
-        start_date=start_date,
-        end_date=end_date,
-        limit=limit,
-        use_cache=use_cache,
-        **kwargs,
-    )
-
-
-async def _aload_private_offering_records(
-    *,
-    cik: str | int | None = None,
-    issuer: str | None = None,
-    start_date: date | None = None,
-    end_date: date | None = None,
-    limit: int | None = 100,
-    use_cache: bool = True,
-    **kwargs: Any,
-) -> list[dict[str, Any]]:
-    """Load Form D offering records from EDGAR filing documents."""
-    normalized = await _load_normalized_form_d(
-        cik=cik,
-        start_date=start_date,
-        end_date=end_date,
-        limit=limit,
-        use_cache=use_cache,
-        **kwargs,
-    )
-    records = [item.offering for item in normalized]
-    return _filter_by_issuer(records, issuer)
-
-
-async def load_normalized_form_d_records(
-    *,
-    cik: str | int | None = None,
-    accession_number: str | None = None,
-    start_date: date | None = None,
-    end_date: date | None = None,
-    limit: int | None = 100,
-    use_cache: bool = True,
-    **kwargs: Any,
-) -> list[NormalizedFormD]:
-    """Load normalized Form D records for route-specific row projections."""
-    return await _load_normalized_form_d(
-        cik=cik,
-        accession_number=accession_number,
-        start_date=start_date,
-        end_date=end_date,
-        limit=limit,
-        use_cache=use_cache,
-        **kwargs,
-    )
-
-
-async def _load_normalized_form_d(
-    *,
-    cik: str | int | None = None,
-    accession_number: str | None = None,
-    start_date: date | None = None,
-    end_date: date | None = None,
-    limit: int | None = 100,
-    use_cache: bool = True,
-    **kwargs: Any,
-) -> list[NormalizedFormD]:
-    """Download Form D filing documents and normalize them."""
-    from openbb_core.provider.abstract.annotated_result import AnnotatedResult
-
-    from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
-    from openbb_sec.models.sec_filing import Filing
-
-    if accession_number and cik is None:
-        return await _load_normalized_form_d_by_accession(
-            accession_number,
-            use_cache=use_cache,
-        )
-
-    if cik is None:
-        raise OpenBBError("A CIK is required.")
-
-    fetched = await SecCompanyFilingsFetcher().fetch_data(
-        {
-            "cik": cik,
-            "form_type": "D",
-            "start_date": start_date,
-            "end_date": end_date,
-            "limit": 0 if accession_number else limit,
-            "use_cache": use_cache,
-        },
-        {},
-    )
-    filings = (fetched.result or []) if isinstance(fetched, AnnotatedResult) else fetched
-    if accession_number:
-        filings = [
-            filing
-            for filing in filings
-            if _clean_text(getattr(filing, "accession_number", None))
-            == accession_number
-        ]
-    normalized: list[NormalizedFormD] = []
-    for filing in filings:
-        document_url = getattr(filing, "complete_submission_url", None) or getattr(
-            filing,
-            "report_url",
-            None,
-        )
-        if not document_url:
-            continue
-        try:
-            document = await Filing._adownload_file(str(document_url), use_cache)
-            normalized.append(
-                normalize_form_d_document(
-                    _extract_form_d_document(document or ""),
-                    accession_number=_clean_text(
-                        getattr(filing, "accession_number", None)
-                    ),
-                    filing_date=getattr(filing, "filing_date", None),
-                )
-            )
-        except (ParseError, UnicodeDecodeError):
-            continue
-    return normalized
-
-
-async def _load_normalized_form_d_by_accession(
+    cik: str,
     accession_number: str,
-    *,
-    use_cache: bool,
-) -> list[NormalizedFormD]:
+    use_cache: bool = True,
+    **kwargs: Any,
+) -> dict[str, Any]:
     """Download and normalize one Form D filing by accession number."""
     from openbb_sec.models.sec_filing import Filing
 
     accession = _normalize_accession_number(accession_number)
-    url = _complete_submission_url(accession)
     try:
-        document = await Filing._adownload_file(url, use_cache)
-        return [
-            normalize_form_d_document(
-                _extract_form_d_document(document or ""),
-                accession_number=accession,
-            )
-        ]
+        document = await Filing._adownload_file(
+            kwargs.get("url") or _complete_submission_url(accession, cik),
+            use_cache,
+        )
+        return normalize_form_d_document(
+            _extract_form_d_document(document or ""),
+            accession_number=accession,
+        )
     except (ParseError, UnicodeDecodeError):
-        return []
+        return {}
 
 
-def _complete_submission_url(accession_number: str) -> str:
+def normalize_form_d_document(
+    document: str | bytes,
+    *,
+    accession_number: str | None = None,
+    filing_date: date | None = None,
+) -> dict[str, Any]:
+    """Normalize one Form D XML or text document."""
+    text = (
+        document.decode("utf-8", errors="replace")
+        if isinstance(document, bytes)
+        else document
+    )
+    if _looks_like_xml(text):
+        return _normalize_form_d_xml(
+            text,
+            accession_number=accession_number,
+            filing_date=filing_date,
+        )
+    return _normalize_form_d_text(
+        text,
+        accession_number=accession_number,
+        filing_date=filing_date,
+    )
+
+
+def _normalize_form_d_xml(
+    text: str,
+    *,
+    accession_number: str | None,
+    filing_date: date | None,
+) -> dict[str, Any]:
+    """Normalize one Form D XML document."""
+    root = ElementTree.fromstring(text)
+    industry_group = _first_text(root, ("industryGroupType",))
+    offering = _offering_row(
+        issuer_cik=_normalize_cik(_first_text(root, ("issuerCik", "issuerCIK", "cik"))),
+        issuer_name=_first_text(root, ("issuerName", "entityName", "nameOfIssuer")),
+        accession_number=accession_number
+        or _first_text(root, ("accessionNumber", "accession-number")),
+        filing_date=filing_date,
+        first_sale_date=_parse_date(
+            _first_text(root, ("dateOfFirstSale", "dateOfFirstSale/value", "value"))
+        ),
+        industry_group=industry_group,
+        offering_amount=_parse_amount(
+            _first_text(root, ("totalOfferingAmount", "totalOfferingAmount/value"))
+        ),
+        sold_amount=_parse_amount(
+            _first_text(root, ("totalAmountSold", "totalAmountSold/value"))
+        ),
+        remaining_amount=_parse_amount(
+            _first_text(root, ("totalRemaining", "totalRemaining/value"))
+        ),
+        investor_count=_parse_int(_first_text(root, ("totalNumberAlreadyInvested",))),
+        is_private_fund=_is_private_fund(industry_group),
+    )
+    offering["related_people"] = _xml_related_people(root)
+    return offering
+
+
+def _normalize_form_d_text(
+    text: str,
+    *,
+    accession_number: str | None,
+    filing_date: date | None,
+) -> dict[str, Any]:
+    """Normalize one plain-text Form D document."""
+    industry_group = _text_field(text, ("INDUSTRY GROUP", "INDUSTRY GROUP TYPE"))
+    offering = _offering_row(
+        issuer_cik=_normalize_cik(_text_field(text, ("ISSUER CIK", "CIK"))),
+        issuer_name=_text_field(
+            text,
+            (
+                "ENTITY NAME",
+                "ISSUER NAME",
+                "OFFERING NAME",
+                "FUND NAME",
+                "NAME OF ISSUER",
+            ),
+        ),
+        accession_number=accession_number
+        or _text_field(text, ("ACCESSION NUMBER", "ACCESSION NO")),
+        filing_date=filing_date,
+        first_sale_date=_parse_date(_text_field(text, ("FIRST SALE DATE",))),
+        industry_group=industry_group,
+        offering_amount=_parse_amount(
+            _text_field(text, ("TOTAL OFFERING AMOUNT", "OFFERING AMOUNT"))
+        ),
+        sold_amount=_parse_amount(
+            _text_field(text, ("TOTAL AMOUNT SOLD", "AMOUNT SOLD", "SOLD AMOUNT"))
+        ),
+        remaining_amount=_parse_amount(
+            _text_field(text, ("TOTAL REMAINING", "REMAINING AMOUNT"))
+        ),
+        investor_count=_parse_int(
+            _text_field(text, ("TOTAL NUMBER ALREADY INVESTED", "INVESTOR COUNT"))
+        ),
+        is_private_fund=_is_private_fund(industry_group),
+    )
+    offering["related_people"] = _text_related_people(text)
+    return offering
+
+
+def _offering_row(**values: Any) -> dict[str, Any]:
+    """Return a stable Form D offering row."""
+    return {
+        "issuer_cik": values.get("issuer_cik"),
+        "issuer_name": values.get("issuer_name"),
+        "accession_number": values.get("accession_number"),
+        "filing_date": values.get("filing_date"),
+        "first_sale_date": values.get("first_sale_date"),
+        "industry_group": values.get("industry_group"),
+        "offering_amount": values.get("offering_amount"),
+        "sold_amount": values.get("sold_amount"),
+        "remaining_amount": values.get("remaining_amount"),
+        "investor_count": values.get("investor_count"),
+        "is_private_fund": values.get("is_private_fund"),
+    }
+
+
+def _xml_related_people(root: Element) -> list[dict[str, Any]]:
+    """Normalize Form D related people from XML."""
+    people: list[dict[str, Any]] = []
+    for element in root.iter():
+        if _local_name(element.tag) != "relatedPersonInfo":
+            continue
+        name_parts = [
+            _first_text(element, ("firstName",)),
+            _first_text(element, ("middleName",)),
+            _first_text(element, ("lastName",)),
+            _first_text(element, ("suffix",)),
+        ]
+        name = _clean_text(" ".join(part for part in name_parts if part))
+        if not name:
+            name = _first_text(element, ("relatedPersonName", "personName"))
+        if not name:
+            continue
+        people.append(
+            {
+                "person_name": name,
+                "relationship": _first_text(
+                    element,
+                    (
+                        "relationship",
+                        "relationshipClarification",
+                        "relatedPersonRelationshipList",
+                    ),
+                ),
+                "address_city": _first_text(element, ("relatedPersonCity", "city")),
+                "address_state": _first_text(
+                    element,
+                    ("relatedPersonStateOrCountry", "stateOrCountry", "state"),
+                ),
+                "address_country": _first_text(
+                    element,
+                    (
+                        "relatedPersonStateOrCountryDescription",
+                        "stateOrCountryDescription",
+                        "country",
+                    ),
+                ),
+            }
+        )
+    return people
+
+
+def _text_related_people(text: str) -> list[dict[str, Any]]:
+    """Normalize Form D related people from text."""
+    people: list[dict[str, Any]] = []
+    pattern = re.compile(
+        r"^\s*RELATED PERSON\s*:\s*(?P<name>.+?)(?:\s+-\s+(?P<role>.+))?\s*$",
+        re.IGNORECASE | re.MULTILINE,
+    )
+    for match in pattern.finditer(text):
+        name = _clean_text(match.group("name"))
+        if not name:
+            continue
+        people.append(
+            {
+                "person_name": name,
+                "relationship": _clean_text(match.group("role")),
+                "address_city": None,
+                "address_state": None,
+                "address_country": None,
+            }
+        )
+    return people
+
+
+def _complete_submission_url(accession_number: str, cik: str) -> str:
     """Return the public EDGAR complete-submission URL for an accession."""
-    cik = accession_number.split("-", maxsplit=1)[0].lstrip("0")
+    issuer_cik = (_normalize_cik(cik) or "").lstrip("0")
+    if not issuer_cik:
+        raise OpenBBError("CIK must contain at least one digit.")
     accession_path = accession_number.replace("-", "")
     return (
-        f"https://www.sec.gov/Archives/edgar/data/{cik}/"
+        f"https://www.sec.gov/Archives/edgar/data/{issuer_cik}/"
         f"{accession_path}/{accession_number}.txt"
     )
 
@@ -368,247 +397,6 @@ def _base_form_code(value: Any) -> str:
     return form[:-2] if form.endswith("/A") else form
 
 
-def normalize_form_d_document(
-    document: str | bytes,
-    *,
-    accession_number: str | None = None,
-    filing_date: date | None = None,
-) -> NormalizedFormD:
-    """Normalize one Form D XML or text document."""
-    text = (
-        document.decode("utf-8", errors="replace")
-        if isinstance(document, bytes)
-        else document
-    )
-    if _looks_like_xml(text):
-        return _normalize_form_d_xml(
-            text,
-            accession_number=accession_number,
-            filing_date=filing_date,
-        )
-    return _normalize_form_d_text(
-        text,
-        accession_number=accession_number,
-        filing_date=filing_date,
-    )
-
-
-def _normalize_form_d_xml(
-    text: str,
-    *,
-    accession_number: str | None,
-    filing_date: date | None,
-) -> NormalizedFormD:
-    """Normalize one Form D XML document."""
-    root = ElementTree.fromstring(text)
-    issuer_cik = _normalize_cik(_first_text(root, ("issuerCik", "issuerCIK", "cik")))
-    issuer_name = _first_text(root, ("issuerName", "entityName", "nameOfIssuer"))
-    industry_group = _first_text(root, ("industryGroupType",))
-    offering = _offering_row(
-        issuer_cik=issuer_cik,
-        issuer_name=issuer_name,
-        accession_number=accession_number
-        or _first_text(root, ("accessionNumber", "accession-number")),
-        filing_date=filing_date,
-        first_sale_date=_parse_date(
-            _first_text(root, ("dateOfFirstSale", "dateOfFirstSale/value", "value"))
-        ),
-        industry_group=industry_group,
-        offering_amount=_parse_amount(
-            _first_text(root, ("totalOfferingAmount", "totalOfferingAmount/value"))
-        ),
-        sold_amount=_parse_amount(
-            _first_text(root, ("totalAmountSold", "totalAmountSold/value"))
-        ),
-        remaining_amount=_parse_amount(
-            _first_text(root, ("totalRemaining", "totalRemaining/value"))
-        ),
-        investor_count=_parse_int(
-            _first_text(root, ("totalNumberAlreadyInvested",))
-        ),
-        is_private_fund=_is_private_fund(industry_group),
-    )
-    return NormalizedFormD(
-        offering=offering,
-        people=_xml_related_people(root, offering),
-    )
-
-
-def _normalize_form_d_text(
-    text: str,
-    *,
-    accession_number: str | None,
-    filing_date: date | None,
-) -> NormalizedFormD:
-    """Normalize one plain-text Form D document."""
-    industry_group = _text_field(text, ("INDUSTRY GROUP", "INDUSTRY GROUP TYPE"))
-    offering = _offering_row(
-        issuer_cik=_normalize_cik(_text_field(text, ("ISSUER CIK", "CIK"))),
-        issuer_name=_text_field(
-            text,
-            (
-                "ENTITY NAME",
-                "ISSUER NAME",
-                "OFFERING NAME",
-                "FUND NAME",
-                "NAME OF ISSUER",
-            ),
-        ),
-        accession_number=accession_number
-        or _text_field(text, ("ACCESSION NUMBER", "ACCESSION NO")),
-        filing_date=filing_date,
-        first_sale_date=_parse_date(_text_field(text, ("FIRST SALE DATE",))),
-        industry_group=industry_group,
-        offering_amount=_parse_amount(
-            _text_field(text, ("TOTAL OFFERING AMOUNT", "OFFERING AMOUNT"))
-        ),
-        sold_amount=_parse_amount(
-            _text_field(text, ("TOTAL AMOUNT SOLD", "AMOUNT SOLD", "SOLD AMOUNT"))
-        ),
-        remaining_amount=_parse_amount(
-            _text_field(text, ("TOTAL REMAINING", "REMAINING AMOUNT"))
-        ),
-        investor_count=_parse_int(
-            _text_field(text, ("TOTAL NUMBER ALREADY INVESTED", "INVESTOR COUNT"))
-        ),
-        is_private_fund=_is_private_fund(industry_group),
-    )
-    return NormalizedFormD(
-        offering=offering,
-        people=_text_related_people(text, offering),
-    )
-
-
-def _offering_row(**values: Any) -> dict[str, Any]:
-    """Return a stable Form D offering row."""
-    return {
-        "issuer_cik": values.get("issuer_cik"),
-        "issuer_name": values.get("issuer_name"),
-        "accession_number": values.get("accession_number"),
-        "filing_date": values.get("filing_date"),
-        "first_sale_date": values.get("first_sale_date"),
-        "industry_group": values.get("industry_group"),
-        "offering_amount": values.get("offering_amount"),
-        "sold_amount": values.get("sold_amount"),
-        "remaining_amount": values.get("remaining_amount"),
-        "investor_count": values.get("investor_count"),
-        "is_private_fund": values.get("is_private_fund"),
-    }
-
-
-def related_person_row(
-    offering: dict[str, Any],
-    *,
-    person_name: str,
-    relationship: str | None = None,
-    address_city: str | None = None,
-    address_state: str | None = None,
-    address_country: str | None = None,
-) -> dict[str, Any]:
-    """Return a stable Form D related-person row."""
-    return {
-        "issuer_cik": offering.get("issuer_cik"),
-        "issuer_name": offering.get("issuer_name"),
-        "accession_number": offering.get("accession_number"),
-        "filing_date": offering.get("filing_date"),
-        "person_name": person_name,
-        "relationship": relationship,
-        "address_city": address_city,
-        "address_state": address_state,
-        "address_country": address_country,
-    }
-
-
-def _xml_related_people(
-    root: Element,
-    offering: dict[str, Any],
-) -> list[dict[str, Any]]:
-    """Normalize Form D related people from XML."""
-    people: list[dict[str, Any]] = []
-    for element in root.iter():
-        if _local_name(element.tag) != "relatedPersonInfo":
-            continue
-        name_parts = [
-            _first_text(element, ("firstName",)),
-            _first_text(element, ("middleName",)),
-            _first_text(element, ("lastName",)),
-            _first_text(element, ("suffix",)),
-        ]
-        name = " ".join(part for part in name_parts if part)
-        if not name:
-            name = _first_text(element, ("relatedPersonName", "personName")) or ""
-        name = _clean_text(name)
-        if not name:
-            continue
-        people.append(
-            related_person_row(
-                offering,
-                person_name=name,
-                relationship=_first_text(
-                    element,
-                    (
-                        "relationship",
-                        "relationshipClarification",
-                        "relatedPersonRelationshipList",
-                    ),
-                ),
-                address_city=_first_text(element, ("relatedPersonCity", "city")),
-                address_state=_first_text(
-                    element,
-                    ("relatedPersonStateOrCountry", "stateOrCountry", "state"),
-                ),
-                address_country=_first_text(
-                    element,
-                    (
-                        "relatedPersonStateOrCountryDescription",
-                        "stateOrCountryDescription",
-                        "country",
-                    ),
-                ),
-            )
-        )
-    return people
-
-
-def _text_related_people(
-    text: str,
-    offering: dict[str, Any],
-) -> list[dict[str, Any]]:
-    """Normalize Form D related people from text."""
-    people: list[dict[str, Any]] = []
-    pattern = re.compile(
-        r"^\s*RELATED PERSON\s*:\s*(?P<name>.+?)(?:\s+-\s+(?P<role>.+))?\s*$",
-        re.IGNORECASE | re.MULTILINE,
-    )
-    for match in pattern.finditer(text):
-        name = _clean_text(match.group("name"))
-        if not name:
-            continue
-        people.append(
-            related_person_row(
-                offering,
-                person_name=name,
-                relationship=_clean_text(match.group("role")),
-            )
-        )
-    return people
-
-
-def _filter_by_issuer(
-    records: list[dict[str, Any]],
-    issuer: str | None,
-) -> list[dict[str, Any]]:
-    """Apply issuer-name filtering."""
-    if not issuer:
-        return records
-    needle = issuer.casefold()
-    return [
-        record
-        for record in records
-        if needle in str(record.get("issuer_name") or "").casefold()
-    ]
-
-
 def _looks_like_xml(text: str) -> bool:
     stripped = text.lstrip()
     return stripped.startswith("<") or stripped.startswith("<?xml")
@@ -621,9 +409,7 @@ def _first_text(root: Element, names: tuple[str, ...]) -> str | None:
             if _local_name(element.tag) != parts[0]:
                 continue
             value = (
-                _descendant_text(element, parts[1:])
-                if len(parts) > 1
-                else element.text
+                _descendant_text(element, parts[1:]) if len(parts) > 1 else element.text
             )
             cleaned = _clean_text(value)
             if cleaned:

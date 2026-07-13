@@ -13,22 +13,14 @@ from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
-from openbb_sec.models.filing_index import SecFilingIndexFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
+from openbb_sec.models.form_d import SecFormDFetcher
 from openbb_sec.models.full_text_search import SecFullTextSearchFetcher
 from openbb_sec.models.htm_file import SecHtmFileFetcher
 from openbb_sec.models.income_statement import SecIncomeStatementFetcher
 from openbb_sec.models.income_statement_growth import SecIncomeStatementGrowthFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
-from openbb_sec.models.institutional_holdings import SecInstitutionalHoldingsFetcher
-from openbb_sec.models.institutional_managers import SecInstitutionalManagersFetcher
-from openbb_sec.models.institutional_reporting_periods import (
-    SecInstitutionalReportingPeriodsFetcher,
-)
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
-from openbb_sec.models.investment_adviser_people import (
-    SecInvestmentAdviserPeopleFetcher,
-)
 from openbb_sec.models.investment_advisers import SecInvestmentAdvisersFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
 from openbb_sec.models.management_discussion_analysis import (
@@ -36,8 +28,6 @@ from openbb_sec.models.management_discussion_analysis import (
 )
 from openbb_sec.models.nport_disclosure import SecNportDisclosureFetcher
 from openbb_sec.models.nport_fund_metrics import SecNportFundMetricsFetcher
-from openbb_sec.models.private_offering_people import SecPrivateOfferingPeopleFetcher
-from openbb_sec.models.private_offerings import SecPrivateOfferingsFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sec_as_filed_statements import SecAsFiledStatementsFetcher
@@ -96,7 +86,7 @@ sec_provider = Provider(
         ),
         _equity_key("EquityFTD", "SecEquityFtd"): SecEquityFtdFetcher,
         _equity_key("EquitySearch", "SecEquitySearch"): SecEquitySearchFetcher,
-        "SecFilingIndex": SecFilingIndexFetcher,
+        "SecFormD": SecFormDFetcher,
         "Filings": SecCompanyFilingsFetcher,
         _equity_key("Form13FHR", "SecForm13FHR"): SecForm13FHRFetcher,
         "SecFullTextSearch": SecFullTextSearchFetcher,
@@ -106,11 +96,7 @@ sec_provider = Provider(
             SecIncomeStatementGrowthFetcher
         ),
         _equity_key("InsiderTrading", "SecInsiderTrading"): SecInsiderTradingFetcher,
-        "SecInstitutionalHoldings": SecInstitutionalHoldingsFetcher,
-        "SecInstitutionalManagers": SecInstitutionalManagersFetcher,
-        "SecInstitutionalReportingPeriods": SecInstitutionalReportingPeriodsFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
-        "SecInvestmentAdviserPeople": SecInvestmentAdviserPeopleFetcher,
         "SecInvestmentAdvisers": SecInvestmentAdvisersFetcher,
         _equity_key("LatestFinancialReports", "SecLatestFinancialReports"): (
             SecLatestFinancialReportsFetcher
@@ -120,8 +106,6 @@ sec_provider = Provider(
         ): (SecManagementDiscussionAnalysisFetcher),
         _etf_key("NportDisclosure", "SecNportDisclosure"): SecNportDisclosureFetcher,
         "SecNportFundMetrics": SecNportFundMetricsFetcher,
-        "SecPrivateOfferingPeople": SecPrivateOfferingPeopleFetcher,
-        "SecPrivateOfferings": SecPrivateOfferingsFetcher,
         "RssLitigation": SecRssLitigationFetcher,
         "SchemaFiles": SecSchemaFilesFetcher,
         "SecAsFiledStatements": SecAsFiledStatementsFetcher,
