@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/crd/api/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2015-01&facets%5Bduoarea%5D%5B%5D=R3FM&facets%5Bduoarea%5D%5B%5D=R48&facets%5Bduoarea%5D%5B%5D=R98&facets%5Bprocess%5D%5B%5D=FPF&facets%5Bproduct%5D%5B%5D=EPC00U&facets%5Bseries%5D%5B%5D=M_EPC00U_FPF_R48_MBBLD&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2015-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2015-01","duoarea":"R48","area-name":"NA","product":"EPC00U","product-name":"Crude
+        Gravity of Unkown","process":"FPF","process-name":"Field Production","series":"M_EPC00U_FPF_R48_MBBLD","series-description":"Lower
+        48 States Crude Oil and Lease Condensate Production for Unknown API Gravity
+        (Thousand Barrels per Day)","value":"106","units":"MBBL\/D"}]},"request":{"command":"\/v2\/petroleum\/crd\/api\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["value"],"facets":{"duoarea":["R98","R3FM","R48"],"product":["EPC00U"],"process":["FPF"],"series":["M_EPC00U_FPF_R48_MBBLD"]},"start":"2015-01","end":"2015-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '2'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:01:11 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:01:11 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '880'
+    status:
+      code: 200
+      message: OK
+version: 1

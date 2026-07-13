@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EIA RSS Feed</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f6f7f9;
+    --panel-hover: #eef0f3;
+    --border: #e2e5ea;
+    --text: #1a1d21;
+    --muted: #626873;
+    --accent: #0b6db3;
+    --chip: #e7eef5;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --overlay: rgba(20, 22, 26, 0.55);
+  }
+  html[data-theme="dark"] {
+    --bg: #14171c;
+    --panel: #1c2027;
+    --panel-hover: #232833;
+    --border: #2b313b;
+    --text: #e7eaee;
+    --muted: #98a0ac;
+    --accent: #4aa3df;
+    --chip: #263140;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --overlay: rgba(0, 0, 0, 0.66);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .wrap { padding: 14px 16px 24px; }
+  .feed-head { margin: 0 0 12px; }
+  .feed-head h1 { font-size: 18px; margin: 0 0 3px; }
+  .feed-head p { margin: 0; color: var(--muted); font-size: 12.5px; }
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .card {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: background 0.12s, transform 0.12s, box-shadow 0.12s;
+  }
+  .card:hover {
+    background: var(--panel-hover);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+  .card .date { color: var(--muted); font-size: 11.5px; letter-spacing: 0.02em; }
+  .card .title { font-weight: 600; font-size: 15px; margin: 3px 0 5px; }
+  .card .excerpt { color: var(--text); opacity: 0.9; font-size: 13px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 2px; }
+  .chip {
+    background: var(--chip);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11.5px;
+  }
+  .chip b { color: var(--text); font-weight: 600; }
+  .card .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    gap: 10px;
+  }
+  .card .author { color: var(--muted); font-size: 11.5px; }
+  .action { color: var(--accent); font-size: 12.5px; font-weight: 600; }
+  .empty { color: var(--muted); padding: 30px 0; text-align: center; }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 50;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 660px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+  .modal.wide { max-width: 1200px; height: 88vh; }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-head .m-title {
+    font-weight: 600;
+    font-size: 15px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .modal-head a.newtab { color: var(--accent); font-size: 12.5px; text-decoration: none; }
+  .modal-head a.newtab:hover { text-decoration: underline; }
+  .modal-head button {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .modal-head button:hover { color: var(--text); }
+  .modal-body { flex: 1; overflow: auto; min-height: 0; }
+  .modal-body iframe { width: 100%; height: 100%; border: none; display: block; }
+  .doc-meta {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pdf-wrap { padding: 12px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .pdf-wrap canvas {
+    display: block;
+    width: 100%;
+    max-width: 1100px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+  .doc-status { color: var(--muted); padding: 26px 0; text-align: center; font-size: 13px; }
+  .doc-status a { color: var(--accent); }
+  .table-wrap { padding: 8px 18px 20px; }
+  .table-wrap h4 {
+    margin: 16px 0 6px;
+    font-size: 13px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+  }
+  table.price { width: 100%; border-collapse: collapse; }
+  table.price td { padding: 3px 6px; font-size: 13px; border-bottom: 1px solid var(--border); }
+  table.price td.v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; width: 90px; }
+  * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="feed-head">
+    <h1 id="feed-label"></h1>
+    <p id="feed-desc"></p>
+  </div>
+  <div class="list" id="list"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <span class="m-title" id="m-title"></span>
+      <a class="newtab" id="m-newtab" target="_blank" rel="noopener">Open in new tab ↗</a>
+      <button id="m-close" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script id="rss-data" type="application/json">__EIA_RSS_DATA__</script>
+<script>
+  (function () {
+    var DATA = JSON.parse(document.getElementById("rss-data").textContent);
+    document.documentElement.setAttribute("data-theme", DATA.theme === "light" ? "light" : "dark");
+
+    document.getElementById("feed-label").textContent = DATA.label || "EIA RSS Feed";
+    document.getElementById("feed-desc").textContent = DATA.description || "";
+
+    function esc(s) {
+      var d = document.createElement("div");
+      d.textContent = s == null ? "" : String(s);
+      return d.innerHTML;
+    }
+    function withTheme(url) {
+      if (!url || url.indexOf("/eia_proxy/") < 0) return url;
+      var sep = url.indexOf("?") < 0 ? "?" : "&";
+      return url + sep + "obb_theme=" + (DATA.theme === "light" ? "light" : "dark");
+    }
+    function fmtDate(iso) {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    }
+    function actionLabel(item) {
+      if (item.viewer === "pdf") return "Open document →";
+      if (item.viewer === "embed") return "Watch video →";
+      if (item.viewer === "table") return "View prices →";
+      return "Read article →";
+    }
+
+    var list = document.getElementById("list");
+    var items = DATA.items || [];
+    if (!items.length) {
+      list.innerHTML = '<div class="empty">No items available for this feed.</div>';
+    }
+    items.forEach(function (item, idx) {
+      var card = document.createElement("div");
+      card.className = "card";
+      var chips = "";
+      if (item.meta && item.meta.length) {
+        chips = '<div class="chips">' + item.meta.map(function (m) {
+          return '<span class="chip"><b>' + esc(m.label) + ":</b> " + esc(m.value) + "</span>";
+        }).join("") + "</div>";
+      }
+      var excerpt = item.excerpt ? '<div class="excerpt">' + item.excerpt + "</div>" : "";
+      card.innerHTML =
+        '<div class="date">' + esc(fmtDate(item.date)) + "</div>" +
+        '<div class="title">' + esc(item.title) + "</div>" +
+        chips + excerpt +
+        '<div class="foot"><span class="author">' + esc(item.author) + "</span>" +
+        '<span class="action">' + actionLabel(item) + "</span></div>";
+      card.addEventListener("click", function () { openModal(item); });
+      list.appendChild(card);
+    });
+
+    var overlay = document.getElementById("overlay");
+    var modal = document.getElementById("modal");
+    var mTitle = document.getElementById("m-title");
+    var mBody = document.getElementById("m-body");
+    var mNewtab = document.getElementById("m-newtab");
+    var openToken = 0;
+
+    var PDFJS_BASE = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/";
+    var pdfjsPromise = null;
+    function loadPdfjs() {
+      if (!pdfjsPromise) {
+        pdfjsPromise = import(PDFJS_BASE + "pdf.min.mjs").then(function (lib) {
+          lib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + "pdf.worker.min.mjs";
+          return lib;
+        });
+      }
+      return pdfjsPromise;
+    }
+
+    function docStatus(html) {
+      var status = document.createElement("div");
+      status.className = "doc-status";
+      status.innerHTML = html;
+      return status;
+    }
+
+    function renderMeta(item) {
+      if (!item.meta || !item.meta.length) return;
+      var meta = document.createElement("div");
+      meta.className = "doc-meta";
+      meta.innerHTML = item.meta.map(function (m) {
+        return '<span class="chip"><b>' + esc(m.label) + ":</b> " + esc(m.value) + "</span>";
+      }).join("") + (item.ppt_url ? '<a class="chip" href="' + esc(item.ppt_url) + '" target="_blank" rel="noopener">Slides ↗</a>' : "");
+      mBody.appendChild(meta);
+    }
+
+    function pdfFallback(item, wrap) {
+      wrap.innerHTML = "";
+      wrap.appendChild(docStatus(
+        'Unable to render the document here. <a href="' +
+        esc(item.url || item.src) + '" target="_blank" rel="noopener">Open it in a new tab ↗</a>'
+      ));
+    }
+
+    function renderPdf(item, token) {
+      var wrap = document.createElement("div");
+      wrap.className = "pdf-wrap";
+      wrap.appendChild(docStatus("Downloading document…"));
+      mBody.appendChild(wrap);
+
+      Promise.all([
+        loadPdfjs(),
+        fetch(item.src, { credentials: "same-origin" }).then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.arrayBuffer();
+        }),
+      ]).then(function (loaded) {
+        if (token !== openToken) return null;
+        var lib = loaded[0];
+        return lib.getDocument({ data: loaded[1] }).promise.then(function (doc) {
+          if (token !== openToken) return null;
+          wrap.innerHTML = "";
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var width = Math.max(mBody.clientWidth - 24, 320);
+
+          function renderPage(num) {
+            if (token !== openToken || num > doc.numPages) return null;
+            return doc.getPage(num).then(function (page) {
+              if (token !== openToken) return null;
+              var scale = width / page.getViewport({ scale: 1 }).width;
+              var viewport = page.getViewport({ scale: scale * dpr });
+              var canvas = document.createElement("canvas");
+              canvas.width = viewport.width;
+              canvas.height = viewport.height;
+              wrap.appendChild(canvas);
+              return page.render({
+                canvasContext: canvas.getContext("2d"),
+                viewport: viewport,
+              }).promise.then(function () {
+                return renderPage(num + 1);
+              });
+            });
+          }
+          return renderPage(1);
+        });
+      }).catch(function () {
+        if (token === openToken) pdfFallback(item, wrap);
+      });
+    }
+
+    function openModal(item) {
+      openToken += 1;
+      mTitle.textContent = item.title || "";
+      mNewtab.href = item.url || item.src || "#";
+      modal.classList.toggle("wide", item.viewer !== "table");
+      mBody.innerHTML = "";
+      if (item.viewer === "table") {
+        var wrap = document.createElement("div");
+        wrap.className = "table-wrap";
+        wrap.innerHTML = item.body_html || '<div class="empty">No data.</div>';
+        mBody.appendChild(wrap);
+      } else if (item.viewer === "pdf") {
+        renderMeta(item);
+        renderPdf(item, openToken);
+      } else {
+        renderMeta(item);
+        var status = document.createElement("div");
+        status.className = "doc-status";
+        status.textContent = "Loading…";
+        mBody.appendChild(status);
+        var frame = document.createElement("iframe");
+        frame.src = withTheme(item.src || item.url);
+        frame.setAttribute("referrerpolicy", "no-referrer");
+        frame.style.display = "none";
+        var slow = setTimeout(function () {
+          status.innerHTML =
+            'Still loading… <a href="' + esc(item.url) +
+            '" target="_blank" rel="noopener">open in new tab ↗</a>';
+        }, 8000);
+        frame.addEventListener("load", function () {
+          clearTimeout(slow);
+          status.remove();
+          frame.style.display = "block";
+        });
+        mBody.appendChild(frame);
+      }
+      overlay.classList.add("open");
+    }
+    function closeModal() {
+      openToken += 1;
+      overlay.classList.remove("open");
+      mBody.innerHTML = "";
+    }
+    document.getElementById("m-close").addEventListener("click", closeModal);
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) closeModal();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeModal();
+    });
+  })();
+</script>
+</body>
+</html>

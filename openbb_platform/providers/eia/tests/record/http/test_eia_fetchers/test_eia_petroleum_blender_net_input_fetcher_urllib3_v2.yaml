@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/pnp/inpt3/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2005-01&facets%5Bduoarea%5D%5B%5D=NUS&facets%5Bprocess%5D%5B%5D=YIB&facets%5Bproduct%5D%5B%5D=EPOBG&facets%5Bseries%5D%5B%5D=MBCRB_NUS_1&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2005-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2005-01","duoarea":"NUS","area-name":"U.S.","product":"EPOBG","product-name":"Gasoline
+        Blending Components","process":"YIB","process-name":"Motor Gasoline Terminal
+        Blenders Net Input","series":"MBCRB_NUS_1","series-description":"U.S. Blender
+        Net Input of Gasoline Blending Components (Thousand Barrels)","value":"56154","units":"MBBL"}]},"request":{"command":"\/v2\/petroleum\/pnp\/inpt3\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["value"],"facets":{"duoarea":["NUS"],"product":["EPOBG"],"process":["YIB"],"series":["MBCRB_NUS_1"]},"start":"2005-01","end":"2005-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:00:57 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:00:57 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '842'
+    status:
+      code: 200
+      message: OK
+version: 1

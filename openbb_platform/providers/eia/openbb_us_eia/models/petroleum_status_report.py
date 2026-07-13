@@ -1,7 +1,5 @@
 """EIA Weekly Petroleum Status Report model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -11,6 +9,8 @@ from openbb_core.provider.standard_models.petroleum_status_report import (
     PetroleumStatusReportQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field
+
 from openbb_us_eia.utils.constants import (
     WpsrCategoryChoices,
     WpsrCategoryType,
@@ -18,7 +18,6 @@ from openbb_us_eia.utils.constants import (
     WpsrTableChoices,
     WpsrTableMap,
 )
-from pydantic import Field
 
 WpsrTableChoicesString = "\n        ".join(WpsrTableChoices)
 
@@ -31,7 +30,7 @@ class EiaPetroleumStatusReportQueryParams(PetroleumStatusReportQueryParams):
 
     __json_schema_extra__ = {
         "category": {
-            "multiiple_items_allowed": False,
+            "multiple_items_allowed": False,
             "choices": WpsrCategoryChoices,
         },
         "table": {
@@ -75,7 +74,6 @@ class EiaPetroleumStatusReportFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> EiaPetroleumStatusReportQueryParams:
         """Transform the query parameters."""
-        # pylint: disable=import-outside-toplevel
         from warnings import warn
 
         category = params.get("category", "balance_sheet")
@@ -117,7 +115,6 @@ class EiaPetroleumStatusReportFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the data from the EIA website."""
-        # pylint: disable=import-outside-toplevel
         from openbb_us_eia.utils.helpers import download_excel_file
 
         url = WpsrFileMap.get(query.category, "balance_sheet")
@@ -136,20 +133,22 @@ class EiaPetroleumStatusReportFetcher(
         **kwargs: Any,
     ) -> list[EiaPetroleumStatusReportData]:
         """Transform the data."""
-        # pylint: disable=import-outside-toplevel
-        import concurrent.futures  # noqa
+        import concurrent.futures
         import re
         from functools import lru_cache
+        from warnings import warn
+
         from numpy import nan
         from pandas import Categorical, ExcelFile, concat, read_excel
-        from warnings import warn
 
         category = query.category
 
         _tables = (
-            query.table.split(",")  # type: ignore
+            query.table.split(",")
             if query.table
-            else ["stocks"] if category == "weekly_estimates" else ["all"]
+            else ["stocks"]
+            if category == "weekly_estimates"
+            else ["all"]
         )
         all_tables = list(WpsrTableMap[category])
         tables = all_tables if "all" in _tables else _tables
@@ -226,7 +225,7 @@ class EiaPetroleumStatusReportFetcher(
 
             results = concat(dfs)
 
-            if len(results) < 1:
+            if len(results) < 1:  # pragma: no cover
                 raise EmptyDataError("The data is empty.")
 
             results = results.sort_values(by=["date", "table", "order"]).replace(
@@ -237,5 +236,5 @@ class EiaPetroleumStatusReportFetcher(
                 EiaPetroleumStatusReportData.model_validate(d)
                 for d in results.to_dict(orient="records")
             ]
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise OpenBBError(f"Error transforming the data -> {e}") from e

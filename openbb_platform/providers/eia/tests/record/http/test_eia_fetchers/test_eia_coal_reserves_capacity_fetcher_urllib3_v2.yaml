@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/coal/reserves-capacity/data/?api_key=MOCK_API_KEY&data%5B0%5D=producer-distributor-stocks&data%5B1%5D=productive-capacity&data%5B2%5D=recoverable-reserves&end=2001&facets%5BmineTypeId%5D%5B%5D=SUR&facets%5BstateId%5D%5B%5D=AK&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2001
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2001","stateId":"AK","stateDescription":"Alaska","mineTypeId":"SUR","mineTypeDescription":"Surface","producer-distributor-stocks":null,"productive-capacity":"w","recoverable-reserves":"w","producer-distributor-stocks-units":"short
+        tons","productive-capacity-units":"short tons","recoverable-reserves-units":"short
+        tons"}],"description":"Coal capacity data, including productive capacity,
+        stocks, \r\n        and recoverable reserves by state, region and mine type.  Source:
+        EIA Form 7A and \r\n        MSHA Form 7000-2.  Interactive browser:  https:\/\/www.eia.gov\/coal\/data\/browser\/"},"request":{"command":"\/v2\/coal\/reserves-capacity\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["producer-distributor-stocks","productive-capacity","recoverable-reserves"],"facets":{"stateId":["AK"],"mineTypeId":["SUR"]},"start":"2001","end":"2001","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:18 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:18 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1109'
+    status:
+      code: 200
+      message: OK
+version: 1

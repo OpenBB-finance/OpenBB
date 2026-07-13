@@ -1,0 +1,1 @@
+"""EIA Electricity models."""

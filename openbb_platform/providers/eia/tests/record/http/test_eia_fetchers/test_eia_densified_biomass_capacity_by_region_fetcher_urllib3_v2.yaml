@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/densified-biomass/capacity-by-region/data/?api_key=MOCK_API_KEY&data%5B0%5D=capacity&data%5B1%5D=number-of-facilities&data%5B2%5D=number-of-fte-employees&end=2016-01&facets%5Bregion%5D%5B%5D=EAST&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2016-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2016-01","region":"EAST","capacity":"2141600","number-of-facilities":"33","number-of-fte-employees":"599","capacity-units":"tons","number-of-facilities-units":"number
+        of facilities","number-of-fte-employees-units":"number of fte employees"}],"description":"Densified
+        biomass capacity includes number of facilities \r\n        and number of employees.  Source:
+        EIA-63C  Report:  www.eia.gov\/biomass\/"},"request":{"command":"\/v2\/densified-biomass\/capacity-by-region\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["capacity","number-of-facilities","number-of-fte-employees"],"facets":{"region":["EAST"]},"start":"2016-01","end":"2016-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:20 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:20 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '912'
+    status:
+      code: 200
+      message: OK
+version: 1
