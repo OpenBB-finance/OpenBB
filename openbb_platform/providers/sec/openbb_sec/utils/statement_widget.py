@@ -94,11 +94,38 @@ async def get_statement_widget_rows(
             field_meta[tag] = {
                 "Line Item": record.get("label") or tag,
                 "description": record.get("description") or "",
+                "parent": record.get("parent"),
+                "sequence": record.get("sequence"),
             }
             order.append(tag)
 
     field_index = _model_field_order(statement_type)
-    order.sort(key=lambda tag: field_index.get(tag, len(field_index)))
+    end_index = len(field_index)
+
+    def _resolve(tag: str, seen: frozenset = frozenset()) -> tuple[int, int] | None:
+        """Return (anchor_index, depth) by walking parents up to a model field."""
+        if tag in field_index:
+            return field_index[tag], 0
+        parent = field_meta.get(tag, {}).get("parent")
+        if not parent or parent in seen:
+            return None
+        result = _resolve(parent, seen | {tag})
+        if result is None:
+            return None
+        anchor, depth = result
+        return anchor, depth + 1
+
+    def _sort_key(tag: str) -> tuple[float, int, float]:
+        resolved = _resolve(tag)
+        if resolved is None:
+            return (float(end_index), 0, 0.0)
+        anchor, depth = resolved
+        seq = field_meta[tag].get("sequence") or 0.0
+        if depth == 0:
+            return (float(anchor), 0, 0.0)
+        return (float(anchor) - 0.5, -depth, float(seq))
+
+    order.sort(key=_sort_key)
 
     period_keys = sorted(periods, reverse=True)
     if limit and limit > 0:

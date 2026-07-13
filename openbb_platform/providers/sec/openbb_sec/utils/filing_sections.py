@@ -407,3 +407,75 @@ def extract_item_sections(markdown: str) -> dict:
             },
         )
     return items
+
+
+_XREF_PART_LINE = re.compile(r"^\s*\|\s*Part\s+(I{1,3}|IV|[1-4])\s*\|", re.IGNORECASE)
+_XREF_ITEM_LINE = re.compile(
+    r"^\s*\|\s*Item\s+(1[0-5]?|[2-9])([A-Ca-c])?\s*\|"
+    r"\s*([^|]+?)\s*\|"
+    r"\s*([^|]*?)\s*\|\s*$",
+    re.IGNORECASE,
+)
+_XREF_ANCHOR_HREF = re.compile(r"\[\d+\]\(#([^)]+)\)")
+_HTML_ANCHOR_ID = re.compile(
+    r"""<a\s+(?:[^>]*\s+)?id\s*=\s*["']([^"']+)["'][^>]*>\s*</a>"""
+)
+
+
+def extract_via_cross_reference(markdown: str) -> dict:
+    """Build item sections from a 'Form 10-K Cross-Reference Index' anchor table.
+
+    Some issuers (e.g. McDonald's) restructure their 10-K with custom headings
+    like "About McDonald's" instead of "Item 1. Business", and include an
+    end-of-document table mapping each Item number to an in-document anchor.
+    This walks those anchors in document order and slices section content
+    between consecutive item anchors.
+    """
+    if not markdown:
+        return {}
+
+    anchor_positions: dict = {}
+    for match in _HTML_ANCHOR_ID.finditer(markdown):
+        anchor_positions.setdefault(match.group(1), match.start())
+    if not anchor_positions:
+        return {}
+
+    rows: list = []
+    current_part = "I"
+    for line in markdown.splitlines():
+        part_match = _XREF_PART_LINE.match(line)
+        if part_match:
+            current_part = _part_label(part_match.group(1))
+            continue
+        item_match = _XREF_ITEM_LINE.match(line)
+        if not item_match:
+            continue
+        anchor_match = _XREF_ANCHOR_HREF.search(item_match.group(4))
+        if not anchor_match:
+            continue
+        pos = anchor_positions.get(anchor_match.group(1))
+        if pos is None:
+            continue
+        num = f"{item_match.group(1)}{(item_match.group(2) or '').upper()}"
+        name = item_match.group(3).strip()[:120]
+        rows.append((pos, num, name, current_part))
+
+    if not rows:
+        return {}
+
+    rows.sort(key=lambda r: r[0])
+    items: dict = {}
+    for index, (pos, num, name, item_part) in enumerate(rows):
+        end = rows[index + 1][0] if index + 1 < len(rows) else len(markdown)
+        text = _HTML_ANCHOR_ID.sub("", markdown[pos:end]).strip()
+        key = f"item_II_{num}" if item_part not in ("I", "") else f"item_{num}"
+        items.setdefault(
+            key,
+            {
+                "name": name,
+                "item_num": num,
+                "part": item_part,
+                "text": text,
+            },
+        )
+    return items

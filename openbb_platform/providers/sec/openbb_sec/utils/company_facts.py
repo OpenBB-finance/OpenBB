@@ -71,20 +71,45 @@ def order_field_meta(
     field_meta: dict[str, dict],
     model_cls: type[BaseModel],
 ) -> dict[str, dict]:
-    """Reorder field_meta by model field declaration order with sequential sequence."""
+    """Reorder field_meta by model field declaration order with sequential sequence.
+
+    Tags absent from the model (e.g. synthetic ``other_*`` plug rows) are
+    slotted just before their nearest model-field ancestor by recursively
+    walking the ``parent`` chain, so the schema's hierarchical ordering is
+    preserved instead of dumping unmapped rows at the end.
+    """
+    field_index = {name: idx for idx, name in enumerate(model_cls.model_fields)}
+    end_index = len(field_index)
+
+    def _resolve(tag: str, seen: frozenset = frozenset()) -> tuple[int, int] | None:
+        if tag in field_index:
+            return field_index[tag], 0
+        parent = field_meta.get(tag, {}).get("parent")
+        if not parent or parent in seen:
+            return None
+        result = _resolve(parent, seen | {tag})
+        if result is None:
+            return None
+        anchor, depth = result
+        return anchor, depth + 1
+
+    def _sort_key(item: tuple[str, dict]) -> tuple[float, int, float]:
+        tag, entry = item
+        resolved = _resolve(tag)
+        if resolved is None:
+            return (float(end_index), 0, 0.0)
+        anchor, depth = resolved
+        seq = entry.get("sequence") or 0.0
+        if depth == 0:
+            return (float(anchor), 0, 0.0)
+        return (float(anchor) - 0.5, -depth, float(seq))
+
     ordered: dict[str, dict] = {}
-    seq = 1
-    for fname in model_cls.model_fields:
-        if fname in field_meta:
-            entry = field_meta[fname]
-            entry["sequence"] = seq
-            ordered[fname] = entry
-            seq += 1
-    for fname, entry in field_meta.items():
-        if fname not in ordered:
-            entry["sequence"] = seq
-            ordered[fname] = entry
-            seq += 1
+    for seq, (tag, entry) in enumerate(
+        sorted(field_meta.items(), key=_sort_key), start=1
+    ):
+        entry["sequence"] = seq
+        ordered[tag] = entry
     return ordered
 
 

@@ -37,11 +37,9 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
             "multiple_items_allowed": True,
             "choices": FORM_LIST,
             "x-widget_config": {
-                "type": "endpoint",
-                "optionsEndpoint": "/api/v1/sec/form_types",
-                "optionsParams": {"symbol": "$symbol"},
+                "type": "text",
                 "multiSelect": False,
-                "style": {"popupWidth": 950},
+                "multiple": True,
             },
         },
     }

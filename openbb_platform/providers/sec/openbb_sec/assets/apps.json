@@ -597,7 +597,7 @@
             "h": 11,
             "state": {
               "params": {
-                "form_type": "S-1/A,S-1"
+                "form_type": "S-1"
               },
               "chartView": {
                 "enabled": false,

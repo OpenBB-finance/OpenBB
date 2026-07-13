@@ -64,6 +64,8 @@ _EXTRA_ROUTES = [
     "fts_locations",
     "edgar_document",
     "edgar_document_markdown",
+    "asset_data_rows",
+    "filing_viewer_mcp/{path:path}",
     "filing_viewer_app",
     "section_markdown",
     "as_filed_statement",
@@ -407,7 +409,7 @@ class TestWidgetEndpoints:
     def test_get_widgets_json_includes_curated(self):
         with (
             patch("openbb_sec.sec_router._warm_companies", new=AsyncMock()),
-            patch("openbb_sec.sec_router._ensure_filing_viewer_mcp"),
+            patch("openbb_sec.sec_router.ensure_mcp_subprocess"),
         ):
             widgets = asyncio.run(sec_router.get_widgets_json())
         assert isinstance(widgets, dict)
@@ -416,7 +418,7 @@ class TestWidgetEndpoints:
     def test_get_widgets_json_falls_back_on_error(self):
         with (
             patch("openbb_sec.sec_router._warm_companies", new=AsyncMock()),
-            patch("openbb_sec.sec_router._ensure_filing_viewer_mcp"),
+            patch("openbb_sec.sec_router.ensure_mcp_subprocess"),
             patch(
                 "openbb_platform_api.utils.widgets.build_json",
                 side_effect=RuntimeError("boom"),
@@ -570,58 +572,21 @@ def test_get_apps_json_no_remap_when_standalone(monkeypatch):
 
 def test_filing_viewer_mcp_port(monkeypatch):
     """The MCP port reads its env override, defaulting to 7769."""
+    from openbb_sec.utils.filing_viewer_mcp import mcp_port
+
     monkeypatch.delenv("OPENBB_SEC_MCP_PORT", raising=False)
-    assert sec_router.filing_viewer_mcp_port() == 7769
+    assert mcp_port() == 7769
     monkeypatch.setenv("OPENBB_SEC_MCP_PORT", "9999")
-    assert sec_router.filing_viewer_mcp_port() == 9999
+    assert mcp_port() == 9999
 
 
-def test_mcp_base_url_from_request():
-    """_mcp_base_url honours X-Forwarded-Proto, else the request scheme."""
-    from types import SimpleNamespace
-
-    req = SimpleNamespace(
-        headers={"x-forwarded-proto": "https", "host": "data.example.com:6900"},
-        url=SimpleNamespace(scheme="http"),
-    )
-    assert sec_router._mcp_base_url(req).startswith("https://data.example.com:")
-    req2 = SimpleNamespace(
-        headers={"host": "localhost:6900"}, url=SimpleNamespace(scheme="http")
-    )
-    assert sec_router._mcp_base_url(req2).startswith("http://localhost:")
-
-
-def test_mcp_base_from_config(monkeypatch):
-    """_mcp_base_from_config builds from env, defaulting to http localhost."""
-    monkeypatch.delenv("OPENBB_API_HOST", raising=False)
-    assert sec_router._mcp_base_from_config().startswith("http://localhost:")
-    monkeypatch.setenv("OPENBB_API_HOST", "0.0.0.0")  # noqa: S104
-    assert sec_router._mcp_base_from_config().startswith("http://localhost:")
-    monkeypatch.setenv("OPENBB_API_HOST", "example.com")
-    assert "example.com" in sec_router._mcp_base_from_config()
-
-
-def test_mcp_base_from_config_https(monkeypatch):
-    """A TLS-configured server yields an https base."""
-    monkeypatch.delenv("OPENBB_API_HOST", raising=False)
-
-    class _SS:
-        class system_settings:
-            class python_settings:
-                @staticmethod
-                def model_dump():
-                    return {"uvicorn": {"ssl_certfile": "cert.pem"}}
-
-    monkeypatch.setattr("openbb_core.app.service.system_service.SystemService", _SS)
-    assert sec_router._mcp_base_from_config().startswith("https://localhost:")
-
-
-def test_filing_viewer_app_endpoint():
-    """filing_viewer_app injects the MCP base into the served HTML."""
-    resp = asyncio.run(sec_router.filing_viewer_app(mcp_base="http://localhost:7769"))
+def test_filing_viewer_app_serves_same_origin_mcp():
+    """The viewer app derives a same-origin MCP base; no injected localhost."""
+    resp = asyncio.run(sec_router.filing_viewer_app())
     body = resp.body.decode("utf-8")
-    assert "http://localhost:7769" in body
     assert "__OB_MCP_BASE__" not in body
+    assert 'OB_MCP_BASE = OB_API + "filing_viewer_mcp"' in body
+    assert "localhost:7769" not in body
 
 
 def test_edgar_document_markdown_endpoint(monkeypatch):
@@ -725,7 +690,9 @@ def test_edgar_document_html_rewrites(monkeypatch):
     resp = asyncio.run(sec_router.edgar_document(url="https://www.sec.gov/dir/doc.htm"))
     body = resp.body.decode()
     assert resp.media_type == "text/html"
-    assert "/api/v1/sec/edgar_document?url=" in body
+    # Proxied as a relative path so it works under any API prefix.
+    assert 'src="edgar_document?url=' in body
+    assert "/api/v1/sec/" not in body
     assert "data:image/png" in body
     assert "url(data:image/gif" in body
     assert 'href="#sec"' in body
@@ -798,30 +765,191 @@ def test_edgar_document_plain_text_short_dir(monkeypatch):
     assert resp.media_type.startswith("text/plain")
 
 
-def test_ensure_filing_viewer_mcp(monkeypatch):
-    """The MCP server is started once in a daemon thread, then guarded."""
-    monkeypatch.setattr(sec_router, "_MCP_MOUNTED", set())
-    captured: dict = {}
+class _FakeStreamResponse:
+    """Minimal streaming response stand-in for ``sec_make_request``."""
 
-    class _FakeThread:
-        def __init__(self, target=None, daemon=None, name=None):
-            captured["target"] = target
+    def __init__(self, chunks, status_code=200):
+        self._chunks = chunks
+        self.status_code = status_code
 
-        def start(self):
-            captured["started"] = True
+    def iter_content(self, size):
+        yield from self._chunks
 
-    monkeypatch.setattr("threading.Thread", _FakeThread)
-    sec_router._ensure_filing_viewer_mcp()
-    assert captured["started"] is True
+    def close(self):
+        pass
 
-    captured["started"] = False
-    sec_router._ensure_filing_viewer_mcp()
-    assert captured["started"] is False
 
+def _patch_stream(monkeypatch, chunks, status_code=200):
+    """Patch the rate-limited streaming fetch used by ``_bounded_get``."""
+
+    def _fake(target, headers=None, stream=None, timeout=None):
+        return _FakeStreamResponse(chunks, status_code)
+
+    monkeypatch.setattr("openbb_sec.utils.ratelimit.sec_make_request", _fake)
+
+
+# A short URL whose accession segment is not 18 digits, so ``_rendered_html``
+# returns None immediately and the ``.xml`` branch falls through to the
+# bounded streaming fetch and the structured renderers.
+_XML_URL = "https://www.sec.gov/files/assetdata.xml"
+
+
+class TestEdgarDocumentXmlRendering:
+    """The ``.xml`` branch: bounded fetch then structured-render fallbacks."""
+
+    def test_streams_and_renders_structured_xml(self, monkeypatch):
+        _patch_bytes(monkeypatch, lambda t, **k: b"")
+        asset_xml = (
+            b"<assetData><asset><x>1</x></asset><asset><x>2</x></asset></assetData>"
+        )
+        # The leading empty chunk exercises the ``if piece`` guard.
+        _patch_stream(monkeypatch, [b"", asset_xml])
+        resp = asyncio.run(sec_router.edgar_document(url=_XML_URL))
+        assert resp.media_type == "text/html"
+        assert "ob-xml" in resp.body.decode()
+
+    def test_bounded_read_breaks_at_limit_then_plain_text(self, monkeypatch):
+        _patch_bytes(monkeypatch, lambda t, **k: b"")
+        # A single chunk at the 5MB cap forces the read loop to break, and the
+        # non-XML payload falls through every renderer to plain text.
+        _patch_stream(monkeypatch, [b"x" * 5_000_000])
+        resp = asyncio.run(sec_router.edgar_document(url=_XML_URL))
+        assert resp.media_type.startswith("text/plain")
+
+    def test_renders_financial_report_for_xbrl(self, monkeypatch):
+        _patch_bytes(monkeypatch, lambda t, **k: b"")
+        _patch_stream(monkeypatch, [b"<data/>"])
+        monkeypatch.setattr(
+            "openbb_sec.utils.xml_render.render_xml_as_html", lambda *a, **k: None
+        )
+        monkeypatch.setattr(
+            "openbb_sec.utils.xbrl_render._looks_xbrl", lambda chunk: True
+        )
+        monkeypatch.setattr(
+            "openbb_sec.utils.financial_report.render_financial_report",
+            AsyncMock(return_value="<div>REPORT</div>"),
+        )
+        resp = asyncio.run(sec_router.edgar_document(url=_XML_URL))
+        assert resp.media_type == "text/html"
+        assert "REPORT" in resp.body.decode()
+
+    def test_falls_back_to_xbrl_facts_when_no_report(self, monkeypatch):
+        _patch_bytes(monkeypatch, lambda t, **k: b"")
+        _patch_stream(monkeypatch, [b"<data/>"])
+        monkeypatch.setattr(
+            "openbb_sec.utils.xml_render.render_xml_as_html", lambda *a, **k: None
+        )
+        monkeypatch.setattr(
+            "openbb_sec.utils.xbrl_render._looks_xbrl", lambda chunk: True
+        )
+        monkeypatch.setattr(
+            "openbb_sec.utils.financial_report.render_financial_report",
+            AsyncMock(return_value=None),
+        )
+        monkeypatch.setattr(
+            "openbb_sec.utils.xbrl_render.render_xbrl_facts",
+            lambda *a, **k: "<div>FACTS</div>",
+        )
+        resp = asyncio.run(sec_router.edgar_document(url=_XML_URL))
+        assert resp.media_type == "text/html"
+        assert "FACTS" in resp.body.decode()
+
+
+class TestAssetDataRows:
+    """The AgGrid SSRM ``asset_data_rows`` endpoint."""
+
+    def _body(self, url):
+        return sec_router.SecAssetDataRowsRequest(
+            document_url=url, startRow=0, endRow=0
+        )
+
+    def test_empty_url_returns_empty(self):
+        resp = asyncio.run(sec_router.asset_data_rows(self._body("")))
+        assert resp.rowCount == 0
+        assert resp.columns == []
+
+    def test_non_sec_url_returns_empty(self):
+        resp = asyncio.run(sec_router.asset_data_rows(self._body("https://evil.com/x")))
+        assert resp.rowData == []
+
+    def test_load_error_returns_empty(self, monkeypatch):
+        def _boom(url):
+            raise RuntimeError("x")
+
+        monkeypatch.setattr("openbb_sec.utils.asset_data.load_asset_data", _boom)
+        resp = asyncio.run(sec_router.asset_data_rows(self._body(_XML_URL)))
+        assert resp.rowCount == 0
+
+    def test_no_columns_returns_empty(self, monkeypatch):
+        monkeypatch.setattr(
+            "openbb_sec.utils.asset_data.load_asset_data", lambda url: ([], [])
+        )
+        resp = asyncio.run(sec_router.asset_data_rows(self._body(_XML_URL)))
+        assert resp.columns == []
+
+    def test_serves_paged_rows(self, monkeypatch):
+        monkeypatch.setattr(
+            "openbb_sec.utils.asset_data.load_asset_data",
+            lambda url: (["a", "b"], [("1", "2"), ("3", "4")]),
+        )
+        resp = asyncio.run(sec_router.asset_data_rows(self._body(_XML_URL)))
+        assert resp.rowCount == 2
+        assert resp.columns == ["a", "b"]
+        assert resp.rowData == [{"a": "1", "b": "2"}, {"a": "3", "b": "4"}]
+
+
+def test_mcp_public_url_env_override(monkeypatch):
+    """An explicit ``OPENBB_SEC_MCP_PUBLIC_URL`` is returned verbatim."""
+    monkeypatch.setenv("OPENBB_SEC_MCP_PUBLIC_URL", "https://example.com/mcp")
+    assert sec_router._mcp_public_url() == "https://example.com/mcp"
+
+
+def test_mcp_public_url_reads_port_from_argv_space(monkeypatch):
+    """The port is read from a ``--port 1234`` argv pair."""
+    monkeypatch.delenv("OPENBB_SEC_MCP_PUBLIC_URL", raising=False)
+    monkeypatch.delenv("OPENBB_API_PORT", raising=False)
+    monkeypatch.setattr("sys.argv", ["openbb-api", "--port", "1234"])
+    assert ":1234" in sec_router._mcp_public_url()
+
+
+def test_mcp_public_url_reads_port_from_argv_equals(monkeypatch):
+    """The port is read from a ``--port=5678`` argv token."""
+    monkeypatch.delenv("OPENBB_SEC_MCP_PUBLIC_URL", raising=False)
+    monkeypatch.delenv("OPENBB_API_PORT", raising=False)
+    monkeypatch.setattr("sys.argv", ["openbb-api", "--port=5678"])
+    assert ":5678" in sec_router._mcp_public_url()
+
+
+def test_ensure_mcp_subprocess(monkeypatch):
+    """The MCP server is launched once as a guarded subprocess."""
     import openbb_sec.utils.filing_viewer_mcp as mcp
 
-    monkeypatch.setattr(mcp, "build_mcp_app", object)
-    ran: dict = {}
-    monkeypatch.setattr("uvicorn.run", lambda *a, **k: ran.setdefault("ran", True))
-    captured["target"]()
-    assert ran.get("ran") is True
+    calls: dict = {}
+
+    class _FakeProc:
+        def poll(self):
+            return None
+
+    def _fake_popen(cmd, **kwargs):
+        calls["cmd"] = cmd
+        return _FakeProc()
+
+    monkeypatch.setattr(mcp, "_mcp_process", None)
+    monkeypatch.setattr(mcp, "_port_open", lambda *a: False)
+    monkeypatch.setattr("atexit.register", lambda *a, **k: None)
+    monkeypatch.setattr("subprocess.Popen", _fake_popen)
+
+    mcp.ensure_mcp_subprocess()
+    assert calls["cmd"][1:3] == ["-m", "openbb_sec.utils.filing_viewer_mcp"]
+
+    # A live process short-circuits the second call.
+    calls.clear()
+    mcp.ensure_mcp_subprocess()
+    assert "cmd" not in calls
+
+    # A port already in use also short-circuits, without launching.
+    monkeypatch.setattr(mcp, "_mcp_process", None)
+    monkeypatch.setattr(mcp, "_port_open", lambda *a: True)
+    calls.clear()
+    mcp.ensure_mcp_subprocess()
+    assert "cmd" not in calls

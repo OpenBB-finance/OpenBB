@@ -3,10 +3,9 @@
 from typing import Annotated
 
 from fastapi import (
-    Depends,
     Query as FastAPIQuery,
-    Request,
 )
+from openbb_core.app.model.aggrid import AgGridRowsRequest
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -17,6 +16,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
+from pydantic import BaseModel
 
 router = Router(
     prefix="",
@@ -1205,7 +1205,7 @@ async def section_markdown(
 
 
 @router.api_router.get("/edgar_document", include_in_schema=False)
-async def edgar_document(
+async def edgar_document(  # noqa: PLR0911, PLR0912
     url: Annotated[
         str | None,
         FastAPIQuery(description="Direct URL of a SEC EDGAR filing document."),
@@ -1214,6 +1214,7 @@ async def edgar_document(
 ):
     """Serve a SEC filing document for the viewer iframe, same-origin."""
     import asyncio
+    import contextlib
     import re as _re
 
     from fastapi.responses import HTMLResponse, Response
@@ -1234,6 +1235,26 @@ async def edgar_document(
             cached_bytes, target, use_cache=use_cache, headers=SEC_HEADERS
         )
 
+    def _bounded_get(target: str, limit: int) -> bytes:
+        """Stream at most ``limit`` bytes so huge files never load in full."""
+        from openbb_sec.utils.ratelimit import sec_make_request
+
+        headers = {**SEC_HEADERS, "Accept-Encoding": "identity"}
+        resp = sec_make_request(target, headers=headers, stream=True, timeout=30)
+        try:
+            if getattr(resp, "status_code", 200) >= 400:
+                return b""
+            out = bytearray()
+            for piece in resp.iter_content(65536):
+                if piece:
+                    out += piece
+                if len(out) >= limit:
+                    break
+            return bytes(out[:limit])
+        finally:
+            with contextlib.suppress(Exception):
+                resp.close()
+
     def _rewrite_urls(content: str, doc_url: str) -> str:
         from urllib.parse import quote
 
@@ -1250,7 +1271,9 @@ async def edgar_document(
             return directory + v
 
         def _proxy(value: str) -> str:
-            return "/api/v1/sec/edgar_document?url=" + quote(_abs(value), safe="")
+            # Relative path: resolves against the viewer's base URL, so it works
+            # under any API prefix (/api/v1, /api/v2, ...) without hard-coding it.
+            return "edgar_document?url=" + quote(_abs(value), safe="")
 
         def _inline(value: str) -> bool:
             v = value.strip()
@@ -1320,6 +1343,42 @@ async def edgar_document(
         except Exception:  # noqa: BLE001
             return None
 
+    path = url.split("?", 1)[0].lower()
+
+    if path.endswith(".xml") and "/xsl" not in path:
+        rendered = await _rendered_html(url)
+        if rendered is not None:
+            return Response(content=rendered, media_type="text/html")
+        from openbb_sec.utils.xml_render import render_xml_as_html
+
+        limit = 5_000_000
+        chunk = await asyncio.to_thread(_bounded_get, url, limit)
+        if chunk:
+            structured = render_xml_as_html(
+                chunk, source_url=url, truncated=len(chunk) >= limit
+            )
+            if structured is not None:
+                return Response(content=structured, media_type="text/html")
+            from openbb_sec.utils.xbrl_render import _looks_xbrl, render_xbrl_facts
+
+            if _looks_xbrl(chunk):
+                from openbb_sec.utils.financial_report import render_financial_report
+
+                report = await render_financial_report(
+                    url.rsplit("/", 1)[0] + "/", use_cache
+                )
+                if report is not None:
+                    return Response(content=report, media_type="text/html")
+            xbrl = render_xbrl_facts(
+                chunk, source_url=url, truncated=len(chunk) >= limit
+            )
+            if xbrl is not None:
+                return Response(content=xbrl, media_type="text/html")
+            return Response(
+                content=chunk.decode("utf-8", errors="ignore"),
+                media_type="text/plain; charset=utf-8",
+            )
+
     try:
         raw = await _get(url)
     except Exception:  # noqa: BLE001
@@ -1328,8 +1387,6 @@ async def edgar_document(
             status_code=502,
         )
     raw = raw or b""
-
-    path = url.split("?", 1)[0].lower()
     image_exts = (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tif", ".tiff")
     binary_type = None
     if path.endswith(".pdf") or raw[:5] == b"%PDF-":
@@ -1361,48 +1418,8 @@ async def edgar_document(
     return Response(content=text, media_type="text/plain; charset=utf-8")
 
 
-def filing_viewer_mcp_port() -> int:
-    """Port the Filing Viewer MCP server listens on."""
-    import os
-
-    return int(os.environ.get("OPENBB_SEC_MCP_PORT", "7769"))
-
-
-def _mcp_base_url(request: Request) -> str:
-    """Build the Filing Viewer MCP base URL from the incoming request."""
-    forwarded = request.headers.get("x-forwarded-proto") or ""
-    scheme = forwarded.split(",")[0].strip() or request.url.scheme
-    hostname = request.headers.get("host", "localhost").split(":")[0]
-    return f"{scheme}://{hostname}:{filing_viewer_mcp_port()}"
-
-
-def _mcp_base_from_config() -> str:
-    """Build the MCP base URL without a request, for the collected widgets.json."""
-    import os
-
-    host = os.getenv("OPENBB_API_HOST") or "localhost"
-    if host in ("0.0.0.0", "::"):  # noqa: S104
-        host = "localhost"
-    scheme = "http"
-    import contextlib
-
-    with contextlib.suppress(Exception):
-        from openbb_core.app.service.system_service import SystemService
-
-        uvicorn_settings = (
-            SystemService()
-            .system_settings.python_settings.model_dump()
-            .get("uvicorn", {})
-        )
-        if uvicorn_settings.get("ssl_certfile") or uvicorn_settings.get("ssl_keyfile"):
-            scheme = "https"
-    return f"{scheme}://{host}:{filing_viewer_mcp_port()}"
-
-
 @router.api_router.get("/filing_viewer_app", include_in_schema=False)
-async def filing_viewer_app(
-    mcp_base: Annotated[str, Depends(_mcp_base_url)],
-):
+async def filing_viewer_app():
     """Serve the Filing Viewer iframe app."""
     from pathlib import Path
 
@@ -1411,8 +1428,42 @@ async def filing_viewer_app(
     app_html = (Path(__file__).parent / "assets" / "filing_viewer_app.html").read_text(
         encoding="utf-8"
     )
-    app_html = app_html.replace("__OB_MCP_BASE__", mcp_base)
     return HTMLResponse(content=app_html)
+
+
+class SecAssetDataRowsRequest(AgGridRowsRequest):
+    """SSRM request body for asset-data rows, carrying the document URL."""
+
+    document_url: str = ""
+
+
+class AssetDataRowsResponse(BaseModel):
+    """A page of asset-data rows for an AgGrid datasource."""
+
+    rowData: list[dict]
+    rowCount: int
+    columns: list[str]
+
+
+@router.api_router.post("/asset_data_rows", include_in_schema=False)
+async def asset_data_rows(body: SecAssetDataRowsRequest) -> AssetDataRowsResponse:
+    """Serve a paged/sorted/filtered block of asset-data rows for the viewer grid."""
+    import asyncio
+
+    from openbb_sec.utils.asset_data import load_asset_data, query
+
+    url = body.document_url
+    empty = AssetDataRowsResponse(rowData=[], rowCount=0, columns=[])
+    if not url or not url.startswith(("https://www.sec.gov/", "https://efts.sec.gov/")):
+        return empty
+    try:
+        columns, rows = await asyncio.to_thread(load_asset_data, url)
+    except Exception:  # noqa: BLE001
+        return empty
+    if not columns:
+        return empty
+    row_data, total = query(columns, rows, body)
+    return AssetDataRowsResponse(rowData=row_data, rowCount=total, columns=columns)
 
 
 @router.api_router.get("/edgar_document_markdown", include_in_schema=False)
@@ -1458,33 +1509,57 @@ async def fts_locations() -> list:
 
 
 _PRIME_TASKS: set = set()
-_MCP_MOUNTED: set = set()
 
 
-def _ensure_filing_viewer_mcp() -> None:
-    """Start the Filing Viewer MCP server in a background thread, once."""
-    if _MCP_MOUNTED:
-        return
-    _MCP_MOUNTED.add(True)
-    import contextlib
-    import threading
+def _mcp_public_url() -> str:
+    """Absolute URL the Workspace connects to for the Filing Viewer MCP.
 
-    def _serve() -> None:
-        with contextlib.suppress(Exception):
-            import os
+    The server runs as a subprocess reverse-proxied through the OpenBB API (see
+    the route below), so it lives on the API's own host/port. It must be absolute
+    — a relative path resolves against the Workspace origin, not the backend, so
+    the connection never reaches here. Built from the API port; override the whole
+    URL with ``OPENBB_SEC_MCP_PUBLIC_URL`` (or just the host with
+    ``OPENBB_SEC_MCP_PUBLIC_HOST``) for non-local deployments.
+    """
+    import os
+    import sys
 
-            import uvicorn
+    from openbb_core.app.service.system_service import SystemService
 
-            from openbb_sec.utils.filing_viewer_mcp import build_mcp_app
+    override = os.environ.get("OPENBB_SEC_MCP_PUBLIC_URL")
+    if override:
+        return override
 
-            uvicorn.run(
-                build_mcp_app(),
-                host=os.environ.get("OPENBB_SEC_MCP_HOST", "127.0.0.1"),
-                port=filing_viewer_mcp_port(),
-                log_level="error",
-            )
+    # openbb-api/uvicorn take --port on the command line and do not export it, so
+    # read it from argv (then env, then the default).
+    port = None
+    for i, arg in enumerate(sys.argv):
+        if arg == "--port" and i + 1 < len(sys.argv):
+            port = sys.argv[i + 1]
+        elif arg.startswith("--port="):
+            port = arg.split("=", 1)[1]
+    port = os.environ.get("OPENBB_API_PORT") or port or "6900"
 
-    threading.Thread(target=_serve, daemon=True, name="sec-filing-viewer-mcp").start()
+    prefix = SystemService().system_settings.api_settings.prefix
+    host = os.environ.get("OPENBB_SEC_MCP_PUBLIC_HOST", "127.0.0.1")
+    return f"http://{host}:{port}{prefix}/sec/filing_viewer_mcp/mcp"
+
+
+from openbb_sec.utils.filing_viewer_mcp import (  # noqa: E402
+    ensure_mcp_subprocess,
+    mcp_reverse_proxy,
+)
+
+# Expose the Filing Viewer MCP server on the OpenBB API's own host/port by
+# reverse-proxying to the local subprocess that serves streamable-http. The
+# {path:path} catch-all forwards both /mcp (the transport) and /viewer-state
+# (the iframe's current-document ping).
+router.api_router.add_api_route(
+    path="/filing_viewer_mcp/{path:path}",
+    endpoint=mcp_reverse_proxy,
+    methods=["GET", "POST", "DELETE"],
+    include_in_schema=False,
+)
 
 
 async def _warm_companies() -> None:
@@ -1583,26 +1658,27 @@ async def get_widgets_json() -> dict:
     task = asyncio.get_running_loop().create_task(_warm_companies())
     _PRIME_TASKS.add(task)
     task.add_done_callback(_PRIME_TASKS.discard)
-    _ensure_filing_viewer_mcp()
+    ensure_mcp_subprocess()
 
     curated = json.loads(
         (Path(__file__).parent / "assets" / "widgets.json").read_text(encoding="utf-8")
     )
+    mcp_url = _mcp_public_url()
     if "sec_filing_viewer_sec_obb" in curated:
-        curated["sec_filing_viewer_sec_obb"]["storage"] = {
-            "mcpUrl": _mcp_base_from_config() + "/mcp"
-        }
+        curated["sec_filing_viewer_sec_obb"]["storage"] = {"mcpUrl": mcp_url}
     try:
-        from openbb_core.api.rest_api import app as rest_app
+        from fastapi import FastAPI
         from openbb_core.app.service.system_service import SystemService
         from openbb_platform_api.utils.widgets import build_json
 
-        # Derive the API prefix rather than hard-coding "/api/v1": it is
-        # "/api/v{version}" and the version is configurable, so a literal path
-        # silently matches nothing — dropping every generated SEC widget —
-        # whenever the prefix differs from the default.
-        sec_prefix = f"{SystemService().system_settings.api_settings.prefix}/sec/"
-        generated = build_json(rest_app.openapi(), [])
+        # Build the spec from a throwaway app that holds ONLY the SEC router, so
+        # widget generation stays isolated to this provider and never imports or
+        # builds the whole platform app just to read SEC routes.
+        api_prefix = SystemService().system_settings.api_settings.prefix
+        sec_prefix = f"{api_prefix}/sec/"
+        sec_app = FastAPI()
+        sec_app.include_router(router.api_router, prefix=f"{api_prefix}/sec")
+        generated = build_json(sec_app.openapi(), [])
         widgets = {
             key: value
             for key, value in generated.items()

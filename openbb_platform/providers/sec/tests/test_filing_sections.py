@@ -7,6 +7,7 @@ from openbb_sec.utils.filing_sections import (
     _is_bold_paragraph,
     extract_item_sections,
     extract_section_html,
+    extract_via_cross_reference,
     reflow_plain_text,
     split_bold_sections,
     strip_markdown_footers,
@@ -255,3 +256,47 @@ def test_split_bold_sections_splits_and_skips_containers():
     headings = [b["risk_factor"] for b in blocks]
     assert "The first risk heading." in headings
     assert "The second risk heading." in headings
+
+
+_CROSS_REFERENCE_MARKDOWN = (
+    '<a id="bus"></a>About our business operations and strategy.\n\n'
+    '<a id="risk"></a>Risk discussion of various market risks.\n\n'
+    '<a id="mkt"></a>Market for the common equity.\n\n'
+    "| Item | Description | Reference |\n"
+    "| Part I |\n"
+    "| Item 1 | Business | [1](#bus) |\n"
+    "| Item 1A | Risk Factors | [2](#risk) |\n"
+    "| Item 2 | Properties | none |\n"
+    "| Item 3 | Legal | [3](#missing) |\n"
+    "| Part II |\n"
+    "| Item 5 | Market | [4](#mkt) |\n"
+)
+
+
+def test_extract_via_cross_reference_walks_anchor_table():
+    items = extract_via_cross_reference(_CROSS_REFERENCE_MARKDOWN)
+    # Rows whose anchor is missing (#missing) or absent (none) are dropped.
+    assert set(items) == {"item_1", "item_1A", "item_II_5"}
+    assert items["item_1"]["name"] == "Business"
+    assert items["item_1"]["part"] == "I"
+    assert "About our business" in items["item_1"]["text"]
+    # Anchor tags are stripped from the sliced section content.
+    assert "<a id=" not in items["item_1"]["text"]
+    assert items["item_II_5"]["part"] == "II"
+    assert items["item_II_5"]["item_num"] == "5"
+
+
+def test_extract_via_cross_reference_empty_markdown():
+    assert extract_via_cross_reference("") == {}
+
+
+def test_extract_via_cross_reference_requires_anchors():
+    # An anchor table with no in-document ``<a id>`` targets yields nothing.
+    assert extract_via_cross_reference("| Item 1 | Business | [1](#bus) |\n") == {}
+
+
+def test_extract_via_cross_reference_no_resolvable_rows():
+    markdown = (
+        '<a id="bus"></a>Business content.\n\n| Item 1 | Business | [1](#nope) |\n'
+    )
+    assert extract_via_cross_reference(markdown) == {}

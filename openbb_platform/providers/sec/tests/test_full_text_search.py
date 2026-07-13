@@ -153,3 +153,27 @@ def test_transform_data_empty():
     query = SecFullTextSearchFetcher.transform_query({"query": "x"})
     with pytest.raises(EmptyDataError):
         SecFullTextSearchFetcher.transform_data(query, [])
+
+
+def test_form_type_json_array_string_is_joined():
+    """A JSON-array string from the Workspace multi-select is comma-joined."""
+    query = SecFullTextSearchFetcher.transform_query(
+        {"query": "x", "form_type": '["S-1", "8-K"]'}
+    )
+    assert query.form_type == "S-1,8-K"
+
+
+def test_form_type_invalid_json_array_returns_stripped():
+    """A bracketed but non-JSON value falls back to its stripped self."""
+    query = SecFullTextSearchFetcher.transform_query(
+        {"query": "x", "form_type": "[S-1, 8-K]"}
+    )
+    assert query.form_type == "[S-1, 8-K]"
+
+
+def test_form_type_list_is_joined():
+    """A real list/tuple is comma-joined, dropping blank entries."""
+    query = SecFullTextSearchFetcher.transform_query(
+        {"query": "x", "form_type": ["S-1", " ", "8-K"]}
+    )
+    assert query.form_type == "S-1,8-K"

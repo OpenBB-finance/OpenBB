@@ -75,6 +75,21 @@ class SecLatestFinancialReportsQueryParams(LatestFinancialReportsQueryParams):
 class SecLatestFinancialReportsData(LatestFinancialReportsData):
     """SEC Latest Financial Reports Data."""
 
+    url: str = Field(
+        description="URL to the filing page.",
+        json_schema_extra={
+            "x-widget_config": {
+                "headerName": "Document",
+                "pinned": "left",
+                "cellDataType": "text",
+                "renderFn": "cellOnClick",
+                "renderFnParams": {
+                    "actionType": "groupBy",
+                    "groupBy": {"paramName": "url"},
+                },
+            }
+        },
+    )
     items: str | None = Field(
         default=None, description="Item codes associated with the filing."
     )
@@ -117,8 +132,6 @@ class SecLatestFinancialReportsFetcher(
         if query_date.weekday() > 4:
             query_date -= timedelta(days=query_date.weekday() - 4)
 
-        date = query_date.strftime("%Y-%m-%d")
-
         SEARCH_HEADERS = {
             "User-Agent": "my real company name definitelynot@fakecompany.com",
             "Accept-Encoding": "gzip, deflate",
@@ -142,44 +155,55 @@ class SecLatestFinancialReportsFetcher(
                 f"&category=form-cat1&startdt={date}&enddt={date}&forms={forms}&count=100&from={offset}"
             )
 
-        n_hits = 0
-        results: list = []
-        url = get_url(date, n_hits)
-        try:
-            response = await amake_request(url, headers=SEARCH_HEADERS)
-        except OpenBBError as e:
-            raise OpenBBError(f"Failed to get SEC data: {e}") from e
-
-        if not isinstance(response, dict):
-            raise OpenBBError(
-                f"Unexpected data response. Expected dictionary, got {response.__class__.__name__}"
-            )
-
-        hits = response.get("hits", {})
-        total_hits = hits.get("total", {}).get("value")
-
-        if hits.get("hits"):
-            results.extend(hits["hits"])
-
-        n_hits += len(results)
-
-        while n_hits < total_hits:
-            offset = n_hits
-            url = get_url(date, offset)
+        async def _fetch_for_date(day: str) -> list:
+            """Fetch all hits for a single date, following pagination."""
+            out: list = []
             try:
-                response = await amake_request(url, headers=SEARCH_HEADERS)
-            except Exception as e:
-                warn(f"Failed to get the next page of SEC data: {e}")
+                response = await amake_request(get_url(day, 0), headers=SEARCH_HEADERS)
+            except OpenBBError as e:
+                raise OpenBBError(f"Failed to get SEC data: {e}") from e
+
+            if not isinstance(response, dict):
+                raise OpenBBError(
+                    "Unexpected data response. Expected dictionary, got"
+                    f" {response.__class__.__name__}"
+                )
+
+            hits = response.get("hits", {})
+            total_hits = hits.get("total", {}).get("value") or 0
+
+            if hits.get("hits"):
+                out.extend(hits["hits"])
+
+            while len(out) < total_hits:
+                try:
+                    response = await amake_request(
+                        get_url(day, len(out)), headers=SEARCH_HEADERS
+                    )
+                except Exception as e:  # noqa: BLE001
+                    warn(f"Failed to get the next page of SEC data: {e}")
+                    break
+
+                new_results = cast("dict", response).get("hits", {}).get("hits", [])
+
+                if not new_results:
+                    break
+
+                out.extend(new_results)
+
+            return out
+
+        # Filings are not submitted on weekends or market holidays. Step back to
+        # the most recent business day that actually has filings so the widget
+        # returns the latest available reports instead of nothing.
+        results: list = []
+        for _ in range(10):
+            results = await _fetch_for_date(query_date.strftime("%Y-%m-%d"))
+            if results:
                 break
-
-            hits = cast("dict", response).get("hits", {})
-            new_results = hits.get("hits", [])
-
-            if not new_results:
-                break
-
-            results.extend(new_results)
-            n_hits += len(new_results)
+            query_date -= timedelta(days=1)
+            while query_date.weekday() > 4:
+                query_date -= timedelta(days=1)
 
         if not results and query.report_type is None:
             raise OpenBBError("No data was returned.")

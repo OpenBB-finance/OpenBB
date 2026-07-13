@@ -194,3 +194,55 @@ def test_line_items_sorted_by_model_field_order():
         "Total Current Assets",
         "Total Liabilities",
     ]
+
+
+def test_line_items_resolve_through_parent_and_orphans():
+    records = [
+        {
+            "period_ending": "2024-12-31",
+            "fiscal_period": "FY",
+            "tag": "total_current_assets",
+            "value": 1,
+            "label": "Total Current Assets",
+        },
+        # Custom tag anchored to a model field via its parent (depth 1).
+        {
+            "period_ending": "2024-12-31",
+            "fiscal_period": "FY",
+            "tag": "custom_receivable",
+            "value": 2,
+            "label": "Custom Receivable",
+            "parent": "total_current_assets",
+            "sequence": 3.0,
+        },
+        # Orphan tag: not a model field and no parent -> resolves to nothing.
+        {
+            "period_ending": "2024-12-31",
+            "fiscal_period": "FY",
+            "tag": "mystery_item",
+            "value": 4,
+            "label": "Mystery Item",
+        },
+        # Cyclic parents: each points at the other, so resolution bails out.
+        {
+            "period_ending": "2024-12-31",
+            "fiscal_period": "FY",
+            "tag": "loop_a",
+            "value": 5,
+            "label": "Loop A",
+            "parent": "loop_b",
+        },
+        {
+            "period_ending": "2024-12-31",
+            "fiscal_period": "FY",
+            "tag": "loop_b",
+            "value": 6,
+            "label": "Loop B",
+            "parent": "loop_a",
+        },
+    ]
+    items = [r["Line Item"] for r in _run(records=records, transpose=True)]
+    # The child anchors just above its resolved parent (anchor index - 0.5).
+    assert items.index("Custom Receivable") == items.index("Total Current Assets") - 1
+    # Unresolvable tags sink to the end but are still present.
+    assert {"Mystery Item", "Loop A", "Loop B"}.issubset(set(items))

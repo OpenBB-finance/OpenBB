@@ -494,6 +494,7 @@ class FinancialStatements(Filing):
         """Filing item sections (Item 1, 1A, 3, ...) keyed by item id, with text."""
         from openbb_sec.utils.filing_sections import (
             extract_item_sections,
+            extract_via_cross_reference,
             reflow_plain_text,
         )
 
@@ -503,6 +504,8 @@ class FinancialStatements(Filing):
                 return {}
             markdown = self._clean_html_to_text(content, keep_tables=True)
             self._items = extract_item_sections(markdown)
+            if not self._items:
+                self._items = extract_via_cross_reference(markdown)
             if not self._items:
                 self._items = extract_item_sections(content)
 

@@ -313,7 +313,7 @@ def get_fiscal_meta(  # noqa: PLR0912
                             int(end[:4]) if end_month <= fye_month else int(end[:4]) + 1
                         )
                         fis_q = f"Q{((end_month - fye_month - 1) % 12) // 3 + 1}"
-                        q_label = fp if fp.startswith("Q") else fis_q
+                        q_label = fp if fp and fp.startswith("Q") else fis_q
                         if days is not None and 300 <= days <= 400:
                             if end not in best_annual or filed < best_annual[end][0]:
                                 best_annual[end] = (filed, fis_year, "FY")

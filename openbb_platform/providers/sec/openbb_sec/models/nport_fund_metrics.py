@@ -24,7 +24,7 @@ class SecNportFundMetricsQueryParams(QueryParams):
                 "label": "Fund",
                 "type": "endpoint",
                 "optionsEndpoint": "/api/v1/sec/nport_funds",
-                "style": {"popupWidth": 600},
+                "style": {"popupWidth": 950},
             }
         },
         "date": {

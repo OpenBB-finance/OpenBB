@@ -5,17 +5,48 @@
 <title>SEC Filing Viewer</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-grid.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-theme-balham.css">
 <style>
-  :root { --ob-chrome-bg: #ffffff; --ob-chrome-fg: #8a8a8a; }
-  html[data-theme="dark"] { --ob-chrome-bg: #15151a; --ob-chrome-fg: #9a9aa4; }
+  :root { --ob-chrome-bg: #ffffff; --ob-chrome-fg: #8a8a8a;
+    --ob-bar-bg: #f5f5f7; --ob-bar-fg: #444444; --ob-bar-border: #dddddd; }
+  html[data-theme="dark"] { --ob-chrome-bg: #15151a; --ob-chrome-fg: #9a9aa4;
+    --ob-bar-bg: #1b1b20; --ob-bar-fg: #cfcfd6; --ob-bar-border: #2a2a32; }
   html, body { margin: 0; height: 100%; width: 100%; overflow: hidden; background: var(--ob-chrome-bg); }
   #ob-msg { font-family: system-ui, sans-serif; color: var(--ob-chrome-fg); padding: 1.25rem; font-size: 0.95rem; }
-  #ob-doc { padding: 16px 20px; overflow: auto; height: 100%; box-sizing: border-box;
+  #ob-doc { display: flex; flex-direction: column; height: 100%; background: #fff; }
+  #ob-doc-bar { flex: 0 0 auto; }
+  #ob-doc-bar:not(:empty) { padding: 8px 16px; background: var(--ob-bar-bg);
+    color: var(--ob-bar-fg); border-bottom: 1px solid var(--ob-bar-border); }
+  #ob-doc-bar label { display: flex; gap: 8px; align-items: center;
+    font: 13px system-ui, sans-serif; }
+  #ob-doc-bar select { font: inherit; padding: 3px 7px; max-width: 60%; }
+  #ob-doc-scroll { flex: 1 1 auto; overflow: auto; padding: 16px 20px; box-sizing: border-box;
     font-family: system-ui, sans-serif; background: #fff; color: #111; }
-  #ob-doc img { max-width: 100%; height: auto; }
-  #ob-doc pre.ob-src { margin: 0; padding: 0; white-space: pre-wrap; word-break: break-word;
+  #ob-doc-scroll img { max-width: 100%; height: auto; display: block; }
+  /* SEC print-formatted filings set content-visibility:auto on each page div,
+     which makes the browser skip rendering off-screen pages — embedded images
+     never load. Force every descendant to render so images appear on scroll. */
+  #ob-doc-scroll * { content-visibility: visible !important; }
+  /* Print-formatted page divs wrap each image in an absolutely-positioned div
+     with z-index near INT64_MIN. position:relative alone doesn't establish a
+     stacking context, so that negative z-index escapes to the root and the
+     image renders behind the page's white background. Force a stacking context
+     on every positioned descendant so the image stays above its page bg. */
+  #ob-doc-scroll div[style*="position:relative"],
+  #ob-doc-scroll div[style*="position: relative"] { isolation: isolate; }
+  /* Print-formatted "coverart" pages wrap each image in a chain of nested
+     position:absolute divs with no offsets and no width/height. Those wrappers
+     shrink to 0×0 (their only in-flow content is another out-of-flow child),
+     and the img ends up as a static-flow child of a 0×0 box — Chrome paints
+     it as blank. Neutralize the naked wrappers so the img flows normally
+     inside the outer sized wrapper. */
+  #ob-doc-scroll div[style*="position:absolute"]:not([style*="top:"]):not([style*="bottom:"]):not([style*="left:"]):not([style*="right:"]):not([style*="width"]):not([style*="height"]) {
+    position: static !important;
+  }
+  #ob-doc-scroll pre.ob-src { margin: 0; padding: 0; white-space: pre-wrap; word-break: break-word;
     font: 12.5px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  #ob-doc pre.ob-src code { background: none; padding: 0; }
+  #ob-doc-scroll pre.ob-src code { background: none; padding: 0; }
   #ob-pdf { display: flex; flex-direction: column; height: 100%; background: #2b2b30;
     color: #e7e7ea; font-family: system-ui, sans-serif; }
   .pv-bar { flex: 0 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
@@ -39,12 +70,20 @@
   #pv-toc a:hover { background: #26262d; color: #fff; }
   .pv-main { flex: 1 1 auto; position: relative; }
   #viewerContainer { position: absolute; inset: 0; overflow: auto; background: #525659; }
+  #ob-grid { height: 100%; width: 100%;
+    --ag-font-size: 13px; --ag-font-family: system-ui, -apple-system, sans-serif; }
+  html[data-theme="dark"] #ob-grid {
+    --ag-background-color: #15151a; --ag-odd-row-background-color: #15151a;
+    --ag-header-background-color: #1b1b20; --ag-foreground-color: #d6d6dc;
+    --ag-header-foreground-color: #9a9aa4; --ag-border-color: #2a2a32;
+    --ag-row-border-color: #23232a; --ag-row-hover-color: #1f1f26;
+    --ag-control-panel-background-color: #1b1b20; }
   .ob-hidden { display: none !important; }
 </style>
 </head>
 <body>
 <div id="ob-msg">Select a document in the Index Headers to view it here.</div>
-<div id="ob-doc" class="ob-hidden"></div>
+<div id="ob-doc" class="ob-hidden"><div id="ob-doc-bar"></div><div id="ob-doc-scroll"></div></div>
 <div id="ob-pdf" class="ob-hidden">
   <div class="pv-bar">
     <button id="pv-toc-btn" style="display:none" title="Toggle contents">&#9776; Contents</button>
@@ -58,15 +97,22 @@
     <div class="pv-main"><div id="viewerContainer"><div id="viewer" class="pdfViewer"></div></div></div>
   </div>
 </div>
+<div id="ob-grid" class="ob-hidden"></div>
 <script id="ob-params" type="application/json">[{"paramName":"document_url","label":"Document URL","type":"text","description":"Direct URL of a SEC EDGAR document. Set by clicking a document's URL in the Index Headers table.","value":""}]</script>
-<script>window.OB_MCP_BASE = "__OB_MCP_BASE__";</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/dist/ag-grid-community.min.js"></script>
 <script>
 (function () {
   var PARAM_DEFS = JSON.parse(document.getElementById("ob-params").textContent || "[]");
   var PARAM_KEYS = PARAM_DEFS.map(function (p) { return p.paramName; });
+  // SEC endpoint base, derived from this app's own URL so it is agnostic to the
+  // API prefix (/api/v1, /api/v2, ...) and any path-rewriting proxy.
+  var OB_API = window.location.origin
+    + window.location.pathname.replace(/filing_viewer_app\/?$/, "");
+  // Filing Viewer MCP, reached same-origin through the API's proxy endpoint.
+  var OB_MCP_BASE = OB_API + "filing_viewer_mcp";
   var WIDGET_MANIFESTS = [{
     widgetId: "sec-filing-document",
     name: "Filing Document (Markdown)",
@@ -99,17 +145,27 @@
       data: "",
     };
     if (!current) { target.postMessage(msg, "*"); return; }
-    fetch(window.location.origin
-      + "/api/v1/sec/edgar_document_markdown?url=" + encodeURIComponent(current))
+    fetch(OB_API + "edgar_document_markdown?url=" + encodeURIComponent(current))
       .then(function (r) { return r.json(); })
       .then(function (j) { msg.data = (j && j.content) || ""; target.postMessage(msg, "*"); })
       .catch(function () { target.postMessage(msg, "*"); });
   }
 
+  function gridThemeClass() {
+    return document.documentElement.getAttribute("data-theme") === "dark"
+      ? "ag-theme-balham-dark" : "ag-theme-balham";
+  }
+
   function applyTheme(t) {
-    if (t === "dark" || t === "light") {
-      document.documentElement.setAttribute("data-theme", t);
-    }
+    if (!t) return;
+    var s = String(t).toLowerCase();
+    var mode = s.indexOf("dark") >= 0 ? "dark"
+      : (s.indexOf("light") >= 0 ? "light" : null);
+    if (!mode) return;
+    document.documentElement.setAttribute("data-theme", mode);
+    // Re-theme a live grid so it follows Workspace theme changes via the bridge.
+    var grid = document.getElementById("ob-grid");
+    if (grid && grid._obGrid) { grid.className = gridThemeClass(); }
   }
 
   (function initTheme() {
@@ -126,14 +182,27 @@
   })();
 
   function show(id) {
-    ["ob-msg", "ob-doc", "ob-pdf"].forEach(function (x) {
+    ["ob-msg", "ob-doc", "ob-pdf", "ob-grid"].forEach(function (x) {
       document.getElementById(x).classList.toggle("ob-hidden", x !== id);
     });
   }
 
+  function clearDocBar() {
+    document.getElementById("ob-doc-bar").innerHTML = "";
+  }
+
   function renderHtmlText(html) {
-    var doc = document.getElementById("ob-doc");
-    doc.innerHTML = html;
+    var doc = document.getElementById("ob-doc-scroll");
+    // Backend rewrites src to relative "edgar_document?url=..." so it works
+    // under any API prefix. Rewrite to absolute on the HTML string BEFORE
+    // assigning innerHTML — touching img.src after assignment cancels the
+    // in-flight relative load Chrome already started, and 80+ concurrent
+    // cancel-and-reload cycles surface as net::ERR_UNEXPECTED on every load
+    // but the first.
+    doc.innerHTML = html.replace(
+      /(<img\b[^>]*\bsrc=)(["'])(edgar_document\?[^"']*)\2/gi,
+      function (_m, pre, q, rel) { return pre + q + OB_API + rel + q; }
+    );
     doc.querySelectorAll('a[href]').forEach(function (a) {
       var href = a.getAttribute("href") || "";
       if (href.charAt(0) === "#") {
@@ -152,8 +221,50 @@
         a.setAttribute("rel", "noopener");
       }
     });
+    // Financial-report pages carry the SEC Show.js for row collapse/expand;
+    // <script> injected via innerHTML never runs, so re-create it — scoped to
+    // the report container, where the only script is that trusted asset.
+    if (doc.querySelector(".ob-fr")) {
+      doc.querySelectorAll(".ob-fr script").forEach(function (old) {
+        var s = document.createElement("script");
+        if (old.src) { s.src = old.src; } else { s.textContent = old.textContent; }
+        old.parentNode.replaceChild(s, old);
+      });
+    }
+    setupSectionMenu(doc);
     show("ob-doc");
     doc.scrollTop = 0;
+  }
+
+  // When a rendered document is split into labelled <section class=ob-sec>
+  // blocks (e.g. XBRL statement tables), show a dropdown to view one at a time.
+  function setupSectionMenu(scrollEl) {
+    var bar = document.getElementById("ob-doc-bar");
+    bar.innerHTML = "";
+    var sections = scrollEl.querySelectorAll("section.ob-sec");
+    if (sections.length < 2) return;
+    var label = document.createElement("label");
+    label.textContent = "Table:";
+    var select = document.createElement("select");
+    sections.forEach(function (section, i) {
+      var opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = section.getAttribute("data-name") || "Table " + (i + 1);
+      select.appendChild(opt);
+      section.querySelectorAll("h2").forEach(function (h) { h.style.display = "none"; });
+    });
+    function showSection(idx) {
+      sections.forEach(function (section, i) {
+        section.style.display = i === idx ? "" : "none";
+      });
+      scrollEl.scrollTop = 0;
+    }
+    select.addEventListener("change", function () {
+      showSection(parseInt(select.value, 10) || 0);
+    });
+    label.appendChild(select);
+    bar.appendChild(label);
+    showSection(0);
   }
 
   function renderPdf(proxied, u) {
@@ -255,7 +366,8 @@
   }
 
   function renderXmlText(text, u) {
-    var host = document.getElementById("ob-doc");
+    clearDocBar();
+    var host = document.getElementById("ob-doc-scroll");
     host.innerHTML = "";
     var pre = document.createElement("pre");
     pre.className = "ob-src";
@@ -273,7 +385,8 @@
   }
 
   function renderImage(proxied) {
-    var doc = document.getElementById("ob-doc");
+    clearDocBar();
+    var doc = document.getElementById("ob-doc-scroll");
     doc.innerHTML = "";
     var img = document.createElement("img");
     img.src = proxied;
@@ -284,9 +397,8 @@
   }
 
   function pushViewerState(u) {
-    if (!window.OB_MCP_BASE || window.OB_MCP_BASE.indexOf("__OB_MCP") === 0) return;
     try {
-      fetch(window.OB_MCP_BASE + "/viewer-state", {
+      fetch(OB_MCP_BASE + "/viewer-state", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: u }),
@@ -294,16 +406,172 @@
     } catch (e) {}
   }
 
+  function humanizeField(name) {
+    var s = (name || "").replace(/_/g, " ").replace(/([a-z0-9])([A-Z])/g, "$1 $2");
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function fetchRows(url, startRow, endRow, sortModel, filterModel) {
+    return fetch(OB_API + "asset_data_rows", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        document_url: url,
+        startRow: startRow,
+        endRow: endRow,
+        sortModel: sortModel || [],
+        filterModel: filterModel || {}
+      })
+    }).then(function (r) { return r.json(); });
+  }
+
+  function inferColumnType(col, rows) {
+    var numeric = true, hasValue = false;
+    for (var i = 0; i < rows.length; i++) {
+      var v = rows[i][col];
+      if (v === "" || v == null) continue;
+      hasValue = true;
+      if (isNaN(Number(v))) { numeric = false; break; }
+    }
+    return (hasValue && numeric) ? "number" : "text";
+  }
+
+  // Grid sort/filter/column layout persists across refreshes but not forever:
+  // entries carry a timestamp, expire after GRID_STATE_TTL, and are capped.
+  var GRID_STATE_TTL = 3600000;
+  var GRID_STATE_MAX = 20;
+  function gridStateKey(url) { return "ob-grid-state::" + url; }
+
+  function pruneGridState() {
+    try {
+      var now = Date.now(), entries = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (!k || k.indexOf("ob-grid-state::") !== 0) continue;
+        var s = null;
+        try { s = JSON.parse(localStorage.getItem(k)); } catch (e) { s = null; }
+        if (!s || !s.ts || (now - s.ts) > GRID_STATE_TTL) {
+          localStorage.removeItem(k); i--;
+        } else { entries.push([k, s.ts]); }
+      }
+      entries.sort(function (a, b) { return a[1] - b[1]; });
+      while (entries.length > GRID_STATE_MAX) {
+        localStorage.removeItem(entries.shift()[0]);
+      }
+    } catch (e) {}
+  }
+
+  function saveGridState(url, api) {
+    try {
+      localStorage.setItem(gridStateKey(url), JSON.stringify({
+        ts: Date.now(),
+        columnState: api.getColumnState(),
+        filterModel: api.getFilterModel()
+      }));
+      pruneGridState();
+    } catch (e) {}
+  }
+
+  function restoreGridState(url, api) {
+    try {
+      var raw = localStorage.getItem(gridStateKey(url));
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      if (!s || !s.ts || (Date.now() - s.ts) > GRID_STATE_TTL) {
+        localStorage.removeItem(gridStateKey(url)); return;
+      }
+      if (s.columnState) {
+        api.applyColumnState({ state: s.columnState, applyOrder: true });
+      }
+      if (s.filterModel) api.setFilterModel(s.filterModel);
+    } catch (e) {}
+  }
+
+  function renderAssetGrid(url, firstBlock) {
+    var host = document.getElementById("ob-grid");
+    if (host._obGrid && host._obGrid.destroy) {
+      try { host._obGrid.destroy(); } catch (e) {}
+    }
+    host.innerHTML = "";
+    host.className = gridThemeClass();
+    var sample = firstBlock.rowData || [];
+    var columnDefs = (firstBlock.columns || []).map(function (c) {
+      var isNum = inferColumnType(c, sample) === "number";
+      return {
+        field: c,
+        headerName: humanizeField(c),
+        sortable: true,
+        resizable: true,
+        minWidth: 130,
+        filter: isNum ? "agNumberColumnFilter" : "agTextColumnFilter"
+      };
+    });
+    var datasource = {
+      getRows: function (params) {
+        fetchRows(url, params.startRow, params.endRow, params.sortModel, params.filterModel)
+          .then(function (j) {
+            if (url !== current) { params.failCallback(); return; }
+            var count = (typeof j.rowCount === "number") ? j.rowCount : -1;
+            params.successCallback(j.rowData || [], count);
+          })
+          .catch(function () { params.failCallback(); });
+      }
+    };
+    var saveTimer = null;
+    function scheduleSave(api) {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () { saveGridState(url, api); }, 400);
+    }
+    host._obGrid = agGrid.createGrid(host, {
+      columnDefs: columnDefs,
+      rowModelType: "infinite",
+      cacheBlockSize: 100,
+      maxBlocksInCache: 20,
+      datasource: datasource,
+      defaultColDef: { sortable: true, resizable: true, filter: true },
+      onGridReady: function (p) { restoreGridState(url, p.api); },
+      onSortChanged: function (p) { scheduleSave(p.api); },
+      onFilterChanged: function (p) { scheduleSave(p.api); },
+      onColumnMoved: function (p) { scheduleSave(p.api); },
+      onColumnVisible: function (p) { scheduleSave(p.api); },
+      onColumnResized: function (p) { if (p.finished) scheduleSave(p.api); }
+    });
+    show("ob-grid");
+  }
+
+  var MSG_DEFAULT = "Select a document in the Index Headers to view it here.";
+  function setMessage(text) {
+    document.getElementById("ob-msg").textContent = text;
+    show("ob-msg");
+  }
+
   function render(u) {
-    if (!u) { show("ob-msg"); current = null; pushViewerState(null); return; }
+    if (!u) { setMessage(MSG_DEFAULT); current = null; pushViewerState(null); return; }
     if (u === current) return;
     current = u;
     pushViewerState(u);
-    var proxied = window.location.origin
-      + "/api/v1/sec/edgar_document?url=" + encodeURIComponent(u);
+    setMessage("Loading…");
+    var proxied = OB_API + "edgar_document?url=" + encodeURIComponent(u);
     var clean = u.split("?")[0].toLowerCase();
     if (/\.pdf$/.test(clean)) { renderPdf(proxied, u); return; }
     if (/\.(jpe?g|png|gif|bmp|webp|tiff?)$/.test(clean)) { renderImage(proxied); return; }
+    if (/\.xml$/.test(clean) && window.agGrid && agGrid.createGrid) {
+      fetchRows(u, 0, 100, [], {})
+        .then(function (j) {
+          if (u !== current) return;
+          if (j && j.rowCount > 0 && j.columns && j.columns.length) {
+            renderAssetGrid(u, j);
+          } else {
+            renderViaEdgar(u, proxied);
+          }
+        })
+        .catch(function () { if (u === current) renderViaEdgar(u, proxied); });
+      return;
+    }
+    renderViaEdgar(u, proxied);
+  }
+
+  function renderViaEdgar(u, proxied) {
     fetch(proxied)
       .then(function (r) {
         var ct = (r.headers.get("content-type") || "").toLowerCase();
@@ -315,13 +583,15 @@
         });
       })
       .catch(function () {
-        document.getElementById("ob-doc").textContent = "Could not load the document.";
+        clearDocBar();
+        document.getElementById("ob-doc-scroll").textContent =
+          "Could not load the document.";
         show("ob-doc");
       });
   }
 
   function renderDefault() {
-    fetch(window.location.origin + "/api/v1/sec/filing_headers?url=")
+    fetch(OB_API + "filing_headers?url=")
       .then(function (r) { return r.json(); })
       .then(function (j) {
         var docs = (j && j.results && j.results.document_urls) || [];
@@ -354,8 +624,11 @@
   window.addEventListener("message", function (event) {
     var d = event.data;
     if (!d || typeof d !== "object") return;
-    var theme = d.theme || (d.payload && d.payload.theme);
-    if (typeof theme === "string") applyTheme(theme.toLowerCase());
+    var theme = d.theme || d.colorScheme || d.appTheme
+      || (d.payload && (d.payload.theme || d.payload.colorScheme))
+      || (d.data && (d.data.theme || d.data.colorScheme))
+      || (d.settings && d.settings.theme);
+    if (typeof theme === "string") applyTheme(theme);
     if (!d.type) return;
     if (d.type === "openbb-request") {
       if (d.widgetId === null || d.widgetId === undefined

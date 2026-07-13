@@ -9,7 +9,7 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class SecFullTextSearchQueryParams(QueryParams):
@@ -28,12 +28,17 @@ class SecFullTextSearchQueryParams(QueryParams):
             }
         },
         "form_type": {
+            "multiple_items_allowed": True,
             "x-widget_config": {
                 "label": "Form Type",
+                # Free-text multi-value with autocomplete: the EDGAR full-text
+                # API supports exclusion (e.g. ``-4``, ``-10-K/A``) and amendment
+                # codes that a strict dropdown cannot express, so values must be
+                # typeable, not constrained to the suggestion list.
                 "type": "text",
-                "multiple": True,
+                "multiSelect": True,
                 "optionsEndpoint": "/api/v1/sec/fts_form_types",
-            }
+            },
         },
         "location": {
             "x-widget_config": {
@@ -81,6 +86,27 @@ class SecFullTextSearchQueryParams(QueryParams):
         default=100,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
+
+    @field_validator("form_type", mode="before", check_fields=False)
+    @classmethod
+    def _normalize_form_type(cls, v):
+        """Normalize the form-type selection to EDGAR's comma-separated string.
+
+        The Workspace multi-select sends a JSON-array string (e.g. ``["S-1","8-K"]``);
+        accept that, a real list/tuple, or a plain comma-separated string.
+        """
+        if isinstance(v, str):
+            stripped = v.strip()
+            if stripped.startswith("[") and stripped.endswith("]"):
+                import json
+
+                try:
+                    v = json.loads(stripped)
+                except (ValueError, TypeError):
+                    return stripped or None
+        if isinstance(v, (list, tuple)):
+            return ",".join(str(i).strip() for i in v if str(i).strip()) or None
+        return v or None
 
 
 class SecFullTextSearchData(Data):
