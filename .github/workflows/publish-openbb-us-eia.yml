@@ -1,0 +1,193 @@
+name: 📦 publish openbb-us-eia
+
+# Triggers exclusively on the merge of a ``release/openbb-us-eia-v*`` branch
+# into ``develop``. No push / tag triggers. Four sequential jobs — check the
+# version is bumped, build once against a freshly crawled catalog, test the
+# built artifact across the full cross-platform matrix, and only publish to
+# PyPI if the entire matrix is green.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [develop, v5]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  version-check:
+    name: Verify version bump
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/openbb-us-eia-v')) || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/eia
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+
+      - name: Parse [project].version from pyproject.toml
+        id: parse
+        run: |
+          VERSION=$(grep -m1 -E '^version[[:space:]]*=' pyproject.toml | sed -E 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/')
+          if [ -z "$VERSION" ]; then
+            echo "::error::Could not parse [project].version from pyproject.toml."
+            exit 1
+          fi
+          echo "Local version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Fail if version already exists on PyPI
+        env:
+          VERSION: ${{ steps.parse.outputs.version }}
+        run: |
+          STATUS=$(curl -sS -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/openbb-us-eia/${VERSION}/json")
+          case "$STATUS" in
+            200)
+              echo "::error::openbb-us-eia ${VERSION} is already published on PyPI."
+              echo "Bump openbb_platform/providers/eia/pyproject.toml [project].version and re-merge a fresh release branch."
+              exit 1
+              ;;
+            404)
+              echo "openbb-us-eia ${VERSION} is not yet on PyPI — proceeding."
+              ;;
+            *)
+              echo "::error::Unexpected status $STATUS from PyPI JSON API. Aborting to avoid a silent skip."
+              exit 1
+              ;;
+          esac
+
+      - name: Verify release branch name matches pyproject version
+        if: github.event_name == 'pull_request'
+        env:
+          VERSION: ${{ steps.parse.outputs.version }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          EXPECTED="release/openbb-us-eia-v${VERSION}"
+          if [ "$BRANCH" != "$EXPECTED" ]; then
+            echo "::error::Release branch '${BRANCH}' does not match pyproject version '${VERSION}'."
+            echo "Expected branch name: '${EXPECTED}'."
+            echo "Either rename the release branch or update [project].version in pyproject.toml so they agree."
+            exit 1
+          fi
+          echo "Branch '${BRANCH}' matches pyproject version '${VERSION}'."
+
+  build:
+    name: Build sdist + wheel
+    needs: version-check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/eia
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Save the freshly crawled catalog (warming pool for the PR workflow)
+        uses: actions/cache@v4
+        with:
+          path: openbb_platform/providers/eia/openbb_us_eia/assets/eia_catalog.json.xz
+          key: eia-catalog-${{ hashFiles('openbb_platform/providers/eia/openbb_us_eia/utils/generate_catalog.py') }}
+
+      - name: Build sdist + wheel (fresh EIA catalog)
+        # A release always ships a catalog crawled from the live APIv2
+        # metadata tree, never a cached one.
+        env:
+          OPENBB_EIA_FORCE_CATALOG_REBUILD: "1"
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+        run: uv build --no-sources
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openbb-us-eia-dist
+          path: openbb_platform/providers/eia/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux: full sweep across every released Python.
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          # macOS + Windows: min and max supported.
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/eia
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-us-eia-dist
+          path: openbb_platform/providers/eia/dist
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install dependencies then openbb-us-eia wheel
+        # ``openbb-core>=2.0.0`` isn't on PyPI yet — install it from the
+        # sibling source tree first so the wheel's pinned deps resolve.
+        # ``--group dev`` brings in pytest / pytest-asyncio / pytest-cov /
+        # pytest-recorder / ruff / ty.
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system --group dev
+          uv pip install --system dist/openbb_us_eia-*.whl
+
+      - name: Test the installed wheel
+        # Remove the local ``openbb_us_eia/`` source so pytest imports the
+        # package from site-packages — i.e., the EXACT wheel that's about to
+        # be uploaded to PyPI. This is a release pipeline; the source tree
+        # can't be allowed to shadow the artifact.
+        run: |
+          rm -rf openbb_us_eia
+          pytest tests --cov=openbb_us_eia --cov-report=term-missing --cov-fail-under=100
+
+  publish:
+    name: Publish to PyPI
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required for PyPI OIDC trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-us-eia-dist
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
