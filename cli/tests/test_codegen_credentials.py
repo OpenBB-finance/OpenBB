@@ -32,6 +32,8 @@ def test_normalize_credential_key_canonicalizes_separators_and_case(raw, expecte
     "name",
     [
         "api_key",
+        "api_token",
+        "api-token",
         "apikey",
         "API_KEY",
         "X-API-Key",

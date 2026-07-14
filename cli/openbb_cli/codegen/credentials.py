@@ -9,6 +9,7 @@ CredentialLocation = Literal["query", "header"]
 _CREDENTIAL_NAMES: frozenset[str] = frozenset(
     {
         "api_key",
+        "api_token",
         "apikey",
         "x_api_key",
         "x_apikey",
