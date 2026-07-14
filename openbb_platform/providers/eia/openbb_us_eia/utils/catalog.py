@@ -6,6 +6,8 @@ import re
 from datetime import (
     date as dateType,
     datetime,
+    timedelta,
+    timezone,
 )
 from functools import lru_cache
 from pathlib import Path
@@ -583,7 +585,11 @@ def parse_period(value: str, fmt: str) -> dateType | datetime:
     if fmt.startswith('YYYY-MM-DD"T"HH24'):
         base = datetime.strptime(value[:13], "%Y-%m-%dT%H")
         offset = value[13:]
-        if offset:
-            return datetime.fromisoformat(f"{value[:13]}:00{offset}")
-        return base
+        if not offset:
+            return base
+        digits = offset[1:].replace(":", "")
+        delta = timedelta(hours=int(digits[:2] or 0), minutes=int(digits[2:4] or 0))
+        return base.replace(
+            tzinfo=timezone(-delta if offset[0] == "-" else delta),
+        )
     raise OpenBBError(ValueError(f"Unsupported EIA period format: {fmt}"))

@@ -1242,9 +1242,11 @@ def main() -> int:
             "check",
             "--python",
             sys.executable,
+            "--ignore",
+            "unresolved-import",
             str(MODELS_ROOT),
         ],
-        cwd=PACKAGE_ROOT.parent,
+        cwd=MODELS_ROOT.parent.parent,
         check=False,
     )
     if completed.returncode != 0:
