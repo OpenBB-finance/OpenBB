@@ -314,12 +314,20 @@ def parse_json_arg(raw: str) -> Any:
 def request_body_parameters(
     body_schema: dict[str, Any] | None,
 ) -> list[dict[str, Any]]:
-    """Flatten a dereferenced request-body schema into OpenAPI parameter objects."""
+    """Flatten a dereferenced request-body schema into OpenAPI parameter objects.
+
+    A body counts as an object when it declares ``type: object`` or carries
+    ``properties`` — the latter is how a normalized 3.1 nullable object
+    (``type: ["object", "null"]``) arrives: ``expand_type_arrays`` moves the
+    type into ``anyOf`` variants while ``properties`` stays on the parent.
+    Failing both, an ``anyOf`` with exactly one object variant is unwrapped
+    to that variant.
+    """
     if not isinstance(body_schema, dict):
         return []
     body_type = body_schema.get("type")
     body_types = body_type if isinstance(body_type, list) else [body_type]
-    if "object" not in body_types:
+    if "object" not in body_types and "properties" not in body_schema:
         object_members = [
             member
             for member in body_schema.get("anyOf", [])
@@ -478,12 +486,16 @@ def detect_api_prefix(spec: dict[str, Any]) -> str:
 
 
 def url_to_command(url: str, api_prefix: str = "/api/v1") -> str:
-    """Convert a URL path to a dotted command, dropping ``{path_params}``."""
+    """Convert a URL path to a dotted command, dropping ``{path_params}``.
+
+    A literal ``.`` inside a URL segment (``/v1.1/fundamentals``) becomes
+    ``_`` — dots in command names are exclusively namespace separators.
+    """
     prefix_parts = [p for p in api_prefix.strip("/").split("/") if p]
     parts = [p for p in url.strip("/").split("/") if p]
     if parts[: len(prefix_parts)] == prefix_parts:
         parts = parts[len(prefix_parts) :]
-    cleaned = [_strip_placeholders(p) for p in parts]
+    cleaned = [_strip_placeholders(p).replace(".", "_") for p in parts]
     return ".".join(p for p in cleaned if p)
 
 
@@ -542,7 +554,11 @@ def build_reference(
         parts = [p for p in url.strip("/").split("/") if p]
         if parts[: len(prefix_parts)] == prefix_parts:
             parts = parts[len(prefix_parts) :]
-        non_template = [p for p in parts if not (p.startswith("{") and p.endswith("}"))]
+        non_template = [
+            p.replace(".", "_")
+            for p in parts
+            if not (p.startswith("{") and p.endswith("}"))
+        ]
         cli_path = "/" + "/".join(non_template)
         op_desc = (op.get("description") or op.get("summary") or "").strip()
         if cli_path not in paths_out or not paths_out[cli_path].get("description"):
@@ -732,15 +748,6 @@ def _bundle_external_refs(
         documents[url] = parsed
         return parsed
 
-    def normalize_schema_type(value: dict[str, Any]) -> dict[str, Any]:
-        """Convert OpenAPI 3.1 type arrays for the existing code generator."""
-        schema_types = value.get("type")
-        if not isinstance(schema_types, list):
-            return value
-        normalized = {key: item for key, item in value.items() if key != "type"}
-        normalized["anyOf"] = [{"type": item} for item in schema_types]
-        return normalized
-
     def visit(
         node: Any,
         current_url: str,
@@ -796,21 +803,19 @@ def _bundle_external_refs(
                     if key != "$ref"
                 }
                 if isinstance(resolved, dict):
-                    return normalize_schema_type({**resolved, **siblings})
+                    return {**resolved, **siblings}
                 return resolved
-            return normalize_schema_type(
-                {
-                    key: visit(
-                        value,
-                        current_url,
-                        current_document,
-                        imported=imported,
-                        seen=seen,
-                        depth=depth + 1,
-                    )
-                    for key, value in node.items()
-                }
-            )
+            return {
+                key: visit(
+                    value,
+                    current_url,
+                    current_document,
+                    imported=imported,
+                    seen=seen,
+                    depth=depth + 1,
+                )
+                for key, value in node.items()
+            }
         if isinstance(node, list):
             return [
                 visit(
@@ -907,7 +912,7 @@ def fetch_openapi(
     embedded = _extract_embedded_spec(landing.text)
     if embedded is not None:
         return _bundle_external_refs(
-            embedded,
+            _ensure_openapi_dict(embedded, landing_url),
             str(getattr(landing, "url", landing_url)),
             timeout=timeout,
             headers=merged_headers,
@@ -938,4 +943,28 @@ def _ensure_openapi_dict(parsed: Any, source_url: str) -> dict[str, Any]:
             "Pass --openapi-path to point at the real spec endpoint "
             "(e.g. /swagger/v1/swagger.json)."
         )
-    return parsed
+    return expand_type_arrays(parsed)
+
+
+def expand_type_arrays(node: Any) -> Any:
+    """Rewrite JSON-Schema ``type`` arrays (OpenAPI 3.1) into ``anyOf`` unions.
+
+    ``{"type": ["number", "null"]}`` becomes
+    ``{"anyOf": [{"type": "number"}, {"type": "null"}]}`` — the OpenAPI 3.0
+    shape every schema consumer already understands. Sibling keywords are
+    copied into each non-null variant so type-scoped keys (``format``,
+    ``items``, ``enum``) survive the split. Schemas that already declare
+    ``anyOf`` / ``oneOf`` are left alone: consumers resolve the combinator
+    before ever reading ``type``.
+    """
+    if isinstance(node, list):
+        return [expand_type_arrays(v) for v in node]
+    if not isinstance(node, dict):
+        return node
+    out = {k: expand_type_arrays(v) for k, v in node.items()}
+    types = out.get("type")
+    if not isinstance(types, list) or "anyOf" in out or "oneOf" in out:
+        return out
+    rest = {k: v for k, v in out.items() if k != "type"}
+    variants = [{"type": "null"} if t == "null" else {**rest, "type": t} for t in types]
+    return {**rest, "anyOf": variants}
