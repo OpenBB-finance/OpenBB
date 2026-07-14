@@ -96,19 +96,27 @@ jobs:
 
       - run: python -m pip install --upgrade pip uv
 
+      - name: Install the build backend and openbb-core
+        run: |
+          uv pip install --system "hatchling>=1.25" "requests>=2.31"
+          uv pip install --system ../../core
+
       - name: Save the freshly crawled catalog (warming pool for the PR workflow)
         uses: actions/cache@v4
         with:
           path: openbb_platform/providers/eia/openbb_us_eia/assets/eia_catalog.json.xz
           key: eia-catalog-${{ hashFiles('openbb_platform/providers/eia/openbb_us_eia/utils/generate_catalog.py') }}
 
-      - name: Build sdist + wheel (fresh EIA catalog)
-        # A release always ships a catalog crawled from the live APIv2
-        # metadata tree, never a cached one.
+      - name: Build sdist (fresh EIA catalog)
         env:
           OPENBB_EIA_FORCE_CATALOG_REBUILD: "1"
           EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
-        run: uv build --no-sources
+        run: uv build --sdist --no-sources --no-build-isolation --python "$(which python)"
+
+      - name: Build wheel
+        env:
+          OPENBB_EIA_FORCE_CATALOG_REBUILD: "0"
+        run: uv build --wheel --no-sources --no-build-isolation --python "$(which python)"
 
       - uses: actions/upload-artifact@v4
         with:

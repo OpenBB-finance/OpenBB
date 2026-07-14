@@ -39,6 +39,11 @@ jobs:
 
       - run: python -m pip install --upgrade pip uv
 
+      - name: Install the build backend and openbb-core
+        run: |
+          uv pip install --system "hatchling>=1.25" "requests>=2.31"
+          uv pip install --system ../../core
+
       - name: Restore EIA catalog
         # ``eia_catalog.json.xz`` is gitignored. On a cache hit the build hook
         # reuses it; on a miss it crawls api.eia.gov, which needs EIA_API_KEY.
@@ -50,11 +55,16 @@ jobs:
           restore-keys: |
             eia-catalog-
 
-      - name: Build sdist + wheel
+      - name: Build sdist
         env:
           OPENBB_EIA_FORCE_CATALOG_REBUILD: ${{ inputs.force_catalog_rebuild == true && '1' || '0' }}
           EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
-        run: uv build --no-sources
+        run: uv build --sdist --no-sources --no-build-isolation --python "$(which python)"
+
+      - name: Build wheel
+        env:
+          OPENBB_EIA_FORCE_CATALOG_REBUILD: "0"
+        run: uv build --wheel --no-sources --no-build-isolation --python "$(which python)"
 
       - uses: actions/upload-artifact@v5
         with:
