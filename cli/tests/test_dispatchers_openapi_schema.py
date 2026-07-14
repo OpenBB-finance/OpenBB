@@ -13,6 +13,7 @@ import argparse
 import pytest
 
 from openbb_cli.dispatchers.openapi_schema import (
+    _bundle_external_refs,
     _is_json_arg,
     _provider_choices,
     _resolve_schema,
@@ -1458,3 +1459,228 @@ def test_fetch_openapi_rejects_non_dict_body(monkeypatch):
     monkeypatch.setattr(openapi_schema.httpx, "get", lambda *a, **k: _Resp())
     with pytest.raises(ValueError, match="not an OpenAPI document"):
         openapi_schema.fetch_openapi("http://h", path="/swagger/v1/swagger.json")
+
+
+def test_bundle_external_refs_resolves_nested_same_origin_documents(monkeypatch):
+    from openbb_cli.dispatchers import openapi_schema
+
+    documents = {
+        "https://api.example/spec/paths/items.json": (
+            '{"post":{"requestBody":{"content":{"application/json":'
+            '{"schema":{"$ref":"../schemas/body.json"}}}}}}'
+        ),
+        "https://api.example/spec/schemas/body.json": (
+            '{"type":["object","null"],"properties":{"symbol":{"type":"string"}}}'
+        ),
+    }
+
+    class _Response:
+        status_code = 200
+        headers = {"content-type": "application/json"}
+        is_redirect = False
+        encoding = "utf-8"
+
+        def __init__(self, url):
+            self.url = url
+            self.text = documents[url]
+            self.content = self.text.encode()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def iter_bytes(self, *, chunk_size):
+            assert chunk_size == 64 * 1024
+            yield self.content
+
+        def raise_for_status(self):
+            return None
+
+    monkeypatch.setattr(
+        openapi_schema.httpx,
+        "stream",
+        lambda _method, url, **_kwargs: _Response(url),
+    )
+    bundled = _bundle_external_refs(
+        {"openapi": "3.1.0", "paths": {"/items": {"$ref": "paths/items.json"}}},
+        "https://api.example/spec/openapi.json",
+        timeout=1,
+        headers={},
+    )
+
+    schema = bundled["paths"]["/items"]["post"]["requestBody"]["content"][
+        "application/json"
+    ]["schema"]
+    assert schema["anyOf"] == [{"type": "object"}, {"type": "null"}]
+    assert request_body_parameters(schema)[0]["name"] == "symbol"
+
+
+def test_bundle_external_refs_rejects_redirects(monkeypatch):
+    from openbb_cli.dispatchers import openapi_schema
+
+    class _Redirect:
+        status_code = 302
+        headers = {"location": "http://169.254.169.254/latest/meta-data"}
+        text = ""
+        content = b""
+        is_redirect = True
+        encoding = "utf-8"
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+    monkeypatch.setattr(
+        openapi_schema.httpx, "stream", lambda *_args, **_kwargs: _Redirect()
+    )
+
+    with pytest.raises(ValueError, match="Redirects are not allowed"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "paths": {"/x": {"$ref": "x.json"}}},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_rejects_oversized_content_length(monkeypatch):
+    from openbb_cli.dispatchers import openapi_schema
+
+    class _Oversized:
+        status_code = 200
+        headers = {"content-length": str(8 * 1024 * 1024 + 1)}
+        is_redirect = False
+        encoding = "utf-8"
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def raise_for_status(self):
+            return None
+
+        def iter_bytes(self):
+            raise AssertionError("body must not be buffered")
+
+    monkeypatch.setattr(
+        openapi_schema.httpx, "stream", lambda *_args, **_kwargs: _Oversized()
+    )
+    with pytest.raises(ValueError, match="size limit"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "paths": {"/x": {"$ref": "x.json"}}},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_rejects_oversized_stream(monkeypatch):
+    from openbb_cli.dispatchers import openapi_schema
+
+    class _Oversized:
+        status_code = 200
+        headers = {}
+        is_redirect = False
+        encoding = "utf-8"
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def raise_for_status(self):
+            return None
+
+        def iter_bytes(self, *, chunk_size):
+            assert chunk_size == 64 * 1024
+            yield b"x" * (8 * 1024 * 1024 + 1)
+
+    monkeypatch.setattr(
+        openapi_schema.httpx, "stream", lambda *_args, **_kwargs: _Oversized()
+    )
+    with pytest.raises(ValueError, match="size limit"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "paths": {"/x": {"$ref": "x.json"}}},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_rejects_cross_origin_urls():
+    with pytest.raises(ValueError, match="same-origin"):
+        _bundle_external_refs(
+            {
+                "openapi": "3.1.0",
+                "paths": {"/x": {"$ref": "https://other.example/x.json"}},
+            },
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_rejects_resource_identifiers():
+    with pytest.raises(ValueError, match="resource identifiers"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "$id": "nested.json", "paths": {}},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_preserves_non_nullable_type_unions():
+    bundled = _bundle_external_refs(
+        {"openapi": "3.1.0", "type": ["integer", "number"], "paths": {}},
+        "https://api.example/openapi.json",
+        timeout=1,
+        headers={},
+    )
+
+    assert bundled["anyOf"] == [{"type": "integer"}, {"type": "number"}]
+
+
+def test_bundle_external_refs_rejects_schema_ref_siblings(monkeypatch):
+    from openbb_cli.dispatchers import openapi_schema
+
+    class _Response:
+        status_code = 200
+        headers = {"content-type": "application/json"}
+        is_redirect = False
+        encoding = "utf-8"
+        content = b'{"type":"integer"}'
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def iter_bytes(self, *, chunk_size):
+            assert chunk_size == 64 * 1024
+            yield self.content
+
+        def raise_for_status(self):
+            return None
+
+    monkeypatch.setattr(
+        openapi_schema.httpx, "stream", lambda *_args, **_kwargs: _Response()
+    )
+    with pytest.raises(ValueError, match="reference siblings"):
+        _bundle_external_refs(
+            {
+                "openapi": "3.1.0",
+                "paths": {"/x": {"$ref": "x.json", "minimum": 1}},
+            },
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
