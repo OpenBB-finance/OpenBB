@@ -3,6 +3,7 @@
 import json
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -490,9 +491,16 @@ class TestSlickGridExtraction:
             .replace("__DELAY__", str(delay))
         )
         source = HARNESS.replace("__BRIDGE__", bridge).replace("__GRID__", grid)
-        result = subprocess.run(  # noqa: S603
-            [NODE, "-e", source], capture_output=True, text=True, timeout=30, check=True
-        )
+        with tempfile.TemporaryDirectory() as tmp:
+            script_path = Path(tmp) / "harness.js"
+            script_path.write_text(source, encoding="utf-8")
+            result = subprocess.run(  # noqa: S603
+                [NODE, str(script_path)],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=True,
+            )
         return json.loads(result.stdout)
 
     def test_the_rendered_grid_is_published_to_the_shell(self):
