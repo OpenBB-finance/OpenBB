@@ -40,9 +40,19 @@ class GeneratedRouters:
     ----------
     routers : list of GeneratedRouter
         All emitted router modules.
+    root_commands : list of str
+        Rendered command blocks for top-level leaf commands; they have no
+        namespace router of their own and mount directly on the root router.
+    root_post_imports : list of (str, str)
+        ``(module_path, function_name)`` imports the root command blocks need.
+    root_has_stream : bool
+        Whether any root command streams (root router imports ``OBBStream``).
     """
 
     routers: list[GeneratedRouter] = field(default_factory=list)
+    root_commands: list[str] = field(default_factory=list)
+    root_post_imports: list[tuple[str, str]] = field(default_factory=list)
+    root_has_stream: bool = False
 
 
 def _safe_segment(name: str) -> str:
@@ -107,15 +117,42 @@ def generate_routers(
     """
     out = GeneratedRouters()
     for top_name, top_node in sorted(root.children.items()):
-        _emit_router(
-            top_node,
-            package_name=package_name,
-            provider_name=provider_name,
-            fetchers_by_command=fetchers_by_command,
-            post_commands_by_command=post_commands_by_command,
-            collected=out,
-            is_top_level=True,
-        )
+        if top_node.is_namespace:
+            _emit_router(
+                top_node,
+                package_name=package_name,
+                provider_name=provider_name,
+                fetchers_by_command=fetchers_by_command,
+                post_commands_by_command=post_commands_by_command,
+                collected=out,
+                is_top_level=True,
+            )
+        if top_node.cmd_spec is None:
+            continue
+        function_name = _safe_segment(top_name)
+        description = (top_node.cmd_spec.get("description") or "").strip()
+        fetcher = fetchers_by_command.get(top_node.full_path)
+        if fetcher is not None:
+            renderer = (
+                _render_stream_command if fetcher.is_streaming else _render_get_command
+            )
+            out.root_has_stream = out.root_has_stream or fetcher.is_streaming
+            out.root_commands.append(
+                renderer(fetcher, function_name=function_name, description=description)
+            )
+            continue
+        post = post_commands_by_command.get(top_node.full_path)
+        if post is not None:
+            out.root_post_imports.append(
+                (
+                    f"{package_name}.providers.{provider_name}.models."
+                    f"{post.module_name}",
+                    post.function_name,
+                )
+            )
+            out.root_commands.append(
+                f'router.command(methods=["POST"])(_{post.function_name})\n'
+            )
     return out
 
 

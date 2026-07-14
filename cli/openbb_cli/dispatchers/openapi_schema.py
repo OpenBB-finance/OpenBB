@@ -6,6 +6,7 @@ import argparse
 import json
 import re
 from typing import Any
+from urllib.parse import unquote, urldefrag, urljoin, urlsplit
 
 import httpx
 
@@ -258,14 +259,19 @@ def _resolve_schema(schema: dict[str, Any]) -> tuple[type, list[Any], bool]:
         choices: list[Any] = []
         is_list = False
         for s in non_null:
-            if s.get("type") == "array":
+            schema_type = s.get("type")
+            if schema_type == "array" or (
+                isinstance(schema_type, list) and "array" in schema_type
+            ):
                 is_list = True
             for v in s.get("enum", []):
                 if v not in choices:
                     choices.append(v)
         return (str, choices, is_list)
 
-    if schema.get("type") == "array":
+    schema_type = schema.get("type", "string")
+    schema_types = schema_type if isinstance(schema_type, list) else [schema_type]
+    if "array" in schema_types:
         items = schema.get("items", {}) or {}
         py_type, item_choices, _ = _resolve_schema(items)
         return (py_type, item_choices, True)
@@ -273,17 +279,22 @@ def _resolve_schema(schema: dict[str, Any]) -> tuple[type, list[Any], bool]:
     if "const" in schema:
         return (type(schema["const"]), [schema["const"]], False)
 
-    py_type = _TYPE_MAP.get(schema.get("type", "string"), str)
+    scalar_type = next(
+        (item for item in schema_types if item not in {"array", "null"}), "string"
+    )
+    py_type = _TYPE_MAP.get(scalar_type, str)
     return (py_type, list(schema.get("enum", [])), False)
 
 
 def _is_json_arg(schema: dict[str, Any]) -> bool:
     """Whether a request-body field must be supplied as a raw JSON value."""
-    if schema.get("type") == "object" or "properties" in schema:
+    schema_type = schema.get("type")
+    schema_types = schema_type if isinstance(schema_type, list) else [schema_type]
+    if "object" in schema_types or "properties" in schema:
         return True
     if schema.get("additionalProperties"):
         return True
-    if schema.get("type") == "array":
+    if "array" in schema_types:
         items = schema.get("items")
         return isinstance(items, dict) and _is_json_arg(items)
     return any(
@@ -303,9 +314,37 @@ def parse_json_arg(raw: str) -> Any:
 def request_body_parameters(
     body_schema: dict[str, Any] | None,
 ) -> list[dict[str, Any]]:
-    """Flatten a dereferenced request-body schema into OpenAPI parameter objects."""
-    if not isinstance(body_schema, dict) or body_schema.get("type") != "object":
+    """Flatten a dereferenced request-body schema into OpenAPI parameter objects.
+
+    A body counts as an object when it declares ``type: object`` or carries
+    ``properties`` — the latter is how a normalized 3.1 nullable object
+    (``type: ["object", "null"]``) arrives: ``expand_type_arrays`` moves the
+    type into ``anyOf`` variants while ``properties`` stays on the parent.
+    Failing both, an ``anyOf`` with exactly one object variant is unwrapped
+    to that variant.
+    """
+    if not isinstance(body_schema, dict):
         return []
+    body_type = body_schema.get("type")
+    body_types = body_type if isinstance(body_type, list) else [body_type]
+    if "object" not in body_types and "properties" not in body_schema:
+        object_members = [
+            member
+            for member in body_schema.get("anyOf", [])
+            if isinstance(member, dict)
+            and (
+                "object"
+                in (
+                    member.get("type")
+                    if isinstance(member.get("type"), list)
+                    else [member.get("type")]
+                )
+                or "properties" in member
+            )
+        ]
+        if len(object_members) != 1:
+            return []
+        body_schema = {**body_schema, **object_members[0]}
     required = set(body_schema.get("required") or [])
     out: list[dict[str, Any]] = []
     for name, prop in (body_schema.get("properties") or {}).items():
@@ -447,12 +486,16 @@ def detect_api_prefix(spec: dict[str, Any]) -> str:
 
 
 def url_to_command(url: str, api_prefix: str = "/api/v1") -> str:
-    """Convert a URL path to a dotted command, dropping ``{path_params}``."""
+    """Convert a URL path to a dotted command, dropping ``{path_params}``.
+
+    A literal ``.`` inside a URL segment (``/v1.1/fundamentals``) becomes
+    ``_`` — dots in command names are exclusively namespace separators.
+    """
     prefix_parts = [p for p in api_prefix.strip("/").split("/") if p]
     parts = [p for p in url.strip("/").split("/") if p]
     if parts[: len(prefix_parts)] == prefix_parts:
         parts = parts[len(prefix_parts) :]
-    cleaned = [_strip_placeholders(p) for p in parts]
+    cleaned = [_strip_placeholders(p).replace(".", "_") for p in parts]
     return ".".join(p for p in cleaned if p)
 
 
@@ -511,7 +554,11 @@ def build_reference(
         parts = [p for p in url.strip("/").split("/") if p]
         if parts[: len(prefix_parts)] == prefix_parts:
             parts = parts[len(prefix_parts) :]
-        non_template = [p for p in parts if not (p.startswith("{") and p.endswith("}"))]
+        non_template = [
+            p.replace(".", "_")
+            for p in parts
+            if not (p.startswith("{") and p.endswith("}"))
+        ]
         cli_path = "/" + "/".join(non_template)
         op_desc = (op.get("description") or op.get("summary") or "").strip()
         if cli_path not in paths_out or not paths_out[cli_path].get("description"):
@@ -615,6 +662,184 @@ def _extract_embedded_spec(html: str) -> dict[str, Any] | None:
     return None
 
 
+def _resolve_json_pointer(document: Any, fragment: str) -> Any:
+    """Resolve a URI-fragment JSON pointer within one OpenAPI document."""
+    if not fragment:
+        return document
+    pointer = unquote(fragment)
+    if not pointer.startswith("/"):
+        raise ValueError(f"Unsupported OpenAPI reference fragment: #{fragment}")
+    node = document
+    for raw_part in pointer[1:].split("/"):
+        part = raw_part.replace("~1", "/").replace("~0", "~")
+        if isinstance(node, dict):
+            node = node[part]
+        elif isinstance(node, list):
+            node = node[int(part)]
+        else:
+            raise ValueError(f"Invalid OpenAPI reference fragment: #{fragment}")
+    return node
+
+
+def _url_origin(url: str) -> tuple[str, str, int | None]:
+    """Return a normalized HTTP(S) origin for reference security checks."""
+    parsed = urlsplit(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise ValueError(f"Unsupported OpenAPI reference URL: {url}")
+    default_port = 443 if parsed.scheme == "https" else 80
+    return parsed.scheme, parsed.hostname.lower(), parsed.port or default_port
+
+
+def _bundle_external_refs(
+    document: dict[str, Any],
+    source_url: str,
+    *,
+    timeout: float,
+    headers: dict[str, str],
+) -> dict[str, Any]:
+    """Inline same-origin external refs while preserving root-local refs."""
+    max_documents = 512
+    max_document_bytes = 8 * 1024 * 1024
+    read_chunk_bytes = 64 * 1024
+    max_depth = 128
+    root_url, _ = urldefrag(source_url)
+    root_origin = _url_origin(root_url)
+    documents: dict[str, dict[str, Any]] = {root_url: document}
+
+    def load_document(url: str) -> dict[str, Any]:
+        cached = documents.get(url)
+        if cached is not None:
+            return cached
+        if _url_origin(url) != root_origin:
+            raise ValueError(f"External OpenAPI reference must be same-origin: {url}")
+        if len(documents) >= max_documents:
+            raise ValueError("OpenAPI reference graph exceeds the document limit")
+        with httpx.stream(
+            "GET",
+            url,
+            timeout=timeout,
+            follow_redirects=False,
+            headers=headers,
+        ) as response:
+            if response.is_redirect:
+                raise ValueError(
+                    "Redirects are not allowed for external OpenAPI references"
+                )
+            response.raise_for_status()
+            content_length = response.headers.get("content-length")
+            if content_length and int(content_length) > max_document_bytes:
+                raise ValueError("External OpenAPI reference exceeds the size limit")
+            content = bytearray()
+            for chunk in response.iter_bytes(chunk_size=read_chunk_bytes):
+                if len(chunk) > max_document_bytes - len(content):
+                    raise ValueError(
+                        "External OpenAPI reference exceeds the size limit"
+                    )
+                content.extend(chunk)
+            text = bytes(content).decode(response.encoding or "utf-8")
+            content_type = response.headers.get("content-type", "")
+        parsed = _ensure_openapi_dict(
+            _parse_spec_text(
+                text,
+                content_type=content_type,
+            ),
+            url,
+        )
+        documents[url] = parsed
+        return parsed
+
+    def visit(
+        node: Any,
+        current_url: str,
+        current_document: dict[str, Any],
+        *,
+        imported: bool,
+        seen: frozenset[tuple[str, str]],
+        depth: int,
+    ) -> Any:
+        if depth > max_depth:
+            raise ValueError("OpenAPI reference graph exceeds the depth limit")
+        if isinstance(node, dict):
+            if "$id" in node:
+                raise ValueError("OpenAPI $id resource identifiers are not supported")
+            ref = node.get("$ref")
+            if isinstance(ref, str) and (imported or not ref.startswith("#")):
+                target_url, fragment = urldefrag(urljoin(current_url, ref))
+                if fragment and not fragment.startswith("/"):
+                    raise ValueError("OpenAPI reference anchors are not supported")
+                marker = (target_url, fragment)
+                if marker in seen:
+                    return {"$ref": f"{target_url}#{fragment}"}
+                target_document = (
+                    current_document
+                    if target_url == current_url
+                    else load_document(target_url)
+                )
+                target = _resolve_json_pointer(target_document, fragment)
+                resolved = visit(
+                    target,
+                    target_url,
+                    target_document,
+                    imported=True,
+                    seen=seen | {marker},
+                    depth=depth + 1,
+                )
+                unsupported_siblings = set(node) - {"$ref", "summary", "description"}
+                if unsupported_siblings:
+                    raise ValueError(
+                        "OpenAPI reference siblings other than summary and description "
+                        "are not supported"
+                    )
+                siblings = {
+                    key: visit(
+                        value,
+                        current_url,
+                        current_document,
+                        imported=imported,
+                        seen=seen,
+                        depth=depth + 1,
+                    )
+                    for key, value in node.items()
+                    if key != "$ref"
+                }
+                if isinstance(resolved, dict):
+                    return {**resolved, **siblings}
+                return resolved
+            return {
+                key: visit(
+                    value,
+                    current_url,
+                    current_document,
+                    imported=imported,
+                    seen=seen,
+                    depth=depth + 1,
+                )
+                for key, value in node.items()
+            }
+        if isinstance(node, list):
+            return [
+                visit(
+                    value,
+                    current_url,
+                    current_document,
+                    imported=imported,
+                    seen=seen,
+                    depth=depth + 1,
+                )
+                for value in node
+            ]
+        return node
+
+    return visit(
+        document,
+        root_url,
+        document,
+        imported=False,
+        seen=frozenset(),
+        depth=0,
+    )
+
+
 def fetch_openapi(
     base_url: str,
     *,
@@ -643,24 +868,36 @@ def fetch_openapi(
     )
     if response.status_code < 400:
         try:
-            return _ensure_openapi_dict(
+            parsed = _ensure_openapi_dict(
                 _parse_spec_text(
                     response.text,
                     content_type=response.headers.get("content-type", ""),
                 ),
                 full_url,
             )
+            return _bundle_external_refs(
+                parsed,
+                str(getattr(response, "url", full_url)),
+                timeout=timeout,
+                headers=merged_headers,
+            )
         except (json.JSONDecodeError, ValueError):
             pass
 
     if explicit_path:
         response.raise_for_status()
-        return _ensure_openapi_dict(
+        parsed = _ensure_openapi_dict(
             _parse_spec_text(
                 response.text,
                 content_type=response.headers.get("content-type", ""),
             ),
             full_url,
+        )
+        return _bundle_external_refs(
+            parsed,
+            str(getattr(response, "url", full_url)),
+            timeout=timeout,
+            headers=merged_headers,
         )
 
     landing_url = base_url.rstrip("/") + "/"
@@ -674,15 +911,26 @@ def fetch_openapi(
     landing.raise_for_status()
     embedded = _extract_embedded_spec(landing.text)
     if embedded is not None:
-        return embedded
+        return _bundle_external_refs(
+            _ensure_openapi_dict(embedded, landing_url),
+            str(getattr(landing, "url", landing_url)),
+            timeout=timeout,
+            headers=merged_headers,
+        )
 
     response.raise_for_status()
-    return _ensure_openapi_dict(
+    parsed = _ensure_openapi_dict(
         _parse_spec_text(
             response.text,
             content_type=response.headers.get("content-type", ""),
         ),
         full_url,
+    )
+    return _bundle_external_refs(
+        parsed,
+        str(getattr(response, "url", full_url)),
+        timeout=timeout,
+        headers=merged_headers,
     )
 
 
@@ -695,4 +943,28 @@ def _ensure_openapi_dict(parsed: Any, source_url: str) -> dict[str, Any]:
             "Pass --openapi-path to point at the real spec endpoint "
             "(e.g. /swagger/v1/swagger.json)."
         )
-    return parsed
+    return expand_type_arrays(parsed)
+
+
+def expand_type_arrays(node: Any) -> Any:
+    """Rewrite JSON-Schema ``type`` arrays (OpenAPI 3.1) into ``anyOf`` unions.
+
+    ``{"type": ["number", "null"]}`` becomes
+    ``{"anyOf": [{"type": "number"}, {"type": "null"}]}`` — the OpenAPI 3.0
+    shape every schema consumer already understands. Sibling keywords are
+    copied into each non-null variant so type-scoped keys (``format``,
+    ``items``, ``enum``) survive the split. Schemas that already declare
+    ``anyOf`` / ``oneOf`` are left alone: consumers resolve the combinator
+    before ever reading ``type``.
+    """
+    if isinstance(node, list):
+        return [expand_type_arrays(v) for v in node]
+    if not isinstance(node, dict):
+        return node
+    out = {k: expand_type_arrays(v) for k, v in node.items()}
+    types = out.get("type")
+    if not isinstance(types, list) or "anyOf" in out or "oneOf" in out:
+        return out
+    rest = {k: v for k, v in out.items() if k != "type"}
+    variants = [{"type": "null"} if t == "null" else {**rest, "type": t} for t in types]
+    return {**rest, "anyOf": variants}
