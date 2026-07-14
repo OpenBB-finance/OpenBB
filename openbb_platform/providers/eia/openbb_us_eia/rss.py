@@ -1,5 +1,7 @@
 """EIA RSS feed HTML widget."""
 
+from typing import Annotated
+
 from fastapi import Depends
 from fastapi.responses import HTMLResponse
 from openbb_core.app.router import Router
@@ -16,9 +18,9 @@ router = Router(prefix="", description="EIA RSS feeds.")
 
 
 async def rss_feed(
+    info: Annotated[dict, Depends(request_info)],
     feed: str = "today_in_energy",
     theme: str = "dark",
-    info: dict = Depends(request_info),
 ) -> HTMLResponse:
     """Articles, releases, testimony, and fuel-price updates from EIA's RSS feeds."""
     from openbb_core.provider.utils.helpers import get_async_requests_session

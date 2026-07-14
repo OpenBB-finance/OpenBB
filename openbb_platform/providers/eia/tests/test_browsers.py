@@ -1,6 +1,9 @@
 """Tests for the EIA data-browser widgets and reverse proxy."""
 
 import json
+import shutil
+import subprocess
+from pathlib import Path
 
 import pytest
 from fastapi import Request
@@ -28,11 +31,12 @@ MAPS_HTML = """
 """
 
 PROXY_PREFIX = "/api/v1/eia_proxy"
-TOKEN = "a" * 32
 INTERNATIONAL = browsers.EIA_DATA_BROWSERS["international"]["path"]
+IMPORTS = browsers.EIA_DATA_BROWSERS["petroleum_imports"]["path"]
+ELECTRICITY = browsers.EIA_DATA_BROWSERS["electricity"]["path"]
 
 
-def make_info(path, query="", method="GET", body=b"", user="", referer=""):
+def make_info(path, query="", method="GET", body=b"", referer=""):
     """Build the request_info mapping the proxy endpoints consume."""
     return {
         "url": f"http://test{path}",
@@ -41,7 +45,6 @@ def make_info(path, query="", method="GET", body=b"", user="", referer=""):
         "method": method,
         "body": body,
         "content_type": "application/x-www-form-urlencoded" if body else "",
-        "user": user,
         "referer": referer,
     }
 
@@ -50,22 +53,23 @@ def make_info(path, query="", method="GET", body=b"", user="", referer=""):
 def isolate_state(monkeypatch, tmp_path):
     """Keep every test off the shared caches, disk, and view stores."""
     monkeypatch.setattr(browsers, "_CACHE_DIR", tmp_path / "cache")
-    browsers._PROXY_CACHE.clear()
-    browsers._REDIRECTS.clear()
-    browsers._REWRITE_CACHE.clear()
-    browsers._LAST_DATA.clear()
-    browsers._VIEW_DATA.clear()
-    browsers._CURRENT_VIEW.clear()
     monkeypatch.setattr(browsers, "_MAPS_CATALOG", None)
-    browsers._INTL_LABELS.clear()
+    stores = (
+        browsers._PROXY_CACHE,
+        browsers._REDIRECTS,
+        browsers._REWRITE_CACHE,
+        browsers._TABLE_ROWS,
+        browsers._LAST_DATA,
+        browsers._VIEW_DATA,
+        browsers._CURRENT_VIEW,
+        browsers._INTL_LABELS,
+        browsers._IMPORTS_LABELS,
+    )
+    for store in stores:
+        store.clear()
     yield
-    browsers._INTL_LABELS.clear()
-    browsers._PROXY_CACHE.clear()
-    browsers._REDIRECTS.clear()
-    browsers._REWRITE_CACHE.clear()
-    browsers._LAST_DATA.clear()
-    browsers._VIEW_DATA.clear()
-    browsers._CURRENT_VIEW.clear()
+    for store in stores:
+        store.clear()
 
 
 class FakeUpstream:
@@ -90,69 +94,11 @@ class FakeUpstream:
         return self
 
 
-class TestUserToken:
-    """Identities are reduced to opaque tokens; raw identity never survives."""
-
-    def test_token_is_opaque_and_stable(self):
-        token = browsers.user_token("analyst@example.com")
-        assert browsers._TOKEN_RE.match(token)
-        assert token == browsers.user_token("analyst@example.com")
-        assert "analyst@example.com" not in token
-
-    def test_distinct_identities_get_distinct_tokens(self):
-        assert browsers.user_token("a@x.com") != browsers.user_token("b@x.com")
-
-    def test_empty_identity_yields_no_token(self):
-        assert browsers.user_token("") == ""
-
-    def test_malformed_token_is_rejected(self):
-        assert browsers._clean_token("not-a-token") == ""
-        assert browsers._clean_token("") == ""
-        assert browsers._clean_token(TOKEN) == TOKEN
-
-
-class TestSalt:
-    """The token salt survives restarts, so a user's recorded views survive too."""
-
-    def test_existing_salt_is_reused(self, monkeypatch, tmp_path):
-        salt_file = tmp_path / ".user_salt"
-        salt_file.write_bytes(b"S" * 32)
-        monkeypatch.setattr(browsers.Path, "home", staticmethod(lambda: tmp_path))
-        monkeypatch.setattr(
-            browsers, "_load_or_create_salt", browsers._load_or_create_salt
-        )
-        target = tmp_path / ".openbb_platform" / "cache" / "eia_proxy"
-        target.mkdir(parents=True)
-        (target / ".user_salt").write_bytes(b"S" * 32)
-        assert browsers._load_or_create_salt() == b"S" * 32
-
-    def test_salt_is_created_and_persisted_when_absent(self, monkeypatch, tmp_path):
-        monkeypatch.setattr(browsers.Path, "home", staticmethod(lambda: tmp_path))
-        salt = browsers._load_or_create_salt()
-        assert len(salt) == 32
-        written = tmp_path / ".openbb_platform" / "cache" / "eia_proxy" / ".user_salt"
-        assert written.read_bytes() == salt
-        assert browsers._load_or_create_salt() == salt
-
-    def test_wrong_length_salt_is_replaced(self, monkeypatch, tmp_path):
-        monkeypatch.setattr(browsers.Path, "home", staticmethod(lambda: tmp_path))
-        target = tmp_path / ".openbb_platform" / "cache" / "eia_proxy"
-        target.mkdir(parents=True)
-        (target / ".user_salt").write_bytes(b"short")
-        assert len(browsers._load_or_create_salt()) == 32
-
-    def test_unwritable_home_still_yields_a_salt(self, monkeypatch, tmp_path):
-        blocker = tmp_path / "file"
-        blocker.write_text("not a directory")
-        monkeypatch.setattr(browsers.Path, "home", staticmethod(lambda: blocker))
-        assert len(browsers._load_or_create_salt()) == 32
-
-
 class TestRequestInfo:
     """The proxy reads deepcopy-safe primitives off the request."""
 
     @pytest.mark.asyncio
-    async def test_extracts_url_query_path_and_identity(self):
+    async def test_extracts_url_query_path_and_method(self):
         request = Request(
             scope={
                 "type": "http",
@@ -169,7 +115,6 @@ class TestRequestInfo:
         assert info["query"] == "a=1"
         assert info["path"] == "/api/v1/eia_proxy/coal/"
         assert info["method"] == "GET"
-        assert info["user"] == browsers.user_token("analyst@example.com")
         assert "analyst@example.com" not in json.dumps(info, default=str)
 
     @pytest.mark.asyncio
@@ -219,25 +164,28 @@ class TestSplitWidgetParams:
 
     def test_splits_markers_and_keeps_the_rest(self):
         query = (
-            f"obb_theme=dark&obb_token={TOKEN}&obb_browser={INTERNATIONAL}"
-            "&obb_view=international%2Fdata&frequency=A&pid=44"
+            f"obb_theme=dark&obb_browser={INTERNATIONAL}"
+            "&obb_view=international%2Fdata&obb_seq=1700&frequency=A&pid=44"
         )
-        rest, dark, token, browser, view = browsers._split_widget_params(query)
+        rest, dark, browser, view, seq = browsers._split_widget_params(query)
         assert rest == "frequency=A&pid=44"
         assert dark is True
-        assert token == TOKEN
         assert browser == INTERNATIONAL
         assert view == "international/data"
+        assert seq == 1700.0
 
     def test_light_theme_and_unknown_browser_are_dropped(self):
-        rest, dark, token, browser, view = browsers._split_widget_params(
-            "obb_theme=light&obb_browser=bogus&obb_token=nope"
+        rest, dark, browser, view, seq = browsers._split_widget_params(
+            "obb_theme=light&obb_browser=bogus"
         )
         assert rest == ""
         assert dark is False
-        assert token == ""
         assert browser == ""
         assert view == ""
+        assert seq == 0.0
+
+    def test_a_malformed_sequence_is_ignored(self):
+        assert browsers._split_widget_params("obb_seq=nope")[4] == 0.0
 
 
 class TestDeriveBrowser:
@@ -293,119 +241,371 @@ class TestIsDataResponse:
         assert browsers.is_data_response(f"{base}/1", "application/json") is True
 
 
-class TestViewTracking:
-    """``raw`` must answer for the view on screen, including after click-throughs."""
+class TestRenderedTable:
+    """``raw`` serves the table the page has rendered -- the current view itself."""
 
-    OVERVIEW = "international/overview/world"
-    COUNTRY = "international/data/country/USA/infographic/total-production"
-
-    def test_raw_follows_the_current_view(self):
-        browsers.set_current_view(TOKEN, INTERNATIONAL, self.OVERVIEW)
-        browsers.set_data_target(
-            TOKEN, INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
-        )
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == "OVERVIEW"
-
-        browsers.set_current_view(TOKEN, INTERNATIONAL, self.COUNTRY)
-        browsers.set_data_target(
-            TOKEN, INTERNATIONAL, self.COUNTRY, {"url": "COUNTRY", "method": "GET"}
-        )
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == "COUNTRY"
-
-    def test_returning_to_a_cached_view_resolves_that_view(self):
-        for view, url in ((self.OVERVIEW, "OVERVIEW"), (self.COUNTRY, "COUNTRY")):
-            browsers.set_current_view(TOKEN, INTERNATIONAL, view)
-            browsers.set_data_target(
-                TOKEN, INTERNATIONAL, view, {"url": url, "method": "GET"}
-            )
-        browsers.set_current_view(TOKEN, INTERNATIONAL, self.OVERVIEW)
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == "OVERVIEW"
-
-    def test_unseen_view_falls_back_to_the_last_request(self):
-        browsers.set_data_target(
-            TOKEN, INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
-        )
-        browsers.set_current_view(TOKEN, INTERNATIONAL, "international/rankings/world")
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == "OVERVIEW"
-
-    def test_tokenless_spa_requests_resolve_for_a_known_user(self):
-        browsers.set_current_view("", INTERNATIONAL, self.OVERVIEW)
-        browsers.set_data_target(
-            "", INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
-        )
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == "OVERVIEW"
-
-    def test_nothing_recorded_yields_no_target(self):
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL) is None
-
-    def test_entries_expire(self, monkeypatch):
-        monkeypatch.setattr(browsers, "_VIEW_TTL", -1.0)
-        browsers.set_current_view(TOKEN, INTERNATIONAL, self.OVERVIEW)
-        browsers.set_data_target(
-            TOKEN, INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
-        )
-        assert browsers.get_current_view(TOKEN, INTERNATIONAL) == ""
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL) is None
-
-    def test_another_users_expired_entry_is_swept_on_write(self, monkeypatch):
-        stale = "1" * 32
-        monkeypatch.setattr(browsers, "_VIEW_TTL", -1.0)
-        browsers.set_current_view(stale, INTERNATIONAL, self.OVERVIEW)
-        browsers.set_data_target(
-            stale, INTERNATIONAL, self.OVERVIEW, {"url": "STALE", "method": "GET"}
-        )
-        assert (stale, INTERNATIONAL) in browsers._CURRENT_VIEW
-
-        monkeypatch.setattr(browsers, "_VIEW_TTL", 3600.0)
-        browsers.set_current_view(TOKEN, INTERNATIONAL, self.OVERVIEW)
-        browsers.set_data_target(
-            TOKEN, INTERNATIONAL, self.OVERVIEW, {"url": "FRESH", "method": "GET"}
-        )
-        assert (stale, INTERNATIONAL) not in browsers._CURRENT_VIEW
-        assert (stale, INTERNATIONAL) not in browsers._LAST_DATA
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == "FRESH"
-
-    def test_stores_are_capped_across_users(self, monkeypatch):
-        monkeypatch.setattr(browsers, "_VIEW_STATE_MAX", 2)
-        for index in range(5):
-            token = f"{index:032x}"
-            browsers.set_current_view(token, INTERNATIONAL, f"view/{index}")
-            browsers.set_data_target(
-                token, INTERNATIONAL, f"view/{index}", {"url": "U", "method": "GET"}
-            )
-        assert len(browsers._CURRENT_VIEW) <= 2
-        assert len(browsers._LAST_DATA) <= 2
-        assert len(browsers._VIEW_DATA) <= 2
-
-    def test_widget_context_reads_token_and_browser_from_referer(self):
-        referer = f"http://t/api/v1/eia_proxy/{INTERNATIONAL}?obb_token={TOKEN}"
-        assert browsers.widget_context(referer) == (TOKEN, INTERNATIONAL)
-
-    def test_widget_context_ignores_foreign_referers(self):
-        assert browsers.widget_context("http://elsewhere/x") == ("", "")
-
-
-class TestEiaViewBeacon:
-    """The iframe reports each navigation so the server knows the current view."""
+    ROWS = [
+        {"category": "All grades", "2024": None},
+        {"category": "World", "2024": None},
+        {"category": "Total U.S.", "2024": 2410516.0},
+    ]
 
     @pytest.mark.asyncio
-    async def test_beacon_records_the_view(self):
+    async def test_the_page_publishes_its_table(self):
         info = make_info(
-            "/api/v1/eia_view",
-            query=f"obb_browser={INTERNATIONAL}&obb_view=international%2Fdata"
-            f"&obb_token={TOKEN}",
+            "/api/v1/eia_table",
+            query=f"obb_browser={IMPORTS}&obb_seq=2000",
             method="POST",
+            body=json.dumps(self.ROWS).encode(),
         )
-        response = await browsers.eia_view(info)
+        response = await browsers.eia_table(info)
         assert response.status_code == 204
-        assert browsers.get_current_view(TOKEN, INTERNATIONAL) == "international/data"
+        assert browsers.get_table_rows(IMPORTS) == self.ROWS
 
     @pytest.mark.asyncio
-    async def test_beacon_without_a_known_browser_records_nothing(self):
-        await browsers.eia_view(
-            make_info("/api/v1/eia_view", query="obb_browser=bogus&obb_view=x")
+    async def test_raw_serves_the_rendered_table_verbatim(self, monkeypatch):
+        browsers.set_table_rows(IMPORTS, self.ROWS, 2000)
+        spec = browsers.EIA_DATA_BROWSERS["petroleum_imports"]
+        assert await browsers.raw_table("petroleum_imports", spec) == self.ROWS
+
+    @pytest.mark.asyncio
+    async def test_a_later_table_replaces_an_earlier_one(self):
+        browsers.set_table_rows(IMPORTS, self.ROWS, 2000)
+        newer = [{"category": "Light Sweet", "2024": 7.0}]
+        browsers.set_table_rows(IMPORTS, newer, 3000)
+        assert browsers.get_table_rows(IMPORTS) == newer
+
+    @pytest.mark.asyncio
+    async def test_a_table_from_a_view_the_user_left_is_ignored(self):
+        browsers.set_table_rows(IMPORTS, self.ROWS, 3000)
+        stale = [{"category": "STALE", "2024": 1.0}]
+        browsers.set_table_rows(IMPORTS, stale, 1000)
+        assert browsers.get_table_rows(IMPORTS) == self.ROWS
+
+    @pytest.mark.asyncio
+    async def test_an_unknown_browser_publishes_nothing(self):
+        await browsers.eia_table(
+            make_info(
+                "/api/v1/eia_table",
+                query="obb_browser=bogus",
+                method="POST",
+                body=json.dumps(self.ROWS).encode(),
+            )
         )
-        assert not browsers._CURRENT_VIEW
+        assert not browsers._TABLE_ROWS
+
+    @pytest.mark.asyncio
+    async def test_a_malformed_body_publishes_nothing(self):
+        for body in (b"not json", b"[]", b'["junk"]', b'{"a":1}'):
+            await browsers.eia_table(
+                make_info(
+                    "/api/v1/eia_table",
+                    query=f"obb_browser={IMPORTS}",
+                    method="POST",
+                    body=body,
+                )
+            )
+        assert not browsers._TABLE_ROWS
+
+    def test_the_extractor_is_injected_into_the_page(self):
+        page = browsers.rewrite_html("<head></head>", PROXY_PREFIX, browser=IMPORTS)
+        assert browsers._table_bridge_js(IMPORTS) in page
+        assert "eia:table" in page
+        assert "/eia_table" in page
+        assert "forEachNodeAfterFilterAndSort" in page
+
+    def test_the_extractor_is_not_injected_without_a_browser(self):
+        page = browsers.rewrite_html("<head></head>", PROXY_PREFIX)
+        assert "eia:table" not in page
+
+    @pytest.mark.asyncio
+    async def test_raw_does_not_fall_back_to_the_default_view(self, monkeypatch):
+        spec = browsers.EIA_DATA_BROWSERS["electricity"]
+        browsers.set_table_rows(ELECTRICITY, self.ROWS, 2000)
+
+        def unused(_target):
+            raise AssertionError("raw must not re-fetch when a table was published")
+
+        monkeypatch.setattr(browsers, "_fetch_sync", unused)
+        assert await browsers.raw_table("electricity", spec) == self.ROWS
+
+
+NODE = shutil.which("node") or "/usr/local/bin/node"
+
+HARNESS = """
+var posted = null, sent = null;
+var listeners = {};
+global.window = global;
+global.location = { pathname: "/api/v1/eia_proxy/electricity/data/browser/",
+                    search: "", hash: "", origin: "http://test" };
+global.document = {
+  documentElement: {},
+  querySelectorAll: function () { return []; },
+};
+global.MutationObserver = function () { return { observe: function () {} }; };
+global.fetch = function (url, init) {
+  sent = {
+    url: url,
+    body: init && init.body,
+    keepalive: !!(init && init.keepalive),
+  };
+  return { catch: function () {} };
+};
+window.parent = { postMessage: function (msg) { posted = msg; } };
+window.addEventListener = function (name, fn) { listeners[name] = fn; };
+
+__BRIDGE__
+
+__GRID__
+
+setTimeout(function () {
+  process.stdout.write(JSON.stringify({ posted: posted, sent: sent }), function () {
+    process.exit(0);
+  });
+}, 1600);
+"""
+
+
+@pytest.mark.skipif(not Path(NODE).exists(), reason="node is not installed")
+class TestSlickGridExtraction:
+    """The classic browsers draw with SlickGrid, and raw must read what they drew."""
+
+    GRID = """
+    function resolver(field, datum) {
+      var path = field.split('.');
+      var ret = datum;
+      for (var i = 0; i < path.length; i++) {
+        ret = ret[path[i]];
+        if (!ret || typeof ret == 'undefined') break;
+      }
+      return ret;
+    }
+    var descriptionOutputFormatter = function (row, cell, value, columnDef, datum) {
+      return datum.CHART_NAME || value;
+    };
+    var numericalDataFormatter = function (row, cell, value, columnDef, datum) {
+      if (!datum.HAS_DATA) return '';
+      var ret = isNaN(parseFloat(value))
+        ? value
+        : Number(value).toFixed(datum.PRECISION !== undefined ? datum.PRECISION : 0)
+            .replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+      return ret === undefined || ret === '' || ret === null ? '--' : ret;
+    };
+    var COLUMNS = __COLUMNS__;
+    for (var i = 0; i < COLUMNS.length; i++) {
+      if (COLUMNS[i].outputFormatter === '@description')
+        COLUMNS[i].outputFormatter = descriptionOutputFormatter;
+      if (COLUMNS[i].dataFormatter === '@numerical')
+        COLUMNS[i].dataFormatter = numericalDataFormatter;
+    }
+    var OPTIONS = {
+      frozenColumn: 2,
+      addSpacerColumn: true,
+      dataItemColumnValueExtractor: function (item, colDef) {
+        if (colDef && colDef.field) return resolver(colDef.field, item);
+        return null;
+      }
+    };
+    function Grid(container, data, columns, options) {
+      this.data = data; this.columns = columns; this.options = options;
+      this.onRendered = { subscribe: function () {} };
+    }
+    Grid.prototype.getColumns = function () { return this.columns; };
+    Grid.prototype.getOptions = function () { return this.options; };
+    Grid.prototype.getDataLength = function () { return this.data.length; };
+    Grid.prototype.getDataItem = function (i) { return this.data[i]; };
+    window.Slick = { Grid: Grid };
+    setTimeout(function () {
+      new window.Slick.Grid("#g", __DATA__, COLUMNS, OPTIONS);
+    }, __DELAY__);
+    """
+
+    COLUMNS = [
+        {"id": "pinKey", "field": "HAS_DATA", "output": False},
+        {
+            "id": "description",
+            "field": "DESCRIPTION",
+            "outputFormatter": "@description",
+        },
+        {"id": "chart", "field": "HAS_DATA", "output": False},
+        {"id": "units", "name": "units", "field": "UNITS", "display": False},
+        {
+            "id": "source key",
+            "name": "source key",
+            "field": "SERIES_ID",
+            "display": False,
+        },
+        {
+            "id": "200101",
+            "name": "Jan 2001",
+            "field": "DATA.200101",
+            "rseField": "RSE_DATA.200101",
+            "dataFormatter": "@numerical",
+        },
+        {"id": "spacer", "name": " ", "autoWidth": True},
+    ]
+    DATA = [
+        {
+            "DESCRIPTION": "United States",
+            "LEVEL": 0,
+            "CHART_NAME": "United States",
+            "SERIES_ID": "ELEC.GEN..M",
+            "HAS_DATA": False,
+            "PRECISION": 0,
+            "DATA": {"200101": "--"},
+        },
+        {
+            "DESCRIPTION": "All fuels",
+            "LEVEL": 2,
+            "CHART_NAME": "United States : all fuels (utility-scale)",
+            "SERIES_ID": "ELEC.GEN.ALL-US-99.M",
+            "HAS_DATA": True,
+            "PRECISION": 0,
+            "UNITS": "thousand megawatthours",
+            "DATA": {"200101": 332493.16},
+        },
+        {
+            "DESCRIPTION": "Coal",
+            "LEVEL": 3,
+            "CHART_NAME": "United States : coal",
+            "SERIES_ID": "ELEC.GEN.COW-US-99.M",
+            "HAS_DATA": True,
+            "PRECISION": 0,
+            "UNITS": "thousand megawatthours",
+            "DATA": {"200101": 177287.111},
+        },
+    ]
+
+    def run(self, data=None, columns=None, delay=120):
+        script = browsers._table_bridge_js(ELECTRICITY)
+        bridge = script.replace("<script>", "").replace("</script>", "")
+        grid = (
+            self.GRID.replace(
+                "__DATA__", json.dumps(self.DATA if data is None else data)
+            )
+            .replace(
+                "__COLUMNS__",
+                json.dumps(self.COLUMNS if columns is None else columns),
+            )
+            .replace("__DELAY__", str(delay))
+        )
+        source = HARNESS.replace("__BRIDGE__", bridge).replace("__GRID__", grid)
+        result = subprocess.run(  # noqa: S603
+            [NODE, "-e", source], capture_output=True, text=True, timeout=30, check=True
+        )
+        return json.loads(result.stdout)
+
+    def test_the_rendered_grid_is_published_to_the_shell(self):
+        posted = self.run()["posted"]
+        assert posted["type"] == "eia:table"
+        assert posted["rows"] == [
+            {"category": "United States", "Jan 2001": None},
+            {
+                "category": "United States : all fuels (utility-scale)",
+                "Jan 2001": 332493.16,
+            },
+            {"category": "United States : coal", "Jan 2001": 177287.111},
+        ]
+
+    def test_the_same_rows_are_posted_to_the_backend(self):
+        result = self.run()
+        assert result["sent"]["url"].startswith("/api/v1/eia_table?obb_browser=")
+        assert json.loads(result["sent"]["body"]) == result["posted"]["rows"]
+
+    def test_a_period_value_is_read_through_its_dotted_field_path(self):
+        posted = self.run()["posted"]
+        assert [row["Jan 2001"] for row in posted["rows"]] == [
+            None,
+            332493.16,
+            177287.111,
+        ]
+
+    def test_full_precision_survives_the_grids_own_formatter(self):
+        posted = self.run()["posted"]
+        assert posted["rows"][2]["Jan 2001"] == 177287.111
+
+    def test_the_hierarchy_is_the_one_the_grid_renders(self):
+        posted = self.run()["posted"]
+        assert [row["category"] for row in posted["rows"]] == [
+            "United States",
+            "United States : all fuels (utility-scale)",
+            "United States : coal",
+        ]
+
+    def test_only_the_columns_on_screen_are_published(self):
+        posted = self.run()["posted"]
+        for row in posted["rows"]:
+            assert list(row) == ["category", "Jan 2001"]
+
+    def test_a_row_with_no_data_yields_nulls_not_the_dash(self):
+        posted = self.run()["posted"]
+        assert posted["rows"][0]["Jan 2001"] is None
+
+    def test_the_post_does_not_use_keepalive(self):
+        assert self.run()["sent"]["keepalive"] is False
+
+    def test_a_table_over_the_keepalive_limit_is_posted_whole(self):
+        columns = (
+            self.COLUMNS[:5]
+            + [
+                {
+                    "id": str(200101 + n),
+                    "name": f"period {n}",
+                    "field": f"DATA.{200101 + n}",
+                    "dataFormatter": "@numerical",
+                }
+                for n in range(305)
+            ]
+            + [self.COLUMNS[-1]]
+        )
+        data = [
+            {
+                "DESCRIPTION": f"Fuel {r}",
+                "CHART_NAME": f"United States : fuel {r}",
+                "SERIES_ID": f"ELEC.GEN.F{r}-US-99.M",
+                "HAS_DATA": True,
+                "PRECISION": 0,
+                "DATA": {str(200101 + n): 177287.111 + n for n in range(305)},
+            }
+            for r in range(21)
+        ]
+        sent = self.run(data=data, columns=columns)["sent"]
+        assert len(sent["body"]) > 64 * 1024
+        rows = json.loads(sent["body"])
+        assert len(rows) == 21
+        assert rows[0]["period 0"] == 177287.111
+
+    def test_a_grid_with_no_rows_publishes_nothing(self):
+        assert self.run(data=[])["posted"] is None
+
+    def test_a_grid_built_much_later_is_still_captured(self):
+        assert self.run(delay=500)["posted"]["rows"]
+
+    def test_the_page_is_left_holding_a_working_grid(self):
+        source = HARNESS.replace(
+            "__BRIDGE__",
+            browsers._table_bridge_js(ELECTRICITY)
+            .replace("<script>", "")
+            .replace("</script>", ""),
+        ).replace(
+            "__GRID__",
+            self.GRID.replace("__DATA__", json.dumps(self.DATA))
+            .replace("__COLUMNS__", json.dumps(self.COLUMNS))
+            .replace("__DELAY__", "120")
+            .replace(
+                'new window.Slick.Grid("#g", ',
+                'var g = new window.Slick.Grid("#g", ',
+            )
+            .replace(
+                "}, 120);",
+                "  if (!(g instanceof window.Slick.Grid)) throw new Error('broke instanceof');"
+                "  if (g.getDataLength() !== 3) throw new Error('broke the grid');"
+                "}, 120);",
+            ),
+        )
+        subprocess.run(  # noqa: S603
+            [NODE, "-e", source], capture_output=True, text=True, timeout=30, check=True
+        )
 
 
 class TestText:
@@ -544,23 +744,34 @@ class TestRewriteHtml:
         out = browsers.rewrite_html("<head></head>", PROXY_PREFIX)
         assert browsers._ASSET_FIX_JS in out
 
-    def test_xhr_tagger_carries_token_browser_and_view(self):
+    def test_the_table_bridge_is_bound_to_its_browser(self):
         out = browsers.rewrite_html(
-            "<head></head>", PROXY_PREFIX, user=TOKEN, browser=INTERNATIONAL
+            "<head></head>", PROXY_PREFIX, browser=INTERNATIONAL
         )
         assert f"browser='{INTERNATIONAL}'" in out
-        assert f"token='{TOKEN}'" in out
+        assert "eia:table" in out
+
+    def test_the_tagger_binds_each_request_to_its_view(self):
+        out = browsers.rewrite_html(
+            "<head></head>", PROXY_PREFIX, browser=INTERNATIONAL
+        )
+        assert "XMLHttpRequest.prototype.open" in out
         assert "obb_view" in out
+        assert "obb_token" not in out
+
+    def test_the_tagger_leaves_the_widgets_own_endpoints_alone(self):
+        """A tagged POST to ``/eia_table`` would be proxied to eia.gov."""
+        out = browsers.rewrite_html(
+            "<head></head>", PROXY_PREFIX, browser=INTERNATIONAL
+        )
+        assert "var mine=[parts[0]+'/eia_table',parts[0]+'/eia_view'];" in out
+        assert (
+            "for(var m=0;m<mine.length;m++)if(u.pathname===mine[m])return raw;" in out
+        )
 
     def test_tagger_omitted_without_a_browser(self):
         out = browsers.rewrite_html("<head></head>", PROXY_PREFIX)
         assert "obb_browser" not in out
-
-    def test_forged_token_never_reaches_the_page(self):
-        out = browsers.rewrite_html(
-            "<head></head>", PROXY_PREFIX, user="../../etc", browser=INTERNATIONAL
-        )
-        assert "token=''" in out
 
     def test_analytics_and_akamai_scripts_dropped(self):
         html = (
@@ -637,18 +848,17 @@ class TestRewrittenCache:
 class TestRedirects:
     """An upstream redirect is mapped back onto the proxy, keeping the markers."""
 
-    def test_redirect_target_keeps_theme_and_token(self):
+    def test_redirect_target_keeps_the_theme(self):
         location = browsers._redirect_target(
-            PROXY_PREFIX, f"{browsers._EIA_ORIGIN}/coal/?a=1", True, TOKEN
+            PROXY_PREFIX, f"{browsers._EIA_ORIGIN}/coal/?a=1", True
         )
         assert location.startswith(f"{PROXY_PREFIX}/coal/?")
         assert "a=1" in location
         assert "obb_theme=dark" in location
-        assert f"obb_token={TOKEN}" in location
 
-    def test_light_theme_and_no_token(self):
+    def test_light_theme_is_carried_through(self):
         location = browsers._redirect_target(
-            PROXY_PREFIX, f"{browsers._EIA_ORIGIN}/coal/", False, ""
+            PROXY_PREFIX, f"{browsers._EIA_ORIGIN}/coal/", False
         )
         assert "obb_theme=light" in location
         assert "obb_token" not in location
@@ -695,17 +905,16 @@ class TestProxyPost:
             "naturalgas/ngqs/data/report/1",
             make_info(
                 "/api/v1/eia_proxy/naturalgas/ngqs/data/report/1",
-                query=f"obb_browser={ngqs}&obb_view=ngqs",
+                query=f"obb_browser={ngqs}",
                 method="POST",
                 body=b"items=1",
             ),
         )
         assert captured["body"] == b"items=1"
-        browsers.set_current_view("", ngqs, "ngqs")
-        recorded = browsers.get_data_target("", ngqs)
-        assert recorded["method"] == "POST"
-        assert recorded["body"] == b"items=1"
-        assert recorded["content_type"] == "application/x-www-form-urlencoded"
+        assert captured["content_type"] == "application/x-www-form-urlencoded"
+        assert captured["target"] == (
+            "https://www.eia.gov/naturalgas/ngqs/data/report/1"
+        )
 
 
 class TestFetchUpstream:
@@ -832,7 +1041,7 @@ class TestEiaProxy:
             "coal/",
             make_info(
                 "/api/v1/eia_proxy/coal/",
-                query=f"a=1&obb_theme=dark&obb_token={TOKEN}&obb_view=coal",
+                query="a=1&obb_theme=dark",
             ),
         )
         assert "obb_" not in upstream.calls[0]
@@ -887,61 +1096,8 @@ class TestEiaProxy:
         assert b"Upstream error" in response.body
 
     @pytest.mark.asyncio
-    async def test_data_response_recorded_against_the_tagged_view(self, monkeypatch):
-        target = "https://www.eia.gov/international/api/data/data?x=1"
-        FakeUpstream({target: (b'{"response":{}}', "application/json")}).install(
-            monkeypatch
-        )
-        await browsers.eia_proxy(
-            "international/api/data/data",
-            make_info(
-                "/api/v1/eia_proxy/international/api/data/data",
-                query=f"x=1&obb_browser={INTERNATIONAL}&obb_token={TOKEN}"
-                "&obb_view=international%2Fdata",
-            ),
-        )
-        browsers.set_current_view(TOKEN, INTERNATIONAL, "international/data")
-        assert browsers.get_data_target(TOKEN, INTERNATIONAL)["url"] == target
-
-    @pytest.mark.asyncio
-    async def test_a_data_request_establishes_the_current_view(self, monkeypatch):
-        """The view must not stay pinned to whichever view loaded first.
-
-        The navigation beacon is the primary signal, but if it never lands the
-        current view would never move and ``raw`` would answer for the first
-        view forever. Every data request also carries the view that issued it.
-        """
-        first = "https://www.eia.gov/international/api/series_data/data?id=1"
-        second = "https://www.eia.gov/international/api/series_data/data?id=4"
-        FakeUpstream(
-            {
-                first: (b'{"data":{}}', "application/json"),
-                second: (b'{"data":{}}', "application/json"),
-            }
-        ).install(monkeypatch)
-        base = "/api/v1/eia_proxy/international/api/series_data/data"
-
-        await browsers.eia_proxy(
-            "international/api/series_data/data",
-            make_info(base, query=f"id=1&obb_browser={INTERNATIONAL}&obb_view=view/1"),
-        )
-        assert browsers.get_current_view("", INTERNATIONAL) == "view/1"
-        assert browsers.get_data_target("", INTERNATIONAL)["url"] == first
-
-        await browsers.eia_proxy(
-            "international/api/series_data/data",
-            make_info(base, query=f"id=4&obb_browser={INTERNATIONAL}&obb_view=view/4"),
-        )
-        assert browsers.get_current_view("", INTERNATIONAL) == "view/4"
-        assert browsers.get_data_target("", INTERNATIONAL)["url"] == second
-
-    @pytest.mark.asyncio
-    async def test_deep_linked_spa_route_still_reports_its_view(self, monkeypatch):
-        """A restored or deep-linked sub-route is not the browser's root path.
-
-        Injection keyed on the root path alone left these pages with no tagger
-        and no beacon, so nothing they fetched was ever tied to a view.
-        """
+    async def test_deep_linked_spa_route_still_gets_the_bridge(self, monkeypatch):
+        """A deep-linked sub-route is not the root path, but still needs the bridge."""
         target = "https://www.eia.gov/international/overview/USA"
         FakeUpstream({target: (b"<head></head>", "text/html")}).install(monkeypatch)
         response = await browsers.eia_proxy(
@@ -950,8 +1106,7 @@ class TestEiaProxy:
         )
         page = response.body.decode()
         assert f"browser='{INTERNATIONAL}'" in page
-        assert "obb_view" in page
-        assert "/eia_view" in page
+        assert "/eia_table" in page
 
     @pytest.mark.asyncio
     async def test_article_pages_get_no_tagger(self, monkeypatch):
@@ -963,37 +1118,6 @@ class TestEiaProxy:
         )
         assert "obb_browser" not in response.body.decode()
 
-    @pytest.mark.asyncio
-    async def test_untagged_spa_request_still_records_via_the_path(self, monkeypatch):
-        target = "https://www.eia.gov/international/api/data/data"
-        FakeUpstream({target: (b'{"response":{}}', "application/json")}).install(
-            monkeypatch
-        )
-        await browsers.eia_proxy(
-            "international/api/data/data",
-            make_info("/api/v1/eia_proxy/international/api/data/data"),
-        )
-        assert browsers.get_data_target("", INTERNATIONAL)["url"] == target
-
-    @pytest.mark.asyncio
-    async def test_paginated_continuation_does_not_replace_the_view(self, monkeypatch):
-        first = "https://www.eia.gov/international/api/data/data?offset=0"
-        page2 = "https://www.eia.gov/international/api/data/data?offset=500"
-        FakeUpstream(
-            {
-                first: (b'{"response":{}}', "application/json"),
-                page2: (b'{"response":{}}', "application/json"),
-            }
-        ).install(monkeypatch)
-        base = "/api/v1/eia_proxy/international/api/data/data"
-        await browsers.eia_proxy(
-            "international/api/data/data", make_info(base, "offset=0")
-        )
-        await browsers.eia_proxy(
-            "international/api/data/data", make_info(base, "offset=500")
-        )
-        assert browsers.get_data_target("", INTERNATIONAL)["url"] == first
-
 
 class TestRenderBrowser:
     """Each browser is its own widget, carrying EIA's own description."""
@@ -1001,7 +1125,7 @@ class TestRenderBrowser:
     @pytest.mark.asyncio
     async def test_site_payload(self):
         info = make_info("/api/v1/coal_browser")
-        response = await browsers.render_browser("coal", "light", False, "", info)
+        response = await browsers.render_browser("coal", "light", False, info)
         text = response.body.decode()
         assert '"mode": "site"' in text
         assert '"theme": "light"' in text
@@ -1011,7 +1135,7 @@ class TestRenderBrowser:
     @pytest.mark.asyncio
     async def test_unknown_browser_falls_back_to_electricity(self):
         info = make_info("/api/v1/bogus_browser")
-        response = await browsers.render_browser("bogus", "dark", False, "", info)
+        response = await browsers.render_browser("bogus", "dark", False, info)
         text = response.body.decode()
         assert "electricity/data/browser/" in text
         assert '"theme": "dark"' in text
@@ -1020,7 +1144,7 @@ class TestRenderBrowser:
     async def test_petroleum_imports_lands_on_its_default_view(self):
         info = make_info("/api/v1/petroleum_imports_browser")
         response = await browsers.render_browser(
-            "petroleum_imports", "dark", False, "", info
+            "petroleum_imports", "dark", False, info
         )
         assert "%23/?vs=PET_IMPORTS.WORLD-US-ALL.A" in response.body.decode() or (
             "#/?vs=PET_IMPORTS.WORLD-US-ALL.A" in response.body.decode()
@@ -1033,7 +1157,7 @@ class TestRenderBrowser:
 
         monkeypatch.setattr(browsers, "fetch_maps_catalog", fake_catalog)
         info = make_info("/api/v1/maps_browser")
-        response = await browsers.render_browser("maps", "dark", False, "", info)
+        response = await browsers.render_browser("maps", "dark", False, info)
         text = response.body.decode()
         assert '"mode": "maps"' in text
         assert "\\u003c" in text
@@ -1041,36 +1165,51 @@ class TestRenderBrowser:
         assert "/maps/x.pdf" in text
 
     @pytest.mark.asyncio
-    async def test_raw_labels_series_ids_the_way_the_table_does(self, monkeypatch):
-        origin = browsers._EIA_ORIGIN
-        target = f"{origin}/international/api/data/data"
-        upstream = intl_upstream()
-        upstream.responses[target] = (
-            json.dumps(
-                {"data": {"INTL.44-1-USA-QBTU.A": {"2023": [1.5, 1.5]}}}
-            ).encode(),
-            "application/json",
-        )
-        upstream.install(monkeypatch)
-        browsers.set_current_view(TOKEN, INTERNATIONAL, "international/data")
+    async def test_raw_serves_the_table_the_page_published(self, monkeypatch):
+        rows = [{"category": "Production", "2023": 1.5}]
+        browsers.set_table_rows(INTERNATIONAL, rows, 2000)
+
+        def unused(_target):
+            raise AssertionError("raw must not reach upstream")
+
+        monkeypatch.setattr(browsers, "_fetch_sync", unused)
+        info = make_info("/api/v1/international_browser")
+        response = await browsers.render_browser("international", "dark", True, info)
+        assert json.loads(response.body) == rows
+
+    @pytest.mark.asyncio
+    async def test_raw_replays_the_view_the_page_is_showing(self, monkeypatch):
+        """Grids whose API the page cannot reach are served from their payload."""
+        spec = browsers.EIA_DATA_BROWSERS["electricity"]
+        target = "https://www.eia.gov/electricity/x?method=getAggregateData"
+        payload = json.dumps(
+            {
+                "TABLEDATA": {
+                    "ROWS": [
+                        {
+                            "DESCRIPTION": "United States",
+                            "LEVEL": 0,
+                            "UNITS": "thousand megawatthours",
+                            "SERIES_ID": "ELEC.GEN.ALL-US-99.M",
+                            "DATA": {"200101": 332493.16},
+                        }
+                    ],
+                    "DATACOLUMNS": [200101],
+                }
+            }
+        ).encode()
+        FakeUpstream({target: (payload, "application/json")}).install(monkeypatch)
+        browsers.set_current_view(spec["path"], "electricity/data/browser/#/topic/0")
         browsers.set_data_target(
-            TOKEN,
-            INTERNATIONAL,
-            "international/data",
+            spec["path"],
+            "electricity/data/browser/#/topic/0",
             {"url": target, "method": "GET"},
         )
-        info = make_info("/api/v1/international_browser")
-        response = await browsers.render_browser(
-            "international", "dark", True, TOKEN, info
-        )
+        info = make_info("/api/v1/electricity_browser")
+        response = await browsers.render_browser("electricity", "dark", True, info)
         rows = json.loads(response.body)
-        assert len(rows) == 1
-        row = rows[0]
-        assert row["category"] == "Production"
-        assert row["country"] == "United States"
-        assert row["units"] == "quad Btu"
-        assert row["source_key"] == "INTL.44-1-USA-QBTU.A"
-        assert row["2023 "] == 1.5
+        assert rows[0]["category"] == "United States"
+        assert rows[0]["2001-01"] == 332493.16
 
     @pytest.mark.asyncio
     async def test_raw_for_maps_returns_the_catalog(self, monkeypatch):
@@ -1079,8 +1218,122 @@ class TestRenderBrowser:
 
         monkeypatch.setattr(browsers, "fetch_maps_catalog", fake_catalog)
         info = make_info("/api/v1/maps_browser")
-        response = await browsers.render_browser("maps", "dark", True, "", info)
+        response = await browsers.render_browser("maps", "dark", True, info)
         assert json.loads(response.body)[0]["title"] == "T"
+
+
+class TestRouterRegistration:
+    """Every browser is registered as its own Workspace widget."""
+
+    def routes(self):
+        return {route.path: route for route in browsers.router._api_router.routes}
+
+    def test_proxy_and_table_sink_are_registered_and_hidden(self):
+        routes = self.routes()
+        assert "/eia_proxy/{path:path}" in routes
+        assert "/eia_table" in routes
+        assert routes["/eia_proxy/{path:path}"].include_in_schema is False
+        assert routes["/eia_table"].include_in_schema is False
+
+    def test_the_view_beacon_is_registered_and_hidden(self):
+        routes = self.routes()
+        assert "/eia_view" in routes
+        assert routes["/eia_view"].include_in_schema is False
+
+    def test_one_widget_route_per_browser(self):
+        routes = self.routes()
+        for browser in browsers.EIA_DATA_BROWSERS:
+            assert browsers.widget_route(browser) in routes
+
+    @pytest.mark.parametrize("browser", sorted(browsers.EIA_DATA_BROWSERS))
+    def test_widget_config_metadata(self, browser):
+        route = self.routes()[browsers.widget_route(browser)]
+        config = route.openapi_extra["widget_config"]
+        spec = browsers.EIA_DATA_BROWSERS[browser]
+        assert config["name"] == f"EIA {spec['label']} Browser"
+        assert config["description"] == spec["description"]
+        assert config["category"] == "EIA"
+        assert config["subCategory"] == "Data Browsers"
+        assert config["source"] == ["EIA"]
+        assert config["widgetId"] == browsers.widget_id(browser)
+        assert config["raw"] is True
+        params = {p["paramName"]: p for p in config["params"]}
+        assert params["theme"]["show"] is False
+        assert params["raw"]["show"] is False
+
+    @pytest.mark.parametrize("browser", sorted(browsers.EIA_DATA_BROWSERS))
+    def test_the_browser_widget_never_refetches_itself(self, browser):
+        config = self.routes()[browsers.widget_route(browser)].openapi_extra[
+            "widget_config"
+        ]
+        assert config["refetchInterval"] is False
+        assert config["staleTime"] == 1000
+
+
+class TestViewTracking:
+    """``raw`` must answer for the view on screen, including after click-throughs."""
+
+    OVERVIEW = "international/overview/world"
+    COUNTRY = "international/data/country/USA/infographic/total-production"
+
+    def test_raw_follows_the_current_view(self):
+        browsers.set_current_view(INTERNATIONAL, self.OVERVIEW)
+        browsers.set_data_target(
+            INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
+        )
+        assert browsers.get_data_target(INTERNATIONAL)["url"] == "OVERVIEW"
+
+        browsers.set_current_view(INTERNATIONAL, self.COUNTRY)
+        browsers.set_data_target(
+            INTERNATIONAL, self.COUNTRY, {"url": "COUNTRY", "method": "GET"}
+        )
+        assert browsers.get_data_target(INTERNATIONAL)["url"] == "COUNTRY"
+
+    def test_returning_to_a_cached_view_resolves_that_view(self):
+        for view, url in ((self.OVERVIEW, "OVERVIEW"), (self.COUNTRY, "COUNTRY")):
+            browsers.set_current_view(INTERNATIONAL, view)
+            browsers.set_data_target(INTERNATIONAL, view, {"url": url, "method": "GET"})
+        browsers.set_current_view(INTERNATIONAL, self.OVERVIEW)
+        assert browsers.get_data_target(INTERNATIONAL)["url"] == "OVERVIEW"
+
+    def test_unseen_view_falls_back_to_the_last_request(self):
+        browsers.set_data_target(
+            INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
+        )
+        browsers.set_current_view(INTERNATIONAL, "international/rankings/world")
+        assert browsers.get_data_target(INTERNATIONAL)["url"] == "OVERVIEW"
+
+    def test_tokenless_spa_requests_resolve_for_a_known_user(self):
+        browsers.set_current_view(INTERNATIONAL, self.OVERVIEW)
+        browsers.set_data_target(
+            INTERNATIONAL, self.OVERVIEW, {"url": "OVERVIEW", "method": "GET"}
+        )
+        assert browsers.get_data_target(INTERNATIONAL)["url"] == "OVERVIEW"
+
+    def test_nothing_recorded_yields_no_target(self):
+        assert browsers.get_data_target(INTERNATIONAL) is None
+
+
+class TestEiaViewBeacon:
+    """The iframe reports each navigation so the server knows the current view."""
+
+    @pytest.mark.asyncio
+    async def test_beacon_records_the_view(self):
+        info = make_info(
+            "/api/v1/eia_view",
+            query=f"obb_browser={INTERNATIONAL}&obb_view=international%2Fdata",
+            method="POST",
+        )
+        response = await browsers.eia_view(info)
+        assert response.status_code == 204
+        assert browsers.get_current_view(INTERNATIONAL) == "international/data"
+
+    @pytest.mark.asyncio
+    async def test_beacon_without_a_known_browser_records_nothing(self):
+        await browsers.eia_view(
+            make_info("/api/v1/eia_view", query="obb_browser=bogus&obb_view=x")
+        )
+        assert not browsers._CURRENT_VIEW
 
 
 class TestRawTable:
@@ -1130,9 +1383,8 @@ class TestRawTable:
             return b'{"TABLE_DATA":[]}', "application/json", 200
 
         monkeypatch.setattr(browsers, "_post_sync", fake_post)
-        browsers.set_current_view("", spec["path"], "ngqs")
+        browsers.set_current_view(spec["path"], "ngqs")
         browsers.set_data_target(
-            "",
             spec["path"],
             "ngqs",
             {
@@ -1151,10 +1403,8 @@ class TestRawTable:
         spec = browsers.EIA_DATA_BROWSERS["electricity"]
         target = "https://www.eia.gov/x"
         FakeUpstream({target: (b"<html>", "text/html")}).install(monkeypatch)
-        browsers.set_current_view("", spec["path"], "v")
-        browsers.set_data_target(
-            "", spec["path"], "v", {"url": target, "method": "GET"}
-        )
+        browsers.set_current_view(spec["path"], "v")
+        browsers.set_data_target(spec["path"], "v", {"url": target, "method": "GET"})
         assert await browsers.raw_table("electricity", spec) == []
 
 
@@ -1342,69 +1592,287 @@ class TestBrowserSpecificLabelling:
         assert await browsers._labelled_rows("international", []) is None
 
 
-class TestRouterRegistration:
-    """Every browser is registered as its own Workspace widget."""
+class TestPlantAndMineLists:
+    """The plant-, mine- and shipment-level views are a record per site."""
 
-    def routes(self):
-        return {route.path: route for route in browsers.router._api_router.routes}
+    PAYLOAD = {
+        "SINGLE_STATE": False,
+        "DATA": [
+            {
+                "id": 66729,
+                "Plant Name": "(3K) 59 Hetcheltown Rd",
+                "Plant Code": 66729,
+                "State": "NY",
+                "Sector Name": "Electric utility non-cogen",
+                "lat": 42.87657,
+                "lon": -73.91048,
+                "HAS_DATA": True,
+            }
+        ],
+        "DATA_COLUMNS": ["Plant Name", "Plant Code", "State", "Sector Name"],
+        "DESCRIPTION": "List of plants",
+    }
 
-    def test_proxy_and_beacon_are_registered_and_hidden(self):
-        routes = self.routes()
-        assert "/eia_proxy/{path:path}" in routes
-        assert "/eia_view" in routes
-        assert routes["/eia_proxy/{path:path}"].include_in_schema is False
-        assert routes["/eia_view"].include_in_schema is False
+    def test_only_the_columns_the_grid_shows_are_kept(self):
+        rows = browsers._plant_list_rows(self.PAYLOAD)
+        assert rows == [
+            {
+                "Plant Name": "(3K) 59 Hetcheltown Rd",
+                "Plant Code": 66729,
+                "State": "NY",
+                "Sector Name": "Electric utility non-cogen",
+            }
+        ]
 
-    def test_one_widget_route_per_browser(self):
-        routes = self.routes()
-        for browser in browsers.EIA_DATA_BROWSERS:
-            assert browsers.widget_route(browser) in routes
+    def test_the_record_carries_more_than_the_table_does(self):
+        rows = browsers._plant_list_rows(self.PAYLOAD)
+        assert "lat" not in rows[0]
+        assert "HAS_DATA" not in rows[0]
 
-    @pytest.mark.parametrize("browser", sorted(browsers.EIA_DATA_BROWSERS))
-    def test_widget_config_metadata(self, browser):
-        route = self.routes()[browsers.widget_route(browser)]
-        config = route.openapi_extra["widget_config"]
-        spec = browsers.EIA_DATA_BROWSERS[browser]
-        assert config["name"] == f"EIA {spec['label']} Browser"
-        assert config["description"] == spec["description"]
-        assert config["category"] == "EIA"
-        assert config["subCategory"] == "Data Browsers"
-        assert config["source"] == ["EIA"]
-        assert config["widgetId"] == browsers.widget_id(browser)
-        assert config["raw"] is True
-        params = {p["paramName"]: p for p in config["params"]}
-        assert params["theme"]["show"] is False
-        assert params["raw"]["show"] is False
+    def test_a_plant_list_is_dispatched_by_rows_from_payload(self):
+        rows = browsers.rows_from_payload(self.PAYLOAD)
+        assert rows[0]["Plant Name"] == "(3K) 59 Hetcheltown Rd"
 
-    @pytest.mark.parametrize("browser", sorted(browsers.EIA_DATA_BROWSERS))
-    def test_endpoint_docstring_is_the_eia_description(self, browser):
-        route = self.routes()[browsers.widget_route(browser)]
-        assert (
-            route.endpoint.__doc__
-            == (browsers.EIA_DATA_BROWSERS[browser]["description"])
-        )
+    @pytest.mark.parametrize(
+        "payload",
+        [
+            {"DATA": [], "DATA_COLUMNS": ["Plant Name"]},
+            {"DATA": ["junk"], "DATA_COLUMNS": ["Plant Name"]},
+            {"DATA": [{"a": 1}], "DATA_COLUMNS": [7]},
+            {"DATA": [{"a": 1}]},
+            {"DATA_COLUMNS": ["Plant Name"]},
+        ],
+    )
+    def test_anything_that_is_not_a_site_list_is_declined(self, payload):
+        assert browsers._plant_list_rows(payload) is None
 
-    @pytest.mark.parametrize("browser", sorted(browsers.EIA_DATA_BROWSERS))
-    def test_no_implementation_chatter_in_descriptions(self, browser):
-        spec = browsers.EIA_DATA_BROWSERS[browser]
-        text = spec["description"].lower()
-        for phrase in ("chrome-free", "raw rows", "html widget", "proxy", "embed"):
-            assert phrase not in text
+    @pytest.mark.parametrize(
+        "method",
+        ["method=getPlantList", "method=getMineList", "method=getShipmentList"],
+    )
+    def test_the_site_lists_count_as_table_data(self, method):
+        """These were being discarded, so the plant/mine views served nothing."""
+        target = f"https://www.eia.gov/coal/data/browser/data/index.php?{method}"
+        assert browsers.is_data_response(target, "application/json") is True
+
+
+class TestPagedPayload:
+    """A view whose data arrives in pages must be replayed to its end."""
+
+    def _payload(self, keys, total):
+        return {
+            "data": {key: {"2023": [1.0, 1.0]} for key in keys},
+            "totalCount": total,
+            "recordCount": len(keys),
+        }
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("browser", sorted(browsers.EIA_DATA_BROWSERS))
-    async def test_registered_endpoint_serves_its_browser(self, browser, monkeypatch):
-        async def fake_catalog():
-            return []
-
-        monkeypatch.setattr(browsers, "fetch_maps_catalog", fake_catalog)
-        endpoint = self.routes()[browsers.widget_route(browser)].endpoint
-        response = await endpoint(
-            theme="dark",
-            raw=False,
-            obb_token=TOKEN,
-            info=make_info(f"/api/v1{browsers.widget_route(browser)}"),
+    async def test_every_page_is_followed(self, monkeypatch):
+        base = (
+            "https://www.eia.gov/international/api/series_data/data"
+            "?frequency=A&limit=2&offset=0"
         )
-        text = response.body.decode()
-        assert f'"browser": "{browser}"' in text
-        assert f"obb_token={TOKEN}" in text
+        page2 = (
+            "https://www.eia.gov/international/api/series_data/data"
+            "?frequency=A&limit=2&offset=2"
+        )
+        FakeUpstream(
+            {
+                page2: (
+                    json.dumps(self._payload(["c", "d"], 4)).encode(),
+                    "application/json",
+                )
+            }
+        ).install(monkeypatch)
+        merged = await browsers._all_pages({"url": base}, self._payload(["a", "b"], 4))
+        assert sorted(merged["data"]) == ["a", "b", "c", "d"]
+        assert merged["recordCount"] == 4
+
+    @pytest.mark.asyncio
+    async def test_a_complete_payload_is_left_alone(self, monkeypatch):
+        def unused(_target):
+            raise AssertionError("a complete payload must not be re-fetched")
+
+        monkeypatch.setattr(browsers, "_fetch_sync", unused)
+        payload = self._payload(["a", "b"], 2)
+        assert (
+            await browsers._all_pages({"url": "https://x/y?limit=2"}, payload)
+            is payload
+        )
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://www.eia.gov/x?limit=0",
+            "https://www.eia.gov/x?limit=nope",
+            "https://www.eia.gov/x",
+        ],
+    )
+    async def test_a_payload_with_no_usable_page_size_is_left_alone(self, url):
+        payload = self._payload(["a"], 9)
+        assert await browsers._all_pages({"url": url}, payload) is payload
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "payload",
+        [
+            {"data": [1, 2]},
+            {"data": {"a": {}}, "totalCount": "many"},
+            "not a payload",
+        ],
+    )
+    async def test_an_unpaged_shape_is_left_alone(self, payload):
+        assert (
+            await browsers._all_pages({"url": "https://x?limit=2"}, payload) is payload
+        )
+
+    @pytest.mark.asyncio
+    async def test_a_broken_page_stops_the_walk(self, monkeypatch):
+        base = "https://www.eia.gov/x?limit=2&offset=0"
+        FakeUpstream(
+            {
+                "https://www.eia.gov/x?limit=2&offset=2": (
+                    b"not json",
+                    "application/json",
+                )
+            }
+        ).install(monkeypatch)
+        merged = await browsers._all_pages({"url": base}, self._payload(["a", "b"], 6))
+        assert sorted(merged["data"]) == ["a", "b"]
+
+    @pytest.mark.asyncio
+    async def test_an_empty_page_stops_the_walk(self, monkeypatch):
+        base = "https://www.eia.gov/x?limit=2&offset=0"
+        FakeUpstream(
+            {
+                "https://www.eia.gov/x?limit=2&offset=2": (
+                    json.dumps({"data": {}}).encode(),
+                    "application/json",
+                )
+            }
+        ).install(monkeypatch)
+        merged = await browsers._all_pages({"url": base}, self._payload(["a", "b"], 6))
+        assert sorted(merged["data"]) == ["a", "b"]
+
+
+class TestRecordedViewOrdering:
+    """A late report must never drag the current view backwards."""
+
+    def test_an_older_report_does_not_overwrite_a_newer_one(self):
+        path = ELECTRICITY
+        browsers.set_data_target(path, "view/new", {"url": "NEW"}, 2000)
+        browsers.set_data_target(path, "view/old", {"url": "OLD"}, 1000)
+        assert browsers.get_data_target(path)["url"] == "NEW"
+
+    @pytest.mark.asyncio
+    async def test_a_data_response_records_the_view_that_asked_for_it(
+        self, monkeypatch
+    ):
+        target = "https://www.eia.gov/international/api/data/data?x=1"
+        FakeUpstream({target: (b'{"response":{}}', "application/json")}).install(
+            monkeypatch
+        )
+        await browsers.eia_proxy(
+            "international/api/data/data",
+            make_info(
+                "/api/v1/eia_proxy/international/api/data/data",
+                query=f"x=1&obb_browser={INTERNATIONAL}"
+                "&obb_view=international%2Fdata&obb_seq=5",
+            ),
+        )
+        assert browsers.get_current_view(INTERNATIONAL) == "international/data"
+        assert browsers.get_data_target(INTERNATIONAL)["url"] == target
+
+
+class TestInternationalRawEndToEnd:
+    """International's grid API is unreachable, so raw is served from its payload."""
+
+    LABEL_FEEDS = {
+        "countries": [{"iso": "USA", "name": "United States"}],
+        "political_groups": [],
+        "units": [{"code": "QBTU", "short_name": "quad Btu"}],
+        "products": [{"id": 44, "name": "primary energy", "parent": None}],
+        "activities": [{"id": 1, "name": "production"}],
+    }
+
+    def _upstream(self, target, payload):
+        responses = {
+            f"{browsers._EIA_ORIGIN}/international/api/{feed}/data": (
+                json.dumps({"data": rows}).encode(),
+                "application/json",
+            )
+            for feed, rows in self.LABEL_FEEDS.items()
+        }
+        responses[target] = (json.dumps(payload).encode(), "application/json")
+        return FakeUpstream(responses)
+
+    @pytest.mark.asyncio
+    async def test_raw_serves_the_view_the_page_is_showing(self, monkeypatch):
+        spec = browsers.EIA_DATA_BROWSERS["international"]
+        target = f"{browsers._EIA_ORIGIN}/international/api/series_data/data"
+        payload = {"data": {"INTL.44-1-USA-QBTU.A": {"2023": [96.0, 96.34]}}}
+        self._upstream(target, payload).install(monkeypatch)
+
+        browsers.set_current_view(spec["path"], "international/data/world")
+        browsers.set_data_target(
+            spec["path"], "international/data/world", {"url": target, "method": "GET"}
+        )
+        rows = await browsers.raw_table("international", spec)
+        assert rows == [
+            {
+                "category": "Production",
+                "country": "United States",
+                "units": "quad Btu",
+                "source_key": "INTL.44-1-USA-QBTU.A",
+                "2023 ": 96.34,
+            }
+        ]
+
+    @pytest.mark.asyncio
+    async def test_the_widget_endpoint_serves_those_rows(self, monkeypatch):
+        spec = browsers.EIA_DATA_BROWSERS["international"]
+        target = f"{browsers._EIA_ORIGIN}/international/api/series_data/data"
+        payload = {"data": {"INTL.44-1-USA-QBTU.A": {"2023": [96.0, 96.34]}}}
+        self._upstream(target, payload).install(monkeypatch)
+        browsers.set_current_view(spec["path"], "international/data/world")
+        browsers.set_data_target(
+            spec["path"], "international/data/world", {"url": target, "method": "GET"}
+        )
+
+        routes = {r.path: r for r in browsers.router._api_router.routes}
+        endpoint = routes["/international_browser"].endpoint
+        response = await endpoint(
+            theme="dark", raw=True, info=make_info("/api/v1/international_browser")
+        )
+        assert json.loads(response.body)[0]["country"] == "United States"
+
+
+class TestMapContrast:
+    """The map series is unreadable at eia.gov's own colours on a white page."""
+
+    def _page(self, dark):
+        return browsers.rewrite_html(
+            "<head></head>", PROXY_PREFIX, dark=dark, browser=INTERNATIONAL
+        )
+
+    @pytest.mark.parametrize("dark", [False, True])
+    def test_regions_with_no_value_are_given_a_readable_fill(self, dark):
+        page = self._page(dark)
+        assert (
+            ".highcharts-map-series .highcharts-null-point{fill:#dde2e8!important}"
+            in page
+        )
+
+    @pytest.mark.parametrize("dark", [False, True])
+    def test_every_region_is_outlined_so_the_shapes_read(self, dark):
+        page = self._page(dark)
+        assert (
+            ".highcharts-map-series .highcharts-point"
+            "{stroke:#98a2b0!important;stroke-width:0.7px!important}" in page
+        )
+
+    def test_a_choropleths_own_colours_are_left_alone(self):
+        """A shaded map's fill is the data; only no-data regions may be recoloured."""
+        page = self._page(False)
+        assert ".highcharts-map-series .highcharts-point{fill:" not in page

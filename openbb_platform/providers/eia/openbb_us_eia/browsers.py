@@ -1,15 +1,13 @@
 """EIA data-browser widgets."""
 
 import re
-import secrets
 import threading
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from hashlib import blake2s
 from pathlib import Path
-from typing import Any
+from typing import Annotated
 
-from fastapi import Depends, Query, Request
+from fastapi import Depends, Request
 from fastapi.responses import (
     HTMLResponse,
     JSONResponse,
@@ -17,41 +15,6 @@ from fastapi.responses import (
     Response,
 )
 from openbb_core.app.router import Router
-
-
-def _load_or_create_salt() -> bytes:
-    """Load a stable per-deployment salt so user tokens survive process restarts."""
-    path = Path.home() / ".openbb_platform" / "cache" / "eia_proxy" / ".user_salt"
-    try:
-        existing = path.read_bytes()
-        if len(existing) == 32:
-            return existing
-    except OSError:
-        pass
-    salt = secrets.token_bytes(32)
-    try:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(salt)
-        path.chmod(0o600)
-    except OSError:
-        pass
-    return salt
-
-
-_USER_SALT = _load_or_create_salt()
-_TOKEN_RE = re.compile(r"\A[0-9a-f]{32}\Z")
-
-
-def user_token(identity: str) -> str:
-    """Derive an opaque, non-reversible token from a Workspace user identity."""
-    if not identity:
-        return ""
-    return blake2s(identity.encode("utf-8"), key=_USER_SALT, digest_size=16).hexdigest()
-
-
-def _clean_token(token: str) -> str:
-    """Return ``token`` when it is a well-formed opaque token, else empty."""
-    return token if _TOKEN_RE.match(token or "") else ""
 
 
 async def request_info(request: Request) -> dict:
@@ -69,7 +32,6 @@ async def request_info(request: Request) -> dict:
         "method": request.method,
         "body": body,
         "content_type": request.headers.get("Content-Type", ""),
-        "user": user_token(request.headers.get("X-OpenBB-User", "")),
         "referer": request.headers.get("Referer", ""),
     }
 
@@ -121,6 +83,17 @@ _DARK_CSS = (
 _MAP_LAYOUT_CSS = (
     "<style>#map{position:relative!important;max-width:920px!important}</style>"
 )
+# The map series draws its landmasses at #f7f7f7 with an #e6e6e6 border, which is
+# invisible against the widget's white page. Only the regions carrying no value are
+# refilled -- a choropleth's own colours are the data and must survive -- and every
+# region gets a border so the shapes read. Both hold up once dark mode inverts them.
+_MAP_CONTRAST_CSS = (
+    "<style>"
+    ".highcharts-map-series .highcharts-null-point{fill:#dde2e8!important}"
+    ".highcharts-map-series .highcharts-point"
+    "{stroke:#98a2b0!important;stroke-width:0.7px!important}"
+    "</style>"
+)
 _NGQS_GRID_CSS = "<style>#agGrid{width:100%!important}</style>"
 _STATES_CSS = (
     "<style>h3.dashboard-title{top:0!important}"
@@ -162,23 +135,232 @@ def _view_bridge_js() -> str:
     return _VIEW_BRIDGE_TEMPLATE
 
 
+_TABLE_BRIDGE_TEMPLATE = (
+    "<script>(function(){"
+    "var parts=location.pathname.split('/eia_proxy/');if(parts.length<2)return;"
+    "var sink=parts[0]+'/eia_table',browser='__OBB_BROWSER__';"
+    "var up=window.parent&&window.parent!==window?window.parent:null;"
+    "function txt(el){return((el.innerText||el.textContent||'')"
+    ".replace(/\\s+/g,' ')).trim();}"
+    "function cell(v){"
+    "if(v===null||v===undefined)return null;"
+    "if(typeof v==='number')return isFinite(v)?v:null;"
+    "if(typeof v==='object'){"
+    "if('value' in v)return cell(v.value);"
+    "if('v' in v)return cell(v.v);"
+    "return null;}"
+    "var s=String(v).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ')"
+    ".replace(/\\s+/g,' ').trim();"
+    "if(s===''||s==='--'||s==='-'||s==='\\u2013'||s==='\\u2014')return null;"
+    "var n=s.replace(/,/g,'');"
+    "if(/^-?\\d*\\.?\\d+$/.test(n))return parseFloat(n);"
+    "return s;}"
+    "function records(head,body){"
+    "var names=[],used={};"
+    "for(var i=0;i<head.length;i++){"
+    "var h=String(head[i]||'').trim();"
+    "if(!h)h='category';"
+    "if(used[h]){used[h]++;h=h+' ('+used[h]+')';}else used[h]=1;"
+    "names.push(h);}"
+    "var out=[];"
+    "for(var r=0;r<body.length;r++){"
+    "var row={};"
+    "for(var c=0;c<names.length;c++)row[names[c]]=cell(body[r][c]);"
+    "if(Object.keys(row).length)out.push(row);}"
+    "return out;}"
+    "var grids=[];"
+    "function resolve(field,item){"
+    "if(!field)return undefined;"
+    "var path=String(field).split('.'),v=item;"
+    "for(var i=0;i<path.length;i++){"
+    "if(v===null||v===undefined)return undefined;"
+    "v=v[path[i]];}"
+    "return v;}"
+    "function extract(grid,item,col){"
+    "var o=grid.getOptions?grid.getOptions():null;"
+    "if(o&&typeof o.dataItemColumnValueExtractor==='function'){"
+    "try{return o.dataItemColumnValueExtractor(item,col);}catch(e){}}"
+    "return resolve(col.field,item);}"
+    "function value(grid,item,col,r,c){"
+    "var raw=extract(grid,item,col);"
+    "if(typeof raw==='number'&&isFinite(raw))return raw;"
+    "var fn=col.outputFormatter||col.dataFormatter||col.formatter;"
+    "if(typeof fn==='function'){"
+    "try{var out=fn.call(grid,r,c,raw,col,item);"
+    "if(out!==undefined&&out!==null)return out;}catch(e){}}"
+    "return raw===undefined?null:raw;}"
+    "function fromSlick(){"
+    "var best=null,rows=0;"
+    "for(var i=0;i<grids.length;i++){var g=grids[i];"
+    "try{var n=g.getDataLength();"
+    "if(n>rows){rows=n;best=g;}}catch(e){}}"
+    "if(!best||!rows)return null;"
+    "var all=best.getColumns()||[];if(!all.length)return null;"
+    "var cols=[],head=[];"
+    "for(var c=0;c<all.length;c++){var col=all[c];"
+    "if(col.output===false||col.display===false||col.id==='spacer')continue;"
+    "var h=col.name===undefined||col.name===null?'':String(col.name);"
+    "cols.push(col);head.push(h.replace(/<[^>]*>/g,' '));}"
+    "if(!cols.length)return null;"
+    "var body=[];"
+    "for(var r=0;r<rows;r++){"
+    "var item=best.getDataItem(r);if(!item)continue;"
+    "var row=[];"
+    "for(var f=0;f<cols.length;f++)row.push(value(best,item,cols[f],r,f));"
+    "body.push(row);}"
+    "return body.length?records(head,body):null;}"
+    "function wrapGrid(){"
+    "var S=window.Slick;"
+    "if(!S||typeof S.Grid!=='function'||S.Grid.__obb)return;"
+    "var G=S.Grid;"
+    "function W(){"
+    "var g=Object.create(G.prototype||Object.prototype);"
+    "var r=G.apply(g,arguments);"
+    "var inst=r&&typeof r==='object'?r:g;"
+    "try{grids.push(inst);"
+    "if(inst.onRendered&&inst.onRendered.subscribe)"
+    "inst.onRendered.subscribe(schedule);"
+    "schedule();}catch(e){}"
+    "return inst;}"
+    "W.prototype=G.prototype;W.__obb=1;"
+    "for(var k in G){try{W[k]=G[k];}catch(e){}}"
+    "try{S.Grid=W;}catch(e){}}"
+    "setInterval(wrapGrid,20);"
+    "var apis=[];"
+    "function keep(api){"
+    "if(!api||typeof api.forEachNodeAfterFilterAndSort!=='function')return;"
+    "for(var i=0;i<apis.length;i++)if(apis[i]===api)return;"
+    "apis.push(api);schedule();}"
+    "function wrapAg(){"
+    "var A=window.agGrid;if(!A||A.__obb)return;"
+    "if(typeof A.createGrid==='function'){"
+    "var create=A.createGrid;"
+    "A.createGrid=function(el,opts){"
+    "var api=create.apply(this,arguments);"
+    "try{keep(api);}catch(e){}"
+    "return api;};}"
+    "if(typeof A.Grid==='function'){"
+    "var G=A.Grid;"
+    "function W(el,opts){"
+    "var g=Object.create(G.prototype||Object.prototype);"
+    "var r=G.apply(g,arguments);"
+    "var inst=r&&typeof r==='object'?r:g;"
+    "try{keep(opts&&opts.api);keep(inst&&inst.gridOptions&&inst.gridOptions.api);}"
+    "catch(e){}"
+    "return inst;}"
+    "W.prototype=G.prototype;"
+    "for(var k in G){try{W[k]=G[k];}catch(e){}}"
+    "try{A.Grid=W;}catch(e){}}"
+    "try{A.__obb=1;}catch(e){}}"
+    "setInterval(wrapAg,20);"
+    "function unwrap(v){"
+    "if(!v)return null;"
+    "var seen=[v,v.api,v.gridApi,v.gridOptions&&v.gridOptions.api,"
+    "v.gridOptions&&v.gridOptions.gridApi];"
+    "for(var i=0;i<seen.length;i++){var a=seen[i];"
+    "if(a&&typeof a.forEachNodeAfterFilterAndSort==='function')return a;}"
+    "return null;}"
+    "function domApi(){"
+    "var nodes=document.querySelectorAll("
+    "'ag-grid-angular,.ag-root-wrapper,.ag-root,.ag-body');"
+    "for(var i=0;i<nodes.length;i++){var el=nodes[i];"
+    "for(var d=0;d<4&&el&&el.getAttribute;d++,el=el.parentNode){"
+    "var a=unwrap(el.__ag_grid_instance);if(a)return a;"
+    "for(var k in el){try{var got=unwrap(el[k]);if(got)return got;}catch(e){}}}}"
+    "return null;}"
+    "function gridApi(){"
+    "var best=null,rows=-1;"
+    "for(var i=0;i<apis.length;i++){var a=apis[i];"
+    "try{if(a.isDestroyed&&a.isDestroyed())continue;"
+    "var n=0;a.forEachNodeAfterFilterAndSort(function(){n++;});"
+    "if(n>rows){rows=n;best=a;}}catch(e){}}"
+    "return best||domApi();}"
+    "function fromGrid(){"
+    "var api=gridApi();if(!api||!api.getAllDisplayedColumns)return null;"
+    "var cols=api.getAllDisplayedColumns()||[];if(!cols.length)return null;"
+    "var head=[],fields=[],defs=[];"
+    "for(var i=0;i<cols.length;i++){"
+    "var def=cols[i].getColDef?cols[i].getColDef():{};"
+    "var id=cols[i].getColId?cols[i].getColId():'';"
+    "var h=def.headerName!==undefined&&def.headerName!==null"
+    "?String(def.headerName):String(id);"
+    "if(h.toLowerCase()==='pin'||h.toLowerCase()==='api')continue;"
+    "head.push(h);fields.push(def.field||id);defs.push(def);}"
+    "if(!fields.length)return null;"
+    "var body=[];"
+    "api.forEachNodeAfterFilterAndSort(function(node){"
+    "if(!node||!node.data)return;var row=[];"
+    "for(var j=0;j<fields.length;j++){"
+    "var v=resolve(fields[j],node.data);"
+    "if((v===undefined||v===null)&&typeof defs[j].valueGetter==='function'){"
+    "try{v=defs[j].valueGetter({data:node.data,node:node,colDef:defs[j]});}"
+    "catch(e){}}"
+    "row.push(v===undefined?null:v);}"
+    "body.push(row);});"
+    "return body.length?records(head,body):null;}"
+    "function fromTable(){"
+    "var all=document.querySelectorAll('table'),best=null;"
+    "for(var i=0;i<all.length;i++){var t=all[i];"
+    "if(t.rows.length<2||!t.offsetParent)continue;"
+    "if(!best||t.rows.length>best.rows.length)best=t;}"
+    "if(!best)return null;"
+    "var head=[],body=[],start=0;"
+    "var first=best.rows[0];"
+    "for(var c=0;c<first.cells.length;c++)head.push(txt(first.cells[c]));"
+    "start=1;"
+    "for(var r=start;r<best.rows.length;r++){"
+    "var cells=best.rows[r].cells,row=[];"
+    "for(var k2=0;k2<cells.length;k2++)row.push(txt(cells[k2]));"
+    "body.push(row);}"
+    "return body.length?records(head,body):null;}"
+    "var last='';"
+    "function grab(){"
+    "var rows=null;"
+    "try{rows=fromSlick();}catch(e){}"
+    "if(!rows){try{rows=fromGrid();}catch(e){}}"
+    "if(!rows){try{rows=fromTable();}catch(e){}}"
+    "if(!rows||!rows.length)return;"
+    "var body=JSON.stringify(rows);"
+    "if(body===last)return;last=body;"
+    "if(up)up.postMessage({type:'eia:table',rows:rows},'*');"
+    "var q=sink+'?obb_browser='+encodeURIComponent(browser)"
+    "+'&obb_seq='+String(Date.now());"
+    "fetch(q,{method:'POST',headers:{'Content-Type':'application/json'},"
+    "body:body}).catch(function(){});}"
+    "var timer=null;"
+    "function schedule(){clearTimeout(timer);timer=setTimeout(grab,500);}"
+    "new MutationObserver(schedule).observe(document.documentElement,"
+    "{childList:true,subtree:true,characterData:true});"
+    "setInterval(grab,2000);"
+    "window.addEventListener('load',schedule);schedule();"
+    "})();</script>"
+)
+
+
+def _table_bridge_js(browser: str) -> str:
+    """Render the bridge that publishes the browser's rendered table."""
+    return _TABLE_BRIDGE_TEMPLATE.replace("__OBB_BROWSER__", browser)
+
+
 _XHR_TAG_TEMPLATE = (
     "<script>(function(){"
     "var parts=location.pathname.split('/eia_proxy/');if(parts.length<2)return;"
     "var prefix=parts[0]+'/eia_proxy/',browser='__OBB_BROWSER__';"
-    "var token='__OBB_TOKEN__',beacon=parts[0]+'/eia_view';"
+    "var beacon=parts[0]+'/eia_view';"
     "function view(){var p=location.pathname.split('/eia_proxy/')[1]||'';"
-    "return p+location.hash;}"
+    "return p+location.search+location.hash;}"
+    "var mine=[parts[0]+'/eia_table',parts[0]+'/eia_view'];"
     "function tag(raw){"
     "var base=document.baseURI||location.href;"
     "try{var u=new URL(raw,base);}catch(e){return raw;}"
     "if(u.origin!==location.origin)return raw;"
+    "for(var m=0;m<mine.length;m++)if(u.pathname===mine[m])return raw;"
     "if(u.pathname.indexOf(prefix)!==0)"
     "u=new URL(prefix+u.pathname.substring(1)+u.search+u.hash,location.origin);"
     "if(!u.searchParams.has('obb_browser')){"
     "u.searchParams.set('obb_browser',browser);"
     "u.searchParams.set('obb_view',view());"
-    "if(token)u.searchParams.set('obb_token',token);}"
+    "u.searchParams.set('obb_seq',String(Date.now()));}"
     "return u.pathname+u.search+u.hash;}"
     "var open=XMLHttpRequest.prototype.open;"
     "XMLHttpRequest.prototype.open=function(method,url){"
@@ -192,9 +374,9 @@ _XHR_TAG_TEMPLATE = (
     "function report(){var v=view();if(v===last)return;last=v;"
     "var q=beacon+'?obb_browser='+encodeURIComponent(browser)"
     "+'&obb_view='+encodeURIComponent(v)"
-    "+(token?'&obb_token='+token:'');"
+    "+'&obb_seq='+String(Date.now());"
     "if(navigator.sendBeacon)navigator.sendBeacon(q);"
-    "else fetch0.call(window,q,{method:'POST',keepalive:true});}"
+    "else fetch0.call(window,q,{method:'POST'});}"
     "function hook(m){var o=history[m];if(o)history[m]=function(){"
     "var r=o.apply(this,arguments);setTimeout(report,0);return r;};}"
     "hook('pushState');hook('replaceState');"
@@ -205,11 +387,9 @@ _XHR_TAG_TEMPLATE = (
 )
 
 
-def _xhr_tag_js(token: str, browser: str) -> str:
-    """Render the request tagger that binds each XHR to its user, browser, and view."""
-    return _XHR_TAG_TEMPLATE.replace("__OBB_TOKEN__", _clean_token(token)).replace(
-        "__OBB_BROWSER__", browser
-    )
+def _xhr_tag_js(browser: str) -> str:
+    """Render the request tagger that binds each proxied request to its view."""
+    return _XHR_TAG_TEMPLATE.replace("__OBB_BROWSER__", browser)
 
 
 _DIALOG_CLAMP_JS = (
@@ -257,7 +437,7 @@ _NAV_GUARD_JS = (
     "var spa=parts[1].indexOf('international/')===0"
     "||parts[1].indexOf('states/')===0;"
     "var cur=new URLSearchParams(location.search),keep=[];"
-    "['obb_theme','obb_token'].forEach(function(k){"
+    "['obb_theme'].forEach(function(k){"
     "if(cur.has(k))keep.push([k,cur.get(k)]);});"
     "function ensure(sp){var added=false;keep.forEach(function(pr){"
     "if(!sp.has(pr[0])){sp.set(pr[0],pr[1]);added=true;}});return added;}"
@@ -424,22 +604,15 @@ def _derive_browser(path: str) -> str:
     return ""
 
 
-_VIEW_STATE_MAX = 2048
-_VIEW_TTL = 8 * 3600.0
-
 MAPS_PAGE = "maps/oil-naturalgas.php"
 
 
-_LAST_DATA: dict[tuple[str, str], tuple[float, dict]] = {}
-_VIEW_DATA: dict[tuple[str, str, str], tuple[float, dict]] = {}
-_CURRENT_VIEW: dict[tuple[str, str], tuple[float, str]] = {}
+_TABLE_ROWS: dict[str, tuple[list, float]] = {}
 _NOT_TABLE_RE = re.compile(
     r"method=getConfig"
     r"|method=getImportExportConfigJSON"
     r"|method=getRowMetadata"
     r"|method=getMapData"
-    r"|method=getMineList"
-    r"|method=getShipmentList"
     r"|type=config"
     r"|type=defaults"
     r"|type=mapData"
@@ -460,9 +633,6 @@ _NOT_TABLE_RE = re.compile(
 )
 
 
-_PAGE_CONTINUATION_RE = re.compile(r"[?&]offset=(?!0(?:&|$))\d")
-
-
 def is_data_response(target: str, content_type: str) -> bool:
     """Return ``True`` for a proxied response carrying a browser's table data."""
     if "/global/" in target or "json" not in content_type:
@@ -470,82 +640,68 @@ def is_data_response(target: str, content_type: str) -> bool:
     return not _NOT_TABLE_RE.search(target)
 
 
-def widget_context(referer: str) -> tuple[str, str]:
-    """Extract the opaque token and browser path from a proxied page's referer."""
-    from urllib.parse import parse_qsl
-
-    if "/eia_proxy/" not in referer:
-        return "", ""
-    path, _, query = referer.split("/eia_proxy/", 1)[1].partition("?")
-    token = ""
-    for key, value in parse_qsl(query, keep_blank_values=True):
-        if key == "obb_token":
-            token = _clean_token(value)
-    return token, path if path in _BROWSER_PATHS else ""
+_LAST_DATA: dict[str, tuple[dict, float]] = {}
+_VIEW_DATA: dict[tuple[str, str], tuple[dict, float]] = {}
+_CURRENT_VIEW: dict[str, tuple[str, float]] = {}
+_PAGE_CONTINUATION_RE = re.compile(r"[?&]offset=(?!0(?:&|$))\d")
 
 
-def _sweep(store: dict, now: float) -> None:
-    """Drop expired entries, then the oldest, keeping a store under its cap."""
-    for key in [k for k, (expiry, _) in store.items() if expiry <= now]:
-        del store[key]
-    while len(store) >= _VIEW_STATE_MAX:
-        del store[min(store, key=lambda k: store[k][0])]
+def view_key(view: str) -> str:
+    """Strip a view's query string, keeping any hash the classic browsers use."""
+    head, marker, fragment = view.partition("#")
+    head = head.partition("?")[0]
+    return f"{head}#{fragment}" if marker else head
 
 
-def set_current_view(token: str, browser: str, view: str) -> None:
-    """Record the view a browser is displaying right now."""
-    from time import monotonic
-
-    now = monotonic()
-    _sweep(_CURRENT_VIEW, now)
-    _CURRENT_VIEW[(token, browser)] = (now + _VIEW_TTL, view)
-
-
-def _lookup(store: dict, keys: list) -> Any:
-    """Return the first unexpired entry among ``keys``, expiring stale ones."""
-    from time import monotonic
-
-    now = monotonic()
-    for key in keys:
-        entry = store.get(key)
-        if entry is None:
-            continue
-        expiry, value = entry
-        if expiry <= now:
-            del store[key]
-            continue
-        return value
-    return None
+def _put(store: dict, key, value, seq: float) -> None:
+    """Store ``value`` unless a later-issued one is already there."""
+    existing = store.get(key)
+    if existing is not None and existing[1] > seq:
+        return
+    store[key] = (value, seq)
 
 
-def get_current_view(token: str, browser: str) -> str:
-    """Return the view a browser is displaying, falling back to the tokenless one."""
-    keys = [(token, browser), ("", browser)] if token else [("", browser)]
-    return _lookup(_CURRENT_VIEW, keys) or ""
+def set_current_view(browser: str, view: str, seq: float = 0.0) -> None:
+    """Record the view a browser is displaying."""
+    _put(_CURRENT_VIEW, browser, view, seq)
 
 
-def set_data_target(token: str, browser: str, view: str, request: dict) -> None:
+def get_current_view(browser: str) -> str:
+    """Return the view a browser is displaying."""
+    entry = _CURRENT_VIEW.get(browser)
+    return entry[0] if entry is not None else ""
+
+
+def set_data_target(browser: str, view: str, request: dict, seq: float = 0.0) -> None:
     """Record the data request a browser issued, keyed by the view that issued it."""
-    from time import monotonic
-
-    now = monotonic()
-    _sweep(_LAST_DATA, now)
-    _LAST_DATA[(token, browser)] = (now + _VIEW_TTL, request)
+    _put(_LAST_DATA, browser, request, seq)
     if view:
-        _sweep(_VIEW_DATA, now)
-        _VIEW_DATA[(token, browser, view)] = (now + _VIEW_TTL, request)
+        _put(_VIEW_DATA, (browser, view_key(view)), request, seq)
 
 
-def get_data_target(token: str, browser: str) -> dict | None:
+def get_data_target(browser: str) -> dict | None:
     """Return the data request behind the view a browser is currently displaying."""
-    view = get_current_view(token, browser)
+    view = view_key(get_current_view(browser))
     if view:
-        keys = [(token, browser, view), ("", browser, view)] if token else []
-        request = _lookup(_VIEW_DATA, keys or [("", browser, view)])
-        if request is not None:
-            return request
-    keys = [(token, browser), ("", browser)] if token else [("", browser)]
-    return _lookup(_LAST_DATA, keys)
+        entry = _VIEW_DATA.get((browser, view))
+        if entry is not None:
+            return entry[0]
+    entry = _LAST_DATA.get(browser)
+    return entry[0] if entry is not None else None
+
+
+def set_table_rows(browser: str, rows: list, seq: float = 0.0) -> None:
+    """Record the table a browser has rendered, ignoring a late older one."""
+    existing = _TABLE_ROWS.get(browser)
+    if existing is not None and existing[1] > seq:
+        return
+    _TABLE_ROWS[browser] = (rows, seq)
+
+
+def get_table_rows(browser: str) -> list | None:
+    """Return the table a browser has rendered."""
+    entry = _TABLE_ROWS.get(browser)
+    return entry[0] if entry is not None else None
 
 
 _MAPS_TAB_RE = re.compile(r'<li><label for="maps-eia-tab-\d+">(.*?)</label></li>', re.S)
@@ -630,7 +786,6 @@ def rewrite_html(
     proxy_prefix: str,
     article: bool = False,
     dark: bool = False,
-    user: str = "",
     browser: str = "",
 ) -> str:
     """Repoint root-absolute paths at the proxy, drop dead scripts, hide chrome."""
@@ -645,7 +800,13 @@ def rewrite_html(
     html = _ESCAPED_ROOT_RE.sub(lambda m: f"{m.group(1)}{escaped}\\/", html)
     html = _ABS_EIA_RE.sub(proxy_prefix, html)
     html = _ESCAPED_EIA_RE.sub(escaped, html)
-    injected = _CHROME_CSS + (_DARK_CSS if dark else "") + _NAV_GUARD_JS + _ASSET_FIX_JS
+    injected = (
+        _CHROME_CSS
+        + _MAP_CONTRAST_CSS
+        + (_DARK_CSS if dark else "")
+        + _NAV_GUARD_JS
+        + _ASSET_FIX_JS
+    )
     if browser.startswith(("electricity", "coal")):
         injected += _MAP_LAYOUT_CSS
     if browser.startswith("naturalgas/ngqs"):
@@ -655,7 +816,7 @@ def rewrite_html(
     if browser.startswith("international"):
         injected += _INTERNATIONAL_CSS
     if browser:
-        injected += _xhr_tag_js(user, browser)
+        injected += _xhr_tag_js(browser) + _table_bridge_js(browser)
     if article:
         injected += _ARTICLE_CSS
     else:
@@ -665,27 +826,30 @@ def rewrite_html(
     return injected + html
 
 
-def _split_widget_params(query: str) -> tuple[str, bool, str, str, str]:
-    """Split the widget theme, token, browser, and view markers out of a query."""
+def _split_widget_params(query: str) -> tuple[str, bool, str, str, float]:
+    """Split the widget theme, browser, view and sequence out of a query."""
     from urllib.parse import parse_qsl, urlencode
 
     dark = False
-    token = ""
     browser = ""
     view = ""
+    seq = 0.0
     rest: list[tuple[str, str]] = []
     for key, value in parse_qsl(query, keep_blank_values=True):
         if key == "obb_theme":
             dark = value != "light"
-        elif key == "obb_token":
-            token = _clean_token(value)
         elif key == "obb_browser":
             browser = value if value in _BROWSER_PATHS else ""
         elif key == "obb_view":
             view = value
+        elif key == "obb_seq":
+            try:
+                seq = float(value)
+            except ValueError:
+                seq = 0.0
         else:
             rest.append((key, value))
-    return urlencode(rest, safe=",~;"), dark, token, browser, view
+    return urlencode(rest, safe=",~;"), dark, browser, view, seq
 
 
 def _proxy_prefix(path: str) -> str:
@@ -693,7 +857,7 @@ def _proxy_prefix(path: str) -> str:
     return path.split("/eia_proxy", 1)[0] + "/eia_proxy"
 
 
-def _redirect_target(prefix: str, landed: str, dark: bool, token: str) -> str:
+def _redirect_target(prefix: str, landed: str, dark: bool) -> str:
     """Map an upstream redirect back onto the proxy, keeping the widget params."""
     from urllib.parse import parse_qsl, urlencode
 
@@ -701,8 +865,6 @@ def _redirect_target(prefix: str, landed: str, dark: bool, token: str) -> str:
     path, _, query = rest.partition("?")
     params = [(key, value) for key, value in parse_qsl(query, keep_blank_values=True)]
     params.append(("obb_theme", "dark" if dark else "light"))
-    if token:
-        params.append(("obb_token", token))
     return f"{prefix}/{path}?{urlencode(params, safe=';,')}"
 
 
@@ -938,17 +1100,40 @@ def _schedule_warm() -> None:
     task.add_done_callback(_WARM_TASKS.discard)
 
 
-async def eia_view(info: dict = Depends(request_info)) -> Response:
-    """Record the view a browser navigated to, so ``raw`` follows the current view."""
-    _, _, token, browser, view = _split_widget_params(info["query"])
-    if browser:
-        set_current_view(token, browser, view)
+async def eia_table(
+    info: Annotated[dict, Depends(request_info)],
+) -> Response:
+    """Record the table a browser has rendered, so ``raw`` serves that table."""
+    import json
+
+    _, _, browser, _view, seq = _split_widget_params(info["query"])
+    if not browser:
+        return Response(status_code=204)
+    try:
+        rows = json.loads(info["body"] or b"[]")
+    except ValueError:
+        return Response(status_code=204)
+    if isinstance(rows, list) and rows and all(isinstance(r, dict) for r in rows):
+        set_table_rows(browser, rows, seq)
     return Response(status_code=204)
 
 
-async def eia_proxy(path: str, info: dict = Depends(request_info)) -> Response:
+async def eia_view(
+    info: Annotated[dict, Depends(request_info)],
+) -> Response:
+    """Record the view a browser navigated to, so ``raw`` follows the current view."""
+    _, _, browser, view, seq = _split_widget_params(info["query"])
+    if browser:
+        set_current_view(browser, view, seq)
+    return Response(status_code=204)
+
+
+async def eia_proxy(
+    path: str,
+    info: Annotated[dict, Depends(request_info)],
+) -> Response:
     """Reverse-proxy an eia.gov data-browser resource, same-origin."""
-    query, dark, user, tagged, view = _split_widget_params(info["query"])
+    query, dark, tagged, view, seq = _split_widget_params(info["query"])
     target = f"{_EIA_ORIGIN}/{path}" + (f"?{query}" if query else "")
     is_post = info["method"] == "POST"
     try:
@@ -963,22 +1148,20 @@ async def eia_proxy(path: str, info: dict = Depends(request_info)) -> Response:
 
     is_data = is_data_response(target, content_type)
     if is_data and not _PAGE_CONTINUATION_RE.search(target):
-        referred_token, referred_browser = widget_context(info["referer"])
-        browser = tagged or referred_browser or _derive_browser(path)
+        browser = tagged or _derive_browser(path)
         if browser:
             request = {"url": target, "method": info["method"]}
             if is_post:
                 request["body"] = info["body"]
                 request["content_type"] = info["content_type"]
-            token = user or referred_token
             if view:
-                set_current_view(token, browser, view)
-            set_data_target(token, browser, view, request)
+                set_current_view(browser, view, seq)
+            set_data_target(browser, view, request, seq)
 
     prefix = _proxy_prefix(info["path"])
     landed = _REDIRECTS.get(target)
     if landed and "text/html" in content_type and landed.startswith(f"{_EIA_ORIGIN}/"):
-        location = _redirect_target(prefix, landed, dark, user)
+        location = _redirect_target(prefix, landed, dark)
         if location.split("?", 1)[0] != info["path"]:
             return RedirectResponse(location, status_code=307)
     static = {"Cache-Control": f"public, max-age={int(_PROXY_CACHE_TTL)}"}
@@ -989,7 +1172,6 @@ async def eia_proxy(path: str, info: dict = Depends(request_info)) -> Response:
                 prefix,
                 article=path.startswith(_ARTICLE_PATHS),
                 dark=dark,
-                user=user,
                 browser=(path if path in _BROWSER_PATHS else _derive_browser(path)),
             ),
             headers={"Cache-Control": "no-store"},
@@ -1454,20 +1636,30 @@ def _intl_infographic_rows(records: list, labels: dict | None = None) -> list[di
 
 
 def _intl_series_rows(data: dict, labels: dict | None = None) -> list[dict]:
-    """One row per International series, periods as columns."""
+    """One row per International series, periods as columns, ordered as displayed.
+
+    The grid groups by country -- World first, then the countries by name -- and
+    keeps the product order the payload arrives in. The payload itself is keyed
+    product-first, so it has to be regrouped to match the table on screen.
+    """
     labels = labels or {}
-    parsed: list[tuple[tuple[str, str, str, str], dict]] = []
+    order_map: dict[str, int] = labels.get("product_order") or {}
+    parsed: list[tuple[tuple, tuple[str, str, str, str], dict]] = []
     all_periods: set = set()
     for series_id, points in data.items():
         if not isinstance(points, dict):
             continue
+        product = _parse_intl_id(series_id)[0]
+        order = (order_map.get(str(product), len(order_map)), str(product))
         flat = {period: _intl_value(point) for period, point in points.items()}
         all_periods.update(flat.keys())
-        parsed.append((_intl_row(series_id, "", "", labels), flat))
+        parsed.append((order, _intl_row(series_id, "", "", labels), flat))
+
+    parsed.sort(key=lambda item: (item[1][1] != "World", item[1][1], item[0]))
 
     columns = _period_columns(all_periods)
     rows: list[dict] = []
-    for (label, country, units, source), flat in parsed:
+    for _order, (label, country, units, source), flat in parsed:
         row: dict = {
             "category": label,
             "country": country,
@@ -1480,6 +1672,24 @@ def _intl_series_rows(data: dict, labels: dict | None = None) -> list[dict]:
     return rows
 
 
+def _plant_list_rows(payload: dict) -> list[dict] | None:
+    """Rows for the plant-level views, whose table is a record per plant.
+
+    ``DATA_COLUMNS`` is the column set the grid shows; the record carries more
+    (coordinates, ids) that the table does not.
+    """
+    records = payload.get("DATA")
+    columns = payload.get("DATA_COLUMNS")
+    if not isinstance(records, list) or not isinstance(columns, list):
+        return None
+    if not records or not isinstance(records[0], dict):
+        return None
+    names = [name for name in columns if isinstance(name, str)]
+    if not names:
+        return None
+    return [{name: record.get(name) for name in names} for record in records]
+
+
 def _dict_payload_rows(payload: dict) -> list[dict]:
     """Shape-dispatch a dict payload into tabular rows.
 
@@ -1488,6 +1698,14 @@ def _dict_payload_rows(payload: dict) -> list[dict]:
     which has no ``TABLEDATA``). ``SERIESDATA`` holds the separately pinned
     series and is only the table when no standard view is selected.
     """
+    plants = _plant_list_rows(payload)
+    if plants is not None:
+        return plants
+    return _keyed_payload_rows(payload)
+
+
+def _keyed_payload_rows(payload: dict) -> list[dict]:
+    """Rows for a payload that names its table under a known key."""
     table = payload.get("TABLEDATA") or payload.get("tabledata")
     if not isinstance(table, dict):
         for key in ("VIEWSDATA", "SERIESDATA"):
@@ -1734,21 +1952,37 @@ async def _intl_label_maps() -> dict:
         "parent": {
             str(p["id"]): p.get("parent") for p in feeds["products"] if p.get("id")
         },
+        "product_order": {
+            str(p["id"]): index
+            for index, p in enumerate(feeds["products"])
+            if p.get("id") is not None
+        },
     }
     if region_map:
         _INTL_LABELS.update(labels)
     return labels
 
 
-async def raw_table(browser: str, spec: dict, token: str = "") -> list[dict]:
-    """Return the browser's current table as rows for agent tool calls."""
+async def raw_table(browser: str, spec: dict) -> list[dict]:
+    """Return the table the browser is showing.
+
+    A grid that hands over its rendered rows has already published them. The
+    rest are Angular apps whose grid API the page cannot reach, so the view's
+    own payload -- recorded by the proxy as the page fetched it -- is pivoted
+    into the table that view is displaying.
+    """
     import json
     from urllib.parse import urlencode
 
     if browser == "maps":
         return await fetch_maps_catalog()
 
-    request = get_data_target(token, spec["path"])
+    rendered = get_table_rows(spec["path"])
+    if rendered:
+        return rendered
+
+    view = get_current_view(spec["path"])
+    request = get_data_target(spec["path"])
     if request is None:
         if browser == "total_energy":
             body, _ = await _fetch_upstream(f"{_EIA_ORIGIN}/{spec['path']}")
@@ -1773,11 +2007,56 @@ async def raw_table(browser: str, spec: dict, token: str = "") -> list[dict]:
         payload = json.loads(body)
     except (ValueError, AttributeError):
         return []
-    labelled = await _labelled_rows(browser, payload)
+    payload = await _all_pages(request, payload)
+    labelled = await _labelled_rows(browser, payload, view)
     return rows_from_payload(payload) if labelled is None else labelled
 
 
-async def _labelled_rows(browser: str, payload) -> list[dict] | None:
+async def _all_pages(request: dict, payload):
+    """Follow a paged payload to its end, so ``raw`` is never a partial table.
+
+    The page asks for ``limit`` series at a time and stitches the pages together
+    as they land. Replaying only the request that was recorded would answer with
+    the first page and silently drop the rest of the table.
+    """
+    import json
+    from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
+
+    if not isinstance(payload, dict) or not isinstance(payload.get("data"), dict):
+        return payload
+    total = payload.get("totalCount")
+    if not isinstance(total, int) or len(payload["data"]) >= total:
+        return payload
+
+    parts = urlparse(request["url"])
+    query = dict(parse_qsl(parts.query))
+    try:
+        limit = int(query.get("limit", 0))
+    except ValueError:
+        return payload
+    if limit <= 0:
+        return payload
+
+    merged = dict(payload["data"])
+    offset = limit
+    while len(merged) < total and offset < total:
+        query["offset"] = str(offset)
+        page_url = urlunparse(parts._replace(query=urlencode(query, safe="~,")))
+        body, _ = await _fetch_upstream(page_url)
+        try:
+            page = json.loads(body)
+        except (ValueError, AttributeError):
+            break
+        chunk = page.get("data") if isinstance(page, dict) else None
+        if not isinstance(chunk, dict) or not chunk:
+            break
+        merged.update(chunk)
+        offset += limit
+
+    return {**payload, "data": merged, "recordCount": len(merged)}
+
+
+async def _labelled_rows(browser: str, payload, view: str = "") -> list[dict] | None:
     """Rows for the browsers whose tables are labelled from a separate config."""
     if not isinstance(payload, dict):
         return None
@@ -1806,34 +2085,27 @@ async def render_browser(
     browser: str,
     theme: str,
     raw: bool,
-    obb_token: str,
     info: dict,
 ) -> Response:
     """Render one EIA data browser as an HTML widget, or its table as raw rows."""
     import json
 
     spec = EIA_DATA_BROWSERS.get(browser) or EIA_DATA_BROWSERS["electricity"]
-    token = info["user"] or _clean_token(obb_token)
     if raw:
         return JSONResponse(
-            content=await raw_table(browser, spec, token),
+            content=await raw_table(browser, spec),
             headers={"Cache-Control": "no-store"},
         )
     proxy_base = info["url"].rsplit("/", 1)[0] + "/eia_proxy"
     mode = "light" if theme == "light" else "dark"
     fragment = spec["hash"]
-    raw_url = f"{info['url']}?raw=true"
-    if token:
-        raw_url += f"&obb_token={token}"
     payload: dict = {
         "mode": "site",
         "theme": mode,
         "browser": browser,
         "label": spec["label"],
         "description": spec["description"],
-        "raw_url": raw_url,
-        "src": f"{proxy_base}/{spec['path']}"
-        f"?obb_theme={mode}&obb_token={token}{fragment}",
+        "src": f"{proxy_base}/{spec['path']}?obb_theme={mode}{fragment}",
         "proxy": proxy_base,
         "maps": [],
     }
@@ -1880,17 +2152,23 @@ router._api_router.add_api_route(
     include_in_schema=False,
 )
 
+router._api_router.add_api_route(
+    path="/eia_table",
+    endpoint=eia_table,
+    methods=["POST"],
+    include_in_schema=False,
+)
+
 
 def _browser_endpoint(browser: str):
     """Build the widget endpoint bound to one EIA data browser."""
 
     async def endpoint(
+        info: Annotated[dict, Depends(request_info)],
         theme: str = "dark",
         raw: bool = False,
-        obb_token: str = Query("", include_in_schema=False),
-        info: dict = Depends(request_info),
     ) -> Response:
-        return await render_browser(browser, theme, raw, obb_token, info)
+        return await render_browser(browser, theme, raw, info)
 
     endpoint.__name__ = f"{browser}_browser"
     endpoint.__doc__ = EIA_DATA_BROWSERS[browser]["description"]
@@ -1928,6 +2206,7 @@ for _browser, _spec in EIA_DATA_BROWSERS.items():
                     {"paramName": "raw", "show": False},
                 ],
                 "refetchInterval": False,
+                "staleTime": 1000,
                 "raw": True,
             }
         },

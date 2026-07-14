@@ -491,7 +491,8 @@ class TestInternationalRows:
 
     def test_series_rows_are_labelled_with_country_and_unit_names(self):
         rows = browsers._intl_series_rows(INTL_SERIES_PAYLOAD["data"], LABELS)
-        assert rows[0] == {
+        row = next(r for r in rows if r["country"] == "United States")
+        assert row == {
             "category": "Production",
             "country": "United States",
             "units": "quad Btu",
@@ -499,13 +500,38 @@ class TestInternationalRows:
             "2022 ": 95.12,
             "2023 ": 96.34,
         }
-        assert rows[1]["country"] == "China"
+
+    def test_series_rows_are_grouped_by_country_the_way_the_grid_shows_them(self):
+        """The payload is keyed product-first; the grid groups by country."""
+        rows = browsers._intl_series_rows(INTL_SERIES_PAYLOAD["data"], LABELS)
+        assert [row["country"] for row in rows] == ["China", "United States"]
+
+    def test_world_leads_the_table(self):
+        labels = {**LABELS, "region": {**LABELS["region"], "WORL": "World"}}
+        data = {
+            "INTL.44-1-USA-QBTU.A": {"2023": [96.0, 96.34]},
+            "INTL.44-1-WORL-QBTU.A": {"2023": [600.0, 600.5]},
+        }
+        rows = browsers._intl_series_rows(data, labels)
+        assert [row["country"] for row in rows] == ["World", "United States"]
+
+    def test_products_keep_the_order_eia_publishes_them_in(self):
+        labels = {**LABELS, "product_order": {"7": 0, "11": 1}}
+        data = {
+            "INTL.11-1-USA-TST.A": {"2023": [1.0, 1.0]},
+            "INTL.7-1-USA-TST.A": {"2023": [2.0, 2.0]},
+        }
+        rows = browsers._intl_series_rows(data, labels)
+        assert [row["source_key"] for row in rows] == [
+            "INTL.7-1-USA-TST.A",
+            "INTL.11-1-USA-TST.A",
+        ]
 
     def test_series_rows_fall_back_to_codes_without_label_maps(self):
         rows = browsers._intl_series_rows(INTL_SERIES_PAYLOAD["data"])
-        assert rows[0]["country"] == "USA"
-        assert rows[0]["units"] == "QBTU"
-        assert rows[0]["category"] == "INTL.44-1-USA-QBTU.A"
+        row = next(r for r in rows if r["country"] == "USA")
+        assert row["units"] == "QBTU"
+        assert row["category"] == "INTL.44-1-USA-QBTU.A"
 
     def test_series_rows_skip_non_mapping_entries(self):
         assert browsers._intl_series_rows({"INTL.X": "junk"}) == []
@@ -582,7 +608,10 @@ class TestRowsFromPayload:
 
     def test_international_series(self):
         rows = browsers.rows_from_payload(INTL_SERIES_PAYLOAD)
-        assert rows[0]["source_key"] == "INTL.44-1-USA-QBTU.A"
+        assert {row["source_key"] for row in rows} == {
+            "INTL.44-1-USA-QBTU.A",
+            "INTL.44-1-CHN-QBTU.A",
+        }
 
     def test_international_overview(self):
         rows = browsers.rows_from_payload(INTL_OVERVIEW_PAYLOAD)

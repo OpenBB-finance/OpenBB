@@ -334,12 +334,12 @@ class TestRssFeedEndpoint:
         )
         return session
 
+    INFO = {"url": "http://t/api/v1/eia/rss_feed", "query": "", "path": ""}
+
     @pytest.mark.asyncio
     async def test_renders_feed_with_proxy_base(self, stubbed):
         response = await rss_widget.rss_feed(
-            "today_in_energy",
-            "dark",
-            {"url": "http://t/api/v1/eia/rss_feed", "query": "", "path": ""},
+            info=self.INFO, feed="today_in_energy", theme="dark"
         )
         text = response.body.decode()
         assert "First Article" in text
@@ -349,9 +349,7 @@ class TestRssFeedEndpoint:
     @pytest.mark.asyncio
     async def test_unknown_feed_falls_back(self, stubbed):
         response = await rss_widget.rss_feed(
-            "bogus",
-            "light",
-            {"url": "http://t/api/v1/eia/rss_feed", "query": "", "path": ""},
+            info=self.INFO, feed="bogus", theme="light"
         )
         assert '"today_in_energy"' in response.body.decode()
 

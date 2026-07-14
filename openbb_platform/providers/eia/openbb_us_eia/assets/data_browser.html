@@ -229,24 +229,26 @@
         "*"
       );
 
-      function sendData() {
-        fetch(DATA.raw_url, { credentials: "omit" })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (rows) {
-            target.postMessage(
-              {
-                type: "openbb-data",
-                widgetId: widgetId,
-                dataType: "table",
-                data: rows,
-              },
-              "*"
-            );
-          })
-          .catch(function () {});
+      function publish(rows) {
+        target.postMessage(
+          {
+            type: "openbb-data",
+            widgetId: widgetId,
+            dataType: "table",
+            data: rows,
+          },
+          "*"
+        );
       }
+
+      function sendData() {
+        publish(window.__eiaTable || []);
+      }
+
+      window.__eiaPublish = function (rows) {
+        window.__eiaTable = rows;
+        publish(rows);
+      };
 
       window.addEventListener("message", function (event) {
         var msg = event.data;
@@ -254,14 +256,6 @@
         if (msg.type === "openbb-request") {
           if (msg.widgetId === null || msg.widgetId === widgetId) sendData();
         } else if (msg.type === "openbb-params-update") {
-          var params = msg.params || {};
-          if (params.browser && params.browser !== DATA.browser) {
-            DATA.browser = params.browser;
-            DATA.raw_url = DATA.raw_url.replace(
-              /browser=[^&]*/,
-              "browser=" + encodeURIComponent(params.browser)
-            );
-          }
           sendData();
         }
       });
@@ -336,6 +330,9 @@
         else if (msg.type === "eia:pdf" && msg.src) openPdfModal(msg.src);
         else if (msg.type === "eia:nav" && msg.pathname) {
           remember({ pathname: msg.pathname, hash: msg.hash || "" });
+        } else if (msg.type === "eia:table" && msg.rows && msg.rows.length) {
+          if (window.__eiaPublish) window.__eiaPublish(msg.rows);
+          else window.__eiaTable = msg.rows;
         }
       });
 

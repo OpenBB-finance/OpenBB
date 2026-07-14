@@ -1,5 +1,6 @@
 """Tests for the EIA provider router."""
 
+from inspect import Parameter
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -51,6 +52,60 @@ def _routes_by_path():
     from openbb_core.app.route_iter import iter_api_routes
 
     return {route.path: route for route in iter_api_routes(router.api_router)}
+
+
+class TestStaticPackageBuild:
+    """Every route must survive ``openbb-build``.
+
+    The package builder writes ``reference.json`` with ``json.dumps``, so no
+    parameter default may be a non-serialisable object. A FastAPI dependency
+    must therefore be declared as ``Annotated[T, Depends(...)]`` -- which the
+    builder drops -- and never as a ``= Depends(...)`` default value, which it
+    carries straight into the reference and fails to serialise.
+    """
+
+    def _formatted(self, path, route):
+        from inspect import signature
+
+        from openbb_core.app.static.package_builder.method_definition import (
+            MethodDefinition,
+        )
+
+        endpoint = route.endpoint
+        return MethodDefinition.format_params(
+            path=path,
+            parameter_map=dict(signature(endpoint).parameters),
+            func=endpoint,
+        )
+
+    def test_no_dependency_leaks_into_a_parameter_default(self):
+        leaked = [
+            (path, name)
+            for path, route in _routes_by_path().items()
+            for name, param in self._formatted(path, route).items()
+            if "Depends" in str(param.default)
+        ]
+        assert leaked == []
+
+    def test_every_parameter_default_is_json_serialisable(self):
+        from json import dumps
+
+        for path, route in _routes_by_path().items():
+            for name, param in self._formatted(path, route).items():
+                default = param.default
+                if default is Parameter.empty:
+                    continue
+                try:
+                    dumps(default)
+                except TypeError as exc:  # pragma: no cover - guard only
+                    raise AssertionError(
+                        f"{path} parameter '{name}' has a default that"
+                        f" openbb-build cannot serialise: {default!r}"
+                    ) from exc
+
+    def test_the_injected_request_context_is_not_a_public_parameter(self):
+        for path, route in _routes_by_path().items():
+            assert "info" not in self._formatted(path, route)
 
 
 class TestRouterRegistration:
