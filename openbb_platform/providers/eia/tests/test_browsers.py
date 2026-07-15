@@ -1292,7 +1292,8 @@ class TestEiaProxy:
         )
         response = await browsers.eia_proxy("x", make_info("/api/v1/eia_proxy/x"))
         assert response.status_code == 502
-        assert b"Upstream error" in response.body
+        assert response.body == b"Upstream request failed."
+        assert b"boom" not in response.body
 
     @pytest.mark.asyncio
     async def test_deep_linked_spa_route_still_gets_the_bridge(self, monkeypatch):

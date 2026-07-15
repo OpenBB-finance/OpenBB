@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from time import struct_time
 from typing import TYPE_CHECKING
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit, urlunsplit
 
 if TYPE_CHECKING:
     from aiohttp import ClientSession
@@ -270,12 +270,17 @@ def build_feed(feed_key: str, parsed, limit: int, proxy_base: str = "") -> dict:
             _fill_presentation(item, entry, base)
         elif viewer == "table":
             item["body_html"] = render_price_table(summary)
+        src_parts = urlsplit(item["src"])
+        src_host = (src_parts.hostname or "").lower()
         if (
             item["viewer"] in ("page", "pdf")
             and proxy_base
-            and "eia.gov/" in item["src"]
+            and (src_host == "eia.gov" or src_host.endswith(".eia.gov"))
         ):
-            item["src"] = proxy_base + "/" + item["src"].split("eia.gov/", 1)[1]
+            tail = urlunsplit(
+                ("", "", src_parts.path, src_parts.query, src_parts.fragment)
+            ).lstrip("/")
+            item["src"] = f"{proxy_base}/{tail}"
         items.append(item)
 
     return {

@@ -769,8 +769,8 @@ async def eia_proxy(
             )
         else:
             body, content_type = await _fetch_upstream(target)
-    except Exception as exc:  # noqa: BLE001
-        return Response(content=f"Upstream error: {exc}".encode(), status_code=502)
+    except Exception:  # noqa: BLE001
+        return Response(content=b"Upstream request failed.", status_code=502)
 
     is_data = is_data_response(target, content_type)
     if is_data and not _PAGE_CONTINUATION_RE.search(target):
