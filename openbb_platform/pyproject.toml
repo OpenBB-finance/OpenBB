@@ -57,6 +57,7 @@ openbb-finra = { version = "^1.6.1", optional = true }
 openbb-finviz = { version = "^1.5.1", optional = true }
 openbb-multpl = { version = "^1.3.1", optional = true }
 openbb-nasdaq = { version = "^1.6.3", optional = true }
+openbb-nse = { version = "^1.0.0", optional = true }
 openbb-seeking-alpha = { version = "^1.6.1", optional = true }
 openbb-stockgrid = { version = "^1.6.1", optional = true }
 openbb-tmx = { version = "^1.5.2", optional = true }
@@ -82,6 +83,7 @@ finra = ["openbb-finra"]
 finviz = ["openbb-finviz"]
 mcp_server = ["openbb-mcp-server"]
 nasdaq = ["openbb-nasdaq"]
+nse = ["openbb-nse"]
 multpl = ["openbb-multpl"]
 quantitative = ["openbb-quantitative"]
 seeking_alpha = ["openbb-seeking-alpha"]
@@ -106,6 +108,7 @@ all = [
     "openbb-mcp-server",
     "openbb-multpl",
     "openbb-nasdaq",
+    "openbb-nse",
     "openbb-quantitative",
     "openbb-seeking-alpha",
     "openbb-stockgrid",
