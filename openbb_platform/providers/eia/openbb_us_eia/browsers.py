@@ -4,6 +4,7 @@ import re
 import threading
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from functools import lru_cache
 from pathlib import Path
 from typing import Annotated
 
@@ -41,93 +42,28 @@ router = Router(prefix="", description="EIA interactive data browsers.")
 _TEMPLATE = Path(__file__).parent / "assets" / "data_browser.html"
 _EIA_ORIGIN = "https://www.eia.gov"
 
-_CHROME_CSS = (
-    "<style>#sticker,header,footer,.social-fixed,.blue_side,"
-    ".l-inner-wrapper>.title"
-    "{display:none!important}"
-    "html,body{margin:0!important;padding:0!important;background:#fff!important}"
-    "section{margin:0!important}"
-    ".l-outer-wrapper,.l-inner-wrapper"
-    "{width:100%!important;max-width:none!important;margin:0!important}"
-    ".l-outer-wrapper .l-inner-wrapper{padding:8px 12px 12px!important}"
-    ".fancybox__content{max-height:100%!important}"
-    ".fancybox__content .customize_window_container"
-    "{display:flex!important;flex-direction:column!important;min-height:0!important}"
-    ".fancybox__content .customize_window_container>.green_top"
-    "{display:flex!important;flex:1 1 auto!important;min-height:0!important}"
-    ".fancybox__content .customize_window_container .customize_options"
-    "{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important}"
-    ".fancybox__content .customize_window_container .fancybox_buttons"
-    "{position:static!important}"
-    "</style>"
-)
-_DARK_CSS = (
-    "<style>html{filter:invert(0.92) hue-rotate(180deg);"
-    "background:#fff!important;min-height:100%!important}"
-    "body{background:#fff!important;min-height:100vh!important}"
-    "img,video,embed,object,iframe"
-    "{filter:invert(1) hue-rotate(180deg)}"
-    'img[src*=".png"],img[src*=".svg"],img[src*=".gif"]{filter:none}'
-    'img[src*="flags/"],.rankFlag img,.country-flag img,'
-    ".highcharts-tooltip svg{filter:invert(1) hue-rotate(180deg)}"
-    "*{scrollbar-width:thin;scrollbar-color:#c3cbdd transparent}"
-    "::-webkit-scrollbar{width:10px;height:10px}"
-    "::-webkit-scrollbar-thumb{background:#c3cbdd;border-radius:6px}"
-    "::-webkit-scrollbar-thumb:hover{background:#a8b3cc}"
-    "::-webkit-scrollbar-track{background:transparent}"
-    "::-webkit-scrollbar-corner{background:transparent}"
-    "html{scrollbar-color:#3a4150 transparent}"
-    "html::-webkit-scrollbar-thumb{background:#3a4150}"
-    "html::-webkit-scrollbar-thumb:hover{background:#4c556a}</style>"
-)
-_MAP_LAYOUT_CSS = (
-    "<style>#map{position:relative!important;max-width:920px!important}</style>"
-)
-# The map series draws its landmasses at #f7f7f7 with an #e6e6e6 border, which is
-# invisible against the widget's white page. Only the regions carrying no value are
-# refilled -- a choropleth's own colours are the data and must survive -- and every
-# region gets a border so the shapes read. Both hold up once dark mode inverts them.
-_MAP_CONTRAST_CSS = (
-    "<style>"
-    ".highcharts-map-series .highcharts-null-point{fill:#dde2e8!important}"
-    ".highcharts-map-series .highcharts-point"
-    "{stroke:#98a2b0!important;stroke-width:0.7px!important}"
-    "</style>"
-)
-_NGQS_GRID_CSS = "<style>#agGrid{width:100%!important}</style>"
-_STATES_CSS = (
-    "<style>h3.dashboard-title{top:0!important}"
-    ".dashboard-controls-container{top:33px!important}</style>"
-)
-_INTERNATIONAL_CSS = (
-    "<style>app-other-resources,#other-resources{display:none!important}</style>"
-)
-_ARTICLE_CSS = (
-    "<style>.l-row.header,.title-banner,.sub-navigation,#page-sub-nav,"
-    ".tie-archive-section{display:none!important}</style>"
-)
-_VIEW_BRIDGE_TEMPLATE = (
-    "<script>(function(){"
-    "if(location.pathname.indexOf('/eia_proxy/')<0)return;"
-    "var up=window.parent&&window.parent!==window?window.parent:null;if(!up)return;"
-    "var last=null,ready=false;"
-    "function report(){var v=location.pathname+location.hash;if(v===last)return;"
-    "last=v;up.postMessage("
-    "{type:'eia:nav',pathname:location.pathname,hash:location.hash},'*');}"
-    "function hook(m){var o=history[m];if(o)history[m]=function(){"
-    "var r=o.apply(this,arguments);setTimeout(report,0);return r;};}"
-    "hook('pushState');hook('replaceState');"
-    "function checkReady(){if(ready)return;"
-    "if(document.readyState!=='complete')return;"
-    "if(document.querySelector('.loadmask,.loadmask-msg'))return;"
-    "ready=true;up.postMessage({type:'eia:ready'},'*');}"
-    "window.addEventListener('hashchange',report);"
-    "window.addEventListener('popstate',report);"
-    "var iv=setInterval(function(){checkReady();if(ready)clearInterval(iv);},250);"
-    "window.addEventListener('load',function(){report();checkReady();});"
-    "report();"
-    "})();</script>"
-)
+_PROXY_ASSETS = Path(__file__).parent / "assets" / "proxy"
+
+
+def _style(name: str) -> str:
+    """Return a proxy stylesheet wrapped in a ``style`` tag."""
+    return f"<style>{(_PROXY_ASSETS / name).read_text(encoding='utf-8')}</style>"
+
+
+def _script(name: str) -> str:
+    """Return a proxy script wrapped in a ``script`` tag."""
+    return f"<script>{(_PROXY_ASSETS / name).read_text(encoding='utf-8')}</script>"
+
+
+_CHROME_CSS = _style("chrome.css")
+_DARK_CSS = _style("dark.css")
+_MAP_LAYOUT_CSS = _style("map_layout.css")
+_MAP_CONTRAST_CSS = _style("map_contrast.css")
+_NGQS_GRID_CSS = _style("ngqs_grid.css")
+_STATES_CSS = _style("states.css")
+_INTERNATIONAL_CSS = _style("international.css")
+_ARTICLE_CSS = _style("article.css")
+_VIEW_BRIDGE_TEMPLATE = _script("view_bridge.js")
 
 
 def _view_bridge_js() -> str:
@@ -135,206 +71,7 @@ def _view_bridge_js() -> str:
     return _VIEW_BRIDGE_TEMPLATE
 
 
-_TABLE_BRIDGE_TEMPLATE = (
-    "<script>(function(){"
-    "var parts=location.pathname.split('/eia_proxy/');if(parts.length<2)return;"
-    "var sink=parts[0]+'/eia_table',browser='__OBB_BROWSER__';"
-    "var up=window.parent&&window.parent!==window?window.parent:null;"
-    "function txt(el){return((el.innerText||el.textContent||'')"
-    ".replace(/\\s+/g,' ')).trim();}"
-    "function cell(v){"
-    "if(v===null||v===undefined)return null;"
-    "if(typeof v==='number')return isFinite(v)?v:null;"
-    "if(typeof v==='object'){"
-    "if('value' in v)return cell(v.value);"
-    "if('v' in v)return cell(v.v);"
-    "return null;}"
-    "var s=String(v).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ')"
-    ".replace(/\\s+/g,' ').trim();"
-    "if(s===''||s==='--'||s==='-'||s==='\\u2013'||s==='\\u2014')return null;"
-    "var n=s.replace(/,/g,'');"
-    "if(/^-?\\d*\\.?\\d+$/.test(n))return parseFloat(n);"
-    "return s;}"
-    "function records(head,body){"
-    "var names=[],used={};"
-    "for(var i=0;i<head.length;i++){"
-    "var h=String(head[i]||'').trim();"
-    "if(!h)h='category';"
-    "if(used[h]){used[h]++;h=h+' ('+used[h]+')';}else used[h]=1;"
-    "names.push(h);}"
-    "var out=[];"
-    "for(var r=0;r<body.length;r++){"
-    "var row={};"
-    "for(var c=0;c<names.length;c++)row[names[c]]=cell(body[r][c]);"
-    "if(Object.keys(row).length)out.push(row);}"
-    "return out;}"
-    "var grids=[];"
-    "function resolve(field,item){"
-    "if(!field)return undefined;"
-    "var path=String(field).split('.'),v=item;"
-    "for(var i=0;i<path.length;i++){"
-    "if(v===null||v===undefined)return undefined;"
-    "v=v[path[i]];}"
-    "return v;}"
-    "function extract(grid,item,col){"
-    "var o=grid.getOptions?grid.getOptions():null;"
-    "if(o&&typeof o.dataItemColumnValueExtractor==='function'){"
-    "try{return o.dataItemColumnValueExtractor(item,col);}catch(e){}}"
-    "return resolve(col.field,item);}"
-    "function value(grid,item,col,r,c){"
-    "var raw=extract(grid,item,col);"
-    "if(typeof raw==='number'&&isFinite(raw))return raw;"
-    "var fn=col.outputFormatter||col.dataFormatter||col.formatter;"
-    "if(typeof fn==='function'){"
-    "try{var out=fn.call(grid,r,c,raw,col,item);"
-    "if(out!==undefined&&out!==null)return out;}catch(e){}}"
-    "return raw===undefined?null:raw;}"
-    "function fromSlick(){"
-    "var best=null,rows=0;"
-    "for(var i=0;i<grids.length;i++){var g=grids[i];"
-    "try{var n=g.getDataLength();"
-    "if(n>rows){rows=n;best=g;}}catch(e){}}"
-    "if(!best||!rows)return null;"
-    "var all=best.getColumns()||[];if(!all.length)return null;"
-    "var cols=[],head=[];"
-    "for(var c=0;c<all.length;c++){var col=all[c];"
-    "if(col.output===false||col.display===false||col.id==='spacer')continue;"
-    "var h=col.name===undefined||col.name===null?'':String(col.name);"
-    "cols.push(col);head.push(h.replace(/<[^>]*>/g,' '));}"
-    "if(!cols.length)return null;"
-    "var body=[];"
-    "for(var r=0;r<rows;r++){"
-    "var item=best.getDataItem(r);if(!item)continue;"
-    "var row=[];"
-    "for(var f=0;f<cols.length;f++)row.push(value(best,item,cols[f],r,f));"
-    "body.push(row);}"
-    "return body.length?records(head,body):null;}"
-    "function wrapGrid(){"
-    "var S=window.Slick;"
-    "if(!S||typeof S.Grid!=='function'||S.Grid.__obb)return;"
-    "var G=S.Grid;"
-    "function W(){"
-    "var g=Object.create(G.prototype||Object.prototype);"
-    "var r=G.apply(g,arguments);"
-    "var inst=r&&typeof r==='object'?r:g;"
-    "try{grids.push(inst);"
-    "if(inst.onRendered&&inst.onRendered.subscribe)"
-    "inst.onRendered.subscribe(schedule);"
-    "schedule();}catch(e){}"
-    "return inst;}"
-    "W.prototype=G.prototype;W.__obb=1;"
-    "for(var k in G){try{W[k]=G[k];}catch(e){}}"
-    "try{S.Grid=W;}catch(e){}}"
-    "setInterval(wrapGrid,20);"
-    "var apis=[];"
-    "function keep(api){"
-    "if(!api||typeof api.forEachNodeAfterFilterAndSort!=='function')return;"
-    "for(var i=0;i<apis.length;i++)if(apis[i]===api)return;"
-    "apis.push(api);schedule();}"
-    "function wrapAg(){"
-    "var A=window.agGrid;if(!A||A.__obb)return;"
-    "if(typeof A.createGrid==='function'){"
-    "var create=A.createGrid;"
-    "A.createGrid=function(el,opts){"
-    "var api=create.apply(this,arguments);"
-    "try{keep(api);}catch(e){}"
-    "return api;};}"
-    "if(typeof A.Grid==='function'){"
-    "var G=A.Grid;"
-    "function W(el,opts){"
-    "var g=Object.create(G.prototype||Object.prototype);"
-    "var r=G.apply(g,arguments);"
-    "var inst=r&&typeof r==='object'?r:g;"
-    "try{keep(opts&&opts.api);keep(inst&&inst.gridOptions&&inst.gridOptions.api);}"
-    "catch(e){}"
-    "return inst;}"
-    "W.prototype=G.prototype;"
-    "for(var k in G){try{W[k]=G[k];}catch(e){}}"
-    "try{A.Grid=W;}catch(e){}}"
-    "try{A.__obb=1;}catch(e){}}"
-    "setInterval(wrapAg,20);"
-    "function unwrap(v){"
-    "if(!v)return null;"
-    "var seen=[v,v.api,v.gridApi,v.gridOptions&&v.gridOptions.api,"
-    "v.gridOptions&&v.gridOptions.gridApi];"
-    "for(var i=0;i<seen.length;i++){var a=seen[i];"
-    "if(a&&typeof a.forEachNodeAfterFilterAndSort==='function')return a;}"
-    "return null;}"
-    "function domApi(){"
-    "var nodes=document.querySelectorAll("
-    "'ag-grid-angular,.ag-root-wrapper,.ag-root,.ag-body');"
-    "for(var i=0;i<nodes.length;i++){var el=nodes[i];"
-    "for(var d=0;d<4&&el&&el.getAttribute;d++,el=el.parentNode){"
-    "var a=unwrap(el.__ag_grid_instance);if(a)return a;"
-    "for(var k in el){try{var got=unwrap(el[k]);if(got)return got;}catch(e){}}}}"
-    "return null;}"
-    "function gridApi(){"
-    "var best=null,rows=-1;"
-    "for(var i=0;i<apis.length;i++){var a=apis[i];"
-    "try{if(a.isDestroyed&&a.isDestroyed())continue;"
-    "var n=0;a.forEachNodeAfterFilterAndSort(function(){n++;});"
-    "if(n>rows){rows=n;best=a;}}catch(e){}}"
-    "return best||domApi();}"
-    "function fromGrid(){"
-    "var api=gridApi();if(!api||!api.getAllDisplayedColumns)return null;"
-    "var cols=api.getAllDisplayedColumns()||[];if(!cols.length)return null;"
-    "var head=[],fields=[],defs=[];"
-    "for(var i=0;i<cols.length;i++){"
-    "var def=cols[i].getColDef?cols[i].getColDef():{};"
-    "var id=cols[i].getColId?cols[i].getColId():'';"
-    "var h=def.headerName!==undefined&&def.headerName!==null"
-    "?String(def.headerName):String(id);"
-    "if(h.toLowerCase()==='pin'||h.toLowerCase()==='api')continue;"
-    "head.push(h);fields.push(def.field||id);defs.push(def);}"
-    "if(!fields.length)return null;"
-    "var body=[];"
-    "api.forEachNodeAfterFilterAndSort(function(node){"
-    "if(!node||!node.data)return;var row=[];"
-    "for(var j=0;j<fields.length;j++){"
-    "var v=resolve(fields[j],node.data);"
-    "if((v===undefined||v===null)&&typeof defs[j].valueGetter==='function'){"
-    "try{v=defs[j].valueGetter({data:node.data,node:node,colDef:defs[j]});}"
-    "catch(e){}}"
-    "row.push(v===undefined?null:v);}"
-    "body.push(row);});"
-    "return body.length?records(head,body):null;}"
-    "function fromTable(){"
-    "var all=document.querySelectorAll('table'),best=null;"
-    "for(var i=0;i<all.length;i++){var t=all[i];"
-    "if(t.rows.length<2||!t.offsetParent)continue;"
-    "if(!best||t.rows.length>best.rows.length)best=t;}"
-    "if(!best)return null;"
-    "var head=[],body=[],start=0;"
-    "var first=best.rows[0];"
-    "for(var c=0;c<first.cells.length;c++)head.push(txt(first.cells[c]));"
-    "start=1;"
-    "for(var r=start;r<best.rows.length;r++){"
-    "var cells=best.rows[r].cells,row=[];"
-    "for(var k2=0;k2<cells.length;k2++)row.push(txt(cells[k2]));"
-    "body.push(row);}"
-    "return body.length?records(head,body):null;}"
-    "var last='';"
-    "function grab(){"
-    "var rows=null;"
-    "try{rows=fromSlick();}catch(e){}"
-    "if(!rows){try{rows=fromGrid();}catch(e){}}"
-    "if(!rows){try{rows=fromTable();}catch(e){}}"
-    "if(!rows||!rows.length)return;"
-    "var body=JSON.stringify(rows);"
-    "if(body===last)return;last=body;"
-    "if(up)up.postMessage({type:'eia:table',rows:rows},'*');"
-    "var q=sink+'?obb_browser='+encodeURIComponent(browser)"
-    "+'&obb_seq='+String(Date.now());"
-    "fetch(q,{method:'POST',headers:{'Content-Type':'application/json'},"
-    "body:body}).catch(function(){});}"
-    "var timer=null;"
-    "function schedule(){clearTimeout(timer);timer=setTimeout(grab,500);}"
-    "new MutationObserver(schedule).observe(document.documentElement,"
-    "{childList:true,subtree:true,characterData:true});"
-    "setInterval(grab,2000);"
-    "window.addEventListener('load',schedule);schedule();"
-    "})();</script>"
-)
+_TABLE_BRIDGE_TEMPLATE = _script("table_bridge.js")
 
 
 def _table_bridge_js(browser: str) -> str:
@@ -342,49 +79,7 @@ def _table_bridge_js(browser: str) -> str:
     return _TABLE_BRIDGE_TEMPLATE.replace("__OBB_BROWSER__", browser)
 
 
-_XHR_TAG_TEMPLATE = (
-    "<script>(function(){"
-    "var parts=location.pathname.split('/eia_proxy/');if(parts.length<2)return;"
-    "var prefix=parts[0]+'/eia_proxy/',browser='__OBB_BROWSER__';"
-    "var beacon=parts[0]+'/eia_view';"
-    "function view(){var p=location.pathname.split('/eia_proxy/')[1]||'';"
-    "return p+location.search+location.hash;}"
-    "var mine=[parts[0]+'/eia_table',parts[0]+'/eia_view'];"
-    "function tag(raw){"
-    "var base=document.baseURI||location.href;"
-    "try{var u=new URL(raw,base);}catch(e){return raw;}"
-    "if(u.origin!==location.origin)return raw;"
-    "for(var m=0;m<mine.length;m++)if(u.pathname===mine[m])return raw;"
-    "if(u.pathname.indexOf(prefix)!==0)"
-    "u=new URL(prefix+u.pathname.substring(1)+u.search+u.hash,location.origin);"
-    "if(!u.searchParams.has('obb_browser')){"
-    "u.searchParams.set('obb_browser',browser);"
-    "u.searchParams.set('obb_view',view());"
-    "u.searchParams.set('obb_seq',String(Date.now()));}"
-    "return u.pathname+u.search+u.hash;}"
-    "var open=XMLHttpRequest.prototype.open;"
-    "XMLHttpRequest.prototype.open=function(method,url){"
-    "arguments[1]=tag(url);return open.apply(this,arguments);};"
-    "var fetch0=window.fetch;"
-    "if(fetch0)window.fetch=function(input,init){"
-    "if(typeof input==='string')arguments[0]=tag(input);"
-    "else if(input&&input.url)arguments[0]=new Request(tag(input.url),input);"
-    "return fetch0.apply(this,arguments);};"
-    "var last=null;"
-    "function report(){var v=view();if(v===last)return;last=v;"
-    "var q=beacon+'?obb_browser='+encodeURIComponent(browser)"
-    "+'&obb_view='+encodeURIComponent(v)"
-    "+'&obb_seq='+String(Date.now());"
-    "if(navigator.sendBeacon)navigator.sendBeacon(q);"
-    "else fetch0.call(window,q,{method:'POST'});}"
-    "function hook(m){var o=history[m];if(o)history[m]=function(){"
-    "var r=o.apply(this,arguments);setTimeout(report,0);return r;};}"
-    "hook('pushState');hook('replaceState');"
-    "window.addEventListener('hashchange',report);"
-    "window.addEventListener('popstate',report);"
-    "report();"
-    "})();</script>"
-)
+_XHR_TAG_TEMPLATE = _script("xhr_tag.js")
 
 
 def _xhr_tag_js(browser: str) -> str:
@@ -392,87 +87,10 @@ def _xhr_tag_js(browser: str) -> str:
     return _XHR_TAG_TEMPLATE.replace("__OBB_BROWSER__", browser)
 
 
-_DIALOG_CLAMP_JS = (
-    "<script>(function(){"
-    "var SEL='#analysis_dialog,#download_dialog,#visualization_dialog,"
-    "#filter_dialog';"
-    "function clamp(){"
-    "var box=document.getElementById('simplemodal-container');if(!box)return;"
-    "var el=box.querySelector(SEL)||box.firstElementChild;if(!el)return;"
-    "var pad=6,r=el.getBoundingClientRect(),"
-    "w=document.documentElement.clientWidth,"
-    "cur=parseFloat(getComputedStyle(el).left)||0,dx=0;"
-    "if(r.left<pad)dx=pad-r.left;"
-    "else if(r.right>w-pad)dx=Math.max(w-pad-r.right,pad-r.left);"
-    "if(dx)el.style.left=(cur+dx)+'px';}"
-    "new MutationObserver(clamp).observe(document.documentElement,"
-    "{childList:true,subtree:true});"
-    "window.addEventListener('resize',clamp);})();</script>"
-)
-_ASSET_FIX_JS = (
-    "<script>(function(){"
-    "var parts=location.pathname.split('/eia_proxy/');if(parts.length<2)return;"
-    "var prefix=parts[0]+'/eia_proxy';"
-    "function fix(el){var raw=el.getAttribute('src');"
-    "if(!raw||raw.charAt(0)!=='/'||raw.charAt(1)==='/')return;"
-    "if(raw.indexOf(prefix+'/')===0)return;"
-    "el.setAttribute('src',prefix+raw);}"
-    "function scan(root){if(!root.querySelectorAll)return;"
-    "var els=root.querySelectorAll('img[src^=\"/\"]');"
-    "for(var i=0;i<els.length;i++)fix(els[i]);}"
-    "scan(document);"
-    "new MutationObserver(function(recs){recs.forEach(function(r){"
-    "if(r.type==='attributes'){if(r.target.tagName==='IMG')fix(r.target);return;}"
-    "for(var i=0;i<r.addedNodes.length;i++){var n=r.addedNodes[i];"
-    "if(n.nodeType!==1)continue;"
-    "if(n.tagName==='IMG')fix(n);"
-    "scan(n);}});}).observe(document.documentElement,"
-    "{childList:true,subtree:true,attributes:true,attributeFilter:['src']});"
-    "})();</script>"
-)
-_NAV_GUARD_JS = (
-    "<script>(function(){"
-    "var parts=location.pathname.split('/eia_proxy/');if(parts.length<2)return;"
-    "var prefix=parts[0]+'/eia_proxy';"
-    "var spa=parts[1].indexOf('international/')===0"
-    "||parts[1].indexOf('states/')===0;"
-    "var cur=new URLSearchParams(location.search),keep=[];"
-    "['obb_theme'].forEach(function(k){"
-    "if(cur.has(k))keep.push([k,cur.get(k)]);});"
-    "function ensure(sp){var added=false;keep.forEach(function(pr){"
-    "if(!sp.has(pr[0])){sp.set(pr[0],pr[1]);added=true;}});return added;}"
-    "function proxied(raw){"
-    "if(!raw)return null;"
-    "var a=document.createElement('a');a.href=raw;"
-    "if(a.protocol!=='http:'&&a.protocol!=='https:')return null;"
-    "var mine=a.origin===location.origin;"
-    "if(!mine&&a.hostname!=='www.eia.gov'&&a.hostname!=='eia.gov')return null;"
-    "var p=a.pathname||'/',sp=new URLSearchParams(a.search);"
-    "if(mine&&p.indexOf(prefix+'/')===0){"
-    "if(spa||!ensure(sp))return null;"
-    "var q0=sp.toString();return a.origin+p+(q0?'?'+q0:'')+a.hash;}"
-    "ensure(sp);"
-    "var q=sp.toString();return prefix+p+(q?'?'+q:'')+a.hash;}"
-    "window.__eiaProxied=proxied;"
-    "document.addEventListener('click',function(e){"
-    "var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;"
-    "var u=proxied(a.href);if(!u)return;"
-    "e.preventDefault();"
-    "var up=window.parent&&window.parent!==window?window.parent:null;"
-    "if(up&&/\\.pdf(\\?|#|$)/i.test(a.href)){"
-    "var abs=u.charAt(0)==='/'?location.origin+u:u;"
-    "up.postMessage({type:'eia:pdf',src:abs},'*');return;}"
-    "location.href=u;},true);"
-    "document.addEventListener('change',function(e){"
-    "var s=e.target;if(!s||s.tagName!=='SELECT')return;"
-    "if((s.getAttribute('onchange')||'').indexOf('location')<0)return;"
-    "var u=proxied(s.value);if(!u)return;"
-    "e.preventDefault();e.stopPropagation();location.href=u;},true);"
-    "document.addEventListener('submit',function(e){"
-    "var f=e.target;if(!f||!f.getAttribute)return;"
-    "var u=proxied(f.getAttribute('action')||'');if(!u)return;"
-    "f.setAttribute('action',u);},true);})();</script>"
-)
+_DIALOG_CLAMP_JS = _script("dialog_clamp.js")
+_VIEW_SELECT_SYNC_JS = _script("view_select_sync.js")
+_ASSET_FIX_JS = _script("asset_fix.js")
+_NAV_GUARD_JS = _script("nav_guard.js")
 _DEAD_SCRIPTS = re.compile(
     r"""<script\b[^>]*\bsrc=["'][^"']*"""
     r"""(?:googletagmanager|gtag/js|ga-file-downloads|/akam/|akamaihd"""
@@ -816,7 +434,9 @@ def rewrite_html(
     if browser.startswith("international"):
         injected += _INTERNATIONAL_CSS
     if browser:
-        injected += _xhr_tag_js(browser) + _table_bridge_js(browser)
+        injected += (
+            _xhr_tag_js(browser) + _table_bridge_js(browser) + _VIEW_SELECT_SYNC_JS
+        )
     if article:
         injected += _ARTICLE_CSS
     else:
@@ -946,7 +566,14 @@ async def post_upstream(
     return content, ct
 
 
-_CACHE_DIR = Path.home() / ".openbb_platform" / "cache" / "eia_proxy"
+@lru_cache(maxsize=1)
+def _cache_dir() -> Path:
+    """Return the on-disk proxy cache directory under the user cache root."""
+    from openbb_core.app.utils import get_user_cache_directory
+
+    return Path(get_user_cache_directory()) / "eia_proxy"
+
+
 _STATIC_EXT = (
     ".js",
     ".css",
@@ -976,7 +603,8 @@ def _cache_paths(target: str) -> tuple[Path, Path]:
     from hashlib import sha256
 
     digest = sha256(target.encode("utf-8")).hexdigest()[:32]
-    return _CACHE_DIR / digest, _CACHE_DIR / f"{digest}.type"
+    cache_dir = _cache_dir()
+    return cache_dir / digest, cache_dir / f"{digest}.type"
 
 
 def _remember(target: str, body: bytes, content_type: str) -> None:
@@ -1017,7 +645,7 @@ async def _fetch_upstream(target: str) -> tuple[bytes, str]:
         _remember(target, body, content_type)
         if static:
             try:
-                _CACHE_DIR.mkdir(parents=True, exist_ok=True)
+                _cache_dir().mkdir(parents=True, exist_ok=True)
                 body_path.write_bytes(body)
                 type_path.write_text(content_type, encoding="utf-8")
             except OSError:
@@ -1572,6 +1200,59 @@ def _is_intl_infographic(data) -> bool:
     )
 
 
+def _is_intl_ranking(data) -> bool:
+    """Return True for the International overview's flat ``ranking`` records."""
+    return (
+        isinstance(data, list)
+        and bool(data)
+        and isinstance(data[0], dict)
+        and "ranking" in data[0]
+        and "iso" in data[0]
+        and "productid" in data[0]
+    )
+
+
+def _ranking_period(value) -> str:
+    """Return the four-digit year carried by a ranking's date field."""
+    match = re.search(r"\d{4}", str(value if value is not None else ""))
+    return match.group(0) if match else ""
+
+
+def _intl_ranking_rows(records: list, labels: dict | None = None) -> list[dict]:
+    """One row per International overview ranking, labelled from the config feeds."""
+    labels = labels or {}
+    products = labels.get("product") or {}
+    activities = labels.get("activity") or {}
+    regions = labels.get("region") or {}
+    units = labels.get("unit") or {}
+    rows: list[dict] = []
+    for entry in records:
+        if not isinstance(entry, dict):
+            continue
+        product = products.get(str(entry.get("productid"))) or ""
+        activity = activities.get(str(entry.get("activityid"))) or ""
+        iso = str(entry.get("iso") or "")
+        unit_code = entry.get("unitcode")
+        value = entry.get("unrounded_value")
+        if value is None:
+            value = entry.get("value")
+        rows.append(
+            {
+                "category": _sentence(
+                    " ".join(part for part in (product, activity) if part)
+                )
+                or iso,
+                "country": regions.get(iso) or iso,
+                "rank": _num(entry.get("ranking")),
+                "value": _num(value),
+                "units": units.get(unit_code) or (unit_code or ""),
+                "period": _ranking_period(entry.get("date")),
+                "source_key": iso,
+            }
+        )
+    return rows
+
+
 def _intl_row(
     series_id: str, country: str, unit: str, labels: dict
 ) -> tuple[str, str, str, str]:
@@ -1963,23 +1644,22 @@ async def _intl_label_maps() -> dict:
     return labels
 
 
-async def raw_table(browser: str, spec: dict) -> list[dict]:
-    """Return the table the browser is showing.
+_PAYLOAD_FIRST = frozenset({"petroleum_imports"})
 
-    A grid that hands over its rendered rows has already published them. The
-    rest are Angular apps whose grid API the page cannot reach, so the view's
-    own payload -- recorded by the proxy as the page fetched it -- is pivoted
-    into the table that view is displaying.
-    """
+
+async def raw_table(browser: str, spec: dict) -> list[dict]:
+    """Return the table the browser is showing, hierarchical where its payload allows."""
     import json
     from urllib.parse import urlencode
 
     if browser == "maps":
         return await fetch_maps_catalog()
 
-    rendered = get_table_rows(spec["path"])
-    if rendered:
-        return rendered
+    payload_first = browser in _PAYLOAD_FIRST
+    if not payload_first:
+        rendered = get_table_rows(spec["path"])
+        if rendered:
+            return rendered
 
     view = get_current_view(spec["path"])
     request = get_data_target(spec["path"])
@@ -1989,7 +1669,7 @@ async def raw_table(browser: str, spec: dict) -> list[dict]:
             return parse_inline_table(body.decode("utf-8", "replace"))
         params = table_params_from_hash(spec["hash"])
         if params is None:
-            return []
+            return (get_table_rows(spec["path"]) or []) if payload_first else []
         query = urlencode(params, safe="~,")
         endpoint = f"{_EIA_ORIGIN}/{spec['path']}{_TABLE_ENDPOINT}?{query}"
         request = {"url": endpoint, "method": "GET"}
@@ -2006,10 +1686,13 @@ async def raw_table(browser: str, spec: dict) -> list[dict]:
     try:
         payload = json.loads(body)
     except (ValueError, AttributeError):
-        return []
+        return (get_table_rows(spec["path"]) or []) if payload_first else []
     payload = await _all_pages(request, payload)
     labelled = await _labelled_rows(browser, payload, view)
-    return rows_from_payload(payload) if labelled is None else labelled
+    result = rows_from_payload(payload) if labelled is None else labelled
+    return (
+        result if result or not payload_first else (get_table_rows(spec["path"]) or [])
+    )
 
 
 async def _all_pages(request: dict, payload):
@@ -2078,6 +1761,8 @@ async def _intl_rows(payload: dict) -> list[dict] | None:
         return _intl_series_rows(data, await _intl_label_maps())
     if isinstance(data, list) and _is_intl_infographic(data):
         return _intl_infographic_rows(data, await _intl_label_maps())
+    if isinstance(data, list) and _is_intl_ranking(data):
+        return _intl_ranking_rows(data, await _intl_label_maps())
     return None
 
 

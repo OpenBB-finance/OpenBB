@@ -53,7 +53,7 @@ def make_info(path, query="", method="GET", body=b"", referer=""):
 @pytest.fixture(autouse=True)
 def isolate_state(monkeypatch, tmp_path):
     """Keep every test off the shared caches, disk, and view stores."""
-    monkeypatch.setattr(browsers, "_CACHE_DIR", tmp_path / "cache")
+    monkeypatch.setattr(browsers, "_cache_dir", lambda: tmp_path / "cache")
     monkeypatch.setattr(browsers, "_MAPS_CATALOG", None)
     stores = (
         browsers._PROXY_CACHE,
@@ -270,6 +270,43 @@ class TestRenderedTable:
         assert await browsers.raw_table("petroleum_imports", spec) == self.ROWS
 
     @pytest.mark.asyncio
+    async def test_imports_raw_prefers_the_hierarchical_payload(self, monkeypatch):
+        spec = browsers.EIA_DATA_BROWSERS["petroleum_imports"]
+        target = f"{browsers._EIA_ORIGIN}/petroleum/imports/browser/data/index.php?x=1"
+        payload = {
+            "TABLE_DATA": [
+                {
+                    "seriesID": "PET_IMPORTS.WORLD-RP_3-LSO.A",
+                    "data": {"2009": 100, "2011": 300, "2010": 200},
+                }
+            ]
+        }
+        FakeUpstream(
+            {
+                f"{browsers._EIA_ORIGIN}/{browsers._IMPORTS_CONFIG}": (
+                    json.dumps(IMPORTS_CONFIG).encode(),
+                    "application/json",
+                ),
+                target: (json.dumps(payload).encode(), "application/json"),
+            }
+        ).install(monkeypatch)
+        browsers._IMPORTS_LABELS.clear()
+        browsers.set_table_rows(IMPORTS, [{"category": "Texas", "2009 ": 1}], 2000)
+        browsers.set_current_view(spec["path"], "imports/view")
+        browsers.set_data_target(
+            spec["path"], "imports/view", {"url": target, "method": "GET"}
+        )
+        rows = await browsers.raw_table("petroleum_imports", spec)
+        assert rows[0]["category"] == (
+            "Imports of Light Sour from World to PADD3 (Gulf Coast), annual"
+        )
+        assert rows[0]["origin"] == "World"
+        assert rows[0]["destination"] == "PADD3 (Gulf Coast)"
+        assert rows[0]["grade"] == "Light Sour"
+        assert list(rows[0])[-3:] == ["2009 ", "2010 ", "2011 "]
+        browsers._IMPORTS_LABELS.clear()
+
+    @pytest.mark.asyncio
     async def test_a_later_table_replaces_an_earlier_one(self):
         browsers.set_table_rows(IMPORTS, self.ROWS, 2000)
         newer = [{"category": "Light Sweet", "2024": 7.0}]
@@ -477,6 +514,35 @@ class TestSlickGridExtraction:
         },
     ]
 
+    ANNUAL_COLUMNS = [
+        {"id": "pinKey", "field": "HAS_DATA", "output": False},
+        {
+            "id": "description",
+            "field": "DESCRIPTION",
+            "outputFormatter": "@description",
+        },
+    ] + [
+        {
+            "id": str(year),
+            "name": str(year),
+            "field": f"DATA.{year}",
+            "dataFormatter": "@numerical",
+        }
+        for year in (2014, 2015, 2009, 2010)
+    ]
+    ANNUAL_DATA = [
+        {
+            "DESCRIPTION": "Total U.S.",
+            "LEVEL": 0,
+            "CHART_NAME": "Total U.S.",
+            "SERIES_ID": "PET_IMPORTS.WORLD-US-ALL.A",
+            "HAS_DATA": True,
+            "PRECISION": 0,
+            "UNITS": "thousand barrels",
+            "DATA": {"2009": 100, "2010": 200, "2014": 239554, "2015": 244173},
+        },
+    ]
+
     def run(self, data=None, columns=None, delay=120):
         script = browsers._table_bridge_js(ELECTRICITY)
         bridge = script.replace("<script>", "").replace("</script>", "")
@@ -544,6 +610,13 @@ class TestSlickGridExtraction:
         posted = self.run()["posted"]
         for row in posted["rows"]:
             assert list(row) == ["category", "Jan 2001"]
+
+    def test_an_annual_table_keeps_its_label_column_first(self):
+        result = self.run(data=self.ANNUAL_DATA, columns=self.ANNUAL_COLUMNS)
+        rows = json.loads(result["sent"]["body"])
+        assert list(rows[0]) == ["category", "2009 ", "2010 ", "2014 ", "2015 "]
+        assert rows[0]["category"] == "Total U.S."
+        assert rows[0]["2014 "] == 239554
 
     def test_a_row_with_no_data_yields_nulls_not_the_dash(self):
         posted = self.run()["posted"]
@@ -614,6 +687,121 @@ class TestSlickGridExtraction:
         subprocess.run(  # noqa: S603
             [NODE, "-e", source], capture_output=True, text=True, timeout=30, check=True
         )
+
+
+SYNC_HARNESS = """
+var intervals = [], listeners = {};
+global.window = global;
+var select = {
+  tagName: 'SELECT',
+  value: '-1',
+  options: [
+    { value: '-1', text: 'Select a view' },
+    { value: '0', text: 'Imports of all grades to US' },
+    { value: '8', text: 'Top 10 light crude oil importing refineries in 2013' },
+  ],
+};
+global.location = {
+  pathname: '/api/v1/eia_proxy/petroleum/imports/browser/',
+  hash: '#/?vs=PET_IMPORTS.WORLD-US-ALL.A',
+};
+global.document = {
+  getElementsByTagName: function (tag) { return tag === 'select' ? [select] : []; },
+};
+global.window.addEventListener = function (name, fn) { listeners[name] = fn; };
+global.setInterval = function (fn) { intervals.push(fn); return intervals.length; };
+var CONFIG = __CONFIG__;
+global.fetch = function () {
+  return Promise.resolve({ json: function () { return Promise.resolve(CONFIG); } });
+};
+
+__SCRIPT__
+
+function tick() { for (var i = 0; i < intervals.length; i++) intervals[i](); }
+setTimeout(function () {
+  __DRIVER__
+  process.stdout.write(JSON.stringify({ value: select.value }));
+}, 80);
+"""
+
+V0_VS = "PET_IMPORTS.WORLD-US-ALL.A"
+V8_VS = "PET_IMPORTS.WORLD-RF_465-O.A~PET_IMPORTS.WORLD-RF_225-O.A"
+CONFIG_WITH_VIEWS = {
+    "views": [
+        {"id": "0", "json": json.dumps({"vs": V0_VS})},
+        {
+            "id": "8",
+            "json": json.dumps({"columnendpoints": "2", "d": "abc", "vs": V8_VS}),
+        },
+    ]
+}
+CONFIG_NO_VIEWS = {"status": "OK"}
+
+
+@pytest.mark.skipif(not Path(NODE).exists(), reason="node is not installed")
+class TestFeaturedViewSync:
+    """The Featured views select must mirror the view encoded in the live hash."""
+
+    def run(self, driver, config=None):
+        script = browsers._VIEW_SELECT_SYNC_JS.replace("<script>", "").replace(
+            "</script>", ""
+        )
+        source = (
+            SYNC_HARNESS.replace(
+                "__CONFIG__",
+                json.dumps(CONFIG_WITH_VIEWS if config is None else config),
+            )
+            .replace("__SCRIPT__", script)
+            .replace("__DRIVER__", driver)
+        )
+        result = subprocess.run(  # noqa: S603
+            [NODE, "-e", source],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=True,
+        )
+        return json.loads(result.stdout)
+
+    def test_the_default_view_is_reflected_on_load(self):
+        assert self.run("")["value"] == "0"
+
+    def test_a_view_in_the_hash_is_reflected(self):
+        driver = (
+            f"location.hash = '#/?d=xyz&f=a&vs=' + encodeURIComponent('{V8_VS}');"
+            "tick();"
+        )
+        assert self.run(driver)["value"] == "8"
+
+    def test_matching_ignores_the_other_view_params(self):
+        driver = (
+            f"location.hash = '#/?vs=' + encodeURIComponent('{V8_VS}') + '&d=DIFF';"
+            "tick();"
+        )
+        assert self.run(driver)["value"] == "8"
+
+    def test_a_hashchange_event_drives_the_sync(self):
+        driver = (
+            f"location.hash = '#/?vs=' + encodeURIComponent('{V8_VS}');"
+            "listeners['hashchange']();"
+        )
+        assert self.run(driver)["value"] == "8"
+
+    def test_an_unmatched_state_clears_to_the_placeholder(self):
+        driver = "location.hash = '#/?vs=PET_IMPORTS.NO_SUCH_SERIES.A';tick();"
+        assert self.run(driver)["value"] == "-1"
+
+    def test_a_browser_without_view_config_is_left_untouched(self):
+        driver = "select.value = '0';tick();"
+        assert self.run(driver, config=CONFIG_NO_VIEWS)["value"] == "0"
+
+    def test_the_script_is_injected_into_the_classic_browser_page(self):
+        page = browsers.rewrite_html(
+            "<head></head><body></body>",
+            PROXY_PREFIX,
+            browser=IMPORTS,
+        )
+        assert browsers._VIEW_SELECT_SYNC_JS in page
 
 
 class TestText:
@@ -1579,6 +1767,56 @@ class TestBrowserSpecificLabelling:
             await browsers._labelled_rows("petroleum_imports", {"TABLE_DATA": []})
             is None
         )
+
+    @pytest.mark.asyncio
+    async def test_international_overview_ranking_is_labelled(self, monkeypatch):
+        browsers._INTL_LABELS.clear()
+        feeds = {
+            "countries": [{"iso": "CHN", "name": "China"}],
+            "political_groups": [],
+            "units": [{"code": "QBTU", "short_name": "quad Btu"}],
+            "products": [{"id": 44, "name": "primary energy", "parent": None}],
+            "activities": [{"id": 1, "name": "production"}],
+        }
+        FakeUpstream(
+            {
+                f"{browsers._EIA_ORIGIN}/international/api/{feed}/data": (
+                    json.dumps({"data": rows}).encode(),
+                    "application/json",
+                )
+                for feed, rows in feeds.items()
+            }
+        ).install(monkeypatch)
+        rows = await browsers._labelled_rows(
+            "international",
+            {
+                "data": [
+                    {
+                        "productid": 44,
+                        "activityid": 1,
+                        "frequency": "A",
+                        "ranking": 1,
+                        "iso": "CHN",
+                        "date": "2024-01-01",
+                        "value": 130.757,
+                        "unitcode": "QBTU",
+                        "ug_bmi": 0,
+                    }
+                ]
+            },
+        )
+        assert rows == [
+            {
+                "category": "Primary energy production",
+                "country": "China",
+                "rank": 1.0,
+                "value": 130.757,
+                "units": "quad Btu",
+                "period": "2024",
+                "source_key": "CHN",
+            }
+        ]
+        browsers._INTL_LABELS.clear()
 
     @pytest.mark.asyncio
     async def test_ngqs_payload_uses_its_grid_headers(self):

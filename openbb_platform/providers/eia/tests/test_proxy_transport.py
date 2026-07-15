@@ -193,7 +193,7 @@ class TestDiskCache:
         assert browsers._is_static(target) is False
 
     def test_cache_paths_are_derived_from_the_url(self, monkeypatch, tmp_path):
-        monkeypatch.setattr(browsers, "_CACHE_DIR", tmp_path)
+        monkeypatch.setattr(browsers, "_cache_dir", lambda: tmp_path)
         body, type_path = browsers._cache_paths("https://t/a.js")
         assert body.parent == tmp_path
         assert type_path.name == f"{body.name}.type"
@@ -205,7 +205,7 @@ class TestDiskCache:
     ):
         blocker = tmp_path / "blocked"
         blocker.write_text("not a directory")
-        monkeypatch.setattr(browsers, "_CACHE_DIR", blocker / "cache")
+        monkeypatch.setattr(browsers, "_cache_dir", lambda: blocker / "cache")
         FakeCurlSession.get_results = [FakeResponse(b"code", "application/javascript")]
         assert await browsers._fetch_upstream("https://t/a.js") == (
             b"code",
