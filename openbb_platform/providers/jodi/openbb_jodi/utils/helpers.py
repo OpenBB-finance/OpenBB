@@ -78,7 +78,11 @@ def _lock_handle_nt(handle) -> None:  # pragma: no cover - Windows-only
     handle.seek(0)
     while True:
         try:
-            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            msvcrt.locking(  # ty: ignore[unresolved-attribute]
+                handle.fileno(),
+                msvcrt.LK_NBLCK,  # ty: ignore[unresolved-attribute]
+                1,
+            )
             return
         except OSError:
             sleep(0.05)
@@ -89,7 +93,11 @@ def _unlock_handle_nt(handle) -> None:  # pragma: no cover - Windows-only
     import msvcrt
 
     handle.seek(0)
-    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+    msvcrt.locking(  # ty: ignore[unresolved-attribute]
+        handle.fileno(),
+        msvcrt.LK_UNLCK,  # ty: ignore[unresolved-attribute]
+        1,
+    )
 
 
 def _lock_handle_posix(handle) -> None:  # pragma: no cover - POSIX-only
