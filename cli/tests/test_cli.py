@@ -985,6 +985,82 @@ def test_generate_spec_errors_when_zero_commands(tmp_path, capsys):
     assert not (tmp_path / "x.spec").exists()
 
 
+def test_generate_spec_errors_when_fetch_fails(tmp_path, capsys):
+    """A connection failure is a one-line actionable error, not a traceback."""
+    import httpx
+
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        side_effect=httpx.ConnectError("connection refused"),
+    ):
+        rc = cli._generate_spec(
+            "http://localhost:1",
+            str(tmp_path / "x.spec"),
+            None,
+        )
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "failed to fetch the OpenAPI document" in err
+    assert "http://localhost:1" in err
+    assert "connection refused" in err
+    assert not (tmp_path / "x.spec").exists()
+
+
+def test_generate_spec_errors_on_http_status_error(tmp_path, capsys):
+    """An HTTP error status from the spec endpoint surfaces its cause."""
+    import httpx
+
+    error = httpx.HTTPStatusError(
+        "Server error '500 Internal Server Error'",
+        request=httpx.Request("GET", "http://localhost:8000/openapi.json"),
+        response=httpx.Response(500),
+    )
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        side_effect=error,
+    ):
+        rc = cli._generate_spec(
+            "http://localhost:8000",
+            str(tmp_path / "x.spec"),
+            None,
+        )
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "failed to fetch the OpenAPI document" in err
+    assert "500" in err
+
+
+def test_launch_repl_server_fetch_failure_is_actionable(capsys):
+    """``openbb --server URL`` with an unreachable server exits 2 with a message."""
+    import httpx
+
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        side_effect=httpx.ConnectError("connection refused"),
+    ):
+        rc = cli._launch_repl(False, False, None, "http://localhost:1")
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "failed to fetch the OpenAPI document" in err
+    assert "http://localhost:1" in err
+
+
+def test_launch_repl_server_zero_commands_is_loud(capsys):
+    """A spec that maps to no commands never launches an empty REPL."""
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        return_value={
+            "openapi": "3.1.0",
+            "paths": {"/x": {"$ref": "./paths/x.yaml#/~1x"}},
+        },
+    ):
+        rc = cli._launch_repl(False, False, None, "http://localhost:8000")
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "0 commands" in err
+    assert "external $refs" in err
+
+
 def test_generate_extension_aborts_when_spec_has_zero_commands(tmp_path, capsys):
     """An empty spec never reaches codegen — no zero-command skeleton package."""
     from openbb_cli.dispatchers.spec import SPEC_VERSION, write_spec

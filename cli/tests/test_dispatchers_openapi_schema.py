@@ -1824,6 +1824,69 @@ def test_bundle_external_refs_rejects_resource_identifiers():
         )
 
 
+def test_resolve_json_pointer_missing_member_is_actionable():
+    from openbb_cli.dispatchers.openapi_schema import _resolve_json_pointer
+
+    with pytest.raises(ValueError, match=r"no member 'missing'"):
+        _resolve_json_pointer({"paths": {}}, "/paths/missing")
+
+
+def test_resolve_json_pointer_bad_array_index_is_actionable():
+    from openbb_cli.dispatchers.openapi_schema import _resolve_json_pointer
+
+    with pytest.raises(ValueError, match=r"invalid array index 'x'"):
+        _resolve_json_pointer({"servers": []}, "/servers/x")
+    with pytest.raises(ValueError, match=r"invalid array index '3'"):
+        _resolve_json_pointer({"servers": [1]}, "/servers/3")
+
+
+def test_bundle_external_refs_dangling_pointer_is_actionable(monkeypatch):
+    """A modular spec whose external ref points at a missing member names the
+    pointer instead of raising a bare ``KeyError``."""
+    from openbb_cli.dispatchers import openapi_schema
+
+    class _Response:
+        status_code = 200
+        headers = {"content-type": "application/json"}
+        is_redirect = False
+        encoding = "utf-8"
+        content = b'{"paths": {}}'
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def iter_bytes(self, *, chunk_size):
+            yield self.content
+
+        def raise_for_status(self):
+            return None
+
+    monkeypatch.setattr(
+        openapi_schema.httpx, "stream", lambda *_args, **_kwargs: _Response()
+    )
+    with pytest.raises(ValueError, match=r"pointer #/paths/~1x not found"):
+        _bundle_external_refs(
+            {
+                "openapi": "3.1.0",
+                "paths": {"/x": {"$ref": "paths.json#/paths/~1x"}},
+            },
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_parse_spec_text_malformed_yaml_raises_value_error():
+    """Broken YAML surfaces as ``ValueError``, not a raw ``yaml.YAMLError``."""
+    from openbb_cli.dispatchers.openapi_schema import _parse_spec_text
+
+    with pytest.raises(ValueError, match="not valid YAML"):
+        _parse_spec_text("openapi: 3.1.0\n\tpaths: {", content_type="application/yaml")
+
+
 def test_bundle_external_refs_leaves_type_arrays_to_ingestion_normalization():
     """Bundling only inlines refs — 3.1 type arrays are ``expand_type_arrays``'
     job inside ``_ensure_openapi_dict``, which every fetched document passes
