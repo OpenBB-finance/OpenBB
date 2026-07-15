@@ -53,7 +53,10 @@ def make_info(path, query="", method="GET", body=b"", referer=""):
 @pytest.fixture(autouse=True)
 def isolate_state(monkeypatch, tmp_path):
     """Keep every test off the shared caches, disk, and view stores."""
-    monkeypatch.setattr(browsers, "_cache_dir", lambda: tmp_path / "cache")
+    monkeypatch.setattr(
+        "openbb_core.app.utils.get_user_cache_directory",
+        lambda: str(tmp_path / "cache"),
+    )
     monkeypatch.setattr(browsers, "_MAPS_CATALOG", None)
     stores = (
         browsers._PROXY_CACHE,
@@ -1801,7 +1804,8 @@ class TestBrowserSpecificLabelling:
                         "value": 130.757,
                         "unitcode": "QBTU",
                         "ug_bmi": 0,
-                    }
+                    },
+                    "not a record",
                 ]
             },
         )

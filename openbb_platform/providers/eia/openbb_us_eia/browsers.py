@@ -4,7 +4,6 @@ import re
 import threading
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from functools import lru_cache
 from pathlib import Path
 from typing import Annotated
 
@@ -566,7 +565,6 @@ async def post_upstream(
     return content, ct
 
 
-@lru_cache(maxsize=1)
 def _cache_dir() -> Path:
     """Return the on-disk proxy cache directory under the user cache root."""
     from openbb_core.app.utils import get_user_cache_directory
