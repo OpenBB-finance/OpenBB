@@ -271,7 +271,7 @@
       status.textContent = "Loading EIA data browser…";
       document.body.appendChild(status);
 
-      var storeKey = "eia:view:" + DATA.browser;
+      var storeKey = "eia:view:" + DATA.browser + ":" + (DATA.user || "");
       function saved() {
         try {
           var v = window.localStorage.getItem(storeKey);
@@ -289,10 +289,32 @@
         if (!nav || !nav.pathname || nav.pathname.indexOf("/eia_proxy/") < 0) return DATA.src;
         try {
           var base = new URL(DATA.src);
-          return base.origin + nav.pathname + base.search + (nav.hash || "");
+          var params = new URLSearchParams(base.search);
+          new URLSearchParams(nav.search || "").forEach(function (v, k) {
+            if (k.indexOf("obb_") !== 0) params.set(k, v);
+          });
+          var q = params.toString();
+          return base.origin + nav.pathname + (q ? "?" + q : "") + (nav.hash || "");
         } catch (e) {
           return DATA.src;
         }
+      }
+
+      function reportView(nav) {
+        try {
+          if (!DATA.user || !DATA.path || !DATA.proxy) return;
+          var tail = nav.pathname.split("/eia_proxy/")[1];
+          if (!tail) return;
+          var view = tail + (nav.search || "") + (nav.hash || "");
+          var url =
+            DATA.proxy.replace(/\/eia_proxy$/, "/eia_view") +
+            "?obb_browser=" + encodeURIComponent(DATA.path) +
+            "&obb_user=" + encodeURIComponent(DATA.user) +
+            "&obb_view=" + encodeURIComponent(view) +
+            "&obb_seq=" + String(Date.now());
+          if (navigator.sendBeacon) navigator.sendBeacon(url);
+          else fetch(url, { method: "POST" }).catch(function () {});
+        } catch (e) {}
       }
 
       var frame = document.createElement("iframe");
@@ -308,17 +330,36 @@
       home.innerHTML = "&#8962; Home";
       home.addEventListener("click", function () {
         try { window.localStorage.removeItem(storeKey); } catch (e) {}
+        try {
+          var u = new URL(DATA.home);
+          reportView({ pathname: u.pathname, search: u.search, hash: u.hash });
+        } catch (e) {}
         frame.src = "about:blank";
-        requestAnimationFrame(function () { frame.src = DATA.src; });
+        requestAnimationFrame(function () { frame.src = DATA.home; });
       });
       bar.appendChild(home);
 
       var revealed = false;
+      function nudge() {
+        // The grids compute their canvas from the frame's size; on a fast
+        // (cached) restore they lay out before the frame is visible and paint
+        // an empty viewport. A resize once it is shown makes them repaint.
+        try {
+          var w = frame.contentWindow;
+          if (!w) return;
+          [0, 150, 400, 900].forEach(function (delay) {
+            setTimeout(function () {
+              try { w.dispatchEvent(new Event("resize")); } catch (e) {}
+            }, delay);
+          });
+        } catch (e) {}
+      }
       function ready() {
         if (revealed) return;
         revealed = true;
         status.remove();
         frame.classList.add("ready");
+        nudge();
       }
       setTimeout(ready, 20000);
 
@@ -329,10 +370,17 @@
         if (msg.type === "eia:ready") ready();
         else if (msg.type === "eia:pdf" && msg.src) openPdfModal(msg.src);
         else if (msg.type === "eia:nav" && msg.pathname) {
-          remember({ pathname: msg.pathname, hash: msg.hash || "" });
+          var nav = {
+            pathname: msg.pathname,
+            search: msg.search || "",
+            hash: msg.hash || "",
+          };
+          remember(nav);
+          reportView(nav);
         } else if (msg.type === "eia:table" && msg.rows && msg.rows.length) {
           if (window.__eiaPublish) window.__eiaPublish(msg.rows);
           else window.__eiaTable = msg.rows;
+          if (revealed) nudge();
         }
       });
 

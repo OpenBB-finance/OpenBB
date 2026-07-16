@@ -33,7 +33,15 @@ async def request_info(request: Request) -> dict:
         "body": body,
         "content_type": request.headers.get("Content-Type", ""),
         "referer": request.headers.get("Referer", ""),
+        "user": _user_key(request.headers.get("X-OpenBB-User", "")),
     }
+
+
+def _user_key(identity: str) -> str:
+    """Return a stable, non-identifying key that isolates one user's widget state."""
+    from hashlib import sha256
+
+    return sha256(identity.encode("utf-8")).hexdigest()[:16] if identity else ""
 
 
 router = Router(prefix="", description="EIA interactive data browsers.")
@@ -73,17 +81,21 @@ def _view_bridge_js() -> str:
 _TABLE_BRIDGE_TEMPLATE = _script("table_bridge.js")
 
 
-def _table_bridge_js(browser: str) -> str:
+def _table_bridge_js(browser: str, user: str = "") -> str:
     """Render the bridge that publishes the browser's rendered table."""
-    return _TABLE_BRIDGE_TEMPLATE.replace("__OBB_BROWSER__", browser)
+    return _TABLE_BRIDGE_TEMPLATE.replace("__OBB_BROWSER__", browser).replace(
+        "__OBB_USER__", user
+    )
 
 
 _XHR_TAG_TEMPLATE = _script("xhr_tag.js")
 
 
-def _xhr_tag_js(browser: str) -> str:
+def _xhr_tag_js(browser: str, user: str = "") -> str:
     """Render the request tagger that binds each proxied request to its view."""
-    return _XHR_TAG_TEMPLATE.replace("__OBB_BROWSER__", browser)
+    return _XHR_TAG_TEMPLATE.replace("__OBB_BROWSER__", browser).replace(
+        "__OBB_USER__", user
+    )
 
 
 _DIALOG_CLAMP_JS = _script("dialog_clamp.js")
@@ -224,7 +236,7 @@ def _derive_browser(path: str) -> str:
 MAPS_PAGE = "maps/oil-naturalgas.php"
 
 
-_TABLE_ROWS: dict[str, tuple[list, float]] = {}
+_TABLE_ROWS: dict[tuple[str, str], tuple[list, float]] = {}
 _NOT_TABLE_RE = re.compile(
     r"method=getConfig"
     r"|method=getImportExportConfigJSON"
@@ -257,9 +269,9 @@ def is_data_response(target: str, content_type: str) -> bool:
     return not _NOT_TABLE_RE.search(target)
 
 
-_LAST_DATA: dict[str, tuple[dict, float]] = {}
-_VIEW_DATA: dict[tuple[str, str], tuple[dict, float]] = {}
-_CURRENT_VIEW: dict[str, tuple[str, float]] = {}
+_LAST_DATA: dict[tuple[str, str], tuple[dict, float]] = {}
+_VIEW_DATA: dict[tuple[str, str, str], tuple[dict, float]] = {}
+_CURRENT_VIEW: dict[tuple[str, str], tuple[str, float]] = {}
 _PAGE_CONTINUATION_RE = re.compile(r"[?&]offset=(?!0(?:&|$))\d")
 
 
@@ -278,46 +290,48 @@ def _put(store: dict, key, value, seq: float) -> None:
     store[key] = (value, seq)
 
 
-def set_current_view(browser: str, view: str, seq: float = 0.0) -> None:
-    """Record the view a browser is displaying."""
-    _put(_CURRENT_VIEW, browser, view, seq)
+def set_current_view(browser: str, view: str, seq: float = 0.0, user: str = "") -> None:
+    """Record the view a browser is displaying for one user."""
+    _put(_CURRENT_VIEW, (user, browser), view, seq)
 
 
-def get_current_view(browser: str) -> str:
-    """Return the view a browser is displaying."""
-    entry = _CURRENT_VIEW.get(browser)
+def get_current_view(browser: str, user: str = "") -> str:
+    """Return the view a browser is displaying for one user."""
+    entry = _CURRENT_VIEW.get((user, browser))
     return entry[0] if entry is not None else ""
 
 
-def set_data_target(browser: str, view: str, request: dict, seq: float = 0.0) -> None:
+def set_data_target(
+    browser: str, view: str, request: dict, seq: float = 0.0, user: str = ""
+) -> None:
     """Record the data request a browser issued, keyed by the view that issued it."""
-    _put(_LAST_DATA, browser, request, seq)
+    _put(_LAST_DATA, (user, browser), request, seq)
     if view:
-        _put(_VIEW_DATA, (browser, view_key(view)), request, seq)
+        _put(_VIEW_DATA, (user, browser, view_key(view)), request, seq)
 
 
-def get_data_target(browser: str) -> dict | None:
+def get_data_target(browser: str, user: str = "") -> dict | None:
     """Return the data request behind the view a browser is currently displaying."""
-    view = view_key(get_current_view(browser))
+    view = view_key(get_current_view(browser, user))
     if view:
-        entry = _VIEW_DATA.get((browser, view))
+        entry = _VIEW_DATA.get((user, browser, view))
         if entry is not None:
             return entry[0]
-    entry = _LAST_DATA.get(browser)
+    entry = _LAST_DATA.get((user, browser))
     return entry[0] if entry is not None else None
 
 
-def set_table_rows(browser: str, rows: list, seq: float = 0.0) -> None:
+def set_table_rows(browser: str, rows: list, seq: float = 0.0, user: str = "") -> None:
     """Record the table a browser has rendered, ignoring a late older one."""
-    existing = _TABLE_ROWS.get(browser)
+    existing = _TABLE_ROWS.get((user, browser))
     if existing is not None and existing[1] > seq:
         return
-    _TABLE_ROWS[browser] = (rows, seq)
+    _TABLE_ROWS[(user, browser)] = (rows, seq)
 
 
-def get_table_rows(browser: str) -> list | None:
+def get_table_rows(browser: str, user: str = "") -> list | None:
     """Return the table a browser has rendered."""
-    entry = _TABLE_ROWS.get(browser)
+    entry = _TABLE_ROWS.get((user, browser))
     return entry[0] if entry is not None else None
 
 
@@ -404,6 +418,7 @@ def rewrite_html(
     article: bool = False,
     dark: bool = False,
     browser: str = "",
+    user: str = "",
 ) -> str:
     """Repoint root-absolute paths at the proxy, drop dead scripts, hide chrome."""
     html = _DEAD_SCRIPTS.sub("", html)
@@ -434,7 +449,9 @@ def rewrite_html(
         injected += _INTERNATIONAL_CSS
     if browser:
         injected += (
-            _xhr_tag_js(browser) + _table_bridge_js(browser) + _VIEW_SELECT_SYNC_JS
+            _xhr_tag_js(browser, user)
+            + _table_bridge_js(browser, user)
+            + _VIEW_SELECT_SYNC_JS
         )
     if article:
         injected += _ARTICLE_CSS
@@ -445,14 +462,15 @@ def rewrite_html(
     return injected + html
 
 
-def _split_widget_params(query: str) -> tuple[str, bool, str, str, float]:
-    """Split the widget theme, browser, view and sequence out of a query."""
+def _split_widget_params(query: str) -> tuple[str, bool, str, str, float, str]:
+    """Split the widget theme, browser, view, sequence and user out of a query."""
     from urllib.parse import parse_qsl, urlencode
 
     dark = False
     browser = ""
     view = ""
     seq = 0.0
+    user = ""
     rest: list[tuple[str, str]] = []
     for key, value in parse_qsl(query, keep_blank_values=True):
         if key == "obb_theme":
@@ -461,6 +479,8 @@ def _split_widget_params(query: str) -> tuple[str, bool, str, str, float]:
             browser = value if value in _BROWSER_PATHS else ""
         elif key == "obb_view":
             view = value
+        elif key == "obb_user":
+            user = value
         elif key == "obb_seq":
             try:
                 seq = float(value)
@@ -468,7 +488,7 @@ def _split_widget_params(query: str) -> tuple[str, bool, str, str, float]:
                 seq = 0.0
         else:
             rest.append((key, value))
-    return urlencode(rest, safe=",~;"), dark, browser, view, seq
+    return urlencode(rest, safe=",~;"), dark, browser, view, seq, user
 
 
 def _proxy_prefix(path: str) -> str:
@@ -732,7 +752,7 @@ async def eia_table(
     """Record the table a browser has rendered, so ``raw`` serves that table."""
     import json
 
-    _, _, browser, _view, seq = _split_widget_params(info["query"])
+    _, _, browser, _view, seq, user = _split_widget_params(info["query"])
     if not browser:
         return Response(status_code=204)
     try:
@@ -740,7 +760,7 @@ async def eia_table(
     except ValueError:
         return Response(status_code=204)
     if isinstance(rows, list) and rows and all(isinstance(r, dict) for r in rows):
-        set_table_rows(browser, rows, seq)
+        set_table_rows(browser, rows, seq, user)
     return Response(status_code=204)
 
 
@@ -748,9 +768,9 @@ async def eia_view(
     info: Annotated[dict, Depends(request_info)],
 ) -> Response:
     """Record the view a browser navigated to, so ``raw`` follows the current view."""
-    _, _, browser, view, seq = _split_widget_params(info["query"])
+    _, _, browser, view, seq, user = _split_widget_params(info["query"])
     if browser:
-        set_current_view(browser, view, seq)
+        set_current_view(browser, view, seq, user)
     return Response(status_code=204)
 
 
@@ -759,7 +779,7 @@ async def eia_proxy(
     info: Annotated[dict, Depends(request_info)],
 ) -> Response:
     """Reverse-proxy an eia.gov data-browser resource, same-origin."""
-    query, dark, tagged, view, seq = _split_widget_params(info["query"])
+    query, dark, tagged, view, seq, user = _split_widget_params(info["query"])
     target = f"{_EIA_ORIGIN}/{path}" + (f"?{query}" if query else "")
     is_post = info["method"] == "POST"
     try:
@@ -781,8 +801,8 @@ async def eia_proxy(
                 request["body"] = info["body"]
                 request["content_type"] = info["content_type"]
             if view:
-                set_current_view(browser, view, seq)
-            set_data_target(browser, view, request, seq)
+                set_current_view(browser, view, seq, user)
+            set_data_target(browser, view, request, seq, user)
 
     prefix = _proxy_prefix(info["path"])
     landed = _REDIRECTS.get(target)
@@ -799,6 +819,7 @@ async def eia_proxy(
                 article=path.startswith(_ARTICLE_PATHS),
                 dark=dark,
                 browser=(path if path in _BROWSER_PATHS else _derive_browser(path)),
+                user=user,
             ),
             headers={"Cache-Control": "no-store"},
         )
@@ -1433,19 +1454,25 @@ def rows_from_payload(payload) -> list[dict]:
     return [row for row in payload if isinstance(row, dict)]
 
 
-def parse_inline_table(html: str) -> list[dict]:
-    """Pivot Total Energy's inline ``sampleData`` (ROWS/DATACOLUMNS) into rows."""
+def _inline_payload(html: str) -> dict:
+    """Return Total Energy's inline ``sampleData`` payload, or an empty dict."""
     import json
 
     start = html.find("sampleData")
     brace = html.find("{", start) if start >= 0 else -1
     if brace < 0:
-        return []
+        return {}
     try:
         payload, _ = json.JSONDecoder().raw_decode(html, brace)
     except ValueError:
-        return []
-    return _table_rows(payload) if isinstance(payload, dict) else []
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def parse_inline_table(html: str) -> list[dict]:
+    """Pivot Total Energy's inline ``sampleData`` (ROWS/DATACOLUMNS) into rows."""
+    payload = _inline_payload(html)
+    return _table_rows(payload) if payload else []
 
 
 def _ngqs_rows(payload: dict) -> list[dict]:
@@ -1462,7 +1489,7 @@ def _ngqs_rows(payload: dict) -> list[dict]:
     for column in columns:
         if not isinstance(column, dict) or not column.get("field"):
             continue
-        header = str(column.get("headerName") or column["field"])
+        header = _text(str(column.get("headerName") or column["field"]))
         if header.isdigit():
             header = f"{header} "
         headers.append((header, column["field"], bool(column.get("numeric"))))
@@ -1645,7 +1672,85 @@ async def _intl_label_maps() -> dict:
 _PAYLOAD_FIRST = frozenset({"petroleum_imports"})
 
 
-async def raw_table(browser: str, spec: dict) -> list[dict]:
+def _view_query(view: str) -> str:
+    """Return a view's own query string, dropping the widget's ``obb_`` markers."""
+    from urllib.parse import parse_qsl, urlencode
+
+    query = view.partition("#")[0].partition("?")[2]
+    kept = [
+        (key, value)
+        for key, value in parse_qsl(query, keep_blank_values=True)
+        if not key.startswith("obb_")
+    ]
+    return urlencode(kept, safe=",~;")
+
+
+def _mer_hash_state(view: str) -> tuple[str, str, str]:
+    """Return the ``(frequency, start, end)`` the MER hash encodes for a view."""
+    from urllib.parse import parse_qs
+
+    fragment = view.partition("#")[2]
+    query = fragment.partition("?")[2] if "?" in fragment else ""
+    params = parse_qs(query)
+    return (
+        (params.get("f") or [""])[0],
+        (params.get("start") or [""])[0],
+        (params.get("end") or [""])[0],
+    )
+
+
+def _filter_mer_payload(payload: dict, freq: str, start: str, end: str) -> None:
+    """Narrow the inline table to one frequency and the selected period range.
+
+    The inline data carries every period at once -- annual codes are four digits,
+    monthly six -- so the frequency picks the column width and start/end clip it
+    to what the time slider shows.
+    """
+    rows = payload.get("ROWS") or []
+    if freq not in ("M", "A"):
+        freq = (
+            "M"
+            if any(
+                len(str(period)) == 6
+                for row in rows
+                if isinstance(row, dict)
+                for period in row.get("DATA") or {}
+            )
+            else "A"
+        )
+    width = 6 if freq == "M" else 4
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        row["DATA"] = {
+            period: value
+            for period, value in (row.get("DATA") or {}).items()
+            if len(str(period)) == width
+            and (not start or str(period) >= start)
+            and (not end or str(period) <= end)
+        }
+
+
+async def _total_energy_table(path: str, user: str) -> list[dict]:
+    """Return the Monthly Energy Review table the user is viewing, from its inline data.
+
+    The MER browser reloads to ``?tbl=<table>`` and keeps the frequency and time
+    range in its hash, so the tracked view names the full state. Fetching that
+    page and pivoting its inline data -- narrowed to that frequency and range --
+    is deterministic, with no scrape or recorded request to go stale or wrong.
+    """
+    view = get_current_view(path, user)
+    query = _view_query(view)
+    url = f"{_EIA_ORIGIN}/{path}" + (f"?{query}" if query else "")
+    body, _ = await _fetch_upstream(url)
+    payload = _inline_payload(body.decode("utf-8", "replace"))
+    if not payload:
+        return []
+    _filter_mer_payload(payload, *_mer_hash_state(view))
+    return _table_rows(payload)
+
+
+async def raw_table(browser: str, spec: dict, user: str = "") -> list[dict]:
     """Return the table the browser is showing, hierarchical where its payload allows."""
     import json
     from urllib.parse import urlencode
@@ -1653,23 +1758,24 @@ async def raw_table(browser: str, spec: dict) -> list[dict]:
     if browser == "maps":
         return await fetch_maps_catalog()
 
+    path = spec["path"]
+    if browser == "total_energy":
+        return await _total_energy_table(path, user)
+
     payload_first = browser in _PAYLOAD_FIRST
     if not payload_first:
-        rendered = get_table_rows(spec["path"])
+        rendered = get_table_rows(path, user)
         if rendered:
             return rendered
 
-    view = get_current_view(spec["path"])
-    request = get_data_target(spec["path"])
+    view = get_current_view(path, user)
+    request = get_data_target(path, user)
     if request is None:
-        if browser == "total_energy":
-            body, _ = await _fetch_upstream(f"{_EIA_ORIGIN}/{spec['path']}")
-            return parse_inline_table(body.decode("utf-8", "replace"))
         params = table_params_from_hash(spec["hash"])
         if params is None:
-            return (get_table_rows(spec["path"]) or []) if payload_first else []
+            return (get_table_rows(path, user) or []) if payload_first else []
         query = urlencode(params, safe="~,")
-        endpoint = f"{_EIA_ORIGIN}/{spec['path']}{_TABLE_ENDPOINT}?{query}"
+        endpoint = f"{_EIA_ORIGIN}/{path}{_TABLE_ENDPOINT}?{query}"
         request = {"url": endpoint, "method": "GET"}
 
     if request.get("method") == "POST":
@@ -1684,13 +1790,11 @@ async def raw_table(browser: str, spec: dict) -> list[dict]:
     try:
         payload = json.loads(body)
     except (ValueError, AttributeError):
-        return (get_table_rows(spec["path"]) or []) if payload_first else []
+        return (get_table_rows(path, user) or []) if payload_first else []
     payload = await _all_pages(request, payload)
     labelled = await _labelled_rows(browser, payload, view)
     result = rows_from_payload(payload) if labelled is None else labelled
-    return (
-        result if result or not payload_first else (get_table_rows(spec["path"]) or [])
-    )
+    return result if result or not payload_first else (get_table_rows(path, user) or [])
 
 
 async def _all_pages(request: dict, payload):
@@ -1764,6 +1868,31 @@ async def _intl_rows(payload: dict) -> list[dict] | None:
     return None
 
 
+def _widget_src(
+    proxy_base: str, path: str, default_hash: str, view: str, mode: str, user: str
+) -> str:
+    """Build the iframe src, restoring the user's last view when one was stashed."""
+    from urllib.parse import parse_qsl, urlencode
+
+    if view:
+        head, marker, fragment = view.partition("#")
+        path, _, search = head.partition("?")
+        extra = [
+            (key, value)
+            for key, value in parse_qsl(search, keep_blank_values=True)
+            if not key.startswith("obb_")
+        ]
+        tail = f"#{fragment}" if marker else ""
+    else:
+        extra = []
+        tail = default_hash
+    params = [("obb_theme", mode)]
+    if user:
+        params.append(("obb_user", user))
+    params.extend(extra)
+    return f"{proxy_base}/{path}?{urlencode(params, safe=',~;')}{tail}"
+
+
 async def render_browser(
     browser: str,
     theme: str,
@@ -1774,21 +1903,25 @@ async def render_browser(
     import json
 
     spec = EIA_DATA_BROWSERS.get(browser) or EIA_DATA_BROWSERS["electricity"]
+    user = info.get("user", "")
     if raw:
         return JSONResponse(
-            content=await raw_table(browser, spec),
+            content=await raw_table(browser, spec, user),
             headers={"Cache-Control": "no-store"},
         )
     proxy_base = info["url"].rsplit("/", 1)[0] + "/eia_proxy"
     mode = "light" if theme == "light" else "dark"
-    fragment = spec["hash"]
+    view = "" if browser == "maps" else get_current_view(spec["path"], user)
     payload: dict = {
         "mode": "site",
         "theme": mode,
         "browser": browser,
+        "path": spec["path"],
+        "user": user,
         "label": spec["label"],
         "description": spec["description"],
-        "src": f"{proxy_base}/{spec['path']}?obb_theme={mode}{fragment}",
+        "src": _widget_src(proxy_base, spec["path"], spec["hash"], view, mode, user),
+        "home": _widget_src(proxy_base, spec["path"], spec["hash"], "", mode, user),
         "proxy": proxy_base,
         "maps": [],
     }

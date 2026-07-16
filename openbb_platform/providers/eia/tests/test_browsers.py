@@ -37,7 +37,7 @@ IMPORTS = browsers.EIA_DATA_BROWSERS["petroleum_imports"]["path"]
 ELECTRICITY = browsers.EIA_DATA_BROWSERS["electricity"]["path"]
 
 
-def make_info(path, query="", method="GET", body=b"", referer=""):
+def make_info(path, query="", method="GET", body=b"", referer="", user=""):
     """Build the request_info mapping the proxy endpoints consume."""
     return {
         "url": f"http://test{path}",
@@ -47,6 +47,7 @@ def make_info(path, query="", method="GET", body=b"", referer=""):
         "body": body,
         "content_type": "application/x-www-form-urlencoded" if body else "",
         "referer": referer,
+        "user": user,
     }
 
 
@@ -122,6 +123,29 @@ class TestRequestInfo:
         assert "analyst@example.com" not in json.dumps(info, default=str)
 
     @pytest.mark.asyncio
+    async def test_the_user_is_stashed_as_an_opaque_key(self):
+        def info_for(headers):
+            return browsers.request_info(
+                Request(
+                    scope={
+                        "type": "http",
+                        "method": "GET",
+                        "scheme": "http",
+                        "server": ("test", 80),
+                        "path": "/api/v1/coal_browser",
+                        "query_string": b"",
+                        "headers": headers,
+                    }
+                )
+            )
+
+        alice = (await info_for([(b"x-openbb-user", b"alice@x.com")]))["user"]
+        bob = (await info_for([(b"x-openbb-user", b"bob@x.com")]))["user"]
+        assert alice and bob and alice != bob
+        assert "alice@x.com" not in alice
+        assert (await info_for([]))["user"] == ""
+
+    @pytest.mark.asyncio
     async def test_post_body_is_read(self):
         async def receive():
             return {"type": "http.request", "body": b"a=1", "more_body": False}
@@ -168,18 +192,19 @@ class TestSplitWidgetParams:
 
     def test_splits_markers_and_keeps_the_rest(self):
         query = (
-            f"obb_theme=dark&obb_browser={INTERNATIONAL}"
+            f"obb_theme=dark&obb_browser={INTERNATIONAL}&obb_user=abc123"
             "&obb_view=international%2Fdata&obb_seq=1700&frequency=A&pid=44"
         )
-        rest, dark, browser, view, seq = browsers._split_widget_params(query)
+        rest, dark, browser, view, seq, user = browsers._split_widget_params(query)
         assert rest == "frequency=A&pid=44"
         assert dark is True
         assert browser == INTERNATIONAL
         assert view == "international/data"
         assert seq == 1700.0
+        assert user == "abc123"
 
     def test_light_theme_and_unknown_browser_are_dropped(self):
-        rest, dark, browser, view, seq = browsers._split_widget_params(
+        rest, dark, browser, view, seq, user = browsers._split_widget_params(
             "obb_theme=light&obb_browser=bogus"
         )
         assert rest == ""
@@ -187,6 +212,7 @@ class TestSplitWidgetParams:
         assert browser == ""
         assert view == ""
         assert seq == 0.0
+        assert user == ""
 
     def test_a_malformed_sequence_is_ignored(self):
         assert browsers._split_widget_params("obb_seq=nope")[4] == 0.0
@@ -405,6 +431,148 @@ setTimeout(function () {
   });
 }, 1600);
 """
+
+XHR_TAG_HARNESS = """
+var beacon = null;
+global.window = global;
+global.location = {
+  pathname: "/api/v1/eia_proxy/totalenergy/data/browser/",
+  search: "__SEARCH__", hash: "#/?f=M", origin: "http://test",
+  href: "http://test/api/v1/eia_proxy/totalenergy/data/browser/",
+};
+global.document = { baseURI: location.href };
+var store = __STORE__;
+global.sessionStorage = {
+  getItem: function (k) { return k in store ? store[k] : null; },
+  setItem: function (k, v) { store[k] = v; },
+};
+try { global.navigator = { sendBeacon: function (u) { beacon = u; return true; } }; }
+catch (e) { /* node ships a read-only navigator; the beacon falls back to fetch */ }
+global.history = { pushState: function () {}, replaceState: function () {} };
+global.XMLHttpRequest = function () {};
+global.XMLHttpRequest.prototype = { open: function () {} };
+global.fetch = function (url) {
+  if (typeof url === "string" && url.indexOf("/eia_view") >= 0) beacon = url;
+  return { catch: function () {} };
+};
+window.addEventListener = function () {};
+
+__SCRIPT__
+
+process.stdout.write(JSON.stringify({ beacon: beacon, store: store }));
+"""
+
+
+@pytest.mark.skipif(not Path(NODE).exists(), reason="node is not installed")
+class TestProxyRequestTagger:
+    """The tagger keeps every proxied request bound to its user across reloads."""
+
+    def run(self, search, store):
+        script = (
+            browsers._xhr_tag_js("totalenergy/data/browser/", "")
+            .replace("<script>", "")
+            .replace("</script>", "")
+        )
+        source = (
+            XHR_TAG_HARNESS.replace("__SEARCH__", search)
+            .replace("__STORE__", json.dumps(store))
+            .replace("__SCRIPT__", script)
+        )
+        result = subprocess.run(  # noqa: S603
+            [NODE, "-e", source],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=True,
+        )
+        return json.loads(result.stdout)
+
+    def test_the_user_key_is_persisted_on_the_first_load(self):
+        out = self.run("?obb_theme=dark&obb_user=HASH123", {})
+        assert out["store"]["obb_user"] == "HASH123"
+        assert "obb_user=HASH123" in out["beacon"]
+
+    def test_the_user_key_survives_a_query_clobbering_navigation(self):
+        out = self.run("?tbl=T09.05", {"obb_user": "HASH123"})
+        assert "obb_user=HASH123" in out["beacon"]
+
+
+@pytest.mark.skipif(not Path(NODE).exists(), reason="node is not installed")
+class TestHostRestore:
+    """The host rebuilds the iframe src from the saved nav, per browser."""
+
+    def run(self, browser, src, nav):
+        html = browsers._TEMPLATE.read_text(encoding="utf-8")
+        funcs = html[html.index("var storeKey") : html.index("function reportView")]
+        data = {"browser": browser, "user": "U9", "src": src}
+        store = {f"eia:view:{browser}:U9": json.dumps(nav)}
+        source = (
+            "global.window = global;\n"
+            f"var _store = {json.dumps(store)};\n"
+            "global.localStorage = { getItem: function (k) { return _store[k] || null; },"
+            " setItem: function () {}, removeItem: function () {} };\n"
+            f"var DATA = {json.dumps(data)};\n"
+            f"{funcs}\n"
+            "process.stdout.write(restoredSrc());"
+        )
+        return subprocess.run(  # noqa: S603
+            [NODE, "-e", source],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=True,
+        ).stdout
+
+    def test_mer_restores_the_full_state_including_the_range(self):
+        out = self.run(
+            "total_energy",
+            "http://h/api/v1/eia_proxy/totalenergy/data/browser/?obb_theme=dark&obb_user=U9",
+            {
+                "pathname": "/api/v1/eia_proxy/totalenergy/data/browser/",
+                "search": "?tbl=T09.01",
+                "hash": "#/?f=M&start=201506&end=202604&charted=1-2",
+            },
+        )
+        assert out.endswith(
+            "/totalenergy/data/browser/?obb_theme=dark&obb_user=U9&tbl=T09.01"
+            "#/?f=M&start=201506&end=202604&charted=1-2"
+        )
+
+    def test_other_browsers_restore_the_full_hash(self):
+        out = self.run(
+            "electricity",
+            "http://h/api/v1/eia_proxy/electricity/data/browser/?obb_theme=dark&obb_user=U9",
+            {
+                "pathname": "/api/v1/eia_proxy/electricity/data/browser/",
+                "search": "",
+                "hash": "#/topic/0?agg=2,0,1&fuel=vtvv",
+            },
+        )
+        assert out.endswith("#/topic/0?agg=2,0,1&fuel=vtvv")
+
+    def test_the_frame_is_nudged_to_repaint_the_grid(self):
+        html = browsers._TEMPLATE.read_text(encoding="utf-8")
+        nudge = html[html.index("function nudge()") : html.index("function ready()")]
+        source = (
+            "var dispatched = [];\n"
+            "global.Event = function (t) { this.type = t; };\n"
+            "var frame = { contentWindow: { dispatchEvent: function (e) {"
+            " dispatched.push(e.type); } } };\n"
+            "global.setTimeout = function (fn) { fn(); };\n"
+            f"{nudge}\n"
+            "nudge();\n"
+            "process.stdout.write(JSON.stringify({ dispatched: dispatched }));"
+        )
+        out = json.loads(
+            subprocess.run(  # noqa: S603
+                [NODE, "-e", source],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=True,
+            ).stdout
+        )
+        assert out["dispatched"] == ["resize", "resize", "resize", "resize"]
 
 
 @pytest.mark.skipif(not Path(NODE).exists(), reason="node is not installed")
@@ -1422,6 +1590,135 @@ class TestRenderBrowser:
         assert json.loads(response.body)[0]["title"] == "T"
 
 
+class TestWidgetStateRestore:
+    """Each user's iframe navigation is stashed and restored across the raw toggle."""
+
+    MER = browsers.EIA_DATA_BROWSERS["total_energy"]["path"]
+
+    def test_state_stores_isolate_users(self):
+        browsers.set_current_view(self.MER, "mer#/topic/1", 1000, "alice")
+        browsers.set_current_view(self.MER, "mer#/topic/2", 1000, "bob")
+        assert browsers.get_current_view(self.MER, "alice") == "mer#/topic/1"
+        assert browsers.get_current_view(self.MER, "bob") == "mer#/topic/2"
+        assert browsers.get_current_view(self.MER) == ""
+        browsers.set_table_rows(self.MER, [{"a": 1}], 1000, "alice")
+        assert browsers.get_table_rows(self.MER, "alice") == [{"a": 1}]
+        assert browsers.get_table_rows(self.MER, "bob") is None
+
+    @pytest.mark.asyncio
+    async def test_the_iframe_restores_the_users_last_view(self):
+        view = f"{self.MER}?obb_theme=dark&obb_user=u123#/topic/5?agg=2,0,1"
+        browsers.set_current_view(self.MER, view, 2000, "u123")
+        info = make_info("/api/v1/total_energy_browser", user="u123")
+        response = await browsers.render_browser("total_energy", "dark", False, info)
+        text = response.body.decode()
+        assert "topic/5" in text
+        assert "obb_user=u123" in text
+
+    @pytest.mark.asyncio
+    async def test_the_default_view_is_used_without_a_stash(self):
+        info = make_info("/api/v1/total_energy_browser", user="u123")
+        response = await browsers.render_browser("total_energy", "dark", False, info)
+        text = response.body.decode()
+        assert f"eia_proxy/{self.MER}" in text
+        assert "topic/" not in text
+
+    @pytest.mark.asyncio
+    async def test_a_users_view_never_leaks_into_another_users_iframe(self):
+        browsers.set_current_view(self.MER, f"{self.MER}#/topic/9", 2000, "alice")
+        info = make_info("/api/v1/total_energy_browser", user="bob")
+        response = await browsers.render_browser("total_energy", "dark", False, info)
+        assert "topic/9" not in response.body.decode()
+
+    @pytest.mark.asyncio
+    async def test_the_beacon_keys_the_view_by_user(self):
+        await browsers.eia_view(
+            make_info(
+                "/api/v1/eia_view",
+                query=f"obb_browser={self.MER}&obb_user=carol&obb_view=mer%23%2Ftopic%2F7&obb_seq=3000",
+            )
+        )
+        assert browsers.get_current_view(self.MER, "carol") == "mer#/topic/7"
+        assert browsers.get_current_view(self.MER, "dave") == ""
+
+    @pytest.mark.asyncio
+    async def test_raw_serves_each_user_their_own_table(self, monkeypatch):
+        browsers.set_current_view(
+            self.MER, f"{self.MER}?tbl=T09.05#/?f=M", 2000, "alice"
+        )
+        browsers.set_current_view(self.MER, f"{self.MER}?tbl=T01.01#/?f=M", 2000, "bob")
+
+        def table(desc):
+            return (
+                '<script>var sampleData = {"UNITS":"u","ROWS":'
+                '[{"MSN":"X","DESCRIPTION":"'
+                + desc
+                + '","DATA":{"2024":"1"}}]};</script>'
+            ).encode()
+
+        FakeUpstream(
+            {
+                f"{browsers._EIA_ORIGIN}/{self.MER}?tbl=T09.05": (
+                    table("Refiner Prices"),
+                    "text/html",
+                ),
+                f"{browsers._EIA_ORIGIN}/{self.MER}?tbl=T01.01": (
+                    table("Primary Energy"),
+                    "text/html",
+                ),
+            }
+        ).install(monkeypatch)
+        alice = await browsers.render_browser(
+            "total_energy", "dark", True, make_info("/api/v1/x", user="alice")
+        )
+        bob = await browsers.render_browser(
+            "total_energy", "dark", True, make_info("/api/v1/x", user="bob")
+        )
+        assert json.loads(alice.body)[0]["category"] == "Refiner Prices"
+        assert json.loads(bob.body)[0]["category"] == "Primary Energy"
+
+    def test_the_bridges_carry_the_user_key(self):
+        xhr = browsers._xhr_tag_js(self.MER, "u9")
+        tbl = browsers._table_bridge_js(self.MER, "u9")
+        assert "user='u9'" in xhr and "obb_user" in xhr
+        assert "user='u9'" in tbl and "obb_user" in tbl
+        assert "obb_user" in browsers._NAV_GUARD_JS
+
+    def test_the_view_bridge_reports_the_query_string(self):
+        assert "search:location.search" in browsers._view_bridge_js()
+
+    def test_a_view_query_keeps_page_params_and_drops_widget_markers(self):
+        view = f"{self.MER}?obb_theme=dark&obb_user=X&tbl=T09.05#/?f=M"
+        assert browsers._view_query(view) == "tbl=T09.05"
+        assert browsers._view_query("") == ""
+
+    @pytest.mark.asyncio
+    async def test_the_host_carries_the_user_and_path_for_state_reporting(self):
+        info = make_info("/api/v1/total_energy_browser", user="HASH9")
+        response = await browsers.render_browser("total_energy", "dark", False, info)
+        text = response.body.decode()
+        assert '"user": "HASH9"' in text
+        assert '"path": "totalenergy/data/browser/"' in text
+        assert "reportView" in text and "restoredSrc" in text
+
+    @pytest.mark.asyncio
+    async def test_home_is_the_default_view_not_the_restored_one(self):
+        browsers.set_current_view(
+            self.MER, f"{self.MER}?tbl=T09.05#/?f=M&start=201506", 2000, "u123"
+        )
+        info = make_info("/api/v1/total_energy_browser", user="u123")
+        text = (
+            await browsers.render_browser("total_energy", "dark", False, info)
+        ).body.decode()
+        marker = '<script id="browser-data" type="application/json">'
+        blob = text.split(marker, 1)[1].split("</script>", 1)[0]
+        data = json.loads(
+            blob.replace("\\u003c", "<").replace("\\u003e", ">").replace("\\u0026", "&")
+        )
+        assert "tbl=T09.05" in data["src"]
+        assert "tbl=T09.05" not in data["home"] and "start=" not in data["home"]
+
+
 class TestRouterRegistration:
     """Every browser is registered as its own Workspace widget."""
 
@@ -1634,6 +1931,64 @@ def intl_upstream() -> FakeUpstream:
     )
 
 
+class TestTotalEnergyState:
+    """The MER raw reflects the full tracked state: table, frequency and range."""
+
+    MER = browsers.EIA_DATA_BROWSERS["total_energy"]["path"]
+    SPEC = browsers.EIA_DATA_BROWSERS["total_energy"]
+    PAGE = (
+        '<script>var sampleData = {"UNITS":"u","ROWS":[{"MSN":"X",'
+        '"DESCRIPTION":"Series","DATA":{"2018":"10","2019":"11",'
+        '"201812":"1.2","201901":"1.3","202604":"9.9"}}]};</script>'
+    )
+
+    async def _raw(self, monkeypatch, view, page=None):
+        browsers.set_current_view(self.MER, view, 2000, "u1")
+        query = browsers._view_query(view)
+        url = f"{browsers._EIA_ORIGIN}/{self.MER}" + (f"?{query}" if query else "")
+        FakeUpstream(
+            {url: ((page if page is not None else self.PAGE).encode(), "text/html")}
+        ).install(monkeypatch)
+        return await browsers.raw_table("total_energy", self.SPEC, "u1")
+
+    def _periods(self, rows):
+        return [k for k in rows[0] if k not in ("category", "units", "source_key")]
+
+    @pytest.mark.asyncio
+    async def test_monthly_range_narrows_to_the_slider(self, monkeypatch):
+        rows = await self._raw(
+            monkeypatch, f"{self.MER}?tbl=T09.01#/?f=M&start=201812&end=201901"
+        )
+        assert self._periods(rows) == ["2018-12", "2019-01"]
+
+    @pytest.mark.asyncio
+    async def test_annual_frequency_keeps_yearly_columns(self, monkeypatch):
+        rows = await self._raw(monkeypatch, f"{self.MER}?tbl=T09.01#/?f=A")
+        assert self._periods(rows) == ["2018 ", "2019 "]
+
+    @pytest.mark.asyncio
+    async def test_no_hash_defaults_to_monthly_full_range(self, monkeypatch):
+        rows = await self._raw(monkeypatch, f"{self.MER}?tbl=T09.01")
+        assert self._periods(rows) == ["2018-12", "2019-01", "2026-04"]
+
+    @pytest.mark.asyncio
+    async def test_a_page_without_inline_data_is_empty(self, monkeypatch):
+        assert (
+            await self._raw(monkeypatch, f"{self.MER}?tbl=T99", "<html>no</html>") == []
+        )
+
+    def test_hash_state_reads_frequency_and_range(self):
+        assert browsers._mer_hash_state(
+            f"{self.MER}?tbl=T01.01#/?f=M&start=201812&end=202604"
+        ) == ("M", "201812", "202604")
+        assert browsers._mer_hash_state("no-hash") == ("", "", "")
+
+    def test_filter_skips_non_dict_rows(self):
+        payload = {"ROWS": ["junk", {"DATA": {"201812": "1"}}]}
+        browsers._filter_mer_payload(payload, "M", "", "")
+        assert payload["ROWS"][1]["DATA"] == {"201812": "1"}
+
+
 class TestInternationalLabelMaps:
     """Names for country, unit, product and activity are fetched once and cached."""
 
@@ -1833,6 +2188,20 @@ class TestBrowserSpecificLabelling:
             },
         )
         assert rows == [{"Area": "U.S. Total"}]
+
+    @pytest.mark.asyncio
+    async def test_ngqs_headers_strip_their_html_line_breaks(self):
+        rows = await browsers._labelled_rows(
+            "natural_gas_query",
+            {
+                "columns": [
+                    {"headerName": "Report<BR>State<BR>", "field": "s"},
+                    {"headerName": "Gas<BR>Field Code", "field": "g", "numeric": True},
+                ],
+                "data": [{"s": "AK", "g": "691992"}],
+            },
+        )
+        assert rows == [{"Report State": "AK", "Gas Field Code": 691992.0}]
 
     @pytest.mark.asyncio
     async def test_other_browsers_use_the_shared_pivot(self):
