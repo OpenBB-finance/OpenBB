@@ -789,6 +789,45 @@ class TestSlickGridExtraction:
         assert rows[0]["category"] == "Total U.S."
         assert rows[0]["2014 "] == 239554
 
+    def test_icon_button_columns_are_dropped(self):
+        columns = [
+            {
+                "id": "sourcekey",
+                "field": "HAS_DATA",
+                "output": False,
+                "iconClass": "sourcekey",
+            },
+            {
+                "id": "remove",
+                "name": "",
+                "field": "DESCRIPTION",
+                "output": True,
+                "iconClass": "remove",
+            },
+            {
+                "id": "description",
+                "name": "",
+                "field": "DESCRIPTION",
+                "outputFormatter": "@description",
+            },
+            {"id": "map", "field": "HAS_DATA", "output": True, "iconClass": "map"},
+            {
+                "id": "linechart",
+                "field": "HAS_DATA",
+                "output": True,
+                "iconClass": "chart",
+            },
+            {
+                "id": "200101",
+                "name": "Jan 2001",
+                "field": "DATA.200101",
+                "dataFormatter": "@numerical",
+            },
+        ]
+        posted = self.run(columns=columns)["posted"]
+        for row in posted["rows"]:
+            assert list(row) == ["category", "Jan 2001"]
+
     def test_a_row_with_no_data_yields_nulls_not_the_dash(self):
         posted = self.run()["posted"]
         assert posted["rows"][0]["Jan 2001"] is None
