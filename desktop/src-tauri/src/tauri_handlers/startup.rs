@@ -797,13 +797,7 @@ pub async fn install_conda(directory: String, window: Window) -> Result<bool, St
         log::debug!(
             "Executing installer via start /B: {} with args: {:?}",
             installer_path.to_string_lossy(),
-            &[
-                "/InstallationType=JustMe",
-                "/RegisterPython=0",
-                "/AddToPath=0",
-                "/S",
-                &format!("/D={}", conda_dir.to_string_lossy())
-            ]
+            args
         );
 
         // Run the installer via cmd start
