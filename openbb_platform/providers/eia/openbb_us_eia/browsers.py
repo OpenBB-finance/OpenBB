@@ -236,7 +236,7 @@ def _derive_browser(path: str) -> str:
 MAPS_PAGE = "maps/oil-naturalgas.php"
 
 
-_TABLE_ROWS: dict[tuple[str, str], tuple[list, float]] = {}
+_TABLE_ROWS: dict[tuple[str, str, str], tuple[list, float]] = {}
 _NOT_TABLE_RE = re.compile(
     r"method=getConfig"
     r"|method=getImportExportConfigJSON"
@@ -321,17 +321,16 @@ def get_data_target(browser: str, user: str = "") -> dict | None:
     return entry[0] if entry is not None else None
 
 
-def set_table_rows(browser: str, rows: list, seq: float = 0.0, user: str = "") -> None:
-    """Record the table a browser has rendered, ignoring a late older one."""
-    existing = _TABLE_ROWS.get((user, browser))
-    if existing is not None and existing[1] > seq:
-        return
-    _TABLE_ROWS[(user, browser)] = (rows, seq)
+def set_table_rows(
+    browser: str, rows: list, seq: float = 0.0, user: str = "", view: str = ""
+) -> None:
+    """Record the table a browser rendered, keyed by the view that rendered it."""
+    _put(_TABLE_ROWS, (user, browser, view_key(view)), rows, seq)
 
 
-def get_table_rows(browser: str, user: str = "") -> list | None:
-    """Return the table a browser has rendered."""
-    entry = _TABLE_ROWS.get((user, browser))
+def get_table_rows(browser: str, user: str = "", view: str = "") -> list | None:
+    """Return the table a browser rendered for one view."""
+    entry = _TABLE_ROWS.get((user, browser, view_key(view)))
     return entry[0] if entry is not None else None
 
 
@@ -752,7 +751,7 @@ async def eia_table(
     """Record the table a browser has rendered, so ``raw`` serves that table."""
     import json
 
-    _, _, browser, _view, seq, user = _split_widget_params(info["query"])
+    _, _, browser, view, seq, user = _split_widget_params(info["query"])
     if not browser:
         return Response(status_code=204)
     try:
@@ -760,7 +759,7 @@ async def eia_table(
     except ValueError:
         return Response(status_code=204)
     if isinstance(rows, list) and rows and all(isinstance(r, dict) for r in rows):
-        set_table_rows(browser, rows, seq, user)
+        set_table_rows(browser, rows, seq, user, view)
     return Response(status_code=204)
 
 
@@ -1762,18 +1761,18 @@ async def raw_table(browser: str, spec: dict, user: str = "") -> list[dict]:
     if browser == "total_energy":
         return await _total_energy_table(path, user)
 
+    view = get_current_view(path, user)
     payload_first = browser in _PAYLOAD_FIRST
     if not payload_first:
-        rendered = get_table_rows(path, user)
+        rendered = get_table_rows(path, user, view)
         if rendered:
             return rendered
 
-    view = get_current_view(path, user)
     request = get_data_target(path, user)
     if request is None:
         params = table_params_from_hash(spec["hash"])
         if params is None:
-            return (get_table_rows(path, user) or []) if payload_first else []
+            return (get_table_rows(path, user, view) or []) if payload_first else []
         query = urlencode(params, safe="~,")
         endpoint = f"{_EIA_ORIGIN}/{path}{_TABLE_ENDPOINT}?{query}"
         request = {"url": endpoint, "method": "GET"}
@@ -1790,11 +1789,15 @@ async def raw_table(browser: str, spec: dict, user: str = "") -> list[dict]:
     try:
         payload = json.loads(body)
     except (ValueError, AttributeError):
-        return (get_table_rows(path, user) or []) if payload_first else []
+        return (get_table_rows(path, user, view) or []) if payload_first else []
     payload = await _all_pages(request, payload)
     labelled = await _labelled_rows(browser, payload, view)
     result = rows_from_payload(payload) if labelled is None else labelled
-    return result if result or not payload_first else (get_table_rows(path, user) or [])
+    return (
+        result
+        if result or not payload_first
+        else (get_table_rows(path, user, view) or [])
+    )
 
 
 async def _all_pages(request: dict, payload):

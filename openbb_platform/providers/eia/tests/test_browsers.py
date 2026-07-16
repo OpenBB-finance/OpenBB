@@ -899,6 +899,122 @@ class TestSlickGridExtraction:
         )
 
 
+LIFECYCLE_GRID = """
+var DOC = { contains: function (n) { return n._attached; } };
+function makeNode(attached, visible) {
+  var n = {
+    _attached: attached, _viewport: true, ownerDocument: DOC,
+    querySelector: function (sel) {
+      return (n._viewport && sel === '.slick-viewport') ? {} : null;
+    },
+    getClientRects: function () { return visible ? [{}] : []; },
+    offsetParent: visible ? {} : null,
+  };
+  return n;
+}
+var COLUMNS = [
+  { id: 'description', field: 'DESCRIPTION' },
+  { id: '200101', name: 'Jan 2001', field: 'DATA.200101' },
+];
+var OPTIONS = {
+  dataItemColumnValueExtractor: function (item, colDef) {
+    var path = colDef.field.split('.'), ret = item;
+    for (var i = 0; i < path.length; i++) ret = ret[path[i]];
+    return ret;
+  },
+};
+function Grid(container, data, columns, options) {
+  this.node = container; this.data = data;
+  this.columns = columns; this.options = options;
+  this.onRendered = { subscribe: function () {} };
+}
+Grid.prototype.getColumns = function () { return this.columns; };
+Grid.prototype.getOptions = function () { return this.options; };
+Grid.prototype.getDataLength = function () { return this.data.length; };
+Grid.prototype.getDataItem = function (i) { return this.data[i]; };
+Grid.prototype.getContainerNode = function () { return this.node; };
+Grid.prototype.destroy = function () { this.node._viewport = false; };
+window.Slick = { Grid: Grid };
+setTimeout(function () {
+  var stale = new window.Slick.Grid(makeNode(true, true), __STALE__, COLUMNS, OPTIONS);
+  new window.Slick.Grid(makeNode(true, true), __CURRENT__, COLUMNS, OPTIONS);
+  __TEARDOWN__
+}, 120);
+"""
+
+
+def _rows(label, count):
+    """Build ``count`` grid rows carrying ``label`` as their description."""
+    return [
+        {"DESCRIPTION": f"{label} {n}", "DATA": {"200101": float(n)}}
+        for n in range(count)
+    ]
+
+
+@pytest.mark.skipif(not Path(NODE).exists(), reason="node is not installed")
+class TestGridLifecycle:
+    """A view the user left must never supply the table ``raw`` answers with.
+
+    EIA rebuilds the grid per view and calls ``destroy()`` on the old one, which
+    only empties the container -- the instance keeps answering
+    ``getDataLength()`` with the row count of the view it drew. A stale grid is
+    routinely larger than the current one, so picking by row count alone hands
+    ``raw`` the table of a view that is no longer on screen.
+    """
+
+    def run(self, stale, current, teardown):
+        script = browsers._table_bridge_js(ELECTRICITY)
+        bridge = script.replace("<script>", "").replace("</script>", "")
+        grid = (
+            LIFECYCLE_GRID.replace("__STALE__", json.dumps(stale))
+            .replace("__CURRENT__", json.dumps(current))
+            .replace("__TEARDOWN__", teardown)
+        )
+        source = HARNESS.replace("__BRIDGE__", bridge).replace("__GRID__", grid)
+        result = subprocess.run(  # noqa: S603
+            [NODE, "-e", source], capture_output=True, text=True, timeout=30, check=True
+        )
+        return json.loads(result.stdout)
+
+    def test_a_destroyed_grid_does_not_supply_the_table(self):
+        posted = self.run(_rows("STALE", 6), _rows("CURRENT", 2), "stale.destroy();")
+        assert [row["category"] for row in posted["posted"]["rows"]] == [
+            "CURRENT 0",
+            "CURRENT 1",
+        ]
+
+    def test_a_detached_grid_does_not_supply_the_table(self):
+        posted = self.run(
+            _rows("STALE", 6), _rows("CURRENT", 2), "stale.node._attached = false;"
+        )
+        assert [row["category"] for row in posted["posted"]["rows"]] == [
+            "CURRENT 0",
+            "CURRENT 1",
+        ]
+
+    def test_a_hidden_grid_does_not_supply_the_table(self):
+        posted = self.run(
+            _rows("STALE", 6),
+            _rows("CURRENT", 2),
+            "stale.node.offsetParent = null; stale.node.getClientRects = "
+            "function () { return []; };",
+        )
+        assert [row["category"] for row in posted["posted"]["rows"]] == [
+            "CURRENT 0",
+            "CURRENT 1",
+        ]
+
+    def test_the_larger_live_grid_still_wins(self):
+        posted = self.run(_rows("STALE", 6), _rows("CURRENT", 2), "")
+        assert len(posted["posted"]["rows"]) == 6
+
+    def test_the_scrape_names_the_view_it_was_taken_from(self):
+        sent = self.run(_rows("STALE", 6), _rows("CURRENT", 2), "stale.destroy();")[
+            "sent"
+        ]
+        assert "obb_view=electricity%2Fdata%2Fbrowser%2F" in sent["url"]
+
+
 SYNC_HARNESS = """
 var intervals = [], listeners = {};
 global.window = global;
