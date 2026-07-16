@@ -30,7 +30,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.0", "openbb-platform-api>=2.0.0"]
 
 [build-system]
 requires = ["hatchling>=1.25", "requests>=2.31"]
@@ -54,6 +54,7 @@ path = "hatch_build.py"
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
 openbb-devtools = { path = "../../extensions/devtools", editable = true }
+openbb-platform-api = { path = "../../extensions/platform_api", editable = true }
 
 [tool.ruff]
 line-length = 88
