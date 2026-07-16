@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-eodhd"
+version = "5.0.0"
+description = "EODHD Historical Data provider extension for OpenBB Platform."
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_eodhd" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openbb-core = ">=1.0.0"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+eodhd = "openbb_eodhd:eodhd_provider"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
