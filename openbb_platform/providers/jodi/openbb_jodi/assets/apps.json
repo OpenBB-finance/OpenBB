@@ -52,35 +52,57 @@
             "x": 0,
             "y": 0,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 2",
+              "Group 4"
+            ]
           },
           {
             "i": "jodi_oil_demand_jodi_obb",
             "x": 20,
             "y": 0,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 2",
+              "Group 4"
+            ]
           },
           {
             "i": "jodi_oil_imports_jodi_obb",
             "x": 0,
             "y": 13,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 2",
+              "Group 3",
+              "Group 4"
+            ]
           },
           {
             "i": "jodi_oil_exports_jodi_obb",
             "x": 20,
             "y": 13,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 2",
+              "Group 3",
+              "Group 4"
+            ]
           },
           {
             "i": "jodi_oil_stocks_jodi_obb",
             "x": 0,
             "y": 26,
             "w": 40,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 2",
+              "Group 3"
+            ]
           }
         ]
       },
@@ -93,35 +115,57 @@
             "x": 0,
             "y": 0,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 5",
+              "Group 6"
+            ]
           },
           {
             "i": "jodi_gas_demand_jodi_obb",
             "x": 20,
             "y": 0,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 5",
+              "Group 6"
+            ]
           },
           {
             "i": "jodi_gas_imports_jodi_obb",
             "x": 0,
             "y": 13,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 5",
+              "Group 6",
+              "Group 7"
+            ]
           },
           {
             "i": "jodi_gas_exports_jodi_obb",
             "x": 20,
             "y": 13,
             "w": 20,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 5",
+              "Group 6",
+              "Group 7"
+            ]
           },
           {
             "i": "jodi_gas_stocks_jodi_obb",
             "x": 0,
             "y": 26,
             "w": 40,
-            "h": 13
+            "h": 13,
+            "groups": [
+              "Group 5",
+              "Group 6"
+            ]
           }
         ]
       }
@@ -131,12 +175,84 @@
         "name": "Group 1",
         "type": "param",
         "paramName": "country",
+        "defaultValue": "united_states",
         "widgetIds": [
           "jodi_oil_balance_jodi_obb",
           "jodi_oil_demand_by_product_jodi_obb",
           "jodi_gas_balance_jodi_obb"
-        ],
-        "defaultValue": "united_states"
+        ]
+      },
+      {
+        "name": "Group 2",
+        "type": "param",
+        "paramName": "country",
+        "defaultValue": "united_states,saudi_arabia,russia,china,india",
+        "widgetIds": [
+          "jodi_oil_production_jodi_obb",
+          "jodi_oil_demand_jodi_obb",
+          "jodi_oil_imports_jodi_obb",
+          "jodi_oil_exports_jodi_obb",
+          "jodi_oil_stocks_jodi_obb"
+        ]
+      },
+      {
+        "name": "Group 3",
+        "type": "param",
+        "paramName": "product",
+        "defaultValue": "crude_oil",
+        "widgetIds": [
+          "jodi_oil_imports_jodi_obb",
+          "jodi_oil_exports_jodi_obb",
+          "jodi_oil_stocks_jodi_obb"
+        ]
+      },
+      {
+        "name": "Group 4",
+        "type": "param",
+        "paramName": "unit",
+        "defaultValue": "kbd",
+        "widgetIds": [
+          "jodi_oil_production_jodi_obb",
+          "jodi_oil_demand_jodi_obb",
+          "jodi_oil_imports_jodi_obb",
+          "jodi_oil_exports_jodi_obb"
+        ]
+      },
+      {
+        "name": "Group 5",
+        "type": "param",
+        "paramName": "country",
+        "defaultValue": "united_states,qatar,norway,china,japan",
+        "widgetIds": [
+          "jodi_gas_production_jodi_obb",
+          "jodi_gas_demand_jodi_obb",
+          "jodi_gas_imports_jodi_obb",
+          "jodi_gas_exports_jodi_obb",
+          "jodi_gas_stocks_jodi_obb"
+        ]
+      },
+      {
+        "name": "Group 6",
+        "type": "param",
+        "paramName": "unit",
+        "defaultValue": "m3",
+        "widgetIds": [
+          "jodi_gas_production_jodi_obb",
+          "jodi_gas_demand_jodi_obb",
+          "jodi_gas_imports_jodi_obb",
+          "jodi_gas_exports_jodi_obb",
+          "jodi_gas_stocks_jodi_obb"
+        ]
+      },
+      {
+        "name": "Group 7",
+        "type": "param",
+        "paramName": "flow",
+        "defaultValue": "total",
+        "widgetIds": [
+          "jodi_gas_imports_jodi_obb",
+          "jodi_gas_exports_jodi_obb"
+        ]
       }
     ],
     "prompts": []

@@ -195,7 +195,7 @@ async def request_range(
     timeout: int,
     start: int | None = None,
     end: int | None = None,
-    validator: str = "",
+    validator: str | None = None,
 ) -> "tuple[int, Mapping, bytes]":
     """Make one request, optionally for a byte range guarded by a validator."""
     from openbb_core.provider.utils.helpers import amake_request
@@ -224,8 +224,8 @@ def source_meta(status: int, headers: "Mapping") -> dict:
     if not total_text.isdigit() and status == 200:
         total_text = str(headers.get("Content-Length", ""))
     return {
-        "etag": headers.get("ETag", ""),
-        "last_modified": headers.get("Last-Modified", ""),
+        "etag": headers.get("ETag"),
+        "last_modified": headers.get("Last-Modified"),
         "size": int(total_text) if total_text.isdigit() else 0,
     }
 
@@ -258,7 +258,7 @@ async def download(url: str, timeout: int = 600) -> "tuple[bytes, dict]":
     meta = source_meta(status, headers)
     total = meta["size"]
     if total:
-        validator = meta["etag"] or meta["last_modified"]
+        validator = meta["etag"] or meta["last_modified"] or None
         chunk_size = ceil(
             total / min(MAX_RANGE_CONNECTIONS, max(1, ceil(total / MIN_RANGE_CHUNK)))
         )

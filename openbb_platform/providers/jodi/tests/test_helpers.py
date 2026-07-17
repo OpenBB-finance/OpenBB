@@ -111,8 +111,8 @@ def test_source_meta():
     # An unknown total is reported as zero.
     assert helpers.source_meta(206, {"Content-Range": "bytes 0-0/*"})["size"] == 0
     assert helpers.source_meta(200, {}) == {
-        "etag": "",
-        "last_modified": "",
+        "etag": None,
+        "last_modified": None,
         "size": 0,
     }
 
@@ -123,7 +123,7 @@ def test_source_unchanged():
     assert helpers.source_unchanged(cached, {"etag": '"a"', "size": 99})
     assert not helpers.source_unchanged(cached, {"etag": '"b"', "size": 10})
     # Missing ETag falls back to Last-Modified, then size.
-    assert helpers.source_unchanged(cached, {"etag": "", "last_modified": "Mon"})
+    assert helpers.source_unchanged(cached, {"etag": None, "last_modified": "Mon"})
     assert not helpers.source_unchanged(cached, {"last_modified": "Tue"})
     assert helpers.source_unchanged({"size": 10}, {"size": 10})
     assert not helpers.source_unchanged({"size": 10}, {"size": 11})
@@ -184,7 +184,7 @@ class RangeServer:
         ranges: bool = True,
         break_chunks: bool = False,
         raise_chunks: bool = False,
-        etag: str = "",
+        etag: str | None = None,
     ):
         self.body = body
         self.ranges = ranges
@@ -194,7 +194,7 @@ class RangeServer:
         self.calls: list[tuple[int | None, int | None]] = []
         self.validators: list[str] = []
 
-    async def __call__(self, url, timeout, start=None, end=None, validator=""):
+    async def __call__(self, url, timeout, start=None, end=None, validator=None):
         self.calls.append((start, end))
         if start is None or not self.ranges:
             return 200, {"Content-Length": str(len(self.body))}, self.body
@@ -262,7 +262,7 @@ def test_download_failed_chunk_falls_back(monkeypatch):
 
 
 def test_download_unknown_total_falls_back(monkeypatch):
-    async def fake_request(url, timeout, start=None, end=None, validator=""):
+    async def fake_request(url, timeout, start=None, end=None, validator=None):
         if start is not None:
             return 206, {"Content-Range": "bytes 0-0/*"}, b"x"
         return 200, {}, b"full body"
@@ -272,7 +272,7 @@ def test_download_unknown_total_falls_back(monkeypatch):
 
 
 def test_download_fallback_error(monkeypatch):
-    async def fake_request(url, timeout, start=None, end=None, validator=""):
+    async def fake_request(url, timeout, start=None, end=None, validator=None):
         if start is not None:
             return 206, {"Content-Range": "bytes 0-0/*"}, b"x"
         return 500, {}, b""
@@ -283,7 +283,7 @@ def test_download_fallback_error(monkeypatch):
 
 
 def test_download_probe_error(monkeypatch):
-    async def fake_request(url, timeout, start=None, end=None, validator=""):
+    async def fake_request(url, timeout, start=None, end=None, validator=None):
         return 404, {}, b""
 
     monkeypatch.setattr(helpers, "request_range", fake_request)
@@ -292,23 +292,23 @@ def test_download_probe_error(monkeypatch):
 
 
 def test_probe_source(monkeypatch):
-    async def ok(url, timeout, start=None, end=None, validator=""):
+    async def ok(url, timeout, start=None, end=None, validator=None):
         return 206, {"Content-Range": "bytes 0-0/10", "ETag": '"a"'}, b"x"
 
     monkeypatch.setattr(helpers, "request_range", ok)
     assert asyncio.run(helpers.probe_source("http://x")) == {
         "etag": '"a"',
-        "last_modified": "",
+        "last_modified": None,
         "size": 10,
     }
 
-    async def gone(url, timeout, start=None, end=None, validator=""):
+    async def gone(url, timeout, start=None, end=None, validator=None):
         return 404, {}, b""
 
     monkeypatch.setattr(helpers, "request_range", gone)
     assert asyncio.run(helpers.probe_source("http://x")) == {}
 
-    async def unreachable(url, timeout, start=None, end=None, validator=""):
+    async def unreachable(url, timeout, start=None, end=None, validator=None):
         raise ConnectionError("network down")
 
     monkeypatch.setattr(helpers, "request_range", unreachable)
