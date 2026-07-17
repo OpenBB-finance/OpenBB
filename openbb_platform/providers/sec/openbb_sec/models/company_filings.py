@@ -308,12 +308,10 @@ class SecCompanyFilingsFetcher(
             base_url + filings["accessionNumber"] + "-index.htm"
         )
         if query.form_type:
-            form_types = {
-                _base_form(form_type)
-                for form_type in query.form_type.replace("_", " ").split(",")
-                if form_type
-            }
-            filings = filings[filings.form.map(_base_form).isin(form_types)]
+            form_types = query.form_type.replace("_", " ").split(",")
+            filings = filings[
+                filings.form.str.contains("|".join(form_types), case=False, na=False)
+            ]
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
 
@@ -324,9 +322,3 @@ class SecCompanyFilingsFetcher(
         return [
             SecCompanyFilingsData.model_validate(d) for d in filings.to_dict("records")
         ]
-
-
-def _base_form(value: Any) -> str:
-    """Return the SEC base form code used for exact form filtering."""
-    form = str(value or "").strip().upper()
-    return form[:-2] if form.endswith("/A") else form

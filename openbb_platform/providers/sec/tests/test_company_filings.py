@@ -140,33 +140,6 @@ class TestCompanyFilingsTransformData:
         assert row.complete_submission_url.endswith("/0000320193-24-000081.txt")
         assert row.filing_detail_url.endswith("-index.htm")
 
-    def test_form_type_filter_uses_exact_base_form(self):
-        q = types.SimpleNamespace(
-            cik="0000320193",
-            symbol=None,
-            start_date=None,
-            end_date=None,
-            form_type="D",
-            limit=None,
-        )
-        form_d = {
-            **_filing_records()[0],
-            "form": "D/A",
-            "primaryDocument": "formd.xml",
-            "accessionNumber": "0000320193-24-000001",
-        }
-        schedule_13d = {
-            **_filing_records()[0],
-            "form": "SC 13D",
-            "primaryDocument": "schedule13d.xml",
-            "accessionNumber": "0000320193-24-000002",
-        }
-
-        res = SecCompanyFilingsFetcher.transform_data(q, [form_d, schedule_13d])
-
-        assert len(res) == 1
-        assert res[0].report_type == "D/A"
-
     def test_empty_data_raises(self):
         q = types.SimpleNamespace(
             cik="0000320193",

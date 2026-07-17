@@ -47,8 +47,7 @@ class SecForm13FHRData(Form13FHRData):
         "option_type": "putCall",
     }
 
-    weight: float | None = Field(
-        default=None,
+    weight: float = Field(
         description="The weight of the security relative to the market value of all securities in the filing"
         + " , as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
@@ -89,12 +88,7 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
             if query.date is not None:
                 date = parse_13f.date_to_quarter_end(query.date.strftime("%Y-%m-%d"))
                 filings.index = filings.index.astype(str)
-                selected = filings.loc[date]
-                urls = (
-                    selected.dropna().to_list()
-                    if hasattr(selected, "to_list")
-                    else [selected]
-                )
+                urls = [filings.loc[date]]
 
             results: list = []
 
@@ -125,7 +119,7 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
             SecForm13FHRData.model_validate(d)
             for d in sorted(
                 data,
-                key=lambda d: [d["period_ending"], d.get("weight") or 0],
+                key=lambda d: [d["period_ending"], d["weight"]],
                 reverse=True,
             )
         ]

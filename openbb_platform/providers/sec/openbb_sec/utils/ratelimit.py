@@ -6,8 +6,7 @@ import threading
 import time
 from typing import Any
 
-_DEFAULT_REQUESTS_PER_SECOND = 7.5
-_MAX_REQUEST_ATTEMPTS = 3
+_DEFAULT_REQUESTS_PER_SECOND = 9.0
 REQUESTS_PER_SECOND_ENV_VAR = "OPENBB_SEC_REQUESTS_PER_SECOND"
 
 _lock = threading.Lock()
@@ -56,16 +55,8 @@ async def sec_amake_request(*args: Any, **kwargs: Any) -> Any:
     """Rate-limited ``amake_request`` for SEC EDGAR."""
     from openbb_core.provider.utils.helpers import amake_request  # noqa: PLC0415
 
-    for attempt in range(_MAX_REQUEST_ATTEMPTS):
-        await sec_rate_limit()
-        try:
-            return await amake_request(*args, **kwargs)
-        except asyncio.TimeoutError:
-            if attempt == _MAX_REQUEST_ATTEMPTS - 1:
-                raise
-            await asyncio.sleep(2**attempt)
-
-    raise RuntimeError("Unreachable SEC request retry state.")
+    await sec_rate_limit()
+    return await amake_request(*args, **kwargs)
 
 
 def sec_make_request(*args: Any, **kwargs: Any) -> Any:

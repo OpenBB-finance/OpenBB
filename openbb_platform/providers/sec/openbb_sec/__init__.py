@@ -14,7 +14,6 @@ from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetche
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
-from openbb_sec.models.form_d import SecFormDFetcher
 from openbb_sec.models.full_text_search import SecFullTextSearchFetcher
 from openbb_sec.models.htm_file import SecHtmFileFetcher
 from openbb_sec.models.income_statement import SecIncomeStatementFetcher
@@ -86,7 +85,6 @@ sec_provider = Provider(
         ),
         _equity_key("EquityFTD", "SecEquityFtd"): SecEquityFtdFetcher,
         _equity_key("EquitySearch", "SecEquitySearch"): SecEquitySearchFetcher,
-        "SecFormD": SecFormDFetcher,
         "Filings": SecCompanyFilingsFetcher,
         _equity_key("Form13FHR", "SecForm13FHR"): SecForm13FHRFetcher,
         "SecFullTextSearch": SecFullTextSearchFetcher,

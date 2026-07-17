@@ -208,8 +208,6 @@ async def institutions_search(
     model="SecInvestmentAdvisers",
     examples=[
         APIEx(parameters={"query": "blackrock", "provider": "sec"}),
-        APIEx(parameters={"crd": "105046", "provider": "sec"}),
-        APIEx(parameters={"include_all": True, "limit": 1000, "provider": "sec"}),
     ],
 )
 async def investment_advisers(
@@ -218,29 +216,7 @@ async def investment_advisers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search SEC investment adviser records by name, CRD, or SEC number."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="SecFormD",
-    examples=[
-        APIEx(
-            parameters={
-                "cik": "0001841359",
-                "accession_number": "0001841359-24-000001",
-                "provider": "sec",
-            }
-        ),
-    ],
-)
-async def form_d(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get one exact SEC Form D filing by issuer CIK and accession number."""
+    """Search SEC investment adviser firms."""
     return await OBBject.from_query(Query(**locals()))
 
 

@@ -24,7 +24,6 @@ _BASE_COMMANDS = [
     "htm_file",
     "cik_map",
     "institutions_search",
-    "form_d",
     "investment_advisers",
     "schema_files",
     "symbol_map",
