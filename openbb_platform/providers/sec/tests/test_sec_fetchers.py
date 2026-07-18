@@ -8,6 +8,10 @@ from unittest.mock import patch
 import pytest
 from openbb_core.app.service.user_service import UserService
 
+from openbb_sec.models.adviser_search import (
+    SecAdviserFirmsFetcher,
+    SecAdviserIndividualsFetcher,
+)
 from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
 from openbb_sec.models.balance_sheet_growth import SecBalanceSheetGrowthFetcher
 from openbb_sec.models.cash_flow import SecCashFlowStatementFetcher
@@ -161,6 +165,26 @@ def test_sec_institutions_search_fetcher(credentials=test_credentials):
     params = {"query": "Investment Trust", "use_cache": False}
 
     fetcher = SecInstitutionsSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_adviser_firms_fetcher(credentials=test_credentials):
+    """Test the SEC adviser firms fetcher."""
+    params = {"query": "blackrock", "limit": 2, "use_cache": False}
+
+    fetcher = SecAdviserFirmsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_adviser_individuals_fetcher(credentials=test_credentials):
+    """Test the SEC adviser individuals fetcher."""
+    params = {"query": "john smith", "limit": 2, "use_cache": False}
+
+    fetcher = SecAdviserIndividualsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

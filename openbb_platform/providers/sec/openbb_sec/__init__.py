@@ -4,6 +4,10 @@ from importlib.util import find_spec
 
 from openbb_core.provider.abstract.provider import Provider
 
+from openbb_sec.models.adviser_search import (
+    SecAdviserFirmsFetcher,
+    SecAdviserIndividualsFetcher,
+)
 from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
 from openbb_sec.models.balance_sheet_growth import SecBalanceSheetGrowthFetcher
 from openbb_sec.models.cash_flow import SecCashFlowStatementFetcher
@@ -20,7 +24,6 @@ from openbb_sec.models.income_statement import SecIncomeStatementFetcher
 from openbb_sec.models.income_statement_growth import SecIncomeStatementGrowthFetcher
 from openbb_sec.models.insider_trading import SecInsiderTradingFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
-from openbb_sec.models.investment_advisers import SecInvestmentAdvisersFetcher
 from openbb_sec.models.latest_financial_reports import SecLatestFinancialReportsFetcher
 from openbb_sec.models.management_discussion_analysis import (
     SecManagementDiscussionAnalysisFetcher,
@@ -95,7 +98,8 @@ sec_provider = Provider(
         ),
         _equity_key("InsiderTrading", "SecInsiderTrading"): SecInsiderTradingFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
-        "SecInvestmentAdvisers": SecInvestmentAdvisersFetcher,
+        "SecAdviserFirms": SecAdviserFirmsFetcher,
+        "SecAdviserIndividuals": SecAdviserIndividualsFetcher,
         _equity_key("LatestFinancialReports", "SecLatestFinancialReports"): (
             SecLatestFinancialReportsFetcher
         ),

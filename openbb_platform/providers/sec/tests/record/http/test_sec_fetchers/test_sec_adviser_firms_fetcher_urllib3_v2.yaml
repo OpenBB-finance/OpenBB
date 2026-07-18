@@ -1,0 +1,106 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+    method: GET
+    uri: https://api.adviserinfo.sec.gov/search/firm?nrows=100&query=blackrock
+  response:
+    body:
+      string: !!binary |
+        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
+        Sv6EQ42/YmB+BjWe/weSHaP2nEwAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token
+      Access-Control-Allow-Methods:
+      - DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-RAY:
+      - a1cfdc5d8cba1143-ORD
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 18 Jul 2026 07:44:22 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 6a7b4b41112304057a352630e969f514.cloudfront.net (CloudFront)
+      X-Content-Type-Options:
+      - nosniff
+      cf-cache-status:
+      - DYNAMIC
+      strict-transport-security:
+      - max-age=31536000
+      x-amz-apigw-id:
+      - AsRBoFCHoAMEUJw=
+      x-amz-cf-id:
+      - pEsJXm1paZYDNVbwnpXKjtAtjgQaw5ZtI3d32VniFPSw3PM-RyEuzA==
+      x-amz-cf-pop:
+      - ORD58-P5
+      x-amzn-requestid:
+      - c65c57df-aeb5-49b4-8135-ae3eb9fdd74b
+      x-amzn-trace-id:
+      - Root=1-6a5b2ed6-734c16ba10649d2a7b65bc95;Parent=62fe168d0ac5bf3d;Sampled=0;Lineage=1:75aa8d91:0
+      x-cache:
+      - Miss from cloudfront
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

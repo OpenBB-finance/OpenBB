@@ -205,18 +205,34 @@ async def institutions_search(
 
 
 @router.command(
-    model="SecInvestmentAdvisers",
+    model="SecAdviserFirms",
     examples=[
         APIEx(parameters={"query": "blackrock", "provider": "sec"}),
     ],
 )
-async def investment_advisers(
+async def adviser_firms(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
     """Search SEC investment adviser firms."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SecAdviserIndividuals",
+    examples=[
+        APIEx(parameters={"query": "john smith", "provider": "sec"}),
+    ],
+)
+async def adviser_individuals(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search SEC adviser individuals, with one row per current employer."""
     return await OBBject.from_query(Query(**locals()))
 
 
