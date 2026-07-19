@@ -275,7 +275,18 @@ class SecCompanyFilingsFetcher(
         """Transform the data."""
         # pylint: disable=import-outside-toplevel
         from numpy import nan
+        from openbb_core.provider.utils.helpers import run_async
         from pandas import NA, DataFrame, to_datetime
+
+        # XOM got a new CIK in July 2026, so all historical filings are under the old CIK.
+        # This is special handling for the transition.
+        if query.symbol == "XOM":
+            query.symbol = None
+            query.cik = "0000034088"
+            legacy_filings = run_async(
+                SecCompanyFilingsFetcher.aextract_data, query, None
+            )
+            data.extend(legacy_filings)
 
         if not data:
             raise EmptyDataError(
