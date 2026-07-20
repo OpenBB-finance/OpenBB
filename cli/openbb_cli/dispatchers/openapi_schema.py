@@ -578,6 +578,18 @@ def build_reference(
 def _parse_spec_text(text: str, *, content_type: str = "") -> dict[str, Any]:
     """Parse a fetched spec body, choosing JSON or YAML by content sniff."""
     stripped = text.lstrip()
+    looks_html = "html" in content_type.lower() or stripped[:15].lower().startswith(
+        ("<!doctype html", "<html")
+    )
+    if looks_html:
+        embedded = _extract_embedded_spec(text)
+        if embedded is not None:
+            return embedded
+        raise ValueError(
+            "the URL returned an HTML page, not an OpenAPI document. "
+            "If this is a GitHub 'blob' link, use the raw file URL "
+            "(or append '?raw=true')."
+        )
     if stripped.startswith(("{", "[")):
         return json.loads(text)
     if "yaml" in content_type or "yml" in content_type:

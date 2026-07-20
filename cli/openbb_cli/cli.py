@@ -14,6 +14,16 @@ from typing import Any
 from openbb_cli.utils.utils import change_logging_sub_app, reset_logging_sub_app
 
 
+def _debug_enabled() -> bool:
+    """Return True when debug output (full tracebacks) is requested."""
+    return os.environ.get("OPENBB_DEBUG_MODE", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
 def _materialize_socrata_spec(story_source: str) -> str:
     """Build a Socrata spec from a story and write it to a temp file."""
     import tempfile
@@ -379,6 +389,10 @@ def _launch_repl(
             sys.stderr.write(
                 f"failed to fetch the OpenAPI document from {server_url}: {exc}\n"
             )
+            if _debug_enabled():
+                import traceback
+
+                sys.stderr.write(traceback.format_exc())
             return 2
         spec_doc = build_spec_document(openapi, base_url=server_url)
         if not spec_doc["commands"]:
@@ -471,6 +485,10 @@ def _generate_spec(
         sys.stderr.write(
             f"failed to fetch the OpenAPI document from {server_url}: {exc}\n"
         )
+        if _debug_enabled():
+            import traceback
+
+            sys.stderr.write(traceback.format_exc())
         return 2
     if openapi_path and (
         openapi_path.startswith("http://") or openapi_path.startswith("https://")

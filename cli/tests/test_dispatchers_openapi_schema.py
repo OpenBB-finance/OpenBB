@@ -590,6 +590,27 @@ def test_parse_spec_text_recognizes_json_array_form():
     assert _parse_spec_text("[1, 2]") == [1, 2]
 
 
+def test_parse_spec_text_rejects_html_page_before_yaml_parser():
+    """An HTML page (e.g. a GitHub blob URL) is caught before the YAML parser."""
+    from openbb_cli.dispatchers.openapi_schema import _parse_spec_text
+
+    html = (
+        "<!DOCTYPE html><html><head><style>--tab-size-preference: 4;</style>"
+        "</head><body>page</body></html>"
+    )
+    with pytest.raises(ValueError, match="HTML page"):
+        _parse_spec_text(html, content_type="text/html; charset=utf-8")
+
+
+def test_parse_spec_text_returns_embedded_spec_from_html():
+    """HTML that embeds an OpenAPI spec (Swagger UI) is still parsed."""
+    from openbb_cli.dispatchers.openapi_schema import _parse_spec_text
+
+    html = '<html><script>var spec = {"openapi": "3.0.0", "paths": {}};</script></html>'
+    out = _parse_spec_text(html, content_type="text/html")
+    assert out.get("openapi") == "3.0.0"
+
+
 def test_fetch_openapi_default_path_and_user_agent(monkeypatch):
     """Default appends ``/openapi.json`` and merges the default User-Agent."""
     from openbb_cli.dispatchers import openapi_schema

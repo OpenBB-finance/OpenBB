@@ -1006,6 +1006,42 @@ def test_generate_spec_errors_when_fetch_fails(tmp_path, capsys):
     assert not (tmp_path / "x.spec").exists()
 
 
+def test_generate_spec_fetch_failure_hides_traceback_by_default(
+    tmp_path, capsys, monkeypatch
+):
+    """Without OPENBB_DEBUG_MODE the failure stays a one-line message."""
+    import httpx
+
+    monkeypatch.delenv("OPENBB_DEBUG_MODE", raising=False)
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        side_effect=httpx.ConnectError("connection refused"),
+    ):
+        rc = cli._generate_spec("http://localhost:1", str(tmp_path / "x.spec"), None)
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "failed to fetch the OpenAPI document" in err
+    assert "Traceback" not in err
+
+
+def test_generate_spec_fetch_failure_shows_traceback_in_debug(
+    tmp_path, capsys, monkeypatch
+):
+    """With OPENBB_DEBUG_MODE the full traceback is emitted for diagnosis."""
+    import httpx
+
+    monkeypatch.setenv("OPENBB_DEBUG_MODE", "1")
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        side_effect=httpx.ConnectError("connection refused"),
+    ):
+        rc = cli._generate_spec("http://localhost:1", str(tmp_path / "x.spec"), None)
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "failed to fetch the OpenAPI document" in err
+    assert "Traceback" in err
+
+
 def test_generate_spec_errors_on_http_status_error(tmp_path, capsys):
     """An HTTP error status from the spec endpoint surfaces its cause."""
     import httpx
