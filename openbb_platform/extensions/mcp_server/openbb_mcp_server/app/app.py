@@ -942,7 +942,12 @@ async def stdio_main(mcp_server):
         os._exit(0)  # pylint: disable=protected-access
 
     for sig in (signal.SIGINT, signal.SIGTERM):
-        loop.add_signal_handler(sig, signal_handler)
+        try:
+            loop.add_signal_handler(sig, signal_handler)
+        except NotImplementedError:
+            # Windows event loops do not support signal handlers. The MCP client
+            # owns the stdio child process and closes it directly.
+            break
 
     logger.info("Starting OpenBB MCP Server in STDIO mode. Press Ctrl+C to stop.")
 
