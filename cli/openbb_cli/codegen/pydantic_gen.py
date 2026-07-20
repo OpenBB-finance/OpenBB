@@ -554,6 +554,7 @@ def generate_class(
     imports: set[str] = {"from pydantic import BaseModel, Field"}
     body_lines: list[str] = []
     doc_fields: list[tuple[str, str, str | None, bool, Any, bool]] = []
+    optional_object_fields: list[str] = []
 
     for raw_name, prop_schema in properties.items():
         safe_name, needs_alias = safe_field_name(raw_name)
@@ -566,6 +567,8 @@ def generate_class(
         )
         is_required = raw_name in required_set
         prop = prop_schema if isinstance(prop_schema, dict) else {}
+        if not is_required and (prop.get("type") == "object" or "properties" in prop):
+            optional_object_fields.append(safe_name)
         has_default = "default" in prop
         if not is_required and "None" not in annotation:
             annotation = f"{annotation} | None"
@@ -602,6 +605,20 @@ def generate_class(
 
     if not body_lines:
         body_lines.append("    pass")
+
+    if optional_object_fields:
+        # PHP-style serializers emit [] where the schema declares an object
+        # (empty associative array quirk); [] is never a valid JSON-object value.
+        imports.add("from pydantic import field_validator")
+        imports.add("from typing import Any")
+        names = ", ".join(repr(n) for n in optional_object_fields)
+        body_lines.append(
+            f'\n    @field_validator({names}, mode="before")\n'
+            "    @classmethod\n"
+            "    def _empty_list_to_none(cls, v: Any) -> Any:\n"
+            '        """Coerce `[]` to None."""\n'
+            "        return None if v == [] else v"
+        )
 
     summary = docstring or class_name
     doc_block = _render_class_docstring(summary, doc_fields)
