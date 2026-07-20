@@ -1,5 +1,6 @@
 """Unit tests for app module."""
 
+import argparse
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -54,6 +55,37 @@ def test_read_system_prompt_file(tmp_path):
     prompt_file.write_text("Test prompt")
     assert _read_system_prompt_file(str(prompt_file)) == "Test prompt"
     assert _read_system_prompt_file("nonexistent.txt") is None
+
+
+@patch("openbb_mcp_server.app.app.create_mcp_server")
+@patch("openbb_mcp_server.app.app.MCPService")
+@patch("openbb_mcp_server.app.app.parse_args")
+@patch("openbb_mcp_server.app.app.logger")
+def test_main_logs_exception_type_on_fatal_error(
+    mock_logger, mock_parse_args, _mock_service, mock_create
+):
+    """A fatal error with an empty str() still logs its type, not a blank message."""
+    from openbb_mcp_server.app.app import main
+
+    mock_parse_args.return_value = argparse.Namespace(
+        transport="stdio",
+        imported_app=None,
+        uvicorn_config={},
+        allowed_categories=None,
+        default_categories=None,
+        tool_discovery=None,
+        system_prompt=None,
+        server_prompts=None,
+    )
+    # NotImplementedError() has an empty str(); the old logger.error left the line blank.
+    mock_create.side_effect = NotImplementedError()
+
+    with pytest.raises(SystemExit) as exc_info:
+        main()
+
+    assert exc_info.value.code == 1
+    mock_logger.exception.assert_called_once()
+    assert "NotImplementedError" in mock_logger.exception.call_args.args
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
