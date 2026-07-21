@@ -1,0 +1,170 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, zstd
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.niftyindices.com/IndexConstituent/ind_nifty50list.csv
+  response:
+    body:
+      string: 'Company Name,Industry,Symbol,Series,ISIN Code
+
+        Adani Enterprises Ltd.,Metals & Mining,ADANIENT,EQ,INE423A01024
+
+        Adani Ports and Special Economic Zone Ltd.,Services,ADANIPORTS,EQ,INE742F01042
+
+        Apollo Hospitals Enterprise Ltd.,Healthcare,APOLLOHOSP,EQ,INE437A01024
+
+        Asian Paints Ltd.,Consumer Durables,ASIANPAINT,EQ,INE021A01026
+
+        Axis Bank Ltd.,Financial Services,AXISBANK,EQ,INE238A01034
+
+        Bajaj Auto Ltd.,Automobile and Auto Components,BAJAJ-AUTO,EQ,INE917I01010
+
+        Bajaj Finance Ltd.,Financial Services,BAJFINANCE,EQ,INE296A01032
+
+        Bajaj Finserv Ltd.,Financial Services,BAJAJFINSV,EQ,INE918I01026
+
+        Bharat Electronics Ltd.,Capital Goods,BEL,EQ,INE263A01024
+
+        Bharti Airtel Ltd.,Telecommunication,BHARTIARTL,EQ,INE397D01024
+
+        Cipla Ltd.,Healthcare,CIPLA,EQ,INE059A01026
+
+        Coal India Ltd.,Oil Gas & Consumable Fuels,COALINDIA,EQ,INE522F01014
+
+        Dr. Reddy''s Laboratories Ltd.,Healthcare,DRREDDY,EQ,INE089A01031
+
+        Eicher Motors Ltd.,Automobile and Auto Components,EICHERMOT,EQ,INE066A01021
+
+        Eternal Ltd.,Consumer Services,ETERNAL,EQ,INE758T01015
+
+        Grasim Industries Ltd.,Construction Materials,GRASIM,EQ,INE047A01021
+
+        HCL Technologies Ltd.,Information Technology,HCLTECH,EQ,INE860A01027
+
+        HDFC Bank Ltd.,Financial Services,HDFCBANK,EQ,INE040A01034
+
+        HDFC Life Insurance Company Ltd.,Financial Services,HDFCLIFE,EQ,INE795G01014
+
+        Hindalco Industries Ltd.,Metals & Mining,HINDALCO,EQ,INE038A01020
+
+        Hindustan Unilever Ltd.,Fast Moving Consumer Goods,HINDUNILVR,EQ,INE030A01027
+
+        ICICI Bank Ltd.,Financial Services,ICICIBANK,EQ,INE090A01021
+
+        ITC Ltd.,Fast Moving Consumer Goods,ITC,EQ,INE154A01025
+
+        Infosys Ltd.,Information Technology,INFY,EQ,INE009A01021
+
+        InterGlobe Aviation Ltd.,Services,INDIGO,EQ,INE646L01027
+
+        JSW Steel Ltd.,Metals & Mining,JSWSTEEL,EQ,INE019A01038
+
+        Jio Financial Services Ltd.,Financial Services,JIOFIN,EQ,INE758E01017
+
+        Kotak Mahindra Bank Ltd.,Financial Services,KOTAKBANK,EQ,INE237A01036
+
+        Larsen & Toubro Ltd.,Construction,LT,EQ,INE018A01030
+
+        Mahindra & Mahindra Ltd.,Automobile and Auto Components,M&M,EQ,INE101A01026
+
+        Maruti Suzuki India Ltd.,Automobile and Auto Components,MARUTI,EQ,INE585B01010
+
+        Max Healthcare Institute Ltd.,Healthcare,MAXHEALTH,EQ,INE027H01010
+
+        NTPC Ltd.,Power,NTPC,EQ,INE733E01010
+
+        Nestle India Ltd.,Fast Moving Consumer Goods,NESTLEIND,EQ,INE239A01024
+
+        Oil & Natural Gas Corporation Ltd.,Oil Gas & Consumable Fuels,ONGC,EQ,INE213A01029
+
+        Power Grid Corporation of India Ltd.,Power,POWERGRID,EQ,INE752E01010
+
+        Reliance Industries Ltd.,Oil Gas & Consumable Fuels,RELIANCE,EQ,INE002A01018
+
+        SBI Life Insurance Company Ltd.,Financial Services,SBILIFE,EQ,INE123W01016
+
+        Shriram Finance Ltd.,Financial Services,SHRIRAMFIN,EQ,INE721A01047
+
+        State Bank of India,Financial Services,SBIN,EQ,INE062A01020
+
+        Sun Pharmaceutical Industries Ltd.,Healthcare,SUNPHARMA,EQ,INE044A01036
+
+        Tata Consultancy Services Ltd.,Information Technology,TCS,EQ,INE467B01029
+
+        Tata Consumer Products Ltd.,Fast Moving Consumer Goods,TATACONSUM,EQ,INE192A01025
+
+        Tata Motors Passenger Vehicles Ltd.,Automobile and Auto Components,TMPV,EQ,INE155A01022
+
+        Tata Steel Ltd.,Metals & Mining,TATASTEEL,EQ,INE081A01020
+
+        Tech Mahindra Ltd.,Information Technology,TECHM,EQ,INE669C01036
+
+        Titan Company Ltd.,Consumer Durables,TITAN,EQ,INE280A01028
+
+        Trent Ltd.,Consumer Services,TRENT,EQ,INE849A01020
+
+        UltraTech Cement Ltd.,Construction Materials,ULTRACEMCO,EQ,INE481G01011
+
+        Wipro Ltd.,Information Technology,WIPRO,EQ,INE075A01022
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1341'
+      Content-Security-Policy:
+      - default-src 'self'; script-src 'report-sample' 'unsafe-inline' 'unsafe-eval'
+        'self' https://ajax.aspnetcdn.com https://www.googletagmanager.com https://liveindexsa.niftyindices.com/
+        https://code.jquery.com https://cdnjs.cloudflare.com https://d2i2wahzwrm1n5.cloudfront.net
+        https://www.gstatic.com http://kendo.cdn.telerik.com https://www.google.com
+        https://cdn.siteimprove.net https://cdn.jsdelivr.net; style-src 'report-sample'
+        'unsafe-inline' 'self' https://liveindexsa.niftyindices.com/ https://fonts.googleapis.com
+        https://d35islomi5rx1v.cloudfront.net; object-src 'none'; base-uri 'self';
+        connect-src 'self' https://liveindexsa.niftyindices.com/ https://www.google-analytics.com
+        https://cdn.jsdelivr.net; font-src 'self' https://liveindexsa.niftyindices.com/
+        https://cdn.blerp.com https://fonts.gstatic.com; frame-src 'self' https://www.google.com;
+        frame-ancestors 'self' https://www.google.com; img-src 'self' https://liveindexsa.niftyindices.com/;
+        manifest-src 'self'; media-src 'self'; report-uri https://new.niftyindices.com/;
+        worker-src 'none';
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Wed, 15 Jul 2026 09:24:48 GMT
+      ETag:
+      - '"805529a4ba13dd1:0"'
+      Last-Modified:
+      - Tue, 14 Jul 2026 18:00:23 GMT
+      Strict-Transport-Security:
+      - max-age=15768000 ; includeSubDomains ; preload
+      Vary:
+      - Accept-Encoding
+      referrer-policy:
+      - strict-origin-when-cross-origin
+      request-context:
+      - appId=cid-v1:e1ac18a0-4a17-4467-980e-b6788780204d
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
