@@ -237,6 +237,38 @@ async def adviser_individuals(
 
 
 @router.command(
+    model="SecAdviserProfile",
+    examples=[
+        APIEx(parameters={"crd": "148826", "provider": "sec"}),
+    ],
+)
+async def adviser_profile(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a structured SEC investment adviser firm profile by CRD number."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SecAdviserDocuments",
+    examples=[
+        APIEx(parameters={"crd": "148826", "provider": "sec"}),
+    ],
+)
+async def adviser_documents(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """List available Form ADV and brochure documents by firm CRD."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="SchemaFiles",
     examples=[
         APIEx(parameters={"provider": "sec"}),

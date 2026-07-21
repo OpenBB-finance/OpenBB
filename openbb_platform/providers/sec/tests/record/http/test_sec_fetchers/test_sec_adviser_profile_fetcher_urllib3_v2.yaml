@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+    method: GET
+    uri: https://api.adviserinfo.sec.gov/search/firm/148826
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/8VXbW/iOBD+K1E+tVK15AVart+yebn6GgJK0q66S1W5iQHfhZhLnKqo6n+/cZxQ
+        ukDpdqnuA0jMPDOP58Xj4UmdUV6q508qZxxn6rl+0kh+PKl3fLkg6rl6l7JEPVHvSlYVCRFgihOW
+        c5Jz0D6N1Xtc0gTlE1bMMacsH6vnCogntJijVPzQu/2+cXqiSFmA50RIx6qNYstxfcVyrlE0DCPF
+        9+2xKnCMz0ghgKVA/hirVnThu6FiWyOw8QVQOQpd/wYFf0pzNzyWpq3TKA6v7PgqdB3FQ4EV2G7L
+        c/MecxRcu1E8cINYsYdBdOXHAnsUXbjBd/gcg3QwsgLwhQYoBpI9/i6GvgPaSEGKP9oHdq/C4ciF
+        Y+5FWhGyXo7gdS47ltLqji6GYHcJX8ct5Hivv41SbGgQ2pW/W4GnOErYoqmwZcfo2pWOaIksD+ov
+        NTdSmJEpTpYhWbCCRxzzqpTqgHElJP9WpOQklVCcPng0o/nUwbxxr512dL1jaMaphMxwOUonrwjg
+        OK4dVPN7Ukj5mdY/1TZ08bI9cl/Tx+qzVIvjWmlakLJ0CMc0K5veZpMJTUijamQlLwjheuPF1JSv
+        IbIvXd9XRr713ZKUEmRIkOcPh6Gi96QqoXwp5QNkDVCLXwXr+Q2OVTkvGuhVTiFBikiduCtCv2Bg
+        lNksbexMUzdFSHVMOKnNcc6jqlgUtCTuI57LW3Yrvc8XNKvvMeQZ1woIjqRUiJAjBD2jZ/YEmK+y
+        hqw7FDjXzRGnJCcFnCgd5lINdTKaOsExtvk73fDnoXBwBwX6sMuzHS5jK3bf4bROR0GmFGpW5+Ol
+        P0VGSpL8VUECU5q0Q2+sro5brvWytVgU7KFtYzKZELB4IC9trHd6QKprLWnOOHSXbPYV398bZDbO
+        KAzdnOJNzqB2oYCPN3l1QWzobQq3cLA8F2ZJxT+PxMtYQdOPRmF06hFg7PaPMsgko+XnRXAJj2GV
+        /LP8IIPZMfVXvbzJMKDJjE5x/psM5m6GmDziT0zRN1zOoJ85O0QI9TUhj2S+4PLtAM9W+gDjrFib
+        ZayY1m+RvLhehqftrKYl3NSwvtukIOnrF6Osp+nP2qDVuqG1Uwde31QLx9sBz3LaZMs2Elasrv7L
+        JmX8YWimVs+I1Ra1uRptJhgWoLWXWNhGW7WyeD/xma/5NpeUw/HBU3Wm6dv5om+u4waKHztfDkjY
+        NXp6fzvhauM5cpBnr3aoLQP+Deo3M9vdQby21B2GzdT7ve6+MNuC/h9hvmd3/bUT7WlqfU8y5JZ7
+        0M7u9XaQemH99ySyokNVu6tr5p4AI9jdrdEwdJVR7H75zarX4/a+YMmsKkg7ZBe44IZbD2kxe1/N
+        whabvqzVYtK14muY46tdDmLpG92zdbO3/0OKH7B9D+0L+Psn+VIYvFF1P6ect0N3/dG9fX6GBRm+
+        /wPDl3nfEg8AAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token
+      Access-Control-Allow-Methods:
+      - DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-RAY:
+      - a1e860f9a89e42a0-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Jul 2026 07:09:12 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=h8HA1V_dTWSEO9Nfbba4oDmnJiaGU__cxNsLIzxH7Z4-1784617752.5821536-1.0.1.1-419cGVUBNYHJRjryC8qXLr.o4Ro5T0co5yqEiJWVFTiIPBD_BWrng6p0TbeZpzn9B_UpUd7NhQc9ZE6c9C6LTl6KadHB6Iebv6wIlgHZS0JPjJ1JH55BuxstL2nJjDRY;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.adviserinfo.sec.gov; Expires=Tue,
+        21 Jul 2026 07:39:12 GMT
+      - _cfuvid=WqGBB1VQjZMMQvszVVzXCE_r_FHfvMXxJ08r0rMCUK0-1784617752.5821536-1.0.1.1-jNnflld67EdlyGa8LW5zfnfgDzY.Sb_VKyS04VpjoFg;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.adviserinfo.sec.gov
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 6546ac91279664c434057761c7bb99e8.cloudfront.net (CloudFront)
+      X-Content-Type-Options:
+      - nosniff
+      cf-cache-status:
+      - DYNAMIC
+      strict-transport-security:
+      - max-age=31536000
+      x-amz-apigw-id:
+      - A2Er7GV2oAMEqsA=
+      x-amz-cf-id:
+      - 9rxq_t5FiU3IQLcatCSUGZfgaXayM1cLmfM_Rw7n54mk-KaYsyyugQ==
+      x-amz-cf-pop:
+      - JFK50-P13
+      x-amzn-requestid:
+      - f33aa6d5-f434-47e4-8471-1efa8f0022d4
+      x-amzn-trace-id:
+      - Root=1-6a5f1b18-2884ff4550e2a17672098f35;Parent=1b8220d8a1d140dc;Sampled=0;Lineage=1:1cab0193:0
+      x-cache:
+      - Miss from cloudfront
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

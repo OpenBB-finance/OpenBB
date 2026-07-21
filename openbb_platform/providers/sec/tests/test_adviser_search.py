@@ -115,8 +115,12 @@ def test_firm_search_normalizes_flat_results(
         {
             "crd": "164594",
             "sec_number": "801-76926",
+            "sec_registration_type": "SEC Registered",
             "name": "BLACKROCK ADVISORS, LLC",
             "matched_name": None,
+            "matched_name_type": None,
+            "matched_crd": None,
+            "matched_status": None,
             "status": "ACTIVE",
             "branch_count": 7,
             "address_line_1": "50 HUDSON YARDS",
@@ -170,6 +174,67 @@ def test_firm_search_exposes_an_alias_match() -> None:
     assert record is not None
     assert record["name"] == "ROSSI FINANCIAL GROUP"
     assert record["matched_name"] == "BLACKROCK FINANCIAL GROUP"
+    assert record["matched_name_type"] == "Alternate Name"
+
+
+def test_firm_search_exposes_a_relying_adviser_match() -> None:
+    """Relying-adviser matches include the matched firm's identity and status."""
+    sources = adviser_search._parse_iapd_sources(
+        {
+            "hits": {
+                "hits": [
+                    {
+                        "_source": {
+                            "firm_source_id": "128598",
+                            "firm_ia_full_sec_number": "801-117335",
+                            "firm_name": "J.P. MORGAN INVESTMENT MANAGEMENT INC.",
+                            "firm_ia_scope": "ACTIVE",
+                            "firm_relying_advisors": [
+                                {
+                                    "firmId": "319130",
+                                    "name": "GIM EM MANAGER, LLC",
+                                    "status": "ACTIVE",
+                                }
+                            ],
+                        },
+                        "highlight": {
+                            "firm_other_names": [
+                                "GIM ADVISORY SERVICES, LLC (RELYING ADVISER)"
+                            ],
+                            "firm_relying_advisors.name": [
+                                "<em>GIM EM MANAGER</em>, LLC"
+                            ],
+                        },
+                    }
+                ]
+            }
+        },
+        query="GIM EM MANAGER",
+    )
+
+    record = adviser_search._firm_record(sources[0])
+
+    assert record is not None
+    assert record["matched_name"] == "GIM EM MANAGER, LLC"
+    assert record["matched_name_type"] == "Relying Adviser"
+    assert record["matched_crd"] == "319130"
+    assert record["matched_status"] == "ACTIVE"
+
+
+@pytest.mark.parametrize(
+    ("sec_number", "registration_type"),
+    [
+        ("801-70860", "SEC Registered"),
+        ("802-12345", "SEC Exempt Reporting Adviser"),
+        (None, None),
+    ],
+)
+def test_firm_search_classifies_sec_registration(
+    sec_number: str | None,
+    registration_type: str | None,
+) -> None:
+    """Official SEC number prefixes identify registered and exempt advisers."""
+    assert adviser_search._sec_registration_type(sec_number) == registration_type
 
 
 def test_firm_search_filters_broker_dealers() -> None:
@@ -250,9 +315,12 @@ def test_individual_search_normalizes_flat_results(monkeypatch) -> None:
             "first_name": "JOHN",
             "middle_name": "T.",
             "last_name": "SMITH",
+            "suffix": None,
+            "matched_name": None,
             "status": "Active",
             "broker_dealer_status": "InActive",
             "industry_start_date": date(2001, 5, 1),
+            "industry_days": None,
             "employment_count": 3,
             "finra_registration_count": 1,
             "current_firm_crd": "104555",
@@ -265,9 +333,12 @@ def test_individual_search_normalizes_flat_results(monkeypatch) -> None:
             "first_name": "JOHN",
             "middle_name": "T.",
             "last_name": "SMITH",
+            "suffix": None,
+            "matched_name": None,
             "status": "Active",
             "broker_dealer_status": "InActive",
             "industry_start_date": date(2001, 5, 1),
+            "industry_days": None,
             "employment_count": 3,
             "finra_registration_count": 1,
             "current_firm_crd": "7784",
@@ -292,6 +363,39 @@ def test_individual_search_filters_non_advisers(status: str | None) -> None:
     )
 
     assert records == []
+
+
+def test_individual_search_exposes_suffix_alias_and_industry_days() -> None:
+    """Individual search retains scalar identity fields from IAPD."""
+    sources = adviser_search._parse_iapd_sources(
+        {
+            "hits": {
+                "hits": [
+                    {
+                        "_source": {
+                            "ind_source_id": "2265605",
+                            "ind_firstname": "John",
+                            "ind_middlename": "Charles",
+                            "ind_lastname": "Smith",
+                            "ind_namesuffix": "Jr",
+                            "ind_other_names": ["CHUCK SMITH"],
+                            "ind_ia_scope": "InActive",
+                            "ind_industry_days_iapd": "7190",
+                        },
+                        "highlight": {"ind_other_names": ["<em>CHUCK SMITH</em>"]},
+                    }
+                ]
+            }
+        },
+        entity="individual",
+        query="Chuck Smith",
+    )
+
+    records = adviser_search._individual_records(sources[0])
+
+    assert records[0]["suffix"] == "Jr"
+    assert records[0]["matched_name"] == "CHUCK SMITH"
+    assert records[0]["industry_days"] == 7190
 
 
 @pytest.mark.parametrize(
@@ -400,7 +504,7 @@ def test_parser_rejects_iapd_application_error() -> None:
 
 def test_firm_search_rejects_malformed_address() -> None:
     """Malformed embedded address JSON is an explicit provider error."""
-    with pytest.raises(OpenBBError, match="address details contain invalid JSON"):
+    with pytest.raises(OpenBBError, match="invalid JSON in firm address details"):
         adviser_search._firm_record(
             {
                 "firm_source_id": "164594",
@@ -452,8 +556,12 @@ def test_adviser_models_are_flat() -> None:
         {
             "crd": "164594",
             "sec_number": None,
+            "sec_registration_type": None,
             "name": "BLACKROCK ADVISORS, LLC",
             "matched_name": None,
+            "matched_name_type": None,
+            "matched_crd": None,
+            "matched_status": None,
             "status": "ACTIVE",
             "branch_count": 7,
         }
@@ -464,9 +572,12 @@ def test_adviser_models_are_flat() -> None:
             "first_name": "JOHN",
             "middle_name": "T.",
             "last_name": "SMITH",
+            "suffix": None,
+            "matched_name": None,
             "status": "Active",
             "broker_dealer_status": "InActive",
             "industry_start_date": date(2001, 5, 1),
+            "industry_days": None,
             "employment_count": 3,
             "finra_registration_count": 1,
             "current_firm_crd": "104555",
