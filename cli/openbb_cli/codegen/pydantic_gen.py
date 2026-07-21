@@ -54,8 +54,35 @@ class GeneratedClass:
         return out
 
 
+def _to_snake_case(string: str) -> str:
+    """Convert a string to snake_case.
+
+    Mirrors ``openbb_core.provider.utils.helpers.to_snake_case`` so that
+    generated field names match the casing the rest of the platform
+    (``provider_interface.py``) assumes for every non-standard provider field.
+    """
+    s1 = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", string)
+    return (
+        re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1)
+        .lower()
+        .replace(" ", "_")
+        .replace("__", "_")
+    )
+
+
 def safe_field_name(name: str) -> tuple[str, bool]:
-    """Normalize a JSON property name to a valid Python identifier.
+    """Normalize a JSON property name to a valid, snake_case Python identifier.
+
+    The platform's field-exposure layer (``ProviderInterface._extract_params``
+    / ``_extract_data``) unconditionally renders every non-standard provider
+    field through ``to_snake_case`` for its public docstrings and extra-params
+    dataclasses, without touching the underlying Pydantic model. If the model
+    field itself is left in its on-the-wire casing (e.g. ``datasetId``), the
+    two views of the field name diverge and the parameter can no longer be
+    supplied through the standard ``obb.<namespace>.<command>()`` interface:
+    the "documented" snake_case name isn't a real field, and the real
+    camelCase name isn't recognized by the params machinery either. Aliasing
+    to snake_case here keeps the generated model consistent with that layer.
 
     Returns ``(safe_name, needs_alias)``.
     """
@@ -64,6 +91,7 @@ def safe_field_name(name: str) -> tuple[str, bool]:
         cleaned = "field"
     if cleaned[0].isdigit():
         cleaned = f"f_{cleaned}"
+    cleaned = _to_snake_case(cleaned)
     if keyword.iskeyword(cleaned) or cleaned in _PYTHON_RESERVED_FIELD_NAMES:
         cleaned = f"{cleaned}_"
     return (cleaned, cleaned != name)

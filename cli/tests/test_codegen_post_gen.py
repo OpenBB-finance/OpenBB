@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import ast
 
+import pytest
+
 from openbb_cli.codegen import post_gen as pg
 
 # --- _module_name_from_command ---
@@ -492,8 +494,8 @@ def test_render_signature_no_params_renders_empty_signature():
 
 def test_render_signature_renders_required_and_optional_with_defaults():
     params = [
-        ("data", "list[X]", "Body data.", True, None),
-        ("limit", "int", "Limit.", False, 5),
+        ("data", "list[X]", "Body data.", True, None, "data"),
+        ("limit", "int", "Limit.", False, 5, "limit"),
     ]
     out = pg._render_signature("foo", params, "OBBject[list[FooData]]")
     assert "async def foo(" in out
@@ -738,6 +740,72 @@ def test_generate_post_command_module_body_props_only_object_form():
     assert "_body: dict[str, Any] = {" in src
     assert "'alpha': alpha," in src
     assert "'beta': beta," in src
+
+
+def test_generate_post_command_module_camel_case_body_field_is_callable():
+    """Regression test: a camelCase body field (very common in real OpenAPI
+    specs) must produce a *callable* module, not just one that parses.
+
+    Before this fix, ``_signature_params`` declared the parameter using the
+    raw on-the-wire name (``searchFields``) while ``_render_body_block``
+    referenced ``safe_field_name(name)`` (``search_fields``) when building
+    the JSON body -- two different identifiers, so ``ast.parse`` succeeded
+    (both are individually valid names) but every real call raised
+    ``NameError: name 'search_fields' is not defined``. Actually exec'ing
+    the generated module and calling the function is the only way to catch
+    that class of bug; static assertions on generated text are not enough.
+    """
+    spec = pg.PostCommandSpec(
+        name="tools.search",
+        cmd_spec={
+            "url_path": "/search",
+            "method": "post",
+            "description": "Search.",
+            "request_body_schema": {
+                "type": "object",
+                "properties": {
+                    "search": {"type": "string"},
+                    "searchFields": {"type": "string"},
+                },
+            },
+            "response_schema": {"type": "object"},
+        },
+        base_url="https://api.example.com",
+        api_prefix="",
+        provider_name="tools",
+    )
+    out = pg.generate_post_command_module(spec)
+    src = out.source
+    ast.parse(src)
+    # The signature declares the safe (snake_case) identifier; the wire key
+    # sent in the JSON body stays the original camelCase from the spec.
+    assert "search_fields: str = None," in src
+    assert "'searchFields': search_fields," in src
+
+    # The generated module's `from ....utils import unpack_response` is a
+    # real relative import inside the eventual installed package; it has no
+    # parent package here, so stub it out -- this test only cares whether
+    # the *signature and body variable names agree*, not the response
+    # unpacking helper.
+    stubbed_src = src.replace(
+        "from ....utils import unpack_response",
+        "def unpack_response(payload): return [], {}",
+    )
+    namespace: dict = {}
+    exec(compile(stubbed_src, "<generated tools.search>", "exec"), namespace)  # noqa: S102
+    coro = namespace["tools_search"](search="q", search_fields="name")
+    try:
+        coro.send(None)
+    except StopIteration:
+        pytest.fail("Coroutine should not complete without a mocked HTTP session.")
+    except Exception as exc:  # noqa: BLE001
+        # Any failure past this point is the (real, unmocked) HTTP call
+        # itself -- proof the NameError this test guards against never
+        # happened at all.
+        assert "search_fields" not in str(exc)
+        assert not isinstance(exc, NameError)
+    finally:
+        coro.close()
 
 
 def test_generate_post_command_module_appends_period_when_description_lacks_terminator():

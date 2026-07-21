@@ -321,8 +321,15 @@ def _signature_params(
     array_field: str | None,
     array_annotation: str | None,
     has_credentials: bool,
-) -> list[tuple[str, str, str | None, bool, Any]]:
-    """Build the function parameter list (name, annotation, description, required, default).
+) -> list[tuple[str, str, str | None, bool, Any, str]]:
+    """Build the function parameter list (safe_name, annotation, description, required, default, raw_name).
+
+    ``safe_name`` is what actually gets declared in the ``async def`` signature
+    and referenced in the function body (snake_case, aliased via
+    ``safe_field_name`` exactly like the sibling Pydantic-model generator).
+    ``raw_name`` is the original on-the-wire key from the spec, kept alongside
+    so ``_render_body_block`` can still emit the correct JSON/query key while
+    referencing the Python-valid variable.
 
     Parameters
     ----------
@@ -340,7 +347,7 @@ def _signature_params(
     list of tuple
         Per-parameter tuples in declaration order.
     """
-    out: list[tuple[str, str, str | None, bool, Any]] = []
+    out: list[tuple[str, str, str | None, bool, Any, str]] = []
     if has_credentials:
         out.append(
             (
@@ -349,10 +356,12 @@ def _signature_params(
                 "Provides access to user-configured credentials.",
                 True,
                 None,
+                "cc",
             )
         )
     if array_field and array_annotation:
-        out.append((array_field, array_annotation, "Body data rows.", True, None))
+        safe = safe_field_name(array_field)[0]
+        out.append((safe, array_annotation, "Body data rows.", True, None, array_field))
     body_props = (cmd_spec.get("request_body_schema") or {}).get("properties") or {}
     body_required = set(
         (cmd_spec.get("request_body_schema") or {}).get("required") or []
@@ -369,13 +378,15 @@ def _signature_params(
                 "choices": schema.get("enum"),
             }
         )
+        safe = safe_field_name(name)[0]
         out.append(
             (
-                name,
+                safe,
                 ann,
                 schema.get("description") or schema.get("title"),
                 name in body_required,
                 schema.get("default"),
+                name,
             )
         )
     for raw in filter_user_params(cmd_spec.get("parameters") or []):
@@ -383,13 +394,15 @@ def _signature_params(
         if not name:
             continue
         ann = _python_type_from_param(raw)
+        safe = safe_field_name(name)[0]
         out.append(
             (
-                name,
+                safe,
                 ann,
                 raw.get("help"),
                 bool(raw.get("required")),
                 raw.get("default"),
+                name,
             )
         )
     out.sort(key=lambda entry: (0 if entry[0] == "cc" else 1, 0 if entry[3] else 1))
@@ -398,7 +411,7 @@ def _signature_params(
 
 def _render_signature(
     func_name: str,
-    params: list[tuple[str, str, str | None, bool, Any]],
+    params: list[tuple[str, str, str | None, bool, Any, str]],
     return_annotation: str,
 ) -> str:
     """Render ``async def func_name(...) -> return_annotation:`` lines.
@@ -420,7 +433,7 @@ def _render_signature(
     if not params:
         return f"async def {func_name}() -> {return_annotation}:"
     lines = [f"async def {func_name}("]
-    for name, annotation, _, required, default in params:
+    for name, annotation, _, required, default, _raw_name in params:
         if required:
             lines.append(f"    {name}: {annotation},")
         else:
@@ -593,7 +606,7 @@ def _render_body_block(
     base_url: str,
     cred_lines: list[str],
     data_class: str,
-    params: list[tuple[str, str, str | None, bool, Any]],
+    params: list[tuple[str, str, str | None, bool, Any, str]],
 ) -> str:
     """Render the function body for a POST command.
 
@@ -625,25 +638,36 @@ def _render_body_block(
     """
     body_props = (cmd_spec.get("request_body_schema") or {}).get("properties") or {}
     body_field_names = list(body_props)
+    # (safe_name, raw_name) pairs for params that go in the query string, i.e.
+    # everything that isn't the context object or a request-body field.
+    # Compared and later substituted by `raw_name` (the real wire/URL key);
+    # `safe_name` is the actual Python identifier declared in the signature.
     query_field_names = [
-        n for n, _, _, _, _ in params if n != "cc" and n not in body_field_names
+        (safe_name, raw_name)
+        for safe_name, _, _, _, _, raw_name in params
+        if raw_name != "cc" and raw_name not in body_field_names
     ]
+
+    # Map each raw (wire/URL) param name to its safe Python identifier so
+    # `.format(...)` and the query-dict build below reference the name that
+    # was actually declared in the signature, not the raw spec name.
+    safe_by_raw = {raw_name: safe_name for safe_name, _, _, _, _, raw_name in params}
 
     lines: list[str] = []
     lines.extend(cred_lines)
 
     if path_params:
-        sub_args = ", ".join(f"{p}={p}" for p in path_params)
+        sub_args = ", ".join(f"{p}={safe_by_raw.get(p, p)}" for p in path_params)
         lines.append(f"    _path = {url_path_template!r}.format({sub_args})")
     else:
         lines.append(f"    _path = {url_path_template!r}")
 
     lines.append("    _query_dict: dict[str, Any] = {}")
-    for name in query_field_names:
-        if name in path_params:
+    for safe_name, raw_name in query_field_names:
+        if raw_name in path_params:
             continue
-        lines.append(f"    if {name} is not None:")
-        lines.append(f"        _query_dict[{name!r}] = {name}")
+        lines.append(f"    if {safe_name} is not None:")
+        lines.append(f"        _query_dict[{raw_name!r}] = {safe_name}")
     for canonical, info in creds.items():
         if info["in"] != "query":
             continue

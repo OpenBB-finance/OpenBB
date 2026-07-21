@@ -14,7 +14,20 @@ def test_safe_field_name_passes_through_valid_identifier():
 
 
 def test_safe_field_name_replaces_invalid_chars():
-    assert pg.safe_field_name("X-API-Key") == ("X_API_Key", True)
+    assert pg.safe_field_name("X-API-Key") == ("x_api_key", True)
+
+
+def test_safe_field_name_converts_camel_case_to_snake_case():
+    """Every non-standard provider field is rendered through
+    ``to_snake_case`` by ``ProviderInterface._extract_params`` /
+    ``_extract_data`` for its public docstrings and extra-params dataclass,
+    with no matching rename on the underlying Pydantic model. A field left
+    in its on-the-wire casing (e.g. ``datasetId``) is therefore unreachable
+    through ``obb.<namespace>.<command>()``: the "documented" snake_case
+    name isn't a real field, and the real camelCase name isn't recognized
+    by the params machinery either. Aliasing every non-snake_case field
+    keeps the generated model consistent with that layer."""
+    assert pg.safe_field_name("datasetId") == ("dataset_id", True)
 
 
 def test_safe_field_name_prefixes_leading_digit_with_letter():
@@ -434,7 +447,7 @@ def test_generate_class_field_alias_for_dotted_property_name():
         "properties": {"X-API-Key": {"type": "string"}},
     }
     cls = pg.generate_class(schema, class_name="Headers")
-    assert "X_API_Key:" in cls.source
+    assert "x_api_key:" in cls.source
     assert "alias='X-API-Key'" in cls.source
 
 
@@ -875,7 +888,8 @@ def test_optional_enum_field_emits_literal_with_optional_none_suffix():
     }
     cls = pg.generate_class(schema, class_name="Auction")
     src = cls.source
-    assert "operationDirection: Literal['P', 'S'] | None" in src
+    assert "operation_direction: Literal['P', 'S'] | None" in src
+    assert "alias='operationDirection'" in src
     # Choices still surface in the description for user-facing context.
     assert "Choices: P, S" in src
     assert "Example: P" in src
