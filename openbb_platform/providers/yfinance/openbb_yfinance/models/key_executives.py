@@ -51,7 +51,7 @@ class YFinanceKeyExecutivesFetcher(
         return YFinanceKeyExecutivesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: YFinanceKeyExecutivesQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
@@ -59,10 +59,10 @@ class YFinanceKeyExecutivesFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.abstract.error import OpenBBError
-        from yfinance import Ticker
+        from openbb_yfinance.utils.helpers import get_ticker_info
 
         try:
-            ticker = Ticker(query.symbol).get_info()
+            ticker = await get_ticker_info(query.symbol)
         except Exception as e:
             raise OpenBBError(
                 f"Error getting data for {query.symbol} -> {e.__class__.__name__}: {e}"

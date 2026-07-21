@@ -122,7 +122,7 @@ class YFinanceEquityProfileFetcher(
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
         from warnings import warn
-        from yfinance import Ticker
+        from openbb_yfinance.utils.helpers import get_ticker_info
 
         symbols = query.symbol.split(",")
         results = []
@@ -161,7 +161,7 @@ class YFinanceEquityProfileFetcher(
             result: dict = {}
             ticker: dict = {}
             try:
-                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+                ticker = await get_ticker_info(symbol)
             except Exception as e:
                 messages.append(
                     f"Error getting data for {symbol} -> {e.__class__.__name__}: {e}"

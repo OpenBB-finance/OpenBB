@@ -625,3 +625,20 @@ def df_transform_numbers(data: "DataFrame", columns: list) -> "DataFrame":
                 data[col] = data[col].apply(replace_suffix, args=(suffix, multiplier))
 
     return data
+
+
+async def get_ticker_info(symbol: str, timeout: int = 30) -> dict:
+    """Get ticker info with timeout."""
+    # pylint: disable=import-outside-toplevel
+    import asyncio  # noqa
+    from curl_cffi import requests
+    from yfinance import Ticker
+
+    def _get_info():
+        # strict session isolation
+        with requests.Session(impersonate="chrome") as session:
+            return Ticker(symbol, session=session).info
+
+    return await asyncio.wait_for(
+        asyncio.to_thread(_get_info), timeout=timeout
+    )

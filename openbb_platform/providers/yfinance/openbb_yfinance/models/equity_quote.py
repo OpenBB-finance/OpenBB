@@ -78,7 +78,7 @@ class YFinanceEquityQuoteFetcher(
         """Extract the raw data from YFinance."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from yfinance import Ticker
+        from openbb_yfinance.utils.helpers import get_ticker_info
 
         symbols = [s.strip() for s in query.symbol.split(",") if s.strip()]
         results: list[dict] = []
@@ -109,7 +109,7 @@ class YFinanceEquityQuoteFetcher(
 
         async def get_one(symbol: str) -> None:
             try:
-                ticker = await asyncio.to_thread(lambda: Ticker(symbol).get_info())
+                ticker = await get_ticker_info(symbol)
             except Exception as e:
                 warn(f"Error getting data for {symbol}: {e}")
                 return
