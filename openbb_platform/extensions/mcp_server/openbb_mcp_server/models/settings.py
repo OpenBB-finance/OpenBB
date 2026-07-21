@@ -171,6 +171,33 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_SKILLS_PROVIDERS",
     )
 
+    # Audit receipt configuration
+    audit_receipts_enabled: bool = Field(
+        default=False,
+        description="Enable signed JSONL audit receipts for MCP tool calls.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_ENABLED",
+    )
+    audit_receipts_path: str | None = Field(
+        default=None,
+        description="Path to a JSONL file where signed audit receipts are appended.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_PATH",
+    )
+    audit_receipts_private_key: str | None = Field(
+        default=None,
+        description="Ed25519 private key for receipt signing. Accepts PEM, base64 raw bytes, or hex raw bytes.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_PRIVATE_KEY",
+    )
+    audit_receipts_principal: str = Field(
+        default="unknown",
+        description="Principal identifier recorded in audit receipts.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_PRINCIPAL",
+    )
+    audit_receipts_include_arguments: bool = Field(
+        default=False,
+        description="If True, include canonical tool arguments in receipts. Defaults to hashing arguments only.",
+        alias="OPENBB_MCP_AUDIT_RECEIPTS_INCLUDE_ARGUMENTS",
+    )
+
     module_exclusion_map: dict[str, str] | None = Field(
         default=None,
         description="Key:Value pairs mapping API Tags with their Python module names."

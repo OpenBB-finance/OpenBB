@@ -193,3 +193,70 @@ def test_create_mcp_server_fixed_toolset_mode(
     # No components were processed (mocked), so _enabled_tools is empty —
     # enable is not called. In real usage it would re-enable matched tools.
     mock_mcp_instance.enable.assert_not_called()
+
+
+@patch("openbb_mcp_server.app.app.AuditReceiptMiddleware")
+@patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
+@patch("openbb_mcp_server.app.app.CategoryIndex")
+@patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
+def test_create_mcp_server_adds_audit_receipt_middleware_when_enabled(
+    mock_from_fastapi,
+    mock_category_index,
+    mock_process_routes,
+    mock_audit_middleware,
+):
+    """Audit receipt middleware is registered only when enabled."""
+    settings = MCPSettings(
+        audit_receipts_enabled=True,  # type: ignore
+        audit_receipts_path="openbb-mcp-audit.jsonl",  # type: ignore
+        audit_receipts_private_key="test-key",  # type: ignore
+    )
+    fastapi_app = FastAPI()
+
+    mock_processed_data = MagicMock()
+    mock_processed_data.route_lookup = {}
+    mock_processed_data.route_maps = []
+    mock_processed_data.prompt_definitions = []
+    mock_process_routes.return_value = mock_processed_data
+
+    mock_index_instance = MagicMock()
+    mock_index_instance.all_tool_names.return_value = set()
+    mock_category_index.return_value = mock_index_instance
+
+    mock_mcp_instance = MagicMock()
+    mock_from_fastapi.return_value = mock_mcp_instance
+    middleware = MagicMock()
+    mock_audit_middleware.from_settings.return_value = middleware
+
+    create_mcp_server(settings, fastapi_app)
+
+    mock_audit_middleware.from_settings.assert_called_once_with(settings)
+    mock_mcp_instance.add_middleware.assert_called_once_with(middleware)
+
+
+@patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
+@patch("openbb_mcp_server.app.app.CategoryIndex")
+@patch("openbb_mcp_server.app.app.FastMCP.from_fastapi")
+def test_create_mcp_server_skips_audit_receipt_middleware_by_default(
+    mock_from_fastapi, mock_category_index, mock_process_routes
+):
+    """Audit receipt middleware is disabled by default."""
+    settings = MCPSettings()
+    fastapi_app = FastAPI()
+
+    mock_processed_data = MagicMock()
+    mock_processed_data.route_lookup = {}
+    mock_processed_data.route_maps = []
+    mock_processed_data.prompt_definitions = []
+    mock_process_routes.return_value = mock_processed_data
+
+    mock_index_instance = MagicMock()
+    mock_index_instance.all_tool_names.return_value = set()
+    mock_category_index.return_value = mock_index_instance
+
+    mock_mcp_instance = MagicMock()
+    mock_from_fastapi.return_value = mock_mcp_instance
+
+    create_mcp_server(settings, fastapi_app)
+
+    mock_mcp_instance.add_middleware.assert_not_called()

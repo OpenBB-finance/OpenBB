@@ -11,6 +11,11 @@ def test_mcp_settings_defaults():
     assert settings.allowed_tool_categories is None
     assert settings.enable_tool_discovery is False
     assert settings.describe_responses is False
+    assert settings.audit_receipts_enabled is False
+    assert settings.audit_receipts_path is None
+    assert settings.audit_receipts_private_key is None
+    assert settings.audit_receipts_principal == "unknown"
+    assert settings.audit_receipts_include_arguments is False
 
 
 def test_mcp_settings_validation():
@@ -68,6 +73,24 @@ def test_get_httpx_kwargs():
     settings = MCPSettings(httpx_client_kwargs={"timeout": 120})  # type: ignore
     kwargs = settings.get_httpx_kwargs()
     assert kwargs["timeout"] == 120
+
+
+def test_audit_receipt_settings():
+    """Audit receipt settings are parsed and excluded from FastMCP kwargs."""
+    settings = MCPSettings(
+        audit_receipts_enabled=True,  # type: ignore
+        audit_receipts_path="openbb-mcp-audit.jsonl",  # type: ignore
+        audit_receipts_private_key="abc",  # type: ignore
+        audit_receipts_principal="agent-1",  # type: ignore
+        audit_receipts_include_arguments=True,  # type: ignore
+    )
+
+    assert settings.audit_receipts_enabled is True
+    assert settings.audit_receipts_path == "openbb-mcp-audit.jsonl"
+    assert settings.audit_receipts_private_key == "abc"
+    assert settings.audit_receipts_principal == "agent-1"
+    assert settings.audit_receipts_include_arguments is True
+    assert "audit_receipts_enabled" not in settings.get_fastmcp_kwargs()
 
 
 def test_update_settings():
