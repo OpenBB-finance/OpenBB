@@ -269,6 +269,23 @@ async def adviser_documents(
 
 
 @router.command(
+    model="SecAdviserUniverse",
+    examples=[
+        APIEx(parameters={"registration_type": "registered", "provider": "sec"}),
+        APIEx(parameters={"registration_type": "exempt", "provider": "sec"}),
+    ],
+)
+async def adviser_universe(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the current SEC registered or exempt adviser universe."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="SchemaFiles",
     examples=[
         APIEx(parameters={"provider": "sec"}),
