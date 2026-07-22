@@ -13,7 +13,7 @@ from openbb_cli.controllers.base_platform_controller import (
 
 @pytest.fixture
 def platform_controller():
-    """Return a platform controller."""
+    """Create a PlatformController instance for tests."""
     session = Session()  # noqa: F841
     translators = {"test_command": MagicMock(), "test_menu": MagicMock()}  # noqa: F841
     translators["test_command"]._parser = Mock(

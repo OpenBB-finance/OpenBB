@@ -1,4 +1,4 @@
-"""Publish the OpenBB Platform to PyPi."""
+"""Publish the OpenBB Platform to PyPI."""
 
 import argparse
 import logging
@@ -22,7 +22,7 @@ DIR_EXTENSIONS = ["extensions", "providers", "obbject_extensions"]
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Publish OpenBB Platform to PyPi with optional core or extensions flag."
+        description="Publish OpenBB Platform to PyPI with optional core or extensions flag."
     )
     parser.add_argument(
         "-c", "--core", action="store_true", help="Publish core packages.", dest="core"
@@ -82,7 +82,7 @@ def publish(
     verbose: bool = False,
     semver: Literal["patch", "minor", "major", "none"] = "patch",
 ):
-    """Publish the Platform to PyPi with optional core or extensions."""
+    """Publish the OpenBB Platform to PyPI with optional core or extensions."""
     package_directories = []
     if core:
         package_directories.extend(DIR_CORE)
