@@ -5,6 +5,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from openbb_platform_api.utils.widgets import build_json
+import openbb_government_us
 
 from openbb_government_us.congress.models.congress_amendments import (
     CongressAmendmentsData,
@@ -19,11 +20,7 @@ from openbb_government_us.congress.models.member_legislation import (
 )
 
 APPS_JSON = (
-    Path(__file__).parents[1]
-    / "openbb_government_us"
-    / "congress"
-    / "assets"
-    / "apps.json"
+    Path(openbb_government_us.__file__).parent / "congress" / "assets" / "apps.json"
 )
 
 LIVE_FIELDS = {

@@ -5,23 +5,26 @@ import json
 from pathlib import Path
 
 import pytest
+import openbb_government_us
 
 from openbb_government_us.congress.congress_router import get_congress_gov_apps_json
 from openbb_government_us.treasury.treasury_router import get_us_treasury_apps_json
 from openbb_government_us.usda.usda_router import get_usda_apps_json
 
+PACKAGE_ROOT = Path(openbb_government_us.__file__).parent
+
 APPS = {
     "congress": (
         get_congress_gov_apps_json,
-        Path(__file__).parents[1] / "openbb_government_us/congress/assets/apps.json",
+        PACKAGE_ROOT / "congress/assets/apps.json",
     ),
     "treasury": (
         get_us_treasury_apps_json,
-        Path(__file__).parents[1] / "openbb_government_us/treasury/assets/apps.json",
+        PACKAGE_ROOT / "treasury/assets/apps.json",
     ),
     "usda": (
         get_usda_apps_json,
-        Path(__file__).parents[1] / "openbb_government_us/usda/assets/apps.json",
+        PACKAGE_ROOT / "usda/assets/apps.json",
     ),
 }
 

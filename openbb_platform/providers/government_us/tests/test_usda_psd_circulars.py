@@ -3,6 +3,7 @@
 import asyncio
 import json
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -187,7 +188,7 @@ class TestCacheDirectory:
     def test_defaults_under_the_platform_cache(self, monkeypatch):
         """Without an override the cache lives under the platform directory."""
         monkeypatch.delenv(P.CACHE_ENV_VAR, raising=False)
-        assert P.cache_directory().endswith("/usda/psd")
+        assert Path(P.cache_directory()).as_posix().endswith("/usda/psd")
 
     def test_get_cache_opens_the_resolved_directory(self, tmp_path):
         """The store is opened at the resolved directory."""

@@ -44,6 +44,15 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["openbb_government_us"]
+include = [
+    "openbb_government_us/congress/assets/apps.json",
+    "openbb_government_us/treasury/assets/apps.json",
+    "openbb_government_us/treasury/assets/award_info.html",
+    "openbb_government_us/treasury/assets/recipient_info.html",
+    "openbb_government_us/usda/assets/apps.json",
+    "openbb_government_us/usda/assets/ers_chart.html",
+    "openbb_government_us/usda/assets/ers_viz_catalog.json",
+]
 
 [tool.hatch.build.targets.sdist]
 include = [
