@@ -1,5 +1,9 @@
 """USDA fetcher tests."""
 
+import csv
+import gzip
+from io import StringIO
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 
@@ -30,6 +34,122 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def _redact_binary_response(response: dict) -> dict:
+    headers = response.get("headers", {})
+    content_type_values = (
+        headers.get("Content-Type") or headers.get("content-type") or []
+    )
+    content_type = " ".join(content_type_values).lower()
+    content_encoding_values = (
+        headers.get("Content-Encoding") or headers.get("content-encoding") or []
+    )
+    content_encoding = " ".join(content_encoding_values).lower()
+    body = response.get("body", {})
+    payload = body.get("string")
+    if isinstance(payload, str):
+        payload_bytes = payload.encode("utf-8", errors="ignore")
+    else:
+        payload_bytes = payload
+    is_pdf = (
+        "application/pdf" in content_type or "application/octet-stream" in content_type
+    )
+    if is_pdf and isinstance(payload_bytes, (bytes, bytearray)):
+        body["string"] = b"%PDF-1.4\n%OpenBB VCR redacted binary body\n%%EOF\n"
+        response["body"] = body
+        return response
+
+    if "text/csv" not in content_type or not isinstance(
+        payload_bytes, (bytes, bytearray)
+    ):
+        return response
+
+    decoded_bytes = bytes(payload_bytes)
+    if "gzip" in content_encoding:
+        try:
+            decoded_bytes = gzip.decompress(decoded_bytes)
+        except OSError:
+            return response
+
+    try:
+        text = decoded_bytes.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return response
+
+    reader = csv.DictReader(StringIO(text))
+    raw_fieldnames = reader.fieldnames
+    if not raw_fieldnames:
+        return response
+    fieldnames = [name.strip() for name in raw_fieldnames]
+
+    rows = [
+        {((key or "").strip()): value for key, value in row.items()} for row in reader
+    ]
+    reduced_rows: list[dict[str, str]] | None = None
+
+    if {"Year", "Region or State", "Land use", "Value"}.issubset(fieldnames):
+        reduced_rows = []
+        for row in rows:
+            year_text = (row.get("Year") or "").strip()
+            geography = (row.get("Region or State") or "").strip()
+            try:
+                year_value = int(year_text)
+            except ValueError:
+                continue
+            if year_value >= 2010 and geography in {"48 States", "U.S. total"}:
+                reduced_rows.append(row)
+
+    elif {
+        "Source_table",
+        "Commodity",
+        "Year",
+        "Time_period",
+        "US_Trade",
+        "Value_type",
+        "Value",
+    }.issubset(fieldnames):
+        reduced_rows = []
+        target_table = "Top 10 U.S. export markets for soybeans, corn, wheat, and cotton, by volume"
+        for row in rows:
+            if (row.get("Source_table") or "").strip() != target_table:
+                continue
+            if (row.get("Commodity") or "").strip() != "Corn":
+                continue
+            if (row.get("Country") or "").strip() != "World total":
+                continue
+            if (row.get("US_Trade") or "").strip() != "Exports":
+                continue
+            if (row.get("Value_type") or "").strip() != "Volume":
+                continue
+            year_text = (row.get("Year") or "").strip()
+            if len(year_text) < 4 or not year_text[:4].isdigit():
+                continue
+            if int(year_text[:4]) in {2025, 2026}:
+                reduced_rows.append(row)
+
+    if reduced_rows is None or not reduced_rows:
+        return response
+
+    output = StringIO()
+    writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(reduced_rows)
+    new_payload = output.getvalue().encode("utf-8")
+
+    if "Content-Encoding" in headers:
+        headers["Content-Encoding"] = []
+    if "content-encoding" in headers:
+        headers["content-encoding"] = []
+    if "Content-Length" in headers:
+        headers["Content-Length"] = [str(len(new_payload))]
+    if "content-length" in headers:
+        headers["content-length"] = [str(len(new_payload))]
+
+    body["string"] = new_payload
+    response["headers"] = headers
+    response["body"] = body
+    return response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR config."""
@@ -38,6 +158,7 @@ def vcr_config():
         "filter_query_parameters": [
             None,
         ],
+        "before_record_response": _redact_binary_response,
     }
 
 

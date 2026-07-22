@@ -3,6 +3,27 @@
 import pytest
 
 
+def _redact_binary_response(response: dict) -> dict:
+    headers = response.get("headers", {})
+    content_type_values = (
+        headers.get("Content-Type") or headers.get("content-type") or []
+    )
+    content_type = " ".join(content_type_values).lower()
+    body = response.get("body", {})
+    payload = body.get("string")
+    if isinstance(payload, str):
+        payload_bytes = payload.encode("utf-8", errors="ignore")
+    else:
+        payload_bytes = payload
+    is_pdf = (
+        "application/pdf" in content_type or "application/octet-stream" in content_type
+    )
+    if is_pdf and isinstance(payload_bytes, (bytes, bytearray)):
+        body["string"] = b"%PDF-1.4\n%OpenBB VCR redacted binary body\n%%EOF\n"
+        response["body"] = body
+    return response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     """VCR configuration: strip auth headers and api_key from recorded cassettes."""
@@ -14,6 +35,7 @@ def vcr_config():
         "filter_query_parameters": [
             ("api_key", "MOCK_API_KEY"),
         ],
+        "before_record_response": _redact_binary_response,
     }
 
 
