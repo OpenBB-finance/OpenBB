@@ -1,0 +1,2 @@
+"""The CoinGecko provider."""
+
