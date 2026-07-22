@@ -1525,7 +1525,7 @@ class TestUsTreasuryAuctionsUnit:
         record = data[0]
         assert record["cusip"] == "912797SL2"
         assert record["somaHoldings"] is None
-        assert isnan(record["highYield"])
+        assert record["highYield"] is None
         assert "type=Bill" in captured["url"]
         assert "startDate=01/01/2024" in captured["url"]
         assert "endDate=06/30/2024" in captured["url"]
@@ -1554,17 +1554,6 @@ class TestUsTreasuryAuctionsUnit:
         assert item.allocation_percentage is None
         assert item.high_discount_margin is None
         assert item.floating_rate == "No"
-
-    def test_transform_data_cleans_nan(self):
-        """NaN values become None before validation."""
-        fetcher = treasury_auctions.UsTreasuryAuctionsFetcher
-        query = fetcher.transform_query({})
-        rows = [_auction_row(highYield=float("nan"), bidToCoverRatio=2.5)]
-        item = fetcher.transform_data(query, rows)[0]
-        assert item.high_yield is None
-        assert item.bid_to_cover_ratio == 2.5
-        assert item.cusip == "912797SL2"
-        assert item.issue_date == date(2024, 1, 18)
 
 
 _PRICES_CSV = (

@@ -242,13 +242,5 @@ class UsTreasuryAuctionsFetcher(
         **kwargs: Any,
     ) -> list[UsTreasuryAuctionsData]:
         """Transform the data."""
-        from math import isnan
 
-        def clean_nan(d: dict) -> dict:
-            """Replace nan values with None for Pydantic validation."""
-            return {
-                k: None if isinstance(v, float) and isnan(v) else v
-                for k, v in d.items()
-            }
-
-        return [UsTreasuryAuctionsData.model_validate(clean_nan(d)) for d in data]
+        return [UsTreasuryAuctionsData.model_validate(d) for d in data]
