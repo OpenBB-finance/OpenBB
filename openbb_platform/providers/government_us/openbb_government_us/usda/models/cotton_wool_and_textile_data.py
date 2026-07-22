@@ -210,8 +210,9 @@ class CottonWoolAndTextileDataFetcher(
             {classify_frequency(record["period"]) for record in data},
             key=lambda freq: FREQUENCY_RANK.get(freq, 9),
         )
-        if query.frequency in available:
-            return query.frequency, available
+        requested = query.frequency
+        if requested is not None and requested in available:
+            return requested, available
         return available[-1], available
 
     @staticmethod

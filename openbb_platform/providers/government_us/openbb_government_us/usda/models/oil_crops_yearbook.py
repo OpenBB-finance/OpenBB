@@ -189,8 +189,9 @@ class OilCropsYearbookFetcher(
     def _resolve_frequency(query: OilCropsYearbookQueryParams) -> str:
         """Resolve the requested frequency against the table's frequencies."""
         available = FREQUENCIES_BY_TABLE[query.table]
-        if query.frequency in available:
-            return query.frequency
+        requested = query.frequency
+        if requested is not None and requested in available:
+            return requested
         return DEFAULT_FREQUENCY[query.table]
 
     @staticmethod

@@ -13,6 +13,9 @@ dependencies = [
     "diskcache>=5",
     "httpx>=0.27",
     "random-user-agent>=1.0",
+    "openpyxl>=3.1.5,<4.0.0",
+    "xlrd>=2.0.2",
+
 ]
 
 [project.entry-points."openbb_provider_extension"]

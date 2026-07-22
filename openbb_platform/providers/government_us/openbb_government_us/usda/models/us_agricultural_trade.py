@@ -268,10 +268,10 @@ class UsAgriculturalTradeFetcher(
         """Resolve the requested period basis against the table's real bases."""
         present = {classify_period(record["time_period"]) for record in records}
         available = [basis for basis in PERIOD_BASIS_ORDER if basis in present]
-        if requested in available:
+        if requested is not None and requested in available:
             return requested
         default = DEFAULT_BASIS.get(table)
-        if default in available:
+        if default is not None and default in available:
             return default
         return available[0] if available else DEFAULT_BASIS[table]
 

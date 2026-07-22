@@ -184,8 +184,9 @@ class RiceYearbookFetcher(
         """Resolve the requested frequency against the table's real frequencies."""
         present = {classify_frequency(record["period"]) for record in data}
         available = [freq for freq in FREQUENCY_ORDER if freq in present]
-        if query.frequency in available:
-            return query.frequency, available
+        requested = query.frequency
+        if requested is not None and requested in available:
+            return requested, available
         return (available[0] if available else FREQUENCY_ORDER[-1]), available
 
     @staticmethod
