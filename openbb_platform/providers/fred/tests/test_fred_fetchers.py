@@ -3,6 +3,7 @@
 import datetime
 
 import pytest
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
@@ -133,6 +134,48 @@ def test_fred_ameribor_fetcher(credentials=test_credentials):
     fetcher = FredAmeriborFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.asyncio
+async def test_fred_ameribor_aextract_data_multi_maturity(monkeypatch, credentials=test_credentials):
+    """Test AMERIBOR symbol mapping for multiple maturities."""
+    query = FredAmeriborFetcher.transform_query({"maturity": "overnight,average_30d"})
+    captured_params = {}
+
+    class MockSeriesResult:
+        def model_dump(self):
+            return {
+                "date": datetime.date(2024, 1, 2),
+                "AMERIBOR": 5.0,
+                "AMBOR30": 4.0,
+            }
+
+    class MockResponse:
+        metadata = {
+            "AMERIBOR": {"title": "Overnight AMERIBOR"},
+            "AMBOR30": {"title": "30-day AMERIBOR"},
+        }
+        result = [MockSeriesResult()]
+
+    async def mock_fetch_data(params, _credentials):
+        captured_params.update(params)
+        return MockResponse()
+
+    monkeypatch.setattr("openbb_fred.models.ameribor.FredSeriesFetcher.fetch_data", mock_fetch_data)
+
+    response = await FredAmeriborFetcher.aextract_data(query, credentials)
+
+    assert captured_params["symbol"] == "AMERIBOR,AMBOR30"
+    assert response["metadata"]["AMERIBOR"]["title"] == "Overnight AMERIBOR"
+    assert response["data"][0]["AMERIBOR"] == 5.0
+
+
+def test_fred_ameribor_transform_data_empty_raises():
+    """Test AMERIBOR empty-data guard."""
+    query = FredAmeriborFetcher.transform_query({})
+
+    with pytest.raises(EmptyDataError, match="no data"):
+        FredAmeriborFetcher.transform_data(query, {"data": []})
 
 
 @pytest.mark.record_http
