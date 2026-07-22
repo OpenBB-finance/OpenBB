@@ -403,6 +403,31 @@ def test_generate_class_required_and_optional_fields():
     assert "label: str | None = Field(default=None, description='Pretty label.')" in src
 
 
+def test_generate_class_normalized_nullable_fields_keep_format_and_enum():
+    """The 3.1 chain end-to-end: ``expand_type_arrays`` copies siblings into
+    ``anyOf`` variants, so nullable date/enum fields type as ``datetime.date``
+    / ``Literal`` — not ``str``. Guards against a bare-variant normalizer
+    (one that emits ``{"type": t}`` only) ever reappearing upstream."""
+    from openbb_cli.dispatchers.openapi_schema import expand_type_arrays
+
+    schema = expand_type_arrays(
+        {
+            "type": "object",
+            "properties": {
+                "date": {"type": ["string", "null"], "format": "date"},
+                "rating": {"type": ["string", "null"], "enum": ["AAA", "AA"]},
+                "close": {"type": ["number", "null"]},
+            },
+        }
+    )
+    cls = pg.generate_class(schema, class_name="Row")
+    src = cls.source
+    assert "date: datetime.date | None" in src
+    assert "rating: Literal['AAA', 'AA'] | None" in src
+    assert "close: float | None" in src
+    assert "import datetime" in cls.collect_imports()
+
+
 def test_generate_class_field_alias_for_dotted_property_name():
     schema = {
         "type": "object",

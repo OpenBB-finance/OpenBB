@@ -73,43 +73,48 @@ def order_field_meta(
 ) -> dict[str, dict]:
     """Reorder field_meta by model field declaration order with sequential sequence.
 
-    Tags absent from the model (e.g. synthetic ``other_*`` plug rows) are
-    slotted just before their nearest model-field ancestor by recursively
-    walking the ``parent`` chain, so the schema's hierarchical ordering is
-    preserved instead of dumping unmapped rows at the end.
+    Dynamic ``other_<base>`` balancing plugs (generated at runtime, so they have
+    no model field) are inserted immediately before their parent subtotal rather
+    than appended at the end, matching the plug's ``parent.sequence - 0.01``
+    placement.  Remaining unmatched fields keep their existing tail position.
     """
-    field_index = {name: idx for idx, name in enumerate(model_cls.model_fields)}
-    end_index = len(field_index)
+    placed = [f for f in model_cls.model_fields if f in field_meta]
+    placed_set = set(placed)
+    deferred: list[str] = []
 
-    def _resolve(tag: str, seen: frozenset = frozenset()) -> tuple[int, int] | None:
-        if tag in field_index:
-            return field_index[tag], 0
-        parent = field_meta.get(tag, {}).get("parent")
-        if not parent or parent in seen:
-            return None
-        result = _resolve(parent, seen | {tag})
-        if result is None:
-            return None
-        anchor, depth = result
-        return anchor, depth + 1
+    for fname in field_meta:
+        if fname in placed_set:
+            continue
 
-    def _sort_key(item: tuple[str, dict]) -> tuple[float, int, float]:
-        tag, entry = item
-        resolved = _resolve(tag)
-        if resolved is None:
-            return (float(end_index), 0, 0.0)
-        anchor, depth = resolved
-        seq = entry.get("sequence") or 0.0
-        if depth == 0:
-            return (float(anchor), 0, 0.0)
-        return (float(anchor) - 0.5, -depth, float(seq))
+        # Balancing plugs are named ``[growth_]other_<base>`` and belong just
+        # before their parent subtotal (``[growth_]total_<base>`` or the bare
+        # ``[growth_]<base>``); the ``growth_`` prefix appears in growth models.
+        parent = None
+        for prefix in ("", "growth_"):
+            marker = f"{prefix}other_"
+            if fname.startswith(marker):
+                base = fname[len(marker) :]
+                for candidate in (f"{prefix}total_{base}", f"{prefix}{base}"):
+                    if candidate in placed_set:
+                        parent = candidate
+                        break
+            if parent is not None:
+                break
+
+        if parent is not None:
+            placed.insert(placed.index(parent), fname)
+            placed_set.add(fname)
+        else:
+            deferred.append(fname)
+
+    placed.extend(deferred)
 
     ordered: dict[str, dict] = {}
-    for seq, (tag, entry) in enumerate(
-        sorted(field_meta.items(), key=_sort_key), start=1
-    ):
+    for seq, fname in enumerate(placed, start=1):
+        entry = field_meta[fname]
         entry["sequence"] = seq
-        ordered[tag] = entry
+        ordered[fname] = entry
+
     return ordered
 
 
@@ -124,6 +129,7 @@ MULTI_CIK_TICKERS: dict[str, list[str]] = {
     "DIS": ["0001744489", "0001001039"],
     "BLK": ["0002012383", "0001364742"],
     "GOOG": ["0001652044", "0001288776"],
+    "XOM": ["0000034088", "0002115436"],
 }
 
 

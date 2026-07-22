@@ -563,7 +563,9 @@ not SIC/NAICS codes. The priority cascade:
 
 ```
 1. INSURANCE  — ≥ 1 insurance IS signal AND (IS + BS signals) ≥ 2
-   (defers to financial when financial signal count is higher)
+   (defers to financial when the financial signal count exceeds the
+   insurance income-statement signal count, so a bank carrying an
+   insurance subsidiary — e.g., BMO — classifies as financial)
 2. FINANCIAL  — ≥ 2 financial signals
 3. INDUSTRIAL — any COGS or GrossProfit tag present **in recent filings**
 4. DIVERSIFIED — has CostsAndExpenses without COGS

@@ -244,3 +244,124 @@ def test_generate_routers_skips_command_without_matching_fetcher_or_post():
     assert "async def" not in src
     assert "router.command" not in src
     ast.parse(src)
+
+
+# --- top-level leaf commands land on the root router ---
+
+
+def test_generate_routers_top_level_command_becomes_root_command():
+    tree = nt.build_namespace_tree(
+        {"eod": {"providers": ["eodhd"], "description": "End of day."}}
+    )
+    fetchers = {
+        "eod": _Fetcher(
+            module_name="eod",
+            fetcher_class="EodFetcher",
+            model_name="Eod",
+        )
+    }
+    out = rg.generate_routers(
+        tree,
+        package_name="openbb_codegen",
+        provider_name="eodhd",
+        fetchers_by_command=fetchers,
+        post_commands_by_command={},
+    )
+    # No dedicated router module for a pure top-level command
+    assert out.routers == []
+    assert len(out.root_commands) == 1
+    block = out.root_commands[0]
+    assert '@router.command(model="Eod")' in block
+    assert "async def eod(" in block
+    assert out.root_has_stream is False
+
+
+def test_generate_routers_top_level_stream_command_sets_flag():
+    tree = nt.build_namespace_tree(
+        {"feed": {"providers": ["wargame"], "description": "Live feed."}}
+    )
+    fetchers = {
+        "feed": _Fetcher(
+            module_name="feed",
+            fetcher_class="FeedFetcher",
+            model_name="Feed",
+            is_streaming=True,
+        )
+    }
+    out = rg.generate_routers(
+        tree,
+        package_name="openbb_codegen",
+        provider_name="wargame",
+        fetchers_by_command=fetchers,
+        post_commands_by_command={},
+    )
+    assert out.root_has_stream is True
+    assert "OBBStream" in out.root_commands[0]
+
+
+def test_generate_routers_top_level_post_command_records_import():
+    tree = nt.build_namespace_tree(
+        {"regression": {"providers": [], "description": "Linear fit."}}
+    )
+    posts = {
+        "regression": _PostCommand(
+            module_name="regression",
+            function_name="regression",
+        )
+    }
+    out = rg.generate_routers(
+        tree,
+        package_name="openbb_codegen",
+        provider_name="tools",
+        fetchers_by_command={},
+        post_commands_by_command=posts,
+    )
+    assert out.root_post_imports == [
+        ("openbb_codegen.providers.tools.models.regression", "regression")
+    ]
+    assert 'router.command(methods=["POST"])(_regression)' in out.root_commands[0]
+
+
+def test_generate_routers_top_level_command_without_fetcher_is_dropped():
+    tree = nt.build_namespace_tree(
+        {"orphan": {"providers": ["fmp"], "description": "No fetcher."}}
+    )
+    out = rg.generate_routers(
+        tree,
+        package_name="openbb_codegen",
+        provider_name="fmp",
+        fetchers_by_command={},
+        post_commands_by_command={},
+    )
+    assert out.routers == []
+    assert out.root_commands == []
+
+
+def test_generate_routers_mixes_namespaces_and_root_commands():
+    tree = nt.build_namespace_tree(
+        {
+            "eod": {"providers": ["eodhd"], "description": "End of day."},
+            "calendar.ipos": {"providers": ["eodhd"], "description": "IPOs."},
+        }
+    )
+    fetchers = {
+        "eod": _Fetcher(
+            module_name="eod", fetcher_class="EodFetcher", model_name="Eod"
+        ),
+        "calendar.ipos": _Fetcher(
+            module_name="calendar_ipos",
+            fetcher_class="CalendarIposFetcher",
+            model_name="CalendarIpos",
+        ),
+    }
+    out = rg.generate_routers(
+        tree,
+        package_name="openbb_codegen",
+        provider_name="eodhd",
+        fetchers_by_command=fetchers,
+        post_commands_by_command={},
+    )
+    assert [r.module_name for r in out.routers] == ["calendar"]
+    assert "async def ipos(" in out.routers[0].source
+    assert len(out.root_commands) == 1
+    assert "async def eod(" in out.root_commands[0]
