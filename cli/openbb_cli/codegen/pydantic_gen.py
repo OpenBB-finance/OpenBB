@@ -377,14 +377,16 @@ def _quick_schema_type(schema: dict[str, Any]) -> str:
     if schema_type == "object" or "properties" in schema:
         title = schema.get("title")
         return title or "object"
-    if schema_type in _PRIMITIVE_TYPES:
-        if schema_type == "string":
-            fmt = schema.get("format")
-            if fmt == "date":
-                return "date"
-            if fmt == "date-time":
-                return "datetime"
-        return _PRIMITIVE_TYPES[schema_type]
+    if isinstance(schema_type, str):
+        primitive_type = _PRIMITIVE_TYPES.get(schema_type)
+        if primitive_type is not None:
+            if schema_type == "string":
+                fmt = schema.get("format")
+                if fmt == "date":
+                    return "date"
+                if fmt == "date-time":
+                    return "datetime"
+            return primitive_type
     return "Any"
 
 

@@ -553,6 +553,8 @@ def get_international_portfolio_data(
 
     with zipfile.ZipFile(BytesIO(response.content)) as f:
         filenames = f.namelist()
+        if index is None:
+            raise ValueError("Could not resolve portfolio index from input parameters.")
 
         if index in filenames:
             try:

@@ -566,7 +566,7 @@ def _kpss_block(values, regression: str) -> dict:
 
     from statsmodels.tsa.stattools import kpss
 
-    kpss_reg: Literal["c", "ct"] = "c" if regression not in {"c", "ct"} else regression  # ty: ignore[invalid-assignment]
+    kpss_reg: Literal["c", "ct"] = "c" if regression not in {"c", "ct"} else regression
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         stat, pvalue, _, crit = kpss(values, regression=kpss_reg, nlags="auto")
