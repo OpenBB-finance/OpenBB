@@ -1,0 +1,841 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/data-products/price-spreads-from-farm-to-consumer
+  response:
+    body:
+      string: !!binary |
+        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
+        AAD//wMAe6C8FsL+AAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Thu, 16 Jul 2026 19:40:16 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=dfe4dc51965494ba4e57b2f9926883501190138659b8143057463faf55be9359;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=dfe4dc51965494ba4e57b2f9926883501190138659b8143057463faf55be9359;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - HIT
+      X-Drupal-Cache-Contexts:
+      - cookies:big_pipe_nojs languages layout_builder_is_active:node route session.exists
+        theme timezone url user.permissions user.roles
+      X-Drupal-Cache-Max-Age:
+      - -1 (Permanent)
+      X-Drupal-Cache-Tags:
+      - block_content:42 block_content:43 block_content:44 block_content:45 block_content:46
+        block_content:47 block_content:48 block_content:49 block_content:50 block_content:51
+        block_content:52 block_content:53 block_content:54 block_content:55 block_view
+        config:block.block.erslinks config:block.block.footersignup config:block.block.footersociallinks
+        config:block.block.navanalysiscolumn1 config:block.block.navanalysiscolumn2
+        config:block.block.navanalysiscolumn3 config:block.block.navdatacolumn1 config:block.block.navdatacolumn2
+        config:block.block.navdatacolumn3 config:block.block.navnewsroomcolumn1 config:block.block.navnewsroomcolumn2
+        config:block.block.navnewsroomcolumn3 config:block.block.navsecondarylinks
+        config:block.block.usdalinks config:block.block.uswds_ers_about config:block.block.uswds_ers_account_menu
+        config:block.block.uswds_ers_adobeanalytics config:block.block.uswds_ers_branding
+        config:block.block.uswds_ers_breadcrumbs config:block.block.uswds_ers_contactus
+        config:block.block.uswds_ers_content config:block.block.uswds_ers_covid19
+        config:block.block.uswds_ers_footer config:block.block.uswds_ers_googleanalyticsdap
+        config:block.block.uswds_ers_googleanalyticsers config:block.block.uswds_ers_googlesiteverification
+        config:block.block.uswds_ers_help config:block.block.uswds_ers_help_2 config:block.block.uswds_ers_local_actions
+        config:block.block.uswds_ers_local_tasks config:block.block.uswds_ers_loginloginlogoutmyaccount
+        config:block.block.uswds_ers_main_menu config:block.block.uswds_ers_messages
+        config:block.block.uswds_ers_newsroom config:block.block.uswds_ers_page_title
+        config:block.block.uswds_ers_pagestatusarchived config:block.block.uswds_ers_pagestatusdraft
+        config:block.block.uswds_ers_pagestatusunpublished config:block.block.uswds_ers_search
+        config:block.block.uswds_ers_sidenav_data_products config:block.block.uswds_ers_sidenav_developer
+        config:block.block.uswds_ers_sidenav_privacy config:block.block.uswds_ers_sidenav_topics
+        config:block.block.uswds_ers_sitewidealert config:block_list config:context.context.data_products_data_files
+        config:context.context.data_products_sidenav config:context.context.ers_csat_survey_invite
+        config:context.context.hero_default config:core.entity_view_display.node.data_products.default
+        config:easy_breadcrumb.settings config:filter.format.full_html config:system.site
+        config:user.role.anonymous config:workflows.workflow.cms_posting context_block_page
+        http_response local_task node:3779 node:3789 node:3916 node:7056 node:7112
+        node_view rendered scheduled_transitions_for:node:3779 user:0
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/data-products/price-spreads-from-farm-to-consumer
+  response:
+    body:
+      string: !!binary |
+        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
+        AAD//wMAe6C8FsL+AAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Thu, 16 Jul 2026 19:40:16 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=dfe4dc51965494ba4e57b2f9926883501190138659b8143057463faf55be9359;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=dfe4dc51965494ba4e57b2f9926883501190138659b8143057463faf55be9359;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - HIT
+      X-Drupal-Cache-Contexts:
+      - cookies:big_pipe_nojs languages layout_builder_is_active:node route session.exists
+        theme timezone url user.permissions user.roles
+      X-Drupal-Cache-Max-Age:
+      - -1 (Permanent)
+      X-Drupal-Cache-Tags:
+      - block_content:42 block_content:43 block_content:44 block_content:45 block_content:46
+        block_content:47 block_content:48 block_content:49 block_content:50 block_content:51
+        block_content:52 block_content:53 block_content:54 block_content:55 block_view
+        config:block.block.erslinks config:block.block.footersignup config:block.block.footersociallinks
+        config:block.block.navanalysiscolumn1 config:block.block.navanalysiscolumn2
+        config:block.block.navanalysiscolumn3 config:block.block.navdatacolumn1 config:block.block.navdatacolumn2
+        config:block.block.navdatacolumn3 config:block.block.navnewsroomcolumn1 config:block.block.navnewsroomcolumn2
+        config:block.block.navnewsroomcolumn3 config:block.block.navsecondarylinks
+        config:block.block.usdalinks config:block.block.uswds_ers_about config:block.block.uswds_ers_account_menu
+        config:block.block.uswds_ers_adobeanalytics config:block.block.uswds_ers_branding
+        config:block.block.uswds_ers_breadcrumbs config:block.block.uswds_ers_contactus
+        config:block.block.uswds_ers_content config:block.block.uswds_ers_covid19
+        config:block.block.uswds_ers_footer config:block.block.uswds_ers_googleanalyticsdap
+        config:block.block.uswds_ers_googleanalyticsers config:block.block.uswds_ers_googlesiteverification
+        config:block.block.uswds_ers_help config:block.block.uswds_ers_help_2 config:block.block.uswds_ers_local_actions
+        config:block.block.uswds_ers_local_tasks config:block.block.uswds_ers_loginloginlogoutmyaccount
+        config:block.block.uswds_ers_main_menu config:block.block.uswds_ers_messages
+        config:block.block.uswds_ers_newsroom config:block.block.uswds_ers_page_title
+        config:block.block.uswds_ers_pagestatusarchived config:block.block.uswds_ers_pagestatusdraft
+        config:block.block.uswds_ers_pagestatusunpublished config:block.block.uswds_ers_search
+        config:block.block.uswds_ers_sidenav_data_products config:block.block.uswds_ers_sidenav_developer
+        config:block.block.uswds_ers_sidenav_privacy config:block.block.uswds_ers_sidenav_topics
+        config:block.block.uswds_ers_sitewidealert config:block_list config:context.context.data_products_data_files
+        config:context.context.data_products_sidenav config:context.context.ers_csat_survey_invite
+        config:context.context.hero_default config:core.entity_view_display.node.data_products.default
+        config:easy_breadcrumb.settings config:filter.format.full_html config:system.site
+        config:user.role.anonymous config:workflows.workflow.cms_posting context_block_page
+        http_response local_task node:3779 node:3789 node:3916 node:7056 node:7112
+        node_view rendered scheduled_transitions_for:node:3779 user:0
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/media/5716/milk-and-dairy-basket.csv
+  response:
+    body:
+      string: "\uFEFFCommodity,Year,Attribute,Value\r\nMilk and dairy basket,2016,Retail
+        cost (2022 = 100),83.8423668127662\r\nMilk and dairy basket,2017,Retail cost
+        (2022 = 100),83.8998549293166\r\nMilk and dairy basket,2018,Retail cost (2022
+        = 100),83.5167294277424\r\nMilk and dairy basket,2019,Retail cost (2022 =
+        100),84.3775078708562\r\nMilk and dairy basket,2020,Retail cost (2022 = 100),88.0926291746404\r\nMilk
+        and dairy basket,2021,Retail cost (2022 = 100),89.2886906599173\r\nMilk and
+        dairy basket,2022,Retail cost (2022 = 100),100\r\nMilk and dairy basket,2023,Retail
+        cost (2022 = 100),103.990987097969\r\nMilk and dairy basket,2024,Retail cost
+        (2022 = 100),103.739235446633\r\nMilk and dairy basket,2025,Retail cost (2022
+        = 100),104.460087556845\r\nMilk and dairy basket,2016,Farm value (2022 = 100),68.1769157937384\r\nMilk
+        and dairy basket,2017,Farm value (2022 = 100),72.6297211481426\r\nMilk and
+        dairy basket,2018,Farm value (2022 = 100),67.796261761469\r\nMilk and dairy
+        basket,2019,Farm value (2022 = 100),76.4339254721643\r\nMilk and dairy basket,2020,Farm
+        value (2022 = 100),74.253495548874\r\nMilk and dairy basket,2021,Farm value
+        (2022 = 100),72.5017734383873\r\nMilk and dairy basket,2022,Farm value (2022
+        = 100),100\r\nMilk and dairy basket,2023,Farm value (2022 = 100),83.3492364400916\r\nMilk
+        and dairy basket,2024,Farm value (2022 = 100),91.9000963369785\r\nMilk and
+        dairy basket,2025,Farm value (2022 = 100),85.9267885680941\r\nMilk and dairy
+        basket,2016,Farm-to-retail spread (2022 = 100),90.0483918022129\r\nMilk and
+        dairy basket,2017,Farm-to-retail spread (2022 = 100),88.364631066015\r\nMilk
+        and dairy basket,2018,Farm-to-retail spread (2022 = 100),89.744549811859\r\nMilk
+        and dairy basket,2019,Farm-to-retail spread (2022 = 100),87.524437430186\r\nMilk
+        and dairy basket,2020,Farm-to-retail spread (2022 = 100),93.575140275628\r\nMilk
+        and dairy basket,2021,Farm-to-retail spread (2022 = 100),95.9389956939725\r\nMilk
+        and dairy basket,2022,Farm-to-retail spread (2022 = 100),100\r\nMilk and dairy
+        basket,2023,Farm-to-retail spread (2022 = 100),112.168422924944\r\nMilk and
+        dairy basket,2024,Farm-to-retail spread (2022 = 100),108.429428731129\r\nMilk
+        and dairy basket,2025,Farm-to-retail spread (2022 = 100),111.802239182187\r\nMilk
+        and dairy basket,2016,Farm-value share (percent),23.0732753220211\r\nMilk
+        and dairy basket,2017,Farm-value share (percent),24.5634064320806\r\nMilk
+        and dairy basket,2018,Farm-value share (percent),23.0339116384201\r\nMilk
+        and dairy basket,2019,Farm-value share (percent),25.7036558506796\r\nMilk
+        and dairy basket,2020,Farm-value share (percent),23.9173334659523\r\nMilk
+        and dairy basket,2021,Farm-value share (percent),23.040272048501\r\nMilk and
+        dairy basket,2022,Farm-value share (percent),28.3749710675312\r\nMilk and
+        dairy basket,2023,Farm-value share (percent),22.7426649028761\r\nMilk and
+        dairy basket,2024,Farm-value share (percent),25.1367051572939\r\nMilk and
+        dairy basket,2025,Farm-value share (percent),23.3406863479675\r\n"
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename="dairy-basket.csv"
+      Content-Language:
+      - en
+      Content-Length:
+      - '2899'
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/csv; charset=UTF-8
+      Date:
+      - Thu, 16 Jul 2026 19:40:17 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=c966c7d5af1344058a798837a03f8e890bfe04d338460a23b9d8cbdb8a738fbe;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=c966c7d5af1344058a798837a03f8e890bfe04d338460a23b9d8cbdb8a738fbe;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Drupal-Dynamic-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/media/5736/fresh-apples.csv
+  response:
+    body:
+      string: "\uFEFFCommodity,Year,Attribute,Value\r\nFresh apples,2008,Retail price
+        (cents/pound),155.110164112632\r\nFresh apples,2009,Retail price (cents/pound),126.907142820591\r\nFresh
+        apples,2010,Retail price (cents/pound),132.378637776836\r\nFresh apples,2011,Retail
+        price (cents/pound),142.762708187256\r\nFresh apples,2012,Retail price (cents/pound),153.310480749866\r\nFresh
+        apples,2013,Retail price (cents/pound),160.031011514366\r\nFresh apples,2014,Retail
+        price (cents/pound),156.024003271742\r\nFresh apples,2015,Retail price (cents/pound),155.336962746601\r\nFresh
+        apples,2016,Retail price (cents/pound),166.289299742283\r\nFresh apples,2017,Retail
+        price (cents/pound),163.097919558619\r\nFresh apples,2018,Retail price (cents/pound),151.26340464143\r\nFresh
+        apples,2019,Retail price (cents/pound),163.07\r\nFresh apples,2020,Retail
+        price (cents/pound),155.86\r\nFresh apples,2021,Retail price (cents/pound),156.94\r\nFresh
+        apples,2022,Retail price (cents/pound),193.75\r\nFresh apples,2023,Retail
+        price (cents/pound),182.15\r\nFresh apples,2024,Retail price (cents/pound),170.128488152965\r\nFresh
+        apples,2008,Farm price (cents/pound),30.1\r\nFresh apples,2009,Farm price
+        (cents/pound),31.4\r\nFresh apples,2010,Farm price (cents/pound),32.6\r\nFresh
+        apples,2011,Farm price (cents/pound),39.4\r\nFresh apples,2012,Farm price
+        (cents/pound),45.3\r\nFresh apples,2013,Farm price (cents/pound),40.5\r\nFresh
+        apples,2014,Farm price (cents/pound),32.7\r\nFresh apples,2015,Farm price
+        (cents/pound),44.1\r\nFresh apples,2016,Farm price (cents/pound),40.5\r\nFresh
+        apples,2017,Farm price (cents/pound),40.7\r\nFresh apples,2018,Farm price
+        (cents/pound),38.7\r\nFresh apples,2019,Farm price (cents/pound),32.7\r\nFresh
+        apples,2020,Farm price (cents/pound),38.4\r\nFresh apples,2021,Farm price
+        (cents/pound),36.9\r\nFresh apples,2022,Farm price (cents/pound),41.5\r\nFresh
+        apples,2023,Farm price (cents/pound),32.2\r\nFresh apples,2024,Farm price
+        (cents/pound),34.9\r\nFresh apples,2008,Farm share (percent),20.2141277111274\r\nFresh
+        apples,2009,Farm share (percent),25.7734376539965\r\nFresh apples,2010,Farm
+        share (percent),25.6524269350621\r\nFresh apples,2011,Farm share (percent),28.7481704345605\r\nFresh
+        apples,2012,Farm share (percent),30.7790437869599\r\nFresh apples,2013,Farm
+        share (percent),26.3620779502558\r\nFresh apples,2014,Farm share (percent),21.8315767354555\r\nFresh
+        apples,2015,Farm share (percent),29.572806875938\r\nFresh apples,2016,Farm
+        share (percent),25.3699426634081\r\nFresh apples,2017,Farm share (percent),25.9940981761548\r\nFresh
+        apples,2018,Farm share (percent),26.6505306392916\r\nFresh apples,2019,Farm
+        share (percent),20.8882688416018\r\nFresh apples,2020,Farm share (percent),25.6640574874888\r\nFresh
+        apples,2021,Farm share (percent),24.4918440168217\r\nFresh apples,2022,Farm
+        share (percent),22.3118279569893\r\nFresh apples,2023,Farm share (percent),18.4143105499131\r\nFresh
+        apples,2024,Farm share (percent),21.3686532228394\r\n"
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename="apples.csv"
+      Content-Language:
+      - en
+      Content-Length:
+      - '2856'
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/csv; charset=UTF-8
+      Date:
+      - Thu, 16 Jul 2026 19:40:17 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=55f5da4a8c48930b0cc19bf9164d5e83a9da0288149c0108974f2a53c34bc635;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=55f5da4a8c48930b0cc19bf9164d5e83a9da0288149c0108974f2a53c34bc635;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Drupal-Dynamic-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+version: 1

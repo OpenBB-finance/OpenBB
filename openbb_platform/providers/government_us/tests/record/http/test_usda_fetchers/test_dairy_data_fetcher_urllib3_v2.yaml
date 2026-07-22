@@ -1,0 +1,989 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/data-products/dairy-data
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Thu, 16 Jul 2026 20:18:26 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=55f5da4a8c48930b0cc19bf9164d5e83a9da0288149c0108974f2a53c34bc635;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=55f5da4a8c48930b0cc19bf9164d5e83a9da0288149c0108974f2a53c34bc635;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - HIT
+      X-Drupal-Cache-Contexts:
+      - cookies:big_pipe_nojs languages layout_builder_is_active:node route session.exists
+        theme timezone url user.permissions user.roles
+      X-Drupal-Cache-Max-Age:
+      - -1 (Permanent)
+      X-Drupal-Cache-Tags:
+      - block_content:42 block_content:43 block_content:44 block_content:45 block_content:46
+        block_content:47 block_content:48 block_content:49 block_content:50 block_content:51
+        block_content:52 block_content:53 block_content:54 block_content:55 block_view
+        config:block.block.erslinks config:block.block.footersignup config:block.block.footersociallinks
+        config:block.block.navanalysiscolumn1 config:block.block.navanalysiscolumn2
+        config:block.block.navanalysiscolumn3 config:block.block.navdatacolumn1 config:block.block.navdatacolumn2
+        config:block.block.navdatacolumn3 config:block.block.navnewsroomcolumn1 config:block.block.navnewsroomcolumn2
+        config:block.block.navnewsroomcolumn3 config:block.block.navsecondarylinks
+        config:block.block.usdalinks config:block.block.uswds_ers_about config:block.block.uswds_ers_account_menu
+        config:block.block.uswds_ers_adobeanalytics config:block.block.uswds_ers_branding
+        config:block.block.uswds_ers_breadcrumbs config:block.block.uswds_ers_contactus
+        config:block.block.uswds_ers_content config:block.block.uswds_ers_covid19
+        config:block.block.uswds_ers_footer config:block.block.uswds_ers_googleanalyticsdap
+        config:block.block.uswds_ers_googleanalyticsers config:block.block.uswds_ers_googlesiteverification
+        config:block.block.uswds_ers_help config:block.block.uswds_ers_help_2 config:block.block.uswds_ers_local_actions
+        config:block.block.uswds_ers_local_tasks config:block.block.uswds_ers_loginloginlogoutmyaccount
+        config:block.block.uswds_ers_main_menu config:block.block.uswds_ers_messages
+        config:block.block.uswds_ers_newsroom config:block.block.uswds_ers_page_title
+        config:block.block.uswds_ers_pagestatusarchived config:block.block.uswds_ers_pagestatusdraft
+        config:block.block.uswds_ers_pagestatusunpublished config:block.block.uswds_ers_search
+        config:block.block.uswds_ers_sidenav_data_products config:block.block.uswds_ers_sidenav_developer
+        config:block.block.uswds_ers_sidenav_privacy config:block.block.uswds_ers_sidenav_topics
+        config:block.block.uswds_ers_sitewidealert config:block_list config:context.context.data_products_data_files
+        config:context.context.data_products_sidenav config:context.context.ers_csat_survey_invite
+        config:context.context.hero_default config:core.entity_view_display.node.data_products.default
+        config:easy_breadcrumb.settings config:filter.format.full_html config:system.site
+        config:user.role.anonymous config:workflows.workflow.cms_posting context_block_page
+        http_response local_task node:3777 node:3989 node:7112 node_view rendered
+        scheduled_transitions_for:node:3777 user:0
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/media/5501/us-dairy-situation-at-a-glance-monthly-and-annual.csv
+  response:
+    body:
+      string: "\uFEFF\"Year\",\"Period\",\"Timeperiod_id\",\"Frequency\",\"Category\",\"Data_item\",\"Value\",\"Unit\"\n2024,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"All food\",2.26,\"Year-over-year percent change\"\n2024,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"All products\",2.952,\"Year-over-year percent change\"\n2024,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Butter\",3.621,\"Year-over-year percent change\"\n2024,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Cheese\",-1.652,\"Year-over-year percent change\"\n2024,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Dairy products\",-0.236,\"Year-over-year percent change\"\n2024,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Fluid milk\",-0.12,\"Year-over-year percent change\"\n2024,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"American cheese\",5576.556,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Butter\",2235.593,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Other-than-American cheese\",8660.869,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Dry skim milk products\",2261.506,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Frozen products\",1278.779,\"Million gallons\"\n2024,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"American cheese\",5464.875,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"Butter\",2323.164,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",8073.854,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"Dry skim milk products\",643.656,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",222889.346,\"Million
+        pounds\"\n2024,\"Annual\",17,\"Annual\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",183577.347,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",13072.104,\"Million
+        pounds\"\n2024,\"Annual\",17,\"Annual\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",9084.09,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",11844.749,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",48869.506,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",9130.855,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",6800.928,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",22.55,\"Dollars per hundredweight\"\n2024,\"Annual\",17,\"Annual\",\"Milk
+        prices\",\"ClassIIWhole\",21.342,\"Dollars per hundredweight\"\n2024,\"Annual\",17,\"Annual\",\"Milk
+        prices\",\"ClassIWhole\",23.166,\"Dollars per hundredweight\"\n2024,\"Annual\",17,\"Annual\",\"Milk
+        production\",\"Production\",225889,\"Million pounds\"\n2024,\"Annual\",17,\"Annual\",\"Milk
+        production\",\"Milk cows\",9345,\"Thousands\"\n2024,\"Annual\",17,\"Annual\",\"Milk
+        production\",\"Milk per cow\",24172,\"Pounds\"\n2024,\"Annual\",17,\"Annual\",\"Oceania
+        export prices\",\"Skim milk powder\",2701,\"Dollars per metric ton\"\n2024,\"Annual\",17,\"Annual\",\"Oceania
+        export prices\",\"Butter\",6746,\"Dollars per metric ton\"\n2024,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Butter\",2.887,\"Dollars per pound\"\n2024,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.8247,\"Dollars
+        per pound\"\n2024,\"Annual\",17,\"Annual\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",1.8658,\"Dollars per pound\"\n2024,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.4913,\"Dollars per pound\"\n2024,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.242,\"Dollars per pound\"\n2025,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"All food\",2.869,\"Year-over-year percent change\"\n2025,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"All products\",2.69,\"Year-over-year percent change\"\n2025,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Butter\",0.093,\"Year-over-year percent change\"\n2025,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Cheese\",1.124,\"Year-over-year percent change\"\n2025,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Dairy products\",0.854,\"Year-over-year percent change\"\n2025,\"Annual\",17,\"Annual\",\"Consumer
+        Price Indexes\",\"Fluid milk\",1.825,\"Year-over-year percent change\"\n2025,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"American cheese\",5832.351,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Butter\",2386.405,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Other-than-American cheese\",8967.713,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Dry skim milk products\",2170.583,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Dairy
+        product output\",\"Frozen products\",1156.29,\"Million gallons\"\n2025,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"American cheese\",5527.096,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"Butter\",2326.639,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",8205.213,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"Dry skim milk products\",650.241,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",221722.576,\"Million
+        pounds\"\n2025,\"Annual\",17,\"Annual\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",189249.799,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",12644.99,\"Million
+        pounds\"\n2025,\"Annual\",17,\"Annual\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",9216.664,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",16736.789,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",48162.233,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",7364.25,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",6876.606,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",21.175,\"Dollars per hundredweight\"\n2025,\"Annual\",17,\"Annual\",\"Milk
+        prices\",\"ClassIIWhole\",18.333,\"Dollars per hundredweight\"\n2025,\"Annual\",17,\"Annual\",\"Milk
+        prices\",\"ClassIWhole\",22.522,\"Dollars per hundredweight\"\n2025,\"Annual\",17,\"Annual\",\"Milk
+        production\",\"Production\",231658,\"Million pounds\"\n2025,\"Annual\",17,\"Annual\",\"Milk
+        production\",\"Milk cows\",9498,\"Thousands\"\n2025,\"Annual\",17,\"Annual\",\"Milk
+        production\",\"Milk per cow\",24390,\"Pounds\"\n2025,\"Annual\",17,\"Annual\",\"Oceania
+        export prices\",\"Skim milk powder\",2784,\"Dollars per metric ton\"\n2025,\"Annual\",17,\"Annual\",\"Oceania
+        export prices\",\"Butter\",7081,\"Dollars per metric ton\"\n2025,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Butter\",2.2202,\"Dollars per pound\"\n2025,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.7871,\"Dollars
+        per pound\"\n2025,\"Annual\",17,\"Annual\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",1.8089,\"Dollars per pound\"\n2025,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.5956,\"Dollars per pound\"\n2025,\"Annual\",17,\"Annual\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.2348,\"Dollars per pound\"\n2025,\"August\",8,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.916,\"Year-over-year percent change\"\n2025,\"August\",8,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",1.251,\"Year-over-year percent change\"\n2025,\"August\",8,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",0.068,\"Year-over-year percent change\"\n2025,\"August\",8,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",2.708,\"Year-over-year percent change\"\n2025,\"August\",8,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.188,\"Year-over-year percent change\"\n2025,\"August\",8,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",1.672,\"Year-over-year percent change\"\n2025,\"August\",8,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",481.321,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Dairy
+        product output\",\"Butter\",176.312,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",746.861,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",164.486,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",104.389,\"Million gallons\"\n2025,\"August\",8,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",455.403,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",208.641,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",693.92,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",60.799,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",19581.164,\"Million
+        pounds\"\n2025,\"August\",8,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",16221.281,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",15873.184,\"Million
+        pounds\"\n2025,\"August\",8,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",9771.552,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1517.624,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4115.116,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",511.486,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",512.225,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",20.9,\"Dollars per hundredweight\"\n2025,\"August\",8,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",23.05,\"Dollars per hundredweight\"\n2025,\"August\",8,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",19.18,\"Dollars per hundredweight\"\n2025,\"August\",8,\"Monthly\",\"Milk
+        production\",\"Production\",19560,\"Million pounds\"\n2025,\"August\",8,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9543,\"Thousands\"\n2025,\"August\",8,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2050,\"Pounds\"\n2025,\"August\",8,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2955,\"Dollars per metric ton\"\n2025,\"August\",8,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",7277,\"Dollars per metric ton\"\n2025,\"August\",8,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",2.4778,\"Dollars per pound\"\n2025,\"August\",8,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.282,\"Dollars per pound\"\n2025,\"August\",8,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.7529,\"Dollars
+        per pound\"\n2025,\"August\",8,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"August\",8,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.5779,\"Dollars per pound\"\n2025,\"December\",12,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.677,\"Year-over-year percent change\"\n2025,\"December\",12,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",-0.887,\"Year-over-year percent change\"\n2025,\"December\",12,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-3.423,\"Year-over-year percent change\"\n2025,\"December\",12,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-1.566,\"Year-over-year percent change\"\n2025,\"December\",12,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.067,\"Year-over-year percent change\"\n2025,\"December\",12,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",-0.968,\"Year-over-year percent change\"\n2025,\"December\",12,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",503.875,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Dairy
+        product output\",\"Butter\",207.53,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",784.308,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",176.631,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",75.385,\"Million gallons\"\n2025,\"December\",12,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",475.471,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",215.749,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",702.428,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",32.67,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18882.493,\"Million
+        pounds\"\n2025,\"December\",12,\"Monthly\",\"Domestic disappearance\",\"All
+        products (milk equivalent skim-solids basis)\",15965.08,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",12644.99,\"Million
+        pounds\"\n2025,\"December\",12,\"Monthly\",\"Ending stocks\",\"All products
+        (milk equivalent skim-solids basis)\",9216.664,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1606.107,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",3970.269,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",608.349,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",649.28,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",19,\"Dollars per hundredweight\"\n2025,\"December\",12,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",22.33,\"Dollars per hundredweight\"\n2025,\"December\",12,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",14.41,\"Dollars per hundredweight\"\n2025,\"December\",12,\"Monthly\",\"Milk
+        production\",\"Production\",19529,\"Million pounds\"\n2025,\"December\",12,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9566,\"Thousands\"\n2025,\"December\",12,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2042,\"Pounds\"\n2025,\"December\",12,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",5288,\"Dollars per metric ton\"\n2025,\"December\",12,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2508,\"Dollars per metric ton\"\n2025,\"December\",12,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.5287,\"Dollars per pound\"\n2025,\"December\",12,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.1541,\"Dollars per pound\"\n2025,\"December\",12,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.5271,\"Dollars
+        per pound\"\n2025,\"December\",12,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"December\",12,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6893,\"Dollars per pound\"\n2025,\"July\",7,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.705,\"Year-over-year percent change\"\n2025,\"July\",7,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",1.464,\"Year-over-year percent change\"\n2025,\"July\",7,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-1.613,\"Year-over-year percent change\"\n2025,\"July\",7,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",2.306,\"Year-over-year percent change\"\n2025,\"July\",7,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",2.866,\"Year-over-year percent change\"\n2025,\"July\",7,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",2.612,\"Year-over-year percent change\"\n2025,\"July\",7,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",485.117,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Dairy
+        product output\",\"Butter\",179.391,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",752.513,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",175.588,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",112.447,\"Million gallons\"\n2025,\"July\",7,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",482.282,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",193.261,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",679.825,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",42.546,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",19006.403,\"Million
+        pounds\"\n2025,\"July\",7,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",16008.863,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",16984.569,\"Million
+        pounds\"\n2025,\"July\",7,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",10119.806,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1613.977,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4364.495,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",608.534,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",575.255,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",20.8,\"Dollars per hundredweight\"\n2025,\"July\",7,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",22.94,\"Dollars per hundredweight\"\n2025,\"July\",7,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",19.31,\"Dollars per hundredweight\"\n2025,\"July\",7,\"Monthly\",\"Milk
+        production\",\"Production\",19706,\"Million pounds\"\n2025,\"July\",7,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9511,\"Thousands\"\n2025,\"July\",7,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2072,\"Pounds\"\n2025,\"July\",7,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2788,\"Dollars per metric ton\"\n2025,\"July\",7,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",7569,\"Dollars per metric ton\"\n2025,\"July\",7,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",2.5753,\"Dollars per pound\"\n2025,\"July\",7,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.2783,\"Dollars per pound\"\n2025,\"July\",7,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.7634,\"Dollars
+        per pound\"\n2025,\"July\",7,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"July\",7,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.567,\"Dollars per pound\"\n2025,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.669,\"Year-over-year percent change\"\n2025,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",0.943,\"Year-over-year percent change\"\n2025,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-0.435,\"Year-over-year percent change\"\n2025,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",2.944,\"Year-over-year percent change\"\n2025,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",2.969,\"Year-over-year percent change\"\n2025,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",2.084,\"Year-over-year percent change\"\n2025,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",479.371,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Butter\",191.789,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",738.723,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",198.952,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",106.669,\"Million gallons\"\n2025,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",455.054,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",192.894,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",663.347,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",81,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18269.482,\"Million
+        pounds\"\n2025,\"June\",6,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",15427.285,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",17374.496,\"Million
+        pounds\"\n2025,\"June\",6,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",10295.991,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1437.532,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4575.6,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",570.369,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",588.278,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",21.3,\"Dollars per hundredweight\"\n2025,\"June\",6,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",21.38,\"Dollars per hundredweight\"\n2025,\"June\",6,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",18.43,\"Dollars per hundredweight\"\n2025,\"June\",6,\"Monthly\",\"Milk
+        production\",\"Production\",19254,\"Million pounds\"\n2025,\"June\",6,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9485,\"Thousands\"\n2025,\"June\",6,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2030,\"Pounds\"\n2025,\"June\",6,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2813,\"Dollars per metric ton\"\n2025,\"June\",6,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",7913,\"Dollars per metric ton\"\n2025,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",2.488,\"Dollars per pound\"\n2025,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.2531,\"Dollars per pound\"\n2025,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.9322,\"Dollars
+        per pound\"\n2025,\"June\",6,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.5497,\"Dollars per pound\"\n2025,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.355,\"Year-over-year percent change\"\n2025,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",1.724,\"Year-over-year percent change\"\n2025,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",1.949,\"Year-over-year percent change\"\n2025,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",2.815,\"Year-over-year percent change\"\n2025,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",2.88,\"Year-over-year percent change\"\n2025,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",3.26,\"Year-over-year percent change\"\n2025,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",512.263,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Butter\",216.713,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",745.265,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",206.691,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",105.295,\"Million gallons\"\n2025,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",480.238,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",183.323,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",677.743,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",86.365,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18478.774,\"Million
+        pounds\"\n2025,\"May\",5,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",16671.036,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",17338.511,\"Million
+        pounds\"\n2025,\"May\",5,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",10537.969,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1345.828,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",3935.549,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",708.99,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",574.56,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",21.4,\"Dollars per hundredweight\"\n2025,\"May\",5,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",21.19,\"Dollars per hundredweight\"\n2025,\"May\",5,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",18.72,\"Dollars per hundredweight\"\n2025,\"May\",5,\"Monthly\",\"Milk
+        production\",\"Production\",20097,\"Million pounds\"\n2025,\"May\",5,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9481,\"Thousands\"\n2025,\"May\",5,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2120,\"Pounds\"\n2025,\"May\",5,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2935,\"Dollars per metric ton\"\n2025,\"May\",5,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",7826,\"Dollars per metric ton\"\n2025,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",2.3703,\"Dollars per pound\"\n2025,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.1925,\"Dollars per pound\"\n2025,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.8177,\"Dollars
+        per pound\"\n2025,\"May\",5,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",1.8284,\"Dollars per pound\"\n2025,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.5119,\"Dollars per pound\"\n2025,\"November\",11,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.735,\"Year-over-year percent change\"\n2025,\"November\",11,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",-1.598,\"Year-over-year percent change\"\n2025,\"November\",11,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-4.449,\"Year-over-year percent change\"\n2025,\"November\",11,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-2.367,\"Year-over-year percent change\"\n2025,\"November\",11,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",2.649,\"Year-over-year percent change\"\n2025,\"November\",11,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",-0.801,\"Year-over-year percent change\"\n2025,\"November\",11,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",483.837,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Dairy
+        product output\",\"Butter\",178.831,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",757.186,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",154.597,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",77.54,\"Million gallons\"\n2025,\"November\",11,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",474.981,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",180.347,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",703.108,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",41.821,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18577.869,\"Million
+        pounds\"\n2025,\"November\",11,\"Monthly\",\"Domestic disappearance\",\"All
+        products (milk equivalent skim-solids basis)\",15481.291,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",13080.324,\"Million
+        pounds\"\n2025,\"November\",11,\"Monthly\",\"Ending stocks\",\"All products
+        (milk equivalent skim-solids basis)\",9057.816,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1550.997,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",3908.454,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",576.484,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",557.511,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",19.6,\"Dollars per hundredweight\"\n2025,\"November\",11,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",20.87,\"Dollars per hundredweight\"\n2025,\"November\",11,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",14.54,\"Dollars per hundredweight\"\n2025,\"November\",11,\"Monthly\",\"Milk
+        production\",\"Production\",18804,\"Million pounds\"\n2025,\"November\",11,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9559,\"Thousands\"\n2025,\"November\",11,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",1967,\"Pounds\"\n2025,\"November\",11,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",6150,\"Dollars per metric ton\"\n2025,\"November\",11,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2566,\"Dollars per metric ton\"\n2025,\"November\",11,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.636,\"Dollars per pound\"\n2025,\"November\",11,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.1609,\"Dollars per pound\"\n2025,\"November\",11,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.7419,\"Dollars
+        per pound\"\n2025,\"November\",11,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"November\",11,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6415,\"Dollars per pound\"\n2025,\"October\",10,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",NA,\"Year-over-year percent change\"\n2025,\"October\",10,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",NA,\"Year-over-year percent change\"\n2025,\"October\",10,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",NA,\"Year-over-year percent change\"\n2025,\"October\",10,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",NA,\"Year-over-year percent change\"\n2025,\"October\",10,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",NA,\"Year-over-year percent change\"\n2025,\"October\",10,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",NA,\"Year-over-year percent change\"\n2025,\"October\",10,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",491.479,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Dairy
+        product output\",\"Butter\",188.338,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",781.405,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",165.871,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",96.515,\"Million gallons\"\n2025,\"October\",10,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",469.944,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",200.401,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",719.767,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",39.722,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",19368.922,\"Million
+        pounds\"\n2025,\"October\",10,\"Monthly\",\"Domestic disappearance\",\"All
+        products (milk equivalent skim-solids basis)\",16120.724,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",13910.076,\"Million
+        pounds\"\n2025,\"October\",10,\"Monthly\",\"Ending stocks\",\"All products
+        (milk equivalent skim-solids basis)\",9167.42,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1440.688,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4092.823,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",496.837,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",469.205,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",19.9,\"Dollars per hundredweight\"\n2025,\"October\",10,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",22.16,\"Dollars per hundredweight\"\n2025,\"October\",10,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",16.02,\"Dollars per hundredweight\"\n2025,\"October\",10,\"Monthly\",\"Milk
+        production\",\"Production\",19469,\"Million pounds\"\n2025,\"October\",10,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9566,\"Thousands\"\n2025,\"October\",10,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2035,\"Pounds\"\n2025,\"October\",10,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2599,\"Dollars per metric ton\"\n2025,\"October\",10,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",6744,\"Dollars per metric ton\"\n2025,\"October\",10,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.7344,\"Dollars per pound\"\n2025,\"October\",10,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.1601,\"Dollars per pound\"\n2025,\"October\",10,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.7384,\"Dollars
+        per pound\"\n2025,\"October\",10,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"October\",10,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.593,\"Dollars per pound\"\n2025,\"September\",9,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",3.013,\"Year-over-year percent change\"\n2025,\"September\",9,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",0.719,\"Year-over-year percent change\"\n2025,\"September\",9,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-1.784,\"Year-over-year percent change\"\n2025,\"September\",9,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",1.123,\"Year-over-year percent change\"\n2025,\"September\",9,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.108,\"Year-over-year percent change\"\n2025,\"September\",9,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",2.102,\"Year-over-year percent change\"\n2025,\"September\",9,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",475.989,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Dairy
+        product output\",\"Butter\",183.898,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",748.523,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",172.09,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",94.151,\"Million gallons\"\n2025,\"September\",9,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",459.91,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",207.255,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",689.57,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",68.8,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",19069.177,\"Million
+        pounds\"\n2025,\"September\",9,\"Monthly\",\"Domestic disappearance\",\"All
+        products (milk equivalent skim-solids basis)\",15720.83,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",14837.932,\"Million
+        pounds\"\n2025,\"September\",9,\"Monthly\",\"Ending stocks\",\"All products
+        (milk equivalent skim-solids basis)\",9526.845,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1358.823,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",3943.828,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",532.117,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",559.32,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",20.4,\"Dollars per hundredweight\"\n2025,\"September\",9,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",22.82,\"Dollars per hundredweight\"\n2025,\"September\",9,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",17.39,\"Dollars per hundredweight\"\n2025,\"September\",9,\"Monthly\",\"Milk
+        production\",\"Production\",18942,\"Million pounds\"\n2025,\"September\",9,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9574,\"Thousands\"\n2025,\"September\",9,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",1978,\"Pounds\"\n2025,\"September\",9,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2641,\"Dollars per metric ton\"\n2025,\"September\",9,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",6992,\"Dollars per metric ton\"\n2025,\"September\",9,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",2.0377,\"Dollars per pound\"\n2025,\"September\",9,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.2265,\"Dollars per pound\"\n2025,\"September\",9,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.8066,\"Dollars
+        per pound\"\n2025,\"September\",9,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2025,\"September\",9,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.5782,\"Dollars per pound\"\n2026,\"April\",4,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",3.811,\"Year-over-year percent change\"\n2026,\"April\",4,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",-0.584,\"Year-over-year percent change\"\n2026,\"April\",4,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-5.837,\"Year-over-year percent change\"\n2026,\"April\",4,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-3.111,\"Year-over-year percent change\"\n2026,\"April\",4,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.183,\"Year-over-year percent change\"\n2026,\"April\",4,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",0.463,\"Year-over-year percent change\"\n2026,\"April\",4,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",491.594,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Dairy
+        product output\",\"Butter\",224.282,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",776.727,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",216.583,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",109.029,\"Million gallons\"\n2026,\"April\",4,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",457.075,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",206.707,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",693.55,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",75.763,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18376.244,\"Million
+        pounds\"\n2026,\"April\",4,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",15961.984,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",15642.773,\"Million
+        pounds\"\n2026,\"April\",4,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",9999.774,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1780.904,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4209.294,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",847.475,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",576.32,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",20.8,\"Dollars per hundredweight\"\n2026,\"April\",4,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",22.78,\"Dollars per hundredweight\"\n2026,\"April\",4,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",18.82,\"Dollars per hundredweight\"\n2026,\"April\",4,\"Monthly\",\"Milk
+        production\",\"Production\",19955,\"Million pounds\"\n2026,\"April\",4,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9655,\"Thousands\"\n2026,\"April\",4,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2067,\"Pounds\"\n2026,\"April\",4,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",6323,\"Dollars per metric ton\"\n2026,\"April\",4,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",3577,\"Dollars per metric ton\"\n2026,\"April\",4,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.7707,\"Dollars per pound\"\n2026,\"April\",4,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.7788,\"Dollars per pound\"\n2026,\"April\",4,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.6427,\"Dollars
+        per pound\"\n2026,\"April\",4,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2026,\"April\",4,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6443,\"Dollars per pound\"\n2026,\"February\",2,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.414,\"Year-over-year percent change\"\n2026,\"February\",2,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",0.062,\"Year-over-year percent change\"\n2026,\"February\",2,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-7.615,\"Year-over-year percent change\"\n2026,\"February\",2,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-1.102,\"Year-over-year percent change\"\n2026,\"February\",2,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.06,\"Year-over-year percent change\"\n2026,\"February\",2,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",0.512,\"Year-over-year percent change\"\n2026,\"February\",2,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",454.687,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Dairy
+        product output\",\"Butter\",222.399,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",709.434,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",180.185,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",91.019,\"Million gallons\"\n2026,\"February\",2,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",431.806,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",179.592,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",620.794,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",58.21,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",16385.997,\"Million
+        pounds\"\n2026,\"February\",2,\"Monthly\",\"Domestic disappearance\",\"All
+        products (milk equivalent skim-solids basis)\",14699.736,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",14101.285,\"Million
+        pounds\"\n2026,\"February\",2,\"Monthly\",\"Ending stocks\",\"All products
+        (milk equivalent skim-solids basis)\",9462.182,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1654.709,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",3906.768,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",466.397,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",436.517,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",18.3,\"Dollars per hundredweight\"\n2026,\"February\",2,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",18.82,\"Dollars per hundredweight\"\n2026,\"February\",2,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",15.34,\"Dollars per hundredweight\"\n2026,\"February\",2,\"Monthly\",\"Milk
+        production\",\"Production\",18262,\"Million pounds\"\n2026,\"February\",2,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9613,\"Thousands\"\n2026,\"February\",2,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",1900,\"Pounds\"\n2026,\"February\",2,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",5913,\"Dollars per metric ton\"\n2026,\"February\",2,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2906,\"Dollars per metric ton\"\n2026,\"February\",2,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.6966,\"Dollars per pound\"\n2026,\"February\",2,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.3726,\"Dollars per pound\"\n2026,\"February\",2,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.4338,\"Dollars
+        per pound\"\n2026,\"February\",2,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2026,\"February\",2,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6931,\"Dollars per pound\"\n2026,\"January\",1,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",2.386,\"Year-over-year percent change\"\n2026,\"January\",1,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",-0.314,\"Year-over-year percent change\"\n2026,\"January\",1,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-4.95,\"Year-over-year percent change\"\n2026,\"January\",1,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-1.162,\"Year-over-year percent change\"\n2026,\"January\",1,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",2.876,\"Year-over-year percent change\"\n2026,\"January\",1,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",0.334,\"Year-over-year percent change\"\n2026,\"January\",1,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",497.132,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Dairy
+        product output\",\"Butter\",240.89,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",778.558,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",199.276,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",90.34,\"Million gallons\"\n2026,\"January\",1,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",472.553,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",190.938,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",701.567,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",79.281,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",17918.212,\"Million
+        pounds\"\n2026,\"January\",1,\"Monthly\",\"Domestic disappearance\",\"All
+        products (milk equivalent skim-solids basis)\",16174.145,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",13489.539,\"Million
+        pounds\"\n2026,\"January\",1,\"Monthly\",\"Ending stocks\",\"All products
+        (milk equivalent skim-solids basis)\",9446.113,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1488.996,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",3880.385,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",461.84,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",494.061,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",17.5,\"Dollars per hundredweight\"\n2026,\"January\",1,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",20.47,\"Dollars per hundredweight\"\n2026,\"January\",1,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",13.92,\"Dollars per hundredweight\"\n2026,\"January\",1,\"Monthly\",\"Milk
+        production\",\"Production\",19874,\"Million pounds\"\n2026,\"January\",1,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9607,\"Thousands\"\n2026,\"January\",1,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2069,\"Pounds\"\n2026,\"January\",1,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",5270,\"Dollars per metric ton\"\n2026,\"January\",1,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",2585,\"Dollars per metric ton\"\n2026,\"January\",1,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.4266,\"Dollars per pound\"\n2026,\"January\",1,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.1921,\"Dollars per pound\"\n2026,\"January\",1,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.4003,\"Dollars
+        per pound\"\n2026,\"January\",1,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2026,\"January\",1,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6986,\"Dollars per pound\"\n2026,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.014,\"Year-over-year percent change\"\n2026,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",3.531,\"Year-over-year percent change\"\n2026,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-8.735,\"Year-over-year percent change\"\n2026,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-3.579,\"Year-over-year percent change\"\n2026,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",0.391,\"Year-over-year percent change\"\n2026,\"June\",6,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",6.57,\"Year-over-year percent change\"\n2026,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Butter\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",NA,\"Million gallons\"\n2026,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",NA,\"Million
+        pounds\"\n2026,\"June\",6,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent skim-solids basis)\",NA,\"Million
+        pounds\"\n2026,\"June\",6,\"Monthly\",\"Exports\",\"All products (milk equivalent
+        milk-fat basis)\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",NA,\"Dollars per hundredweight\"\n2026,\"June\",6,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",22.78,\"Dollars per hundredweight\"\n2026,\"June\",6,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",26.3,\"Dollars per hundredweight\"\n2026,\"June\",6,\"Monthly\",\"Milk
+        production\",\"Production\",NA,\"Million pounds\"\n2026,\"June\",6,\"Monthly\",\"Milk
+        production\",\"Milk cows\",NA,\"Thousands\"\n2026,\"June\",6,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",NA,\"Pounds\"\n2026,\"June\",6,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",3665,\"Dollars per metric ton\"\n2026,\"June\",6,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",5869,\"Dollars per metric ton\"\n2026,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.6227,\"Dollars per pound\"\n2026,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.5642,\"Dollars
+        per pound\"\n2026,\"June\",6,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2026,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6428,\"Dollars per pound\"\n2026,\"June\",6,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.9327,\"Dollars per pound\"\n2026,\"March\",3,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",3.256,\"Year-over-year percent change\"\n2026,\"March\",3,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",-1.562,\"Year-over-year percent change\"\n2026,\"March\",3,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-8.288,\"Year-over-year percent change\"\n2026,\"March\",3,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-4.4,\"Year-over-year percent change\"\n2026,\"March\",3,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",2.678,\"Year-over-year percent change\"\n2026,\"March\",3,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",-0.379,\"Year-over-year percent change\"\n2026,\"March\",3,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",491.917,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Dairy
+        product output\",\"Butter\",228.497,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",770.926,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",214.107,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",103.837,\"Million gallons\"\n2026,\"March\",3,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",452.677,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",193.273,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",687.768,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",75.275,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18438.829,\"Million
+        pounds\"\n2026,\"March\",3,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",16362.597,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",15078.816,\"Million
+        pounds\"\n2026,\"March\",3,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",9721.102,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1856.867,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4403.081,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",895.309,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",646.68,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",19.7,\"Dollars per hundredweight\"\n2026,\"March\",3,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",19.59,\"Dollars per hundredweight\"\n2026,\"March\",3,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",17.34,\"Dollars per hundredweight\"\n2026,\"March\",3,\"Monthly\",\"Milk
+        production\",\"Production\",20462,\"Million pounds\"\n2026,\"March\",3,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9635,\"Thousands\"\n2026,\"March\",3,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2124,\"Pounds\"\n2026,\"March\",3,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",6822,\"Dollars per metric ton\"\n2026,\"March\",3,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",3342,\"Dollars per metric ton\"\n2026,\"March\",3,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.8969,\"Dollars per pound\"\n2026,\"March\",3,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",1.5741,\"Dollars per pound\"\n2026,\"March\",3,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.5607,\"Dollars
+        per pound\"\n2026,\"March\",3,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2026,\"March\",3,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6724,\"Dollars per pound\"\n2026,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"All products\",4.249,\"Year-over-year percent change\"\n2026,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Dairy products\",-1.041,\"Year-over-year percent change\"\n2026,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Butter\",-7.973,\"Year-over-year percent change\"\n2026,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Cheese\",-6.03,\"Year-over-year percent change\"\n2026,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"All food\",3.082,\"Year-over-year percent change\"\n2026,\"May\",5,\"Monthly\",\"Consumer
+        Price Indexes\",\"Fluid milk\",3.744,\"Year-over-year percent change\"\n2026,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"American cheese\",498.863,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Butter\",224.25,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Other-than-American cheese\",783.553,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Dry skim milk products\",203.427,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Dairy
+        product output\",\"Frozen products\",110.762,\"Million gallons\"\n2026,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"American cheese\",469.691,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"Butter\",193.555,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"Other-than-American cheese\",695.845,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"Dry skim milk products\",94.806,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Domestic
+        disappearance\",\"All products (milk equivalent milk-fat basis)\",18788.247,\"Million
+        pounds\"\n2026,\"May\",5,\"Monthly\",\"Domestic disappearance\",\"All products
+        (milk equivalent skim-solids basis)\",16543.637,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Ending
+        stocks\",\"All products (milk equivalent milk-fat basis)\",16387.235,\"Million
+        pounds\"\n2026,\"May\",5,\"Monthly\",\"Ending stocks\",\"All products (milk
+        equivalent skim-solids basis)\",10213.746,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent milk-fat basis)\",1804.271,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Exports\",\"All
+        products (milk equivalent skim-solids basis)\",4362.78,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent milk-fat basis)\",856.062,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Imports\",\"All
+        products (milk equivalent skim-solids basis)\",639.471,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Milk
+        prices\",\"All milk (at average milk-fat test)\",21.3,\"Dollars per hundredweight\"\n2026,\"May\",5,\"Monthly\",\"Milk
+        prices\",\"ClassIWhole\",24.27,\"Dollars per hundredweight\"\n2026,\"May\",5,\"Monthly\",\"Milk
+        prices\",\"ClassIIWhole\",20.28,\"Dollars per hundredweight\"\n2026,\"May\",5,\"Monthly\",\"Milk
+        production\",\"Production\",20565,\"Million pounds\"\n2026,\"May\",5,\"Monthly\",\"Milk
+        production\",\"Milk cows\",9665,\"Thousands\"\n2026,\"May\",5,\"Monthly\",\"Milk
+        production\",\"Milk per cow\",2128,\"Pounds\"\n2026,\"May\",5,\"Monthly\",\"Oceania
+        export prices\",\"Butter\",5914,\"Dollars per metric ton\"\n2026,\"May\",5,\"Monthly\",\"Oceania
+        export prices\",\"Skim milk powder\",3656,\"Dollars per metric ton\"\n2026,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Butter\",1.6311,\"Dollars per pound\"\n2026,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Nonfat dry milk\",2.0809,\"Dollars per pound\"\n2026,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Cheddar cheese, 40-pound blocks\",1.6577,\"Dollars
+        per pound\"\n2026,\"May\",5,\"Monthly\",\"Wholesale dairy product prices\",\"Cheddar
+        cheese, 500-pound barrels\",NA,\"Dollars per pound\"\n2026,\"May\",5,\"Monthly\",\"Wholesale
+        dairy product prices\",\"Dry whey\",0.6396,\"Dollars per pound\"\n"
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename="dairy-situation-glance_0.csv"
+      Content-Language:
+      - en
+      Content-Length:
+      - '58118'
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/csv; charset=UTF-8
+      Date:
+      - Thu, 16 Jul 2026 20:18:26 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=3bbcd4c69a18185b84c00f0788ada2b788477618a76b785721e3fd9848e186b0;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=3bbcd4c69a18185b84c00f0788ada2b788477618a76b785721e3fd9848e186b0;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Drupal-Dynamic-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+version: 1
