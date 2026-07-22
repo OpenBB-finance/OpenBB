@@ -1967,7 +1967,7 @@ async def presentation_table(  # noqa: PLR0912
 
     for col in df.columns:
         if col != "title":
-            title_row[col] = None  # type: ignore
+            title_row[col] = None
 
     return [title_row] + records
 

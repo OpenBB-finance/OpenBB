@@ -59,9 +59,10 @@ jobs:
 
       - run: python -m pip install --upgrade pip uv
 
-      - name: Install openbb-core (sibling) + dev tooling
+      - name: Install openbb-core (sibling) + package + dev tooling
         run: |
           uv pip install --system ../../core
+          uv pip install --system -e .
           uv pip install --system --group dev
 
       - name: ruff check

@@ -83,6 +83,39 @@ def test_generate_packages_returns_single_package_with_provider_and_router(tmp_p
     assert package.fetchers_by_provider["fmp"][0].model_name == "EquitySearch"
 
 
+def test_generate_packages_top_level_command_mounts_on_root_router(tmp_path):
+    spec = {
+        "base_url": "https://api.example.com",
+        "api_prefix": "",
+        "commands": {
+            "eod": {
+                "providers": ["eodhd"],
+                "method": "get",
+                "url_path": "/eod/{ticker}",
+                "description": "End of day.",
+                "parameters": [
+                    {
+                        "name": "ticker",
+                        "in": "path",
+                        "type": "string",
+                        "required": True,
+                    }
+                ],
+                "response_schema": {"type": "object"},
+            }
+        },
+    }
+    out = pkg.generate_packages(spec, output_root=tmp_path, provider_name="eodhd")
+    package = out.packages[0]
+    by_module = {r.module_name: r for r in package.routers.routers}
+    # No dedicated (empty) router module for the top-level command
+    assert "eod" not in by_module
+    root = by_module["eodhd"]
+    assert '@router.command(model="Eod")' in root.source
+    assert "async def eod(" in root.source
+    assert "from openbb_core.app.query import Query" in root.source
+
+
 def test_generate_packages_skips_coverage_namespace(tmp_path):
     spec = {
         "base_url": "https://api.example.com",

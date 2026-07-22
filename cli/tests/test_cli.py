@@ -964,6 +964,54 @@ def test_generate_extension_aborts_when_filter_matches_nothing(tmp_path, capsys)
     assert "matched no commands" in err
 
 
+def test_generate_spec_errors_when_zero_commands(tmp_path, capsys):
+    """A source that maps to no commands is a loud error, not a skeleton spec."""
+    with patch(
+        "openbb_cli.dispatchers.openapi_schema.fetch_openapi",
+        return_value={
+            "openapi": "3.1.0",
+            "paths": {"/x": {"$ref": "./paths/x.yaml#/~1x"}},
+        },
+    ):
+        rc = cli._generate_spec(
+            "http://localhost:8000",
+            str(tmp_path / "x.spec"),
+            "/openapi.yaml",
+        )
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "0 commands" in err
+    assert "external $refs" in err
+    assert not (tmp_path / "x.spec").exists()
+
+
+def test_generate_extension_aborts_when_spec_has_zero_commands(tmp_path, capsys):
+    """An empty spec never reaches codegen — no zero-command skeleton package."""
+    from openbb_cli.dispatchers.spec import SPEC_VERSION, write_spec
+
+    spec_path = tmp_path / "empty.spec"
+    write_spec(
+        spec_path,
+        {
+            "version": SPEC_VERSION,
+            "base_url": "http://x",
+            "api_prefix": "/api/v1",
+            "commands": {},
+        },
+    )
+    rc = cli._generate_extension(
+        [(None, str(spec_path))],
+        str(tmp_path / "out"),
+        provider_name=None,
+        project_name=None,
+        package_name=None,
+        router_name=None,
+    )
+    assert rc == 2
+    assert "0 commands" in capsys.readouterr().err
+    assert not (tmp_path / "out").exists()
+
+
 def test_generate_extension_filters_commands_before_codegen(tmp_path, capsys):
     """``--include`` reaches all the way through to ``generate_packages``:
     the filtered spec is what codegen actually sees, so the emitted
