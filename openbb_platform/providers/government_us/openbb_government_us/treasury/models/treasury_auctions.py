@@ -198,11 +198,12 @@ class UsTreasuryAuctionsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data from Treasury Direct API."""
-        from pandas import DataFrame  # noqa
+        from numpy import nan  # noqa
+        from pandas import DataFrame
         from openbb_core.provider.utils.helpers import (
             get_querystring,
             make_request,
-        )  # noqa
+        )
 
         base_url = "https://www.treasurydirect.gov/TA_WS/securities/search?"
 
@@ -230,9 +231,7 @@ class UsTreasuryAuctionsFetcher(
         if r.status_code != 200:
             raise OpenBBError(f"{r.status_code}")
         data = DataFrame(r.json())
-        results = (
-            data.fillna("N/A").replace("", None).replace("N/A", None).to_dict("records")
-        )
+        results = data.replace({nan: None, "": None}).to_dict(orient="records")
 
         return results
 
