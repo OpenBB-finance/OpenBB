@@ -166,7 +166,16 @@ async def rss(
     for entry, fetched_body in zip(entries, bodies):
         summary_html = entry.get("summary") or entry.get("description") or ""
         excerpt = truncate(strip_html(summary_html))
-        body = fetched_body or html_to_markdown(summary_html) or excerpt
+        url = (entry.get("link") or "").strip()
+        if fetched_body:
+            body = fetched_body
+        else:
+            # No full body — some sources paywall or block article pages (NYT,
+            # WSJ). Fall back to the summary and link out so the reader can
+            # still reach the full story.
+            body = html_to_markdown(summary_html) or excerpt
+            if url:
+                body = f"{body}\n\n[Read the full story at the source ↗]({url})"
         out.append(
             NewsItemData(
                 title=(entry.get("title") or "(untitled)").strip(),
@@ -174,7 +183,7 @@ async def rss(
                     entry.get("published_parsed") or entry.get("updated_parsed")
                 ),
                 author=entry.get("author") or feed_title or "Unknown",
-                url=(entry.get("link") or "").strip(),
+                url=url,
                 excerpt=excerpt,
                 body=body,
             )
