@@ -92,7 +92,10 @@ class UsSpendingRecipientSearchQueryParams(QueryParams):
         """Normalize the keyword to a stripped string or None."""
         if not v:
             return None
-        return str(v).strip() or None
+        value = str(v).strip()
+        if not value or value.lower() in {"none", "null"}:
+            return None
+        return value
 
 
 class UsSpendingRecipientSearchData(Data):
@@ -120,7 +123,7 @@ class UsSpendingRecipientSearchData(Data):
                         "description": "Ghost parameter carrying the recipient id"
                         " clicked in this table, so the recipient widgets follow it.",
                         "type": "text",
-                        "value": None,
+                        "value": "none",
                         "show": False,
                     },
                 ],

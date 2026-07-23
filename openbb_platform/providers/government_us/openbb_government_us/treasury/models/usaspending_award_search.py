@@ -94,7 +94,7 @@ def _code_param(field: str, label: str) -> dict:
         "x-widget_config": {
             "label": label,
             "multiSelect": True,
-            "options": code_options(field),
+            "options": [{"label": label, "value": "none"}, *code_options(field)],
             "style": {"popupWidth": 460},
         },
     }
@@ -116,6 +116,7 @@ class UsSpendingAwardSearchQueryParams(QueryParams):
                 "multiSelect": True,
                 "type": "endpoint",
                 "optionsEndpoint": f"{api_prefix}/ustreasury/def_codes",
+                "options": [{"label": "DEFC", "value": "none"}],
                 "style": {"popupWidth": 520},
             },
         },
@@ -126,6 +127,7 @@ class UsSpendingAwardSearchQueryParams(QueryParams):
                 "multiSelect": False,
                 "multiple": False,
                 "optionsEndpoint": f"{api_prefix}/ustreasury/awarding_agencies",
+                "options": [{"label": "Awarding Agency", "value": "none"}],
                 "style": {"popupWidth": 520},
             },
         },
@@ -273,7 +275,10 @@ class UsSpendingAwardSearchQueryParams(QueryParams):
         """Strip an optional text filter to None when empty."""
         if not isinstance(v, str):
             return v
-        return v.strip() or None
+        value = v.strip()
+        if not value or value.lower() in {"none", "null"}:
+            return None
+        return value
 
 
 class UsSpendingAwardSearchData(Data):
@@ -294,7 +299,7 @@ class UsSpendingAwardSearchData(Data):
                         "description": "Ghost parameter carrying the award id"
                         " clicked in this table, so the award widgets follow it.",
                         "type": "text",
-                        "value": None,
+                        "value": "none",
                         "show": False,
                     },
                 ],

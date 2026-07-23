@@ -35,6 +35,8 @@
   }
   .wrap {
     padding: 16px 18px 24px;
+    max-width: 1320px;
+    margin: 0 auto;
     box-sizing: border-box;
   }
   .title {
@@ -89,9 +91,16 @@
     font-variant-numeric: tabular-nums;
   }
   .sections {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+  .section {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 10px 12px;
   }
   .section h2, .subawards > summary, details.tops > summary {
     font-size: 11px;
@@ -99,17 +108,17 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--accent);
-    margin: 0 0 6px;
-    padding-bottom: 4px;
+    margin: 0 0 8px;
+    padding-bottom: 6px;
     border-bottom: 1px solid var(--line);
   }
   dl {
     margin: 0;
     display: grid;
-    grid-template-columns: minmax(120px, 38%) 1fr;
+    grid-template-columns: minmax(130px, 42%) minmax(0, 1fr);
   }
   dt, dd {
-    padding: 4px 0;
+    padding: 5px 0;
     border-bottom: 1px solid var(--line);
     margin: 0;
     min-width: 0;
@@ -121,6 +130,10 @@
   dd {
     word-break: break-word;
     font-variant-numeric: tabular-nums;
+  }
+  .section dl dt:nth-last-of-type(1),
+  .section dl dd:nth-last-of-type(1) {
+    border-bottom: 0;
   }
   table {
     width: 100%;
@@ -180,10 +193,16 @@
     border-bottom: 1px solid var(--line);
   }
   .top-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 12px;
     margin-top: 10px;
+  }
+  .top-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 10px 12px;
   }
   .top-card h3 {
     font-size: 11px;
@@ -249,6 +268,37 @@
     color: var(--muted);
     padding: 24px 0;
   }
+  @media (max-width: 900px) {
+    .wrap {
+      padding: 12px 12px 18px;
+    }
+    .kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sections,
+    .top-grid {
+      grid-template-columns: 1fr;
+    }
+    dl,
+    .child-body dl {
+      grid-template-columns: 1fr;
+    }
+    dt {
+      padding-bottom: 2px;
+      border-bottom: 0;
+    }
+    dd {
+      padding-top: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+  }
+  @media (max-width: 520px) {
+    .kpis {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
@@ -262,7 +312,6 @@
   __CHILDREN__
 </div>
 <script>
-  // Display-only formatting: the server emits full raw values in data-value.
   document.querySelectorAll("[data-value]").forEach(function (el) {
     var raw = el.getAttribute("data-value");
     if (raw === null || raw === "") return;

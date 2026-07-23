@@ -35,7 +35,8 @@
   }
   .wrap {
     padding: 16px 18px 24px;
-    max-width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
     box-sizing: border-box;
   }
   .title {
@@ -89,9 +90,16 @@
     font-variant-numeric: tabular-nums;
   }
   .sections {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+  .section {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 10px 12px;
   }
   .section h2 {
     font-size: 11px;
@@ -99,18 +107,18 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--accent);
-    margin: 0 0 6px;
-    padding-bottom: 4px;
+    margin: 0 0 8px;
+    padding-bottom: 6px;
     border-bottom: 1px solid var(--line);
   }
   dl {
     margin: 0;
     display: grid;
-    grid-template-columns: minmax(120px, 38%) 1fr;
+    grid-template-columns: minmax(130px, 42%) minmax(0, 1fr);
     gap: 0;
   }
   dt, dd {
-    padding: 4px 0;
+    padding: 5px 0;
     border-bottom: 1px solid var(--line);
     margin: 0;
     min-width: 0;
@@ -125,6 +133,10 @@
   }
   dd.num {
     text-align: right;
+  }
+  .section dl dt:nth-last-of-type(1),
+  .section dl dd:nth-last-of-type(1) {
+    border-bottom: 0;
   }
   .desc {
     background: var(--panel);
@@ -220,6 +232,37 @@
     font-size: 11px;
     margin: 8px 0 0;
   }
+  @media (max-width: 900px) {
+    .wrap {
+      padding: 12px 12px 18px;
+    }
+    .kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sections {
+      grid-template-columns: 1fr;
+    }
+    dl {
+      grid-template-columns: 1fr;
+    }
+    dt {
+      padding-bottom: 2px;
+      border-bottom: 0;
+    }
+    dd {
+      padding-top: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    dd.num {
+      text-align: left;
+    }
+  }
+  @media (max-width: 520px) {
+    .kpis {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
@@ -233,7 +276,6 @@
   __SUBAWARDS__
 </div>
 <script>
-  // Display-only formatting: the server emits full raw values in data-value.
   document.querySelectorAll("[data-value]").forEach(function (el) {
     var raw = el.getAttribute("data-value");
     if (raw === null || raw === "") return;

@@ -95,7 +95,7 @@ class UsSpendingRecipientAwardsData(Data):
                         "description": "Ghost parameter carrying the award id"
                         " clicked in this table, so the award widgets follow it.",
                         "type": "text",
-                        "value": None,
+                        "value": "none",
                         "show": False,
                     },
                 ],
