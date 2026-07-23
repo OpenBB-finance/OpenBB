@@ -76,7 +76,7 @@ def parse_cme_value(v: str | None) -> float | None:
     """Parse a CME settlement field that may contain commas, dashes, or B/A markers."""
     if v is None:
         return None
-    v = str(v).strip().replace(",", "").replace("+", "").lstrip("ABCDE")
+    v = str(v).strip().replace(",", "").replace("+", "").strip("ABCDE")
     if v in ("", "-", "0-", "UNCH"):
         return None
     try:
@@ -190,6 +190,21 @@ async def fetch_settlements(symbol: str, trade_date: date) -> list[dict]:
     return results
 
 
+async def fetch_latest_settlements(
+    symbol: str,
+    as_of: date | None = None,
+    lookback_business_days: int = 5,
+) -> tuple[date, list[dict]]:
+    """Fetch the latest available settlements within a bounded lookback window."""
+    trade_date = last_business_day(as_of)
+    for _ in range(lookback_business_days):
+        rows = await fetch_settlements(symbol, trade_date)
+        if rows:
+            return trade_date, rows
+        trade_date = last_business_day(trade_date - timedelta(days=1))
+    return trade_date, []
+
+
 _CME_MONTH_CODES = {
     "01": "F",
     "02": "G",
@@ -241,11 +256,7 @@ async def fetch_product_calendar(product_id: str) -> list[dict]:
     if not symbol:
         return []
 
-    trade_date = last_business_day()
-    rows = await fetch_settlements(symbol, trade_date)
-    if not rows:
-        trade_date = last_business_day(trade_date - timedelta(days=1))
-        rows = await fetch_settlements(symbol, trade_date)
+    _, rows = await fetch_latest_settlements(symbol)
     spec = CME_PRODUCT_MAP[symbol]
 
     results: list[dict] = []

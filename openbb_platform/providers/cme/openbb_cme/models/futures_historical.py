@@ -9,11 +9,6 @@ from datetime import (
 )
 from typing import Any
 
-from openbb_cme.utils.helpers import (
-    CME_PRODUCT_MAP,
-    business_days_between,
-    fetch_settlements,
-)
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_historical import (
     FuturesHistoricalData,
@@ -22,6 +17,12 @@ from openbb_core.provider.standard_models.futures_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator, model_validator
+
+from openbb_cme.utils.helpers import (
+    CME_PRODUCT_MAP,
+    business_days_between,
+    fetch_settlements,
+)
 
 MAX_HISTORY_DAYS = 252
 _REQUEST_SEMAPHORE_LIMIT = 10

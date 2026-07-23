@@ -6,7 +6,6 @@ import asyncio
 from datetime import datetime
 from typing import Any
 
-from openbb_cme.utils.helpers import CME_PRODUCT_MAP, fetch_product_calendar
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_instruments import (
     FuturesInstrumentsData,
@@ -18,6 +17,8 @@ from openbb_core.provider.utils.descriptions import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field, field_validator
+
+from openbb_cme.utils.helpers import CME_PRODUCT_MAP, fetch_product_calendar
 
 
 class CMEFuturesInstrumentsQueryParams(FuturesInstrumentsQueryParams):

@@ -5,11 +5,6 @@
 from datetime import date as dateType
 from typing import Any
 
-from openbb_cme.utils.helpers import (
-    CME_PRODUCT_MAP,
-    fetch_settlements,
-    last_business_day,
-)
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_info import (
     FuturesInfoData,
@@ -21,6 +16,11 @@ from openbb_core.provider.utils.descriptions import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
+
+from openbb_cme.utils.helpers import (
+    CME_PRODUCT_MAP,
+    fetch_latest_settlements,
+)
 
 
 class CMEFuturesInfoQueryParams(FuturesInfoQueryParams):
@@ -118,13 +118,12 @@ class CMEFuturesInfoFetcher(
         import asyncio
 
         symbols = query.symbol.split(",")
-        trade_date = last_business_day()
 
         async def fetch_one(symbol: str) -> dict | None:
             spec = CME_PRODUCT_MAP.get(symbol)
             if not spec:
                 return None
-            rows = await fetch_settlements(symbol, trade_date)
+            trade_date, rows = await fetch_latest_settlements(symbol)
             # Front month = lowest expiration with a settlement price
             front = next(
                 (r for r in rows if r.get("settlement_price") is not None), None

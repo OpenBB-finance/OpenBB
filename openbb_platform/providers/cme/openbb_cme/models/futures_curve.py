@@ -2,14 +2,10 @@
 
 # pylint: disable=unused-argument
 
+import asyncio
 from datetime import date as dateType
 from typing import Any
 
-from openbb_cme.utils.helpers import (
-    CME_PRODUCT_MAP,
-    fetch_settlements,
-    last_business_day,
-)
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
@@ -21,6 +17,12 @@ from openbb_core.provider.utils.descriptions import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
+
+from openbb_cme.utils.helpers import (
+    CME_PRODUCT_MAP,
+    fetch_latest_settlements,
+    fetch_settlements,
+)
 
 
 class CMEFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -83,19 +85,25 @@ class CMEFuturesCurveFetcher(
     ) -> list[dict]:
         """Fetch the term structure for the given symbol on a specific date."""
         if query.date:
-            trade_date = (
-                dateType.fromisoformat(query.date)
+            dates = (
+                [
+                    dateType.fromisoformat(value.strip())
+                    for value in query.date.split(",")
+                    if value.strip()
+                ]
                 if isinstance(query.date, str)
-                else query.date
+                else [query.date]
             )
+            rows_nested = await asyncio.gather(
+                *[fetch_settlements(query.symbol, trade_date) for trade_date in dates]
+            )
+            rows = [row for result in rows_nested for row in result]
         else:
-            trade_date = last_business_day()
-
-        rows = await fetch_settlements(query.symbol, trade_date)
+            _, rows = await fetch_latest_settlements(query.symbol)
 
         if not rows:
             raise EmptyDataError(
-                f"No settlement data found for {query.symbol} on {trade_date}."
+                f"No settlement data found for {query.symbol} on the requested date(s)."
             )
         return rows
 
@@ -123,4 +131,4 @@ class CMEFuturesCurveFetcher(
             )
         if not results:
             raise EmptyDataError("No settlement prices found in the response.")
-        return sorted(results, key=lambda x: x.expiration)
+        return sorted(results, key=lambda x: (x.date or dateType.min, x.expiration))

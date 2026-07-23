@@ -7,7 +7,6 @@ _get_json so tests are fully reproducible without network access.
 
 import json
 from pathlib import Path
-from unittest.mock import AsyncMock
 
 import pytest
 

@@ -1,15 +1,20 @@
 """CME Fetcher Tests."""
+
 from datetime import date
 from unittest.mock import AsyncMock, patch
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_core.provider.utils.helpers import run_async
+
 from openbb_cme.models.futures_curve import CMEFuturesCurveFetcher
 from openbb_cme.models.futures_historical import CMEFuturesHistoricalFetcher
 from openbb_cme.models.futures_info import CMEFuturesInfoFetcher
 from openbb_cme.models.futures_instruments import CMEFuturesInstrumentsFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 _ES_SETTLEMENTS = [
     {
@@ -119,7 +124,10 @@ def test_cme_futures_historical_fetcher_unit(credentials=test_credentials):
         "expiration": "2025-06",
     }
 
-    with patch("openbb_cme.models.futures_historical.fetch_settlements", new=AsyncMock(return_value=_ES_SETTLEMENTS)):
+    with patch(
+        "openbb_cme.models.futures_historical.fetch_settlements",
+        new=AsyncMock(return_value=_ES_SETTLEMENTS),
+    ):
         fetcher = CMEFuturesHistoricalFetcher()
         result = run_async(fetcher.fetch_data, params, credentials)
 
@@ -159,6 +167,7 @@ def test_cme_futures_historical_max_days():
 
 # ------------------ FuturesCurve -----------------------------------------------
 
+
 @pytest.mark.record_http
 def test_cme_futures_curve_fetcher(credentials=test_credentials):
     """Cassette test: ES curve returns sorted expirations with prices."""
@@ -191,6 +200,31 @@ def test_cme_futures_curve_fetcher_unit(credentials=test_credentials):
     assert result[0].open_interest == 2089654.0
 
 
+def test_cme_futures_curve_multiple_dates(credentials=test_credentials):
+    """Multiple dates accepted by the standard model return one curve per date."""
+    requested_dates = (date(2025, 6, 24), date(2025, 6, 25))
+
+    async def mock_settlements(_symbol, trade_date):
+        return [{**row, "date": trade_date} for row in _ES_SETTLEMENTS]
+
+    params = {
+        "symbol": "ES",
+        "date": [value.isoformat() for value in requested_dates],
+    }
+    with patch(
+        "openbb_cme.models.futures_curve.fetch_settlements",
+        new=AsyncMock(side_effect=mock_settlements),
+    ):
+        result = run_async(
+            CMEFuturesCurveFetcher().fetch_data,
+            params,
+            credentials,
+        )
+
+    assert len(result) == len(_ES_SETTLEMENTS) * 2
+    assert {row.date for row in result} == set(requested_dates)
+
+
 def test_cme_futures_curve_validation():
     """Unknown symbol should raise ValueError."""
     with pytest.raises(ValueError, match="not supported"):
@@ -221,8 +255,8 @@ def test_cme_futures_info_fetcher_unit(credentials=test_credentials):
     params = {"symbol": "ES"}
 
     with patch(
-        "openbb_cme.models.futures_info.fetch_settlements",
-        new=AsyncMock(return_value=_ES_SETTLEMENTS),
+        "openbb_cme.models.futures_info.fetch_latest_settlements",
+        new=AsyncMock(return_value=(date(2025, 6, 25), _ES_SETTLEMENTS)),
     ):
         fetcher = CMEFuturesInfoFetcher()
         result = run_async(fetcher.fetch_data, params, credentials)
@@ -242,25 +276,29 @@ def test_cme_futures_info_multiple_symbols(credentials=test_credentials):
     """Multi-symbol query returns one record per symbol."""
     params = {"symbol": "ES,NQ,MES"}
 
-    async def mock_settlements(symbol, trade_date):
+    async def mock_settlements(symbol):
+        trade_date = date(2025, 6, 25)
         base = 7000.0 if symbol == "ES" else 29000.0 if symbol == "NQ" else 700.0
-        return [
-            {
-                "date": trade_date,
-                "symbol": symbol,
-                "expiration": "2025-09",
-                "open": base,
-                "high": base + 50,
-                "low": base - 50,
-                "close": base + 25,
-                "volume": 100000.0,
-                "settlement_price": base + 25,
-                "open_interest": 50000.0,
-            }
-        ]
+        return (
+            trade_date,
+            [
+                {
+                    "date": trade_date,
+                    "symbol": symbol,
+                    "expiration": "2025-09",
+                    "open": base,
+                    "high": base + 50,
+                    "low": base - 50,
+                    "close": base + 25,
+                    "volume": 100000.0,
+                    "settlement_price": base + 25,
+                    "open_interest": 50000.0,
+                }
+            ],
+        )
 
     with patch(
-        "openbb_cme.models.futures_info.fetch_settlements",
+        "openbb_cme.models.futures_info.fetch_latest_settlements",
         new=AsyncMock(side_effect=mock_settlements),
     ):
         fetcher = CMEFuturesInfoFetcher()
@@ -328,6 +366,7 @@ def test_cme_futures_instruments_fetcher_unit(credentials=test_credentials):
 
 # --------- Helpers unit tests ---------------------------------------------------
 
+
 def test_parse_cme_value():
     """parse_cme_value handles commas, dashes, empty strings."""
     from openbb_cme.utils.helpers import parse_cme_value
@@ -338,6 +377,8 @@ def test_parse_cme_value():
     assert parse_cme_value("") is None
     assert parse_cme_value(None) is None
     assert parse_cme_value("+35.75") == 35.75
+    assert parse_cme_value("7607.75B") == 7607.75
+    assert parse_cme_value("A7569.75") == 7569.75
 
 
 def test_parse_cme_month():
@@ -363,3 +404,26 @@ def test_business_days_between():
     # A weekend range returns empty
     days = business_days_between(date(2025, 6, 21), date(2025, 6, 22))
     assert len(days) == 0
+
+
+def test_fetch_latest_settlements_skips_empty_business_day():
+    """Latest settlement lookup falls back across holidays."""
+    from openbb_cme.utils.helpers import fetch_latest_settlements
+
+    rows = [{**_ES_SETTLEMENTS[0], "date": date(2025, 6, 20)}]
+    with patch(
+        "openbb_cme.utils.helpers.fetch_settlements",
+        new=AsyncMock(side_effect=[[], rows]),
+    ) as mock_fetch:
+        trade_date, result = run_async(
+            fetch_latest_settlements,
+            "ES",
+            date(2025, 6, 23),
+        )
+
+    assert trade_date == date(2025, 6, 20)
+    assert result == rows
+    assert [call.args[1] for call in mock_fetch.await_args_list] == [
+        date(2025, 6, 23),
+        date(2025, 6, 20),
+    ]
