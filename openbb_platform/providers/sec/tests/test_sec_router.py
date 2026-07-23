@@ -26,7 +26,6 @@ _BASE_COMMANDS = [
     "institutions_search",
     "adviser_firms",
     "adviser_individuals",
-    "adviser_profile",
     "adviser_documents",
     "adviser_universe",
     "schema_files",

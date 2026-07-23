@@ -16,40 +16,31 @@ from openbb_sec.models import adviser_search
 from openbb_sec.models.adviser_search import (
     SecAdviserFirmsData,
     SecAdviserFirmsFetcher,
-    SecAdviserFirmsQueryParams,
     SecAdviserIndividualsData,
     SecAdviserIndividualsFetcher,
-    SecAdviserIndividualsQueryParams,
+    SecAdviserSearchQueryParams,
 )
 
 
-@pytest.mark.parametrize(
-    "query_model",
-    [SecAdviserFirmsQueryParams, SecAdviserIndividualsQueryParams],
-)
 @pytest.mark.parametrize("query", [None, "", "   "])
-def test_adviser_search_requires_query(query_model, query: str | None) -> None:
+def test_adviser_search_requires_query(query: str | None) -> None:
     """Adviser searches require nonblank text."""
     params = {} if query is None else {"query": query}
 
     with pytest.raises(ValidationError):
-        query_model(**params)
+        SecAdviserSearchQueryParams(**params)
 
 
-@pytest.mark.parametrize(
-    "query_model",
-    [SecAdviserFirmsQueryParams, SecAdviserIndividualsQueryParams],
-)
-def test_adviser_search_normalizes_query_and_bounds_limit(query_model) -> None:
+def test_adviser_search_normalizes_query_and_bounds_limit() -> None:
     """Adviser searches strip query text and bound result counts."""
-    query = query_model(query="  123456  ")
+    query = SecAdviserSearchQueryParams(query="  123456  ")
 
     assert query.query == "123456"
     assert query.limit == 20
     assert query.use_cache is True
 
     with pytest.raises(ValidationError):
-        query_model(query="adviser", limit=101)
+        SecAdviserSearchQueryParams(query="adviser", limit=101)
 
 
 @pytest.mark.parametrize("address_as_json", [False, True])
@@ -97,7 +88,7 @@ def test_firm_search_normalizes_flat_results(
         "openbb_sec.utils.cache.cached_request",
         fake_cached_request,
     )
-    query = SecAdviserFirmsQueryParams(
+    query = SecAdviserSearchQueryParams(
         query="blackrock",
         limit=12,
         use_cache=False,
@@ -115,12 +106,7 @@ def test_firm_search_normalizes_flat_results(
         {
             "crd": "164594",
             "sec_number": "801-76926",
-            "sec_registration_type": "SEC Registered",
             "name": "BLACKROCK ADVISORS, LLC",
-            "matched_name": None,
-            "matched_name_type": None,
-            "matched_crd": None,
-            "matched_status": None,
             "status": "ACTIVE",
             "branch_count": 7,
             "address_line_1": "50 HUDSON YARDS",
@@ -146,95 +132,6 @@ def test_firm_search_keeps_state_advisers_without_sec_number() -> None:
     assert record is not None
     assert record["crd"] == "123456"
     assert record["sec_number"] is None
-
-
-def test_firm_search_exposes_an_alias_match() -> None:
-    """Alias matches identify why a canonical firm name was returned."""
-    sources = adviser_search._parse_iapd_sources(
-        {
-            "hits": {
-                "hits": [
-                    {
-                        "_source": {
-                            "firm_source_id": "154546",
-                            "firm_name": "ROSSI FINANCIAL GROUP",
-                            "firm_ia_scope": "ACTIVE",
-                        },
-                        "highlight": {
-                            "firm_other_names": ["<em>BLACKROCK</em> FINANCIAL GROUP"]
-                        },
-                    }
-                ]
-            }
-        }
-    )
-
-    record = adviser_search._firm_record(sources[0])
-
-    assert record is not None
-    assert record["name"] == "ROSSI FINANCIAL GROUP"
-    assert record["matched_name"] == "BLACKROCK FINANCIAL GROUP"
-    assert record["matched_name_type"] == "Alternate Name"
-
-
-def test_firm_search_exposes_a_relying_adviser_match() -> None:
-    """Relying-adviser matches include the matched firm's identity and status."""
-    sources = adviser_search._parse_iapd_sources(
-        {
-            "hits": {
-                "hits": [
-                    {
-                        "_source": {
-                            "firm_source_id": "128598",
-                            "firm_ia_full_sec_number": "801-117335",
-                            "firm_name": "J.P. MORGAN INVESTMENT MANAGEMENT INC.",
-                            "firm_ia_scope": "ACTIVE",
-                            "firm_relying_advisors": [
-                                {
-                                    "firmId": "319130",
-                                    "name": "GIM EM MANAGER, LLC",
-                                    "status": "ACTIVE",
-                                }
-                            ],
-                        },
-                        "highlight": {
-                            "firm_other_names": [
-                                "GIM ADVISORY SERVICES, LLC (RELYING ADVISER)"
-                            ],
-                            "firm_relying_advisors.name": [
-                                "<em>GIM EM MANAGER</em>, LLC"
-                            ],
-                        },
-                    }
-                ]
-            }
-        },
-        query="GIM EM MANAGER",
-    )
-
-    record = adviser_search._firm_record(sources[0])
-
-    assert record is not None
-    assert record["matched_name"] == "GIM EM MANAGER, LLC"
-    assert record["matched_name_type"] == "Relying Adviser"
-    assert record["matched_crd"] == "319130"
-    assert record["matched_status"] == "ACTIVE"
-
-
-@pytest.mark.parametrize(
-    ("sec_number", "registration_type"),
-    [
-        ("801-70860", "SEC Registered"),
-        ("802-12345", "SEC Exempt Reporting Adviser"),
-        (None, None),
-    ],
-)
-def test_firm_search_classifies_sec_registration(
-    sec_number: str | None,
-    registration_type: str | None,
-) -> None:
-    """Official SEC number prefixes identify registered and exempt advisers."""
-    assert adviser_search._sec_registration_type(sec_number) == registration_type
 
 
 def test_firm_search_filters_broker_dealers() -> None:
@@ -300,7 +197,7 @@ def test_individual_search_normalizes_flat_results(monkeypatch) -> None:
         "openbb_sec.utils.cache.cached_request",
         fake_cached_request,
     )
-    query = SecAdviserIndividualsQueryParams(query="john smith", limit=1)
+    query = SecAdviserSearchQueryParams(query="john smith", limit=1)
 
     records = asyncio.run(SecAdviserIndividualsFetcher.aextract_data(query, None))
 
@@ -316,7 +213,6 @@ def test_individual_search_normalizes_flat_results(monkeypatch) -> None:
             "middle_name": "T.",
             "last_name": "SMITH",
             "suffix": None,
-            "matched_name": None,
             "status": "Active",
             "broker_dealer_status": "InActive",
             "industry_start_date": date(2001, 5, 1),
@@ -327,24 +223,6 @@ def test_individual_search_normalizes_flat_results(monkeypatch) -> None:
             "current_firm_name": "STRATEGIC ADVISERS LLC",
             "current_firm_ia_sec_number": "801-13243",
             "current_firm_bd_sec_number": "8-11111",
-        },
-        {
-            "crd": "4346806",
-            "first_name": "JOHN",
-            "middle_name": "T.",
-            "last_name": "SMITH",
-            "suffix": None,
-            "matched_name": None,
-            "status": "Active",
-            "broker_dealer_status": "InActive",
-            "industry_start_date": date(2001, 5, 1),
-            "industry_days": None,
-            "employment_count": 3,
-            "finra_registration_count": 1,
-            "current_firm_crd": "7784",
-            "current_firm_name": "FIDELITY BROKERAGE SERVICES LLC",
-            "current_firm_ia_sec_number": None,
-            "current_firm_bd_sec_number": "8-23292",
         },
     ]
 
@@ -365,36 +243,22 @@ def test_individual_search_filters_non_advisers(status: str | None) -> None:
     assert records == []
 
 
-def test_individual_search_exposes_suffix_alias_and_industry_days() -> None:
+def test_individual_search_exposes_suffix_and_industry_days() -> None:
     """Individual search retains scalar identity fields from IAPD."""
-    sources = adviser_search._parse_iapd_sources(
+    records = adviser_search._individual_records(
         {
-            "hits": {
-                "hits": [
-                    {
-                        "_source": {
-                            "ind_source_id": "2265605",
-                            "ind_firstname": "John",
-                            "ind_middlename": "Charles",
-                            "ind_lastname": "Smith",
-                            "ind_namesuffix": "Jr",
-                            "ind_other_names": ["CHUCK SMITH"],
-                            "ind_ia_scope": "InActive",
-                            "ind_industry_days_iapd": "7190",
-                        },
-                        "highlight": {"ind_other_names": ["<em>CHUCK SMITH</em>"]},
-                    }
-                ]
-            }
-        },
-        entity="individual",
-        query="Chuck Smith",
+            "ind_source_id": "2265605",
+            "ind_firstname": "John",
+            "ind_middlename": "Charles",
+            "ind_lastname": "Smith",
+            "ind_namesuffix": "Jr",
+            "ind_other_names": ["CHUCK SMITH"],
+            "ind_ia_scope": "InActive",
+            "ind_industry_days_iapd": "7190",
+        }
     )
 
-    records = adviser_search._individual_records(sources[0])
-
     assert records[0]["suffix"] == "Jr"
-    assert records[0]["matched_name"] == "CHUCK SMITH"
     assert records[0]["industry_days"] == 7190
 
 
@@ -403,11 +267,11 @@ def test_individual_search_exposes_suffix_alias_and_industry_days() -> None:
     [
         (
             SecAdviserFirmsFetcher,
-            SecAdviserFirmsQueryParams(query="blackrock", limit=1),
+            SecAdviserSearchQueryParams(query="blackrock", limit=1),
         ),
         (
             SecAdviserIndividualsFetcher,
-            SecAdviserIndividualsQueryParams(query="john smith", limit=1),
+            SecAdviserSearchQueryParams(query="john smith", limit=1),
         ),
     ],
 )
@@ -488,17 +352,18 @@ def test_adviser_search_applies_limit_after_filtering(
 def test_parser_rejects_invalid_iapd_response(payload: object) -> None:
     """Malformed IAPD responses raise an actionable provider error."""
     with pytest.raises(OpenBBError, match="Invalid IAPD search response"):
-        adviser_search._parse_iapd_sources(payload)
+        adviser_search.iapd_sources(payload, "search")
 
 
 def test_parser_rejects_iapd_application_error() -> None:
     """HTTP-200 IAPD error envelopes are surfaced to callers."""
     with pytest.raises(OpenBBError, match="IAPD search failed with error 400"):
-        adviser_search._parse_iapd_sources(
+        adviser_search.iapd_sources(
             {
                 "errorCode": "400",
                 "errorMessage": "Invalid query",
-            }
+            },
+            "search",
         )
 
 
@@ -520,12 +385,12 @@ def test_firm_search_rejects_malformed_address() -> None:
     [
         (
             SecAdviserFirmsFetcher,
-            SecAdviserFirmsQueryParams(query="no such firm"),
+            SecAdviserSearchQueryParams(query="no such firm"),
             "No investment adviser firms",
         ),
         (
             SecAdviserIndividualsFetcher,
-            SecAdviserIndividualsQueryParams(query="no such individual"),
+            SecAdviserSearchQueryParams(query="no such individual"),
             "No investment adviser individuals",
         ),
     ],
@@ -556,12 +421,7 @@ def test_adviser_models_are_flat() -> None:
         {
             "crd": "164594",
             "sec_number": None,
-            "sec_registration_type": None,
             "name": "BLACKROCK ADVISORS, LLC",
-            "matched_name": None,
-            "matched_name_type": None,
-            "matched_crd": None,
-            "matched_status": None,
             "status": "ACTIVE",
             "branch_count": 7,
         }
@@ -573,7 +433,6 @@ def test_adviser_models_are_flat() -> None:
             "middle_name": "T.",
             "last_name": "SMITH",
             "suffix": None,
-            "matched_name": None,
             "status": "Active",
             "broker_dealer_status": "InActive",
             "industry_start_date": date(2001, 5, 1),
@@ -589,6 +448,6 @@ def test_adviser_models_are_flat() -> None:
 
     for record in (firm, individual):
         assert all(
-            value is None or isinstance(value, (date, str, int))
+            value is None or isinstance(value, date | str | int)
             for value in record.model_dump().values()
         )

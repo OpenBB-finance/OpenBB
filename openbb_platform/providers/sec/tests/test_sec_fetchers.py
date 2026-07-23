@@ -9,10 +9,7 @@ from unittest.mock import patch
 import pytest
 from openbb_core.app.service.user_service import UserService
 
-from openbb_sec.models.adviser_profile import (
-    SecAdviserDocumentsFetcher,
-    SecAdviserProfileFetcher,
-)
+from openbb_sec.models.adviser_documents import SecAdviserDocumentsFetcher
 from openbb_sec.models.adviser_search import (
     SecAdviserFirmsFetcher,
     SecAdviserIndividualsFetcher,
@@ -194,16 +191,6 @@ def test_sec_adviser_individuals_fetcher(credentials=test_credentials):
     params = {"query": "john smith", "limit": 2, "use_cache": False}
 
     fetcher = SecAdviserIndividualsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_sec_adviser_profile_fetcher(credentials=test_credentials):
-    """Test the SEC adviser profile fetcher."""
-    params = {"crd": "148826", "use_cache": False}
-
-    fetcher = SecAdviserProfileFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

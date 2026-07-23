@@ -1,14 +1,16 @@
-"""Current SEC investment adviser universe."""
+"""Current SEC Form ADV Part 1 data."""
 
 from __future__ import annotations
 
 import asyncio
 import csv
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
+from decimal import Decimal, InvalidOperation
 from io import BytesIO, TextIOWrapper
-from typing import Literal, Protocol
+from typing import Literal
 from zipfile import BadZipFile, ZipFile
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -18,7 +20,7 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
-from openbb_sec.utils.cache import cached_request
+from openbb_sec.utils.cache import cached_bytes, cached_request
 from openbb_sec.utils.definitions import SEC_HEADERS
 
 SEC_DATA_CATALOG_URL = "https://www.sec.gov/data.json"
@@ -29,26 +31,92 @@ CATALOG_CACHE_SECONDS = 24 * 60 * 60
 REPORT_CACHE_SECONDS = 35 * 24 * 60 * 60
 
 AdviserUniverseType = Literal["registered", "exempt"]
-AdviserRegistrationType = Literal[
-    "SEC Registered",
-    "SEC Exempt Reporting Adviser",
-]
-
 _REPORT_MONTH = re.compile(r"([A-Z][a-z]+ \d{4})")
 _REQUIRED_COLUMNS = {
     "Organization CRD#",
     "SEC#",
-    "CIK#",
-    "Total number of CIK numbers",
+    "Firm Type",
     "Primary Business Name",
     "Legal Name",
     "SEC Current Status",
+    "Latest ADV Filing Date",
 }
 
+_COLUMN_NAMES = {
+    "Organization CRD#": "crd",
+    "Additional CRD Number": "additional_crd",
+    "Total number of additional CRD numbers": "additional_crd_count",
+    "SEC#": "sec_number",
+    "Total number of relying advisers": "relying_adviser_count",
+    "Total number of CIK numbers": "cik_count",
+    "Main Office Street Address 1": "main_office_address_line_1",
+    "Main Office Street Address 2": "main_office_address_line_2",
+    "Main Office Private Residence Flag": "main_office_private_residence",
+    "Main Office Telephone Number": "main_office_phone",
+    "Main Office Facsimile Number": "main_office_fax",
+    "Total number of offices, other than your Principal Office and place of business": (
+        "other_office_count"
+    ),
+    "Mail Office Street Address 1": "mail_office_address_line_1",
+    "Mail Office Street Address 2": "mail_office_address_line_2",
+    "Mail Office Private Residence Flag": "mail_office_private_residence",
+    "SEC Current Status": "status",
+    "SEC Status Effective Date": "status_effective_date",
+    "Website Address": "website",
+    "Total Number of Website Addresses": "website_count",
+    "Total Number of Books and Records Locations": "books_and_records_location_count",
+    "Total Number of Acquired Firms": "acquired_firm_count",
+    "5A": "employee_count",
+    "5F(2)(a)": "discretionary_aum",
+    "5F(2)(b)": "non_discretionary_aum",
+    "5F(2)(c)": "regulatory_assets_under_management",
+    "5F(2)(d)": "discretionary_account_count",
+    "5F(2)(e)": "non_discretionary_account_count",
+    "5F(2)(f)": "account_count",
+    "5F(3)": "non_us_clients_aum",
+    "Count of IA Affiliates": "investment_adviser_affiliate_count",
+    "Count of IA/BD Affiliates": "investment_adviser_broker_dealer_affiliate_count",
+    "Count of BD Affiliates": "broker_dealer_affiliate_count",
+    "Count of Private Funds - 7B(1)": "private_fund_count",
+    "Total Gross Assets of Private Funds": "private_fund_gross_assets",
+    "Count of Private Funds - 7B(2)": "private_fund_adviser_count",
+    "Total Custody Amount": "custody_amount",
+    "Count of Control person Public Reporting Company": (
+        "public_reporting_company_control_person_count"
+    ),
+}
 
-class _ReadableResponse(Protocol):
-    async def read(self) -> bytes:
-        """Return the response body."""
+_DATE_FIELDS = {
+    "status_effective_date",
+    "latest_adv_filing_date",
+}
+_INTEGER_FIELDS = {
+    "additional_crd_count",
+    "relying_adviser_count",
+    "cik_count",
+    "other_office_count",
+    "website_count",
+    "books_and_records_location_count",
+    "acquired_firm_count",
+    "employee_count",
+    "discretionary_account_count",
+    "non_discretionary_account_count",
+    "account_count",
+    "investment_adviser_affiliate_count",
+    "investment_adviser_broker_dealer_affiliate_count",
+    "broker_dealer_affiliate_count",
+    "private_fund_count",
+    "private_fund_adviser_count",
+    "public_reporting_company_control_person_count",
+}
+_NUMBER_FIELDS = {
+    "discretionary_aum",
+    "non_discretionary_aum",
+    "regulatory_assets_under_management",
+    "non_us_clients_aum",
+    "private_fund_gross_assets",
+    "custody_amount",
+}
 
 
 @dataclass(frozen=True)
@@ -62,10 +130,15 @@ class AdviserReport:
 
 
 class SecAdviserUniverseQueryParams(QueryParams):
-    """SEC investment adviser universe query."""
+    """Current SEC Form ADV Part 1 dataset query."""
 
     registration_type: AdviserUniverseType = Field(
-        description="Adviser registration population to return.",
+        description="Registered or exempt adviser population to return.",
+    )
+    crd: str | None = Field(
+        default=None,
+        description="Central Registration Depository (CRD) number to return.",
+        pattern=r"^\d+$",
     )
     use_cache: bool = Field(
         default=True,
@@ -74,7 +147,12 @@ class SecAdviserUniverseQueryParams(QueryParams):
 
 
 class SecAdviserUniverseData(Data):
-    """One firm in the current SEC investment adviser universe."""
+    """Current Form ADV Part 1 data for one SEC investment adviser.
+
+    Stable identifiers and metrics are typed explicitly. Every additional column
+    from the registered or exempt SEC report is retained as a dynamic flat field.
+    Form item headings are normalized with an ``item_`` prefix.
+    """
 
     crd: str = Field(description="Central Registration Depository (CRD) number.")
     sec_number: str = Field(description="SEC investment adviser number.")
@@ -82,20 +160,48 @@ class SecAdviserUniverseData(Data):
         default=None,
         description="First reported CIK, zero-padded to 10 digits.",
     )
-    reported_cik_count: int | None = Field(
+    cik_count: int | None = Field(
         default=None,
-        description=(
-            "Number of CIKs reported by the firm. The cik field contains only "
-            "the first."
-        ),
+        description="Total number of CIKs reported by the firm.",
     )
-    name: str = Field(description="Primary business name.")
+    primary_business_name: str = Field(description="Primary business name.")
     legal_name: str = Field(description="Legal name.")
-    registration_type: AdviserRegistrationType = Field(
-        description="SEC adviser registration category."
+    firm_type: str = Field(
+        description="Registration category reported in the SEC data file."
     )
     status: str = Field(description="Current SEC registration status.")
-    report_period: date = Field(
+    latest_adv_filing_date: date = Field(
+        description="Date of the latest Form ADV filing."
+    )
+    employee_count: int | None = Field(
+        default=None,
+        description="Number of employees reported in Form ADV Item 5.A.",
+    )
+    discretionary_aum: int | float | None = Field(
+        default=None,
+        description="Discretionary regulatory assets under management.",
+    )
+    non_discretionary_aum: int | float | None = Field(
+        default=None,
+        description="Non-discretionary regulatory assets under management.",
+    )
+    regulatory_assets_under_management: int | float | None = Field(
+        default=None,
+        description="Total regulatory assets under management.",
+    )
+    discretionary_account_count: int | None = Field(
+        default=None,
+        description="Number of discretionary accounts.",
+    )
+    non_discretionary_account_count: int | None = Field(
+        default=None,
+        description="Number of non-discretionary accounts.",
+    )
+    account_count: int | None = Field(
+        default=None,
+        description="Total number of accounts.",
+    )
+    report_date: date = Field(
         description="Report month, represented by its first calendar day."
     )
 
@@ -116,7 +222,7 @@ class SecAdviserUniverseFetcher(
         credentials: dict[str, str] | None,
         **kwargs: object,
     ) -> list[dict[str, object]]:
-        """Download and parse the latest SEC adviser universe report."""
+        """Download and parse the latest SEC Form ADV report."""
         catalog = await cached_request(
             SEC_DATA_CATALOG_URL,
             headers=SEC_HEADERS,
@@ -124,20 +230,29 @@ class SecAdviserUniverseFetcher(
             expire=CATALOG_CACHE_SECONDS,
         )
         report = _latest_report(catalog, query.registration_type)
-        content = await cached_request(
+        content = await asyncio.to_thread(
+            cached_bytes,
             report.url,
             headers=SEC_HEADERS,
-            response_callback=_read_response,
             use_cache=query.use_cache,
             expire=REPORT_CACHE_SECONDS,
             timeout=180,
         )
-        if not isinstance(content, bytes):
-            raise OpenBBError("Invalid SEC adviser report response: expected bytes.")
-        records = await asyncio.to_thread(_parse_report, content, report)
+        records = await asyncio.to_thread(
+            _parse_report,
+            content,
+            report,
+            query.crd,
+        )
         if not records:
+            if query.crd is not None:
+                raise EmptyDataError(
+                    f"No {query.registration_type} investment adviser with CRD "
+                    f"{query.crd} was found."
+                )
             raise EmptyDataError(
-                f"The {report.report_date:%B %Y} SEC adviser report was empty."
+                f"The {report.report_date:%B %Y} SEC "
+                f"{query.registration_type} adviser report was empty."
             )
         return records
 
@@ -149,11 +264,6 @@ class SecAdviserUniverseFetcher(
     ) -> list[SecAdviserUniverseData]:
         """Transform raw records to the public model."""
         return [SecAdviserUniverseData.model_validate(record) for record in data]
-
-
-async def _read_response(response: _ReadableResponse, session: object) -> bytes:
-    """Read a binary SEC response."""
-    return await response.read()
 
 
 def _latest_report(
@@ -260,8 +370,9 @@ def _report_from_distribution(item: object) -> AdviserReport | None:
 def _parse_report(
     content: bytes,
     report: AdviserReport,
+    crd: str | None = None,
 ) -> list[dict[str, object]]:
-    """Parse the identity columns from one SEC adviser report archive."""
+    """Parse current Form ADV rows from one SEC adviser report archive."""
     try:
         archive = ZipFile(BytesIO(content))
     except BadZipFile as exc:
@@ -292,36 +403,82 @@ def _parse_report(
                     + ", ".join(missing)
                     + "."
                 )
-            return [_universe_record(row, report) for row in reader]
+            column_names = _public_column_names(reader.fieldnames or [])
+            records: list[dict[str, object]] = []
+            for row in reader:
+                if (
+                    crd is not None
+                    and _optional_text(row.get("Organization CRD#")) != crd
+                ):
+                    continue
+                records.append(_adviser_record(row, report, column_names))
+                if crd is not None:
+                    break
+            return records
 
 
-def _universe_record(
+def _adviser_record(
     row: dict[str, str | None],
     report: AdviserReport,
+    column_names: dict[str, str],
 ) -> dict[str, object]:
-    """Map one SEC report row to the public universe model."""
-    cik = _optional_text(row.get("CIK#"))
-    if cik is not None:
-        if not cik.isdigit():
-            raise OpenBBError("Invalid SEC adviser report: CIK must be numeric.")
-        cik = cik.zfill(10)
-    return {
-        "crd": _required_text(row.get("Organization CRD#"), "Organization CRD#"),
-        "sec_number": _required_text(row.get("SEC#"), "SEC#"),
-        "cik": cik,
-        "reported_cik_count": _optional_int(row.get("Total number of CIK numbers")),
-        "name": _required_text(
-            row.get("Primary Business Name"), "Primary Business Name"
-        ),
-        "legal_name": _required_text(row.get("Legal Name"), "Legal Name"),
-        "registration_type": (
-            "SEC Registered"
-            if report.registration_type == "registered"
-            else "SEC Exempt Reporting Adviser"
-        ),
-        "status": _required_text(row.get("SEC Current Status"), "SEC Current Status"),
-        "report_period": report.report_date,
+    """Map one SEC Form ADV row without discarding source columns."""
+    record = {
+        public_name: _field_value(public_name, row.get(source_name))
+        for source_name, public_name in column_names.items()
     }
+    cik = record.get("cik")
+    if cik is not None:
+        if not isinstance(cik, str) or not cik.isdigit():
+            raise OpenBBError("Invalid SEC adviser report: CIK must be numeric.")
+        record["cik"] = cik.zfill(10)
+    record["crd"] = _required_text(record.get("crd"), "Organization CRD#")
+    record["sec_number"] = _required_text(record.get("sec_number"), "SEC#")
+    record["primary_business_name"] = _required_text(
+        record.get("primary_business_name"), "Primary Business Name"
+    )
+    record["legal_name"] = _required_text(record.get("legal_name"), "Legal Name")
+    record["firm_type"] = _required_text(record.get("firm_type"), "Firm Type")
+    record["status"] = _required_text(record.get("status"), "SEC Current Status")
+    record["latest_adv_filing_date"] = _required_date(
+        record.get("latest_adv_filing_date"), "Latest ADV Filing Date"
+    )
+    record["report_date"] = report.report_date
+    return record
+
+
+def _public_column_names(columns: Sequence[str]) -> dict[str, str]:
+    """Build unique Python field names for all SEC source columns."""
+    names = {
+        column: _COLUMN_NAMES.get(column, _normalize_column_name(column))
+        for column in columns
+    }
+    if len(set(names.values())) != len(names):
+        raise OpenBBError(
+            "Invalid SEC adviser report: source columns map to duplicate field names."
+        )
+    return names
+
+
+def _normalize_column_name(value: str) -> str:
+    """Normalize an SEC heading while retaining its Form ADV item number."""
+    name = re.sub(r"[^a-z0-9]+", "_", value.casefold()).strip("_")
+    if name and name[0].isdigit():
+        name = f"item_{name}"
+    if not name:
+        raise OpenBBError("Invalid SEC adviser report: empty column heading.")
+    return name
+
+
+def _field_value(field: str, value: object) -> object:
+    """Parse fields with unambiguous scalar types and retain all others as text."""
+    if field in _DATE_FIELDS:
+        return _optional_date(value)
+    if field in _INTEGER_FIELDS:
+        return _optional_int(value)
+    if field in _NUMBER_FIELDS:
+        return _optional_number(value)
+    return _optional_text(value)
 
 
 def _required_text(value: object, field: str) -> str:
@@ -330,6 +487,13 @@ def _required_text(value: object, field: str) -> str:
     if cleaned is None:
         raise OpenBBError(f"Invalid SEC adviser report: {field} is required.")
     return cleaned
+
+
+def _required_date(value: object, field: str) -> date:
+    """Return a required SEC report date."""
+    if not isinstance(value, date):
+        raise OpenBBError(f"Invalid SEC adviser report: {field} is required.")
+    return value
 
 
 def _optional_text(value: object) -> str | None:
@@ -347,9 +511,35 @@ def _optional_int(value: object) -> int | None:
     cleaned = _optional_text(value)
     if cleaned is None:
         return None
+    cleaned = cleaned.replace(",", "")
     if not cleaned.isdigit():
         raise OpenBBError("Invalid SEC adviser report: expected an integer value.")
     return int(cleaned)
+
+
+def _optional_number(value: object) -> int | float | None:
+    """Normalize an optional SEC numeric value."""
+    cleaned = _optional_text(value)
+    if cleaned is None:
+        return None
+    try:
+        number = Decimal(cleaned.replace(",", "").replace("$", ""))
+    except InvalidOperation as exc:
+        raise OpenBBError(
+            "Invalid SEC adviser report: expected a numeric value."
+        ) from exc
+    return int(number) if number == number.to_integral_value() else float(number)
+
+
+def _optional_date(value: object) -> date | None:
+    """Normalize an optional SEC report date."""
+    cleaned = _optional_text(value)
+    if cleaned is None:
+        return None
+    try:
+        return datetime.strptime(cleaned, "%m/%d/%Y").date()  # noqa: DTZ007
+    except ValueError as exc:
+        raise OpenBBError("Invalid SEC adviser report: expected MM/DD/YYYY.") from exc
 
 
 def _object_record(value: object, error_message: str) -> dict[str, object]:

@@ -237,22 +237,6 @@ async def adviser_individuals(
 
 
 @router.command(
-    model="SecAdviserProfile",
-    examples=[
-        APIEx(parameters={"crd": "148826", "provider": "sec"}),
-    ],
-)
-async def adviser_profile(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get a structured SEC investment adviser firm profile by CRD number."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
     model="SecAdviserDocuments",
     examples=[
         APIEx(parameters={"crd": "148826", "provider": "sec"}),
@@ -273,6 +257,13 @@ async def adviser_documents(
     examples=[
         APIEx(parameters={"registration_type": "registered", "provider": "sec"}),
         APIEx(parameters={"registration_type": "exempt", "provider": "sec"}),
+        APIEx(
+            parameters={
+                "registration_type": "registered",
+                "crd": "148826",
+                "provider": "sec",
+            }
+        ),
     ],
 )
 async def adviser_universe(
@@ -281,7 +272,7 @@ async def adviser_universe(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the current SEC registered or exempt adviser universe."""
+    """Get current registered or exempt Form ADV Part 1 data, optionally by CRD."""
     return await OBBject.from_query(Query(**locals()))
 
 

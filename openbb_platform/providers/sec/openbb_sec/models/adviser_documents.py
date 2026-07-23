@@ -1,4 +1,4 @@
-"""SEC investment adviser firm profiles and regulatory documents."""
+"""SEC investment adviser regulatory documents."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_sec.utils.adviser_info import (
     clean_date,
@@ -28,17 +28,9 @@ BROCHURE_URL = (
     "https://files.adviserinfo.sec.gov/IAPD/Content/Common/crd_iapd_Brochure.aspx"
 )
 
-RegistrationType = Literal[
-    "SEC Registered",
-    "State Registered",
-    "SEC Exempt Reporting Adviser",
-    "State Exempt Reporting Adviser",
-    "Exempt Reporting Adviser",
-]
 
-
-class _AdviserFirmQueryParams(QueryParams):
-    """Shared query for one IAPD firm."""
+class SecAdviserDocumentsQueryParams(QueryParams):
+    """SEC investment adviser document query."""
 
     crd: str = Field(
         description="Central Registration Depository (CRD) number.",
@@ -48,67 +40,6 @@ class _AdviserFirmQueryParams(QueryParams):
         default=True,
         description="Whether to use cached SEC responses.",
     )
-
-    @field_validator("crd", mode="before")
-    @classmethod
-    def normalize_crd(cls, value: object) -> str:
-        """Normalize a numeric CRD identifier."""
-        if isinstance(value, bool) or not isinstance(value, (str, int)):
-            raise ValueError("crd must be a numeric identifier")
-        cleaned = str(value).strip()
-        if not cleaned.isdigit():
-            raise ValueError("crd must be a numeric identifier")
-        return str(int(cleaned))
-
-
-class SecAdviserProfileQueryParams(_AdviserFirmQueryParams):
-    """SEC investment adviser profile query."""
-
-
-class SecAdviserProfileData(Data):
-    """SEC investment adviser firm profile."""
-
-    crd: str = Field(description="Central Registration Depository (CRD) number.")
-    name: str = Field(description="Investment adviser firm name.")
-    sec_number: str | None = Field(
-        default=None,
-        description="SEC investment adviser number.",
-    )
-    registration_type: RegistrationType | None = Field(
-        default=None,
-        description="Registration category reported by IAPD.",
-    )
-    status: str | None = Field(
-        default=None,
-        description="Investment adviser registration status.",
-    )
-    filing_date: date | None = Field(
-        default=None,
-        description="Date of the latest Form ADV filing.",
-    )
-    address_line_1: str | None = Field(
-        default=None,
-        description="First line of the firm's office address.",
-    )
-    address_line_2: str | None = Field(
-        default=None,
-        description="Second line of the firm's office address.",
-    )
-    city: str | None = Field(default=None, description="Office city.")
-    state: str | None = Field(default=None, description="Office state or region.")
-    postal_code: str | None = Field(
-        default=None,
-        description="Office postal code.",
-    )
-    country: str | None = Field(default=None, description="Office country.")
-    part_2_exempt: bool | None = Field(
-        default=None,
-        description="Whether the firm reports an exemption from Form ADV Part 2.",
-    )
-
-
-class SecAdviserDocumentsQueryParams(_AdviserFirmQueryParams):
-    """SEC investment adviser regulatory documents query."""
 
 
 class SecAdviserDocumentsData(Data):
@@ -129,36 +60,6 @@ class SecAdviserDocumentsData(Data):
         description="Date the document was filed or submitted.",
     )
     url: str = Field(description="Public adviserinfo.sec.gov document URL.")
-
-
-class SecAdviserProfileFetcher(
-    Fetcher[SecAdviserProfileQueryParams, list[SecAdviserProfileData]]
-):
-    """SEC investment adviser firm profile fetcher."""
-
-    @staticmethod
-    def transform_query(params: dict[str, object]) -> SecAdviserProfileQueryParams:
-        """Transform query parameters."""
-        return SecAdviserProfileQueryParams.model_validate(params)
-
-    @staticmethod
-    async def aextract_data(
-        query: SecAdviserProfileQueryParams,
-        credentials: dict[str, str] | None,
-        **kwargs: object,
-    ) -> list[dict[str, object]]:
-        """Return a flat IAPD firm profile."""
-        firm = await _get_adviser_firm(query.crd, query.use_cache)
-        return [_profile_record(firm)]
-
-    @staticmethod
-    def transform_data(
-        query: SecAdviserProfileQueryParams,
-        data: list[dict[str, object]],
-        **kwargs: object,
-    ) -> list[SecAdviserProfileData]:
-        """Transform raw records to the public model."""
-        return [SecAdviserProfileData.model_validate(record) for record in data]
 
 
 class SecAdviserDocumentsFetcher(
@@ -231,30 +132,6 @@ async def _get_adviser_firm(crd: str, use_cache: bool) -> dict[str, object]:
     raise EmptyDataError(f"No investment adviser firm was found for CRD {crd}.")
 
 
-def _profile_record(firm: dict[str, object]) -> dict[str, object]:
-    """Build one flat profile record from structured IAPD data."""
-    basic = _profile_section(firm, "basicInformation")
-    address_details = _profile_section(firm, "iaFirmAddressDetails", required=False)
-    office = _nested_object(address_details, "officeAddress")
-    brochures = _profile_section(firm, "brochures", required=False)
-
-    return {
-        "crd": required_text(basic.get("firmId"), "firm CRD", "firm profile"),
-        "name": required_text(basic.get("firmName"), "firm name", "firm profile"),
-        "sec_number": _sec_number(basic),
-        "registration_type": _registration_type(firm, basic),
-        "status": clean_text(basic.get("iaScope")),
-        "filing_date": clean_date(basic.get("advFilingDate"), "%m/%d/%Y"),
-        "address_line_1": clean_text(office.get("street1")),
-        "address_line_2": clean_text(office.get("street2")),
-        "city": clean_text(office.get("city")),
-        "state": clean_text(office.get("state")),
-        "postal_code": clean_text(office.get("postalCode")),
-        "country": clean_text(office.get("country")),
-        "part_2_exempt": _yes_no(brochures.get("part2ExemptFlag")),
-    }
-
-
 def _document_records(firm: dict[str, object]) -> list[dict[str, object]]:
     """Build flat document rows from structured IAPD metadata."""
     basic = _profile_section(firm, "basicInformation")
@@ -317,17 +194,6 @@ def _profile_section(
     )
 
 
-def _nested_object(parent: dict[str, object], name: str) -> dict[str, object]:
-    """Return an optional nested object."""
-    value = parent.get(name)
-    if value is None:
-        return {}
-    return string_dict(
-        value,
-        f"Invalid IAPD firm profile response: {name} must be an object.",
-    )
-
-
 def _object_list(value: object, field: str) -> list[dict[str, object]]:
     """Validate an optional list of profile objects."""
     if value is None:
@@ -343,47 +209,6 @@ def _object_list(value: object, field: str) -> list[dict[str, object]]:
         )
         for item in value
     ]
-
-
-def _sec_number(basic: dict[str, object]) -> str | None:
-    """Build the full SEC adviser number from its structured components."""
-    number = clean_text(basic.get("iaSECNumber"))
-    number_type = clean_text(basic.get("iaSECNumberType"))
-    if number is None and number_type is None:
-        return None
-    if number is None or number_type is None:
-        raise OpenBBError(
-            "Invalid IAPD firm profile response: SEC number is incomplete."
-        )
-    return f"{number_type}-{number}"
-
-
-def _registration_type(
-    firm: dict[str, object], basic: dict[str, object]
-) -> RegistrationType | None:
-    """Return a source-backed adviser registration category."""
-    number_type = clean_text(basic.get("iaSECNumberType"))
-    if number_type == "801":
-        return "SEC Registered"
-    if number_type == "802":
-        return "SEC Exempt Reporting Adviser"
-    if number_type is not None:
-        raise OpenBBError(
-            f"Invalid IAPD firm profile response: unknown SEC number type {number_type}."
-        )
-
-    flags = _profile_section(firm, "orgScopeStatusFlags", required=False)
-    if _yes_no(flags.get("isSECERARegistered")) is True:
-        return "SEC Exempt Reporting Adviser"
-    if _yes_no(flags.get("isStateERARegistered")) is True:
-        return "State Exempt Reporting Adviser"
-    if _yes_no(flags.get("isERARegistered")) is True:
-        return "Exempt Reporting Adviser"
-    if _yes_no(flags.get("isSECRegistered")) is True:
-        return "SEC Registered"
-    if _yes_no(flags.get("isStateRegistered")) is True:
-        return "State Registered"
-    return None
 
 
 def _yes_no(value: object) -> bool | None:
