@@ -67,6 +67,7 @@ def isolate_state(monkeypatch, tmp_path):
         browsers._LAST_DATA,
         browsers._VIEW_DATA,
         browsers._CURRENT_VIEW,
+        browsers._WIDGET_STATE,
         browsers._INTL_LABELS,
         browsers._IMPORTS_LABELS,
     )
@@ -1664,6 +1665,21 @@ class TestRenderBrowser:
         assert '"theme": "dark"' in text
 
     @pytest.mark.asyncio
+    async def test_site_payload_without_request_info(self):
+        response = await browsers.render_browser("aeo", "dark", False, None)
+        text = response.body.decode()
+        assert '"mode": "site"' in text
+        assert '"endpoint": "http://127.0.0.1:6900/api/v1/eia/aeo_browser"' in text
+        assert "eia_proxy/outlooks/aeo/data/browser/" in text
+
+    @pytest.mark.asyncio
+    async def test_endpoint_without_request_info_returns_html_text(self):
+        endpoint = browsers._browser_endpoint("maps")
+        out = await endpoint(theme="dark", raw=False)
+        assert isinstance(out, str)
+        assert "<!DOCTYPE html>" in out
+
+    @pytest.mark.asyncio
     async def test_petroleum_imports_lands_on_its_default_view(self):
         info = make_info("/api/v1/petroleum_imports_browser")
         response = await browsers.render_browser(
@@ -1921,6 +1937,15 @@ class TestRouterRegistration:
         assert config["refetchInterval"] is False
         assert config["staleTime"] == 1000
 
+    def test_iframe_protocol_does_not_expose_browser_as_a_param(self):
+        template = browsers._TEMPLATE.read_text(encoding="utf-8")
+        assert 'paramName: "browser"' not in template
+        assert "params: []" in template
+
+    def test_frame_load_event_reveals_the_browser(self):
+        template = browsers._TEMPLATE.read_text(encoding="utf-8")
+        assert 'frame.addEventListener("load", ready);' in template
+
 
 class TestViewTracking:
     """``raw`` must answer for the view on screen, including after click-throughs."""
@@ -1965,6 +1990,24 @@ class TestViewTracking:
     def test_nothing_recorded_yields_no_target(self):
         assert browsers.get_data_target(INTERNATIONAL) is None
 
+    def test_user_falls_back_to_anon_view_data(self):
+        browsers.set_current_view(INTERNATIONAL, self.OVERVIEW, 1000, "alice")
+        browsers.set_data_target(
+            INTERNATIONAL, self.OVERVIEW, {"url": "ANON", "method": "GET"}, 1000, ""
+        )
+        assert browsers.get_data_target(INTERNATIONAL, "alice")["url"] == "ANON"
+
+    def test_user_falls_back_to_anon_last_data(self):
+        browsers.set_current_view(INTERNATIONAL, "international/unseen", 1000, "alice")
+        browsers.set_data_target(
+            INTERNATIONAL,
+            self.OVERVIEW,
+            {"url": "LAST_ANON", "method": "GET"},
+            1000,
+            "",
+        )
+        assert browsers.get_data_target(INTERNATIONAL, "alice")["url"] == "LAST_ANON"
+
 
 class TestEiaViewBeacon:
     """The iframe reports each navigation so the server knows the current view."""
@@ -1986,6 +2029,79 @@ class TestEiaViewBeacon:
             make_info("/api/v1/eia_view", query="obb_browser=bogus&obb_view=x")
         )
         assert not browsers._CURRENT_VIEW
+
+
+class TestWidgetStateBeacon:
+    @pytest.mark.asyncio
+    async def test_state_beacon_records_view_and_widget_state(self):
+        info = make_info(
+            "/api/v1/eia_state",
+            query=f"obb_browser={INTERNATIONAL}&obb_view=international%2Fdata&obb_seq=7&obb_user=u1",
+            method="POST",
+            body=b'{"selected":"oil"}',
+            user="u1",
+        )
+        response = await browsers.eia_state(info)
+        assert response.status_code == 204
+        assert browsers.get_current_view(INTERNATIONAL, "u1") == "international/data"
+        assert browsers.get_widget_state(INTERNATIONAL, "u1") == {"selected": "oil"}
+
+    @pytest.mark.asyncio
+    async def test_state_beacon_invalid_json_defaults_to_empty_dict(self):
+        info = make_info(
+            "/api/v1/eia_state",
+            query=f"obb_browser={INTERNATIONAL}&obb_view=international%2Fdata&obb_seq=8&obb_user=u2",
+            method="POST",
+            body=b"{",
+            user="u2",
+        )
+        response = await browsers.eia_state(info)
+        assert response.status_code == 204
+        assert browsers.get_widget_state(INTERNATIONAL, "u2") == {}
+
+    @pytest.mark.asyncio
+    async def test_state_beacon_unknown_browser_is_ignored(self):
+        response = await browsers.eia_state(
+            make_info(
+                "/api/v1/eia_state",
+                query="obb_browser=bogus",
+                method="POST",
+                body=b"{}",
+            )
+        )
+        assert response.status_code == 204
+        assert not browsers._WIDGET_STATE
+
+    def test_widget_state_uses_freshest_any_user_when_user_unknown(self):
+        browsers.set_widget_state(INTERNATIONAL, {"value": "older"}, 1, "alice")
+        browsers.set_widget_state(INTERNATIONAL, {"value": "newer"}, 2, "bob")
+        assert browsers.get_widget_state(INTERNATIONAL, "carol") == {"value": "newer"}
+
+    def test_widget_state_user_falls_back_to_anon_bucket(self):
+        browsers.set_widget_state(INTERNATIONAL, {"value": "anon"}, 1, "")
+        assert browsers.get_widget_state(INTERNATIONAL, "alice") == {"value": "anon"}
+
+
+class TestMcpStateEndpoint:
+    @pytest.mark.asyncio
+    async def test_mcp_state_known_browser_uses_raw_table(self, monkeypatch):
+        async def fake_raw(browser, spec, user):
+            assert browser == "international"
+            assert spec == browsers.EIA_DATA_BROWSERS["international"]
+            assert user == "u1"
+            return [{"x": 1}]
+
+        monkeypatch.setattr(browsers, "raw_table", fake_raw)
+        response = await browsers.eia_mcp_state("international", "u1")
+        assert response.status_code == 200
+        assert json.loads(response.body) == [{"x": 1}]
+        assert response.headers["cache-control"] == "no-store"
+
+    @pytest.mark.asyncio
+    async def test_mcp_state_unknown_browser_returns_empty(self):
+        response = await browsers.eia_mcp_state("bogus", "u1")
+        assert response.status_code == 200
+        assert json.loads(response.body) == []
 
 
 class TestRawTable:
@@ -2621,6 +2737,21 @@ class TestInternationalRawEndToEnd:
             theme="dark", raw=True, info=make_info("/api/v1/international_browser")
         )
         assert json.loads(response.body)[0]["country"] == "United States"
+
+
+class TestBrowserEndpointNoRequest:
+    @pytest.mark.asyncio
+    async def test_raw_endpoint_without_request_info_unwraps_json(self, monkeypatch):
+        endpoint = browsers._browser_endpoint("international")
+
+        async def fake_render(_browser, _theme, _raw, _info):
+            return browsers.JSONResponse(
+                content=[{"row": 1}], headers={"Cache-Control": "no-store"}
+            )
+
+        monkeypatch.setattr(browsers, "render_browser", fake_render)
+        out = await endpoint(theme="dark", raw=True)
+        assert out == [{"row": 1}]
 
 
 class TestMapContrast:

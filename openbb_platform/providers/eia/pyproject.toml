@@ -10,9 +10,9 @@ dependencies = [
     "openbb-core[pandas]>=2.0.0",
     "async-lru>=2",
     "curl-cffi>=0.7",
+    "fastmcp>=2.0",
     "feedparser>=6.0",
     "openpyxl>=3.1.5",
-    "requests>=2.31",
     "xlrd>=2.0.1",
 ]
 

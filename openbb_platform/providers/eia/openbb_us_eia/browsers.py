@@ -5,7 +5,7 @@ import threading
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends, Request
 from fastapi.responses import (
@@ -42,6 +42,25 @@ def _user_key(identity: str) -> str:
     from hashlib import sha256
 
     return sha256(identity.encode("utf-8")).hexdigest()[:16] if identity else ""
+
+
+def _mcp_url() -> str:
+    """Return this same server's dedicated EIA MCP endpoint, for iframe auto-connect.
+
+    The route is registered on this very API process (see ``eia_router.py``),
+    which reverse-proxies to the EIA MCP subprocess, so the URL the Workspace
+    connects to shares the exact host/port ``openbb-platform-api`` itself is
+    bound to. The ``eia`` extension name is applied as a path prefix by the
+    core router loader, so the served path is ``.../eia/eia_mcp``.
+    """
+    import os
+
+    from openbb_core.app.service.system_service import SystemService
+
+    host = os.environ.get("OPENBB_API_HOST", "127.0.0.1")
+    port = os.environ.get("OPENBB_API_PORT", "6900")
+    prefix = SystemService().system_settings.api_settings.prefix
+    return f"http://{host}:{port}{prefix}/eia/eia_mcp"
 
 
 router = Router(prefix="", description="EIA interactive data browsers.")
@@ -272,6 +291,7 @@ def is_data_response(target: str, content_type: str) -> bool:
 _LAST_DATA: dict[tuple[str, str], tuple[dict, float]] = {}
 _VIEW_DATA: dict[tuple[str, str, str], tuple[dict, float]] = {}
 _CURRENT_VIEW: dict[tuple[str, str], tuple[str, float]] = {}
+_WIDGET_STATE: dict[tuple[str, str], tuple[dict, float]] = {}
 _PAGE_CONTINUATION_RE = re.compile(r"[?&]offset=(?!0(?:&|$))\d")
 
 
@@ -290,14 +310,37 @@ def _put(store: dict, key, value, seq: float) -> None:
     store[key] = (value, seq)
 
 
+def _freshest_any_user(store: dict, *rest: str) -> tuple | None:
+    """Return the freshest ``(value, seq)`` entry for ``(any_user, *rest)``.
+
+    A caller reading state (the MCP tool in particular) has no way to
+    guarantee its own identity hash matches the one a widget's iframe used
+    when it reported state, so the real source of truth is whichever widget
+    instance most recently reported this exact state -- regardless of whose
+    user hash it was filed under.
+    """
+    best = None
+    for key, entry in store.items():
+        if key[1:] == rest and (best is None or entry[1] > best[1]):
+            best = entry
+    return best
+
+
 def set_current_view(browser: str, view: str, seq: float = 0.0, user: str = "") -> None:
     """Record the view a browser is displaying for one user."""
     _put(_CURRENT_VIEW, (user, browser), view, seq)
 
 
 def get_current_view(browser: str, user: str = "") -> str:
-    """Return the view a browser is displaying for one user."""
+    """Return the view a browser is displaying for one user.
+
+    Falls back to the anonymous bucket when a user-scoped entry is missing, so
+    a beacon that could not resolve a user hash still lands on the state a
+    prior (or concurrent) anonymous beacon recorded for the same browser.
+    """
     entry = _CURRENT_VIEW.get((user, browser))
+    if entry is None and user:
+        entry = _CURRENT_VIEW.get(("", browser))
     return entry[0] if entry is not None else ""
 
 
@@ -315,9 +358,13 @@ def get_data_target(browser: str, user: str = "") -> dict | None:
     view = view_key(get_current_view(browser, user))
     if view:
         entry = _VIEW_DATA.get((user, browser, view))
+        if entry is None and user:
+            entry = _VIEW_DATA.get(("", browser, view))
         if entry is not None:
             return entry[0]
     entry = _LAST_DATA.get((user, browser))
+    if entry is None and user:
+        entry = _LAST_DATA.get(("", browser))
     return entry[0] if entry is not None else None
 
 
@@ -331,6 +378,25 @@ def set_table_rows(
 def get_table_rows(browser: str, user: str = "", view: str = "") -> list | None:
     """Return the table a browser rendered for one view."""
     entry = _TABLE_ROWS.get((user, browser, view_key(view)))
+    if entry is None and user:
+        entry = _TABLE_ROWS.get(("", browser, view_key(view)))
+    return entry[0] if entry is not None else None
+
+
+def set_widget_state(
+    browser: str, state: dict, seq: float = 0.0, user: str = ""
+) -> None:
+    """Record the latest widget interaction state for one browser and user."""
+    _put(_WIDGET_STATE, (user, browser), state, seq)
+
+
+def get_widget_state(browser: str, user: str = "") -> dict | None:
+    """Return the latest widget interaction state for one browser and user."""
+    entry = _WIDGET_STATE.get((user, browser))
+    if entry is None and user:
+        entry = _WIDGET_STATE.get(("", browser))
+    if entry is None:
+        entry = _freshest_any_user(_WIDGET_STATE, browser)
     return entry[0] if entry is not None else None
 
 
@@ -761,6 +827,43 @@ async def eia_table(
     if isinstance(rows, list) and rows and all(isinstance(r, dict) for r in rows):
         set_table_rows(browser, rows, seq, user, view)
     return Response(status_code=204)
+
+
+async def eia_state(
+    info: Annotated[dict, Depends(request_info)],
+) -> Response:
+    """Record explicit iframe interaction state independently of table rows."""
+    import json
+
+    _, _, browser, view, seq, user = _split_widget_params(info["query"])
+    if not browser:
+        return Response(status_code=204)
+    set_current_view(browser, view, seq, user)
+    try:
+        state = json.loads(info["body"] or b"{}")
+    except ValueError:
+        state = {}
+    if isinstance(state, dict):
+        set_widget_state(browser, state, seq, user)
+    return Response(status_code=204)
+
+
+async def eia_mcp_state(browser: str, user: str = "") -> Response:
+    """Return the live table for one browser, read from this process's tracked state.
+
+    The EIA MCP tool runs in its own subprocess (see ``eia_mcp.py``) with no
+    visibility into this process's in-memory browser state, so it calls back
+    here to read exactly what ``raw_table`` would return in this process.
+    """
+    import json
+
+    spec = EIA_DATA_BROWSERS.get(browser)
+    rows = await raw_table(browser, spec, user) if spec is not None else []
+    return Response(
+        content=json.dumps(rows).encode("utf-8"),
+        media_type="application/json",
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 async def eia_view(
@@ -1900,19 +2003,32 @@ async def render_browser(
     browser: str,
     theme: str,
     raw: bool,
-    info: dict,
+    info: dict | None,
 ) -> Response:
     """Render one EIA data browser as an HTML widget, or its table as raw rows."""
     import json
+    import os
+
+    from openbb_core.app.service.system_service import SystemService
 
     spec = EIA_DATA_BROWSERS.get(browser) or EIA_DATA_BROWSERS["electricity"]
+    info = info or {}
     user = info.get("user", "")
     if raw:
         return JSONResponse(
             content=await raw_table(browser, spec, user),
             headers={"Cache-Control": "no-store"},
         )
-    proxy_base = info["url"].rsplit("/", 1)[0] + "/eia_proxy"
+    endpoint = info.get("url")
+    if endpoint:
+        proxy_base = endpoint.rsplit("/", 1)[0] + "/eia_proxy"
+    else:
+        host = os.environ.get("OPENBB_API_HOST", "127.0.0.1")
+        port = os.environ.get("OPENBB_API_PORT", "6900")
+        prefix = SystemService().system_settings.api_settings.prefix
+        root = f"http://{host}:{port}{prefix}/eia"
+        endpoint = f"{root}/{browser}_browser"
+        proxy_base = f"{root}/eia_proxy"
     mode = "light" if theme == "light" else "dark"
     view = "" if browser == "maps" else get_current_view(spec["path"], user)
     payload: dict = {
@@ -1923,6 +2039,7 @@ async def render_browser(
         "user": user,
         "label": spec["label"],
         "description": spec["description"],
+        "endpoint": endpoint,
         "src": _widget_src(proxy_base, spec["path"], spec["hash"], view, mode, user),
         "home": _widget_src(proxy_base, spec["path"], spec["hash"], "", mode, user),
         "proxy": proxy_base,
@@ -1978,16 +2095,38 @@ router._api_router.add_api_route(
     include_in_schema=False,
 )
 
+router._api_router.add_api_route(
+    path="/eia_state",
+    endpoint=eia_state,
+    methods=["POST"],
+    include_in_schema=False,
+)
+
+router._api_router.add_api_route(
+    path="/eia_mcp_state",
+    endpoint=eia_mcp_state,
+    methods=["GET"],
+    include_in_schema=False,
+)
+
 
 def _browser_endpoint(browser: str):
     """Build the widget endpoint bound to one EIA data browser."""
 
     async def endpoint(
-        info: Annotated[dict, Depends(request_info)],
+        info: Annotated[dict | None, Depends(request_info)] = None,
         theme: str = "dark",
         raw: bool = False,
-    ) -> Response:
-        return await render_browser(browser, theme, raw, info)
+    ) -> Any:
+        import json
+
+        response = await render_browser(browser, theme, raw, info)
+        if info is None:
+            body = bytes(response.body)
+            if isinstance(response, JSONResponse):
+                return json.loads(body)
+            return body.decode("utf-8", "replace")
+        return response
 
     endpoint.__name__ = f"{browser}_browser"
     endpoint.__doc__ = EIA_DATA_BROWSERS[browser]["description"]
@@ -2017,7 +2156,7 @@ for _browser, _spec in EIA_DATA_BROWSERS.items():
                 "category": "EIA",
                 "subCategory": "Data Browsers",
                 "source": ["EIA"],
-                "type": "html",
+                "type": "iframe",
                 "widgetId": widget_id(_browser),
                 "gridData": {"w": 40, "h": 22},
                 "params": [
@@ -2027,6 +2166,7 @@ for _browser, _spec in EIA_DATA_BROWSERS.items():
                 "refetchInterval": False,
                 "staleTime": 1000,
                 "raw": True,
+                "storage": {"mcpUrl": _mcp_url()},
             }
         },
     )

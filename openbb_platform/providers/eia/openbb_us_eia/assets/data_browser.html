@@ -214,20 +214,7 @@
           dataType: "table",
         },
       ];
-      var paramDefs = [
-        {
-          paramName: "browser",
-          label: "Browser",
-          type: "text",
-          description: "Which EIA data browser the table comes from.",
-          value: DATA.browser,
-        },
-      ];
-
-      target.postMessage(
-        { type: "openbb-connect", widgets: manifests, params: paramDefs },
-        "*"
-      );
+      var authHeaders = {};
 
       function publish(rows) {
         target.postMessage(
@@ -241,8 +228,48 @@
         );
       }
 
+      function parseParams(msg) {
+        if (!msg) return {};
+        if (msg.params && typeof msg.params === "object") return msg.params;
+        if (msg.paramName) {
+          var single = {};
+          single[msg.paramName] = msg.value;
+          return single;
+        }
+        return {};
+      }
+
+      function asBool(value) {
+        if (typeof value === "boolean") return value;
+        if (typeof value === "number") return value !== 0;
+        if (typeof value === "string") {
+          var v = value.toLowerCase();
+          return v === "true" || v === "1" || v === "yes";
+        }
+        return false;
+      }
+
+      function themedUrl(rawUrl, theme) {
+        try {
+          var u = new URL(rawUrl, window.location.origin);
+          u.searchParams.set("obb_theme", theme === "light" ? "light" : "dark");
+          return u.toString();
+        } catch (e) {
+          return rawUrl;
+        }
+      }
+
+      function applyTheme(theme) {
+        var mode = theme === "light" ? "light" : "dark";
+        DATA.theme = mode;
+        document.documentElement.setAttribute("data-theme", mode);
+        var frame = window.__eiaFrame;
+        if (!frame) return;
+        frame.src = themedUrl(frame.src || DATA.src, mode);
+      }
+
       function sendData() {
-        publish(window.__eiaTable || []);
+        publish(Array.isArray(window.__eiaTable) ? window.__eiaTable : []);
       }
 
       window.__eiaPublish = function (rows) {
@@ -256,9 +283,22 @@
         if (msg.type === "openbb-request") {
           if (msg.widgetId === null || msg.widgetId === widgetId) sendData();
         } else if (msg.type === "openbb-params-update") {
-          sendData();
+          var params = parseParams(msg);
+          if (params.theme !== undefined) applyTheme(params.theme);
+          if (params.raw !== undefined && asBool(params.raw)) {
+            sendData();
+          }
+        } else if (msg.type === "openbb-auth") {
+          authHeaders = msg.headers && typeof msg.headers === "object" ? msg.headers : {};
+          window.__eiaPendingAuth = authHeaders;
+          if (typeof window.__eiaSetAuth === "function") window.__eiaSetAuth(authHeaders);
         }
       });
+
+      target.postMessage(
+        { type: "openbb-connect", widgets: manifests, params: [] },
+        "*"
+      );
     }
 
     function renderSite() {
@@ -271,17 +311,24 @@
       status.textContent = "Loading EIA data browser…";
       document.body.appendChild(status);
 
-      var storeKey = "eia:view:" + DATA.browser + ":" + (DATA.user || "");
+      var authHeaders = {};
+      var storeKey = function () {
+        return "eia:view:" + DATA.browser + ":" + (DATA.user || "");
+      };
       function saved() {
         try {
-          var v = window.localStorage.getItem(storeKey);
+          var v = window.localStorage.getItem(storeKey());
           return v ? JSON.parse(v) : null;
         } catch (e) {
           return null;
         }
       }
       function remember(nav) {
-        try { window.localStorage.setItem(storeKey, JSON.stringify(nav)); } catch (e) {}
+        try { window.localStorage.setItem(storeKey(), JSON.stringify(nav)); } catch (e) {}
+      }
+      function forwardAuth() {
+        if (!frame || !frame.contentWindow) return;
+        frame.contentWindow.postMessage({ type: "openbb-auth", headers: authHeaders }, "*");
       }
 
       function restoredSrc() {
@@ -302,18 +349,22 @@
 
       function reportView(nav) {
         try {
-          if (!DATA.user || !DATA.path || !DATA.proxy) return;
+          if (!DATA.path || !DATA.proxy) return;
           var tail = nav.pathname.split("/eia_proxy/")[1];
           if (!tail) return;
           var view = tail + (nav.search || "") + (nav.hash || "");
           var url =
             DATA.proxy.replace(/\/eia_proxy$/, "/eia_view") +
             "?obb_browser=" + encodeURIComponent(DATA.path) +
-            "&obb_user=" + encodeURIComponent(DATA.user) +
+            (DATA.user ? "&obb_user=" + encodeURIComponent(DATA.user) : "") +
             "&obb_view=" + encodeURIComponent(view) +
             "&obb_seq=" + String(Date.now());
-          if (navigator.sendBeacon) navigator.sendBeacon(url);
-          else fetch(url, { method: "POST" }).catch(function () {});
+          var hasAuth = Object.keys(authHeaders || {}).length > 0;
+          if (!hasAuth && navigator.sendBeacon) {
+            navigator.sendBeacon(url);
+          } else {
+            fetch(url, { method: "POST", headers: authHeaders }).catch(function () {});
+          }
         } catch (e) {}
       }
 
@@ -322,21 +373,27 @@
       frame.src = restoredSrc();
       frame.setAttribute("referrerpolicy", "same-origin");
       frame.setAttribute("allow", "fullscreen");
+      window.__eiaFrame = frame;
+
+      function goHome() {
+        try { window.localStorage.removeItem(storeKey()); } catch (e) {}
+        try {
+          var u = new URL(DATA.home);
+          reportView({ pathname: u.pathname, search: u.search, hash: u.hash });
+        } catch (e) {}
+        frame.classList.remove("ready");
+        revealed = false;
+        frame.src = "about:blank";
+        requestAnimationFrame(function () { frame.src = DATA.home; });
+      }
+      window.__eiaGoHome = goHome;
 
       var home = document.createElement("button");
       home.className = "home-btn";
       home.type = "button";
       home.title = "Reset " + DATA.label + " to its default view";
       home.innerHTML = "&#8962; Home";
-      home.addEventListener("click", function () {
-        try { window.localStorage.removeItem(storeKey); } catch (e) {}
-        try {
-          var u = new URL(DATA.home);
-          reportView({ pathname: u.pathname, search: u.search, hash: u.hash });
-        } catch (e) {}
-        frame.src = "about:blank";
-        requestAnimationFrame(function () { frame.src = DATA.home; });
-      });
+      home.addEventListener("click", goHome);
       bar.appendChild(home);
 
       var revealed = false;
@@ -362,6 +419,16 @@
         nudge();
       }
       setTimeout(ready, 20000);
+      frame.addEventListener("load", ready);
+      frame.addEventListener("load", forwardAuth);
+
+      window.__eiaSetAuth = function (headers) {
+        authHeaders = headers && typeof headers === "object" ? headers : {};
+        forwardAuth();
+      };
+      if (window.__eiaPendingAuth && typeof window.__eiaPendingAuth === "object") {
+        window.__eiaSetAuth(window.__eiaPendingAuth);
+      }
 
       window.addEventListener("message", function (event) {
         if (event.source !== frame.contentWindow) return;
@@ -377,6 +444,7 @@
           };
           remember(nav);
           reportView(nav);
+          window.__eiaTable = null;
         } else if (msg.type === "eia:table" && msg.rows && msg.rows.length) {
           if (window.__eiaPublish) window.__eiaPublish(msg.rows);
           else window.__eiaTable = msg.rows;

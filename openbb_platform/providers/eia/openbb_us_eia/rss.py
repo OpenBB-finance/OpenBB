@@ -35,6 +35,7 @@ async def rss_feed(
         parsed = await fetch_feed(session, EIA_RSS_FEEDS[feed]["url"])
 
     data = build_feed(feed, parsed, 50, proxy_base)
+    data["endpoint"] = info["url"]
     return HTMLResponse(content=render_rss_html(data, theme))
 
 
@@ -51,7 +52,7 @@ router._api_router.add_api_route(
             "category": "EIA",
             "subCategory": "News & Feeds",
             "source": ["EIA"],
-            "type": "html",
+            "type": "iframe",
             "widgetId": "eia_rss_feeds_us_eia_obb",
             "gridData": {"w": 40, "h": 20},
             "params": [

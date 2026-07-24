@@ -344,6 +344,7 @@ class TestRssFeedEndpoint:
         text = response.body.decode()
         assert "First Article" in text
         assert "eia_proxy/todayinenergy" in text
+        assert '"endpoint": "http://t/api/v1/eia/rss_feed"' in text
         assert stubbed.closed is True
 
     @pytest.mark.asyncio

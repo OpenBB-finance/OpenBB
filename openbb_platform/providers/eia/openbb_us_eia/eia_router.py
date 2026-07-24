@@ -17,6 +17,7 @@ from openbb_core.app.router import Router
 
 from openbb_us_eia import COMMODITY_INSTALLED
 from openbb_us_eia.browsers import router as _browsers_router
+from openbb_us_eia.eia_mcp import mcp_reverse_proxy
 from openbb_us_eia.rss import router as _rss_router
 from openbb_us_eia.utils import catalog
 from openbb_us_eia.utils.catalog import dataset_summary, model_name
@@ -27,6 +28,12 @@ router = Router(
 )
 router.include_router(_rss_router)
 router.include_router(_browsers_router)
+router._api_router.add_api_route(
+    path="/eia_mcp",
+    endpoint=mcp_reverse_proxy,
+    methods=["GET", "POST", "DELETE"],
+    include_in_schema=False,
+)
 
 
 async def get_eia_apps_json() -> list[dict]:

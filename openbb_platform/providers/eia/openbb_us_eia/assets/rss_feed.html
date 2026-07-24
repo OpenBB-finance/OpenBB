@@ -81,6 +81,45 @@
   .action { color: var(--accent); font-size: 12.5px; font-weight: 600; }
   .empty { color: var(--muted); padding: 30px 0; text-align: center; }
 
+  .page-loading {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 120;
+  }
+  .page-loading.open { display: flex; }
+  .page-loading .panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    min-width: 240px;
+    padding: 16px 18px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-loading .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex: 0 0 auto;
+  }
+  .page-loading .text {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
   .overlay {
     position: fixed;
     inset: 0;
@@ -191,11 +230,19 @@
   </div>
 </div>
 
+<div class="page-loading" id="page-loading" aria-live="polite" aria-busy="true">
+  <div class="panel">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="text" id="page-loading-text">Loading…</div>
+  </div>
+</div>
+
 <script id="rss-data" type="application/json">__EIA_RSS_DATA__</script>
 <script>
   (function () {
     var DATA = JSON.parse(document.getElementById("rss-data").textContent);
     document.documentElement.setAttribute("data-theme", DATA.theme === "light" ? "light" : "dark");
+    openbbProtocol();
 
     document.getElementById("feed-label").textContent = DATA.label || "EIA RSS Feed";
     document.getElementById("feed-desc").textContent = DATA.description || "";
@@ -220,6 +267,121 @@
       if (item.viewer === "embed") return "Watch video →";
       if (item.viewer === "table") return "View prices →";
       return "Read article →";
+    }
+
+    function openbbProtocol() {
+      var target = window.top || window.parent;
+      if (!target || target === window) return;
+      var authHeaders = {};
+      var widgetId = "eia_rss_feed_items";
+      var loadingMask = document.getElementById("page-loading");
+      var loadingText = document.getElementById("page-loading-text");
+
+      function showLoading(text) {
+        if (loadingText) loadingText.textContent = text || "Loading…";
+        if (loadingMask) loadingMask.classList.add("open");
+      }
+
+      function navigateWithLoading(url, text) {
+        showLoading(text);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            window.location.href = url;
+          });
+        });
+      }
+
+      function parseParams(msg) {
+        if (!msg) return {};
+        if (msg.params && typeof msg.params === "object") return msg.params;
+        if (msg.paramName) {
+          var single = {};
+          single[msg.paramName] = msg.value;
+          return single;
+        }
+        return {};
+      }
+
+      function applyTheme(theme) {
+        DATA.theme = theme === "light" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", DATA.theme);
+      }
+
+      function reloadForFeed(feed) {
+        if (!DATA.endpoint || !feed) return;
+        var url = new URL(DATA.endpoint, window.location.origin);
+        url.searchParams.set("feed", feed);
+        url.searchParams.set("theme", DATA.theme === "light" ? "light" : "dark");
+        navigateWithLoading(url.toString(), "Loading feed…");
+      }
+
+      function markdown() {
+        var out = ["# " + (DATA.label || "EIA RSS Feed")];
+        var items = Array.isArray(DATA.items) ? DATA.items : [];
+        for (var i = 0; i < items.length; i++) {
+          var item = items[i] || {};
+          var title = item.title || "Untitled";
+          var url = item.url || item.src || "";
+          var date = item.date || "";
+          if (url) out.push("- [" + title + "](" + url + ")" + (date ? " - " + date : ""));
+          else out.push("- " + title + (date ? " - " + date : ""));
+        }
+        return out.join("\n");
+      }
+
+      function publish() {
+        target.postMessage(
+          {
+            type: "openbb-data",
+            widgetId: widgetId,
+            dataType: "markdown",
+            data: markdown(),
+          },
+          "*"
+        );
+      }
+
+      window.addEventListener("message", function (event) {
+        var msg = event.data;
+        if (!msg || !msg.type) return;
+        if (msg.type === "openbb-request") {
+          if (msg.widgetId === null || msg.widgetId === widgetId) publish();
+        } else if (msg.type === "openbb-params-update") {
+          var params = parseParams(msg);
+          if (params.theme !== undefined) {
+            applyTheme(params.theme);
+            if (params.feed === undefined && DATA.endpoint) {
+              var themeUrl = new URL(DATA.endpoint, window.location.origin);
+              if (DATA.feed) themeUrl.searchParams.set("feed", DATA.feed);
+              themeUrl.searchParams.set("theme", DATA.theme === "light" ? "light" : "dark");
+              navigateWithLoading(themeUrl.toString(), "Applying theme…");
+              return;
+            }
+          }
+          if (params.feed !== undefined) reloadForFeed(String(params.feed || ""));
+          publish();
+        } else if (msg.type === "openbb-auth") {
+          authHeaders = msg.headers && typeof msg.headers === "object" ? msg.headers : {};
+        }
+      });
+
+      target.postMessage(
+        {
+          type: "openbb-connect",
+          widgets: [
+            {
+              widgetId: widgetId,
+              name: "EIA RSS Feed Items",
+              description: DATA.description || "Articles, releases, testimony, and fuel-price updates.",
+              category: "EIA",
+              subCategory: "News & Feeds",
+              dataType: "markdown",
+            },
+          ],
+          params: [],
+        },
+        "*"
+      );
     }
 
     var list = document.getElementById("list");
