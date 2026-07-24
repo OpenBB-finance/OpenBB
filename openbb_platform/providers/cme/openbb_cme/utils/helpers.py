@@ -1,58 +1,9 @@
 """CME Group Helpers."""
 
-from datetime import date, timedelta
-from typing import Literal
+import asyncio
+from datetime import date, datetime, timedelta
 
-CME_SYMBOLS = Literal["ES", "NQ", "MES", "MNQ", "YM"]
-
-# Maps root symbol → (product_id, full_name, exchange)
-CME_PRODUCT_MAP: dict[str, dict] = {
-    "ES": {
-        "product_id": "133",
-        "name": "E-mini S&P 500",
-        "exchange": "CME/Globex",
-        "tick_size": 0.25,
-        "point_value": 50.0,
-        "multiplier": 50,
-        "currency": "USD",
-    },
-    "NQ": {
-        "product_id": "146",
-        "name": "E-mini Nasdaq-100",
-        "exchange": "CME/Globex",
-        "tick_size": 0.25,
-        "point_value": 20.0,
-        "multiplier": 20,
-        "currency": "USD",
-    },
-    "MES": {
-        "product_id": "8667",
-        "name": "Micro E-mini S&P 500",
-        "exchange": "CME/Globex",
-        "tick_size": 0.25,
-        "point_value": 5.0,
-        "multiplier": 5,
-        "currency": "USD",
-    },
-    "MNQ": {
-        "product_id": "8668",
-        "name": "Micro E-mini Nasdaq-100",
-        "exchange": "CME/Globex",
-        "tick_size": 0.25,
-        "point_value": 2.0,
-        "multiplier": 2,
-        "currency": "USD",
-    },
-    "YM": {
-        "product_id": "318",
-        "name": "E-mini Dow ($5)",
-        "exchange": "CBOT/Globex",
-        "tick_size": 1.0,
-        "point_value": 5.0,
-        "multiplier": 5,
-        "currency": "USD",
-    },
-}
+from openbb_cme.utils.client import CMEHttpClient, CMERequestError
 
 BASE_URL = "https://www.cmegroup.com"
 
@@ -73,14 +24,29 @@ MONTH_ABBR = {
 
 
 def parse_cme_value(v: str | None) -> float | None:
-    """Parse a CME settlement field that may contain commas, dashes, or B/A markers."""
+    """Parse decimal or exchange-style fractional CME price fields."""
     if v is None:
         return None
-    v = str(v).strip().replace(",", "").replace("+", "").strip("ABCDE")
+    v = str(v).strip().replace(",", "").strip("ABCDE")
     if v in ("", "-", "0-", "UNCH"):
         return None
+    if "'" in v:
+        sign = -1 if v.startswith("-") else 1
+        value = v.lstrip("+-")
+        whole_text, fraction_text = value.split("'", maxsplit=1)
+        if not fraction_text.isdigit():
+            return None
+        whole = float(whole_text) if whole_text else 0.0
+        if len(fraction_text) == 1:
+            fraction = int(fraction_text) / 8
+        elif len(fraction_text) == 2:
+            fraction = int(fraction_text) / 32
+        else:
+            fraction = int(fraction_text[:2]) / 32
+            fraction += int(fraction_text[2:]) / 256
+        return sign * (whole + fraction)
     try:
-        return float(v)
+        return float(v.replace("+", ""))
     except ValueError:
         return None
 
@@ -122,48 +88,57 @@ def business_days_between(start: date, end: date) -> list[date]:
     return days
 
 
-_HEADERS = {
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Referer": "https://www.cmegroup.com/",
-}
-
-
-async def _get_json(url: str) -> dict | list:
+async def _get_json(
+    url: str,
+    client: CMEHttpClient | None = None,
+) -> dict | list:
     """
     Fetch JSON from a CME URL using curl-cffi to impersonate Chrome's TLS fingerprint,
     bypassing Akamai Bot Manager which blocks standard aiohttp/Python SSL fingerprints.
     """
-    # pylint: disable=import-outside-toplevel
-    from curl_cffi.requests import AsyncSession
-
-    async with AsyncSession(impersonate="chrome120") as session:
-        resp = await session.get(url, headers=_HEADERS, timeout=15)
-        resp.raise_for_status()
-        return resp.json()
+    if client is not None:
+        return await client.get_json(url)
+    async with CMEHttpClient() as owned_client:
+        return await owned_client.get_json(url)
 
 
-async def fetch_settlements(symbol: str, trade_date: date) -> list[dict]:
+async def fetch_settlements(
+    symbol: str,
+    trade_date: date,
+    product_id: int | None = None,
+    client: CMEHttpClient | None = None,
+) -> list[dict]:
     """
     Fetch CME daily settlement data for a given symbol and trade date.
 
     Returns a list of dicts, one per active contract month.
     """
-    spec = CME_PRODUCT_MAP.get(symbol.upper(), {})
-    product_id = spec.get("product_id", symbol.upper())
+    # Imported locally to keep the HTTP primitive available to the catalog module.
+    from openbb_cme.utils.catalog import resolve_product
+
+    if product_id is None:
+        product = await resolve_product(symbol, "Futures", client=client)
+        if not product:
+            return []
+        product_id = product["product_id"]
     formatted = trade_date.strftime("%m/%d/%Y")
     url = (
         f"{BASE_URL}/CmeWS/mvc/Settlements/Futures/Settlements"
         f"/{product_id}/FUT?strategy=DEFAULT&tradeDate={formatted}"
     )
-    response = await _get_json(url)
+    response = await _get_json(url, client)
 
     if isinstance(response, dict):
-        rows = response.get("settlements", [])
+        rows = response.get("settlements")
     elif isinstance(response, list):
         rows = response
     else:
-        return []
+        rows = None
+    if not isinstance(rows, list):
+        raise CMERequestError(
+            f"CME returned an invalid futures settlement payload: {url}",
+            url=url,
+        )
 
     results: list[dict] = []
     for row in rows:
@@ -194,94 +169,185 @@ async def fetch_latest_settlements(
     symbol: str,
     as_of: date | None = None,
     lookback_business_days: int = 5,
+    product_id: int | None = None,
+    client: CMEHttpClient | None = None,
 ) -> tuple[date, list[dict]]:
     """Fetch the latest available settlements within a bounded lookback window."""
     trade_date = last_business_day(as_of)
     for _ in range(lookback_business_days):
-        rows = await fetch_settlements(symbol, trade_date)
+        rows = await fetch_settlements(symbol, trade_date, product_id, client)
         if rows:
             return trade_date, rows
         trade_date = last_business_day(trade_date - timedelta(days=1))
     return trade_date, []
 
 
-_CME_MONTH_CODES = {
-    "01": "F",
-    "02": "G",
-    "03": "H",
-    "04": "J",
-    "05": "K",
-    "06": "M",
-    "07": "N",
-    "08": "Q",
-    "09": "U",
-    "10": "V",
-    "11": "X",
-    "12": "Z",
-}
+async def fetch_product_calendar(
+    product_id: int,
+    product_type: str = "Futures",
+    client: CMEHttpClient | None = None,
+) -> list[dict]:
+    """Fetch the official listed-contract calendar for a CME product."""
+    calendar_type = "Options" if product_type == "Options" else "Future"
+    url = f"{BASE_URL}/CmeWS/mvc/ProductCalendar/{calendar_type}/{product_id}"
+    response = await _get_json(url, client)
+    if not isinstance(response, list):
+        raise CMERequestError(
+            f"CME returned an invalid product calendar payload: {url}",
+            url=url,
+        )
 
-_CME_MONTH_NAMES = {
-    "01": "Jan",
-    "02": "Feb",
-    "03": "Mar",
-    "04": "Apr",
-    "05": "May",
-    "06": "Jun",
-    "07": "Jul",
-    "08": "Aug",
-    "09": "Sep",
-    "10": "Oct",
-    "11": "Nov",
-    "12": "Dec",
-}
-
-
-def _third_friday(year: int, month: int) -> date:
-    """Return the date of the 3rd Friday in the given month."""
-    first = date(year, month, 1)
-    first_friday = first + timedelta(days=(4 - first.weekday()) % 7)
-    return first_friday + timedelta(weeks=2)
-
-
-async def fetch_product_calendar(product_id: str) -> list[dict]:
-    """Derive listed contract months from CME settlement data by product ID."""
-    symbol = next(
-        (
-            sym
-            for sym, spec in CME_PRODUCT_MAP.items()
-            if spec["product_id"] == product_id
-        ),
-        None,
-    )
-    if not symbol:
-        return []
-
-    _, rows = await fetch_latest_settlements(symbol)
-    spec = CME_PRODUCT_MAP[symbol]
+    if calendar_type == "Options":
+        if any(
+            not isinstance(group, dict)
+            or not isinstance(group.get("calendarEntries"), list)
+            for group in response
+        ):
+            raise CMERequestError(
+                f"CME returned an invalid options calendar payload: {url}",
+                url=url,
+            )
+        entries = [
+            {
+                **entry,
+                "product_id": group.get("productId"),
+                "option_type": group.get("optionType"),
+                "option_name": group.get("name"),
+                "weekly": group.get("weekly", False),
+                "daily": group.get("daily", False),
+            }
+            for group in response
+            if isinstance(group, dict)
+            for entry in group.get("calendarEntries", [])
+            if isinstance(entry, dict)
+        ]
+    else:
+        entries = [row for row in response if isinstance(row, dict)]
 
     results: list[dict] = []
-    for row in rows:
-        expiration_iso = row.get("expiration", "")
-        if not expiration_iso or "-" not in expiration_iso:
-            continue
-        try:
-            year_s, month_s = expiration_iso.split("-")
-            year, month = int(year_s), int(month_s)
-            month_code = _CME_MONTH_CODES.get(month_s, "")
-            year_short = year_s[2:]
-            contract_symbol = f"{symbol}{month_code}{year_short}"
-            month_name = _CME_MONTH_NAMES.get(month_s, "")
-            exp_date = _third_friday(year, month)
-            exp_iso = exp_date.isoformat() + "T00:00:00"
-        except (ValueError, IndexError):
-            continue
+    for row in entries:
+        expiration = None
+        for key in ("lastTrade", "settlement"):
+            value = row.get(key)
+            if value and value != "-":
+                try:
+                    expiration = datetime.strptime(value, "%d %b %Y")
+                    break
+                except ValueError:
+                    continue
         results.append(
             {
-                "symbol": contract_symbol,
-                "product_code": symbol,
-                "description": f"{spec['name']} {month_name} {year_s}",
-                "expiration": exp_iso,
+                "symbol": row.get("productCode"),
+                "description": row.get("option_name") or row.get("contractMonth"),
+                "contract_month": row.get("contractMonth"),
+                "first_trade_date": row.get("firstTrade"),
+                "last_trade_date": row.get("lastTrade"),
+                "settlement_date": row.get("settlement"),
+                "expiration": expiration,
                 "is_active": True,
+                "option_type": row.get("option_type"),
+                "weekly": row.get("weekly"),
+                "daily": row.get("daily"),
+                "product_id": row.get("product_id", product_id),
             }
         )
     return results
+
+
+async def fetch_option_expirations(
+    product_id: int,
+    client: CMEHttpClient | None = None,
+) -> list[dict]:
+    """Fetch the available option expirations and their recent trade dates."""
+    url = (
+        f"{BASE_URL}/CmeWS/mvc/Settlements/Options/TradeDateAndExpirations/{product_id}"
+    )
+    response, calendar = await asyncio.gather(
+        _get_json(url, client),
+        fetch_product_calendar(product_id, "Options", client),
+    )
+    if not isinstance(response, list):
+        raise CMERequestError(
+            f"CME returned an invalid option expiration payload: {url}",
+            url=url,
+        )
+
+    calendar_by_contract = {
+        row.get("symbol"): row
+        for row in calendar
+        if row.get("symbol") and row.get("expiration")
+    }
+    results: list[dict] = []
+    for group in response:
+        if not isinstance(group, dict) or not isinstance(
+            group.get("expirations"), list
+        ):
+            raise CMERequestError(
+                f"CME returned an invalid option expiration group: {url}",
+                url=url,
+            )
+        for expiration in group["expirations"]:
+            if not isinstance(expiration, dict):
+                raise CMERequestError(
+                    f"CME returned an invalid option expiration: {url}",
+                    url=url,
+                )
+            key = expiration.get("expiration")
+            if not isinstance(key, dict):
+                raise CMERequestError(
+                    f"CME returned invalid option expiration metadata: {url}",
+                    url=url,
+                )
+            contract_id = expiration.get("contractId")
+            calendar_row = calendar_by_contract.get(contract_id, {})
+            calendar_expiration = calendar_row.get("expiration")
+            results.append(
+                {
+                    "product_id": int(expiration.get("productId", product_id)),
+                    "option_type": group.get("optionType"),
+                    "name": group.get("name"),
+                    "label": expiration.get("label"),
+                    "month_year": key.get("twoDigitsCode"),
+                    "contract_id": contract_id,
+                    "expiration_date": (
+                        calendar_expiration.date()
+                        if isinstance(calendar_expiration, datetime)
+                        else None
+                    ),
+                    "trade_dates": [
+                        row.get("formatedDate")
+                        for row in expiration.get("tradeDates", [])
+                        if row.get("formatedDate")
+                    ],
+                }
+            )
+    return results
+
+
+async def fetch_option_settlements(
+    product_id: int,
+    month_year: str,
+    contract_id: str,
+    trade_date: date,
+    client: CMEHttpClient | None = None,
+) -> list[dict]:
+    """Fetch strike-level call and put settlements for one option expiration."""
+    formatted = trade_date.strftime("%m/%d/%Y")
+    url = (
+        f"{BASE_URL}/CmeWS/mvc/Settlements/Options/Settlements/{product_id}/OOF"
+        f"?strategy=DEFAULT&optionProductId={product_id}"
+        f"&monthYear={month_year}&optionExpiration={contract_id}"
+        f"&tradeDate={formatted}&pageSize=500"
+    )
+    response = await _get_json(url, client)
+    settlements = response.get("settlements") if isinstance(response, dict) else None
+    if not isinstance(settlements, list):
+        raise CMERequestError(
+            f"CME returned an invalid option settlement payload: {url}",
+            url=url,
+        )
+    return [
+        row
+        for row in settlements
+        if isinstance(row, dict) and row.get("strike") != "Total"
+    ]

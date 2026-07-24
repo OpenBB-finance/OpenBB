@@ -51,15 +51,32 @@ def test_provider_key_switches_to_cme_alias(monkeypatch):
 
 
 def test_standalone_router_binds_all_futures_endpoints():
-    """All four futures endpoints are exposed from the CME namespace."""
+    """Standalone CME endpoints are exposed from the provider namespace."""
     module = _load_standalone_router_module()
-    for name in ("historical", "curve", "instruments", "info"):
+    for name in (
+        "products",
+        "contract_specs",
+        "historical",
+        "curve",
+        "instruments",
+        "info",
+        "options_chains",
+    ):
         assert callable(getattr(module, name, None)), f"missing {name}"
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "endpoint_name", ("historical", "curve", "instruments", "info")
+    "endpoint_name",
+    (
+        "products",
+        "contract_specs",
+        "historical",
+        "curve",
+        "instruments",
+        "info",
+        "options_chains",
+    ),
 )
 async def test_standalone_endpoints_delegate_to_query(endpoint_name):
     """Standalone commands delegate through the standard OpenBB query pipeline."""

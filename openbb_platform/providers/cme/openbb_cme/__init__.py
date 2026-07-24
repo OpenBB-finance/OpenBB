@@ -4,10 +4,13 @@ from importlib.util import find_spec
 
 from openbb_core.provider.abstract.provider import Provider
 
+from openbb_cme.models.contract_specs import CMEContractSpecsFetcher
 from openbb_cme.models.futures_curve import CMEFuturesCurveFetcher
 from openbb_cme.models.futures_historical import CMEFuturesHistoricalFetcher
 from openbb_cme.models.futures_info import CMEFuturesInfoFetcher
 from openbb_cme.models.futures_instruments import CMEFuturesInstrumentsFetcher
+from openbb_cme.models.options_chains import CMEOptionsChainsFetcher
+from openbb_cme.models.products import CMEProductsFetcher
 
 DERIVATIVES_INSTALLED = find_spec("openbb_derivatives") is not None
 
@@ -21,13 +24,15 @@ cme_provider = Provider(
     name="cme",
     website="https://www.cmegroup.com/",
     description=(
-        "CME Group provider for equity index futures settlement data. "
-        "Provides daily settlement prices, term structure, contract specifications, "
-        "and listed instruments for ES, NQ, MES, MNQ, and YM futures. "
-        "Uses publicly available CME settlement APIs — no API key required."
+        "CME Group provider for futures and options-on-futures reference and "
+        "settlement data across the exchange's asset classes. Product metadata and "
+        "contract specifications are generated from CME's public product slate."
     ),
     credentials=None,
     fetcher_dict={
+        "CmeProducts": CMEProductsFetcher,
+        "CmeContractSpecs": CMEContractSpecsFetcher,
+        _key("OptionsChains", "CmeOptionsChains"): CMEOptionsChainsFetcher,
         _key("FuturesCurve", "CmeFuturesCurve"): CMEFuturesCurveFetcher,
         _key("FuturesHistorical", "CmeFuturesHistorical"): (
             CMEFuturesHistoricalFetcher
@@ -37,10 +42,10 @@ cme_provider = Provider(
             CMEFuturesInstrumentsFetcher
         ),
     },
-    repr_name="CME Group Public Settlement Data",
+    repr_name="CME Group Public Derivatives Data",
     instructions=(
-        "This provider uses CME Group's public settlement data endpoints."
-        " No credentials are required."
-        " Data is published after the trading session."
+        "This provider uses CME Group's public product-slate, contract-specification,"
+        " calendar, and settlement endpoints. No credentials are required."
+        " Settlement data is published after the trading session."
     ),
 )

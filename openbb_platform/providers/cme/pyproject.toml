@@ -1,7 +1,7 @@
 [project]
 name = "openbb-cme"
 version = "1.0.0"
-description = "CME Group equity index futures settlement data provider for OpenBB."
+description = "CME Group futures and options-on-futures data provider for OpenBB."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "AGPL-3.0-only" }
 readme = "README.md"

@@ -16,6 +16,47 @@ from openbb_cme import DERIVATIVES_INSTALLED
 router = Router(prefix="", description="CME Group provider router.")
 
 
+@router.command(
+    model="CmeProducts",
+    examples=[
+        APIEx(parameters={"product_type": "Futures", "provider": "cme"}),
+        APIEx(parameters={"asset_class": "Energy", "provider": "cme"}),
+        APIEx(parameters={"symbol": "ES", "provider": "cme"}),
+    ],
+)
+async def products(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search the exchange-wide CME futures and options product catalog."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CmeContractSpecs",
+    examples=[
+        APIEx(
+            parameters={
+                "symbol": "ES",
+                "product_type": "Futures",
+                "provider": "cme",
+            }
+        ),
+        APIEx(parameters={"product_id": 138, "provider": "cme"}),
+    ],
+)
+async def contract_specs(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get complete exchange-published specifications for CME products."""
+    return await OBBject.from_query(Query(**locals()))
+
+
 if not DERIVATIVES_INSTALLED:
 
     @router.command(
@@ -100,4 +141,27 @@ if not DERIVATIVES_INSTALLED:
         extra_params: ExtraParams,
     ) -> OBBject:
         """Get CME futures specifications and latest settlements."""
+        return await OBBject.from_query(Query(**locals()))
+
+    @router.command(
+        model="CmeOptionsChains",
+        examples=[
+            APIEx(parameters={"symbol": "ES", "provider": "cme"}),
+            APIEx(
+                parameters={
+                    "symbol": "ES",
+                    "product_id": 138,
+                    "expiration": "2026-09-18",
+                    "provider": "cme",
+                }
+            ),
+        ],
+    )
+    async def options_chains(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Get CME options-on-futures settlement chains."""
         return await OBBject.from_query(Query(**locals()))

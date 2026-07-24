@@ -18,8 +18,9 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator, model_validator
 
+from openbb_cme.utils.catalog import resolve_product
+from openbb_cme.utils.client import CMEHttpClient
 from openbb_cme.utils.helpers import (
-    CME_PRODUCT_MAP,
     business_days_between,
     fetch_settlements,
 )
@@ -35,26 +36,21 @@ class CMEFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
     Source: https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/{product_id}/FUT
     """
 
-    __json_schema_extra__ = {
-        "symbol": {"multiple_items_allowed": False, "choices": list(CME_PRODUCT_MAP)},
-    }
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": False}}
     symbol: str = Field(
         default="ES",
         description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " Supported symbols: "
-        + ", ".join(CME_PRODUCT_MAP),
+        + " Enter any futures product code from the CME product slate.",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def _validate_symbol(cls, v: str) -> str:
-        """Uppercase and validate against known CME symbols."""
-        v = v.upper()
-        if v not in CME_PRODUCT_MAP:
-            raise ValueError(
-                f"Symbol '{v}' is not supported. Supported: {', '.join(CME_PRODUCT_MAP)}"
-            )
-        return v
+        """Normalize a CME product code."""
+        value = str(v).strip().upper()
+        if not value:
+            raise ValueError("Symbol cannot be empty.")
+        return value
 
     @model_validator(mode="before")
     @classmethod
@@ -101,42 +97,42 @@ class CMEFuturesHistoricalFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Fetch settlement data for each business day in the requested range."""
-        start = query.start_date or (dateType.today() - timedelta(days=30))
-        end = query.end_date or dateType.today()
+        async with CMEHttpClient() as client:
+            product = await resolve_product(query.symbol, "Futures", client=client)
+            if not product:
+                raise ValueError(
+                    f"Symbol '{query.symbol}' was not found in the CME futures catalog."
+                )
 
-        if isinstance(start, str):
-            start = dateType.fromisoformat(start)
-        if isinstance(end, str):
-            end = dateType.fromisoformat(end)
+            start = query.start_date or (dateType.today() - timedelta(days=30))
+            end = query.end_date or dateType.today()
 
-        days = business_days_between(start, end)
+            if isinstance(start, str):
+                start = dateType.fromisoformat(start)
+            if isinstance(end, str):
+                end = dateType.fromisoformat(end)
 
-        if len(days) > MAX_HISTORY_DAYS:
-            raise ValueError(
-                f"Date range spans {len(days)} trading days; max is {MAX_HISTORY_DAYS}."
-                " Narrow the range or use multiple calls."
-            )
+            days = business_days_between(start, end)
 
-        semaphore = asyncio.Semaphore(_REQUEST_SEMAPHORE_LIMIT)
+            if len(days) > MAX_HISTORY_DAYS:
+                raise ValueError(
+                    f"Date range spans {len(days)} trading days; "
+                    f"max is {MAX_HISTORY_DAYS}. Narrow the range or use multiple calls."
+                )
 
-        async def fetch_one(d: dateType) -> list[dict]:
-            async with semaphore:
-                return await fetch_settlements(query.symbol, d)
+            semaphore = asyncio.Semaphore(_REQUEST_SEMAPHORE_LIMIT)
 
-        results_nested = await asyncio.gather(
-            *[fetch_one(d) for d in days], return_exceptions=True
-        )
+            async def fetch_one(d: dateType) -> list[dict]:
+                async with semaphore:
+                    return await fetch_settlements(
+                        query.symbol,
+                        d,
+                        product["product_id"],
+                        client,
+                    )
 
-        rows: list[dict] = []
-        for result in results_nested:
-            if isinstance(result, BaseException):
-                # pylint: disable=import-outside-toplevel
-                from openbb_core.app.model.abstract.error import OpenBBError
-
-                if isinstance(result, OpenBBError):
-                    raise result
-                continue
-            rows.extend(result)
+            results_nested = await asyncio.gather(*(fetch_one(d) for d in days))
+            rows = [row for result in results_nested for row in result]
 
         if query.expiration:
             rows = [r for r in rows if r.get("expiration") == query.expiration]
