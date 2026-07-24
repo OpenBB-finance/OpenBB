@@ -4,7 +4,7 @@ import re
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from time import struct_time
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NamedTuple
 
 if TYPE_CHECKING:
     from aiohttp import ClientSession
@@ -27,6 +27,85 @@ _MIN_PARAGRAPHS = 2
 _FEED_TIMEOUT_SEC = 8.0
 _ARTICLE_TIMEOUT_SEC = 6.0
 _TIMESTAMP_RE = re.compile(r"^\d{1,2}:\d{2}(?::\d{2})?$")
+
+
+_WEBKIT_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    " (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+)
+_SAFARI_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15"
+    " (KHTML, like Gecko) Version/18.2 Safari/605.1.15"
+)
+_FEED_ACCEPT = (
+    "text/html,application/xhtml+xml,application/xml;q=0.9,"
+    "application/rss+xml,application/atom+xml,*/*;q=0.8"
+)
+# The shared session decodes only gzip/deflate. Overriding request headers
+# drops its default Accept-Encoding, so aiohttp advertises br, which then
+# arrives undecoded and unparseable; pin an encoding the session can decode.
+_SAFE_ENCODING = "gzip, deflate"
+
+
+def _pinned(user_agent: str | None = None) -> dict[str, str]:
+    """Build a browser-like header set the shared session can decode."""
+    headers = {"Accept": _FEED_ACCEPT, "Accept-Encoding": _SAFE_ENCODING}
+    if user_agent:
+        headers["User-Agent"] = user_agent
+    return headers
+
+
+# Hosts whose rotating-UA / JSON-Accept defaults get 403/406/202 or br-encoded.
+_HOST_HEADERS: dict[str, dict[str, str]] = {
+    # Drugs.com article pages 403 the rotating Gecko user agents.
+    "drugs.com": _pinned(_WEBKIT_UA),
+    # Cloudflare/Akamai edges gate these feeds on the user agent; Safari passes.
+    "espn.com": _pinned(_SAFARI_UA),
+    "heavy.com": _pinned(_SAFARI_UA),
+    "bleepingcomputer.com": _pinned(_SAFARI_UA),
+    "pbs.org": _pinned(_SAFARI_UA),
+    # Techmeme's feed rejects the session default Accept: application/json.
+    "techmeme.com": _pinned(),
+}
+
+
+class _SiteRule(NamedTuple):
+    """Article extraction rule for a single host."""
+
+    container: str
+    """XPath for the element holding the article."""
+
+    cut: tuple[str, ...]
+    """XPath tests; the first matching child of ``container`` ends the article."""
+
+    hero_skip: tuple[str, ...] = ()
+    """Substrings marking a hero image as a site placeholder rather than art."""
+
+
+_SITE_RULES: dict[str, _SiteRule] = {
+    # Drugs.com has no <article> and its <main> holds the sidebar, so //main
+    # swallows related teasers, newsletter pitches and vendor copyright.
+    "drugs.com": _SiteRule(
+        container="//div[contains(@class, 'ddc-main-content')]",
+        cut=(
+            "self::*[contains(@class, 'ddc-disclaimer')]",
+            "self::*[contains(@class, 'more-resources')]",
+            "self::h2[normalize-space()='More news resources']",
+            "self::h2[normalize-space()='Subscribe to our newsletter']",
+        ),
+        hero_skip=("ddc-opengraph-logomark",),
+    ),
+}
+
+
+def _host(url: str | None) -> str:
+    """Return the hostname of ``url`` without a ``www.`` prefix."""
+    if not url:
+        return ""
+    from urllib.parse import urlparse
+
+    hostname = (urlparse(url).hostname or "").lower()
+    return hostname[4:] if hostname.startswith("www.") else hostname
 
 
 class _TagStripper(HTMLParser):
@@ -123,10 +202,13 @@ async def fetch_feed(session: "ClientSession", url: str):
     import aiohttp
     import feedparser
 
+    kwargs: dict = {"timeout": aiohttp.ClientTimeout(total=_FEED_TIMEOUT_SEC)}
+    headers = _HOST_HEADERS.get(_host(url))
+    if headers:
+        kwargs["headers"] = headers
+
     try:
-        response = await session.get(
-            url, timeout=aiohttp.ClientTimeout(total=_FEED_TIMEOUT_SEC)
-        )
+        response = await session.get(url, **kwargs)
         async with response:
             response.raise_for_status()
             payload = await response.read()
@@ -219,6 +301,29 @@ def _article_markdown(node) -> str:
     return "\n\n".join(parts)
 
 
+def _cut_tail(container, cut: tuple[str, ...]) -> None:
+    """Drop the first child matching ``cut`` and every element after it."""
+    cutting = False
+    for child in list(container):
+        if not isinstance(child.tag, str):
+            continue
+        if not cutting and any(child.xpath(f"boolean({test})") for test in cut):
+            cutting = True
+        if cutting:
+            container.remove(child)
+
+
+def _site_body(doc, rule: _SiteRule) -> str:
+    """Render the article container defined by ``rule`` as markdown."""
+    best = ""
+    for container in doc.xpath(rule.container):
+        _cut_tail(container, rule.cut)
+        text = _article_markdown(container)
+        if _looks_clean(text) and len(text) > len(best):
+            best = text
+    return best
+
+
 def _extract_image_from_doc(doc) -> str | None:
     """Find a hero image URL from meta tags, JSON-LD, or article body."""
     for path in (
@@ -242,7 +347,7 @@ def _extract_image_from_doc(doc) -> str | None:
     return None
 
 
-def _extract_body(payload: bytes) -> str | None:
+def _extract_body(payload: bytes, url: str | None = None) -> str | None:
     """Return the article body as markdown with inline images."""
     from lxml import html
 
@@ -251,16 +356,21 @@ def _extract_body(payload: bytes) -> str | None:
     except Exception:  # noqa: BLE001
         return None
 
+    rule = _SITE_RULES.get(_host(url))
+
     hero = _extract_image_from_doc(doc)
+    if hero and rule and any(marker in hero for marker in rule.hero_skip):
+        hero = None
 
     body = _jsonld_field(doc, "articleBody")
     if not (body and _looks_clean(body)):
         _strip_chrome(doc)
-        best: str = ""
-        for article in doc.xpath("//article"):
-            text = _article_markdown(article)
-            if _looks_clean(text) and len(text) > len(best):
-                best = text
+        best: str = _site_body(doc, rule) if rule else ""
+        if not best:
+            for article in doc.xpath("//article"):
+                text = _article_markdown(article)
+                if _looks_clean(text) and len(text) > len(best):
+                    best = text
         if not best:
             for main in doc.xpath("//main"):
                 text = _article_markdown(main)
@@ -278,13 +388,16 @@ async def fetch_article_body(session: "ClientSession", url: str) -> str | None:
     """Fetch ``url`` and return its article body."""
     import aiohttp
 
+    kwargs: dict = {"timeout": aiohttp.ClientTimeout(total=_ARTICLE_TIMEOUT_SEC)}
+    headers = _HOST_HEADERS.get(_host(url))
+    if headers:
+        kwargs["headers"] = headers
+
     try:
-        response = await session.get(
-            url, timeout=aiohttp.ClientTimeout(total=_ARTICLE_TIMEOUT_SEC)
-        )
+        response = await session.get(url, **kwargs)
         async with response:
             response.raise_for_status()
             payload = await response.read()
     except (aiohttp.ClientError, TimeoutError):
         return None
-    return _extract_body(payload)
+    return _extract_body(payload, url)

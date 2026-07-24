@@ -29,7 +29,10 @@ async def test_rss_with_body(mocked_pipeline):
     assert items[0].excerpt == "A short summary."
     assert items[0].url == "https://example.test/article/1"
     assert "First paragraph" in items[0].body
+    # The extracted article body is used verbatim — no source link appended.
+    assert "Read the full story" not in items[0].body
     assert items[1].excerpt == "Plain text summary without HTML."
+    # Item 1 has no link, so the summary stands alone.
     assert items[1].body == items[1].excerpt
     assert items[1].url == ""
     assert items[1].author == "Sample Feed"
@@ -37,7 +40,45 @@ async def test_rss_with_body(mocked_pipeline):
 
 async def test_rss_without_body(mocked_pipeline):
     out = await rss.rss(source="example", limit=5, fetch_body=False)
-    assert all(item.body == item.excerpt for item in out.results)
+    results = out.results
+    # Item 0 has a link: the summary is followed by a source link.
+    assert results[0].body.startswith(results[0].excerpt)
+    assert (
+        "[Read the full story at the source ↗](https://example.test/article/1)"
+        in results[0].body
+    )
+    # Item 1 has no link, so the summary stands alone.
+    assert results[1].body == results[1].excerpt
+
+
+async def test_rss_appends_source_link_when_body_fetch_fails(
+    monkeypatch, stub_session_factory
+):
+    feed = (
+        b"<?xml version='1.0' encoding='UTF-8'?>"
+        b'<rss version="2.0"><channel><title>Paywalled</title>'
+        b"<item><title>Locked Story</title>"
+        b"<link>https://paywall.test/story</link>"
+        b"<description>Just the teaser.</description>"
+        b"<pubDate>Mon, 19 May 2026 12:00:00 GMT</pubDate>"
+        b"</item></channel></rss>"
+    )
+    monkeypatch.setattr(
+        "openbb_news.registry.get_feed_url", lambda key: "http://feed.test/pw"
+    )
+    stub_session_factory(
+        {
+            "http://feed.test/pw": feed,
+            # Article page 403s / yields no extractable body.
+            "https://paywall.test/story": (b"Access Denied", 403),
+        }
+    )
+    item = (await rss.rss(source="x", limit=1, fetch_body=True)).results[0]
+    assert item.excerpt == "Just the teaser."
+    assert item.body == (
+        "Just the teaser.\n\n"
+        "[Read the full story at the source ↗](https://paywall.test/story)"
+    )
 
 
 async def test_rss_limit_caps_entries(mocked_pipeline):

@@ -1,12 +1,14 @@
 # openbb-news
 
 RSS news feeds for the OpenBB Platform — one Workspace Newsfeed widget backed by
-a registry of 400+ vetted feeds (Benzinga, GlobeNewswire by full ICB industry
+a registry of 500+ vetted feeds (Benzinga, GlobeNewswire by full ICB industry
 breakdown + subject/event-type breakdown — earnings, M&A, dividends, IPOs, etc.,
 PR Newswire regional + category, Axios, Yahoo Finance, Fortune, BBC, Fox News,
-Drudge Report, Google News regional + topic). The widget defaults to
-**Benzinga → Markets** so it loads finance-relevant articles immediately on
-first open.
+Drudge Report, Drugs.com, Google News regional + topic, plus the full set of
+publishers aggregated by brutalist.report grouped under its eight topics —
+Tech, News, Business, Science, Gaming, Culture, Politics, Sports). The widget
+defaults to **Benzinga → Markets** so it loads finance-relevant articles
+immediately on first open.
 
 ## Install
 
@@ -75,7 +77,7 @@ internal      = "Internal Sources"
 ### 3. Keep the bundled defaults — `[news] merge_defaults`
 
 Without this flag, the presence of any `[news.rss_feeds]` entries replaces
-the 438 bundled feeds entirely. Set `merge_defaults = true` to keep
+the 562 bundled feeds entirely. Set `merge_defaults = true` to keep
 everything and add your feeds on top. User keys that collide with bundled
 keys override the bundled URL.
 
