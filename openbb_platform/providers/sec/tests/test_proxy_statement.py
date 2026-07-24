@@ -109,6 +109,30 @@ class TestTableMarkdown:
         out = ps.beneficial_owners_table(html)
         assert "Fund X" in out
 
+    def test_beneficial_owners_table_foreign_style(self):
+        html = (
+            "<table><tr><td>Directors and Executive Officers (1):</td>"
+            "<td>Percentage of Beneficial Ownership</td></tr>"
+            "<tr><td>All directors and executive officers as a group</td><td>11.2</td></tr>"
+            "<tr><td>5% Shareholders:</td><td>Global Clean Energy Limited</td></tr>"
+            "<tr><td>Percentage of Aggregate Voting Power</td><td>86.4</td></tr></table>"
+        )
+        out = ps.beneficial_owners_table(html)
+        assert "Global Clean Energy Limited" in out
+
+    def test_beneficial_owners_table_from_share_ownership_section(self):
+        html = (
+            "<div>E. Share Ownership</div>"
+            "<p>text</p>"
+            "<table><tr><td>Directors and Executive Officers</td><td>Voting Power</td></tr>"
+            "<tr><td>5% Shareholders:</td><td>Global Clean Energy Limited</td></tr></table>"
+            "<table><tr><td>* Represents beneficial ownership.</td></tr></table>"
+            "<div>F. Related Party Transactions</div>"
+        )
+        out = ps.beneficial_owners_table(html)
+        assert "Global Clean Energy Limited" in out
+        assert "Represents beneficial ownership" in out
+
     def test_management_ownership_table(self):
         html = (
             "<table><tr><td>Directors and Executive Officers as a Group</td>"
@@ -184,11 +208,19 @@ class TestPayVersusPerformance:
         )
         assert ps.pay_versus_performance(html) == []
 
+    def test_net_income_only_is_not_pvp(self):
+        html = (
+            '<xbrli:context id="c1"><xbrli:period>'
+            "<xbrli:enddate>2024-12-31</xbrli:enddate>"
+            "</xbrli:period></xbrli:context>"
+            '<ix:nonfraction name="ecd:NetIncomeLoss" contextref="c1">100</ix:nonfraction>'
+        )
+        assert ps.pay_versus_performance(html) == []
+
 
 _CONTENT_MODELS = [
     (SecBeneficialOwnershipFetcher, "beneficial_owners_table"),
     (SecExecutiveCompensationFetcher, "summary_compensation_table"),
-    (SecManagementOwnershipFetcher, "management_ownership_table"),
 ]
 
 
@@ -313,3 +345,60 @@ class TestPayVersusPerformanceFetcher:
             pytest.raises(EmptyDataError, match="Pay Versus Performance"),
         ):
             asyncio.run(SecPayVersusPerformanceFetcher.aextract_data(q, None))
+
+
+class TestManagementSectionFetcher:
+    def test_uses_item_10_for_10k(self):
+        q = SecManagementOwnershipFetcher.transform_query({"symbol": "AAPL"})
+        stub = SimpleNamespace(
+            document_type="10-K", get_item=MagicMock(return_value={"text": "Item 10"})
+        )
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_filing_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+        ):
+            out = asyncio.run(SecManagementOwnershipFetcher.aextract_data(q, None))
+        assert out == {"content": "Item 10"}
+
+    def test_uses_item_6_for_20f_and_slices_before_compensation(self):
+        q = SecManagementOwnershipFetcher.transform_query({"symbol": "CNEY"})
+        text = (
+            "Preface\n"
+            "A. Directors and Senior Management\n"
+            "Profile A\n"
+            "B. Compensation\n"
+            "Comp section"
+        )
+        stub = SimpleNamespace(
+            document_type="20-F", get_item=MagicMock(return_value={"text": text})
+        )
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_filing_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+        ):
+            out = asyncio.run(SecManagementOwnershipFetcher.aextract_data(q, None))
+        assert "Profile A" in out["content"]
+        assert "B. Compensation" not in out["content"]
+
+    def test_no_filing_raises(self):
+        q = SecManagementOwnershipFetcher.transform_query({"symbol": "AAPL"})
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_filing_url",
+                new=AsyncMock(return_value=""),
+            ),
+            pytest.raises(EmptyDataError),
+        ):
+            asyncio.run(SecManagementOwnershipFetcher.aextract_data(q, None))

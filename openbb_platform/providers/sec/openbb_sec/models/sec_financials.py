@@ -546,7 +546,11 @@ class FinancialStatements(Filing):
             split_bold_sections,
         )
 
-        item = self._item_by_name("risk factor") or self.get_item("1A")
+        doc_type = (self.document_type or "").upper()
+        if doc_type.startswith(("20-F", "40-F")):
+            item = self._item_by_name("risk factor") or self.get_item("3D", "3")
+        else:
+            item = self._item_by_name("risk factor") or self.get_item("1A")
         if item:
             content = self.get_main_document_content()
             section_html = (
@@ -591,15 +595,63 @@ class FinancialStatements(Filing):
 
     def business(self) -> str | None:
         """Return the Business section (Item 1) as formatted markdown."""
-        item = (
-            self.get_item("1")
-            if (self.document_type or "").upper().startswith("10-K")
-            else self._item_by_name("business")
-        )
+        from openbb_sec.utils.filing_sections import extract_section_html
+
+        def _strip_exec_officers(text: str) -> str:
+            return re.split(
+                r"(?im)^\s*#{1,6}\s*EXECUTIVE\s+OFFICERS\s+OF\s+THE\s+REGISTRANT\s*$",
+                text,
+                maxsplit=1,
+            )[0].rstrip()
+
+        def _slice_foreign_business(text: str) -> str:
+            start_match = re.search(r"(?im)^\s*B\.\s*Business(?:\s+Overview)?\b", text)
+            if not start_match:
+                return text
+            start = start_match.start()
+            end_candidates = []
+            for pattern in (
+                r"(?im)^\s*C\.\s*Organizational\s+Structure\b",
+                r"(?im)^\s*D\.\s*Property\b",
+                r"(?im)^\s*ITEM\s*4A\b",
+                r"(?im)^\s*4A\.\b",
+                r"(?im)^\s*ITEM\s*5\b",
+            ):
+                match = re.search(pattern, text[start:])
+                if match:
+                    end_candidates.append(start + match.start())
+            end = min(end_candidates) if end_candidates else len(text)
+            return text[start:end].strip()
+
+        doc_type = (self.document_type or "").upper()
+        if doc_type.startswith("10-K"):
+            item = self.get_item("1")
+        elif doc_type.startswith(("20-F", "40-F")):
+            item = self.get_item("4", "4A", "4B") or self._item_by_name(
+                "information on the company"
+            )
+            if not item:
+                item = self._item_by_name("business")
+        else:
+            item = self._item_by_name("business")
         if not item:
             return None
+        content = self.get_main_document_content()
+        item_num = item.get("item_num") if isinstance(item, dict) else None
+        if content and item_num:
+            section_html = extract_section_html(content, str(item_num))
+            if section_html:
+                section_text = self._clean_html_to_text(section_html, keep_tables=False)
+                if section_text:
+                    cleaned = _strip_exec_officers(section_text)
+                    if doc_type.startswith(("20-F", "40-F")):
+                        cleaned = _slice_foreign_business(cleaned)
+                    return cleaned or None
         text = (item.get("text") or "").strip()
-        return text or None
+        cleaned = _strip_exec_officers(text)
+        if doc_type.startswith(("20-F", "40-F")):
+            cleaned = _slice_foreign_business(cleaned)
+        return cleaned or None
 
     def _parse_exhibit_index(self) -> list:
         """Parse the hyperlinked exhibit index from a filing's main document.
@@ -1592,20 +1644,24 @@ class FinancialStatements(Filing):
             matched = {
                 k: v
                 for k, v in statements_info.items()
-                if "operations" in k.lower() or "income" in k.lower()
+                if ("operations" in k.lower() or "income" in k.lower())
+                and "parenthetical" not in k.lower()
             }
         elif statement == "balance":
             matched = {
                 k: v
                 for k, v in statements_info.items()
-                if "balance" in k.lower() or "condition" in k.lower()
+                if ("balance" in k.lower() or "condition" in k.lower())
+                and "parenthetical" not in k.lower()
             }
         else:
             search_term = statement_map.get(statement)
             matched = {
                 k: v
                 for k, v in statements_info.items()
-                if search_term and search_term in k.lower()
+                if search_term
+                and search_term in k.lower()
+                and "parenthetical" not in k.lower()
             }
 
         if not matched:
@@ -1622,6 +1678,7 @@ class FinancialStatements(Filing):
                 f"No URLs found for statement: {statement}"
                 f" -> matched: {list(matched.keys())}"
             )
+
         output_statement = DataFrame()
         output_meta = DataFrame()
         col1_name = ""
@@ -1726,7 +1783,12 @@ class FinancialStatements(Filing):
 
         def apply_label(x):
             """Apply a label to the column by matching against tag labels."""
-            x_lower = x.lower()
+            if x is None:
+                return None
+            x_text = str(x).strip()
+            if not x_text or x_text.lower() == "nan":
+                return None
+            x_lower = x_text.lower()
             # Exact match
             for key, value in tags.items():
                 for match in try_order:
@@ -1999,12 +2061,64 @@ class FinancialStatements(Filing):
             if not context or len(context) < 1:
                 return None
 
+            expected_end = None
+            expected_months = None
+            period_label = str(getattr(row, "period_ending", "") or "")
+            if period_label:
+                expected_end = period_label.split(" -- ", 1)[0].strip()
+                if " -- " in period_label:
+                    suffix = period_label.split(" -- ", 1)[1].strip().lower()
+                    month_match = re.search(r"(\d+)\s*months?", suffix)
+                    if month_match:
+                        expected_months = int(month_match.group(1))
+                    else:
+                        month_words = {
+                            "one": 1,
+                            "two": 2,
+                            "three": 3,
+                            "four": 4,
+                            "five": 5,
+                            "six": 6,
+                            "seven": 7,
+                            "eight": 8,
+                            "nine": 9,
+                            "ten": 10,
+                            "eleven": 11,
+                            "twelve": 12,
+                        }
+                        for word, months in month_words.items():
+                            if re.search(rf"\b{word}\s+months?\b", suffix):
+                                expected_months = months
+                                break
+
             if value and value != "--":
                 for c in context:
                     if not c:
                         continue
                     con = c.get("context_ref", "")
                     if not con:
+                        continue
+                    con_end = c.get("end")
+                    if expected_end and con_end:
+                        parsed_end = None
+                        with contextlib.suppress(Exception):
+                            parsed_end = to_datetime(con_end).strftime("%Y-%m-%d")
+                        if parsed_end != expected_end:
+                            continue
+                    if expected_months and c.get("start") and c.get("end"):
+                        parsed_months = None
+                        with contextlib.suppress(Exception):
+                            start = to_datetime(c.get("start"))
+                            end = to_datetime(c.get("end"))
+                            parsed_months = (
+                                (end.year - start.year) * 12
+                                + end.month
+                                - start.month
+                                + 1
+                            )
+                        if parsed_months != expected_months:
+                            continue
+                    elif expected_months and c.get("end") and not c.get("start"):
                         continue
                     val = c.get("value")
                     if not val or val == "--":
@@ -2087,13 +2201,9 @@ class FinancialStatements(Filing):
             apply_dimension_label, axis=1
         )
 
-        output_statement = (
-            flattened_output.copy()
-            .dropna(how="all", axis=1)
-            .sort_values(
-                by=["order", "period_ending"],
-                ascending=[True, False],
-            )
+        output_statement = flattened_output.copy().sort_values(
+            by=["order", "period_ending"],
+            ascending=[True, False],
         )
 
         output_statement["parent_tag"] = output_statement.tag.apply(apply_parent_tag)
@@ -2121,12 +2231,9 @@ class FinancialStatements(Filing):
         def apply_period_beginning(row):
             """Apply a period beginning to the column."""
             context = row.context_ref if hasattr(row, "context_ref") else None
-            if not context or not isinstance(context, str):
-                return None
-
             period_start = ""
 
-            if context:
+            if context and isinstance(context, str):
                 if context.lower().startswith("as_of"):
                     return period_start
 
@@ -2181,9 +2288,32 @@ class FinancialStatements(Filing):
         def apply_fix_period_end(row):
             """Apply a period ending to the column."""
             con_ref = row.context_ref if hasattr(row, "context_ref") else None
-            if row.period_beginning or con_ref or " -- " in row.period_ending:
-                period_end = row.period_ending.split(" -- ")[0]
-                row.period_ending = period_end
+            if con_ref and isinstance(con_ref, str):
+                context_data = self._period_context.get(con_ref, {})
+                context_end = context_data.get("end")
+                context_start = context_data.get("start")
+                context_period_type = context_data.get("period_type")
+                if context_end:
+                    with contextlib.suppress(Exception):
+                        period_end = to_datetime(context_end).strftime("%Y-%m-%d")
+                        if (
+                            context_period_type == "duration"
+                            and context_start
+                            and context_end
+                        ):
+                            start = to_datetime(context_start)
+                            end = to_datetime(context_end)
+                            n_months = (
+                                (end.year - start.year) * 12
+                                + end.month
+                                - start.month
+                                + 1
+                            )
+                            row.period_ending = (
+                                f"{period_end} -- {n_months} Months Ended"
+                            )
+                        else:
+                            row.period_ending = period_end
 
             con_ref = row.context_ref
 
@@ -2196,7 +2326,7 @@ class FinancialStatements(Filing):
                 row.period_beginning and row.period_ending and row.tag and not con_ref
             ):
                 begin = to_datetime(row.period_beginning)
-                end = to_datetime(row.period_ending)
+                end = to_datetime(row.period_ending.split(" -- ")[0])
                 n_months = (end.year - begin.year) * 12 + end.month - begin.month + 1
                 row.context_ref = f"{n_months} Months Ended"
 
@@ -2206,6 +2336,25 @@ class FinancialStatements(Filing):
             apply_period_beginning, axis=1
         )
         output_statement = output_statement.apply(apply_fix_period_end, axis=1)
+
+        period_with_duration = output_statement["period_ending"].dropna().astype(str)
+        period_with_duration = period_with_duration[
+            period_with_duration.str.contains(" -- ", regex=False)
+        ]
+        period_end_lookup: dict[str, str] = {}
+        for period_label in period_with_duration.tolist():
+            period_date = period_label.split(" -- ", 1)[0]
+            if period_date not in period_end_lookup:
+                period_end_lookup[period_date] = period_label
+
+        if period_end_lookup:
+            output_statement["period_ending"] = output_statement["period_ending"].apply(
+                lambda x: (
+                    period_end_lookup.get(str(x), str(x))
+                    if x is not None and " -- " not in str(x)
+                    else x
+                )
+            )
 
         output_statement = output_statement[
             [
@@ -2231,27 +2380,15 @@ class FinancialStatements(Filing):
         )
 
         output_statement = output_statement.drop_duplicates(
-            subset=["tag", "value", "period_ending"], keep="first"
+            subset=[
+                "tag",
+                "value",
+                "period_ending",
+                "period_beginning",
+                "context_ref",
+            ],
+            keep="first",
         )
-
-        tag_min_order = output_statement.groupby("tag")["order"].min().to_dict()
-        output_statement["_tag_order"] = output_statement["tag"].map(tag_min_order)
-
-        output_statement = output_statement.sort_values(
-            by=["_tag_order", "order", "period_ending", "period_beginning"],
-            ascending=[True, True, False, False],
-        )
-
-        unique_items = output_statement.drop_duplicates(subset=["tag", "label"]).copy()
-        new_order_map = {
-            (row.tag, row.label): i + 1
-            for i, row in enumerate(unique_items.itertuples())
-        }
-        output_statement["order"] = output_statement.apply(
-            lambda row: new_order_map.get((row.tag, row.label), row.order), axis=1
-        )
-
-        output_statement = output_statement.drop(columns=["_tag_order"])
         output_statement = output_statement.sort_values(
             by=["order", "period_ending", "period_beginning"],
             ascending=[True, False, False],
@@ -2401,7 +2538,7 @@ class FinancialStatements(Filing):
             )
 
             pattern = re.compile(
-                r"\(in [a-zA-Z] per share\)|per share -|weighted average number of",
+                r"\(in [a-zA-Z] per share\)|per\s+(?:common\s+)?share\b|weighted average number of",
                 re.IGNORECASE,
             )
             pattern_shares = re.compile(
@@ -2433,49 +2570,55 @@ class FinancialStatements(Filing):
                 value_cols = statement.columns[1:]
                 for col in value_cols:
                     statement[col] = statement[col].replace("--", float("nan"))
-                statement = statement.dropna().reset_index(drop=True)
+                label_col = statement.columns[0]
+                has_label = statement[label_col].astype(str).str.strip() != ""
+                has_values = statement[value_cols].notna().any(axis=1)
+                statement = statement[has_label | has_values].reset_index(drop=True)
 
             def format_date(x):
                 """Format a date."""
                 if not x:
                     return None
-                date_part = " ".join(x.split()[:3])
-                return to_datetime(date_part).strftime("%Y-%m-%d")
+                date_part = " ".join(str(x).split()[:3])
+                with contextlib.suppress(Exception):
+                    return to_datetime(date_part).strftime("%Y-%m-%d")
+                return None
+
+            date_col_map: dict = {}
+            if not is_equity:
+                for col in statement.columns[1:]:
+                    parsed_date = format_date(col)
+                    if parsed_date:
+                        date_col_map[col] = parsed_date
+                if date_col_map:
+                    statement = statement[[statement.columns[0], *date_col_map.keys()]]
 
             for col in statement.columns[1:]:
                 statement[col] = statement[col].apply(clean_col)
+
+                def _scale_row_value(row):
+                    if isnull(row[col]):
+                        return "--"
+
+                    label = str(row[statement.columns[0]]).lower()
+                    is_per_share = bool(pattern.search(label)) or (
+                        "(in dollars per share)" in label
+                    )
+                    is_share_count = "(in shares)" in label or bool(
+                        pattern_shares.search(label)
+                    )
+
+                    if is_per_share:
+                        return float(row[col])
+
+                    if is_share_count:
+                        return int(row[col] * shares_multiplier)
+
+                    value = row[col] * multiplier
+                    return int(value)
+
                 statement[col] = statement.apply(
-                    lambda row: (
-                        int(row[col] * shares_multiplier)
-                        if not isnull(row[col])
-                        and (
-                            "(in shares)" in row[statement.columns[0]].lower()
-                            or pattern_shares.search(row[statement.columns[0]].lower())
-                        )
-                        and (
-                            not pattern.search(str(row[statement.columns[0]]).lower())
-                            and "(in dollars per share)"
-                            not in str(row[statement.columns[0]]).lower()
-                        )
-                        else (
-                            float(row[col])
-                            if not isnull(row[col])
-                            and pattern.search(str(row[statement.columns[0]]).lower())
-                            or "(in dollars per share)"
-                            in str(row[statement.columns[0]]).lower()
-                            else (
-                                int(
-                                    row[col] * multiplier
-                                    if not pattern.search(
-                                        str(row[statement.columns[0]]).lower()
-                                    )
-                                    else row[col]
-                                )
-                                if not isnull(row[col])
-                                else "--"
-                            )
-                        )
-                    ),
+                    _scale_row_value,
                     axis=1,
                 )
 
@@ -2487,7 +2630,7 @@ class FinancialStatements(Filing):
                     if is_equity is True
                     else [col_1]
                     + [
-                        f"{format_date(d)} -- {period_end}"
+                        f"{date_col_map.get(d) or format_date(d)} -- {period_end}"
                         for d in statement.columns[1:].tolist()
                     ]
                 )
@@ -2496,7 +2639,10 @@ class FinancialStatements(Filing):
                     statement.columns
                     if is_equity is True
                     else [col_1]
-                    + [format_date(d) for d in statement.columns[1:].tolist()]
+                    + [
+                        date_col_map.get(d) or format_date(d)
+                        for d in statement.columns[1:].tolist()
+                    ]
                 )
 
             item_map = DataFrame()

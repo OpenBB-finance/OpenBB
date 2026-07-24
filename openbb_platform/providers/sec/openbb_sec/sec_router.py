@@ -786,7 +786,10 @@ else:
                         "renderFn": "cellOnClick",
                         "renderFnParams": {
                             "actionType": "groupBy",
-                            "groupBy": {"paramName": "url"},
+                            "groupBy": {
+                                "paramName": "url",
+                                "valueField": "report_url",
+                            },
                         },
                     },
                     {

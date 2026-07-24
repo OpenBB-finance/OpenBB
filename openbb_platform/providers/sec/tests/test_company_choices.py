@@ -77,3 +77,35 @@ def test_caches_result_when_use_cache():
     choices, aset = _run(AsyncMock(return_value=page), use_cache=True, aget=None)
     assert choices[0]["value"] == "AAPL"
     aset.assert_awaited_once()
+
+
+def test_dedupes_ticker_and_keeps_best_ranked_row():
+    response = {
+        "rows": [
+            {
+                "ticker": "DE",
+                "name": "Deere Funding Canada Corp",
+                "cik": "315189",
+                "rank": 42,
+            },
+            {
+                "ticker": "DE",
+                "name": "Deere & Company",
+                "cik": "315189",
+                "rank": 3,
+            },
+        ]
+    }
+    with (
+        patch(
+            "openbb_sec.utils.cache.cached_request", AsyncMock(return_value=response)
+        ),
+        patch("openbb_sec.utils.cache.aget_cached", AsyncMock(return_value=None)),
+        patch("openbb_sec.utils.cache.aset_cached", AsyncMock()),
+    ):
+        choices = asyncio.run(get_company_choices(use_cache=False))
+
+    assert len(choices) == 1
+    assert choices[0]["value"] == "DE"
+    assert choices[0]["label"] == "Deere & Company"
+    assert choices[0]["extraInfo"]["description"] == "DE | 315189"

@@ -114,6 +114,24 @@ class SecCompanyFilingsData(CompanyFilingsData):
         description="The date of the filing.",
         default=None,
     )
+    report_url: str = Field(
+        description="URL to the actual report.",
+        json_schema_extra={
+            "x-widget_config": {
+                "headerName": "Document",
+                "pinned": "left",
+                "cellDataType": "text",
+                "renderFn": "cellOnClick",
+                "renderFnParams": {
+                    "actionType": "groupBy",
+                    "groupBy": {
+                        "paramName": "url",
+                        "valueField": "report_url",
+                    },
+                },
+            }
+        },
+    )
     act: str | int | None = Field(description="The SEC Act number.", default=None)
     items: str | float | None = Field(description="The SEC Item numbers.", default=None)
     primary_doc_description: str | None = Field(

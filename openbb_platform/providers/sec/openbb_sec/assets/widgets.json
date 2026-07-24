@@ -28,6 +28,14 @@
         "paramName": "use_cache"
       },
       {
+        "label": "Document URL",
+        "description": "URL of a SEC EDGAR document.",
+        "optional": true,
+        "type": "text",
+        "show": false,
+        "paramName": "document_url"
+      },
+      {
         "paramName": "provider",
         "value": "sec",
         "show": false
@@ -79,7 +87,8 @@
             "renderFnParams": {
               "actionType": "groupBy",
               "groupBy": {
-                "paramName": "document_url"
+                "paramName": "document_url",
+                "valueField": "url"
               }
             }
           }

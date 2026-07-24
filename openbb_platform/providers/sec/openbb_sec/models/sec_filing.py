@@ -661,8 +661,9 @@ class Filing(Data):
             if title and "- shares" in title:
                 shares_multiplier = title.split(" shares in ")[-1]
                 multiplier = self._multiplier_map(shares_multiplier)
+                first_col = df.iloc[:, 0].astype(str)
                 shares_outstanding = (
-                    df[df.iloc[:, 0].str.contains("Shares Outstanding")]
+                    df[first_col.str.contains("Shares Outstanding", na=False)]
                     .iloc[:, 2]
                     .values[0]
                 )
@@ -680,33 +681,27 @@ class Filing(Data):
                     }
 
             if not df.empty:
+                first_col = df.iloc[:, 0].astype(str)
+                second_col = df.iloc[:, 1].fillna("").astype(str)
                 trading_symbols_df = df[
-                    df.iloc[:, 0]
-                    .astype(str)
-                    .str.lower()
-                    .isin(["trading symbol", "no trading symbol flag"])
+                    first_col.str.lower().isin(
+                        ["trading symbol", "no trading symbol flag"]
+                    )
                 ]
                 symbols_dict: dict = {}
                 trading_symbols = (
                     trading_symbols_df.iloc[:, 1]
+                    .fillna("")
+                    .astype(str)
                     .str.strip()
                     .str.replace("true", "No Trading Symbol")
                     .tolist()
                 )
-                symbol_names = (
-                    df[
-                        df.iloc[:, 0].astype(str).str.strip()
-                        == "Title of 12(b) Security"
-                    ]
-                    .iloc[:, 1]
-                    .tolist()
-                )
+                symbol_names = second_col[
+                    first_col.str.strip() == "Title of 12(b) Security"
+                ].tolist()
                 exchange_names = (
-                    df[
-                        df.iloc[:, 0].astype(str).str.strip()
-                        == "Security Exchange Name"
-                    ]
-                    .iloc[:, 1]
+                    second_col[first_col.str.strip() == "Security Exchange Name"]
                     .fillna("No Exchange")
                     .tolist()
                 )

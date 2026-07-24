@@ -1887,7 +1887,19 @@ class XBRLParser:
                 my_children_rels = [
                     r for r in relationships if r["parent"] == element_id
                 ]
-                my_children_rels.sort(key=lambda x: float(x["order"]))
+
+                def _order_key(rel: dict[str, Any]) -> float:
+                    order = rel.get("order")
+                    if isinstance(order, (int, float)):
+                        return float(order)
+                    if isinstance(order, str):
+                        try:
+                            return float(order)
+                        except ValueError:
+                            pass
+                    return float("inf")
+
+                my_children_rels.sort(key=_order_key)
 
                 for rel in my_children_rels:
                     child_node = build_node(

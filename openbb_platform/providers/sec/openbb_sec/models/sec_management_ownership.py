@@ -1,5 +1,6 @@
 """SEC Management Ownership Model."""
 
+import re
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -65,31 +66,59 @@ class SecManagementOwnershipFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract the directors/executive officers ownership table (DEF 14A)."""
+        """Extract management section content from annual filings."""
         from openbb_core.provider.utils.errors import EmptyDataError
 
-        from openbb_sec.models.sec_filing import Filing
-        from openbb_sec.utils.proxy_statement import (
-            management_ownership_table,
-            resolve_proxy_url,
+        from openbb_sec.models.sec_financials import (
+            FinancialStatements,
+            no_filing_message,
+            resolve_filing_url,
         )
 
-        url = await resolve_proxy_url(
-            query.symbol, query.calendar_year, query.use_cache
+        url = await resolve_filing_url(
+            query.symbol,
+            query.calendar_year,
+            None,
+            query.use_cache,
+            annual_default=True,
         )
-        if not url and query.calendar_year is not None:
-            url = await resolve_proxy_url(query.symbol, None, query.use_cache)
         if not url:
-            raise EmptyDataError(
-                f"No proxy statement (DEF 14A) was found for {query.symbol}."
-            )
+            raise EmptyDataError(no_filing_message(query.symbol))
 
-        html = await Filing._adownload_file(url, query.use_cache)
-        content = management_ownership_table(html or "")
+        statements = FinancialStatements.from_url(url, query.use_cache)
+        doc_type = (statements.document_type or "").upper()
+
+        item = None
+        if doc_type.startswith(("20-F", "40-F")):
+            item = statements.get_item("6")
+        elif doc_type.startswith("10-K"):
+            item = statements.get_item("10")
+
+        if not item:
+            item = statements._item_by_name("senior management")
+        if not item:
+            item = statements._item_by_name("executive officer")
+        if not item:
+            item = statements._item_by_name("director")
+
+        content = (item.get("text") if isinstance(item, dict) else "") or ""
+
+        if doc_type.startswith(("20-F", "40-F")) and content:
+            start = re.search(
+                r"(?im)^\s*A\.\s*Directors\s+and\s+Senior\s+Management\b",
+                content,
+            )
+            if start:
+                section = content[start.start() :]
+                end = re.search(
+                    r"(?im)^\s*B\.\s*Compensation\b",
+                    section,
+                )
+                content = section[: end.start()].strip() if end else section.strip()
+
         if not content:
             raise EmptyDataError(
-                "No management ownership table was found in the proxy statement for"
-                f" {query.symbol}."
+                f"No management section was found in an annual filing for {query.symbol}."
             )
 
         return {"content": content}
