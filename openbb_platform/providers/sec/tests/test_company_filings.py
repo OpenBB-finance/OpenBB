@@ -177,6 +177,42 @@ class TestCompanyFilingsTransformData:
         res = SecCompanyFilingsFetcher.transform_data(q, _filing_records())
         assert len(res) == 1
 
+    def test_xom_legacy_cik_merges_legacy_filings(self, monkeypatch):
+        q = types.SimpleNamespace(
+            cik="320193",
+            symbol="XOM",
+            start_date=None,
+            end_date=None,
+            form_type=None,
+            limit=None,
+        )
+        legacy = [
+            {
+                "reportDate": "2022-12-31",
+                "filingDate": "2023-02-22",
+                "acceptanceDateTime": "2023-02-22T10:00:00",
+                "act": "34",
+                "form": "10-K",
+                "items": "",
+                "primaryDocDescription": "10-K",
+                "primaryDocument": "xom.htm",
+                "accessionNumber": "0000034088-23-000010",
+                "fileNumber": "001-2256",
+                "filmNumber": "1",
+                "isInlineXBRL": "1",
+                "isXBRL": "1",
+                "size": "1000",
+            }
+        ]
+        monkeypatch.setattr(
+            "openbb_core.provider.utils.helpers.run_async",
+            lambda *a, **k: legacy,
+        )
+        res = SecCompanyFilingsFetcher.transform_data(q, _filing_records())
+        assert len(res) == 3
+        assert q.symbol is None
+        assert q.cik == "0000034088"
+
 
 class TestCompanyFilingsExtract:
     """SecCompanyFilingsFetcher.aextract_data branches."""

@@ -3,6 +3,8 @@
 import asyncio
 from unittest.mock import AsyncMock, patch
 
+import pytest
+
 from openbb_sec.utils.company_choices import get_company_choices
 
 
@@ -66,6 +68,15 @@ def test_non_dict_response_returns_empty():
     assert choices == []
 
 
+def test_dolt_error_raises():
+    response = {
+        "query_execution_status": "Error",
+        "query_execution_message": "bad query",
+    }
+    with pytest.raises(Exception, match="bad query"):
+        _run(AsyncMock(return_value=response))
+
+
 def test_returns_cached_when_available():
     cached = [{"label": "Cached Co", "value": "X"}]
     choices, _ = _run(AsyncMock(), use_cache=True, aget=cached)
@@ -109,3 +120,25 @@ def test_dedupes_ticker_and_keeps_best_ranked_row():
     assert choices[0]["value"] == "DE"
     assert choices[0]["label"] == "Deere & Company"
     assert choices[0]["extraInfo"]["description"] == "DE | 315189"
+
+
+def test_dedupes_ticker_with_invalid_ranks():
+    response = {
+        "rows": [
+            {
+                "ticker": "DE",
+                "name": "First",
+                "cik": "315189",
+                "rank": "bad-prev",
+            },
+            {
+                "ticker": "DE",
+                "name": "Second",
+                "cik": "315189",
+                "rank": "bad-curr",
+            },
+        ]
+    }
+    choices, _ = _run(AsyncMock(return_value=response))
+    assert len(choices) == 1
+    assert choices[0]["label"] == "First"

@@ -38,7 +38,7 @@ from openbb_sec.models.sec_executive_compensation import (
 from openbb_sec.models.sec_exhibit import SecExhibitFetcher
 from openbb_sec.models.sec_filing import SecFilingFetcher
 from openbb_sec.models.sec_legal_proceedings import SecLegalProceedingsFetcher
-from openbb_sec.models.sec_management_ownership import SecManagementOwnershipFetcher
+from openbb_sec.models.sec_management_profiles import SecManagementProfilesFetcher
 from openbb_sec.models.sec_pay_versus_performance import (
     SecPayVersusPerformanceFetcher,
 )
@@ -112,7 +112,7 @@ sec_provider = Provider(
         "SecExhibit": SecExhibitFetcher,
         "SecFiling": SecFilingFetcher,
         "SecLegalProceedings": SecLegalProceedingsFetcher,
-        "SecManagementOwnership": SecManagementOwnershipFetcher,
+        "SecManagementProfiles": SecManagementProfilesFetcher,
         "SecPayVersusPerformance": SecPayVersusPerformanceFetcher,
         "SecRiskFactors": SecRiskFactorsFetcher,
         "SecSegmentRevenue": SecSegmentRevenueFetcher,

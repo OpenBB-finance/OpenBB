@@ -1892,11 +1892,6 @@ class XBRLParser:
                     order = rel.get("order")
                     if isinstance(order, (int, float)):
                         return float(order)
-                    if isinstance(order, str):
-                        try:
-                            return float(order)
-                        except ValueError:
-                            pass
                     return float("inf")
 
                 my_children_rels.sort(key=_order_key)

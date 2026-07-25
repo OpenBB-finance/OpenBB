@@ -60,8 +60,6 @@ async def resolve_proxy_url(
     if picked_foreign:
         return picked_foreign
 
-    if not proxy_rows and not foreign_rows:
-        return None
     return None
 
 
@@ -235,11 +233,66 @@ def beneficial_owners_table(html: str) -> str:
     )
 
 
-def management_ownership_table(html: str) -> str:
+def management_profiles_table(html: str) -> str:
     """Return the directors-and-executive-officers share-ownership table."""
     return _table_markdown(
         html, lambda t: "directors and executive officers as a group" in t
     )
+
+
+def management_information_from_proxy(html: str) -> str:
+    """Return director/officer profile information from a proxy statement."""
+    import re
+
+    from bs4 import BeautifulSoup
+
+    from openbb_sec.utils.html2markdown import html_to_markdown
+
+    soup = BeautifulSoup(html, "html.parser")
+
+    tables = []
+    for table in soup.find_all("table"):
+        normalized = re.sub(r"\s+", " ", table.get_text(" ", strip=True)).lower()
+        if not normalized:
+            continue
+        tables.append((normalized, table))
+
+    preferred = []
+    for normalized, table in tables:
+        if (
+            "nominee and principal occupation" in normalized
+            and "independent" in normalized
+            and "age" in normalized
+        ):
+            preferred.append(table)
+            continue
+
+    if preferred:
+        markdown = html_to_markdown(str(preferred[0]), keep_tables=True).strip()
+        if markdown:
+            return markdown
+
+    fallback = []
+    for normalized, table in tables:
+        if "age" in normalized and (
+            "director" in normalized
+            or "position" in normalized
+            or "business experience" in normalized
+            or "nominee" in normalized
+            or "executive officer" in normalized
+        ):
+            fallback.append(table)
+
+    if fallback:
+        markdown = html_to_markdown(str(fallback[0]), keep_tables=True).strip()
+        if markdown:
+            return markdown
+
+    markdown = html_to_markdown(html, keep_tables=True).strip()
+    if markdown:
+        return markdown
+
+    return ""
 
 
 _PVP_NUMERIC = {

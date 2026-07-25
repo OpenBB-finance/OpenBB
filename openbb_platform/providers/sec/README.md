@@ -30,7 +30,7 @@ All endpoints are available under `obb.sec.*` in the Python/HTTP interface.
 | --- | --- |
 | Filings & documents | `company_filings`, `latest_financial_reports`, `filing_headers`, `htm_file`, `full_text_search`, `rss_litigation`, `exhibit` |
 | 10-K / 10-Q sections | `company_overview`, `risk_factors`, `legal_proceedings`, `disclosures`, `segment_revenue`, `financial_statements` |
-| Proxy statement (DEF 14A) | `executive_compensation`, `pay_versus_performance`, `beneficial_ownership`, `management_ownership` |
+| Proxy statement (DEF 14A) | `executive_compensation`, `pay_versus_performance`, `beneficial_ownership`, `management_profiles` |
 | Funds | `nport_disclosure`, `nport_fund_metrics` |
 | Reference & lookups | `cik_map`, `symbol_map`, `institutions_search`, `sic_search`, `schema_files` |
 

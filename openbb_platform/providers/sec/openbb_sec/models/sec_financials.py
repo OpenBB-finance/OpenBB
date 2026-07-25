@@ -1783,9 +1783,7 @@ class FinancialStatements(Filing):
 
         def apply_label(x):
             """Apply a label to the column by matching against tag labels."""
-            if x is None:
-                return None
-            x_text = str(x).strip()
+            x_text = "" if x is None else str(x).strip()
             if not x_text or x_text.lower() == "nan":
                 return None
             x_lower = x_text.lower()

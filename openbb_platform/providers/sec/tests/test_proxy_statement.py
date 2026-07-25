@@ -12,7 +12,7 @@ from openbb_sec.models.sec_beneficial_ownership import SecBeneficialOwnershipFet
 from openbb_sec.models.sec_executive_compensation import (
     SecExecutiveCompensationFetcher,
 )
-from openbb_sec.models.sec_management_ownership import SecManagementOwnershipFetcher
+from openbb_sec.models.sec_management_profiles import SecManagementProfilesFetcher
 from openbb_sec.models.sec_pay_versus_performance import (
     SecPayVersusPerformanceFetcher,
 )
@@ -87,6 +87,30 @@ class TestResolveProxyUrl:
             url = asyncio.run(ps.resolve_proxy_url("AAPL", None, False))
         assert url is None
 
+    def test_falls_back_to_foreign_when_no_proxy(self):
+        rows = [
+            SimpleNamespace(
+                filing_date="2024-03-01",
+                report_url="http://foreign",
+                report_type="20-F",
+            )
+        ]
+        with _patch_filings(rows):
+            url = asyncio.run(ps.resolve_proxy_url("CNEY", None, False))
+        assert url == "http://foreign"
+
+    def test_unknown_report_type_returns_none(self):
+        rows = [
+            SimpleNamespace(
+                filing_date="2024-03-01",
+                report_url="http://other",
+                report_type="8-K",
+            )
+        ]
+        with _patch_filings(rows):
+            url = asyncio.run(ps.resolve_proxy_url("AAPL", None, False))
+        assert url is None
+
 
 class TestTableMarkdown:
     """The keyword-predicate table extractors."""
@@ -133,17 +157,120 @@ class TestTableMarkdown:
         assert "Global Clean Energy Limited" in out
         assert "Represents beneficial ownership" in out
 
-    def test_management_ownership_table(self):
+    def test_management_profiles_table(self):
         html = (
             "<table><tr><td>Directors and Executive Officers as a Group</td>"
             "<td>10%</td></tr></table>"
         )
-        out = ps.management_ownership_table(html)
+        out = ps.management_profiles_table(html)
         assert "10%" in out
+
+    def test_management_information_from_proxy(self):
+        html = (
+            "<table><tr><td>Nominee and Principal Occupation</td><td>Independent</td><td>Age</td></tr>"
+            "<tr><td>Jane Doe</td><td>Yes</td><td>62</td></tr></table>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "Jane Doe" in out
+
+    def test_management_information_from_proxy_uses_fallback_table(self):
+        html = (
+            "<table><tr><td>Name</td><td>Age</td><td>Position</td></tr>"
+            "<tr><td>John Doe</td><td>51</td><td>Director</td></tr></table>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "John Doe" in out
+
+    def test_management_information_from_proxy_uses_document_fallback(self):
+        html = "<div><p>Narrative section</p></div>"
+        out = ps.management_information_from_proxy(html)
+        assert "Narrative section" in out
+
+    def test_management_information_from_proxy_empty_table_skipped(self):
+        html = (
+            "<table></table>"
+            "<table><tr><td>Name</td><td>Age</td><td>Position</td></tr>"
+            "<tr><td>John Doe</td><td>51</td><td>Director</td></tr></table>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "John Doe" in out
+
+    def test_management_information_from_proxy_returns_empty_when_converter_empty(self):
+        html = "<div><p>Narrative section</p></div>"
+        with patch("openbb_sec.utils.html2markdown.html_to_markdown", return_value=""):
+            out = ps.management_information_from_proxy(html)
+        assert out == ""
 
     def test_no_match_returns_empty(self):
         html = "<table><tr><td>Unrelated</td><td>Data</td></tr></table>"
         assert ps.beneficial_owners_table(html) == ""
+
+    def test_table_from_section_returns_first_table_when_no_predicate(self):
+        html = (
+            "<div>Item 10. Directors</div>"
+            "<table><tr><td>A</td></tr></table>"
+            "<div>Item 11. Executive Compensation</div>"
+        )
+        out = ps._table_from_section(html, r"item\s+10")
+        assert "A" in out
+
+    def test_table_from_section_returns_matching_predicate(self):
+        html = (
+            "<div>Item 10. Directors</div>"
+            "<table><tr><td>other table</td></tr></table>"
+            "<table><tr><td>target table</td></tr></table>"
+            "<div>Item 11. Executive Compensation</div>"
+        )
+        out = ps._table_from_section(
+            html,
+            r"item\s+10",
+            table_predicate=lambda t: "target table" in t,
+        )
+        assert "target table" in out
+
+    def test_table_from_section_returns_fallback_first_table(self):
+        html = (
+            "<div>Item 10. Directors</div>"
+            "<table><tr><td>first table</td></tr></table>"
+            "<table><tr><td>second table</td></tr></table>"
+            "<div>Item 11. Executive Compensation</div>"
+        )
+        out = ps._table_from_section(
+            html,
+            r"item\s+10",
+            table_predicate=lambda t: "never present" in t,
+        )
+        assert "first table" in out
+
+    def test_table_from_section_skips_node_without_parent(self):
+        fake_soup = MagicMock()
+        fake_soup.find_all.return_value = [SimpleNamespace(parent=None)]
+        with patch("bs4.BeautifulSoup", return_value=fake_soup):
+            out = ps._table_from_section("<div/>", r"item\s+10")
+        assert out == ""
+
+    def test_ownership_section_with_no_table_returns_empty(self):
+        html = "<div>E. Share Ownership</div><div>F. Related Party Transactions</div>"
+        out = ps._ownership_table_from_share_section(html)
+        assert out == ""
+
+    def test_ownership_section_skips_non_main_then_uses_main_table(self):
+        html = (
+            "<div>E. Share Ownership</div>"
+            "<table><tr><td>Other disclosure</td></tr></table>"
+            "<table><tr><td>5% Shareholders</td><td>Voting Power</td></tr>"
+            "<tr><td>Fund X</td><td>7%</td></tr></table>"
+            "<div>F. Related Party Transactions</div>"
+        )
+        out = ps._ownership_table_from_share_section(html)
+        assert "Fund X" in out
+
+    def test_ownership_section_skips_node_without_parent(self):
+        fake_soup = MagicMock()
+        fake_soup.find_all.return_value = [SimpleNamespace(parent=None)]
+        with patch("bs4.BeautifulSoup", return_value=fake_soup):
+            out = ps._ownership_table_from_share_section("<div/>")
+        assert out == ""
 
 
 class TestIxNumber:
@@ -348,14 +475,20 @@ class TestPayVersusPerformanceFetcher:
 
 
 class TestManagementSectionFetcher:
+    def test_query_validator_calendar_year_passthrough(self):
+        q = SecManagementProfilesFetcher.transform_query(
+            {"symbol": "AAPL", "calendar_year": 2024}
+        )
+        assert q.calendar_year == 2024
+
     def test_uses_item_10_for_10k(self):
-        q = SecManagementOwnershipFetcher.transform_query({"symbol": "AAPL"})
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "AAPL"})
         stub = SimpleNamespace(
             document_type="10-K", get_item=MagicMock(return_value={"text": "Item 10"})
         )
         with (
             patch(
-                "openbb_sec.models.sec_financials.resolve_filing_url",
+                "openbb_sec.models.sec_financials.resolve_section_url",
                 new=AsyncMock(return_value="http://f"),
             ),
             patch(
@@ -363,11 +496,11 @@ class TestManagementSectionFetcher:
                 return_value=stub,
             ),
         ):
-            out = asyncio.run(SecManagementOwnershipFetcher.aextract_data(q, None))
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
         assert out == {"content": "Item 10"}
 
     def test_uses_item_6_for_20f_and_slices_before_compensation(self):
-        q = SecManagementOwnershipFetcher.transform_query({"symbol": "CNEY"})
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "CNEY"})
         text = (
             "Preface\n"
             "A. Directors and Senior Management\n"
@@ -380,7 +513,7 @@ class TestManagementSectionFetcher:
         )
         with (
             patch(
-                "openbb_sec.models.sec_financials.resolve_filing_url",
+                "openbb_sec.models.sec_financials.resolve_section_url",
                 new=AsyncMock(return_value="http://f"),
             ),
             patch(
@@ -388,17 +521,195 @@ class TestManagementSectionFetcher:
                 return_value=stub,
             ),
         ):
-            out = asyncio.run(SecManagementOwnershipFetcher.aextract_data(q, None))
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
         assert "Profile A" in out["content"]
         assert "B. Compensation" not in out["content"]
 
-    def test_no_filing_raises(self):
-        q = SecManagementOwnershipFetcher.transform_query({"symbol": "AAPL"})
+    def test_incorporated_by_reference_uses_proxy(self):
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "CAT"})
+        stub = SimpleNamespace(
+            document_type="10-K",
+            get_item=MagicMock(
+                return_value={
+                    "text": "Information required by this Item is incorporated by reference from the 2026 Proxy Statement."
+                }
+            ),
+        )
+        proxy_html = (
+            "<table><tr><td>Nominee and Principal Occupation</td><td>Independent</td><td>Age</td></tr>"
+            "<tr><td>Jane Doe</td><td>Yes</td><td>62</td></tr></table>"
+        )
         with (
             patch(
-                "openbb_sec.models.sec_financials.resolve_filing_url",
+                "openbb_sec.models.sec_financials.resolve_section_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+            patch.object(
+                ps,
+                "resolve_proxy_url",
+                new=AsyncMock(return_value="http://proxy"),
+            ),
+            _adownload(proxy_html),
+        ):
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+        assert "Jane Doe" in out["content"]
+
+    def test_no_filing_raises(self):
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "AAPL"})
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_section_url",
                 new=AsyncMock(return_value=""),
             ),
             pytest.raises(EmptyDataError),
         ):
-            asyncio.run(SecManagementOwnershipFetcher.aextract_data(q, None))
+            asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+
+    def test_no_filing_retries_without_calendar_year(self):
+        q = SecManagementProfilesFetcher.transform_query(
+            {"symbol": "AAPL", "calendar_year": 1999}
+        )
+        stub = SimpleNamespace(
+            document_type="10-K", get_item=MagicMock(return_value={"text": "Item 10"})
+        )
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_section_url",
+                new=AsyncMock(side_effect=["", "http://fallback"]),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+        ):
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+        assert out == {"content": "Item 10"}
+
+    def test_item_name_fallback_chain_uses_director(self):
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "AAPL"})
+        stub = SimpleNamespace(document_type="", get_item=MagicMock(return_value=None))
+
+        def _item_by_name(name):
+            if name == "director":
+                return {"text": "Director section"}
+            return None
+
+        stub._item_by_name = MagicMock(side_effect=_item_by_name)
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_section_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+        ):
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+        assert out == {"content": "Director section"}
+        assert [call.args[0] for call in stub._item_by_name.call_args_list] == [
+            "senior management",
+            "executive officer",
+            "director",
+        ]
+
+    def test_proxy_retry_without_calendar_year(self):
+        q = SecManagementProfilesFetcher.transform_query(
+            {"symbol": "AAPL", "calendar_year": 1999}
+        )
+        stub = SimpleNamespace(
+            document_type="10-K",
+            get_item=MagicMock(return_value={"text": "See Proxy Statement"}),
+        )
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_section_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+            patch.object(
+                ps,
+                "resolve_proxy_url",
+                new=AsyncMock(side_effect=["", "http://proxy"]),
+            ) as patch_proxy,
+            patch.object(
+                ps,
+                "management_information_from_proxy",
+                return_value="proxy content",
+            ) as patch_mgmt,
+            _adownload("<html></html>"),
+        ):
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+        assert out == {"content": "See Proxy Statement"}
+        assert patch_proxy.call_count == 2
+        assert patch_mgmt.call_count == 1
+
+    def test_proxy_retry_without_calendar_year_replaces_for_incorporated_by_reference(
+        self,
+    ):
+        q = SecManagementProfilesFetcher.transform_query(
+            {"symbol": "AAPL", "calendar_year": 1999}
+        )
+        stub = SimpleNamespace(
+            document_type="10-K",
+            get_item=MagicMock(
+                return_value={"text": "Incorporated by reference to Proxy Statement"}
+            ),
+        )
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_section_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+            patch.object(
+                ps,
+                "resolve_proxy_url",
+                new=AsyncMock(side_effect=["", "http://proxy"]),
+            ) as patch_proxy,
+            patch.object(
+                ps,
+                "management_information_from_proxy",
+                return_value="proxy content",
+            ) as patch_mgmt,
+            _adownload("<html></html>"),
+        ):
+            out = asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+        assert out == {"content": "proxy content"}
+        assert patch_proxy.call_count == 2
+        assert patch_mgmt.call_count == 1
+
+    def test_raises_when_no_management_content(self):
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "AAPL"})
+        stub = SimpleNamespace(
+            document_type="10-K",
+            get_item=MagicMock(return_value={"text": ""}),
+            _item_by_name=MagicMock(return_value=None),
+        )
+        with (
+            patch(
+                "openbb_sec.models.sec_financials.resolve_section_url",
+                new=AsyncMock(return_value="http://f"),
+            ),
+            patch(
+                "openbb_sec.models.sec_financials.FinancialStatements.from_url",
+                return_value=stub,
+            ),
+            pytest.raises(EmptyDataError, match="No management section"),
+        ):
+            asyncio.run(SecManagementProfilesFetcher.aextract_data(q, None))
+
+    def test_transform_data(self):
+        q = SecManagementProfilesFetcher.transform_query({"symbol": "AAPL"})
+        data = SecManagementProfilesFetcher.transform_data(q, {"content": "abc"})
+        assert data.content == "abc"

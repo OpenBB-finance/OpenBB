@@ -345,9 +345,9 @@ def test_sec_beneficial_ownership(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_sec_management_ownership(params, obb):
-    """Test the SEC management ownership endpoint."""
-    result = obb.sec.management_ownership(**params)
+def test_sec_management_profiles(params, obb):
+    """Test the SEC management profiles endpoint."""
+    result = obb.sec.management_profiles(**params)
     assert result
     assert isinstance(result, OBBject)
     assert result.results.content

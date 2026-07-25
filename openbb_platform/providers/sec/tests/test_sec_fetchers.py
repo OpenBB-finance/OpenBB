@@ -41,7 +41,6 @@ from openbb_sec.models.sec_executive_compensation import (
 )
 from openbb_sec.models.sec_filing import SecFilingFetcher
 from openbb_sec.models.sec_legal_proceedings import SecLegalProceedingsFetcher
-from openbb_sec.models.sec_management_ownership import SecManagementOwnershipFetcher
 from openbb_sec.models.sec_pay_versus_performance import (
     SecPayVersusPerformanceFetcher,
 )
@@ -425,6 +424,5 @@ def test_sec_proxy_statement_fetchers(credentials=test_credentials):
     params = {"symbol": "CAT", "calendar_year": 2024, "use_cache": False}
 
     assert SecBeneficialOwnershipFetcher().test(params, credentials) is None
-    assert SecManagementOwnershipFetcher().test(params, credentials) is None
     assert SecExecutiveCompensationFetcher().test(params, credentials) is None
     assert SecPayVersusPerformanceFetcher().test(params, credentials) is None

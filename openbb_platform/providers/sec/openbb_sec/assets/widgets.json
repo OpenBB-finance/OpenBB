@@ -1118,15 +1118,15 @@
     ],
     "subCategory": "Beneficial Ownership"
   },
-  "sec_management_ownership_sec_obb": {
-    "name": "Management Ownership",
-    "description": "Get the directors and executive officers ownership table from a proxy (DEF 14A).",
+  "sec_management_profiles_sec_obb": {
+    "name": "Management Profiles",
+    "description": "Get management profiles from annual filings and referenced proxy statements.",
     "category": "SEC Filings",
     "type": "markdown",
-    "widgetId": "sec_management_ownership_sec_obb",
+    "widgetId": "sec_management_profiles_sec_obb",
     "mcp_tool": {
       "mcp_server": "Open Data Platform",
-      "tool_id": "sec_management_ownership"
+      "tool_id": "sec_management_profiles"
     },
     "params": [
       {
@@ -1142,7 +1142,7 @@
       },
       {
         "label": "Calendar Year",
-        "description": "Calendar year the proxy was filed. Options depend on the selected symbol.",
+        "description": "Calendar year of the filing. Options depend on the selected symbol.",
         "optional": true,
         "type": "endpoint",
         "value": null,
@@ -1168,7 +1168,7 @@
         "show": false
       }
     ],
-    "endpoint": "/api/v1/sec/management_ownership",
+    "endpoint": "/api/v1/sec/management_profiles",
     "runButton": false,
     "gridData": {
       "w": 20,
@@ -1180,7 +1180,7 @@
     "source": [
       "SEC"
     ],
-    "subCategory": "Management Ownership"
+    "subCategory": "Management Profiles"
   },
   "sec_pay_versus_performance_sec_obb": {
     "name": "Pay Versus Performance",

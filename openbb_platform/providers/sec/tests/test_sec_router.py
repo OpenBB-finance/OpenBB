@@ -37,7 +37,7 @@ _BASE_COMMANDS = [
     "exhibit",
     "executive_compensation",
     "beneficial_ownership",
-    "management_ownership",
+    "management_profiles",
     "pay_versus_performance",
     "company_filings",
     "latest_financial_reports",

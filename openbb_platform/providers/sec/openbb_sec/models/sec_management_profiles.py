@@ -1,4 +1,4 @@
-"""SEC Management Ownership Model."""
+"""SEC Management Profiles Model."""
 
 import re
 from typing import Any
@@ -9,17 +9,16 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, field_validator
 
 
-class SecManagementOwnershipQueryParams(QueryParams):
-    """SEC Management Ownership Query.
+class SecManagementProfilesQueryParams(QueryParams):
+    """SEC Management Profiles Query.
 
-    The share ownership of directors and executive officers from the company's
-    proxy statement (DEF 14A), Security Ownership of Management.
+    The management section from the company's annual filing.
     """
 
     symbol: str = Field(description="Symbol to get data for.")
     calendar_year: int | None = Field(
         default=None,
-        description="Calendar year the proxy was filed. Defaults to the most recent.",
+        description="Calendar year of the filing. Defaults to the most recent.",
     )
     use_cache: bool = Field(
         default=True,
@@ -39,49 +38,51 @@ class SecManagementOwnershipQueryParams(QueryParams):
         return None if v == "" else v
 
 
-class SecManagementOwnershipData(Data):
-    """SEC Management Ownership Data."""
+class SecManagementProfilesData(Data):
+    """SEC Management Profiles Data."""
 
     content: str = Field(
-        description="The directors and executive officers ownership table from the"
-        " proxy (DEF 14A) as a formatted markdown table."
+        description="Management profiles and governance information as formatted markdown."
     )
 
 
-class SecManagementOwnershipFetcher(
-    Fetcher[SecManagementOwnershipQueryParams, SecManagementOwnershipData]
+class SecManagementProfilesFetcher(
+    Fetcher[SecManagementProfilesQueryParams, SecManagementProfilesData]
 ):
-    """SEC Management Ownership Fetcher."""
+    """SEC Management Profiles Fetcher."""
 
     @staticmethod
     def transform_query(
         params: dict[str, Any],
-    ) -> SecManagementOwnershipQueryParams:
+    ) -> SecManagementProfilesQueryParams:
         """Transform the query."""
-        return SecManagementOwnershipQueryParams(**params)
+        return SecManagementProfilesQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: SecManagementOwnershipQueryParams,
+        query: SecManagementProfilesQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Extract management section content from annual filings."""
+        """Extract the management section from the annual filing."""
         from openbb_core.provider.utils.errors import EmptyDataError
 
+        from openbb_sec.models.sec_filing import Filing
         from openbb_sec.models.sec_financials import (
             FinancialStatements,
             no_filing_message,
-            resolve_filing_url,
+            resolve_section_url,
+        )
+        from openbb_sec.utils.proxy_statement import (
+            management_information_from_proxy,
+            resolve_proxy_url,
         )
 
-        url = await resolve_filing_url(
-            query.symbol,
-            query.calendar_year,
-            None,
-            query.use_cache,
-            annual_default=True,
-        )
+        url = await resolve_section_url(query, annual_default=True)
+        if not url and query.calendar_year is not None:
+            url = await resolve_section_url(
+                query.model_copy(update={"calendar_year": None}), annual_default=True
+            )
         if not url:
             raise EmptyDataError(no_filing_message(query.symbol))
 
@@ -116,6 +117,27 @@ class SecManagementOwnershipFetcher(
                 )
                 content = section[: end.start()].strip() if end else section.strip()
 
+        if re.search(r"(?i)proxy\s+statement", content):
+            proxy_url = await resolve_proxy_url(
+                query.symbol,
+                query.calendar_year,
+                query.use_cache,
+            )
+            if not proxy_url and query.calendar_year is not None:
+                proxy_url = await resolve_proxy_url(
+                    query.symbol,
+                    None,
+                    query.use_cache,
+                )
+            if proxy_url:
+                proxy_html = await Filing._adownload_file(proxy_url, query.use_cache)
+                proxy_content = management_information_from_proxy(proxy_html or "")
+                if proxy_content and (
+                    "incorporated by reference" in content.lower()
+                    or len(proxy_content) > len(content)
+                ):
+                    content = proxy_content
+
         if not content:
             raise EmptyDataError(
                 f"No management section was found in an annual filing for {query.symbol}."
@@ -125,7 +147,7 @@ class SecManagementOwnershipFetcher(
 
     @staticmethod
     def transform_data(
-        query: SecManagementOwnershipQueryParams, data: dict, **kwargs: Any
-    ) -> SecManagementOwnershipData:
+        query: SecManagementProfilesQueryParams, data: dict, **kwargs: Any
+    ) -> SecManagementProfilesData:
         """Transform the data."""
-        return SecManagementOwnershipData.model_validate(data)
+        return SecManagementProfilesData.model_validate(data)

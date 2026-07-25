@@ -16,6 +16,7 @@ Tests only — no source under ``openbb_sec/`` is modified.
 
 import json
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
@@ -39,6 +40,7 @@ from openbb_sec.utils.statement_schema._extraction import (
 )
 from openbb_sec.utils.statement_schema._types import (
     RowDef,
+    RowResult,
     _tolerance,
 )
 
@@ -1969,6 +1971,38 @@ class TestQuarterlyRefFilingsEdges:
 @pytest.fixture(scope="module")
 def schema():
     return StatementSchema()
+
+
+def test_combine_unfunded_provision_skips_none_add(schema):
+    row = RowResult(
+        tag="provision_for_credit_losses",
+        label="Provision for credit losses",
+        description="",
+        parent=None,
+        sequence=1,
+        factor="+",
+        balance="debit",
+        unit="monetary",
+        period_type="duration",
+        values={"2024-12-31": 100.0},
+        sources={
+            "2024-12-31": "us-gaap:FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal"
+        },
+    )
+    with patch(
+        "openbb_sec.utils.statement_schema._schema.extract_row_values",
+        return_value=({}, {}),
+    ):
+        schema._combine_unfunded_provision(
+            [row],
+            "income_statement",
+            "financial",
+            {"us-gaap": {}},
+            "annual",
+            "USD",
+            {},
+        )
+    assert row.values["2024-12-31"] == 100.0
 
 
 class TestSchemaExtractDefaults:

@@ -58,7 +58,7 @@
             }
           },
           {
-            "i": "sec_management_ownership_sec_obb",
+            "i": "sec_management_profiles_sec_obb",
             "x": 0,
             "y": 57,
             "w": 40,
@@ -229,7 +229,7 @@
           "sec_executive_compensation_sec_obb",
           "sec_pay_versus_performance_sec_obb",
           "sec_beneficial_ownership_sec_obb",
-          "sec_management_ownership_sec_obb",
+          "sec_management_profiles_sec_obb",
           "sec_segment_revenue_sec_obb",
           "sec_financial_statements_sec_obb",
           "sec_disclosures_sec_obb",
@@ -252,7 +252,7 @@
           "sec_executive_compensation_sec_obb",
           "sec_pay_versus_performance_sec_obb",
           "sec_beneficial_ownership_sec_obb",
-          "sec_management_ownership_sec_obb",
+          "sec_management_profiles_sec_obb",
           "sec_segment_revenue_sec_obb",
           "sec_risk_factors_sec_obb",
           "sec_legal_proceedings_sec_obb",

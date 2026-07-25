@@ -1956,6 +1956,20 @@ class TestParsePresentation:
         with pytest.raises(OpenBBError, match="Failed to parse presentation"):
             parser.parse_presentation(_b("<bad"), TaxonomyStyle.FASB_STANDARD)
 
+    def test_non_numeric_order_raises(self, parser: XBRLParser):
+        xml = (
+            f"<link:linkbase {_LINK_HDR}>"
+            "<link:presentationLink>"
+            '<link:loc xlink:href="x.xsd#ex_Parent" xlink:label="p"/>'
+            '<link:loc xlink:href="x.xsd#ex_First" xlink:label="c1"/>'
+            '<link:loc xlink:href="x.xsd#ex_Second" xlink:label="c2"/>'
+            '<link:presentationArc xlink:from="p" xlink:to="c1" order="not-a-number"/>'
+            '<link:presentationArc xlink:from="p" xlink:to="c2" order="1.0"/>'
+            "</link:presentationLink></link:linkbase>"
+        )
+        with pytest.raises(OpenBBError, match="Failed to parse presentation linkbase"):
+            parser.parse_presentation(_b(xml), TaxonomyStyle.FASB_STANDARD)
+
 
 # ════════════════════════════════════════════════════════════════════
 # XBRLParser — parse_calculation
