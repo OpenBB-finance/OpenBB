@@ -305,6 +305,42 @@ class TestTableMarkdown:
         assert "Tim Cook serves as chief executive officer." in out
         assert "Compensation content should not be included." not in out
 
+    def test_management_information_from_proxy_anchor_start_missing_on_second_lookup(
+        self,
+    ):
+        html = (
+            "<table>"
+            "<tr><td><a href='#dir'>Directors</a></td><td>10</td></tr>"
+            "<tr><td><a href='#comp'>Executive Compensation</a></td><td>20</td></tr>"
+            "</table>"
+            "<h2 id='dir'>Directors</h2>"
+            "<p>Jane Doe biography.</p>"
+            "<h2 id='comp'>Executive Compensation</h2>"
+        )
+        real_soup = BeautifulSoup(html, "html.parser")
+        original_find = real_soup.find
+        state = {"dir_calls": 0}
+
+        def flaky_find(*args, **kwargs):
+            if kwargs.get("id") == "dir":
+                state["dir_calls"] += 1
+                if state["dir_calls"] == 1:
+                    return object()
+                return None
+            return original_find(*args, **kwargs)
+
+        with (
+            patch("bs4.BeautifulSoup", return_value=real_soup),
+            patch(
+                "openbb_sec.utils.html2markdown.html_to_markdown",
+                return_value="",
+            ),
+            patch.object(real_soup, "find", side_effect=flaky_find),
+        ):
+            out = ps.management_information_from_proxy(html)
+
+        assert out == ""
+
     def test_management_information_from_proxy_anchor_toc_boundaries(self):
         html = (
             "<table>"
