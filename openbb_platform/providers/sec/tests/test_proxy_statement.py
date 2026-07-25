@@ -181,10 +181,10 @@ class TestTableMarkdown:
         out = ps.management_information_from_proxy(html)
         assert "John Doe" in out
 
-    def test_management_information_from_proxy_uses_document_fallback(self):
+    def test_management_information_from_proxy_no_section_returns_empty(self):
         html = "<div><p>Narrative section</p></div>"
         out = ps.management_information_from_proxy(html)
-        assert "Narrative section" in out
+        assert out == ""
 
     def test_management_information_from_proxy_empty_table_skipped(self):
         html = (
@@ -200,6 +200,110 @@ class TestTableMarkdown:
         with patch("openbb_sec.utils.html2markdown.html_to_markdown", return_value=""):
             out = ps.management_information_from_proxy(html)
         assert out == ""
+
+    def test_management_information_from_proxy_skips_toc_and_uses_nominee_section(self):
+        html = (
+            "<table><tr><td>Notice of Annual Meeting of Shareholders</td><td>3</td></tr>"
+            "<tr><td>Proxy Statement Summary</td><td>7</td></tr>"
+            "<tr><td>Corporate Governance</td><td>13</td></tr>"
+            "<tr><td>Board Meetings and Attendance</td><td>20</td></tr>"
+            "<tr><td>Related Party Policy and Transactions</td><td>20</td></tr>"
+            "<tr><td>Shareholder Engagement</td><td>9</td></tr></table>"
+            "<h2>Nominees to Apple's Board of Directors</h2>"
+            "<p>Jane Doe has served as director since 2020.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "Nominees to Apple's Board of Directors" in out
+        assert "Proxy Statement Summary" not in out
+
+    def test_management_information_from_proxy_returns_full_section_not_single_table(
+        self,
+    ):
+        html = (
+            "<h2>Nominees to Apple's Board of Directors</h2>"
+            "<p>Director profiles appear below.</p>"
+            "<table><tr><td>Name</td><td>Age</td><td>Position</td></tr>"
+            "<tr><td>Jane Doe</td><td>62</td><td>Director</td></tr></table>"
+            "<p>Additional narrative about committee service.</p>"
+            "<h2>Executive Compensation</h2>"
+            "<p>Comp section starts here.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "Nominees to Apple's Board of Directors" in out
+        assert "Director profiles appear below." in out
+        assert "Jane Doe" in out
+        assert "Additional narrative about committee service." in out
+        assert "Comp section starts here." not in out
+
+    def test_management_information_from_proxy_skips_front_matter_and_toc(self):
+        html = (
+            "<h1>UNITED STATES SECURITIES AND EXCHANGE COMMISSION</h1>"
+            "<p>SCHEDULE 14A</p>"
+            "<table><tr><td>Notice of 2026 Annual Meeting of Shareholders</td><td>3</td></tr>"
+            "<tr><td>Proxy Statement Summary</td><td>7</td></tr>"
+            "<tr><td>Nominees to Apple's Board of Directors</td><td>10</td></tr></table>"
+            "<h2>Nominees to Apple's Board of Directors</h2>"
+            "<p>Jane Doe has served as director since 2020.</p>"
+            "<p>John Doe is chief executive officer.</p>"
+            "<h2>Executive Compensation</h2>"
+            "<p>Comp section starts here.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "UNITED STATES SECURITIES" not in out
+        assert "Proxy Statement Summary" not in out
+        assert "Nominees to Apple's Board of Directors" in out
+        assert "Jane Doe has served as director since 2020." in out
+        assert "Comp section starts here." not in out
+
+    def test_management_information_from_proxy_ignores_intro_paragraph_mentions(self):
+        html = (
+            "<p>In the Proxy Statement, references to our directors and executive officers are informational only.</p>"
+            "<h2>Nominees to Apple's Board of Directors</h2>"
+            "<p>Jane Doe has served as director since 2020.</p>"
+            "<h2>Executive Compensation</h2>"
+            "<p>Comp section starts here.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "references to our directors and executive officers" not in out
+        assert "Nominees to Apple's Board of Directors" in out
+        assert "Jane Doe has served as director since 2020." in out
+
+    def test_management_information_from_proxy_uses_toc_boundaries(self):
+        html = (
+            "<table>"
+            "<tr><td>Proxy Statement Summary</td><td>7</td></tr>"
+            "<tr><td>Nominees for Election as Directors</td><td>10</td></tr>"
+            "<tr><td>Executive Compensation</td><td>20</td></tr>"
+            "</table>"
+            "<p>In the Proxy Statement, references to our directors and executive officers are informational only.</p>"
+            "<div>Nominees for Election as Directors</div>"
+            "<p>Jane Doe biography.</p>"
+            "<div>Executive Compensation</div>"
+            "<p>Compensation content should not be included.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "Nominees for Election as Directors" in out
+        assert "Jane Doe biography." in out
+        assert "Compensation content should not be included." not in out
+        assert "references to our directors and executive officers" not in out
+
+    def test_management_information_from_proxy_toc_exact_heading_match(self):
+        html = (
+            "<table>"
+            "<tr><td>Executive Officers</td><td>33</td></tr>"
+            "<tr><td>Executive Compensation</td><td>35</td></tr>"
+            "</table>"
+            "<p>In the Proxy Statement, references to our directors and executive officers are informational only.</p>"
+            "<h2>Executive Officers</h2>"
+            "<p>Tim Cook serves as chief executive officer.</p>"
+            "<h2>Executive Compensation</h2>"
+            "<p>Compensation content should not be included.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "references to our directors and executive officers" not in out
+        assert "Executive Officers" in out
+        assert "Tim Cook serves as chief executive officer." in out
+        assert "Compensation content should not be included." not in out
 
     def test_no_match_returns_empty(self):
         html = "<table><tr><td>Unrelated</td><td>Data</td></tr></table>"
