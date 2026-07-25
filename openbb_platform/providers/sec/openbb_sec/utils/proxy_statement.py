@@ -472,7 +472,9 @@ def management_information_from_proxy(html: str) -> str:
                         break
             section = "\n".join(lines[toc_start_line_idx:end_idx]).strip()
             if section:
-                section_lines = [line.strip() for line in section.splitlines() if line.strip()]
+                section_lines = [
+                    line.strip() for line in section.splitlines() if line.strip()
+                ]
                 if section_lines and all(
                     line.startswith("|") or _is_toc_line(line) for line in section_lines
                 ):
@@ -535,7 +537,15 @@ def management_information_from_proxy(html: str) -> str:
 
         if not start:
             for tag in soup.find_all(True):
-                if tag.name in {"table", "tr", "td", "th", "script", "style", "noscript"}:
+                if tag.name in {
+                    "table",
+                    "tr",
+                    "td",
+                    "th",
+                    "script",
+                    "style",
+                    "noscript",
+                }:
                     continue
                 text = re.sub(r"\s+", " ", tag.get_text(" ", strip=True))
                 if text and heading_re.search(text):
