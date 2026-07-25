@@ -1345,11 +1345,14 @@ def test_add_normalized_parameter_with_datetime_param_uses_coercer():
 
 
 def test_build_command_spec_inherits_path_item_parameters():
-    """Parameters declared on the path item apply to the operation under it."""
+    """Path and query parameters declared on the path item apply to the operation."""
     openapi = {
         "paths": {
-            "/api/v1/x": {
-                "parameters": [{"name": "tenant", "in": "header", "required": True}],
+            "/api/v1/x/{record_id}": {
+                "parameters": [
+                    {"name": "record_id", "in": "path", "required": True},
+                    {"name": "page", "in": "query", "schema": {"type": "integer"}},
+                ],
                 "get": {
                     "operationId": "x",
                     "parameters": [{"name": "symbol", "schema": {"type": "string"}}],
@@ -1359,9 +1362,27 @@ def test_build_command_spec_inherits_path_item_parameters():
     }
     out = build_command_spec(openapi)
     names = [p["name"] for p in out["x"]["parameters"]]
-    assert names == ["tenant", "symbol"]
-    tenant = next(p for p in out["x"]["parameters"] if p["name"] == "tenant")
-    assert tenant["required"] is True
+    assert names == ["record_id", "page", "symbol"]
+    record = next(p for p in out["x"]["parameters"] if p["name"] == "record_id")
+    assert record["required"] is True
+
+
+def test_build_command_spec_drops_path_item_header_parameters():
+    """Path-item headers/cookies are not turned into command arguments."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "x-tenant-id", "in": "header", "required": True},
+                    {"name": "session", "in": "cookie"},
+                    {"name": "page", "in": "query", "schema": {"type": "integer"}},
+                ],
+                "get": {"operationId": "x"},
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    assert [p["name"] for p in out["x"]["parameters"]] == ["page"]
 
 
 def test_build_command_spec_resolves_path_item_ref_parameters():
@@ -1369,23 +1390,23 @@ def test_build_command_spec_resolves_path_item_ref_parameters():
     openapi = {
         "components": {
             "parameters": {
-                "tenantHeader": {
-                    "name": "xero-tenant-id",
-                    "in": "header",
+                "companyId": {
+                    "name": "companyId",
+                    "in": "path",
                     "required": True,
                     "schema": {"type": "string"},
                 }
             }
         },
         "paths": {
-            "/api/v1/accounts/{AccountID}": {
-                "parameters": [{"$ref": "#/components/parameters/tenantHeader"}],
+            "/api/v1/accounts/{companyId}": {
+                "parameters": [{"$ref": "#/components/parameters/companyId"}],
                 "get": {"operationId": "accounts"},
             }
         },
     }
     out = build_command_spec(openapi)
-    assert [p["name"] for p in out["accounts"]["parameters"]] == ["xero-tenant-id"]
+    assert [p["name"] for p in out["accounts"]["parameters"]] == ["companyId"]
 
 
 def test_build_command_spec_operation_parameter_overrides_path_item():
@@ -1423,7 +1444,7 @@ def test_build_command_spec_path_item_param_kept_when_location_differs():
         "paths": {
             "/api/v1/x": {
                 "parameters": [
-                    {"name": "id", "in": "header", "schema": {"type": "string"}}
+                    {"name": "id", "in": "path", "schema": {"type": "string"}}
                 ],
                 "get": {
                     "operationId": "x",
@@ -1436,7 +1457,7 @@ def test_build_command_spec_path_item_param_kept_when_location_differs():
     }
     out = build_command_spec(openapi)
     locations = sorted(p["in"] for p in out["x"]["parameters"] if p["name"] == "id")
-    assert locations == ["header", "query"]
+    assert locations == ["path", "query"]
 
 
 def test_build_command_spec_path_item_parameters_apply_to_every_operation():
@@ -1445,21 +1466,21 @@ def test_build_command_spec_path_item_parameters_apply_to_every_operation():
         "paths": {
             "/api/v1/x": {
                 "parameters": [
-                    {"name": "tenant", "in": "header", "schema": {"type": "string"}}
+                    {"name": "page", "in": "query", "schema": {"type": "integer"}}
                 ],
                 "get": {"operationId": "x"},
             },
             "/api/v1/y": {
                 "parameters": [
-                    {"name": "tenant", "in": "header", "schema": {"type": "string"}}
+                    {"name": "page", "in": "query", "schema": {"type": "integer"}}
                 ],
                 "post": {"operationId": "y"},
             },
         }
     }
     out = build_command_spec(openapi)
-    assert [p["name"] for p in out["x"]["parameters"]] == ["tenant"]
-    assert [p["name"] for p in out["y"]["parameters"]] == ["tenant"]
+    assert [p["name"] for p in out["x"]["parameters"]] == ["page"]
+    assert [p["name"] for p in out["y"]["parameters"]] == ["page"]
 
 
 def test_build_command_spec_skips_unresolvable_path_item_ref_param():
@@ -1484,7 +1505,7 @@ def test_build_command_spec_ignores_malformed_path_item_parameters():
     openapi = {
         "paths": {
             "/api/v1/x": {
-                "parameters": ["not-a-dict", {"in": "header"}],
+                "parameters": ["not-a-dict", {"in": "query"}],
                 "get": {
                     "operationId": "x",
                     "parameters": [{"name": "kept", "schema": {"type": "string"}}],

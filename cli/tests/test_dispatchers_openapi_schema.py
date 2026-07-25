@@ -1884,11 +1884,33 @@ def test_operation_parameters_returns_own_when_no_path_item_params():
 
 def test_operation_parameters_inherits_from_path_item():
     """Path-item parameters come first, then the operation's own."""
-    path_item = {"parameters": [{"name": "tenant", "in": "header"}]}
+    path_item = {"parameters": [{"name": "record_id", "in": "path"}]}
     op = {"parameters": [{"name": "symbol", "in": "query"}]}
     assert [p["name"] for p in operation_parameters({}, path_item, op)] == [
-        "tenant",
+        "record_id",
         "symbol",
+    ]
+
+
+def test_operation_parameters_drops_inherited_headers_and_cookies():
+    """Headers and cookies are transport concerns, not command arguments."""
+    path_item = {
+        "parameters": [
+            {"name": "x-tenant-id", "in": "header"},
+            {"name": "session", "in": "cookie"},
+            {"name": "record_id", "in": "path"},
+        ]
+    }
+    assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["record_id"]
+
+
+def test_operation_parameters_keeps_operation_level_headers():
+    """An operation's own header parameter is untouched by the inheritance filter."""
+    op = {"parameters": [{"name": "x-request-id", "in": "header"}]}
+    path_item = {"parameters": [{"name": "record_id", "in": "path"}]}
+    assert [p["name"] for p in operation_parameters({}, path_item, op)] == [
+        "record_id",
+        "x-request-id",
     ]
 
 
@@ -1905,15 +1927,15 @@ def test_operation_parameters_resolves_refs_on_both_levels():
     spec = {
         "components": {
             "parameters": {
-                "tenant": {"name": "tenant", "in": "header"},
+                "record_id": {"name": "record_id", "in": "path"},
                 "symbol": {"name": "symbol", "in": "query"},
             }
         }
     }
-    path_item = {"parameters": [{"$ref": "#/components/parameters/tenant"}]}
+    path_item = {"parameters": [{"$ref": "#/components/parameters/record_id"}]}
     op = {"parameters": [{"$ref": "#/components/parameters/symbol"}]}
     assert [p["name"] for p in operation_parameters(spec, path_item, op)] == [
-        "tenant",
+        "record_id",
         "symbol",
     ]
 
@@ -1924,11 +1946,11 @@ def test_operation_parameters_skips_unresolvable_and_unnamed_entries():
         "parameters": [
             {"$ref": "#/components/parameters/missing"},
             "not-a-dict",
-            {"in": "header"},
-            {"name": "tenant", "in": "header"},
+            {"in": "query"},
+            {"name": "record_id", "in": "path"},
         ]
     }
-    assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["tenant"]
+    assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["record_id"]
 
 
 def test_build_command_index_inherits_path_item_parameters():
@@ -1937,7 +1959,7 @@ def test_build_command_index_inherits_path_item_parameters():
         "paths": {
             "/api/v1/x": {
                 "parameters": [
-                    {"name": "tenant", "in": "header", "schema": {"type": "string"}}
+                    {"name": "record_id", "in": "path", "schema": {"type": "string"}}
                 ],
                 "get": {
                     "operationId": "x",
@@ -1950,7 +1972,7 @@ def test_build_command_index_inherits_path_item_parameters():
     }
     parser = build_command_index(spec)["x"]
     dests = {a.dest for a in parser._actions}
-    assert "tenant" in dests
+    assert "record_id" in dests
     assert "symbol" in dests
 
 

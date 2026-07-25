@@ -10,6 +10,8 @@ from urllib.parse import unquote, urldefrag, urljoin, urlsplit
 
 import httpx
 
+_INHERITABLE_PARAMETER_LOCATIONS = frozenset({"path", "query"})
+
 PROVIDER_TAG_RE = re.compile(r"\s*\(provider:\s*([^)]+)\)\s*$")
 PROVIDER_SECTION_SPLIT_RE = re.compile(r";\s*\n\s*")
 
@@ -131,6 +133,12 @@ def operation_parameters(
     operation under that path. An operation-level parameter overrides an inherited
     one when both match on ``(name, in)``; anything else is inherited as-is.
 
+    Only ``in: path`` and ``in: query`` are inherited. A path-item ``in: header``
+    or ``in: cookie`` entry is deliberately dropped: those do not translate into a
+    Python interface function, and outbound headers belong to transport
+    configuration (``SystemSettings.PythonSettings.http.headers``, the CLI's
+    ``-H``) or to security-scheme handling — not to a per-command argument.
+
     Entries are returned dereferenced, inherited first, then the operation's own.
     """
     inherited = path_item.get("parameters") or []
@@ -146,6 +154,8 @@ def operation_parameters(
             continue
         resolved = deref_parameter(spec, raw)
         if not resolved or not resolved.get("name"):
+            continue
+        if resolved.get("in") not in _INHERITABLE_PARAMETER_LOCATIONS:
             continue
         if (resolved.get("name"), resolved.get("in")) in overridden:
             continue
