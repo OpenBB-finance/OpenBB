@@ -2320,14 +2320,6 @@ class FinancialStatements(Filing):
             ) or row.value == "--":
                 return row
 
-            if (  # pragma: no cover - period_beginning is only set when context_ref is truthy, so this `not con_ref` branch is never taken
-                row.period_beginning and row.period_ending and row.tag and not con_ref
-            ):
-                begin = to_datetime(row.period_beginning)
-                end = to_datetime(row.period_ending.split(" -- ")[0])
-                n_months = (end.year - begin.year) * 12 + end.month - begin.month + 1
-                row.context_ref = f"{n_months} Months Ended"
-
             return row
 
         output_statement.loc[:, "period_beginning"] = output_statement.apply(

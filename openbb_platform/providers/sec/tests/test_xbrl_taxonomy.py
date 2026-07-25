@@ -1970,7 +1970,9 @@ class TestParsePresentation:
         with pytest.raises(OpenBBError, match="Failed to parse presentation linkbase"):
             parser.parse_presentation(_b(xml), TaxonomyStyle.FASB_STANDARD)
 
-    def test_order_key_fallback_for_non_numeric_order_value(self, parser: XBRLParser, monkeypatch):
+    def test_order_key_fallback_for_non_numeric_order_value(
+        self, parser: XBRLParser, monkeypatch
+    ):
         import builtins
 
         real_float = builtins.float
@@ -1997,7 +1999,10 @@ class TestParsePresentation:
         )
 
         nodes = parser.parse_presentation(_b(xml), TaxonomyStyle.FASB_STANDARD)
-        assert [child.element_id for child in nodes[0].children] == ["ex_First", "ex_Second"]
+        assert [child.element_id for child in nodes[0].children] == [
+            "ex_First",
+            "ex_Second",
+        ]
 
 
 # ════════════════════════════════════════════════════════════════════

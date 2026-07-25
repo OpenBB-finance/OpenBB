@@ -329,7 +329,8 @@ def management_information_from_proxy(html: str) -> str:
         start_href = cast("str", entries[start_idx][1])
         start_id = start_href[1:]
         start_anchor = soup.find(id=start_id)
-        assert start_anchor is not None
+        if start_anchor is None:
+            return ""
 
         start_node = start_anchor
         while start_node.parent and start_node.name not in {
