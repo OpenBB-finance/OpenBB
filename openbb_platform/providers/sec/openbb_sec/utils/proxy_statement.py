@@ -1,6 +1,7 @@
 """Helpers for extracting governance tables from proxy statements (DEF 14A)."""
 
 from collections.abc import Callable
+from typing import cast
 
 
 def _attr(tag, name: str) -> str:
@@ -325,13 +326,10 @@ def management_information_from_proxy(html: str) -> str:
                     end_id = candidate_id
                     break
 
-        start_href = entries[start_idx][1]
-        if not start_href:
-            return ""
+        start_href = cast("str", entries[start_idx][1])
         start_id = start_href[1:]
         start_anchor = soup.find(id=start_id)
-        if not start_anchor:
-            return ""
+        assert start_anchor is not None
 
         start_node = start_anchor
         while start_node.parent and start_node.name not in {
@@ -354,8 +352,6 @@ def management_information_from_proxy(html: str) -> str:
             section_nodes.append(sib)
 
         section_html = "".join(str(n) for n in section_nodes).strip()
-        if not section_html:
-            return ""
         return html_to_markdown(section_html, keep_tables=True).strip()
 
     def _toc_titles() -> list[str]:
@@ -385,8 +381,6 @@ def management_information_from_proxy(html: str) -> str:
 
         def _is_toc_line(line: str) -> bool:
             stripped = line.strip()
-            if not stripped:
-                return False
             bare = re.sub(r"^#{1,6}\s+", "", stripped)
             return bool(re.search(r"\s\d{1,3}$", bare))
 
@@ -403,8 +397,6 @@ def management_information_from_proxy(html: str) -> str:
 
         def _is_heading_like(line: str) -> bool:
             stripped = line.strip()
-            if not stripped:
-                return False
             if stripped.startswith("#"):
                 return True
             bare = re.sub(r"^#{1,6}\s+", "", stripped)
@@ -436,8 +428,6 @@ def management_information_from_proxy(html: str) -> str:
                     return i
                 if not _is_heading_like(stripped):
                     continue
-                if norm_line == norm_target or norm_line.startswith(f"{norm_target} "):
-                    return i
             return -1
 
         toc_start_title_idx = -1
@@ -471,14 +461,6 @@ def management_information_from_proxy(html: str) -> str:
                         end_idx = i
                         break
             section = "\n".join(lines[toc_start_line_idx:end_idx]).strip()
-            if section:
-                section_lines = [
-                    line.strip() for line in section.splitlines() if line.strip()
-                ]
-                if section_lines and all(
-                    line.startswith("|") or _is_toc_line(line) for line in section_lines
-                ):
-                    section = ""
             if section:
                 return section
 
@@ -563,9 +545,6 @@ def management_information_from_proxy(html: str) -> str:
             section_nodes.append(sib)
 
         section_html = "".join(str(n) for n in section_nodes)
-        if not section_html.strip():
-            return ""
-
         markdown = html_to_markdown(section_html, keep_tables=True).strip()
         return markdown
 

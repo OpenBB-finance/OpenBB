@@ -1970,6 +1970,35 @@ class TestParsePresentation:
         with pytest.raises(OpenBBError, match="Failed to parse presentation linkbase"):
             parser.parse_presentation(_b(xml), TaxonomyStyle.FASB_STANDARD)
 
+    def test_order_key_fallback_for_non_numeric_order_value(self, parser: XBRLParser, monkeypatch):
+        import builtins
+
+        real_float = builtins.float
+
+        class FakeFloat:
+            def __new__(cls, value):
+                if value == "1.0":
+                    return "bad-order"
+                if value == "inf":
+                    return real_float("inf")
+                return real_float(value)
+
+        monkeypatch.setattr(xth, "float", FakeFloat, raising=False)
+
+        xml = (
+            f"<link:linkbase {_LINK_HDR}>"
+            "<link:presentationLink>"
+            '<link:loc xlink:href="x.xsd#ex_Parent" xlink:label="p"/>'
+            '<link:loc xlink:href="x.xsd#ex_First" xlink:label="c1"/>'
+            '<link:loc xlink:href="x.xsd#ex_Second" xlink:label="c2"/>'
+            '<link:presentationArc xlink:from="p" xlink:to="c1" order="1.0"/>'
+            '<link:presentationArc xlink:from="p" xlink:to="c2" order="2.0"/>'
+            "</link:presentationLink></link:linkbase>"
+        )
+
+        nodes = parser.parse_presentation(_b(xml), TaxonomyStyle.FASB_STANDARD)
+        assert [child.element_id for child in nodes[0].children] == ["ex_First", "ex_Second"]
+
 
 # ════════════════════════════════════════════════════════════════════
 # XBRLParser — parse_calculation

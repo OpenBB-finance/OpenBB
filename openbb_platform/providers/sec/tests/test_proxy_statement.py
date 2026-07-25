@@ -305,6 +305,118 @@ class TestTableMarkdown:
         assert "Tim Cook serves as chief executive officer." in out
         assert "Compensation content should not be included." not in out
 
+    def test_management_information_from_proxy_anchor_toc_boundaries(self):
+        html = (
+            "<table>"
+            "<tr><td>Only One Cell</td></tr>"
+            "<tr><td></td><td>8</td></tr>"
+            "<tr><td>Abc</td><td>9</td></tr>"
+            "<tr><td><a href='#sum'>Proxy Statement Summary</a></td><td>7</td></tr>"
+            "<tr><td><a href='#dir'>Directors</a></td><td>10</td></tr>"
+            "<tr><td>Middle Section</td><td>11</td></tr>"
+            "<tr><td><a href='#comp'>Executive Compensation</a></td><td>20</td></tr>"
+            "</table>"
+            "<h2><a id='sum'></a>Proxy Statement Summary</h2>"
+            "<h2><a id='dir'></a>Directors</h2>"
+            "<p>Jane Doe biography.</p>"
+            "<h2 id='comp'>Executive Compensation</h2>"
+            "<p>Compensation content should not be included.</p>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "Directors" in out
+        assert "Jane Doe biography." in out
+        assert "Compensation content should not be included." not in out
+
+    def test_management_information_from_proxy_section_markdown_prefers_exact_title(
+        self,
+    ):
+        html = (
+            "<table>"
+            "<tr><td>Executive Officers</td><td>33</td></tr>"
+            "<tr><td>Executive Compensation</td><td>35</td></tr>"
+            "</table>"
+            "<div>Executive Officers</div>"
+            "<p>Officer biography.</p>"
+            "<div>Executive Compensation</div>"
+            "<p>Compensation content should not be included.</p>"
+        )
+        with patch(
+            "openbb_sec.utils.html2markdown.html_to_markdown",
+            side_effect=[
+                "Completely unrelated preprocessed markdown.",
+                "Executive Officers\nOfficer biography.",
+            ],
+        ):
+            out = ps.management_information_from_proxy(html)
+        assert "Executive Officers" in out
+        assert "Officer biography." in out
+
+    def test_management_information_from_proxy_section_markdown_heading_fallback(self):
+        html = (
+            "<table>"
+            "<tr><td>Proxy Statement Summary</td><td>7</td></tr>"
+            "</table>"
+            "<div>Nominees for Election as Directors</div>"
+            "<p>Jane Doe biography.</p>"
+            "<div>Executive Compensation</div>"
+            "<p>Compensation content should not be included.</p>"
+        )
+        with patch(
+            "openbb_sec.utils.html2markdown.html_to_markdown",
+            side_effect=[
+                "Completely unrelated preprocessed markdown.",
+                "Nominees for Election as Directors\nJane Doe biography.",
+            ],
+        ):
+            out = ps.management_information_from_proxy(html)
+        assert "Nominees for Election as Directors" in out
+        assert "Jane Doe biography." in out
+
+    def test_management_information_from_proxy_skips_toc_like_table_in_preferred_scan(
+        self,
+    ):
+        html = (
+            "<table>"
+            "<tr><td>Proxy Statement Summary</td><td>7</td></tr>"
+            "<tr><td>Corporate Governance</td><td>13</td></tr>"
+            "<tr><td>Directors</td><td>23</td></tr>"
+            "<tr><td>Executive Compensation</td><td>35</td></tr>"
+            "<tr><td>Shareholder Proposals</td><td>70</td></tr>"
+            "<tr><td>Other Information</td><td>80</td></tr>"
+            "</table>"
+            "<table>"
+            "<tr><td>Name</td><td>Director Since</td><td>Age</td></tr>"
+            "<tr><td>Jane Doe</td><td>2020</td><td>62</td></tr>"
+            "</table>"
+        )
+        out = ps.management_information_from_proxy(html)
+        assert "Jane Doe" in out
+
+    def test_management_information_from_proxy_markdown_path_covers_toc_row_filters(
+        self,
+    ):
+        html = (
+            "<table>"
+            "<tr><td>Only One Cell</td></tr>"
+            "<tr><td></td><td>10</td></tr>"
+            "<tr><td>Short</td><td>11</td></tr>"
+            "<tr><td>Nominees for Election as Directors</td><td>12</td></tr>"
+            "</table>"
+        )
+        long_heading = "A" * 141
+        with patch(
+            "openbb_sec.utils.html2markdown.html_to_markdown",
+            return_value=(
+                "Nominees for Election as Directors | 12 |\n"
+                f"{long_heading}\n"
+                "Nominees for Election as Directors, committee update\n"
+                "Nominees for Election as Directors Jane Doe biography.\n"
+                "Executive Compensation"
+            ),
+        ):
+            out = ps.management_information_from_proxy(html)
+        assert "Jane Doe biography." in out
+
     def test_no_match_returns_empty(self):
         html = "<table><tr><td>Unrelated</td><td>Data</td></tr></table>"
         assert ps.beneficial_owners_table(html) == ""
