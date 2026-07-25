@@ -22,6 +22,7 @@ from openbb_cli.dispatchers.openapi_schema import (
     build_reference,
     build_router_map,
     expand_type_arrays,
+    operation_parameters,
     parameter_to_kwargs,
     parse_json_arg,
     request_body_parameters,
@@ -1873,3 +1874,90 @@ def test_bundle_external_refs_rejects_schema_ref_siblings(monkeypatch):
             timeout=1,
             headers={},
         )
+
+
+def test_operation_parameters_returns_own_when_no_path_item_params():
+    """Without inherited parameters the operation's own list is returned, dereferenced."""
+    op = {"parameters": [{"name": "symbol", "in": "query"}]}
+    assert operation_parameters({}, {}, op) == [{"name": "symbol", "in": "query"}]
+
+
+def test_operation_parameters_inherits_from_path_item():
+    """Path-item parameters come first, then the operation's own."""
+    path_item = {"parameters": [{"name": "tenant", "in": "header"}]}
+    op = {"parameters": [{"name": "symbol", "in": "query"}]}
+    assert [p["name"] for p in operation_parameters({}, path_item, op)] == [
+        "tenant",
+        "symbol",
+    ]
+
+
+def test_operation_parameters_operation_overrides_inherited():
+    """An operation parameter replaces an inherited one matching (name, in)."""
+    path_item = {"parameters": [{"name": "limit", "in": "query", "required": False}]}
+    op = {"parameters": [{"name": "limit", "in": "query", "required": True}]}
+    out = operation_parameters({}, path_item, op)
+    assert out == [{"name": "limit", "in": "query", "required": True}]
+
+
+def test_operation_parameters_resolves_refs_on_both_levels():
+    """``$ref`` entries are resolved before they are compared or returned."""
+    spec = {
+        "components": {
+            "parameters": {
+                "tenant": {"name": "tenant", "in": "header"},
+                "symbol": {"name": "symbol", "in": "query"},
+            }
+        }
+    }
+    path_item = {"parameters": [{"$ref": "#/components/parameters/tenant"}]}
+    op = {"parameters": [{"$ref": "#/components/parameters/symbol"}]}
+    assert [p["name"] for p in operation_parameters(spec, path_item, op)] == [
+        "tenant",
+        "symbol",
+    ]
+
+
+def test_operation_parameters_skips_unresolvable_and_unnamed_entries():
+    """Unresolvable refs, non-dicts, and nameless entries are dropped."""
+    path_item = {
+        "parameters": [
+            {"$ref": "#/components/parameters/missing"},
+            "not-a-dict",
+            {"in": "header"},
+            {"name": "tenant", "in": "header"},
+        ]
+    }
+    assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["tenant"]
+
+
+def test_build_command_index_inherits_path_item_parameters():
+    """The interactive parser also picks up parameters shared by the path item."""
+    spec = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "tenant", "in": "header", "schema": {"type": "string"}}
+                ],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {"name": "symbol", "in": "query", "schema": {"type": "string"}}
+                    ],
+                },
+            }
+        }
+    }
+    parser = build_command_index(spec)["x"]
+    dests = {a.dest for a in parser._actions}
+    assert "tenant" in dests
+    assert "symbol" in dests
+
+
+def test_build_parser_from_operation_without_spec_ignores_path_item():
+    """Called without a spec the parser keeps its previous operation-only behavior."""
+    op = {
+        "parameters": [{"name": "symbol", "in": "query", "schema": {"type": "string"}}]
+    }
+    parser = build_parser_from_operation(op)
+    assert {a.dest for a in parser._actions} == {"symbol"}

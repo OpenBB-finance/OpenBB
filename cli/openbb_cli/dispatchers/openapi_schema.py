@@ -122,6 +122,38 @@ def deref_parameter(spec: dict[str, Any], param: dict[str, Any]) -> dict[str, An
     return param
 
 
+def operation_parameters(
+    spec: dict[str, Any], path_item: dict[str, Any], op: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return an operation's parameters, including those inherited from its path item.
+
+    OpenAPI 3.x lets a Path Item Object declare ``parameters`` that apply to every
+    operation under that path. An operation-level parameter overrides an inherited
+    one when both match on ``(name, in)``; anything else is inherited as-is.
+
+    Entries are returned dereferenced, inherited first, then the operation's own.
+    """
+    inherited = path_item.get("parameters") or []
+    own_raw = op.get("parameters") or []
+    own = [deref_parameter(spec, p) for p in own_raw if isinstance(p, dict)]
+    own = [p for p in own if p]
+    if not inherited:
+        return own
+    overridden = {(p.get("name"), p.get("in")) for p in own}
+    merged: list[dict[str, Any]] = []
+    for raw in inherited:
+        if not isinstance(raw, dict):
+            continue
+        resolved = deref_parameter(spec, raw)
+        if not resolved or not resolved.get("name"):
+            continue
+        if (resolved.get("name"), resolved.get("in")) in overridden:
+            continue
+        merged.append(resolved)
+    merged.extend(own)
+    return merged
+
+
 def deref_schema(
     spec: dict[str, Any],
     node: Any,
@@ -426,9 +458,15 @@ def parameter_to_kwargs(param: dict[str, Any]) -> tuple[str, dict[str, Any]] | N
 
 
 def build_parser_from_operation(
-    op: dict[str, Any], spec: dict[str, Any] | None = None
+    op: dict[str, Any],
+    spec: dict[str, Any] | None = None,
+    path_item: dict[str, Any] | None = None,
 ) -> argparse.ArgumentParser:
-    """Build an ``ArgumentParser`` from an OpenAPI operation object."""
+    """Build an ``ArgumentParser`` from an OpenAPI operation object.
+
+    When ``path_item`` is given, parameters shared by every operation under that
+    path are inherited by the parser (see :func:`operation_parameters`).
+    """
     parser = argparse.ArgumentParser(
         prog=op.get("operationId", "cmd"),
         description=(op.get("description") or op.get("summary") or "").strip() or None,
@@ -440,7 +478,12 @@ def build_parser_from_operation(
         if spec is not None
         else []
     )
-    for param in [*op.get("parameters", []), *body_params]:
+    params = (
+        operation_parameters(spec, path_item or {}, op)
+        if spec is not None
+        else list(op.get("parameters", []) or [])
+    )
+    for param in [*params, *body_params]:
         translated = parameter_to_kwargs(param)
         if translated is None:
             continue
@@ -509,7 +552,7 @@ def build_command_index(
         if not op:
             continue
         index[url_to_command(url, api_prefix=api_prefix)] = build_parser_from_operation(
-            op, spec
+            op, spec, methods
         )
     return index
 

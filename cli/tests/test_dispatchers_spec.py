@@ -1342,3 +1342,155 @@ def test_add_normalized_parameter_with_datetime_param_uses_coercer():
     )
     action = next(a for a in p._actions if a.dest == "fromDateTime")
     assert action.type is _coerce_iso_datetime
+
+
+def test_build_command_spec_inherits_path_item_parameters():
+    """Parameters declared on the path item apply to the operation under it."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [{"name": "tenant", "in": "header", "required": True}],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [{"name": "symbol", "schema": {"type": "string"}}],
+                },
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    names = [p["name"] for p in out["x"]["parameters"]]
+    assert names == ["tenant", "symbol"]
+    tenant = next(p for p in out["x"]["parameters"] if p["name"] == "tenant")
+    assert tenant["required"] is True
+
+
+def test_build_command_spec_resolves_path_item_ref_parameters():
+    """A path-item parameter given as a $ref is resolved before inheriting."""
+    openapi = {
+        "components": {
+            "parameters": {
+                "tenantHeader": {
+                    "name": "xero-tenant-id",
+                    "in": "header",
+                    "required": True,
+                    "schema": {"type": "string"},
+                }
+            }
+        },
+        "paths": {
+            "/api/v1/accounts/{AccountID}": {
+                "parameters": [{"$ref": "#/components/parameters/tenantHeader"}],
+                "get": {"operationId": "accounts"},
+            }
+        },
+    }
+    out = build_command_spec(openapi)
+    assert [p["name"] for p in out["accounts"]["parameters"]] == ["xero-tenant-id"]
+
+
+def test_build_command_spec_operation_parameter_overrides_path_item():
+    """An operation parameter wins over an inherited one with the same name and location."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "limit", "in": "query", "schema": {"type": "string"}}
+                ],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "required": True,
+                            "schema": {"type": "integer"},
+                        }
+                    ],
+                },
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    params = out["x"]["parameters"]
+    assert len(params) == 1
+    assert params[0]["type"] == "integer"
+    assert params[0]["required"] is True
+
+
+def test_build_command_spec_path_item_param_kept_when_location_differs():
+    """Overriding is keyed on (name, in) — a same-named param elsewhere is kept."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "id", "in": "header", "schema": {"type": "string"}}
+                ],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {"name": "id", "in": "query", "schema": {"type": "string"}}
+                    ],
+                },
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    locations = sorted(p["in"] for p in out["x"]["parameters"] if p["name"] == "id")
+    assert locations == ["header", "query"]
+
+
+def test_build_command_spec_path_item_parameters_apply_to_every_operation():
+    """Both operations under one path item inherit its shared parameters."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "tenant", "in": "header", "schema": {"type": "string"}}
+                ],
+                "get": {"operationId": "x"},
+            },
+            "/api/v1/y": {
+                "parameters": [
+                    {"name": "tenant", "in": "header", "schema": {"type": "string"}}
+                ],
+                "post": {"operationId": "y"},
+            },
+        }
+    }
+    out = build_command_spec(openapi)
+    assert [p["name"] for p in out["x"]["parameters"]] == ["tenant"]
+    assert [p["name"] for p in out["y"]["parameters"]] == ["tenant"]
+
+
+def test_build_command_spec_skips_unresolvable_path_item_ref_param():
+    """An unresolvable path-item $ref is dropped rather than crashing."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [{"$ref": "#/components/parameters/missing"}],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [{"name": "kept", "schema": {"type": "string"}}],
+                },
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    assert [p["name"] for p in out["x"]["parameters"]] == ["kept"]
+
+
+def test_build_command_spec_ignores_malformed_path_item_parameters():
+    """Non-dict path-item parameter entries are skipped defensively."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": ["not-a-dict", {"in": "header"}],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [{"name": "kept", "schema": {"type": "string"}}],
+                },
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    assert [p["name"] for p in out["x"]["parameters"]] == ["kept"]
