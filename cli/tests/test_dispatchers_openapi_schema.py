@@ -22,6 +22,8 @@ from openbb_cli.dispatchers.openapi_schema import (
     build_reference,
     build_router_map,
     expand_type_arrays,
+    extract_response_schema,
+    merge_allof,
     operation_parameters,
     parameter_to_kwargs,
     parse_json_arg,
@@ -1983,3 +1985,127 @@ def test_build_parser_from_operation_without_spec_ignores_path_item():
     }
     parser = build_parser_from_operation(op)
     assert {a.dest for a in parser._actions} == {"symbol"}
+
+
+def test_merge_allof_unions_properties_and_required():
+    schema = {
+        "allOf": [
+            {"type": "object", "properties": {"results": {"type": "array"}}},
+            {
+                "type": "object",
+                "properties": {"pageNumber": {"type": "integer"}},
+                "required": ["pageNumber"],
+            },
+        ]
+    }
+    merged = merge_allof(schema)
+    assert merged["type"] == "object"
+    assert set(merged["properties"]) == {"results", "pageNumber"}
+    assert merged["required"] == ["pageNumber"]
+
+
+def test_merge_allof_first_member_wins_on_conflict():
+    schema = {
+        "allOf": [
+            {"properties": {"value": {"type": "string"}}},
+            {"properties": {"value": {"type": "integer"}}},
+        ]
+    }
+    assert merge_allof(schema)["properties"]["value"] == {"type": "string"}
+
+
+def test_merge_allof_sibling_keywords_outrank_members():
+    schema = {
+        "properties": {"value": {"type": "boolean"}},
+        "required": ["value"],
+        "allOf": [{"properties": {"value": {"type": "string"}}}],
+    }
+    merged = merge_allof(schema)
+    assert merged["properties"]["value"] == {"type": "boolean"}
+    assert merged["required"] == ["value"]
+
+
+def test_merge_allof_nested_inside_properties():
+    schema = {
+        "type": "object",
+        "properties": {
+            "row": {
+                "allOf": [
+                    {"properties": {"a": {"type": "string"}}},
+                    {"properties": {"b": {"type": "string"}}},
+                ]
+            }
+        },
+    }
+    merged = merge_allof(schema)
+    assert set(merged["properties"]["row"]["properties"]) == {"a", "b"}
+
+
+def test_merge_allof_leaves_non_object_compositions_alone():
+    # A member carrying its own combinator, or a non-object type, is not a
+    # plain intersection of property bags and must not be flattened.
+    with_combinator = {
+        "allOf": [
+            {"properties": {"a": {"type": "string"}}},
+            {"oneOf": [{"type": "object"}, {"type": "null"}]},
+        ]
+    }
+    scalar_member = {"allOf": [{"type": "string"}, {"properties": {"a": {}}}]}
+
+    assert merge_allof(with_combinator) == with_combinator
+    assert merge_allof(scalar_member) == scalar_member
+
+
+def test_merge_allof_ignores_schemas_without_allof():
+    schema = {"type": "object", "properties": {"a": {"type": "string"}}}
+    assert merge_allof(schema) == schema
+
+
+def test_extract_response_schema_merges_allof_composition():
+    spec = {
+        "components": {
+            "schemas": {
+                "Paged": {
+                    "type": "object",
+                    "properties": {"pageNumber": {"type": "integer"}},
+                    "required": ["pageNumber"],
+                },
+                "Bills": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "results": {
+                                    "type": "array",
+                                    "items": {"$ref": "#/components/schemas/Bill"},
+                                }
+                            },
+                        },
+                        {"$ref": "#/components/schemas/Paged"},
+                    ]
+                },
+                "Bill": {
+                    "type": "object",
+                    "properties": {"id": {"type": "string"}},
+                },
+            }
+        }
+    }
+    op = {
+        "responses": {
+            "200": {
+                "content": {
+                    "application/json": {
+                        "schema": {"$ref": "#/components/schemas/Bills"}
+                    }
+                }
+            }
+        }
+    }
+
+    schema = extract_response_schema(spec, op)
+    assert set(schema["properties"]) == {"results", "pageNumber"}
+    assert schema["required"] == ["pageNumber"]
+    # The nested reference inside the merged member is still resolved.
+    items = schema["properties"]["results"]["items"]
+    assert items["properties"]["id"] == {"type": "string"}

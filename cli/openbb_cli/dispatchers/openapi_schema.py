@@ -190,6 +190,89 @@ def deref_schema(
     return node
 
 
+_MERGEABLE_ALLOF_KEYS = frozenset({"properties", "required", "type", "description"})
+
+
+def _mergeable_allof_members(members: list[Any]) -> list[dict[str, Any]] | None:
+    """Return the members if every one is a plain object subschema, else ``None``.
+
+    Only object-shaped members are merged. A member carrying its own combinator
+    (``oneOf`` / ``anyOf`` / a nested ``allOf`` that did not collapse), or a
+    non-object ``type``, means the composition is not a simple intersection of
+    property bags and is left untouched rather than merged into something the
+    spec does not describe.
+    """
+    out: list[dict[str, Any]] = []
+    for member in members:
+        if not isinstance(member, dict):
+            return None
+        if member.keys() - _MERGEABLE_ALLOF_KEYS - {"examples", "x-internal", "title"}:
+            return None
+        declared = member.get("type")
+        if declared is not None and declared != "object":
+            return None
+        out.append(member)
+    return out
+
+
+def merge_allof(node: Any, max_depth: int = 32) -> Any:
+    """Collapse ``allOf`` compositions of object subschemas into one object schema.
+
+    An ``allOf`` is an intersection: the instance must satisfy every member. A
+    consumer reading ``properties`` off the composition itself finds nothing,
+    because the properties live one level down inside the members. This merges
+    them into a single object schema so the composition can be read like any
+    other object.
+
+    ``properties`` are unioned, with the first member to declare a name winning
+    on conflict, and any sibling ``properties`` on the ``allOf`` node itself
+    taking precedence over all members. ``required`` is unioned. Compositions
+    that are not a plain intersection of object subschemas are returned
+    unchanged.
+    """
+    if max_depth <= 0:
+        return node
+    if isinstance(node, list):
+        return [merge_allof(v, max_depth - 1) for v in node]
+    if not isinstance(node, dict):
+        return node
+
+    node = {k: merge_allof(v, max_depth - 1) for k, v in node.items()}
+
+    members = node.get("allOf")
+    if not isinstance(members, list) or not members:
+        return node
+
+    mergeable = _mergeable_allof_members(members)
+    if mergeable is None:
+        return node
+
+    properties: dict[str, Any] = {}
+    required: list[str] = []
+    for member in mergeable:
+        for name, subschema in (member.get("properties") or {}).items():
+            properties.setdefault(name, subschema)
+        for name in member.get("required") or []:
+            if name not in required:
+                required.append(name)
+
+    siblings = {k: v for k, v in node.items() if k != "allOf"}
+    # Keywords written next to the ``allOf`` describe the composition itself and
+    # outrank anything the members declare.
+    for name, subschema in (siblings.get("properties") or {}).items():
+        properties[name] = subschema
+    for name in siblings.get("required") or []:
+        if name not in required:
+            required.append(name)
+
+    merged: dict[str, Any] = {**siblings, "type": "object"}
+    if properties:
+        merged["properties"] = properties
+    if required:
+        merged["required"] = required
+    return merged
+
+
 _SUCCESS_PRIORITY = ("200", "2XX", "201", "default")
 _JSON_CONTENT_TYPES = ("application/json", "application/vnd.api+json")
 
@@ -235,7 +318,7 @@ def extract_response_schema(
     schema = media.get("schema")
     if not isinstance(schema, dict):
         return None
-    return deref_schema(spec, schema)
+    return merge_allof(deref_schema(spec, schema))
 
 
 def extract_request_body_schema(
@@ -284,7 +367,7 @@ def extract_response_schemas(
                 continue
             schema = media.get("schema")
             if isinstance(schema, dict):
-                per_content[content_type] = deref_schema(spec, schema)
+                per_content[content_type] = merge_allof(deref_schema(spec, schema))
         if per_content:
             out[status] = per_content
     return out
