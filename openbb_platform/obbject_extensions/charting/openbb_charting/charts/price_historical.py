@@ -40,6 +40,10 @@ def price_historical(  # noqa: PLR0912
     if "date" in data.columns:
         data = data.set_index("date")
 
+    # Determine ticker symbol and corresponding currency tick prefix
+    symbol_str = str(kwargs.get("symbol", "") or "")
+    currency_symbol = "₹" if symbol_str.endswith((".NS")) else "$"
+
     target = str(kwargs.get("target"))
     normalize = kwargs.get("normalize") is True
     returns = kwargs.get("returns") is True
@@ -157,6 +161,7 @@ def price_historical(  # noqa: PLR0912
                 mirror=True,
                 showline=True,
                 tickfont=dict(size=14),
+                tickprefix=f"{currency_symbol} " if not (normalize or returns) else "",
             ),
             yaxis2=dict(
                 ticklen=0,
@@ -282,6 +287,7 @@ def price_historical(  # noqa: PLR0912
                 ),
                 tickfont=dict(size=14),
                 anchor="x",
+                tickprefix=f"{currency_symbol} " if not (normalize or returns) else "",
             )
         ),
         yaxis2=(
@@ -295,6 +301,7 @@ def price_historical(  # noqa: PLR0912
                 ),
                 tickfont=dict(size=14),
                 anchor="x",
+                tickprefix=f"{currency_symbol} " if not (normalize or returns) else "",
             )
             if y2title
             else None
