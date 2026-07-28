@@ -347,7 +347,7 @@ def extract_request_body_schema(
     schema = media.get("schema")
     if not isinstance(schema, dict):
         return None
-    return deref_schema(spec, schema)
+    return merge_allof(deref_schema(spec, schema))
 
 
 def extract_response_schemas(

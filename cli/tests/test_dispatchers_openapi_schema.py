@@ -22,6 +22,7 @@ from openbb_cli.dispatchers.openapi_schema import (
     build_reference,
     build_router_map,
     expand_type_arrays,
+    extract_request_body_schema,
     extract_response_schema,
     merge_allof,
     operation_parameters,
@@ -2109,3 +2110,43 @@ def test_extract_response_schema_merges_allof_composition():
     # The nested reference inside the merged member is still resolved.
     items = schema["properties"]["results"]["items"]
     assert items["properties"]["id"] == {"type": "string"}
+
+
+def test_extract_request_body_schema_merges_allof_composition():
+    spec = {
+        "components": {
+            "schemas": {
+                "Timestamps": {
+                    "type": "object",
+                    "properties": {"modifiedDate": {"type": "string"}},
+                },
+                "BillPrototype": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {"reference": {"type": "string"}},
+                            "required": ["reference"],
+                        },
+                        {"$ref": "#/components/schemas/Timestamps"},
+                    ]
+                },
+            }
+        }
+    }
+    op = {
+        "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/BillPrototype"}
+                }
+            }
+        }
+    }
+
+    schema = extract_request_body_schema(spec, op)
+    assert set(schema["properties"]) == {"reference", "modifiedDate"}
+    assert schema["required"] == ["reference"]
+
+    # A composition body now flattens into body parameters instead of none.
+    names = {p["name"] for p in request_body_parameters(schema)}
+    assert names == {"reference", "modifiedDate"}
