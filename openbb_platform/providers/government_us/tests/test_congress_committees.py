@@ -368,31 +368,52 @@ _MC_LEG = {
 }
 
 
-def test_render_member_cards_themes_and_parties():
-    """Cards render party colors, photos, initials fallback, sorting, and themes."""
-    from openbb_government_us.congress.utils.member_cards import render_member_cards
-
-    dark = render_member_cards(_MC_MEMBERS, _MC_LEG, "dark")
-    assert "#1b1f27" in dark
-    assert "#c0392b" in dark and "#2563c9" in dark and "#6b7280" in dark
-    assert 'src="https://x/C001.jpg"' in dark
-    assert "initials" in dark
-    assert "Age " in dark
-    assert (
-        dark.index("Rep. Chair")
-        < dark.index("Rep. Ranking")
-        < dark.index("Rep. Member")
+def test_committee_members_payload_orders_and_projects():
+    """Members are ordered chair, ranking, then the rest, with profile fields merged."""
+    from openbb_government_us.congress.utils.member_cards import (
+        committee_members_payload,
     )
 
-    light = render_member_cards(_MC_MEMBERS, _MC_LEG, "light")
-    assert "#ffffff" in light and light != dark
+    payload = committee_members_payload(
+        _MC_MEMBERS,
+        _MC_LEG,
+        {
+            "name": "House Judiciary",
+            "chamber": "house",
+            "jurisdiction": "Courts.",
+            "website": "https://judiciary.house.gov",
+        },
+    )
+    assert [m["name"] for m in payload["members"]] == [
+        "Rep. Chair",
+        "Rep. Ranking",
+        "Rep. Member",
+        "No Photo",
+    ]
+    assert payload["committee"]["name"] == "House Judiciary"
+    assert payload["committee"]["is_subcommittee"] is False
+
+    chair = payload["members"][0]
+    assert chair["party_letter"] == "R"
+    assert chair["state"] == "OH"
+    assert chair["age"] is not None
+    assert chair["photo_url"] == "https://x/C001.jpg"
+
+    unknown = payload["members"][3]
+    assert unknown["party_letter"] == "·"
+    assert unknown["photo_url"] is None
+    assert unknown["age"] is None
 
 
-def test_render_member_cards_empty():
-    """No members renders the empty-state message."""
-    from openbb_government_us.congress.utils.member_cards import render_member_cards
+def test_committee_members_payload_empty():
+    """No members and no detail still yields a well-formed payload."""
+    from openbb_government_us.congress.utils.member_cards import (
+        committee_members_payload,
+    )
 
-    assert "No member data available" in render_member_cards([], {}, None)
+    payload = committee_members_payload([], {})
+    assert payload["members"] == []
+    assert payload["committee"]["name"] == ""
 
 
 def test_member_cards_age():
@@ -437,35 +458,47 @@ _BIO_RECORD = {
 }
 
 
-def test_render_member_bio_full():
-    """The bio card includes the photo, encoded links, social, committees, terms."""
-    import re
+def test_member_bio_payload_full():
+    """The bio payload carries identity, encoded links, social, committees, and terms."""
+    from openbb_government_us.congress.utils.member_cards import member_bio_payload
 
-    from openbb_government_us.congress.utils.member_cards import render_member_bio
-
-    html = render_member_bio(
+    payload = member_bio_payload(
         _BIO_RECORD,
         [{"committee": "House Appropriations", "title": "Chair"}],
         {"twitter": "Robert_Aderholt"},
         {"yea": 282, "nay": 11, "total": 293, "yea_pct": 96.2},
-        "dark",
         "https://unitedstates.github.io/images/congress/225x275/A000055.jpg",
     )
-    assert "225x275/A000055.jpg" in html
-    assert "Robert B. Aderholt" in html
-    assert "Representative · AL-4 · Republican" in html
-    assert "Age " in html
-    assert "en.wikipedia.org/wiki/Robert_Aderholt" in html
-    assert all(" " not in h for h in re.findall(r'href="([^"]+)"', html))
-    assert "On Passage" in html and "282 Yea" in html and "96.2% Yea" in html
-    assert "Committee Assignments" in html and "Chair" in html
-    assert "Term History" in html and "1997-01-07" in html
-    assert "#c0392b" in html
+    assert payload["photo_url"].endswith("225x275/A000055.jpg")
+    assert payload["name"] == "Robert B. Aderholt"
+    assert payload["role"] == "Representative"
+    assert payload["location"] == "AL-4"
+    assert payload["party"] == "Republican"
+    assert payload["party_letter"] == "R"
+    assert payload["gender"] == "Male"
+    assert payload["age"] is not None
+    assert payload["contact"]["phone"] == "202-225-4876"
+    assert {link["label"] for link in payload["links"]} == {"Wikipedia", "GovTrack"}
+    assert all(" " not in link["url"] for link in payload["links"])
+    assert payload["social"] == [
+        {"label": "Twitter/X", "url": "https://twitter.com/Robert_Aderholt"}
+    ]
+    assert payload["voting"] == {
+        "yea": 282,
+        "nay": 11,
+        "total": 293,
+        "yea_pct": 96.2,
+    }
+    assert payload["committees"][0]["title"] == "Chair"
+    assert [term["start"] for term in payload["terms"]] == [
+        "2025-01-03",
+        "1997-01-07",
+    ]
 
 
-def test_render_member_bio_minimal_and_theme():
-    """A sparse record (no photo/links/committees) renders with initials + light theme."""
-    from openbb_government_us.congress.utils.member_cards import render_member_bio
+def test_member_bio_payload_minimal():
+    """A sparse record yields empty collections rather than missing keys."""
+    from openbb_government_us.congress.utils.member_cards import member_bio_payload
 
     record = {
         "id": {},
@@ -473,12 +506,17 @@ def test_render_member_bio_minimal_and_theme():
         "bio": {},
         "terms": [{"type": "sen", "state": "TX", "party": "Independent"}],
     }
-    empty_voting = {"yea": 0, "nay": 0, "total": 0, "yea_pct": None}
-    light = render_member_bio(record, [], {}, empty_voting, "light")
-    dark = render_member_bio(record, [], {}, empty_voting, "dark")
-    assert "color:#1b1f27" in light and light != dark
-    assert "initials" in light and ">JD<" in light
-    assert "Committee Assignments" not in light
-    assert "Social" not in light
-    assert "Senator · TX · Independent" in light
-    assert "No On-Passage roll-call votes on record." in light
+    payload = member_bio_payload(
+        record, [], {}, {"yea": 0, "nay": 0, "total": 0, "yea_pct": None}
+    )
+    assert payload["name"] == "Jane Doe"
+    assert payload["role"] == "Senator"
+    assert payload["location"] == "TX"
+    assert payload["party_letter"] == "I"
+    assert payload["photo_url"] is None
+    assert payload["links"] == []
+    assert payload["social"] == []
+    assert payload["committees"] == []
+    assert payload["gender"] == ""
+    assert payload["age"] is None
+    assert payload["voting"]["total"] == 0

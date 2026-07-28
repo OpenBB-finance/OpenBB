@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 
 import pytest
-import openbb_government_us
 
+import openbb_government_us
 from openbb_government_us.congress.congress_router import get_congress_gov_apps_json
 from openbb_government_us.treasury.treasury_router import get_us_treasury_apps_json
 from openbb_government_us.usda.usda_router import get_usda_apps_json

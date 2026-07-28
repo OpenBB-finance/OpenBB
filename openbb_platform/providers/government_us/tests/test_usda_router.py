@@ -118,6 +118,7 @@ class TestUsdaRouter:
         """The ERS endpoints register regardless of installed extensions."""
         paths = {route.path for route in usda_router.router.api_router.routes}
         assert "/ers_chart" in paths
+        assert "/ers_viz_catalog" in paths
         assert "/price_spreads" in paths
 
 
@@ -226,18 +227,57 @@ class TestBellReportOptions:
 class TestErsChart:
     """Tests for the ERS Tableau visualization widget endpoint."""
 
-    def test_renders_default_viz(self):
-        """The default visualization renders as a full HTML embed page."""
-        response = asyncio.run(usda_router.ers_chart())
-        body = response.body.decode()
-        assert "Marketbaskets/Marketbaskets?:embed=y" in body
-        assert "Market Baskets" in body
-        assert "#0f0f0f" in body
+    @staticmethod
+    def _payload(body: str) -> dict:
+        """Extract the JSON payload the page bootstraps from."""
+        import json
+        import re
 
-    def test_light_theme_background(self):
-        """The light theme swaps the page background."""
+        match = re.search(
+            r'<script id="ers-chart-data" type="application/json">(.*?)</script>',
+            body,
+            re.S,
+        )
+        assert match
+        return json.loads(match.group(1))
+
+    def test_renders_default_viz(self):
+        """The default visualization is injected as the page's bootstrap payload."""
+        response = asyncio.run(usda_router.ers_chart())
+        payload = self._payload(response.body.decode())
+        assert payload["viz"] == "Marketbaskets/Marketbaskets"
+        assert payload["title"] == "Market Baskets"
+        assert payload["theme"] == "dark"
+
+    def test_light_theme(self):
+        """The light theme is carried into the payload."""
         response = asyncio.run(usda_router.ers_chart(theme="light"))
-        assert "#ffffff" in response.body.decode()
+        assert self._payload(response.body.decode())["theme"] == "light"
+
+    def test_implements_the_iframe_protocol(self):
+        """The page announces itself and answers the Workspace protocol messages."""
+        body = asyncio.run(usda_router.ers_chart()).body.decode()
+        for message in (
+            "openbb-connect",
+            "openbb-request",
+            "openbb-data",
+            "openbb-params-update",
+            "openbb-auth",
+        ):
+            assert message in body
+        assert "usda_ers_viz_catalog" in body
+        assert "usda_ers_viz_about" in body
+
+    def test_widget_is_an_iframe(self):
+        """The widget is served to the Workspace as an iframe."""
+        route = next(
+            route
+            for route in usda_router.router.api_router.routes
+            if route.path == "/ers_chart"
+        )
+        config = route.openapi_extra["widget_config"]
+        assert config["type"] == "iframe"
+        assert config["widgetId"] == "usda_ers_chart_usda_obb"
 
     def test_unknown_viz_raises_404(self):
         """An unknown visualization path raises a 404."""
@@ -248,7 +288,7 @@ class TestErsChart:
         assert error.value.status_code == 404
 
     def test_every_catalog_entry_renders(self):
-        """Every catalog entry produces a valid embed URL."""
+        """Every catalog entry produces a payload the page can embed."""
         from openbb_government_us.usda.utils.ers_catalog import load_catalog, viz_paths
 
         catalog = load_catalog()
@@ -256,7 +296,36 @@ class TestErsChart:
         for entry in catalog:
             path = f"{entry['workbook']}/{entry['default_view']}"
             body = asyncio.run(usda_router.ers_chart(viz=path)).body.decode()
-            assert f"https://public.tableau.com/views/{path}?:embed=y" in body
+            assert self._payload(body)["viz"] == path
+
+
+class TestErsVizCatalog:
+    """Tests for the catalog endpoint the iframe fetches its sub-widget data from."""
+
+    def test_registered_and_excluded_from_widgets(self):
+        """The catalog is served but never becomes a widget of its own."""
+        route = next(
+            route
+            for route in usda_router.router.api_router.routes
+            if route.path == "/ers_viz_catalog"
+        )
+        assert route.openapi_extra["widget_config"] == {"exclude": True}
+
+    def test_lists_every_visualization(self):
+        """Every catalog entry is returned with its embed path and public URL."""
+        from openbb_government_us.usda.utils.ers_catalog import load_catalog
+
+        rows = asyncio.run(usda_router.ers_viz_catalog())
+        assert len(rows) == len(load_catalog())
+        for row in rows:
+            assert set(row) == {
+                "viz",
+                "title",
+                "description",
+                "last_updated",
+                "url",
+            }
+            assert row["url"] == f"https://public.tableau.com/views/{row['viz']}"
 
 
 class TestErsCatalog:

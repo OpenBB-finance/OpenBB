@@ -684,20 +684,49 @@ def test_stop_background_cancels_tasks(monkeypatch):
     router._BACKGROUND_TASKS.clear()
 
 
-def test_committee_members_html_endpoint(monkeypatch):
-    """The committee_members endpoint returns a raw text/html card response."""
+def _page_payload(body: str) -> dict:
+    """Extract the bootstrap payload a widget page renders itself from."""
+    import json
+
+    match = re.search(
+        r'<script id="widget-data" type="application/json">(.*?)</script>',
+        body,
+        re.S,
+    )
+    assert match
+    return json.loads(match.group(1))
+
+
+def _patch_committee_sources(monkeypatch):
+    """Patch the committee membership, structure, and profile sources."""
 
     async def _members(system_code):
         assert system_code == "hsju03"
-        return [{"name": "Jim Jordan", "title": "Chair", "bioguide": "J000289"}]
+        return [
+            {"name": "Jim Jordan", "title": "Chair", "bioguide": "J000289"},
+            {"name": "Jane Doe", "title": "Member", "bioguide": "D000001"},
+        ]
+
+    async def _structure():
+        return [
+            {
+                "thomas_id": "HSJU",
+                "name": "House Judiciary",
+                "url": "https://judiciary.house.gov",
+                "jurisdiction": "Courts and the judiciary.",
+                "subcommittees": [{"thomas_id": "03", "name": "Immigration"}],
+            }
+        ]
 
     async def _leg():
         return {
             "J000289": {
                 "party": "Republican",
                 "state": "OH",
+                "birthday": "1964-02-17",
                 "photo_url": "https://x/J000289.jpg",
-            }
+            },
+            "D000001": {"party": "Democrat", "state": "MD"},
         }
 
     async def _photo(bioguide):
@@ -707,11 +736,36 @@ def test_committee_members_html_endpoint(monkeypatch):
         "openbb_government_us.congress.utils.committees.get_committee_members", _members
     )
     monkeypatch.setattr(
+        "openbb_government_us.congress.utils.bulk.load_committee_structure", _structure
+    )
+    monkeypatch.setattr(
         "openbb_government_us.congress.utils.bulk.load_legislators", _leg
     )
     monkeypatch.setattr(
         "openbb_government_us.congress.utils.bulk.member_photo_url", _photo
     )
+
+
+def test_committee_members_data_endpoint(monkeypatch):
+    """The data endpoint returns the committee detail and its members, chairs first."""
+    _patch_committee_sources(monkeypatch)
+
+    payload = asyncio.run(
+        router.committee_members_data(
+            chamber="house", committee="hsju00", subcommittee="HSJU03"
+        )
+    )
+    assert payload["committee"]["name"] == "House Judiciary — Immigration"
+    assert payload["committee"]["chamber"] == "house"
+    assert payload["committee"]["is_subcommittee"] is True
+    assert [m["name"] for m in payload["members"]] == ["Jim Jordan", "Jane Doe"]
+    assert payload["members"][0]["party_letter"] == "R"
+    assert payload["members"][0]["photo_url"] == "https://x/J000289.jpg"
+
+
+def test_committee_members_page_endpoint(monkeypatch):
+    """The committee_members endpoint serves the iframe page with its payload."""
+    _patch_committee_sources(monkeypatch)
 
     resp = asyncio.run(
         router.committee_members(
@@ -719,11 +773,23 @@ def test_committee_members_html_endpoint(monkeypatch):
         )
     )
     body = resp.body.decode()
+    payload = _page_payload(body)
     assert resp.media_type == "text/html"
-    assert body.lstrip().startswith("<style>")
-    assert not body.lstrip().startswith("{")
-    assert 'src="https://x/J000289.jpg"' in body
-    assert "#c0392b" in body
+    assert body.lstrip().startswith("<!DOCTYPE html>")
+    assert payload["theme"] == "dark"
+    assert payload["chamber"] == "house"
+    assert payload["subcommittee"] == "HSJU03"
+    assert payload["committee_detail"]["name"] == "House Judiciary — Immigration"
+    assert payload["members"][0]["name"] == "Jim Jordan"
+    for message in (
+        "openbb-connect",
+        "openbb-request",
+        "openbb-data",
+        "openbb-params-update",
+        "openbb-auth",
+        "openbb:widget-params:update",
+    ):
+        assert message in body
 
 
 def test_how_to_use_returns_markdown():
@@ -781,8 +847,8 @@ def test_member_choices_empty(monkeypatch):
     assert result == [{"label": "No members found.", "value": None}]
 
 
-def test_member_info_html_endpoint(monkeypatch):
-    """The member_info endpoint returns a raw themed HTML bio card."""
+def _patch_member_sources(monkeypatch):
+    """Patch the member record, committees, social, voting, and photo sources."""
 
     async def _record(bioguide):
         return {
@@ -829,11 +895,44 @@ def test_member_info_html_endpoint(monkeypatch):
         "openbb_government_us.congress.utils.bulk.member_photo_url", _photo
     )
 
+
+def test_member_info_page_endpoint(monkeypatch):
+    """The member_info endpoint serves the iframe page with its bio payload."""
+    _patch_member_sources(monkeypatch)
+
     resp = asyncio.run(router.member_info(bioguide_id="A000055", theme="dark"))
     body = resp.body.decode()
+    payload = _page_payload(body)
     assert resp.media_type == "text/html"
-    assert "225x275/A000055.jpg" in body
-    assert "en.wikipedia.org/wiki/Robert_Aderholt" in body
-    assert " " not in [h for h in re.findall(r'href="([^"]+)"', body)][0]
-    assert "#c0392b" in body
-    assert "96.2% Yea" in body
+    assert payload["theme"] == "dark"
+    assert payload["photo_url"].endswith("225x275/A000055.jpg")
+    assert payload["name"] == "Robert B. Aderholt"
+    assert payload["role"] == "Representative"
+    assert payload["location"] == "AL-4"
+    assert payload["party_letter"] == "R"
+    assert payload["voting"]["yea_pct"] == 96.2
+    assert payload["committees"][0]["title"] == "Chair"
+    assert payload["links"][0]["url"] == (
+        "https://en.wikipedia.org/wiki/Robert_Aderholt"
+    )
+    assert payload["social"][0]["url"] == "https://twitter.com/Robert_Aderholt"
+    for message in (
+        "openbb-connect",
+        "openbb-request",
+        "openbb-data",
+        "openbb-params-update",
+        "openbb-auth",
+    ):
+        assert message in body
+
+
+def test_member_info_data_endpoint(monkeypatch):
+    """The data endpoint returns the member payload the page re-fetches."""
+    _patch_member_sources(monkeypatch)
+
+    payload = asyncio.run(router.member_info_data(bioguide_id="A000055"))
+    assert payload["bioguide_id"] == "A000055"
+    assert payload["age"] is not None
+    assert payload["gender"] == "Male"
+    assert payload["terms"][0]["role"] == "Representative"
+    assert payload["voting"]["total"] == 293

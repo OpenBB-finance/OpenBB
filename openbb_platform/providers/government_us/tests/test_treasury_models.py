@@ -3,7 +3,6 @@
 import asyncio
 import warnings
 from datetime import date, timedelta
-from math import isnan
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError

@@ -49,11 +49,42 @@ router._api_router.add_api_route(
 )
 
 
+async def ers_viz_catalog() -> list[dict]:
+    """List the USDA ERS Tableau Public visualizations.
+
+    Returns
+    -------
+    list[dict]
+        One record per visualization, with its embed path and public URL.
+    """
+    return [
+        {
+            "viz": f"{entry['workbook']}/{entry['default_view']}",
+            "title": entry["title"],
+            "description": entry["description"],
+            "last_updated": entry["last_updated"],
+            "url": f"https://public.tableau.com/views/{entry['workbook']}"
+            f"/{entry['default_view']}",
+        }
+        for entry in load_catalog()
+    ]
+
+
+router._api_router.add_api_route(
+    path="/ers_viz_catalog",
+    endpoint=ers_viz_catalog,
+    methods=["GET"],
+    openapi_extra={"widget_config": {"exclude": True}},
+)
+
+
 async def ers_chart(
     viz: str = DEFAULT_ERS_VIZ,
     theme: str | None = "dark",
 ) -> HTMLResponse:
-    """Render an embedded USDA ERS Tableau Public visualization (OpenBB Workspace HTML widget)."""
+    """Render an embedded USDA ERS Tableau Public visualization (OpenBB Workspace iframe widget)."""
+    import json
+
     entry = viz_paths().get(viz)
     if entry is None:
         raise HTTPException(
@@ -64,11 +95,22 @@ async def ers_chart(
     template = (Path(__file__).parent / "assets" / "ers_chart.html").read_text(
         encoding="utf-8"
     )
-    background = "#ffffff" if (theme or "").lower() == "light" else "#0f0f0f"
+    payload = {
+        "viz": viz,
+        "title": entry["title"],
+        "description": entry["description"],
+        "last_updated": entry["last_updated"],
+        "theme": "light" if (theme or "").lower() == "light" else "dark",
+    }
+    blob = (
+        json.dumps(payload)
+        .replace("<", "\\u003c")
+        .replace(">", "\\u003e")
+        .replace("&", "\\u0026")
+    )
     return HTMLResponse(
-        content=template.replace("__VIZ_PATH__", viz)
-        .replace("__TITLE__", entry["title"])
-        .replace("__BACKGROUND__", background)
+        content=template.replace("__ERS_CHART_DATA__", blob),
+        headers={"Cache-Control": "no-cache"},
     )
 
 
@@ -85,7 +127,7 @@ router._api_router.add_api_route(
             "category": "Economy",
             "subCategory": "Agriculture",
             "source": ["USDA", "ERS"],
-            "type": "html",
+            "type": "iframe",
             "widgetId": "usda_ers_chart_usda_obb",
             "gridData": {
                 "w": 40,

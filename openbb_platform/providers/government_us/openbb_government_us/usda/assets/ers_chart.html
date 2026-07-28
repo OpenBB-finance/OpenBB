@@ -3,30 +3,270 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>__TITLE__</title>
+<title>USDA ERS Interactive Charts</title>
 <style>
+  :root[data-theme="dark"] { --bg: #0f0f0f; }
+  :root[data-theme="light"] { --bg: #ffffff; }
   html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: __BACKGROUND__;
+    background: var(--bg);
   }
-  iframe {
-    border: none;
+  #viz { position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; }
+  #sizer {
+    position: relative;
     width: 100%;
     height: 100%;
-    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  #stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transform-origin: top left;
+  }
+  #stage tableau-viz {
+    display: block !important;
+    width: 100% !important;
+    height: calc(100% + 27px) !important;
   }
 </style>
 </head>
 <body>
-<iframe
-  src="https://public.tableau.com/views/__VIZ_PATH__?:embed=y&amp;:showVizHome=no&amp;:toolbar=yes&amp;:language=en-US&amp;:origin=viz_share_link"
-  title="__TITLE__"
-  allowfullscreen
-  loading="eager"
-></iframe>
+<div id="viz"><div id="sizer"><div id="stage"></div></div></div>
+<script id="ers-chart-data" type="application/json">__ERS_CHART_DATA__</script>
+<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById("ers-chart-data").textContent);
+  var TABLEAU = "https://public.tableau.com/views/";
+  var CATALOG_WIDGET = "usda_ers_viz_catalog";
+  var ABOUT_WIDGET = "usda_ers_viz_about";
+  var MANIFESTS = [
+    {
+      widgetId: CATALOG_WIDGET,
+      name: "USDA ERS Visualization Catalog",
+      description:
+        "Every interactive visualization published by the USDA Economic Research Service on Tableau Public.",
+      category: "Economy",
+      subCategory: "Agriculture",
+      dataType: "table"
+    },
+    {
+      widgetId: ABOUT_WIDGET,
+      name: "USDA ERS Visualization Details",
+      description: "Title, description, and publication date of the displayed visualization.",
+      category: "Economy",
+      subCategory: "Agriculture",
+      dataType: "markdown"
+    }
+  ];
+
+  var target = window.top || window.parent;
+  var embedded = !!target && target !== window;
+  var authHeaders = {};
+  var catalog = [];
+  var current = {
+    viz: DATA.viz,
+    title: DATA.title,
+    description: DATA.description,
+    last_updated: DATA.last_updated
+  };
+
+  var holder = document.getElementById("viz");
+  var sizer = document.getElementById("sizer");
+  var stage = document.getElementById("stage");
+
+  applyTheme(DATA.theme);
+  render();
+
+  window.addEventListener("resize", fit);
+  window.addEventListener("message", onMessage);
+  if (embedded) {
+    target.postMessage(
+      { type: "openbb-connect", widgets: MANIFESTS },
+      "*"
+    );
+  }
+  loadCatalog();
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme === "light" ? "light" : "dark"
+    );
+  }
+
+  function entryFor(viz) {
+    for (var i = 0; i < catalog.length; i++) {
+      if (catalog[i].viz === viz) return catalog[i];
+    }
+    return null;
+  }
+
+  function render() {
+    var src = TABLEAU + current.viz;
+    var viz = stage.firstElementChild;
+    if (viz && viz.getAttribute("src") === src) return;
+    stage.textContent = "";
+    fluid();
+    viz = document.createElement("tableau-viz");
+    viz.setAttribute("src", src);
+    viz.setAttribute("toolbar", "hidden");
+    viz.setAttribute("hide-tabs", "");
+    viz.setAttribute("device", "desktop");
+    viz.setAttribute("width", "100%");
+    viz.setAttribute("height", "100%");
+    viz.addEventListener("firstinteractive", fit);
+    stage.appendChild(viz);
+  }
+
+  function fixedSize() {
+    var viz = stage.firstElementChild;
+    var size;
+    try {
+      size = viz && viz.workbook ? viz.workbook.activeSheet.size : null;
+    } catch (error) {
+      return null;
+    }
+    if (!size || size.behavior !== "exactly" || !size.maxSize) return null;
+    return size.maxSize.width && size.maxSize.height ? size.maxSize : null;
+  }
+
+  function fluid() {
+    sizer.style.width = "100%";
+    sizer.style.height = "100%";
+    stage.style.width = "100%";
+    stage.style.height = "100%";
+    stage.style.transform = "";
+  }
+
+  function fit() {
+    var size = fixedSize();
+    if (!size) {
+      fluid();
+      return;
+    }
+    stage.style.width = size.width + "px";
+    stage.style.height = size.height + "px";
+    scaleToFit(size);
+    if (holder.scrollHeight > holder.clientHeight) scaleToFit(size);
+  }
+
+  function scaleToFit(size) {
+    var byWidth = holder.clientWidth / size.width;
+    var scale = Math.min(byWidth, holder.clientHeight / size.height);
+    if (scale < 1) scale = byWidth;
+    sizer.style.width = size.width * scale + "px";
+    sizer.style.height = size.height * scale + "px";
+    stage.style.transform = "scale(" + scale + ")";
+  }
+
+  function selectViz(viz) {
+    if (!viz || viz === current.viz) return;
+    var entry = entryFor(viz);
+    current = {
+      viz: viz,
+      title: entry ? entry.title : viz,
+      description: entry ? entry.description : "",
+      last_updated: entry ? entry.last_updated : ""
+    };
+    render();
+    publishAbout();
+  }
+
+  function catalogUrl() {
+    return new URL("ers_viz_catalog", window.location.href).toString();
+  }
+
+  function loadCatalog() {
+    fetch(catalogUrl(), { headers: authHeaders })
+      .then(function (response) {
+        return response.ok ? response.json() : [];
+      })
+      .then(function (rows) {
+        catalog = Array.isArray(rows) ? rows : [];
+        var entry = entryFor(current.viz);
+        if (entry) {
+          current.title = entry.title;
+          current.description = entry.description;
+          current.last_updated = entry.last_updated;
+        }
+        render();
+        publishCatalog();
+        publishAbout();
+      })
+      .catch(function () {});
+  }
+
+  function aboutMarkdown() {
+    var lines = ["## " + current.title, ""];
+    if (current.description && current.description !== current.title) {
+      lines.push(current.description, "");
+    }
+    if (current.last_updated) {
+      lines.push("**Last updated:** " + current.last_updated, "");
+    }
+    lines.push("[Open in Tableau Public](" + TABLEAU + current.viz + ")");
+    return lines.join("\n");
+  }
+
+  function publish(widgetId, dataType, data) {
+    if (!embedded) return;
+    target.postMessage(
+      { type: "openbb-data", widgetId: widgetId, dataType: dataType, data: data },
+      "*"
+    );
+  }
+
+  function publishCatalog() {
+    publish(CATALOG_WIDGET, "table", catalog);
+  }
+
+  function publishAbout() {
+    publish(ABOUT_WIDGET, "markdown", aboutMarkdown());
+  }
+
+  function parseParams(msg) {
+    if (msg.params && typeof msg.params === "object") return msg.params;
+    if (msg.paramName) {
+      var single = {};
+      single[msg.paramName] = msg.value;
+      return single;
+    }
+    return {};
+  }
+
+  function onMessage(event) {
+    var msg = event.data;
+    if (!msg || !msg.type) return;
+    if (msg.type === "openbb-request") {
+      if (msg.widgetId === null || msg.widgetId === undefined) {
+        publishCatalog();
+        publishAbout();
+      } else if (msg.widgetId === CATALOG_WIDGET) {
+        publishCatalog();
+      } else if (msg.widgetId === ABOUT_WIDGET) {
+        publishAbout();
+      }
+    } else if (msg.type === "openbb-params-update") {
+      var params = parseParams(msg);
+      if (params.theme !== undefined) applyTheme(params.theme);
+      if (params.viz !== undefined) selectViz(String(params.viz));
+    } else if (msg.type === "openbb-auth") {
+      authHeaders =
+        msg.headers && typeof msg.headers === "object" ? msg.headers : {};
+      loadCatalog();
+    }
+  }
+})();
+</script>
 </body>
 </html>

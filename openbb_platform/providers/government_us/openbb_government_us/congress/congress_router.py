@@ -938,24 +938,63 @@ router._api_router.add_api_route(
 )
 
 
-async def committee_members(
+def _widget_page(template: str, payload: dict) -> HTMLResponse:
+    """Serve a packaged widget page with its bootstrap payload injected.
+
+    Parameters
+    ----------
+    template : str
+        File name of the page in the assets directory.
+    payload : dict
+        JSON-serializable data the page renders itself from.
+    """
+    import json
+    from pathlib import Path
+
+    blob = (
+        json.dumps(payload)
+        .replace("<", "\\u003c")
+        .replace(">", "\\u003e")
+        .replace("&", "\\u0026")
+    )
+    page = (Path(__file__).parent / "assets" / template).read_text(encoding="utf-8")
+
+    return HTMLResponse(
+        content=page.replace("__WIDGET_DATA__", blob),
+        headers={"Cache-Control": "no-cache"},
+    )
+
+
+async def committee_members_data(
     chamber: str = "senate",
     committee: str = "ssaf00",
     subcommittee: str | None = None,
-    theme: str | None = "dark",
-):
-    """Render a committee's members as themed HTML cards (OpenBB Workspace HTML widget)."""
+) -> dict:
+    """Get a committee's current membership with each member's profile.
+
+    Parameters
+    ----------
+    chamber : str
+        Chamber the committee belongs to.
+    committee : str
+        Committee system code.
+    subcommittee : str | None
+        Subcommittee system code. Takes precedence over the committee.
+    """
     import asyncio
 
     from openbb_government_us.congress.utils.bulk import (
         load_legislators,
         member_photo_url,
     )
-    from openbb_government_us.congress.utils.committees import get_committee_members
-    from openbb_government_us.congress.utils.member_cards import render_member_cards
+    from openbb_government_us.congress.utils.committees import get_committee_overview
+    from openbb_government_us.congress.utils.member_cards import (
+        committee_members_payload,
+    )
 
     system_code = (subcommittee or committee).lower()
-    members = await get_committee_members(system_code)
+    overview = await get_committee_overview(system_code, chamber)
+    members = overview.get("members", [])
     legislators = await load_legislators()
 
     bioguides = [m.get("bioguide", "") for m in members]
@@ -964,8 +1003,39 @@ async def committee_members(
         b: {**legislators.get(b, {}), "photo_url": photo}
         for b, photo in zip(bioguides, photos)
     }
+    detail = {**overview.get("detail", {}), "chamber": chamber}
 
-    return HTMLResponse(content=render_member_cards(members, profiles, theme))
+    return committee_members_payload(members, profiles, detail)
+
+
+router._api_router.add_api_route(
+    path="/committee_members_data",
+    endpoint=committee_members_data,
+    methods=["GET"],
+    openapi_extra={"widget_config": {"exclude": True}},
+)
+
+
+async def committee_members(
+    chamber: str = "senate",
+    committee: str = "ssaf00",
+    subcommittee: str | None = None,
+    theme: str | None = "dark",
+):
+    """Render a committee's members as cards (OpenBB Workspace iframe widget)."""
+    payload = await committee_members_data(chamber, committee, subcommittee)
+
+    return _widget_page(
+        "committee_members.html",
+        {
+            "theme": "light" if (theme or "").lower() == "light" else "dark",
+            "chamber": chamber,
+            "committee": committee,
+            "subcommittee": subcommittee,
+            "committee_detail": payload["committee"],
+            "members": payload["members"],
+        },
+    )
 
 
 router._api_router.add_api_route(
@@ -979,7 +1049,7 @@ router._api_router.add_api_route(
             "description": "Member cards for a U.S. Congressional Committee.",
             "category": "Government",
             "subCategory": "Congress",
-            "type": "html",
+            "type": "iframe",
             "widgetId": "uscongress_committee_members_congress_gov_obb",
             "params": [
                 {
@@ -1051,11 +1121,14 @@ async def members(
     return await OBBject.from_query(OpenBBQuery(**locals()))
 
 
-async def member_info(
-    bioguide_id: str = "A000055",
-    theme: str | None = "dark",
-):
-    """Render a member's bio, history, and committees as a themed HTML card."""
+async def member_info_data(bioguide_id: str = "A000055") -> dict:
+    """Get a member's bio, contact, links, committees, terms, and voting record.
+
+    Parameters
+    ----------
+    bioguide_id : str
+        Bioguide id of a current member of Congress.
+    """
     from openbb_government_us.congress.utils.bulk import (
         load_member_record,
         load_social_media,
@@ -1063,7 +1136,7 @@ async def member_info(
         member_passage_record,
         member_photo_url,
     )
-    from openbb_government_us.congress.utils.member_cards import render_member_bio
+    from openbb_government_us.congress.utils.member_cards import member_bio_payload
 
     record = await load_member_record(bioguide_id)
     committees = await member_committees(bioguide_id)
@@ -1071,9 +1144,26 @@ async def member_info(
     voting = await member_passage_record(bioguide_id)
     photo_url = await member_photo_url(bioguide_id)
 
-    return HTMLResponse(
-        content=render_member_bio(record, committees, social, voting, theme, photo_url)
-    )
+    return member_bio_payload(record, committees, social, voting, photo_url)
+
+
+router._api_router.add_api_route(
+    path="/member_info_data",
+    endpoint=member_info_data,
+    methods=["GET"],
+    openapi_extra={"widget_config": {"exclude": True}},
+)
+
+
+async def member_info(
+    bioguide_id: str = "A000055",
+    theme: str | None = "dark",
+):
+    """Render a member's bio, history, and committees (OpenBB Workspace iframe widget)."""
+    payload = await member_info_data(bioguide_id)
+    payload["theme"] = "light" if (theme or "").lower() == "light" else "dark"
+
+    return _widget_page("member_bio.html", payload)
 
 
 router._api_router.add_api_route(
@@ -1087,7 +1177,7 @@ router._api_router.add_api_route(
             "description": "Bio, history, and committee assignments for a member.",
             "category": "Government",
             "subCategory": "Congress",
-            "type": "html",
+            "type": "iframe",
             "widgetId": "uscongress_member_info_congress_gov_obb",
             "params": [
                 {

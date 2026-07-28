@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Congressional Committee Members</title>
+<style>
+  :root {
+    --rep: #c0392b;
+    --dem: #2563c9;
+    --ind: #6b7280;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1116;
+    --card: #1b1f27;
+    --card-hover: #222834;
+    --text: #e6e8eb;
+    --muted: #9aa4b2;
+    --border: #2c333f;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff;
+    --card: #ffffff;
+    --card-hover: #f5f7fa;
+    --text: #1b1f27;
+    --muted: #5a6473;
+    --border: #e2e6ea;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+  }
+  body { overflow-y: auto; }
+  #page { padding: 14px; }
+  .head { border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
+  .title { font-size: 17px; font-weight: 700; line-height: 1.25; }
+  .parent { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 2px 9px;
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .chip b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .jurisdiction { color: var(--muted); font-size: 12px; margin-top: 8px; line-height: 1.45; }
+  .head a { color: inherit; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent, var(--ind));
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+  .card:hover { background: var(--card-hover); }
+  .card.is-selected { border-color: var(--accent, var(--ind)); }
+  .card.is-lead .role { color: var(--text); font-weight: 600; }
+  .avatar {
+    width: 84px;
+    height: 103px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: var(--border);
+  }
+  .avatar.initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .name { margin-top: 8px; font-weight: 600; line-height: 1.3; }
+  .badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 0 5px;
+    border-radius: 4px;
+    background: var(--accent, var(--ind));
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+  .role { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .empty { color: var(--muted); padding: 28px 4px; text-align: center; }
+</style>
+</head>
+<body>
+<div id="page"></div>
+<script id="widget-data" type="application/json">__WIDGET_DATA__</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById("widget-data").textContent);
+  var TABLE_WIDGET = "uscongress_committee_members_table";
+  var MANIFESTS = [
+    {
+      widgetId: TABLE_WIDGET,
+      name: "Committee Members Table",
+      description: "The committee's current membership, chairs first.",
+      category: "Government",
+      subCategory: "Congress",
+      dataType: "table"
+    }
+  ];
+  var PARTY_VAR = {
+    Republican: "var(--rep)",
+    Democrat: "var(--dem)",
+    Independent: "var(--ind)"
+  };
+
+  var target = window.top || window.parent;
+  var embedded = !!target && target !== window;
+  var authHeaders = {};
+  var page = document.getElementById("page");
+  var params = {
+    chamber: DATA.chamber,
+    committee: DATA.committee,
+    subcommittee: DATA.subcommittee
+  };
+  var selected = null;
+
+  applyTheme(DATA.theme);
+  render();
+
+  window.addEventListener("message", onMessage);
+  if (embedded) {
+    target.postMessage(
+      { type: "openbb-connect", widgets: MANIFESTS },
+      "*"
+    );
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme === "light" ? "light" : "dark"
+    );
+  }
+
+  function accent(party) {
+    return PARTY_VAR[party] || "var(--ind)";
+  }
+
+  function initials(name) {
+    return name
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function (part) { return part.charAt(0); })
+      .join("")
+      .toUpperCase();
+  }
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null && text !== "") node.textContent = text;
+    return node;
+  }
+
+  function safeUrl(url) {
+    return /^https?:\/\//i.test(url || "") ? url : "";
+  }
+
+  function partyCounts() {
+    var counts = {};
+    (DATA.members || []).forEach(function (member) {
+      var party = member.party || "Unaffiliated";
+      counts[party] = (counts[party] || 0) + 1;
+    });
+    return Object.keys(counts)
+      .sort(function (a, b) { return counts[b] - counts[a]; })
+      .map(function (party) { return { party: party, count: counts[party] }; });
+  }
+
+  function renderHead() {
+    var committee = DATA.committee_detail || {};
+    var head = el("div", "head");
+
+    if (committee.is_subcommittee && committee.parent_name) {
+      head.appendChild(el("div", "parent", committee.parent_name));
+    }
+    head.appendChild(el("div", "title", committee.name || "Committee"));
+
+    var chips = el("div", "chips");
+    if (committee.chamber) {
+      chips.appendChild(el("span", "chip", titleCase(committee.chamber)));
+    }
+    var total = el("span", "chip");
+    total.appendChild(document.createTextNode("Members "));
+    total.appendChild(el("b", null, String((DATA.members || []).length)));
+    chips.appendChild(total);
+
+    partyCounts().forEach(function (entry) {
+      var chip = el("span", "chip");
+      var dot = el("span", "dot");
+      dot.style.background = accent(entry.party);
+      chip.appendChild(dot);
+      chip.appendChild(document.createTextNode(entry.party + " "));
+      chip.appendChild(el("b", null, String(entry.count)));
+      chips.appendChild(chip);
+    });
+
+    var site = safeUrl(committee.website);
+    if (site) {
+      var link = el("a", "chip", "Committee website");
+      link.href = site;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      chips.appendChild(link);
+    }
+    head.appendChild(chips);
+
+    if (committee.jurisdiction) {
+      head.appendChild(el("div", "jurisdiction", committee.jurisdiction));
+    }
+    return head;
+  }
+
+  function titleCase(value) {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  function isLead(title) {
+    var role = (title || "").toLowerCase();
+    return role.indexOf("chair") >= 0 || role.indexOf("ranking") >= 0;
+  }
+
+  function renderCard(member) {
+    var card = el("div", "card" + (isLead(member.title) ? " is-lead" : ""));
+    card.style.setProperty("--accent", accent(member.party));
+
+    var photo = safeUrl(member.photo_url);
+    if (photo) {
+      var image = el("img", "avatar");
+      image.src = photo;
+      image.alt = member.name;
+      image.loading = "lazy";
+      card.appendChild(image);
+    } else {
+      card.appendChild(el("div", "avatar initials", initials(member.name)));
+    }
+
+    var name = el("div", "name", member.name);
+    if (member.party_letter) {
+      name.appendChild(el("span", "badge", member.party_letter));
+    }
+    card.appendChild(name);
+    card.appendChild(el("div", "role", member.title));
+
+    var meta = [member.state, member.age ? "Age " + member.age : ""]
+      .filter(Boolean)
+      .join(" · ");
+    if (meta) card.appendChild(el("div", "meta", meta));
+
+    if (member.bioguide_id) {
+      card.addEventListener("click", function () { select(member.bioguide_id); });
+    }
+    card.dataset.bioguide = member.bioguide_id || "";
+    return card;
+  }
+
+  function render() {
+    page.textContent = "";
+    page.appendChild(renderHead());
+
+    var members = DATA.members || [];
+    if (!members.length) {
+      page.appendChild(
+        el("div", "empty", "No member data available for this committee.")
+      );
+      return;
+    }
+
+    var grid = el("div", "grid");
+    members.forEach(function (member) { grid.appendChild(renderCard(member)); });
+    page.appendChild(grid);
+    markSelected();
+  }
+
+  function markSelected() {
+    var cards = page.querySelectorAll(".card");
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.toggle(
+        "is-selected",
+        !!selected && cards[i].dataset.bioguide === selected
+      );
+    }
+  }
+
+  function select(bioguide) {
+    selected = bioguide;
+    markSelected();
+    if (embedded) {
+      target.postMessage(
+        { type: "openbb:widget-params:update", params: { bioguide_id: bioguide } },
+        "*"
+      );
+    }
+  }
+
+  function dataUrl() {
+    var url = new URL("committee_members_data", window.location.href);
+    Object.keys(params).forEach(function (key) {
+      if (params[key]) url.searchParams.set(key, params[key]);
+    });
+    return url.toString();
+  }
+
+  function reload() {
+    fetch(dataUrl(), { headers: authHeaders })
+      .then(function (response) {
+        return response.ok ? response.json() : null;
+      })
+      .then(function (payload) {
+        if (!payload) return;
+        DATA.committee_detail = payload.committee;
+        DATA.members = payload.members;
+        selected = null;
+        render();
+        publishTable();
+      })
+      .catch(function () {});
+  }
+
+  function tableRows() {
+    return (DATA.members || []).map(function (member) {
+      return {
+        name: member.name,
+        title: member.title,
+        party: member.party,
+        state: member.state,
+        age: member.age,
+        bioguide_id: member.bioguide_id
+      };
+    });
+  }
+
+  function publishTable() {
+    if (!embedded) return;
+    target.postMessage(
+      {
+        type: "openbb-data",
+        widgetId: TABLE_WIDGET,
+        dataType: "table",
+        data: tableRows()
+      },
+      "*"
+    );
+  }
+
+  function parseParams(msg) {
+    if (msg.params && typeof msg.params === "object") return msg.params;
+    if (msg.paramName) {
+      var single = {};
+      single[msg.paramName] = msg.value;
+      return single;
+    }
+    return {};
+  }
+
+  function onMessage(event) {
+    var msg = event.data;
+    if (!msg || !msg.type) return;
+    if (msg.type === "openbb-request") {
+      if (msg.widgetId === null || msg.widgetId === undefined || msg.widgetId === TABLE_WIDGET) {
+        publishTable();
+      }
+    } else if (msg.type === "openbb-params-update") {
+      var incoming = parseParams(msg);
+      if (incoming.theme !== undefined) applyTheme(incoming.theme);
+      var changed = false;
+      ["chamber", "committee", "subcommittee"].forEach(function (key) {
+        if (incoming[key] !== undefined && incoming[key] !== params[key]) {
+          params[key] = incoming[key];
+          changed = true;
+        }
+      });
+      if (changed) reload();
+    } else if (msg.type === "openbb-auth") {
+      authHeaders =
+        msg.headers && typeof msg.headers === "object" ? msg.headers : {};
+      reload();
+    }
+  }
+})();
+</script>
+</body>
+</html>
