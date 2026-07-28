@@ -44,9 +44,7 @@ class YFinanceOptionsChainsData(OptionsChainsData):
     )
 
 
-class YFinanceOptionsChainsFetcher(
-    Fetcher[YFinanceOptionsChainsQueryParams, YFinanceOptionsChainsData]
-):
+class YFinanceOptionsChainsFetcher(Fetcher[YFinanceOptionsChainsQueryParams, YFinanceOptionsChainsData]):
     """YFinance Options Chains Fetcher."""
 
     @staticmethod
@@ -78,15 +76,20 @@ class YFinanceOptionsChainsFetcher(
             if not expirations or len(expirations) == 0:
                 return None, None, []
 
-            underlying = t.option_chain(expirations[0])[2]
+            first_chain_data = t.option_chain(expirations[0])
+            underlying = first_chain_data[2]
             chains_output: list = []
             tz = timezone(underlying.get("exchangeTimezoneName", "UTC"))
 
-            for expiration in expirations:
+            for frame in first_chain_data[:2]:
+                if frame is not None and "lastTradeDate" in frame:
+                    frame["lastTradeDate"] = frame["lastTradeDate"].dt.tz_convert(tz)
+
+            for index, expiration in enumerate(expirations):
                 exp = datetime.strptime(expiration, "%Y-%m-%d").date()
                 now = datetime.now().date()
                 dte = (exp - now).days
-                chain_data = t.option_chain(expiration, tz=tz)
+                chain_data = first_chain_data if index == 0 else t.option_chain(expiration, tz=tz)
                 calls = chain_data[0]
                 calls["option_type"] = "call"
                 calls["expiration"] = expiration
@@ -94,31 +97,21 @@ class YFinanceOptionsChainsFetcher(
                 puts["option_type"] = "put"
                 puts["expiration"] = expiration
                 chain = concat([calls, puts])
-                chain = (
-                    chain.set_index(["strike", "option_type", "contractSymbol"])
-                    .sort_index()
-                    .reset_index()
-                )
+                chain = chain.set_index(["strike", "option_type", "contractSymbol"]).sort_index().reset_index()
                 chain = chain.drop(columns=["contractSize"])
                 chain["dte"] = dte
-                underlying_price = underlying.get(
-                    "postMarketPrice", underlying.get("regularMarketPrice")
-                )
+                underlying_price = underlying.get("postMarketPrice", underlying.get("regularMarketPrice"))
                 if underlying_price is not None:
                     chain["underlying_price"] = underlying_price
                     chain["underlying_symbol"] = symbol
                 chain["percentChange"] = chain["percentChange"] / 100
 
                 if len(chain) > 0:
-                    chains_output.extend(
-                        chain.fillna("N/A").replace("N/A", None).to_dict("records")
-                    )
+                    chains_output.extend(chain.fillna("N/A").replace("N/A", None).to_dict("records"))
 
             return underlying, chains_output, expirations
 
-        underlying, chains_output, expirations = await asyncio.to_thread(
-            _get_all_data, symbol
-        )
+        underlying, chains_output, expirations = await asyncio.to_thread(_get_all_data, symbol)
 
         if not expirations or len(expirations) == 0:
             raise OpenBBError(f"No options found for {symbol}")
@@ -137,7 +130,8 @@ class YFinanceOptionsChainsFetcher(
             "ask": underlying.get("ask"),  # type: ignore
             "ask_size": underlying.get("askSize"),  # type: ignore
             "last_price": underlying.get(  # type: ignore
-                "postMarketPrice", underlying.get("regularMarketPrice")  # type: ignore
+                "postMarketPrice",
+                underlying.get("regularMarketPrice"),  # type: ignore
             ),
             "open": underlying.get("regularMarketOpen"),  # type: ignore
             "high": underlying.get("regularMarketDayHigh"),  # type: ignore

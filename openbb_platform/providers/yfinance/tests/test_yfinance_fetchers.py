@@ -41,9 +41,7 @@ from openbb_yfinance.models.undervalued_growth_equities import (
 )
 from openbb_yfinance.models.undervalued_large_caps import YFUndervaluedLargeCapsFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump(
-    mode="json"
-)
+test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
 
 
 def scrub_string(key, value):
@@ -426,3 +424,90 @@ def test_y_finance_equity_screener_fetcher(credentials=test_credentials):
     fetcher = YFinanceEquityScreenerFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.asyncio
+async def test_y_finance_options_chains_fetches_each_expiration_once(
+    monkeypatch,
+):
+    """Test that each options expiration is requested only once."""
+    from openbb_yfinance.models.options_chains import (
+        YFinanceOptionsChainsQueryParams,
+    )
+    from pandas import DataFrame, Timestamp
+
+    class FakeTicker:
+        """Deterministic replacement for yfinance.Ticker."""
+
+        instance = None
+
+        def __init__(self, symbol):
+            self.symbol = symbol
+            self.options = ["2099-01-16", "2099-01-23"]
+            self.option_chain_calls = []
+            FakeTicker.instance = self
+
+        def option_chain(self, expiration, tz=None):
+            self.option_chain_calls.append(expiration)
+
+            last_trade_date = Timestamp(
+                "2099-01-01 15:00:00",
+                tz="UTC",
+            )
+
+            if tz is not None:
+                last_trade_date = last_trade_date.tz_convert(tz)
+
+            expiration_code = expiration.replace("-", "")
+
+            calls = DataFrame(
+                [
+                    {
+                        "strike": 100.0,
+                        "contractSymbol": (f"AAPL{expiration_code}C00100000"),
+                        "contractSize": "REGULAR",
+                        "percentChange": 0.0,
+                        "lastTradeDate": last_trade_date,
+                    }
+                ]
+            )
+
+            puts = DataFrame(
+                [
+                    {
+                        "strike": 100.0,
+                        "contractSymbol": (f"AAPL{expiration_code}P00100000"),
+                        "contractSize": "REGULAR",
+                        "percentChange": 0.0,
+                        "lastTradeDate": last_trade_date,
+                    }
+                ]
+            )
+
+            underlying = {
+                "exchangeTimezoneName": "America/New_York",
+                "regularMarketPrice": 100.0,
+            }
+
+            return calls, puts, underlying
+
+    monkeypatch.setattr("yfinance.Ticker", FakeTicker)
+
+    query = YFinanceOptionsChainsQueryParams(symbol="AAPL")
+
+    result = await YFinanceOptionsChainsFetcher.aextract_data(
+        query,
+        credentials=None,
+    )
+
+    ticker = FakeTicker.instance
+    assert ticker is not None
+
+    assert ticker.option_chain_calls == [
+        "2099-01-16",
+        "2099-01-23",
+    ]
+    assert len(result["chains"]) == 4
+
+    first_last_trade_date = result["chains"][0]["lastTradeDate"]
+    assert str(first_last_trade_date.tz) == "America/New_York"
