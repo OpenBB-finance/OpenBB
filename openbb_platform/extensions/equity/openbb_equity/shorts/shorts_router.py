@@ -13,8 +13,6 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="/shorts")
 
-# pylint: disable=unused-argument
-
 
 @router.command(
     model="EquityFTD",
@@ -32,7 +30,6 @@ async def fails_to_deliver(
 
 @router.command(
     model="ShortVolume",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "stockgrid"})],
 )
 async def short_volume(
     cc: CommandContext,

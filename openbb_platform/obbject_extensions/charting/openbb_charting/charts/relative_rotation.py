@@ -1,7 +1,5 @@
 """Relative Rotation Chart Helpers."""
 
-# pylint: disable=R0917
-
 from datetime import date as dateType
 from typing import TYPE_CHECKING, Literal
 from warnings import warn
@@ -104,7 +102,6 @@ def create_rrg_with_tails(
     Figure
         Plotly GraphObjects Figure.
     """
-    # pylint: disable=import-outside-toplevel
     from pandas import to_datetime
     from plotly import graph_objects as go
 
@@ -128,11 +125,10 @@ def create_rrg_with_tails(
     x_max = ratios_data.max().max()
     y_min = momentum_data.min().min()
     y_max = momentum_data.max().max()
-    # Create an empty list to store the scatter traces
     frames: list = []
     x_data = ratios_data
     y_data = momentum_data
-    for i, date in enumerate(ratios_data.index):  # pylint: disable=unused-variable
+    for i, date in enumerate(ratios_data.index):
         frame_data: list = []
 
         for j, symbol in enumerate(symbols):
@@ -187,14 +183,12 @@ def create_rrg_with_tails(
 
         frames.append(go.Frame(data=frame_data, name=f"Frame {i}"))
 
-    # Define the initial trace for the figure
     initial_trace = frames[0]["data"]
 
     padding = 0.1
     y_range = [y_min - padding * abs(y_min) - 0.3, y_max + padding * abs(y_max) + 0.3]
     x_range = [x_min - padding * abs(x_min) - 0.3, x_max + padding * abs(x_max) + 0.3]
 
-    # Create the layout for the figure
     layout = go.Layout(
         title={
             "text": (
@@ -424,7 +418,6 @@ def create_rrg_with_tails(
         ],
     )
 
-    # Create the figure and add the initial trace
     fig = go.Figure(data=initial_trace, layout=layout, frames=frames)
 
     return fig
@@ -458,7 +451,6 @@ def create_rrg_without_tails(
     Figure
         Plotly GraphObjects Figure.
     """
-    # pylint: disable=import-outside-toplevel
     from plotly import graph_objects as go  # noqa
     from pandas import to_datetime  # noqa
 
@@ -468,26 +460,21 @@ def create_rrg_without_tails(
     if date is None:
         date = ratios_data.index[-1]
 
-    # Select a single row from each dataframe
-    row_x = ratios_data.loc[to_datetime(date).date()]  # type: ignore
-    row_y = momentum_data.loc[to_datetime(date).date()]  # type: ignore
+    row_x = ratios_data.loc[to_datetime(date).date()]
+    row_y = momentum_data.loc[to_datetime(date).date()]
 
     x_max = row_x.max() + 0.5
     x_min = row_x.min() - 0.5
     y_max = row_y.max() + 0.5
     y_min = row_y.min() - 0.5
 
-    # Create an empty list to store the scatter traces
     traces = []
 
-    # Loop through each column in the row_x dataframe
     for i, (column_name, value_x) in enumerate(row_x.items()):
-        # Retrieve the corresponding value from the row_y dataframe
-        value_y = row_y[column_name]  # type: ignore
-        marker_name = column_name.upper().replace("^", "").replace(":US", "")  # type: ignore
+        value_y = row_y[column_name]
+        marker_name = column_name.upper().replace("^", "").replace(":US", "")
         special_name = "-" in marker_name or len(marker_name) > 5
         marker_size = 38 if special_name else 30
-        # Create a scatter trace for each column
         trace = go.Scatter(
             x=[value_x],
             y=[value_y],
@@ -507,7 +494,6 @@ def create_rrg_without_tails(
             + "RS-Momentum: %{y:.4f}"
             + "<extra></extra>",
         )
-        # Add the trace to the list
         traces.append(trace)
 
     padding = 0.1
@@ -518,7 +504,7 @@ def create_rrg_without_tails(
         title={
             "text": (
                 f"RS-Ratio vs RS-Momentum of {study.capitalize()} "
-                f"Against {benchmark_symbol.replace('^', '')} - {to_datetime(row_x.name).strftime('%Y-%m-%d')}"  # type: ignore
+                f"Against {benchmark_symbol.replace('^', '')} - {to_datetime(row_x.name).strftime('%Y-%m-%d')}"
             ),
             "x": 0.5,
             "xanchor": "center",

@@ -1,7 +1,6 @@
 """Script to build the OpenBB platform static assets."""
 
 # flake8: noqa: S603
-# pylint: disable=import-outside-toplevel,unused-import
 import logging
 import subprocess
 import sys
@@ -59,23 +58,23 @@ def main():
             import openbb  # noqa
 
             openbb.build()
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise RuntimeError(  # noqa
                 "Failed to build the OpenBB platform static assets. \n"
-                f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"  # type:ignore  # pylint: disable=E1101
-                f"{e.__traceback__.tb_lineno}"  # type:ignore
+                f"{e} -> {e.__traceback__.tb_frame.f_code.co_filename}:"
+                f"{e.__traceback__.tb_lineno}"
                 if hasattr(e, "__traceback__")
-                and hasattr(e.__traceback__, "tb_frame")  # type:ignore
+                and hasattr(e.__traceback__, "tb_frame")
                 and hasattr(
-                    e.__traceback__.tb_frame,  # type:ignore
+                    e.__traceback__.tb_frame,
                     "f_code",
                 )
                 and hasattr(
-                    e.__traceback__.tb_frame.f_code,  # type:ignore  # pylint: disable=E1101
+                    e.__traceback__.tb_frame.f_code,
                     "co_filename",
                 )
                 and hasattr(
-                    e.__traceback__,  # type:ignore
+                    e.__traceback__,
                     "tb_lineno",
                 )
                 else f"Failed to build the OpenBB platform static assets. \n{e}"

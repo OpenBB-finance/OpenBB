@@ -1,35 +1,149 @@
-[tool.poetry]
+[project]
 name = "openbb-core"
-version = "1.6.13"
+version = "2.0.0"
 description = "OpenBB package with core functionality."
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [
-    { include = "openbb_core" },
-    { include = "openbb" }
+requires-python = ">=3.10,<4"
+dependencies = [
+    "uvicorn>=0.48.0",
+    "websockets>=15.0",
+    "fastapi>=0.136.3",
+    "uuid7>=0.1.0",
+    "python-multipart>=0.0.29",
+    "pydantic>=2.12.3,<3.0.0",
+    "requests>=2.34.2",
+    "importlib-metadata>=6.8.0",
+    "python-dotenv>=1.0.0",
+    "aiohttp>=3.13.3",
+    "ruff>=0.15,<0.16",
+    "pyjwt>=2.13.0",
+    "tomli>=2.0.0; python_version<'3.11'",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-uvicorn = "^0.40.0"
-websockets = ">=15.0"
-pandas = ">=1.5.3"
-html5lib = "^1.1"
-fastapi = "0.136.3"
-uuid7 = "^0.1.0"
-python-multipart = ">=0.0.30"
-pydantic = "^2.12.3"
-requests = "^2.33.0"
-importlib-metadata = ">=6.8.0"
-python-dotenv = "^1.0.0"
-aiohttp = ">=3.14.1"
-ruff = "^0.15"              # Needed here to lint generated code
-pyjwt = "^2.12.0"
+[project.optional-dependencies]
+pandas = ["pandas>=1.5.3"]
 
-[tool.poetry.scripts]
+[project.scripts]
 openbb-build = "openbb_core.build:main"
 
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_core", "openbb"]
+
+[tool.uv.sources]
+openbb-devtools = { path = "../extensions/devtools", editable = true }
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_core",
+    "openbb",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+extend-exclude = [
+    "openbb/package",
+    "openbb_core/app/static/package",
+]
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "E",
+    "W",
+    "F",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+ignore = [
+    "PLR2004",  # magic-value-comparison
+    "PLR0913",  # too-many-arguments
+    "PLR0915",  # too-many-statements
+    "PLC0415",  # import-outside-top-level
+    "E402",     # module-import-not-at-top-of-file
+    "E501",     # line-too-long (formatter handles this on best-effort)
+    "D202",
+    "D203",
+    "D205",
+    "D206",     # docstring-tab-indentation (conflicts with formatter)
+    "D210",
+    "D212",
+    "D213",
+    "D214",
+    "D215",
+    "D300",     # triple-single-quotes (conflicts with formatter)
+    "D400",
+    "D404",
+    "D405",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D410",
+    "D411",
+    "D413",
+    "D415",
+    "D416",
+    "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D"]
+"integration/**" = ["S101", "D"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_core", "openbb"]
+exclude = [
+    "openbb/package",
+    "openbb/assets",
+    "tests",
+    "integration",
+]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[[tool.ty.overrides]]
+# file_lock.py is cross-platform (fcntl/msvcrt) - silence platform-specific noise.
+include = ["**/static/package_builder/file_lock.py"]
+
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
+unused-type-ignore-comment = "ignore"

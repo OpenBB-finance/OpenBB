@@ -1,7 +1,5 @@
 """Economy Router."""
 
-# pylint: disable=unused-argument
-
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -375,7 +373,7 @@ async def available_indicators(
         APIEx(
             description="IMF symbols can also be used for retrieving entire presentation tables."
             + " This example gets the Direct Investment Position (DIP) table."
-            + " Use `/imf_utils/list_tables` to get a list of supported presentation table symbols.",
+            + " Use `/imf/list_tables` to get a list of supported presentation table symbols.",
             parameters={
                 "provider": "imf",
                 "symbol": "DIP::H_DIP_INDICATOR",

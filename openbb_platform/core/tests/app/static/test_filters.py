@@ -1,11 +1,15 @@
 """Test the filters.py file."""
 
-import numpy as np
-import pandas as pd
 import pytest
-from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.static.utils.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+
+pd = pytest.importorskip("pandas")
+np = pytest.importorskip("numpy")
+
+from openbb_core.app.model.abstract.error import OpenBBError  # noqa: E402
+from openbb_core.app.static.utils.filters import filter_inputs  # noqa: E402
+from openbb_core.provider.abstract.data import Data  # noqa: E402
+
+pytestmark = pytest.mark.requires_pandas
 
 
 def test_filter_inputs_not_df():
@@ -61,16 +65,15 @@ def test_filter_inputs(
 
     # Assert that the type of 'data' in the result is the expected type
     if isinstance(result["data"], list):
-        assert isinstance(
-            result["data"][0], Data
-        ), f"The 'data' key should be a list of {Data.__name__}"
+        assert isinstance(result["data"][0], Data), (
+            f"The 'data' key should be a list of {Data.__name__}"
+        )
     else:
-        assert isinstance(
-            result["data"], Data
-        ), f"The 'data' key should be of type {Data.__name__}"
+        assert isinstance(result["data"], Data), (
+            f"The 'data' key should be of type {Data.__name__}"
+        )
 
 
-# --- Choices validation tests ---
 # These tests cover the fix for a silent data corruption bug:
 #
 # EXACT BUG SCENARIO (obb.economy.balance_of_payments):
@@ -179,7 +182,6 @@ def test_filter_inputs_choices_no_info_no_error():
     assert result["extra_params"]["frequency"] == "monthly"
 
 
-# --- Negative tests: exact bug reproduction ---
 # These two tests mirror the discriminating condition that first exposed the bug:
 #   "mont"   → rejected  (caught by ExtraParams Literal validation — was already working)
 #   "monthly" → accepted  (equalled the merged default → silently dropped → wrong data)
@@ -225,3 +227,56 @@ def test_filter_inputs_post_fix_monthly_rejected_with_choices():
     }
     with pytest.raises(OpenBBError, match="Invalid value 'monthly' for 'frequency'"):
         filter_inputs(info=_BOP_INFO_WITH_CHOICES, **kwargs)
+
+
+def test_filter_inputs_info_provider_properties_list_legacy():
+    kwargs = {
+        "provider_choices": {"provider": "oecd"},
+        "standard_params": {},
+        "extra_params": {"frequency": "annual"},
+    }
+    info = {
+        "frequency": {
+            "oecd": ["multiple_items_allowed"],
+        }
+    }
+
+    result = filter_inputs(info=info, **kwargs)
+    assert result["extra_params"]["frequency"] == "annual"
+
+
+def test_filter_inputs_info_provider_properties_non_mapping():
+    kwargs = {
+        "provider_choices": {"provider": "oecd"},
+        "standard_params": {},
+        "extra_params": {"frequency": "annual"},
+    }
+    info = {
+        "frequency": {
+            "oecd": "legacy",
+        }
+    }
+
+    result = filter_inputs(info=info, **kwargs)
+    assert result["extra_params"]["frequency"] == "annual"
+
+
+def test_filter_inputs_no_info_list_in_standard_params_raises():
+    kwargs = {
+        "provider_choices": {"provider": "oecd"},
+        "standard_params": {"frequency": ["annual", "quarterly"]},
+    }
+    with pytest.raises(OpenBBError, match="multiple items not allowed"):
+        filter_inputs(**kwargs)
+
+
+def test_filter_inputs_converts_nested_data_in_model_dict():
+    """A QueryParams model passed as a dict has its nested data field converted."""
+    result = filter_inputs(
+        True, None, params={"data": [{"a": 1}, {"a": 2}], "target": "a"}
+    )
+
+    nested = result["params"]["data"]
+    assert isinstance(nested, list)
+    assert all(isinstance(row, Data) for row in nested)
+    assert result["params"]["target"] == "a"

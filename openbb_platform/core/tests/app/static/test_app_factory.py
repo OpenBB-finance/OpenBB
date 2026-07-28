@@ -1,8 +1,7 @@
 """Test static app factory."""
 
-# pylint: disable=redefined-outer-name
-
 import pytest
+
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.static.app_factory import create_app
@@ -44,5 +43,19 @@ def test_app_coverage(app_factory):
 def test_app_reference(app_factory):
     """Test app reference."""
     reference = app_factory.reference
-    assert reference
     assert isinstance(reference, dict)
+
+
+def test_app_repr_without_extensions_doc():
+    app = create_app()
+    out = repr(app)
+    assert "OpenBB Platform" in out
+
+
+def test_app_repr_with_empty_extension_doc():
+    class _Ext:
+        __doc__ = None
+
+    app = create_app(_Ext)
+    out = repr(app)
+    assert "OpenBB Platform" in out

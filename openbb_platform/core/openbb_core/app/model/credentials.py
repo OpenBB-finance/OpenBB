@@ -7,11 +7,6 @@ import warnings
 from pathlib import Path
 from typing import Annotated, ClassVar, Optional
 
-from openbb_core.app.constants import USER_SETTINGS_PATH
-from openbb_core.app.extension_loader import ExtensionLoader
-from openbb_core.app.model.abstract.warning import OpenBBWarning
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.env import Env
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -20,6 +15,12 @@ from pydantic import (
     create_model,
 )
 from pydantic.functional_serializers import PlainSerializer
+
+from openbb_core.app.constants import USER_SETTINGS_PATH
+from openbb_core.app.extension_loader import ExtensionLoader
+from openbb_core.app.model.abstract.warning import OpenBBWarning
+from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.env import Env
 
 
 class LoadingError(Exception):
@@ -158,12 +159,12 @@ class CredentialsLoader:
             if key in additional and additional[key] not in (None, "")
         }
 
-        model = create_model(
+        model = create_model(  # ty: ignore[no-matching-overload]
             "Credentials",
             __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
-            **self.format_credentials(additional),  # type: ignore
+            **self.format_credentials(additional),
         )
-        model._env_defaults = env_overrides  # type: ignore # pylint: disable=W0212
+        model._env_defaults = env_overrides
         model.origins = self.credentials
 
         return model
@@ -193,8 +194,9 @@ class Credentials(_Credentials):  # type: ignore
     def model_post_init(self, __context) -> None:
         """Set unset credentials from environment variables."""
         super().model_post_init(__context)
+        model_fields = type(self).model_fields
         for key, secret in self._env_defaults.items():
-            if key not in self.model_fields:
+            if key not in model_fields:
                 continue
             current = getattr(self, key, None)
             if self._is_unset(current):
@@ -210,12 +212,14 @@ class Credentials(_Credentials):  # type: ignore
 
     def show(self):
         """Unmask credentials and print them."""
+        items = []
+        for k in sorted(type(self).model_fields):
+            v = getattr(self, k, None)
+            if isinstance(v, SecretStr):
+                v = v.get_secret_value()
+            items.append(f"{k}: {v}")
         print(  # noqa: T201
-            self.__class__.__name__
-            + "\n\n"
-            + "\n".join(
-                [f"{k}: {v}" for k, v in sorted(self.model_dump(mode="json").items())]
-            )
+            self.__class__.__name__ + "\n\n" + "\n".join(items)
         )
 
     def update(self, incoming: "Credentials"):

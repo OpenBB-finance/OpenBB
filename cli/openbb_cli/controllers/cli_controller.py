@@ -1,8 +1,4 @@
-#!/usr/bin/env python
 """Main CLI Module."""
-
-# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
-# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
 
 import argparse
 import contextlib
@@ -10,7 +6,6 @@ import difflib
 import os
 import re
 import sys
-import time
 import webbrowser
 from datetime import datetime
 from functools import partial, update_wrapper
@@ -19,8 +14,10 @@ from types import MethodType
 from typing import Any
 
 import pandas as pd
-import requests
-from openbb import obb
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.styles import Style
+
+from openbb_cli.backend import Backend, LocalBackend
 from openbb_cli.config import constants
 from openbb_cli.config.constants import (
     ASSETS_DIRECTORY,
@@ -46,44 +43,81 @@ from openbb_cli.controllers.utils import (
     welcome_message,
 )
 from openbb_cli.session import Session
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit.styles import Style
-from pydantic import BaseModel
 
-PLATFORM_ROUTERS = {
-    d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
-    for d in dir(obb)
-    if "_" not in d
-}
 NON_DATA_ROUTERS = ["coverage", "reference", "system", "user"]
 DATA_PROCESSING_ROUTERS = ["technical", "quantitative", "econometrics"]
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
 
 
+def _result_to_obbject(result: Any, router: str, other_args: list[str]) -> Any:
+    """Lift a spec-mode dispatcher result to an ``OBBject`` for registry insert."""
+    try:
+        from openbb_core.app.model.obbject import OBBject
+    except ImportError:
+        return None
+    if isinstance(result, OBBject):
+        obbject = result
+    elif isinstance(result, (list, dict)):
+        try:
+            obbject = OBBject(results=result)
+            obbject._route = "/" + router.replace(".", "/").strip("/")
+        except Exception:  # noqa: BLE001
+            return None
+    else:
+        return None
+    obbject.extra["command"] = f"/{router} {' '.join(other_args)}".strip()
+    return obbject
+
+
+def _params_to_completions(parameters: list[dict[str, Any]]) -> dict[str, Any]:
+    """Translate normalized spec parameters into a NestedCompleter dict."""
+    out: dict[str, Any] = {}
+    for p in parameters or []:
+        name = p.get("name")
+        if not name:
+            continue
+        flag = f"--{name}"
+        choices_list = p.get("choices") or []
+        if choices_list:
+            out[flag] = {str(c): None for c in choices_list}
+        else:
+            out[flag] = None
+    out["--help"] = None
+    out["-h"] = "--help"
+    return out
+
+
 class CLIController(BaseController):
     """CLI Controller class."""
 
-    CHOICES_COMMANDS = ["record", "stop", "exe", "results"]
-    CHOICES_MENUS = [
-        "settings",
-    ]
-
-    for router, value in PLATFORM_ROUTERS.items():
-        if value == "menu":
-            CHOICES_MENUS.append(router)
-        else:
-            CHOICES_COMMANDS.append(router)
+    CHOICES_COMMANDS_BUILTIN = ["record", "stop", "exe", "results"]
+    CHOICES_MENUS_BUILTIN = ["settings", "user", "feature"]
 
     PATH = "/"
     CHOICES_GENERATION = False
 
-    def __init__(self, jobs_cmds: list[str] | None = None):
+    def __init__(
+        self,
+        jobs_cmds: list[str] | None = None,
+        *,
+        backend: Backend | None = None,
+    ):
         """Construct CLI controller."""
         self.ROUTINE_FILES: dict[str, Path] = dict()
-        self.ROUTINE_DEFAULT_FILES: dict[str, Path] = dict()
-        self.ROUTINE_PERSONAL_FILES: dict[str, Path] = dict()
         self.ROUTINE_CHOICES: dict[str, Any] = dict()
+
+        self._backend: Backend = backend if backend is not None else LocalBackend()
+
+        platform_routers = self._backend.routers
+        menus = list(self.CHOICES_MENUS_BUILTIN)
+        commands = list(self.CHOICES_COMMANDS_BUILTIN)
+        for router, kind in platform_routers.items():
+            if router == "user":
+                continue
+            (menus if kind == "menu" else commands).append(router)
+        self.CHOICES_MENUS = menus
+        self.CHOICES_COMMANDS = commands
 
         super().__init__(jobs_cmds)
 
@@ -101,77 +135,175 @@ class CLIController(BaseController):
         self.update_runtime_choices()
 
     def _generate_platform_commands(self):
-        """Generate Platform based commands/menus."""
+        """Generate Platform based commands/menus from the configured backend."""
+        backend = self._backend
 
         def method_call_class(self, _, controller, name, parent_path, target):
             self.queue = self.load_class(
                 controller, name, parent_path, target, self.queue
             )
 
-        # pylint: disable=unused-argument
-        def method_call_command(self, _, router: str):
-            """Call command."""
-            mdl = getattr(obb, router)
+        def method_call_command_legacy(self, _, router: str):
+            """Display the static command-target metadata for in-process ``obb``."""
+            mdl = backend.get_command_target(router)
             df = pd.DataFrame.from_dict(mdl.model_dump(), orient="index")
             if isinstance(df.columns, pd.RangeIndex):
                 df.columns = [str(i) for i in df.columns]
             return print_rich_table(df, show_index=True)
 
-        for router, value in PLATFORM_ROUTERS.items():
-            target = getattr(obb, router)
+        def method_call_command_spec(self, other_args: list[str], router: str):
+            """Dispatch a top-level command-typed router via SpecBackend."""
+            from openbb_cli.backend import SpecTranslator
+
+            spec_doc: dict[str, Any] = getattr(backend, "_spec", {})
+            cmd_spec = spec_doc.get("commands", {}).get(router)
+            if cmd_spec is None:
+                session.console.print(f"[red]Command not found in spec: {router}[/red]")
+                return
+            translator = SpecTranslator(
+                router, cmd_spec, getattr(backend, "_dispatcher", None)
+            )
+            ns_parser = self.parse_known_args_and_warn(
+                parser=translator.parser,
+                other_args=other_args,
+                export_allowed="raw_data_only",
+            )
+            if not ns_parser:
+                return
+            try:
+                result = translator.execute_func(ns_parser)
+            except Exception as exc:  # noqa: BLE001
+                session.console.print(f"[red]error: {exc}[/red]")
+                return
+
+            obbject = _result_to_obbject(result, router, other_args)
+            if obbject is not None and obbject.results is not None:
+                if session.max_obbjects_exceeded():
+                    session.obbject_registry.remove()
+                    session.console.print(
+                        "[yellow]Maximum number of OBBjects reached. "
+                        "The oldest entry was removed.[/yellow]"
+                    )
+                if session.obbject_registry.register(obbject) and (
+                    session.settings.SHOW_MSG_OBBJECT_REGISTRY
+                ):
+                    session.console.print("Added `OBBject` to cached results.")
+
+            payload: Any
+            if obbject is not None:
+                payload = obbject.results
+            elif isinstance(result, dict):
+                payload = result.get("results", result)
+            else:
+                payload = result
+            if isinstance(payload, dict):
+                df = pd.DataFrame([payload])
+            elif isinstance(payload, list):
+                df = pd.DataFrame(payload)
+            else:
+                df = pd.DataFrame({"value": [payload]})
+            session.output_adapter.display(df, title=f"/{router}")
+
+        is_spec_backend = hasattr(backend, "_spec") and hasattr(backend, "_dispatcher")
+        method_call_command: Any = (
+            method_call_command_spec if is_spec_backend else method_call_command_legacy
+        )
+
+        spec_commands: dict[str, Any] = (
+            getattr(backend, "_spec", {}).get("commands", {}) if is_spec_backend else {}
+        )
+
+        def method_call_menu_or_leaf(
+            self,
+            other_args: list[str],
+            controller,
+            name: str,
+            parent_path: list[str],
+            target,
+            router: str,
+        ):
+            """Hybrid for routers that have both a leaf path and nested commands."""
+            if other_args:
+                method_call_command_spec(self, other_args, router)
+                return
+            self.queue = self.load_class(
+                controller, name, parent_path, target, self.queue
+            )
+
+        for router, value in backend.routers.items():
+            if router == "user":
+                continue
+
+            has_leaf = router in spec_commands
 
             if value == "menu":
-                pcf = PlatformControllerFactory(
-                    target,
-                    reference=obb.reference["paths"],  # type: ignore
-                )
+                pcf = PlatformControllerFactory(backend=backend, router_name=router)
                 DynamicController = pcf.create()
 
-                # Bind the method to the class
-                bound_method = MethodType(method_call_class, self)
-
-                # Update the wrapper and set the attribute
-                bound_method = update_wrapper(  # type: ignore
-                    partial(
-                        bound_method,
-                        controller=DynamicController,
-                        name=router,
-                        target=target,
-                        parent_path=self.path,
-                    ),
-                    method_call_class,
-                )
+                if has_leaf:
+                    bound_method = MethodType(method_call_menu_or_leaf, self)
+                    bound_method = update_wrapper(
+                        partial(
+                            bound_method,
+                            controller=DynamicController,
+                            name=router,
+                            target=None,
+                            parent_path=self.path,
+                            router=router,
+                        ),
+                        method_call_menu_or_leaf,
+                    )
+                else:
+                    bound_method = MethodType(method_call_class, self)
+                    bound_method = update_wrapper(
+                        partial(
+                            bound_method,
+                            controller=DynamicController,
+                            name=router,
+                            target=None,
+                            parent_path=self.path,
+                        ),
+                        method_call_class,
+                    )
             else:
                 bound_method = MethodType(method_call_command, self)
-                bound_method = update_wrapper(  # type: ignore
+                bound_method = update_wrapper(
                     partial(bound_method, router=router),
                     method_call_command,
                 )
 
             setattr(self, f"call_{router}", bound_method)
 
+    def _spec_command_completions(self) -> dict[str, dict[str, Any]]:
+        """Build per-command completion choices from the SpecBackend's metadata."""
+        out: dict[str, dict[str, Any]] = {}
+        backend = getattr(self, "_backend", None)
+        if backend is None:
+            return out
+        spec_doc = getattr(backend, "_spec", None)
+        if not isinstance(spec_doc, dict):
+            return out
+        commands = spec_doc.get("commands", {})
+        for router in backend.routers:
+            if router not in self.controller_choices:
+                continue
+            cmd_spec = commands.get(router)
+            if not cmd_spec:
+                continue
+            out[router] = _params_to_completions(cmd_spec.get("parameters", []))
+        return out
+
     def update_runtime_choices(self):
         """Update runtime choices."""
         routines_directory = Path(session.user.preferences.export_directory, "routines")
 
         if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
-            # choices: dict = self.choices_default
-            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices.update(self._spec_command_completions())
 
             self.ROUTINE_FILES = {
-                filepath.name: filepath for filepath in routines_directory.rglob("*.openbb")  # type: ignore
-            }
-            self.ROUTINE_DEFAULT_FILES = {
-                filepath.name: filepath  # type: ignore
-                for filepath in Path(routines_directory / "hub" / "default").rglob(
-                    "*.openbb"
-                )
-            }
-            self.ROUTINE_PERSONAL_FILES = {
-                filepath.name: filepath  # type: ignore
-                for filepath in Path(routines_directory / "hub" / "personal").rglob(
-                    "*.openbb"
-                )
+                filepath.name: filepath
+                for filepath in routines_directory.rglob("*.openbb")
             }
 
             choices["exe"] = {
@@ -183,7 +315,6 @@ class CLIController(BaseController):
                 "-e": "--example",
                 "--input": None,
                 "-i": "--input",
-                "--url": None,
                 "--help": None,
                 "-h": "--help",
             }
@@ -192,8 +323,6 @@ class CLIController(BaseController):
                 "-n": "--name",
                 "--description": None,
                 "-d": "--description",
-                "--public": None,
-                "-p": "--public",
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
@@ -201,14 +330,47 @@ class CLIController(BaseController):
                 "-h": "--help",
             }
             choices["stop"] = {"--help": None, "-h": "--help"}
+
+            registry_all = session.obbject_registry.all
+            index_completions = {str(idx): None for idx in registry_all}
+            key_completions = {
+                (data.get("extra") or {}).get("register_key"): None
+                for data in registry_all.values()
+                if (data.get("extra") or {}).get("register_key")
+            }
+
             choices["results"] = {
+                "--index": index_completions if index_completions else None,
+                "-i": "--index",
+                "--key": key_completions if key_completions else None,
+                "-k": "--key",
+                "--chart": None,
+                "-c": "--chart",
+                "--export": {
+                    c: None
+                    for c in [
+                        "csv",
+                        "json",
+                        "xlsx",
+                        "png",
+                        "jpg",
+                        "db",
+                        "sqlite",
+                        "sqlite3",
+                    ]
+                },
+                "-e": "--export",
+                "--sheet-name": None,
                 "--help": None,
                 "-h": "--help",
-                "--export": {c: None for c in ["csv", "json", "xlsx", "png", "jpg"]},
-                "--index": None,
-                "--key": None,
-                "--chart": None,
-                "--sheet_name": None,
+            }
+            choices["load"] = {
+                "--file": None,
+                "-f": "--file",
+                "--sheet-name": None,
+                "--register_key": None,
+                "--help": None,
+                "-h": "--help",
             }
 
             self.update_completer(choices)
@@ -220,6 +382,10 @@ class CLIController(BaseController):
         mt.add_menu(
             "settings",
             description="enable and disable feature flags, preferences and settings",
+        )
+        mt.add_menu(
+            "user",
+            description="view and set platform user preferences for the session",
         )
         mt.add_raw("\n")
         mt.add_info("Record and execute your own .openbb routine scripts")
@@ -234,46 +400,58 @@ class CLIController(BaseController):
         mt.add_raw("\n")
         mt.add_info("Retrieve data from different asset classes and providers")
 
-        for router, value in PLATFORM_ROUTERS.items():
+        platform_routers = self._backend.routers
+        reference_routers = self._backend.reference_routers
+        reference_paths = self._backend.reference_paths
+
+        def _menu_description(router: str) -> str:
+            """Return the menu's reference description (tolerant of trailing slash)."""
+            for key in (f"{self.PATH}{router}/", f"{self.PATH}{router}"):
+                desc = reference_routers.get(key, {}).get("description") or ""
+                if desc:
+                    return desc.split(".")[0].lower()
+            return ""
+
+        def _command_description(router: str) -> str:
+            """Return the operation description for top-level command-typed routers."""
+            for key in (f"{self.PATH}{router}", f"{self.PATH}{router}/"):
+                desc = reference_paths.get(key, {}).get("description") or ""
+                if desc:
+                    return desc.split(".")[0].lower()
+            return ""
+
+        for router, value in platform_routers.items():
             if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
                 continue
             if value == "menu":
-                menu_description = (
-                    obb.reference["routers"].get(f"{self.PATH}{router}", {}).get("description")  # type: ignore
-                ) or ""
-                mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
-                )
+                mt.add_menu(name=router, description=_menu_description(router))
             else:
-                mt.add_cmd(router)
+                mt.add_cmd(name=router, description=_command_description(router))
 
-        if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
+        if any(router in platform_routers for router in DATA_PROCESSING_ROUTERS):
             mt.add_info("\nAnalyze and process previously obtained data")
 
-            for router, value in PLATFORM_ROUTERS.items():
+            for router, value in platform_routers.items():
                 if router not in DATA_PROCESSING_ROUTERS:
                     continue
                 if value == "menu":
-                    menu_description = (
-                        obb.reference["routers"].get(f"{self.PATH}{router}", {}).get("description")  # type: ignore
-                    ) or ""
-                    mt.add_menu(
-                        name=router,
-                        description=menu_description.split(".")[0].lower(),
-                    )
+                    mt.add_menu(name=router, description=_menu_description(router))
                 else:
-                    mt.add_cmd(router)
+                    mt.add_cmd(name=router, description=_command_description(router))
 
         mt.add_raw("\n")
+        mt.add_info("Data manipulation and feature engineering")
+        mt.add_menu("feature", description="feature engineering and table operations")
+        mt.add_cmd("load", description="load data from file in OpenBBUserData")
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
             mt.add_info("\nCached Results")
-            for key, value in list(session.obbject_registry.all.items())[  # type: ignore
+            for key, value in list(session.obbject_registry.all.items())[
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
+                command = (value.get("extra") or {}).get("command", "")
                 mt.add_raw(
-                    f"[yellow]OBB{key}[/yellow]: {value['command']}",  # type: ignore[index]
+                    f"[yellow]OBB{key}[/yellow]: {command}",
                     left_spacing=True,
                 )
 
@@ -288,9 +466,22 @@ class CLIController(BaseController):
 
         self.queue = self.load_class(SettingsController, self.queue)
 
+    def call_user(self, _):
+        """Process user command."""
+        from openbb_cli.controllers.user_controller import UserController
+
+        self.queue = self.load_class(UserController, self.queue)
+
+    def call_feature(self, _):
+        """Process feature engineering command."""
+        from openbb_cli.controllers.feature_controller import (
+            FeatureController,
+        )
+
+        self.queue = self.load_class(FeatureController, self.queue)
+
     def call_exe(self, other_args: list[str]):
         """Process exe command."""
-        # Merge rest of string path to other_args and remove queue since it is a dir
         other_args += self.queue
 
         if not other_args:
@@ -313,9 +504,7 @@ class CLIController(BaseController):
             required="-h" not in other_args
             and "--help" not in other_args
             and "-e" not in other_args
-            and "--example" not in other_args
-            and "--url" not in other_args
-            and "my.openbb" not in other_args[0],
+            and "--example" not in other_args,
             type=str,
             nargs="+",
         )
@@ -334,64 +523,18 @@ class CLIController(BaseController):
             action="store_true",
             default=False,
         )
-        parser.add_argument(
-            "--url", help="URL to run openbb script from.", dest="url", type=str
-        )
         if other_args and "-" not in other_args[0][0]:
-            if other_args[0].startswith("my.") or other_args[0].startswith("http"):
-                other_args.insert(0, "--url")
-            else:
-                other_args.insert(0, "--file")
+            other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
-                session.console.print(  # TODO: Point to docs when ready
+                session.console.print(
                     "[info]Executing an example, please visit our docs to learn how to create your own script.[/info]\n"
                 )
-                time.sleep(3)
-            elif ns_parser.url:
-                if not ns_parser.url.startswith(
-                    "https"
-                ) and not ns_parser.url.startswith("http:"):
-                    url = "https://" + ns_parser.url
-                elif ns_parser.url.startswith("http://"):
-                    url = ns_parser.url.replace("http://", "https://")
-                else:
-                    url = ns_parser.url
-                username = url.split("/")[-3]
-                script_name = url.split("/")[-1]
-                file_name = f"{username}_{script_name}.openbb"
-                final_url = f"{url}?raw=true"
-                response = requests.get(final_url, timeout=10)
-                if response.status_code != 200:
-                    session.console.print(
-                        "[red]Could not find the requested script.[/red]"
-                    )
-                    return
-                routine_text = response.json()["script"]
-                file_path = Path(session.user.preferences.export_directory, "routines")
-                routine_path = file_path / file_name
-                with open(routine_path, "w") as file:
-                    file.write(routine_text)
-                self.update_runtime_choices()
-
             elif ns_parser.file:
-                file_path = " ".join(ns_parser.file)  # type: ignore
-                # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
-                full_path = file_path
-                hub_routine = file_path.split("/")  # type: ignore
-                # Change with: my.openbb.co
-                if hub_routine[0] == "default":
-                    routine_path = Path(
-                        self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
-                    )
-                elif hub_routine[0] == "personal":
-                    routine_path = Path(
-                        self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
-                    )
-                else:
-                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))  # type: ignore
+                file_path = " ".join(ns_parser.file)
+                routine_path = Path(self.ROUTINE_FILES.get(file_path, file_path))
             else:
                 return
 
@@ -400,7 +543,6 @@ class CLIController(BaseController):
                     raw_lines = list(fp)
 
                 script_inputs = []
-                # Capture ARGV either as list if args separated by commas or as single value
                 if routine_args := ns_parser.routine_args:
                     pattern = r"\[(.*?)\]"
                     matches = re.findall(pattern, routine_args)
@@ -417,9 +559,6 @@ class CLIController(BaseController):
                     raw_lines=raw_lines, script_inputs=script_inputs
                 )
 
-                # If there err output is not an empty string then it means there was an
-                # issue in parsing the routine and therefore we don't want to feed it
-                # to the terminal
                 if err:
                     session.console.print(err)
                     return
@@ -434,7 +573,6 @@ class CLIController(BaseController):
 
                 if "export" in self.queue[0]:
                     export_path = self.queue[0].split(" ")[1]
-                    # If the path selected does not start from the user root, give relative location from root
                     if export_path[0] == "~":
                         export_path = export_path.replace(
                             "~", HOME_DIRECTORY.as_posix()
@@ -444,7 +582,6 @@ class CLIController(BaseController):
                             os.path.dirname(os.path.abspath(__file__)), export_path
                         )
 
-                    # Check if the directory exists
                     if os.path.isdir(export_path):
                         session.console.print(
                             f"Export data to be saved in the selected folder: '{export_path}'"
@@ -481,7 +618,6 @@ def handle_job_cmds(jobs_cmds: list[str] | None) -> list[str] | None:
             os.path.dirname(os.path.abspath(__file__)), export_path
         )
 
-    # Check if the directory exists
     if os.path.isdir(export_path):
         session.console.print(
             f"Export data to be saved in the selected folder: '{export_path}'"
@@ -494,11 +630,15 @@ def handle_job_cmds(jobs_cmds: list[str] | None) -> list[str] | None:
     return jobs_cmds
 
 
-# pylint: disable=unused-argument
-def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
-    """Run the CLI menu."""
+def run_cli(
+    jobs_cmds: list[str] | None = None,
+    test_mode=False,
+    *,
+    backend: Backend | None = None,
+):
+    """Run the CLI menu, optionally backed by a non-default ``Backend``."""
     ret_code = 1
-    t_controller = CLIController(jobs_cmds)
+    t_controller = CLIController(jobs_cmds, backend=backend)
     an_input = ""
 
     jobs_cmds = handle_job_cmds(jobs_cmds)
@@ -514,29 +654,22 @@ def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
         t_controller.print_help()
 
     while ret_code:
-        # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
-            # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
                 print_goodbye()
                 break
 
-            # Consume 1 element from the queue
             an_input = t_controller.queue[0]
             t_controller.queue = t_controller.queue[1:]
 
-            # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
                 session.console.print(f"{get_flair_and_username()} / $ {an_input}")
 
-        # Get input command from user
         else:
             try:
-                # Get input from user using auto-completion
                 if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
-                    # Check if toolbar hint was enabled
                     if session.settings.TOOLBAR_HINT:
-                        an_input = session.prompt_session.prompt(  # type: ignore[union-attr]
+                        an_input = session.prompt_session.prompt(
                             f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
@@ -554,13 +687,12 @@ def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
                             ),
                         )
                     else:
-                        an_input = session.prompt_session.prompt(  # type: ignore[union-attr]
+                        an_input = session.prompt_session.prompt(
                             f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
 
-                # Get input from user without auto-completion
                 else:
                     an_input = input(f"{get_flair_and_username()} / $ ")
 
@@ -569,14 +701,12 @@ def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
                 break
 
         try:
-            # Process the input command
             t_controller.queue = t_controller.switch(an_input)
 
             if an_input in ("q", "quit", "..", "exit", "e"):
                 print_goodbye()
                 break
 
-            # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_success:
                 reset(t_controller.queue if t_controller.queue else [])
                 break
@@ -593,7 +723,7 @@ def run_cli(jobs_cmds: list[str] | None = None, test_mode=False):
             )
             if similar_cmd:
                 an_input = similar_cmd[0]
-                if " " in an_input:
+                if " " in an_input:  # pragma: no cover
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                     )
@@ -617,7 +747,7 @@ def insert_start_slash(cmds: list[str]) -> list[str]:
     return cmds
 
 
-def run_scripts(  # pylint: disable=R0917
+def run_scripts(
     path: Path,
     test_mode: bool = False,
     verbose: bool = False,
@@ -629,19 +759,18 @@ def run_scripts(  # pylint: disable=R0917
 
     Parameters
     ----------
-    path : str
-        The location of the .openbb file
+    path : Path
+        The location of the .openbb file.
     test_mode : bool
-        Whether the CLI is in test mode
+        Whether the CLI is in test mode.
     verbose : bool
-        Whether to run tests in verbose mode
-    routines_args : List[str]
+        Whether to run tests in verbose mode.
+    routines_args : list[str] | None
         One or multiple inputs to be replaced in the routine and separated by commas.
-        E.g. GME,AMC,BTC-USD
-    special_arguments: Optional[Dict[str, str]]
-        Replace `${key=default}` with `value` for every key in the dictionary
-    output: bool
-        Whether to log tests to txt files
+    special_arguments : dict[str, str] | None
+        Replace `${key=default}` with `value` for every key in the dictionary.
+    output : bool
+        Whether to log tests to txt files.
     """
     if not path.exists():
         session.console.print(f"File '{path}' doesn't exist. Launching base CLI.\n")
@@ -661,13 +790,12 @@ def run_scripts(  # pylint: disable=R0917
                 for i, arg in enumerate(routines_args):
                     templine = templine.replace(f"$ARGV[{i}]", arg)
                 lines.append(templine)
-        # Handle new testing arguments:
         elif special_arguments:
             lines = []
             for line in raw_lines:
                 new_line = re.sub(
                     r"\${[^{]+=[^{]+}",
-                    lambda x: replace_dynamic(x, special_arguments),  # type: ignore
+                    lambda x: replace_dynamic(x, special_arguments),
                     line,
                 )
                 lines.append(new_line)
@@ -678,7 +806,6 @@ def run_scripts(  # pylint: disable=R0917
         if test_mode and "exit" not in lines[-1]:
             lines.append("exit")
 
-        # Deals with the export with a path with "/" in it
         export_folder = ""
         if "export" in lines[0]:
             export_folder = lines[0].split("export ")[1].rstrip()
@@ -720,15 +847,15 @@ def replace_dynamic(match: re.Match, special_arguments: dict[str, str]) -> str:
 
     Parameters
     ----------
-    match: re.Match[str]
-        The match object
-    special_arguments: Dict[str, str]
-        The key value pairs to replace in the scripts
+    match : re.Match
+        The match object.
+    special_arguments : dict[str, str]
+        The key value pairs to replace in the scripts.
 
     Returns
-    ----------
+    -------
     str
-        The new string
+        The new string.
     """
     cleaned = match[0].replace("{", "").replace("}", "").replace("$", "")
     key, default = cleaned.split("=")
@@ -759,12 +886,13 @@ def run_routine(file: str, routines_args: str | None = None):
         )
 
 
-# pylint: disable=unused-argument
 def main(
     debug: bool,
     dev: bool,
     path_list: list[str],
     routines_args: list[str] | None = None,
+    *,
+    backend: Backend | None = None,
     **kwargs,
 ):
     """Run the CLI with various options.
@@ -772,28 +900,19 @@ def main(
     Parameters
     ----------
     debug : bool
-        Whether to run the CLI in debug mode
-    dev:
-        Points backend towards development environment instead of production
-    test : bool
-        Whether to run the CLI in integrated test mode
-    filtert : str
-        Filter test files with given string in name
-    paths : List[str]
-        The paths to run for scripts or to test
-    verbose : bool
-        Whether to show output from tests
-    routines_args : List[str]
+        Whether to run the CLI in debug mode.
+    dev : bool
+        Points backend towards development environment instead of production.
+    path_list : list[str]
+        The paths to run for scripts or to test.
+    routines_args : list[str] | None
         One or multiple inputs to be replaced in the routine and separated by commas.
-        E.g. GME,AMC,BTC-USD
     """
     if debug:
         session.settings.DEBUG_MODE = True
 
     if dev:
         session.settings.DEV_BACKEND = True
-        session.settings.BASE_URL = "https://payments.openbb.dev/"
-        session.settings.HUB_URL = "https://my.openbb.dev"
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(
@@ -803,9 +922,9 @@ def main(
     elif path_list:
         argv_cmds = list([" ".join(path_list).replace(" /", "/home/")])
         argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-        run_cli(argv_cmds)
+        run_cli(argv_cmds, backend=backend)
     else:
-        run_cli()
+        run_cli(backend=backend)
 
 
 def parse_args_and_run():
@@ -856,8 +975,6 @@ def parse_args_and_run():
             "Run the CLI in testing mode. Also run this option and '-h' to see testing argument options."
         ),
     )
-    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
-    # by papermill and that's why they have suppress help.
     parser.add_argument(
         "-m",
         help=argparse.SUPPRESS,
@@ -883,8 +1000,6 @@ def parse_args_and_run():
         sys.argv.insert(1, "--file")
     ns_parser, unknown = parser.parse_known_args()
 
-    # This ensures that if cli.py receives unknown args it will not start.
-    # Use -d flag if you want to see the unknown args.
     if unknown:
         if ns_parser.debug:
             session.console.print(unknown)
@@ -903,11 +1018,15 @@ def parse_args_and_run():
 
 
 def launch(
-    debug: bool = False, dev: bool = False, queue: list[str] | None = None
+    debug: bool = False,
+    dev: bool = False,
+    queue: list[str] | None = None,
+    *,
+    backend: Backend | None = None,
 ) -> None:
-    """Launch CLI."""
+    """Launch CLI, optionally with a non-default ``Backend``."""
     if queue:
-        main(debug, dev, queue, module="")
+        main(debug, dev, queue, module="", backend=backend)
     else:
         parse_args_and_run()
 

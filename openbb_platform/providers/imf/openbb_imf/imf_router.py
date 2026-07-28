@@ -1,17 +1,22 @@
-"""IMF Utilities Router."""
+"""IMF Router."""
 
-# pylint: disable=C0302
-# pylint: disable=unused-argument,protected-access,too-many-positional-arguments,too-many-locals,too-many-branches
-
+import re
 from typing import Annotated, Any, Literal
 
 from fastapi import Query
-from fastapi.responses import HTMLResponse
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query as OBBQuery
 from openbb_core.app.router import Router
 from openbb_core.app.service.system_service import SystemService
+
 from openbb_imf.models.indicator_metadata import ImfTableMetadata
 from openbb_imf.utils.constants import (
     PRESENTATION_TABLES,
@@ -19,10 +24,83 @@ from openbb_imf.utils.constants import (
     table_dataflow_map,
     table_name_map,
 )
-from openbb_imf.utils.metadata import ImfMetadata
+from openbb_imf.utils.metadata import ImfMetadata, ImfMetadataDependency
 
-router = Router(prefix="", description="Utilities for IMF provider.")
+router = Router(prefix="", description="IMF provider router.")
 api_prefix = SystemService().system_settings.api_settings.prefix
+
+
+def _render_dataflows_markdown(metadata: ImfMetadata) -> str:
+    """Render the full dataflow catalog as a markdown summary."""
+    dataflows = metadata.dataflows
+    all_tables = metadata.list_all_dataflow_tables()
+    md_parts: list[str] = []
+
+    for dataflow_id in sorted(dataflows.keys()):
+        details = dataflows[dataflow_id]
+        try:
+            indicators = metadata.get_indicators_in(dataflow_id)
+        except KeyError:
+            indicators = []
+        params = metadata.get_dataflow_parameters(dataflow_id)
+        md_parts.append(f"## `{dataflow_id}` - {details.get('name', '')}\n\n")
+
+        if indicators:
+            md_parts.append(f"**Number of Series:** {len(indicators)}\n\n")
+        if params:
+            escaped = [f"`{p}`" for p in list(params)]
+            md_parts.append(f"**Dimensions:** {', '.join(escaped)}\n\n")
+
+        presentations = all_tables.get(dataflow_id, [])
+        if presentations:
+            md_parts.append("### Presentation Tables\n\n")
+            seen_names: set[str] = set()
+            for pres in presentations:
+                pres_name = pres.get("name", "").strip()
+                if pres_name in seen_names:
+                    continue
+                seen_names.add(pres_name)
+
+                pres_id = pres.get("id", "")
+                pres_desc = pres.get("description", "").strip()
+                friendly_name = pres.get("friendly_name", "")
+                symbol = f"{dataflow_id}::{pres_id}"
+                md_parts.append(f"#### {pres_name}\n\n")
+                if friendly_name:
+                    md_parts.append(f"**Friendly Name:** `{friendly_name}`\n\n")
+                md_parts.append(f"**Symbol:** `{symbol}`\n\n")
+                if pres_desc and pres_desc != pres_name:
+                    md_parts.append(f"{pres_desc}\n\n")
+
+        md_parts.append(f"{details.get('description', '').strip()}\n\n")
+        md_parts.append("---\n\n")
+
+    return "".join(md_parts)
+
+
+def _dump_economic_indicator_rows(results: Any) -> list[dict[str, Any]]:
+    """Normalize fetcher output to a list of JSON-mode pydantic dumps."""
+    rows: Any = results.result if hasattr(results, "result") else results
+    if not rows:
+        return []
+    out: list[dict[str, Any]] = []
+    for r in rows:
+        if hasattr(r, "model_dump"):
+            out.append(r.model_dump(mode="json", exclude_none=True))
+        else:
+            out.append(dict(r))
+    return out
+
+
+def _render_parameters_markdown(parameters: dict[str, list[dict]]) -> str:
+    """Render dataflow parameters as a per-dimension code list."""
+    parts: list[str] = []
+    for dim, options in parameters.items():
+        parts.append(f"### `{dim}`\n\n")
+        for option in options:
+            parts.append(f"- `{option.get('value', '')}` : {option.get('label')}\n\n")
+        parts.append("---\n\n")
+    return "".join(parts)
 
 
 @router.command(
@@ -59,74 +137,20 @@ api_prefix = SystemService().system_settings.api_settings.prefix
         PythonEx(
             description="Lists all known dataflows available from the IMF.",
             code=[
-                "imf_dataflows = obb.imf.utils.list_dataflows()",
+                "imf_dataflows = obb.imf.list_dataflows()",
                 "print(imf_dataflows)",
             ],
         ),
     ],
 )
 async def list_dataflows(
+    metadata: ImfMetadataDependency,
     output_format: Literal["json", "markdown"] = "json",
 ) -> OBBject:
-    """List all available IMF dataflows.
-
-    Returns an OBBject containing either a JSON dictionary of dataflows
-    or a markdown string under the 'results' attribute.
-    """
-    metadata = ImfMetadata()
-    dataflows = metadata.dataflows
-
+    """List all available IMF dataflows."""
     if output_format == "markdown":
-        all_tables = metadata.list_all_dataflow_tables()
-        md_text = ""
-
-        for dataflow_id in sorted(dataflows.keys()):
-            details = dataflows[dataflow_id]
-            indicators = metadata.get_indicators_in(dataflow_id)
-            params = metadata.get_dataflow_parameters(dataflow_id)
-            md_text += f"## `{dataflow_id}` - {details.get('name', '')}\n\n"
-
-            if indicators:
-                md_text += f"**Number of Series:** {len(indicators)}\n\n"
-
-            if params:
-                escaped_params = [f"`{param}`" for param in list(params)]
-                md_text += f"**Dimensions:** {', '.join(escaped_params)}\n\n"
-
-            presentations = all_tables.get(dataflow_id, [])
-
-            if presentations:
-                md_text += "### Presentation Tables\n\n"
-                seen_names: set[str] = set()
-
-                for pres in presentations:
-                    pres_name = pres.get("name", "").strip()
-
-                    if pres_name in seen_names:
-                        continue
-
-                    seen_names.add(pres_name)
-
-                    pres_id = pres.get("id", "")
-                    pres_desc = pres.get("description", "").strip()
-                    friendly_name = pres.get("friendly_name", "")
-                    symbol = f"{dataflow_id}::{pres_id}"
-                    md_text += f"#### {pres_name}\n\n"
-
-                    if friendly_name:
-                        md_text += f"**Friendly Name:** `{friendly_name}`\n\n"
-
-                    md_text += f"**Symbol:** `{symbol}`\n\n"
-
-                    if pres_desc and pres_desc != pres_name:
-                        md_text += f"{pres_desc}\n\n"
-
-            md_text += f"{details.get('description', '').strip()}\n\n"
-            md_text += "---\n\n"
-
-        return OBBject(results=md_text)
-
-    return OBBject(results=dataflows)
+        return OBBject(results=_render_dataflows_markdown(metadata))
+    return OBBject(results=metadata.dataflows)
 
 
 @router.command(
@@ -141,7 +165,7 @@ async def list_dataflows(
                 "value": "CPI",
                 "description": "The IMF dataflow to display.",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/imf_utils/list_dataflow_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/list_dataflow_choices",
                 "style": {"popupWidth": 700},
             },
             {
@@ -158,7 +182,7 @@ async def list_dataflows(
         PythonEx(
             description="Get parameters for the 'CPI' dataflow.",
             code=[
-                "imf_params = obb.imf.utils.get_dataflow_dimensions('CPI')",
+                "imf_params = obb.imf.get_dataflow_dimensions('CPI')",
                 "print(imf_params.results)",
             ],
         ),
@@ -173,6 +197,7 @@ async def list_dataflows(
     ],
 )
 async def get_dataflow_dimensions(
+    metadata: ImfMetadataDependency,
     dataflow_id: Annotated[
         str,
         Query(
@@ -182,55 +207,11 @@ async def get_dataflow_dimensions(
     ],
     output_format: Literal["json", "markdown"] = "json",
 ) -> OBBject:
-    """Dataflow parameters and possible values.
-
-    Returns an OBBject containing either a JSON dictionary of parameters
-    and their options, or a markdown string under the 'results' attribute.
-    """
-    metadata = ImfMetadata()
-    params_str = ""
-
-    try:
-        parameters = metadata.get_dataflow_parameters(dataflow_id)
-    except ValueError as e:
-        raise e from e
-
+    """Dataflow parameters and their possible values."""
+    parameters = metadata.get_dataflow_parameters(dataflow_id)
     if output_format == "json":
         return OBBject(results=parameters)
-
-    for dim, options in parameters.items():
-        params_str += f"### `{dim}`\n\n"
-        for option in options:
-            params_str += f"- `{option.get('value', '')}` : {option.get('label')}\n\n"
-        params_str += "---\n\n"
-
-    return OBBject(results=params_str)
-
-
-@router.command(
-    methods=["GET"],
-    widget_config={"exclude": True},
-    examples=[
-        APIEx(
-            description="Get port ID choices for IMF Port Watch.",
-            parameters={},
-        )
-    ],
-)
-async def list_port_id_choices() -> list[dict[str, str]]:
-    """
-    Get port ID choices for IMF Port Watch.
-
-    Returns
-    -------
-    list[dict[str, str]]
-        A list of dictionaries with 'label' and 'value' for each port ID.
-    """
-    # pylint: disable=import-outside-toplevel
-    from openbb_imf.utils.port_watch_helpers import get_port_id_choices
-
-    choices = get_port_id_choices()
-    return choices
+    return OBBject(results=_render_parameters_markdown(parameters))
 
 
 @router.command(
@@ -260,9 +241,10 @@ async def list_port_id_choices() -> list[dict[str, str]]:
         "subCategory": "Metadata",
     },
 )
-async def list_tables() -> OBBject[list[ImfTableMetadata]]:
+async def list_tables(
+    metadata: ImfMetadataDependency,
+) -> OBBject[list[ImfTableMetadata]]:
     """Get the list of presentation tables available from the IMF."""
-    metadata = ImfMetadata()
     tables: list[ImfTableMetadata] = []
     dataflows = metadata.list_all_dataflow_tables()
 
@@ -293,29 +275,15 @@ async def list_tables() -> OBBject[list[ImfTableMetadata]]:
         ),
     ],
 )
-async def list_table_choices() -> list[dict[str, str]]:
-    """Get presentation table choices for IMF data retrieval.
-
-    Returns
-    -------
-    list[dict[str, str]]
-        A list of dictionaries with 'label' and 'value' for each presentation table.
-    """
-    metadata = ImfMetadata()
-    table_choices = metadata.list_all_dataflow_tables()
-    choices: list[dict[str, str]] = []
-    for dataflow_id, presentations in table_choices.items():
-        for pres in presentations:
-            table_id = pres.get("id", "")
-            unique_key = f"{dataflow_id}::{table_id}"
-            choices.append(
-                {
-                    "label": pres.get("name", ""),
-                    "value": unique_key,
-                }
-            )
-
-    return choices
+async def list_table_choices(
+    metadata: ImfMetadataDependency,
+) -> list[dict[str, str]]:
+    """Get presentation table choices for IMF data retrieval."""
+    return [
+        {"label": pres.get("name", ""), "value": f"{dataflow_id}::{pres.get('id', '')}"}
+        for dataflow_id, presentations in metadata.list_all_dataflow_tables().items()
+        for pres in presentations
+    ]
 
 
 @router.command(
@@ -328,25 +296,62 @@ async def list_table_choices() -> list[dict[str, str]]:
         )
     ],
 )
-async def list_dataflow_choices() -> list[dict[str, str]]:
-    """Get dataflow choices for IMF data retrieval.
+async def list_dataflow_choices(
+    metadata: ImfMetadataDependency,
+) -> list[dict[str, str]]:
+    """Get dataflow choices for IMF data retrieval."""
+    choices = [
+        {"label": details.get("name", ""), "value": dataflow_id}
+        for dataflow_id, details in metadata.dataflows.items()
+    ]
+    return sorted(choices, key=lambda x: x["label"])
 
-    Returns
-    -------
-    list[dict[str, str]]
-        A list of dictionaries with 'label' and 'value' for each presentation table.
-    """
-    metadata = ImfMetadata()
-    dataflows = metadata.dataflows
-    choices: list[dict[str, str]] = []
-    for dataflow_id, details in dataflows.items():
-        choices.append(
-            {
-                "label": details.get("name", ""),
-                "value": dataflow_id,
-            }
+
+@router.command(
+    methods=["GET"],
+    widget_config={"exclude": True},
+    examples=[
+        APIEx(
+            description="Get country choices for the IMF Balance of Payments dataflow.",
+            parameters={},
         )
+    ],
+)
+async def list_bop_country_choices(
+    metadata: ImfMetadataDependency,
+) -> list[dict[str, str]]:
+    """Get country choices (label, ISO3 value) for the IMF Balance of Payments dataflow."""
+    params = metadata.get_dataflow_parameters("BOP")
+    choices: list[dict[str, str]] = []
+    for entry in params.get("COUNTRY", []):
+        code = entry.get("value")
+        if not code:
+            continue
+        choices.append({"label": entry.get("label", code), "value": code.upper()})
+    return sorted(choices, key=lambda x: x["label"])
 
+
+@router.command(
+    methods=["GET"],
+    widget_config={"exclude": True},
+    examples=[
+        APIEx(
+            description="Get country choices for the IMF Consumer Price Index dataflow.",
+            parameters={},
+        )
+    ],
+)
+async def list_cpi_country_choices(
+    metadata: ImfMetadataDependency,
+) -> list[dict[str, str]]:
+    """Get country choices (label, ISO3 value) for the IMF Consumer Price Index dataflow."""
+    params = metadata.get_dataflow_parameters("CPI")
+    choices: list[dict[str, str]] = []
+    for entry in params.get("COUNTRY", []):
+        code = entry.get("value")
+        if not code:
+            continue
+        choices.append({"label": entry.get("label", code), "value": code.upper()})
     return sorted(choices, key=lambda x: x["label"])
 
 
@@ -382,17 +387,13 @@ async def list_dataflow_choices() -> list[dict[str, str]]:
     ],
 )
 async def presentation_table_choices(
+    metadata: ImfMetadataDependency,
     dataflow_group: str | None = None,
     table: str | None = None,
     country: str | None = None,
     frequency: str | None = None,
 ) -> list[dict[str, str]]:
     """Get presentation table choices for IMF data retrieval.
-
-    This endpoint provides dynamic choices for IMF presentation tables based on selected parameters.
-    It is intended to be used by the OpenBB Workspace UI to populate dropdowns.
-
-    For manual API calls, use `economy/indicators` instead with a `symbol` from `list_tables()`.
 
     Parameters
     ----------
@@ -408,9 +409,7 @@ async def presentation_table_choices(
     Returns
     -------
     list[dict[str, str]]
-        A list of dictionaries with 'label' and 'value' for each presentation table.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_imf.utils.progressive_helper import ImfParamsBuilder
 
     choices: list[dict[str, str]] = []
@@ -418,10 +417,7 @@ async def presentation_table_choices(
     if dataflow_group is None:
         return table_dataflow_choices
 
-    metadata = ImfMetadata()
-
     if dataflow_group is not None and table is None:
-
         table_names = table_dataflow_map.get(dataflow_group, [])
 
         for t in table_names:
@@ -441,13 +437,20 @@ async def presentation_table_choices(
         country_dim = (
             "COUNTRY"
             if "COUNTRY" in params
-            else "JURISDICTION" if "JURISDICTION" in params else "REF_AREA"
+            else "JURISDICTION"
+            if "JURISDICTION" in params
+            else "REF_AREA"
         )
         countries = params.get(country_dim, [])
 
         return sorted(countries, key=lambda x: x["label"])
 
-    if dataflow_group is not None and table is not None and country is not None:
+    if (
+        dataflow_group is not None
+        and table is not None
+        and country is not None
+        and frequency is not None
+    ):
         table_id = PRESENTATION_TABLES.get(table, "")
         dataflow_id = table_id.split("::")[0]
         hierarchy_id = table_id.split("::", 1)[1] if "::" in table_id else None
@@ -455,7 +458,6 @@ async def presentation_table_choices(
         country_dim = "COUNTRY" if "COUNTRY" in params else "REF_AREA"
         freq_dim = "FREQUENCY" if "FREQUENCY" in params else "FREQ"
 
-        # Get table structure and extract dimension codes (same as table_builder.get_table)
         table_structure = metadata.get_dataflow_table_structure(
             dataflow_id, hierarchy_id
         )
@@ -472,55 +474,6 @@ async def presentation_table_choices(
         pb = ImfParamsBuilder(dataflow_id=dataflow_id)
         dims_in_order = pb._get_dimensions_in_order()
 
-        # Set dimensions in order, using table's indicator codes
-        for dim_id in dims_in_order:
-            if dim_id in dimension_codes:
-                codes = dimension_codes[dim_id]
-                joined = "+".join(codes)
-                if len(joined) > 800:
-                    # Truncate to avoid URL length issues
-                    joined = "+".join(codes[:20])
-                    if len(joined) > 800:
-                        joined = "*"
-                pb.set_dimension((dim_id, joined))
-            elif dim_id == country_dim:
-                pb.set_dimension((dim_id, str(country).replace(",", "+")))
-
-        options = pb.get_options_for_dimension(freq_dim) if freq_dim else []
-
-        return options
-
-    if (
-        dataflow_group is not None
-        and table is not None
-        and country is not None
-        and frequency is not None
-    ):
-        table_id = PRESENTATION_TABLES.get(table, "")
-        dataflow_id = table_id.split("::")[0]
-        hierarchy_id = table_id.split("::", 1)[1] if "::" in table_id else None
-        params = metadata.get_dataflow_parameters(dataflow_id)
-        country_dim = "COUNTRY" if "COUNTRY" in params else "REF_AREA"
-        freq_dim = "FREQUENCY" if "FREQUENCY" in params else "FREQ"
-
-        # Get table structure and extract dimension codes (same as table_builder.get_table)
-        table_structure = metadata.get_dataflow_table_structure(
-            dataflow_id, hierarchy_id
-        )
-        dimension_codes = {}
-        for entry in table_structure.get("indicators", []):
-            indicator_code = entry.get("indicator_code")
-            dimension_id = entry.get("dimension_id")
-            if indicator_code and dimension_id:
-                if dimension_id not in dimension_codes:
-                    dimension_codes[dimension_id] = []
-                if indicator_code not in dimension_codes[dimension_id]:
-                    dimension_codes[dimension_id].append(indicator_code)
-
-        pb = ImfParamsBuilder(dataflow_id=dataflow_id)
-        dims_in_order = pb._get_dimensions_in_order()
-
-        # Set dimensions in order, using table's indicator codes
         for dim_id in dims_in_order:
             if dim_id in dimension_codes:
                 codes = dimension_codes[dim_id]
@@ -542,27 +495,93 @@ async def presentation_table_choices(
 
         return options
 
-    return choices
+    if dataflow_group is not None and table is not None and country is not None:
+        table_id = PRESENTATION_TABLES.get(table, "")
+        dataflow_id = table_id.split("::")[0]
+        hierarchy_id = table_id.split("::", 1)[1] if "::" in table_id else None
+        params = metadata.get_dataflow_parameters(dataflow_id)
+        country_dim = "COUNTRY" if "COUNTRY" in params else "REF_AREA"
+        freq_dim = "FREQUENCY" if "FREQUENCY" in params else "FREQ"
+
+        table_structure = metadata.get_dataflow_table_structure(
+            dataflow_id, hierarchy_id
+        )
+        dimension_codes = {}
+        for entry in table_structure.get("indicators", []):
+            indicator_code = entry.get("indicator_code")
+            dimension_id = entry.get("dimension_id")
+            if indicator_code and dimension_id:
+                if dimension_id not in dimension_codes:
+                    dimension_codes[dimension_id] = []
+                if indicator_code not in dimension_codes[dimension_id]:
+                    dimension_codes[dimension_id].append(indicator_code)
+
+        pb = ImfParamsBuilder(dataflow_id=dataflow_id)
+        dims_in_order = pb._get_dimensions_in_order()
+
+        for dim_id in dims_in_order:
+            if dim_id in dimension_codes:
+                codes = dimension_codes[dim_id]
+                joined = "+".join(codes)
+                if len(joined) > 800:
+                    joined = "+".join(codes[:20])
+                    if len(joined) > 800:
+                        joined = "*"
+                pb.set_dimension((dim_id, joined))
+            elif dim_id == country_dim:
+                pb.set_dimension((dim_id, str(country).replace(",", "+")))
+
+        options = pb.get_options_for_dimension(freq_dim) if freq_dim else []
+
+        return options
+
+    return choices  # pragma: no cover -- unreachable: all four branches above are exhaustive
+
+
+_INDENT_UNIT = ">\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0"
+
+
+def _indent_title(title: str, level: int) -> str:
+    """Prepend ``>``-prefixed indent markers proportional to ``level``."""
+    if not isinstance(title, str):
+        return title
+    if level <= 0:
+        return title
+    return _INDENT_UNIT * level + title
+
+
+def _rewrap_indent(title: str) -> str:
+    """Replace leading whitespace with ``_INDENT_UNIT`` markers per 3-space step."""
+    if not isinstance(title, str):
+        return title
+    stripped = title.lstrip(" ")
+    leading = len(title) - len(stripped)
+    if leading == 0:
+        return stripped
+    level = leading // 3
+    return _INDENT_UNIT * level + stripped
+
+
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 @router.command(
     methods=["GET"],
     widget_config={
-        "type": "html",
         "params": [
             {
                 "paramName": "dataflow_group",
                 "label": "Dataflow",
                 "value": None,
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/imf_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/presentation_table_choices",
                 "description": "The IMF dataflow group.",
             },
             {
                 "paramName": "table",
                 "label": "Table",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/imf_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/presentation_table_choices",
                 "optionsParams": {
                     "dataflow_group": "$dataflow_group",
                 },
@@ -573,8 +592,8 @@ async def presentation_table_choices(
                 "label": "Country",
                 "description": "Country or region for the table.",
                 "type": "endpoint",
-                "multiSelect": True,
-                "optionsEndpoint": f"{api_prefix}/imf_utils/presentation_table_choices",
+                "multiSelect": False,
+                "optionsEndpoint": f"{api_prefix}/imf/presentation_table_choices",
                 "optionsParams": {
                     "dataflow_group": "$dataflow_group",
                     "table": "$table",
@@ -585,7 +604,7 @@ async def presentation_table_choices(
                 "paramName": "frequency",
                 "label": "Frequency",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/imf_utils/presentation_table_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/presentation_table_choices",
                 "optionsParams": {
                     "dataflow_group": "$dataflow_group",
                     "table": "$table",
@@ -610,17 +629,13 @@ async def presentation_table_choices(
                 "description": "Most recent N records to retrieve per series.",
                 "type": "number",
             },
-            {
-                "paramName": "raw",
-                "show": False,
-            },
         ],
-        "raw": True,
+        "runButton": True,
         "refetchInterval": False,
         "name": "IMF Presentation Table",
         "description": "Presentation tables from the IMF database.",
         "source": ["IMF"],
-        "category": "IMF Utilities",
+        "category": "IMF Data",
         "subCategory": "Presentation Tables",
     },
     examples=[
@@ -685,20 +700,9 @@ async def presentation_table(
             description="Maximum number of records to retrieve per series.",
         ),
     ] = 1,
-    raw: Annotated[
-        bool,
-        Query(
-            title="Raw Output",
-            description="Return presentation table as raw JSON data if True.",
-        ),
-    ] = False,
-) -> Any:
-    """Get a formatted presentation table from the IMF database. Returns as HTML or JSON list."""
-    # pylint: disable=import-outside-toplevel
-    import html as html_module
-
+) -> list[dict[str, Any]]:
+    """Get a presentation table from the IMF database as native AG Grid rows."""
     from openbb_imf.models.economic_indicators import ImfEconomicIndicatorsFetcher
-    from pandas import DataFrame
 
     if dataflow_group is None or table is None:
         raise OpenBBError(ValueError("Please enter a dataflow group and a table."))
@@ -717,103 +721,44 @@ async def presentation_table(
         "pivot": True,
     }
     results = await ImfEconomicIndicatorsFetcher.fetch_data(params, {})
-    results_json = [d.model_dump(mode="json", exclude_none=True) for d in results.result]  # type: ignore
+    rows = _dump_economic_indicator_rows(results)
 
-    if raw is True:
-        return results_json
+    keep_country = len({c.strip() for c in re.split(r"[+,]", country) if c.strip()}) > 1
 
-    df = DataFrame(results_json).set_index(["title", "country"]).reset_index()
-    # Preserve leading whitespace by replacing double spaces with non-breaking spaces
-    df["title"] = df["title"].apply(
-        lambda x: x.replace("  ", "\u00a0\u00a0") if isinstance(x, str) else x
-    )
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        level = row.get("level")
+        title = row.get("title", "")
+        if level is None:
+            title = _rewrap_indent(title)
+        else:
+            try:
+                lvl = int(level)
+            except (TypeError, ValueError):
+                lvl = 0
+            title = _indent_title(title, lvl)
 
-    columns = df.columns.tolist()
-    header_cells = "".join(
-        f"<th>{html_module.escape(str(col))}</th>" for col in columns
-    )
+        ordered: dict[str, Any] = {}
+        if keep_country and "country" in row:
+            ordered["country"] = row["country"]
+        ordered["title"] = title
+        date_pairs: list[tuple[str, Any]] = []
+        trailing: list[tuple[str, Any]] = []
+        for k, v in row.items():
+            if k in ("country", "title", "level"):
+                continue
+            if isinstance(k, str) and _DATE_RE.match(k):
+                date_pairs.append((k, v))
+            else:
+                trailing.append((k, v))
+        date_pairs.sort(key=lambda kv: kv[0], reverse=True)
+        for k, v in date_pairs:
+            ordered[k] = v
+        for k, v in trailing:
+            ordered[k] = v
+        out.append(ordered)
 
-    def format_number(value):
-        """Format large numbers with K, M, B suffixes for readability."""
-        if isinstance(value, (int, float)):
-            abs_value = abs(value)
-            if abs_value >= 1_000_000_000:
-                return f"{value / 1_000_000_000:.2f}".rstrip("0").rstrip(".") + "B"
-            if abs_value >= 1_000_000:
-                return f"{value / 1_000_000:.2f}".rstrip("0").rstrip(".") + "M"
-            if abs_value >= 1_000:
-                return f"{value / 1_000:.2f}".rstrip("0").rstrip(".") + "K"
-            if isinstance(value, float):
-                return f"{value:.2f}".rstrip("0").rstrip(".")
-            return str(value)
-        return str(value)
-
-    # Build body rows
-    body_rows = ""
-    for _, row in df.iterrows():
-        cells = "".join(
-            f"<td>{html_module.escape(format_number(row[col]))}</td>" for col in columns
-        )
-        body_rows += f"<tr>{cells}</tr>"
-
-    interactive_html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMF Presentation Table</title>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <style>
-        * {{ box-sizing: border-box; }}
-        body {{
-            font-family: 'Inter', sans-serif;
-            margin: 0; padding: 20px; background: #1a1a2e; color: #eee;
-        }}
-        .table-container {{
-            max-height: 85vh; overflow: auto; border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }}
-        table {{
-            width: 100%; border-collapse: collapse; background: #16213e;
-        }}
-        thead {{ position: sticky; top: 0; z-index: 10; }}
-        th {{
-            background: linear-gradient(180deg, #1f4068 0%, #162447 100%);
-            padding: 12px 8px; text-align: left; font-weight: 600;
-            border-bottom: 2px solid #e94560; white-space: nowrap;
-            resize: horizontal; overflow: hidden; min-width: 50px;
-        }}
-        th:first-child {{ width: 400px; }}
-        td {{
-            padding: 10px 8px; border-bottom: 1px solid #2a2a4a;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 13px; max-width: 0;
-        }}
-        td:first-child {{ white-space: pre; }}
-        tr:nth-child(even) {{ background: #1a1a3e; }}
-        tr:nth-child(odd) {{ background: #16213e; }}
-        tr:hover {{ background: #252560; }}
-        /* Scrollbar styling */
-        .table-container::-webkit-scrollbar {{ width: 6px; height: 10px; }}
-        .table-container::-webkit-scrollbar-track {{ background: #1a1a2e; }}
-        .table-container::-webkit-scrollbar-thumb {{
-            background: #444; border-radius: 5px;
-        }}
-        .table-container::-webkit-scrollbar-thumb:hover {{ background: #555; }}
-    </style>
-</head>
-<body>
-    <div class="table-container">
-        <table id="dataTable">
-            <thead><tr>{header_cells}</tr></thead>
-            <tbody>{body_rows}</tbody>
-        </table>
-    </div>
-</body>
-</html>"""
-
-    return HTMLResponse(content=interactive_html)
+    return out
 
 
 @router.command(
@@ -832,6 +777,7 @@ async def presentation_table(
     ],
 )
 async def indicator_choices(  # noqa: PLR0912
+    metadata: ImfMetadataDependency,
     symbol: str | None = None,
     country: str | None = None,
     frequency: str | None = None,
@@ -839,14 +785,6 @@ async def indicator_choices(  # noqa: PLR0912
     dimension_values: list[str] | None = None,
 ) -> list[dict[str, str]]:
     """Get progressive indicator choices for IMF data retrieval.
-
-    This endpoint works progressively starting with the 'symbol' parameter,
-    which is required and in the format 'dataflow::indicator'.
-
-    Function is not intended to be used directly;
-    it is used by the OpenBB Workspace for progressive parameter selection.
-
-    For manual inspection, use the `get_dataflow_dimensions` endpoint instead.
 
     Parameters
     ----------
@@ -867,26 +805,19 @@ async def indicator_choices(  # noqa: PLR0912
     list[dict[str, str]]
         A list of dictionaries with 'label' and 'value' for each choice.
     """
-    # pylint: disable=import-outside-toplevel
     from urllib.parse import unquote
 
     from openbb_imf.utils.helpers import detect_transform_dimension
 
-    metadata = ImfMetadata()
-
-    # Symbol is required and in format dataflow::indicator
     if symbol is None:
         return []
 
-    # URL-decode the symbol parameter and handle multiple comma-separated symbols
     symbol = unquote(symbol)
 
-    # Parse multiple symbols (comma-separated): "QGFS::F4_L_T_XDC,QGFS::F12_L_T_XDC"
     symbols = [s.strip() for s in symbol.split(",") if s.strip()]
     if not symbols:
         return []
 
-    # Extract unique dataflows and all indicator codes
     dataflows_seen: set[str] = set()
     indicator_codes: list[str] = []
 
@@ -898,17 +829,14 @@ async def indicator_choices(  # noqa: PLR0912
             if ind_code:
                 indicator_codes.append(ind_code)
         else:
-            # Just a dataflow ID with no indicator
             dataflows_seen.add(sym.strip())
 
-    # For now, only support single dataflow (use first one)
     dataflow_id = list(dataflows_seen)[0] if dataflows_seen else None
     indicator_code = "+".join(indicator_codes) if indicator_codes else None
 
     if not dataflow_id:
         return []
 
-    # Get dimension order for this dataflow
     df_obj = metadata.dataflows.get(dataflow_id, {})
 
     if not df_obj:
@@ -918,25 +846,19 @@ async def indicator_choices(  # noqa: PLR0912
     dsd = metadata.datastructures.get(dsd_id, {})
     dimensions = dsd.get("dimensions", [])
 
-    # Sort by position
     sorted_dims = sorted(
         [d for d in dimensions if d.get("id") != "TIME_PERIOD"],
         key=lambda x: int(x.get("position", 0)),
     )
     dim_order = [d["id"] for d in sorted_dims]
 
-    # Get codelist labels for all dimensions
     params = metadata.get_dataflow_parameters(dataflow_id)
 
-    # Identify dimension types
     country_dim = "COUNTRY" if "COUNTRY" in dim_order else "REF_AREA"
     freq_dim = "FREQUENCY" if "FREQUENCY" in dim_order else "FREQ"
     transform_dim, unit_dim, _, _ = detect_transform_dimension(dataflow_id)
-    # Use UNIT dimension as fallback for transform if no transform dimension exists
     effective_transform_dim = transform_dim or unit_dim
 
-    # Parse dimension_values into a dict of DIM_ID -> VALUE
-    # Input format: list of "DIM_ID:VALUE" strings
     extra_dimensions: dict[str, str] = {}
     if dimension_values:
         for dv in dimension_values:
@@ -946,25 +868,19 @@ async def indicator_choices(  # noqa: PLR0912
                 dim_id, dim_value = dv.split(":", 1)
                 extra_dimensions[dim_id.strip().upper()] = dim_value.strip().upper()
 
-    # dimension_values OVERRIDES parameter values for country/frequency/transform
-    # Check if any country dimension is in extra_dimensions
     for cdim in ("COUNTRY", "REF_AREA", "JURISDICTION", "AREA"):
         if cdim in extra_dimensions:
             country = extra_dimensions.pop(cdim)
             break
-    # Check if frequency dimension is in extra_dimensions
     for fdim in ("FREQUENCY", "FREQ"):
         if fdim in extra_dimensions:
             frequency = extra_dimensions.pop(fdim)
             break
-    # Check if transform dimension is in extra_dimensions
     for tdim in ("UNIT_MEASURE", "UNIT", "TRANSFORMATION"):
         if tdim in extra_dimensions:
             transform = extra_dimensions.pop(tdim)
             break
 
-    # Find indicator dimension - check which dimension contains the indicator_code
-    # This list should include all possible indicator-type dimensions across dataflows
     indicator_dims = [
         "INDICATOR",
         "INDEX_TYPE",
@@ -976,8 +892,6 @@ async def indicator_choices(  # noqa: PLR0912
         "PRODUCTION_INDEX",
     ]
 
-    # If we have indicator_code(s), find which dimension they belong to
-    # indicator_code may be "+" joined (e.g., "F4_L_T_XDC+F12_L_T_XDC")
     indicator_dim = None
     first_indicator = indicator_code.split("+")[0] if indicator_code else None
     if first_indicator:
@@ -988,7 +902,6 @@ async def indicator_choices(  # noqa: PLR0912
                     indicator_dim = dim_id
                     break
 
-        # If still not found, search ALL dimensions for the indicator code
         if indicator_dim is None:
             for dim_id in dim_order:
                 if dim_id in (
@@ -1004,26 +917,18 @@ async def indicator_choices(  # noqa: PLR0912
                     indicator_dim = dim_id
                     break
 
-    # Fallback to first available indicator dimension if not found
     if indicator_dim is None:
         indicator_dim = next((d for d in indicator_dims if d in dim_order), None)
 
     def build_key_with_indicator(target_dim: str) -> str:
-        """Build constraint key with indicator always set, targeting a specific dimension.
-
-        This builds a full key for all dimensions, with the target dimension as wildcard
-        and the indicator dimension set to the indicator code (if available).
-        This allows querying for available values of the target dimension filtered by indicator.
-        """
+        """Build constraint key with indicator always set, targeting a specific dimension."""
         key_parts: list[str] = []
         for dim_id in dim_order:
             if dim_id == target_dim:
-                # Target dimension gets wildcard - we want to know available values
                 key_parts.append("*")
             elif dim_id == country_dim:
                 key_parts.append(str(country).replace(",", "+") if country else "*")
             elif dim_id == indicator_dim:
-                # Always include indicator code if available
                 key_parts.append(indicator_code if indicator_code else "*")
             elif dim_id == freq_dim:
                 key_parts.append(str(frequency) if frequency else "*")
@@ -1032,7 +937,6 @@ async def indicator_choices(  # noqa: PLR0912
                     str(transform) if transform and transform != "true" else "*"
                 )
             elif dim_id in extra_dimensions:
-                # Use value from dimension_values if provided
                 key_parts.append(extra_dimensions[dim_id])
             else:
                 key_parts.append("*")
@@ -1047,9 +951,7 @@ async def indicator_choices(  # noqa: PLR0912
             key=key,
             component_id=dim_id,
         )
-        # Get labels from params
         labels = {opt["value"]: opt["label"] for opt in params.get(dim_id, [])}
-        # Also try to get labels from codelist
         codelist_labels: dict = {}
         dim_meta: dict = next((d for d in sorted_dims if d.get("id") == dim_id), {})
 
@@ -1066,49 +968,275 @@ async def indicator_choices(  # noqa: PLR0912
         for kv in constraints.get("key_values", []):
             if kv.get("id") == dim_id:
                 for value in kv.get("values", []):
-                    # Try params first, then codelist, then fall back to value
                     label = labels.get(value) or codelist_labels.get(value) or value
                     choices.append({"label": label, "value": value})
 
         return choices
 
-    # Step 1: No country selected - return country choices filtered by indicator
     if country == "true" and country_dim:
         choices = get_choices_for_dim(country_dim)
         choices = sorted(choices, key=lambda x: x["label"])
         choices.insert(0, {"label": "All Countries", "value": "*"})
         return choices
 
-    # Step 2: Country selected, no frequency - return frequency choices
     if frequency == "true" and freq_dim:
         return get_choices_for_dim(freq_dim)
 
-    # Step 3: Frequency selected, no transform - return transform choices
     if transform == "true" and effective_transform_dim:
         choices = get_choices_for_dim(effective_transform_dim)
-        # Add "all" option at the beginning if there are choices
         if choices:
             choices.insert(0, {"label": "All", "value": "all"})
         return choices
 
-    # All parameters set - no more choices needed
     return []
 
 
-async def get_imf_utils_apps_json() -> list[dict[str, Any]]:
+from openbb_imf import ECONOMY_INSTALLED  # noqa: E402
+
+if not ECONOMY_INSTALLED:
+
+    @router.command(
+        model="AvailableImfIndicators",
+        examples=[
+            APIEx(
+                description="Search the full IMF indicator catalog.",
+                parameters={"provider": "imf"},
+            ),
+            APIEx(
+                description="Filter the catalog to specific dataflows.",
+                parameters={"provider": "imf", "dataflows": "CPI,PCPS"},
+            ),
+        ],
+    )
+    async def available_indicators(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Search the IMF SDMX indicator catalog by query, dataflow, or keyword."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfIndicators",
+        examples=[
+            APIEx(
+                description="Fetch a single indicator series by ``dataflow::code`` symbol.",
+                parameters={
+                    "provider": "imf",
+                    "symbol": "IL::RGV_REVS",
+                    "country": "*",
+                    "frequency": "month",
+                    "limit": 1,
+                    "start_date": "2025-09-30",
+                },
+            ),
+            APIEx(
+                description="Fetch a full presentation table for a country.",
+                parameters={
+                    "provider": "imf",
+                    "symbol": "DIP::H_DIP_INDICATOR",
+                    "country": "BRA",
+                    "frequency": "annual",
+                    "limit": 2,
+                    "pivot": True,
+                },
+            ),
+        ],
+    )
+    async def indicators(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Fetch IMF economic indicators or presentation tables by ``dataflow::code`` symbol."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfConsumerPriceIndex",
+        examples=[
+            APIEx(
+                description="Latest CPI basket weightings reported by the IMF.",
+                parameters={
+                    "provider": "imf",
+                    "country": "CAN",
+                    "transform": "weight_percent",
+                    "expenditure": "all",
+                    "limit": 1,
+                },
+            ),
+        ],
+    )
+    async def cpi(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Consumer Price Index (CPI) data from the IMF."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfBalanceOfPayments",
+        examples=[
+            APIEx(parameters={"provider": "imf"}),
+            APIEx(parameters={"provider": "imf", "country": "BRA"}),
+        ],
+    )
+    async def balance_of_payments(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Balance of Payments reports from the IMF BOP dataflow."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfDirectionOfTrade",
+        examples=[
+            APIEx(
+                parameters={
+                    "provider": "imf",
+                    "country": "all",
+                    "counterpart": "china",
+                },
+            ),
+            APIEx(
+                description="Select multiple countries or counterparts by entering a comma-separated list.",
+                parameters={
+                    "provider": "imf",
+                    "country": "us",
+                    "counterpart": "world,eu",
+                    "frequency": "annual",
+                    "direction": "exports",
+                },
+            ),
+        ],
+    )
+    async def direction_of_trade(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Direction Of Trade Statistics (DOTS) from the IMF database."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfPortInfo",
+        examples=[
+            APIEx(parameters={"provider": "imf"}),
+            APIEx(parameters={"provider": "imf", "continent": "asia_pacific"}),
+        ],
+    )
+    async def port_info(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """General metadata and statistics for all IMF Port Watch ports."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfPortVolume",
+        examples=[
+            APIEx(
+                description="Daily port calls and estimated trading volumes for specific ports.",
+                parameters={
+                    "provider": "imf",
+                    "port_code": "rotterdam,singapore",
+                },
+            ),
+            APIEx(
+                description="All ports in a specific country (ISO3 code).",
+                parameters={"provider": "imf", "country": "GBR"},
+            ),
+        ],
+    )
+    async def port_volume(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Daily port calls and estimated trading volumes from IMF Port Watch."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfMaritimeChokePointInfo",
+        examples=[APIEx(parameters={"provider": "imf"})],
+    )
+    async def chokepoint_info(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Metadata and statistics for all IMF Port Watch maritime chokepoints."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+    @router.command(
+        model="ImfMaritimeChokePointVolume",
+        examples=[
+            APIEx(parameters={"provider": "imf"}),
+            APIEx(
+                parameters={
+                    "provider": "imf",
+                    "chokepoint": "suez_canal,panama_canal",
+                }
+            ),
+        ],
+    )
+    async def chokepoint_volume(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> OBBject:
+        """Daily transit calls and estimated trade volumes for shipping chokepoints."""
+        return await OBBject.from_query(OBBQuery(**locals()))
+
+
+from openbb_imf.portwatch_router import portwatch_router  # noqa: E402
+
+router.include_router(portwatch_router, prefix="/portwatch")
+
+
+_APPS_WIDGET_ID_FALLBACK_MAP = {
+    "economy_available_indicators_imf_obb": "imf_available_indicators_imf_obb",
+    "economy_indicators_imf_obb": "imf_indicators_imf_obb",
+    "economy_balance_of_payments_imf_obb": "imf_balance_of_payments_imf_obb",
+    "economy_cpi_imf_obb": "imf_cpi_imf_obb",
+    "economy_direction_of_trade_imf_obb": "imf_direction_of_trade_imf_obb",
+    "economy_shipping_chokepoint_volume_imf_obb": "imf_chokepoint_volume_imf_obb",
+    "economy_shipping_port_info_imf_obb": "imf_port_info_imf_obb",
+    "economy_shipping_port_volume_imf_obb": "imf_port_volume_imf_obb",
+}
+
+
+def _rewrite_widget_ids(apps_json: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Swap ``economy_*_imf_obb`` widget IDs for their ``imf_*_imf_obb`` fallbacks."""
+    for app in apps_json:
+        tabs = app.get("tabs", {}) or {}
+        for tab in tabs.values():
+            for widget in tab.get("layout", []) or []:
+                widget_id = widget.get("i")
+                if widget_id in _APPS_WIDGET_ID_FALLBACK_MAP:
+                    widget["i"] = _APPS_WIDGET_ID_FALLBACK_MAP[widget_id]
+    return apps_json
+
+
+async def get_imf_apps_json() -> list[dict[str, Any]]:
     """Get the IMF apps.json file.
-
-    This endpoint serves the apps.json file containing OpenBB Workspace app configurations
-    related to IMF data and utilities.
-
-    It is automatically merged with any existing apps.json files in the Workspace and API.
 
     Returns
     -------
     list[dict[str, Any]]
         A list of OpenBB Workspace app configurations.
     """
-    # pylint: disable=import-outside-toplevel
     import json
     from pathlib import Path
 
@@ -1117,14 +1245,18 @@ async def get_imf_utils_apps_json() -> list[dict[str, Any]]:
     try:
         with apps_file.open("r", encoding="utf-8") as f:
             apps_json = json.load(f)
-            return apps_json
     except Exception:
         return []
+
+    if not ECONOMY_INSTALLED:
+        apps_json = _rewrite_widget_ids(apps_json)
+
+    return apps_json
 
 
 router._api_router.add_api_route(
     path="/apps.json",
-    endpoint=get_imf_utils_apps_json,
+    endpoint=get_imf_apps_json,
     methods=["GET"],
     include_in_schema=False,
 )

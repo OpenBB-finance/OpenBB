@@ -1,7 +1,6 @@
 """Test ImfMetadata search functionality."""
 
 # ruff: noqa: I001
-# pylint: disable=W0621,R0903
 import pytest
 
 from openbb_imf.utils import metadata as md
@@ -43,7 +42,6 @@ def imf_metadata(monkeypatch):
         if dataflow_id not in meta.dataflows:
             raise ValueError(f"Dataflow '{dataflow_id}' not found.")
 
-        # Return a lightweight, deterministic parameter mapping.
         return {
             "COUNTRY": [
                 {"value": "USA", "label": "United States"},

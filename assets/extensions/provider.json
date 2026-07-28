@@ -1,43 +1,5 @@
 [
     {
-        "packageName": "openbb-alpha-vantage",
-        "optional": true,
-        "reprName": "Alpha Vantage",
-        "description": "Alpha Vantage provides realtime and historical\nfinancial market data through a set of powerful and developer-friendly data APIs\nand spreadsheets. From traditional asset classes (e.g., stocks, ETFs, mutual funds)\nto economic indicators, from foreign exchange rates to commodities,\nfrom fundamental data to technical indicators, Alpha Vantage\nis your one-stop-shop for enterprise-grade global market data delivered through\ncloud-based APIs, Excel, and Google Sheets. ",
-        "credentials": [
-            "alpha_vantage_api_key"
-        ],
-        "deprecatedCredentials": {
-            "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key"
-        },
-        "website": "https://www.alphavantage.co",
-        "instructions": "Go to: https://www.alphavantage.co/support/#api-key\n\n![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)\n\nFill out the form, pass Captcha, and click on, \"GET FREE API KEY\"."
-    },
-    {
-        "packageName": "openbb-benzinga",
-        "optional": false,
-        "reprName": "Benzinga",
-        "description": "Benzinga is a financial data provider that offers an API\nfocused on information that moves the market.",
-        "credentials": [
-            "benzinga_api_key"
-        ],
-        "website": "https://www.benzinga.com"
-    },
-    {
-        "packageName": "openbb-biztoc",
-        "optional": true,
-        "reprName": "BizToc",
-        "description": "BizToc uses Rapid API for its REST API.\nYou may sign up for your free account at https://rapidapi.com/thma/api/biztoc.\n\nThe Base URL for all requests is:\n\n    https://biztoc.p.rapidapi.com/\n\nIf you're not a developer but would still like to use Biztoc outside of the main website,\nwe've partnered with OpenBB, allowing you to pull in BizToc's news stream in their Terminal.",
-        "credentials": [
-            "biztoc_api_key"
-        ],
-        "deprecatedCredentials": {
-            "API_BIZTOC_TOKEN": "biztoc_api_key"
-        },
-        "website": "https://api.biztoc.com",
-        "instructions": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key. Use this value to enter as `biztoc_api_key`."
-    },
-    {
         "packageName": "openbb-bls",
         "optional": false,
         "reprName": "Bureau of Labor Statistics' (BLS) Public Data API",
@@ -242,14 +204,6 @@
         "website": "https://seekingalpha.com"
     },
     {
-        "packageName": "openbb-stockgrid",
-        "optional": true,
-        "reprName": "Stockgrid",
-        "description": "Stockgrid gives you a detailed view of what smart money is doing.\nGet in depth data about large option blocks being traded, including\nthe sentiment score, size, volume and order type. Stop guessing and\nbuild a strategy around the number 1 factor moving the market: money.",
-        "credentials": [],
-        "website": "https://www.stockgrid.io"
-    },
-    {
         "packageName": "openbb-tiingo",
         "optional": false,
         "reprName": "Tiingo",
@@ -302,14 +256,6 @@
         ],
         "website": "https://eia.gov/",
         "instructions": "Credentials are required for functions calling the EIA's API.\n    Register for a free key here: https://www.eia.gov/opendata/register.php"
-    },
-    {
-        "packageName": "openbb-wsj",
-        "optional": true,
-        "reprName": "Wall Street Journal (WSJ)",
-        "description": "WSJ (Wall Street Journal) is a business-focused, English-language\ninternational daily newspaper based in New York City. The Journal is published six\ndays a week by Dow Jones & Company, a division of News Corp, along with its Asian\nand European editions. The newspaper is published in the broadsheet format and\nonline. The Journal has been printed continuously since its inception on\nJuly 8, 1889, by Charles Dow, Edward Jones, and Charles Bergstresser.\nThe WSJ is the largest newspaper in the United States, by circulation.\n    ",
-        "credentials": [],
-        "website": "https://www.wsj.com"
     },
     {
         "packageName": "openbb-yfinance",

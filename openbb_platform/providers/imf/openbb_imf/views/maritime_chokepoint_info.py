@@ -1,5 +1,7 @@
 """Plotting functions for IMF Maritime Chokepoint Information"""
 
+from __future__ import annotations
+
 from openbb_imf.models.maritime_chokepoint_info import ImfMaritimeChokePointInfoData
 
 
@@ -7,7 +9,6 @@ def plot_chokepoint_annual_avg_vessels(
     data: list[ImfMaritimeChokePointInfoData], theme="light"
 ):
     """Plot the average annual vessels for each chokepoint."""
-    # pylint: disable=import-outside-toplevel
     import datetime  # noqa
     from openbb_core.app.model.abstract.error import OpenBBError
     from pandas import DataFrame
@@ -189,7 +190,7 @@ def plot_chokepoint_annual_avg_vessels(
         col=2,
     )
 
-    fig.update_geos(  # type: ignore
+    fig.update_geos(
         projection=dict(type="orthographic", scale=1, rotation=dict(lon=70, lat=20)),
         showland=True,
         landcolor=landcolor,

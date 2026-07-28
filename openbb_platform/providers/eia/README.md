@@ -71,49 +71,53 @@ Tables from the WPSR are returned in a flat format in the same order as presente
 
 Category choices are defined as:
 
-    balance_sheet
-    inputs_and_production
-    refiner_and_blender_net_production
-    crude_petroleum_stocks
-    gasoline_fuel_stocks
-    total_gasoline_by_sub_padd
-    distillate_fuel_oil_stocks
-    imports
-    imports_by_country
-    weekly_estimates
-    spot_prices_crude_gas_heating
-    spot_prices_diesel_jet_fuel_propane
-    retail_prices
+```text
+balance_sheet
+inputs_and_production
+refiner_and_blender_net_production
+crude_petroleum_stocks
+gasoline_fuel_stocks
+total_gasoline_by_sub_padd
+distillate_fuel_oil_stocks
+imports
+imports_by_country
+weekly_estimates
+spot_prices_crude_gas_heating
+spot_prices_diesel_jet_fuel_propane
+retail_prices
+```
 
 ### Short Term Energy Outlook
 
 The Short Term Energy Outlook (STEO) is curated by table, and relies on the EIA V2 API. Tables are defined by their alphanumeric code, and return in the same format as the WPSR tables.
 
-    01: US Energy Markets Summary
-    02: Nominal Energy Prices
-    03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
-    03b: Non-OPEC Petroleum and Other Liquid Fuels Production
-    03c: World Petroleum and Other Liquid Fuels Production
-    03d: World Crude Oil Production
-    03e: World Petroleum and Other Liquid Fuels Consumption
-    04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories
-    04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances
-    04c: US Regional Motor Gasoline Prices and Inventories
-    04d: US Biofuel Supply, Consumption, and Inventories
-    05a: US Natural Gas Supply, Consumption, and Inventories
-    05b: US Regional Natural Gas Prices
-    06: US Coal Supply, Consumption, and Inventories
-    07a: US Electricity Industry Overview
-    07b: US Regional Electricity Retail Sales
-    07c: US Regional Electricity Prices
-    07d1: US Regional Electricity Generation, Electric Power Sector
-    07d2: US Regional Electricity Generation, Electric Power Sector, continued
-    07e: US Electricity Generating Capacity
-    08: US Renewable Energy Consumption
-    09a: US Macroeconomic Indicators and CO2 Emissions
-    09b: US Regional Macroeconomic Data
-    09c: US Regional Weather Data
-    10a: Drilling Productivity Metrics
-    10b: Crude Oil and Natural Gas Production from Shale and Tight Formations
+```text
+01: US Energy Markets Summary
+02: Nominal Energy Prices
+03a: World Petroleum and Other Liquid Fuels Production, Consumption, and Inventories
+03b: Non-OPEC Petroleum and Other Liquid Fuels Production
+03c: World Petroleum and Other Liquid Fuels Production
+03d: World Crude Oil Production
+03e: World Petroleum and Other Liquid Fuels Consumption
+04a: US Petroleum and Other Liquid Fuels Supply, Consumption, and Inventories
+04b: US Hydrocarbon Gas Liquids (HGL) and Petroleum Refinery Balances
+04c: US Regional Motor Gasoline Prices and Inventories
+04d: US Biofuel Supply, Consumption, and Inventories
+05a: US Natural Gas Supply, Consumption, and Inventories
+05b: US Regional Natural Gas Prices
+06: US Coal Supply, Consumption, and Inventories
+07a: US Electricity Industry Overview
+07b: US Regional Electricity Retail Sales
+07c: US Regional Electricity Prices
+07d1: US Regional Electricity Generation, Electric Power Sector
+07d2: US Regional Electricity Generation, Electric Power Sector, continued
+07e: US Electricity Generating Capacity
+08: US Renewable Energy Consumption
+09a: US Macroeconomic Indicators and CO2 Emissions
+09b: US Regional Macroeconomic Data
+09c: US Regional Weather Data
+10a: Drilling Productivity Metrics
+10b: Crude Oil and Natural Gas Production from Shale and Tight Formations
+```
 
-    A "symbol" parameter allows lookup by individual series ID(s) within the dataset.
+A "symbol" parameter allows lookup by individual series ID(s) within the dataset.

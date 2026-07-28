@@ -1,5 +1,6 @@
 """Views for the Derivatives Extension."""
 
+from importlib import import_module
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -10,19 +11,20 @@ class DerivativesViews:
     """Derivatives Views."""
 
     @staticmethod
-    def derivatives_futures_historical(  # noqa: PLR0912
+    def derivatives_futures_historical(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Get Derivatives Price Historical Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.price_historical import price_historical
+        price_historical = import_module(
+            "openbb_charting.charts.price_historical"
+        ).price_historical
 
         kwargs.update({"candles": False, "same_axis": False})
 
         return price_historical(**kwargs)
 
     @staticmethod
-    def derivatives_futures_curve(  # noqa: PLR0912
+    def derivatives_futures_curve(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Futures curve chart. All parameters are optional, and are kwargs.
@@ -70,29 +72,36 @@ class DerivativesViews:
         data.charting.to_chart(colors=["green", "red"], title="VIX Futures Curve - 2020 vs. 2024")
         ```
         """
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.chart_style import ChartStyle
-        from openbb_charting.core.openbb_figure import OpenBBFigure
-        from openbb_charting.styles.colors import LARGE_CYCLER
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.abstract.data import Data
         from pandas import DataFrame, to_datetime
+
+        ChartStyle = import_module("openbb_charting.core.chart_style").ChartStyle
+        OpenBBFigure = import_module("openbb_charting.core.openbb_figure").OpenBBFigure
+        LARGE_CYCLER = import_module("openbb_charting.styles.colors").LARGE_CYCLER
 
         data = kwargs.get("data")
         symbol = kwargs.get("standard_params", {}).get("symbol", "")
         df: DataFrame = DataFrame()
         if data:
-            if isinstance(data, DataFrame) and not data.empty:  # noqa: SIM108
+            if isinstance(data, DataFrame) and not data.empty:
                 df = data
             elif isinstance(data, (list, Data)):
-                df = DataFrame([d.model_dump(exclude_none=True, exclude_unset=True) for d in data])  # type: ignore
+                df = DataFrame(
+                    [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+                )
             else:
                 pass
         else:
             df = DataFrame(
-                [d.model_dump(exclude_none=True, exclude_unset=True) for d in kwargs["obbject_item"]]  # type: ignore
+                [
+                    d.model_dump(exclude_none=True, exclude_unset=True)
+                    for d in kwargs["obbject_item"]
+                ]
                 if isinstance(kwargs.get("obbject_item"), list)
-                else kwargs["obbject_item"].model_dump(exclude_none=True, exclude_unset=True)  # type: ignore
+                else kwargs["obbject_item"].model_dump(
+                    exclude_none=True, exclude_unset=True
+                )
             )
 
         if df.empty:
@@ -235,7 +244,7 @@ class DerivativesViews:
         return figure, content
 
     @staticmethod
-    def derivatives_options_surface(  # noqa: PLR0912
+    def derivatives_options_surface(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Options surface chart. All parameters are optional, and are kwargs.
@@ -255,9 +264,9 @@ class DerivativesViews:
         - `colorscale`: The colorscale to use for the chart.
         - `layout_kwargs`: Additional dictionary to be passed to `fig.update_layout` before output.
         """
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.generic_charts import surface3d
         from pandas import DataFrame
+
+        surface3d = import_module("openbb_charting.charts.generic_charts").surface3d
 
         cols_map = {
             "expiration": "Expiration",
@@ -308,7 +317,7 @@ class DerivativesViews:
         figure = surface3d(
             X=X,
             Y=Y,
-            Z=Z,  # type: ignore
+            Z=Z,
             xtitle=x_title,
             ytitle=y_title,
             ztitle=z_title,
@@ -318,6 +327,6 @@ class DerivativesViews:
             title=title,
         )
 
-        content = figure.show(external=True).to_plotly_json()  # type: ignore
+        content = figure.show(external=True).to_plotly_json()
 
-        return figure, content  # type: ignore
+        return figure, content  # ty: ignore[invalid-return-type]

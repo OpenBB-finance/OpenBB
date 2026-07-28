@@ -15,6 +15,8 @@ from typing import (
 )
 
 from anyio.from_thread import start_blocking_portal
+from typing_extensions import ParamSpec
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.utils.client import (
     ClientResponse,
@@ -22,10 +24,9 @@ from openbb_core.provider.utils.client import (
     get_user_agent,
 )
 from openbb_core.provider.utils.errors import UnauthorizedError
-from typing_extensions import ParamSpec
 
 if TYPE_CHECKING:
-    from requests import Response, Session  # pylint: disable=import-outside-toplevel
+    from requests import Response, Session
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -118,7 +119,6 @@ def get_python_request_settings() -> dict:
 
     Any additional keys supplied will be ignored.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.service.system_service import SystemService
 
     python_settings = SystemService().system_settings.python_settings.model_dump()
@@ -146,7 +146,6 @@ def get_python_request_settings() -> dict:
 
 def get_requests_session(**kwargs) -> "Session":
     """Get a requests session object with the applied user settings or environment variables."""
-    # pylint: disable=import-outside-toplevel
     import requests
 
     # If a session is already provided, just return it.
@@ -204,7 +203,11 @@ def get_requests_session(**kwargs) -> "Session":
         )
 
     if auth := python_settings.get("auth"):
-        _session.auth = auth if isinstance(auth, (tuple, requests.auth.AuthBase)) else tuple(auth)  # type: ignore
+        import requests.auth as _requests_auth
+
+        _session.auth = (
+            auth if isinstance(auth, (tuple, _requests_auth.AuthBase)) else tuple(auth)
+        )
 
     if kwargs:
         for key, value in kwargs.items():
@@ -224,7 +227,6 @@ def get_requests_session(**kwargs) -> "Session":
 
 async def get_async_requests_session(**kwargs) -> ClientSession:
     """Get an aiohttp session object with the applied user settings or environment variables."""
-    # pylint: disable=import-outside-toplevel
     import aiohttp  # noqa
     import atexit
     import ssl
@@ -436,7 +438,8 @@ async def amake_requests(
                 isinstance(result, UnauthorizedError)
                 or kwargs.get("raise_for_status", False)
             ):
-                raise result  # type: ignore[misc]
+                assert isinstance(result, BaseException)  # noqa: S101
+                raise result
 
             if is_exception and ret_exceptions:
                 results.append(result)  # type: ignore[arg-type]
@@ -453,7 +456,7 @@ async def amake_requests(
                 results.extend(result if isinstance(result, list) else [result])  # type: ignore[list-item]
 
         if exceptions and not results and not ret_exceptions:
-            raise exceptions[0]  # type: ignore
+            raise exceptions[0]
 
         return results
 
@@ -463,7 +466,6 @@ async def amake_requests(
 
 def combine_certificates(cert: str, bundle: str | None = None) -> str:
     """Combine a certificate and a bundle into a single certificate file. Use the default bundle if none is provided."""
-    # pylint: disable=import-outside-toplevel
     import atexit  # noqa
     import certifi
     import shutil
@@ -473,10 +475,10 @@ def combine_certificates(cert: str, bundle: str | None = None) -> str:
     if not Path(cert).exists():
         raise FileNotFoundError(f"Certificate file '{cert}' not found")
 
-    if cert.split(".")[0].endswith("_combined"):
+    if cert.split(".", maxsplit=1)[0].endswith("_combined"):
         return cert
 
-    combined_cert = cert.split(".")[0] + "_combined." + cert.split(".")[1]
+    combined_cert = cert.split(".", maxsplit=1)[0] + "_combined." + cert.split(".")[1]
 
     if Path(combined_cert).exists():
         return combined_cert
@@ -498,7 +500,7 @@ def combine_certificates(cert: str, bundle: str | None = None) -> str:
         atexit.register(os.remove, combined_cert)
 
         return combined_cert
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         warn(
             f"An error occurred while handling the certificates file -> {e.__class__.__name__}: {e}"
         )
@@ -567,7 +569,7 @@ def make_request(
 
 def to_snake_case(string: str) -> str:
     """Convert a string to snake case."""
-    import re  # pylint: disable=import-outside-toplevel
+    import re
 
     s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
     return (
@@ -609,7 +611,7 @@ def filter_by_dates(
     if start_date is None and end_date is None:
         return data
 
-    def _filter(d: Data) -> bool:
+    def _filter(d: D) -> bool:
         _date = getattr(d, "date", None)
         dt = _date.date() if _date and isinstance(_date, datetime) else _date
         if dt:
@@ -619,7 +621,7 @@ def filter_by_dates(
                 return dt >= start_date
             if end_date:
                 return dt <= end_date
-            return True
+            return True  # pragma: no cover
         return False
 
     return list(filter(_filter, data))

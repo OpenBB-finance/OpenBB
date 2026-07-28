@@ -23,7 +23,7 @@ pip install openbb-finviz
 
 ## Screener
 
-The screener is a faithful replication of the public-facing stock screener - https://finviz.com/screener.ashx?
+The screener is a faithful replication of the public-facing stock screener - <https://finviz.com/screener.ashx>
 
 Some options are directly accessible through the function parameters, all others are exposed via `presets` or `filters_dict`.
 The filters list below are exposed in the function, with choices visible in the docstring:
@@ -54,7 +54,7 @@ The `metric` parameter defines the type of data fields to return. Choices are:
 
 Default is, "overview".
 
-```
+```python
 res = obb.equity.screener(provider="finviz", metric="performance")
 ```
 

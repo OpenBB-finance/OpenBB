@@ -47,12 +47,15 @@ class APIEx(Example):
     def validate_model(cls, values: dict) -> dict:
         """Validate model."""
         parameters = values.get("parameters", {})
-        provider = parameters.pop("provider", None)
+        provider = parameters.get("provider")
 
-        if provider and not isinstance(provider, str):
+        if provider is not None and not isinstance(provider, str):
             raise ValueError("Provider must be a string.")
 
-        if len(parameters) > 3 and not values.get("description"):
+        # `provider`, when present, is a meta-parameter rather than a real
+        # query parameter, so don't count it toward the description threshold.
+        non_provider_count = len(parameters) - (1 if "provider" in parameters else 0)
+        if non_provider_count > 3 and not values.get("description"):
             raise ValueError(
                 "Description is required when there are more than 3 parameters."
             )
@@ -62,10 +65,7 @@ class APIEx(Example):
     @staticmethod
     def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {typing._GenericAlias, int}."""
-        if (
-            hasattr(type_, "__args__")
-            and type(type_) is not _GenericAlias  # pylint: disable=C0123
-        ):
+        if hasattr(type_, "__args__") and type(type_) is not _GenericAlias:
             return set().union(*map(APIEx._unpack_type, type_.__args__))  # type: ignore
         return {type_} if isinstance(type_, type) else {type(type_)}
 
@@ -184,7 +184,9 @@ class APIEx(Example):
         eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
             if k in param_types and (type_ := param_types.get(k)):
-                if QUOTE_TYPES.intersection(self._unpack_type(type_)):
+                if isinstance(v, str) and QUOTE_TYPES.intersection(
+                    self._unpack_type(type_)
+                ):
                     eg += f"{k}='{v}', "
                 else:
                     eg += f"{k}={v}, "

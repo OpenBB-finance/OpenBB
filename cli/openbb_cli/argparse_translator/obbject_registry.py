@@ -1,6 +1,6 @@
 """Registry for OBBjects."""
 
-import json
+from typing import Any
 
 from openbb_core.app.model.obbject import OBBject
 
@@ -22,7 +22,7 @@ class Registry:
         if (
             isinstance(obbject, OBBject)
             and not self._contains_obbject(obbject.id, self._obbjects)
-            and obbject.results
+            and obbject.results is not None
         ):
             self._obbjects.append(obbject)
             return True
@@ -46,11 +46,8 @@ class Registry:
 
     def _get_by_index(self, idx: int) -> OBBject | None:
         """Return the obbject at index idx."""
-        # the list should work as a stack
-        # i.e., the last element needs to be accessed by idx=0 and so on
         reversed_list = list(reversed(self._obbjects))
 
-        # check if the index is out of bounds
         if idx >= len(reversed_list):
             return None
 
@@ -58,8 +55,6 @@ class Registry:
 
     def remove(self, idx: int = -1):
         """Remove the obbject at index idx, default is the last element."""
-        # the list should work as a stack
-        # i.e., the last element needs to be accessed by idx=0 and so on
         reversed_list = list(reversed(self._obbjects))
         del reversed_list[idx]
         self._obbjects = list(reversed(reversed_list))
@@ -67,49 +62,26 @@ class Registry:
     @property
     def all(self) -> dict[int, dict]:
         """Return all obbjects in the registry."""
-
-        def _handle_standard_params(obbject: OBBject) -> str:
-            """Handle standard params for obbjects."""
-            standard_params_json = ""
-            std_params = getattr(
-                obbject, "_standard_params", {}
-            )  # pylint: disable=protected-access
-            if std_params:
-                standard_params = {
-                    k: str(v)[:30] for k, v in std_params.items() if v and k != "data"
-                }
-                standard_params_json = json.dumps(standard_params)
-
-            return standard_params_json
-
-        def _handle_data_repr(obbject: OBBject) -> str:
-            """Handle data representation for obbjects."""
-            data_repr = ""
-            if hasattr(obbject, "results") and obbject.results:
-                data_schema = (
-                    obbject.results[0].model_json_schema()
-                    if obbject.results
-                    and isinstance(obbject.results, list)
-                    and hasattr(obbject.results[0], "model_json_schema")
-                    else ""
-                )
-                if data_schema and "title" in data_schema:
-                    data_repr = f"{data_schema['title']}"  # type: ignore
-                if data_schema and "description" in data_schema:
-                    data_repr += f" - {data_schema['description'].split('.')[0]}"  # type: ignore
-
-            return data_repr
-
-        obbjects = {}
+        obbjects: dict[int, dict] = {}
         for i, obbject in enumerate(list(reversed(self._obbjects))):
-            obbjects[i] = {
-                "route": obbject._route,  # pylint: disable=protected-access
-                "provider": obbject.provider,
-                "standard params": _handle_standard_params(obbject),
-                "data": _handle_data_repr(obbject),
-                "command": obbject.extra.get("command", ""),
-                "key": obbject.extra.get("register_key", ""),
-            }
+            model_dump = getattr(obbject, "model_dump", None)
+            dump: dict[str, Any] | None = None
+            if callable(model_dump):
+                try:
+                    candidate = model_dump(exclude={"results"})
+                except Exception:  # noqa: BLE001
+                    candidate = None
+                if isinstance(candidate, dict):
+                    dump = candidate
+            if dump is None:
+                dump = {
+                    "id": getattr(obbject, "id", None),
+                    "provider": getattr(obbject, "provider", None),
+                    "warnings": getattr(obbject, "warnings", None),
+                    "chart": getattr(obbject, "chart", None),
+                    "extra": getattr(obbject, "extra", {}) or {},
+                }
+            obbjects[i] = dump
 
         return obbjects
 

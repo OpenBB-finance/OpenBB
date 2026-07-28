@@ -4,13 +4,21 @@ from collections.abc import Callable
 from inspect import _empty, signature
 from typing import TYPE_CHECKING, Any
 
-from openbb_core.app.provider_interface import ProviderInterface
 from pydantic import BaseModel, Field, create_model
+from pydantic.fields import FieldInfo
+
+from openbb_core.app.provider_interface import ProviderInterface
 
 if TYPE_CHECKING:
     from openbb_core.app.static.app_factory import BaseApp
 
 provider_interface = ProviderInterface()
+
+
+def _model_fields(model_or_cls: Any):
+    """Return pydantic model fields from either a class or an instance."""
+    model_cls = model_or_cls if isinstance(model_or_cls, type) else type(model_or_cls)
+    return model_cls.model_fields
 
 
 def get_route_callable(app: "BaseApp", route: str) -> Callable:
@@ -29,7 +37,7 @@ def get_route_callable(app: "BaseApp", route: str) -> Callable:
     return return_callable  # type: ignore
 
 
-def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, Field]]:  # type: ignore
+def signature_to_fields(app: "BaseApp", route: str) -> dict[str, tuple[Any, FieldInfo]]:
     """Convert a command signature to pydantic fields."""
     return_callable = get_route_callable(app, route)
     sig = signature(return_callable)
@@ -75,22 +83,22 @@ def create_combined_model(
     filter_by_provider: str | None = None,
 ) -> type[BaseModel]:
     """Create a combined pydantic model."""
-    combined_fields = {}
+    combined_fields: dict[str, Any] = {}
     for fields in field_sets:
         for name, (type_annotation, field) in fields.items():
             if (
                 filter_by_provider is None
-                or "openbb" in field.title  # type: ignore
-                or (filter_by_provider in field.title)  # type: ignore
+                or "openbb" in field.title
+                or (filter_by_provider in field.title)
             ):
                 combined_fields[name] = (type_annotation, field)
 
-    model = create_model(model_name, **combined_fields)  # type: ignore
+    model = create_model(model_name, **combined_fields)
 
     # # Clean up the metadata
-    for field in model.model_fields.values():
+    for field in _model_fields(model).values():
         if hasattr(field, "metadata"):
-            field.metadata = None  # type: ignore
+            field.metadata = None
 
     return model
 

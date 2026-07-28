@@ -1,7 +1,5 @@
 """Congress Committee Info Model - Widget 2: Metadata and Members for a Single Committee."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.service.system_service import SystemService
@@ -124,36 +122,14 @@ class CongressCommitteeInfoFetcher(
         credentials: dict[str, str] | None,
         **kwargs,
     ) -> dict:
-        """Extract data from the Congress API."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio
+        """Extract committee structure + members from keyless sources."""
+        from openbb_congress_gov.utils.committees import get_committee_overview
 
-        from openbb_congress_gov.utils.committees import get_committee_members
-        from openbb_core.provider.utils.helpers import amake_request
-
-        api_key = credentials.get("congress_gov_api_key", "") if credentials else ""
         system_code = (
             query.subcommittee if query.subcommittee else query.committee
         ).lower()
-        chamber = query.chamber.lower()
-        detail_url = f"https://api.congress.gov/v3/committee/{chamber}/{system_code}?format=json&api_key={api_key}"
 
-        detail_resp, members = await asyncio.gather(
-            amake_request(detail_url),
-            get_committee_members(system_code),
-            return_exceptions=True,
-        )
-        detail = {} if isinstance(detail_resp, Exception) else detail_resp.get("committee", {})  # type: ignore
-
-        if isinstance(members, Exception):  # type: ignore
-            members = []  # type: ignore
-
-        return {
-            "chamber": chamber,
-            "system_code": system_code,
-            "detail": detail,
-            "members": members,
-        }
+        return await get_committee_overview(system_code, query.chamber.lower())
 
     @staticmethod
     def transform_data(
@@ -162,71 +138,36 @@ class CongressCommitteeInfoFetcher(
         **kwargs,
     ) -> CongressCommitteeInfoData:
         """Transform the raw data into a CongressCommitteeInfoData instance."""
-        chamber = data.get("chamber", "")
         system_code = data.get("system_code", "")
         detail = data.get("detail", {})
         members = data.get("members", [])
-        history = detail.get("history", [])
-        name = ""
 
-        for h in reversed(history):
-            candidate = h.get("officialName") or h.get("libraryOfCongressName") or ""
-            if candidate:
-                name = candidate
-                break
+        name = detail.get("name") or system_code.upper()
+        md = f"# {name}\n\n## Overview\n\n| Field | Value |\n|---|---|\n"
 
-        if not name:
-            name = system_code.upper()
-
-        committee_type = detail.get("type", "")
-        website = detail.get("committeeWebsiteUrl") or ""
-        is_current = detail.get("isCurrent", True)
-        update_date = (detail.get("updateDate") or "")[:10]
-        reports_info = detail.get("reports") or {}
-        bills_info = detail.get("bills") or {}
-        nominations_info = detail.get("nominations") or {}
-        comms_info = detail.get("communications") or {}
-        subcommittees = detail.get("subcommittees") or []
-        md = f"# {name}\n\n"
         meta_rows = [
-            ("Chamber", chamber.title()),
-            ("Type", committee_type),
+            ("Chamber", detail.get("chamber", "").title()),
+            ("Type", detail.get("type", "")),
             ("System Code", f"`{system_code}`"),
-            ("Current", "Yes" if is_current else "No"),
-            ("Last Updated", update_date),
         ]
-
-        if website:
+        if detail.get("is_subcommittee") and detail.get("parent_name"):
+            meta_rows.append(("Parent Committee", detail["parent_name"]))
+        if detail.get("website"):
+            website = detail["website"]
             meta_rows.append(("Website", f"[{website}]({website})"))
-
-        md += "## Overview\n\n"
-        md += "| Field | Value |\n|---|---|\n"
 
         for label, val in meta_rows:
             md += f"| {label} | {val} |\n"
 
-        md += "\n## Activity Counts\n\n"
-        md += "| Type | Count |\n|---|---|\n"
+        if detail.get("jurisdiction"):
+            md += f"\n## Jurisdiction\n\n{detail['jurisdiction']}\n"
 
-        for label, info in [
-            ("Reports", reports_info),
-            ("Bills Referred", bills_info),
-            ("Nominations", nominations_info),
-            ("Communications", comms_info),
-        ]:
-            if isinstance(info, dict):
-                count = info.get("count", 0)
-
-                if count:
-                    md += f"| {label} | {count:,} |\n"
-
+        subcommittees = detail.get("subcommittees") or []
         if subcommittees:
             md += f"\n## Subcommittees ({len(subcommittees)})\n\n"
-
             for sub in subcommittees:
                 sub_name = sub.get("name", "")
                 sub_code = sub.get("systemCode", "")
-
                 if sub_name:
                     md += f"- **{sub_name}** (`{sub_code}`)\n"
 
@@ -249,16 +190,6 @@ class CongressCommitteeInfoFetcher(
                 md += f"| {name_val} | {party} | {title} |\n"
         else:
             md += "\n*Member data not available for this committee.*\n"
-
-        if history:
-            md += "\n## Historical Names\n\n"
-
-            for h in history:
-                official = h.get("officialName") or h.get("libraryOfCongressName") or ""
-                start = (h.get("startDate") or "")[:10]
-                end = (h.get("endDate") or "present")[:10]
-                if official:
-                    md += f"- {official} ({start} – {end})\n"
 
         return CongressCommitteeInfoData(
             markdown_content=md,

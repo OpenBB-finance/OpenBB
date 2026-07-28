@@ -22,7 +22,6 @@ openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "p
 openbb-core = { path = "./core", develop = true }
 openbb-platform-api = { path = "./extensions/platform_api", develop = true }
 
-openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-bls = { path = "./providers/bls", develop = true }
 openbb-cftc = { path = "./providers/cftc", develop = true }
 openbb-congress-gov = { path = "./providers/congress_gov", develop = true }
@@ -54,8 +53,6 @@ openbb-regulators = { path = "./extensions/regulators", develop = true }
 openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
 
 # Community dependencies
-openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
-openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
@@ -65,10 +62,8 @@ openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
 openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
-openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
 openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
 openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
-openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
 openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }

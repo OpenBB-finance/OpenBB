@@ -4,12 +4,12 @@ import json
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
-from openbb_core.app.logs.logging_service import LoggingService
-from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import BaseModel
 
+from openbb_core.app.logs.logging_service import LoggingService
+from openbb_core.app.model.abstract.error import OpenBBError
+
 # ruff: noqa: S106
-# pylint: disable=redefined-outer-name, protected-access
 
 
 class MockSystemSettings:
@@ -75,7 +75,12 @@ def logging_service():
 
 def test_correctly_initialized():
     """Test the LoggingService is correctly initialized."""
-    mock_system_settings = Mock()
+    # LoggingService is a singleton; clear any prior instance so __init__ runs.
+    from openbb_core.app.model.abstract.singleton import SingletonMeta
+
+    SingletonMeta._instances.pop(LoggingService, None)
+
+    mock_system_settings = MockSystemSettings()
     mock_user_settings = Mock()
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()
@@ -102,6 +107,37 @@ def test_correctly_initialized():
         mock_log_startup.assert_called_once()
 
 
+def test_init_with_logging_suppress_returns_early():
+    from openbb_core.app.model.abstract.singleton import SingletonMeta
+
+    SingletonMeta._instances.pop(LoggingService, None)
+
+    class _Suppressed:
+        logging_suppress = True
+
+    svc = LoggingService(system_settings=_Suppressed(), user_settings=Mock())
+    assert not hasattr(svc, "_logging_settings")
+
+
+def test_setup_handlers_executes_and_logs():
+    svc = LoggingService.__new__(LoggingService)
+    svc._logger = MagicMock()
+    svc._logging_settings = Mock(handler_list=["stdout"], verbosity=2)
+
+    fake_manager = Mock()
+    fake_manager.setup = Mock()
+
+    with patch(
+        "openbb_core.app.logs.logging_service.HandlersManager",
+        return_value=fake_manager,
+    ):
+        out = LoggingService._setup_handlers(svc)
+
+    assert out is fake_manager
+    fake_manager.setup.assert_called_once()
+    assert svc._logger.info.call_count == 4
+
+
 def test_logging_settings_setter(logging_service):
     """Test the logging_settings setter."""
     custom_user_settings = Mock()
@@ -118,8 +154,14 @@ def test_logging_settings_setter(logging_service):
             custom_user_settings,
         )
 
-    assert logging_service.logging_settings.system_settings.custom_attribute == "custom_system_settings"  # type: ignore[attr-defined]
-    assert logging_service.logging_settings.user_settings.preferences == "custom_preferences"  # type: ignore[attr-defined]
+    assert (
+        logging_service.logging_settings.system_settings.custom_attribute
+        == "custom_system_settings"
+    )  # type: ignore[attr-defined]
+    assert (
+        logging_service.logging_settings.user_settings.preferences
+        == "custom_preferences"
+    )  # type: ignore[attr-defined]
 
 
 def test_log_startup(logging_service):

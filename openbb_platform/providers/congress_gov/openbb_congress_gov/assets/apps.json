@@ -1,0 +1,572 @@
+[
+  {
+    "name": "The United States Congress",
+    "img": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "img_dark": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "img_light": "https://www.congress.gov/img/opengraph1200by630.jpg",
+    "description": "Find and view US federal legislative information and complete bill text.",
+    "allowCustomization": true,
+    "tabs": {
+      "bills": {
+        "id": "bills",
+        "name": "Bills",
+        "layout": [
+          {
+            "i": "uscongress_bills_congress_gov_obb",
+            "x": 0,
+            "y": 11,
+            "w": 40,
+            "h": 11,
+            "state": {
+              "paramOrder": [
+                "congress",
+                "bill_type",
+                "start_date",
+                "end_date",
+                "limit",
+                "offset",
+                "sort_by",
+                "bill_id"
+              ],
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "origin_chamber_code"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "update_date",
+                      "latest_action_date",
+                      "bill_id",
+                      "congress",
+                      "bill_number",
+                      "origin_chamber",
+                      "origin_chamber_code",
+                      "bill_type",
+                      "title",
+                      "latest_action",
+                      "update_date_including_text"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "uscongress_bill_text_congress_gov_obb",
+            "x": 16,
+            "y": 22,
+            "w": 24,
+            "h": 31,
+            "state": {
+              "params": {
+                "bill_id": "119-hr-6967",
+                "urls": [
+                  "https://www.congress.gov/119/bills/hr6967/BILLS-119hr6967rh.pdf"
+                ]
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "uscongress_bill_info_congress_gov_obb",
+            "x": 0,
+            "y": 22,
+            "w": 16,
+            "h": 31,
+            "state": {
+              "params": {
+                "bill_id": "119-hr-4553"
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 9,
+            "state": {
+              "params": {
+                "note": "bills"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "amendments": {
+        "id": "amendments",
+        "name": "Amendments",
+        "layout": [
+          {
+            "i": "uscongress_amendments_congress_gov_obb",
+            "x": 0,
+            "y": 10,
+            "w": 40,
+            "h": 11,
+            "state": {
+              "paramOrder": [
+                "congress",
+                "amendment_type",
+                "start_date",
+                "end_date",
+                "limit",
+                "offset",
+                "sort_by",
+                "amendment_id"
+              ],
+              "params": {
+                "congress": "119",
+                "amendment_type": "samdt",
+                "limit": "100"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "congress",
+                      "amendment_type",
+                      "number",
+                      "update_date",
+                      "amendment_id",
+                      "amended_bill",
+                      "amended_bill_title",
+                      "sponsor",
+                      "submitted_date"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 2"
+            ]
+          },
+          {
+            "i": "uscongress_amendment_info_congress_gov_obb",
+            "x": 0,
+            "y": 21,
+            "w": 14,
+            "h": 27,
+            "groups": [
+              "Group 2"
+            ]
+          },
+          {
+            "i": "uscongress_amendment_text_congress_gov_obb",
+            "x": 14,
+            "y": 21,
+            "w": 26,
+            "h": 27,
+            "state": {
+              "params": {
+                "amendment_id": "119-samdt-4743",
+                "urls": [
+                  "https://www.govinfo.gov/content/pkg/CREC-2026-03-21/pdf/CREC-2026-03-21-pt1-PgS1484-6.pdf"
+                ]
+              }
+            },
+            "groups": [
+              "Group 2"
+            ]
+          },
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "note": "amendments"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "committees": {
+        "id": "committees",
+        "name": "Committees",
+        "layout": [
+          {
+            "i": "uscongress_committee_document_viewer_congress_gov_obb",
+            "x": 0,
+            "y": 9,
+            "w": 40,
+            "h": 26,
+            "state": {
+              "params": {
+                "chamber": "house",
+                "committee": "hsju00",
+                "doc_type": "report",
+                "congress": "119",
+                "urls": [
+                  "https://www.congress.gov/119/crpt/hrpt541/CRPT-119hrpt541.pdf"
+                ]
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 7,
+            "state": {
+              "params": {
+                "note": "committees"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "uscongress_committee_members_congress_gov_obb",
+            "x": 0,
+            "y": 35,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "chamber": "house",
+                "committee": "hsju00"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "members": {
+        "id": "members",
+        "name": "Members",
+        "layout": [
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 7,
+            "state": {
+              "params": {
+                "note": "members"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "uscongress_members_congress_gov_obb",
+            "x": 0,
+            "y": 7,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "chamber": "house"
+              }
+            },
+            "groups": [
+              "Group 11"
+            ]
+          },
+          {
+            "i": "uscongress_member_info_congress_gov_obb",
+            "x": 0,
+            "y": 19,
+            "w": 16,
+            "h": 34,
+            "state": {
+              "params": {
+                "bioguide_id": "A000055",
+                "theme": "dark"
+              }
+            },
+            "groups": [
+              "Group 11"
+            ]
+          },
+          {
+            "i": "uscongress_member_votes_congress_gov_obb",
+            "x": 16,
+            "y": 19,
+            "w": 24,
+            "h": 17,
+            "state": {
+              "params": {
+                "bioguide_id": "A000055"
+              }
+            },
+            "groups": [
+              "Group 11"
+            ]
+          },
+          {
+            "i": "uscongress_member_legislation_congress_gov_obb",
+            "x": 16,
+            "y": 36,
+            "w": 24,
+            "h": 17,
+            "state": {
+              "params": {
+                "bioguide_id": "A000055"
+              }
+            },
+            "groups": [
+              "Group 11"
+            ]
+          }
+        ]
+      },
+      "laws": {
+        "id": "laws",
+        "name": "Laws",
+        "layout": [
+          {
+            "i": "uscongress_laws_congress_gov_obb",
+            "x": 0,
+            "y": 9,
+            "w": 40,
+            "h": 12,
+            "state": {},
+            "groups": [
+              "Group 6"
+            ]
+          },
+          {
+            "i": "uscongress_law_viewer_congress_gov_obb",
+            "x": 0,
+            "y": 21,
+            "w": 40,
+            "h": 26,
+            "state": {
+              "params": {
+                "law_type": "public",
+                "law_id": "119-1"
+              }
+            },
+            "groups": [
+              "Group 6"
+            ]
+          },
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 7,
+            "state": {
+              "params": {
+                "note": "laws"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "calendars": {
+        "id": "calendars",
+        "name": "Calendars",
+        "layout": [
+          {
+            "i": "uscongress_calendars_congress_gov_obb",
+            "x": 0,
+            "y": 9,
+            "w": 40,
+            "h": 12,
+            "state": {},
+            "groups": [
+              "Group 7",
+              "Group 3",
+              "Group 10"
+            ]
+          },
+          {
+            "i": "uscongress_calendar_viewer_congress_gov_obb",
+            "x": 0,
+            "y": 21,
+            "w": 40,
+            "h": 26,
+            "state": {
+              "params": {
+                "package_id": "CCAL-119hcal-2025-01-03"
+              }
+            },
+            "groups": [
+              "Group 7"
+            ]
+          },
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 7,
+            "state": {
+              "params": {
+                "note": "calendars"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "mandated_reports": {
+        "id": "mandated_reports",
+        "name": "Mandated Reports",
+        "layout": [
+          {
+            "i": "uscongress_mandated_reports_congress_gov_obb",
+            "x": 0,
+            "y": 9,
+            "w": 40,
+            "h": 12,
+            "state": {},
+            "groups": [
+              "Group 8"
+            ]
+          },
+          {
+            "i": "uscongress_mandated_report_viewer_congress_gov_obb",
+            "x": 0,
+            "y": 21,
+            "w": 40,
+            "h": 26,
+            "state": {
+              "params": {
+                "package_id": "CMR-A98-00199920"
+              }
+            },
+            "groups": [
+              "Group 8"
+            ]
+          },
+          {
+            "i": "uscongress_how_to_use_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 7,
+            "state": {
+              "params": {
+                "note": "mandated_reports"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "search": {
+        "id": "search",
+        "name": "Search",
+        "layout": [
+          {
+            "i": "uscongress_search_congress_gov_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 13,
+            "state": {
+              "params": {
+                "query": "artificial intelligence",
+                "congress": "119"
+              }
+            },
+            "groups": [
+              "Group 9"
+            ]
+          },
+          {
+            "i": "uscongress_search_viewer_congress_gov_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {
+                "package_id": "CHRG-119hhrg63299"
+              }
+            },
+            "groups": [
+              "Group 9"
+            ]
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Group 1",
+        "type": "param",
+        "paramName": "bill_id",
+        "defaultValue": "119-hr-6967"
+      },
+      {
+        "name": "Group 2",
+        "type": "param",
+        "paramName": "amendment_id",
+        "defaultValue": "119-samdt-4743"
+      },
+      {
+        "name": "Group 3",
+        "type": "param",
+        "paramName": "chamber",
+        "defaultValue": "both"
+      },
+      {
+        "name": "Group 6",
+        "type": "param",
+        "paramName": "law_id",
+        "defaultValue": "119-1"
+      },
+      {
+        "name": "Group 7",
+        "type": "param",
+        "paramName": "package_id",
+        "defaultValue": null
+      },
+      {
+        "name": "Group 8",
+        "type": "param",
+        "paramName": "package_id",
+        "defaultValue": null
+      },
+      {
+        "name": "Group 9",
+        "type": "param",
+        "paramName": "package_id",
+        "defaultValue": null
+      },
+      {
+        "name": "Group 10",
+        "type": "param",
+        "paramName": "congress",
+        "defaultValue": "119"
+      },
+      {
+        "name": "Group 11",
+        "type": "param",
+        "paramName": "bioguide_id",
+        "defaultValue": "A000055"
+      }
+    ]
+  }
+]

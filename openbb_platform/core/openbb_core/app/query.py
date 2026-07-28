@@ -67,12 +67,17 @@ class Query:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
-            self.filter_extra_params(self.extra_params, self.provider) if self.extra_params else {}  # type: ignore
+            self.filter_extra_params(
+                self.extra_params,
+                self.provider,  # ty: ignore[invalid-argument-type]
+            )
+            if self.extra_params
+            else {}
         )
         query_executor = self.provider_interface.create_executor()
 
         return await query_executor.execute(
-            provider_name=self.provider,
+            provider_name=self.provider,  # ty: ignore[invalid-argument-type]
             model_name=self.name,
             params={**standard_dict, **extra_dict},
             credentials=self.cc.user_settings.credentials.model_dump(),

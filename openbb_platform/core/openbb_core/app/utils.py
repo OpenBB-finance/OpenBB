@@ -5,14 +5,15 @@ import json
 from datetime import time
 from typing import TYPE_CHECKING, Union
 
+from pydantic import ValidationError
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
+from openbb_core.app.utils_optional import require_optional
 from openbb_core.provider.abstract.data import Data
-from pydantic import ValidationError
 
 if TYPE_CHECKING:
-    # pylint: disable=import-outside-toplevel
     from numpy import ndarray
     from pandas import DataFrame, Series
 
@@ -22,8 +23,8 @@ def basemodel_to_df(
     index: str | None = None,
 ) -> "DataFrame":
     """Convert list of BaseModel to a Pandas DataFrame."""
-    # pylint: disable=import-outside-toplevel
-    from pandas import DataFrame, to_datetime
+    pd = require_optional("pandas")
+    DataFrame, to_datetime = pd.DataFrame, pd.to_datetime  # type: ignore[union-attr]
 
     if isinstance(data, list):
         df = DataFrame(
@@ -34,7 +35,8 @@ def basemodel_to_df(
             df = DataFrame(data.model_dump(exclude_none=True, exclude_unset=True))
         except ValueError:
             df = DataFrame(
-                data.model_dump(exclude_none=True, exclude_unset=True), index=["values"]
+                data.model_dump(exclude_none=True, exclude_unset=True),
+                index=pd.Index(["values"]),  # type: ignore[union-attr]
             )
 
     if "is_multiindex" in df.columns:
@@ -62,8 +64,8 @@ def df_to_basemodel(
     df: Union["DataFrame", "Series"], index: bool = False
 ) -> list[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
-    # pylint: disable=import-outside-toplevel
-    from pandas import MultiIndex, Series, to_datetime
+    pd = require_optional("pandas")
+    MultiIndex, Series, to_datetime = pd.MultiIndex, pd.Series, pd.to_datetime  # type: ignore[union-attr]
 
     is_multiindex = isinstance(df.index, MultiIndex)
 
@@ -91,8 +93,8 @@ def df_to_basemodel(
 
 def list_to_basemodel(data_list: list) -> list[Data]:
     """Convert a list to a list of BaseModel."""
-    # pylint: disable=import-outside-toplevel
-    from pandas import DataFrame, Series
+    pd = require_optional("pandas")
+    DataFrame, Series = pd.DataFrame, pd.Series  # type: ignore[union-attr]
 
     base_models = []
     for item in data_list:
@@ -129,9 +131,9 @@ def ndarray_to_basemodel(array: "ndarray") -> list[Data]:
 
 def convert_to_basemodel(data) -> Data | list[Data]:
     """Dispatch function to convert different types to BaseModel."""
-    # pylint: disable=import-outside-toplevel
-    from numpy import ndarray
-    from pandas import DataFrame, Series
+    np, pd = require_optional("numpy", "pandas")
+    ndarray = np.ndarray  # type: ignore[union-attr]
+    DataFrame, Series = pd.DataFrame, pd.Series  # type: ignore[union-attr]
 
     if isinstance(data, Data) or issubclass(type(data), Data):
         return data
@@ -158,10 +160,8 @@ def get_target_column(df: "DataFrame", target: str) -> "Series":
 
 def get_target_columns(df: "DataFrame", target_columns: list[str]) -> "DataFrame":
     """Get target columns from time series data."""
-    # pylint: disable=import-outside-toplevel
-    from pandas import DataFrame
-
-    df_result = DataFrame()
+    pd = require_optional("pandas")
+    df_result = pd.DataFrame()  # type: ignore[union-attr]
     for target in target_columns:
         df_result[target] = get_target_column(df, target).to_frame()
     return df_result

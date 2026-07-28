@@ -1,6 +1,5 @@
 """Chart and style helpers for Plotly."""
 
-# pylint: disable=C0302,R0902,W3301
 import json
 import sys
 from pathlib import Path
@@ -21,12 +20,7 @@ from openbb_charting.core.config.openbb_styles import (
 
 
 class ChartStyle:
-    """The class that helps with handling of style configurations.
-
-    It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
-    to the .pltstyle files. For `Plotly` and `Rich` this class serves custom
-    styles as python dictionaries.
-    """
+    """The class that helps with handling of style configurations."""
 
     STYLES_REPO = Path(__file__).parent.parent / "styles"
     user_styles_directory: Path = STYLES_REPO
@@ -49,10 +43,10 @@ class ChartStyle:
     initialized: bool = False
     instance: ClassVar["ChartStyle | None"] = None
 
-    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
+    def __new__(cls, *args, **kwargs):
         """Create a singleton."""
         if cls.instance is None:
-            cls.instance = super().__new__(cls)  # pylint: disable=E1120
+            cls.instance = super().__new__(cls)
         return cls.instance
 
     def __init__(
@@ -69,7 +63,6 @@ class ChartStyle:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.service.user_service import UserService
 
         if self.initialized:
@@ -93,7 +86,7 @@ class ChartStyle:
         if style != self.plt_style:
             self.load_style(style)
 
-        style = style.lower().replace("light", "white")  # type: ignore
+        style = style.lower().replace("light", "white")
 
         if self.plt_style and self.plotly_template:
             self.plotly_template.setdefault("layout", {}).setdefault(
@@ -105,7 +98,9 @@ class ChartStyle:
             try:
                 pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             except ValueError as err:
-                if "plotly.graph_objs.Layout: 'legend2'" in str(err):
+                if (
+                    "plotly.graph_objs.Layout: 'legend2'" in str(err)
+                ):  # pragma: no cover - plotly<5.15 only; installed plotly supports legend2
                     warn(
                         "[red]Warning: Plotly multiple legends are "
                         "not supported in currently installed version.[/]\n\n"
@@ -127,11 +122,6 @@ class ChartStyle:
 
     def load_available_styles_from_folder(self, folder: Path | str) -> None:
         """Load custom styles from folder.
-
-        Parses the styles/default and styles/user folders and loads style files.
-        To be recognized files need to follow a naming convention:
-        *.pltstyle        - plotly stylesheets
-        *.richstyle.json  - rich stylesheets
 
         Parameters
         ----------

@@ -2,13 +2,14 @@
 
 from datetime import date as dateType
 
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class ReleaseTableQueryParams(QueryParams):
@@ -30,8 +31,9 @@ class ReleaseTableQueryParams(QueryParams):
     @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import to_datetime
+        from openbb_core.app.utils_optional import require_optional
+
+        to_datetime = require_optional("pandas").to_datetime  # type: ignore[union-attr]
 
         if v is None:
             return None

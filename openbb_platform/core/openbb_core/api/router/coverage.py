@@ -4,6 +4,7 @@ import json
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+
 from openbb_core.api.dependency.coverage import get_command_map, get_provider_interface
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
@@ -39,9 +40,7 @@ async def get_commands_model_map(
             data_fields = data.get("fields", {})
 
             for field, field_info in query_fields.items():
-                attributes = (
-                    field_info._attributes_set  # pylint: disable=protected-access
-                )
+                attributes = field_info._attributes_set
                 if attributes.get("annotation"):
                     _annotation = str(attributes.get("annotation"))
                     attributes["annotation"] = _annotation
@@ -51,9 +50,7 @@ async def get_commands_model_map(
             new_command[provider]["QueryParams"]["docstring"] = query.get("docstring")
 
             for field, field_info in data_fields.items():
-                attributes = (
-                    field_info._attributes_set  # pylint: disable=protected-access
-                )
+                attributes = field_info._attributes_set
                 if attributes.get("annotation"):
                     _annotation = str(attributes.get("annotation"))
                     attributes["annotation"] = _annotation
@@ -84,7 +81,7 @@ async def get_commands_model_map(
         """Serialize the object."""
         if isinstance(obj, type):
             return str(obj)
-        return obj
+        return obj  # pragma: no cover
 
     return json.loads(json.dumps(commands_map, default=serializer, indent=4))
 

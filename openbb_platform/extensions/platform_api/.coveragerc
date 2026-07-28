@@ -1,0 +1,24 @@
+[run]
+branch = False
+parallel = True
+source = openbb_platform_api
+data_file = .coverage
+omit =
+    openbb_platform_api/assets/**
+    tests/*
+    integration/*
+
+[paths]
+source =
+    openbb_platform_api
+    */site-packages/openbb_platform_api
+    */platform_api/openbb_platform_api
+
+[report]
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    if __name__ == .__main__.:
+    raise NotImplementedError

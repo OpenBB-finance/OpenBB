@@ -6,6 +6,7 @@ from importlib import import_module
 from types import ModuleType
 
 from fastapi import APIRouter
+
 from openbb_core.api.router.user import (
     auth_hook as default_auth_hook,
     router as default_router,
