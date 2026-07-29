@@ -392,6 +392,7 @@ async def cds_index_trades(
     ],
     widget_config={
         "name": "Overnight Index Swap Curve",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "Central bank overnight index swap curves built from executed transactions.",
         "category": "CFTC",
         "subCategory": "Swaps",
@@ -428,6 +429,7 @@ async def ois_curve(
     ],
     widget_config={
         "name": "Overnight Index Swap Curve History",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "Central bank overnight index swap curves over time, by tenor.",
         "category": "CFTC",
         "subCategory": "Swaps",
@@ -469,6 +471,7 @@ async def ois_curve_history(
     ],
     widget_config={
         "name": "OIS Forward Rate Curve",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "Forward par swap rate by start date, from executed transactions.",
         "category": "CFTC",
         "subCategory": "Swaps",
@@ -496,6 +499,7 @@ async def ois_forward_curve(
     ],
     widget_config={
         "name": "OIS Policy Path",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "Expected central-bank overnight-rate path, read from"
         + " forward-starting OIS reported to the DTCC.",
         "category": "CFTC",
@@ -528,6 +532,7 @@ async def ois_policy_path(
     ],
     widget_config={
         "name": "FX Forward Points",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "FX forward points built from executed forwards and FX swaps.",
         "category": "CFTC",
         "subCategory": "FX",
@@ -555,6 +560,7 @@ async def fx_forward_points(
     ],
     widget_config={
         "name": "FX Forward Curve",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "Outright FX forward curve, in units of the currency per US dollar,"
         + " from executed forwards and FX swaps.",
         "category": "CFTC",
@@ -583,6 +589,7 @@ async def fx_forward_curve(
     ],
     widget_config={
         "name": "FX Implied Volatility",
+        "data": {"chartView": {"enabled": True, "chartType": "line"}},
         "description": "FX implied-volatility smiles by tenor from vanilla options reported to the CFTC.",
         "category": "CFTC",
         "subCategory": "FX",

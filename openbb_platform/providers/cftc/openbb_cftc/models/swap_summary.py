@@ -322,6 +322,7 @@ async def _fx_metadata(query: CftcSwapSummaryQueryParams, record: dict) -> dict:
 
     from openbb_core.provider.utils.errors import EmptyDataError
 
+    from openbb_cftc.utils.cfets import mentions_cny
     from openbb_cftc.utils.dtcc import get_slice
     from openbb_cftc.utils.fx_valuation import value_fx_trade
     from openbb_cftc.utils.swap import record_disseminated_day
@@ -335,6 +336,18 @@ async def _fx_metadata(query: CftcSwapSummaryQueryParams, record: dict) -> dict:
 
     forex = await get_slice("forex", day, use_cache=query.use_cache)
     rates = await get_slice("rates", day, use_cache=query.use_cache)
+
+    if mentions_cny(record):
+        from openbb_cftc.utils.cfets import cny_curve_records
+        from openbb_cftc.utils.store import RecordChain
+
+        extra = await cny_curve_records(
+            dateType.fromisoformat(day), use_cache=query.use_cache
+        )
+
+        if extra:
+            rates = RecordChain(rates, extra)
+
     valued = value_fx_trade(
         record,
         forex,

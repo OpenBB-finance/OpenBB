@@ -1279,14 +1279,19 @@ def test_ois_curve_every_central_bank(patch_source, currency, index):
 def test_ois_currency_literal_matches_the_index_registry():
     from typing import get_args
 
-    from openbb_cftc.utils.constants import OIS_INDICES, day_count_basis
+    from openbb_cftc.utils.constants import (
+        FIXED_FLOAT_CURVE_SPECS,
+        OIS_INDICES,
+        day_count_basis,
+    )
 
     registry = set(OIS_INDICES)
+    fixed_float = set(FIXED_FLOAT_CURVE_SPECS)
     thin = {"AUD", "NZD"}
     offered_by_class = {
-        CftcOisCurveQueryParams: registry - thin,
+        CftcOisCurveQueryParams: (registry - thin) | fixed_float,
         CftcOisForwardCurveQueryParams: registry - thin,
-        CftcOisCurveHistoryQueryParams: registry,
+        CftcOisCurveHistoryQueryParams: registry | fixed_float,
     }
     for query_cls, expected in offered_by_class.items():
         offered = set(get_args(query_cls.model_fields["currency"].annotation))
@@ -1299,11 +1304,12 @@ def test_ois_currency_literal_matches_the_index_registry():
 
 
 def test_ois_curve_slice_defaults_to_the_latest_published_date(patch_source):
-    _, report_date = asyncio.run(
+    _, report_date, anchor = asyncio.run(
         CftcOisCurveFetcher.aextract_data(CftcOisCurveQueryParams(source="slice"), None)
     )
 
     assert report_date == "2026-07-15"
+    assert anchor is None
 
 
 @pytest.mark.parametrize("lookback", [0, 366])
@@ -1829,3 +1835,285 @@ def test_inflation_levels_fetches_each_index_once_and_survives_an_outage(monkeyp
 
     assert sorted(calls) == ["UKRPI", "USCPI"]
     assert sorted(levels) == ["UKRPI"]
+
+
+def test_ois_curve_overnight_anchor(patch_source, monkeypatch):
+    seen: list = []
+
+    async def _fixings(index, start_date, end_date, use_cache=True):
+        seen.append((index, start_date, end_date))
+
+        return {date(2026, 7, 14): 0.0435}
+
+    monkeypatch.setattr("openbb_cftc.utils.fixings.get_fixings", _fixings)
+    query = CftcOisCurveQueryParams(
+        date=TRADE_DATE, source="slice", min_trades=5, overnight_anchor=True
+    )
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+    first = result.result[0]
+
+    assert seen[0][0] == "SOFR"
+    assert first.tenor == "1D"
+    assert first.num_trades == 0
+    assert first.as_of_date == date(2026, 7, 14)
+    assert first.staleness_days == 1
+    assert first.rate == pytest.approx(4.35)
+    assert result.metadata["overnight_anchor"] == {
+        "date": "2026-07-14",
+        "rate": pytest.approx(4.35),
+    }
+
+
+def test_ois_curve_overnight_anchor_search_source(patch_search, monkeypatch):
+
+    async def _fixings(index, start_date, end_date, use_cache=True):
+        return {end_date: 0.011}
+
+    monkeypatch.setattr("openbb_cftc.utils.fixings.get_fixings", _fixings)
+    query = CftcOisCurveQueryParams(currency="CHF", min_trades=1, overnight_anchor=True)
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+
+    assert result.result[0].tenor == "1D"
+    assert result.metadata["overnight_anchor"]["rate"] == pytest.approx(1.1)
+
+
+def test_ois_curve_anchor_unavailable_on_a_fixings_outage(patch_source, monkeypatch):
+
+    async def _broken(index, start_date, end_date, use_cache=True):
+        raise OpenBBError("source down")
+
+    monkeypatch.setattr("openbb_cftc.utils.fixings.get_fixings", _broken)
+    query = CftcOisCurveQueryParams(
+        date=TRADE_DATE, source="slice", min_trades=5, overnight_anchor=True
+    )
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+
+    assert all(n.tenor != "1D" for n in result.result)
+    assert result.metadata["overnight_anchor"] == "unavailable"
+
+
+def test_ois_curve_anchor_metadata_defaults_off(patch_source):
+    query = CftcOisCurveQueryParams(date=TRADE_DATE, source="slice", min_trades=5)
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+
+    assert result.metadata["overnight_anchor"] is False
+
+
+def test_latest_fixing_skips_days_after_the_cutoff(monkeypatch):
+    from openbb_cftc.models.ois_curve import _latest_fixing
+
+    async def _fixings(index, start_date, end_date, use_cache=True):
+        return {date(2026, 8, 1): 0.05}
+
+    monkeypatch.setattr("openbb_cftc.utils.fixings.get_fixings", _fixings)
+
+    assert asyncio.run(_latest_fixing("USD", date(2026, 7, 15), True)) is None
+
+
+def test_keep_priceable_forex_injects_the_cfets_curve_for_cny(monkeypatch):
+    from openbb_cftc.models.swap_trades import (
+        CftcSwapTradesQueryParams,
+        _keep_priceable_forex,
+    )
+
+    marker = {"UPI FISN": "NA/Swap Fxd Flt CNY", "synthetic": "1"}
+    captured: list = []
+
+    async def _rates(asset_class, report_date, use_cache=True):
+        return [{"UPI FISN": "NA/Swap OIS USD"}]
+
+    async def _cny(day, use_cache=True):
+        return [marker]
+
+    def _value(record, fx_records, rates_records, curve_date, **kwargs):
+        captured.append(list(rates_records))
+
+        return {"npv": 1.0}
+
+    monkeypatch.setattr("openbb_cftc.utils.dtcc.get_slice", _rates)
+    monkeypatch.setattr("openbb_cftc.utils.cfets.cny_curve_records", _cny)
+    monkeypatch.setattr("openbb_cftc.utils.fx_valuation.value_fx_trade", _value)
+    filtered = [{"UPI FISN": "NA/Fwd NDF CNY USD", "UPI Underlier Name": "CNY USD"}]
+    query = CftcSwapTradesQueryParams(asset_class="forex")
+    kept = asyncio.run(_keep_priceable_forex(filtered, [], "2026-07-24", query))
+
+    assert kept == filtered
+    assert marker in captured[0]
+
+
+def test_keep_priceable_forex_skips_cfets_without_cny(monkeypatch):
+    from openbb_cftc.models.swap_trades import (
+        CftcSwapTradesQueryParams,
+        _keep_priceable_forex,
+    )
+
+    async def _rates(asset_class, report_date, use_cache=True):
+        return [{"UPI FISN": "NA/Swap OIS USD"}]
+
+    def _forbidden(*args, **kwargs):
+        raise AssertionError("no CFETS fetch for a CNY-free day")
+
+    def _value(record, fx_records, rates_records, curve_date, **kwargs):
+        return {"npv": 1.0}
+
+    monkeypatch.setattr("openbb_cftc.utils.dtcc.get_slice", _rates)
+    monkeypatch.setattr("openbb_cftc.utils.cfets.cny_curve_records", _forbidden)
+    monkeypatch.setattr("openbb_cftc.utils.fx_valuation.value_fx_trade", _value)
+    filtered = [{"UPI FISN": "NA/Fwd EUR USD", "UPI Underlier Name": "EUR USD"}]
+    query = CftcSwapTradesQueryParams(asset_class="forex")
+    kept = asyncio.run(_keep_priceable_forex(filtered, [], "2026-07-24", query))
+
+    assert kept == filtered
+
+
+def test_swap_summary_fx_injects_the_cfets_curve_for_cny(monkeypatch):
+    from openbb_cftc.models.swap_summary import (
+        CftcSwapSummaryQueryParams,
+        _fx_metadata,
+    )
+
+    marker = {"UPI FISN": "NA/Swap Fxd Flt CNY", "synthetic": "1"}
+    captured: list = []
+
+    async def _slice(asset_class, report_date, use_cache=True):
+        return [{"UPI FISN": "NA/Swap OIS USD"}]
+
+    async def _cny(day, use_cache=True):
+        return [marker]
+
+    def _value(record, fx_records, rates_records, curve_date, **kwargs):
+        captured.append(list(rates_records))
+
+        return {"npv": 1.0}
+
+    monkeypatch.setattr("openbb_cftc.utils.dtcc.get_slice", _slice)
+    monkeypatch.setattr("openbb_cftc.utils.cfets.cny_curve_records", _cny)
+    monkeypatch.setattr("openbb_cftc.utils.fx_valuation.value_fx_trade", _value)
+    record = {
+        "UPI FISN": "NA/Fwd NDF CNY USD",
+        "UPI Underlier Name": "CNY USD",
+        "Dissemination Timestamp": "2026-07-24T12:00:00Z",
+    }
+    query = CftcSwapSummaryQueryParams(dissemination_identifier="4400000000000000101")
+    valued = asyncio.run(_fx_metadata(query, record))
+
+    assert valued["npv"] == 1.0
+    assert valued["trade_date"] == "2026-07-24"
+    assert marker in captured[0]
+
+
+def _patch_cfets_bulletin(monkeypatch):
+    from tests.test_cfets import BULLETIN
+
+    async def _bulletin(search_date, use_cache=True):
+        return BULLETIN
+
+    monkeypatch.setattr("openbb_cftc.utils.cfets.fetch_irs_bulletin", _bulletin)
+
+
+def test_ois_curve_cny_slice_builds_from_the_cfets_backstop(patch_source, monkeypatch):
+    _patch_cfets_bulletin(monkeypatch)
+    query = CftcOisCurveQueryParams(
+        currency="CNY", source="slice", date=TRADE_DATE, min_trades=1
+    )
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+    tenors = {row.tenor for row in result.result}
+
+    assert result.metadata["benchmark"] == "FR007"
+    assert result.metadata["central_bank"] == "People's Bank of China"
+    assert result.metadata["curve_date"] == "2026-07-15"
+    assert {"1M", "1Y", "5Y"} <= tenors
+    assert all(row.currency == "CNY" for row in result.result)
+
+    factors = [
+        row.discount_factor for row in result.result if row.discount_factor is not None
+    ]
+    assert all(a > b for a, b in zip(factors, factors[1:]))
+
+
+def test_ois_curve_cny_slice_without_the_backstop_uses_the_tape(
+    patch_source, monkeypatch
+):
+
+    async def _empty(day, use_cache=True):
+        return []
+
+    monkeypatch.setattr("openbb_cftc.utils.cfets.cny_curve_records", _empty)
+    query = CftcOisCurveQueryParams(
+        currency="CNY", source="slice", date=TRADE_DATE, min_trades=1
+    )
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+
+    assert len(result.result) > 0
+    assert all(row.currency == "CNY" for row in result.result)
+
+
+def test_ois_curve_cny_slice_rejects_an_empty_window(patch_source, monkeypatch):
+    from openbb_core.app.model.abstract.error import OpenBBError as CoreError
+
+    async def _dates(asset_class):
+        return ["2026-07-14", "2026-07-15"]
+
+    monkeypatch.setattr("openbb_cftc.utils.dtcc.get_available_dates", _dates)
+    query = CftcOisCurveQueryParams(
+        currency="CNY", source="slice", date=date(2020, 1, 1)
+    )
+
+    with pytest.raises(CoreError, match="No PPD rates files"):
+        asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+
+
+def test_ois_curve_cny_search_source(patch_search, monkeypatch):
+    _patch_cfets_bulletin(monkeypatch)
+    query = CftcOisCurveQueryParams(currency="CNY", min_trades=1)
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+
+    assert result.metadata["benchmark"] == "FR007"
+    assert len(result.result) >= 9
+
+
+def test_ois_curve_cny_overnight_anchor_uses_shibor(patch_source, monkeypatch):
+    _patch_cfets_bulletin(monkeypatch)
+    seen: list = []
+
+    async def _fixings(index, start_date, end_date, use_cache=True):
+        seen.append(index)
+
+        return {date(2026, 7, 14): 0.0142}
+
+    monkeypatch.setattr("openbb_cftc.utils.fixings.get_fixings", _fixings)
+    query = CftcOisCurveQueryParams(
+        currency="CNY",
+        source="slice",
+        date=TRADE_DATE,
+        min_trades=1,
+        overnight_anchor=True,
+    )
+    data = asyncio.run(CftcOisCurveFetcher.aextract_data(query, None))
+    result = CftcOisCurveFetcher.transform_data(query, data)
+
+    assert seen == ["SHIBOR"]
+    assert result.result[0].tenor == "1D"
+    assert result.result[0].rate == pytest.approx(1.42)
+
+
+def test_ois_curve_history_cny(patch_source, monkeypatch):
+    _patch_cfets_bulletin(monkeypatch)
+    query = CftcOisCurveHistoryQueryParams(
+        currency="CNY",
+        start_date=date(2026, 7, 14),
+        end_date=TRADE_DATE,
+        min_trades=1,
+    )
+    data = asyncio.run(CftcOisCurveHistoryFetcher.aextract_data(query, None))
+    result = CftcOisCurveHistoryFetcher.transform_data(query, data)
+
+    assert result.metadata["index"] == "FR007"
+    assert len(result.result) > 0

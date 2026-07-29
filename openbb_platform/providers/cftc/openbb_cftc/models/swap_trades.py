@@ -1330,8 +1330,10 @@ async def _keep_priceable_forex(
     query: "CftcSwapTradesQueryParams",
 ) -> list[dict]:
     """Keep the forex rows the swap valuation endpoints can actually price."""
+    from openbb_cftc.utils.cfets import cny_curve_records, mentions_cny
     from openbb_cftc.utils.dtcc import get_slice
     from openbb_cftc.utils.fx_valuation import value_fx_trade
+    from openbb_cftc.utils.store import RecordChain
 
     try:
         rates = await get_slice("rates", day, use_cache=query.use_cache)
@@ -1339,6 +1341,13 @@ async def _keep_priceable_forex(
         return []
 
     curve_date = dateType.fromisoformat(day)
+
+    if any(mentions_cny(record) for record in filtered):
+        extra = await cny_curve_records(curve_date, use_cache=query.use_cache)
+
+        if extra:
+            rates = RecordChain(rates, extra)
+
     memo: dict = {}
 
     return [

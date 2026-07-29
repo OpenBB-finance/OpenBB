@@ -819,6 +819,93 @@ def test_curve_cache_key_differs_by_every_parameter():
         assert _curve_cache_key(**varied) != baseline
 
 
+def test_build_curve_overnight_anchor_prepends_a_1d_node(slice_records):
+    from datetime import timedelta
+
+    overnight_date = TRADE_DATE - timedelta(days=1)
+    curve = build_curve(
+        slice_records,
+        trade_date=TRADE_DATE,
+        fisn=SOFR_OIS_FISN,
+        min_trades=5,
+        overnight_rate=0.0435,
+        overnight_date=overnight_date,
+    )
+    node = curve[0]
+
+    assert node["tenor"] == "1D"
+    assert node["num_trades"] == 0
+    assert node["par_rate"] == pytest.approx(0.0435)
+    assert node["discount_factor"] == pytest.approx(1.0 / (1.0 + 0.0435 / 360.0))
+    assert node["day_count"] == "ACT/360"
+    assert node["as_of_date"] == overnight_date
+    assert node["staleness_days"] == 1
+    assert node["maturity_date"] == TRADE_DATE + timedelta(days=1)
+
+    factors = [n["discount_factor"] for n in curve]
+    assert all(a > b for a, b in zip(factors, factors[1:]))
+
+
+def test_build_curve_anchor_and_unanchored_cache_separately(slice_records):
+    plain = build_curve(
+        slice_records, trade_date=TRADE_DATE, fisn=SOFR_OIS_FISN, min_trades=5
+    )
+    anchored = build_curve(
+        slice_records,
+        trade_date=TRADE_DATE,
+        fisn=SOFR_OIS_FISN,
+        min_trades=5,
+        overnight_rate=0.0435,
+    )
+    again = build_curve(
+        slice_records, trade_date=TRADE_DATE, fisn=SOFR_OIS_FISN, min_trades=5
+    )
+
+    assert all(n["tenor"] != "1D" for n in plain)
+    assert anchored[0]["tenor"] == "1D"
+    assert anchored[0]["as_of_date"] == TRADE_DATE
+    assert anchored[0]["staleness_days"] == 0
+    assert len(anchored) == len(plain) + 1
+    assert all(n["tenor"] != "1D" for n in again)
+
+
+def test_build_curve_observed_granularity_includes_the_anchor(slice_records):
+    curve = build_curve(
+        slice_records,
+        trade_date=TRADE_DATE,
+        fisn=SOFR_OIS_FISN,
+        granularity="observed",
+        min_trades=5,
+        overnight_rate=0.0435,
+        use_cache=False,
+    )
+    node = next(n for n in curve if n["tenor"] == "1D")
+
+    assert node["num_trades"] == 0
+    assert node["par_rate"] == pytest.approx(0.0435, rel=1e-4)
+
+
+def test_build_curve_anchor_defers_to_a_traded_1d_node():
+    records = [
+        _irs("NA/Swap OIS USD", "USD", "A004", rate=0.043, tenor_days=1),
+        _irs("NA/Swap OIS USD", "USD", "A004", rate=0.0432, tenor_days=1),
+        _irs("NA/Swap OIS USD", "USD", "A004", rate=0.0431, tenor_days=365),
+        _irs("NA/Swap OIS USD", "USD", "A004", rate=0.0433, tenor_days=365),
+    ]
+    curve = build_curve(
+        records,
+        trade_date=TRADE_DATE,
+        fisn="NA/Swap OIS USD",
+        granularity="observed",
+        overnight_rate=0.05,
+        use_cache=False,
+    )
+    one_day = next(n for n in curve if n["tenor_days"] == 1)
+
+    assert one_day["num_trades"] == 2
+    assert all(n["num_trades"] > 0 for n in curve)
+
+
 def test_build_curve_raises_without_observations(slice_records):
     with pytest.raises(EmptyDataError, match="No priceable"):
         build_curve(slice_records, trade_date=TRADE_DATE, fisn="NA/Nothing")

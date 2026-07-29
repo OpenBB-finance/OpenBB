@@ -178,6 +178,70 @@ def test_fetch_cfets_raises_when_nothing_is_in_range(monkeypatch):
         asyncio.run(fixings._fetch_cfets("7", "2030-01-01", "2030-12-31"))
 
 
+SHIBOR_BODY = json.dumps(
+    {
+        "head": {"rep_code": "200"},
+        "data": {
+            "columns": [
+                "date",
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume",
+                "O/N",
+                "1W",
+                "2W",
+                "1M",
+                "3M",
+                "6M",
+                "9M",
+                "1Y",
+            ],
+            "csv": (
+                "\r\n2026-07-29,,,,,,1.438,1.51,1.481,1.421,1.431,1.4505,1.471,1.481"
+                "\r\n2026-07-28,,,,,,1.415,1.46,1.45,1.42,1.43,1.4505,1.47,1.48"
+                "\r\n2020-01-02,,,,,,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7"
+                "\r\nnot a date,,,,,,x,y,z,a,b,c,d,e"
+                "\r\n2026-07-27,,,,,,bad,1.43,1.42,1.42,1.43,1.45,1.47,1.48"
+                "\r\n"
+            ),
+        },
+    }
+)
+
+
+def test_fetch_shibor_reads_the_tenor_column(monkeypatch):
+    _patch(monkeypatch, [("ShiborChrt", SHIBOR_BODY)])
+    rates = asyncio.run(fixings._fetch_shibor("O/N", "2026-01-01", "2026-12-31"))
+
+    assert rates == {
+        "2026-07-29": pytest.approx(0.01438),
+        "2026-07-28": pytest.approx(0.01415),
+    }
+
+
+def test_fetch_shibor_reads_a_term_tenor(monkeypatch):
+    _patch(monkeypatch, [("ShiborChrt", SHIBOR_BODY)])
+    rates = asyncio.run(fixings._fetch_shibor("3M", "2026-07-29", "2026-07-29"))
+
+    assert rates == {"2026-07-29": pytest.approx(0.01431)}
+
+
+def test_fetch_shibor_raises_when_nothing_is_in_range(monkeypatch):
+    _patch(monkeypatch, [("ShiborChrt", SHIBOR_BODY)])
+
+    with pytest.raises(OpenBBError, match="Unexpected fixings response"):
+        asyncio.run(fixings._fetch_shibor("O/N", "2030-01-01", "2030-12-31"))
+
+
+def test_fetch_shibor_raises_on_an_unknown_tenor(monkeypatch):
+    _patch(monkeypatch, [("ShiborChrt", SHIBOR_BODY)])
+
+    with pytest.raises(OpenBBError, match="Unexpected fixings response"):
+        asyncio.run(fixings._fetch_shibor("5Y", "2026-01-01", "2026-12-31"))
+
+
 FINWIRE_BODY = json.dumps(
     {
         "data": {
@@ -592,6 +656,7 @@ def test_fetch_mnb_ignores_years_outside_the_window(monkeypatch):
     [
         ("TAIBOR", "_fetch_taibor"),
         ("FR007", "_fetch_cfets"),
+        ("SHIBOR", "_fetch_shibor"),
         ("WIBOR", "_fetch_finwire"),
         ("POLSTR", "_fetch_gpw"),
         ("BUBOR", "_fetch_mnb"),

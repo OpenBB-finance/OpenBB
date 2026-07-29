@@ -226,6 +226,8 @@ def test_cftc_cds_index_trades(params, headers):
         {"granularity": "observed", "min_trades": 1, "provider": "cftc"},
         {"source": "slice", "provider": "cftc"},
         {"currency": "CHF", "lookback_days": 30, "min_trades": 1, "provider": "cftc"},
+        {"overnight_anchor": True, "provider": "cftc"},
+        {"currency": "CNY", "min_trades": 1, "provider": "cftc"},
     ],
 )
 @pytest.mark.integration

@@ -139,6 +139,31 @@ def currency_basis(currency: str) -> float:
     )
 
 
+FIXED_FLOAT_CURVE_SPECS: dict[str, dict[str, str]] = {
+    "CNY": {
+        "index": "FR007",
+        "central_bank": "People's Bank of China",
+        "day_count": "A005",
+        "fisn": "NA/Swap Fxd Flt CNY",
+        "overnight_index": "SHIBOR",
+    },
+}
+
+
+def curve_spec(currency: str) -> dict[str, str]:
+    """Return the benchmark spec a currency's rate curve is built against."""
+    ccy = (currency or "").strip().upper()
+
+    return OIS_INDICES.get(ccy) or FIXED_FLOAT_CURVE_SPECS[ccy]
+
+
+def curve_fisn(currency: str) -> str:
+    """Return the FISN a currency's rate curve is built from."""
+    spec = curve_spec(currency)
+
+    return spec.get("fisn") or ois_fisn(currency)
+
+
 def rate_curve_fisns(currency: str) -> list[str]:
     """Swap families that could price a currency's rate curve, deepest source first."""
     ccy = (currency or "").strip().upper()

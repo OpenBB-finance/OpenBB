@@ -59,6 +59,7 @@ class CftcOisCurveHistoryQueryParams(QueryParams):
         "BRL",
         "AUD",
         "NZD",
+        "CNY",
     ] = Field(
         default="USD",
         description="Currency of the swap curve.",
@@ -198,9 +199,11 @@ class CftcOisCurveHistoryFetcher(
         import asyncio
         from datetime import timedelta
 
-        from openbb_cftc.utils.constants import ois_fisn
+        from openbb_cftc.utils.cfets import cny_curve_records
+        from openbb_cftc.utils.constants import curve_fisn
         from openbb_cftc.utils.curve import build_curve
         from openbb_cftc.utils.dtcc import get_available_dates, get_slice
+        from openbb_cftc.utils.store import RecordChain
 
         available = await get_available_dates("rates")
 
@@ -226,10 +229,20 @@ class CftcOisCurveHistoryFetcher(
                     records = await get_slice(
                         "rates", report_date, use_cache=query.use_cache
                     )
+
+                    if query.currency == "CNY":
+                        extra = await cny_curve_records(
+                            dateType.fromisoformat(report_date),
+                            use_cache=query.use_cache,
+                        )
+
+                        if extra:
+                            records = RecordChain(records, extra)
+
                     return build_curve(
                         records,
                         trade_date=dateType.fromisoformat(report_date),
-                        fisn=ois_fisn(query.currency),
+                        fisn=curve_fisn(query.currency),
                         currency=query.currency,
                         granularity="benchmark",
                         aggregation=query.aggregation,
@@ -258,7 +271,7 @@ class CftcOisCurveHistoryFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[CftcOisCurveHistoryData]]:
         """Reduce the nodes to the requested measure, pivoting when asked."""
-        from openbb_cftc.utils.constants import BENCHMARK_TENORS, OIS_INDICES
+        from openbb_cftc.utils.constants import BENCHMARK_TENORS, curve_spec
 
         wanted: set[str] | None = None
 
@@ -311,7 +324,7 @@ class CftcOisCurveHistoryFetcher(
             result=[CftcOisCurveHistoryData.model_validate(r) for r in rows],
             metadata={
                 "currency": query.currency,
-                "index": OIS_INDICES[query.currency]["index"],
+                "index": curve_spec(query.currency)["index"],
                 "measure": query.measure,
                 "dates": len({node["date"] for node in data}),
                 "pivot": query.pivot,

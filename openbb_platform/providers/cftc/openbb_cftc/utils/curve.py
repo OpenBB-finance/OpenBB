@@ -933,6 +933,49 @@ def _reprice_off_pillars(
     return repriced
 
 
+def _curve_day_count_default(currency: str) -> str:
+    """Return the fallback day-count code for a currency's curve nodes."""
+    from openbb_cftc.utils.constants import FIXED_FLOAT_CURVE_SPECS, OIS_INDICES
+
+    ccy = (currency or "").strip().upper()
+
+    return (
+        OIS_INDICES.get(ccy, {}).get("day_count")
+        or FIXED_FLOAT_CURVE_SPECS.get(ccy, {}).get("day_count")
+        or "A004"
+    )
+
+
+def _overnight_node(rate: float, currency: str) -> dict:
+    """Return a 1-day curve node anchored to the currency's published overnight fixing."""
+    from openbb_cftc.utils.constants import FIXED_FLOAT_CURVE_SPECS, OIS_INDICES
+    from openbb_cftc.utils.fixings import FIXING_BASES
+
+    ccy = currency.upper()
+    index = (
+        OIS_INDICES.get(ccy, {}).get("index")
+        or FIXED_FLOAT_CURVE_SPECS.get(ccy, {}).get("overnight_index")
+        or ""
+    )
+    basis = FIXING_BASES.get(index, 360.0)
+    day_count = {360.0: "ACT/360", 365.0: "ACT/365F", 252.0: "BUS/252"}.get(basis)
+
+    return {
+        "tenor": "1D",
+        "tenor_days": 1,
+        "tenor_years": round(1 / 365.0, 6),
+        "par_rate": rate,
+        "num_trades": 0,
+        "total_notional": None,
+        "min_rate": rate,
+        "max_rate": rate,
+        "is_capped": False,
+        "day_count": day_count,
+        "day_count_basis": basis,
+        "payment_period_days": 1,
+    }
+
+
 def build_curve(
     records: Iterable[dict],
     trade_date: dateType,
@@ -945,6 +988,8 @@ def build_curve(
     interpolation: str = "log_linear",
     cleared_only: bool = False,
     use_cache: bool = True,
+    overnight_rate: float | None = None,
+    overnight_date: dateType | None = None,
 ) -> list[dict]:
     """Build a bootstrapped swap curve from one report date's slice records."""
     from datetime import timedelta
@@ -952,7 +997,7 @@ def build_curve(
     from openbb_core.provider.utils.errors import EmptyDataError
 
     from openbb_cftc.utils import store
-    from openbb_cftc.utils.constants import OIS_INDICES, day_count_basis
+    from openbb_cftc.utils.constants import day_count_basis
 
     cache_key = None
 
@@ -966,6 +1011,8 @@ def build_curve(
             min_trades=min_trades,
             interpolation=interpolation,
             cleared_only=cleared_only,
+            overnight_rate=overnight_rate,
+            overnight_date=overnight_date.isoformat() if overnight_date else None,
         )
         cached = store.get_curve(cache_key)
 
@@ -988,7 +1035,7 @@ def build_curve(
             f"No priceable {currency} trades matching '{fisn}' were found for {trade_date}."
         )
 
-    day_count = OIS_INDICES.get(currency, {}).get("day_count", "A004")
+    day_count = _curve_day_count_default(currency)
     nodes = build_nodes(
         observations,
         granularity=granularity,
@@ -1003,19 +1050,26 @@ def build_curve(
             + f" Try lowering min_trades (currently {min_trades})."
         )
 
+    anchored = overnight_rate is not None and all(n["tenor_days"] > 1 for n in nodes)
+
+    if anchored:
+        nodes.insert(0, _overnight_node(overnight_rate, currency))
+
     basis = day_count_basis(day_count, "A004")
     period = _curve_period(observations)
 
     if granularity == "observed":
-        pillars = bootstrap(
-            build_nodes(
-                observations,
-                aggregation=aggregation,
-                min_trades=min_trades,
-                day_count_default=day_count,
-            ),
-            interpolation,
+        pillar_nodes = build_nodes(
+            observations,
+            aggregation=aggregation,
+            min_trades=min_trades,
+            day_count_default=day_count,
         )
+
+        if anchored:
+            pillar_nodes.insert(0, _overnight_node(overnight_rate, currency))
+
+        pillars = bootstrap(pillar_nodes, interpolation)
         curve = _reprice_off_pillars(nodes, pillars, basis, period, interpolation)
     else:
         curve = bootstrap(nodes, interpolation)
@@ -1025,6 +1079,10 @@ def build_curve(
         node["as_of_date"] = trade_date
         node["staleness_days"] = 0
         node["maturity_date"] = trade_date + timedelta(days=node["tenor_days"])
+
+        if anchored and node["tenor"] == "1D" and overnight_date is not None:
+            node["as_of_date"] = overnight_date
+            node["staleness_days"] = max(0, (trade_date - overnight_date).days)
 
     if cache_key is not None:
         store.put_curve(cache_key, trade_date.isoformat(), _encode_curve_dates(curve))
@@ -1112,13 +1170,15 @@ def build_curve_as_of(
     interpolation: str = "log_linear",
     cleared_only: bool = False,
     max_staleness_days: int | None = None,
+    overnight_rate: float | None = None,
+    overnight_date: dateType | None = None,
 ) -> list[dict]:
     """Build a bootstrapped swap curve whose nodes are each dated to their own day."""
     from datetime import timedelta
 
     from openbb_core.provider.utils.errors import EmptyDataError
 
-    from openbb_cftc.utils.constants import OIS_INDICES, day_count_basis
+    from openbb_cftc.utils.constants import day_count_basis
 
     def _usable(nodes: list[dict]) -> list[dict]:
         live = [n for n in nodes if n["tenor_days"] > n["staleness_days"]]
@@ -1142,7 +1202,7 @@ def build_curve_as_of(
             + " search window."
         )
 
-    day_count = OIS_INDICES.get(currency, {}).get("day_count", "A004")
+    day_count = _curve_day_count_default(currency)
     nodes = build_nodes_as_of(
         observations,
         granularity=granularity,
@@ -1159,21 +1219,37 @@ def build_curve_as_of(
         )
 
     nodes = _usable(nodes)
+    anchored = (
+        overnight_rate is not None
+        and bool(nodes)
+        and all(n["tenor_days"] > 1 for n in nodes)
+    )
+    anchor: dict | None = None
+
+    if anchored:
+        reference = max(n["as_of_date"] for n in nodes)
+        anchor = _overnight_node(overnight_rate, currency)
+        anchor["as_of_date"] = overnight_date or reference
+        anchor["staleness_days"] = max(0, (reference - anchor["as_of_date"]).days)
+        nodes.insert(0, anchor)
+
     basis = day_count_basis(day_count, "A004")
     period = _curve_period(observations)
 
     if granularity == "observed":
-        pillars = bootstrap(
-            _usable(
-                build_nodes_as_of(
-                    observations,
-                    aggregation=aggregation,
-                    min_trades=min_trades,
-                    day_count_default=day_count,
-                )
-            ),
-            interpolation,
+        pillar_nodes = _usable(
+            build_nodes_as_of(
+                observations,
+                aggregation=aggregation,
+                min_trades=min_trades,
+                day_count_default=day_count,
+            )
         )
+
+        if anchor is not None:
+            pillar_nodes.insert(0, dict(anchor))
+
+        pillars = bootstrap(pillar_nodes, interpolation)
         curve = _reprice_off_pillars(nodes, pillars, basis, period, interpolation)
     else:
         curve = bootstrap(nodes, interpolation)

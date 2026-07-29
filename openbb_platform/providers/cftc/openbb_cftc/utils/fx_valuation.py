@@ -281,6 +281,52 @@ def _discount_for(
     return memo[key]
 
 
+def _cip_market(
+    peers: list[dict],
+    rates_records: Iterable[dict],
+    trade: dict,
+    curve_date: dateType,
+    min_trades: int,
+    memo: dict,
+) -> dict | None:
+    """Both legs' curves and a covered-interest-parity forward, when prints are sparse."""
+    from statistics import median
+
+    from openbb_cftc.utils.fx import extract_fx_observations
+
+    near = [
+        observation["rate"]
+        for observation in extract_fx_observations(
+            peers,
+            pair=trade["pair"],
+            trade_date=curve_date,
+            min_notional=CURVE_MIN_NOTIONAL,
+        )
+        if observation["days"] <= 9
+    ]
+
+    if not near:
+        return None
+
+    spot = median(near)
+
+    if spot <= 0.0:
+        return None
+
+    df_base = _discount_for(rates_records, trade["base"], curve_date, min_trades, memo)
+    df_quote = _discount_for(
+        rates_records, trade["quote"], curve_date, min_trades, memo
+    )
+
+    if df_base is None or df_quote is None:
+        return None
+
+    def forward(years: float, _s=spot, _b=df_base, _q=df_quote) -> float:
+        return _s * _b(years) / _q(years)
+
+    return {"spot": spot, "forward": forward, "df_base": df_base, "df_quote": df_quote}
+
+
 def fx_market(
     fx_records: Iterable[dict],
     rates_records: Iterable[dict],
@@ -313,14 +359,14 @@ def fx_market(
     }
 
     if len(nodes) < MIN_FORWARD_NODES:
-        return None
+        return _cip_market(peers, rates_records, trade, curve_date, min_trades, memo)
 
     spot, forward = ndf_forward_curve(
         peers, trade["pair"], curve_date, min_notional=CURVE_MIN_NOTIONAL
     )
 
     if spot is None or forward is None or spot <= 0.0:
-        return None
+        return _cip_market(peers, rates_records, trade, curve_date, min_trades, memo)
 
     df_base = _discount_for(rates_records, trade["base"], curve_date, min_trades, memo)
 

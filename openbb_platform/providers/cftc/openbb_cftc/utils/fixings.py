@@ -83,6 +83,8 @@ CFETS_FRR_URL = (
     "https://www.chinamoney.com.cn/r/cms/www/chinamoney/data/currency/frr-chrt.csv"
 )
 CFETS_FR007_COLUMN = "7"
+CFETS_SHIBOR_URL = "https://www.chinamoney.com.cn/ags/ms/cm-u-bk-shibor/ShiborChrt"
+CFETS_SHIBOR_TENOR = "O/N"
 TAIBOR_BASE_URL = "https://www.ba.org.tw/taiborDaily"
 TAIBOR_TENOR_COLUMN = "5"
 TAIBOR_MAX_ARCHIVES = 40
@@ -125,6 +127,8 @@ FIXING_SOURCES: dict[str, tuple[str, str]] = {
     "POLSTR": ("gpw", GPW_POLSTR_COLUMN),
     "WIBOR": ("finwire", FINWIRE_WIBOR_INDICATOR),
     "FR007": ("cfets", CFETS_FR007_COLUMN),
+    "SHIBOR": ("shibor", CFETS_SHIBOR_TENOR),
+    "SHIBOR3M": ("shibor", "3M"),
     "TAIBOR": ("taibor", TAIBOR_TENOR_COLUMN),
 }
 
@@ -161,6 +165,8 @@ FIXING_BASES: dict[str, float] = {
     "POLSTR": 365.0,
     "WIBOR": 365.0,
     "FR007": 365.0,
+    "SHIBOR": 360.0,
+    "SHIBOR3M": 360.0,
     "TAIBOR": 365.0,
 }
 
@@ -192,6 +198,8 @@ FIXING_PROFILES: dict[str, tuple[str, str]] = {
     "THOR": ("Thai Overnight Repurchase Rate", "THA"),
     "HIBOR": ("Hong Kong Interbank Offered Rate (1M)", "HKG"),
     "FR007": ("7-Day Fixing Repo Rate", "CHN"),
+    "SHIBOR": ("Shanghai Interbank Offered Rate (O/N)", "CHN"),
+    "SHIBOR3M": ("Shanghai Interbank Offered Rate (3M)", "CHN"),
     "TAIBOR": ("Taipei Interbank Offered Rate (3M)", "TWN"),
     "KOFR": ("Korea Overnight Financing Repo Rate", "KOR"),
     "KRWCD": ("Certificate of Deposit Rate (91-day)", "KOR"),
@@ -1124,6 +1132,62 @@ async def _fetch_cfets(column: str, start: str, end: str) -> dict[str, float]:
     return fixings
 
 
+async def _fetch_shibor(tenor: str, start: str, end: str) -> dict[str, float]:
+    """Fetch a SHIBOR tenor from the CFETS benchmark chart service."""
+    import json
+    import re
+    import ssl
+
+    import aiohttp
+    import certifi
+    from openbb_core.app.model.abstract.error import OpenBBError
+
+    context = ssl.create_default_context(cafile=certifi.where())
+    context.verify_flags &= ~ssl.VERIFY_X509_STRICT
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            " (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+        ),
+        "Referer": "https://www.chinamoney.com.cn/english/bmkshb/",
+    }
+
+    async with (
+        aiohttp.ClientSession(
+            headers=headers, connector=aiohttp.TCPConnector(ssl=context)
+        ) as session,
+        session.post(CFETS_SHIBOR_URL) as response,
+    ):
+        response.raise_for_status()
+        payload = json.loads(await response.text())
+
+    data = payload.get("data") or {}
+    columns = data.get("columns") or []
+    fixings: dict[str, float] = {}
+
+    if tenor in columns:
+        index = columns.index(tenor)
+
+        for line in (data.get("csv") or "").splitlines():
+            cells = line.split(",")
+
+            if len(cells) <= index or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", cells[0]):
+                continue
+
+            try:
+                rate = float(cells[index])
+            except ValueError:
+                continue
+
+            if start <= cells[0] <= end:
+                fixings[cells[0]] = rate / 100.0
+
+    if not fixings:
+        raise OpenBBError(f"Unexpected fixings response from {CFETS_SHIBOR_URL}.")
+
+    return fixings
+
+
 async def _fetch_finwire(indicator: str, start: str, end: str) -> dict[str, float]:
     """Fetch a Polish benchmark series from the finwire public data API."""
     import json
@@ -1797,6 +1861,8 @@ async def get_fixings(
                 rates = await _fetch_finwire(path, fetch_start, fetch_end)
             elif source == "cfets":
                 rates = await _fetch_cfets(path, fetch_start, fetch_end)
+            elif source == "shibor":
+                rates = await _fetch_shibor(path, fetch_start, fetch_end)
             elif source == "taibor":
                 rates = await _fetch_taibor(path, fetch_start, fetch_end)
             elif source == "rbnz":

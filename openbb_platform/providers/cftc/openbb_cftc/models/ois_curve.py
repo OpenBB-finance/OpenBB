@@ -11,6 +11,40 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import ConfigDict, Field, field_validator
 
 
+async def _latest_fixing(
+    currency: str, on_or_before: dateType, use_cache: bool
+) -> tuple[dateType, float] | None:
+    """Return the currency's freshest published overnight fixing on or before a date."""
+    from datetime import timedelta
+
+    from openbb_core.app.model.abstract.error import OpenBBError
+
+    from openbb_cftc.utils.constants import FIXED_FLOAT_CURVE_SPECS, OIS_INDICES
+    from openbb_cftc.utils.fixings import get_fixings
+
+    spec = OIS_INDICES.get(currency) or FIXED_FLOAT_CURVE_SPECS[currency]
+    index = spec.get("overnight_index") or spec["index"]
+
+    try:
+        fixings = await get_fixings(
+            index,
+            on_or_before - timedelta(days=14),
+            on_or_before,
+            use_cache=use_cache,
+        )
+    except OpenBBError:
+        return None
+
+    days = [day for day in fixings if day <= on_or_before]
+
+    if not days:
+        return None
+
+    day = max(days)
+
+    return day, fixings[day]
+
+
 class CftcOisCurveQueryParams(QueryParams):
     """DTCC Overnight Index Swap Curve Query Parameters."""
 
@@ -39,11 +73,13 @@ class CftcOisCurveQueryParams(QueryParams):
         "THB",
         "ILS",
         "BRL",
+        "CNY",
     ] = Field(
         default="USD",
         description="Currency of the swap curve. Each maps to that currency's overnight"
         + " benchmark rate. Currencies whose overnight index swaps are too thinly"
-        + " reported to bootstrap a curve are not offered.",
+        + " reported to bootstrap a curve are not offered. CNY builds from FR007"
+        + " fixed-float swaps, backstopped by the CFETS daily bulletin's traded curve.",
     )
     curve_type: Literal["par", "zero"] = Field(
         default="par",
@@ -121,6 +157,12 @@ class CftcOisCurveQueryParams(QueryParams):
         + " of the discount factor. 'log_linear' is piecewise linear, giving"
         + " piecewise-flat instantaneous forwards. 'log_cubic' is a monotone Hermite"
         + " cubic, giving smooth forwards without overshooting into negative rates.",
+    )
+    overnight_anchor: bool = Field(
+        default=False,
+        description="Anchor the curve's front end with the benchmark's latest published"
+        + " overnight fixing, as a 1-day node. The fixing is a realized rate, so the"
+        + " node carries no trades and its own as-of date.",
     )
     use_cache: bool = Field(
         default=True,
@@ -342,34 +384,75 @@ class CftcOisCurveFetcher(Fetcher[CftcOisCurveQueryParams, list[CftcOisCurveData
         query: CftcOisCurveQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> tuple[Iterable[dict], str | None]:
+    ) -> tuple[Iterable[dict], str | None, tuple[dateType, float] | None]:
         """Fetch the interest-rate transactions the curve is built from."""
         from datetime import datetime, timedelta, timezone
 
-        from openbb_cftc.utils.constants import ois_fisn
+        from openbb_core.app.model.abstract.error import OpenBBError
+
+        from openbb_cftc.utils.cfets import cny_curve_records
+        from openbb_cftc.utils.constants import curve_fisn
         from openbb_cftc.utils.curve import extract_observations
-        from openbb_cftc.utils.dtcc import get_latest_viable_slice
+        from openbb_cftc.utils.dtcc import (
+            get_available_dates,
+            get_latest_viable_slice,
+            get_slice,
+        )
         from openbb_cftc.utils.search import search_trades
+        from openbb_cftc.utils.store import RecordChain
+
+        fisn = curve_fisn(query.currency)
 
         if query.source == "slice":
-            fisn = ois_fisn(query.currency)
-            records, report_date = await get_latest_viable_slice(
-                "rates",
-                lambda recs, day: bool(
-                    extract_observations(
-                        recs,
-                        trade_date=day,
-                        fisn=fisn,
-                        currency=query.currency,
-                        cleared_only=query.cleared,
+            if query.currency == "CNY":
+                dates = await get_available_dates("rates")
+
+                if query.date:
+                    dates = [d for d in dates if d <= query.date.isoformat()]
+
+                if not dates:
+                    raise OpenBBError(
+                        "No PPD rates files are currently published for the window."
                     )
-                ),
-                use_cache=query.use_cache,
-                max_lookback=query.lookback_days,
-                end_date=query.date.isoformat() if query.date else None,
+
+                report_date = dates[-1]
+                records = await get_slice(
+                    "rates", report_date, use_cache=query.use_cache
+                )
+                extra = await cny_curve_records(
+                    dateType.fromisoformat(report_date), use_cache=query.use_cache
+                )
+
+                if extra:
+                    records = RecordChain(records, extra)
+            else:
+                records, report_date = await get_latest_viable_slice(
+                    "rates",
+                    lambda recs, day: bool(
+                        extract_observations(
+                            recs,
+                            trade_date=day,
+                            fisn=fisn,
+                            currency=query.currency,
+                            cleared_only=query.cleared,
+                        )
+                    ),
+                    use_cache=query.use_cache,
+                    max_lookback=query.lookback_days,
+                    end_date=query.date.isoformat() if query.date else None,
+                )
+
+            anchor = (
+                await _latest_fixing(
+                    query.currency,
+                    dateType.fromisoformat(report_date),
+                    query.use_cache,
+                )
+                if query.overnight_anchor
+                else None
             )
 
-            return records, report_date
+            return records, report_date, anchor
 
         end_date = query.date or datetime.now(timezone.utc).date()
         records = await search_trades(
@@ -377,29 +460,42 @@ class CftcOisCurveFetcher(Fetcher[CftcOisCurveQueryParams, list[CftcOisCurveData
             start_date=end_date - timedelta(days=query.lookback_days - 1),
             end_date=end_date,
             currency=query.currency,
-            upi_short_name=ois_fisn(query.currency),
+            upi_short_name=fisn,
             use_cache=query.use_cache,
         )
 
-        return records, None
+        if query.currency == "CNY":
+            extra = await cny_curve_records(end_date, use_cache=query.use_cache)
+
+            if extra:
+                records = RecordChain(records, extra)
+
+        anchor = (
+            await _latest_fixing(query.currency, end_date, query.use_cache)
+            if query.overnight_anchor
+            else None
+        )
+
+        return records, None, anchor
 
     @staticmethod
     def transform_data(
         query: CftcOisCurveQueryParams,
-        data: tuple[Iterable[dict], str | None],
+        data: tuple[Iterable[dict], str | None, tuple[dateType, float] | None],
         **kwargs: Any,
     ) -> AnnotatedResult[list[CftcOisCurveData]]:
         """Build the curve and insert metadata."""
-        from openbb_cftc.utils.constants import OIS_INDICES, ois_fisn
+        from openbb_cftc.utils.constants import curve_fisn, curve_spec
         from openbb_cftc.utils.curve import build_curve, build_curve_as_of
 
-        records, report_date = data
-        spec = OIS_INDICES[query.currency]
+        records, report_date, anchor = data
+        spec = curve_spec(query.currency)
+        overnight_date, overnight_rate = anchor if anchor else (None, None)
 
         if report_date is None:
             curve = build_curve_as_of(
                 records,
-                fisn=ois_fisn(query.currency),
+                fisn=curve_fisn(query.currency),
                 currency=query.currency,
                 granularity=query.granularity,
                 aggregation=query.aggregation,
@@ -407,12 +503,14 @@ class CftcOisCurveFetcher(Fetcher[CftcOisCurveQueryParams, list[CftcOisCurveData
                 interpolation=query.interpolation,
                 cleared_only=query.cleared,
                 max_staleness_days=query.max_staleness_days,
+                overnight_rate=overnight_rate,
+                overnight_date=overnight_date,
             )
         else:
             curve = build_curve(
                 records,
                 trade_date=dateType.fromisoformat(report_date),
-                fisn=ois_fisn(query.currency),
+                fisn=curve_fisn(query.currency),
                 currency=query.currency,
                 granularity=query.granularity,
                 aggregation=query.aggregation,
@@ -420,6 +518,8 @@ class CftcOisCurveFetcher(Fetcher[CftcOisCurveQueryParams, list[CftcOisCurveData
                 interpolation=query.interpolation,
                 cleared_only=query.cleared,
                 use_cache=query.use_cache,
+                overnight_rate=overnight_rate,
+                overnight_date=overnight_date,
             )
 
         rate_key = {"par": "par_rate", "zero": "zero_rate"}[query.curve_type]
@@ -458,5 +558,10 @@ class CftcOisCurveFetcher(Fetcher[CftcOisCurveQueryParams, list[CftcOisCurveData
                 "granularity": query.granularity,
                 "aggregation": query.aggregation,
                 "lookback_days": query.lookback_days if report_date is None else None,
+                "overnight_anchor": (
+                    {"date": anchor[0].isoformat(), "rate": anchor[1] * 100.0}
+                    if anchor
+                    else ("unavailable" if query.overnight_anchor else False)
+                ),
             },
         )

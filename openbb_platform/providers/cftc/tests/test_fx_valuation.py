@@ -363,10 +363,75 @@ def test_fx_market_requires_enough_nodes(monkeypatch):
     assert fv.fx_market([], [], trade, DAY) is None
 
 
-def test_fx_market_rejects_a_missing_spot(monkeypatch):
+def test_fx_market_recovers_a_missing_spot_through_cip(monkeypatch):
     _patch_market(monkeypatch, [7, 38, 90])
     monkeypatch.setattr(
         "openbb_cftc.utils.fx_vol.ndf_forward_curve", lambda *a, **k: (None, None)
+    )
+    trade = fv.extract_fx_trade(_forward(), DAY)
+    market = fv.fx_market([], [], trade, DAY)
+
+    assert market["spot"] == pytest.approx(1460.0)
+    assert market["forward"](1.0) == pytest.approx(1460.0)
+
+
+def test_fx_market_cip_fallback_prices_off_both_curves(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_cftc.utils.fx.extract_fx_observations",
+        lambda *a, **k: [{"days": 2, "rate": 1460.0}, {"days": 5, "rate": 1461.0}],
+    )
+
+    def _rate_df(records, currency, day, min_trades):
+        if currency == "USD":
+            return lambda years: 0.96**years
+
+        return lambda years: 0.99**years
+
+    monkeypatch.setattr("openbb_cftc.utils.fx_vol.rate_discount_factor", _rate_df)
+    trade = fv.extract_fx_trade(_forward(), DAY)
+    market = fv.fx_market([], [], trade, DAY)
+
+    assert market["spot"] == pytest.approx(1460.5)
+    assert market["forward"](1.0) == pytest.approx(1460.5 * 0.96 / 0.99)
+    assert market["forward"](2.0) < market["forward"](1.0)
+    assert market["df_base"](1.0) == pytest.approx(0.96)
+    assert market["df_quote"](1.0) == pytest.approx(0.99)
+
+
+def test_fx_market_cip_fallback_needs_both_curves(monkeypatch):
+    from openbb_core.provider.utils.errors import EmptyDataError
+
+    monkeypatch.setattr(
+        "openbb_cftc.utils.fx.extract_fx_observations",
+        lambda *a, **k: [{"days": 2, "rate": 1460.0}],
+    )
+
+    def _usd_only(records, currency, day, min_trades):
+        if currency == "USD":
+            return lambda years: 0.96**years
+
+        raise EmptyDataError("no quote curve")
+
+    monkeypatch.setattr("openbb_cftc.utils.fx_vol.rate_discount_factor", _usd_only)
+    trade = fv.extract_fx_trade(_forward(), DAY)
+
+    assert fv.fx_market([], [], trade, DAY) is None
+
+
+def test_fx_market_cip_fallback_needs_a_near_print(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_cftc.utils.fx.extract_fx_observations",
+        lambda *a, **k: [{"days": 38, "rate": 1460.0}],
+    )
+    trade = fv.extract_fx_trade(_forward(), DAY)
+
+    assert fv.fx_market([], [], trade, DAY) is None
+
+
+def test_fx_market_cip_fallback_rejects_a_nonpositive_spot(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_cftc.utils.fx.extract_fx_observations",
+        lambda *a, **k: [{"days": 2, "rate": 0.0}],
     )
     trade = fv.extract_fx_trade(_forward(), DAY)
 

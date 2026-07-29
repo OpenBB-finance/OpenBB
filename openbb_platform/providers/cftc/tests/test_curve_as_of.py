@@ -344,3 +344,60 @@ def test_build_curve_as_of_raises_when_min_trades_removes_everything(
         build_curve_as_of(
             chf_search_records, fisn=CHF_FISN, currency="CHF", min_trades=100_000
         )
+
+
+def test_build_curve_as_of_overnight_anchor(chf_search_records):
+    curve = build_curve_as_of(
+        chf_search_records,
+        fisn=CHF_FISN,
+        currency="CHF",
+        min_trades=1,
+        overnight_rate=0.011,
+    )
+    node = curve[0]
+
+    assert node["tenor"] == "1D"
+    assert node["num_trades"] == 0
+    assert node["staleness_days"] == 0
+    assert node["discount_factor"] == pytest.approx(1.0 / (1.0 + 0.011 / 360.0))
+    assert node["as_of_date"] == max(n["as_of_date"] for n in curve)
+
+
+def test_build_curve_as_of_anchor_carries_its_own_date(chf_search_records):
+    from datetime import timedelta
+
+    plain = build_curve_as_of(
+        chf_search_records, fisn=CHF_FISN, currency="CHF", min_trades=1
+    )
+    reference = max(n["as_of_date"] for n in plain)
+    overnight_date = reference - timedelta(days=3)
+    curve = build_curve_as_of(
+        chf_search_records,
+        fisn=CHF_FISN,
+        currency="CHF",
+        min_trades=1,
+        overnight_rate=0.011,
+        overnight_date=overnight_date,
+    )
+    node = curve[0]
+
+    assert node["as_of_date"] == overnight_date
+    assert node["staleness_days"] == 3
+    assert curve[0]["date"] == reference
+
+
+def test_build_curve_as_of_observed_granularity_includes_the_anchor(
+    chf_search_records,
+):
+    curve = build_curve_as_of(
+        chf_search_records,
+        fisn=CHF_FISN,
+        currency="CHF",
+        granularity="observed",
+        min_trades=1,
+        overnight_rate=0.011,
+    )
+    node = next(n for n in curve if n["tenor"] == "1D")
+
+    assert node["num_trades"] == 0
+    assert node["par_rate"] == pytest.approx(0.011, rel=1e-4)
