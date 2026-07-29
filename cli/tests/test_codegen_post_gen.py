@@ -889,3 +889,43 @@ def test_render_body_block_keys_keyword_property_by_wire_name():
     # A body property must not also be sent as a query parameter.
     assert "_query_dict['from_']" not in block
     assert '_query_dict["from_"]' not in block
+
+
+def test_signature_params_never_emits_a_duplicate_identifier():
+    """Collisions are resolved on the emitted identifier, not the wire name.
+
+    Two wire names can sanitize onto one identifier, and operation_parameters
+    keeps a name declared twice under different ``in`` locations. Neither may
+    produce a duplicate argument.
+    """
+    cmd = {
+        "parameters": [
+            # same name, two locations — operation_parameters keeps both
+            {"name": "id", "in": "path", "type": "string", "required": True},
+            {"name": "id", "in": "query", "type": "string"},
+            # sanitizes onto the same identifier as the body's ``from``
+            {"name": "from_", "in": "query", "type": "string"},
+            {"name": "Organization-Id", "in": "header", "type": "string"},
+        ],
+        "request_body_schema": {
+            "type": "object",
+            "properties": {
+                "from": {"type": "string"},
+                "Organization_Id": {"type": "string"},
+                "kept": {"type": "string"},
+            },
+        },
+    }
+    out = pg._signature_params(
+        cmd, array_field=None, array_annotation=None, has_credentials=True
+    )
+    names = [e[0] for e in out]
+
+    assert len(names) == len(set(names)), names
+    assert names.count("id") == 1
+    assert names.count("from_") == 1
+    assert names.count("Organization_Id") == 1
+    # A body property that collides with nothing is still emitted.
+    assert "kept" in names
+    # Every emitted name is a usable Python identifier.
+    assert all(n.isidentifier() for n in names)

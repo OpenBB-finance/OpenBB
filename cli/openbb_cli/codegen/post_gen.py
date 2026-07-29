@@ -364,18 +364,29 @@ def _signature_params(
     # placeholder and its own ``required``. The payload is unaffected, because
     # ``_render_body_block`` reads the body fields from ``request_body_schema``
     # rather than from this list.
-    operation_param_names = {
-        p.get("name")
-        for p in filter_user_params(cmd_spec.get("parameters") or [])
-        if p.get("name")
-    }
+    #
+    # Two wire names can also collapse onto one identifier once sanitized
+    # (``from`` and ``from_``, ``Organization-Id`` and ``Organization_Id``), and
+    # ``operation_parameters`` keeps a name declared twice under different ``in``
+    # locations. Collisions are therefore resolved on the emitted identifier, not
+    # on the wire name, so a duplicate argument cannot be generated at all.
+    operation_params = [
+        p for p in filter_user_params(cmd_spec.get("parameters") or []) if p.get("name")
+    ]
+    operation_param_names = {p["name"] for p in operation_params}
+    operation_param_names |= {safe_field_name(p["name"])[0] for p in operation_params}
+    emitted: set[str] = {entry[0] for entry in out}
+
     for name, schema in body_props.items():
         if name == array_field:
             continue
         if name in operation_param_names:
             continue
+        if safe_field_name(name)[0] in operation_param_names | emitted:
+            continue
         if not isinstance(schema, dict):
             continue
+        emitted.add(safe_field_name(name)[0])
         ann = _python_type_from_param(
             {
                 "type": schema.get("type"),
@@ -396,10 +407,12 @@ def _signature_params(
                 schema.get("default"),
             )
         )
-    for raw in filter_user_params(cmd_spec.get("parameters") or []):
-        name = raw.get("name")
-        if not name:
+    for raw in operation_params:
+        name = raw["name"]
+        safe = safe_field_name(name)[0]
+        if safe in emitted:
             continue
+        emitted.add(safe)
         ann = _python_type_from_param(raw)
         out.append(
             (
@@ -407,7 +420,7 @@ def _signature_params(
                 # ``Organization-Id`` and a ``REB-APIKEY`` security header, which
                 # emitted ``REB-APIKEY: str = None``. The fetcher path already
                 # sanitizes these; this one has to match it.
-                safe_field_name(name)[0],
+                safe,
                 ann,
                 raw.get("help"),
                 bool(raw.get("required")),
