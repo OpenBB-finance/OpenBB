@@ -1,0 +1,249 @@
+{
+  "tradeDate": "06/25/2026",
+  "symbol": "ES",
+  "productId": "133",
+  "settlements": [
+    {
+      "month": "SEP 26",
+      "open": "7476.25",
+      "high": "7496.00",
+      "low": "7390.50",
+      "last": "7433.75",
+      "change": "-5.00",
+      "settle": "7423.25",
+      "volume": "1,547,837",
+      "openInterest": "1,978,419"
+    },
+    {
+      "month": "DEC 26",
+      "open": "7552.50",
+      "high": "7568.50",
+      "low": "7458.25",
+      "last": "7509.00B",
+      "change": "-5.00",
+      "settle": "7491.25",
+      "volume": "2,795",
+      "openInterest": "6,821"
+    },
+    {
+      "month": "MAR 27",
+      "open": "-",
+      "high": "7607.75B",
+      "low": "7569.75A",
+      "last": "7607.75B",
+      "change": "-5.50",
+      "settle": "7567.75",
+      "volume": "0",
+      "openInterest": "144"
+    },
+    {
+      "month": "JUN 27",
+      "open": "-",
+      "high": "7677.50B",
+      "low": "7636.75A",
+      "last": "7677.50B",
+      "change": "-6.50",
+      "settle": "7640.25",
+      "volume": "0",
+      "openInterest": "102"
+    },
+    {
+      "month": "SEP 27",
+      "open": "-",
+      "high": "7749.75B",
+      "low": "-",
+      "last": "7749.75B",
+      "change": "-6.75",
+      "settle": "7711.25",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "DEC 27",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-7.00",
+      "settle": "7784.75",
+      "volume": "0",
+      "openInterest": "83"
+    },
+    {
+      "month": "MAR 28",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-7.75",
+      "settle": "7857.25",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "JUN 28",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-10.00",
+      "settle": "7929.50",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "SEP 28",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-9.50",
+      "settle": "8002.25",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "DEC 28",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-8.00",
+      "settle": "8074.00",
+      "volume": "0",
+      "openInterest": "20"
+    },
+    {
+      "month": "MAR 29",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-8.25",
+      "settle": "8151.00",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "JUN 29",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-8.50",
+      "settle": "8227.75",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "SEP 29",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-8.75",
+      "settle": "8304.75",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "DEC 29",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-9.50",
+      "settle": "8381.50",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "MAR 30",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-10.00",
+      "settle": "8462.50",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "JUN 30",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-10.50",
+      "settle": "8543.50",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "SEP 30",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-11.00",
+      "settle": "8624.25",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "DEC 30",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-12.25",
+      "settle": "8704.50",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "MAR 31",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-12.25",
+      "settle": "8765.50",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "JUN 31",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-12.25",
+      "settle": "8828.00",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "SEP 31",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "-12.25",
+      "settle": "8913.00",
+      "volume": "0",
+      "openInterest": "0"
+    },
+    {
+      "month": "Total",
+      "open": "-",
+      "high": "-",
+      "low": "-",
+      "last": "-",
+      "change": "0",
+      "settle": "-",
+      "volume": "1,550,632",
+      "openInterest": "1,985,589"
+    }
+  ]
+}

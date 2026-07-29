@@ -54,6 +54,7 @@ openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers 
 
 # Community dependencies
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
+openbb-cme = { path = "./providers/cme", optional = true, develop = true }
 openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }
