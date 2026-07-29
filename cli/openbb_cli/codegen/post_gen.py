@@ -385,7 +385,11 @@ def _signature_params(
         )
         out.append(
             (
-                name,
+                # ``_render_body_block`` already writes ``{'from': from_}``, keying the
+                # payload by the wire name and reading the safe identifier, so the
+                # signature has to declare the safe one. Codat's Transfer body has a
+                # property named ``from``, which is a keyword.
+                safe_field_name(name)[0],
                 ann,
                 schema.get("description") or schema.get("title"),
                 name in body_required,
@@ -639,8 +643,13 @@ def _render_body_block(
     """
     body_props = (cmd_spec.get("request_body_schema") or {}).get("properties") or {}
     body_field_names = list(body_props)
+    # The signature declares the safe identifier for a body property, so the
+    # body/query split has to compare against those, not the wire names.
+    # Otherwise a keyword-named property such as ``from`` is not recognized as a
+    # body field and leaks into the query string as ``from_``.
+    body_safe_names = {safe_field_name(n)[0] for n in body_field_names}
     query_field_names = [
-        n for n, _, _, _, _ in params if n != "cc" and n not in body_field_names
+        n for n, _, _, _, _ in params if n != "cc" and n not in body_safe_names
     ]
 
     lines: list[str] = []
