@@ -797,3 +797,38 @@ def test_generate_post_command_module_no_body_props_uses_empty_body_dict():
     )
     out = pg.generate_post_command_module(spec)
     assert "_body: dict[str, Any] = {}" in out.source
+
+
+def test_signature_params_body_property_does_not_duplicate_operation_parameter():
+    """A name declared both as an operation parameter and a body property is emitted once.
+
+    Codat's push endpoints put ``accountId`` in the URL template and repeat it in
+    the request body. Emitting both produced two parameters with the same name,
+    which is a SyntaxError in the generated module.
+    """
+    cmd = {
+        "url_path": "/companies/{companyId}/push/bankAccounts/{accountId}/transactions",
+        "parameters": [
+            {"name": "companyId", "type": "string", "required": True},
+            {"name": "accountId", "type": "string", "required": True},
+        ],
+        "request_body_schema": {
+            "type": "object",
+            "properties": {
+                "accountId": {"type": "string"},
+                "reference": {"type": "string"},
+            },
+        },
+    }
+    out = pg._signature_params(
+        cmd, array_field=None, array_annotation=None, has_credentials=False
+    )
+    names = [e[0] for e in out]
+
+    assert names.count("accountId") == 1
+    assert len(names) == len(set(names))
+    # The operation parameter wins: it carries the path placeholder and required.
+    accountid = next(e for e in out if e[0] == "accountId")
+    assert accountid[3] is True
+    # Body-only properties are unaffected.
+    assert "reference" in names

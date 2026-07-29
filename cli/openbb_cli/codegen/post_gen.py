@@ -357,8 +357,22 @@ def _signature_params(
     body_required = set(
         (cmd_spec.get("request_body_schema") or {}).get("required") or []
     )
+    # A name can be declared both as an operation parameter and as a request-body
+    # property — Codat's push endpoints put ``accountId`` in the URL template and
+    # in the body. Emitting both produces two parameters with the same name, which
+    # is a SyntaxError. The operation parameter wins: it carries the path
+    # placeholder and its own ``required``. The payload is unaffected, because
+    # ``_render_body_block`` reads the body fields from ``request_body_schema``
+    # rather than from this list.
+    operation_param_names = {
+        p.get("name")
+        for p in filter_user_params(cmd_spec.get("parameters") or [])
+        if p.get("name")
+    }
     for name, schema in body_props.items():
         if name == array_field:
+            continue
+        if name in operation_param_names:
             continue
         if not isinstance(schema, dict):
             continue
