@@ -97,111 +97,6 @@ def get_logger():
 logger = get_logger()
 
 
-def setup_database(conn):
-    """Create a caching database for Form 4 data."""
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS form4_data (
-        filing_date DATE,
-        symbol TEXT,
-        form TEXT,
-        owner_name TEXT,
-        owner_cik TEXT,
-        company_name TEXT,
-        company_cik TEXT,
-        director BOOLEAN,
-        officer BOOLEAN,
-        ten_percent_owner BOOLEAN,
-        other BOOLEAN,
-        other_text TEXT,
-        owner_title TEXT,
-        security_type TEXT,
-        transaction_date DATE,
-        transaction_type TEXT,
-        acquisition_or_disposition TEXT,
-        footnote TEXT,
-        securities_transacted REAL,
-        transaction_price MONEY,
-        transaction_value MONEY,
-        securities_owned REAL,
-        value_owned MONEY,
-        transaction_timeliness TEXT,
-        ownership_type TEXT,
-        nature_of_ownership TEXT,
-        conversion_exercise_price MONEY,
-        exercise_date DATE,
-        expiration_date DATE,
-        deemed_execution_date DATE,
-        underlying_security_title TEXT,
-        underlying_security_shares REAL,
-        underlying_security_value MONEY,
-        filing_url TEXT NOT NULL
-    );
-    """
-    conn.execute(create_table_query)
-    conn.commit()
-
-
-def add_missing_column(conn, column_name):
-    """Add a missing column to the form4_data table."""
-    # Sanitize the column name to prevent SQL injection
-    column_name_clean = column_name.replace('"', '""')
-
-    missing_type = (
-        "MONEY"
-        if "price" in column_name or "value" in column_name
-        else (
-            "REAL"
-            if "shares" in column_name
-            else (
-                "BOOLEAN"
-                if "is_" in column_name
-                else "DATE" if "date" in column_name else "TEXT"
-            )
-        )
-    )
-    cursor = conn.cursor()
-    cursor.execute(
-        f'ALTER TABLE form4_data ADD COLUMN "{column_name_clean}" {missing_type}'
-    )
-    conn.commit()
-
-
-def compress_db(db_path):
-    """Compress the database file."""
-    # pylint: disable=import-outside-toplevel
-    import gzip
-    import shutil
-
-    with open(db_path, "rb") as f_in, gzip.open(f"{db_path}.gz", "wb") as f_out:
-        shutil.copyfileobj(f_in, f_out)
-
-
-def decompress_db(db_path):
-    """Decompress the database file."""
-    # pylint: disable=import-outside-toplevel
-    import gzip
-    import shutil
-
-    with gzip.open(f"{db_path}.gz", "rb") as f_in, open(db_path, "wb") as f_out:
-        shutil.copyfileobj(f_in, f_out)
-
-
-def close_db(conn, db_path):
-    """Sort the table by "date" before closing the connection and compressing the database."""
-    # pylint: disable=import-outside-toplevel
-    import os
-
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS form4_data_sorted AS SELECT * FROM form4_data ORDER BY filing_date"
-    )
-    conn.execute("DROP TABLE form4_data")
-    conn.execute("ALTER TABLE form4_data_sorted RENAME TO form4_data")
-    conn.commit()
-    conn.close()
-    compress_db(db_path)
-    os.remove(db_path)
-
-
 async def get_form_4_urls(
     symbol,
     start_date: dateType | None = None,
@@ -209,7 +104,6 @@ async def get_form_4_urls(
     use_cache: bool = True,
 ):
     """Get the form 4 URLs for a symbol."""
-    # pylint: disable=import-outside-toplevel
     from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 
     fetcher = SecCompanyFilingsFetcher()
@@ -226,29 +120,37 @@ async def get_form_4_urls(
     start_date = (
         start_date
         if isinstance(start_date, dateType)
-        else (dateType.fromisoformat(start_date) if start_date and isinstance(start_date, str) else None)  # type: ignore
+        else (
+            dateType.fromisoformat(start_date)
+            if start_date and isinstance(start_date, str)
+            else None
+        )
     )
     end_date = (
         end_date
         if isinstance(end_date, dateType)
-        else (dateType.fromisoformat(end_date) if end_date and isinstance(end_date, str) else None)  # type: ignore
+        else (
+            dateType.fromisoformat(end_date)
+            if end_date and isinstance(end_date, str)
+            else None
+        )
     )
     urls: list = []
     for item in form_4:
         if (
-            (not start_date or not item.filing_date)  # type: ignore
+            (not start_date or not item.filing_date)  # ty: ignore[unresolved-attribute]
             or start_date
-            and item.filing_date < start_date  # type: ignore
+            and item.filing_date < start_date  # ty: ignore[unresolved-attribute]
         ):
             continue
         if (
-            (not end_date or not item.report_date)  # type: ignore
+            (not end_date or not item.report_date)  # ty: ignore[unresolved-attribute]
             or end_date
-            and item.report_date > end_date  # type: ignore
+            and item.report_date > end_date  # ty: ignore[unresolved-attribute]
         ):
             continue
-        to_replace = f"{item.primary_doc.split('/')[0]}/"  # type: ignore
-        form_url = item.report_url.replace(to_replace, "")  # type: ignore
+        to_replace = f"{item.primary_doc.split('/')[0]}/"  # ty: ignore[unresolved-attribute]
+        form_url = item.report_url.replace(to_replace, "")  # ty: ignore[unresolved-attribute]
         if form_url.endswith(".xml"):
             urls.append(form_url)
 
@@ -257,7 +159,6 @@ async def get_form_4_urls(
 
 def clean_xml(xml_content):
     """Clean the XML content."""
-    # pylint: disable=import-outside-toplevel
     import re
 
     xml_content = re.sub(r"\\", "", xml_content)
@@ -268,10 +169,9 @@ def clean_xml(xml_content):
 
 async def get_form_4_data(url) -> dict:
     """Get the form 4 data."""
-    # pylint: disable=import-outside-toplevel
     from warnings import warn  # noqa
     from xmltodict import parse
-    from openbb_core.provider.utils.helpers import amake_request
+    from openbb_sec.utils.ratelimit import sec_amake_request as amake_request
 
     async def response_callback(response, _):
         """Response callback function."""
@@ -282,8 +182,8 @@ async def get_form_4_data(url) -> dict:
         headers=SEC_HEADERS,
         response_callback=response_callback,
         timeout=30,
-    )  # type: ignore
-    response_text = response.decode("utf-8")  # type: ignore
+    )
+    response_text = response.decode("utf-8")
 
     if "Traffic Limit" in response_text:
         raise OpenBBError(
@@ -301,10 +201,10 @@ async def get_form_4_data(url) -> dict:
 
     return (
         xml_data.get("ownershipDocument") if xml_data.get("ownershipDocument") else {}
-    )  # type: ignore
+    )
 
 
-async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-many-branches
+async def parse_form_4_data(  # noqa: PLR0915, PLR0912
     data,
 ):
     """Parse the Form 4 data."""
@@ -351,10 +251,10 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
         "symbol": issuer.get("issuerTradingSymbol", "").upper(),
         "form": data.get("documentType"),
         "owner": (
-            owners if owners else owner.get("reportingOwnerId", {}).get("rptOwnerName")  # type: ignore
+            owners if owners else owner.get("reportingOwnerId", {}).get("rptOwnerName")
         ),
         "owner_cik": (
-            ciks if ciks else owner.get("reportingOwnerId", {}).get("rptOwnerCik")  # type: ignore
+            ciks if ciks else owner.get("reportingOwnerId", {}).get("rptOwnerCik")
         ),
         "issuer": issuer.get("issuerName"),
         "issuer_cik": issuer.get("issuerCik"),
@@ -492,137 +392,75 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
     return results
 
 
-async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
-    """Get the Form 4 data from a list of URLs."""
-    # pylint: disable=import-outside-toplevel
+async def download_data(urls, use_cache: bool = True):
+    """Get the Form 4 data from a list of URLs.
+
+    Parsed filings are stored in the unified SEC disk cache, keyed by filing URL.
+    A filing that yields no transactions is cached as an empty list so it is not
+    re-downloaded on subsequent calls.
+    """
     import asyncio  # noqa
-    import os
-    import sqlite3
     from numpy import nan
-    from openbb_core.app.utils import get_user_cache_directory
+    from openbb_sec.utils.cache import aget_cached, aset_cached
     from pandas import DataFrame
+
+    def _cache_key(url: str) -> str:
+        """Build the cache key for a Form 4 filing URL."""
+        return f"form4 {url}"
 
     results: list = []
     non_cached_urls: list = []
 
-    try:
+    if use_cache is True:
+        cached = await asyncio.gather(*[aget_cached(_cache_key(url)) for url in urls])
+        for url, entry in zip(urls, cached):
+            if entry is None:
+                non_cached_urls.append(url)
+            elif entry:
+                results.extend(entry)
+    else:
+        non_cached_urls = list(urls)
+
+    async def get_one(url):
+        """Fetch, parse, and cache the Form 4 data for one URL."""
+        data = await get_form_4_data(url)
+        result = await parse_form_4_data(data)
+        rows: list = []
+        if result:
+            df = DataFrame(result)
+            df["filing_url"] = url
+            df = df.replace({nan: None}).rename(columns=field_map)
+            rows = df.to_dict(orient="records")
+            results.extend(rows)
         if use_cache is True:
-            db_dir = f"{get_user_cache_directory()}/sql"
-            db_path = f"{db_dir}/sec_form4.db"
-            # Decompress the database file
-            if os.path.exists(f"{db_path}.gz"):
-                decompress_db(db_path)
+            await aset_cached(_cache_key(url), rows)
 
-            os.makedirs(db_dir, exist_ok=True)
-
-            try:
-                conn = sqlite3.connect(db_path)
-                setup_database(conn)
-                cached_data = get_cached_data(urls, conn)
-                cached_urls = {entry["filing_url"] for entry in cached_data}
-                for url in urls:
-                    if url not in cached_urls:
-                        non_cached_urls.append(url)
-            except sqlite3.DatabaseError as e:
-                logger.info("Error connecting to the database.")
-                retry_input = input(
-                    "Would you like to retry with a new database? (y/n): "
-                )
-                if retry_input.lower() == "y":
-                    faulty_db_path = f"{db_path}.faulty"
-                    os.rename(db_path, faulty_db_path)
-                    logger.info("Renamed faulty database to %s", faulty_db_path)
-                    db_path = f"{db_dir}/sec_form4.db"
-                    conn = sqlite3.connect(db_path)
-                    setup_database(conn)
-                    cached_data = get_cached_data(urls, conn)
-                    cached_urls = {entry["filing_url"] for entry in cached_data}
-                    for url in urls:
-                        if url not in cached_urls:
-                            non_cached_urls.append(url)
-                else:
-                    raise OpenBBError(e) from e
-
-            results.extend(cached_data)
-        elif use_cache is False:
-            non_cached_urls = urls
-
-        async def get_one(url):
-            """Get the data for one URL."""
-            data = await get_form_4_data(url)
-            result = await parse_form_4_data(data)
-            if not result and use_cache is True:
-                df = DataFrame([{"filing_url": url}])
-                df.to_sql("form4_data", conn, if_exists="append", index=False)
-
-            if result:
-                df = DataFrame(result)
-                df["filing_url"] = url
-                df = df.replace({nan: None}).rename(columns=field_map)
-                try:
-                    if use_cache is True:
-                        df.to_sql("form4_data", conn, if_exists="append", index=False)
-                except sqlite3.DatabaseError as e:
-                    if "no column named" in str(e):
-                        missing_column = (
-                            str(e).split("no column named ")[1].split(" ")[0]
-                        )
-                        missing_column = field_map.get(missing_column, missing_column)
-                        add_missing_column(conn, missing_column)
-                        df.to_sql("form4_data", conn, if_exists="append", index=False)
-                    else:
-                        raise OpenBBError(e) from e
-                results.extend(df.replace({nan: None}).to_dict(orient="records"))
-
-        time_estimate = (len(non_cached_urls) / 7) * 1.8
+    time_estimate = (len(non_cached_urls) / 7) * 1.8
+    logger.info(
+        "Found %d total filings and %d uncached entries to download, estimated download time: %d seconds.",
+        len(urls),
+        len(non_cached_urls),
+        round(time_estimate),
+    )
+    min_warn_time = 10
+    if time_estimate > min_warn_time:
         logger.info(
-            "Found %d total filings and %d uncached entries to download, estimated download time: %d seconds.",
-            len(urls),
-            len(non_cached_urls),
-            round(time_estimate),
+            "Warning: This function is not intended for mass data collection."
+            " Long download times are due to limitations with concurrent downloads from the SEC."
+            "\n\nReduce the number of requests by using a more specific date range."
         )
-        min_warn_time = 10
-        if time_estimate > min_warn_time:
-            logger.info(
-                "Warning: This function is not intended for mass data collection."
-                " Long download times are due to limitations with concurrent downloads from the SEC."
-                "\n\nReduce the number of requests by using a more specific date range."
-            )
 
-        if len(non_cached_urls) > 0:
-            async with asyncio.Semaphore(8):
-                for url_chunk in [
-                    non_cached_urls[i : i + 8]
-                    for i in range(0, len(non_cached_urls), 8)
-                ]:
-                    await asyncio.gather(*[get_one(url) for url in url_chunk])
-                    await asyncio.sleep(1.125)
+    if len(non_cached_urls) > 0:
+        async with asyncio.Semaphore(8):
+            for url_chunk in [
+                non_cached_urls[i : i + 8] for i in range(0, len(non_cached_urls), 8)
+            ]:
+                await asyncio.gather(*[get_one(url) for url in url_chunk])
+                await asyncio.sleep(1.125)
 
-        if use_cache is True:
-            close_db(conn, db_path)
+    results = [entry for entry in results if entry.get("filing_date")]
 
-        results = [entry for entry in results if entry.get("filing_date")]
-
-        return sorted(results, key=lambda x: x["filing_date"], reverse=True)
-
-    except Exception as e:  # pylint: disable=broad-except
-        if use_cache is True:
-            close_db(conn, db_path)
-        raise OpenBBError(
-            f"Unexpected error while downloading and processing data -> {e.__class__.__name__}: {e}"
-        ) from e
-
-
-def get_cached_data(urls, conn):
-    """Retrieve cached data for a list of URLs."""
-    # pylint: disable=import-outside-toplevel
-    from numpy import nan
-    from pandas import read_sql
-
-    placeholders = ", ".join("?" for _ in urls)
-    query = f"SELECT * FROM form4_data WHERE filing_url IN ({placeholders})"  # noqa
-    df = read_sql(query, conn, params=urls)
-    return df.replace({nan: None}).to_dict(orient="records") if not df.empty else []
+    return sorted(results, key=lambda x: x["filing_date"], reverse=True)
 
 
 async def get_form_4(
@@ -633,7 +471,6 @@ async def get_form_4(
     use_cache: bool = True,
 ) -> list[dict]:
     """Get the Form 4 data by ticker symbol or CIK number."""
-    # pylint: disable=import-outside-toplevel
     import asyncio
 
     try:

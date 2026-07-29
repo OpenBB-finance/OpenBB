@@ -23,6 +23,7 @@ import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
+from typing import Any
 
 import requests
 
@@ -1104,7 +1105,7 @@ def validate_one(cik: str, name: str, facts_json: dict) -> dict:
 
     Returns a dict summarizing the results.
     """
-    result = {
+    result: dict[str, Any] = {
         "cik": cik,
         "name": name,
         "entity_name": facts_json.get("entityName", ""),
@@ -1292,9 +1293,9 @@ def format_report(all_results: list[dict]) -> str:
             computed = grand_total - direct - q4h2
             lines.append("")
             lines.append(
-                f"  Direct XBRL: {direct:,d} ({100*direct/grand_total:.1f}%)"
-                f"  |  Q4/H2: {q4h2:,d} ({100*q4h2/grand_total:.1f}%)"
-                f"  |  Other computed: {computed:,d} ({100*computed/grand_total:.1f}%)"
+                f"  Direct XBRL: {direct:,d} ({100 * direct / grand_total:.1f}%)"
+                f"  |  Q4/H2: {q4h2:,d} ({100 * q4h2 / grand_total:.1f}%)"
+                f"  |  Other computed: {computed:,d} ({100 * computed / grand_total:.1f}%)"
             )
         lines.append("")
 
@@ -1421,9 +1422,9 @@ def main():
     # --- Phase 1b: Download and prepare multi-CIK merged entities ---
     # For tickers in MULTI_CIK_TICKERS, download any missing CIKs
     # and build a merged facts_json for unified validation.
-    merged_entities: dict[str, tuple[str, dict]] = (
-        {}
-    )  # ticker -> (display_name, merged_facts_json)
+    merged_entities: dict[
+        str, tuple[str, dict]
+    ] = {}  # ticker -> (display_name, merged_facts_json)
     merged_ciks: set[str] = set()  # CIKs that are part of a merge group
 
     for ticker, cik_list in MULTI_CIK_TICKERS.items():

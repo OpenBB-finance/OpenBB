@@ -1,7 +1,5 @@
 """StatementSchema class: loads the split JSON schema and orchestrates extraction."""
 
-# pylint: disable=R0912,R0913,R0914,R0915,R0917
-
 from __future__ import annotations
 
 import json
@@ -9,6 +7,7 @@ from collections import Counter
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+
 from openbb_sec.utils.statement_schema._detection import (
     detect_reporting_currency,
     detect_type,
@@ -407,19 +406,27 @@ class StatementSchema:
                                 "identity-enforced: cash_at_end_of_period"
                                 " - net_change_in_cash"
                             )
-                        elif "imputed:" in _nc_src:
+                        # The branches below are unreachable: cash_at_beginning
+                        # has no XBRL tags and is never imputed, so a present
+                        # ``_bv`` always carries a "derived:" source and the
+                        # first branch above always wins.
+                        elif (
+                            "imputed:" in _nc_src
+                        ):  # pragma: no cover - bop is always derived
                             _nc.values[date] = _ev - _bv
                             _nc.sources[date] = (
                                 "identity-enforced: cash_at_end_of_period"
                                 " - cash_at_beginning_of_period"
                             )
-                        elif "standalone" in _eop_src:
+                        elif (
+                            "standalone" in _eop_src
+                        ):  # pragma: no cover - bop is always derived
                             _eop.values[date] = _bv + _nv
                             _eop.sources[date] = (
                                 "identity-enforced: cash_at_beginning_of_period"
                                 " + net_change_in_cash"
                             )
-                        else:
+                        else:  # pragma: no cover - bop is always derived
                             diagnostics.append(
                                 ValidationWarning(
                                     date=date,

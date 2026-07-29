@@ -1,0 +1,2781 @@
+{
+  "sec_filing_headers_sec_obb": {
+    "name": "Filing Headers",
+    "description": "Get a list of all the documents associated with a filing, and their direct URLs.",
+    "category": "SEC Filings",
+    "type": "table",
+    "widgetId": "sec_filing_headers_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_filing_headers"
+    },
+    "params": [
+      {
+        "label": "Filing URL",
+        "description": "URL of a SEC filing.",
+        "optional": true,
+        "type": "text",
+        "show": true,
+        "paramName": "url"
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use cache for the index headers and cover page. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "label": "Document URL",
+        "description": "URL of a SEC EDGAR document.",
+        "optional": true,
+        "type": "text",
+        "show": false,
+        "paramName": "document_url"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/filing_headers",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 10
+    },
+    "data": {
+      "dataKey": "results.document_urls",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "sequence",
+            "headerName": "Sequence",
+            "headerTooltip": "The sequence of the document.",
+            "pinned": "left",
+            "type": "number"
+          },
+          {
+            "field": "type",
+            "headerName": "Document Type",
+            "headerTooltip": "The type of document.",
+            "type": "text"
+          },
+          {
+            "field": "filename",
+            "headerName": "Filename",
+            "headerTooltip": "The filename of the document.",
+            "type": "text"
+          },
+          {
+            "field": "content_description",
+            "headerName": "Description",
+            "headerTooltip": "Description of the document.",
+            "minWidth": 600,
+            "type": "text"
+          },
+          {
+            "field": "url",
+            "headerName": "URL",
+            "headerTooltip": "Click to view this document in the Filing Viewer.",
+            "type": "text",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+              "actionType": "groupBy",
+              "groupBy": {
+                "paramName": "document_url",
+                "valueField": "url"
+              }
+            }
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Filing Headers",
+    "refetchInterval": false
+  },
+  "sec_htm_file_sec_obb": {
+    "name": "Open HTML",
+    "description": "Open a HTM/HTML document from the SEC website.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_htm_file_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_htm_file"
+    },
+    "params": [
+      {
+        "label": "URL",
+        "description": "URL for the SEC filing.",
+        "optional": true,
+        "type": "text",
+        "show": true,
+        "paramName": "url"
+      },
+      {
+        "label": "Use Cache",
+        "description": "Cache the file for use later. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/htm_file",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results.content",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "content",
+            "formatterFn": null,
+            "headerName": "Content",
+            "headerTooltip": "Raw content of the HTM/HTML file.",
+            "cellDataType": "text"
+          }
+        ]
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Htm File",
+    "refetchInterval": false
+  },
+  "sec_cik_map_sec_obb": {
+    "name": "Cik Map",
+    "description": "Map a ticker symbol to a CIK number.",
+    "category": "SEC Reference",
+    "type": "table",
+    "widgetId": "sec_cik_map_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_cik_map"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Use Cache",
+        "description": "Whether or not to use cache for the request, default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/cik_map",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "cik",
+            "formatterFn": "none",
+            "headerName": "CIK",
+            "headerTooltip": "Central Index Key (CIK) for the requested entity.",
+            "cellDataType": "text",
+            "renderFn": null
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "CIK Map"
+  },
+  "sec_institutions_search_sec_obb": {
+    "name": "Institutions Search",
+    "description": "Search SEC-regulated institutions by name and return a list of results with CIK numbers.",
+    "category": "SEC Reference",
+    "type": "table",
+    "widgetId": "sec_institutions_search_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_institutions_search"
+    },
+    "params": [
+      {
+        "label": "Query",
+        "description": "Search query.",
+        "optional": true,
+        "type": "text",
+        "show": true,
+        "paramName": "query"
+      },
+      {
+        "label": "Use Cache",
+        "description": "Whether or not to use cache.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/institutions_search",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "name",
+            "formatterFn": null,
+            "headerName": "Name",
+            "headerTooltip": "The name of the institution.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "cik",
+            "formatterFn": "none",
+            "headerName": "CIK",
+            "headerTooltip": "Central Index Key (CIK)",
+            "cellDataType": "text",
+            "renderFn": null
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Institutions Search"
+  },
+  "sec_schema_files_sec_obb": {
+    "name": "Schema Files",
+    "description": "Explore SEC and FASB XBRL taxonomy schemas, labels, and presentation structures.\n\n- No parameters: list all available taxonomy families.\n- taxonomy only: get all parsed structures for the most recent year.\n- taxonomy + year: get all parsed structures for a specific year.\n- taxonomy + component: get one component's structure using the most recent year.\n- taxonomy + year + component: get one component's parsed structure.",
+    "category": "SEC Reference",
+    "type": "table",
+    "widgetId": "sec_schema_files_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_schema_files"
+    },
+    "params": [
+      {
+        "label": "Taxonomy",
+        "description": "Taxonomy family to explore. Omit to list all available taxonomies and their descriptions.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "us-gaap",
+            "value": "us-gaap"
+          },
+          {
+            "label": "srt",
+            "value": "srt"
+          },
+          {
+            "label": "dei",
+            "value": "dei"
+          },
+          {
+            "label": "ecd",
+            "value": "ecd"
+          },
+          {
+            "label": "cyd",
+            "value": "cyd"
+          },
+          {
+            "label": "ffd",
+            "value": "ffd"
+          },
+          {
+            "label": "ifrs",
+            "value": "ifrs"
+          },
+          {
+            "label": "frc-core",
+            "value": "frc-core"
+          },
+          {
+            "label": "frc-dpl",
+            "value": "frc-dpl"
+          },
+          {
+            "label": "rxp",
+            "value": "rxp"
+          },
+          {
+            "label": "spac",
+            "value": "spac"
+          },
+          {
+            "label": "cef",
+            "value": "cef"
+          },
+          {
+            "label": "oef",
+            "value": "oef"
+          },
+          {
+            "label": "vip",
+            "value": "vip"
+          },
+          {
+            "label": "fnd",
+            "value": "fnd"
+          },
+          {
+            "label": "sro",
+            "value": "sro"
+          },
+          {
+            "label": "sbs",
+            "value": "sbs"
+          },
+          {
+            "label": "rocr",
+            "value": "rocr"
+          },
+          {
+            "label": "country",
+            "value": "country"
+          },
+          {
+            "label": "currency",
+            "value": "currency"
+          },
+          {
+            "label": "exch",
+            "value": "exch"
+          },
+          {
+            "label": "naics",
+            "value": "naics"
+          },
+          {
+            "label": "sic",
+            "value": "sic"
+          },
+          {
+            "label": "stpr",
+            "value": "stpr"
+          },
+          {
+            "label": "snj",
+            "value": "snj"
+          }
+        ],
+        "paramName": "taxonomy"
+      },
+      {
+        "label": "Year",
+        "description": "Taxonomy year (e.g. 2011+ for us-gaap, varies by taxonomy). Defaults to the most recent year when omitted.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "year"
+      },
+      {
+        "label": "Component",
+        "description": "Presentation component to retrieve. Values are taxonomy-specific. Omit to return all components for the taxonomy.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "component"
+      },
+      {
+        "label": "Category",
+        "description": "Filter taxonomies by SEC filer category.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "operating_company",
+            "value": "operating_company"
+          },
+          {
+            "label": "investment_company",
+            "value": "investment_company"
+          },
+          {
+            "label": "self_regulatory_org",
+            "value": "self_regulatory_org"
+          },
+          {
+            "label": "sbs_repository",
+            "value": "sbs_repository"
+          },
+          {
+            "label": "nrsro",
+            "value": "nrsro"
+          },
+          {
+            "label": "common_reference",
+            "value": "common_reference"
+          }
+        ],
+        "paramName": "category"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/schema_files",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "name",
+            "formatterFn": null,
+            "headerName": "Name",
+            "headerTooltip": "Identifier: taxonomy key, year, component name, or XBRL element ID depending on the query mode.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Label",
+            "headerTooltip": "Human-readable label.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "description",
+            "formatterFn": null,
+            "headerName": "Description",
+            "headerTooltip": "Description or long name.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "category",
+            "formatterFn": null,
+            "headerName": "Category",
+            "headerTooltip": "Taxonomy category (e.g., operating_company).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "style",
+            "formatterFn": null,
+            "headerName": "Style",
+            "headerTooltip": "Taxonomy style (e.g., FASB_STANDARD, SEC_EMBEDDED).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "has_label_linkbase",
+            "formatterFn": null,
+            "headerName": "Has Label Linkbase",
+            "headerTooltip": "Whether the taxonomy has a parseable label linkbase.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "url",
+            "formatterFn": null,
+            "headerName": "URL",
+            "headerTooltip": "URL to the taxonomy resource or SEC reference page.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "level",
+            "formatterFn": null,
+            "headerName": "Level",
+            "headerTooltip": "Hierarchy depth in presentation structure (0 = root).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "order",
+            "formatterFn": null,
+            "headerName": "Order",
+            "headerTooltip": "Sort order within parent in presentation structure.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "parent_id",
+            "formatterFn": "none",
+            "headerName": "Parent ID",
+            "headerTooltip": "Parent XBRL element ID in presentation structure.",
+            "cellDataType": "text",
+            "renderFn": null
+          },
+          {
+            "field": "preferred_label",
+            "formatterFn": null,
+            "headerName": "Preferred Label",
+            "headerTooltip": "Preferred label role URI for presentation rendering.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "xbrl_type",
+            "formatterFn": null,
+            "headerName": "Xbrl Type",
+            "headerTooltip": "XBRL data type (e.g., monetaryItemType, textBlockItemType, stringItemType, sharesItemType, perShareItemType, domainItemType).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "period_type",
+            "formatterFn": null,
+            "headerName": "Period Type",
+            "headerTooltip": "Period type: 'instant' (point-in-time) or 'duration' (over a period).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "balance_type",
+            "formatterFn": null,
+            "headerName": "Balance Type",
+            "headerTooltip": "Balance type for monetary items: 'credit' or 'debit'.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "abstract",
+            "formatterFn": null,
+            "headerName": "Abstract",
+            "headerTooltip": "Whether the element is abstract (grouping/heading only, not taggable).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "substitution_group",
+            "formatterFn": null,
+            "headerName": "Substitution Group",
+            "headerTooltip": "XBRL substitution group: 'item' (line item), 'dimensionItem' (axis), 'hypercubeItem' (table).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "nillable",
+            "formatterFn": null,
+            "headerName": "Nillable",
+            "headerTooltip": "Whether the element value can be nil.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Schema Files"
+  },
+  "sec_symbol_map_sec_obb": {
+    "name": "Symbol Map",
+    "description": "Map a CIK number to a ticker symbol, leading 0s can be omitted or included.",
+    "category": "SEC Reference",
+    "type": "table",
+    "widgetId": "sec_symbol_map_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_symbol_map"
+    },
+    "params": [
+      {
+        "label": "Query",
+        "description": "Search query.",
+        "optional": false,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "query"
+      },
+      {
+        "label": "Use Cache",
+        "description": "Whether or not to use cache. If True, cache will store for seven days.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/symbol_map",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "symbol",
+            "pinned": "left",
+            "formatterFn": "none",
+            "headerName": "Symbol",
+            "headerTooltip": "Symbol representing the entity requested in the data.",
+            "cellDataType": "text",
+            "renderFn": null
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Symbol Map"
+  },
+  "sec_rss_litigation_sec_obb": {
+    "name": "SEC Litigation Releases",
+    "description": "Latest SEC enforcement litigation releases, with full text when available.",
+    "category": "SEC News",
+    "type": "newsfeed",
+    "widgetId": "sec_rss_litigation_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_rss_litigation"
+    },
+    "params": [
+      {
+        "paramName": "limit",
+        "label": "Number of Releases",
+        "type": "number",
+        "value": 25,
+        "description": "Number of litigation releases to return."
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/rss_litigation",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results"
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "RSS Litigation"
+  },
+  "sec_sic_search_sec_obb": {
+    "name": "Sic Search",
+    "description": "Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.",
+    "category": "SEC Reference",
+    "type": "table",
+    "widgetId": "sec_sic_search_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_sic_search"
+    },
+    "params": [
+      {
+        "label": "Query",
+        "description": "Search query to match against SIC code, industry title, or office.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "query"
+      },
+      {
+        "label": "Use Cache",
+        "description": "Whether or not to use cache.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/sic_search",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "sic",
+            "formatterFn": "int",
+            "headerName": "SIC",
+            "headerTooltip": "Sector Industrial Code (SIC)",
+            "cellDataType": "number"
+          },
+          {
+            "field": "industry",
+            "formatterFn": null,
+            "headerName": "Industry",
+            "headerTooltip": "Industry title.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "office",
+            "formatterFn": null,
+            "headerName": "Office",
+            "headerTooltip": "Reporting office within the Corporate Finance Office",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "SIC Search"
+  },
+  "sec_financial_statements_sec_obb": {
+    "name": "Financial Statements",
+    "description": "Get the financial statements exactly as reported in a company's latest 10-K/10-Q filing.",
+    "category": "SEC Filings",
+    "type": "table",
+    "widgetId": "sec_financial_statements_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_financial_statements"
+    },
+    "params": [
+      {
+        "label": "Statement Type",
+        "description": "The financial statement to retrieve, as reported in the filing.",
+        "optional": true,
+        "type": "text",
+        "value": "income",
+        "show": true,
+        "options": [
+          {
+            "label": "income",
+            "value": "income"
+          },
+          {
+            "label": "balance",
+            "value": "balance"
+          },
+          {
+            "label": "cash",
+            "value": "cash"
+          },
+          {
+            "label": "equity",
+            "value": "equity"
+          }
+        ],
+        "paramName": "statement_type"
+      },
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "calendar_period",
+        "label": "Calendar Period",
+        "options": [
+          {
+            "value": "Q1",
+            "label": "Q1"
+          },
+          {
+            "value": "Q2",
+            "label": "Q2"
+          },
+          {
+            "value": "Q3",
+            "label": "Q3"
+          },
+          {
+            "value": "Q4",
+            "label": "Q4"
+          }
+        ],
+        "description": "Calendar quarter; empty for the most recent annual report."
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      }
+    ],
+    "endpoint": "/as_filed_statement",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "enableAdvanced": true,
+        "columnsDefs": [
+          {
+            "field": "order",
+            "headerName": "Order",
+            "cellDataType": "number"
+          },
+          {
+            "field": "label",
+            "headerName": "Label",
+            "cellDataType": "text"
+          },
+          {
+            "field": "unit",
+            "headerName": "Unit",
+            "cellDataType": "text"
+          }
+        ]
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Financial Statements"
+  },
+  "sec_company_overview_sec_obb": {
+    "name": "Company Overview",
+    "description": "Get the company overview - entity profile and Business (Item 1) section - from a filing.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_company_overview_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_company_overview"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/company_overview",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 18
+    },
+    "data": {
+      "dataKey": "results.content"
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Company Overview"
+  },
+  "sec_executive_compensation_sec_obb": {
+    "name": "Executive Compensation",
+    "description": "Get the Summary Compensation Table from a company's proxy statement (DEF 14A).",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_executive_compensation_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_executive_compensation"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the proxy was filed. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/executive_compensation",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 18
+    },
+    "data": {
+      "dataKey": "results.content"
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Executive Compensation"
+  },
+  "sec_beneficial_ownership_sec_obb": {
+    "name": "Beneficial Ownership",
+    "description": "Get the 5%+ beneficial owners table from a company's proxy statement (DEF 14A).",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_beneficial_ownership_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_beneficial_ownership"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the proxy was filed. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/beneficial_ownership",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 12
+    },
+    "data": {
+      "dataKey": "results.content"
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Beneficial Ownership"
+  },
+  "sec_management_profiles_sec_obb": {
+    "name": "Management Profiles",
+    "description": "Get management profiles from annual filings and referenced proxy statements.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_management_profiles_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_management_profiles"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year of the filing. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/management_profiles",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 18
+    },
+    "data": {
+      "dataKey": "results.content"
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Management Profiles"
+  },
+  "sec_pay_versus_performance_sec_obb": {
+    "name": "Pay Versus Performance",
+    "description": "Get the Pay Versus Performance disclosure (Item 402(v)) XBRL facts from a proxy (DEF 14A).",
+    "category": "SEC Filings",
+    "type": "table",
+    "widgetId": "sec_pay_versus_performance_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_pay_versus_performance"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the proxy was filed. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/pay_versus_performance",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 12
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "year",
+            "headerName": "Year",
+            "headerTooltip": "Fiscal year.",
+            "pinned": "left",
+            "type": "number"
+          },
+          {
+            "field": "peo_total_compensation",
+            "headerName": "PEO Total Comp",
+            "headerTooltip": "Principal executive officer total compensation (SCT total).",
+            "type": "number"
+          },
+          {
+            "field": "peo_compensation_actually_paid",
+            "headerName": "PEO Comp Actually Paid",
+            "headerTooltip": "Principal executive officer compensation actually paid.",
+            "type": "number"
+          },
+          {
+            "field": "average_neo_total_compensation",
+            "headerName": "Avg NEO Total Comp",
+            "headerTooltip": "Average total compensation of the non-PEO named executive officers.",
+            "type": "number"
+          },
+          {
+            "field": "average_neo_compensation_actually_paid",
+            "headerName": "Avg NEO Comp Actually Paid",
+            "headerTooltip": "Average compensation actually paid to the non-PEO named executive officers.",
+            "type": "number"
+          },
+          {
+            "field": "total_shareholder_return",
+            "headerName": "TSR ($100)",
+            "headerTooltip": "Cumulative total shareholder return on a $100 investment.",
+            "type": "number"
+          },
+          {
+            "field": "peer_group_total_shareholder_return",
+            "headerName": "Peer TSR ($100)",
+            "headerTooltip": "Peer-group cumulative total shareholder return on a $100 investment.",
+            "type": "number"
+          },
+          {
+            "field": "net_income",
+            "headerName": "Net Income",
+            "headerTooltip": "Net income.",
+            "type": "number"
+          },
+          {
+            "field": "company_selected_measure",
+            "headerName": "Company-Selected Measure",
+            "headerTooltip": "The company-selected financial performance measure value.",
+            "type": "number"
+          },
+          {
+            "field": "company_selected_measure_name",
+            "headerName": "Measure",
+            "headerTooltip": "Name of the company-selected financial performance measure.",
+            "type": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Pay Versus Performance"
+  },
+  "sec_disclosures_sec_obb": {
+    "name": "Disclosures",
+    "description": "Get the disclosure text blocks and tables - notes to the financial statements - from a filing.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_disclosures_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_disclosures"
+    },
+    "params": [
+      {
+        "type": "text",
+        "paramName": "section",
+        "value": "disclosures",
+        "show": false
+      },
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "calendar_period",
+        "label": "Calendar Period",
+        "options": [
+          {
+            "value": "Q1",
+            "label": "Q1"
+          },
+          {
+            "value": "Q2",
+            "label": "Q2"
+          },
+          {
+            "value": "Q3",
+            "label": "Q3"
+          },
+          {
+            "value": "Q4",
+            "label": "Q4"
+          }
+        ],
+        "description": "Calendar quarter; empty for the most recent annual report."
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      }
+    ],
+    "endpoint": "/section_markdown",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 20
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Disclosures"
+  },
+  "sec_risk_factors_sec_obb": {
+    "name": "Risk Factors",
+    "description": "Get the Risk Factors (Item 1A) section from a company's latest 10-K/10-Q filing.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_risk_factors_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_risk_factors"
+    },
+    "params": [
+      {
+        "type": "text",
+        "paramName": "section",
+        "value": "risk_factors",
+        "show": false
+      },
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "calendar_period",
+        "label": "Calendar Period",
+        "options": [
+          {
+            "value": "Q1",
+            "label": "Q1"
+          },
+          {
+            "value": "Q2",
+            "label": "Q2"
+          },
+          {
+            "value": "Q3",
+            "label": "Q3"
+          },
+          {
+            "value": "Q4",
+            "label": "Q4"
+          }
+        ],
+        "description": "Calendar quarter; empty for the most recent annual report."
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      }
+    ],
+    "endpoint": "/section_markdown",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 20
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Risk Factors"
+  },
+  "sec_segment_revenue_sec_obb": {
+    "name": "Segment Revenue",
+    "description": "Get the segment and geographic breakdown of revenues from a filing's XBRL data.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_segment_revenue_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_segment_revenue"
+    },
+    "params": [
+      {
+        "type": "text",
+        "paramName": "section",
+        "value": "segment_revenue",
+        "show": false
+      },
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "calendar_period",
+        "label": "Calendar Period",
+        "options": [
+          {
+            "value": "Q1",
+            "label": "Q1"
+          },
+          {
+            "value": "Q2",
+            "label": "Q2"
+          },
+          {
+            "value": "Q3",
+            "label": "Q3"
+          },
+          {
+            "value": "Q4",
+            "label": "Q4"
+          }
+        ],
+        "description": "Calendar quarter; empty for the most recent annual report."
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      }
+    ],
+    "endpoint": "/section_markdown",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 20
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Segment Revenue"
+  },
+  "sec_legal_proceedings_sec_obb": {
+    "name": "Legal Proceedings",
+    "description": "Get the Legal Proceedings section (Item 3 / Part II Item 1) from a filing.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_legal_proceedings_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_legal_proceedings"
+    },
+    "params": [
+      {
+        "type": "text",
+        "paramName": "section",
+        "value": "legal_proceedings",
+        "show": false
+      },
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "calendar_period",
+        "label": "Calendar Period",
+        "options": [
+          {
+            "value": "Q1",
+            "label": "Q1"
+          },
+          {
+            "value": "Q2",
+            "label": "Q2"
+          },
+          {
+            "value": "Q3",
+            "label": "Q3"
+          },
+          {
+            "value": "Q4",
+            "label": "Q4"
+          }
+        ],
+        "description": "Calendar quarter; empty for the most recent annual report."
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      }
+    ],
+    "endpoint": "/section_markdown",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 20
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Legal Proceedings"
+  },
+  "sec_exhibit_sec_obb": {
+    "name": "Exhibits",
+    "description": "Display an attached exhibit document (EX-3, EX-10, EX-21, EX-23, EX-99, ...) from a filing.",
+    "category": "SEC Filings",
+    "type": "markdown",
+    "widgetId": "sec_exhibit_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_exhibit"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "label": "Calendar Year",
+        "description": "Calendar year the filing's period ends. Options depend on the selected symbol.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "calendar_year",
+        "optionsEndpoint": "/api/v1/sec/filing_options",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "type": "text",
+        "paramName": "calendar_period",
+        "label": "Calendar Period",
+        "optional": true,
+        "show": true,
+        "options": [
+          {
+            "value": "Q1",
+            "label": "Q1"
+          },
+          {
+            "value": "Q2",
+            "label": "Q2"
+          },
+          {
+            "value": "Q3",
+            "label": "Q3"
+          },
+          {
+            "value": "Q4",
+            "label": "Q4"
+          }
+        ],
+        "description": "Calendar quarter; empty for the most recent filing."
+      },
+      {
+        "label": "Exhibit",
+        "description": "The attached exhibit document to display. Options depend on the selected filing.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "exhibit",
+        "optionsEndpoint": "/api/v1/sec/exhibits",
+        "optionsParams": {
+          "symbol": "$symbol",
+          "calendar_year": "$calendar_year",
+          "calendar_period": "$calendar_period"
+        },
+        "style": {
+          "popupWidth": 950
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Use the cache for downloaded filings. Default is True.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/exhibit",
+    "runButton": false,
+    "gridData": {
+      "w": 20,
+      "h": 18
+    },
+    "data": {
+      "dataKey": "results.content"
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Exhibits"
+  },
+  "sec_nport_disclosure_sec_obb": {
+    "name": "Nport Disclosure",
+    "description": "Get SEC NPORT-P disclosure filings for a given ETF or mutual fund (US only).",
+    "category": "SEC Funds",
+    "type": "table",
+    "widgetId": "sec_nport_disclosure_sec_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "sec_nport_disclosure"
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Fund",
+        "value": "XLK",
+        "optionsEndpoint": "/api/v1/sec/nport_funds",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a mutual fund or ETF (ticker symbol mapped to its SEC series)."
+      },
+      {
+        "label": "Filing Period",
+        "description": "The filing period to view. Money market funds report monthly; most other funds report quarterly.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "date",
+        "optionsEndpoint": "/api/v1/sec/nport_periods",
+        "optionsParams": {
+          "symbol": "$symbol"
+        }
+      },
+      {
+        "label": "Use Cache",
+        "description": "Whether or not to use cache for the request.",
+        "optional": true,
+        "type": "boolean",
+        "value": true,
+        "show": true,
+        "paramName": "use_cache"
+      },
+      {
+        "paramName": "provider",
+        "value": "sec",
+        "show": false
+      }
+    ],
+    "endpoint": "/api/v1/sec/nport_disclosure",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 15
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "symbol",
+            "pinned": "left",
+            "formatterFn": "none",
+            "headerName": "Symbol",
+            "headerTooltip": "Symbol representing the entity requested in the data.",
+            "cellDataType": "text",
+            "renderFn": null
+          },
+          {
+            "field": "name",
+            "formatterFn": null,
+            "headerName": "Name",
+            "headerTooltip": "Name of the asset.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "title",
+            "formatterFn": null,
+            "headerName": "Title",
+            "headerTooltip": "Title of the asset.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "cusip",
+            "formatterFn": "none",
+            "headerName": "CUSIP",
+            "headerTooltip": "CUSIP of the holding.",
+            "cellDataType": "text",
+            "renderFn": null
+          },
+          {
+            "field": "lei",
+            "formatterFn": null,
+            "headerName": "Lei",
+            "headerTooltip": "The LEI of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "isin",
+            "formatterFn": "none",
+            "headerName": "ISIN",
+            "headerTooltip": "The ISIN of the holding.",
+            "cellDataType": "text",
+            "renderFn": null
+          },
+          {
+            "field": "other_id",
+            "formatterFn": null,
+            "headerName": "Other ID",
+            "headerTooltip": "Internal identifier for the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_restricted",
+            "formatterFn": null,
+            "headerName": "Is Restricted",
+            "headerTooltip": "Whether the holding is restricted.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "fair_value_level",
+            "formatterFn": null,
+            "headerName": "Fair Value Level",
+            "headerTooltip": "The fair value level of the holding.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "is_cash_collateral",
+            "formatterFn": null,
+            "headerName": "Is Cash Collateral",
+            "headerTooltip": "Whether the holding is cash collateral.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_non_cash_collateral",
+            "formatterFn": null,
+            "headerName": "Is Non Cash Collateral",
+            "headerTooltip": "Whether the holding is non-cash collateral.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_loan_by_fund",
+            "formatterFn": null,
+            "headerName": "Is Loan By Fund",
+            "headerTooltip": "Whether the holding is loan by fund.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "loan_value",
+            "formatterFn": null,
+            "headerName": "Loan Value",
+            "headerTooltip": "The loan value of the holding.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "issuer_conditional",
+            "formatterFn": null,
+            "headerName": "Issuer Conditional",
+            "headerTooltip": "The issuer conditions of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "asset_conditional",
+            "formatterFn": null,
+            "headerName": "Asset Conditional",
+            "headerTooltip": "The asset conditions of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "payoff_profile",
+            "formatterFn": null,
+            "headerName": "Payoff Profile",
+            "headerTooltip": "The payoff profile of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "asset_category",
+            "formatterFn": null,
+            "headerName": "Asset Category",
+            "headerTooltip": "The asset category of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "issuer_category",
+            "formatterFn": null,
+            "headerName": "Issuer Category",
+            "headerTooltip": "The issuer category of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "country",
+            "formatterFn": null,
+            "headerName": "Country",
+            "headerTooltip": "The country of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "balance",
+            "formatterFn": null,
+            "headerName": "Balance",
+            "headerTooltip": "The balance of the holding, in shares or units.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "units",
+            "formatterFn": null,
+            "headerName": "Units",
+            "headerTooltip": "The type of units.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "currency",
+            "formatterFn": null,
+            "headerName": "Currency",
+            "headerTooltip": "The currency of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "value",
+            "formatterFn": null,
+            "headerName": "Value",
+            "headerTooltip": "The value of the holding, in dollars.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "weight",
+            "formatterFn": "normalizedPercent",
+            "headerName": "Weight",
+            "headerTooltip": "The weight of the holding, as a normalized percent.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "maturity_date",
+            "formatterFn": null,
+            "headerName": "Maturity Date",
+            "headerTooltip": "The maturity date of the debt security.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "coupon_kind",
+            "formatterFn": null,
+            "headerName": "Coupon Kind",
+            "headerTooltip": "The type of coupon for the debt security.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "rate_type",
+            "formatterFn": null,
+            "headerName": "Rate Type",
+            "headerTooltip": "The type of rate for the debt security, floating or fixed.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "annualized_return",
+            "formatterFn": "normalizedPercent",
+            "headerName": "Annualized Return",
+            "headerTooltip": "The annualized return on the debt security.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "is_default",
+            "formatterFn": null,
+            "headerName": "Is Default",
+            "headerTooltip": "If the debt security is defaulted.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "in_arrears",
+            "formatterFn": null,
+            "headerName": "In Arrears",
+            "headerTooltip": "If the debt security is in arrears.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_paid_kind",
+            "formatterFn": null,
+            "headerName": "Is Paid Kind",
+            "headerTooltip": "If the debt security payments are paid in kind.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "derivative_category",
+            "formatterFn": null,
+            "headerName": "Derivative Category",
+            "headerTooltip": "The derivative category of the holding.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "counterparty",
+            "formatterFn": null,
+            "headerName": "Counterparty",
+            "headerTooltip": "The counterparty of the derivative.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "underlying_name",
+            "formatterFn": null,
+            "headerName": "Underlying Name",
+            "headerTooltip": "The name of the underlying asset associated with the derivative.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "option_type",
+            "formatterFn": null,
+            "headerName": "Option Type",
+            "headerTooltip": "The type of option.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "derivative_payoff",
+            "formatterFn": null,
+            "headerName": "Derivative Payoff",
+            "headerTooltip": "The payoff profile of the derivative.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "expiry_date",
+            "formatterFn": null,
+            "headerName": "Expiry Date",
+            "headerTooltip": "The expiry or termination date of the derivative.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "exercise_price",
+            "formatterFn": null,
+            "headerName": "Exercise Price",
+            "headerTooltip": "The exercise price of the option.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "exercise_currency",
+            "formatterFn": null,
+            "headerName": "Exercise Currency",
+            "headerTooltip": "The currency of the option exercise price.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "shares_per_contract",
+            "formatterFn": null,
+            "headerName": "Shares Per Contract",
+            "headerTooltip": "The number of shares per contract.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "delta",
+            "formatterFn": "none",
+            "headerName": "Delta",
+            "headerTooltip": "The delta of the option.",
+            "cellDataType": "number",
+            "renderFn": "greenRed"
+          },
+          {
+            "field": "rate_type_rec",
+            "formatterFn": null,
+            "headerName": "Rate Type Rec",
+            "headerTooltip": "The type of rate for receivable portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "receive_currency",
+            "formatterFn": null,
+            "headerName": "Receive Currency",
+            "headerTooltip": "The receive currency of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "upfront_receive",
+            "formatterFn": null,
+            "headerName": "Upfront Receive",
+            "headerTooltip": "The upfront amount received of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "floating_rate_index_rec",
+            "formatterFn": null,
+            "headerName": "Floating Rate Index Rec",
+            "headerTooltip": "The floating rate index for receivable portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "floating_rate_spread_rec",
+            "formatterFn": null,
+            "headerName": "Floating Rate Spread Rec",
+            "headerTooltip": "The floating rate spread for reveivable portion of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "rate_tenor_rec",
+            "formatterFn": null,
+            "headerName": "Rate Tenor Rec",
+            "headerTooltip": "The rate tenor for receivable portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "rate_tenor_unit_rec",
+            "formatterFn": null,
+            "headerName": "Rate Tenor Unit Rec",
+            "headerTooltip": "The rate tenor unit for receivable portion of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "reset_date_rec",
+            "formatterFn": null,
+            "headerName": "Reset Date Rec",
+            "headerTooltip": "The reset date for receivable portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "reset_date_unit_rec",
+            "formatterFn": null,
+            "headerName": "Reset Date Unit Rec",
+            "headerTooltip": "The reset date unit for receivable portion of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "rate_type_pmnt",
+            "formatterFn": null,
+            "headerName": "Rate Type Pmnt",
+            "headerTooltip": "The type of rate for payment portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "payment_currency",
+            "formatterFn": null,
+            "headerName": "Payment Currency",
+            "headerTooltip": "The payment currency of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "upfront_payment",
+            "formatterFn": null,
+            "headerName": "Upfront Payment",
+            "headerTooltip": "The upfront amount received of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "floating_rate_index_pmnt",
+            "formatterFn": null,
+            "headerName": "Floating Rate Index Pmnt",
+            "headerTooltip": "The floating rate index for payment portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "floating_rate_spread_pmnt",
+            "formatterFn": null,
+            "headerName": "Floating Rate Spread Pmnt",
+            "headerTooltip": "The floating rate spread for payment portion of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "rate_tenor_pmnt",
+            "formatterFn": null,
+            "headerName": "Rate Tenor Pmnt",
+            "headerTooltip": "The rate tenor for payment portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "rate_tenor_unit_pmnt",
+            "formatterFn": null,
+            "headerName": "Rate Tenor Unit Pmnt",
+            "headerTooltip": "The rate tenor unit for payment portion of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "reset_date_pmnt",
+            "formatterFn": null,
+            "headerName": "Reset Date Pmnt",
+            "headerTooltip": "The reset date for payment portion of the swap.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "reset_date_unit_pmnt",
+            "formatterFn": null,
+            "headerName": "Reset Date Unit Pmnt",
+            "headerTooltip": "The reset date unit for payment portion of the swap.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "repo_type",
+            "formatterFn": null,
+            "headerName": "Repo Type",
+            "headerTooltip": "The type of repo.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_cleared",
+            "formatterFn": null,
+            "headerName": "Is Cleared",
+            "headerTooltip": "If the repo is cleared.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_tri_party",
+            "formatterFn": null,
+            "headerName": "Is Tri Party",
+            "headerTooltip": "If the repo is tri party.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "principal_amount",
+            "formatterFn": null,
+            "headerName": "Principal Amount",
+            "headerTooltip": "The principal amount of the repo.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "principal_currency",
+            "formatterFn": null,
+            "headerName": "Principal Currency",
+            "headerTooltip": "The currency of the principal amount.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "collateral_type",
+            "formatterFn": null,
+            "headerName": "Collateral Type",
+            "headerTooltip": "The collateral type of the repo.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "collateral_amount",
+            "formatterFn": null,
+            "headerName": "Collateral Amount",
+            "headerTooltip": "The collateral amount of the repo.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "collateral_currency",
+            "formatterFn": null,
+            "headerName": "Collateral Currency",
+            "headerTooltip": "The currency of the collateral amount.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "exchange_currency",
+            "formatterFn": null,
+            "headerName": "Exchange Currency",
+            "headerTooltip": "The currency of the exchange rate.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "exchange_rate",
+            "formatterFn": null,
+            "headerName": "Exchange Rate",
+            "headerTooltip": "The exchange rate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "currency_sold",
+            "formatterFn": null,
+            "headerName": "Currency Sold",
+            "headerTooltip": "The currency sold in a Forward Derivative.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "currency_amount_sold",
+            "formatterFn": null,
+            "headerName": "Currency Amount Sold",
+            "headerTooltip": "The amount of currency sold in a Forward Derivative.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "currency_bought",
+            "formatterFn": null,
+            "headerName": "Currency Bought",
+            "headerTooltip": "The currency bought in a Forward Derivative.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "currency_amount_bought",
+            "formatterFn": null,
+            "headerName": "Currency Amount Bought",
+            "headerTooltip": "The amount of currency bought in a Forward Derivative.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "notional_amount",
+            "formatterFn": null,
+            "headerName": "Notional Amount",
+            "headerTooltip": "The notional amount of the derivative.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "notional_currency",
+            "formatterFn": null,
+            "headerName": "Notional Currency",
+            "headerTooltip": "The currency of the derivative's notional amount.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "unrealized_gain",
+            "formatterFn": null,
+            "headerName": "Unrealized Gain",
+            "headerTooltip": "The unrealized gain or loss on the derivative.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Nport Disclosure"
+  },
+  "sec_edgar_viewer_sec_obb": {
+    "name": "SEC EDGAR Full-Text Search",
+    "description": "Browse and read company filings directly on SEC EDGAR.",
+    "category": "SEC Filings",
+    "widgetId": "sec_edgar_viewer_sec_obb",
+    "type": "iframe",
+    "endpoint": "https://www.sec.gov/edgar/search/",
+    "gridData": {
+      "w": 20,
+      "h": 18
+    },
+    "source": [
+      "SEC"
+    ]
+  },
+  "sec_filing_viewer_sec_obb": {
+    "name": "Filing Viewer",
+    "description": "View a SEC filing document.",
+    "category": "SEC Filings",
+    "type": "iframe",
+    "widgetId": "sec_filing_viewer_sec_obb",
+    "endpoint": "/api/v1/sec/filing_viewer_app",
+    "params": [
+      {
+        "paramName": "document_url",
+        "type": "text",
+        "label": "Document URL",
+        "show": true,
+        "optional": true,
+        "description": "URL of a SEC EDGAR document."
+      }
+    ],
+    "gridData": {
+      "w": 20,
+      "h": 25
+    },
+    "source": [
+      "SEC"
+    ],
+    "subCategory": "Filing Viewer"
+  },
+  "sec_balance_sheet_facts_sec_obb": {
+    "name": "Balance Sheet",
+    "description": "SEC standardized balance sheet (annual / quarterly / TTM, with optional YoY / PoP transform), from EDGAR companyfacts.",
+    "category": "Financial Statements",
+    "type": "table",
+    "endpoint": "/standardized_statement",
+    "widgetId": "sec_balance_sheet_facts_sec_obb",
+    "refetchInterval": false,
+    "gridData": {
+      "w": 40,
+      "h": 18
+    },
+    "data": {
+      "table": {
+        "enableAdvanced": true,
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "Line Item",
+            "headerName": "Line Item",
+            "cellDataType": "text",
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "value",
+                "title": "",
+                "markdown": "### {Line Item}\n\n{description}\n\n### Source Provenance\n{provenance}"
+              }
+            }
+          },
+          {
+            "field": "description",
+            "headerName": "Description",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "provenance",
+            "headerName": "Source Provenance",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "type": "text",
+        "paramName": "statement_type",
+        "value": "balance",
+        "show": false
+      },
+      {
+        "type": "tabs",
+        "paramName": "period",
+        "label": "Period",
+        "value": "FY",
+        "description": "FY = annual, Q = quarterly, TTM = trailing twelve months.",
+        "options": [
+          {
+            "label": "FY",
+            "value": "FY"
+          },
+          {
+            "label": "Q",
+            "value": "Q"
+          },
+          {
+            "label": "TTM",
+            "value": "TTM"
+          }
+        ]
+      },
+      {
+        "type": "tabs",
+        "paramName": "transform",
+        "label": "Transform",
+        "value": "None",
+        "description": "None = raw; % YoY = year-over-year; % PoP = period-over-period.",
+        "options": [
+          {
+            "label": "$",
+            "value": "None"
+          },
+          {
+            "label": "% YoY",
+            "value": "% YoY"
+          },
+          {
+            "label": "% PoP",
+            "value": "% PoP"
+          }
+        ]
+      },
+      {
+        "type": "boolean",
+        "paramName": "transpose",
+        "label": "Transpose",
+        "value": true,
+        "description": "Pivot the table so line items are rows and periods are columns."
+      },
+      {
+        "type": "number",
+        "paramName": "limit",
+        "label": "Limit",
+        "value": 10,
+        "description": "Most-recent N periods (0 = all)."
+      }
+    ]
+  },
+  "sec_income_statement_facts_sec_obb": {
+    "name": "Income Statement",
+    "description": "SEC standardized income statement (annual / quarterly / TTM, with optional YoY / PoP transform), from EDGAR companyfacts.",
+    "category": "Financial Statements",
+    "type": "table",
+    "endpoint": "/standardized_statement",
+    "widgetId": "sec_income_statement_facts_sec_obb",
+    "refetchInterval": false,
+    "gridData": {
+      "w": 40,
+      "h": 18
+    },
+    "data": {
+      "table": {
+        "enableAdvanced": true,
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "Line Item",
+            "headerName": "Line Item",
+            "cellDataType": "text",
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "value",
+                "title": "",
+                "markdown": "### {Line Item}\n\n{description}\n\n### Source Provenance\n{provenance}"
+              }
+            }
+          },
+          {
+            "field": "description",
+            "headerName": "Description",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "provenance",
+            "headerName": "Source Provenance",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "type": "text",
+        "paramName": "statement_type",
+        "value": "income",
+        "show": false
+      },
+      {
+        "type": "tabs",
+        "paramName": "period",
+        "label": "Period",
+        "value": "FY",
+        "description": "FY = annual, Q = quarterly, TTM = trailing twelve months.",
+        "options": [
+          {
+            "label": "FY",
+            "value": "FY"
+          },
+          {
+            "label": "Q",
+            "value": "Q"
+          },
+          {
+            "label": "TTM",
+            "value": "TTM"
+          }
+        ]
+      },
+      {
+        "type": "tabs",
+        "paramName": "transform",
+        "label": "Transform",
+        "value": "None",
+        "description": "None = raw; % YoY = year-over-year; % PoP = period-over-period.",
+        "options": [
+          {
+            "label": "$",
+            "value": "None"
+          },
+          {
+            "label": "% YoY",
+            "value": "% YoY"
+          },
+          {
+            "label": "% PoP",
+            "value": "% PoP"
+          }
+        ]
+      },
+      {
+        "type": "boolean",
+        "paramName": "transpose",
+        "label": "Transpose",
+        "value": true,
+        "description": "Pivot the table so line items are rows and periods are columns."
+      },
+      {
+        "type": "number",
+        "paramName": "limit",
+        "label": "Limit",
+        "value": 10,
+        "description": "Most-recent N periods (0 = all)."
+      }
+    ]
+  },
+  "sec_cash_flow_facts_sec_obb": {
+    "name": "Cash Flow Statement",
+    "description": "SEC standardized cash flow statement (annual / quarterly / TTM, with optional YoY / PoP transform), from EDGAR companyfacts.",
+    "category": "Financial Statements",
+    "type": "table",
+    "endpoint": "/standardized_statement",
+    "widgetId": "sec_cash_flow_facts_sec_obb",
+    "refetchInterval": false,
+    "gridData": {
+      "w": 40,
+      "h": 18
+    },
+    "data": {
+      "table": {
+        "enableAdvanced": true,
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "Line Item",
+            "headerName": "Line Item",
+            "cellDataType": "text",
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "value",
+                "title": "",
+                "markdown": "### {Line Item}\n\n{description}\n\n### Source Provenance\n{provenance}"
+              }
+            }
+          },
+          {
+            "field": "description",
+            "headerName": "Description",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "provenance",
+            "headerName": "Source Provenance",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "symbol",
+        "label": "Symbol",
+        "value": "AAPL",
+        "optionsEndpoint": "/api/v1/sec/companies",
+        "style": {
+          "popupWidth": 950
+        },
+        "description": "Pick a company with standardized SEC financials (ranked by market cap)."
+      },
+      {
+        "type": "text",
+        "paramName": "statement_type",
+        "value": "cash",
+        "show": false
+      },
+      {
+        "type": "tabs",
+        "paramName": "period",
+        "label": "Period",
+        "value": "FY",
+        "description": "FY = annual, Q = quarterly, TTM = trailing twelve months.",
+        "options": [
+          {
+            "label": "FY",
+            "value": "FY"
+          },
+          {
+            "label": "Q",
+            "value": "Q"
+          },
+          {
+            "label": "TTM",
+            "value": "TTM"
+          }
+        ]
+      },
+      {
+        "type": "tabs",
+        "paramName": "transform",
+        "label": "Transform",
+        "value": "None",
+        "description": "None = raw; % YoY = year-over-year; % PoP = period-over-period.",
+        "options": [
+          {
+            "label": "$",
+            "value": "None"
+          },
+          {
+            "label": "% YoY",
+            "value": "% YoY"
+          },
+          {
+            "label": "% PoP",
+            "value": "% PoP"
+          }
+        ]
+      },
+      {
+        "type": "boolean",
+        "paramName": "transpose",
+        "label": "Transpose",
+        "value": true,
+        "description": "Pivot the table so line items are rows and periods are columns."
+      },
+      {
+        "type": "number",
+        "paramName": "limit",
+        "label": "Limit",
+        "value": 10,
+        "description": "Most-recent N periods (0 = all)."
+      }
+    ]
+  }
+}

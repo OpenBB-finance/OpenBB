@@ -1,7 +1,5 @@
 """SEC Form 13F-HR Model."""
 
-# pylint: disable =unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -17,6 +15,27 @@ class SecForm13FHRQueryParams(Form13FHRQueryParams):
 
     Source: https://www.sec.gov/Archives/edgar/data/
     """
+
+    __json_schema_extra__ = {
+        "symbol": {
+            "x-widget_config": {
+                "label": "13F Filer",
+                "type": "endpoint",
+                "optionsEndpoint": "/api/v1/sec/13f_filers",
+                "style": {"popupWidth": 600},
+                "description": "Pick a 13F filer - an institutional investment"
+                " manager or a company - by name.",
+            }
+        },
+        "date": {
+            "x-widget_config": {
+                "label": "Filing Period",
+                "type": "endpoint",
+                "optionsEndpoint": "/api/v1/sec/13f_periods",
+                "optionsParams": {"symbol": "$symbol"},
+            }
+        },
+    }
 
 
 class SecForm13FHRData(Form13FHRData):
@@ -50,7 +69,6 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
