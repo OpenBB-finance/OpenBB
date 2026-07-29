@@ -164,6 +164,9 @@ def operation_parameters(
     return merged
 
 
+_NON_SCHEMA_KEYWORDS = frozenset({"default", "example", "examples", "enum", "const"})
+
+
 def deref_schema(
     spec: dict[str, Any],
     node: Any,
@@ -184,7 +187,17 @@ def deref_schema(
             if not target:
                 return node
             return deref_schema(spec, target, seen | {ref}, max_depth - 1)
-        return {k: deref_schema(spec, v, seen, max_depth - 1) for k, v in node.items()}
+        # Instance data (``default``, ``example(s)``, ``enum``, ``const``) and
+        # vendor extensions are not subschemas: a ``$ref`` key inside one is a
+        # literal value, not a reference to resolve.
+        return {
+            k: (
+                v
+                if k in _NON_SCHEMA_KEYWORDS or k.startswith("x-")
+                else deref_schema(spec, v, seen, max_depth - 1)
+            )
+            for k, v in node.items()
+        }
     if isinstance(node, list):
         return [deref_schema(spec, v, seen, max_depth - 1) for v in node]
     return node
@@ -246,7 +259,18 @@ def merge_allof(node: Any, max_depth: int = 32) -> Any:
     if not isinstance(node, dict):
         return node
 
-    node = {k: merge_allof(v, max_depth - 1) for k, v in node.items()}
+    # ``default``, ``example(s)``, ``enum`` and ``const`` hold instance data, not
+    # subschemas, and a vendor extension can hold anything. Recursing into them
+    # would rewrite a value that merely happens to contain an ``allOf`` key —
+    # a default of ``{"allOf": [...]}`` came back as ``{"type": "object"}``.
+    node = {
+        k: (
+            v
+            if k in _NON_SCHEMA_KEYWORDS or k.startswith("x-")
+            else merge_allof(v, max_depth - 1)
+        )
+        for k, v in node.items()
+    }
 
     members = node.get("allOf")
     if not isinstance(members, list) or not members:

@@ -403,7 +403,11 @@ def _signature_params(
         ann = _python_type_from_param(raw)
         out.append(
             (
-                name,
+                # Wire names are not always identifiers. Rebilly declares
+                # ``Organization-Id`` and a ``REB-APIKEY`` security header, which
+                # emitted ``REB-APIKEY: str = None``. The fetcher path already
+                # sanitizes these; this one has to match it.
+                safe_field_name(name)[0],
                 ann,
                 raw.get("help"),
                 bool(raw.get("required")),
@@ -651,6 +655,13 @@ def _render_body_block(
     query_field_names = [
         n for n, _, _, _, _ in params if n != "cc" and n not in body_safe_names
     ]
+    # The signature carries safe identifiers, but the request has to go out under
+    # the wire names, so keep a map back for the query keys and the path check.
+    wire_by_safe = {
+        safe_field_name(p["name"])[0]: p["name"]
+        for p in filter_user_params(cmd_spec.get("parameters") or [])
+        if p.get("name")
+    }
 
     lines: list[str] = []
     lines.extend(cred_lines)
@@ -663,10 +674,11 @@ def _render_body_block(
 
     lines.append("    _query_dict: dict[str, Any] = {}")
     for name in query_field_names:
-        if name in path_params:
+        wire = wire_by_safe.get(name, name)
+        if wire in path_params or name in path_params:
             continue
         lines.append(f"    if {name} is not None:")
-        lines.append(f"        _query_dict[{name!r}] = {name}")
+        lines.append(f"        _query_dict[{wire!r}] = {name}")
     for canonical, info in creds.items():
         if info["in"] != "query":
             continue
