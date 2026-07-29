@@ -380,13 +380,12 @@ def _signature_params(
     for name, schema in body_props.items():
         if name == array_field:
             continue
-        if name in operation_param_names:
-            continue
-        if safe_field_name(name)[0] in operation_param_names | emitted:
-            continue
         if not isinstance(schema, dict):
             continue
-        emitted.add(safe_field_name(name)[0])
+        safe = safe_field_name(name)[0]
+        if safe in operation_param_names or safe in emitted:
+            continue
+        emitted.add(safe)
         ann = _python_type_from_param(
             {
                 "type": schema.get("type"),
@@ -400,7 +399,7 @@ def _signature_params(
                 # payload by the wire name and reading the safe identifier, so the
                 # signature has to declare the safe one. Codat's Transfer body has a
                 # property named ``from``, which is a keyword.
-                safe_field_name(name)[0],
+                safe,
                 ann,
                 schema.get("description") or schema.get("title"),
                 name in body_required,

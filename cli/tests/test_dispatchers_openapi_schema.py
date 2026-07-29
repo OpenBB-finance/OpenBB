@@ -21,6 +21,7 @@ from openbb_cli.dispatchers.openapi_schema import (
     build_parser_from_operation,
     build_reference,
     build_router_map,
+    deref_schema,
     expand_type_arrays,
     extract_request_body_schema,
     extract_response_schema,
@@ -2179,3 +2180,53 @@ def test_merge_allof_blocks_on_structural_keywords():
     for blocking in ({"enum": ["a"]}, {"const": 1}, {"items": {"type": "string"}}):
         schema = {"allOf": [{"properties": {"a": {}}}, blocking]}
         assert merge_allof(schema) == schema
+
+
+def test_merge_allof_leaves_instance_data_untouched():
+    """``default`` / ``example`` / ``enum`` hold instance data, not subschemas.
+
+    A default value that happens to contain an ``allOf`` key was rewritten into
+    ``{"type": "object"}``, destroying the value.
+    """
+    schema = {
+        "type": "object",
+        "properties": {
+            "cfg": {
+                "type": "object",
+                "default": {"allOf": [{"a": 1}, {"b": 2}]},
+                "example": {"allOf": [{"p": 1}]},
+            },
+            "mode": {"type": "string", "enum": [{"allOf": [{"q": 1}]}]},
+        },
+        "x-vendor": {"allOf": [{"z": 1}, {"w": 2}]},
+    }
+    merged = merge_allof(schema)
+
+    assert merged["properties"]["cfg"]["default"] == {"allOf": [{"a": 1}, {"b": 2}]}
+    assert merged["properties"]["cfg"]["example"] == {"allOf": [{"p": 1}]}
+    assert merged["properties"]["mode"]["enum"] == [{"allOf": [{"q": 1}]}]
+    assert merged["x-vendor"] == {"allOf": [{"z": 1}, {"w": 2}]}
+
+
+def test_deref_schema_leaves_instance_data_untouched():
+    """A ``$ref`` key inside a default value is a literal, not a reference."""
+    spec = {"components": {"schemas": {"Thing": {"type": "integer"}}}}
+    node = {
+        "type": "object",
+        "properties": {
+            "payload": {
+                "type": "object",
+                "default": {"$ref": "#/components/schemas/Thing"},
+            },
+            "real": {"$ref": "#/components/schemas/Thing"},
+        },
+        "x-sample": {"$ref": "#/components/schemas/Thing"},
+    }
+    out = deref_schema(spec, node)
+
+    # The literal survives, the genuine reference resolves.
+    assert out["properties"]["payload"]["default"] == {
+        "$ref": "#/components/schemas/Thing"
+    }
+    assert out["x-sample"] == {"$ref": "#/components/schemas/Thing"}
+    assert out["properties"]["real"] == {"type": "integer"}
