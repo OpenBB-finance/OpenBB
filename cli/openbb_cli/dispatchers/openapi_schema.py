@@ -190,23 +190,32 @@ def deref_schema(
     return node
 
 
-_MERGEABLE_ALLOF_KEYS = frozenset({"properties", "required", "type", "description"})
+_ALLOF_BLOCKING_KEYS = frozenset(
+    {"oneOf", "anyOf", "allOf", "not", "$ref", "enum", "const", "items"}
+)
 
 
 def _mergeable_allof_members(members: list[Any]) -> list[dict[str, Any]] | None:
     """Return the members if every one is a plain object subschema, else ``None``.
 
-    Only object-shaped members are merged. A member carrying its own combinator
-    (``oneOf`` / ``anyOf`` / a nested ``allOf`` that did not collapse), or a
-    non-object ``type``, means the composition is not a simple intersection of
-    property bags and is left untouched rather than merged into something the
-    spec does not describe.
+    A member is not mergeable when it carries its own combinator (``oneOf`` /
+    ``anyOf`` / a nested ``allOf`` that did not collapse), an unresolved
+    ``$ref`` left behind by a reference cycle, a scalar constraint (``enum`` /
+    ``const`` / ``items``), or a ``type`` other than ``object``. Any of those
+    means the composition is not a plain intersection of property bags, and
+    merging it would describe something the spec does not.
+
+    Everything else is annotation that does not affect the intersection —
+    ``title``, ``description``, ``examples``, ``definitions``, vendor ``x-``
+    keys — and does not block the merge. Keying off a blocklist rather than a
+    whitelist matters: Codat's ``PagingInfo`` carries ``definitions``, and
+    treating that as disqualifying left the composition unmerged.
     """
     out: list[dict[str, Any]] = []
     for member in members:
         if not isinstance(member, dict):
             return None
-        if member.keys() - _MERGEABLE_ALLOF_KEYS - {"examples", "x-internal", "title"}:
+        if member.keys() & _ALLOF_BLOCKING_KEYS:
             return None
         declared = member.get("type")
         if declared is not None and declared != "object":

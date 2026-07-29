@@ -2150,3 +2150,32 @@ def test_extract_request_body_schema_merges_allof_composition():
     # A composition body now flattens into body parameters instead of none.
     names = {p["name"] for p in request_body_parameters(schema)}
     assert names == {"reference", "modifiedDate"}
+
+
+def test_merge_allof_annotation_keywords_do_not_block_merge():
+    # Codat's PagingInfo carries `definitions` alongside its properties. Treating
+    # any unrecognized keyword as disqualifying left those compositions unmerged,
+    # which is what kept the response model empty.
+    schema = {
+        "title": "Paged results",
+        "x-internal": True,
+        "allOf": [
+            {"type": "object", "properties": {"results": {"type": "array"}}},
+            {
+                "title": "Pagination information",
+                "properties": {"pageNumber": {"type": "integer"}},
+                "definitions": {"links": {"type": "object"}},
+                "additionalProperties": False,
+            },
+        ],
+    }
+    merged = merge_allof(schema)
+    assert set(merged["properties"]) == {"results", "pageNumber"}
+    assert merged["type"] == "object"
+
+
+def test_merge_allof_blocks_on_structural_keywords():
+    # enum, const and items are scalar/array constraints, not property bags.
+    for blocking in ({"enum": ["a"]}, {"const": 1}, {"items": {"type": "string"}}):
+        schema = {"allOf": [{"properties": {"a": {}}}, blocking]}
+        assert merge_allof(schema) == schema
