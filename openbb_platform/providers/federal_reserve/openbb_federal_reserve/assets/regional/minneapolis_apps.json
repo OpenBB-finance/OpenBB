@@ -1,0 +1,137 @@
+[
+  {
+    "name": "Minneapolis Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Federal_Reserve_Bank_of_Minneapolis_building_3.jpg/960px-Federal_Reserve_Bank_of_Minneapolis_building_3.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Federal_Reserve_Bank_of_Minneapolis_building_3.jpg/960px-Federal_Reserve_Bank_of_Minneapolis_building_3.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Federal_Reserve_Bank_of_Minneapolis_building_3.jpg/960px-Federal_Reserve_Bank_of_Minneapolis_building_3.jpg",
+    "description": "Ninth District labor-market and output data from the Minneapolis Fed - regional employment, unemployment, labor-force participation, quits, job openings, weekly claims, regional GDP and CPI, and the business conditions survey.",
+    "allowCustomization": true,
+    "tabs": {
+      "business-conditions": {
+        "id": "business-conditions",
+        "name": "Business Conditions",
+        "layout": [
+          {
+            "i": "minneapolis_business_conditions_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "labor-market": {
+        "id": "labor-market",
+        "name": "Labor Market",
+        "layout": [
+          {
+            "i": "minneapolis_regional_employment_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "minneapolis_regional_unemployment_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "minneapolis_labor_force_participation_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "minneapolis_quits_rate_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "minneapolis_unemployment_claims_federal_reserve_obb",
+            "x": 0,
+            "y": 72,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "minneapolis_job_openings_hiring_federal_reserve_obb",
+            "x": 0,
+            "y": 90,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "output-prices": {
+        "id": "output-prices",
+        "name": "Output & Prices",
+        "layout": [
+          {
+            "i": "minneapolis_regional_gdp_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "minneapolis_regional_cpi_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "minneapolis_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

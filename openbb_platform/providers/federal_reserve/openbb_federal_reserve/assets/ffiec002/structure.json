@@ -1,0 +1,6533 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/2023/ffiec-002-user-guide.pdf",
+  "schedule_count": 11,
+  "item_count": 540,
+  "schedules": [
+    {
+      "schedule": "Cover Page",
+      "name": "Cover Page"
+    },
+    {
+      "schedule": "RAL",
+      "name": "Schedule RAL - Assets and Liabilities"
+    },
+    {
+      "schedule": "A",
+      "name": "Schedule A - Cash and Balances Due From Depository Institutions"
+    },
+    {
+      "schedule": "C, Part 1",
+      "name": "Schedule C, Part I - Loans"
+    },
+    {
+      "schedule": "E",
+      "name": "Schedule E - Deposit Liabilities and Credit Balances"
+    },
+    {
+      "schedule": "K",
+      "name": "Schedule K - Quarterly Averages"
+    },
+    {
+      "schedule": "L",
+      "name": "Schedule L - Off-Balance-Sheet Items"
+    },
+    {
+      "schedule": "N",
+      "name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans"
+    },
+    {
+      "schedule": "P",
+      "name": "Schedule P - Other Borrowed Money"
+    },
+    {
+      "schedule": "Q",
+      "name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value"
+    },
+    {
+      "schedule": "S",
+      "name": "Schedule S - Servicing, Securitization, and Asset Sale Activities"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "Cover Page",
+      "schedule_name": "Cover Page",
+      "line": "CONSCD",
+      "caption": "CONSOLIDATION CODE - FFIEC 002 ONLY (1 = SINGLE OFFICE, > 1 = NU MBER OF US BANKING OFFICES CONSOLIDATED WITHIN SAME FROM DISTRIC T)",
+      "mdrm": "RCON9395",
+      "columns": [
+        "RCON9395"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1A.A",
+      "caption": "CASH AND DUE FROM DEPOSITORIES",
+      "mdrm": "RCFD0010",
+      "columns": [
+        "RCFD0010"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1B1.A",
+      "caption": "U.S. TREASURY SECURITIES",
+      "mdrm": "RCFD0260",
+      "columns": [
+        "RCFD0260"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1B2.A",
+      "caption": "OBLIG OF OTH U.S. GOVT AGEN & CORPS",
+      "mdrm": "RCFD0371",
+      "columns": [
+        "RCFD0371"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M2.A",
+      "caption": "TOTAL SECURITIES, H-T-M, AMORTIZED COST",
+      "mdrm": "RCFD1754",
+      "columns": [
+        "RCFD1754"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M1.A",
+      "caption": "TOTAL SECURITIES, H-T-M, FAIR VALUE",
+      "mdrm": "RCFD1771",
+      "columns": [
+        "RCFD1771"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M4.A",
+      "caption": "TOTAL SECURITIES, A-F-S, AMORTIZED COST",
+      "mdrm": "RCFD1772",
+      "columns": [
+        "RCFD1772"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M3.A",
+      "caption": "TOTAL SECURITIES, A-F-S, FAIR VALUE",
+      "mdrm": "RCFD1773",
+      "columns": [
+        "RCFD1773"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1E.A",
+      "caption": "TOT LNS&LEASE HELD FOR INVESTMENT AND HELD FOR SALE",
+      "mdrm": "RCFD2122",
+      "columns": [
+        "RCFD2122"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1H.A",
+      "caption": "OTHER ASSETS",
+      "mdrm": "RCFD2151",
+      "columns": [
+        "RCFD2151"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "2A.A",
+      "caption": "NET DUE FROM HEAD OFF & OT REL INST",
+      "mdrm": "RCFD2154",
+      "columns": [
+        "RCFD2154"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "3.A",
+      "caption": "TOTAL ASSETS",
+      "mdrm": "RCFD2170",
+      "columns": [
+        "RCFD2170"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1I.A",
+      "caption": "CLAIMS ON NON-AFFILIATES",
+      "mdrm": "RCFD2171",
+      "columns": [
+        "RCFD2171"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4A.A",
+      "caption": "TOTAL DEPOSITS & CREDIT BALANCES",
+      "mdrm": "RCFD2205",
+      "columns": [
+        "RCFD2205"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M13.A",
+      "caption": "PLEDGED U.S. GOVERNMENT SECURITIES",
+      "mdrm": "RCFD2785",
+      "columns": [
+        "RCFD2785"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4F.A",
+      "caption": "OTHER LIABILITIES (TO NONRELATED PARTIES)",
+      "mdrm": "RCFD2916",
+      "columns": [
+        "RCFD2916"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4G.A",
+      "caption": "LIABILITIES TO NON-AFFILIATES",
+      "mdrm": "RCFD2927",
+      "columns": [
+        "RCFD2927"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "5A.A",
+      "caption": "NET DUE TO HEAD OFF AND OTHER RELATED INSTIT",
+      "mdrm": "RCFD2944",
+      "columns": [
+        "RCFD2944"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "6.A",
+      "caption": "TOTAL LIABILITIES",
+      "mdrm": "RCFD2950",
+      "columns": [
+        "RCFD2950"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4C.A",
+      "caption": "OTHER BORROWED MONEY",
+      "mdrm": "RCFD3190",
+      "columns": [
+        "RCFD3190"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "S1",
+      "caption": "ASSET MAINTENANCE REQUIREMENT",
+      "mdrm": "RCFD3343",
+      "columns": [
+        "RCFD3343"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "S2",
+      "caption": "ASSET PLEDGE REQUIREMENT",
+      "mdrm": "RCFD3349",
+      "columns": [
+        "RCFD3349"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F2B.A",
+      "caption": "TRADING ASSETS - ALL OTHER MORTGAGE-BACKED SECURITIES",
+      "mdrm": "RCFD3536",
+      "columns": [
+        "RCFD3536"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M10.A",
+      "caption": "DERIVATIVES WITH A POSITIVE FAIR VALUE",
+      "mdrm": "RCFD3543",
+      "columns": [
+        "RCFD3543"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M11.A",
+      "caption": "DERIVATIVES WITH A NEGATIVE FAIR VALUE",
+      "mdrm": "RCFD3547",
+      "columns": [
+        "RCFD3547"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4E.A",
+      "caption": "TRADING LIABILITES",
+      "mdrm": "RCFD3548",
+      "columns": [
+        "RCFD3548"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M16",
+      "caption": "NUMBER OF FULL TIME EQUIVALENT EMPLOYEES ON PAYROLL AT END OF CU RRENT PERIOD",
+      "mdrm": "RCFD4150",
+      "columns": [
+        "RCFD4150"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M17",
+      "caption": "AUDIT LEVEL INDICATOR (MARCH REPORT ONLY)",
+      "mdrm": "RCFD6724",
+      "columns": [
+        "RCFD6724"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M8.A",
+      "caption": "STRUCTURED NOTES, H-T-M AND A-F-S, AMORTIZED COST",
+      "mdrm": "RCFD8782",
+      "columns": [
+        "RCFD8782"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M7.A",
+      "caption": "FAIR VALUE OF STRUCTURED NOTES",
+      "mdrm": "RCFD8783",
+      "columns": [
+        "RCFD8783"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C1.A",
+      "caption": "SECURITIES OF FOREIGN GOVERNMENTS AND OFFICIAL INSTITUTIONS",
+      "mdrm": "RCFDA003",
+      "columns": [
+        "RCFDA003"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M14A",
+      "caption": "FIRST ITEMIZED AMOUNT THAT EXCEEDS 25% OF ITEM 2151",
+      "mdrm": "RCFDA539",
+      "columns": [
+        "RCFDA539"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M14B",
+      "caption": "SECOND ITEMIZED AMOUNT THAT EXCEEDS 25% OF ITEM 2151",
+      "mdrm": "RCFDA540",
+      "columns": [
+        "RCFDA540"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M14C",
+      "caption": "THIRD ITEMIZED AMOUNT THAT EXCEEDS 25% OF ITEM 2151",
+      "mdrm": "RCFDA541",
+      "columns": [
+        "RCFDA541"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M15A",
+      "caption": "FIRST ITEMIZED AMOUNT THAT EXCEEDS 25% OF ITEM 2916",
+      "mdrm": "RCFDA542",
+      "columns": [
+        "RCFDA542"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M15B",
+      "caption": "SECOND ITEMIZED AMOUNT THAT EXCEEDS 25% OF ITEM 2916",
+      "mdrm": "RCFDA543",
+      "columns": [
+        "RCFDA543"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M15C",
+      "caption": "THIRD ITEMIZED AMOUNT THAT EXCEEDS 25% OF ITEM 2916",
+      "mdrm": "RCFDA544",
+      "columns": [
+        "RCFDA544"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M9.A",
+      "caption": "ASSETS UNDR THE RPRTNG BK'S MANGEMNT",
+      "mdrm": "RCFDB570",
+      "columns": [
+        "RCFDB570"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C3.A",
+      "caption": "OTHER ASSET-BACKED SECURITIES",
+      "mdrm": "RCFDC036",
+      "columns": [
+        "RCFDC036"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C4.A",
+      "caption": "OTHER BONDS, NOTES, DEBENTURES, AND CORPORATE STOCK (INCLUDING S TATE AND LOCAL SECURITIES): ALL OTHER",
+      "mdrm": "RCFDC037",
+      "columns": [
+        "RCFDC037"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D1A.A",
+      "caption": "FEDERAL FUNDS SOLD - WITH COMMERCIAL BANKS IN THE U.S.",
+      "mdrm": "RCFDC412",
+      "columns": [
+        "RCFDC412"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D1B.A",
+      "caption": "FEDERAL FUNDS SOLD - WITH OTHERS",
+      "mdrm": "RCFDC413",
+      "columns": [
+        "RCFDC413"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D2A.A",
+      "caption": "SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - WITH WITH COMMERCIAL BANKS IN THE U.S.",
+      "mdrm": "RCFDC414",
+      "columns": [
+        "RCFDC414"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D2B.A",
+      "caption": "SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - WITH OTHERS",
+      "mdrm": "RCFDC415",
+      "columns": [
+        "RCFDC415"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C2A.A",
+      "caption": "MORTGAGE-BACKED SECURITIES - ISSUED OR GUARANTEED BY U.S. GOVERNMENT AGENCIES",
+      "mdrm": "RCFDC416",
+      "columns": [
+        "RCFDC416"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C2B.A",
+      "caption": "MORTGAGE-BACKED SECURITIES - OTHER",
+      "mdrm": "RCFDC417",
+      "columns": [
+        "RCFDC417"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B1A.A",
+      "caption": "FEDERAL FUNDS PURCHASED - WITH DEPOSITORY INSTITUTIONS IN THE U.S",
+      "mdrm": "RCFDC420",
+      "columns": [
+        "RCFDC420"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B1B.A",
+      "caption": "FEDERAL FUNDS PURCHASED - WITH OTHERS",
+      "mdrm": "RCFDC421",
+      "columns": [
+        "RCFDC421"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B2A.A",
+      "caption": "SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - WITH DEPOSITORY INSTITUTIONS IN THE U.S.",
+      "mdrm": "RCFDC422",
+      "columns": [
+        "RCFDC422"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B2B.A",
+      "caption": "SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - WITH OTHERS",
+      "mdrm": "RCFDC423",
+      "columns": [
+        "RCFDC423"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5B.A",
+      "caption": "TRADING ASSETS - COMMERICAL AND INDUSTRIAL LOANS (DOMESTIC OFFICES)",
+      "mdrm": "RCFDF614",
+      "columns": [
+        "RCFDF614"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6B.A",
+      "caption": "UNPAID PRINCIPAL BALANCES OF LOANS MEASURED AT FAIR VALUE - COMMERCIAL AND INDUSTRIAL LOANS (DOMESTIC ONLY)",
+      "mdrm": "RCFDF632",
+      "columns": [
+        "RCFDF632"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D1B.A",
+      "caption": "FEDERAL FUNDS SOLD WITH NONBANK BROKERS AND DEALERS IN SECURITIES",
+      "mdrm": "RCFDF856",
+      "columns": [
+        "RCFDF856"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D2B.A",
+      "caption": "SECURITIES PURCHASED UNDER AGREEMENTSWITH NONBANK BROKERS AND DEALERS IN SECURITIES",
+      "mdrm": "RCFDF857",
+      "columns": [
+        "RCFDF857"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5C.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE OTHER LOANS",
+      "mdrm": "RCFDG007",
+      "columns": [
+        "RCFDG007"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6C.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY REAL ESTATE SECURED BY OTHER LOANS",
+      "mdrm": "RCFDG009",
+      "columns": [
+        "RCFDG009"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M3A.A",
+      "caption": "AVAILABLE-FOR-SALE SECURITIES, TOTAL",
+      "mdrm": "RCFN1773",
+      "columns": [
+        "RCFN1773"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5A1.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE CONSTRUCTION,LAND DEVELOPMENT,AND OTHER LAND LOANS",
+      "mdrm": "RCFDHT63",
+      "columns": [
+        "RCFDHT63"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5A2.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE SECURED BY FARMLAND",
+      "mdrm": "RCFDHT64",
+      "columns": [
+        "RCFDHT64"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6A1.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY 1-4 FAMILY RESIDENTIAL PROP",
+      "mdrm": "RCFDHT66",
+      "columns": [
+        "RCFDHT66"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6A2.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY ALL OTHER LOANS SECURED BY REAL ESTATE",
+      "mdrm": "RCFDHT67",
+      "columns": [
+        "RCFDHT67"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M3.A",
+      "caption": "A-F-S, AMORTIZED COST",
+      "mdrm": "RCFDJA22",
+      "columns": [
+        "RCFDJA22"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F2A.A",
+      "caption": "TRADING ASSETS: MORTGAGE-BACKED SECURITIES ISSUED OR GUARANTEED BY U.S. AGENCIES",
+      "mdrm": "RCFDK298",
+      "columns": [
+        "RCFDK298"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F3.A",
+      "caption": "TRADING SECURITIES: OTHER ASSET-BACKED SECURITIES",
+      "mdrm": "RCFDK299",
+      "columns": [
+        "RCFDK299"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F5.A",
+      "caption": "TRADING ASSETS: OTHER TRADING ASSETS",
+      "mdrm": "RCFDK302",
+      "columns": [
+        "RCFDK302"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F1.A",
+      "caption": "TRADING ASSETS - U.S. TREASURY AND AGENCY SECURITIES",
+      "mdrm": "RCFDK479",
+      "columns": [
+        "RCFDK479"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F4.A",
+      "caption": "OTHER ASSETS : OTHER TRADING SECURITIES",
+      "mdrm": "RCFDL193",
+      "columns": [
+        "RCFDL193"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1A.B",
+      "caption": "CASH DUE FROM DEPOSITORIES",
+      "mdrm": "RCFN0010",
+      "columns": [
+        "RCFN0010"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M2.B",
+      "caption": "HELD-TO-MATURITY SECURITIES, TOTAL",
+      "mdrm": "RCFN1754",
+      "columns": [
+        "RCFN1754"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M1.B",
+      "caption": "TOTAL FAIR VALUE OFHELD-TO-MATURITY SECURITIES",
+      "mdrm": "RCFN1771",
+      "columns": [
+        "RCFN1771"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M4.B",
+      "caption": "TOTAL AMORTIZED COST OF AVAILABLE-FOR-SALE SECURITIES",
+      "mdrm": "RCFN1772",
+      "columns": [
+        "RCFN1772"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1E.B",
+      "caption": "TOTAL LNS&LEASE HELD FOR INVESTMENT AND HELD FOR SALE",
+      "mdrm": "RCFN2122",
+      "columns": [
+        "RCFN2122"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1H.B",
+      "caption": "OTHER ASSETS (CLAIMS ON NON-RELATED PARTIES)",
+      "mdrm": "RCFN2151",
+      "columns": [
+        "RCFN2151"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "2B.B",
+      "caption": "NET DUE FROM HEAD OFFICE AND OTHER RELATED INSTITUTIONS IN THE U .S. AND FOREIGN COUNTRIES",
+      "mdrm": "RCFN2154",
+      "columns": [
+        "RCFN2154"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "3.B",
+      "caption": "TOTAL ASSETS",
+      "mdrm": "RCFN2170",
+      "columns": [
+        "RCFN2170"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1I.B",
+      "caption": "CLAIMS ON NON-AFFILIATES",
+      "mdrm": "RCFN2171",
+      "columns": [
+        "RCFN2171"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4A.B",
+      "caption": "TOTAL DEPOSITS AND CREDIT BALANCES",
+      "mdrm": "RCFN2205",
+      "columns": [
+        "RCFN2205"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4F.B",
+      "caption": "TOTAL OTHER BORROWED MONEY OWED TO BANKS",
+      "mdrm": "RCFN2916",
+      "columns": [
+        "RCFN2916"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4G.B",
+      "caption": "LIABILITIES TO NON-AFFILIATES",
+      "mdrm": "RCFN2927",
+      "columns": [
+        "RCFN2927"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "5B.B",
+      "caption": "NET DUE TO HEAD OFF AND OTHER RELATED INSTIT",
+      "mdrm": "RCFN2944",
+      "columns": [
+        "RCFN2944"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "6.B",
+      "caption": "TOTAL LIABILITIES",
+      "mdrm": "RCFN2950",
+      "columns": [
+        "RCFN2950"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4C.B",
+      "caption": "OTHER BORROWED MONEY",
+      "mdrm": "RCFN3190",
+      "columns": [
+        "RCFN3190"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F2B.B",
+      "caption": "TRADING ASSETS - ALL OTHER MORTGAGE-BACKED SECURITIES",
+      "mdrm": "RCFN3536",
+      "columns": [
+        "RCFN3536"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M10.B",
+      "caption": "REVALUATION GAINS ON INTEREST RATE, FOREIGN EXCHANGE RATE, AND OTHER COMMODITY AND EQUITY CONTRACTS",
+      "mdrm": "RCFN3543",
+      "columns": [
+        "RCFN3543"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M11.B",
+      "caption": "REVALUATION LOSSES ON INTEREST RATE, FOREIGN EXCHANGE RATE, AND OTHER COMMODITY AND EQUITY CONTRACTS",
+      "mdrm": "RCFN3547",
+      "columns": [
+        "RCFN3547"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4E.B",
+      "caption": "TRADING LIABILITIES, TOTAL",
+      "mdrm": "RCFN3548",
+      "columns": [
+        "RCFN3548"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M8.B",
+      "caption": "AMORTIZED COST OF STRUCTURED NOTES",
+      "mdrm": "RCFN8782",
+      "columns": [
+        "RCFN8782"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M7.B",
+      "caption": "STRUCTURED NOTES, H-T-M AND A-F-S, FAIR VALUE",
+      "mdrm": "RCFN8783",
+      "columns": [
+        "RCFN8783"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C1.B",
+      "caption": "SECURITIES OF FOREIGN GOVERNMENTS AND OFFICIAL INSTITUTIONS",
+      "mdrm": "RCFNA003",
+      "columns": [
+        "RCFNA003"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M9.B",
+      "caption": "ASSETS UNDER THE REPORTING BANK'S MANAGEMENT IN PROPRIETARY MUTU AL FUNDS AND ANNUITIES",
+      "mdrm": "RCFNB570",
+      "columns": [
+        "RCFNB570"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C3.B",
+      "caption": "OTHER ASSET-BACKED SECURITIES",
+      "mdrm": "RCFNC036",
+      "columns": [
+        "RCFNC036"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C4.B",
+      "caption": "OTHER BONDS, NOTES, DEBENTURES, AND CORPORATE STOCK (INCLUDING S TATE AND LOCAL SECURITIES):ALL OTHER",
+      "mdrm": "RCFNC037",
+      "columns": [
+        "RCFNC037"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D1A.B",
+      "caption": "FEDERAL FUNDS SOLD - WITH DEPOSITORY INSTITUTIONS IN THE U.S. (IBF ONLY)",
+      "mdrm": "RCFNC412",
+      "columns": [
+        "RCFNC412"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D1B.B",
+      "caption": "FEDERAL FUNDS SOLD - WITH OTHERS (IBF ONLY)",
+      "mdrm": "RCFNC413",
+      "columns": [
+        "RCFNC413"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D2A.B",
+      "caption": "SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - WITH DEPOSITORY INSTITUTIONS IN THE U.S. (IBF ONLY)",
+      "mdrm": "RCFNC414",
+      "columns": [
+        "RCFNC414"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D2B.B",
+      "caption": "SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - WITH OTHERS (IBF ONLY)",
+      "mdrm": "RCFNC415",
+      "columns": [
+        "RCFNC415"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C2A.B",
+      "caption": "MORTGAGE-BACKED SECURITIES - ISSUED OR GUARANTEED BY U.S. GOVERNMENT AGENCIES (IBF ONLY)",
+      "mdrm": "RCFNC416",
+      "columns": [
+        "RCFNC416"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1C2B.B",
+      "caption": "MORTGAGE-BACKED SECURITIES - OTHER (IBF ONLY)",
+      "mdrm": "RCFNC417",
+      "columns": [
+        "RCFNC417"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B1A.B",
+      "caption": "FEDERAL FUNDS PURCHASED - WITH DEPOSITORY INSTITUTIONS IN THE U.S (IBF ONLY)",
+      "mdrm": "RCFNC420",
+      "columns": [
+        "RCFNC420"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B1B.B",
+      "caption": "FEDERAL FUNDS PURCHASED - WITH OTHERS (IBF ONLY)",
+      "mdrm": "RCFNC421",
+      "columns": [
+        "RCFNC421"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B2A.B",
+      "caption": "SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - WITH DEPOSITORY INSTITUTIONS IN THE U.S. (IBF ONLY)",
+      "mdrm": "RCFNC422",
+      "columns": [
+        "RCFNC422"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "4B2B.B",
+      "caption": "SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - WITH OTHERS (IBF ONLY)",
+      "mdrm": "RCFNC423",
+      "columns": [
+        "RCFNC423"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5B.B",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE COMMERCIAL AND INDUSTRIAL LOANS",
+      "mdrm": "RCFNF614",
+      "columns": [
+        "RCFNF614"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6B.B",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY REAL ESTATE SECURED BY COMMERCIAL AND INDUSTRIAL LOANS",
+      "mdrm": "RCFNF632",
+      "columns": [
+        "RCFNF632"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D1B.B",
+      "caption": "FEDERAL FUNDS SOLD WITH NONBANK BROKERS AND DEALERS IN SECURITIES",
+      "mdrm": "RCFNF856",
+      "columns": [
+        "RCFNF856"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1D2B.B",
+      "caption": "SECURITIES PURCHASED UNDER AGREEMENTSWITH NONBANK BROKERS AND DEALERS IN SECURITIES",
+      "mdrm": "RCFNF857",
+      "columns": [
+        "RCFNF857"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5C.B",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE OTHER LOANS",
+      "mdrm": "RCFNG007",
+      "columns": [
+        "RCFNG007"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6C.B",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY REAL ESTATE SECURED BY OTHER LOANS",
+      "mdrm": "RCFNG009",
+      "columns": [
+        "RCFNG009"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5A1",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE CONSTRUCTION,LAND DEVELOPMENT,AND OTHER LAND LOANS",
+      "mdrm": "RCFNHT63",
+      "columns": [
+        "RCFNHT63"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M5A2",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE SECURED BY FARMLAND",
+      "mdrm": "RCFNHT64",
+      "columns": [
+        "RCFNHT64"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6A1",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY 1-4 FAMILY RESIDENTIAL PROP",
+      "mdrm": "RCFNHT66",
+      "columns": [
+        "RCFNHT66"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M6A2",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY ALL OTHER LOANS SECURED BY REAL ESTATE",
+      "mdrm": "RCFNHT67",
+      "columns": [
+        "RCFNHT67"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "M3",
+      "caption": "Amortized cost of available-for-sale securities IBF Only",
+      "mdrm": "RCFNJA22",
+      "columns": [
+        "RCFNJA22"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F2A.B",
+      "caption": "TRADING ASSETS: MORTGAGE-BACKED SECURITIES ISSUED OR GUARANTEED BY U.S. AGENCIES",
+      "mdrm": "RCFNK298",
+      "columns": [
+        "RCFNK298"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F3.B",
+      "caption": "TRADING SECURITIES: OTHER ASSET-BACKED SECURITIES",
+      "mdrm": "RCFNK299",
+      "columns": [
+        "RCFNK299"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F5.B",
+      "caption": "TRADING ASSETS: OTHER TRADING ASSETS",
+      "mdrm": "RCFNK302",
+      "columns": [
+        "RCFNK302"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F1.B",
+      "caption": "TRADING ASSETS - U.S. TREASURY AND AGENCY SECURITIES",
+      "mdrm": "RCFNK479",
+      "columns": [
+        "RCFNK479"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RAL",
+      "schedule_name": "Schedule RAL - Assets and Liabilities",
+      "line": "1F4.B",
+      "caption": "OTHER ASSETS : OTHER TRADING SECURITIES IBF ONLY",
+      "mdrm": "RCFNL193",
+      "columns": [
+        "RCFNL193"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "1.A",
+      "caption": "CASH ITEMS IN PROCESS OF COLLECTION AND UNPOSTED DEBITS",
+      "mdrm": "RCFD0020",
+      "columns": [
+        "RCFD0020"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "4.A",
+      "caption": "BALANCES WITH BKS IN FGN COUNTRIES",
+      "mdrm": "RCFD0070",
+      "columns": [
+        "RCFD0070"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "2.A",
+      "caption": "CURRENCY & COIN (U.S. & FOREIGN)",
+      "mdrm": "RCFD0080",
+      "columns": [
+        "RCFD0080"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "3.A",
+      "caption": "BALS DUE FROM DEPOSITORY INSTS IN US",
+      "mdrm": "RCFD0082",
+      "columns": [
+        "RCFD0082"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "5.A",
+      "caption": "BALANCES WITH FEDERAL RESERVE BANKS",
+      "mdrm": "RCFD0090",
+      "columns": [
+        "RCFD0090"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "1.B",
+      "caption": "CASH ITEMS IN PROCESS OF COLLECTION AND UNPOSTED DEBITS",
+      "mdrm": "RCFN0020",
+      "columns": [
+        "RCFN0020"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "4.B",
+      "caption": "BALANCES WITH BKS IN FGN COUNTRIES",
+      "mdrm": "RCFN0070",
+      "columns": [
+        "RCFN0070"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Schedule A - Cash and Balances Due From Depository Institutions",
+      "line": "3.B",
+      "caption": "BALS DUE FROM DEPOSITORY INSTS IN US",
+      "mdrm": "RCFN0082",
+      "columns": [
+        "RCFN0082"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1A.A",
+      "caption": "LOANS MEASURED BY REAL ESTATE CONSTRUCTION,LAND DEVELOPMENT, OTHER LAND LOANS",
+      "mdrm": "RCFD1415",
+      "columns": [
+        "RCFD1415"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1B.A",
+      "caption": "REAL ESTATE LOANS SECURED BY FARMLAND",
+      "mdrm": "RCFD1420",
+      "columns": [
+        "RCFD1420"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1D.A",
+      "caption": "REAL ESTATE LOANS SECURED BY MULTI-FAMILY (5 OR MO RE) RESIDENTIAL PROPERTIES",
+      "mdrm": "RCFD1460",
+      "columns": [
+        "RCFD1460"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1E.A",
+      "caption": "NONFARM NONRESIDENTIAL PROPERTIES",
+      "mdrm": "RCFD1480",
+      "columns": [
+        "RCFD1480"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "3.A",
+      "caption": "LNS TO OTH FIN INST (1536 + 1537)",
+      "mdrm": "RCFD1520",
+      "columns": [
+        "RCFD1520"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "7.A",
+      "caption": "Loans for purchasing or carrying securities, including margin loans",
+      "mdrm": "RCFD1545",
+      "columns": [
+        "RCFD1545"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "4A.A",
+      "caption": "C&I LOANS, U.S. ADDRESSEES",
+      "mdrm": "RCFD1763",
+      "columns": [
+        "RCFD1763"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "4B.A",
+      "caption": "C&I LOANS, NON-U.S. ADDRESSEES",
+      "mdrm": "RCFD1764",
+      "columns": [
+        "RCFD1764"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1C1.A",
+      "caption": "REVOLVING, OPEN-END LOANS SECURED BY 1-4 FAMILY RE SIDENTIAL PROPERTIES AND EXTENDED UNDER LINES OF C REDIT",
+      "mdrm": "RCFD1797",
+      "columns": [
+        "RCFD1797"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1C2.A",
+      "caption": "LOANS MEASURED BY REAL ESTATE CLOSE-END LOANS SECURED BY 1-4 RESIDENTIAL",
+      "mdrm": "RCFD1798",
+      "columns": [
+        "RCFD1798"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "8.A",
+      "caption": "ALL OTHER LOANS",
+      "mdrm": "RCFD1885",
+      "columns": [
+        "RCFD1885"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "6.A",
+      "caption": "LNS TO FGN GOVTS & OFFICIAL INSTITUTIONS",
+      "mdrm": "RCFD2081",
+      "columns": [
+        "RCFD2081"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "10.A",
+      "caption": "UNEARNED INCOME ON LOANS",
+      "mdrm": "RCFD2123",
+      "columns": [
+        "RCFD2123"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "9A.A",
+      "caption": "LEASE FINCG RECS-U.S. ADDRESSEES",
+      "mdrm": "RCFD2182",
+      "columns": [
+        "RCFD2182"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "9B.A",
+      "caption": "LEASE FINCG RECS-NON-US ADDRESSEES",
+      "mdrm": "RCFD2183",
+      "columns": [
+        "RCFD2183"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "M3A.A",
+      "caption": "COMMERCIAL AND INDUSTRIAL LOANS WITH REMAINING MATURITY OF ONE Y EAR OR LESS WITH PREDETERMINED INTEREST RATES",
+      "mdrm": "RCFD6119",
+      "columns": [
+        "RCFD6119"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "M3B.A",
+      "caption": "COMMERCIAL AND INDUSTRIAL LOANS WITH REMAINING MATURITY OF ONE Y EAR OR LESS WITH FLOATING INTEREST RATES",
+      "mdrm": "RCFD6120",
+      "columns": [
+        "RCFD6120"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "M4A.A",
+      "caption": "COMMERCIAL AND INDUSTRIAL LOANS WITH REMAINING MATURITY OF MORE THAN ONE YEAR WITH PREDETERMINED INTEREST RATES",
+      "mdrm": "RCFD6122",
+      "columns": [
+        "RCFD6122"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "M4B.A",
+      "caption": "COMMERCIAL AND INDUSTRIAL LOANS WITH REMAINING MATURITY OF MORE THAN ONE YEAR WITH FLOATING INTEREST RATES",
+      "mdrm": "RCFD6123",
+      "columns": [
+        "RCFD6123"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2A1.A",
+      "caption": "LOANS TO U.S. BRANCHES AND AGENCIES OF FOREIGN BANKS",
+      "mdrm": "RCFDB532",
+      "columns": [
+        "RCFDB532"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2A2.A",
+      "caption": "LOANS TO DEPOSITORY INSTITUTIONS AND ACCEPTANCES OF OTHER BANKS: TO OTHER COMMERCIAL BANKS IN THE US",
+      "mdrm": "RCFDB533",
+      "columns": [
+        "RCFDB533"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2B.A",
+      "caption": "LOANS TO OTHER DEPOSITORY INSTITUTIONS IN THE U.S.",
+      "mdrm": "RCFDB534",
+      "columns": [
+        "RCFDB534"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2C1.A",
+      "caption": "LOANS TO FOREIGN BRANCHES OF OTHER U.S. BANKS",
+      "mdrm": "RCFDB536",
+      "columns": [
+        "RCFDB536"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2C2.A",
+      "caption": "LOANS TO DEPOSITORY INSTITUTIONS AND ACCEPTANCES OF OTHER BANKS: TO OTHER BANKS IN FOREIGN COUNTRIES",
+      "mdrm": "RCFDB537",
+      "columns": [
+        "RCFDB537"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1A.B",
+      "caption": "LOANS MEASURED BY REAL ESTATE CONSTRUCTION,LAND DEVELOPMENT, OTHER LAND LOANS",
+      "mdrm": "RCFN1415",
+      "columns": [
+        "RCFN1415"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1B.B",
+      "caption": "REAL ESTATE LOANS SECURED BY FARMLAND",
+      "mdrm": "RCFN1420",
+      "columns": [
+        "RCFN1420"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1D.B",
+      "caption": "REAL ESTATE LOANS SECURED BY MULTI-FAMILY (5 OR MORE) RESIDENTIAL PROPERTIES",
+      "mdrm": "RCFN1460",
+      "columns": [
+        "RCFN1460"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1E.B",
+      "caption": "NONFARM NONRESIDENTIAL PROPERTIES",
+      "mdrm": "RCFN1480",
+      "columns": [
+        "RCFN1480"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "3.B",
+      "caption": "LNS TO OTH FIN INST (1536 + 1537)",
+      "mdrm": "RCFN1520",
+      "columns": [
+        "RCFN1520"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "7.B",
+      "caption": "Loans for purchasing or carrying securities, including margin loans",
+      "mdrm": "RCFN1545",
+      "columns": [
+        "RCFN1545"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "4A.B",
+      "caption": "COMMERCIAL AND INDUSTRIAL LOANS TO U.S. ADDRESSEES",
+      "mdrm": "RCFN1763",
+      "columns": [
+        "RCFN1763"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "4B.B",
+      "caption": "C&I LOANS, NON-U.S. ADDRESSEES",
+      "mdrm": "RCFN1764",
+      "columns": [
+        "RCFN1764"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1C1.B",
+      "caption": "REVOLVING, OPEN-END LOANS SECURED BY 1-4 FAMILY RESIDENTIAL PROPERTIES AND EXTENDED UNDER LINES OF CREDIT",
+      "mdrm": "RCFN1797",
+      "columns": [
+        "RCFN1797"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "1C2.B",
+      "caption": "LOANS MEASURED BY REAL ESTATE CLOSE-END LOANS SECURED BY 1-4 RESIDENTIAL",
+      "mdrm": "RCFN1798",
+      "columns": [
+        "RCFN1798"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "8.B",
+      "caption": "ALL OTHER LOANS",
+      "mdrm": "RCFN1885",
+      "columns": [
+        "RCFN1885"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "6.B",
+      "caption": "LNS TO FGN GOVTS & OFFICIAL INST",
+      "mdrm": "RCFN2081",
+      "columns": [
+        "RCFN2081"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "10.B",
+      "caption": "UNEARNED INCOME ON LOANS",
+      "mdrm": "RCFN2123",
+      "columns": [
+        "RCFN2123"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "9A.B",
+      "caption": "LEASE FINANCING RECEIVABLES(NET OF UNEARNED INCOME) OF U.S. ADDR ESSEES (DOMICILE)",
+      "mdrm": "RCFN2182",
+      "columns": [
+        "RCFN2182"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "9B.B",
+      "caption": "LEASE FINANCING RECEIVABLES(NET OF UNEARNED INCOME) OFNON-U.S. A DDRESSEES(DOMICILE)",
+      "mdrm": "RCFN2183",
+      "columns": [
+        "RCFN2183"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2A1.B",
+      "caption": "LOANS TO U.S. BRANCHES AND AGENCIES OF FOREIGN BANKS",
+      "mdrm": "RCFNB532",
+      "columns": [
+        "RCFNB532"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2A2.B",
+      "caption": "LOANS TO OTHER COMMERCIAL BANKS IN THE U.S.",
+      "mdrm": "RCFNB533",
+      "columns": [
+        "RCFNB533"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2B.B",
+      "caption": "LOANS TO OTHER DEPOSITORY INSTITUTIONS IN THE U.S.",
+      "mdrm": "RCFNB534",
+      "columns": [
+        "RCFNB534"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2C1.B",
+      "caption": "LOANS TO FOREIGN BRANCHES OF OTHER U.S. BANKS",
+      "mdrm": "RCFNB536",
+      "columns": [
+        "RCFNB536"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C, Part 1",
+      "schedule_name": "Schedule C, Part I - Loans",
+      "line": "2C2.B",
+      "caption": "LOANS TO OTHER BANKS IN FOREIGN COUNTRIES",
+      "mdrm": "RCFNB537",
+      "columns": [
+        "RCFNB537"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "2A.D",
+      "caption": "IBF DEPOSIT LIABILITIES - U.S. BRANCHES AND AGENCIES OF OTHER FO REIGN BANKS",
+      "mdrm": "RCFN1668",
+      "columns": [
+        "RCFN1668"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "2B.D",
+      "caption": "IBF DEPOSIT LIABILITIES - OTHER COMMERCIAL BANKS IN THE U.S.",
+      "mdrm": "RCFN1669",
+      "columns": [
+        "RCFN1669"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "3A.D",
+      "caption": "IBF DEPOSIT LIABILITIES - OTHER COMMERCIAL BANKS IN THE U.S.",
+      "mdrm": "RCFN1671",
+      "columns": [
+        "RCFN1671"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "3B.D",
+      "caption": "BF DEPOSIT LIABILITIES - OTHER BANKS IN FOREIGN COUNTRIES",
+      "mdrm": "RCFN1672",
+      "columns": [
+        "RCFN1672"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "5.D",
+      "caption": "TOTAL OTHER DEPOSITS",
+      "mdrm": "RCFN2261",
+      "columns": [
+        "RCFN2261"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "4.D",
+      "caption": "DEPOSITS OF FGN. GOVTS & OFF. INST",
+      "mdrm": "RCFN2650",
+      "columns": [
+        "RCFN2650"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "1A.D",
+      "caption": "IBF DEPOSIT LIABILITIES -: US ADDRESSEES (DOMICILE)",
+      "mdrm": "RCFNC042",
+      "columns": [
+        "RCFNC042"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "1B.D",
+      "caption": "IBF DEPOSIT LIABILITIES - INDIVIDUALS,PARTNERSHIPS AND CORPORATI ONS (INCLUDE ALL CERTIFIED AND OFFICIAL CHECKS): NON-U.S. ADDRES SES(DOMICILE)",
+      "mdrm": "RCFNC045",
+      "columns": [
+        "RCFNC045"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "2A.A",
+      "caption": "TOTAL TRANSACTION ACCOUNTS AND CREDIT BALANCES (EXCLUDING IBF) - DEPOSITS OF U.S. BRANCHES AND AGENCIES OF OTHER FOREIGN BANKS",
+      "mdrm": "RCON1643",
+      "columns": [
+        "RCON1643"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "2B.A",
+      "caption": "TOTAL TRANSACTION ACCOUNTS AND CREDIT BALANCES (EXCLUDING IBF) - DEPOSITS OF OTHER COMMERCIAL BANKS IN THE U.S.",
+      "mdrm": "RCON1645",
+      "columns": [
+        "RCON1645"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "3A.A",
+      "caption": "TOTAL TRANSACTION ACCOUNTS AND CREDIT BALANCES (EXCLUDING IBF) - DEPOSITS OF FOREIGN BRANCHES OF U.S. BANKS",
+      "mdrm": "RCON1646",
+      "columns": [
+        "RCON1646"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "3B.A",
+      "caption": "TOTAL TRANSACTION ACCOUNTS AND CREDIT BALANCES (EXCLUDING IBF) - DEPOSITS OF OTHER BANKS IN FOREIGN COUNTRIES",
+      "mdrm": "RCON1647",
+      "columns": [
+        "RCON1647"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "4.A",
+      "caption": "TOTAL TRANSACTION ACCOUNTS AND CREDIT BALANCES (EXCLUDING IBF) - DEPOSITS OF FOREIGN GOVERNMENTS AND OFFICIAL INSTITUTIONS",
+      "mdrm": "RCON1649",
+      "columns": [
+        "RCON1649"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "5.A",
+      "caption": "TOTAL TRANSACTIONACCOUNTS AND CREDIT BALANCES (EXCLUDING IBF) - ALL OTHER DEPOSITS AND CREDIT BALANCES",
+      "mdrm": "RCON1650",
+      "columns": [
+        "RCON1650"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "7.A",
+      "caption": "TOTAL DEPOSITS AND CREDIT BALANCES",
+      "mdrm": "RCON1653",
+      "columns": [
+        "RCON1653"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "7.B",
+      "caption": "TOTAL DEMAND DEPOSITS",
+      "mdrm": "RCON2210",
+      "columns": [
+        "RCON2210"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "5.C",
+      "caption": "NONTRANSACTION ACCOUNTS - OTHER",
+      "mdrm": "RCON2259",
+      "columns": [
+        "RCON2259"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "2A.C",
+      "caption": "TOTAL NONTRANSACTION ACCOUNTS - U.S. BRANCHES AND AGENCIES OF FO REIGN BANKS",
+      "mdrm": "RCON2347",
+      "columns": [
+        "RCON2347"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "2B.C",
+      "caption": "TOT NONTRANS ACCTS-OTH COMMCL BKS-US",
+      "mdrm": "RCON2348",
+      "columns": [
+        "RCON2348"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "3A.C",
+      "caption": "TOTAL NONTRANSACTION ACCOUNTS - FOREIGN BRANCHES OF OTHER U.S. B ANKS",
+      "mdrm": "RCON2367",
+      "columns": [
+        "RCON2367"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "3B.C",
+      "caption": "TOT NONTRANS ACCTS-OTH BKS-FGN CNTRS",
+      "mdrm": "RCON2373",
+      "columns": [
+        "RCON2373"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "4.C",
+      "caption": "TOT NONTRANS ACCTS-FGN GOVERNMENTS&OFFICIAL",
+      "mdrm": "RCON2377",
+      "columns": [
+        "RCON2377"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "7.C",
+      "caption": "TOTAL NONTRANSACTION ACCOUNTS",
+      "mdrm": "RCON2385",
+      "columns": [
+        "RCON2385"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "M1A",
+      "caption": "TOTAL TIME DEPOSITS OF $100,000 OR MORE",
+      "mdrm": "RCON2604",
+      "columns": [
+        "RCON2604"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "M1C",
+      "caption": "CD'S >$100K IN DOM. OFF. > 12 MO",
+      "mdrm": "RCON6643",
+      "columns": [
+        "RCON6643"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "1A.A",
+      "caption": "TOTAL TRANS ACCOUNTS - INDIVID, PRTNER, AND CORPS INCLUDE ALL CERT/OFF CHCKS: U.S. ADDRESSES (DOM)",
+      "mdrm": "RCONC040",
+      "columns": [
+        "RCONC040"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "1A.C",
+      "caption": "TOTAL NONTRANS ACCTS - INDIVID, PRTNER, AND CORPS (INCLUDE ALL CERT/OFF CHCKS: U.S. ADDRESSEES (DOM)",
+      "mdrm": "RCONC041",
+      "columns": [
+        "RCONC041"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "1B.A",
+      "caption": "TOTAL TRANS ACCTS -INDIVID, PRTNER, CORPS (INCLUDE ALL CERT/OFF CHCKS): NON-U.S. ADDRESSEES (DOMICILE)",
+      "mdrm": "RCONC043",
+      "columns": [
+        "RCONC043"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "1B.C",
+      "caption": "TOTAL NONTRANS ACCOUNTS -INDIVID, PRTNER, CORPS (INCLUDE ALL CERT/OFF CHCKS): NON-U.S. ADDRESSEES (DOMICILE)",
+      "mdrm": "RCONC044",
+      "columns": [
+        "RCONC044"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Schedule E - Deposit Liabilities and Credit Balances",
+      "line": "M1C",
+      "caption": "INDIVIDUAL RETIREMENT ACCTS (IRAS) AND KEOGH PLAN ACCTS INCLUDED IN MEMO ITEM 2.C, \"TOTAL TIME DEPSTS OF$100,000 OR MORE,\" ABOVE",
+      "mdrm": "RCONF233",
+      "columns": [
+        "RCONF233"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "4",
+      "caption": "AVERAGE OF LOANS TO BANKS IN FOREIGN COUNTRIES",
+      "mdrm": "RCFD3105",
+      "columns": [
+        "RCFD3105"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "5",
+      "caption": "QUARTERLY AVERAGE OF TOTAL CLAIMS ON NONRELATED PARTIES",
+      "mdrm": "RCFD3106",
+      "columns": [
+        "RCFD3106"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "7",
+      "caption": "AVERAGE OF INTEREST-BEARING DEPOSITS AND CREDIT BALANCES",
+      "mdrm": "RCFD3107",
+      "columns": [
+        "RCFD3107"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "6",
+      "caption": "QTLY AVG OF TC'S OF DEPS OF $100,000",
+      "mdrm": "RCFD3345",
+      "columns": [
+        "RCFD3345"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "8",
+      "caption": "QTLY AVG OF FED FUNDS PCHD&SEC RP",
+      "mdrm": "RCFD3353",
+      "columns": [
+        "RCFD3353"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "9",
+      "caption": "QTLY AVG OF OTHER BORROWED MONEY",
+      "mdrm": "RCFD3355",
+      "columns": [
+        "RCFD3355"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "3",
+      "caption": "QTLY AVG OF TOTAL LOANS AND LEASES HELD FOR INVESTMENT AND HELD FOR SALE",
+      "mdrm": "RCFD3360",
+      "columns": [
+        "RCFD3360"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "2",
+      "caption": "QTLY AVG OF FED FUNDS SOLD&SEC RS",
+      "mdrm": "RCFD3365",
+      "columns": [
+        "RCFD3365"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "K",
+      "schedule_name": "Schedule K - Quarterly Averages",
+      "line": "1",
+      "caption": "QUARTERLY AVERAGE OF INTEREST-BEARING BALANCES DUE FROM DEPOSITORY INSTITUTIONS",
+      "mdrm": "RCFD3381",
+      "columns": [
+        "RCFD3381"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "3A",
+      "caption": "STANDBY LETTERS OF CREDIT OUTSTANDING",
+      "mdrm": "RCFD3375",
+      "columns": [
+        "RCFD3375"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "3A1",
+      "caption": "STANDBY LETTERS OF CRED, U.S. ADRES",
+      "mdrm": "RCFD3376",
+      "columns": [
+        "RCFD3376"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "3A2",
+      "caption": "STANDBY LETTERS OF CRED, NON-U.S.ADD",
+      "mdrm": "RCFD3377",
+      "columns": [
+        "RCFD3377"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "3B",
+      "caption": "STANDBY LETTERS OF CRED, THRU PARTIC",
+      "mdrm": "RCFD3378",
+      "columns": [
+        "RCFD3378"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "4",
+      "caption": "COMMERCIAL LETTERS OF CREDIT",
+      "mdrm": "RCFD3411",
+      "columns": [
+        "RCFD3411"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "1",
+      "caption": "COMMITMENTS TO MAKE OR PURCHASE LNS",
+      "mdrm": "RCFD3423",
+      "columns": [
+        "RCFD3423"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9E.A",
+      "caption": "NOTIONAL VALUE OF INT RATE SWAPS",
+      "mdrm": "RCFD3450",
+      "columns": [
+        "RCFD3450"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9E.B",
+      "caption": "NOTIONAL VALUE OF FGN EXCHG SWAPS",
+      "mdrm": "RCFD3826",
+      "columns": [
+        "RCFD3826"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "7A",
+      "caption": "FIRST COMPONENT OF ALL OTHER OFF-BALANCE SHEET LIABILITIES GREAT ER THAN OR EQUAL TO 1PERCENT OF TOTAL CLAIMS ON NONRELATED PARTI ES (2171)",
+      "mdrm": "RCFD5598",
+      "columns": [
+        "RCFD5598"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "7B",
+      "caption": "SECOND COMPONENT OF ALL OTHER OFF-BALANCE SHEET LIABILITIES GREA TER THAN OR EQUAL TO 1 PERCENT OF TOTAL CLAIMS ON NONRELATED PAR TIES (2171)",
+      "mdrm": "RCFD5600",
+      "columns": [
+        "RCFD5600"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "7C",
+      "caption": "THIRD COMPONENT OF ALL OTHER OFF-BALANCE SHEET LIABILITIES GREAT ER THAN OR EQUAL TO 1PERCENT OF TOTAL CLAIMS ON NONRELATED PARTI ES (2171)",
+      "mdrm": "RCFD5601",
+      "columns": [
+        "RCFD5601"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "7",
+      "caption": "ALL OTHER OFF-BALANCE SHEET CONTINGENT LIABILITIES GREATER THAN OR EQUAL TO 1/2 PERCENT OF TOTAL CLAIMS ON NONRELATED PARTIES (2 171)",
+      "mdrm": "RCFD5602",
+      "columns": [
+        "RCFD5602"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "8",
+      "caption": "ALL OTHER OFF-BALANCE SHEET CONTINGENT CLAIMS (ASSETS)GREATER TH AN OR EQUAL TO 1/2 PERCENT OF TOTAL CLAIMS ON NONRELATED PARTIES (2171)",
+      "mdrm": "RCFD5603",
+      "columns": [
+        "RCFD5603"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "8A",
+      "caption": "FIRST COMPONENT OF ALL OTHER OFF-BALANCE SHEET ASSETS GREATER TH AN OR EQUAL TO 1PERCENT OF TOTAL CLAIMS ON NONRELATED PARTIES (2 171)",
+      "mdrm": "RCFD5604",
+      "columns": [
+        "RCFD5604"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "8B",
+      "caption": "SECOND COMPONENT OF ALL OTHER OFF-BALANCE SHEET ASSETS GREATER T HAN OR EQUAL TO 1 PERCENT OF TOTAL CLAIMS ON NONRELATED PARTIES (2171)",
+      "mdrm": "RCFD5605",
+      "columns": [
+        "RCFD5605"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "8C",
+      "caption": "THIRD COMPONENT OF ALL OTHER OFF-BALANCE SHEET ASSETS GREATER TH AN OR EQUAL TO 1PERCENT OF TOTAL CLAIMS ON NONRELATED PARTIES (2 171)",
+      "mdrm": "RCFD5606",
+      "columns": [
+        "RCFD5606"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9A.A",
+      "caption": "GROSS AMOUNT OF INTEREST RATE FUTURES CONTRACTS",
+      "mdrm": "RCFD8693",
+      "columns": [
+        "RCFD8693"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9A.B",
+      "caption": "FOREIGN EXCHANGE FUTURES CONTRACTS",
+      "mdrm": "RCFD8694",
+      "columns": [
+        "RCFD8694"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9A.C",
+      "caption": "GROSS AMOUNT OF EQUITY FUTURES CONTRACTS",
+      "mdrm": "RCFD8695",
+      "columns": [
+        "RCFD8695"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9A.D",
+      "caption": "COMMODITY AND OTHER FUTURES CONTRACTS",
+      "mdrm": "RCFD8696",
+      "columns": [
+        "RCFD8696"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9B.A",
+      "caption": "GROSS AMOUNT OF INTEREST RATE FORWARD CONTRACTS",
+      "mdrm": "RCFD8697",
+      "columns": [
+        "RCFD8697"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9B.B",
+      "caption": "FOREIGN EXCHANGE FORWARD CONTRACTS",
+      "mdrm": "RCFD8698",
+      "columns": [
+        "RCFD8698"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9B.C",
+      "caption": "GROSS AMOUNT OF EQUITY FORWARD CONTRACTS",
+      "mdrm": "RCFD8699",
+      "columns": [
+        "RCFD8699"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9B.D",
+      "caption": "COMMODITY AND OTHER FORWARD CONTRACTS",
+      "mdrm": "RCFD8700",
+      "columns": [
+        "RCFD8700"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C1.A",
+      "caption": "GROSS AMOUNT OF WRITTEN EXCHANGE-TRADED INTEREST RATE OPTION CONTRACTS",
+      "mdrm": "RCFD8701",
+      "columns": [
+        "RCFD8701"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C1.B",
+      "caption": "WRITTEN EXCHANGE-TRADED FOREIGN EXCHANGE OPTION CONTRACTS",
+      "mdrm": "RCFD8702",
+      "columns": [
+        "RCFD8702"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C1.C",
+      "caption": "GROSS AMOUNT OF WRITTEN EXCHANGE-TRADED EQUITY OPTION CONTRACTS",
+      "mdrm": "RCFD8703",
+      "columns": [
+        "RCFD8703"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C1.D",
+      "caption": "WRITTEN EXCHANGE-TRADED COMMODITY AND OTHER EXCHANGE-TRADED OPTI ON CONTRACTS",
+      "mdrm": "RCFD8704",
+      "columns": [
+        "RCFD8704"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C2.A",
+      "caption": "GROSS AMOUNT OF PURCHASED EXCHANGE-TRADED INTEREST RATE OPTION CONTRACTS",
+      "mdrm": "RCFD8705",
+      "columns": [
+        "RCFD8705"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C2.B",
+      "caption": "PURCHASED EXCHANGE-TRADED FOREIGN EXCHANGE OPTION CONTRACTS",
+      "mdrm": "RCFD8706",
+      "columns": [
+        "RCFD8706"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C2.C",
+      "caption": "GROSS AMOUNT OF PURCHASED EXCHANGE-TRADED EQUITY OPTION CONTRACTS",
+      "mdrm": "RCFD8707",
+      "columns": [
+        "RCFD8707"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9C2.D",
+      "caption": "PURCHASED EXCHANGE-TRADED COMMODITY AND OTHER EXCHANGE-TRADED OP TION CONTRACTS",
+      "mdrm": "RCFD8708",
+      "columns": [
+        "RCFD8708"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D1.A",
+      "caption": "GROSS AMOUNT OF WRITTEN OTC INTEREST RATE OPTION CONTRACTS",
+      "mdrm": "RCFD8709",
+      "columns": [
+        "RCFD8709"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D1.B",
+      "caption": "WRITTEN OTC FOREIGN EXCHANGE OPTION CONTRACTS",
+      "mdrm": "RCFD8710",
+      "columns": [
+        "RCFD8710"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D1.C",
+      "caption": "GROSS AMOUNT OF WRITTEN OTC EQUITY OPTION CONTRACTS",
+      "mdrm": "RCFD8711",
+      "columns": [
+        "RCFD8711"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D1.D",
+      "caption": "WRITTEN OTC COMMODITY AND OTHER OTC OPTION CONTRACTS",
+      "mdrm": "RCFD8712",
+      "columns": [
+        "RCFD8712"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D2.A",
+      "caption": "GROSS AMOUNT OF PURCHASED OTC INTEREST RATE OPTION CONTRACTS",
+      "mdrm": "RCFD8713",
+      "columns": [
+        "RCFD8713"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D2.B",
+      "caption": "PURCHSD FGN EXCHG CONTRACTS-OTC",
+      "mdrm": "RCFD8714",
+      "columns": [
+        "RCFD8714"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D2.C",
+      "caption": "GROSS AMOUNT OF PURCHASED OTC EQUITY OPTION CONTRACTS",
+      "mdrm": "RCFD8715",
+      "columns": [
+        "RCFD8715"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9D2.D",
+      "caption": "PURCHSD COMMODITY&OTHR CONTRACTS-OTC",
+      "mdrm": "RCFD8716",
+      "columns": [
+        "RCFD8716"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9E.C",
+      "caption": "EQUITY DERIVATIVE SWAPS",
+      "mdrm": "RCFD8719",
+      "columns": [
+        "RCFD8719"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "9E.D",
+      "caption": "COMMODITY AND OTHER SWAPS",
+      "mdrm": "RCFD8720",
+      "columns": [
+        "RCFD8720"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "10.C",
+      "caption": "GROSS AMOUNT OF EQUITY SWAPS",
+      "mdrm": "RCFD8723",
+      "columns": [
+        "RCFD8723"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "10.D",
+      "caption": "GROSS AMOUNT OF COMMODITY & OTHER CONTRACTS HELD FOR TRADING",
+      "mdrm": "RCFD8724",
+      "columns": [
+        "RCFD8724"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "11.A",
+      "caption": "GROSS AMOUNT OF INTEREST RATE CONTRACTS NOT HELD FOR TRADING, MA RKED TO MARKET",
+      "mdrm": "RCFD8725",
+      "columns": [
+        "RCFD8725"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "11.B",
+      "caption": "GROSS AMOUNT OF FOREIGN EXCHANGE CONTRACTS NOT HELD FOR TRADING, MARKED TO MARKET",
+      "mdrm": "RCFD8726",
+      "columns": [
+        "RCFD8726"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "11.C",
+      "caption": "GROSS AMOUNT OF FOREIGN EXCHANGE CONTRACTS NOT HELD FOR TRADING, NOT MARKED TO MARKET",
+      "mdrm": "RCFD8727",
+      "columns": [
+        "RCFD8727"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "11.D",
+      "caption": "GROSS AMOUNT OF COMMODITY & OTHER CONTRACTS NOT HELD FOR TRADING, MARKED TO MARKET",
+      "mdrm": "RCFD8728",
+      "columns": [
+        "RCFD8728"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A1.A",
+      "caption": "GROSS POSITIVE FAIR VALUE OF INTEREST RATE DERIVATIVE CONTRACTS HELD FOR TRADING",
+      "mdrm": "RCFD8733",
+      "columns": [
+        "RCFD8733"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A1.B",
+      "caption": "GROSS POSITIVE FAIR VALUE OF FOREIGN EXCHANGE CONTRACTS HELD FOR TRADING (FFIEC 031-033)",
+      "mdrm": "RCFD8734",
+      "columns": [
+        "RCFD8734"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A1.C",
+      "caption": "GROSS POSITIVE FAIR VALUE OF EQUITY DERIVATIVE CONTRACTS HELD FO R TRADING",
+      "mdrm": "RCFD8735",
+      "columns": [
+        "RCFD8735"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A1.D",
+      "caption": "GROSS POSITIVE FAIR VALUE OF COMMODITY & OTHER CONTRACTS HELD FOR TRADING (FFIEC 031-033)",
+      "mdrm": "RCFD8736",
+      "columns": [
+        "RCFD8736"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A2.A",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF INTEREST RATE DERIVATIVE CONTRACTS HELD FOR TRADING",
+      "mdrm": "RCFD8737",
+      "columns": [
+        "RCFD8737"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A2.B",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF FOREIGN EXCHANGE CONTRACTS HELD FOR TRADING (FFIEC 031-033)",
+      "mdrm": "RCFD8738",
+      "columns": [
+        "RCFD8738"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A2.C",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF EQUITY DERIVATIVE CONTRACTS HELD FO R TRADING",
+      "mdrm": "RCFD8739",
+      "columns": [
+        "RCFD8739"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12A2.D",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF COMMODITY & OTHER CONTRACTS HELD FOR TRADING (FFIEC 031-033)",
+      "mdrm": "RCFD8740",
+      "columns": [
+        "RCFD8740"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B1.A",
+      "caption": "TOTL INT RATE CONTRCS-MKD TO MARKET",
+      "mdrm": "RCFD8741",
+      "columns": [
+        "RCFD8741"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B1.B",
+      "caption": "GROSS POSITIVE FAIR VALUE OF FOREIGN EXCHANGE CONTRACTS NOT HELD FOR TRADING, MARKED TO MARKET (FFIEC 031-033)",
+      "mdrm": "RCFD8742",
+      "columns": [
+        "RCFD8742"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B1.C",
+      "caption": "TOTL EQTY DEV CONTRCS-MKD TO MARKET",
+      "mdrm": "RCFD8743",
+      "columns": [
+        "RCFD8743"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B1.D",
+      "caption": "GROSS POSITIVE FAIR VALUE OF COMMODITY & OTHER CONTRACTS NOT HELD FOR TRADING, MARKED TO MARKET (FFIEC 031-033)",
+      "mdrm": "RCFD8744",
+      "columns": [
+        "RCFD8744"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B2.A",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF INTEREST RATE DERIVATIVE CONTRACTS HELD FOR PURPOSES OTHER THAN TRADING THAT ARE MARKED TO MARKET",
+      "mdrm": "RCFD8745",
+      "columns": [
+        "RCFD8745"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B2.B",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF FOREIGN EXCHANGE CONTRACTS NOT HELD FOR TRADING, MARKED TO MARKET (FFIEC 031-033)",
+      "mdrm": "RCFD8746",
+      "columns": [
+        "RCFD8746"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B2.C",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF EQUITY DERIVATIVE CONTRACTS HELD FO R PURPOSES OTHER THAN TRADING THAT ARE MARKED TO MARKET",
+      "mdrm": "RCFD8747",
+      "columns": [
+        "RCFD8747"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "12B2.D",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF COMMODITY & OTHER CONTRACTS NOT HELD FOR TRADING, MARKED TO MARKET (FFIEC 031-033)",
+      "mdrm": "RCFD8748",
+      "columns": [
+        "RCFD8748"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "2",
+      "caption": "SPOT FOREIGN EXCHANGE CONTRACTS",
+      "mdrm": "RCFD8765",
+      "columns": [
+        "RCFD8765"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "10.A",
+      "caption": "GROSS AMOUNT OF INTEREST RATE CONTRACTS HELD FOR TRADING",
+      "mdrm": "RCFDA126",
+      "columns": [
+        "RCFDA126"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "10.B",
+      "caption": "TOTAL GROSS NOTIONAL AMOUNT OF FOREIGN EXCHANGE DERIVATIVE CONTR ACTS HELD FOR TRADING",
+      "mdrm": "RCFDA127",
+      "columns": [
+        "RCFDA127"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6B1.A",
+      "caption": "NOTIONAL AMOUNT OF CREDIT DERIVATIVES ON WHICH THE REPORTING BANK IS THE GUARANTOR:GROSS POSITIVE FAIR VALUE",
+      "mdrm": "RCFDC219",
+      "columns": [
+        "RCFDC219"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6B2.A",
+      "caption": "NOTIONAL AMOUNT OF CREDIT DERIVATIVES ON WHICH REPORTING BANK IS THE GUARANTOR: GROSS NEGATIVE FAIR VALUE",
+      "mdrm": "RCFDC220",
+      "columns": [
+        "RCFDC220"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6B1.B",
+      "caption": "NOTIONAL AMOUNT OF CREDIT DERIVATIVES ON WHICH THE REPORTING BANK IS THE BENEFICIARY:GROSS POSITIVE FAIR VALUE",
+      "mdrm": "RCFDC221",
+      "columns": [
+        "RCFDC221"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6B2.B",
+      "caption": "NOTIONAL AMOUNT OF CREDIT DERIVATIVES ON WHICH REPORTING BANK IS THE BENEFICIARY: GROSS NEGATIVE FAIR VALUE",
+      "mdrm": "RCFDC222",
+      "columns": [
+        "RCFDC222"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A1.A",
+      "caption": "CREDIT DERIVATIVES NOTIONAL AMOUNTS CREDIT DEFAULT SWAPS",
+      "mdrm": "RCFDC968",
+      "columns": [
+        "RCFDC968"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A1.B",
+      "caption": "CRD DERIVATIVES: NOTIONAL AMNTS-CREDIT DEFAULTS SWAPS-BENEFICIARY",
+      "mdrm": "RCFDC969",
+      "columns": [
+        "RCFDC969"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A2.A",
+      "caption": "CREDIT DERIVATIVES NOTIONAL AMOUNTS TOTAL RETURN SWAPS",
+      "mdrm": "RCFDC970",
+      "columns": [
+        "RCFDC970"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A2.B",
+      "caption": "CREDIT DERIVATIVES:NOTIONAL AMNTS-TOTAL RETURN SWAPS-BENEFICIARY",
+      "mdrm": "RCFDC971",
+      "columns": [
+        "RCFDC971"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A3.A",
+      "caption": "CREDIT DERIVATIVES NOTIONAL AMOUNTS CREDIT OPTIONS",
+      "mdrm": "RCFDC972",
+      "columns": [
+        "RCFDC972"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A3.B",
+      "caption": "CREDIT DERIVATIVES: NOTIONAL AMOUNTS-CREDIT OPTIONS-BENEFICIARY",
+      "mdrm": "RCFDC973",
+      "columns": [
+        "RCFDC973"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A4.A",
+      "caption": "CREDIT DERIVATIVES NOTIONAL AMOUNTS OTHER CREDIT DERIVATIVES",
+      "mdrm": "RCFDC974",
+      "columns": [
+        "RCFDC974"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "L",
+      "schedule_name": "Schedule L - Off-Balance-Sheet Items",
+      "line": "6A4.B",
+      "caption": "CRDT DERIVATIVES:NOTIONAL AMNTS-OTHR CRDT DERIVATIVES-BENEFICIARY",
+      "mdrm": "RCFDC975",
+      "columns": [
+        "RCFDC975"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "3.C",
+      "caption": "TOTAL, NONACCRUAL",
+      "mdrm": "RCFD1403",
+      "columns": [
+        "RCFD1403"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "3.D",
+      "caption": "Total (sum of items 1.a through 1.c and 2) Modified and in Compliance with Modified Terms",
+      "mdrm": "RCFD1404",
+      "columns": [
+        "RCFD1404"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "3.A",
+      "caption": "TOTAL, PAST DUE 30-89 DAYS, ACCRUING",
+      "mdrm": "RCFD1406",
+      "columns": [
+        "RCFD1406"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "3.B",
+      "caption": "TOTAL, PAST DUE 90 OR MORE, ACCRUING",
+      "mdrm": "RCFD1407",
+      "columns": [
+        "RCFD1407"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1B.A",
+      "caption": "REAL ESTATE LOANS, PAST DUE 30-90 DAYS, ACCRUING, U.S. ADDRESSEES (DOMICILE)",
+      "mdrm": "RCFD1421",
+      "columns": [
+        "RCFD1421"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1B.B",
+      "caption": "REAL ESTATE LOANS, PAST DUE 90+ DAYS, ACCRUING, U.S. ADDRESSEES (DOMICILE) (FFIEC 002)",
+      "mdrm": "RCFD1422",
+      "columns": [
+        "RCFD1422"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1B.C",
+      "caption": "REAL ESTATE LOANS, NONACCRUAL, U.S. ADDRESSEES (DOMICILE) (FFIEC 002)",
+      "mdrm": "RCFD1423",
+      "columns": [
+        "RCFD1423"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1B.D",
+      "caption": "Total loans to U.S. addressees (domicile): Loans secured by real estate modified and in Compliance with Modified Terms",
+      "mdrm": "RCFD1424",
+      "columns": [
+        "RCFD1424"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "M1.C",
+      "caption": "BOOK VALUE OF NONACCRUAL LOANS SOLD/TRANSFERRED TO HEAD OFFICE O R RELATED INSTITUTIONS",
+      "mdrm": "RCFD1582",
+      "columns": [
+        "RCFD1582"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1A.A",
+      "caption": "C&I LOANS, PAST DUE 30-89 DAYS, ACCRUING, TO U.S. ADDRESSEES (DO MICILE) (FFIEC002)",
+      "mdrm": "RCFD1606",
+      "columns": [
+        "RCFD1606"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1A.B",
+      "caption": "C&I LOANS, PAST DUE 90+ DAYS, ACCRUING, TO U.S. ADDRESSEES (DOMICILE) (FFIEC 002)",
+      "mdrm": "RCFD1607",
+      "columns": [
+        "RCFD1607"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1A.C",
+      "caption": "C&I LOANS, NONACCRUAL, TO U.S. ADDRESSEES (DOMICILE) (FFIEC 002)",
+      "mdrm": "RCFD1608",
+      "columns": [
+        "RCFD1608"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1A.D",
+      "caption": "Total loans to U.S. addressees (domicile): Commercial and industrial loans Modified and in Compliance with Modified Terms",
+      "mdrm": "RCFD1609",
+      "columns": [
+        "RCFD1609"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "2.A",
+      "caption": "TOTAL LOANS TO NON-U.S. ADDRESSEES (DOMICILE), PAST DUE 30-89 DA YS, ACCRUING (FFIEC 002)",
+      "mdrm": "RCFD1623",
+      "columns": [
+        "RCFD1623"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "2.B",
+      "caption": "TOTAL LOANS TO NON-U.S. ADDRESSEES (DOMICILE), PAST DUE 90+ DAYS , ACCRUING (FFIEC 002)",
+      "mdrm": "RCFD1624",
+      "columns": [
+        "RCFD1624"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "2.C",
+      "caption": "TOTAL LOANS TO NON-U.S. ADDRESSEES (DOMICILE), NONACCRUAL (FFIEC 002)",
+      "mdrm": "RCFD1625",
+      "columns": [
+        "RCFD1625"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "2.D",
+      "caption": "Total loans to non-U.S. addressees (domicile) Modified and in Compliance with Modified Terms",
+      "mdrm": "RCFD1627",
+      "columns": [
+        "RCFD1627"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "M1.A",
+      "caption": "BOOK VALUE OF LOANS PAST DUE 30-89 DAYS, ACCRUING, SOLD/TRANSFER RED TO HEAD OFFICE OR RELATED INSTITUTIONS",
+      "mdrm": "RCFD1628",
+      "columns": [
+        "RCFD1628"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "M1.B",
+      "caption": "BOOK VALUE OF LOANS PAST DUE 90+ DAYS, ACCRUING, SOLD/TRANSFERRE D TO HEAD OFFICE OR RELATED INSTITUTIONS",
+      "mdrm": "RCFD1629",
+      "columns": [
+        "RCFD1629"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "M1.D",
+      "caption": "Book value of loans sold or otherwise transferred to head office or to related institutions and still serviced by the reporting branch or agency Modified and in Compliance with Modified Terms",
+      "mdrm": "RCFD1637",
+      "columns": [
+        "RCFD1637"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1C.A",
+      "caption": "ALL OTHE LOANS AND LEASES PD 30-89 DAYS",
+      "mdrm": "RCFD3183",
+      "columns": [
+        "RCFD3183"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1C.B",
+      "caption": "ALL OTHER LOANS (INCLUDING ALL LEASE FINANCING RECEIVABLES) - PA ST DUE 90 DAYS OR MORE AND STILL ACCRUING",
+      "mdrm": "RCFD3184",
+      "columns": [
+        "RCFD3184"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1C.C",
+      "caption": "ALL OTHER LOANS (INCLUDING ALL LEASE FINANCING RECEIVABLES) - NO NACCRUAL",
+      "mdrm": "RCFD3185",
+      "columns": [
+        "RCFD3185"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "1C.D",
+      "caption": "Total loans to U.S. addressees (domicile): All other loans(including all lease financing receivables) Modified and in Compliance with Modified Terms",
+      "mdrm": "RCFD3186",
+      "columns": [
+        "RCFD3186"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "M2.A",
+      "caption": "INTEREST RATE, FGNX RATE, OTHER COMMODITY & EQUITY CONTRACTS, POSITIVE REPLACEMENT COST, PAST DUE 30-89 DAYS",
+      "mdrm": "RCFD3529",
+      "columns": [
+        "RCFD3529"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "N",
+      "schedule_name": "Schedule N - Past Due, Nonaccrual, and Restructured Loans",
+      "line": "M2.B",
+      "caption": "INTEREST RATE, FGNX RATE, OTHER COMMODITY & EQUITY CONTRACTS, POSITIVE REPLACEMENT COST, PAST DUE 90+ DAYS",
+      "mdrm": "RCFD3530",
+      "columns": [
+        "RCFD3530"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "M1.A",
+      "caption": "IMMED AVAIL FUNDS IN CALL REPT",
+      "mdrm": "RCFD2805",
+      "columns": [
+        "RCFD2805"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "3.A",
+      "caption": "OT LIAB FOR BORR MONEY OWED TO OTHER",
+      "mdrm": "RCFD2869",
+      "columns": [
+        "RCFD2869"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "1A.A",
+      "caption": "OTHER BORROWED MONEY OWED TO U.S. OFFICES OF NONRELATED U.S. BAN KS",
+      "mdrm": "RCFD3312",
+      "columns": [
+        "RCFD3312"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "1B.A",
+      "caption": "OTHER BORROWED MONEY OWED TO U.S. BRANCHES AND AGENCIES OF NONRE LATED FOREIGN BANKS",
+      "mdrm": "RCFD3313",
+      "columns": [
+        "RCFD3313"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "2A.A",
+      "caption": "OTHER BORROWED MONEY OWED TO FOREIGN BRANCHES OF NONRELATED U.S. BANKS",
+      "mdrm": "RCFD3314",
+      "columns": [
+        "RCFD3314"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "2B.A",
+      "caption": "OTHER BORROWED MONEY OWED TO FOREIGN OFFICES OF NONRELATED FOREI GN BANKS",
+      "mdrm": "RCFD3315",
+      "columns": [
+        "RCFD3315"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "3.B",
+      "caption": "TOTAL OTHER BORROWED MONEY OWED TO OTHERS",
+      "mdrm": "RCFN2869",
+      "columns": [
+        "RCFN2869"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "1A.B",
+      "caption": "OTHER BORROWED MONEY OWED TO U.S. OFFICES OFNONRELATED U.S. BANK S",
+      "mdrm": "RCFN3312",
+      "columns": [
+        "RCFN3312"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "1B.B",
+      "caption": "OTHER BORROWED MONEY OWED TO U.S. BRANCHES AND AGENCIES OF NONRE LATED FOREIGN BANKS",
+      "mdrm": "RCFN3313",
+      "columns": [
+        "RCFN3313"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "2A.B",
+      "caption": "OTHER BORROWED MONEY OWED TO FOREIGN BRANCHES OF NONRELATED U.S. BANKS",
+      "mdrm": "RCFN3314",
+      "columns": [
+        "RCFN3314"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "P",
+      "schedule_name": "Schedule P - Other Borrowed Money",
+      "line": "2B.B",
+      "caption": "OTHER BORROWED MONEY OWED TO FOREIGN OFFICES OFNONRELATED FOREIG N BANKS",
+      "mdrm": "RCFN3315",
+      "columns": [
+        "RCFN3315"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B1.A",
+      "caption": "TOTAL FAIR VALUE OF NONTRADING SECURITIES AT FAIR VALUE WITH CHANGES IN FAIR VALUE REPORTED IN CURRENT EARNINGS",
+      "mdrm": "RCFDF240",
+      "columns": [
+        "RCFDF240"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B1.D",
+      "caption": "LEVEL 2 FAIR VALUE MEASUREMENTS OF NONTRADING SECURITIES AT FAIR VALUE WITH CHANGES IN FAIR VALUE REPORTED IN CURRENT EARNINGS",
+      "mdrm": "RCFDF241",
+      "columns": [
+        "RCFDF241"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B1.E",
+      "caption": "LEVEL 3 FAIR VALUE MEASUREMENTS NONTRADING SECURITIES AT FAIR VALUE WITH CHANGES IN FAIR VALUE REPORTED IN CURRENT EARNINGS",
+      "mdrm": "RCFDF242",
+      "columns": [
+        "RCFDF242"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "8.A",
+      "caption": "TOTAL FAIR VALUE OF DEPOSITS",
+      "mdrm": "RCFDF252",
+      "columns": [
+        "RCFDF252"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "8.D",
+      "caption": "LEVEL 2 FAIR VALUE MEASUREMENTS OF DEPOSITS",
+      "mdrm": "RCFDF253",
+      "columns": [
+        "RCFDF253"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "8.E",
+      "caption": "LEVEL 3 FAIR VALUE MEASUREMENTS OF DEPOSITS",
+      "mdrm": "RCFDF254",
+      "columns": [
+        "RCFDF254"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2A.A",
+      "caption": "TOTAL FAIR VALUE OF LOAN COMMITMENTS (NOT ACCOUNTED FOR AS DERIVATIVES)",
+      "mdrm": "RCFDF261",
+      "columns": [
+        "RCFDF261"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2A.D",
+      "caption": "LEVEL 2 FAIR VALUE MEASUREMENTS OF LOAN COMMITMENTS (NOT ACOUNTED FOR AS DERIVATIVES)",
+      "mdrm": "RCFDF262",
+      "columns": [
+        "RCFDF262"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2A.E",
+      "caption": "LEVEL 3 FAIR VALUE MEASUREMENTS OF LOAN COMMITMENTS (NOT ACOUNTED FOR AS DERIVATIVES)",
+      "mdrm": "RCFDF263",
+      "columns": [
+        "RCFDF263"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3B.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE AND SECURED BY REAL ESTATE COMMERCIAL AND INDUSTRIAL LOANS",
+      "mdrm": "RCFDF585",
+      "columns": [
+        "RCFDF585"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4B.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE COMMERCIAL AND RESIDENTIAL",
+      "mdrm": "RCFDF597",
+      "columns": [
+        "RCFDF597"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B1.B",
+      "caption": "AMOUNTS NETTED IN THE DETERMINATION OF TOT FAIR VALUE ON SCHEDULE RC FOR NONTRADING SECURITIES AT FAIR VALUE WITH CHANGES IN FAIR VALUE REPORTED IN CURRENT EARNINGS.",
+      "mdrm": "RCFDF684",
+      "columns": [
+        "RCFDF684"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "8.B",
+      "caption": "AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE REPORTED ON SCHEDULE RC FOR DEPOSITS",
+      "mdrm": "RCFDF686",
+      "columns": [
+        "RCFDF686"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2A.B",
+      "caption": "AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE REPORTED ON SCHEDULE RC FOR LOAN COMMITMENTS (NOT ACCOUNTED FOR AS DERIVATIVES)",
+      "mdrm": "RCFDF689",
+      "columns": [
+        "RCFDF689"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B1.C",
+      "caption": "LEVEL 1 FAIR VALUE MEASUREMENTS FOR NONTRADING SECURITIES AT FAIR VALUE WITH CHANGES IN FAIR VALUE REPORTED IN CURRENT EARNINGS.",
+      "mdrm": "RCFDF692",
+      "columns": [
+        "RCFDF692"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "8.C",
+      "caption": "LEVEL 1 FAIR VALUE MEASUREMENTS FOR DEPOSITS",
+      "mdrm": "RCFDF694",
+      "columns": [
+        "RCFDF694"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2A.C",
+      "caption": "LEVEL 1 FAIR VALUE MEASUREMENTS FOR LOAN COMMITMENTS (NOT ACCOUNTED FOR AS DERIVATIVES)",
+      "mdrm": "RCFDF697",
+      "columns": [
+        "RCFDF697"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "1.A",
+      "caption": "AVAILABLE-FOR-SALE SECURITIES, TOTAL",
+      "mdrm": "RCFDJA36",
+      "columns": [
+        "RCFDJA36"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3C.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE OTHER LOANS",
+      "mdrm": "RCFDG011",
+      "columns": [
+        "RCFDG011"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4C.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY OTHER LOANS",
+      "mdrm": "RCFDG013",
+      "columns": [
+        "RCFDG013"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "6.A",
+      "caption": "ALL OTHER ASSETS - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG391",
+      "columns": [
+        "RCFDG391"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "6.B",
+      "caption": "ALL OTHER ASSETS - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG392",
+      "columns": [
+        "RCFDG392"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "6.C",
+      "caption": "ALL OTHER ASSETS - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG395",
+      "columns": [
+        "RCFDG395"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "6.D",
+      "caption": "ALL OTHER ASSETS - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG396",
+      "columns": [
+        "RCFDG396"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "1.B",
+      "caption": "AVAILABLE-FOR-SALE DEBT SECURITIES AND EQUITY SECURITIES WITH READILY DETERMINABLE FAIR VALUES NOT HELD FOR TRADING SECURITIES - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG474",
+      "columns": [
+        "RCFDG474"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "1.C",
+      "caption": "AVAILABLE-FOR-SALE DEBT SECURITIES AND EQUITY SECURITIES WITH READILY DETERMINABLE FAIR VALUES NOT HELD FOR TRADING SECURITIES - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG475",
+      "columns": [
+        "RCFDG475"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "1.D",
+      "caption": "AVAILABLE-FOR-SALE DEBT SECURITIES AND EQUITY SECURITIES WITH READILY DETERMINABLE FAIR VALUES NOT HELD FOR TRADING SECURITIES - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG476",
+      "columns": [
+        "RCFDG476"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "1.E",
+      "caption": "AVAILABLE-FOR-SALE DEBT SECURITIES AND EQUITY SECURITIES WITH READILY DETERMINABLE FAIR VALUES NOT HELD FOR TRADING SECURITIES - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG477",
+      "columns": [
+        "RCFDG477"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "2.A",
+      "caption": "FEDERAL FUNDS SOLD AND SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG478",
+      "columns": [
+        "RCFDG478"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "2.B",
+      "caption": "FEDERAL FUNDS SOLD AND SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL -LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG479",
+      "columns": [
+        "RCFDG479"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "2.C",
+      "caption": "FEDERAL FUNDS SOLD AND SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL -LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG480",
+      "columns": [
+        "RCFDG480"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "2.D",
+      "caption": "FEDERAL FUNDS SOLD AND SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG481",
+      "columns": [
+        "RCFDG481"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "2.E",
+      "caption": "FEDERAL FUNDS SOLD AND SECURITIES PURCHASED UNDER AGREEMENTS TO RESELL - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG482",
+      "columns": [
+        "RCFDG482"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "3.A",
+      "caption": "LOANS AND LEASES HELD FOR SALE - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG483",
+      "columns": [
+        "RCFDG483"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "3.B",
+      "caption": "LOANS AND LEASES HELD FOR SALE - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG484",
+      "columns": [
+        "RCFDG484"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "3.C",
+      "caption": "LOANS AND LEASES HELD FOR SALE - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG485",
+      "columns": [
+        "RCFDG485"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "3.D",
+      "caption": "LOANS AND LEASES HELD FOR SALE - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG486",
+      "columns": [
+        "RCFDG486"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "3.E",
+      "caption": "LOANS AND LEASES HELD FOR SALE - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG487",
+      "columns": [
+        "RCFDG487"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "4.A",
+      "caption": "LOANS AND LEASES HELD FOR INVESTMENT - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG488",
+      "columns": [
+        "RCFDG488"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "4.B",
+      "caption": "LOANS AND LEASES HELD FOR INVESTMENT - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG489",
+      "columns": [
+        "RCFDG489"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "4.C",
+      "caption": "LOANS AND LEASES HELD FOR INVESTMENT - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG490",
+      "columns": [
+        "RCFDG490"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "4.D",
+      "caption": "LOANS AND LEASES HELD FOR INVESTMENT - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG491",
+      "columns": [
+        "RCFDG491"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "4.E",
+      "caption": "LOANS AND LEASES HELD FOR INVESTMENT - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG492",
+      "columns": [
+        "RCFDG492"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5A.B",
+      "caption": "TRADING DERIVATIVE ASSETS - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG493",
+      "columns": [
+        "RCFDG493"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5A.C",
+      "caption": "TRADING DERIVATIVE ASSETS - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG494",
+      "columns": [
+        "RCFDG494"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5A.D",
+      "caption": "TRADING DERIVATIVE ASSETS - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG495",
+      "columns": [
+        "RCFDG495"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5A.E",
+      "caption": "TRADING DERIVATIVE ASSETS - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG496",
+      "columns": [
+        "RCFDG496"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B.A",
+      "caption": "OTHER TRADING ASSETS - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG497",
+      "columns": [
+        "RCFDG497"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B.B",
+      "caption": "OTHER TRADING ASSETS - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG498",
+      "columns": [
+        "RCFDG498"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B.C",
+      "caption": "OTHER TRADING ASSETS - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG499",
+      "columns": [
+        "RCFDG499"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B.D",
+      "caption": "OTHER TRADING ASSETS - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG500",
+      "columns": [
+        "RCFDG500"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "5B.E",
+      "caption": "OTHER TRADING ASSETS - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG501",
+      "columns": [
+        "RCFDG501"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "7.A",
+      "caption": "TOTAL ASSETS MEASURED AT FAIR VALUE ON A RECURRING BASIS - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG502",
+      "columns": [
+        "RCFDG502"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "7.B",
+      "caption": "TOTAL ASSETS MEASURED AT FAIR VALUE ON A RECURRING BASIS - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG503",
+      "columns": [
+        "RCFDG503"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "7.C",
+      "caption": "TOTAL ASSETS MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG504",
+      "columns": [
+        "RCFDG504"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "7.D",
+      "caption": "TOTAL ASSETS MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG505",
+      "columns": [
+        "RCFDG505"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "7.E",
+      "caption": "TOTAL ASSETS MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG506",
+      "columns": [
+        "RCFDG506"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "9.A",
+      "caption": "FEDERAL FUNDS PURCHASED AND SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG507",
+      "columns": [
+        "RCFDG507"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "9.B",
+      "caption": "FEDERAL FUNDS PURCHASED AND SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG508",
+      "columns": [
+        "RCFDG508"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "9.C",
+      "caption": "FEDERAL FUNDS PURCHASED AND SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG509",
+      "columns": [
+        "RCFDG509"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "9.D",
+      "caption": "FEDERAL FUNDS PURCHASED AND SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG510",
+      "columns": [
+        "RCFDG510"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "9.E",
+      "caption": "FEDERAL FUNDS PURCHASED AND SECURITIES SOLD UNDER AGREEMENTS TO REPURCHASE - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG511",
+      "columns": [
+        "RCFDG511"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10A.B",
+      "caption": "TRADING DERIVATIVE LIABILITIES - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG512",
+      "columns": [
+        "RCFDG512"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10A.C",
+      "caption": "TRADING DERIVATIVE LIABILITIES - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG513",
+      "columns": [
+        "RCFDG513"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10A.D",
+      "caption": "TRADING DERIVATIVE LIABILITIES - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG514",
+      "columns": [
+        "RCFDG514"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10A.E",
+      "caption": "TRADING DERIVATIVE LIABILITIES - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG515",
+      "columns": [
+        "RCFDG515"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10B.A",
+      "caption": "OTHER TRADING LIABILITIES - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG516",
+      "columns": [
+        "RCFDG516"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10B.B",
+      "caption": "OTHER TRADING LIABILITIES - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG517",
+      "columns": [
+        "RCFDG517"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10B.C",
+      "caption": "OTHER TRADING LIABILITIES - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG518",
+      "columns": [
+        "RCFDG518"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10B.D",
+      "caption": "OTHER TRADING LIABILITIES - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG519",
+      "columns": [
+        "RCFDG519"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "10B.E",
+      "caption": "OTHER TRADING LIABILITIES - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG520",
+      "columns": [
+        "RCFDG520"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "11.A",
+      "caption": "OTHER BORROWED MONEY - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG521",
+      "columns": [
+        "RCFDG521"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "11.B",
+      "caption": "OTHER BORROWED MONEY - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG522",
+      "columns": [
+        "RCFDG522"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "11.C",
+      "caption": "OTHER BORROWED MONEY - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG523",
+      "columns": [
+        "RCFDG523"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "11.D",
+      "caption": "OTHER BORROWED MONEY - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG524",
+      "columns": [
+        "RCFDG524"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "11.E",
+      "caption": "OTHER BORROWED MONEY - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG525",
+      "columns": [
+        "RCFDG525"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "12.A",
+      "caption": "SUBORDINATED NOTES AND DEBENTURES - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG526",
+      "columns": [
+        "RCFDG526"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "12.B",
+      "caption": "SUBORDINATED NOTES AND DEBENTURES - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG527",
+      "columns": [
+        "RCFDG527"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "12.C",
+      "caption": "SUBORDINATED NOTES AND DEBENTURES- LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG528",
+      "columns": [
+        "RCFDG528"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "12.D",
+      "caption": "SUBORDINATED NOTES AND DEBENTURES- LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG529",
+      "columns": [
+        "RCFDG529"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "12.E",
+      "caption": "SUBORDINATED NOTES AND DEBENTURES- LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG530",
+      "columns": [
+        "RCFDG530"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "14.A",
+      "caption": "TOTAL LIABILITIES MEASURED AT FAIR VALUE ON A RECURRING BASIS - TOTAL FAIR VALUE REPORTED ON SCHEDULE RC",
+      "mdrm": "RCFDG531",
+      "columns": [
+        "RCFDG531"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "14.B",
+      "caption": "TOTAL LIABILITIES MEASURED AT FAIR VALUE ON A RECURRING BASIS - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG532",
+      "columns": [
+        "RCFDG532"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "14.C",
+      "caption": "TOTAL LIABILITIES MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG533",
+      "columns": [
+        "RCFDG533"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "14.D",
+      "caption": "TOTAL LIABILITIES MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG534",
+      "columns": [
+        "RCFDG534"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "14.E",
+      "caption": "TOTAL LIABILITIES MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG535",
+      "columns": [
+        "RCFDG535"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1A.A",
+      "caption": "OTHR GT $100K & 25% MTG SVC RT FV RPT",
+      "mdrm": "RCFDG536",
+      "columns": [
+        "RCFDG536"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1A.B",
+      "caption": "OTHR GT $100K & 25% MTG SVC RT LESS FV",
+      "mdrm": "RCFDG537",
+      "columns": [
+        "RCFDG537"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1A.C",
+      "caption": "OTHR GT $100K 25% MTG SVC RT LVL 1 FV",
+      "mdrm": "RCFDG538",
+      "columns": [
+        "RCFDG538"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1A.D",
+      "caption": "OTHR GT $100K 25% MTG SVC RT LVL 2 FV",
+      "mdrm": "RCFDG539",
+      "columns": [
+        "RCFDG539"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1A.E",
+      "caption": "OTHR GT $100K 25% MTG SVC RT LVL 3 FV",
+      "mdrm": "RCFDG540",
+      "columns": [
+        "RCFDG540"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1B.A",
+      "caption": "OTHR GT $100K & 25% NONTRDG FV RPT",
+      "mdrm": "RCFDG541",
+      "columns": [
+        "RCFDG541"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1B.B",
+      "caption": "OTHR GT $100K 25% NONTRDG LESS NET FV",
+      "mdrm": "RCFDG542",
+      "columns": [
+        "RCFDG542"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1B.C",
+      "caption": "OTHR GT $100K & 25% NONTRDG LVL 1 FV",
+      "mdrm": "RCFDG543",
+      "columns": [
+        "RCFDG543"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1B.D",
+      "caption": "OTHR GT $100K & 25% NONTRDG LVL 2 FV",
+      "mdrm": "RCFDG544",
+      "columns": [
+        "RCFDG544"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1B.E",
+      "caption": "OTHR GT $100K & 25% NONTRDG LVL 3 FV",
+      "mdrm": "RCFDG545",
+      "columns": [
+        "RCFDG545"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1C.A",
+      "caption": "1ST GT $100K 25% OTHR MEASURE FV RCR",
+      "mdrm": "RCFDG546",
+      "columns": [
+        "RCFDG546"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1C.B",
+      "caption": "1ST GT $100K 25% OTHR RCR LESS AMT FV",
+      "mdrm": "RCFDG547",
+      "columns": [
+        "RCFDG547"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1C.C",
+      "caption": "1ST GT $100K 25% OTHR FV RCR LVL 1 FV",
+      "mdrm": "RCFDG548",
+      "columns": [
+        "RCFDG548"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1C.D",
+      "caption": "1ST GT $100K 25% OTHR FV RCR LVL 2 FV",
+      "mdrm": "RCFDG549",
+      "columns": [
+        "RCFDG549"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1C.E",
+      "caption": "1ST GT $100K 25% OTHR FV RCR LVL 3 FV",
+      "mdrm": "RCFDG550",
+      "columns": [
+        "RCFDG550"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1D.A",
+      "caption": "2ND GT $100K 25% OTHR MEASURE FV RCR",
+      "mdrm": "RCFDG551",
+      "columns": [
+        "RCFDG551"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1D.B",
+      "caption": "2ND GT $100K 25% OTHR RCR LESS AMT FV",
+      "mdrm": "RCFDG552",
+      "columns": [
+        "RCFDG552"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1D.C",
+      "caption": "2ND GT $100K 25% OTHR FV RCR LVL 1 FV",
+      "mdrm": "RCFDG553",
+      "columns": [
+        "RCFDG553"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1D.D",
+      "caption": "2ND GT $100K 25% OTHR FV RCR LVL 2 FV",
+      "mdrm": "RCFDG554",
+      "columns": [
+        "RCFDG554"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1D.E",
+      "caption": "2ND GT $100K 25% OTHR FV RCR LVL 3 FV",
+      "mdrm": "RCFDG555",
+      "columns": [
+        "RCFDG555"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1E.A",
+      "caption": "3RD GT $100K 25% OTHR MEASURE FV RCR",
+      "mdrm": "RCFDG556",
+      "columns": [
+        "RCFDG556"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1E.B",
+      "caption": "3RD GT $100K 25% OTHR RCR LESS AMT FV",
+      "mdrm": "RCFDG557",
+      "columns": [
+        "RCFDG557"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1E.C",
+      "caption": "3RD GT $100K 25% OTHR FV RCR LVL 1 FV",
+      "mdrm": "RCFDG558",
+      "columns": [
+        "RCFDG558"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1E.D",
+      "caption": "3RD GT $100K 25% OTHR FV RCR LVL 2 FV",
+      "mdrm": "RCFDG559",
+      "columns": [
+        "RCFDG559"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1E.E",
+      "caption": "3RD GT $100K 25% OTHR FV RCR LVL 3 FV",
+      "mdrm": "RCFDG560",
+      "columns": [
+        "RCFDG560"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1F.A",
+      "caption": "4TH GT $100K 25% OTHR MEASURE FV RCR",
+      "mdrm": "RCFDG561",
+      "columns": [
+        "RCFDG561"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1F.B",
+      "caption": "4TH GT $100K 25% OTHR RCR LESS AMT FV",
+      "mdrm": "RCFDG562",
+      "columns": [
+        "RCFDG562"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1F.C",
+      "caption": "4TH GT $100K 25% OTHR FV RCR LVL 1 FV",
+      "mdrm": "RCFDG563",
+      "columns": [
+        "RCFDG563"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1F.D",
+      "caption": "4TH GT $100K 25% OTHR FV RCR LVL 2 FV",
+      "mdrm": "RCFDG564",
+      "columns": [
+        "RCFDG564"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M1F.E",
+      "caption": "4TH GT $100K 25% OTHR FV RCR LVL 3 FV",
+      "mdrm": "RCFDG565",
+      "columns": [
+        "RCFDG565"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2B.A",
+      "caption": "OTHR $100K 25% NON TRDING DRVT FV RPT",
+      "mdrm": "RCFDG566",
+      "columns": [
+        "RCFDG566"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2B.B",
+      "caption": "OTHR $100K 25% NON TRDING DRVT LESS F",
+      "mdrm": "RCFDG567",
+      "columns": [
+        "RCFDG567"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2B.C",
+      "caption": "OTHR $100K NON TRDING DRVT LVL 1 FV",
+      "mdrm": "RCFDG568",
+      "columns": [
+        "RCFDG568"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2B.D",
+      "caption": "OTHR $100K NON TRDING DRVT LVL 2 FV",
+      "mdrm": "RCFDG569",
+      "columns": [
+        "RCFDG569"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2B.E",
+      "caption": "OTHR $100K NON TRDING DRVT LVL 3 FV",
+      "mdrm": "RCFDG570",
+      "columns": [
+        "RCFDG570"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2C.A",
+      "caption": "1ST GT $100K 25% OTHR LIAB FV",
+      "mdrm": "RCFDG571",
+      "columns": [
+        "RCFDG571"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2C.B",
+      "caption": "1ST GT $100K OTHR LIAB LESS DTRM FV",
+      "mdrm": "RCFDG572",
+      "columns": [
+        "RCFDG572"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2C.C",
+      "caption": "1ST GT $100K 25% OTHR LIAB LVL 1 FV",
+      "mdrm": "RCFDG573",
+      "columns": [
+        "RCFDG573"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2C.D",
+      "caption": "1ST GT $100K 25% OTHR LIAB LVL 2 FV",
+      "mdrm": "RCFDG574",
+      "columns": [
+        "RCFDG574"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2C.E",
+      "caption": "1ST GT $100K 25% OTHR LIAB LVL 3 FV",
+      "mdrm": "RCFDG575",
+      "columns": [
+        "RCFDG575"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2D.A",
+      "caption": "2ND GT $100K 25% OTHR LIAB FV",
+      "mdrm": "RCFDG576",
+      "columns": [
+        "RCFDG576"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2D.B",
+      "caption": "2ND GT $100K OTHR LIAB LESS DTRM FV",
+      "mdrm": "RCFDG577",
+      "columns": [
+        "RCFDG577"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2D.C",
+      "caption": "2ND GT $100K 25% OTHR LIAB LVL 1 FV",
+      "mdrm": "RCFDG578",
+      "columns": [
+        "RCFDG578"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2D.D",
+      "caption": "2ND GT $100K 25% OTHR LIAB LVL 2 FV",
+      "mdrm": "RCFDG579",
+      "columns": [
+        "RCFDG579"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2D.E",
+      "caption": "2ND GT $100K 25% OTHR LIAB LVL 3 FV",
+      "mdrm": "RCFDG580",
+      "columns": [
+        "RCFDG580"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2E.A",
+      "caption": "3RD GT $100K 25% OTHR LIAB FV",
+      "mdrm": "RCFDG581",
+      "columns": [
+        "RCFDG581"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2E.B",
+      "caption": "3RD GT $100K OTHR LIAB LESS DTRM FV",
+      "mdrm": "RCFDG582",
+      "columns": [
+        "RCFDG582"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2E.C",
+      "caption": "3RD GT $100K 25% OTHR LIAB LVL 1 FV",
+      "mdrm": "RCFDG583",
+      "columns": [
+        "RCFDG583"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2E.D",
+      "caption": "3RD GT $100K 25% OTHR LIAB LVL 2 FV",
+      "mdrm": "RCFDG584",
+      "columns": [
+        "RCFDG584"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2E.E",
+      "caption": "3RD GT $100K 25% OTHR LIAB LVL 3 FV",
+      "mdrm": "RCFDG585",
+      "columns": [
+        "RCFDG585"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2F.A",
+      "caption": "4TH GT $100K 25 PCT OTHR LIAB FV",
+      "mdrm": "RCFDG586",
+      "columns": [
+        "RCFDG586"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2F.B",
+      "caption": "4TH GT $100K OTHR LIAB LESS DTRM FV",
+      "mdrm": "RCFDG587",
+      "columns": [
+        "RCFDG587"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2F.C",
+      "caption": "4TH GT $100K 25% OTHR LIAB LVL 1 FV",
+      "mdrm": "RCFDG588",
+      "columns": [
+        "RCFDG588"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2F.D",
+      "caption": "4TH GT $100K 25% OTHR LIAB LVL 2 FV",
+      "mdrm": "RCFDG589",
+      "columns": [
+        "RCFDG589"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M2F.E",
+      "caption": "4TH GT $100K 25% OTHR LIAB LVL 3 FV",
+      "mdrm": "RCFDG590",
+      "columns": [
+        "RCFDG590"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "6.E",
+      "caption": "ALL OTHER ASSETS - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG804",
+      "columns": [
+        "RCFDG804"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "13.A",
+      "caption": "ALL OTHER LIABILITIES - TOTAL FAIR VALUE REPORTED ON BALANCE SHEET",
+      "mdrm": "RCFDG805",
+      "columns": [
+        "RCFDG805"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "13.B",
+      "caption": "ALL OTHER LIABILITIES - LESS AMOUNTS NETTED IN THE DETERMINATION OF TOTAL FAIR VALUE",
+      "mdrm": "RCFDG806",
+      "columns": [
+        "RCFDG806"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "13.C",
+      "caption": "ALL OTHER LIABILITIES - LEVEL 1 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG807",
+      "columns": [
+        "RCFDG807"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "13.D",
+      "caption": "ALL OTHER LIABILITIES - LEVEL 2 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG808",
+      "columns": [
+        "RCFDG808"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "13.E",
+      "caption": "ALL OTHER LIABILITIES - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RCFDG809",
+      "columns": [
+        "RCFDG809"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3A1.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE LOANS SECURED BY 1-4 FAMILY RESIDENTIAL PROP",
+      "mdrm": "RCFDHT87",
+      "columns": [
+        "RCFDHT87"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3A2.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE ALL OTHER LOANS SECURED BY REAL ESTATE",
+      "mdrm": "RCFDHT88",
+      "columns": [
+        "RCFDHT88"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4A1.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE LOANS SECURED BY 1-4 FAMILY RESIDENTIAL PROP",
+      "mdrm": "RCFDHT91",
+      "columns": [
+        "RCFDHT91"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4A2.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE ALL OTHER LOANS SECURED BY REAL ESTATE",
+      "mdrm": "RCFDHT92",
+      "columns": [
+        "RCFDHT92"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3B.B",
+      "caption": "COMMERCIAL& INDUSTRIAL LOANS MEASURED AT FV (DOMESTIC ONLY)",
+      "mdrm": "RCFNF585",
+      "columns": [
+        "RCFNF585"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4B.B",
+      "caption": "UNPAID PRINCIPAL BALANCE OF COMMERICIAL AND INDUSTRIAL LOANS MEASURED AT FAIR VALUE:",
+      "mdrm": "RCFNF597",
+      "columns": [
+        "RCFNF597"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3C.A",
+      "caption": "LOANS MEASURED BY FAIR VALUE OTHER LOANS",
+      "mdrm": "RCFNG011",
+      "columns": [
+        "RCFNG011"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4C.A",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE SECURED BY OTHER LOANS",
+      "mdrm": "RCFNG013",
+      "columns": [
+        "RCFNG013"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3A1",
+      "caption": "LOANS MEASURED BY FAIR VALUE LOANS SECURED BY 1-4 FAMILY RESIDENTIAL PROP",
+      "mdrm": "RCFNHT87",
+      "columns": [
+        "RCFNHT87"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M3A2",
+      "caption": "LOANS MEASURED BY FAIR VALUE ALL OTHER LOANS SECURED BY REAL ESTATE",
+      "mdrm": "RCFNHT88",
+      "columns": [
+        "RCFNHT88"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4A1",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE LOANS SECURED BY 1-4 FAMILY RESIDENTIAL PROP",
+      "mdrm": "RCFNHT91",
+      "columns": [
+        "RCFNHT91"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "Q",
+      "schedule_name": "Schedule Q - Financial Assets and Liabilities Measured at Fair Value",
+      "line": "M4A2",
+      "caption": "UNPAID PRINCIPAL BALANCE MEASURED AT FAIR VALUE ALL OTHER LOANS SECURED BY REAL ESTATE",
+      "mdrm": "RCFNHT92",
+      "columns": [
+        "RCFNHT92"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.A",
+      "caption": "OUTSTANDING PRINCIPLE BAL. OF ASSETS SOLD & SECURITIZED WITH SERVICING RETAINED OR WITH RECOURSE OR OTHER SELLER PROVIDED CREDIT ENHANCEMENTS: 1 - 4 FAM RES LNS",
+      "mdrm": "RCFDB705",
+      "columns": [
+        "RCFDB705"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.B",
+      "caption": "OUTSTANDING PRINCIPAL BALANCE OF ASSETS SOLD AND SECURITIZED WIT H RECOURSE - HOME EQUITY LINES",
+      "mdrm": "RCFDB706",
+      "columns": [
+        "RCFDB706"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.C",
+      "caption": "OUTSTANDING PRINCIPLE BAL. OF ASSETS SOLD & SECURITIZED WITH SERVICING RETAINED OR WITH RECOURSE OR OTHER SELLER PROVIDED CREDIT ENHANCEMENTS: CREDIT CARD RECEIVABLES",
+      "mdrm": "RCFDB707",
+      "columns": [
+        "RCFDB707"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.D",
+      "caption": "OUTSTANDING PRINCIPAL BALANCE OF ASSETS SOLD AND SECURITIZED WIT H RECOURSE OR OTHER SELLER-PROVIDED CREDIT ENHANCEMENTS - AUTO L OANS",
+      "mdrm": "RCFDB708",
+      "columns": [
+        "RCFDB708"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.E",
+      "caption": "OUTSTANDING PRINCIPLE BAL. OF ASSETS SOLD & SECURITIZED WITH SERVICING RETAINED OR WITH RECOURSE OR OTHER SELLER PROVIDED CREDIT ENHANCEMENTS: OTHER CONSUMER LOANS",
+      "mdrm": "RCFDB709",
+      "columns": [
+        "RCFDB709"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.F",
+      "caption": "OUTSTANDING PRINCIPAL BALANCE OF ASSETS SOLD AND SECURITIZED WIT H RECOURSE - COMMERCIAL AND INDUSTRIAL LOANS",
+      "mdrm": "RCFDB710",
+      "columns": [
+        "RCFDB710"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "1.G",
+      "caption": "OUTSTANDING PRINCIPLE BAL. OF ASSETS SOLD & SECURITIZED WITH SERVICING RETAINED OR WITH RECOURSE OR OTHER SELLER PROVIDED CREDIT ENHANCEMENTS: ALL OTHER LNS AND ALL LEASES (BK U.S.+FRGN OFC)",
+      "mdrm": "RCFDB711",
+      "columns": [
+        "RCFDB711"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.A",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO STRU CTURES REPORTED IN ITEM 1 - 1-4 FAMILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB726",
+      "columns": [
+        "RCFDB726"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.B",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY T0 STRUCTURES, HOME EQUITY LINES",
+      "mdrm": "RCFDB727",
+      "columns": [
+        "RCFDB727"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.C",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO STRU CTURES REPORTED IN ITEM 1 - CREDIT CARD RECEIVABLES",
+      "mdrm": "RCFDB728",
+      "columns": [
+        "RCFDB728"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.D",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY T0 STRUCTURES, AUTO LOANS",
+      "mdrm": "RCFDB729",
+      "columns": [
+        "RCFDB729"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.E",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO STRU CTURES REPORTED IN ITEM 1 - OTHER CONSUMER LOANS",
+      "mdrm": "RCFDB730",
+      "columns": [
+        "RCFDB730"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.F",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY T0 STRUCTURES, COMMERCIAL & INDUSTRIAL LOANS",
+      "mdrm": "RCFDB731",
+      "columns": [
+        "RCFDB731"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "3.G",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO STRU CTURES REPORTED IN ITEM 1 - ALL OTHER LOANS",
+      "mdrm": "RCFDB732",
+      "columns": [
+        "RCFDB732"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.A",
+      "caption": "PAST DUE LOAN AMOUNTS: 30-89 DAYS PAST DUE 1 - 4 FAMILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB733",
+      "columns": [
+        "RCFDB733"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.B",
+      "caption": "PAST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 30-89 DAYS - HOME EQUI TY LINES",
+      "mdrm": "RCFDB734",
+      "columns": [
+        "RCFDB734"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.C",
+      "caption": "PAST DUE LOAN AMOUNTS: 30-89 DAYS PAST DUE CREDIT CARD RECEIVABLES",
+      "mdrm": "RCFDB735",
+      "columns": [
+        "RCFDB735"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.D",
+      "caption": "AST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 30-89 DAYS AUTO LOANS",
+      "mdrm": "RCFDB736",
+      "columns": [
+        "RCFDB736"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.E",
+      "caption": "PAST DUE LOAN AMOUNTS: 30-89 DAYS PAST DUE OTHER CONSUMER LOANS",
+      "mdrm": "RCFDB737",
+      "columns": [
+        "RCFDB737"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.F",
+      "caption": "PAST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 30-89 DAYS COMMERCIAL & INDUSTRIAL LOANS",
+      "mdrm": "RCFDB738",
+      "columns": [
+        "RCFDB738"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4A.G",
+      "caption": "PAST DUE LOAN AMOUNTS: 30-89 DAYS PAST DUE ALL OTHER LOANS AND ALL LEASES",
+      "mdrm": "RCFDB739",
+      "columns": [
+        "RCFDB739"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.A",
+      "caption": "PAST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 90 DAYS OR MORE 1-4 FA MILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB740",
+      "columns": [
+        "RCFDB740"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.B",
+      "caption": "PAST DUE LOAN AMOUNTS: 90 DAYS OR MORE PAST DUE HOME EQUITY LINES",
+      "mdrm": "RCFDB741",
+      "columns": [
+        "RCFDB741"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.C",
+      "caption": "PAST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 90 DAYS OR MORE CREDIT CARD RECEIVABLES",
+      "mdrm": "RCFDB742",
+      "columns": [
+        "RCFDB742"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.D",
+      "caption": "PAST DUE LOAN AMOUNTS: 90 DAYS OR MORE PAST DUE AUTO LOANS",
+      "mdrm": "RCFDB743",
+      "columns": [
+        "RCFDB743"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.E",
+      "caption": "PAST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 90 DAYS OR MORE OTHER CONSUMER LOANS",
+      "mdrm": "RCFDB744",
+      "columns": [
+        "RCFDB744"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.F",
+      "caption": "PAST DUE LOAN AMOUNTS: 9O DAYS OR MORE PAST DUE COMMERCIAL & INDUSTRIAL LOANS",
+      "mdrm": "RCFDB745",
+      "columns": [
+        "RCFDB745"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "4B.G",
+      "caption": "PAST DUE LOAN AMOUNTS INCLUDED IN ITEM 1: 90 DAYS OR MORE ALL OT HER LOANS",
+      "mdrm": "RCFDB746",
+      "columns": [
+        "RCFDB746"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "9.A",
+      "caption": "MAXIMUM AMOUNT OF CREDIT EXPOSURE ARISING FROM CREDIT ENHANCEMEN TS : 1-4 FAMILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB776",
+      "columns": [
+        "RCFDB776"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "9.D",
+      "caption": "MAX CREDIT EXPOSURE ARISING FROM CREDIT ENHANCEMENTS PROVIDED BY REPORTING BANK TO OTH INST SECURITIZATION STRUCTURES AS STANDBY LOC, PURCH SUBORDN SECURITIES AND OTH ENHANCEMENTS, AUTO LNS",
+      "mdrm": "RCFDB779",
+      "columns": [
+        "RCFDB779"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "9.E",
+      "caption": "MAXIMUM AMOUNT OF CREDIT EXPOSURE ARISING FROM CREDIT ENHANCEMEN TS : OTHER CONSUMER LOANS",
+      "mdrm": "RCFDB780",
+      "columns": [
+        "RCFDB780"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "9.F",
+      "caption": "MAX CREDIT EXPOSURE ARISING FROM CREDIT ENHANCEMENTS PROVIDED BY REPORTING BANK TO OTH INST SECURITIZATION STRUCTURES AS STANDBY LOC, PURCH SUBORDN SECURITIES AND OTHER, C & I LOANS",
+      "mdrm": "RCFDB781",
+      "columns": [
+        "RCFDB781"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "9.G",
+      "caption": "MAXIMUM AMOUNT OF CREDIT EXPOSURES ARISING FROM CREDIT ENHANCEME NTS : ALL OTHER LOANS",
+      "mdrm": "RCFDB782",
+      "columns": [
+        "RCFDB782"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "10.A",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO OTHER INSTITUTIONS' SECURITIZATION STRUCTURES 1 - 4 FAMILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB783",
+      "columns": [
+        "RCFDB783"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "10.D",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO OTHE R INSTITUTIONS' SECURITIZATION STRUCTURES - AUTO LOANS",
+      "mdrm": "RCFDB786",
+      "columns": [
+        "RCFDB786"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "10.E",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO OTHER INSTITUTIONS' SECURITIZATION STRUCTURES OTHER CONSUMER LOANS",
+      "mdrm": "RCFDB787",
+      "columns": [
+        "RCFDB787"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "10.F",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO OTHE R INSTITUTIONS' SECURITIZATION STRUCTURES - COMMERCIAL AND INDUS TRIAL LOANS",
+      "mdrm": "RCFDB788",
+      "columns": [
+        "RCFDB788"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "10.G",
+      "caption": "REPORTING BANK'S UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO OTHER INSTITUTIONS' SECURITIZATION STRUCTURES ALL OTHER LOANS AND ALL LEASES",
+      "mdrm": "RCFDB789",
+      "columns": [
+        "RCFDB789"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "11.A",
+      "caption": "ASSETS SOLD WITH RECOURSE OR OTHER SELLER-PROVIDED CREDIT ENHANC EMENTS AND NOT SECURITIZED - 1-4 FAMILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB790",
+      "columns": [
+        "RCFDB790"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "11.G",
+      "caption": "ASSETS SOLD WITH RECOURSE OR OTHER SELLER-PROVIDED CREDIT ENHANC EMENTS AND NOT SECURITIZED - ALL OTHER LOANS",
+      "mdrm": "RCFDB796",
+      "columns": [
+        "RCFDB796"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "12.A",
+      "caption": "MAX CREDIT EXPOSURE ARISING FROM RECOURSE OR OTHER SELLER PROVIDED CREDIT ENHANCEMENTS PROVIDED TO BANK ASSET SALES, 1 - 4 FAMILY RESIDENTIAL LOANS",
+      "mdrm": "RCFDB797",
+      "columns": [
+        "RCFDB797"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "12.G",
+      "caption": "MAX CREDIT EXPOSURE ARISING FROM RECOURSE OR OTHER SELLER PROVIDED CREDIT ENHANCEMENTS PROVIDED TO BANK ASSET SALES, ALL OTHER LOANS AND ALL LEASES",
+      "mdrm": "RCFDB803",
+      "columns": [
+        "RCFDB803"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "M1A1",
+      "caption": "MAXIMUM AMOUNT OF CREDIT EXPOSURE ARISING FROM CREDIT ENHANCEMEN TS PROVIDED TO RELATED CONDUIT STRUCTURES",
+      "mdrm": "RCFDB806",
+      "columns": [
+        "RCFDB806"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "M1A2",
+      "caption": "MAX AMT CREDIT EXPOS FROM CREDIT ENHANCEMENT PROVIDED BY CONDUIT STRUCT AS STANDBY LOC, SUBORD SECURITIES AND OTHER: ASSET-BACKED COMM PAPER CONDUITS SPONSORED BY OTHER UNREL INSTITUTIONS",
+      "mdrm": "RCFDB807",
+      "columns": [
+        "RCFDB807"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "M1B1",
+      "caption": "UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO RELATED CONDUIT STRUC TURES",
+      "mdrm": "RCFDB808",
+      "columns": [
+        "RCFDB808"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "M1B2",
+      "caption": "UNUSED COMMITMENTS TO PROVIDE LIQUIDITY TO CONDUIT STRUCTURES: ASSET-BACKED COMM PAPER CONDUITS SPONSORED BY OTHER UNRELATED INSTITUTIONS",
+      "mdrm": "RCFDB809",
+      "columns": [
+        "RCFDB809"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.A",
+      "caption": "Maximum amount of credit exposure arising from recourse or other seller- provided credit enhancements provided to structures reported IN ITEM 1 -1-4 Family residental",
+      "mdrm": "RCFDHU09",
+      "columns": [
+        "RCFDHU09"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.B",
+      "caption": "Maximum amount of credit exposure arising from recourse or other seller- provided credit enhancements provided to structures reported IN ITEM 1 HOME EQUITY LINE",
+      "mdrm": "RCFDHU10",
+      "columns": [
+        "RCFDHU10"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.C",
+      "caption": "Maximum amount of credit exposure :CC RECEIVABLES",
+      "mdrm": "RCFDHU11",
+      "columns": [
+        "RCFDHU11"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.D",
+      "caption": "Maximum amount of credit exposure arising from recourse or other seller- provided credit enhancements provided to structures reported IN ITEM 1:AUTO LOANS",
+      "mdrm": "RCFDHU12",
+      "columns": [
+        "RCFDHU12"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.E",
+      "caption": "Maximum amount of credit exposure arising from recourse or other seller- provided credit enhancements provided to structures reported IN ITEM 1:OTH CONSUMER LOANS",
+      "mdrm": "RCFDHU13",
+      "columns": [
+        "RCFDHU13"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.F",
+      "caption": "Maximum amount of credit exposure arising from recourse or other seller- provided credit enhancements provided to structures reported IN ITEM 1:COMM AND INDUSTRIAL LNS",
+      "mdrm": "RCFDHU14",
+      "columns": [
+        "RCFDHU14"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "2.G",
+      "caption": "Maximum amount of credit exposure arising from recourse or other seller- provided credit enhancements provided to structures reported IN ITEM 1:ALL OTHER LNS , ALL LEASE, AND ALL OTH ASSETS",
+      "mdrm": "RCFDHU15",
+      "columns": [
+        "RCFDHU15"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "6.B",
+      "caption": "TOTAL AMOUNT OF OWNERSHIP (OR SELLER'S) INTERESTS CARRIED AS: SECURITIES OR LOANS",
+      "mdrm": "RCFDHU16",
+      "columns": [
+        "RCFDHU16"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "6.C",
+      "caption": "TOTAL AMOUNT OF OWNERSHIP (OR SELLER'S) INTERESTS CARRIED AS: SECURITIES OR LOANS::CC RECEIVABLES",
+      "mdrm": "RCFDHU17",
+      "columns": [
+        "RCFDHU17"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Schedule S - Servicing, Securitization, and Asset Sale Activities",
+      "line": "6.F",
+      "caption": "TOTAL AMOUNT OF OWNERSHIP (OR SELLER'S) INTERESTS CARRIED AS: SECURITIES OR LOANS:COMMERICIAL AND INDUSTRIAL LOANS",
+      "mdrm": "RCFDHU18",
+      "columns": [
+        "RCFDHU18"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ]
+}

@@ -1,0 +1,2703 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/ffiec-101-user-guide.pdf",
+  "schedule_count": 4,
+  "item_count": 225,
+  "schedules": [
+    {
+      "schedule": "A",
+      "name": "Advanced Approaches Regulatory Capital"
+    },
+    {
+      "schedule": "B",
+      "name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes"
+    },
+    {
+      "schedule": "S",
+      "name": "Operational Risk"
+    },
+    {
+      "schedule": "COVER",
+      "name": "Cover Page"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "1",
+      "caption": "Common stock plus related surplus, net of treasury stock",
+      "mdrm": "AAABP742",
+      "columns": [
+        "AAABP742"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "2",
+      "caption": "Retained earnings",
+      "mdrm": "AAAB3247",
+      "columns": [
+        "AAAB3247"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "3",
+      "caption": "Accumulated other comprehensive income (AOCI)",
+      "mdrm": "AAABB530",
+      "columns": [
+        "AAABB530"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "5",
+      "caption": "Common equity tier 1 minority interest includable in common equity tier 1 capital",
+      "mdrm": "AAABP839",
+      "columns": [
+        "AAABP839"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "6",
+      "caption": "Common equity tier 1 capital before regulatory deductions and adjustments (sum of items , 3, and 5)",
+      "mdrm": "AAABP840",
+      "columns": [
+        "AAABP840"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "8",
+      "caption": "Goodwill net of associated deferred tax liabilities (DTLs)",
+      "mdrm": "AAABP841",
+      "columns": [
+        "AAABP841"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "9",
+      "caption": "Other intangible assets, net of associated DTLs, other than goodwill and mortgage servicing assets (MSAs)",
+      "mdrm": "AAABP842",
+      "columns": [
+        "AAABP842"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "10",
+      "caption": "Deferred tax assets (DTAs) that arise from net operating loss and tax credit carryforwards, net of any related valuation allowances and net of DTLs.",
+      "mdrm": "AAABP843",
+      "columns": [
+        "AAABP843"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "11",
+      "caption": "Accumulated net gain or loss on cash-flow hedges included in AOCI, net of applicable income taxes, that relate to the hedging of items that are not recognized at fair value on the balance sheet",
+      "mdrm": "AAABP849",
+      "columns": [
+        "AAABP849"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "12",
+      "caption": "Expected credit loss that exceeds eligible credit reserves",
+      "mdrm": "AAABP886",
+      "columns": [
+        "AAABP886"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "13",
+      "caption": "Gain-on-sale associated with a securitization exposure",
+      "mdrm": "AAABJ161",
+      "columns": [
+        "AAABJ161"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "14",
+      "caption": "Unrealized gain or loss related to changes in the fair value of liabilities that are due to changes in own credit risk",
+      "mdrm": "AAABQ258",
+      "columns": [
+        "AAABQ258"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "15",
+      "caption": "Defined-benefit pension fund assets, net of associated DTLs",
+      "mdrm": "AAABP887",
+      "columns": [
+        "AAABP887"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "16",
+      "caption": "Investments in own shares to the extent not excluded above as part of treasury stock",
+      "mdrm": "AAABP888",
+      "columns": [
+        "AAABP888"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "17",
+      "caption": "Reciprocal cross-holdings in the common equity of financial institutions",
+      "mdrm": "AAABP889",
+      "columns": [
+        "AAABP889"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "18",
+      "caption": "Non-significant investments in the capital of unconsolidated financial institutions in the form of common stock that exceed the 10 percent threshold for non-significant investments",
+      "mdrm": "AAABP851",
+      "columns": [
+        "AAABP851"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "19",
+      "caption": "Significant investments in the capital of unconsolidated financial institutions in the form of common stock, net of associated DTLs, that exceed the 10 percent common equity tier 1 capital deduction threshold",
+      "mdrm": "AAABP853",
+      "columns": [
+        "AAABP853"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "20",
+      "caption": "MSAs, net of associated DTLs, that exceed the 10 percent common equity tier 1 capital deduction threshold",
+      "mdrm": "AAABP854",
+      "columns": [
+        "AAABP854"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "21",
+      "caption": "DTAs arising from temporary differences that could not be realized through net operating loss carrybacks, net of related valuation allowances and net of DTLs, that exceed the 10 percent common equity tier 1 capital deduction threshold",
+      "mdrm": "AAABP855",
+      "columns": [
+        "AAABP855"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "22",
+      "caption": "Amount of significant investments in the capital of unconsolidated financial institutions in the form of common stock, net of associated DTLs; MSAs net of associated DTLs; and DTAs arising from temporary differences that could not be realized through net operating loss carrybacks, net of related valuation allowances and net of DTLs, that exceeds the 15 percent common equity tier 1 capital deduction threshold",
+      "mdrm": "AAABP856",
+      "columns": [
+        "AAABP856"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "23",
+      "caption": "of which: significant investments in the capital of unconsolidated financial institutions in the form of common stock, net of associated DTLs",
+      "mdrm": "AAABP890",
+      "columns": [
+        "AAABP890"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "24",
+      "caption": "of which: MSAs, net of associated DTLs",
+      "mdrm": "AAABP891",
+      "columns": [
+        "AAABP891"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "25",
+      "caption": "of which: DTAs arising from temporary differences that could not be realized through net operating loss carrybacks, net of related valuation allowances and net of DTLs",
+      "mdrm": "AAABP892",
+      "columns": [
+        "AAABP892"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "27",
+      "caption": "Deductions applied to common equity tier 1 capital due to insufficient amounts of additional tier 1 capital and tier 2 capital to cover deductions",
+      "mdrm": "AAABP857",
+      "columns": [
+        "AAABP857"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "28",
+      "caption": "Total adjustments and deductions for common equity tier 1 capital (sum of items 8 through 22, plus item 27)",
+      "mdrm": "AAABP858",
+      "columns": [
+        "AAABP858"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "29",
+      "caption": "Common equity tier 1 capital (item 6 less item 28)",
+      "mdrm": "AAABP859",
+      "columns": [
+        "AAABP859"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "30",
+      "caption": "Additional tier 1 capital instruments plus related surplus",
+      "mdrm": "AAABP860",
+      "columns": [
+        "AAABP860"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "33",
+      "caption": "Non-qualifying capital instruments subject to phase out from additional tier 1 capital",
+      "mdrm": "AAABP861",
+      "columns": [
+        "AAABP861"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "34",
+      "caption": "Tier 1 minority interest not included in common equity tier 1 capital",
+      "mdrm": "AAABP862",
+      "columns": [
+        "AAABP862"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "35",
+      "caption": "of which: amount subject to phase out",
+      "mdrm": "AAABP893",
+      "columns": [
+        "AAABP893"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "36",
+      "caption": "Additional tier 1 capital before deductions (sum of items , and 34)",
+      "mdrm": "AAABP863",
+      "columns": [
+        "AAABP863"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "37",
+      "caption": "Investments in own additional tier 1 capital instruments",
+      "mdrm": "AAABP894",
+      "columns": [
+        "AAABP894"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "38",
+      "caption": "Reciprocal cross-holdings in the additional tier 1 capital of financial institutions",
+      "mdrm": "AAABP895",
+      "columns": [
+        "AAABP895"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "39",
+      "caption": "Non-significant investments in additional tier 1 capital of unconsolidated financial institutions that exceed the 10 percent threshold for non- significant investments",
+      "mdrm": "AAABP896",
+      "columns": [
+        "AAABP896"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "40",
+      "caption": "Significant investments in financial institutions not in the form of common stock to be deducted from additional tier 1 capital",
+      "mdrm": "AAABP897",
+      "columns": [
+        "AAABP897"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "41",
+      "caption": "Other deductions from additional tier 1 capital",
+      "mdrm": "AAABP898",
+      "columns": [
+        "AAABP898"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "42",
+      "caption": "Deductions applied to additional tier 1 capital due to insufficient tier 2 capital to cover deductions",
+      "mdrm": "AAABP899",
+      "columns": [
+        "AAABP899"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "43",
+      "caption": "Total additional tier 1 capital deductions (sum of items 37 through 42)",
+      "mdrm": "AAABP864",
+      "columns": [
+        "AAABP864"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "44",
+      "caption": "Additional tier 1 capital (greater of item 36 less item 43 or zero)",
+      "mdrm": "AAABP865",
+      "columns": [
+        "AAABP865"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "45",
+      "caption": "Tier 1 capital (sum of items 29 and 44)",
+      "mdrm": "AAAB8274",
+      "columns": [
+        "AAAB8274"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "46",
+      "caption": "Tier 2 capital instruments plus related surplus",
+      "mdrm": "AAABP866",
+      "columns": [
+        "AAABP866"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "47",
+      "caption": "Non-qualifying capital instruments subject to phase out from tier 2 capital",
+      "mdrm": "AAABP867",
+      "columns": [
+        "AAABP867"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "48",
+      "caption": "Total capital minority interest that is not included in tier 1 capital",
+      "mdrm": "AAABP868",
+      "columns": [
+        "AAABP868"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "49",
+      "caption": "of which: instruments subject to phase out",
+      "mdrm": "AAABP900",
+      "columns": [
+        "AAABP900"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "50",
+      "caption": "Eligible credit reserves included in tier 2 capital",
+      "mdrm": "AAAB5310",
+      "columns": [
+        "AAAB5310"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "51",
+      "caption": "Tier 2 capital before deductions (sum of items , 48, and 50)",
+      "mdrm": "AAABP870",
+      "columns": [
+        "AAABP870"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "52",
+      "caption": "Investments in own tier 2 capital instruments",
+      "mdrm": "AAABP902",
+      "columns": [
+        "AAABP902"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "53",
+      "caption": "Reciprocal cross-holdings in the tier 2 capital of unconsolidated financial institutions",
+      "mdrm": "AAABP903",
+      "columns": [
+        "AAABP903"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "54",
+      "caption": "Non-significant investments in the tier 2 capital and covered debt instruments of unconsolidated financial institutions that exceed the 10 percent threshold for non-significant investments",
+      "mdrm": "AAABP904",
+      "columns": [
+        "AAABP904"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "55",
+      "caption": "Significant investments in financial institutions not in the form of common stock to be deducted from tier 2 capital",
+      "mdrm": "AAABP905",
+      "columns": [
+        "AAABP905"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "56",
+      "caption": "Other deductions from tier 2 capital:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "a",
+      "caption": "Investments in excluded covered debt instruments",
+      "mdrm": "AAABLB40",
+      "columns": [
+        "AAABLB40"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "b",
+      "caption": "All other deductions from tier 2 capital",
+      "mdrm": "AAABP906",
+      "columns": [
+        "AAABP906"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "57",
+      "caption": "Total tier 2 capital deductions (sum of items 52 through 56)",
+      "mdrm": "AAABP872",
+      "columns": [
+        "AAABP872"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "58",
+      "caption": "Tier 2 capital (greater of item 51 less item 57 or zero)",
+      "mdrm": "AAAB5311",
+      "columns": [
+        "AAAB5311"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "59",
+      "caption": "Total capital (sum of items 45 and 58)",
+      "mdrm": "AAAB3792",
+      "columns": [
+        "AAAB3792"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "60",
+      "caption": "Total risk-weighted assets (RWAs)",
+      "mdrm": "AAABA223",
+      "columns": [
+        "AAABA223"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "61",
+      "caption": "Common equity tier 1 capital ratio (item 29 divided by item 60)",
+      "mdrm": "AAABP793",
+      "columns": [
+        "AAABP793"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "62",
+      "caption": "Tier 1 capital ratio (item 45 divided by item 60)",
+      "mdrm": "AAAB7206",
+      "columns": [
+        "AAAB7206"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "63",
+      "caption": "Total capital ratio (item 59 divided by item 60)",
+      "mdrm": "AAAB7205",
+      "columns": [
+        "AAAB7205"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "64",
+      "caption": "Institution-specific common equity tier 1 capital ratio necessary to avoid limitations on capital distributions and discretionary bonus payments",
+      "mdrm": "AAABY933",
+      "columns": [
+        "AAABY933"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "65",
+      "caption": "of which: capital conservation buffer",
+      "mdrm": "AAABFB52",
+      "columns": [
+        "AAABFB52"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "66",
+      "caption": "of which: countercyclical capital buffer (if applicable)",
+      "mdrm": "AAABFB53",
+      "columns": [
+        "AAABFB53"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "67",
+      "caption": "of which: G-SIB surcharge (if applicable)",
+      "mdrm": "AAABFB54",
+      "columns": [
+        "AAABFB54"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "68",
+      "caption": "Common equity tier 1 capital available to meet items 65 through 67 (as a percentage of RWA)",
+      "mdrm": "AAABFB55",
+      "columns": [
+        "AAABFB55"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "72",
+      "caption": "Non-significant investments in the capital of unconsolidated financial institutions that are not deducted",
+      "mdrm": "AAABP907",
+      "columns": [
+        "AAABP907"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "73",
+      "caption": "Significant investments in the capital of unconsolidated financial institutions in the form of common stock, net of associated DTLs, that are not deducted",
+      "mdrm": "AAABP908",
+      "columns": [
+        "AAABP908"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "74",
+      "caption": "MSAs, net of associated DTLs, that are not deducted",
+      "mdrm": "AAABP909",
+      "columns": [
+        "AAABP909"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "75",
+      "caption": "DTAs arising from temporary differences that could not be realized through net operating loss carrybacks, net of related valuation allowances and net of DTLs, that are not deducted",
+      "mdrm": "AAABP910",
+      "columns": [
+        "AAABP910"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "76",
+      "caption": "Total adjusted allowances for credit losses (AACL) under the standardized approach",
+      "mdrm": "AAAAP911",
+      "columns": [
+        "AAAAP911"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "77",
+      "caption": "Amount of AACL includable in tier 2 capital under the standardized approach",
+      "mdrm": "AAAA5310",
+      "columns": [
+        "AAAA5310"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "78",
+      "caption": "Total eligible credit reserves (calculated using advanced approaches)",
+      "mdrm": "AAAAJ183",
+      "columns": [
+        "AAAAJ183"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "79",
+      "caption": "Amount of eligible credit reserves includable in tier 2 capital",
+      "mdrm": "AAAAJ173",
+      "columns": [
+        "AAAAJ173"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "80",
+      "caption": "Cap on common equity tier 1 non-qualifying capital instruments subject to phase-out",
+      "mdrm": "AAABP913",
+      "columns": [
+        "AAABP913"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "81",
+      "caption": "Amount of common equity tier 1 non-qualifying capital instruments excluded",
+      "mdrm": "AAABP914",
+      "columns": [
+        "AAABP914"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "82",
+      "caption": "Cap on additional tier 1 non-qualifying capital instruments subject to phase-out",
+      "mdrm": "AAABP915",
+      "columns": [
+        "AAABP915"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "83",
+      "caption": "Amount of additional tier 1 non-qualifying capital instruments excluded",
+      "mdrm": "AAABP916",
+      "columns": [
+        "AAABP916"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "84",
+      "caption": "Cap on tier 2 non-qualifying capital instruments subject to phase-out",
+      "mdrm": "AAABP917",
+      "columns": [
+        "AAABP917"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "85",
+      "caption": "Amount of tier 2 non-qualifying capital instruments excluded",
+      "mdrm": "AAABP918",
+      "columns": [
+        "AAABP918"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "86",
+      "caption": "Expected credit loss that exceeds eligible credit reserves",
+      "mdrm": "AAAAP886",
+      "columns": [
+        "AAAAP886"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "88",
+      "caption": "Common equity tier 1 capital ratio (calculated using advanced approaches)",
+      "mdrm": "AAAAP793",
+      "columns": [
+        "AAAAP793"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "89",
+      "caption": "Tier 1 capital ratio (calculated using advanced approaches)",
+      "mdrm": "AAAA7206",
+      "columns": [
+        "AAAA7206"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Advanced Approaches Regulatory Capital",
+      "line": "90",
+      "caption": "Total capital ratio (calculated using advanced approaches)",
+      "mdrm": "AAAA7205",
+      "columns": [
+        "AAAA7205"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Weighted Average Probability of Default",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABAJ124",
+      "columns": [
+        "AABAJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABAJ125",
+      "columns": [
+        "AABAJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABAJ126",
+      "columns": [
+        "AABAJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABAJ127",
+      "columns": [
+        "AABAJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABAJ128",
+      "columns": [
+        "AABAJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - EAD Adjustment Method",
+      "mdrm": "AABAJ131",
+      "columns": [
+        "AABAJ131"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABAJ132",
+      "columns": [
+        "AABAJ132"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABAJ133",
+      "columns": [
+        "AABAJ133"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABAJ134",
+      "columns": [
+        "AABAJ134"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABAJ135",
+      "columns": [
+        "AABAJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABAJ136",
+      "columns": [
+        "AABAJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABAJ137",
+      "columns": [
+        "AABAJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABAJ138",
+      "columns": [
+        "AABAJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABAJ139",
+      "columns": [
+        "AABAJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Balance Sheet Amount",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABBJ124",
+      "columns": [
+        "AABBJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABBJ125",
+      "columns": [
+        "AABBJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABBJ126",
+      "columns": [
+        "AABBJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABBJ127",
+      "columns": [
+        "AABBJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABBJ128",
+      "columns": [
+        "AABBJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABBJ135",
+      "columns": [
+        "AABBJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABBJ136",
+      "columns": [
+        "AABBJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABBJ137",
+      "columns": [
+        "AABBJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABBJ138",
+      "columns": [
+        "AABBJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABBJ139",
+      "columns": [
+        "AABBJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Securitization Exposures: Subject to the Supervisory Formula Approach",
+      "mdrm": "AABBJ142",
+      "columns": [
+        "AABBJ142"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Other Assets: Unsettled Transactions",
+      "mdrm": "AABBJ147",
+      "columns": [
+        "AABBJ147"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Other Assets: Assets Not Included in a Defined Exposure Category",
+      "mdrm": "AABBJ148",
+      "columns": [
+        "AABBJ148"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Other Assets: Non-Material Portfolios of Exposures",
+      "mdrm": "AABBJ149",
+      "columns": [
+        "AABBJ149"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Securitization Exposures: Subject to Simplified Supervisory Formula Approach",
+      "mdrm": "AABBP920",
+      "columns": [
+        "AABBP920"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Securitization Exposures: Subject to 1,250% Risk Weight",
+      "mdrm": "AABBP921",
+      "columns": [
+        "AABBP921"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Cleared Transactions: Derivative Contracts and Netting Sets to Derivatives",
+      "mdrm": "AABBP922",
+      "columns": [
+        "AABBP922"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Cleared Transactions: Repo-Style Transactions",
+      "mdrm": "AABBP923",
+      "columns": [
+        "AABBP923"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Cleared Transactions: Default Fund Contributions",
+      "mdrm": "AABBP924",
+      "columns": [
+        "AABBP924"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Total Undrawn Amount",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABCJ124",
+      "columns": [
+        "AABCJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABCJ125",
+      "columns": [
+        "AABCJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABCJ126",
+      "columns": [
+        "AABCJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABCJ127",
+      "columns": [
+        "AABCJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABCJ128",
+      "columns": [
+        "AABCJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABCJ135",
+      "columns": [
+        "AABCJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABCJ136",
+      "columns": [
+        "AABCJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABCJ137",
+      "columns": [
+        "AABCJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABCJ138",
+      "columns": [
+        "AABCJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABCJ139",
+      "columns": [
+        "AABCJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Exposure at Default",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABDJ124",
+      "columns": [
+        "AABDJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABDJ125",
+      "columns": [
+        "AABDJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABDJ126",
+      "columns": [
+        "AABDJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABDJ127",
+      "columns": [
+        "AABDJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABDJ128",
+      "columns": [
+        "AABDJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions and OTC Derivatives with Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABDJ129",
+      "columns": [
+        "AABDJ129"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - EAD Adjustment Method",
+      "mdrm": "AABDJ131",
+      "columns": [
+        "AABDJ131"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABDJ132",
+      "columns": [
+        "AABDJ132"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABDJ133",
+      "columns": [
+        "AABDJ133"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABDJ134",
+      "columns": [
+        "AABDJ134"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABDJ135",
+      "columns": [
+        "AABDJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABDJ136",
+      "columns": [
+        "AABDJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABDJ137",
+      "columns": [
+        "AABDJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABDJ138",
+      "columns": [
+        "AABDJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABDJ139",
+      "columns": [
+        "AABDJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Weighted Average Maturity (Years)",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABEJ124",
+      "columns": [
+        "AABEJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABEJ125",
+      "columns": [
+        "AABEJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABEJ126",
+      "columns": [
+        "AABEJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABEJ127",
+      "columns": [
+        "AABEJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABEJ128",
+      "columns": [
+        "AABEJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - EAD Adjustment Method",
+      "mdrm": "AABEJ131",
+      "columns": [
+        "AABEJ131"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABEJ132",
+      "columns": [
+        "AABEJ132"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABEJ133",
+      "columns": [
+        "AABEJ133"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABEJ134",
+      "columns": [
+        "AABEJ134"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wtd Avg LGD After Consideration of Credit Risk Mitigants (%)",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABFJ124",
+      "columns": [
+        "AABFJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABFJ125",
+      "columns": [
+        "AABFJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABFJ126",
+      "columns": [
+        "AABFJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABFJ127",
+      "columns": [
+        "AABFJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABFJ128",
+      "columns": [
+        "AABFJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - EAD Adjustment Method",
+      "mdrm": "AABFJ131",
+      "columns": [
+        "AABFJ131"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABFJ132",
+      "columns": [
+        "AABFJ132"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABFJ133",
+      "columns": [
+        "AABFJ133"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABFJ134",
+      "columns": [
+        "AABFJ134"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABFJ135",
+      "columns": [
+        "AABFJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABFJ136",
+      "columns": [
+        "AABFJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABFJ137",
+      "columns": [
+        "AABFJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABFJ138",
+      "columns": [
+        "AABFJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABFJ139",
+      "columns": [
+        "AABFJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Risk Weighted Assets",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABGJ124",
+      "columns": [
+        "AABGJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABGJ125",
+      "columns": [
+        "AABGJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABGJ126",
+      "columns": [
+        "AABGJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABGJ127",
+      "columns": [
+        "AABGJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABGJ128",
+      "columns": [
+        "AABGJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions and OTC Derivatives with Cross- Product Netting - EAD Adjustment Method",
+      "mdrm": "AABGJ129",
+      "columns": [
+        "AABGJ129"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - EAD Adjustment Method",
+      "mdrm": "AABGJ131",
+      "columns": [
+        "AABGJ131"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABGJ132",
+      "columns": [
+        "AABGJ132"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABGJ133",
+      "columns": [
+        "AABGJ133"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABGJ134",
+      "columns": [
+        "AABGJ134"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABGJ135",
+      "columns": [
+        "AABGJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABGJ136",
+      "columns": [
+        "AABGJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABGJ137",
+      "columns": [
+        "AABGJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABGJ138",
+      "columns": [
+        "AABGJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABGJ139",
+      "columns": [
+        "AABGJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Securitization Exposures: Subject to the Supervisory Formula Approach",
+      "mdrm": "AABGJ142",
+      "columns": [
+        "AABGJ142"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Equity Exposures: Simple Risk Weight Method (SRWA)",
+      "mdrm": "AABGJ144",
+      "columns": [
+        "AABGJ144"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Other Assets: Unsettled Transactions",
+      "mdrm": "AABGJ147",
+      "columns": [
+        "AABGJ147"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Other Assets: Assets Not Included in a Defined Exposure Category",
+      "mdrm": "AABGJ148",
+      "columns": [
+        "AABGJ148"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Other Assets: Non-Material Portfolios of Exposures",
+      "mdrm": "AABGJ149",
+      "columns": [
+        "AABGJ149"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Risk-Weighted Assets",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Securitization Exposures: Subject to Simplified Supervisory Formula Approach",
+      "mdrm": "AABGP920",
+      "columns": [
+        "AABGP920"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Securitization Exposures: Subject to 1,250% Risk Weight",
+      "mdrm": "AABGP921",
+      "columns": [
+        "AABGP921"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Cleared Transactions: Derivative Contracts and Netting Sets to Derivatives",
+      "mdrm": "AABGP922",
+      "columns": [
+        "AABGP922"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Cleared Transactions: Repo-Style Transactions",
+      "mdrm": "AABGP923",
+      "columns": [
+        "AABGP923"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Cleared Transactions: Default Fund Contributions",
+      "mdrm": "AABGP924",
+      "columns": [
+        "AABGP924"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Expected Credit Loss",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Corporate",
+      "mdrm": "AABHJ124",
+      "columns": [
+        "AABHJ124"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Bank",
+      "mdrm": "AABHJ125",
+      "columns": [
+        "AABHJ125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Sovereign",
+      "mdrm": "AABHJ126",
+      "columns": [
+        "AABHJ126"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: IPRE",
+      "mdrm": "AABHJ127",
+      "columns": [
+        "AABHJ127"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: HVCRE",
+      "mdrm": "AABHJ128",
+      "columns": [
+        "AABHJ128"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - EAD Adjustment Method",
+      "mdrm": "AABHJ131",
+      "columns": [
+        "AABHJ131"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: Eligible Margin Loans, Repo-Style Transactions - No Cross Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABHJ132",
+      "columns": [
+        "AABHJ132"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - EAD Adjustment Method",
+      "mdrm": "AABHJ133",
+      "columns": [
+        "AABHJ133"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Wholesale Exposures: OTC Derivatives - No Cross-Product Netting - Collateral Reflected in LGD",
+      "mdrm": "AABHJ134",
+      "columns": [
+        "AABHJ134"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End First Lien Exposures",
+      "mdrm": "AABHJ135",
+      "columns": [
+        "AABHJ135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Closed-End Junior Lien Exposures",
+      "mdrm": "AABHJ136",
+      "columns": [
+        "AABHJ136"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Residential Mortgage - Revolving Exposures",
+      "mdrm": "AABHJ137",
+      "columns": [
+        "AABHJ137"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Qualifying Revolving Exposures",
+      "mdrm": "AABHJ138",
+      "columns": [
+        "AABHJ138"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": null,
+      "caption": "Retail Exposures: Other Retail Exposures",
+      "mdrm": "AABHJ139",
+      "columns": [
+        "AABHJ139"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "29",
+      "caption": "Sum of Column G, 1 through 28",
+      "mdrm": "AABGJ150",
+      "columns": [
+        "AABGJ150"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "30",
+      "caption": "Total credit risk weighted assets (cell G-29 x 1.06)",
+      "mdrm": "AABGJ151",
+      "columns": [
+        "AABGJ151"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "31",
+      "caption": "Credit Valuation Adjustments:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "31.a",
+      "caption": "Credit Valuation Adjustments: Simple",
+      "mdrm": "AABGP925",
+      "columns": [
+        "AABGP925"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "31.b",
+      "caption": "Credit Valuation Adjustments: Advanced",
+      "mdrm": "AABGP926",
+      "columns": [
+        "AABGP926"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "32",
+      "caption": "Assets subject to the general risk-based capital requirements",
+      "mdrm": "AABGJ198",
+      "columns": [
+        "AABGJ198"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "33",
+      "caption": "Excess eligible credit reserves not included in Tier 2 capital",
+      "mdrm": "AABGJ152",
+      "columns": [
+        "AABGJ152"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "34",
+      "caption": "Advanced market risk equivalent assets",
+      "mdrm": "AABGJ153",
+      "columns": [
+        "AABGJ153"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "35",
+      "caption": "Operational risk",
+      "mdrm": "AABGJ154",
+      "columns": [
+        "AABGJ154"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Summary Risk-Weighted Asset Information for Banks Approved to Use Advanced Internal Ratings-Based and Advanced Measurement Approaches for Regulatory Capital Purposes",
+      "line": "36",
+      "caption": "Total (add cells G-30, G-31, G-32, G-34 and G-35, and subtract G-33)",
+      "mdrm": "AABGA223",
+      "columns": [
+        "AABGA223"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Operational Risk",
+      "line": "1",
+      "caption": "Risk-based capital requirement for operational risk",
+      "mdrm": "AASAJ079",
+      "columns": [
+        "AASAJ079"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "S",
+      "schedule_name": "Operational Risk",
+      "line": "2",
+      "caption": "Is item 1 generated from an \"alternative operational risk quantification system?\" (Enter \"1\" for Yes; enter \"0\" for No.)",
+      "mdrm": "AASAJ080",
+      "columns": [
+        "AASAJ080"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Legal Entity Identifier",
+      "mdrm": "AAXX9224",
+      "columns": [
+        "AAXX9224"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ]
+}

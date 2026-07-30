@@ -1,12 +1,11 @@
 """Federal Reserve Primary Dealer Positioning Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.primary_dealer_positioning import (
-    PrimaryDealerPositioningData,
     PrimaryDealerPositioningQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -50,30 +49,51 @@ class FederalReservePrimaryDealerPositioningQueryParams(
 ):
     """Federal Reserve Primary Dealer Positioning Query Params."""
 
+    __json_schema_extra__ = {
+        "category": {
+            "x-widget_config": {
+                "options": [
+                    {"label": "U.S. Treasury securities", "value": "treasuries"},
+                    {"label": "Treasury bills", "value": "bills"},
+                    {"label": "Treasury coupons", "value": "coupons"},
+                    {"label": "Treasury notes and bonds", "value": "notes"},
+                    {
+                        "label": "Treasury inflation-protected securities (TIPS)",
+                        "value": "tips",
+                    },
+                    {"label": "Mortgage-backed securities (MBS)", "value": "mbs"},
+                    {
+                        "label": "Commercial mortgage-backed securities (CMBS)",
+                        "value": "cmbs",
+                    },
+                    {"label": "Municipal securities", "value": "municipal"},
+                    {"label": "Corporate securities", "value": "corporate"},
+                    {"label": "Commercial paper", "value": "commercial_paper"},
+                    {
+                        "label": "Investment-grade corporate bonds",
+                        "value": "corporate_ig",
+                    },
+                    {
+                        "label": "Below-investment-grade corporate bonds",
+                        "value": "corporate_junk",
+                    },
+                    {"label": "Asset-backed securities (ABS)", "value": "abs"},
+                ]
+            }
+        }
+    }
+
     category: PdsCategories = Field(
         default="treasuries",
         description="The category of asset to return, defaults to 'treasuries'.",
-        json_schema_extra={"choices": PDS_CATEGORY_CHOICES},  # type: ignore
+        json_schema_extra={"choices": PDS_CATEGORY_CHOICES},
     )
 
 
-class FederalReservePrimaryDealerPositioningData(PrimaryDealerPositioningData):
+class FederalReservePrimaryDealerPositioningData(Data):
     """Federal Reserve Primary Dealer Positioning Data."""
 
-    value: int = Field(
-        description="The reported value of the net position (long - short), in millions of $USD.",
-        json_schema_extra={
-            "x-unit_measurement": "currency",
-            "x-frontend_multiply": 1e6,
-            "x-widget_config": {"prefix": "$", "suffix": "M"},
-        },
-    )
-    name: str = Field(
-        description="Short name for the series.",
-    )
-    title: str = Field(
-        description="Title of the series.",
-    )
+    date: dateType = Field(description="The observation date.")
 
 
 class FederalReservePrimaryDealerPositioningFetcher(
@@ -98,9 +118,10 @@ class FederalReservePrimaryDealerPositioningFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the FederalReserve endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
+        import asyncio
+
         from openbb_core.provider.utils.helpers import amake_request
+
         from openbb_federal_reserve.utils.primary_dealer_statistics import (
             POSITION_GROUPS_TO_SERIES,
         )
@@ -132,29 +153,32 @@ class FederalReservePrimaryDealerPositioningFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[FederalReservePrimaryDealerPositioningData]:
-        """Transform the data."""
-        # pylint: disable=import-outside-toplevel
+        """Pivot the per-series positions to one wide row per date."""
+        from pandas import DataFrame
+
         from openbb_federal_reserve.utils.primary_dealer_statistics import (
             POSITION_SERIES_TO_FIELD,
-            POSITION_SERIES_TO_TITLE,
         )
-        from pandas import DataFrame
+        from openbb_federal_reserve.utils.workbook import pivot_wide
 
         df = DataFrame(data)
         df = df.rename(columns={"keyid": "symbol", "asofdate": "date"})
-        df["name"] = df.symbol.map(
-            lambda x: POSITION_SERIES_TO_FIELD["dealer_position"].get(x)
-        )
-        df["title"] = df.symbol.map(lambda x: POSITION_SERIES_TO_TITLE.get(x))
+        df["name"] = df.symbol.map(POSITION_SERIES_TO_FIELD["dealer_position"].get)
+        df["value"] = df["value"].astype(int)
         df["date"] = df["date"].astype("datetime64[ns]").dt.date
 
         if query.start_date:
             df = df[df["date"] >= query.start_date]
-
         if query.end_date:
             df = df[df["date"] <= query.end_date]
 
+        records = pivot_wide(
+            df.sort_values("date")[["date", "name", "value"]].to_dict(orient="records"),
+            index="date",
+            column="name",
+            value="value",
+        )
         return [
-            FederalReservePrimaryDealerPositioningData.model_validate(d)
-            for d in df.sort_values(by="date").to_dict(orient="records")
+            FederalReservePrimaryDealerPositioningData.model_validate(r)
+            for r in records
         ]

@@ -1,0 +1,343 @@
+[
+  {
+    "name": "FFIEC & Bank Regulatory Data",
+    "img": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ihWqWx9nK2E0/v0/-1x-1.webp",
+    "img_dark": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ihWqWx9nK2E0/v0/-1x-1.webp",
+    "img_light": "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ihWqWx9nK2E0/v0/-1x-1.webp",
+    "description": "Bank financials and regulatory data from the FFIEC, CDR, and the Federal Reserve. Call Reports, UBPR, Peer Group & By-State analysis, FR Y-9C, FR Y-15 systemic risk indicators, and FFIEC 009 country exposure.",
+    "allowCustomization": true,
+    "tabs": {
+      "institutions": {
+        "id": "institutions",
+        "name": "Institutions",
+        "layout": [
+          {
+            "i": "ffiec_institutions_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            },
+            "groups": [
+              "Bank"
+            ]
+          },
+          {
+            "i": "ffiec_large_holding_companies_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "ffiec_institution_structure_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "rssd_id": "852218"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "ubpr": {
+        "id": "ubpr",
+        "name": "UBPR",
+        "layout": [
+          {
+            "i": "ffiec_ubpr_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "852218"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "bhcpr": {
+        "id": "bhcpr",
+        "name": "BHCPR",
+        "layout": [
+          {
+            "i": "ffiec_bhcpr_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "1039502",
+                "section": "Summary Ratios"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "executive-summary": {
+        "id": "executive-summary",
+        "name": "Executive Summary",
+        "layout": [
+          {
+            "i": "ffiec_executive_summary_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "852218"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "peer-group-average": {
+        "id": "peer-group-average",
+        "name": "Peer Group Average",
+        "layout": [
+          {
+            "i": "ffiec_peer_group_average_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "peer_group": "1"
+              }
+            },
+            "groups": [
+              "Peer Group"
+            ]
+          },
+          {
+            "i": "ffiec_bhcpr_report_federal_reserve_obb",
+            "x": 0,
+            "y": 38,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {
+                "peer_group": "1"
+              }
+            }
+          }
+        ]
+      },
+      "peer-group-distribution": {
+        "id": "peer-group-distribution",
+        "name": "Peer Group Distribution",
+        "layout": [
+          {
+            "i": "ffiec_peer_group_distribution_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "peer_group": "1"
+              }
+            },
+            "groups": [
+              "Peer Group"
+            ]
+          }
+        ]
+      },
+      "peer-group-bank": {
+        "id": "peer-group-bank",
+        "name": "Peer Group Bank",
+        "layout": [
+          {
+            "i": "ffiec_peer_group_bank_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "852218"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "custom-peer-group": {
+        "id": "custom-peer-group",
+        "name": "Custom Peer Group",
+        "layout": [
+          {
+            "i": "ffiec_custom_peer_group_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "852218",
+                "peers": "852218,451965,480228,63069"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "state-average": {
+        "id": "state-average",
+        "name": "State Average",
+        "layout": [
+          {
+            "i": "ffiec_state_average_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "state": "NY"
+              }
+            }
+          }
+        ]
+      },
+      "list-of-banks": {
+        "id": "list-of-banks",
+        "name": "List of Banks",
+        "layout": [
+          {
+            "i": "ffiec_list_of_banks_peer_group_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "peer_group": "1"
+              }
+            },
+            "groups": [
+              "Peer Group"
+            ]
+          }
+        ]
+      },
+      "call-report": {
+        "id": "call-report",
+        "name": "Call Report",
+        "layout": [
+          {
+            "i": "ffiec_call_report_sectioned_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "852218"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "financial-reports": {
+        "id": "financial-reports",
+        "name": "Financial Reports",
+        "layout": [
+          {
+            "i": "ffiec_financial_report_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 38,
+            "state": {
+              "params": {
+                "rssd_id": "1039502"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          },
+          {
+            "i": "ffiec_financial_report_pdf_federal_reserve_obb",
+            "x": 0,
+            "y": 38,
+            "w": 40,
+            "h": 30,
+            "state": {
+              "params": {
+                "rssd_id": "1039502"
+              }
+            },
+            "groups": [
+              "Bank"
+            ]
+          }
+        ]
+      },
+      "exposures-reference": {
+        "id": "exposures-reference",
+        "name": "Country Exposure",
+        "layout": [
+          {
+            "i": "ffiec_country_exposure_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Bank",
+        "type": "param",
+        "paramName": "rssd_id",
+        "defaultValue": "852218"
+      },
+      {
+        "name": "Peer Group",
+        "type": "param",
+        "paramName": "peer_group",
+        "defaultValue": "1"
+      }
+    ]
+  }
+]
