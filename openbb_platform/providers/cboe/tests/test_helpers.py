@@ -63,14 +63,13 @@ class TestNewYorkClock:
     def test_ny_now_is_eastern(self):
         """The clock is timezone-aware and offset like New York."""
         from datetime import datetime
-
-        from pytz import timezone
+        from zoneinfo import ZoneInfo
 
         now = helpers.ny_now()
 
         assert now.tzinfo is not None
         assert (
-            now.utcoffset() == datetime.now(tz=timezone("America/New_York")).utcoffset()
+            now.utcoffset() == datetime.now(tz=ZoneInfo("America/New_York")).utcoffset()
         )
 
     def test_ny_today_is_the_session_date(self):
@@ -108,16 +107,18 @@ class TestGetCboeData:
         from unittest.mock import AsyncMock
 
         session = FakeCachedSession(FakeResponse("application/json", {"ok": True}))
+        backend = SimpleNamespace(close=AsyncMock())
 
         with (
             patch.object(helpers, "amake_request") as mock_request,
             patch("aiohttp_client_cache.session.CachedSession", return_value=session),
-            patch.object(helpers, "cache_backend", AsyncMock(return_value=object())),
+            patch.object(helpers, "cache_backend", AsyncMock(return_value=backend)),
         ):
             result = asyncio.run(helpers.get_cboe_data("https://cboe.test/a.json"))
 
         assert result == {"ok": True}
         assert session.closed is True
+        backend.close.assert_awaited_once()
         mock_request.assert_not_called()
 
     def test_bypasses_cache(self):
@@ -714,14 +715,105 @@ class TestResponseCache:
         """A backend per request opens the file again for each one."""
         from unittest.mock import patch
 
+        async def twice():
+            return await helpers.cache_backend(), await helpers.cache_backend()
+
         with (
             patch.object(helpers, "_cache", None),
+            patch.object(helpers, "_cache_loop", None),
+            patch.object(helpers, "_cache_users", 0),
+            patch.object(helpers, "_swept", True),
+        ):
+            first, second = asyncio.run(twice())
+
+        assert first is second
+
+    def test_a_new_event_loop_gets_a_fresh_backend(self):
+        """Locks bound to a finished loop must not leak into the next one."""
+        from unittest.mock import patch
+
+        with (
+            patch.object(helpers, "_cache", None),
+            patch.object(helpers, "_cache_loop", None),
+            patch.object(helpers, "_cache_users", 0),
             patch.object(helpers, "_swept", True),
         ):
             first = asyncio.run(helpers.cache_backend())
             second = asyncio.run(helpers.cache_backend())
 
-        assert first is second
+        assert first is not second
+
+    def test_the_backend_outlives_any_one_session(self):
+        """A session closing on exit must not take the shared connection with it."""
+        from unittest.mock import patch
+
+        with (
+            patch.object(helpers, "_cache", None),
+            patch.object(helpers, "_cache_loop", None),
+            patch.object(helpers, "_cache_users", 0),
+            patch.object(helpers, "_swept", True),
+        ):
+            backend = asyncio.run(helpers.cache_backend())
+
+        assert backend.autoclose is False
+
+    def test_a_failing_sweep_still_returns_the_backend(self):
+        """A sweep failure is logged, never raised into the request."""
+        from unittest.mock import patch
+
+        with (
+            patch.object(helpers, "_cache", None),
+            patch.object(helpers, "_cache_loop", None),
+            patch.object(helpers, "_cache_users", 0),
+            patch.object(helpers, "_swept", False),
+            patch.object(
+                helpers, "_sweep", new=AsyncMock(side_effect=Exception("boom"))
+            ),
+        ):
+            backend = asyncio.run(helpers.cache_backend())
+
+        assert backend is not None
+
+    def test_the_shared_cache_closes_only_after_the_last_request(self):
+        """A request finishing must not close the connection under another."""
+        from asyncio import Event, create_task, sleep
+
+        fake_cache = SimpleNamespace(close=AsyncMock())
+        gate = Event()
+        overlap_closes: list = []
+
+        class GatedSession(FakeCachedSession):
+            async def get(self, url, **kwargs):
+                if "slow" in url:
+                    await gate.wait()
+
+                return await super().get(url, **kwargs)
+
+        async def scenario():
+            slow = create_task(helpers.get_cboe_data("https://cboe.test/slow.json"))
+
+            while helpers._cache_users == 0:
+                await sleep(0)
+
+            await helpers.get_cboe_data("https://cboe.test/fast.json")
+            overlap_closes.append(fake_cache.close.await_count)
+            gate.set()
+            await slow
+
+        with (
+            patch(
+                "aiohttp_client_cache.session.CachedSession",
+                side_effect=lambda **kwargs: GatedSession(
+                    FakeResponse("application/json", {"ok": True})
+                ),
+            ),
+            patch.object(helpers, "cache_backend", AsyncMock(return_value=fake_cache)),
+            patch.object(helpers, "_cache_users", 0),
+        ):
+            asyncio.run(scenario())
+
+        assert overlap_closes == [0]
+        fake_cache.close.assert_awaited_once()
 
     def test_an_expired_response_is_deleted_not_just_ignored(self, tmp_path):
         """An expiry alone leaves the row behind and the file grows forever."""

@@ -106,8 +106,9 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[CboeOptionsChainsData]:
         """Transform the data to the standard format."""
+        from zoneinfo import ZoneInfo
+
         from pandas import DataFrame, DatetimeIndex, Series, to_datetime
-        from pytz import timezone
 
         if not data:
             raise EmptyDataError()
@@ -191,7 +192,7 @@ class CboeOptionsChainsFetcher(
         )
 
         quotes = option_df_index.join(options_df)
-        eastern = timezone("America/New_York")
+        eastern = ZoneInfo("America/New_York")
         expires = DatetimeIndex(quotes.expiration).tz_localize(eastern) + EXPIRY_HOUR
         quotes["dte"] = (expires - datetime.now(tz=eastern)).days
         quotes["last_trade_time"] = (

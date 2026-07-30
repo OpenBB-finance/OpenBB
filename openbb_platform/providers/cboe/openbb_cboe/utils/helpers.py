@@ -113,9 +113,9 @@ CONSTITUENTS_EU = Literal[
 
 def ny_now() -> datetime:
     """Return the current time in the America/New_York timezone."""
-    from pytz import timezone
+    from zoneinfo import ZoneInfo
 
-    return datetime.now(tz=timezone("America/New_York"))
+    return datetime.now(tz=ZoneInfo("America/New_York"))
 
 
 def ny_today() -> dateType:
@@ -150,7 +150,9 @@ async def response_callback(response, _) -> Any:
 
 
 _cache: Any = None
+_cache_loop: Any = None
 _swept = False
+_cache_users = 0
 
 
 def cache_path() -> str:
@@ -210,31 +212,40 @@ async def _vacuum(backend: Any) -> None:
 
 
 async def cache_backend() -> Any:
-    """Return the process-wide cache, swept clean on first use.
+    """Return the shared cache for the running event loop, swept on first use.
 
     Returns
     -------
     Any
-        The ``SQLiteBackend`` every cached request shares.
+        The ``SQLiteBackend`` every cached request on the running loop shares.
     """
-    global _cache, _swept  # noqa: PLW0603
+    global _cache, _cache_loop, _swept, _cache_users  # noqa: PLW0603
+
+    from asyncio import get_running_loop
 
     from aiohttp_client_cache import SQLiteBackend
 
-    if _cache is None:
+    loop = get_running_loop()
+
+    if _cache is None or (_cache_loop is not loop and _cache_users == 0):
         _cache = SQLiteBackend(
             cache_path(),
             expire_after=CACHE_TTL["*"],
             urls_expire_after=CACHE_TTL,
+            autoclose=False,
         )
+        _cache_loop = loop
 
     if not _swept:
         _swept = True
+        _cache_users += 1
 
         try:
             await _sweep(_cache)
         except Exception:  # noqa: BLE001
             _logger.exception("Sweeping the Cboe response cache failed")
+        finally:
+            _cache_users -= 1
 
     return _cache
 
@@ -255,15 +266,26 @@ async def get_cboe_data(url: str, use_cache: bool = True, **kwargs) -> Any:
     Any
         The deserialized response.
     """
+    global _cache_users  # noqa: PLW0603
+
     from aiohttp_client_cache.session import CachedSession
 
     if use_cache is not True:
         return await amake_request(url, response_callback=response_callback, **kwargs)
 
-    async with CachedSession(cache=await cache_backend()) as session:
-        response = await session.get(url, timeout=10, **kwargs)
+    backend = await cache_backend()
+    _cache_users += 1
 
-        return await response_callback(response, None)
+    try:
+        async with CachedSession(cache=backend) as session:
+            response = await session.get(url, timeout=10, **kwargs)
+
+            return await response_callback(response, None)
+    finally:
+        _cache_users -= 1
+
+        if _cache_users == 0:
+            await backend.close()
 
 
 async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
