@@ -51,6 +51,9 @@ class CboeFuturesCurveData(FuturesCurveData):
     symbol: str | None = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
+    expiration: str | None = Field(
+        default=None, description="Futures expiration month."
+    )
 
 
 class CboeFuturesCurveFetcher(
@@ -97,5 +100,34 @@ class CboeFuturesCurveFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[CboeFuturesCurveData]:
-        """Transform data."""
-        return [CboeFuturesCurveData.model_validate(d) for d in data]
+        """Transform data, indexing multiple dates by the relative contract."""
+        if query.date is None or "," not in str(query.date):
+            return [CboeFuturesCurveData.model_validate(d) for d in data]
+
+        curves: dict[str, dict[str, float | None]] = {}
+        sessions: set[str] = set()
+
+        for record in data:
+            symbol = record.get("symbol")
+            session = str(record.get("date"))
+
+            if not symbol:
+                continue
+
+            sessions.add(session)
+            curves.setdefault(symbol, {})[session] = record.get("price")
+
+        ordered = sorted(sessions)
+
+        def rank(symbol: str) -> int:
+            suffix = symbol.removeprefix("VX")
+
+            return int(suffix) if suffix.isdigit() else len(curves)
+
+        return [
+            CboeFuturesCurveData.model_validate(
+                {"symbol": symbol}
+                | {session: curves[symbol].get(session) for session in ordered}
+            )
+            for symbol in sorted(curves, key=rank)
+        ]

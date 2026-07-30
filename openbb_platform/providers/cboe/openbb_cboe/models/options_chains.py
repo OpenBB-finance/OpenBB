@@ -1,7 +1,5 @@
 """Cboe Options Chains Model."""
 
-# pylint: disable= unused-argument
-
 from datetime import datetime
 from typing import Any
 
@@ -13,14 +11,29 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
+from pandas import Timedelta
 from pydantic import Field
+
+from openbb_cboe.utils.constants import EQUITY_CHOICES_ENDPOINT
+
+EXPIRY_HOUR = Timedelta(hours=16)
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
-    """CBOE Options Chains Query.
+    """Cboe Options Chains Query.
 
     Source: https://www.cboe.com/
     """
+
+    __json_schema_extra__ = {
+        "symbol": {
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": EQUITY_CHOICES_ENDPOINT,
+                "style": {"popupWidth": 600},
+            },
+        },
+    }
 
     use_cache: bool = Field(
         default=True,
@@ -31,7 +44,7 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 
 
 class CboeOptionsChainsData(OptionsChainsData):
-    """CBOE Options Chains Data."""
+    """Cboe Options Chains Data."""
 
     __doc__ = OptionsChainsData.__doc__
 
@@ -42,7 +55,7 @@ class CboeOptionsChainsFetcher(
         CboeOptionsChainsData,
     ]
 ):
-    """Cboe Options Chains Fetcher."""
+    """Transform the query, extract and transform the data from the Cboe endpoints."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CboeOptionsChainsQueryParams:
@@ -55,30 +68,36 @@ class CboeOptionsChainsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Return the raw data from the Cboe endpoint."""
-        # pylint: disable=import-outside-toplevel
+        """Return the raw data from the Cboe endpoint.
+
+        Raises
+        ------
+        OpenBBError
+            If the symbol is not listed in the Cboe options directory.
+        """
+        from openbb_core.provider.utils.helpers import amake_request
+
         from openbb_cboe.utils.helpers import (
             TICKER_EXCEPTIONS,
             get_company_directory,
             get_index_directory,
         )
-        from openbb_core.provider.utils.helpers import amake_request
 
         symbol = query.symbol.replace("^", "").split(",")[0].upper()
-        INDEXES = await get_index_directory(use_cache=query.use_cache)
-        SYMBOLS = await get_company_directory(use_cache=query.use_cache)
-        INDEXES = INDEXES.set_index("index_symbol")
+        indexes = await get_index_directory(use_cache=query.use_cache)
+        company_directory = await get_company_directory(use_cache=query.use_cache)
+        indexes = indexes.set_index("index_symbol")
 
-        if symbol not in SYMBOLS.index:
+        if symbol not in company_directory.index:
             raise OpenBBError(f"{symbol} was not found in the Cboe options directory.")
 
         quotes_url = (
             f"https://cdn.cboe.com/api/global/delayed_quotes/options/_{symbol}.json"
-            if symbol in TICKER_EXCEPTIONS or symbol in INDEXES.index
+            if symbol in TICKER_EXCEPTIONS or symbol in indexes.index
             else f"https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"
         )
-        results = await amake_request(quotes_url)
-        return results  # type: ignore
+
+        return await amake_request(quotes_url)  # ty: ignore[invalid-return-type]
 
     @staticmethod
     def transform_data(
@@ -87,52 +106,54 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[CboeOptionsChainsData]:
         """Transform the data to the standard format."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, DatetimeIndex, Series, to_datetime
+        from pytz import timezone
 
         if not data:
             raise EmptyDataError()
-        results_metadata = {}
+
         options = data.get("data", {}).pop("options", [])
         change_percent = data["data"].get("percent_change")
         iv30_percent = data["data"].get("iv30_change_percent")
+
         if change_percent:
             change_percent = change_percent / 100
+
         if iv30_percent:
             iv30_percent = iv30_percent / 100
+
         last_timestamp = data["data"].get("last_trade_time")
+
         if last_timestamp:
             last_timestamp = to_datetime(
                 last_timestamp, format="%Y-%m-%dT%H:%M:%S"
             ).strftime("%Y-%m-%d %H:%M:%S")
-        results_metadata.update(
-            {
-                "symbol": data["data"].get("symbol"),
-                "security_type": data["data"].get("security_type", None),
-                "bid": data["data"].get("bid", None),
-                "bid_size": data["data"].get("bid_size", None),
-                "ask": data["data"].get("ask", None),
-                "ask_size": data["data"].get("ask_size", None),
-                "open": data["data"].get("open", None),
-                "high": data["data"].get("high", None),
-                "low": data["data"].get("low", None),
-                "close": data["data"].get("close", None),
-                "volume": data["data"].get("volume", None),
-                "current_price": data["data"].get("current_price", None),
-                "prev_close": data["data"].get("prev_day_close", None),
-                "change": data["data"].get("price_change", None),
-                "change_percent": change_percent,
-                "iv30": data["data"].get("iv30", None),
-                "iv30_change": data["data"].get("iv30_change", None),
-                "iv30_change_percent": iv30_percent,
-                "last_tick": data["data"].get("tick", None),
-                "last_trade_timestamp": last_timestamp,
-            }
-        )
+
+        results_metadata = {
+            "symbol": data["data"].get("symbol"),
+            "security_type": data["data"].get("security_type"),
+            "bid": data["data"].get("bid"),
+            "bid_size": data["data"].get("bid_size"),
+            "ask": data["data"].get("ask"),
+            "ask_size": data["data"].get("ask_size"),
+            "open": data["data"].get("open"),
+            "high": data["data"].get("high"),
+            "low": data["data"].get("low"),
+            "close": data["data"].get("close"),
+            "volume": data["data"].get("volume"),
+            "current_price": data["data"].get("current_price"),
+            "prev_close": data["data"].get("prev_day_close"),
+            "change": data["data"].get("price_change"),
+            "change_percent": change_percent,
+            "iv30": data["data"].get("iv30"),
+            "iv30_change": data["data"].get("iv30_change"),
+            "iv30_change_percent": iv30_percent,
+            "last_tick": data["data"].get("tick"),
+            "last_trade_timestamp": last_timestamp,
+        }
         results_metadata = {k: v for k, v in results_metadata.items() if v is not None}
 
         options_df = DataFrame.from_records(options)
-
         options_df = options_df.rename(
             columns={
                 "option": "contract_symbol",
@@ -142,20 +163,15 @@ class CboeOptionsChainsFetcher(
                 "prev_day_close": "prev_close",
             }
         )
-
-        # Parses the option symbols into columns for expiration, strike, and option_type
-
         option_df_index = options_df["contract_symbol"].str.extractall(
             r"^(?P<Ticker>\D*)(?P<expiration>\d*)(?P<option_type>\D*)(?P<strike>\d*)"
         )
         option_df_index = option_df_index.reset_index().drop(
             columns=["match", "level_0"]
         )
-        # Filter out adjusted options.
         valid_expiration_mask = option_df_index["expiration"].str.len() <= 6
         option_df_index = option_df_index[valid_expiration_mask]
-        valid_indices = option_df_index.index
-        options_df = options_df.iloc[valid_indices]
+        options_df = options_df.iloc[option_df_index.index]
 
         option_df_index.option_type = option_df_index.option_type.str.replace(
             "C", "call"
@@ -174,15 +190,10 @@ class CboeOptionsChainsFetcher(
             columns={"Ticker": "underlying_symbol"}
         )
 
-        # Joins the parsed symbol into the dataframe.
-
         quotes = option_df_index.join(options_df)
-
-        now = datetime.now()
-        temp = DatetimeIndex(quotes.expiration)
-        temp_ = (temp - now).days + 1
-        quotes["dte"] = temp_
-
+        eastern = timezone("America/New_York")
+        expires = DatetimeIndex(quotes.expiration).tz_localize(eastern) + EXPIRY_HOUR
+        quotes["dte"] = (expires - datetime.now(tz=eastern)).days
         quotes["last_trade_time"] = (
             to_datetime(quotes["last_trade_time"], format="%Y-%m-%dT%H:%M:%S")
             .fillna(value="-")
@@ -191,13 +202,13 @@ class CboeOptionsChainsFetcher(
         quotes = quotes.set_index(
             keys=["expiration", "strike", "option_type"]
         ).sort_index()
+
         if results_metadata.get("current_price"):
             quotes["underlying_price"] = results_metadata["current_price"]
-        quotes["open_interest"] = quotes["open_interest"].astype("int64")
-        quotes["volume"] = quotes["volume"].astype("int64")
-        quotes["bid_size"] = quotes["bid_size"].astype("int64")
-        quotes["ask_size"] = quotes["ask_size"].astype("int64")
-        quotes["prev_close"] = quotes["prev_close"]
+
+        for col in ("open_interest", "volume", "bid_size", "ask_size"):
+            quotes[col] = quotes[col].astype("int64")
+
         quotes["change_percent"] = quotes["change_percent"] / 100
 
         return AnnotatedResult(
