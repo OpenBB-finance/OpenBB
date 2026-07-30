@@ -29,9 +29,24 @@ MODEL_COMMANDS = [
 class TestRouterAssembly:
     """Route registration."""
 
+    @classmethod
+    def _paths(cls, routes) -> set:
+        """Flatten route paths across FastAPI's copied and deferred inclusion."""
+        found: set = set()
+
+        for route in routes:
+            included = getattr(route, "original_router", None)
+
+            if included is None:
+                found.add(route.path)
+            else:
+                found |= cls._paths(included.routes)
+
+        return found
+
     def test_every_route_is_registered(self):
         """The assembled router exposes one path per Cboe endpoint."""
-        paths = {route.path for route in cboe_router.router.api_router.routes}
+        paths = self._paths(cboe_router.router.api_router.routes)
 
         assert paths == {
             "/equity/symbol_choices",
