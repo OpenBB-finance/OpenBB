@@ -134,6 +134,21 @@ async def parse_13f_hr(filing: str):
     if filing.startswith("https://"):
         filing = await get_complete_submission(filing)  # type: ignore
 
+    # A Complete Submission TXT file is SGML-wrapped and not well-formed XML.
+    # Feeding it to the XML parser as-is triggers lxml's recover mode, which
+    # silently drops character entities: "S&amp;P500" becomes "SP500" and
+    # "BABCOCK &amp; WILCOX" loses its ampersand in nameOfIssuer/titleOfClass.
+    # Extract the embedded well-formed <XML> blocks (form header + information
+    # table) and reassemble them under a synthetic root so the strict XML path
+    # is used and entities are preserved. Inputs that are already bare XML
+    # (no <XML> wrapper) are passed through unchanged.
+    import re as _re  # noqa: PLC0415
+
+    _xml_blocks = _re.findall(r"<XML>(.*?)</XML>", filing, _re.DOTALL | _re.IGNORECASE)
+    if _xml_blocks:
+        _decl = _re.compile(r"<\?xml[^>]*\?>")
+        filing = "<root>" + "".join(_decl.sub("", b) for b in _xml_blocks) + "</root>"
+
     soup = BeautifulSoup(filing, "xml")
 
     info_table = soup.find_all("informationTable")
@@ -221,7 +236,13 @@ async def parse_13f_hr(filing: str):
             df.drop(columns=col, inplace=True)
 
     total_value = df.value.sum()
-    df["weight"] = round(df.value.astype(float) / total_value, 6)
+    # Guard against empty filings: managers with no reportable holdings file a
+    # single placeholder row (value=0), making total_value 0. Without the guard,
+    # 0/0 becomes NaN, which `.replace({nan: None})` below turns into None and
+    # the required `weight: float` field then fails validation.
+    df["weight"] = (
+        round(df.value.astype(float) / total_value, 6) if total_value else 0.0
+    )
 
     return (
         df.reset_index()
