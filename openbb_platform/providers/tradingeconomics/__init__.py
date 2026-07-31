@@ -1,1 +1,0 @@
-"""OpenBB Trading Economics Provider."""
