@@ -5,7 +5,6 @@
 from datetime import datetime
 from typing import Any, Literal
 
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
     YieldCurveData,
@@ -32,7 +31,7 @@ class ECBYieldCurveQueryParams(YieldCurveQueryParams):
     )
     use_cache: bool = Field(
         default=True,
-        description="If true, cache the request for four hours.",
+        description="If true, cache parsed results on disk for the dataset TTL.",
     )
 
 
@@ -59,66 +58,43 @@ class ECBYieldCurveFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Extract data."""
+        """Fetch the raw windowed yield-curve observations from the ECB data API."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from aiohttp_client_cache import SQLiteBackend
-        from aiohttp_client_cache.session import CachedSession
-        from openbb_core.app.utils import get_user_cache_directory
-        from openbb_core.provider.utils.helpers import amake_request
-        from openbb_ecb.utils.yield_curve_series import (
-            MATURITIES,
-            get_yield_curve_ids,
-        )
+        import asyncio
+        from datetime import timedelta
 
-        results: list = []
+        from openbb_ecb.utils.data_cache import cached_records, make_key
+        from openbb_ecb.utils.query_builder import fetch_sdmx_data
+        from openbb_ecb.utils.yield_curve_series import get_yield_curve_key
 
-        ids = get_yield_curve_ids(
+        key, _, _ = get_yield_curve_key(
             rating=query.rating,
             yield_curve_type=query.yield_curve_type,
         )
-        yield_curve = ids["SERIES_IDS"]
+        dates = (
+            str(query.date).split(",")
+            if query.date
+            else [datetime.now().strftime("%Y-%m-%d")]
+        )
 
-        base_url = "https://data.ecb.europa.eu/data-detail-api"
+        async def get_window(date_str: str) -> list[dict]:
+            """Fetch a window around a requested date."""
+            target = datetime.strptime(date_str.strip(), "%Y-%m-%d")
+            start = (target - timedelta(days=14)).strftime("%Y-%m-%d")
+            end = (target + timedelta(days=1)).strftime("%Y-%m-%d")
 
-        async def get_one(maturity, use_cache):
-            """Each maturity is a separate download."""
-            url = f"{base_url}/{yield_curve[maturity]}"
-            response: dict | list[dict] = []
+            async def loader() -> list[dict]:
+                return await fetch_sdmx_data(
+                    "YC", key, start_date=start, end_date=end, raise_empty=False
+                )
 
-            if use_cache is True:
-                cache_dir = f"{get_user_cache_directory()}/http/ecb_yield_curve"
-                async with CachedSession(
-                    cache=SQLiteBackend(cache_dir, expire_after=3600 * 4)
-                ) as session:
-                    await session.delete_expired_responses()
-                    try:
-                        response = await amake_request(
-                            url,
-                            session=session,  # type: ignore
-                        )
-                    finally:
-                        await session.close()
-            else:
-                response = await amake_request(url=url)
+            cache_key = make_key("yield_curve", key=key, start=start, end=end)
+            return await cached_records(
+                "yield_curve", cache_key, loader, use_cache=query.use_cache
+            )
 
-            if not response:
-                raise OpenBBError("No data was returned.")
-
-            if isinstance(response, list):
-                for item in response:
-                    d = {
-                        "date": item.get("PERIOD"),
-                        "maturity": maturity,
-                        "rate": item.get("OBS_VALUE_AS_IS"),
-                    }
-                    results.append(d)
-
-        tasks = [get_one(maturity, query.use_cache) for maturity in MATURITIES]
-
-        await asyncio.gather(*tasks)
-
-        return results
+        batches = await asyncio.gather(*[get_window(d) for d in dates])
+        return [record for batch in batches for record in batch]
 
     @staticmethod
     def transform_data(
@@ -126,13 +102,31 @@ class ECBYieldCurveFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[ECBYieldCurveData]:
-        """Transform data."""
+        """Map maturities, pick the nearest dates, scale, and validate."""
         # pylint: disable=import-outside-toplevel
-        from openbb_ecb.utils.yield_curve_series import MATURITIES  # noqa
+        from openbb_ecb.utils.yield_curve_series import (  # noqa
+            MATURITIES,
+            get_yield_curve_key,
+        )
         from pandas import Categorical, DataFrame, DatetimeIndex  # noqa
 
-        if not data:
+        _, datatype_to_maturity, _ = get_yield_curve_key(
+            rating=query.rating,
+            yield_curve_type=query.yield_curve_type,
+        )
+        seen: dict[tuple, float] = {}
+        for record in data:
+            maturity = datatype_to_maturity.get(record["series_key"].split(".")[-1])
+            if maturity and record.get("OBS_VALUE") is not None:
+                seen[(record["date"], maturity)] = record["OBS_VALUE"]
+        rows = [
+            {"date": date, "maturity": maturity, "rate": rate}
+            for (date, maturity), rate in seen.items()
+        ]
+
+        if not rows:
             raise EmptyDataError("The request was returned empty.")
+        data = rows
         dates = (
             str(query.date).split(",")
             if query.date
@@ -140,17 +134,12 @@ class ECBYieldCurveFetcher(
         )
         dates_list = DatetimeIndex(dates)
 
-        # Find the nearest date to the requested one.
         df = DataFrame(data).set_index("date").query("`rate`.notnull()")
         df.index = DatetimeIndex(df.index)
-        df_unique_dates = df[
-            ~df.index.duplicated(keep="first")
-        ].sort_index()  # DataFrame with unique dates
+        df_unique_dates = df[~df.index.duplicated(keep="first")].sort_index()
         nearest_dates = [df_unique_dates.index.asof(date) for date in dates_list]
-        # Filter for only the nearest dates
         df = df[df.index.isin(nearest_dates)]
 
-        # Flatten the DataFrame
         flattened_data = df.reset_index().sort_values("date")
         flattened_data = flattened_data.rename(columns={"index": "date"}).sort_values(
             "date"

@@ -1,20 +1,131 @@
-[tool.poetry]
+[project]
 name = "openbb-ecb"
-version = "1.6.1"
-description = "ECB extension for OpenBB"
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+version = "2.0.0"
+description = "ECB provider extension for OpenBB Platform."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_ecb" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "requests>=2.31",
+    "xmltodict>=0.13",
+    "defusedxml>=0.7.1",
+    "diskcache>=5",
+    "beautifulsoup4>=4.12",
+    "markdownify>=0.11",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
-xmltodict = "^0.13.0"
+[project.scripts]
+generate-ecb-cache = "openbb_ecb.utils.generate_cache:main"
+
+[project.entry-points."openbb_provider_extension"]
+ecb = "openbb_ecb:ecb_provider"
+
+[project.entry-points."openbb_core_extension"]
+ecb = "openbb_ecb.ecb_router:router"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling>=1.25", "requests>=2.31"]
+build-backend = "hatchling.build"
 
-[tool.poetry.plugins."openbb_provider_extension"]
-ecb = "openbb_ecb:ecb_provider"
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_ecb"]
+
+[tool.hatch.build.targets.sdist]
+# The cache asset is gitignored; the build hook materializes it before
+# packaging so both sdist and wheel ship a self-contained artifact.
+include = [
+    "openbb_ecb",
+    "openbb_ecb/assets/ecb_cache.json.xz",
+    "hatch_build.py",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_ecb/ecb_router.py" = ["ARG001", "PLC0415", "SLF001", "S112", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917"]
+"openbb_ecb/utils/generate_cache.py" = ["T201", "PLR0912", "PLR0914", "PLR0915", "PLR0917", "BLE001", "S112", "S113"]
+"openbb_ecb/utils/helpers.py" = ["PLR0911", "PLR0912", "PLR0915"]
+"openbb_ecb/utils/bps_series.py" = ["PLR0911"]
+"openbb_ecb/utils/query_builder.py" = ["PLR0911", "PLR0912", "PLR0913", "PLR0917", "SLF001"]
+"openbb_ecb/utils/non_sdmx.py" = ["PLR0912", "PLR0915", "S310", "S314"]
+"openbb_ecb/utils/metadata/_cache_mixin.py" = ["PLR0912"]
+"openbb_ecb/utils/metadata/_loader_mixin.py" = ["PLR0912", "PLR0914", "PLC0415", "ARG002"]
+"openbb_ecb/utils/metadata/_query_mixin.py" = ["PLR0912"]
+"openbb_ecb/utils/metadata/_search_mixin.py" = ["PLR0912"]
+"openbb_ecb/utils/metadata/_category_mixin.py" = ["PLR0912"]
+"openbb_ecb/models/*.py" = ["ARG002", "PLC0415", "PLR0912"]
+"tests/**" = ["S101", "S108", "S314", "S405", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "S113", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_ecb"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "record_http: VCR-backed HTTP cassette tests",
+    "integration: live integration tests against the ECB API",
+]
+
+[tool.coverage.run]
+source = ["openbb_ecb"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "\\.\\.\\.",
+]
