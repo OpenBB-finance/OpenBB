@@ -44,9 +44,22 @@ def basemodel_to_df(
 
     # If the date column contains dates only, convert them to a date to avoid encoding time data.
     if "date" in df.columns:
-        df["date"] = df["date"].apply(to_datetime)
-        if all(t.time() == time(0, 0) for t in df["date"]):
-            df["date"] = df["date"].apply(lambda x: x.date())
+        try:
+            # Parse the column in a single call instead of once per row.
+            parsed = to_datetime(df["date"])
+        except ValueError:
+            # A column that mixes UTC offsets - a series crossing a daylight
+            # savings boundary, for instance - has no single datetime64
+            # representation, so fall back to parsing each value on its own.
+            parsed = df["date"].apply(to_datetime)
+
+        df["date"] = parsed
+
+        if parsed.dtype == object:
+            if all(t.time() == time(0, 0) for t in parsed):
+                df["date"] = parsed.apply(lambda x: x.date())
+        elif (parsed == parsed.dt.normalize()).all():
+            df["date"] = parsed.dt.date
 
     if index and index in df.columns:
         if index == "date":
