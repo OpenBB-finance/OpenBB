@@ -578,6 +578,18 @@ def build_reference(
 def _parse_spec_text(text: str, *, content_type: str = "") -> dict[str, Any]:
     """Parse a fetched spec body, choosing JSON or YAML by content sniff."""
     stripped = text.lstrip()
+    looks_html = "html" in content_type.lower() or stripped[:15].lower().startswith(
+        ("<!doctype html", "<html")
+    )
+    if looks_html:
+        embedded = _extract_embedded_spec(text)
+        if embedded is not None:
+            return embedded
+        raise ValueError(
+            "the URL returned an HTML page, not an OpenAPI document. "
+            "If this is a GitHub 'blob' link, use the raw file URL "
+            "(or append '?raw=true')."
+        )
     if stripped.startswith(("{", "[")):
         return json.loads(text)
     if "yaml" in content_type or "yml" in content_type:
@@ -591,10 +603,14 @@ def _parse_spec_text(text: str, *, content_type: str = "") -> dict[str, Any]:
 
 
 def _yaml_load(text: str) -> dict[str, Any]:
-    """Parse a YAML document."""
+    """Parse a YAML document, raising ``ValueError`` on malformed input."""
     import yaml
 
-    return yaml.safe_load(text)
+    try:
+        return yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        first_line = str(exc).splitlines()[0] if str(exc) else exc.__class__.__name__
+        raise ValueError(f"Document is not valid YAML: {first_line}") from exc
 
 
 _EMBEDDED_SPEC_MARKERS: tuple[str, ...] = (
@@ -673,9 +689,20 @@ def _resolve_json_pointer(document: Any, fragment: str) -> Any:
     for raw_part in pointer[1:].split("/"):
         part = raw_part.replace("~1", "/").replace("~0", "~")
         if isinstance(node, dict):
+            if part not in node:
+                raise ValueError(
+                    f"OpenAPI reference pointer #{fragment} not found: "
+                    f"no member {part!r}"
+                )
             node = node[part]
         elif isinstance(node, list):
-            node = node[int(part)]
+            try:
+                node = node[int(part)]
+            except (ValueError, IndexError) as exc:
+                raise ValueError(
+                    f"OpenAPI reference pointer #{fragment} not found: "
+                    f"invalid array index {part!r}"
+                ) from exc
         else:
             raise ValueError(f"Invalid OpenAPI reference fragment: #{fragment}")
     return node
