@@ -38,6 +38,11 @@ def get_user_agent() -> str:
     return random.choice(user_agent_strings)  # nosec # noqa: S311
 
 
+# Session-close tasks spawned from __del__. The event loop only keeps weak
+# references to tasks, so they are held here until they complete.
+_BACKGROUND_TASKS: set[asyncio.Task] = set()
+
+
 class ClientResponse(aiohttp.ClientResponse):
     """Client response class."""
 
@@ -81,8 +86,29 @@ class ClientSession(aiohttp.ClientSession):
     # pylint: disable=unused-argument
     def __del__(self, _warnings: Any = warnings) -> None:
         """Close the session."""
-        if not self.closed:
-            asyncio.create_task(self.close())
+        if self.closed:
+            return
+
+        # __del__ runs during garbage collection, which may happen with no
+        # running loop at all (sync context, interpreter shutdown). Calling
+        # create_task() there raises RuntimeError, and exceptions in __del__
+        # are swallowed and printed — so the session would silently never
+        # close. Fall back to the ResourceWarning aiohttp itself emits.
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            _warnings.warn(
+                f"Unclosed client session {self!r}",
+                ResourceWarning,
+                source=self,
+            )
+            return
+
+        # The loop only keeps a weak reference to a task, so a discarded close()
+        # can be collected before it finishes. Hold it until it completes.
+        task = loop.create_task(self.close())
+        _BACKGROUND_TASKS.add(task)
+        task.add_done_callback(_BACKGROUND_TASKS.discard)
 
     async def get(self, url: str, **kwargs) -> ClientResponse:  # type: ignore
         """Send GET request."""
