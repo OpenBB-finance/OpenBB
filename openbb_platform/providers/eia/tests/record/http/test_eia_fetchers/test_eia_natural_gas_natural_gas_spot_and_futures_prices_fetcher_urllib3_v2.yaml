@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/natural-gas/pri/fut/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1993-12-24&facets%5Bduoarea%5D%5B%5D=Y35NY&facets%5Bprocess%5D%5B%5D=PE4&facets%5Bproduct%5D%5B%5D=EPG0&facets%5Bseries%5D%5B%5D=RNGC4&frequency=weekly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1993-12-24
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM-DD","frequency":"weekly","data":[{"period":"1993-12-24","duoarea":"Y35NY","area-name":"NEW
+        YORK CITY","product":"EPG0","product-name":"Natural Gas","process":"PE4","process-name":"Future
+        Contract 4","series":"RNGC4","series-description":"Natural Gas Futures Contract
+        4 (Dollars per Million Btu)","value":"1.869","units":"$\/MMBTU"}]},"request":{"command":"\/v2\/natural-gas\/pri\/fut\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"weekly","data":["value"],"facets":{"duoarea":["Y35NY"],"product":["EPG0"],"process":["PE4"],"series":["RNGC4"]},"start":"1993-12-24","end":"1993-12-24","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:51 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:51 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '796'
+    status:
+      code: 200
+      message: OK
+version: 1

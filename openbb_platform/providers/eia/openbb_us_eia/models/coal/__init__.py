@@ -1,0 +1,1 @@
+"""EIA Coal models."""

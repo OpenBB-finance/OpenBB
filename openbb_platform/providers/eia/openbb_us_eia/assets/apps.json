@@ -1,0 +1,197 @@
+[
+  {
+    "name": "U.S. Energy Information Administration",
+    "img": "https://substackcdn.com/image/fetch/$s_!tfyf!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F825cfbf6-d16d-4efd-b4ec-8c8954f9d421_814x526.png",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Official U.S. energy statistics from the Energy Information Administration: electricity, coal, total energy, the Short-Term and Annual Energy Outlooks, international energy, petroleum imports, natural gas, state energy profiles, and oil and natural gas maps, plus EIA's news and data-release feeds.",
+    "allowCustomization": true,
+    "tabs": {
+      "electricity": {
+        "id": "electricity",
+        "name": "Electricity Browser",
+        "layout": [
+          {
+            "i": "eia_electricity_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "coal": {
+        "id": "coal",
+        "name": "Coal Browser",
+        "layout": [
+          {
+            "i": "eia_coal_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "total-energy": {
+        "id": "total-energy",
+        "name": "Total Energy (MER) Browser",
+        "layout": [
+          {
+            "i": "eia_total_energy_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "steo": {
+        "id": "steo",
+        "name": "Short-Term Energy Outlook Browser",
+        "layout": [
+          {
+            "i": "eia_steo_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "aeo": {
+        "id": "aeo",
+        "name": "Annual Energy Outlook Browser",
+        "layout": [
+          {
+            "i": "eia_aeo_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "international": {
+        "id": "international",
+        "name": "International Browser",
+        "layout": [
+          {
+            "i": "eia_international_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "petroleum-imports": {
+        "id": "petroleum-imports",
+        "name": "Petroleum Imports Browser",
+        "layout": [
+          {
+            "i": "eia_petroleum_imports_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "natural-gas-query": {
+        "id": "natural-gas-query",
+        "name": "Natural Gas Annual Respondent Query System Browser",
+        "layout": [
+          {
+            "i": "eia_natural_gas_query_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "states": {
+        "id": "states",
+        "name": "State Energy Profiles Browser",
+        "layout": [
+          {
+            "i": "eia_states_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "maps": {
+        "id": "maps",
+        "name": "Oil & Natural Gas Maps Browser",
+        "layout": [
+          {
+            "i": "eia_maps_browser_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "news-and-feeds": {
+        "id": "news-and-feeds",
+        "name": "News & Feeds",
+        "layout": [
+          {
+            "i": "eia_rss_feeds_us_eia_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "feed": "today_in_energy"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": [],
+    "prompts": [
+      "Summarize the latest Today in Energy articles.",
+      "What were the most recent EIA press releases about?",
+      "Show me U.S. electricity net generation by fuel in the electricity browser.",
+      "What are the latest retail gasoline and diesel prices from the fuel-price feed?"
+    ]
+  }
+]
