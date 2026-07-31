@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json
+  response:
+    body:
+      string: |
+        {
+          "results": {
+            "geo": [
+              {"geo_code": "0", "label": {"en": "Canada", "fr": "Canada"}}
+            ],
+            "themes_en": [{"theme_id": "20", "label": "Prices and price indexes"}],
+            "themes_fr": [{"theme_id": "20", "label": "Prix et indices des prix"}],
+            "indicators": [
+              {"registry_number": "1", "indicator_number": "1", "geo_code": "0",
+               "title": {"en": "Consumer Price Index", "fr": "Indice des prix à la consommation"},
+               "source": "18100004", "themes": "*20*", "release_date": "2024-07-16"}
+            ]
+          }
+        }
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_18100004
+  response:
+    body:
+      string: ""
+    headers:
+      Content-Type:
+      - text/plain
+    status:
+      code: 404
+      message: Not Found
+version: 1
