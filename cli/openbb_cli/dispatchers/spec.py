@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import re
+import warnings
 from datetime import datetime, timezone
 from importlib.metadata import (
     PackageNotFoundError,
@@ -13,7 +14,9 @@ from importlib.metadata import (
 )
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from openbb_cli.dispatchers.openapi_schema import (
@@ -230,8 +233,90 @@ def _count_path_placeholders(url: str) -> int:
     return url.count("{")
 
 
+def _server_url_at_scope(scope: dict[str, Any]) -> tuple[bool, str | None]:
+    """Return whether a scope declares servers and its first server URL."""
+    if "servers" not in scope:
+        return False, None
+    servers = scope.get("servers")
+    if not isinstance(servers, list) or not servers:
+        return False, None
+    first = servers[0]
+    if not isinstance(first, dict):
+        return True, None
+    url = first.get("url")
+    return True, url.strip() if isinstance(url, str) else None
+
+
+def _effective_override_server_url(
+    path_item: dict[str, Any], operation: dict[str, Any]
+) -> str | None:
+    """Return the effective path or operation server URL, if one is declared."""
+    for scope in (operation, path_item):
+        declared, url = _server_url_at_scope(scope)
+        if declared:
+            return url
+    return None
+
+
+def _canonical_absolute_url(url: str | None) -> str | None:
+    """Canonicalize a concrete HTTP(S) URL for diagnostic comparisons."""
+    if not url or "{" in url or "}" in url or any(c.isspace() for c in url):
+        return None
+    parts = urlsplit(url)
+    scheme = parts.scheme.lower()
+    if scheme not in {"http", "https"} or not parts.netloc or not parts.hostname:
+        return None
+    try:
+        port = parts.port
+    except ValueError:
+        return None
+
+    hostname = parts.hostname.lower()
+    if ":" in hostname and not hostname.startswith("["):
+        hostname = f"[{hostname}]"
+    if parts.username is not None:
+        userinfo = parts.username
+        if parts.password is not None:
+            userinfo += f":{parts.password}"
+        hostname = f"{userinfo}@{hostname}"
+    default_port = 80 if scheme == "http" else 443
+    netloc = hostname if port in (None, default_port) else f"{hostname}:{port}"
+    path = parts.path or ""
+    if path != "/":
+        path = path.rstrip("/")
+    return urlunsplit((scheme, netloc, path, parts.query, parts.fragment))
+
+
+def _warn_for_ignored_server(
+    command: str,
+    path_item: dict[str, Any],
+    operation: dict[str, Any],
+    global_base_url: str | None,
+    warned: set[tuple[str, str]],
+) -> None:
+    """Warn once when a concrete override differs from the global base URL."""
+    ignored_url = _effective_override_server_url(path_item, operation)
+    ignored_canonical = _canonical_absolute_url(ignored_url)
+    global_canonical = _canonical_absolute_url(global_base_url)
+    if not ignored_url or not ignored_canonical or not global_canonical:
+        return
+    key = (command, ignored_canonical)
+    if key in warned or ignored_canonical == global_canonical:
+        return
+    warned.add(key)
+    warnings.warn(
+        f"OpenAPI server override for generated command '{command}' is ignored; "
+        f"using global base URL '{global_base_url}' instead of '{ignored_url}'.",
+        OpenBBWarning,
+        stacklevel=2,
+    )
+
+
 def build_command_spec(
-    spec: dict[str, Any], *, api_prefix: str = "/api/v1"
+    spec: dict[str, Any],
+    *,
+    api_prefix: str = "/api/v1",
+    global_base_url: str | None = None,
 ) -> dict[str, dict[str, Any]]:
     """Return ``{dotted_command: {url_path, method, description, parameters[]}}``.
 
@@ -241,6 +326,9 @@ def build_command_spec(
     fully-satisfied template at call time.
     """
     groups: dict[str, list[dict[str, Any]]] = {}
+    warned: set[tuple[str, str]] = set()
+    if global_base_url is None:
+        _, global_base_url = _server_url_at_scope(spec)
     for url, methods in spec.get("paths", {}).items():
         if "get" in methods:
             method, op = "get", methods["get"]
@@ -251,6 +339,13 @@ def build_command_spec(
         base_cmd = url_to_command(url, api_prefix=api_prefix)
         if not base_cmd:
             continue
+        _warn_for_ignored_server(
+            base_cmd,
+            methods,
+            op,
+            global_base_url,
+            warned,
+        )
         groups.setdefault(base_cmd, []).append(
             _build_operation_entry(spec, url, method, op)
         )
@@ -270,8 +365,6 @@ def _resolve_base_url(openapi: dict[str, Any], user_base_url: str) -> str:
     if not server_url:
         return user_clean
     if server_url.startswith(("http://", "https://")):
-        from urllib.parse import urlsplit
-
         if urlsplit(user_clean).path in ("", "/"):
             return server_url.rstrip("/")
         return user_clean
@@ -300,15 +393,20 @@ def build_spec_document(
     effective_prefix = (
         api_prefix if api_prefix is not None else detect_api_prefix(openapi)
     )
+    resolved_base_url = _resolve_base_url(openapi, base_url)
     return {
         "version": SPEC_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "generator": _generator_identifier(),
         "source_url": source_url or "",
         "api_version": str(openapi.get("openapi") or openapi.get("swagger") or ""),
-        "base_url": _resolve_base_url(openapi, base_url),
+        "base_url": resolved_base_url,
         "api_prefix": (("/" + effective_prefix.strip("/")) if effective_prefix else ""),
-        "commands": build_command_spec(openapi, api_prefix=effective_prefix),
+        "commands": build_command_spec(
+            openapi,
+            api_prefix=effective_prefix,
+            global_base_url=resolved_base_url,
+        ),
         "routers": build_router_map(openapi, api_prefix=effective_prefix),
         "reference": build_reference(openapi, api_prefix=effective_prefix),
     }
