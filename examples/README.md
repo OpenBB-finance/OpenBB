@@ -56,6 +56,7 @@ This notebook shows you how you can use OpenbB Platform as functions in an LLM b
 - Convert all OpenBB Platform functions to LLM tools
 - Build a basic Langchain agent that can utilize function calling
 - Run the agent
+- Optionally point `OPENAI_API_BASE` / `ChatOpenAI(base_url=...)` at any OpenAI-compatible multi-model gateway (example: [DaoXE](https://daoxe.com) at `https://api.daoxe.com/v1`)
 
 ### usdLiquidityIndex
 
