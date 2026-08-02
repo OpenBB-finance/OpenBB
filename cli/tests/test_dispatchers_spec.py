@@ -200,6 +200,24 @@ def test_build_command_spec_redundant_server_overrides_do_not_warn():
     assert not [item for item in caught if issubclass(item.category, OpenBBWarning)]
 
 
+def test_build_command_spec_redundant_root_trailing_slash_does_not_warn():
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://root.example/"}],
+                "get": {"operationId": "x"},
+            }
+        }
+    }
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert not [item for item in caught if issubclass(item.category, OpenBBWarning)]
+
+
 def test_build_command_spec_skips_relative_server_overrides():
     openapi = {
         "servers": [{"url": "https://root.example/api"}],

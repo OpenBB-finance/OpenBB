@@ -281,9 +281,7 @@ def _canonical_absolute_url(url: str | None) -> str | None:
         hostname = f"{userinfo}@{hostname}"
     default_port = 80 if scheme == "http" else 443
     netloc = hostname if port in (None, default_port) else f"{hostname}:{port}"
-    path = parts.path or ""
-    if path != "/":
-        path = path.rstrip("/")
+    path = parts.path.rstrip("/")
     return urlunsplit((scheme, netloc, path, parts.query, parts.fragment))
 
 
