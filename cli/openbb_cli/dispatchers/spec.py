@@ -22,11 +22,11 @@ from openbb_cli.dispatchers.openapi_schema import (
     _resolve_schema,
     build_reference,
     build_router_map,
-    deref_parameter,
     detect_api_prefix,
     extract_request_body_schema,
     extract_response_schema,
     extract_response_schemas,
+    operation_parameters,
     param_provider_membership,
     parse_json_arg,
     request_body_parameters,
@@ -190,14 +190,17 @@ def _security_parameters(
 
 
 def _build_operation_entry(
-    spec: dict[str, Any], url: str, method: str, op: dict[str, Any]
+    spec: dict[str, Any],
+    url: str,
+    method: str,
+    op: dict[str, Any],
+    path_item: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the per-URL command entry — params, providers, schemas."""
     providers = _operation_providers(op)
     providers_set = set(providers) if providers else None
     params: list[dict[str, Any]] = []
-    for raw in op.get("parameters", []) or []:
-        resolved = deref_parameter(spec, raw) if isinstance(raw, dict) else raw
+    for resolved in operation_parameters(spec, path_item or {}, op):
         if not resolved:
             continue
         normalized = _normalize_parameter(resolved, providers_set)
@@ -298,7 +301,7 @@ def build_command_spec(
         if not base_cmd:
             continue
         groups.setdefault(base_cmd, []).append(
-            _build_operation_entry(spec, url, method, op)
+            _build_operation_entry(spec, url, method, op, methods)
         )
     out: dict[str, dict[str, Any]] = {}
     for cmd, entries in groups.items():

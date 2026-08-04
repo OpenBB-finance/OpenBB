@@ -10,6 +10,8 @@ from urllib.parse import unquote, urldefrag, urljoin, urlsplit
 
 import httpx
 
+_INHERITABLE_PARAMETER_LOCATIONS = frozenset({"path", "query"})
+
 PROVIDER_TAG_RE = re.compile(r"\s*\(provider:\s*([^)]+)\)\s*$")
 PROVIDER_SECTION_SPLIT_RE = re.compile(r";\s*\n\s*")
 
@@ -122,6 +124,49 @@ def deref_parameter(spec: dict[str, Any], param: dict[str, Any]) -> dict[str, An
     return param
 
 
+def operation_parameters(
+    spec: dict[str, Any], path_item: dict[str, Any], op: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return an operation's parameters, including those inherited from its path item.
+
+    OpenAPI 3.x lets a Path Item Object declare ``parameters`` that apply to every
+    operation under that path. An operation-level parameter overrides an inherited
+    one when both match on ``(name, in)``; anything else is inherited as-is.
+
+    Only ``in: path`` and ``in: query`` are inherited. A path-item ``in: header``
+    or ``in: cookie`` entry is deliberately dropped: those do not translate into a
+    Python interface function, and outbound headers belong to transport
+    configuration (``SystemSettings.PythonSettings.http.headers``, the CLI's
+    ``-H``) or to security-scheme handling — not to a per-command argument.
+
+    Entries are returned dereferenced, inherited first, then the operation's own.
+    """
+    inherited = path_item.get("parameters") or []
+    own_raw = op.get("parameters") or []
+    own = [deref_parameter(spec, p) for p in own_raw if isinstance(p, dict)]
+    own = [p for p in own if p]
+    if not inherited:
+        return own
+    overridden = {(p.get("name"), p.get("in")) for p in own}
+    merged: list[dict[str, Any]] = []
+    for raw in inherited:
+        if not isinstance(raw, dict):
+            continue
+        resolved = deref_parameter(spec, raw)
+        if not resolved or not resolved.get("name"):
+            continue
+        if resolved.get("in") not in _INHERITABLE_PARAMETER_LOCATIONS:
+            continue
+        if (resolved.get("name"), resolved.get("in")) in overridden:
+            continue
+        merged.append(resolved)
+    merged.extend(own)
+    return merged
+
+
+_NON_SCHEMA_KEYWORDS = frozenset({"default", "example", "examples", "enum", "const"})
+
+
 def deref_schema(
     spec: dict[str, Any],
     node: Any,
@@ -142,10 +187,123 @@ def deref_schema(
             if not target:
                 return node
             return deref_schema(spec, target, seen | {ref}, max_depth - 1)
-        return {k: deref_schema(spec, v, seen, max_depth - 1) for k, v in node.items()}
+        # Instance data (``default``, ``example(s)``, ``enum``, ``const``) and
+        # vendor extensions are not subschemas: a ``$ref`` key inside one is a
+        # literal value, not a reference to resolve.
+        return {
+            k: (
+                v
+                if k in _NON_SCHEMA_KEYWORDS or k.startswith("x-")
+                else deref_schema(spec, v, seen, max_depth - 1)
+            )
+            for k, v in node.items()
+        }
     if isinstance(node, list):
         return [deref_schema(spec, v, seen, max_depth - 1) for v in node]
     return node
+
+
+_ALLOF_BLOCKING_KEYS = frozenset(
+    {"oneOf", "anyOf", "allOf", "not", "$ref", "enum", "const", "items"}
+)
+
+
+def _mergeable_allof_members(members: list[Any]) -> list[dict[str, Any]] | None:
+    """Return the members if every one is a plain object subschema, else ``None``.
+
+    A member is not mergeable when it carries its own combinator (``oneOf`` /
+    ``anyOf`` / a nested ``allOf`` that did not collapse), an unresolved
+    ``$ref`` left behind by a reference cycle, a scalar constraint (``enum`` /
+    ``const`` / ``items``), or a ``type`` other than ``object``. Any of those
+    means the composition is not a plain intersection of property bags, and
+    merging it would describe something the spec does not.
+
+    Everything else is annotation that does not affect the intersection —
+    ``title``, ``description``, ``examples``, ``definitions``, vendor ``x-``
+    keys — and does not block the merge. Keying off a blocklist rather than a
+    whitelist matters: Codat's ``PagingInfo`` carries ``definitions``, and
+    treating that as disqualifying left the composition unmerged.
+    """
+    out: list[dict[str, Any]] = []
+    for member in members:
+        if not isinstance(member, dict):
+            return None
+        if member.keys() & _ALLOF_BLOCKING_KEYS:
+            return None
+        declared = member.get("type")
+        if declared is not None and declared != "object":
+            return None
+        out.append(member)
+    return out
+
+
+def merge_allof(node: Any, max_depth: int = 32) -> Any:
+    """Collapse ``allOf`` compositions of object subschemas into one object schema.
+
+    An ``allOf`` is an intersection: the instance must satisfy every member. A
+    consumer reading ``properties`` off the composition itself finds nothing,
+    because the properties live one level down inside the members. This merges
+    them into a single object schema so the composition can be read like any
+    other object.
+
+    ``properties`` are unioned, with the first member to declare a name winning
+    on conflict, and any sibling ``properties`` on the ``allOf`` node itself
+    taking precedence over all members. ``required`` is unioned. Compositions
+    that are not a plain intersection of object subschemas are returned
+    unchanged.
+    """
+    if max_depth <= 0:
+        return node
+    if isinstance(node, list):
+        return [merge_allof(v, max_depth - 1) for v in node]
+    if not isinstance(node, dict):
+        return node
+
+    # ``default``, ``example(s)``, ``enum`` and ``const`` hold instance data, not
+    # subschemas, and a vendor extension can hold anything. Recursing into them
+    # would rewrite a value that merely happens to contain an ``allOf`` key —
+    # a default of ``{"allOf": [...]}`` came back as ``{"type": "object"}``.
+    node = {
+        k: (
+            v
+            if k in _NON_SCHEMA_KEYWORDS or k.startswith("x-")
+            else merge_allof(v, max_depth - 1)
+        )
+        for k, v in node.items()
+    }
+
+    members = node.get("allOf")
+    if not isinstance(members, list) or not members:
+        return node
+
+    mergeable = _mergeable_allof_members(members)
+    if mergeable is None:
+        return node
+
+    properties: dict[str, Any] = {}
+    required: list[str] = []
+    for member in mergeable:
+        for name, subschema in (member.get("properties") or {}).items():
+            properties.setdefault(name, subschema)
+        for name in member.get("required") or []:
+            if name not in required:
+                required.append(name)
+
+    siblings = {k: v for k, v in node.items() if k != "allOf"}
+    # Keywords written next to the ``allOf`` describe the composition itself and
+    # outrank anything the members declare.
+    for name, subschema in (siblings.get("properties") or {}).items():
+        properties[name] = subschema
+    for name in siblings.get("required") or []:
+        if name not in required:
+            required.append(name)
+
+    merged: dict[str, Any] = {**siblings, "type": "object"}
+    if properties:
+        merged["properties"] = properties
+    if required:
+        merged["required"] = required
+    return merged
 
 
 _SUCCESS_PRIORITY = ("200", "2XX", "201", "default")
@@ -193,7 +351,7 @@ def extract_response_schema(
     schema = media.get("schema")
     if not isinstance(schema, dict):
         return None
-    return deref_schema(spec, schema)
+    return merge_allof(deref_schema(spec, schema))
 
 
 def extract_request_body_schema(
@@ -222,7 +380,7 @@ def extract_request_body_schema(
     schema = media.get("schema")
     if not isinstance(schema, dict):
         return None
-    return deref_schema(spec, schema)
+    return merge_allof(deref_schema(spec, schema))
 
 
 def extract_response_schemas(
@@ -242,7 +400,7 @@ def extract_response_schemas(
                 continue
             schema = media.get("schema")
             if isinstance(schema, dict):
-                per_content[content_type] = deref_schema(spec, schema)
+                per_content[content_type] = merge_allof(deref_schema(spec, schema))
         if per_content:
             out[status] = per_content
     return out
@@ -426,9 +584,15 @@ def parameter_to_kwargs(param: dict[str, Any]) -> tuple[str, dict[str, Any]] | N
 
 
 def build_parser_from_operation(
-    op: dict[str, Any], spec: dict[str, Any] | None = None
+    op: dict[str, Any],
+    spec: dict[str, Any] | None = None,
+    path_item: dict[str, Any] | None = None,
 ) -> argparse.ArgumentParser:
-    """Build an ``ArgumentParser`` from an OpenAPI operation object."""
+    """Build an ``ArgumentParser`` from an OpenAPI operation object.
+
+    When ``path_item`` is given, parameters shared by every operation under that
+    path are inherited by the parser (see :func:`operation_parameters`).
+    """
     parser = argparse.ArgumentParser(
         prog=op.get("operationId", "cmd"),
         description=(op.get("description") or op.get("summary") or "").strip() or None,
@@ -440,7 +604,12 @@ def build_parser_from_operation(
         if spec is not None
         else []
     )
-    for param in [*op.get("parameters", []), *body_params]:
+    params = (
+        operation_parameters(spec, path_item or {}, op)
+        if spec is not None
+        else list(op.get("parameters", []) or [])
+    )
+    for param in [*params, *body_params]:
         translated = parameter_to_kwargs(param)
         if translated is None:
             continue
@@ -509,7 +678,7 @@ def build_command_index(
         if not op:
             continue
         index[url_to_command(url, api_prefix=api_prefix)] = build_parser_from_operation(
-            op, spec
+            op, spec, methods
         )
     return index
 
