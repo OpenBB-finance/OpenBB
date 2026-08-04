@@ -91,10 +91,29 @@ async def test_validation_handler_query_params_routed_to_query_loc(monkeypatch):
     except ValidationError as ve:
         err = ve
 
-    req = _make_request({"symbol": ""})  # ensure all_in_query short-circuit works
+    req = _make_request({"symbol": ""})
     # Force `error.title` to contain "QueryParams"; pydantic provides title via model name.
     resp = await ExceptionHandlers.validation(req, err)
     assert resp.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_validation_handler_missing_query_param_returns_422(monkeypatch):
+    monkeypatch.setattr(
+        "openbb_core.api.exception_handlers.Env", type("E", (), {"DEBUG_MODE": False})
+    )
+
+    class SearchQueryParams(BaseModel):
+        category: str
+
+    with pytest.raises(ValidationError) as exc_info:
+        SearchQueryParams()  # type: ignore[call-arg]
+
+    response = await ExceptionHandlers.validation(_make_request(), exc_info.value)
+
+    assert response.status_code == 422
+    detail = json.loads(response.body)["detail"]
+    assert detail[0]["loc"] == ["query", "category"]
 
 
 @pytest.mark.asyncio
