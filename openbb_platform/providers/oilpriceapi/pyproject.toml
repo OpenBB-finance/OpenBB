@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-oilpriceapi"
+version = "1.0.0"
+description = "OilPriceAPI extension for OpenBB"
+authors = ["OilPriceAPI <support@oilpriceapi.com>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_oilpriceapi" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+openbb-core = "^1.6.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+oilpriceapi = "openbb_oilpriceapi:oilpriceapi_provider"

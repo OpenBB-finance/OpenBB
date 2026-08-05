@@ -64,6 +64,7 @@ openbb-finra = { path = "./providers/finra", optional = true, develop = true }
 openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
 openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
+openbb-oilpriceapi = { path = "./providers/oilpriceapi", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
 openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }

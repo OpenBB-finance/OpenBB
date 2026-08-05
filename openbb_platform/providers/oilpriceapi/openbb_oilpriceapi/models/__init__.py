@@ -1,0 +1,1 @@
+"""OilPriceAPI models."""
