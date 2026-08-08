@@ -69,6 +69,26 @@ async def get_complete_submission(url: str):
     )
 
 
+def prepare_13f_xml(filing: str) -> str:
+    """Return parseable XML for a Complete Submission TXT string.
+
+    The Complete Submission TXT file is SGML-wrapped and not well-formed XML, so
+    feeding it straight to an XML parser makes lxml fall back to recover mode,
+    which silently drops character entities like ``&amp;``. When embedded
+    ``<XML>...</XML>`` blocks are present, reassemble those well-formed fragments
+    under a synthetic root (stripping only top-level XML declarations). When no
+    such blocks exist, return the original text unchanged.
+    """
+    # pylint: disable=import-outside-toplevel
+    import re
+
+    xml_blocks = re.findall(r"<XML>(.*?)</XML>", filing, re.DOTALL | re.IGNORECASE)
+    if not xml_blocks:
+        return filing
+    decl = re.compile(r"<\?xml[^>]*\?>")
+    return "<root>" + "".join(decl.sub("", b) for b in xml_blocks) + "</root>"
+
+
 def parse_header(filing_str: str) -> dict:
     """Parse the header of a Complete Submission TXT file string."""
     # pylint: disable=import-outside-toplevel
@@ -133,6 +153,8 @@ async def parse_13f_hr(filing: str):
     # Check if the input string is a URL
     if filing.startswith("https://"):
         filing = await get_complete_submission(filing)  # type: ignore
+
+    filing = prepare_13f_xml(filing)
 
     soup = BeautifulSoup(filing, "xml")
 
