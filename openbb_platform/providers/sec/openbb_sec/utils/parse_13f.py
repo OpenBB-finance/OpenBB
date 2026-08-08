@@ -69,6 +69,26 @@ async def get_complete_submission(url: str):
     )
 
 
+def prepare_13f_xml(filing: str) -> str:
+    """Return parseable XML for a Complete Submission TXT string.
+
+    The Complete Submission TXT file is SGML-wrapped and not well-formed XML, so
+    feeding it straight to an XML parser makes lxml fall back to recover mode,
+    which silently drops character entities like ``&amp;``. When embedded
+    ``<XML>...</XML>`` blocks are present, reassemble those well-formed fragments
+    under a synthetic root (stripping only top-level XML declarations). When no
+    such blocks exist, return the original text unchanged.
+    """
+    # pylint: disable=import-outside-toplevel
+    import re
+
+    xml_blocks = re.findall(r"<XML>(.*?)</XML>", filing, re.DOTALL | re.IGNORECASE)
+    if not xml_blocks:
+        return filing
+    decl = re.compile(r"<\?xml[^>]*\?>")
+    return "<root>" + "".join(decl.sub("", b) for b in xml_blocks) + "</root>"
+
+
 def parse_header(filing_str: str) -> dict:
     """Parse the header of a Complete Submission TXT file string."""
     # pylint: disable=import-outside-toplevel
@@ -125,8 +145,6 @@ def get_period_ending(filing_str: str):
 async def parse_13f_hr(filing: str):
     """Parse a 13F-HR filing from the Complete Submission TXT file string."""
     # pylint: disable=import-outside-toplevel
-    import re
-
     import xmltodict
     from bs4 import BeautifulSoup
     from numpy import nan
@@ -136,14 +154,7 @@ async def parse_13f_hr(filing: str):
     if filing.startswith("https://"):
         filing = await get_complete_submission(filing)  # type: ignore
 
-    # The Complete Submission TXT file is SGML-wrapped and not well-formed XML, so
-    # lxml falls back to recover mode, which silently drops character entities like
-    # '&amp;'. Reassemble the embedded well-formed <XML>...</XML> blocks under a
-    # synthetic root and parse that instead, to preserve entities such as '&'.
-    xml_blocks = re.findall(r"<XML>(.*?)</XML>", filing, re.DOTALL | re.IGNORECASE)
-    if xml_blocks:
-        decl = re.compile(r"<\?xml[^>]*\?>")
-        filing = "<root>" + "".join(decl.sub("", b) for b in xml_blocks) + "</root>"
+    filing = prepare_13f_xml(filing)
 
     soup = BeautifulSoup(filing, "xml")
 
