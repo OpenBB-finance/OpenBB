@@ -78,3 +78,83 @@ def validate_window(input_data: Union["Series", "DataFrame"], window: int) -> No
         raise ValueError(
             f"Window '{window}' is greater than the input data length '{len(input_data)}'"
         )
+
+
+def deflated_sharpe_stats(
+    input_data: "Series",
+    trials: int,
+    rfr: float = 0.0,
+    trials_sr_std: Union[float, None] = None,
+) -> dict:
+    """Compute the deflated Sharpe ratio of a return series.
+
+    The deflated Sharpe ratio (Bailey & Lopez de Prado, 2014) is the
+    probability that the true Sharpe exceeds the expected maximum Sharpe of
+    `trials` zero-skill strategies — i.e. whether a result selected as the
+    best of `trials` attempts reflects skill rather than selection. Adjusts
+    for sample length and return skewness/kurtosis.
+
+    Parameters
+    ----------
+    input_data : Series
+        Return series (per-period returns, not prices).
+    trials : int
+        Number of strategy variants tried before selecting this one.
+    rfr : float, optional
+        Per-period risk-free rate, by default 0.0.
+    trials_sr_std : float, optional
+        Standard deviation of the per-period Sharpe estimates across the
+        trials. Defaults to the null 1/sqrt(n-1) when unknown.
+
+    Returns
+    -------
+    dict
+        sharpe (per-period), expected_max_sharpe, deflated_sharpe_ratio,
+        observations, trials.
+
+    Raises
+    ------
+    ValueError
+        If `trials` < 1 or the series has fewer than 3 observations or zero
+        variance.
+    """
+    # pylint: disable=import-outside-toplevel
+    from numpy import asarray, e as np_e, sqrt
+    from scipy.stats import norm
+
+    if trials < 1:
+        raise ValueError("trials must be >= 1")
+    returns = asarray(input_data, dtype=float)
+    n = len(returns)
+    if n < 3:
+        raise ValueError("need at least 3 observations")
+    mu = returns.mean() - rfr
+    sd = returns.std()  # population, consistent with the reference implementation
+    if sd == 0:
+        raise ValueError("zero-variance returns")
+    sr = mu / sd
+    skew_ = (((returns - returns.mean()) / sd) ** 3).mean()
+    kurt_ = (((returns - returns.mean()) / sd) ** 4).mean()  # non-excess, normal = 3
+
+    if trials_sr_std is None:
+        trials_sr_std = 1.0 / sqrt(n - 1)
+    if trials == 1:
+        bar = 0.0
+    else:
+        euler = 0.5772156649015329
+        z1 = norm.ppf(1 - 1.0 / trials)
+        z2 = norm.ppf(1 - 1.0 / (trials * np_e))
+        bar = trials_sr_std * ((1 - euler) * z1 + euler * z2)
+
+    denom = 1 - skew_ * sr + (kurt_ - 1) / 4 * sr**2
+    if denom <= 0:
+        raise ValueError("degenerate return moments")
+    dsr = norm.cdf((sr - bar) * sqrt(n - 1) / sqrt(denom))
+
+    return {
+        "sharpe": float(sr),
+        "expected_max_sharpe": float(bar),
+        "deflated_sharpe_ratio": float(dsr),
+        "observations": n,
+        "trials": trials,
+    }

@@ -9,6 +9,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
 from openbb_quantitative.models import (
+    DeflatedSharpeModel,
     OmegaModel,
 )
 from pydantic import PositiveInt
@@ -269,3 +270,72 @@ def sortino_ratio(
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)
+
+
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Deflated Sharpe Ratio of a strategy selected as the best of 100 variants.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.performance.deflated_sharpe_ratio(data=returns, target="close", trials=100)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "trials": 100,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
+        ),
+    ],
+)
+def deflated_sharpe_ratio(
+    data: list[Data],
+    target: str,
+    trials: PositiveInt,
+    rfr: float = 0.0,
+) -> OBBject[list[DeflatedSharpeModel]]:
+    """Get the Deflated Sharpe Ratio.
+
+    The Deflated Sharpe Ratio (Bailey & Lopez de Prado, 2014) answers the question a raw Sharpe cannot: does this
+    result reflect skill, or is it what the luckiest of `trials` attempts would show by chance? When a strategy is
+    selected as the best of many tested variants, the expected maximum Sharpe under pure noise grows with the number
+    of trials — so the winning backtest must be scored against that bar, adjusting for sample length and the skewness
+    and kurtosis of returns. A value near 1 means the Sharpe survives the number of attempts made; a value near 0.5 or
+    below means the result is indistinguishable from selection luck. Essential whenever parameters were optimized or
+    multiple strategies compared before reporting a result.
+
+    Parameters
+    ----------
+    data : list[Data]
+        Time series data of per-period returns.
+    target : str
+        Target column name.
+    trials : PositiveInt
+        Number of strategy variants tried before selecting this one.
+    rfr : float, optional
+        Per-period risk-free rate, by default 0.0
+
+    Returns
+    -------
+    OBBject[list[DeflatedSharpeModel]]
+        Sharpe, expected max Sharpe of `trials` zero-skill attempts, and the deflated Sharpe ratio.
+    """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+    )
+    from openbb_quantitative.helpers import deflated_sharpe_stats
+
+    df = basemodel_to_df(data)
+    series_target = get_target_column(df, target)
+    stats_ = deflated_sharpe_stats(series_target, trials=trials, rfr=rfr)
+
+    return OBBject(results=[DeflatedSharpeModel(**stats_)])
