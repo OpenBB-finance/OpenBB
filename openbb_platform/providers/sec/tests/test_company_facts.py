@@ -14,6 +14,10 @@ import openbb_sec.utils.company_facts as cf
 from openbb_sec.utils.company_facts import resolve_company_facts
 from openbb_sec.utils.statement_schema import StatementSchema
 from openbb_sec.utils.statement_schema._detection import get_filing_dates
+from openbb_sec.utils.statement_schema._imputation import (
+    _apply_hierarchical_articulation,
+)
+from openbb_sec.utils.statement_schema._types import RowResult
 
 _FIXTURE_DIR = Path(__file__).parent / "record"
 
@@ -122,6 +126,70 @@ def test_company_type_detection(schema):
         [{"tag": "CostsAndExpenses", "val": 100, "end": "2023-12-31"}]
     )
     assert schema.detect_type(diversified["facts"]) == "diversified"
+
+
+@pytest.mark.parametrize(
+    "profile", ["industrial", "financial", "diversified", "insurance"]
+)
+def test_current_debt_tag_mappings(schema, profile):
+    """Common current-debt spellings map consistently across profiles."""
+    rows = schema._statements["balance_sheet"][profile]  # pylint: disable=W0212
+    tags_by_row = {
+        row["tag"]: {item["tag"] for item in row["xbrl_tags"]} for row in rows
+    }
+
+    assert {"NotesAndLoansPayable", "OtherShortTermBorrowings"} <= tags_by_row[
+        "short_term_debt"
+    ]
+    assert {
+        "LongTermDebtAndCapitalLeaseObligationsCurrent",
+        "LongTermDebtCurrentMaturities",
+        "DebtCurrent",
+    } <= tags_by_row["current_portion_of_long_term_debt"]
+
+    for row in rows:
+        if row["tag"] != "short_term_debt":
+            assert "OtherShortTermBorrowings" not in {
+                item["tag"] for item in row["xbrl_tags"]
+            }
+
+
+def test_operating_income_not_rolled_up_from_single_child():
+    """A lone revenue row must not imply a 100% operating margin."""
+    date = "2025-12-31"
+    rows = [
+        RowResult(
+            tag="total_revenue",
+            label="Total Revenue",
+            description="",
+            parent="total_operating_income",
+            sequence=1,
+            factor="+",
+            balance="credit",
+            unit="monetary",
+            period_type="duration",
+            values={date: 1000.0},
+            sources={date: "us-gaap:Revenues"},
+        ),
+        RowResult(
+            tag="total_operating_income",
+            label="Total Operating Income",
+            description="",
+            parent=None,
+            sequence=2,
+            factor="+",
+            balance="credit",
+            unit="monetary",
+            period_type="duration",
+            values={},
+            sources={},
+        ),
+    ]
+
+    _apply_hierarchical_articulation(rows, {date})
+
+    assert date not in rows[1].values
+    assert date not in rows[1].sources
 
 
 def test_basic_extraction_and_imputation():

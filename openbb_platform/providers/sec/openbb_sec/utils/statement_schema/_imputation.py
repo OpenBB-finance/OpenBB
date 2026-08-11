@@ -166,6 +166,15 @@ def _apply_hierarchical_articulation(
             children_detail = " + ".join(contributing_children)
 
             if p_val is None:
+                # Operating income cannot be inferred from a lone revenue or
+                # expense row. Without both sides of the operating equation,
+                # a rollup would manufacture a misleading 100% margin (or its
+                # expense-only equivalent).
+                if (
+                    parent_tag == "total_operating_income"
+                    and len(contributing_children) < 2
+                ):
+                    continue
                 parent_row.values[date] = children_sum
                 parent_row.sources[date] = f"imputed-rollup: {children_detail}"
             else:
