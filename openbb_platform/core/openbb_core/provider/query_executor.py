@@ -6,6 +6,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.registry import Registry, RegistryLoader
+from openbb_core.provider.utils.errors import MissingCredentialError
 from pydantic import SecretStr
 
 
@@ -53,9 +54,15 @@ class QueryExecutor:
                     if require_credentials:
                         website = provider.website or ""
                         extra_msg = f" Check {website} to get it." if website else ""
-                        raise OpenBBError(
-                            f"Missing credential '{c}'.{extra_msg} Refer to the documentation for setting provider "
-                            "credentials at https://docs.openbb.co/platform/settings/user_settings/api_keys."
+                        message = (
+                            f"Missing credential '{c}'.{extra_msg} Refer to the"
+                            " documentation for setting provider credentials at"
+                            " https://docs.openbb.co/platform/settings/user_settings/api_keys."
+                        )
+                        raise MissingCredentialError(
+                            provider=provider.name.lower(),
+                            credential=c,
+                            message=message,
                         )
                 else:
                     filtered_credentials[c] = secret

@@ -11,7 +11,11 @@ from fastapi.exceptions import ResponseValidationError
 from fastapi.responses import JSONResponse, Response
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
-from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from openbb_core.provider.utils.errors import (
+    EmptyDataError,
+    MissingCredentialError,
+    UnauthorizedError,
+)
 from pydantic import ValidationError
 
 logger = logging.getLogger("uvicorn.error")
@@ -117,6 +121,26 @@ class ExceptionHandlers:
             exception=error,
             status_code=400,
             detail=str(error.original),
+        )
+
+    @staticmethod
+    async def missing_credential(_: Request, error: MissingCredentialError):
+        """Exception handler for MissingCredentialError.
+
+        A missing provider credential is an expected configuration state, not a
+        server fault. Return a structured non-5xx response so clients (e.g. the
+        Workspace widget validator) can distinguish an unconfigured provider
+        from an internal error.
+        """
+        return await ExceptionHandlers._handle(
+            exception=error,
+            status_code=400,
+            detail={
+                "code": "missing_credentials",
+                "provider": error.provider,
+                "credential": error.credential,
+                "message": error.message,
+            },
         )
 
     @staticmethod
