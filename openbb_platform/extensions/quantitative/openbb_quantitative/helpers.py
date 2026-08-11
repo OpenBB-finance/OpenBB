@@ -119,7 +119,7 @@ def deflated_sharpe_stats(
         variance.
     """
     # pylint: disable=import-outside-toplevel
-    from numpy import asarray, e as np_e, sqrt
+    from numpy import asarray, e as np_e, finfo, sqrt
     from scipy.stats import norm
 
     if trials < 1:
@@ -130,7 +130,18 @@ def deflated_sharpe_stats(
         raise ValueError("need at least 3 observations")
     mu = returns.mean() - rfr
     sd = returns.std()  # population, consistent with the reference implementation
-    if sd == 0:
+    # `sd == 0` is exact and a constant series does not reach it: its standard
+    # deviation is floating-point residue rather than a true zero, so a flat 0.1%
+    # series has sd ~1e-19 and divides out to a Sharpe of ~1e16 -- finite, and past
+    # every isfinite guard after this one. Deflating that returned 1.0, i.e. certainty
+    # of a real edge, for the one input carrying no information about one. Compare
+    # against the resolution of a float at the scale of the data instead, so a
+    # genuinely low-volatility series still gets a number.
+    # The residue grows with the number of terms summed, so the floor is n eps rather
+    # than eps: measured at most 1.96 eps x scale over constant series spanning values
+    # 1e-7..1e3 and lengths 3..10000, while a real series with sigma=1e-12 sits more
+    # than ten orders of magnitude above n eps x scale.
+    if not sd > n * finfo(float).eps * abs(returns).max():
         raise ValueError("zero-variance returns")
     sr = mu / sd
     skew_ = (((returns - returns.mean()) / sd) ** 3).mean()

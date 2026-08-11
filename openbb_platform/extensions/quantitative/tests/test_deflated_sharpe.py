@@ -56,3 +56,25 @@ def test_invalid_inputs_raise():
         deflated_sharpe_stats(RETURNS.head(2), trials=10)
     with pytest.raises(ValueError):
         deflated_sharpe_stats(pd.Series([0.01] * 10), trials=10)
+
+
+def test_zero_dispersion_raises_across_values_and_lengths():
+    """A constant series carries no information about an edge, at any scale.
+
+    `sd == 0` is exact and a constant series does not reach it: its standard
+    deviation is floating-point residue rather than a true zero, so the ratio came
+    out finite (~1e16) and reached the deflation arithmetic, which answered 1.0.
+    The residue depends on both the value and the length, so this is checked over a
+    grid: a guard calibrated on a single series passes while still leaking elsewhere.
+    """
+    for value in (1e-7, 1e-4, 0.001, 0.01, 1.0, 100.0):
+        for n in (3, 10, 250, 5000):
+            with pytest.raises(ValueError, match="zero-variance"):
+                deflated_sharpe_stats(pd.Series([value] * n), trials=4)
+
+    # The guard is relative to the scale of the data: a real but very quiet series
+    # still gets a number.
+    import numpy as np
+
+    quiet = pd.Series(np.random.default_rng(1).normal(0, 1e-8, 250))
+    assert 0 <= deflated_sharpe_stats(quiet, trials=4)["deflated_sharpe_ratio"] <= 1
