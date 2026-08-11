@@ -48,6 +48,16 @@ class OmegaModel(BaseModel):
     omega: float
 
 
+class DeflatedSharpeModel(BaseModel):
+    """Deflated Sharpe ratio model (Bailey & Lopez de Prado, 2014)."""
+
+    sharpe: float
+    expected_max_sharpe: float
+    deflated_sharpe_ratio: float
+    observations: int
+    trials: int
+
+
 class SummaryModel(BaseModel):
     """Summary model."""
 
