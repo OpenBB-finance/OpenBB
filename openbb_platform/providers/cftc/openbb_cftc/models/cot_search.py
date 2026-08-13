@@ -97,6 +97,8 @@ class CftcCotSearchData(CotSearchData):
         "name": "contract_market_name",
         "category": "commodity_group_name",
         "subcategory": "commodity_subgroup_name",
+        "units": "contract_units",
+        "commodity": "commodity_name",
     }
 
     commodity: str | None = Field(default=None, description="Name of the commodity.")
@@ -235,6 +237,19 @@ class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, list[CftcCotSearchD
                 ):
                     category = "FINANCIAL INSTRUMENTS"
                     subcategory = "DIGITAL ASSET (NON-MAJOR)"
+                    d["commodity_group_name"] = category
+                    d["commodity_subgroup_name"] = subcategory
+                elif name == "HYPERLIQUID":
+                    category = "FINANCIAL INSTRUMENTS"
+                    subcategory = "DIGITAL ASSET (NON-MAJOR)"
+                    d["commodity_group_name"] = category
+                    d["commodity_subgroup_name"] = subcategory
+                    d["commodity_name"] = "OTHER CRYPTO/DIGITAL ASSET (NON-MAJOR)"
+                elif not d.get("commodity_group_name") and not d.get(
+                    "commodity_subgroup_name"
+                ):
+                    category = "OTHER FINANCIAL INSTRUMENTS"
+                    subcategory = "OTHER FINANCIAL INSTRUMENTS"
                     d["commodity_group_name"] = category
                     d["commodity_subgroup_name"] = subcategory
 

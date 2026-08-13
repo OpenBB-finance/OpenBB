@@ -39,7 +39,7 @@ def headers():
 @pytest.mark.integration
 def test_cftc_cot_search(params, headers):
     """Test the CFTC COT search endpoint."""
-    params = {p: v for p, v in params.items() if v}
+    params = {p: v for p, v in params.items() if v is not None}
 
     query_str = get_querystring(params, [])
     url = f"http://localhost:8000/api/v1/cftc/cot_search?{query_str}"
@@ -68,7 +68,7 @@ def test_cftc_cot_search(params, headers):
 @pytest.mark.integration
 def test_cftc_cot(params, headers):
     """Test the CFTC COT endpoint."""
-    params = {p: v for p, v in params.items() if v}
+    params = {p: v for p, v in params.items() if v is not None}
 
     query_str = get_querystring(params, [])
     url = f"http://localhost:8000/api/v1/cftc/cot?{query_str}"

@@ -26,6 +26,9 @@ python-dotenv = "^1.0.1"
 openpyxl = "^3.1.5"
 pywry = ">=2.0.2"
 
+# Pin must mirror openbb-core until breaking changes in fastapi 0.137 are handled
+fastapi = "0.136.3"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

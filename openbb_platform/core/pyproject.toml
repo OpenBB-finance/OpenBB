@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.6.10"
+version = "1.6.13"
 description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -16,14 +16,14 @@ uvicorn = "^0.40.0"
 websockets = ">=15.0"
 pandas = ">=1.5.3"
 html5lib = "^1.1"
-fastapi = "^0.128.0"
+fastapi = "0.136.3"
 uuid7 = "^0.1.0"
-python-multipart = "^0.0.27"
+python-multipart = ">=0.0.30"
 pydantic = "^2.12.3"
 requests = "^2.33.0"
 importlib-metadata = ">=6.8.0"
 python-dotenv = "^1.0.0"
-aiohttp = ">=3.13.3"
+aiohttp = ">=3.14.1"
 ruff = "^0.15"              # Needed here to lint generated code
 pyjwt = "^2.12.0"
 

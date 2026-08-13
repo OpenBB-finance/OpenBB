@@ -36,6 +36,19 @@ from openbb_sec.utils.statement_schema._types import (
     _tolerance,
 )
 
+# CECL provision reconstruction: filers such as Bank of America report a single
+# income-statement "provision for credit losses" line that combines the funded
+# (financing-receivable) provision with the off-balance-sheet (unfunded
+# commitment) provision, tagging the combined total with a company-specific
+# extension absent from Company Facts. Only the standard component tags survive,
+# so the standardized total is rebuilt as funded + unfunded for those filers.
+_PROVISION_ROW_TAGS = ("provision_for_credit_losses", "provision_for_loan_losses")
+_PROVISION_FUNDED_SOURCES = (
+    "FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal",
+    "ProvisionForLoanLossesExpensed",
+)
+_UNFUNDED_PROVISION_TAG = "OffBalanceSheetCreditLossLiabilityCreditLossExpenseReversal"
+
 
 class StatementSchema:
     """Schema for standardized financial statement extraction."""
@@ -304,6 +317,16 @@ class StatementSchema:
                 )
             )
 
+        self._combine_unfunded_provision(
+            result_rows,
+            statement,
+            company_type,
+            facts,
+            frequency,
+            currency,
+            ref_filed_map,
+        )
+
         diagnostics: list[ValidationWarning] = []
 
         if not skip_imputation:
@@ -447,6 +470,70 @@ class StatementSchema:
             diagnostics=diagnostics,
             preliminary_dates=final_preliminary,
         )
+
+    def _combine_unfunded_provision(
+        self,
+        result_rows: list[RowResult],
+        statement: StatementName,
+        company_type: CompanyType,
+        facts: dict[str, Any],
+        frequency: Frequency,
+        currency: str,
+        ref_filed_map: dict[str, str],
+    ) -> None:
+        """Fold the unfunded-commitment CECL provision into the funded provision.
+
+        Applies only to financial filers whose provision was sourced from a
+        funded-component tag and that do not report a distinct "net interest
+        income after provision for loan losses" (``InterestIncomeExpenseAfter
+        ProvisionForLoanLoss``). The presence of that tag signals a filer such
+        as Citigroup that lists the funded provision as its own income-statement
+        line, so combining would break the ``net_interest_income_after_provision``
+        identity; those filers are left unchanged.
+        """
+        if company_type != "financial" or statement not in (
+            "income_statement",
+            "cash_flow",
+        ):
+            return
+
+        if "InterestIncomeExpenseAfterProvisionForLoanLoss" in facts.get("us-gaap", {}):
+            return
+
+        prov_row = next((r for r in result_rows if r.tag in _PROVISION_ROW_TAGS), None)
+
+        if prov_row is None or not prov_row.values:
+            return
+
+        unfunded_def = RowDef(
+            tag=_UNFUNDED_PROVISION_TAG,
+            label="",
+            description="",
+            parent=None,
+            sequence=0,
+            factor="+",
+            balance="debit",
+            unit="monetary",
+            period_type="duration",
+            xbrl_tags=({"tag": _UNFUNDED_PROVISION_TAG, "namespace": "us-gaap"},),
+        )
+        unfunded_vals, _ = extract_row_values(
+            facts, unfunded_def, frequency, currency, ref_filed_map
+        )
+
+        for date, src in list(prov_row.sources.items()):
+            if not any(t in src for t in _PROVISION_FUNDED_SOURCES):
+                continue
+
+            add = unfunded_vals.get(date)
+
+            if add is None:
+                continue
+
+            prov_row.values[date] = prov_row.values.get(date, 0.0) + add
+            prov_row.sources[date] = (
+                f"{src}+us-gaap:{_UNFUNDED_PROVISION_TAG}(combined)"
+            )
 
     def extract_all(  # noqa: PLR0912
         self,

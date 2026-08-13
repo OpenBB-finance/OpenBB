@@ -36,6 +36,7 @@ def obb(pytestconfig):
 @pytest.mark.integration
 def test_cftc_cot_search(params, obb):
     """Test the CFTC COT search endpoint."""
+    params = {p: v for p, v in params.items() if v is not None}
     result = obb.cftc.cot_search(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -62,6 +63,7 @@ def test_cftc_cot_search(params, obb):
 @pytest.mark.integration
 def test_cftc_cot(params, obb):
     """Test the CFTC COT endpoint."""
+    params = {p: v for p, v in params.items() if v is not None}
     result = obb.cftc.cot(**params)
     assert result
     assert isinstance(result, OBBject)

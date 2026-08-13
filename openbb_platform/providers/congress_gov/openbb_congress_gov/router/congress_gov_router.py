@@ -740,10 +740,10 @@ async def committee_document_urls(
 
 
 async def get_congress_gov_apps_json() -> list[dict[str, Any]]:
-    """Get the IMF apps.json file.
+    """Get the Congress.gov apps.json file.
 
     This endpoint serves the apps.json file containing OpenBB Workspace app configurations
-    related to IMF data and utilities.
+    related to Congress.gov data and utilities.
 
     It is automatically merged with any existing apps.json files in the Workspace and API.
 

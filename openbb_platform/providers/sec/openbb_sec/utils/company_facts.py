@@ -72,20 +72,50 @@ def order_field_meta(
     field_meta: dict[str, dict],
     model_cls: type[BaseModel],
 ) -> dict[str, dict]:
-    """Reorder field_meta by model field declaration order with sequential sequence."""
+    """Reorder field_meta by model field declaration order with sequential sequence.
+
+    Dynamic ``other_<base>`` balancing plugs (generated at runtime, so they have
+    no model field) are inserted immediately before their parent subtotal rather
+    than appended at the end, matching the plug's ``parent.sequence - 0.01``
+    placement.  Remaining unmatched fields keep their existing tail position.
+    """
+    placed = [f for f in model_cls.model_fields if f in field_meta]
+    placed_set = set(placed)
+    deferred: list[str] = []
+
+    for fname in field_meta:
+        if fname in placed_set:
+            continue
+
+        # Balancing plugs are named ``[growth_]other_<base>`` and belong just
+        # before their parent subtotal (``[growth_]total_<base>`` or the bare
+        # ``[growth_]<base>``); the ``growth_`` prefix appears in growth models.
+        parent = None
+        for prefix in ("", "growth_"):
+            marker = f"{prefix}other_"
+            if fname.startswith(marker):
+                base = fname[len(marker) :]
+                for candidate in (f"{prefix}total_{base}", f"{prefix}{base}"):
+                    if candidate in placed_set:
+                        parent = candidate
+                        break
+            if parent is not None:
+                break
+
+        if parent is not None:
+            placed.insert(placed.index(parent), fname)
+            placed_set.add(fname)
+        else:
+            deferred.append(fname)
+
+    placed.extend(deferred)
+
     ordered: dict[str, dict] = {}
-    seq = 1
-    for fname in model_cls.model_fields:
-        if fname in field_meta:
-            entry = field_meta[fname]
-            entry["sequence"] = seq
-            ordered[fname] = entry
-            seq += 1
-    for fname, entry in field_meta.items():
-        if fname not in ordered:
-            entry["sequence"] = seq
-            ordered[fname] = entry
-            seq += 1
+    for seq, fname in enumerate(placed, start=1):
+        entry = field_meta[fname]
+        entry["sequence"] = seq
+        ordered[fname] = entry
+
     return ordered
 
 
@@ -100,6 +130,7 @@ MULTI_CIK_TICKERS: dict[str, list[str]] = {
     "DIS": ["0001744489", "0001001039"],
     "BLK": ["0002012383", "0001364742"],
     "GOOG": ["0001652044", "0001288776"],
+    "XOM": ["0000034088", "0002115436"],
 }
 
 
