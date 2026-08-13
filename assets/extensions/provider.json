@@ -79,6 +79,28 @@
         "instructions": "To get a Congress.gov API key:\n\n1. Go to https://api.congress.gov/sign-up/\n2. Fill out the registration form with your information\n3. Agree to the terms of service\n4. You will receive an API key via email\n\nThe API key is free and provides access to all Congress.gov data."
     },
     {
+        "packageName": "openbb-coingecko",
+        "optional": true,
+        "reprName": "CoinGecko Pro",
+        "description": "CoinGecko provides real-time and historical cryptocurrency prices, market data, and metadata for a broad range of coins, altcoins, and DeFi tokens.",
+        "credentials": [
+            "coingecko_api_key"
+        ],
+        "website": "https://www.coingecko.com/en/api",
+        "instructions": "Create a CoinGecko account and subscribe to an API plan at https://www.coingecko.com/en/api/pricing. Copy the API key from the developer dashboard and save it as `coingecko_api_key`."
+    },
+    {
+        "packageName": "openbb-cryptocompare",
+        "optional": true,
+        "reprName": "CryptoCompare",
+        "description": "CryptoCompare provides real-time and historical cryptocurrency market data across coins, exchanges, and trading pairs.",
+        "credentials": [
+            "cryptocompare_api_key"
+        ],
+        "website": "https://min-api.cryptocompare.com",
+        "instructions": "Create a CryptoCompare account at https://www.cryptocompare.com/cryptopian/api-keys and generate an API key. Save the key as `cryptocompare_api_key`."
+    },
+    {
         "packageName": "openbb-deribit",
         "optional": true,
         "reprName": "Deribit Public Data",
@@ -195,6 +217,17 @@
         },
         "website": "https://intrinio.com",
         "instructions": "Go to: https://intrinio.com/starter-plan\n\n![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)\n\nAn API key will be issued with a subscription. Find the token value within the account dashboard."
+    },
+    {
+        "packageName": "openbb-messari",
+        "optional": true,
+        "reprName": "Messari",
+        "description": "Messari provides cryptocurrency market intelligence, asset metrics, and fundamental data for crypto assets and protocols.",
+        "credentials": [
+            "messari_api_key"
+        ],
+        "website": "https://messari.io/api",
+        "instructions": "Create a Messari account and obtain an API key from the API dashboard at https://messari.io/api. Save the key as `messari_api_key`."
     },
     {
         "packageName": "openbb-multpl",
