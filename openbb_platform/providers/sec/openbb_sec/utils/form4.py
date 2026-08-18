@@ -235,16 +235,12 @@ async def get_form_4_urls(
     )
     urls: list = []
     for item in form_4:
-        if (
-            (not start_date or not item.filing_date)  # type: ignore
-            or start_date
-            and item.filing_date < start_date  # type: ignore
+        if start_date and (
+            not item.filing_date or item.filing_date < start_date  # type: ignore
         ):
             continue
-        if (
-            (not end_date or not item.report_date)  # type: ignore
-            or end_date
-            and item.report_date > end_date  # type: ignore
+        if end_date and (
+            not item.report_date or item.report_date > end_date  # type: ignore
         ):
             continue
         to_replace = f"{item.primary_doc.split('/')[0]}/"  # type: ignore
@@ -304,6 +300,27 @@ async def get_form_4_data(url) -> dict:
     )  # type: ignore
 
 
+def resolve_footnotes(footnote_ref, footnote_map: dict) -> str | None:
+    """Resolve a `footnoteId` reference to the footnote text for a single row.
+
+    `footnote_ref` is either one `{"@id": "F1"}` mapping or a list of them.
+    Multiple references are joined in document order. Returns None when the
+    filing carries no matching footnote text.
+    """
+    if not footnote_map or not footnote_ref:
+        return None
+
+    refs = footnote_ref if isinstance(footnote_ref, list) else [footnote_ref]
+    texts = [
+        footnote_map.get(ref["@id"], "")
+        for ref in refs
+        if isinstance(ref, dict) and "@id" in ref
+    ]
+    resolved = "; ".join([text for text in texts if text])
+
+    return resolved if resolved else None
+
+
 async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-many-branches
     data,
 ):
@@ -339,12 +356,17 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
     else:
         signature_date = None
 
-    footnotes = data.get("footnotes", {})
-    if footnotes:
-        footnote_items = footnotes.get("footnote")
+    footnotes_element = data.get("footnotes", {})
+    footnotes: dict = {}
+    if footnotes_element:
+        footnote_items = footnotes_element.get("footnote")
         if isinstance(footnote_items, dict):
             footnote_items = [footnote_items]
-        footnotes = {item["@id"]: item["#text"] for item in footnote_items}
+        footnotes = {
+            item["@id"]: item.get("#text", "")
+            for item in footnote_items or []
+            if isinstance(item, dict) and "@id" in item
+        }
 
     metadata = {
         "filing_date": signature_date or data.get("periodOfReport"),
@@ -387,63 +409,17 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912  # pylint: disable=too-ma
                     )
                 elif isinstance(value, dict):
                     if "footnoteId" in value:
-                        if isinstance(value["footnoteId"], list):
-                            ids = [item["@id"] for item in value["footnoteId"]]
-                            footnotes = (
-                                "; ".join(
-                                    [
-                                        footnotes.get(footnote_id, "")
-                                        for footnote_id in ids
-                                    ]
-                                )
-                                if isinstance(footnotes, dict)
-                                else footnotes
-                            )
-                            new_row["footnote"] = footnotes
-                        else:
-                            footnote_id = value["footnoteId"]["@id"]
-                            new_row["footnote"] = (
-                                (
-                                    footnotes
-                                    if isinstance(footnotes, str)
-                                    else footnotes.get(footnote_id)
-                                )
-                                if footnotes
-                                else None
-                            )
+                        new_row["footnote"] = resolve_footnotes(
+                            value["footnoteId"], footnotes
+                        )
                     for k, v in value.items():
                         if k == "value":
                             new_row[key] = v
                         if isinstance(v, dict):
                             if "footnoteId" in v:
-                                if isinstance(v["footnoteId"], list):
-                                    ids = [item["@id"] for item in v["footnoteId"]]
-                                    footnotes = (
-                                        footnotes
-                                        if isinstance(footnotes, str)
-                                        else (
-                                            "; ".join(
-                                                [
-                                                    footnotes.get(footnote_id, "")
-                                                    for footnote_id in ids
-                                                ]
-                                            )
-                                            if footnotes
-                                            else None
-                                        )
-                                    )
-                                    new_row["footnote"] = footnotes
-                                else:
-                                    footnote_id = v["footnoteId"]["@id"]
-                                    new_row["footnote"] = (
-                                        (
-                                            footnotes
-                                            if isinstance(footnotes, str)
-                                            else footnotes.get(footnote_id)
-                                        )
-                                        if footnotes
-                                        else None
-                                    )
+                                new_row["footnote"] = resolve_footnotes(
+                                    v["footnoteId"], footnotes
+                                )
                             for k1, v1 in v.items():
                                 if k1 == "value":
                                     new_row[k] = v1
