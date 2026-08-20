@@ -1028,8 +1028,8 @@ def main():
     except KeyboardInterrupt:
         logger.info("Shutdown requested via keyboard interrupt.")
         sys.exit(0)
-    except Exception as e:
-        logger.error("Server error: %s", e)
+    except Exception:
+        logger.exception("Server error")
         sys.exit(1)
 
 
