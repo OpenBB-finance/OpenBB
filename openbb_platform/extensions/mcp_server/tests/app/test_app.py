@@ -1,6 +1,7 @@
 """Unit tests for app module."""
 
 import asyncio
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -14,6 +15,7 @@ from openbb_mcp_server.app.app import (
     _read_system_prompt_file,
     _strip_api_prefix,
     create_mcp_server,
+    main,
     stdio_main,
 )
 from openbb_mcp_server.models.settings import MCPSettings
@@ -68,6 +70,29 @@ async def test_stdio_main_runs_when_signal_handlers_are_unsupported():
         await stdio_main(mcp_server)
 
     mcp_server.run.assert_called_once_with("stdio")
+
+
+def test_main_logs_startup_exception_with_traceback():
+    """Startup failures should use exception logging instead of hiding details."""
+    args = SimpleNamespace(uvicorn_config={}, imported_app=None, transport="sse")
+    settings = MagicMock()
+    settings.get_http_run_kwargs.return_value = {"uvicorn_config": {}}
+    settings.get_httpx_kwargs.return_value = {}
+    mcp_server = MagicMock()
+    mcp_server.run.side_effect = RuntimeError("startup failed")
+
+    with (
+        patch("openbb_mcp_server.app.app.parse_args", return_value=args),
+        patch("openbb_mcp_server.app.app.MCPService") as mock_service,
+        patch("openbb_mcp_server.app.app.create_mcp_server", return_value=mcp_server),
+        patch("openbb_mcp_server.app.app._build_runtime_middleware", return_value=[]),
+        patch("openbb_mcp_server.app.app.logger") as mock_logger,
+        pytest.raises(SystemExit, match="1"),
+    ):
+        mock_service.return_value.load_with_overrides.return_value = settings
+        main()
+
+    mock_logger.exception.assert_called_once_with("Server error")
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")
