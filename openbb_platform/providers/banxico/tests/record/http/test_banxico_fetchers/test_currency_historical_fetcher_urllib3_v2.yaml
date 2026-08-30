@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Bmx-Token:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0
+    method: GET
+    uri: https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/2024-01-02/2024-01-05
+  response:
+    body:
+      string: "{\"bmx\":{\"series\":[{\"idSerie\":\"SF43718\",\"titulo\":\"Tipo de
+        cambio                                          Pesos por d\xF3lar E.U.A.
+        Tipo de cambio para solventar obligaciones denominadas en moneda extranjera
+        Fecha de determinaci\xF3n (FIX)\",\"datos\":[{\"fecha\":\"02/01/2024\",\"dato\":\"17.0297\"},{\"fecha\":\"03/01/2024\",\"dato\":\"17.0492\"},{\"fecha\":\"04/01/2024\",\"dato\":\"17.0458\"},{\"fecha\":\"05/01/2024\",\"dato\":\"16.8987\"}]}]}}"
+    headers:
+      Access-Control-Allow-Headers:
+      - Bmx-Token, Accept, Accept-Encoding, Content-Type
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - es
+      Content-Security-Policy:
+      - script-src 'self'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Thu, 06 Aug 2026 23:49:06 GMT
+      Set-Cookie:
+      - MOCK_COOKIE
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

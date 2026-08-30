@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-banxico"
+version = "0.1.0"
+description = "Banco de México (Banxico) extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "openbb_banxico" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+openbb-core = "^1.6.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+banxico = "openbb_banxico:banxico_provider"
