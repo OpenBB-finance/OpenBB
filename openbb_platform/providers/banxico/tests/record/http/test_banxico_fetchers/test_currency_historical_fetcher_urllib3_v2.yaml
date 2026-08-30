@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Bmx-Token:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0
+    method: GET
+    uri: https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/2024-01-02/2024-01-05
+  response:
+    body:
+      string: "{\"bmx\":{\"series\":[{\"idSerie\":\"SF43718\",\"titulo\":\"Tipo de
+        cambio                                          Pesos por d\xF3lar E.U.A.
+        Tipo de cambio para solventar obligaciones denominadas en moneda extranjera
+        Fecha de determinaci\xF3n (FIX)\",\"datos\":[{\"fecha\":\"02/01/2024\",\"dato\":\"17.0297\"},{\"fecha\":\"03/01/2024\",\"dato\":\"17.0492\"},{\"fecha\":\"04/01/2024\",\"dato\":\"17.0458\"},{\"fecha\":\"05/01/2024\",\"dato\":\"16.8987\"}]}]}}"
+    headers:
+      Access-Control-Allow-Headers:
+      - Bmx-Token, Accept, Accept-Encoding, Content-Type
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-store
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - es
+      Content-Security-Policy:
+      - script-src 'self'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Thu, 06 Aug 2026 23:49:06 GMT
+      Set-Cookie:
+      - Hex11701280=!TkovSbFSnhh10e4JOqwrA+Fx/+vMlPSpwZyprL7Y/TAK45KPHNHAnRXZEFpVP3miRLSfIFROq40OeYY=;
+        expires=Fri, 07-Aug-2026 07:49:07 GMT; path=/; Httponly
+      - TS012f422b=01ab44a5a8919a690bf4bf7ba5303ea03c904e91a38a590afb8114f04df3a4436306a33640e7cfa113354ec978d4cafc5f7fd8b3b08d3d5763ec791883630f7179e2470e61;
+        Path=/
+      - TS604574e3027=083fd6a492ab20008b0164fc3e8796b07fce5a19e2eb89da63d81b5c4932dc91bab6b0be8f486e44083fb45f0d113000c9182c58c96af40a6a27d7120d83d2c7d109f9566e6f45140a359042ea781fc51ff623b278ec344d6ddd20867d3d33d3;
+        Path=/
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

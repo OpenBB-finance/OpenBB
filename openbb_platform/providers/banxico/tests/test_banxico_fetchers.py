@@ -4,11 +4,25 @@ from datetime import date
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.service.user_service import UserService
 from pydantic import ValidationError
 
 from openbb_banxico.models.currency_historical import (
     BanxicoCurrencyHistoricalFetcher,
 )
+
+
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    """VCR configuration that prevents the Banxico token entering a cassette."""
+    return {
+        "filter_headers": [("Bmx-Token", "MOCK_TOKEN")],
+    }
 
 
 def test_currency_historical_normalizes_supported_symbol():
@@ -72,3 +86,19 @@ def test_currency_historical_requires_an_api_token():
 
     with pytest.raises(OpenBBError, match="banxico_api_key"):
         fetcher.extract_data(query, credentials={})
+
+
+@pytest.mark.record_http
+def test_currency_historical_fetcher(credentials=test_credentials):
+    """The complete fetcher flow works against the Banxico API."""
+    fetcher = BanxicoCurrencyHistoricalFetcher()
+    result = fetcher.test(
+        {
+            "symbol": "USDMXN",
+            "start_date": date(2024, 1, 2),
+            "end_date": date(2024, 1, 5),
+        },
+        credentials,
+    )
+
+    assert result is None
