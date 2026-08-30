@@ -17,7 +17,10 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(mo
 def vcr_config():
     """VCR configuration that prevents the Banxico token entering a cassette."""
     return {
-        "filter_headers": [("Bmx-Token", "MOCK_TOKEN")],
+        "filter_headers": [
+            ("Bmx-Token", "MOCK_TOKEN"),
+            ("Set-Cookie", "MOCK_COOKIE"),
+        ],
     }
 
 

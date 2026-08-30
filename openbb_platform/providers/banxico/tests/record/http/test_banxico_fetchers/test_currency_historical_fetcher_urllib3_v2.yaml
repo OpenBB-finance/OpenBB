@@ -40,12 +40,7 @@ interactions:
       Date:
       - Thu, 06 Aug 2026 23:49:06 GMT
       Set-Cookie:
-      - Hex11701280=!TkovSbFSnhh10e4JOqwrA+Fx/+vMlPSpwZyprL7Y/TAK45KPHNHAnRXZEFpVP3miRLSfIFROq40OeYY=;
-        expires=Fri, 07-Aug-2026 07:49:07 GMT; path=/; Httponly
-      - TS012f422b=01ab44a5a8919a690bf4bf7ba5303ea03c904e91a38a590afb8114f04df3a4436306a33640e7cfa113354ec978d4cafc5f7fd8b3b08d3d5763ec791883630f7179e2470e61;
-        Path=/
-      - TS604574e3027=083fd6a492ab20008b0164fc3e8796b07fce5a19e2eb89da63d81b5c4932dc91bab6b0be8f486e44083fb45f0d113000c9182c58c96af40a6a27d7120d83d2c7d109f9566e6f45140a359042ea781fc51ff623b278ec344d6ddd20867d3d33d3;
-        Path=/
+      - MOCK_COOKIE
       Transfer-Encoding:
       - chunked
     status:
