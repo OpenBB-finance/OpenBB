@@ -50,14 +50,19 @@ def test_currency_historical_transforms_banxico_observations():
     result = fetcher.transform_data(
         query,
         [
-            {"fecha": "02/01/2024", "dato": "16.9578"},
-            {"fecha": "03/01/2024", "dato": "N/E"},
+            {"fecha": "02/01/2024", "dato": "17.0297"},
+            {"fecha": "03/01/2024", "dato": "17.0492"},
+            {"fecha": "04/01/2024", "dato": "17.0458"},
+            {"fecha": "05/01/2024", "dato": "16.8987"},
         ],
     )
 
-    assert len(result) == 1
-    assert result[0].date == date(2024, 1, 2)
-    assert result[0].close == 16.9578
+    assert [(item.date, item.close) for item in result] == [
+        (date(2024, 1, 2), 17.0297),
+        (date(2024, 1, 3), 17.0492),
+        (date(2024, 1, 4), 17.0458),
+        (date(2024, 1, 5), 16.8987),
+    ]
 
 
 def test_currency_historical_requires_an_api_token():
