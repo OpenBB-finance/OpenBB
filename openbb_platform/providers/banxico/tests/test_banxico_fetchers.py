@@ -3,18 +3,14 @@
 from datetime import date
 
 import pytest
+from openbb_banxico.models.currency_historical import (
+    BanxicoCurrencyHistoricalFetcher,
+)
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.user_service import UserService
 from pydantic import ValidationError
 
-from openbb_banxico.models.currency_historical import (
-    BanxicoCurrencyHistoricalFetcher,
-)
-
-
-test_credentials = UserService().default_user_settings.credentials.model_dump(
-    mode="json"
-)
+test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
 
 
 @pytest.fixture(scope="module")
@@ -77,6 +73,24 @@ def test_currency_historical_transforms_banxico_observations():
         (date(2024, 1, 4), 17.0458),
         (date(2024, 1, 5), 16.8987),
     ]
+
+
+def test_currency_historical_skips_unavailable_observations():
+    """Observations marked N/E by Banxico are not returned as prices."""
+    fetcher = BanxicoCurrencyHistoricalFetcher()
+    query = fetcher.transform_query({"symbol": "USDMXN"})
+
+    result = fetcher.transform_data(
+        query,
+        [
+            {"fecha": "02/01/2024", "dato": "17.0297"},
+            {"fecha": "03/01/2024", "dato": "N/E"},
+        ],
+    )
+
+    assert len(result) == 1
+    assert result[0].date == date(2024, 1, 2)
+    assert result[0].close == 17.0297
 
 
 def test_currency_historical_requires_an_api_token():

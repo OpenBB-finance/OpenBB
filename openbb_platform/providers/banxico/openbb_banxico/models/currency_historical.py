@@ -15,7 +15,6 @@ from openbb_core.provider.standard_models.currency_historical import (
 from openbb_core.provider.utils.helpers import make_request
 from pydantic import field_validator
 
-
 BASE_URL = "https://www.banxico.org.mx/SieAPIRest/service/v1/series"
 USD_MXN_FIX_SERIES_ID = "SF43718"
 
@@ -33,9 +32,7 @@ class BanxicoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
         """Restrict the first version of this provider to the supported pair."""
         value = value.upper().replace("-", "")
         if value != "USDMXN":
-            raise ValueError(
-                "Banxico currently supports only the USDMXN currency pair."
-            )
+            raise ValueError("Banxico currently supports only the USDMXN currency pair.")
         return value
 
 
@@ -74,23 +71,16 @@ class BanxicoCurrencyHistoricalFetcher(
         api_key = credentials.get("banxico_api_key") if credentials else ""
         if not api_key:
             raise OpenBBError(
-                "A Banxico API token is required. Configure the "
-                "'banxico_api_key' credential before making this request."
+                "A Banxico API token is required. Configure the 'banxico_api_key' credential before making this request."
             )
 
         start_date = query.start_date.isoformat() if query.start_date else ""
         end_date = query.end_date.isoformat() if query.end_date else ""
-        url = (
-            f"{BASE_URL}/{USD_MXN_FIX_SERIES_ID}/datos/"
-            f"{start_date}/{end_date}"
-        )
+        url = f"{BASE_URL}/{USD_MXN_FIX_SERIES_ID}/datos/{start_date}/{end_date}"
         response = make_request(url, headers={"Bmx-Token": api_key})
 
         if response.status_code != 200:
-            raise OpenBBError(
-                "Failed to fetch data from Banxico. "
-                f"Status code: {response.status_code}."
-            )
+            raise OpenBBError(f"Failed to fetch data from Banxico. Status code: {response.status_code}.")
 
         try:
             series = response.json()["bmx"]["series"]
@@ -108,9 +98,7 @@ class BanxicoCurrencyHistoricalFetcher(
         return [
             BanxicoCurrencyHistoricalData.model_validate(
                 {
-                    "date": datetime.strptime(
-                        observation["fecha"], "%d/%m/%Y"
-                    ).date(),
+                    "date": datetime.strptime(observation["fecha"], "%d/%m/%Y").date(),
                     "close": observation["dato"],
                 }
             )
