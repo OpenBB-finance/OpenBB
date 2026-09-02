@@ -266,7 +266,7 @@ def clean_xml(xml_content):
     return xml_content
 
 
-async def get_form_4_data(url) -> dict:
+async def get_form_4_data(url, session=None) -> dict:
     """Get the form 4 data."""
     # pylint: disable=import-outside-toplevel
     from warnings import warn  # noqa
@@ -277,11 +277,13 @@ async def get_form_4_data(url) -> dict:
         """Response callback function."""
         return await response.read()
 
+    session_kwargs = {"session": session} if session is not None else {}
     response = await amake_request(
         url,
         headers=SEC_HEADERS,
         response_callback=response_callback,
         timeout=30,
+        **session_kwargs,
     )  # type: ignore
     response_text = response.decode("utf-8")  # type: ignore
 
@@ -500,6 +502,7 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
     import sqlite3
     from numpy import nan
     from openbb_core.app.utils import get_user_cache_directory
+    from openbb_core.provider.utils.helpers import get_async_requests_session
     from pandas import DataFrame
 
     results: list = []
@@ -547,9 +550,9 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
         elif use_cache is False:
             non_cached_urls = urls
 
-        async def get_one(url):
+        async def get_one(url, session):
             """Get the data for one URL."""
-            data = await get_form_4_data(url)
+            data = await get_form_4_data(url, session=session)
             result = await parse_form_4_data(data)
             if not result and use_cache is True:
                 df = DataFrame([{"filing_url": url}])
@@ -590,13 +593,16 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
             )
 
         if len(non_cached_urls) > 0:
-            async with asyncio.Semaphore(8):
+            session = await get_async_requests_session()
+            try:
                 for url_chunk in [
                     non_cached_urls[i : i + 8]
                     for i in range(0, len(non_cached_urls), 8)
                 ]:
-                    await asyncio.gather(*[get_one(url) for url in url_chunk])
+                    await asyncio.gather(*[get_one(url, session) for url in url_chunk])
                     await asyncio.sleep(1.125)
+            finally:
+                await session.close()
 
         if use_cache is True:
             close_db(conn, db_path)
