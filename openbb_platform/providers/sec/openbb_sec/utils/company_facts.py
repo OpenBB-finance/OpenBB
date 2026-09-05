@@ -532,7 +532,7 @@ async def get_standardized_financials(
     period : PeriodType
         Which periods to return.
     use_cache : bool
-        Whether to use in-memory HTTP caching (6-hour TTL).
+        Whether to use persistent HTTP caching (6-hour TTL).
     pit_mode : bool
         If True, skip the 10-K vintage override for quarterly data,
         preserving point-in-time fidelity for backtesting.
@@ -572,12 +572,22 @@ async def get_standardized_financials(
     async def _fetch(cik_str: str) -> dict:
         url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_str}.json"
         if use_cache:
+            from aiohttp_client_cache import (
+                SQLiteBackend,
+            )  # pylint: disable=import-outside-toplevel
             from aiohttp_client_cache.session import (
                 CachedSession,
             )  # pylint: disable=import-outside-toplevel
+            from openbb_core.app.utils import (
+                get_user_cache_directory,
+            )  # pylint: disable=import-outside-toplevel
 
-            async with CachedSession(expire_after=3600 * 6) as session:
+            cache_dir = f"{get_user_cache_directory()}/http/sec_company_facts"
+            async with CachedSession(
+                cache=SQLiteBackend(cache_dir, expire_after=3600 * 6)
+            ) as session:
                 try:
+                    await session.delete_expired_responses()
                     resp = await amake_request(
                         url, headers=HEADERS, session=session, timeout=300
                     )
