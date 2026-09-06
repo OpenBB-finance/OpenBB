@@ -513,6 +513,7 @@ async def get_standardized_financials(
     use_cache: bool = True,
     pit_mode: bool = False,
     include_preliminary: bool = False,
+    statement: str | None = None,
 ) -> StandardizedStatements:
     """Fetch company facts from SEC and return standardized financial statements.
 
@@ -539,6 +540,10 @@ async def get_standardized_financials(
     include_preliminary : bool
         If True, include 8-K filing data for periods not yet covered
         by a 10-Q/K.
+    statement : str | None
+        Which statement the caller needs.  Only ``"income_statement"``
+        (or ``None``) triggers the class-dimensioned per-share fallback,
+        which is income-statement-only and costs extra SEC requests.
 
     Returns
     -------
@@ -547,6 +552,7 @@ async def get_standardized_financials(
     # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.provider.utils.helpers import amake_request
+    from openbb_sec.utils._dimensional_facts import add_dimensional_per_share_facts
     from openbb_sec.utils.definitions import HEADERS
     from openbb_sec.utils.helpers import symbol_map
 
@@ -602,6 +608,17 @@ async def get_standardized_financials(
             "cik": primary.get("cik", ""),
             "facts": merged_facts,
         }
+
+    # The per-share fields this fills are income-statement-only, so balance
+    # sheet and cash flow requests must not pay for the extra SEC downloads.
+    if statement in (None, "income_statement"):
+        await add_dimensional_per_share_facts(
+            facts_json,
+            symbol=symbol,
+            period=period,
+            fiscal_years=fiscal_years,
+            use_cache=use_cache,
+        )
 
     return resolve_company_facts(
         facts_json,

@@ -430,6 +430,7 @@ class SecCashFlowStatementGrowthFetcher(
             use_cache=query.use_cache,
             include_preliminary=query.include_preliminary,
             pit_mode=query.pit_mode,
+            statement="cash_flow",
         )
         return {"result": result, "statement": "cash_flow"}
 

@@ -620,6 +620,7 @@ class SecBalanceSheetGrowthFetcher(
             use_cache=query.use_cache,
             include_preliminary=query.include_preliminary,
             pit_mode=query.pit_mode,
+            statement="balance_sheet",
         )
         return {"result": result, "statement": "balance_sheet"}
 
