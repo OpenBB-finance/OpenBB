@@ -2,8 +2,11 @@
 
 import logging
 from datetime import date as dateType
+from threading import Lock
 
 from openbb_core.app.model.abstract.error import OpenBBError
+
+_FORM4_CACHE_LOCK = Lock()
 
 SEC_HEADERS: dict[str, str] = {
     "User-Agent": "Jesus Window Washing jesus@stainedglass.com",
@@ -504,9 +507,14 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
 
     results: list = []
     non_cached_urls: list = []
+    conn = None
+    db_path = None
+    cache_lock_acquired = False
 
     try:
         if use_cache is True:
+            await asyncio.to_thread(_FORM4_CACHE_LOCK.acquire)
+            cache_lock_acquired = True
             db_dir = f"{get_user_cache_directory()}/sql"
             db_path = f"{db_dir}/sec_form4.db"
             # Decompress the database file
@@ -598,19 +606,26 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
                     await asyncio.gather(*[get_one(url) for url in url_chunk])
                     await asyncio.sleep(1.125)
 
-        if use_cache is True:
-            close_db(conn, db_path)
+        if conn is not None and db_path is not None:
+            connection = conn
+            conn = None
+            close_db(connection, db_path)
 
         results = [entry for entry in results if entry.get("filing_date")]
 
         return sorted(results, key=lambda x: x["filing_date"], reverse=True)
 
     except Exception as e:  # pylint: disable=broad-except
-        if use_cache is True:
-            close_db(conn, db_path)
+        if conn is not None and db_path is not None:
+            connection = conn
+            conn = None
+            close_db(connection, db_path)
         raise OpenBBError(
             f"Unexpected error while downloading and processing data -> {e.__class__.__name__}: {e}"
         ) from e
+    finally:
+        if cache_lock_acquired:
+            _FORM4_CACHE_LOCK.release()
 
 
 def get_cached_data(urls, conn):
