@@ -2,7 +2,6 @@
 
 import asyncio
 import json
-from types import SimpleNamespace
 
 import pytest
 from fastapi.exceptions import ResponseValidationError
@@ -22,6 +21,18 @@ class MockRequestParams(BaseModel):
     value: str
 
 
+class MockRequest:
+    """Minimal request double with query parameters and an optional body."""
+
+    def __init__(self, body: bytes = b""):
+        self.query_params = {}
+        self._body = body
+
+    async def body(self) -> bytes:
+        """Return the configured request body."""
+        return self._body
+
+
 def get_response_detail(response):
     """Return the JSON response detail."""
     return json.loads(response.body)["detail"]
@@ -32,7 +43,7 @@ def test_validation_missing_query_param_returns_422():
     with pytest.raises(ValidationError) as exc_info:
         MockQueryParams.model_validate({})
 
-    request = SimpleNamespace(query_params={})
+    request = MockRequest()
     response = asyncio.run(ExceptionHandlers.validation(request, exc_info.value))
 
     assert response.status_code == 422
@@ -52,7 +63,7 @@ def test_validation_response_error_returns_422():
             }
         ]
     )
-    request = SimpleNamespace(query_params={})
+    request = MockRequest()
 
     response = asyncio.run(ExceptionHandlers.validation(request, error))
 
@@ -66,7 +77,17 @@ def test_validation_non_query_params_error_returns_500():
     with pytest.raises(ValidationError) as exc_info:
         MockRequestParams.model_validate({})
 
-    request = SimpleNamespace(query_params={})
+    request = MockRequest(body=b"{}")
     response = asyncio.run(ExceptionHandlers.validation(request, exc_info.value))
+
+    assert response.status_code == 500
+
+
+def test_validation_query_params_model_bound_to_body_is_not_query_scoped():
+    """Do not relabel body-bound QueryParams errors as query parameters."""
+    with pytest.raises(ValidationError) as exc_info:
+        MockQueryParams.model_validate({})
+
+    response = asyncio.run(ExceptionHandlers.validation(MockRequest(body=b"{}"), exc_info.value))
 
     assert response.status_code == 500
