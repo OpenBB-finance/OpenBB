@@ -575,8 +575,11 @@ async def get_standardized_financials(
             from aiohttp_client_cache.session import (
                 CachedSession,
             )  # pylint: disable=import-outside-toplevel
+            from aiohttp_client_cache import SQLiteBackend
+            from openbb_core.app.utils import get_user_cache_directory
 
-            async with CachedSession(expire_after=3600 * 6) as session:
+            cache_dir = f"{get_user_cache_directory()}/http/sec_company_facts"
+            async with CachedSession(cache=SQLiteBackend(cache_dir, expire_after=3600 * 6)) as session:
                 try:
                     resp = await amake_request(
                         url, headers=HEADERS, session=session, timeout=300
