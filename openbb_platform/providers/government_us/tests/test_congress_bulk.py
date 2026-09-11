@@ -1781,6 +1781,25 @@ def test_member_committees(monkeypatch):
     assert any(c["title"] == "Chair" for c in out)
 
 
+async def _fake_vv_members(congress, chamber):
+    """One member mapped to an icpsr id, for the passage-index tests."""
+    return {"C000127": "39310"}
+
+
+async def _fake_vv_rollcalls(congress, chamber):
+    """Two final-passage questions and one procedural question."""
+    return {
+        "1": {"question": "On Passage of the Bill"},
+        "2": {"question": "On the Motion to Recommit"},
+        "3": {"question": "On the Joint Resolution"},
+    }
+
+
+async def _fake_vv_votes(congress, chamber):
+    """A yea on rollcall 1 and a nay on rollcall 3, plus an unknown member."""
+    return {"39310": [("1", "1"), ("2", "6"), ("3", "4")], "99999": [("1", "1")]}
+
+
 def _point_store_at(monkeypatch, tmp_path):
     """Route the cache/store at an isolated temp dir and start it empty."""
     from openbb_government_us.congress.utils import store
@@ -2053,10 +2072,143 @@ def test_member_votes_short_circuits_old_congresses(monkeypatch):
 
 
 def test_member_passage_record_absent(monkeypatch, tmp_path):
-    """A member with no ingested votes yields a zeroed record."""
+    """A member with no ingested votes and no buildable units yields a zeroed record."""
     _point_store_at(monkeypatch, tmp_path)
+
+    async def _no_units(bioguide):
+        return None
+
+    monkeypatch.setattr(bulk, "ensure_member_passage", _no_units)
+
     rec = asyncio.run(bulk.member_passage_record("C000127"))
     assert rec == {"yea": 0, "nay": 0, "total": 0, "yea_pct": None}
+
+
+def test_member_passage_record_builds_on_demand(monkeypatch, tmp_path):
+    """An unbuilt index is built for the member being viewed.
+
+    Only the startup warmup built this, behind minutes of bill archives, so any
+    bio opened first - or after a restart - reported no voting record at all.
+    """
+    _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk.clear()
+
+    async def _members():
+        return [
+            {
+                "id": {"bioguide": "C000127"},
+                "terms": [{"start": "2021-01-03", "type": "sen"}],
+            }
+        ]
+
+    monkeypatch.setattr(bulk, "load_members", _members)
+    monkeypatch.setattr(bulk, "load_voteview_members", _fake_vv_members)
+    monkeypatch.setattr(bulk, "load_voteview_rollcalls", _fake_vv_rollcalls)
+    monkeypatch.setattr(bulk, "load_voteview_votes", _fake_vv_votes)
+
+    rec = asyncio.run(bulk.member_passage_record("C000127"))
+
+    assert rec == {"yea": 1, "nay": 1, "total": 2, "yea_pct": 50.0}
+
+
+def test_member_passage_record_survives_a_failed_build(monkeypatch, tmp_path, caplog):
+    """A build failure logs and still renders the bio with an empty tally."""
+    _point_store_at(monkeypatch, tmp_path)
+
+    async def _boom(bioguide):
+        raise OpenBBError("voteview unreachable")
+
+    monkeypatch.setattr(bulk, "ensure_member_passage", _boom)
+
+    with caplog.at_level("ERROR"):
+        rec = asyncio.run(bulk.member_passage_record("C000127"))
+
+    assert rec["total"] == 0
+    assert "could not build the passage index" in caplog.text
+
+
+def test_ensure_member_passage_skips_already_loaded_units(monkeypatch, tmp_path):
+    """Units already in the store are not re-downloaded."""
+    store = _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk.clear()
+
+    async def _members():
+        return [
+            {
+                "id": {"bioguide": "C000127"},
+                "terms": [{"start": "2021-01-03", "type": "sen"}],
+            }
+        ]
+
+    calls: list = []
+
+    async def _vv_members(congress, chamber):
+        calls.append((congress, chamber))
+        return {"C000127": "39310"}
+
+    monkeypatch.setattr(bulk, "load_members", _members)
+    monkeypatch.setattr(bulk, "load_voteview_members", _vv_members)
+    monkeypatch.setattr(bulk, "load_voteview_rollcalls", _fake_vv_rollcalls)
+    monkeypatch.setattr(bulk, "load_voteview_votes", _fake_vv_votes)
+
+    asyncio.run(bulk.ensure_member_passage("C000127"))
+    assert len(calls) == 1
+
+    # Already stored, and the in-process memo is cleared, so the store guard alone
+    # has to prevent a second download.
+    BillsState().bulk.clear()
+    asyncio.run(bulk.ensure_member_passage("C000127"))
+    assert len(calls) == 1
+    assert store.loaded_keys("passage") == {"117-S"}
+
+
+def test_ensure_member_passage_tolerates_a_bad_unit(monkeypatch, tmp_path, caplog):
+    """One unavailable Voteview file does not sink the rest of the member's units."""
+    _point_store_at(monkeypatch, tmp_path)
+    BillsState().bulk.clear()
+
+    async def _members():
+        return [
+            {
+                "id": {"bioguide": "C000127"},
+                "terms": [
+                    {"start": "2021-01-03", "type": "sen"},
+                    {"start": "2023-01-03", "type": "sen"},
+                ],
+            }
+        ]
+
+    async def _vv_members(congress, chamber):
+        if congress == 118:
+            raise OpenBBError("404 from voteview")
+        return {"C000127": "39310"}
+
+    monkeypatch.setattr(bulk, "load_members", _members)
+    monkeypatch.setattr(bulk, "load_voteview_members", _vv_members)
+    monkeypatch.setattr(bulk, "load_voteview_rollcalls", _fake_vv_rollcalls)
+    monkeypatch.setattr(bulk, "load_voteview_votes", _fake_vv_votes)
+
+    with caplog.at_level("WARNING"):
+        asyncio.run(bulk.ensure_member_passage("C000127"))
+
+    assert "passage votes for S118 unavailable" in caplog.text
+    assert asyncio.run(bulk.member_passage_record("C000127"))["total"] == 2
+
+
+def test_ensure_member_passage_no_terms(monkeypatch, tmp_path):
+    """A record with no datable terms asks for nothing."""
+    _point_store_at(monkeypatch, tmp_path)
+
+    async def _members():
+        return [{"id": {"bioguide": "C000127"}, "terms": []}]
+
+    async def _never(*_args, **_kwargs):
+        raise AssertionError("no units should be ingested")
+
+    monkeypatch.setattr(bulk, "load_members", _members)
+    monkeypatch.setattr(bulk, "load_voteview_members", _never)
+
+    asyncio.run(bulk.ensure_member_passage("C000127"))
 
 
 def test_is_passage_question():
@@ -2114,6 +2266,11 @@ def test_build_passage_index(monkeypatch, tmp_path):
     monkeypatch.setattr(bulk, "load_voteview_members", _members)
     monkeypatch.setattr(bulk, "load_voteview_rollcalls", _rollcalls)
     monkeypatch.setattr(bulk, "load_voteview_votes", _votes)
+
+    async def _already_built(bioguide):
+        return None
+
+    monkeypatch.setattr(bulk, "ensure_member_passage", _already_built)
 
     asyncio.run(bulk.build_passage_index([119, 118, 117]))
     rec = asyncio.run(bulk.member_passage_record("C000127"))

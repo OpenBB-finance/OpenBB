@@ -2069,7 +2069,13 @@ async def build_passage_index(
 
     async def _unit(congress: int, chamber: str) -> None:
         async with semaphore:
-            await _ingest_passage(congress, chamber, keep=congress in keep)
+            # Shares the per-unit memo with the on-demand path so a bio opened
+            # mid-warmup cannot start a second download of the same files.
+            async def _load():
+                await _ingest_passage(congress, chamber, keep=congress in keep)
+                return True
+
+            await _memoized(f"PASSAGE_{congress}_{chamber}", _load)
 
     await asyncio.gather(*[_unit(c, ch) for c, ch in units])
     logger.info(
@@ -2130,9 +2136,76 @@ def _passage_ratio(yea: int, nay: int) -> dict:
     }
 
 
+async def ensure_passage(congress: int, chamber: str) -> None:
+    """Ingest one Congress/chamber's Voteview passage tallies if not already stored."""
+    from openbb_government_us.congress.utils import store
+
+    async def _load():
+        if f"{congress}-{chamber}" not in store.loaded_keys("passage"):
+            await _ingest_passage(congress, chamber, keep=False)
+        return True
+
+    await _memoized(f"PASSAGE_{congress}_{chamber}", _load)
+
+
+async def ensure_member_passage(bioguide: str) -> None:
+    """Build the passage index for every Congress/chamber a member served.
+
+    The startup warmup builds this index too, but it runs behind the bill
+    archives and takes minutes, so a bio opened before it gets there - or after a
+    warmup that failed or was restarted - would report no voting record at all.
+
+    Every unit the member served is ingested, not just the missing ones nearest
+    to hand, because ``get_passage`` sums across all of them: a partial build
+    would answer with a confidently wrong career tally and never correct itself.
+    """
+    from openbb_government_us.congress.utils import store
+
+    record = await load_member_record(bioguide)
+    units = member_service(record)
+
+    if not units:
+        return
+
+    loaded = store.loaded_keys("passage")
+    missing = [(c, ch) for c, ch in units if f"{c}-{ch}" not in loaded]
+
+    if not missing:
+        return
+
+    logger.info(
+        "congress_gov: building passage votes for %s (%d Congress/chamber file(s))...",
+        bioguide,
+        len(missing),
+    )
+    semaphore = asyncio.Semaphore(_INDEX_CONCURRENCY)
+
+    async def _unit(congress: int, chamber: str) -> None:
+        async with semaphore:
+            try:
+                await ensure_passage(congress, chamber)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "congress_gov: passage votes for %s%s unavailable: %s",
+                    chamber,
+                    congress,
+                    exc,
+                )
+
+    await asyncio.gather(*[_unit(c, ch) for c, ch in missing])
+
+
 async def member_passage_record(bioguide: str) -> dict:
     """Return a member's career Yea/Nay record on final-passage votes from the store."""
     from openbb_government_us.congress.utils import store
+
+    try:
+        await ensure_member_passage(bioguide)
+    except Exception as exc:  # noqa: BLE001
+        # A bio page is still worth rendering without its voting panel.
+        logger.error(
+            "congress_gov: could not build the passage index for %s: %s", bioguide, exc
+        )
 
     row = store.get_passage(bioguide)
     yea, nay = row if row else (0, 0)
