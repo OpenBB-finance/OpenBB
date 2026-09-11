@@ -111,6 +111,8 @@ class CongressCommitteeInfoFetcher(
 ):
     """Congress Committee Info Fetcher."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressCommitteeInfoQueryParams:
         """Transform the query params."""

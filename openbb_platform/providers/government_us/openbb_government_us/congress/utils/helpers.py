@@ -69,18 +69,36 @@ def download_bills(urls: list[str]) -> list:
     return results
 
 
-async def get_bill_text_choices(bill_id: str, is_workspace: bool = False) -> list:
+async def get_bill_text_choices(
+    bill_id: str,
+    is_workspace: bool = False,
+    credentials: dict[str, str] | None = None,
+) -> list:
     """Fetch the direct download links for the available text versions of the specified bill."""
-    from openbb_government_us.congress.utils import store
+    import logging
+
     from openbb_government_us.congress.utils.bulk import (
+        BillNotFound,
         derive_text_formats,
-        ensure_billstatus,
-        parse_bill_ref,
+        load_bill_record,
     )
 
-    congress, bill_type, number = parse_bill_ref(bill_id)
-    await ensure_billstatus(congress, bill_type)
-    record = store.get_bill(f"{congress}-{bill_type.lower()}-{number}")
+    try:
+        record = await load_bill_record(bill_id, credentials)
+    except BillNotFound:
+        # No such bill - falls through to the same "no text" answer as a bill
+        # that exists but has none.
+        record = None
+    except Exception as exc:  # noqa: BLE001
+        # A failed lookup is not the same as a bill having no text; reporting it
+        # as "no text available" hides a missing key or an upstream outage.
+        logging.getLogger("uvicorn.error").error(
+            "congress_gov: could not load %s for its text versions: %s", bill_id, exc
+        )
+        if is_workspace is True:
+            return [{"label": f"Could not load this bill: {exc}", "value": None}]
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
     versions = record.get("textVersions", []) if record else []
 
     seen_urls: set = set()

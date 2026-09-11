@@ -236,7 +236,7 @@ def test_bill_info_extract_found(monkeypatch):
     """aextract_data returns the record load_bill_record yields for the bill id."""
     captured: list = []
 
-    async def _fake(bill_id):
+    async def _fake(bill_id, credentials=None):
         captured.append(bill_id)
         return {"title": "Test Bill", "number": 1947}
 
@@ -252,7 +252,7 @@ def test_bill_info_extract_found(monkeypatch):
 def test_bill_info_extract_not_found(monkeypatch):
     """A missing bill propagates the OpenBBError from load_bill_record."""
 
-    async def _fake(bill_id):
+    async def _fake(bill_id, credentials=None):
         raise OpenBBError("Bill not found in bulk data: 119/hr/999")
 
     monkeypatch.setattr(
@@ -266,7 +266,7 @@ def test_bill_info_extract_not_found(monkeypatch):
 def test_bill_info_extract_summary_merge(monkeypatch):
     """The BILLSUM-merged summaries flow through to the extracted record."""
 
-    async def _fake(bill_id):
+    async def _fake(bill_id, credentials=None):
         return {
             "title": "Merged",
             "number": 1,

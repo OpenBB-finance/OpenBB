@@ -65,6 +65,8 @@ class CongressBillInfoFetcher(
 ):
     """Congress Gov Bills Info Fetcher."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressBillInfoQueryParams:
         """Transform the query parameters into a CongressBillInfoQueryParams object."""
@@ -79,7 +81,7 @@ class CongressBillInfoFetcher(
         """Extract a bill's full record from the GovInfo bulk archives."""
         from openbb_government_us.congress.utils.bulk import load_bill_record
 
-        return await load_bill_record(query.bill_id)
+        return await load_bill_record(query.bill_id, credentials)
 
     @staticmethod
     def transform_data(  # noqa: PLR0912,PLR0914

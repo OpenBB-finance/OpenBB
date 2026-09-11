@@ -40,7 +40,10 @@ congress_gov_provider = Provider(
     description="""Legislative data from the U.S. Congress. Bills, bill metadata,
 summaries, bill text, amendments, enacted laws, calendars, mandated reports, and
 committees are all sourced from keyless public data (GovInfo bulk data, the
-GovInfo link service, and the unitedstates dataset). No API key is required.""",
+GovInfo link service, and the unitedstates dataset). No API key is required for
+the 108th Congress onward; older Congresses predate the GovInfo bulk archives
+and are served from the Congress.gov API, which needs a free API key.""",
+    credentials=["api_key"],
     fetcher_dict={
         "CongressBills": CongressBillsFetcher,
         "CongressLaws": CongressLawsFetcher,
@@ -59,7 +62,12 @@ GovInfo link service, and the unitedstates dataset). No API key is required.""",
         "CongressMemberLegislation": CongressMemberLegislationFetcher,
     },
     repr_name="Congress.gov",
-    instructions="""All endpoints use public, keyless data from GovInfo (bulk data
+    instructions="""Most endpoints use public, keyless data from GovInfo (bulk data
 and the link service) and the unitedstates dataset, so no credentials are
-required.""",
+required for the 108th Congress (2003) onward.
+
+GovInfo does not publish bulk archives for earlier Congresses. Those requests
+fall back to the Congress.gov API, which reaches back to the 93rd Congress
+(1973) and requires an API key. Sign up for a free key at
+https://api.congress.gov/sign-up/ and set it as 'congress_gov_api_key'.""",
 )

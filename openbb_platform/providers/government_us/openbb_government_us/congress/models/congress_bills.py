@@ -195,6 +195,8 @@ class CongressBillsFetcher(
 ):
     """Transform the query, extract and transform the data from the Congress API."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressBillsQueryParams:
         """Transform the query params."""
@@ -230,6 +232,7 @@ class CongressBillsFetcher(
             limit=query.limit,
             offset=query.offset,
             sort_by=query.sort_by,
+            credentials=credentials,
         )
 
     @staticmethod

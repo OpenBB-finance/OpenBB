@@ -136,6 +136,8 @@ class CongressCalendarsFetcher(
 ):
     """Transform the query, extract and transform data from the GovInfo CCAL sitemaps."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressCalendarsQueryParams:
         """Transform the query params."""

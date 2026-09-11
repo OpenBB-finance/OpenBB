@@ -133,7 +133,7 @@ def test_congress_bills_fetcher(monkeypatch, credentials=test_credentials):
 def test_congress_bill_info_fetcher(monkeypatch, credentials=test_credentials):
     """Test Congress Bill Info fetcher offline against the GovInfo bulk path."""
 
-    async def _fake_load_bill_record(bill_id):
+    async def _fake_load_bill_record(bill_id, credentials=None):
         return dict(_BULK_BILL_RECORD)
 
     monkeypatch.setattr(

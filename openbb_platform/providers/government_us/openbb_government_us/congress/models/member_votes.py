@@ -92,6 +92,8 @@ class CongressMemberVotesFetcher(
 ):
     """Transform the query, extract and transform data from Voteview."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressMemberVotesQueryParams:
         """Transform the query params."""

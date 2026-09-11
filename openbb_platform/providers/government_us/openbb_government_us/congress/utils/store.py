@@ -36,7 +36,7 @@ def _connect():
     import os
     import sqlite3
 
-    from openbb_government_us.congress.utils.bulk import _cache_dir
+    from openbb_government_us.congress.utils.bulk import _cache_dir, logger
 
     cache_dir = _cache_dir()
     if not cache_dir:
@@ -51,7 +51,10 @@ def _connect():
             conn.commit()
             _CREATED.add(path)
         return conn
-    except sqlite3.Error:
+    except sqlite3.Error as exc:
+        logger.error(
+            "congress_gov: could not open the cache database %r: %s", path, exc
+        )
         return None
 
 
@@ -128,12 +131,100 @@ def _write_meta_and_legislation(conn, congress, bill_type, meta_rows, leg_rows) 
 
 
 def ingest_bills(congress: int, bill_type: str, records: list, leg_rows: list) -> None:
-    """Store a Congress/type's full bills (compressed), amendments, meta, and sponsors."""
-    bill_rows = []
+    """Store a Congress/type's full bills (compressed), amendments, meta, and sponsors.
+
+    Bills are keyed by ``bill_id``, so a duplicate anywhere in ``records`` would
+    abort the whole archive's insert. They are de-duplicated here (last record
+    wins) to keep one malformed entry from costing every other bill in the file.
+    """
+    from openbb_government_us.congress.utils.bulk import logger
+
+    bill_rows: dict = {}
     amendment_rows = []
     for record in records:
         latest = record.get("latestAction") or {}
-        bill_rows.append(
+        bill_rows[record.get("bill_id")] = (
+            record.get("bill_id"),
+            congress,
+            bill_type,
+            record.get("number"),
+            record.get("type"),
+            record.get("title"),
+            record.get("originChamber"),
+            record.get("originChamberCode"),
+            (record.get("updateDate") or "")[:10],
+            record.get("updateDateIncludingText"),
+            latest.get("actionDate"),
+            latest.get("text"),
+            _pack(record),
+        )
+        for amendment in record.get("amendments") or []:
+            amendment_rows.append(
+                (
+                    amendment.get("amendment_id"),
+                    congress,
+                    (amendment.get("type") or "").lower(),
+                    amendment.get("number"),
+                    _pack(amendment),
+                )
+            )
+    if len(bill_rows) != len(records):
+        logger.warning(
+            "congress_gov: %s-%s had %d duplicate bill id(s); kept the last of each",
+            congress,
+            bill_type,
+            len(records) - len(bill_rows),
+        )
+
+    meta_rows = _meta_rows(records, congress, bill_type)
+
+    conn = _connect()
+    if conn is None:
+        return
+    try:
+        conn.execute(
+            "DELETE FROM bills WHERE congress = ? AND bill_type = ?",
+            (congress, bill_type),
+        )
+        conn.executemany(
+            "INSERT OR REPLACE INTO bills (bill_id, congress, bill_type, number, "
+            "type_display, title, origin_chamber, origin_chamber_code, update_date, "
+            "update_date_text, latest_action_date, latest_action_text, record) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            list(bill_rows.values()),
+        )
+        conn.executemany(
+            "INSERT OR REPLACE INTO amendments "
+            "(amendment_id, congress, amendment_type, number, record) "
+            "VALUES (?, ?, ?, ?, ?)",
+            amendment_rows,
+        )
+        _write_meta_and_legislation(conn, congress, bill_type, meta_rows, leg_rows)
+        conn.execute(
+            "INSERT OR IGNORE INTO loaded (kind, key) VALUES ('bills', ?)",
+            (f"{congress}-{bill_type}",),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def upsert_bill(congress: int, bill_type: str, record: dict) -> None:
+    """Replace a single bill's row, leaving the rest of the unit untouched.
+
+    Used to hydrate one Congress.gov API bill in place once its full detail has
+    been fetched, without re-writing the whole Congress/type.
+    """
+    latest = record.get("latestAction") or {}
+    conn = _connect()
+    if conn is None:
+        return
+    try:
+        conn.execute(
+            "INSERT OR REPLACE INTO bills (bill_id, congress, bill_type, number, "
+            "type_display, title, origin_chamber, origin_chamber_code, update_date, "
+            "update_date_text, latest_action_date, latest_action_text, record) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 record.get("bill_id"),
                 congress,
@@ -148,45 +239,13 @@ def ingest_bills(congress: int, bill_type: str, records: list, leg_rows: list) -
                 latest.get("actionDate"),
                 latest.get("text"),
                 _pack(record),
-            )
-        )
-        for amendment in record.get("amendments") or []:
-            amendment_rows.append(
-                (
-                    amendment.get("amendment_id"),
-                    congress,
-                    (amendment.get("type") or "").lower(),
-                    amendment.get("number"),
-                    _pack(amendment),
-                )
-            )
-    meta_rows = _meta_rows(records, congress, bill_type)
-
-    conn = _connect()
-    if conn is None:
-        return
-    try:
-        conn.execute(
-            "DELETE FROM bills WHERE congress = ? AND bill_type = ?",
-            (congress, bill_type),
+            ),
         )
         conn.executemany(
-            "INSERT INTO bills (bill_id, congress, bill_type, number, type_display, "
-            "title, origin_chamber, origin_chamber_code, update_date, "
-            "update_date_text, latest_action_date, latest_action_text, record) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            bill_rows,
-        )
-        conn.executemany(
-            "INSERT OR REPLACE INTO amendments "
-            "(amendment_id, congress, amendment_type, number, record) "
-            "VALUES (?, ?, ?, ?, ?)",
-            amendment_rows,
-        )
-        _write_meta_and_legislation(conn, congress, bill_type, meta_rows, leg_rows)
-        conn.execute(
-            "INSERT OR IGNORE INTO loaded (kind, key) VALUES ('bills', ?)",
-            (f"{congress}-{bill_type}",),
+            "INSERT OR REPLACE INTO bill_meta (bill_id, congress, bill_type, title, "
+            "introduced_date, latest_action_date, latest_action) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            _meta_rows([record], congress, bill_type),
         )
         conn.commit()
     finally:

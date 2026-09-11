@@ -405,3 +405,53 @@ def test_search_async_merge_chambers(monkeypatch):
         )
     )
     assert len(result) == 2
+
+
+def test_get_bill_text_choices_surfaces_a_lookup_failure(monkeypatch):
+    """A failed lookup is reported, not disguised as "no text available".
+
+    Swallowing it hid the real cause of empty pickers: the router never passed
+    credentials, so pre-108 bills failed on the missing key and looked textless.
+    """
+    from openbb_government_us.congress.utils import bulk
+
+    async def _boom(bill_id, credentials=None):
+        raise bulk.OpenBBError("A Congress.gov API key is required")
+
+    monkeypatch.setattr(bulk, "load_bill_record", _boom)
+
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(helpers.get_bill_text_choices("95/hr/8410"))
+
+    assert exc.value.status_code == 502
+    assert "API key is required" in str(exc.value.detail)
+
+
+def test_get_bill_text_choices_workspace_reports_a_lookup_failure(monkeypatch):
+    """In the widget the failure becomes a visible label rather than an exception."""
+    from openbb_government_us.congress.utils import bulk
+
+    async def _boom(bill_id, credentials=None):
+        raise bulk.OpenBBError("upstream is down")
+
+    monkeypatch.setattr(bulk, "load_bill_record", _boom)
+
+    result = asyncio.run(helpers.get_bill_text_choices("95/hr/8410", is_workspace=True))
+
+    assert result[0]["value"] is None
+    assert "upstream is down" in result[0]["label"]
+
+
+def test_get_bill_text_choices_missing_bill_is_not_a_failure(monkeypatch):
+    """A bill that does not exist still answers 404, the same as one with no text."""
+    from openbb_government_us.congress.utils import bulk
+
+    async def _missing(bill_id, credentials=None):
+        raise bulk.BillNotFound("Bill not found on Congress.gov: 95/hr/1")
+
+    monkeypatch.setattr(bulk, "load_bill_record", _missing)
+
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(helpers.get_bill_text_choices("95/hr/1"))
+
+    assert exc.value.status_code == 404

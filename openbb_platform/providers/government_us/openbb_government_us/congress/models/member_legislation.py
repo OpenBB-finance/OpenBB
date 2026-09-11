@@ -86,6 +86,8 @@ class CongressMemberLegislationFetcher(
 ):
     """Transform the query, extract and transform data from the BILLSTATUS bulk."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(
         params: dict[str, Any],

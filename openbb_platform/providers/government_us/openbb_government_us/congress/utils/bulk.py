@@ -9,14 +9,40 @@ import zipfile
 from collections.abc import Awaitable, Callable
 from datetime import date as dateType
 
+from openbb_core.app.model.abstract.error import OpenBBError
+
 from openbb_government_us.congress.utils.helpers import BillsState
 
 logger = logging.getLogger("uvicorn.error")
+
+
+class BillNotFound(OpenBBError):
+    """A bill id resolves to no record in either the bulk data or Congress.gov.
+
+    Distinguished from a transport, credential, or parse failure so callers can
+    report "this bill has no record" without masking a broken lookup.
+    """
+
 
 GOVINFO_BASE = "https://www.govinfo.gov"
 BULKDATA_BASE = f"{GOVINFO_BASE}/bulkdata"
 
 _DOWNLOAD_CHUNK_SIZE = 1 << 20
+
+_WARNED: set = set()
+
+
+def _warn_once(key: str, message: str, *args, level: int = logging.WARNING) -> None:
+    """Log ``message`` the first time ``key`` is seen.
+
+    ``_cache_dir`` runs on every store connection, so its diagnostics would
+    otherwise repeat once per query.
+    """
+    if key in _WARNED:
+        return
+    _WARNED.add(key)
+    logger.log(level, message, *args)
+
 
 _CCAL_CHAMBER_CODE = {"house": "h", "senate": "s"}
 _CCAL_PKG_RE = re.compile(r"CCAL-(\d+)([hs])cal-(\d{4}-\d{2}-\d{2})")
@@ -26,6 +52,11 @@ _BILL_REF_RE = re.compile(r"^/?(\d+)[-/]([a-z]+)[-/](\d+)", re.IGNORECASE)
 _AMENDMENT_URL_RE = re.compile(r"/amendment/(\d+)/([a-z]+)/(\d+)", re.IGNORECASE)
 _AMENDMENT_REF_RE = re.compile(r"^/?(\d+)[-/]([a-z]+)[-/](\d+)", re.IGNORECASE)
 _PKG_RE = re.compile(r"/content/pkg/([^/]+)/")
+
+# Congress.gov API text versions point at congress.gov rather than GovInfo, e.g.
+# https://www.congress.gov/107/bills/hr3162/BILLS-107hr3162enr.htm - the GovInfo
+# package id is the filename stem.
+_CDG_PKG_RE = re.compile(r"/((?:BILLS|PLAW)-[A-Za-z0-9]+)\.[A-Za-z]+$")
 
 
 def bulk_zip_url(collection: str, congress: int, bill_type: str) -> str:
@@ -63,16 +94,58 @@ def parse_amendment_ref(amendment_ref: str) -> tuple[int, str, str]:
     return int(match.group(1)), match.group(2).lower(), match.group(3)
 
 
-def _cache_dir() -> str | None:
-    """Return the on-disk bulk-data cache directory, or None if it is not writable."""
-    from openbb_core.app.utils import get_user_cache_directory
-
-    path = os.path.join(get_user_cache_directory(), "congress_gov", "bulkdata")
+def _usable_dir(path: str) -> bool:
+    """Return True if ``path`` exists (creating it if needed) and is writable."""
     try:
         os.makedirs(path, exist_ok=True)
     except OSError:
-        return None
-    return path
+        return False
+    return os.access(path, os.W_OK)
+
+
+def _cache_dir() -> str | None:
+    """Return the on-disk bulk-data cache directory, or None if none is writable."""
+    from tempfile import gettempdir
+
+    from openbb_core.app.utils import get_user_cache_directory
+
+    preferred: str = ""
+
+    try:
+        preferred = os.path.join(get_user_cache_directory(), "congress_gov", "bulkdata")
+    except Exception as exc:  # noqa: BLE001
+        _warn_once(
+            "cache-directory",
+            "congress_gov: could not read the user cache directory: %s",
+            exc,
+        )
+
+    if preferred and _usable_dir(preferred):
+        return preferred
+
+    fallback = os.path.join(gettempdir(), "openbb_congress_gov", "bulkdata")
+
+    if _usable_dir(fallback):
+        _warn_once(
+            f"fallback:{preferred}",
+            "congress_gov: cache directory %r is not writable; falling back to %r."
+            " Bulk data will not persist across reboots - set a valid"
+            " 'cache_directory' preference to keep it.",
+            preferred,
+            fallback,
+        )
+        return fallback
+
+    _warn_once(
+        f"nocache:{preferred}",
+        "congress_gov: no writable cache directory (tried %r and %r). Bulk data"
+        " cannot be cached and lookups will return no results.",
+        preferred,
+        fallback,
+        level=logging.ERROR,
+    )
+
+    return None
 
 
 async def _download(url: str) -> bytes:
@@ -252,6 +325,24 @@ def _item_dict(item) -> dict:
     return {child.tag: (child.text or "").strip() for child in item}
 
 
+def _first_text(element, *paths: str) -> str:
+    """Return the first non-empty text among ``paths``."""
+    for path in paths:
+        text = _text(element, path)
+        if text:
+            return text
+    return ""
+
+
+def _first_items(element, *paths: str) -> list:
+    """Return the child items at the first of ``paths`` that matches anything."""
+    for path in paths:
+        items = element.findall(path)
+        if items:
+            return items
+    return []
+
+
 def parse_billstatus(source: str | bytes) -> list[dict]:
     """Parse a BILLSTATUS ZIP into a list of API-shaped bill records.
 
@@ -264,6 +355,7 @@ def parse_billstatus(source: str | bytes) -> list[dict]:
     from defusedxml.ElementTree import fromstring
 
     records: list[dict] = []
+    skipped: list[str] = []
     with zipfile.ZipFile(_zip_source(source)) as archive:
         for name in archive.namelist():
             if not name.lower().endswith(".xml"):
@@ -271,15 +363,33 @@ def parse_billstatus(source: str | bytes) -> list[dict]:
             bill = fromstring(archive.read(name)).find("bill")
             if bill is None:
                 continue
-            records.append(_billstatus_record(bill))
+            record = _billstatus_record(bill)
+            if record is None:
+                skipped.append(name)
+                continue
+            records.append(record)
+
+    if skipped:
+        logger.warning(
+            "congress_gov: skipped %d BILLSTATUS record(s) with no bill type or"
+            " number (e.g. %s)",
+            len(skipped),
+            ", ".join(skipped[:3]),
+        )
+
     return records
 
 
-def _billstatus_record(bill) -> dict:
+def _billstatus_record(bill) -> dict | None:
     """Map a single ``<bill>`` element to the API-shaped record dict."""
-    congress = int(_text(bill, "congress") or 0)
-    number = int(_text(bill, "number") or 0)
-    bill_type = _text(bill, "type")
+    congress = int(_first_text(bill, "congress") or 0)
+    number_text = _first_text(bill, "number", "billNumber")
+    bill_type = _first_text(bill, "type", "billType")
+
+    if not bill_type or not number_text.isdigit():
+        return None
+
+    number = int(number_text)
 
     titles = [_item_dict(i) for i in bill.findall("titles/item")]
     for title in titles:
@@ -292,7 +402,9 @@ def _billstatus_record(bill) -> dict:
         )
 
     summaries: list[dict] = []
-    for summary in bill.findall("summaries/summary"):
+    for summary in _first_items(
+        bill, "summaries/summary", "summaries/billSummaries/item"
+    ):
         summaries.append(
             {
                 "versionCode": _text(summary, "versionCode"),
@@ -318,14 +430,28 @@ def _billstatus_record(bill) -> dict:
             "actionDate": _text(bill, "latestAction/actionDate"),
             "text": _text(bill, "latestAction/text"),
         },
-        "policyArea": {"name": _text(bill, "policyArea/name")},
+        "policyArea": {
+            "name": _first_text(
+                bill, "policyArea/name", "subjects/billSubjects/policyArea/name"
+            )
+        },
         "sponsors": [_item_dict(i) for i in bill.findall("sponsors/item")],
         "cosponsors": cosponsors,
         "actions": [_item_dict(i) for i in bill.findall("actions/item")],
-        "committees": [_item_dict(i) for i in bill.findall("committees/item")],
+        "committees": [
+            _item_dict(i)
+            for i in _first_items(
+                bill, "committees/item", "committees/billCommittees/item"
+            )
+        ],
         "relatedBills": [_item_dict(i) for i in bill.findall("relatedBills/item")],
         "subjects": [
-            _item_dict(i) for i in bill.findall("subjects/legislativeSubjects/item")
+            _item_dict(i)
+            for i in _first_items(
+                bill,
+                "subjects/legislativeSubjects/item",
+                "subjects/billSubjects/legislativeSubjects/item",
+            )
         ],
         "titles": titles,
         "summaries": summaries,
@@ -340,7 +466,12 @@ def _billstatus_record(bill) -> dict:
             for item in bill.findall("textVersions/item")
         ],
         "amendments": [
-            _amendment_record(am) for am in bill.findall("amendments/amendment")
+            _amendment_record(am)
+            for am in _first_items(
+                bill,
+                "amendments/amendment",
+                "amendments/billAmendments/amendment",
+            )
         ],
     }
 
@@ -480,6 +611,44 @@ async def ensure_billstatus(congress: int, bill_type: str) -> None:
     await _memoized(f"BILLSTATUS_{congress}_{bt}", _load)
 
 
+async def ensure_api_bills(
+    congress: int, bill_type: str, credentials: dict[str, str] | None
+) -> None:
+    """Ingest a pre-bulk Congress/type's bill list from the Congress.gov API.
+
+    Stored in the same ``bills`` table the bulk path fills, so listing, sorting,
+    filtering, and pagination all run against SQLite either way. Rows land
+    without their nested collections; ``load_bill_record`` hydrates a row from
+    the detail endpoint the first time that single bill is opened.
+    """
+    import time
+
+    from openbb_government_us.congress.utils import congress_api, store
+
+    bt = bill_type.lower()
+
+    async def _load():
+        if not store.bills_loaded(congress, bt):
+            started = time.perf_counter()
+            logger.info(
+                "congress_gov: fetching %s-%s from the Congress.gov API...",
+                congress,
+                bt,
+            )
+            records = await congress_api.fetch_bill_list(congress, bt, credentials)
+            await _db_write(store.ingest_bills, congress, bt, records, [])
+            logger.info(
+                "congress_gov: cached %s-%s (%d bills) in %.1fs",
+                congress,
+                bt,
+                len(records),
+                time.perf_counter() - started,
+            )
+        return True
+
+    await _memoized(f"CONGRESSAPI_{congress}_{bt}", _load)
+
+
 def _loaded_archives() -> dict[int, dict[str, str]]:
     """Map every ingested Congress to ``{bill_type: ingest_kind}``.
 
@@ -570,11 +739,46 @@ async def list_bills(
     limit: int | None = None,
     offset: int | None = None,
     sort_by: str = "desc",
+    credentials: dict[str, str] | None = None,
 ) -> list[dict]:
-    """Ingest the Congress's archives if needed, then query the bills list."""
+    """Ingest the Congress's archives if needed, then query the bills list.
+
+    Congresses older than the GovInfo bulk archives are served from the
+    Congress.gov API instead, which returns the same list shape.
+    """
+    from openbb_core.app.model.abstract.error import OpenBBError
+
     from openbb_government_us.congress.utils import store
 
-    await asyncio.gather(*[ensure_billstatus(congress, bt) for bt in bill_types])
+    if congress < _BILLSTATUS_MIN_CONGRESS:
+        source = "the Congress.gov API"
+        loaders = [ensure_api_bills(congress, bt, credentials) for bt in bill_types]
+    else:
+        source = "bulk data"
+        loaders = [ensure_billstatus(congress, bt) for bt in bill_types]
+
+    results = await asyncio.gather(*loaders, return_exceptions=True)
+    failures = [
+        (bt, result)
+        for bt, result in zip(bill_types, results)
+        if isinstance(result, BaseException)
+    ]
+
+    for bill_type, error in failures:
+        logger.error(
+            "congress_gov: ingest of %s-%s failed: %s",
+            congress,
+            bill_type,
+            error,
+            exc_info=error,
+        )
+
+    if len(failures) == len(bill_types):
+        raise OpenBBError(
+            f"Could not load any bill data for Congress {congress} from"
+            f" {source}: {failures[0][1]}"
+        )
+
     return store.list_bills(
         congress,
         [bt.lower() for bt in bill_types],
@@ -597,34 +801,65 @@ def package_urls(pkg: str) -> dict:
 
 
 def derive_text_formats(version: dict) -> dict | None:
-    """Build PDF/HTM/XML URLs for a BILLSTATUS text version."""
-    url = next(
-        (fmt.get("url") for fmt in version.get("formats") or [] if fmt.get("url")),
-        None,
-    )
-    match = _PKG_RE.search(url or "")
-    if not match:
+    """Build PDF/HTM/XML URLs for a text version from either source.
+
+    BILLSTATUS links straight at a GovInfo package, while the Congress.gov API
+    links at congress.gov and carries the package id in the filename. Both are
+    reduced to the same GovInfo package so the viewer gets one set of formats.
+    """
+    package = ""
+
+    for fmt in version.get("formats") or []:
+        url = fmt.get("url") or ""
+        match = _PKG_RE.search(url) or _CDG_PKG_RE.search(url)
+        if match:
+            package = match.group(1)
+            break
+
+    if not package:
         return None
 
     return {
-        "version_type": version.get("type", ""),
-        "version_date": version.get("date", ""),
-        **package_urls(match.group(1)),
+        "version_type": version.get("type") or "",
+        "version_date": (version.get("date") or "")[:10],
+        **package_urls(package),
     }
 
 
-async def load_bill_record(bill_id: str) -> dict:
-    """Load a single bill's full record by id (summaries come from BILLSTATUS)."""
-    from openbb_core.app.model.abstract.error import OpenBBError
+async def load_bill_record(
+    bill_id: str, credentials: dict[str, str] | None = None
+) -> dict:
+    """Load a single bill's full record by id (summaries come from BILLSTATUS).
 
-    from openbb_government_us.congress.utils import store
+    Congresses older than the GovInfo bulk archives are served from the
+    Congress.gov API instead, which returns the same record shape.
+    """
+
+    from openbb_government_us.congress.utils import congress_api, store
 
     congress, bill_type, number = parse_bill_ref(bill_id)
+    key = f"{congress}-{bill_type.lower()}-{number}"
+
+    if congress < _BILLSTATUS_MIN_CONGRESS:
+        # Deliberately does not warm the Congress's whole bill list: opening one
+        # bill must not wait on ingesting the other several thousand. A cached
+        # row is used when it is already detailed, otherwise this bill alone is
+        # fetched and written back.
+        record = store.get_bill(key)
+
+        if record is None or not record.get("_detailed"):
+            record = await congress_api.bill_record(
+                congress, bill_type, number, credentials
+            )
+            await _db_write(store.upsert_bill, congress, bill_type.lower(), record)
+
+        return record
+
     await ensure_billstatus(congress, bill_type)
-    record = store.get_bill(f"{congress}-{bill_type.lower()}-{number}")
+    record = store.get_bill(key)
 
     if record is None:
-        raise OpenBBError(
+        raise BillNotFound(
             f"Bill not found in bulk data: {congress}/{bill_type}/{number}"
         )
 

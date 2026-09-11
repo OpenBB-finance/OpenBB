@@ -1315,11 +1315,33 @@ async def _preload_bills() -> None:
 
     congress = year_to_congress(datetime.now().year)
     logger.info("congress_gov: warming current Congress %d bills...", congress)
-    await asyncio.gather(
+    results = await asyncio.gather(
         *[ensure_billstatus(congress, bt) for bt in BillTypes],
         return_exceptions=True,
     )
-    logger.info("congress_gov: current Congress %d bills ready", congress)
+    failed = [
+        bt
+        for bt, result in zip(BillTypes, results)
+        if isinstance(result, BaseException)
+    ]
+    for bill_type, result in zip(BillTypes, results):
+        if isinstance(result, BaseException):
+            logger.error(
+                "congress_gov: warming %s-%s failed: %s",
+                congress,
+                bill_type,
+                result,
+                exc_info=result,
+            )
+    if failed:
+        logger.warning(
+            "congress_gov: current Congress %d bills ready, except %s"
+            " (these re-download on first request)",
+            congress,
+            ", ".join(failed),
+        )
+    else:
+        logger.info("congress_gov: current Congress %d bills ready", congress)
 
 
 def _served_range(members: list, current: int) -> list[int]:

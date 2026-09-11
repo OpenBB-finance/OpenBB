@@ -166,3 +166,34 @@ def test_store_connect_error(monkeypatch, tmp_path):
     assert store.loaded_keys("bills") == set()
     assert store.get_bill("119-hr-1") is None
     assert store.get_passage("A") is None
+
+
+def test_ingest_bills_tolerates_duplicate_ids(monkeypatch, tmp_path):
+    """A duplicate bill_id collapses to the last record instead of aborting the unit.
+
+    BILLSTATUS has shipped records that parse to the same id; before this the
+    UNIQUE constraint rolled back the whole archive, so none of its bills landed.
+    """
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    store.reset()
+
+    records = _records() + [
+        {
+            "bill_id": "119-hr-1",
+            "number": 1,
+            "title": "A (regenerated)",
+            "introducedDate": "2025-01-01",
+        }
+    ]
+    store.ingest_bills(119, "hr", records, [])
+
+    assert _listed(119, "hr") == {"119-hr-1", "119-hr-2"}
+    assert store.get_bill("119-hr-1")["title"] == "A (regenerated)"
+    assert store.loaded_keys("bills") == {"119-hr"}
+
+
+def test_upsert_bill_without_a_cache_is_a_no_op(monkeypatch):
+    """With no writable cache the single-row hydrate write is skipped silently."""
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: None)
+    store.upsert_bill(95, "hr", {"bill_id": "95-hr-1", "title": "X"})
+    assert store.get_bill("95-hr-1") is None

@@ -204,6 +204,94 @@ def test_derive_text_formats():
     assert out["xml"].endswith("/content/pkg/BILLS-119hr29ih/xml/BILLS-119hr29ih.xml")
 
 
+def test_derive_text_formats_congress_gov_urls():
+    """Congress.gov API text versions resolve to the same GovInfo package.
+
+    The API links at congress.gov (no ``/content/pkg/`` segment), carrying the
+    package id only in the filename, so the viewer produced no choices at all
+    for any Congress served by the API.
+    """
+    version = {
+        "type": "Enrolled Bill",
+        "date": None,
+        "formats": [
+            {
+                "type": "Formatted Text",
+                "url": "https://www.congress.gov/107/bills/hr3162/BILLS-107hr3162enr.htm",
+            },
+            {
+                "type": "PDF",
+                "url": "https://www.congress.gov/107/bills/hr3162/BILLS-107hr3162enr.pdf",
+            },
+        ],
+    }
+    out = bulk.derive_text_formats(version)
+
+    assert out["version_type"] == "Enrolled Bill"
+    assert out["version_date"] == ""
+    assert out["pdf"].endswith(
+        "/content/pkg/BILLS-107hr3162enr/pdf/BILLS-107hr3162enr.pdf"
+    )
+    assert out["htm"].endswith(
+        "/content/pkg/BILLS-107hr3162enr/html/BILLS-107hr3162enr.htm"
+    )
+    assert out["xml"].endswith(
+        "/content/pkg/BILLS-107hr3162enr/xml/BILLS-107hr3162enr.xml"
+    )
+
+
+def test_derive_text_formats_scans_every_format():
+    """A package id is found even when it is not on the first format listed."""
+    version = {
+        "type": "Introduced in House",
+        "date": "2001-10-23T04:00:00Z",
+        "formats": [
+            {"type": "TXT", "url": "https://example.com/not-a-package.txt"},
+            {
+                "type": "PDF",
+                "url": "https://www.congress.gov/107/bills/hr3162/BILLS-107hr3162ih.pdf",
+            },
+        ],
+    }
+    out = bulk.derive_text_formats(version)
+
+    assert out["version_date"] == "2001-10-23"
+    assert out["pdf"].endswith("/BILLS-107hr3162ih.pdf")
+
+
+def test_load_bill_record_does_not_warm_the_whole_congress(monkeypatch, tmp_path):
+    """Opening one API bill fetches that bill only, not its Congress's full list."""
+    from openbb_government_us.congress.utils import congress_api, store
+
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    store.reset()
+    BillsState().bulk.clear()
+
+    async def _never_list(*_args, **_kwargs):
+        raise AssertionError("a single bill must not warm the Congress's bill list")
+
+    async def _detail(congress, bill_type, number, credentials):
+        return {
+            "bill_id": f"{congress}-{bill_type.lower()}-{number}",
+            "congress": congress,
+            "number": number,
+            "type": bill_type.upper(),
+            "title": "USA PATRIOT Act",
+            "latestAction": {"actionDate": "2001-10-26", "text": "Became law."},
+            "_detailed": True,
+        }
+
+    monkeypatch.setattr(congress_api, "fetch_bill_list", _never_list)
+    monkeypatch.setattr(congress_api, "bill_record", _detail)
+
+    record = asyncio.run(
+        bulk.load_bill_record("107-hr-3162", {"congress_gov_api_key": "k"})
+    )
+
+    assert record["title"] == "USA PATRIOT Act"
+    assert store.get_bill("107-hr-3162")["_detailed"] is True
+
+
 def test_derive_text_formats_no_package():
     """derive_text_formats returns None when no package id can be found."""
     assert bulk.derive_text_formats({"formats": []}) is None
@@ -2264,3 +2352,318 @@ def test_refresh_passage_handles_ingest_error(monkeypatch, tmp_path):
     monkeypatch.setattr(bulk, "_invalidate_voteview", lambda c, ch: None)
     asyncio.run(bulk.refresh_passage())
     assert store.get_parsed(f"lm:VV_H{congress}") is None
+
+
+_BILLSTATUS_LEGACY = """<billStatus><bill>
+  <billNumber>9</billNumber><congress>117</congress><billType>HR</billType>
+  <originChamber>House</originChamber><originChamberCode>H</originChamberCode>
+  <title>Reserved for the Speaker.</title>
+  <introducedDate>2021-01-03</introducedDate><updateDate>2021-08-05T14:33:24Z</updateDate>
+  <latestAction><actionDate>2021-01-03</actionDate><text>Introduced in House</text></latestAction>
+  <committees><billCommittees><item><systemCode>hsju00</systemCode><name>Judiciary</name></item></billCommittees></committees>
+  <summaries><billSummaries><item><versionCode>00</versionCode><actionDate>2021-01-03</actionDate><text>Legacy summary.</text></item></billSummaries></summaries>
+  <subjects><billSubjects><policyArea><name>Congress</name></policyArea>
+    <legislativeSubjects><item><name>House rules</name></item></legislativeSubjects></billSubjects></subjects>
+  <titles><item><titleType>Official Title as Introduced</titleType><title>Reserved for the Speaker.</title></item></titles>
+  <actions><item><actionDate>2021-01-03</actionDate><text>Introduced in House</text><type>IntroReferral</type></item></actions>
+</bill></billStatus>"""
+
+
+def test_parse_billstatus_legacy_schema():
+    """The legacy BILLSTATUS schema maps to the same record shape as the current one.
+
+    GovInfo still serves ``billNumber``/``billType`` and ``bill*``-wrapped blocks
+    for bills it has not regenerated (the numbers reserved for the Speaker, for
+    example). Reading only the current field names left those records with no
+    type and number 0, collapsing them onto a single shared bill_id.
+    """
+    records = bulk.parse_billstatus(
+        _zip_bytes({"BILLSTATUS-117hr9.xml": _BILLSTATUS_LEGACY})
+    )
+    assert len(records) == 1
+
+    rec = records[0]
+    assert rec["bill_id"] == "117-hr-9"
+    assert rec["congress"] == 117
+    assert rec["number"] == 9
+    assert rec["type"] == "HR"
+    assert rec["title"] == "Reserved for the Speaker."
+    assert rec["committees"][0]["systemCode"] == "hsju00"
+    assert rec["summaries"][0]["text"] == "Legacy summary."
+    assert rec["policyArea"] == {"name": "Congress"}
+    assert rec["subjects"][0]["name"] == "House rules"
+    assert rec["titles"][0]["type"] == "Official Title as Introduced"
+
+
+def test_parse_billstatus_skips_unusable_records():
+    """A record with no bill type or number is dropped rather than given a junk id."""
+    records = bulk.parse_billstatus(
+        _zip_bytes(
+            {
+                "BILLSTATUS-117hr0.xml": (
+                    "<billStatus><bill><congress>117</congress></bill></billStatus>"
+                ),
+                "BILLSTATUS-117hr9.xml": _BILLSTATUS_LEGACY,
+            }
+        )
+    )
+    assert [r["bill_id"] for r in records] == ["117-hr-9"]
+
+
+def test_cache_dir_falls_back_when_preference_unwritable(monkeypatch, tmp_path):
+    """An unwritable cache_directory preference falls back instead of disabling the cache."""
+    from openbb_core.app import utils as core_utils
+
+    unwritable = tmp_path / "gone"
+    monkeypatch.setattr(core_utils, "get_user_cache_directory", lambda: str(unwritable))
+    monkeypatch.setattr(tempfile, "gettempdir", lambda: str(tmp_path / "tmp"))
+
+    real_makedirs = os.makedirs
+
+    def _makedirs(path, *args, **kwargs):
+        if str(path).startswith(str(unwritable)):
+            raise PermissionError("read-only file system")
+        return real_makedirs(path, *args, **kwargs)
+
+    monkeypatch.setattr(bulk.os, "makedirs", _makedirs)
+    bulk._WARNED.clear()
+
+    path = bulk._cache_dir()
+    assert path == os.path.join(
+        str(tmp_path / "tmp"), "openbb_congress_gov", "bulkdata"
+    )
+    assert os.path.isdir(path)
+
+
+def test_list_bills_routes_pre_bulk_congress_to_the_api(monkeypatch, tmp_path):
+    """A pre-108 Congress is fetched from the API and cached like a bulk archive."""
+    from openbb_government_us.congress.utils import congress_api, store
+
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    store.reset()
+    BillsState().bulk.clear()
+
+    calls: list = []
+
+    async def _fetch(congress, bill_type, credentials):
+        calls.append((congress, bill_type, credentials))
+        return [
+            congress_api.slim_record(
+                {
+                    "congress": congress,
+                    "type": bill_type.upper(),
+                    "number": "8410",
+                    "title": "Labor Reform Act",
+                    "updateDate": "1978-06-22T00:00:00Z",
+                    "latestAction": {"actionDate": "1978-06-22", "text": "Passed."},
+                }
+            )
+        ]
+
+    async def _never(*_args, **_kwargs):
+        raise AssertionError("the bulk path must not run for a pre-108 Congress")
+
+    monkeypatch.setattr(congress_api, "fetch_bill_list", _fetch)
+    monkeypatch.setattr(bulk, "ensure_billstatus", _never)
+
+    creds = {"congress_gov_api_key": "k"}
+    rows = asyncio.run(bulk.list_bills(95, ["hr"], limit=5, credentials=creds))
+
+    assert [r["bill_id"] for r in rows] == ["95-hr-8410"]
+    assert calls == [(95, "hr", creds)]
+
+    # The rows are cached, so a second call serves from SQLite without refetching.
+    assert store.loaded_keys("bills") == {"95-hr"}
+    BillsState().bulk.clear()
+    again = asyncio.run(bulk.list_bills(95, ["hr"], limit=5, credentials=creds))
+    assert [r["bill_id"] for r in again] == ["95-hr-8410"]
+    assert len(calls) == 1
+
+
+def test_load_bill_record_hydrates_and_caches_the_detail(monkeypatch, tmp_path):
+    """An API bill is detailed once, written back, and served from cache after."""
+    from openbb_government_us.congress.utils import congress_api, store
+
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    store.reset()
+    BillsState().bulk.clear()
+
+    detail_calls: list = []
+
+    async def _fetch(congress, bill_type, credentials):
+        return [
+            congress_api.slim_record(
+                {
+                    "congress": congress,
+                    "type": bill_type.upper(),
+                    "number": "8410",
+                    "title": "Labor Reform Act",
+                }
+            )
+        ]
+
+    async def _detail(congress, bill_type, number, credentials):
+        detail_calls.append((congress, bill_type, number))
+        return {
+            "bill_id": f"{congress}-{bill_type.lower()}-{number}",
+            "congress": congress,
+            "number": number,
+            "type": bill_type.upper(),
+            "title": "Labor Reform Act",
+            "latestAction": {"actionDate": "1978-06-22", "text": "Passed."},
+            "actions": [{"actionDate": "1978-06-22", "text": "Passed."}],
+            "_detailed": True,
+        }
+
+    async def _never(*_args, **_kwargs):
+        raise AssertionError("the bulk path must not run for a pre-108 Congress")
+
+    monkeypatch.setattr(congress_api, "fetch_bill_list", _fetch)
+    monkeypatch.setattr(congress_api, "bill_record", _detail)
+    monkeypatch.setattr(bulk, "ensure_billstatus", _never)
+
+    creds = {"congress_gov_api_key": "k"}
+    record = asyncio.run(bulk.load_bill_record("95-hr-8410", creds))
+
+    assert record["title"] == "Labor Reform Act"
+    assert len(record["actions"]) == 1
+    assert detail_calls == [(95, "hr", 8410)]
+
+    # The hydrated record replaced the slim row, so no second detail call.
+    cached = store.get_bill("95-hr-8410")
+    assert cached["_detailed"] is True
+    assert len(cached["actions"]) == 1
+
+    BillsState().bulk.clear()
+    again = asyncio.run(bulk.load_bill_record("95-hr-8410", creds))
+    assert len(again["actions"]) == 1
+    assert len(detail_calls) == 1
+
+
+def test_congress_api_key_required_message(monkeypatch):
+    """Without a key anywhere, the API path names the credential and where to get one."""
+    from openbb_government_us.congress.utils import congress_api
+
+    monkeypatch.setattr(congress_api, "user_credentials", dict)
+
+    with pytest.raises(OpenBBError, match="congress_gov_api_key"):
+        congress_api.api_key({})
+
+    assert congress_api.api_key({"congress_gov_api_key": "k"}) == "k"
+
+
+def test_congress_api_key_falls_back_to_user_settings(monkeypatch):
+    """Router endpoints get no injected credentials, so the key is read from settings."""
+    from openbb_government_us.congress.utils import congress_api
+
+    monkeypatch.setattr(
+        congress_api,
+        "user_credentials",
+        lambda: {"congress_gov_api_key": "from-settings"},
+    )
+
+    assert congress_api.api_key(None) == "from-settings"
+    assert congress_api.api_key({}) == "from-settings"
+    # An explicitly supplied key still wins.
+    assert congress_api.api_key({"congress_gov_api_key": "explicit"}) == "explicit"
+
+
+def test_congress_api_rejects_congress_below_api_coverage():
+    """A Congress older than the API's own floor fails with a clear explanation."""
+    from openbb_government_us.congress.utils import congress_api
+
+    with pytest.raises(OpenBBError, match="predates structured bill data"):
+        asyncio.run(
+            congress_api.bill_record(50, "hr", 1, {"congress_gov_api_key": "k"})
+        )
+
+
+def test_list_bills_degrades_when_one_bill_type_fails(monkeypatch, tmp_path, caplog):
+    """One failing archive still returns the types that loaded."""
+    from openbb_government_us.congress.utils import store
+
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    store.reset()
+    BillsState().bulk.clear()
+
+    async def _ensure(congress, bill_type):
+        if bill_type == "s":
+            raise OpenBBError("archive 404")
+        store.ingest_bills(
+            congress,
+            bill_type,
+            [{"bill_id": "119-hr-1", "number": 1, "title": "A"}],
+            [],
+        )
+
+    monkeypatch.setattr(bulk, "ensure_billstatus", _ensure)
+
+    with caplog.at_level("ERROR"):
+        rows = asyncio.run(bulk.list_bills(119, ["hr", "s"]))
+
+    assert [r["bill_id"] for r in rows] == ["119-hr-1"]
+    assert "ingest of 119-s failed" in caplog.text
+
+
+def test_list_bills_raises_when_every_bill_type_fails(monkeypatch, tmp_path):
+    """Nothing loadable is an error, naming the source that was tried."""
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    BillsState().bulk.clear()
+
+    async def _ensure(congress, bill_type):
+        raise OpenBBError("archive 404")
+
+    monkeypatch.setattr(bulk, "ensure_billstatus", _ensure)
+
+    with pytest.raises(OpenBBError, match="from bulk data"):
+        asyncio.run(bulk.list_bills(119, ["hr", "s"]))
+
+
+def test_list_bills_all_failed_names_the_api_source(monkeypatch, tmp_path):
+    """The pre-108 path reports Congress.gov rather than the bulk archives."""
+    from openbb_government_us.congress.utils import congress_api
+
+    monkeypatch.setattr(bulk, "_cache_dir", lambda: str(tmp_path))
+    BillsState().bulk.clear()
+
+    async def _boom(congress, bill_type, credentials):
+        raise OpenBBError("api down")
+
+    monkeypatch.setattr(congress_api, "fetch_bill_list", _boom)
+
+    with pytest.raises(OpenBBError, match="from the Congress.gov API"):
+        asyncio.run(
+            bulk.list_bills(95, ["hr"], credentials={"congress_gov_api_key": "k"})
+        )
+
+
+def test_warn_once_logs_a_key_a_single_time(caplog):
+    """Diagnostics that run per store connection are logged once, not per query."""
+    bulk._WARNED.discard("unit-test-key")
+
+    with caplog.at_level("WARNING"):
+        bulk._warn_once("unit-test-key", "first %s", "time")
+        bulk._warn_once("unit-test-key", "second %s", "time")
+
+    assert caplog.text.count("time") == 1
+    bulk._WARNED.discard("unit-test-key")
+
+
+def test_cache_dir_when_the_preference_cannot_be_read(monkeypatch, tmp_path, caplog):
+    """An unreadable settings file still yields a usable fallback directory."""
+    from openbb_core.app import utils as core_utils
+
+    def _raise():
+        raise RuntimeError("settings unreadable")
+
+    monkeypatch.setattr(core_utils, "get_user_cache_directory", _raise)
+    monkeypatch.setattr(tempfile, "gettempdir", lambda: str(tmp_path / "tmp"))
+    bulk._WARNED.clear()
+
+    with caplog.at_level("WARNING"):
+        path = bulk._cache_dir()
+
+    assert path == os.path.join(
+        str(tmp_path / "tmp"), "openbb_congress_gov", "bulkdata"
+    )
+    assert "could not read the user cache directory" in caplog.text

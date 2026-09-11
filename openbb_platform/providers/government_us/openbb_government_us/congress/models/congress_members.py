@@ -128,6 +128,8 @@ class CongressMembersFetcher(
 ):
     """Transform the query, extract and transform data from the unitedstates dataset."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressMembersQueryParams:
         """Transform the query params."""

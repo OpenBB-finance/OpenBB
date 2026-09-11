@@ -936,3 +936,26 @@ def test_member_info_data_endpoint(monkeypatch):
     assert payload["gender"] == "Male"
     assert payload["terms"][0]["role"] == "Representative"
     assert payload["voting"]["total"] == 293
+
+
+def test_preload_bills_reports_a_failed_archive(monkeypatch, caplog):
+    """A bill type that fails to warm is named rather than swallowed by gather().
+
+    ``return_exceptions=True`` discarded these, so a Congress could come up
+    partially warmed with nothing in the log to say which types were missing.
+    """
+
+    async def _fake_ensure(congress, bill_type):
+        if bill_type == "hr":
+            raise RuntimeError("archive 503")
+
+    monkeypatch.setattr(
+        "openbb_government_us.congress.utils.bulk.ensure_billstatus", _fake_ensure
+    )
+
+    with caplog.at_level("WARNING"):
+        asyncio.run(router._preload_bills())
+
+    assert "warming" in caplog.text
+    assert "hr" in caplog.text
+    assert "re-download on first request" in caplog.text

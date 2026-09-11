@@ -149,6 +149,8 @@ class CongressLawsFetcher(
 ):
     """Transform the query, extract and transform data from the GovInfo PLAW bulk data."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressLawsQueryParams:
         """Transform the query params."""

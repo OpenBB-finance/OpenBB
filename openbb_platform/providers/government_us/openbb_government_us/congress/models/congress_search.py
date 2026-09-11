@@ -133,6 +133,8 @@ class CongressSearchFetcher(
 ):
     """Transform the query, extract and transform data from the GovInfo search service."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressSearchQueryParams:
         """Transform the query params."""

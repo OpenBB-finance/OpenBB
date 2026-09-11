@@ -122,6 +122,8 @@ class CongressMandatedReportsFetcher(
 ):
     """Transform the query, extract and transform data from the GovInfo CMR link API."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressMandatedReportsQueryParams:
         """Transform the query params."""

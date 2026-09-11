@@ -206,6 +206,8 @@ class CongressAmendmentsFetcher(
 ):
     """Transform the query, extract and transform the data from the Congress API."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CongressAmendmentsQueryParams:
         """Transform the query params."""
