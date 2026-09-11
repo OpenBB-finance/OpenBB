@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/dts/operating_cash_balance?filter=record_date%3Agte%3A2025-07-07%2Crecord_date%3Alte%3A2025-07-11&page%5Bnumber%5D=1&page%5Bsize%5D=10000&sort=record_date
+  response:
+    body:
+      string: !!binary |
+        H4sIANEjWWoA/+2a/2/iNhjG/5Uo2k13Eki2Yycx0n7gCtdVGpyOcprQNCED7hUtJCwJ21jV/31v
+        AgkJcTKl0EjZiqja+HntOv48yWO+POkrEQq998uT7sul56/mcCz1nk4QYV1kwVPv6GK59HZuOA/3
+        20ib+lIEO3+v3UpX+sLR+gddez+97X/QPm+lu3a/aR+FI9ylhP5LxwvkPPRWYj9fCAeGcHeOA4IH
+        pbl2AxvYJImy8dzw8ahQZnIbJcrDOlgKZ76Xwj/qts0swkAPxcKRc3fhQ+Pd6XgDhzAzX4TR3G5E
+        8JiZYLBbzI91YhOdYlbXBjIUayeI6vzl3Fm7yfAYmo7LlpnQcfUK2u874YcykulJA0G6KzgLZc9U
+        PfU1FGq8TqDFsM5FWNyD9NypBdkLgSwAhdPfesE6DABvtETa3d2HekxtCymRMoYZtcqREotzRGyz
+        WajkfwH153X4uPLFn8LJctXed+uxxdywlWxNy0SUVbC1GTUY4c2yzazzf49t9V35Bpi++K5sEKrG
+        nFeKmFO9QcgZWO2GbNeGfFH0lkJ+i97LINt1IV8teolhcaJkatmcmrycKbEJPOPZNUi1Tdn7cqpX
+        yl5CLIOl26csXI4MiowquJaF7KY3Vm0K39pwXzF8qYGoEnNeUYRvojcIuU3hWwmZ14Z8UfiWQn4L
+        38sg87qQrxa+2CTIVCG1ETOtytdGhFKKabNQ25S9L4d6peyFnTJKCeail2EzDohStjbmiONm2bYp
+        emuzfcXoxRjRFGYuenOKInoTvUHIbYreKsgY1YZ8UfSWQn6L3osgA8eakK8WvcQybZq+us0yxcgm
+        jNByqMRmBBPTaBZri8L3AqxXCl/COVN/ooAJg6u56m0NjrHNeMN0WxS/9em+XvzCXsngyl1WXlHu
+        sg56g5BbFL/VkHFtyJfEbznkt/i9DDKuC/lq8YuZYStf+cK92eK4gimkr2GatOGPBduUvi+neq30
+        xRSrt1YELkdS9dqXY4oQbvjjwDaFb224rxm+xIh3wYrwzSrKt6+MpvfPbQpfgPxrR9/I6HtXT3rM
+        S+8R1NEdsZBwcr1zB0ziI20QHRUtAL807yEhr2R85gNtGmkq6GdBni/MeqBQ+LgOtFF88qW+UPb5
+        FJdps2jN84453KHGu81CZqTNSYn8oTDM/W6h5SvyVrn3dj7895+g5TS60jv5uZVZ6Fj15dBQGPLc
+        VjfH47NhFf5KK/916MR1aY+YRHn9wYhp9UDsk9rnTvyFwMhUCiMO+tNh0YH308nd+FZtvK+TyXB8
+        M0sTv1LMGqwgFv2ULckaJ51PxjJpW9EuqZK3yd14OrwdTsq8MRv2i9qJ3Zev/ck02/vcBvn+Cvrl
+        IyS0R5/H0x9L6Q76s4TmJ8/fiFDBcwaP7mjUHQwUVEMfLlYl1e9wByEU/aiwFtUs16JaBJuryZFN
+        5pQlm7QVyabK2R4elUKFRxXUCpy5niqcVSBH5RQHEcQw2sN1M0lxaNiKb9FViqECTu+3GHAgnQfo
+        932kvWMf3fiyfscGP+CkKVj/LeMGdFjgh7UfhPW6bH35h96Ldg4d3ZV/hcnfjqg30vPzP/S2uN2A
+        LAAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1200'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 16 Jul 2026 18:32:49 GMT
+      Server:
+      - nginx
+      Set-Cookie:
+      - cookiesession1=678A3E0FC624A633248A1F0F45D583B9;Expires=Fri, 16 Jul 2027 18:32:49
+        GMT;Path=/;HttpOnly
+      - BIGipServerddsfMj0s2EaKsi9WsSRnAw=!k572EKbc3RCOh0vfcKTyKInrG7ukTitTEy+9vOZyOfREKNnYc47j2Z1mXYrmClOqKmpRZJ5k9rJCBw==;
+        path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

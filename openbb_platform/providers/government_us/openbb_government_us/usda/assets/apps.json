@@ -1,0 +1,811 @@
+[
+  {
+    "name": "US Department of Agriculture",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Corn_Fields%2C_Iowa_Farm_7-13_%2815277889101%29.jpg/1280px-Corn_Fields%2C_Iowa_Farm_7-13_%2815277889101%29.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Corn_Fields%2C_Iowa_Farm_7-13_%2815277889101%29.jpg/1280px-Corn_Fields%2C_Iowa_Farm_7-13_%2815277889101%29.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Corn_Fields%2C_Iowa_Farm_7-13_%2815277889101%29.jpg/1280px-Corn_Fields%2C_Iowa_Farm_7-13_%2815277889101%29.jpg",
+    "description": "Agricultural production, export sales, prices, costs, land use, and trade from the USDA's Foreign Agricultural Service and Economic Research Service.",
+    "allowCustomization": true,
+    "tabs": {
+      "charts": {
+        "id": "charts",
+        "name": "ERS Charts",
+        "layout": [
+          {
+            "i": "usda_ers_chart_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 30
+          }
+        ]
+      },
+      "publications": {
+        "id": "publications",
+        "name": "Publications",
+        "layout": [
+          {
+            "i": "usda_publication_documents_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 30
+          }
+        ]
+      },
+      "trade": {
+        "id": "trade",
+        "name": "Trade",
+        "layout": [
+          {
+            "i": "usda_agricultural_trade_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "table": "exports_ytd",
+                "value_type": "value",
+                "period_basis": "Monthly"
+              }
+            }
+          },
+          {
+            "i": "usda_us_food_imports_usda_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "by_food_group",
+                "measure": "value"
+              }
+            }
+          },
+          {
+            "i": "usda_agricultural_exchange_rates_usda_obb",
+            "x": 0,
+            "y": 29,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "real_index_annual"
+              }
+            }
+          },
+          {
+            "i": "usda_state_agricultural_trade_usda_obb",
+            "x": 0,
+            "y": 43,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "exports_by_commodity",
+                "state": "California"
+              }
+            }
+          },
+          {
+            "i": "usda_agricultural_trade_multipliers_usda_obb",
+            "x": 0,
+            "y": 57,
+            "w": 40,
+            "h": 14
+          }
+        ]
+      },
+      "psd": {
+        "id": "psd",
+        "name": "Production, Supply & Distribution",
+        "layout": [
+          {
+            "i": "usda_psd_data_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_psd_report_custom_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 20
+          }
+        ]
+      },
+      "prices_and_costs": {
+        "id": "prices_and_costs",
+        "name": "Prices & Costs",
+        "layout": [
+          {
+            "i": "usda_price_spreads_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 14
+          },
+          {
+            "i": "usda_milk_cost_of_production_usda_obb",
+            "x": 20,
+            "y": 0,
+            "w": 20,
+            "h": 14
+          },
+          {
+            "i": "usda_dairy_data_usda_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_meat_price_spreads_usda_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "choice_beef"
+              }
+            }
+          },
+          {
+            "i": "usda_commodity_costs_and_returns_usda_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "commodity": "corn",
+                "region": "U.S. total"
+              }
+            }
+          },
+          {
+            "i": "usda_food_price_outlook_usda_obb",
+            "x": 0,
+            "y": 56,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "cpi_forecast"
+              }
+            }
+          },
+          {
+            "i": "usda_fertilizer_use_and_price_usda_obb",
+            "x": 0,
+            "y": 70,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "us_plant_nutrient_consumption"
+              }
+            }
+          },
+          {
+            "i": "usda_normalized_prices_usda_obb",
+            "x": 0,
+            "y": 84,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "table1_national_prices"
+              }
+            }
+          },
+          {
+            "i": "usda_food_at_home_monthly_area_prices_usda_obb",
+            "x": 0,
+            "y": 98,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "monthly_area_prices",
+                "group": "Dairy",
+                "item": "40000"
+              }
+            }
+          }
+        ]
+      },
+      "farm_income": {
+        "id": "farm_income",
+        "name": "Farm Income & Food Economy",
+        "layout": [
+          {
+            "i": "usda_farm_income_and_wealth_statistics_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "table": "income_statement",
+                "state": "US"
+              }
+            }
+          },
+          {
+            "i": "usda_food_dollar_series_usda_obb",
+            "x": 0,
+            "y": 20,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "series": "nominal",
+                "table": 1
+              }
+            }
+          },
+          {
+            "i": "usda_food_expenditure_series_usda_obb",
+            "x": 0,
+            "y": 34,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "food_and_alcohol"
+              }
+            }
+          },
+          {
+            "i": "usda_food_availability_per_capita_usda_obb",
+            "x": 0,
+            "y": 48,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "data_system": "food_availability",
+                "food_group": "eggs"
+              }
+            }
+          },
+          {
+            "i": "usda_food_security_in_the_united_states_usda_obb",
+            "x": 0,
+            "y": 62,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "national_trend"
+              }
+            }
+          },
+          {
+            "i": "usda_cost_estimates_of_foodborne_illnesses_usda_obb",
+            "x": 0,
+            "y": 76,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "cases_and_cost"
+              }
+            }
+          },
+          {
+            "i": "usda_snap_policy_data_sets_usda_obb",
+            "x": 0,
+            "y": 90,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "state": "CA"
+              }
+            }
+          },
+          {
+            "i": "usda_farm_household_income_and_characteristics_usda_obb",
+            "x": 0,
+            "y": 104,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "finances_2021_26f"
+              }
+            }
+          }
+        ]
+      },
+      "export_sales": {
+        "id": "export_sales",
+        "name": "Export Sales",
+        "layout": [
+          {
+            "i": "usda_report_calendar_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 9,
+            "state": {
+              "params": {
+                "report_type": "export_sales"
+              }
+            }
+          },
+          {
+            "i": "usda_bell_report_custom_obb",
+            "x": 0,
+            "y": 9,
+            "w": 40,
+            "h": 21,
+            "state": {
+              "params": {
+                "commodity_code": "801"
+              }
+            }
+          }
+        ]
+      },
+      "diet_and_nutrition": {
+        "id": "diet_and_nutrition",
+        "name": "Diet & Nutrition",
+        "layout": [
+          {
+            "i": "usda_food_consumption_nutrient_intakes_and_diet_quality_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "2_nutrient_intake",
+                "demographics": "US consumers aged 2 and above",
+                "statistic": "mean"
+              }
+            }
+          },
+          {
+            "i": "usda_eating_and_health_module_atus_usda_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "eating_and_drinking_time",
+                "year": "2023"
+              }
+            }
+          },
+          {
+            "i": "usda_purchase_to_plate_usda_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "food_group": "milk"
+              }
+            }
+          },
+          {
+            "i": "usda_resource_requirements_of_food_demand_usda_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "Xf0000"
+              }
+            }
+          }
+        ]
+      },
+      "productivity": {
+        "id": "productivity",
+        "name": "Productivity & Global",
+        "layout": [
+          {
+            "i": "usda_agricultural_productivity_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "national_indices"
+              }
+            }
+          },
+          {
+            "i": "usda_international_agricultural_productivity_usda_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "grouping": "north_america",
+                "country": 179
+              }
+            }
+          },
+          {
+            "i": "usda_international_macroeconomic_data_set_usda_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "variable": "real_gdp",
+                "measure": "level"
+              }
+            }
+          },
+          {
+            "i": "usda_agricultural_and_food_rd_expenditures_usda_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "measure": "real"
+              }
+            }
+          },
+          {
+            "i": "usda_international_baseline_data_usda_obb",
+            "x": 0,
+            "y": 56,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "commodity": "Wheat",
+                "attribute": "Production"
+              }
+            }
+          },
+          {
+            "i": "usda_global_food_assessment_usda_obb",
+            "x": 0,
+            "y": 70,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "element": "Total grain demand"
+              }
+            }
+          }
+        ]
+      },
+      "wheat": {
+        "id": "wheat",
+        "name": "Wheat",
+        "layout": [
+          {
+            "i": "usda_wheat_data_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "table": "us_supply_and_disappearance"
+              }
+            }
+          }
+        ]
+      },
+      "grains_and_oilseeds": {
+        "id": "grains_and_oilseeds",
+        "name": "Grains & Oilseeds",
+        "layout": [
+          {
+            "i": "usda_feed_grains_database_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "corn_supply_and_use"
+              }
+            }
+          },
+          {
+            "i": "usda_oil_crops_yearbook_usda_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "soybeans_supply_disappearance_price",
+                "frequency": "annual"
+              }
+            }
+          },
+          {
+            "i": "usda_rice_yearbook_usda_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "us_supply_disappearance_price",
+                "frequency": "Annual"
+              }
+            }
+          },
+          {
+            "i": "usda_season_average_price_forecasts_usda_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "commodity": "Corn"
+              }
+            }
+          },
+          {
+            "i": "usda_us_bioenergy_statistics_usda_obb",
+            "x": 0,
+            "y": 56,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "ethanol_supply_marketing_year"
+              }
+            }
+          },
+          {
+            "i": "usda_adoption_of_genetically_engineered_crops_usda_obb",
+            "x": 0,
+            "y": 70,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "crop": "corn",
+                "state": "United States"
+              }
+            }
+          }
+        ]
+      },
+      "sugar_fruit_and_vegetables": {
+        "id": "sugar_fruit_and_vegetables",
+        "name": "Sugar, Fruit & Vegetables",
+        "layout": [
+          {
+            "i": "usda_sugar_sweeteners_yearbook_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "table_24a",
+                "frequency": "Fiscal year"
+              }
+            }
+          },
+          {
+            "i": "usda_fruit_and_tree_nuts_data_usda_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "category": "A",
+                "table": "A-1"
+              }
+            }
+          },
+          {
+            "i": "usda_vegetables_and_pulses_usda_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "Table33_Potatoes"
+              }
+            }
+          },
+          {
+            "i": "usda_fruit_and_vegetable_prices_usda_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "vegetable"
+              }
+            }
+          }
+        ]
+      },
+      "livestock_and_meat": {
+        "id": "livestock_and_meat",
+        "name": "Livestock & Meat",
+        "layout": [
+          {
+            "i": "usda_livestock_and_meat_domestic_data_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "table": "supply_and_disappearance"
+              }
+            }
+          },
+          {
+            "i": "usda_livestock_and_meat_international_trade_data_usda_obb",
+            "x": 0,
+            "y": 20,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "table": "beef_veal",
+                "direction": "imports"
+              }
+            }
+          }
+        ]
+      },
+      "cotton_and_textiles": {
+        "id": "cotton_and_textiles",
+        "name": "Cotton & Textiles",
+        "layout": [
+          {
+            "i": "usda_cotton_wool_and_textile_data_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "table": "cotton_supply_and_use",
+                "frequency": "Annual"
+              }
+            }
+          }
+        ]
+      },
+      "land_and_weather": {
+        "id": "land_and_weather",
+        "name": "Land & Weather",
+        "layout": [
+          {
+            "i": "usda_major_land_uses_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_weather_bulletins_download_custom_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 20
+          }
+        ]
+      },
+      "geographic_codes": {
+        "id": "geographic_codes",
+        "name": "Geographic Codes",
+        "layout": [
+          {
+            "i": "usda_rural_urban_continuum_codes_usda_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_urban_influence_codes_usda_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_county_typology_codes_usda_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_rural_urban_commuting_area_codes_usda_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_frontier_and_remote_area_codes_usda_obb",
+            "x": 0,
+            "y": 56,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_commuting_zones_and_labor_market_areas_usda_obb",
+            "x": 0,
+            "y": 70,
+            "w": 40,
+            "h": 14
+          },
+          {
+            "i": "usda_natural_amenities_scale_usda_obb",
+            "x": 0,
+            "y": 84,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "state": "RI"
+              }
+            }
+          },
+          {
+            "i": "usda_poverty_area_measures_usda_obb",
+            "x": 0,
+            "y": 98,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "edition": "2025",
+                "level": "county",
+                "state": "MS"
+              }
+            }
+          },
+          {
+            "i": "usda_area_and_road_ruggedness_scales_usda_obb",
+            "x": 0,
+            "y": 112,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "vintage": "2020",
+                "state": "WV"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

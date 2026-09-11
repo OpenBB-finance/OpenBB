@@ -1,0 +1,73 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://esmis.nal.usda.gov/sites/default/release-files/cj82k728n/9w033w568/x059f4232/wwcb0125.pdf
+  response:
+    body:
+      string: '%PDF-1.4
+
+        %OpenBB VCR redacted binary body
+
+        %%EOF
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '3008357'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self'' https://platform.twitter.com https://youtube.com;
+        connect-src ''self'' https://dap.digitalgov.gov https://*.google.com https://*.googletagmanager.com
+        https://*.google-analytics.com https://orcid.org/userStatus.json https://search.usa.gov
+        https://translate.googleapis.com https://usda.libanswers.com; font-src ''self''
+        data: https://cdn.knightlab.com https://fonts.gstatic.com; frame-src ''self''
+        https://*.twitter.com https://usda.libanswers.com https://player.vimeo.com
+        https://*.youtube.com; img-src ''self'' data: https://cdn.knightlab.com https://feed.informer.com
+        https://fonts.gstatic.com https://*.googletagmanager.com https://*.google-analytics.com
+        https://*.nal.usda.gov https://orcid.org https://info.orcid.org https://www.ssa.gov/accessibility/andi/
+        https://*.twitter.com https://*.usa.gov https://validator.swagger.io https://*.ytimg.com;
+        script-src ''self'' https://ajax.googleapis.com https://cdn.knightlab.com
+        https://dap.digitalgov.gov https://feed.informer.com https://*.googletagmanager.com
+        https://*.libanswers.com https://www.nal.usda.gov https://platform.twitter.com
+        https://search.usa.gov https://www.youtube.com; script-src-elem ''self'' ''unsafe-inline''
+        https://ajax.googleapis.com https://cdn.knightlab.com https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/
+        https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/ https://dap.digitalgov.gov
+        https://feed.informer.com https://*.libanswers.com https://www.nal.usda.gov
+        https://search.usa.gov https://*.twitter.com https://unpkg.com/chart.js@4.4.0/
+        https://unpkg.com/chartjs-adapter-date-fns@3.0.0/ https://unpkg.com/chartjs-plugin-datalabels@2.0.0/
+        https://*.vimeo.com https://www.googletagmanager.com https://www.youtube.com
+        https://www.ssa.gov/accessibility/andi/; style-src ''self'' ''unsafe-inline''
+        https://cdn.knightlab.com https://fonts.googleapis.com https://search.usa.gov;
+        style-src-elem ''self'' ''unsafe-inline'' https://cdn.knightlab.com https://static-assets-us.libanswers.com
+        https://search.usa.gov https://www.ssa.gov;'
+      Content-Type:
+      - application/pdf
+      Date:
+      - Wed, 22 Jul 2026 19:00:13 GMT
+      Etag:
+      - '"2de765-62b22377bb300"'
+      Last-Modified:
+      - Tue, 07 Jan 2025 18:50:20 GMT
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Backend-Server:
+      - '2'
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1

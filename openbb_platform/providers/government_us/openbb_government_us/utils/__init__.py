@@ -1,1 +1,1 @@
-"""OpenBB Government US utils."""
+"""Shared utilities for the US Government provider extensions."""
