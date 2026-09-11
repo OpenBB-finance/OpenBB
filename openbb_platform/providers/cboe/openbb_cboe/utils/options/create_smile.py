@@ -41,7 +41,11 @@ def _first_priced_expiration(data: OptionsChainsData) -> str:
     priced = df[df["implied_volatility"] > 0]
 
     if priced.empty:
-        return data.expirations[0]
+        from openbb_cboe.utils.options.data_handler import chain_expirations
+
+        expirations = chain_expirations(data)
+
+        return expirations[0] if expirations else data.expirations[0]
 
     return sorted(priced["expiration"].astype(str).unique())[0]
 

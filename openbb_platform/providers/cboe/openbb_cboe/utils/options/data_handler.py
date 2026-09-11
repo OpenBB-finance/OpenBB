@@ -7,6 +7,37 @@ from typing import Any
 LOADED_SYMBOLS: dict[str, Any] = {}
 
 
+def chain_expirations(data: Any) -> list[str]:
+    """Return the expirations that still have contracts in the chain.
+
+    ``OptionsChainsData.expirations`` lists every expiration in the payload,
+    including ones whose contracts ``dataframe`` has already dropped for having
+    expired. Driving a picker or a chart off that offers dates which resolve to
+    no rows at all - a chain fetched the morning after an expiration would lead
+    with a date whose quotes come back empty.
+
+    Parameters
+    ----------
+    data : Any
+        The parsed ``CboeOptionsChainsData``.
+
+    Returns
+    -------
+    list[str]
+        Sorted expirations that have rows, falling back to the model's own list
+        if the frame cannot be built.
+    """
+    try:
+        frame = data.dataframe
+    except Exception:  # noqa: BLE001
+        return list(data.expirations)
+
+    if "expiration" not in frame.columns:
+        return list(data.expirations)
+
+    return sorted({str(value) for value in frame["expiration"]})
+
+
 async def load_symbol(symbol: str, update: bool = False) -> Any:
     """Return the cached ``CboeOptionsChainsData`` for a symbol, loading it once.
 
@@ -177,7 +208,7 @@ def get_expirations(symbol: str) -> list[dict]:
     if results is None:
         return []
 
-    return [{"label": e, "value": e} for e in results.expirations]
+    return [{"label": e, "value": e} for e in chain_expirations(results)]
 
 
 def get_strikes(symbol: str) -> list[dict]:

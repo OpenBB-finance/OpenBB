@@ -211,6 +211,32 @@ async def _vacuum(backend: Any) -> None:
         await connection.execute("VACUUM")
 
 
+async def close_cache_backend(backend: Any) -> None:
+    """Close the shared cache and forget it, so the next caller builds a fresh one.
+
+    ``SQLiteBackend.close()`` clears the connection object the backend was
+    constructed with and never rebuilds it, so a closed backend is permanently
+    unusable - every later request through it dies on ``NoneType has no
+    attribute '_connection'``. Dropping the module reference is what makes the
+    close recoverable.
+
+    Parameters
+    ----------
+    backend : Any
+        The backend to close; ignored if it is no longer the shared one.
+    """
+    global _cache, _cache_loop  # noqa: PLW0603
+
+    if _cache is backend:
+        _cache = None
+        _cache_loop = None
+
+    try:
+        await backend.close()
+    except Exception:  # noqa: BLE001
+        _logger.exception("Closing the Cboe response cache failed")
+
+
 async def cache_backend() -> Any:
     """Return the shared cache for the running event loop, swept on first use.
 
@@ -285,7 +311,7 @@ async def get_cboe_data(url: str, use_cache: bool = True, **kwargs) -> Any:
         _cache_users -= 1
 
         if _cache_users == 0:
-            await backend.close()
+            await close_cache_backend(backend)
 
 
 async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:

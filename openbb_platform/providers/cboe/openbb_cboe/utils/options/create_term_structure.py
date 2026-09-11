@@ -52,8 +52,10 @@ def create_term_structure(
     if metric == "iv" and not data.has_iv:
         raise OpenBBError("No implied volatility data available.")
 
+    from openbb_cboe.utils.options.data_handler import chain_expirations
+
     df = data.dataframe.copy()
-    expirations = data.expirations
+    expirations = chain_expirations(data)
     symbol = data.underlying_symbol[0]
     price_col = (
         "last_trade_price"

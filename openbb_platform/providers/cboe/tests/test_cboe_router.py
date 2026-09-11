@@ -207,7 +207,7 @@ class TestOptionsEndpoints:
             strikes = asyncio.run(options.get_tickers(symbol="CLX", strike_list=True))
             neither = asyncio.run(options.get_tickers(symbol="CLX"))
 
-        assert expiries[0]["value"] == options_chain.expirations[0]
+        assert expiries[0]["value"] == data_handler.chain_expirations(options_chain)[0]
         assert strikes[0]["label"] == "Nearest OTM"
         assert neither == []
 

@@ -99,7 +99,9 @@ class TestDataHandler:
         expirations = data_handler.get_expirations("CLX")
         strikes = data_handler.get_strikes("CLX")
 
-        assert expirations[0]["value"] == options_chain.expirations[0]
+        assert (
+            expirations[0]["value"] == data_handler.chain_expirations(options_chain)[0]
+        )
         assert strikes[0] == {"label": "Nearest OTM", "value": None}
         assert strikes[1]["value"] == options_chain.strikes[0]
         assert "Underlying" in strikes[1]["extraInfo"]["rightOfDescription"]
@@ -125,7 +127,10 @@ class TestSmile:
             },
         )()
 
-        assert _first_priced_expiration(stub) == options_chain.expirations[0]
+        assert (
+            _first_priced_expiration(stub)
+            == data_handler.chain_expirations(options_chain)[0]
+        )
 
     def test_builds_chart(self, options_chain):
         """The default smile renders two traces and returns the plotted rows."""
@@ -496,14 +501,19 @@ class TestLegPricing:
         assert naked_quotes(rows, self.MARKS) == {}
 
     def test_the_chain_carries_the_quote_of_every_contract(self, options_chain):
-        """The marks must publish the two sides a leg is priced from."""
+        """The marks must publish the two sides a leg is priced from.
+
+        Reads the expiration from ``chain_expirations`` rather than the model's
+        own list: the bundled payload ages, and its earliest expiration has
+        since passed, so ``expirations[0]`` names a date the frame has dropped.
+        """
+        expiration = data_handler.chain_expirations(options_chain)[0]
+
         with patch(
             "openbb_cboe.utils.options.data_handler.load_symbol",
             new=AsyncMock(return_value=options_chain),
         ):
-            marks = asyncio.run(
-                data_handler.get_chain_marks("CLX", options_chain.expirations[0])
-            )
+            marks = asyncio.run(data_handler.get_chain_marks("CLX", expiration))
 
         published = next(iter(marks["contracts"].values()))
 
@@ -998,3 +1008,46 @@ class TestOptionalCharting:
 
         assert isinstance(drawn, list)
         assert drawn and isinstance(drawn[0], dict)
+
+
+class TestChainExpirations:
+    """Expirations offered must be expirations that resolve to rows."""
+
+    def test_drops_expirations_the_frame_no_longer_carries(self, options_chain):
+        """A passed expiration is not offered, even though the payload still lists it.
+
+        ``dataframe`` drops expired contracts but ``expirations`` does not, so a
+        chain fetched after an expiration led its picker with a date whose
+        quotes came back empty.
+        """
+        offered = data_handler.chain_expirations(options_chain)
+        in_frame = {str(v) for v in options_chain.dataframe["expiration"]}
+
+        assert offered
+        assert set(offered) == in_frame
+        assert set(offered) <= set(options_chain.expirations)
+
+    def test_the_dropdown_offers_only_live_expirations(self, options_chain):
+        """The picker is built from the same filtered list."""
+        data_handler.LOADED_SYMBOLS["CLX"] = options_chain
+
+        try:
+            choices = data_handler.get_expirations("clx")
+        finally:
+            data_handler.LOADED_SYMBOLS.pop("CLX", None)
+
+        assert [c["value"] for c in choices] == data_handler.chain_expirations(
+            options_chain
+        )
+
+    def test_falls_back_when_there_is_no_frame(self):
+        """A chain whose frame cannot be built still reports its own expirations."""
+
+        class _NoFrame:
+            expirations = ["2030-01-18"]
+
+            @property
+            def dataframe(self):
+                raise ValueError("no validated data")
+
+        assert data_handler.chain_expirations(_NoFrame()) == ["2030-01-18"]

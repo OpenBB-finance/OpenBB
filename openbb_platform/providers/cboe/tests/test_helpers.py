@@ -911,3 +911,85 @@ class TestResponseCache:
             asyncio.run(helpers._sweep(backend))
 
         backend.responses.bulk_delete.assert_not_awaited()
+
+
+class TestCacheBackendReuse:
+    """A closed backend must never be handed back out."""
+
+    def test_a_second_request_does_not_reuse_a_closed_backend(self):
+        """Closing on the last request must not poison every request after it.
+
+        ``SQLiteBackend.close()`` clears the connection object it was built with
+        and never rebuilds it, so holding the reference made the first completed
+        request break all later ones with ``'NoneType' object has no attribute
+        '_connection'``.
+        """
+        from unittest.mock import patch
+
+        with (
+            patch.object(helpers, "_cache", None),
+            patch.object(helpers, "_cache_loop", None),
+            patch.object(helpers, "_cache_users", 0),
+            patch.object(helpers, "_swept", True),
+        ):
+
+            async def _two_requests():
+                first = await helpers.cache_backend()
+                await helpers.close_cache_backend(first)
+                second = await helpers.cache_backend()
+                return first, second
+
+            first, second = asyncio.run(_two_requests())
+
+        assert second is not first
+
+    def test_closing_clears_the_shared_reference(self):
+        """After a close, nothing is left pointing at the dead backend."""
+        from unittest.mock import patch
+
+        with (
+            patch.object(helpers, "_cache", None),
+            patch.object(helpers, "_cache_loop", None),
+            patch.object(helpers, "_cache_users", 0),
+            patch.object(helpers, "_swept", True),
+        ):
+            backend = asyncio.run(helpers.cache_backend())
+            assert helpers._cache is backend
+
+            asyncio.run(helpers.close_cache_backend(backend))
+
+            assert helpers._cache is None
+            assert helpers._cache_loop is None
+
+    def test_closing_a_stale_backend_leaves_the_current_one(self):
+        """A late close from an old request must not drop a newer shared backend."""
+        from unittest.mock import AsyncMock, patch
+
+        stale = SimpleNamespace(close=AsyncMock())
+        current = SimpleNamespace(close=AsyncMock())
+
+        with (
+            patch.object(helpers, "_cache", current),
+            patch.object(helpers, "_cache_loop", "loop"),
+        ):
+            asyncio.run(helpers.close_cache_backend(stale))
+
+            assert helpers._cache is current
+            assert helpers._cache_loop == "loop"
+
+        stale.close.assert_awaited_once()
+        current.close.assert_not_called()
+
+    def test_a_failing_close_is_swallowed(self):
+        """A close error must not surface as the request's failure."""
+        from unittest.mock import AsyncMock, patch
+
+        backend = SimpleNamespace(close=AsyncMock(side_effect=Exception("locked")))
+
+        with (
+            patch.object(helpers, "_cache", backend),
+            patch.object(helpers, "_cache_loop", "loop"),
+        ):
+            asyncio.run(helpers.close_cache_backend(backend))
+
+        assert helpers._cache is None

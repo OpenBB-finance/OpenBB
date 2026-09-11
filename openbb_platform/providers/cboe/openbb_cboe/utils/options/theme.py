@@ -26,6 +26,35 @@ class Unplotted:
         return drawn
 
 
+def supported_layout(layout: dict) -> dict:
+    """Drop the layout keys the installed Plotly no longer accepts.
+
+    The charting extension's template still carries ``mapbox``, which Plotly 7
+    removed in favour of ``map``. ``update_layout`` rejects the whole dict when
+    any one key is unknown, so an unrelated leftover would take every Cboe chart
+    down with it. Filtering against the installed ``Layout`` keeps this working
+    across Plotly versions instead of naming the casualties one at a time.
+
+    Parameters
+    ----------
+    layout : dict
+        The template layout to filter.
+
+    Returns
+    -------
+    dict
+        Only the keys the installed Plotly's ``Layout`` accepts.
+    """
+    from plotly.graph_objects import Layout
+
+    valid = getattr(Layout, "_valid_props", None)
+
+    if not valid:
+        return layout
+
+    return {key: value for key, value in layout.items() if key in valid}
+
+
 def new_figure(theme: str) -> tuple[Any, str, str]:
     """Create a themed ``OpenBBFigure`` with its text and background colors.
 
@@ -52,7 +81,7 @@ def new_figure(theme: str) -> tuple[Any, str, str]:
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
     fig = OpenBBFigure(create_backend=True)
-    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    fig.update_layout(supported_layout(ChartStyle().plotly_template.get("layout", {})))
 
     return fig, text_color, background
 
