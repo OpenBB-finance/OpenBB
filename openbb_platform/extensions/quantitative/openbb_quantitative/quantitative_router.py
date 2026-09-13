@@ -99,7 +99,9 @@ def normality(data: list[Data], target: str) -> OBBject[NormalityModel]:
                 "obb.quantitative.capm(data=stock_data, target='close')",
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}
+        ),
     ],
 )
 def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
