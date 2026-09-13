@@ -124,38 +124,29 @@ def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
         CAPM model summary.
     """
     # pylint: disable=import-outside-toplevel
-    import statsmodels.api as sm  # noqa
     from openbb_core.app.utils import (  # noqa``
         basemodel_to_df,
         get_target_columns,
     )
-    from pandas import to_datetime  # noqa
-    from openbb_quantitative.helpers import get_fama_raw  # noqa
+    from openbb_quantitative.helpers import (  # noqa
+        fit_capm,
+        get_fama_raw,
+        prepare_monthly_capm_data,
+    )
 
     df = basemodel_to_df(data)
 
     df_target = get_target_columns(df, ["date", target])
-    df_target = df_target.set_index("date")
-    df_target["return"] = df_target.pct_change()
-    df_target = df_target.dropna()
-    df_target.index = to_datetime(df_target.index)
-    start_date = df_target.index.min().strftime("%Y-%m-%d")
-    end_date = df_target.index.max().strftime("%Y-%m-%d")
+    start_date = df_target["date"].min()
+    end_date = df_target["date"].max()
     df_fama = get_fama_raw(start_date, end_date)
-    df_target = df_target.merge(df_fama, left_index=True, right_index=True)
-    df_target["excess_return"] = df_target["return"] - df_target["RF"]
-    df_target["excess_mkt"] = df_target["MKT-RF"] - df_target["RF"]
-    df_target = df_target.dropna()
-
-    y = df_target[["excess_return"]]
-    x = df_target["excess_mkt"]
-    x = sm.add_constant(x)
-    model = sm.OLS(y, x).fit()
+    capm_data = prepare_monthly_capm_data(df_target, df_fama, target)
+    beta, r_squared = fit_capm(capm_data)
 
     results = CAPMModel(
-        market_risk=model.params["excess_mkt"],
-        systematic_risk=model.rsquared,
-        idiosyncratic_risk=1 - model.rsquared,
+        market_risk=beta,
+        systematic_risk=r_squared,
+        idiosyncratic_risk=1 - r_squared,
     )
 
     return OBBject(results=results)
