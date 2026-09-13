@@ -5,6 +5,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas as pd
 import pytest
+from openbb_core.provider.abstract.data import Data
 from openbb_quantitative.helpers import (
     FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN,
     FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN,
@@ -15,6 +16,7 @@ from openbb_quantitative.helpers import (
     get_fama_raw,
     prepare_monthly_capm_data,
 )
+from openbb_quantitative.quantitative_router import capm
 
 
 def test_get_fama_raw_reads_local_zip(tmp_path):
@@ -212,3 +214,59 @@ def test_fit_capm_recovers_known_beta():
 
     assert beta == pytest.approx(1.5)
     assert r_squared == pytest.approx(1.0)
+
+
+def test_capm_router_uses_monthly_factors(monkeypatch):
+    """The CAPM command should run the complete local regression pipeline."""
+    market_excess = [-0.03, -0.01, 0.01, 0.02, 0.04]
+    risk_free = [0.001, 0.002, 0.001, 0.003, 0.002]
+    monthly_returns = [
+        rf + 0.002 + 1.5 * market
+        for market, rf in zip(market_excess, risk_free)
+    ]
+    prices = [100.0]
+    for monthly_return in monthly_returns:
+        prices.append(prices[-1] * (1 + monthly_return))
+
+    dates = pd.to_datetime(
+        [
+            "2023-01-31",
+            "2023-02-28",
+            "2023-03-31",
+            "2023-04-28",
+            "2023-05-31",
+            "2023-06-30",
+        ]
+    )
+    data = [
+        Data(date=timestamp.date(), close=price)
+        for timestamp, price in zip(dates, prices)
+    ]
+    factors = pd.DataFrame(
+        {
+            FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN: market_excess,
+            FAMA_FRENCH_RISK_FREE_RETURN_COLUMN: risk_free,
+        },
+        index=pd.to_datetime(
+            [
+                "2023-02-01",
+                "2023-03-01",
+                "2023-04-01",
+                "2023-05-01",
+                "2023-06-01",
+            ]
+        ),
+    )
+
+    def get_factors(start_date, end_date):
+        assert start_date == date(2023, 1, 31)
+        assert end_date == date(2023, 6, 30)
+        return factors
+
+    monkeypatch.setattr("openbb_quantitative.helpers.get_fama_raw", get_factors)
+
+    result = capm(data, "close")
+
+    assert result.results.market_risk == pytest.approx(1.5)
+    assert result.results.systematic_risk == pytest.approx(1.0)
+    assert result.results.idiosyncratic_risk == pytest.approx(0.0)
