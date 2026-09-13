@@ -25,9 +25,7 @@ def test_factors_query_params_defaults():
 
 def test_factors_query_params_accept_valid_regional_frequency():
     """A frequency available for the selected regional factor should validate."""
-    params = FamaFrenchFactorsQueryParams(
-        region="europe", factor="momentum", frequency="annual"
-    )
+    params = FamaFrenchFactorsQueryParams(region="europe", factor="momentum", frequency="annual")
 
     assert params.region == "europe"
     assert params.factor == "momentum"
@@ -77,12 +75,8 @@ def test_factors_fetcher_selects_dataset(monkeypatch):
         assert frequency == "annual"
         return expected
 
-    monkeypatch.setattr(
-        "openbb_famafrench.utils.helpers.get_portfolio_data", get_portfolio_data
-    )
-    query = FamaFrenchFactorsQueryParams(
-        region="europe", factor="momentum", frequency="annual"
-    )
+    monkeypatch.setattr("openbb_famafrench.utils.helpers.get_portfolio_data", get_portfolio_data)
+    query = FamaFrenchFactorsQueryParams(region="europe", factor="momentum", frequency="annual")
 
     result = asyncio.run(FamaFrenchFactorsFetcher.aextract_data(query, None))
 
@@ -100,13 +94,9 @@ def test_factors_fetcher_transforms_and_filters_data():
             "RF": [0.0001, 0.0002, 0.0003],
         }
     ).set_index("Date")
-    query = FamaFrenchFactorsQueryParams(
-        start_date=date(2023, 2, 1), end_date=date(2023, 2, 28)
-    )
+    query = FamaFrenchFactorsQueryParams(start_date=date(2023, 2, 1), end_date=date(2023, 2, 28))
 
-    result = FamaFrenchFactorsFetcher.transform_data(
-        query, ([table], [{"source": "fixture"}])
-    )
+    result = FamaFrenchFactorsFetcher.transform_data(query, ([table], [{"source": "fixture"}]))
 
     assert result.metadata == {"source": "fixture"}
     assert len(result.result) == 1

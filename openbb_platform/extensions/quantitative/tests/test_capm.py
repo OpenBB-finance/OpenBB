@@ -79,17 +79,13 @@ def test_prepare_monthly_capm_data_aligns_months_and_uses_market_excess_return()
             FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN: [0.01, 0.02, 0.03, 0.04],
             FAMA_FRENCH_RISK_FREE_RETURN_COLUMN: [0.001, 0.002, 0.003, 0.004],
         },
-        index=pd.to_datetime(
-            ["2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01"]
-        ),
+        index=pd.to_datetime(["2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01"]),
     )
 
     result = prepare_monthly_capm_data(data, factors, "close")
 
     assert list(result.index.astype(str)) == ["2023-02", "2023-03", "2023-04"]
-    assert result["excess_return"].to_list() == pytest.approx(
-        [0.018, 0.027, 0.036]
-    )
+    assert result["excess_return"].to_list() == pytest.approx([0.018, 0.027, 0.036])
     assert result["excess_mkt"].to_list() == pytest.approx([0.02, 0.03, 0.04])
 
 
@@ -149,9 +145,7 @@ def test_prepare_monthly_capm_data_rejects_constant_market_returns():
     """CAPM beta is unidentified when market excess returns do not vary."""
     data = pd.DataFrame(
         {
-            "date": pd.to_datetime(
-                ["2023-01-31", "2023-02-28", "2023-03-31", "2023-04-28"]
-            ),
+            "date": pd.to_datetime(["2023-01-31", "2023-02-28", "2023-03-31", "2023-04-28"]),
             "close": [100.0, 101.0, 102.0, 103.0],
         }
     )
@@ -171,10 +165,7 @@ def test_fit_capm_recovers_known_beta():
     """The prices-to-regression pipeline should recover an exact CAPM beta."""
     market_excess = [-0.03, -0.01, 0.01, 0.02, 0.04]
     risk_free = [0.001, 0.002, 0.001, 0.003, 0.002]
-    monthly_returns = [
-        rf + 0.002 + 1.5 * market
-        for market, rf in zip(market_excess, risk_free)
-    ]
+    monthly_returns = [rf + 0.002 + 1.5 * market for market, rf in zip(market_excess, risk_free)]
     prices = [100.0]
     for monthly_return in monthly_returns:
         prices.append(prices[-1] * (1 + monthly_return))
@@ -220,10 +211,7 @@ def test_capm_router_uses_monthly_factors(monkeypatch):
     """The CAPM command should run the complete local regression pipeline."""
     market_excess = [-0.03, -0.01, 0.01, 0.02, 0.04]
     risk_free = [0.001, 0.002, 0.001, 0.003, 0.002]
-    monthly_returns = [
-        rf + 0.002 + 1.5 * market
-        for market, rf in zip(market_excess, risk_free)
-    ]
+    monthly_returns = [rf + 0.002 + 1.5 * market for market, rf in zip(market_excess, risk_free)]
     prices = [100.0]
     for monthly_return in monthly_returns:
         prices.append(prices[-1] * (1 + monthly_return))
@@ -238,10 +226,7 @@ def test_capm_router_uses_monthly_factors(monkeypatch):
             "2023-06-30",
         ]
     )
-    data = [
-        Data(date=timestamp.date(), close=price)
-        for timestamp, price in zip(dates, prices)
-    ]
+    data = [Data(date=timestamp.date(), close=price) for timestamp, price in zip(dates, prices)]
     factors = pd.DataFrame(
         {
             FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN: market_excess,

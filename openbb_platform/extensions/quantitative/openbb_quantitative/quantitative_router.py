@@ -99,9 +99,7 @@ def normality(data: list[Data], target: str) -> OBBject[NormalityModel]:
                 "obb.quantitative.capm(data=stock_data, target='close')",
             ],
         ),
-        APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}
-        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}),
     ],
 )
 def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
@@ -124,10 +122,11 @@ def capm(data: list[Data], target: str) -> OBBject[CAPMModel]:
         CAPM model summary.
     """
     # pylint: disable=import-outside-toplevel
-    from openbb_core.app.utils import (  # noqa``
+    from openbb_core.app.utils import (  # noqa
         basemodel_to_df,
         get_target_columns,
     )
+
     from openbb_quantitative.helpers import (  # noqa
         fit_capm,
         get_fama_raw,

@@ -12,15 +12,12 @@ FAMA_FRENCH_SMALL_MINUS_BIG_RETURN_COLUMN = "SMB"
 FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN = "HML"
 FAMA_FRENCH_RISK_FREE_RETURN_COLUMN = "RF"
 FAMA_FRENCH_MONTHLY_FACTORS_URL = (
-    "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
-    "F-F_Research_Data_Factors_CSV.zip"
+    "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
 )
 FAMA_FRENCH_MONTHLY_FACTORS_FILE = "F-F_Research_Data_Factors.csv"
 
 
-def prepare_monthly_capm_data(
-    data: "DataFrame", factors: "DataFrame", target: str
-) -> "DataFrame":
+def prepare_monthly_capm_data(data: "DataFrame", factors: "DataFrame", target: str) -> "DataFrame":
     """Align monthly asset excess returns with Fama-French market excess returns.
 
     Returns
@@ -41,26 +38,18 @@ def prepare_monthly_capm_data(
     ).sort_values("date")
     asset = asset.set_index("date")
     # Use the final available price in each month to calculate monthly returns.
-    asset_returns = (
-        asset[target].groupby(asset.index.to_period("M")).last().pct_change().dropna()
-    )
+    asset_returns = asset[target].groupby(asset.index.to_period("M")).last().pct_change().dropna()
 
-    monthly_factors = factors[
-        [FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN, FAMA_FRENCH_RISK_FREE_RETURN_COLUMN]
-    ].copy()
+    monthly_factors = factors[[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN, FAMA_FRENCH_RISK_FREE_RETURN_COLUMN]].copy()
     monthly_factors.index = to_datetime(monthly_factors.index).to_period("M")
 
     result = DataFrame({"return": asset_returns}).join(monthly_factors, how="inner")
-    result["excess_return"] = (
-        result["return"] - result[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN]
-    )
+    result["excess_return"] = result["return"] - result[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN]
     result["excess_mkt"] = result[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN]
     result = result[["excess_return", "excess_mkt"]].dropna()
 
     if len(result) < 3:
-        raise ValueError(
-            "CAPM requires at least 3 aligned monthly return observations."
-        )
+        raise ValueError("CAPM requires at least 3 aligned monthly return observations.")
     if result["excess_mkt"].nunique() < 2:
         raise ValueError("CAPM requires variation in market excess returns.")
 
@@ -128,9 +117,7 @@ def get_fama_raw(
 
     df = df[df[FAMA_FRENCH_DATE_COLUMN].apply(lambda x: len(str(x).strip()) == 6)]
     df[FAMA_FRENCH_DATE_COLUMN] = df[FAMA_FRENCH_DATE_COLUMN].astype(str) + "01"
-    df[FAMA_FRENCH_DATE_COLUMN] = to_datetime(
-        df[FAMA_FRENCH_DATE_COLUMN], format="%Y%m%d"
-    )
+    df[FAMA_FRENCH_DATE_COLUMN] = to_datetime(df[FAMA_FRENCH_DATE_COLUMN], format="%Y%m%d")
     df[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN] = to_numeric(
         df[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN], downcast="float"
     )
@@ -140,21 +127,11 @@ def get_fama_raw(
     df[FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN] = to_numeric(
         df[FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN], downcast="float"
     )
-    df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN] = to_numeric(
-        df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN], downcast="float"
-    )
-    df[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN] = (
-        df[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN] / 100
-    )
-    df[FAMA_FRENCH_SMALL_MINUS_BIG_RETURN_COLUMN] = (
-        df[FAMA_FRENCH_SMALL_MINUS_BIG_RETURN_COLUMN] / 100
-    )
-    df[FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN] = (
-        df[FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN] / 100
-    )
-    df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN] = (
-        df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN] / 100
-    )
+    df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN] = to_numeric(df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN], downcast="float")
+    df[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN] = df[FAMA_FRENCH_MARKET_EXCESS_RETURN_COLUMN] / 100
+    df[FAMA_FRENCH_SMALL_MINUS_BIG_RETURN_COLUMN] = df[FAMA_FRENCH_SMALL_MINUS_BIG_RETURN_COLUMN] / 100
+    df[FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN] = df[FAMA_FRENCH_HIGH_MINUS_LOW_RETURN_COLUMN] / 100
+    df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN] = df[FAMA_FRENCH_RISK_FREE_RETURN_COLUMN] / 100
     df = df.set_index(FAMA_FRENCH_DATE_COLUMN)
 
     dt_start_date = to_datetime(start_date.strftime("%Y-%m-%d"), format="%Y-%m-%d")
@@ -185,6 +162,4 @@ def validate_window(input_data: Union["Series", "DataFrame"], window: int) -> No
         If the window is greater than the input data length.
     """
     if window > len(input_data):
-        raise ValueError(
-            f"Window '{window}' is greater than the input data length '{len(input_data)}'"
-        )
+        raise ValueError(f"Window '{window}' is greater than the input data length '{len(input_data)}'")

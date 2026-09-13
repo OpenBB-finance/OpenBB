@@ -44,16 +44,11 @@ class FamaFrenchFactorsQueryParams(QueryParams):
         default="america",
         json_schema_extra={
             "x-widget_config": {
-                "options": [
-                    {"label": k.replace("_", " ").title(), "value": v}
-                    for k, v in REGIONS_MAP.items()
-                ]
+                "options": [{"label": k.replace("_", " ").title(), "value": v} for k, v in REGIONS_MAP.items()]
             }
         },
     )
-    factor: Literal[
-        "5_factors", "3_factors", "momentum", "st_reversal", "lt_reversal"
-    ] = Field(
+    factor: Literal["5_factors", "3_factors", "momentum", "st_reversal", "lt_reversal"] = Field(
         default="3_factors",
         description="Factor to fetch. "
         + "Default is the 3-Factor Model."
@@ -119,15 +114,11 @@ class FamaFrenchFactorsQueryParams(QueryParams):
         frequency = values.get("frequency", "")
 
         if factor and factor in ["st_reversal", "lt_reversal"] and region != "america":
-            raise ValueError(
-                f"Invalid region, '{region}', for factor '{factor}'. Only 'america' is supported."
-            )
+            raise ValueError(f"Invalid region, '{region}', for factor '{factor}'. Only 'america' is supported.")
 
         if region and region not in list(FACTOR_REGION_MAP):
             raise ValueError(
-                f"Invalid region: '{region}'. "
-                + "Valid regions are: "
-                + ", ".join(FACTOR_REGION_MAP.keys())
+                f"Invalid region: '{region}'. " + "Valid regions are: " + ", ".join(FACTOR_REGION_MAP.keys())
             )
 
         regional_factors = FACTOR_REGION_MAP[region]
@@ -209,8 +200,7 @@ class FamaFrenchFactorsData(Data):
         default=None,
         description="Conservative minus aggressive (CMA) factor returns."
         + " Average return on conservative investment portfolios,"
-        " minus average return on aggressive investment portfolios."
-        + " Only returned when 5 Factor model is selected.",
+        " minus average return on aggressive investment portfolios." + " Only returned when 5 Factor model is selected.",
         title="CMA",
     )
     rf: float | None = Field(
@@ -250,9 +240,7 @@ class FamaFrenchFactorsData(Data):
     )
 
 
-class FamaFrenchFactorsFetcher(
-    Fetcher[FamaFrenchFactorsQueryParams, list[FamaFrenchFactorsData]]
-):
+class FamaFrenchFactorsFetcher(Fetcher[FamaFrenchFactorsQueryParams, list[FamaFrenchFactorsData]]):
     """Fama-French Factors Fetcher."""
 
     @staticmethod
