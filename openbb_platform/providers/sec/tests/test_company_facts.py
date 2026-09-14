@@ -3,11 +3,16 @@
 # pylint: disable=C0302,W0613,W0621
 # flake8: noqa: D102,D103,D403
 
+import asyncio
 import json
 from pathlib import Path
 
+import aiohttp
 import pytest
-from openbb_sec.utils.company_facts import resolve_company_facts
+from openbb_sec.utils.company_facts import (
+    get_standardized_financials,
+    resolve_company_facts,
+)
 from openbb_sec.utils.statement_schema import StatementSchema
 from openbb_sec.utils.statement_schema._detection import get_filing_dates
 
@@ -3069,3 +3074,68 @@ class TestSixKReportingPeriods:
 
         with pytest.raises(OpenBBError, match="quarterly"):
             resolve_company_facts(_six_k_lapsed_interim_facts(), period="quarterly")
+
+
+# ---------------------------------------------------------------------------
+# Caching regression test for issue #7655
+#
+# get_standardized_financials()'s internal `_fetch()` used to open a fresh,
+# throwaway CacheBackend() per call (no `cache=` argument to CachedSession),
+# so its 6-hour TTL never actually spanned two calls -- .income(), .balance()
+# and .cash() for the same symbol each independently re-downloaded the full
+# companyfacts payload. The fix points CachedSession at a persistent
+# SQLiteBackend under the "sec_financials" cache namespace, matching every
+# other cached fetch in this provider (see helpers.py, frames.py,
+# management_discussion_analysis.py).
+# ---------------------------------------------------------------------------
+
+
+def test_get_standardized_financials_reuses_cache_across_calls(tmp_path, monkeypatch):
+    """Two calls for the same CIK must make one real HTTP fetch, not two.
+
+    This provider's tests make real network requests rather than replaying
+    VCR cassettes (see test_xbrl_taxonomy.py's module docstring), so the
+    caching regression is verified the direct way: wrap
+    ``aiohttp.ClientSession._request`` -- the method `aiohttp_client_cache`
+    only calls through to on a genuine cache miss -- with a call counter that
+    still executes the real request underneath. If this regresses to a
+    throwaway per-call cache (a bare ``CachedSession(expire_after=...)`` with
+    no persistent ``cache=`` backend), the second
+    ``get_standardized_financials()`` call below is a second cache miss and
+    the count comes back 2, not 1.
+    """
+    monkeypatch.setattr(
+        "openbb_core.app.utils.get_user_cache_directory",
+        lambda: str(tmp_path),
+    )
+
+    original_request = (
+        aiohttp.ClientSession._request
+    )  # pylint: disable=protected-access
+    call_count = 0
+
+    async def counting_request(self, method, str_or_url, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        return await original_request(self, method, str_or_url, **kwargs)
+
+    monkeypatch.setattr(aiohttp.ClientSession, "_request", counting_request)
+
+    first = asyncio.run(
+        get_standardized_financials(cik="0001964738", period="annual", use_cache=True)
+    )
+    second = asyncio.run(
+        get_standardized_financials(cik="0001964738", period="annual", use_cache=True)
+    )
+
+    assert call_count == 1, (
+        f"expected one real HTTP fetch shared across both calls via the "
+        f"persistent cache, but the underlying transport was hit {call_count} times"
+    )
+    assert first.entity_name == "SOLVENTUM CORPORATION"
+    assert second.entity_name == first.entity_name
+    assert second.income_statement == first.income_statement
+    assert second.balance_sheet == first.balance_sheet
+
+    cache_db = tmp_path / "http" / "sec_financials.sqlite"
+    assert cache_db.exists()
