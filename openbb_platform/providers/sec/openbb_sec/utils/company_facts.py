@@ -572,12 +572,31 @@ async def get_standardized_financials(
     async def _fetch(cik_str: str) -> dict:
         url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_str}.json"
         if use_cache:
+            from aiohttp_client_cache import (
+                SQLiteBackend,
+            )  # pylint: disable=import-outside-toplevel
             from aiohttp_client_cache.session import (
                 CachedSession,
             )  # pylint: disable=import-outside-toplevel
+            from openbb_core.app.utils import (
+                get_user_cache_directory,
+            )  # pylint: disable=import-outside-toplevel
 
-            async with CachedSession(expire_after=3600 * 6) as session:
+            # A persistent, on-disk cache -- same convention, and the same
+            # "sec_financials" namespace, as management_discussion_analysis.py.
+            # `CachedSession(expire_after=...)` with no `cache=` argument
+            # defaults to a fresh in-process CacheBackend() every call, which
+            # is thrown away with the session at the end of this function --
+            # the 6-hour TTL below never actually spans two calls, so
+            # `.income()`, `.balance()`, and `.cash()` for the same symbol
+            # each independently re-download the same multi-megabyte
+            # companyfacts payload instead of sharing one cached fetch.
+            cache_dir = f"{get_user_cache_directory()}/http/sec_financials"
+            async with CachedSession(
+                cache=SQLiteBackend(cache_dir, expire_after=3600 * 6)
+            ) as session:
                 try:
+                    await session.delete_expired_responses()
                     resp = await amake_request(
                         url, headers=HEADERS, session=session, timeout=300
                     )
