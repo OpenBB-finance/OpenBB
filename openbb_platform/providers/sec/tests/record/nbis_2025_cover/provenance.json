@@ -1,0 +1,22 @@
+[
+  {
+    "file": "R1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1513845/000110465926052948/R1.htm",
+    "retrieved_date": "2026-09-14",
+    "transport": "OpenBB regulators/sec/htm_file(provider=sec)",
+    "response_http_status": 200,
+    "response_sha256": "d3102158375e68a61b00b0da102aee67601ae1fe76ad28f22b50c53b7d56b8e4",
+    "html_sha256": "4cddcb3d8d10662587c315bd1c89479330f9e29ed81947d33a062254fe8a3589",
+    "html_bytes": 76819
+  },
+  {
+    "file": "0001104659-26-052948-index-headers.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1513845/000110465926052948/0001104659-26-052948-index-headers.htm",
+    "retrieved_date": "2026-09-14",
+    "transport": "OpenBB regulators/sec/htm_file(provider=sec)",
+    "response_http_status": 200,
+    "response_sha256": "ac1e751186d6e6d528b4d5e0d01378dbbf121e685ddb4d15c76a01d777d75946",
+    "html_sha256": "aac7c3c744d2df41335aee11e8b546e4272e3b51b994a13a4aad50d743e4609f",
+    "html_bytes": 33746
+  }
+]

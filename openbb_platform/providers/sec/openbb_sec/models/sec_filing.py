@@ -532,7 +532,9 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
     ):  # pylint: disable=too-many-branches, too-many-statements, too-many-locals
         """Download the cover page table."""
         # pylint: disable=import-outside-toplevel
-        from pandas import MultiIndex, to_datetime
+        from math import isfinite
+
+        from pandas import MultiIndex, notna, to_datetime
 
         symbols_list: list = []
         try:
@@ -586,12 +588,15 @@ class SecBaseFiling(Data):  # pylint: disable=too-many-instance-attributes
                     else df.columns[2]
                 )
 
-                if as_of_date and shares_outstanding:
-                    self._shares_outstanding = {
-                        to_datetime(as_of_date).strftime("%Y-%m-%d"): int(
-                            shares_outstanding * multiplier
-                        )
-                    }
+                # Missing comparative shares must not discard the rest of the cover.
+                if as_of_date and notna(shares_outstanding):
+                    scaled_shares = shares_outstanding * multiplier
+                    if isfinite(float(scaled_shares)):
+                        self._shares_outstanding = {
+                            to_datetime(as_of_date).strftime("%Y-%m-%d"): int(
+                                scaled_shares
+                            )
+                        }
 
             if not df.empty:
                 trading_symbols_df = df[
