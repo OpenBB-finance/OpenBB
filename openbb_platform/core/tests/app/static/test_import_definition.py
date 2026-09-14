@@ -234,10 +234,6 @@ def test_unwrap_generic_args_swallows_get_args_exception(monkeypatch):
 def test_unwrap_generic_args_handles_annotated_alias():
     """Lines 76-79: ``_AnnotatedAlias`` branch pushes ``__origin__`` on stack."""
     out = import_def_module._unwrap_generic_args(Annotated[int, "tag"])
-    # Origin (``int``) gets pushed and processed by the next loop iteration.
-    # ``int`` itself isn't a generic, so it lands in ``out`` only if it appears
-    # as a top-level type within get_args of the inner — which it doesn't here,
-    # so we just confirm the function returns cleanly without raising.
     assert isinstance(out, list)
 
 
@@ -280,3 +276,38 @@ def test_get_function_hint_type_list_extracts_depends_from_annotated_param():
 
     out = ImportDefinition.get_function_hint_type_list(route)
     assert _dep in out
+
+
+def test_get_function_hint_type_list_falls_back_to_response_model():
+    """An endpoint with no return annotation falls back to ``route.response_model``."""
+    from datetime import datetime
+
+    async def _endpoint(x: int):
+        return x
+
+    route = SimpleNamespace(
+        endpoint=_endpoint,
+        openapi_extra={},
+        response_model=datetime,
+    )
+
+    out = ImportDefinition.get_function_hint_type_list(route)
+    assert datetime in out
+
+
+def test_get_function_hint_type_list_event_stream_returns_obbstream():
+    """An ``text/event-stream`` response class forces an ``OBBStream`` return type."""
+    from openbb_core.app.model.stream import OBBStream
+
+    async def _endpoint(x: int) -> int:
+        return x
+
+    route = SimpleNamespace(
+        endpoint=_endpoint,
+        openapi_extra={},
+        response_model=int,
+        response_class=SimpleNamespace(media_type="text/event-stream"),
+    )
+
+    out = ImportDefinition.get_function_hint_type_list(route)
+    assert OBBStream in out
