@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from async_lru import alru_cache
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.utils.errors import MissingCredentialError
 
 if TYPE_CHECKING:
     from pandas import ExcelFile
@@ -15,6 +16,12 @@ async def response_callback(response, _):
         res = await response.json()
         code = res.get("error", {}).get("code", "")
         msg = res.get("error", {}).get("message", "An invalid api_key was supplied.")
+        if code == "API_KEY_MISSING":
+            raise MissingCredentialError(
+                provider="eia",
+                credential="eia_api_key",
+                message=f"{code} -> {msg}",
+            )
         raise OpenBBError(f"{code} -> {msg}")
     return await response.json()
 

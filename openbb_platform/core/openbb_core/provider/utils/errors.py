@@ -14,6 +14,36 @@ class EmptyDataError(OpenBBError):
         super().__init__(self.message)
 
 
+class MissingCredentialError(OpenBBError):
+    """Exception raised when a required provider credential is not configured."""
+
+    def __init__(
+        self,
+        provider: str,
+        credential: str,
+        message: str | None = None,
+    ):
+        """Initialize the exception.
+
+        Parameters
+        ----------
+        provider : str
+            Name of the provider, e.g. "eia".
+        credential : str
+            Name of the missing credential, e.g. "eia_api_key".
+        message : str | None
+            Optional human-readable message. Defaults to a standard message.
+        """
+        self.provider = provider
+        self.credential = credential
+        self.message = message or (
+            f"Missing credential '{credential}' for provider '{provider}'. "
+            "Refer to the documentation for setting provider credentials at "
+            "https://docs.openbb.co/platform/settings/user_settings/api_keys."
+        )
+        super().__init__(self.message)
+
+
 class UnauthorizedError(OpenBBError):
     """Exception raised for an unauthorized provider request response."""
 

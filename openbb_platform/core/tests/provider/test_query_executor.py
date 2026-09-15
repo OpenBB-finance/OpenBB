@@ -9,6 +9,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.query_executor import QueryExecutor
+from openbb_core.provider.utils.errors import MissingCredentialError
 from pydantic import SecretStr
 
 
@@ -75,8 +76,11 @@ def test_filter_credentials_missing_require(mock_query_executor):
     provider.credentials = ["test_provider_api_key"]
     credentials = {"other_api_key": SecretStr("12345")}
 
-    with pytest.raises(OpenBBError, match="Missing credential"):
+    with pytest.raises(MissingCredentialError) as exc_info:
         mock_query_executor.filter_credentials(credentials, provider, True)
+
+    assert exc_info.value.provider == "test"
+    assert exc_info.value.credential == "test_provider_api_key"
 
 
 def test_filter_credentials_empty_require(mock_query_executor):
@@ -88,8 +92,11 @@ def test_filter_credentials_empty_require(mock_query_executor):
         "other_api_key": SecretStr("12345"),
     }
 
-    with pytest.raises(OpenBBError, match="Missing credential"):
+    with pytest.raises(MissingCredentialError) as exc_info:
         mock_query_executor.filter_credentials(credentials, provider, True)
+
+    assert exc_info.value.provider == "test"
+    assert exc_info.value.credential == "test_provider_api_key"
 
 
 def test_filter_credentials_missing_dont_require(mock_query_executor):

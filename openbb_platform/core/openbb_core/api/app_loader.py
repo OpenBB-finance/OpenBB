@@ -5,7 +5,11 @@ from fastapi.exceptions import ResponseValidationError
 from openbb_core.api.exception_handlers import ExceptionHandlers
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.router import RouterLoader
-from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
+from openbb_core.provider.utils.errors import (
+    EmptyDataError,
+    MissingCredentialError,
+    UnauthorizedError,
+)
 from pydantic import ValidationError
 
 
@@ -39,5 +43,8 @@ class AppLoader:
         app.exception_handlers[ValidationError] = ExceptionHandlers.validation
         app.exception_handlers[ResponseValidationError] = ExceptionHandlers.validation
         app.exception_handlers[OpenBBError] = ExceptionHandlers.openbb
+        app.exception_handlers[MissingCredentialError] = (
+            ExceptionHandlers.missing_credential
+        )
         app.exception_handlers[EmptyDataError] = ExceptionHandlers.empty_data
         app.exception_handlers[UnauthorizedError] = ExceptionHandlers.unauthorized
