@@ -21,7 +21,12 @@ from openbb_cli.dispatchers.openapi_schema import (
     build_parser_from_operation,
     build_reference,
     build_router_map,
+    deref_schema,
     expand_type_arrays,
+    extract_request_body_schema,
+    extract_response_schema,
+    merge_allof,
+    operation_parameters,
     parameter_to_kwargs,
     parse_json_arg,
     request_body_parameters,
@@ -1873,3 +1878,355 @@ def test_bundle_external_refs_rejects_schema_ref_siblings(monkeypatch):
             timeout=1,
             headers={},
         )
+
+
+def test_operation_parameters_returns_own_when_no_path_item_params():
+    """Without inherited parameters the operation's own list is returned, dereferenced."""
+    op = {"parameters": [{"name": "symbol", "in": "query"}]}
+    assert operation_parameters({}, {}, op) == [{"name": "symbol", "in": "query"}]
+
+
+def test_operation_parameters_inherits_from_path_item():
+    """Path-item parameters come first, then the operation's own."""
+    path_item = {"parameters": [{"name": "record_id", "in": "path"}]}
+    op = {"parameters": [{"name": "symbol", "in": "query"}]}
+    assert [p["name"] for p in operation_parameters({}, path_item, op)] == [
+        "record_id",
+        "symbol",
+    ]
+
+
+def test_operation_parameters_drops_inherited_headers_and_cookies():
+    """Headers and cookies are transport concerns, not command arguments."""
+    path_item = {
+        "parameters": [
+            {"name": "x-tenant-id", "in": "header"},
+            {"name": "session", "in": "cookie"},
+            {"name": "record_id", "in": "path"},
+        ]
+    }
+    assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["record_id"]
+
+
+def test_operation_parameters_keeps_operation_level_headers():
+    """An operation's own header parameter is untouched by the inheritance filter."""
+    op = {"parameters": [{"name": "x-request-id", "in": "header"}]}
+    path_item = {"parameters": [{"name": "record_id", "in": "path"}]}
+    assert [p["name"] for p in operation_parameters({}, path_item, op)] == [
+        "record_id",
+        "x-request-id",
+    ]
+
+
+def test_operation_parameters_operation_overrides_inherited():
+    """An operation parameter replaces an inherited one matching (name, in)."""
+    path_item = {"parameters": [{"name": "limit", "in": "query", "required": False}]}
+    op = {"parameters": [{"name": "limit", "in": "query", "required": True}]}
+    out = operation_parameters({}, path_item, op)
+    assert out == [{"name": "limit", "in": "query", "required": True}]
+
+
+def test_operation_parameters_resolves_refs_on_both_levels():
+    """``$ref`` entries are resolved before they are compared or returned."""
+    spec = {
+        "components": {
+            "parameters": {
+                "record_id": {"name": "record_id", "in": "path"},
+                "symbol": {"name": "symbol", "in": "query"},
+            }
+        }
+    }
+    path_item = {"parameters": [{"$ref": "#/components/parameters/record_id"}]}
+    op = {"parameters": [{"$ref": "#/components/parameters/symbol"}]}
+    assert [p["name"] for p in operation_parameters(spec, path_item, op)] == [
+        "record_id",
+        "symbol",
+    ]
+
+
+def test_operation_parameters_skips_unresolvable_and_unnamed_entries():
+    """Unresolvable refs, non-dicts, and nameless entries are dropped."""
+    path_item = {
+        "parameters": [
+            {"$ref": "#/components/parameters/missing"},
+            "not-a-dict",
+            {"in": "query"},
+            {"name": "record_id", "in": "path"},
+        ]
+    }
+    assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["record_id"]
+
+
+def test_build_command_index_inherits_path_item_parameters():
+    """The interactive parser also picks up parameters shared by the path item."""
+    spec = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "record_id", "in": "path", "schema": {"type": "string"}}
+                ],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {"name": "symbol", "in": "query", "schema": {"type": "string"}}
+                    ],
+                },
+            }
+        }
+    }
+    parser = build_command_index(spec)["x"]
+    dests = {a.dest for a in parser._actions}
+    assert "record_id" in dests
+    assert "symbol" in dests
+
+
+def test_build_parser_from_operation_without_spec_ignores_path_item():
+    """Called without a spec the parser keeps its previous operation-only behavior."""
+    op = {
+        "parameters": [{"name": "symbol", "in": "query", "schema": {"type": "string"}}]
+    }
+    parser = build_parser_from_operation(op)
+    assert {a.dest for a in parser._actions} == {"symbol"}
+
+
+def test_merge_allof_unions_properties_and_required():
+    schema = {
+        "allOf": [
+            {"type": "object", "properties": {"results": {"type": "array"}}},
+            {
+                "type": "object",
+                "properties": {"pageNumber": {"type": "integer"}},
+                "required": ["pageNumber"],
+            },
+        ]
+    }
+    merged = merge_allof(schema)
+    assert merged["type"] == "object"
+    assert set(merged["properties"]) == {"results", "pageNumber"}
+    assert merged["required"] == ["pageNumber"]
+
+
+def test_merge_allof_first_member_wins_on_conflict():
+    schema = {
+        "allOf": [
+            {"properties": {"value": {"type": "string"}}},
+            {"properties": {"value": {"type": "integer"}}},
+        ]
+    }
+    assert merge_allof(schema)["properties"]["value"] == {"type": "string"}
+
+
+def test_merge_allof_sibling_keywords_outrank_members():
+    schema = {
+        "properties": {"value": {"type": "boolean"}},
+        "required": ["value"],
+        "allOf": [{"properties": {"value": {"type": "string"}}}],
+    }
+    merged = merge_allof(schema)
+    assert merged["properties"]["value"] == {"type": "boolean"}
+    assert merged["required"] == ["value"]
+
+
+def test_merge_allof_nested_inside_properties():
+    schema = {
+        "type": "object",
+        "properties": {
+            "row": {
+                "allOf": [
+                    {"properties": {"a": {"type": "string"}}},
+                    {"properties": {"b": {"type": "string"}}},
+                ]
+            }
+        },
+    }
+    merged = merge_allof(schema)
+    assert set(merged["properties"]["row"]["properties"]) == {"a", "b"}
+
+
+def test_merge_allof_leaves_non_object_compositions_alone():
+    # A member carrying its own combinator, or a non-object type, is not a
+    # plain intersection of property bags and must not be flattened.
+    with_combinator = {
+        "allOf": [
+            {"properties": {"a": {"type": "string"}}},
+            {"oneOf": [{"type": "object"}, {"type": "null"}]},
+        ]
+    }
+    scalar_member = {"allOf": [{"type": "string"}, {"properties": {"a": {}}}]}
+
+    assert merge_allof(with_combinator) == with_combinator
+    assert merge_allof(scalar_member) == scalar_member
+
+
+def test_merge_allof_ignores_schemas_without_allof():
+    schema = {"type": "object", "properties": {"a": {"type": "string"}}}
+    assert merge_allof(schema) == schema
+
+
+def test_extract_response_schema_merges_allof_composition():
+    spec = {
+        "components": {
+            "schemas": {
+                "Paged": {
+                    "type": "object",
+                    "properties": {"pageNumber": {"type": "integer"}},
+                    "required": ["pageNumber"],
+                },
+                "Bills": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "results": {
+                                    "type": "array",
+                                    "items": {"$ref": "#/components/schemas/Bill"},
+                                }
+                            },
+                        },
+                        {"$ref": "#/components/schemas/Paged"},
+                    ]
+                },
+                "Bill": {
+                    "type": "object",
+                    "properties": {"id": {"type": "string"}},
+                },
+            }
+        }
+    }
+    op = {
+        "responses": {
+            "200": {
+                "content": {
+                    "application/json": {
+                        "schema": {"$ref": "#/components/schemas/Bills"}
+                    }
+                }
+            }
+        }
+    }
+
+    schema = extract_response_schema(spec, op)
+    assert set(schema["properties"]) == {"results", "pageNumber"}
+    assert schema["required"] == ["pageNumber"]
+    # The nested reference inside the merged member is still resolved.
+    items = schema["properties"]["results"]["items"]
+    assert items["properties"]["id"] == {"type": "string"}
+
+
+def test_extract_request_body_schema_merges_allof_composition():
+    spec = {
+        "components": {
+            "schemas": {
+                "Timestamps": {
+                    "type": "object",
+                    "properties": {"modifiedDate": {"type": "string"}},
+                },
+                "BillPrototype": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {"reference": {"type": "string"}},
+                            "required": ["reference"],
+                        },
+                        {"$ref": "#/components/schemas/Timestamps"},
+                    ]
+                },
+            }
+        }
+    }
+    op = {
+        "requestBody": {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": "#/components/schemas/BillPrototype"}
+                }
+            }
+        }
+    }
+
+    schema = extract_request_body_schema(spec, op)
+    assert set(schema["properties"]) == {"reference", "modifiedDate"}
+    assert schema["required"] == ["reference"]
+
+    # A composition body now flattens into body parameters instead of none.
+    names = {p["name"] for p in request_body_parameters(schema)}
+    assert names == {"reference", "modifiedDate"}
+
+
+def test_merge_allof_annotation_keywords_do_not_block_merge():
+    # Codat's PagingInfo carries `definitions` alongside its properties. Treating
+    # any unrecognized keyword as disqualifying left those compositions unmerged,
+    # which is what kept the response model empty.
+    schema = {
+        "title": "Paged results",
+        "x-internal": True,
+        "allOf": [
+            {"type": "object", "properties": {"results": {"type": "array"}}},
+            {
+                "title": "Pagination information",
+                "properties": {"pageNumber": {"type": "integer"}},
+                "definitions": {"links": {"type": "object"}},
+                "additionalProperties": False,
+            },
+        ],
+    }
+    merged = merge_allof(schema)
+    assert set(merged["properties"]) == {"results", "pageNumber"}
+    assert merged["type"] == "object"
+
+
+def test_merge_allof_blocks_on_structural_keywords():
+    # enum, const and items are scalar/array constraints, not property bags.
+    for blocking in ({"enum": ["a"]}, {"const": 1}, {"items": {"type": "string"}}):
+        schema = {"allOf": [{"properties": {"a": {}}}, blocking]}
+        assert merge_allof(schema) == schema
+
+
+def test_merge_allof_leaves_instance_data_untouched():
+    """``default`` / ``example`` / ``enum`` hold instance data, not subschemas.
+
+    A default value that happens to contain an ``allOf`` key was rewritten into
+    ``{"type": "object"}``, destroying the value.
+    """
+    schema = {
+        "type": "object",
+        "properties": {
+            "cfg": {
+                "type": "object",
+                "default": {"allOf": [{"a": 1}, {"b": 2}]},
+                "example": {"allOf": [{"p": 1}]},
+            },
+            "mode": {"type": "string", "enum": [{"allOf": [{"q": 1}]}]},
+        },
+        "x-vendor": {"allOf": [{"z": 1}, {"w": 2}]},
+    }
+    merged = merge_allof(schema)
+
+    assert merged["properties"]["cfg"]["default"] == {"allOf": [{"a": 1}, {"b": 2}]}
+    assert merged["properties"]["cfg"]["example"] == {"allOf": [{"p": 1}]}
+    assert merged["properties"]["mode"]["enum"] == [{"allOf": [{"q": 1}]}]
+    assert merged["x-vendor"] == {"allOf": [{"z": 1}, {"w": 2}]}
+
+
+def test_deref_schema_leaves_instance_data_untouched():
+    """A ``$ref`` key inside a default value is a literal, not a reference."""
+    spec = {"components": {"schemas": {"Thing": {"type": "integer"}}}}
+    node = {
+        "type": "object",
+        "properties": {
+            "payload": {
+                "type": "object",
+                "default": {"$ref": "#/components/schemas/Thing"},
+            },
+            "real": {"$ref": "#/components/schemas/Thing"},
+        },
+        "x-sample": {"$ref": "#/components/schemas/Thing"},
+    }
+    out = deref_schema(spec, node)
+
+    # The literal survives, the genuine reference resolves.
+    assert out["properties"]["payload"]["default"] == {
+        "$ref": "#/components/schemas/Thing"
+    }
+    assert out["x-sample"] == {"$ref": "#/components/schemas/Thing"}
+    assert out["properties"]["real"] == {"type": "integer"}

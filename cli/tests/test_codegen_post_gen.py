@@ -797,3 +797,135 @@ def test_generate_post_command_module_no_body_props_uses_empty_body_dict():
     )
     out = pg.generate_post_command_module(spec)
     assert "_body: dict[str, Any] = {}" in out.source
+
+
+def test_signature_params_body_property_does_not_duplicate_operation_parameter():
+    """A name declared both as an operation parameter and a body property is emitted once.
+
+    Codat's push endpoints put ``accountId`` in the URL template and repeat it in
+    the request body. Emitting both produced two parameters with the same name,
+    which is a SyntaxError in the generated module.
+    """
+    cmd = {
+        "url_path": "/companies/{companyId}/push/bankAccounts/{accountId}/transactions",
+        "parameters": [
+            {"name": "companyId", "type": "string", "required": True},
+            {"name": "accountId", "type": "string", "required": True},
+        ],
+        "request_body_schema": {
+            "type": "object",
+            "properties": {
+                "accountId": {"type": "string"},
+                "reference": {"type": "string"},
+            },
+        },
+    }
+    out = pg._signature_params(
+        cmd, array_field=None, array_annotation=None, has_credentials=False
+    )
+    names = [e[0] for e in out]
+
+    assert names.count("accountId") == 1
+    assert len(names) == len(set(names))
+    # The operation parameter wins: it carries the path placeholder and required.
+    accountid = next(e for e in out if e[0] == "accountId")
+    assert accountid[3] is True
+    # Body-only properties are unaffected.
+    assert "reference" in names
+
+
+def _keyword_body_cmd() -> dict:
+    return {
+        "url_path": "/companies/{companyId}/push/transfers",
+        "parameters": [{"name": "companyId", "type": "string", "required": True}],
+        "request_body_schema": {
+            "type": "object",
+            "properties": {
+                "from": {"type": "string"},
+                "to": {"type": "string"},
+            },
+        },
+    }
+
+
+def test_signature_params_uses_safe_identifier_for_keyword_body_property():
+    """A body property named after a Python keyword cannot be emitted verbatim.
+
+    Codat's Transfer body has a ``from`` property; ``from: str = None`` in a
+    signature is a SyntaxError.
+    """
+    out = pg._signature_params(
+        _keyword_body_cmd(),
+        array_field=None,
+        array_annotation=None,
+        has_credentials=False,
+    )
+    names = [e[0] for e in out]
+
+    assert "from_" in names
+    assert "from" not in names
+    assert "to" in names
+
+
+def test_render_body_block_keys_keyword_property_by_wire_name():
+    """The payload keeps ``from``; only the local identifier is renamed."""
+    cmd = _keyword_body_cmd()
+    params = pg._signature_params(
+        cmd, array_field=None, array_annotation=None, has_credentials=False
+    )
+    block = pg._render_body_block(
+        cmd_spec=cmd,
+        body_field=None,
+        creds={},
+        path_params=["companyId"],
+        url_path_template="/companies/{companyId}/push/transfers",
+        base_url="https://api.codat.io",
+        cred_lines=[],
+        data_class="PushTransfersData",
+        params=params,
+    )
+
+    assert "'from': from_" in block
+    # A body property must not also be sent as a query parameter.
+    assert "_query_dict['from_']" not in block
+    assert '_query_dict["from_"]' not in block
+
+
+def test_signature_params_never_emits_a_duplicate_identifier():
+    """Collisions are resolved on the emitted identifier, not the wire name.
+
+    Two wire names can sanitize onto one identifier, and operation_parameters
+    keeps a name declared twice under different ``in`` locations. Neither may
+    produce a duplicate argument.
+    """
+    cmd = {
+        "parameters": [
+            # same name, two locations — operation_parameters keeps both
+            {"name": "id", "in": "path", "type": "string", "required": True},
+            {"name": "id", "in": "query", "type": "string"},
+            # sanitizes onto the same identifier as the body's ``from``
+            {"name": "from_", "in": "query", "type": "string"},
+            {"name": "Organization-Id", "in": "header", "type": "string"},
+        ],
+        "request_body_schema": {
+            "type": "object",
+            "properties": {
+                "from": {"type": "string"},
+                "Organization_Id": {"type": "string"},
+                "kept": {"type": "string"},
+            },
+        },
+    }
+    out = pg._signature_params(
+        cmd, array_field=None, array_annotation=None, has_credentials=True
+    )
+    names = [e[0] for e in out]
+
+    assert len(names) == len(set(names)), names
+    assert names.count("id") == 1
+    assert names.count("from_") == 1
+    assert names.count("Organization_Id") == 1
+    # A body property that collides with nothing is still emitted.
+    assert "kept" in names
+    # Every emitted name is a usable Python identifier.
+    assert all(n.isidentifier() for n in names)

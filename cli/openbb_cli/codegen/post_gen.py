@@ -357,11 +357,35 @@ def _signature_params(
     body_required = set(
         (cmd_spec.get("request_body_schema") or {}).get("required") or []
     )
+    # A name can be declared both as an operation parameter and as a request-body
+    # property — Codat's push endpoints put ``accountId`` in the URL template and
+    # in the body. Emitting both produces two parameters with the same name, which
+    # is a SyntaxError. The operation parameter wins: it carries the path
+    # placeholder and its own ``required``. The payload is unaffected, because
+    # ``_render_body_block`` reads the body fields from ``request_body_schema``
+    # rather than from this list.
+    #
+    # Two wire names can also collapse onto one identifier once sanitized
+    # (``from`` and ``from_``, ``Organization-Id`` and ``Organization_Id``), and
+    # ``operation_parameters`` keeps a name declared twice under different ``in``
+    # locations. Collisions are therefore resolved on the emitted identifier, not
+    # on the wire name, so a duplicate argument cannot be generated at all.
+    operation_params = [
+        p for p in filter_user_params(cmd_spec.get("parameters") or []) if p.get("name")
+    ]
+    operation_param_names = {p["name"] for p in operation_params}
+    operation_param_names |= {safe_field_name(p["name"])[0] for p in operation_params}
+    emitted: set[str] = {entry[0] for entry in out}
+
     for name, schema in body_props.items():
         if name == array_field:
             continue
         if not isinstance(schema, dict):
             continue
+        safe = safe_field_name(name)[0]
+        if safe in operation_param_names or safe in emitted:
+            continue
+        emitted.add(safe)
         ann = _python_type_from_param(
             {
                 "type": schema.get("type"),
@@ -371,21 +395,31 @@ def _signature_params(
         )
         out.append(
             (
-                name,
+                # ``_render_body_block`` already writes ``{'from': from_}``, keying the
+                # payload by the wire name and reading the safe identifier, so the
+                # signature has to declare the safe one. Codat's Transfer body has a
+                # property named ``from``, which is a keyword.
+                safe,
                 ann,
                 schema.get("description") or schema.get("title"),
                 name in body_required,
                 schema.get("default"),
             )
         )
-    for raw in filter_user_params(cmd_spec.get("parameters") or []):
-        name = raw.get("name")
-        if not name:
+    for raw in operation_params:
+        name = raw["name"]
+        safe = safe_field_name(name)[0]
+        if safe in emitted:
             continue
+        emitted.add(safe)
         ann = _python_type_from_param(raw)
         out.append(
             (
-                name,
+                # Wire names are not always identifiers. Rebilly declares
+                # ``Organization-Id`` and a ``REB-APIKEY`` security header, which
+                # emitted ``REB-APIKEY: str = None``. The fetcher path already
+                # sanitizes these; this one has to match it.
+                safe,
                 ann,
                 raw.get("help"),
                 bool(raw.get("required")),
@@ -625,9 +659,21 @@ def _render_body_block(
     """
     body_props = (cmd_spec.get("request_body_schema") or {}).get("properties") or {}
     body_field_names = list(body_props)
+    # The signature declares the safe identifier for a body property, so the
+    # body/query split has to compare against those, not the wire names.
+    # Otherwise a keyword-named property such as ``from`` is not recognized as a
+    # body field and leaks into the query string as ``from_``.
+    body_safe_names = {safe_field_name(n)[0] for n in body_field_names}
     query_field_names = [
-        n for n, _, _, _, _ in params if n != "cc" and n not in body_field_names
+        n for n, _, _, _, _ in params if n != "cc" and n not in body_safe_names
     ]
+    # The signature carries safe identifiers, but the request has to go out under
+    # the wire names, so keep a map back for the query keys and the path check.
+    wire_by_safe = {
+        safe_field_name(p["name"])[0]: p["name"]
+        for p in filter_user_params(cmd_spec.get("parameters") or [])
+        if p.get("name")
+    }
 
     lines: list[str] = []
     lines.extend(cred_lines)
@@ -640,10 +686,11 @@ def _render_body_block(
 
     lines.append("    _query_dict: dict[str, Any] = {}")
     for name in query_field_names:
-        if name in path_params:
+        wire = wire_by_safe.get(name, name)
+        if wire in path_params or name in path_params:
             continue
         lines.append(f"    if {name} is not None:")
-        lines.append(f"        _query_dict[{name!r}] = {name}")
+        lines.append(f"        _query_dict[{wire!r}] = {name}")
     for canonical, info in creds.items():
         if info["in"] != "query":
             continue
