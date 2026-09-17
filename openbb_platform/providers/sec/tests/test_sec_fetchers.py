@@ -298,6 +298,7 @@ def blk_facts():
 
 def _mock_get_standardized(blk_facts):
     async def _inner(
+        *,
         symbol=None,
         cik=None,
         fiscal_years=None,
@@ -305,6 +306,7 @@ def _mock_get_standardized(blk_facts):
         use_cache=True,
         pit_mode=False,
         include_preliminary=False,
+        statement=None,
     ):
         return resolve_company_facts(
             blk_facts,

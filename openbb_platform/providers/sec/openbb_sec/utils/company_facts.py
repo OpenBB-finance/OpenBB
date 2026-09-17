@@ -14,6 +14,12 @@ from openbb_sec.utils.statement_schema import (
     ValidationWarning,
 )
 
+StatementType = Literal[
+    "income_statement",
+    "balance_sheet",
+    "cash_flow",
+]
+
 PeriodType = Literal[
     "annual", "quarterly", "both", "ttm", "yoy", "yoy_quarterly", "pop"
 ]
@@ -512,6 +518,7 @@ async def get_standardized_financials(
     use_cache: bool = True,
     pit_mode: bool = False,
     include_preliminary: bool = False,
+    statement: StatementType | None = None,
 ) -> StandardizedStatements:
     """Fetch company facts from SEC and return standardized financial statements.
 
@@ -538,6 +545,11 @@ async def get_standardized_financials(
     include_preliminary : bool
         If True, include 8-K filing data for periods not yet covered
         by a 10-Q/K.
+    statement : StatementType | None
+        Which statement the caller needs.  The class-dimensioned per-share
+        fallback is income-statement-only and costs extra SEC requests, so it
+        is skipped for balance sheet and cash flow requests.  Unrecognised
+        values fail safe by running the fallback.
 
     Returns
     -------
@@ -545,6 +557,7 @@ async def get_standardized_financials(
     """
     from openbb_core.app.model.abstract.error import OpenBBError
 
+    from openbb_sec.utils._dimensional_facts import add_dimensional_per_share_facts
     from openbb_sec.utils.cache import cached_request
     from openbb_sec.utils.definitions import HEADERS
     from openbb_sec.utils.helpers import symbol_map
@@ -590,6 +603,19 @@ async def get_standardized_financials(
             "cik": primary.get("cik", ""),
             "facts": merged_facts,
         }
+
+    # The per-share fields this fills are income-statement-only, so balance
+    # sheet and cash flow requests must not pay for the extra SEC downloads.
+    # Expressed as a denylist so an unrecognised value fails safe (runs the
+    # fallback) rather than silently disabling it.
+    if statement not in ("balance_sheet", "cash_flow"):
+        await add_dimensional_per_share_facts(
+            facts_json,
+            symbol=symbol,
+            period=period,
+            fiscal_years=fiscal_years,
+            use_cache=use_cache,
+        )
 
     return resolve_company_facts(
         facts_json,

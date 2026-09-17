@@ -596,6 +596,7 @@ class SecIncomeStatementFetcher(
             use_cache=query.use_cache,
             include_preliminary=query.include_preliminary,
             pit_mode=query.pit_mode,
+            statement="income_statement",
         )
         return {
             "result": result,
