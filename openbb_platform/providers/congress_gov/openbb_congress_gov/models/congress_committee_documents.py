@@ -1,18 +1,17 @@
 """Congress Committee Documents Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 
-from openbb_congress_gov.utils.constants import doc_type_options
-from openbb_congress_gov.utils.helpers import year_to_congress
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import ConfigDict, Field
+
+from openbb_congress_gov.utils.constants import doc_type_options
+from openbb_congress_gov.utils.helpers import year_to_congress
 
 api_prefix = SystemService().system_settings.api_settings.prefix
 
@@ -119,10 +118,6 @@ class CongressCommitteeDocumentsQueryParams(QueryParams):
         description="Pagination offset.",
         ge=0,
     )
-    use_cache: bool = Field(
-        default=True,
-        description="Use cached API responses. Set to False to bypass the cache.",
-    )
 
 
 class CongressCommitteeDocumentsData(Data):
@@ -154,6 +149,10 @@ class CongressCommitteeDocumentsData(Data):
         default=None,
         description="Document title.",
     )
+    date: dateType | None = Field(
+        default=None,
+        description="The document date (report/hearing/print date).",
+    )
     congress: int | None = Field(
         default=None,
         description="Congress session number.",
@@ -162,6 +161,26 @@ class CongressCommitteeDocumentsData(Data):
     chamber: str | None = Field(
         default=None,
         description="Chamber (House, Senate, Joint).",
+    )
+    package_id: str | None = Field(
+        default=None,
+        description="The GovInfo package identifier for the document.",
+        json_schema_extra={
+            "x-widget_config": {
+                "headerTooltip": "Create a group for 'package_id' and click a cell to"
+                + " view the document in the 'Committee Document Viewer' widget.",
+                "renderFn": "cellOnClick",
+                "renderFnParams": {
+                    "actionType": "groupBy",
+                    "groupByParamName": "package_id",
+                },
+            },
+        },
+    )
+    doc_url: str | None = Field(
+        default=None,
+        description="Direct URL to the document PDF.",
+        json_schema_extra={"x-widget_config": {"hide": True}},
     )
 
 
@@ -186,32 +205,25 @@ class CongressCommitteeDocumentsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Extract data from the Congress API."""
-        # pylint: disable=import-outside-toplevel
+        """Extract committee documents from GovInfo (keyless)."""
         from datetime import datetime
 
         from openbb_congress_gov.utils.committees import fetch_committee_documents
 
-        api_key = credentials.get("congress_gov_api_key", "") if credentials else ""
-
-        chamber = query.chamber.lower()
         system_code = (query.subcommittee or query.committee).lower()
-        congress = query.congress
+        congress = (
+            query.congress
+            if query.congress is not None
+            else year_to_congress(datetime.now().year)
+        )
 
-        if congress is None:
-            congress = year_to_congress(datetime.now().year)
-
-        try:
-            return await fetch_committee_documents(
-                chamber=chamber,
-                system_code=system_code,
-                congress=congress,
-                doc_type=query.doc_type,
-                api_key=api_key,
-                use_cache=query.use_cache,
-            )
-        except OpenBBError as e:
-            raise OpenBBError(e) from None
+        return await fetch_committee_documents(
+            system_code=system_code,
+            congress=congress,
+            doc_type=query.doc_type,
+            limit=query.limit,
+            offset=query.offset,
+        )
 
     @staticmethod
     def transform_data(

@@ -27,19 +27,10 @@ class Linters:
 
     def run(
         self,
-        linter: Literal["black", "ruff"],
+        linter: Literal["ruff"],
         flags: list[str] | None = None,
     ):
-        """Run linter with flags.
-
-        Invokes the linter as ``python -m <linter>`` so it resolves through
-        the same Python environment as the build. Looking it up via ``PATH``
-        (the previous behavior) silently skipped lint when the venv's
-        ``bin/`` directory was not active — e.g. when invoking
-        ``.venv/bin/python`` directly without ``source activate`` — which
-        left the speculative imports emitted by ``ImportDefinition.build``
-        in the generated package and produced ``ImportError`` at first use.
-        """
+        """Run linter with flags."""
         if importlib.util.find_spec(linter) is None:
             self.console.log(f"\n* {linter} not found")
             return
@@ -62,18 +53,9 @@ class Linters:
 
         self.print_separator("-")
 
-    def black(self):
-        """Run black."""
-        flags = ["--line-length", "122"]
-        if not self.verbose and not Env().DEBUG_MODE:
-            flags.append("--quiet")
-        self.run(linter="black", flags=flags)
-
     def ruff(self):
         """Run ruff."""
-        self.black()
         flags = ["check", "--fix", "--unsafe-fixes"]
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")
         self.run(linter="ruff", flags=flags)
-        self.black()

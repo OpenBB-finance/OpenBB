@@ -1,23 +1,129 @@
-[tool.poetry]
+[project]
 name = "openbb-platform-api"
-version = "1.3.6"
-description = "OpenBB Platform API: Launch script and widgets builder for the Open Data Platform REST API and Workspace Backend Connector."
-authors = ["OpenBB <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+version = "2.0.0"
+description = "OpenBB Platform API: launcher and widgets builder for the Open Data Platform REST API and OpenBB Workspace custom-backend connector."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-homepage = "https://openbb.co"
-repository = "https://github.com/openbb-finance/openbb"
-documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-api"
-packages = [{ include = "openbb_platform_api" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core>=2.0.0",
+    "deepdiff>=8.6.2",
+    # Backport of stdlib ``tomllib`` for py3.10.
+    "tomli>=2.0;python_version<'3.11'",
+]
 
-[tool.poetry.scripts]
+[project.scripts]
 openbb-api = "openbb_platform_api.main:main"
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
-deepdiff = ">=8.6.2"
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-api"
+
+[dependency-groups]
+dev = [
+    "openbb-devtools>=2.0.0",
+    "httpx>=0.28.0,<1.0.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_platform_api"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_platform_api",
+    "README.md",
+    "pyproject.toml",
+]
+
+# openbb-core is path-sourced because v5's has not yet been published.
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "E",
+    "W",
+    "F",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+ignore = [
+    "PLR2004",  # magic-value-comparison
+    "PLR0913",  # too-many-arguments
+    "PLR0915",  # too-many-statements
+    "PLC0415",  # import-outside-top-level
+    "E402",     # module-import-not-at-top-of-file
+    "E501",     # line-too-long (formatter handles this on best-effort)
+    "D202",
+    "D203",
+    "D205",
+    "D206",     # docstring-tab-indentation (conflicts with formatter)
+    "D210",
+    "D212",
+    "D213",
+    "D214",
+    "D215",
+    "D300",     # triple-single-quotes (conflicts with formatter)
+    "D400",
+    "D404",
+    "D405",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D410",
+    "D411",
+    "D413",
+    "D415",
+    "D416",
+    "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 26
+max-returns = 9
+max-statements = 30
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_platform_api"]
+exclude = ["openbb_platform_api/assets", "tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"

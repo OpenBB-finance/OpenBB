@@ -5,11 +5,11 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate, zstd
       Connection:
       - keep-alive
     method: GET
-    uri: https://www.congress.gov/119/crec/2026/03/21/172/52/CREC-2026-03-21-pt1-PgS1484-6.pdf
+    uri: https://www.govinfo.gov/content/pkg/CREC-2026-03-21/pdf/CREC-2026-03-21-pt1-PgS1484-6.pdf
   response:
     body:
       string: !!binary |
@@ -4011,48 +4011,52 @@ interactions:
     headers:
       Accept-Ranges:
       - bytes
-      Access-Control-Allow-Origin:
-      - '*'
-      Age:
-      - '597'
+      - bytes
       CF-RAY:
-      - 9e0b0675ed7f2194-YVR
-      Cache-Control:
-      - public, max-age=31536000
+      - a06c327d8a832c5e-YVR
       Connection:
       - keep-alive
+      Content-Disposition:
+      - inline; filename="CREC-2026-03-21-pt1-PgS1484-6.pdf"
       Content-Length:
       - '227689'
       Content-Security-Policy:
-      - frame-ancestors http://*.house.gov https://*.house.gov http://*.senate.gov
-        https://*.senate.gov http://*.loc.gov https://*.loc.gov http://*.congress.gov
-        https://congress.gov https://*.congress.gov
+      - default-src 'self'  https://analytics.govinfo.gov https://stackpath.bootstrapcdn.com
+        https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com; frame-ancestors
+        'self'; script-src 'unsafe-inline' 'unsafe-eval' 'self' *.videodelivery.net
+        *.cloudflarestream.com  https://cdn.jsdelivr.net  https://stackpath.bootstrapcdn.com
+        https://api.data.gov https://maxcdn.bootstrapcdn.com https://www.google.com/recaptcha
+        https://recaptcha.google.com/recaptcha; object-src 'unsafe-inline' 'self'
+        ; style-src 'unsafe-inline' 'self' https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com
+        https://api.data.gov  https://stackpath.bootstrapcdn.com https://fonts.googleapis.com
+        https://www.google.com/recaptcha https://recaptcha.google.com/recaptcha; img-src
+        'unsafe-inline' 'self' https://maxcdn.bootstrapcdn.com https://stackpath.bootstrapcdn.com  https://analytics.govinfo.gov
+        data:; font-src 'unsafe-inline' 'self' https://cdn.jsdelivr.net  https://stackpath.bootstrapcdn.com
+        https://api.data.gov https://maxcdn.bootstrapcdn.com https://fonts.gstatic.com
+        https://fonts.googleapis.com; connect-src 'self' *.videodelivery.net *.cloudflarestream.com
+        https://cdn.jsdelivr.net  https://api.data.gov https://analytics.govinfo.gov;
+        frame-src 'self'  https://stackpath.bootstrapcdn.com https://maxcdn.bootstrapcdn.com
+        https://www.google.com/recaptcha https://recaptcha.google.com/recaptcha;
       Content-Type:
       - application/pdf
       Date:
-      - Mon, 23 Mar 2026 05:27:08 GMT
+      - Fri, 05 Jun 2026 03:47:39 GMT
       Last-Modified:
-      - Sun, 22 Mar 2026 09:45:51 GMT
+      - Sun, 22 Mar 2026 09:35:01 GMT
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - cloudflare
-      Set-Cookie:
-      - __cf_bm=mHQF4LYBbnIT3vTH1aVPj19YJi6Ag9si.W7KPL7_s3Q-1774243628-1.0.1.1-qwan2LGAvqdCvJcHJ9Jqmrdiqu2DTXOrADWgyQxb3shioBllwN.FU1ODN.yDHs1iT04DwTuVFD39ThvDBT0KVAKe9VWP9tI8oWRIjVWnwwI;
-        path=/; expires=Mon, 23-Mar-26 05:57:08 GMT; domain=.congress.gov; HttpOnly;
-        Secure; SameSite=None
       Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      Vary:
-      - Accept-Encoding
-      X-Cacheable:
-      - 'YES'
+      - max-age=31536000; includeSubDomains
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
       cf-cache-status:
-      - HIT
-      expires:
-      - Tue, 23 Mar 2027 05:27:08 GMT
+      - DYNAMIC
     status:
       code: 200
       message: OK

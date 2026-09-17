@@ -1,7 +1,6 @@
 """IMF Economic Indicators Model."""
 
-# pylint: disable=unused-argument,protected-access,too-many-branches,too-many-statements,too-many-locals,too-many-lines
-# flake8: noqa: PLR0912
+from __future__ import annotations
 
 from typing import Any
 
@@ -15,44 +14,28 @@ from openbb_core.provider.standard_models.economic_indicators import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import ConfigDict, Field, PrivateAttr, field_validator, model_validator
+
 from openbb_imf.utils.helpers import (
     detect_indicator_dimensions,
     detect_transform_dimension,
     parse_time_period,
     translate_error_message,
 )
-from pydantic import ConfigDict, Field, PrivateAttr, field_validator, model_validator
 
 api_prefix = SystemService().system_settings.api_settings.prefix
 
 
 class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
-    """IMF Economic Indicators Query.
-
-    Symbol format: 'dataflow::identifier' where identifier is either:
-    - A table ID (starts with 'H_') for hierarchical table data
-    - An indicator code for individual indicator data
-
-    Examples:
-    - 'BOP::H_BOP_BOP_AGG_STANDARD_PRESENTATION' - Balance of Payments table
-    - 'BOP_AGG::GS_CD,BOP_AGG::GS_DB' - Multiple BOP_AGG indicators (Goods & Services)
-    - 'IL::RGV_REVS' - Gold reserves in millions of fine troy ounces
-    - 'WEO::NGDP_RPCH' - Real GDP growth (annual only)
-    - 'WEO::POILBRE' - Brent crude oil price (use country='G001' for world)
-    - 'PCPS::PGOLD' - Gold price per troy ounce (monthly/quarterly available)
-
-    Use `obb.economy.available_indicators(provider='imf')` to discover symbols.
-    Use `obb.economy.imf_utils.list_tables()` to see available tables.
-    """
+    """IMF Economic Indicators Query."""
 
     __json_schema_extra__ = {
         "symbol": {
             "multiple_items_allowed": True,
             "x-widget_config": {
                 "label": "Indicator Symbol",
-                # "description": "The IMF indicator series ID.",
                 "multiSelect": False,
-                "multiple": True,
+                "multiple": False,
                 "type": "text",
             },
         },
@@ -64,7 +47,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 "type": "endpoint",
                 "multiSelect": True,
                 "multiple": False,
-                "optionsEndpoint": f"{api_prefix}/imf_utils/indicator_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
                     "country": "true",
@@ -77,7 +60,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             "x-widget_config": {
                 "label": "Frequency",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/imf_utils/indicator_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
                     "country": "$country",
@@ -91,7 +74,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             "x-widget_config": {
                 "label": "Transform",
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/imf_utils/indicator_choices",
+                "optionsEndpoint": f"{api_prefix}/imf/indicator_choices",
                 "optionsParams": {
                     "symbol": "$symbol",
                     "country": "$country",
@@ -138,7 +121,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         + "\n    - 'PCPS::PGOLD' - Gold price per troy ounce (monthly/quarterly available)"
         + "\n\n"
         + "Use `obb.economy.available_indicators(provider='imf')` to discover symbols."
-        + " Use `obb.economy.imf_utils.list_tables()` to see available tables."
+        + " Use `obb.imf.list_tables()` to see available tables."
     )
 
     country: str | None = Field(
@@ -188,43 +171,27 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, v):
-        """
-        Normalize country inputs to ISO3 codes.
-
-        Accepts:
-        - ISO3 codes: "USA", "JPN", "GBR"
-        - Country names: "United States", "Japan", "United Kingdom"
-        - Snake_case names: "united_states", "japan", "united_kingdom"
-        - Wildcards: "*" or "all" to include all countries
-        - None: Allowed if dimension_values contains a country dimension (validated in model_validator)
-        """
-        # pylint: disable=import-outside-toplevel
+        """Normalize country inputs to ISO3 codes."""
         from openbb_imf.utils.metadata import ImfMetadata
 
-        # Allow None - will be validated in model_validator with dimension_values check
         if not v:
             return None
 
-        # Split by comma, handling potential spaces and filtering empty strings
         items = [c.strip() for c in v.split(",") if c.strip()]
 
         if not items:
             return None
 
-        # Check for wildcards - return early without metadata lookup
         if len(items) == 1 and items[0].lower() in ("*", "all"):
             return "*"
 
         metadata = ImfMetadata()
         country_codes = metadata._codelist_cache.get("CL_COUNTRY", {})
 
-        # Build lookup tables
         code_set = set(country_codes.keys())
         name_to_code: dict[str, str] = {}
         for code, name in country_codes.items():
-            # Add lowercase name
             name_to_code[name.lower()] = code
-            # Add snake_case version (replace spaces with underscores)
             snake_name = (
                 name.lower()
                 .replace(" ", "_")
@@ -240,21 +207,16 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             item_upper = item.upper().strip()
             item_lower = item.lower().strip().replace(" ", "_")
 
-            # Handle wildcards in mixed input
             if item_lower in ("*", "all"):
                 return "*"  # Wildcard overrides everything
 
-            # Check if it's already an ISO3 code
             if item_upper in code_set:
                 result.append(item_upper)
-            # Check if it's a name (with spaces or snake_case)
             elif item_lower in name_to_code:
                 result.append(name_to_code[item_lower])
-            # Try with original casing as lowercase lookup
             elif item.lower() in name_to_code:
                 result.append(name_to_code[item.lower()])
             else:
-                # Not found - pass through as uppercase (will fail later with clearer error)
                 result.append(item_upper)
 
         return ",".join(result)
@@ -262,7 +224,6 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     @model_validator(mode="after")
     def parse_and_validate_symbols(self):
         """Parse symbols and validate table/indicator constraints."""
-        # pylint: disable=import-outside-toplevel
         from openbb_imf.utils.metadata import ImfMetadata
 
         if not self.symbol:
@@ -288,37 +249,66 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 dim_id_upper = dim_id.strip().upper()
                 dim_value = dim_value.strip()
 
-                # dimension_values OVERRIDES the country parameter
                 if dim_id_upper in country_dimensions:
                     object.__setattr__(self, "country", dim_value)
-                # dimension_values OVERRIDES the frequency parameter
                 elif dim_id_upper in frequency_dimensions:
                     object.__setattr__(self, "frequency", dim_value)
-                # dimension_values OVERRIDES the transform parameter
                 elif dim_id_upper in transform_dimensions:
                     object.__setattr__(self, "transform", dim_value)
-                # Keep dimension_values that are not consumed by country/frequency/transform
                 else:
                     remaining_dimension_values.append(dv)
 
-            # Update dimension_values to only contain non-consumed dimensions
             object.__setattr__(
                 self,
                 "dimension_values",
                 remaining_dimension_values if remaining_dimension_values else None,
             )
 
-        # Validate country requirement - must have country by now
         if not self.country:
             raise ValueError(
                 "Country is required. Provide via 'country' parameter or include a country "
                 "dimension (COUNTRY, REF_AREA, JURISDICTION, AREA) in 'dimension_values'."
             )
 
-        symbols = [
-            s.strip()
-            for s in self.symbol.split(",")  #  type: ignore  # pylint: disable=E1101
-        ]
+        if remaining_dimension_values:
+            metadata = ImfMetadata()
+            symbol_first = self.symbol.split(",")[0].strip()
+            dataflow_first = symbol_first.split("::")[0].strip().upper()
+            dsd_id = (
+                metadata.dataflows.get(dataflow_first, {})
+                .get("structureRef", {})
+                .get("id")
+            )
+            dim_ids = {
+                d.get("id")
+                for d in metadata.datastructures.get(dsd_id, {}).get("dimensions", [])
+                if d.get("id")
+            }
+            if dim_ids:
+                extra_dim_ids = {
+                    d
+                    for d in dim_ids
+                    if d
+                    not in country_dimensions
+                    | frequency_dimensions
+                    | transform_dimensions
+                    | {"INDICATOR", "TIME_PERIOD"}
+                }
+                for dv in remaining_dimension_values:
+                    if ":" not in dv:
+                        continue
+                    dim_id = dv.split(":", 1)[0].strip().upper()
+                    if dim_id not in dim_ids:
+                        valid = ", ".join(sorted(extra_dim_ids)) or "(none)"
+                        raise ValueError(
+                            f"Unknown dimension '{dim_id}' for dataflow "
+                            f"'{dataflow_first}'. "
+                            f"Valid extra dimensions: {valid}. "
+                            f"Use `available_indicators()` to see per-indicator "
+                            f"extra_dimensions."
+                        )
+
+        symbols = [s.strip() for s in self.symbol.split(",")]
         tables: list[str] = []
         indicators: list[tuple[str, str]] = []
         dataflows_seen: set[str] = set()
@@ -341,7 +331,6 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 )
 
             dataflows_seen.add(dataflow)
-            # Tables can start with H_ or be any valid hierarchy ID for the dataflow
             is_table = False
 
             if identifier.startswith("H_"):
@@ -396,14 +385,12 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 self._dataflow = None  # Multiple dataflows
                 self._indicator_codes = []
 
-            # Validate country, frequency, and transform using constraints API
             self._validate_indicator_params()
 
         return self
 
     def _validate_indicator_params(self):
         """Validate country, frequency, and transform using the constraints API."""
-        # pylint: disable=import-outside-toplevel
         from openbb_imf.utils.metadata import ImfMetadata
 
         metadata = ImfMetadata()
@@ -411,7 +398,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
         def build_key_up_to(target_dim: str) -> str:
             """Build constraint key up to (and including) target dimension."""
             key_parts: list[str] = []
-            countries = self.country.split(",") if self.country else []  # type: ignore  # pylint: disable=E1101
+            countries = self.country.split(",") if self.country else []
             countries_str = (
                 "*"
                 if countries in ["*", "all"]
@@ -425,7 +412,6 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 if dim_id == country_dim:
                     key_parts.append(countries_str if countries_str else "*")
                 elif dim_id == indicator_dim:
-                    # Use all indicator codes for this dataflow
                     key_parts.append(
                         "+".join(indicator_codes) if indicator_codes else "*"
                     )
@@ -457,7 +443,6 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     return kv.get("values", [])
             return []
 
-        # For each dataflow, validate the parameters
         for dataflow_id, indicator_codes in self._indicators_by_dataflow.items():
             df_obj = metadata.dataflows.get(dataflow_id, {})
 
@@ -475,7 +460,9 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             country_dim = (
                 "COUNTRY"
                 if "COUNTRY" in dim_order
-                else "JURISDICTION" if "JURISDICTION" in dim_order else "REF_AREA"
+                else "JURISDICTION"
+                if "JURISDICTION" in dim_order
+                else "REF_AREA"
             )
             freq_dim = "FREQUENCY" if "FREQUENCY" in dim_order else "FREQ"
 
@@ -492,11 +479,10 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 (d for d in indicator_dim_candidates if d in dim_order), None
             )
 
-            # Validate country
             if self.country and country_dim in dim_order:
                 available_countries = get_available_values(country_dim, dataflow_id)
                 if available_countries:
-                    countries = [c.strip().upper() for c in self.country.split(",")]  # type: ignore  # pylint: disable=E1101
+                    countries = [c.strip().upper() for c in self.country.split(",")]
                     invalid = [
                         c
                         for c in countries
@@ -511,7 +497,7 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
 
             if (
                 self.frequency
-                and self.frequency.lower() not in ("all", "*")  # type: ignore  # pylint: disable=E1101
+                and self.frequency.lower() not in ("all", "*")
                 and freq_dim in dim_order
             ):
                 freq_map = {"annual": "A", "quarter": "Q", "month": "M", "day": "D"}
@@ -526,18 +512,16 @@ class ImfEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                         f"available values are: {available_freqs}"
                     )
 
-            # Validate transform (skip if 'all' or '*')
             if (
                 self.transform
-                and self.transform.lower() not in ("all", "*")  # type: ignore  # pylint: disable=E1101
+                and self.transform.lower() not in ("all", "*")
                 and transform_dim
                 and transform_dim in dim_order
             ):
                 _, _, transform_lookup, unit_lookup = detect_transform_dimension(
                     dataflow_id
                 )
-                # Resolve user-friendly name to code
-                transform_val = self.transform.strip().lower()  # type: ignore  # pylint: disable=E1101
+                transform_val = self.transform.strip().lower()
                 resolved_code = transform_lookup.get(
                     transform_val, unit_lookup.get(transform_val, self.transform)
                 )
@@ -664,40 +648,31 @@ class ImfEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the data."""
-        # pylint: disable=import-outside-toplevel
         from datetime import datetime  # noqa
         from openbb_imf.utils.query_builder import ImfQueryBuilder
         from openbb_imf.utils.table_builder import ImfTableBuilder
 
-        countries = query.country.split(",")  # type: ignore
+        countries = query.country.split(",") if query.country else []
         countries_str = "+".join([c.upper() for c in countries])
         frequency_map = {"annual": "A", "quarter": "Q", "month": "M", "day": "D"}
-        frequency = frequency_map.get(query.frequency) or query.frequency  # type: ignore
+        frequency = frequency_map.get(query.frequency or "") or query.frequency
         start_date = query.start_date.strftime("%Y-%m-%d") if query.start_date else None
         end_date = query.end_date.strftime("%Y-%m-%d") if query.end_date else None
 
-        # Parse dimension_values into a dict of DIM_ID -> DIM_VALUE
-        # Input format: list of "DIM_ID:VALUE" strings
-        # Example: ["SECTOR:S13", "GFS_GRP:XDC"] -> {"SECTOR": "S13", "GFS_GRP": "XDC"}
-        # Handles lowercase inputs: "unit:xdc" -> {"UNIT": "XDC"}
         extra_dimensions: dict[str, str] = {}
         if query.dimension_values:
             for dv in query.dimension_values:
-                # Each dv should be "DIMENSION:VALUE"
                 if not dv or not isinstance(dv, str):
                     continue
-                # Handle comma-separated pairs in a single string
                 pairs = [p.strip() for p in dv.split(",") if p.strip()]
                 for pair in pairs:
                     if ":" in pair:
                         dim_id, dim_value = pair.split(":", 1)
-                        # Uppercase both dimension ID and value for IMF API
                         extra_dimensions[dim_id.strip().upper()] = (
                             dim_value.strip().upper()
                         )
 
         if query._is_table:
-            # Table mode: use ImfTableBuilder (single dataflow only)
             dataflow = query._dataflow
             if not dataflow:
                 raise OpenBBError("Could not determine dataflow from symbol.")
@@ -707,8 +682,6 @@ class ImfEconomicIndicatorsFetcher(
                 "FREQUENCY": frequency,
             }
 
-            # Handle special dimensions for certain dataflows
-            # GFS dataflows: GFS_BS, GFS_SOO, GFS_COFOG, GFS_SFCP, GFS_SSUC, QGFS
             if dataflow.startswith("GFS_") or dataflow == "QGFS":
                 params["SECTOR"] = "*"
                 params["GFS_GRP"] = "*"
@@ -719,11 +692,9 @@ class ImfEconomicIndicatorsFetcher(
             elif dataflow == "ISORA_LATEST_DATA_PUB":
                 params["INDICATOR"] = "*"
 
-            # Apply user-specified dimension filters (overrides defaults above)
             if extra_dimensions:
                 params.update(extra_dimensions)
 
-            # Handle transform/unit for table mode
             if query.transform:
                 transform_val = query.transform.strip().lower()
                 transform_dim, unit_dim, transform_lookup, unit_lookup = (
@@ -732,7 +703,6 @@ class ImfEconomicIndicatorsFetcher(
                 applied = False
                 resolved_code = None
 
-                # Try transform dimension first
                 if transform_dim:
                     if transform_val in ("all", "*"):
                         params[transform_dim] = "*"
@@ -742,7 +712,6 @@ class ImfEconomicIndicatorsFetcher(
                         params[transform_dim] = resolved_code
                         applied = True
 
-                # Try unit dimension if not applied to transform
                 if not applied and unit_dim:
                     if transform_val in ("all", "*"):
                         params[unit_dim] = "*"
@@ -752,7 +721,6 @@ class ImfEconomicIndicatorsFetcher(
                         params[unit_dim] = resolved_code
                         applied = True
 
-                # Raise error if transform value is not valid for dataflow
                 if not applied:
                     available = []
                     if transform_lookup:
@@ -775,7 +743,6 @@ class ImfEconomicIndicatorsFetcher(
                         f"Available options: {', '.join(available) if available else 'none'}"
                     )
 
-            # We request one extra period to ensure value carry-forward for STATUS="NA" obs.
             if query.limit is not None and start_date is None:
                 current_year = datetime.now().year
                 if frequency == "A":
@@ -807,11 +774,9 @@ class ImfEconomicIndicatorsFetcher(
                     "series_metadata": result.get("series_metadata", {}),
                 }
             except (ValueError, OpenBBError) as e:
-                # Translate IMF dimension codes to user-friendly parameter names
                 raise OpenBBError(translate_error_message(str(e))) from e
 
         else:
-            # Indicator mode: support multiple dataflows
             query_builder = ImfQueryBuilder()
             all_data: list[dict] = []
             all_metadata: dict = {}
@@ -820,18 +785,15 @@ class ImfEconomicIndicatorsFetcher(
             if not indicators_by_df:
                 raise OpenBBError("No indicators specified.")
 
-            # Fetch data for each dataflow
             for dataflow, indicator_codes in indicators_by_df.items():
-                params = {
+                params: dict[str, Any] = {
                     "COUNTRY": countries_str,
                     "FREQUENCY": frequency,
                 }
 
-                # Apply user-specified dimension filters
                 if extra_dimensions:
                     params.update(extra_dimensions)
 
-                # Handle transform/unit parameter per dataflow
                 if query.transform:
                     transform_val = query.transform.strip().lower()
                     transform_dim, unit_dim, transform_lookup, unit_lookup = (
@@ -840,7 +802,6 @@ class ImfEconomicIndicatorsFetcher(
                     applied = False
                     resolved_code = None
 
-                    # Try transform dimension first
                     if transform_dim:
                         if transform_val in ("all", "*"):
                             params[transform_dim] = "*"
@@ -850,7 +811,6 @@ class ImfEconomicIndicatorsFetcher(
                             params[transform_dim] = resolved_code
                             applied = True
 
-                    # Try unit dimension if not applied to transform
                     if not applied and unit_dim:
                         if transform_val in ("all", "*"):
                             params[unit_dim] = "*"
@@ -860,7 +820,6 @@ class ImfEconomicIndicatorsFetcher(
                             params[unit_dim] = resolved_code
                             applied = True
 
-                    # Raise error if transform value is not valid for dataflow
                     if not applied:
                         available = []
                         if transform_lookup:
@@ -888,12 +847,10 @@ class ImfEconomicIndicatorsFetcher(
                 if query.limit is not None:
                     params["lastNObservations"] = query.limit
 
-                # Detect indicator dimensions for this dataflow
                 dimension_codes = detect_indicator_dimensions(
                     dataflow, indicator_codes, query_builder.metadata
                 )
 
-                # Add indicator codes to appropriate dimensions
                 for dim_id, codes in dimension_codes.items():
                     params[dim_id] = "+".join(codes)
 
@@ -904,13 +861,11 @@ class ImfEconomicIndicatorsFetcher(
                         end_date=end_date,
                         **params,
                     )
-                    # Add dataflow info to each record
                     for record in result.get("data", []):
                         record["_dataflow"] = dataflow
                     all_data.extend(result.get("data", []))
                     all_metadata[dataflow] = result.get("metadata", {})
                 except ValueError as e:
-                    # Translate IMF codes to user-friendly names and raise as OpenBBError
                     raise OpenBBError(translate_error_message(str(e))) from e
 
             return {
@@ -944,10 +899,8 @@ class ImfEconomicIndicatorsFetcher(
             metadata = data.get("metadata", {})
 
         for item in row_data:
-            # Filter by date range if needed (IMF API date filtering can be inconsistent)
             item_date = item.get("TIME_PERIOD") or item.get("date")
 
-            # Normalize date format for comparison and storage
             if item_date:
                 item_date = parse_time_period(item_date)
 
@@ -964,7 +917,6 @@ class ImfEconomicIndicatorsFetcher(
             ):
                 continue
 
-            # Extract indicator code from various possible fields
             symbol = (
                 item.get("series_id")  # Prefer full series_id (dataflow::codes)
                 or item.get("INDICATOR_code")
@@ -974,7 +926,6 @@ class ImfEconomicIndicatorsFetcher(
                 or item.get("indicator_code")
                 or item.get("symbol")
             )
-            # Get country info (ISORA uses JURISDICTION instead of COUNTRY)
             country = (
                 item.get("COUNTRY") or item.get("JURISDICTION") or item.get("country")
             )
@@ -983,22 +934,16 @@ class ImfEconomicIndicatorsFetcher(
                 or item.get("COUNTRY_code")
                 or item.get("JURISDICTION_code")
             )
-            # Get hierarchy info (for table mode)
             order = item.get("order")
             level = item.get("level")
             parent_id = item.get("parent_id")
             is_category_header = item.get("is_category_header", False)
-            # Get title/label - use the title from table_builder which is the indicator name
-            # For data rows, this is the specific indicator (e.g., "Direct investment, Equity...")
-            # For headers, this is the category name with units (e.g., "Goods (Millions, US Dollar)")
             title = item.get("title") or item.get("INDICATOR") or item.get("label")
-            # Get value - use explicit None check to handle 0 correctly
             value = item.get("OBS_VALUE")
 
             if value is None:
                 value = item.get("value")
 
-            # Sanitize scale - convert nan/None to None, ensure string type
             scale_val = item.get("scale") or item.get("SCALE")
             if scale_val is not None:
                 if str(scale_val).lower() == "nan":
@@ -1006,7 +951,6 @@ class ImfEconomicIndicatorsFetcher(
                 elif not isinstance(scale_val, str):
                     scale_val = str(scale_val) if scale_val else None
 
-            # Sanitize unit - convert nan/None to None, ensure string type
             unit_val = (
                 item.get("unit")
                 or item.get("UNIT")
@@ -1043,14 +987,9 @@ class ImfEconomicIndicatorsFetcher(
                 "is_category_header": is_category_header,
             }
 
-            # Dynamically add ALL dimension fields from the raw data
-            # This captures any dimension like SECTOR, PRICE_TYPE, DV_TYPE,
-            # COUNTERPART_COUNTRY, etc. with both label and code
             for key, val in item.items():
-                # Skip fields we've already handled
                 if key in new_row:
                     continue
-                # Skip internal/metadata fields
                 if key in {
                     "TIME_PERIOD",
                     "OBS_VALUE",
@@ -1063,15 +1002,12 @@ class ImfEconomicIndicatorsFetcher(
                     "unit_multiplier",
                 }:
                     continue
-                # Include dimension fields (UPPERCASE) and their _code variants
                 if key.isupper() or key.endswith("_code"):
-                    # Convert to snake_case for the field name
                     field_name = key.lower()
                     new_row[field_name] = val
 
             result.append(new_row)
 
-        # Check if all records were filtered out
         if not result:
             raise EmptyDataError(
                 "No data remaining after applying date filters. "
@@ -1093,13 +1029,11 @@ class ImfEconomicIndicatorsFetcher(
             "parent_code",
             "series_id",
         ]
-        # Non-pivot mode: return flat list
         if not query.pivot:
             new_data: list = []
             for row in result:
                 if not row.get("date"):
                     continue
-                # Exclude internal fields
                 row["symbol"] = row.get("series_id")
                 for field in to_exclude:
                     _ = row.pop(field, None)
@@ -1110,13 +1044,11 @@ class ImfEconomicIndicatorsFetcher(
                 metadata=metadata,
             )
 
-        # Pivot mode: use the table_presentation utility module
-        # pylint: disable=import-outside-toplevel
         from openbb_imf.utils.table_presentation import pivot_table_data
 
         result_df = pivot_table_data(
             result=result,
-            country=query.country,  # type: ignore
+            country=query.country,
             limit=query.limit,
             metadata=metadata,
         )

@@ -42,19 +42,13 @@ repos:
             "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
             "-x=.github/workflows/general-linting.yml"
           ]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.15.0"
+  - repo: https://github.com/astral-sh/ty-pre-commit
+    rev: 0.0.1a14
     hooks:
-      - id: mypy
-        name: mypy
-        description: ""
-        entry: mypy
-        language: python
-        "types_or": [python, pyi]
-        args: ["--ignore-missing-imports", "--scripts-are-modules", "--check-untyped-defs"]
-        additional_dependencies: ["types-requests", "types-setuptools", "types-python-dateutil", "types-pytz"]
-        require_serial: true
-        exclude: 'test_.*\.py'
+      - id: ty
+        name: ty (static type check)
+        args: ["check"]
+        exclude: 'test_.*\.py|tests/.*\.py'
   - repo: https://github.com/kynan/nbstripout
     rev: 0.8.1
     hooks:
@@ -62,11 +56,6 @@ repos:
         name: Strip notebooks output
   - repo: local
     hooks:
-      - id: pylint
-        name: pylint
-        entry: pylint
-        language: system
-        types: [python]
       - id: check-generated-files
         name: Check for generated files
         entry: bash

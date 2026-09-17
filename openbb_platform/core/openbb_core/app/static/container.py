@@ -13,7 +13,6 @@ class Container:
 
     def __init__(self, command_runner: "CommandRunner") -> None:
         """Initialize the container."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.obbject import OBBject
 
         self._command_runner = command_runner
@@ -43,6 +42,11 @@ class Container:
                     kwargs["extra_params"][k] = v
 
         obbject = self._command_runner.sync_run(*args, **kwargs)
+
+        if not hasattr(obbject, "_results_only") and hasattr(obbject, "body_iterator"):
+            from openbb_core.app.model.stream import OBBStream
+
+            return OBBStream(obbject)
 
         results_only = getattr(obbject, "_results_only", False)
 

@@ -1,21 +1,23 @@
 """Congress Amendments Model."""
 
-# pylint: disable=unused-argument
-
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Literal
 
-from openbb_congress_gov.utils.constants import (
-    AmendmentTypes,
-    amendment_type_docstring,
-    amendment_type_options,
-    base_url,
-)
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import ConfigDict, Field, model_validator
+
+from openbb_congress_gov.utils.constants import (
+    AmendmentTypes,
+    amendment_type_docstring,
+    amendment_type_options,
+)
+from openbb_congress_gov.utils.helpers import year_to_congress
 
 
 class CongressAmendmentsQueryParams(QueryParams):
@@ -46,7 +48,7 @@ class CongressAmendmentsQueryParams(QueryParams):
     congress: int | None = Field(
         default=None,
         description="Congress number (e.g., 119 for the 119th Congress)."
-        + " When None, returns amendments across all congresses (requires amendment_type).",
+        + " When None, defaults to the current Congress.",
     )
     amendment_type: str | None = Field(
         default=None,
@@ -73,24 +75,23 @@ class CongressAmendmentsQueryParams(QueryParams):
     )
 
     @model_validator(mode="after")
-    @classmethod
-    def validate_query(cls, values):
+    def validate_query(self):
         """Validate the query parameters."""
         if (
-            values.amendment_type is not None
-            and values.amendment_type not in AmendmentTypes
+            self.amendment_type is not None
+            and self.amendment_type not in AmendmentTypes
         ):
             raise OpenBBError(
                 ValueError(
-                    f"Invalid amendment_type: {values.amendment_type}."
+                    f"Invalid amendment_type: {self.amendment_type}."
                     f" Must be one of: {', '.join(AmendmentTypes)}."
                 )
             )
-        if values.limit == 0 and values.amendment_type is None:
+        if self.limit == 0 and self.amendment_type is None:
             raise OpenBBError(
                 ValueError("'limit' cannot be set to 0 without 'amendment_type'.")
             )
-        return values
+        return self
 
 
 class CongressAmendmentsData(Data):
@@ -98,7 +99,6 @@ class CongressAmendmentsData(Data):
 
     __alias_dict__ = {
         "amendment_type": "type",
-        "amendment_url": "url",
     }
 
     model_config = ConfigDict(
@@ -110,11 +110,12 @@ class CongressAmendmentsData(Data):
                 "$.description": "Current and historical U.S. Congressional Amendments.",
                 "$.params": [
                     {
-                        "paramName": "amendment_url",
-                        "label": "Amendment URL",
-                        "description": "Ghost parameter to group by the amendment URL."
-                        + " Create a group and use the 'Congressional Amendment Info' widget to view details."
-                        + " The 'Congressional Amendment Text Viewer' widget can also be grouped by this field.",
+                        "paramName": "amendment_id",
+                        "label": "Amendment ID",
+                        "description": "Ghost parameter to group by the amendment id"
+                        + " (e.g. '119-hamdt-2'). Create a group and use the"
+                        + " 'Congressional Amendment Info' / 'Congressional Amendment"
+                        + " Viewer' widgets to view the amendment.",
                         "type": "text",
                         "value": None,
                         "show": True,
@@ -125,6 +126,23 @@ class CongressAmendmentsData(Data):
         }
     )
 
+    amendment_id: str = Field(
+        description="The amendment identifier, e.g. '119-hamdt-2'.",
+        json_schema_extra={
+            "x-widget_config": {
+                "headerName": "▸ Group: Amendment ID",
+                "headerTooltip": "Click a cell here to group by this amendment and view"
+                + " it in the 'Congressional Amendment Info' / 'Congressional Amendment"
+                + " Viewer' widgets.",
+                "pinned": "left",
+                "renderFn": "cellOnClick",
+                "renderFnParams": {
+                    "actionType": "groupBy",
+                    "groupByParamName": "amendment_id",
+                },
+            },
+        },
+    )
     congress: int = Field(
         description="The congress session number.",
         json_schema_extra={"x-widget_config": {"formatterFn": "none"}},
@@ -179,21 +197,6 @@ class CongressAmendmentsData(Data):
     update_date: dateType | None = Field(
         default=None, description="The date the record was last updated."
     )
-    amendment_url: str = Field(
-        description="Base URL to the amendment for the congress.gov API.",
-        json_schema_extra={
-            "x-widget_config": {
-                "headerTooltip": "Create a group for the 'amendment_url' parameter and then"
-                + " click in the cell to change the documents in the"
-                + " 'Congressional Amendment Info' or 'Congressional Amendment Text Viewer' widgets.",
-                "renderFn": "cellOnClick",
-                "renderFnParams": {
-                    "actionType": "groupBy",
-                    "groupByParamName": "amendment_url",
-                },
-            },
-        },
-    )
 
 
 class CongressAmendmentsFetcher(
@@ -215,99 +218,29 @@ class CongressAmendmentsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract data from the Congress API."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio
-
-        from openbb_congress_gov.utils.helpers import get_all_amendments_by_type
-        from openbb_core.provider.utils.errors import UnauthorizedError
-        from openbb_core.provider.utils.helpers import amake_request
-
-        api_key = credentials.get("congress_gov_api_key") if credentials else ""
-
-        if query.limit == 0 and query.amendment_type is not None:
-            if query.congress is None:
-                raise OpenBBError(
-                    ValueError("'congress' is required when 'limit' is set to 0.")
-                )
-
-            return await get_all_amendments_by_type(
-                congress=query.congress,
-                amendment_type=query.amendment_type,
-            )
-
-        url = f"{base_url}amendment"
-
-        if query.congress is not None:
-            url += f"/{query.congress}"
-
-            if query.amendment_type is not None:
-                url += f"/{query.amendment_type}"
-
-        url += f"?limit={query.limit if query.limit is not None else 100}"
-        url += f"&offset={query.offset if query.offset else 0}"
-        url += f"&sort=updateDate+{query.sort_by}"
-
-        if query.start_date:
-            url += f"&fromDateTime={query.start_date}T00:00:00Z"
-
-        if query.end_date:
-            url += f"&toDateTime={query.end_date}T23:59:59Z"
-
-        url += f"&format=json&api_key={api_key}"
-
-        try:
-            response = await amake_request(url=url)
-
-            if isinstance(response, dict) and (error := response.get("error", {})):
-                if "API_KEY" in error.get("code", ""):
-                    raise UnauthorizedError(
-                        f"{error.get('code', '')} -> {error.get('message', '')}"
-                    )
-                raise OpenBBError(  # noqa: TRY301
-                    f"{error.get('code', '')} -> {error.get('message', '')}"
-                )
-        except OpenBBError:
-            raise
-        except Exception as e:
-            raise OpenBBError(e) from e
-
-        amendments = response.get("amendments", [])  # type: ignore
-
-        if not amendments:
-            return []
-
-        detail_urls = [
-            a["url"].split("?")[0] + f"?format=json&api_key={api_key}"
-            for a in amendments
-            if "url" in a
-        ]
-        detail_responses = await asyncio.gather(
-            *[amake_request(u) for u in detail_urls],
-            return_exceptions=True,
+        """Extract amendments from the GovInfo BILLSTATUS bulk archives."""
+        from openbb_congress_gov.utils.bulk import (
+            filter_amendments,
+            load_amendments,
+            to_amendment_list_item,
         )
 
-        for amendment, detail_resp in zip(amendments, detail_responses):
-            if not isinstance(detail_resp, dict):
-                continue
+        congress = (
+            query.congress
+            if query.congress is not None
+            else year_to_congress(datetime.now().year)
+        )
+        records = await load_amendments(congress, query.amendment_type)
+        items = [to_amendment_list_item(record) for record in records]
 
-            detail = detail_resp.get("amendment", {})
-
-            for field in (
-                "amendedBill",
-                "amendedAmendment",
-                "sponsors",
-                "submittedDate",
-                "purpose",
-            ):
-                if field in detail and field not in amendment:
-                    amendment[field] = detail[field]
-
-            for field in ("latestAction", "description"):
-                if field not in amendment and field in detail:
-                    amendment[field] = detail[field]
-
-        return amendments
+        return filter_amendments(
+            items,
+            start_date=query.start_date,
+            end_date=query.end_date,
+            limit=query.limit,
+            offset=query.offset,
+            sort_by=query.sort_by,
+        )
 
     @staticmethod
     def transform_data(
@@ -318,16 +251,21 @@ class CongressAmendmentsFetcher(
 
         for amendment in sorted(
             data,
-            key=lambda x: x.get("latestAction", {}).get("actionDate")
-            or x.get("updateDate"),
+            key=lambda x: (
+                x.get("latestAction", {}).get("actionDate") or x.get("updateDate") or ""
+            ),
             reverse=query.sort_by == "desc",
         ):
             latest_action = amendment.pop("latestAction", {})
 
             if latest_action:
-                amendment["latest_action_date"] = latest_action.get("actionDate")
-                amendment["latest_action_time"] = latest_action.get("actionTime")
-                amendment["latest_action"] = latest_action.get("text")
+                amendment["latest_action_date"] = (
+                    latest_action.get("actionDate") or None
+                )
+                amendment["latest_action_time"] = (
+                    latest_action.get("actionTime") or None
+                )
+                amendment["latest_action"] = latest_action.get("text") or None
 
             amended_bill = amendment.pop("amendedBill", {}) or {}
 
@@ -354,8 +292,8 @@ class CongressAmendmentsFetcher(
             if submitted := amendment.pop("submittedDate", None):
                 amendment["submitted_date"] = submitted[:10]
 
-            if update_date := amendment.get("updateDate"):
-                amendment["updateDate"] = update_date[:10]
+            update_date = amendment.get("updateDate")
+            amendment["updateDate"] = update_date[:10] if update_date else None
 
             transformed_data.append(CongressAmendmentsData(**amendment))
 

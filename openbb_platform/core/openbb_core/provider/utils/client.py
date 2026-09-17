@@ -1,6 +1,5 @@
 """Aiohttp client."""
 
-# pylint: disable=protected-access,invalid-overridden-method
 import asyncio
 import random
 import warnings
@@ -14,7 +13,6 @@ FILTER_QUERY_REGEX = r".*key.*|.*token.*|.*auth.*|(c$)"
 
 def obfuscate(params: CIMultiDict[str] | MultiDict[str]) -> dict[str, Any]:
     """Obfuscate sensitive information."""
-    # pylint: disable=import-outside-toplevel
     import re
 
     return {
@@ -26,13 +24,13 @@ def obfuscate(params: CIMultiDict[str] | MultiDict[str]) -> dict[str, Any]:
 def get_user_agent() -> str:
     """Get a not very random user agent."""
     user_agent_strings = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  # noqa: E501  # pylint: disable=line-too-long
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  # noqa: E501  # pylint: disable=line-too-long
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",  # noqa: E501  # pylint: disable=line-too-long
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.7; rv:133.0) Gecko/20100101 Firefox/133.0",  # noqa: E501  # pylint: disable=line-too-long
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",  # noqa: E501  # pylint: disable=line-too-long
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",  # noqa: E501  # pylint: disable=line-too-long
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  # noqa: E501  # pylint: disable=line-too-long
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  # noqa: E501
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  # noqa: E501
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",  # noqa: E501
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.7; rv:133.0) Gecko/20100101 Firefox/133.0",  # noqa: E501
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",  # noqa: E501
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",  # noqa: E501
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",  # noqa: E501
     ]
 
     return random.choice(user_agent_strings)  # nosec # noqa: S311
@@ -78,7 +76,6 @@ class ClientSession(aiohttp.ClientSession):
 
         super().__init__(*args, **kwargs)
 
-    # pylint: disable=unused-argument
     def __del__(self, _warnings: Any = warnings) -> None:
         """Close the session."""
         if not self.closed:
@@ -107,9 +104,10 @@ class ClientSession(aiohttp.ClientSession):
 
         return data
 
-    async def request(self, *args, raise_for_status: bool = False, **kwargs) -> ClientResponse:  # type: ignore
+    async def request(
+        self, *args, raise_for_status: bool = False, **kwargs
+    ) -> ClientResponse:  # type: ignore
         """Send request."""
-        # pylint: disable=import-outside-toplevel
         import zlib
 
         kwargs["headers"] = kwargs.get(

@@ -1,0 +1,74 @@
+name: 🧹 openbb-cli linting
+
+env:
+  PIP_DEFAULT_TIMEOUT: 100
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+    paths:
+      - 'cli/**'
+      - '.github/workflows/lint-openbb-cli.yml'
+  merge_group:
+    types: [checks_requested]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint openbb-cli
+    runs-on: ubuntu-latest
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}/.uv-cache
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          fetch-depth: 20
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch base branch
+        run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
+
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+          architecture: x64
+
+      - name: Cache uv (built wheels)
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.uv-cache
+          key: uv-${{ runner.os }}-py3.10-lint-${{ hashFiles('cli/pyproject.toml', 'cli/uv.lock', 'openbb_platform/core/pyproject.toml', 'openbb_platform/obbject_extensions/charting/pyproject.toml', 'openbb_platform/extensions/devtools/pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-py3.10-lint-
+
+      - name: Get changed CLI files for PR
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "diff_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${HEAD_REF} | grep -E '^cli/.*\.py$' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+
+      - name: Install openbb-cli
+        working-directory: cli
+        run: |
+          python -m pip install --upgrade pip uv
+          python -m uv pip install --system -e ".[charting]" --group dev
+
+      - name: Run ruff format / ruff check / ty on changed CLI files
+        run: |
+          if [ -n "${{ env.diff_files }}" ]; then
+            ruff format --check ${{ env.diff_files }}
+            ruff check ${{ env.diff_files }}
+            ty check ${{ env.diff_files }}
+          else
+            echo "No Python files changed in cli"
+          fi

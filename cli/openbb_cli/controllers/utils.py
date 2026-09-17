@@ -6,30 +6,156 @@ import os
 import random
 import re
 import shutil
+import sqlite3
+import subprocess
 import sys
 from contextlib import contextmanager
 from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import Any
+from zoneinfo import ZoneInfo, available_timezones
 
 import numpy as np
 import pandas as pd
 import requests
-from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
-from openbb_cli.session import Session
 from openbb_core.app.model.obbject import OBBject
-from pytz import all_timezones, timezone
+
+all_timezones = available_timezones()
 from rich.table import Table
 
-if TYPE_CHECKING:
-    from openbb_charting.core.openbb_figure import OpenBBFigure
-
-# pylint: disable=R1702,R0912
+from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
+from openbb_cli.session import Session
 
 
-# pylint: disable=too-many-statements,no-member,too-many-branches,C0302
+class SQLiteTable:
+    """Lazy-loading wrapper for SQLite tables."""
+
+    def __init__(self, db_path: str, table_name: str, row_count: int = 0):
+        """Initialize SQLite table wrapper.
+
+        Parameters
+        ----------
+        db_path : str
+            Path to SQLite database file.
+        table_name : str
+            Name of the table.
+        row_count : int
+            Number of rows (from metadata).
+        """
+        self.db_path = db_path
+        self.table_name = table_name
+        self.row_count = row_count
+        self._cached_df: pd.DataFrame | None = None
+
+    @property
+    def _quoted_name(self) -> str:
+        """Return the table name quoted for safe SQL interpolation."""
+        return '"' + self.table_name.replace('"', '""') + '"'
+
+    def to_dataframe(self, use_cache: bool = True) -> pd.DataFrame:
+        """Load table data from SQLite database.
+
+        Parameters
+        ----------
+        use_cache : bool
+            If True, return cached DataFrame if available.
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame containing table data.
+        """
+        if use_cache and self._cached_df is not None:
+            return self._cached_df
+
+        conn = sqlite3.connect(self.db_path)
+        try:
+            sql = f"SELECT * FROM {self._quoted_name}"  # noqa: S608
+            df = pd.read_sql_query(sql, conn)
+            if use_cache:
+                self._cached_df = df
+            return df
+        finally:
+            conn.close()
+
+    def get_schema(self) -> list[tuple]:
+        """Get table schema (column names and types).
+
+        Returns
+        -------
+        list[tuple]
+            List of (column_name, type, notnull, default, pk) tuples.
+        """
+        conn = sqlite3.connect(self.db_path)
+        try:
+            cursor = conn.cursor()
+            cursor.execute(f"PRAGMA table_info({self._quoted_name})")
+            return cursor.fetchall()
+        finally:
+            conn.close()
+
+    def query(self, where: str = "", limit: int | None = None) -> pd.DataFrame:
+        """Execute SQL query with optional filters.
+
+        Parameters
+        ----------
+        where : str
+            SQL WHERE clause (without WHERE keyword).
+        limit : int | None
+            Maximum number of rows to return.
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with query results.
+        """
+        sql = f"SELECT * FROM {self._quoted_name}"  # noqa: S608
+        if where:
+            sql += f" WHERE {where}"
+        if limit:
+            sql += f" LIMIT {limit}"
+
+        conn = sqlite3.connect(self.db_path)
+        try:
+            return pd.read_sql_query(sql, conn)
+        finally:
+            conn.close()
+
+
+def extract_dataframe(obbject) -> pd.DataFrame:
+    """Extract DataFrame from OBBject without using to_dataframe().
+
+    Parameters
+    ----------
+    obbject
+        OBBject instance or other data.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame extracted from results.
+    """
+    results = (
+        obbject.model_dump(exclude_unset=True, exclude_none=True).get("results")
+        if hasattr(obbject, "model_dump")
+        else obbject
+    )
+
+    if results is None:
+        return pd.DataFrame()
+    elif isinstance(results, SQLiteTable):
+        return results.to_dataframe()
+    elif isinstance(results, pd.DataFrame):
+        return results
+    elif isinstance(results, list):
+        return pd.DataFrame(results)
+    elif isinstance(results, dict):
+        return pd.DataFrame([results])
+    else:
+        return pd.DataFrame({"value": [results]})
+
 
 session = Session()
 
@@ -47,7 +173,6 @@ def remove_file(path: Path) -> bool:
     bool
         The status of the removal.
     """
-    # TODO: Check why module level import leads to circular import.
     try:
         if os.path.isfile(path):
             os.remove(path)
@@ -79,52 +204,41 @@ Please feel free to check out our other products:
 
 def bootup():
     """Bootup the cli."""
-    if sys.platform == "win32":
-        # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-        os.system("")  # nosec # noqa: S605,S607
+    if sys.platform == "win32":  # pragma: no cover
+        os.system("")  # noqa: S605, S607
 
     try:
-        if os.name == "nt":
-            # pylint: disable=E1101
-            sys.stdin.reconfigure(encoding="utf-8")  # type: ignore
-            # pylint: disable=E1101
-            sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
-    except Exception as e:
+        if os.name == "nt":  # pragma: no cover
+            sys.stdin.reconfigure(encoding="utf-8")
+            sys.stdout.reconfigure(encoding="utf-8")
+    except Exception as e:  # pragma: no cover
         session.console.print(e, "\n")
 
 
 def welcome_message():
-    """Print the welcome message.
-
-    Prints first welcome message, help and a notification if updates are available.
-    """
+    """Print the welcome message."""
     session.console.print(
         f"\nWelcome to OpenBB Platform CLI v{session.settings.VERSION}"
     )
 
 
 def reset(queue: list[str] | None = None):
-    """Reset the CLI.
-
-    Allows for checking code without quitting.
-    """
+    """Reset the CLI."""
     session.console.print("resetting...")
     debug = session.settings.DEBUG_MODE
     dev = session.settings.DEV_BACKEND
 
     try:
-        # we clear all openbb_cli modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
             if parts[0] == "openbb_cli":
                 del sys.modules[module]
 
-        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # ty: ignore[invalid-argument-type, no-matching-overload]
 
-        # pylint: disable=import-outside-toplevel
         from openbb_cli.controllers.cli_controller import main
 
-        main(debug, dev, queue_list, module="")  # type: ignore
+        main(debug, dev, queue_list, module="")
 
     except Exception as e:
         session.console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
@@ -149,13 +263,10 @@ def suppress_stdout():
 def first_time_user() -> bool:
     """Check whether a user is a first time user.
 
-    A first time user is someone with an empty .env file.
-    If this is true, it also adds an env variable to make sure this does not run again.
-
     Returns
     -------
     bool
-        Whether or not the user is a first time user
+        Whether or not the user is a first time user.
     """
     if ENV_FILE_SETTINGS.stat().st_size == 0:
         session.settings.set_item("PREVIOUS_USE", True)
@@ -166,33 +277,29 @@ def first_time_user() -> bool:
 def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
     """Filter and split the input queue.
 
-    Uses regex to filters command arguments that have forward slashes so that it doesn't
-    break the execution of the command queue.
-    Currently handles unix paths and sorting settings for screener menus.
-
     Parameters
     ----------
     an_input : str
-        User input as string
-    custom_filters : List
-        Additional regular expressions to match
+        User input as string.
+    custom_filters : list
+        Additional regular expressions to match.
 
     Returns
     -------
-    List[str]
-        Command queue as list
+    list[str]
+        Command queue as list.
     """
-    # Make sure that the user can go back to the root when doing "/"
     if an_input and an_input == "/":
         an_input = "home"
 
-    # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb))"
-    unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
+    known_extensions = (
+        r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb|db|sqlite|sqlite3))"
+    )
+    optional_args = r"(?:\ [^/]+)*?"
+    unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions}{optional_args})"
 
-    # Add custom expressions to handle edge cases of individual controllers
     custom_filter = ""
     for exp in custom_filters:
         if exp is not None:
@@ -207,9 +314,7 @@ def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
         match = re.search(pattern=slash_filter_exp, string=an_input)
         if match is not None:
             placeholder = f"{{placeholder{len(placeholders) + 1}}}"
-            placeholders[placeholder] = an_input[
-                match.span()[0] : match.span()[1]
-            ]  # noqa:E203
+            placeholders[placeholder] = an_input[match.span()[0] : match.span()[1]]  # noqa:E203
             an_input = (
                 an_input[: match.span()[0]] + placeholder + an_input[match.span()[1] :]
             )  # noqa:E203
@@ -225,28 +330,24 @@ def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
         if len(matching_placeholders) > 0:
             for tag in matching_placeholders:
                 commands[command_num] = command.replace(tag, placeholders[tag])
-    return commands
+    return list(filter(None, commands))
 
 
 def return_colored_value(value: str):
     """Return the string value based on condition.
 
-    Return it with green, yellow, red or white color based on
-    whether the number is positive, negative, zero or other, respectively.
-
     Parameters
     ----------
-    value: str
-        string to be checked
+    value : str
+        String to be checked.
 
     Returns
     -------
-    value: str
-        string with color based on value of number if it exists
+    str
+        String with color based on value of number if it exists.
     """
     values = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", value)
 
-    # Finds exactly 1 number in the string
     if len(values) == 1:
         if float(values[0]) > 0:
             return f"[green]{value}[/green]"
@@ -260,7 +361,6 @@ def return_colored_value(value: str):
     return f"{value}"
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
     show_index: bool = False,
@@ -281,45 +381,39 @@ def print_rich_table(  # noqa: PLR0912
 
     Parameters
     ----------
-    df: pd.DataFrame
-        Dataframe to turn into table
-    show_index: bool
-        Whether to include index
-    title: str
-        Title for table
+    df : pd.DataFrame
+        Dataframe to turn into table.
+    show_index : bool
+        Whether to include index.
+    title : str
+        Title for table.
     index_name : str
-        Title for index column
-    headers: List[str]
-        Titles for columns
-    floatfmt: Union[str, List[str]]
-        Float number formatting specs as string or list of strings. Defaults to ".2f"
-    show_header: bool
+        Title for index column.
+    headers : list[str] | pd.Index | None
+        Titles for columns.
+    floatfmt : str | list[str]
+        Float number formatting specs as string or list of strings.
+    show_header : bool
         Whether to show the header row.
-    automatic_coloring: bool
-        Automatically color a table based on positive and negative values
-    columns_to_auto_color: List[str]
-        Columns to automatically color
-    rows_to_auto_color: List[str]
-        Rows to automatically color
-    export: bool
-        Whether we are exporting the table to a file. If so, we don't want to print it.
-    limit: Optional[int]
+    automatic_coloring : bool
+        Automatically color a table based on positive and negative values.
+    columns_to_auto_color : list[str] | None
+        Columns to automatically color.
+    rows_to_auto_color : list[str] | None
+        Rows to automatically color.
+    export : bool
+        Whether we are exporting the table to a file.
+    limit : int | None
         Limit the number of rows to show.
-    columns_keep_types: Optional[List[str]]
-        Columns to keep their types, i.e. not convert to numeric
+    columns_keep_types : list[str] | None
+        Columns to keep their types, i.e. not convert to numeric.
     """
     if export:
         return
 
-    MAX_COLS = session.settings.ALLOWED_NUMBER_OF_COLUMNS
-    MAX_ROWS = session.settings.ALLOWED_NUMBER_OF_ROWS
-
-    # Make a copy of the dataframe to avoid SettingWithCopyWarning
     df = df.copy()
 
     show_index = not isinstance(df.index, pd.RangeIndex) and show_index
-    #  convert non-str that are not timestamp or int into str
-    # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         if columns_keep_types is not None and col in columns_keep_types:
             continue
@@ -339,17 +433,14 @@ def print_rich_table(  # noqa: PLR0912
             output = list(_headers)
         if len(output) != len(df.columns):
             raise ValueError("Length of headers does not match length of DataFrame.")
-        return output  # type: ignore
+        return output  # ty: ignore[invalid-return-type]
 
-    if session.settings.USE_INTERACTIVE_DF:
+    if session.settings.USE_INTERACTIVE_DF and session.backend is not None:
         df_outgoing = df.copy()
-        # If headers are provided, use them
         if headers is not None:
-            # We check if headers are valid
             df_outgoing.columns = _get_headers(headers)
 
         if show_index and index_name not in df_outgoing.columns:
-            # If index name is provided, we use it
             df_outgoing.index.name = index_name or "Index"
             df_outgoing = df_outgoing.reset_index()
 
@@ -357,47 +448,31 @@ def print_rich_table(  # noqa: PLR0912
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        session._backend.send_table(  # type: ignore  # pylint: disable=protected-access
-            df_table=df_outgoing,
-            title=title,
-            theme=session.user.preferences.table_style,
-        )
-        return
+        try:
+            session.backend.send_table(
+                df_table=df_outgoing,
+                title=title,
+                theme=session.user.preferences.table_style,
+            )
+            return
+        except Exception:  # noqa: S110
+            pass
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
     if automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:
-                # checks whether column exists
                 if col in df.columns:
                     df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
         if rows_to_auto_color:
             for row in rows_to_auto_color:
-                # checks whether row exists
                 if row in df.index:
                     df.loc[row] = df.loc[row].apply(
                         lambda x: return_colored_value(str(x))
                     )
 
         if columns_to_auto_color is None and rows_to_auto_color is None:
-            df = df.map(lambda x: return_colored_value(str(x)))  # type: ignore
-
-    exceeds_allowed_columns = len(df.columns) > MAX_COLS
-    exceeds_allowed_rows = len(df) > MAX_ROWS
-
-    if exceeds_allowed_columns:
-        original_columns = df.columns.tolist()
-        trimmed_columns = df.columns.tolist()[:MAX_COLS]
-        df = df[trimmed_columns]
-        trimmed_columns = [
-            col for col in original_columns if col not in trimmed_columns
-        ]
-
-    if exceeds_allowed_rows:
-        n_rows = len(df.index)
-        max_rows = MAX_ROWS
-        df = df[:max_rows]
-        trimmed_rows_count = n_rows - max_rows
+            df = df.map(lambda x: return_colored_value(str(x)))
 
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
@@ -423,7 +498,6 @@ def print_rich_table(  # noqa: PLR0912
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
-            # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
             row_idx = [str(idx)] if show_index else []
             row_idx += [
                 (
@@ -445,23 +519,6 @@ def print_rich_table(  # noqa: PLR0912
         session.console.print(table)
     else:
         session.console.print(df.to_string(col_space=0))
-
-    if exceeds_allowed_columns:
-        session.console.print(
-            f"[yellow]\nAllowed number of columns exceeded ({session.settings.ALLOWED_NUMBER_OF_COLUMNS}).\n"
-            f"The following columns were removed from the output: {', '.join(trimmed_columns)}.\n[/yellow]"
-        )
-
-    if exceeds_allowed_rows:
-        session.console.print(
-            f"[yellow]\nAllowed number of rows exceeded ({session.settings.ALLOWED_NUMBER_OF_ROWS}).\n"
-            f"{trimmed_rows_count} rows were removed from the output.\n[/yellow]"
-        )
-
-    if exceeds_allowed_columns or exceeds_allowed_rows:
-        session.console.print(
-            "Use the `--export` flag to analyse the full output on a file."
-        )
 
 
 def check_non_negative(value) -> int:
@@ -489,6 +546,41 @@ def validate_register_key(value: str) -> str:
     return str(value)
 
 
+def get_user_data_directory() -> Path:
+    """Get the OpenBBUserData directory path."""
+    return Path(session.user.preferences.data_directory)
+
+
+def get_data_files_for_completion() -> list[str]:
+    """Get list of data files in OpenBBUserData for tab completion.
+
+    Returns list of file paths relative to OpenBBUserData directory.
+    Includes CSV, JSON, and Excel files.
+    """
+    try:
+        user_data_dir = get_user_data_directory()
+        if not user_data_dir.exists():
+            return []
+
+        files = []
+        for file_path in user_data_dir.rglob("*"):
+            if file_path.is_file() and file_path.suffix.lower() in [
+                ".csv",
+                ".json",
+                ".xlsx",
+                ".xls",
+                ".db",
+                ".sqlite",
+                ".sqlite3",
+            ]:
+                rel_path = file_path.relative_to(user_data_dir)
+                files.append(str(rel_path).replace("\\", "/"))
+
+        return sorted(files)
+    except Exception:
+        return []
+
+
 def get_user_agent() -> str:
     """Get a not very random user agent."""
     user_agent_strings = [
@@ -501,7 +593,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)  # nosec # noqa: S311
+    return random.choice(user_agent_strings)  # noqa: S311
 
 
 def get_flair() -> str:
@@ -515,7 +607,7 @@ def get_dtime() -> str:
     """Get a datetime string."""
     dtime = ""
     if session.settings.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
-        dtime = datetime.now(timezone(get_user_timezone())).strftime("%Y %b %d, %H:%M")
+        dtime = datetime.now(ZoneInfo(get_user_timezone())).strftime("%Y %b %d, %H:%M")
     return dtime
 
 
@@ -533,13 +625,13 @@ def is_timezone_valid(user_tz: str) -> bool:
 
     Parameters
     ----------
-    user_tz: str
-        Timezone to check for validity
+    user_tz : str
+        Timezone to check for validity.
 
     Returns
     -------
     bool
-        True if timezone provided is valid
+        True if timezone provided is valid.
     """
     return user_tz in all_timezones
 
@@ -550,7 +642,7 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on .env file
+        User timezone based on .env file.
     """
     return session.settings.TIMEZONE
 
@@ -561,7 +653,7 @@ def get_user_timezone_or_invalid() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.openbb file or INVALID
+        User timezone based on timezone.openbb file or INVALID.
     """
     user_tz = get_user_timezone()
     if is_timezone_valid(user_tz):
@@ -574,13 +666,13 @@ def check_file_type_saved(valid_types: list[str] | None = None):
 
     Parameters
     ----------
-    valid_types: List[str]
-        List of valid types to export data
+    valid_types : list[str] | None
+        List of valid types to export data.
 
     Returns
     -------
-    check_filenames: Optional[List[str]]
-        Function that returns list of filenames to export data
+    Callable
+        Function that returns list of filenames to export data.
     """
 
     def check_filenames(filenames: str = "") -> str:
@@ -588,13 +680,13 @@ def check_file_type_saved(valid_types: list[str] | None = None):
 
         Parameters
         ----------
-        filenames: str
-            filenames to be saved separated with comma
+        filenames : str
+            Filenames to be saved separated with comma.
 
         Returns
-        ----------
+        -------
         str
-            valid filenames separated with comma
+            Valid filenames separated with comma.
         """
         if not filenames or not valid_types:
             return ""
@@ -618,21 +710,20 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     Parameters
     ----------
     df : pd.DataFrame
-        The dataframe to remove timezone information from
+        The dataframe to remove timezone information from.
 
     Returns
     -------
     pd.DataFrame
-        The dataframe with timezone information removed
+        The dataframe with timezone information removed.
     """
     date_cols = []
     index_is_date = False
 
-    # Find columns and index containing date data
     if (
         df.index.dtype.kind == "M"
         and hasattr(df.index.dtype, "tz")
-        and df.index.dtype.tz is not None  # type: ignore
+        and df.index.dtype.tz is not None
     ):
         index_is_date = True
 
@@ -640,13 +731,12 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         if dtype.kind == "M" and hasattr(df.index.dtype, "tz") and dtype.tz is not None:
             date_cols.append(col)
 
-    # Remove the timezone information
     for col in date_cols:
         df[col] = df[col].dt.date
 
     if index_is_date:
         index_name = df.index.name
-        df.index = df.index.date  # type: ignore
+        df.index = df.index.date  # ty: ignore[unresolved-attribute]
         df.index.name = index_name
 
     return df
@@ -655,25 +745,20 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 def compose_export_path(func_name: str, dir_path: str) -> Path:
     """Compose export path for data from the terminal.
 
-    Creates a path to a folder and a filename based on conditions.
-
     Parameters
     ----------
     func_name : str
-        Name of the command that invokes this function
+        Name of the command that invokes this function.
     dir_path : str
-        Path of directory from where this function is called
+        Path of directory from where this function is called.
 
     Returns
     -------
     Path
-        Path variable containing the path of the exported file
+        Path variable containing the path of the exported file.
     """
     now = datetime.now()
-    # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
-    # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-    # check if this is done in a main context to avoid saving with openbb_cli
     if resolve_path.parts[-2] == "openbb_cli":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
@@ -689,8 +774,10 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
 def ask_file_overwrite(file_path: Path) -> tuple[bool, bool]:
     """Provide a prompt for overwriting existing files.
 
-    Returns two values, the first is a boolean indicating if the file exists and the
-    second is a boolean indicating if the user wants to overwrite the file.
+    Returns
+    -------
+    tuple[bool, bool]
+        Whether the file exists and whether the user wants to overwrite it.
     """
     if session.settings.FILE_OVERWRITE:
         return False, True
@@ -700,26 +787,28 @@ def ask_file_overwrite(file_path: Path) -> tuple[bool, bool]:
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
             file_path.unlink(missing_ok=True)
-            # File exists and user wants to overwrite
             return True, True
-        # File exists and user does not want to overwrite
         return True, False
-    # File does not exist
     return False, True
 
 
-# This is a false positive on pylint and being tracked in pylint #3060
-# pylint: disable=abstract-class-instantiated,too-many-positional-arguments
 def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=True):
     """Save a Pandas DataFrame to an Excel file.
 
-    Args:
-        df: A Pandas DataFrame.
-        saved_path: The path to the Excel file to save to.
-        sheet_name: The name of the sheet to save the DataFrame to.
-        start_row: The row number to start writing the DataFrame at.
-        index: Whether to write the DataFrame index to the Excel file.
-        header: Whether to write the DataFrame header to the Excel file.
+    Parameters
+    ----------
+    df
+        A Pandas DataFrame.
+    saved_path
+        The path to the Excel file to save to.
+    sheet_name
+        The name of the sheet to save the DataFrame to.
+    start_row
+        The row number to start writing the DataFrame at.
+    index
+        Whether to write the DataFrame index to the Excel file.
+    header
+        Whether to write the DataFrame header to the Excel file.
     """
     overwrite_options = {
         "o": "replace",
@@ -746,7 +835,7 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
             with pd.ExcelWriter(
                 saved_path,
                 mode="a",
-                if_sheet_exists=overwrite_options[overwrite_option],  # type: ignore
+                if_sheet_exists=overwrite_options[overwrite_option],  # ty: ignore[invalid-argument-type]
                 engine="openpyxl",
             ) as writer:
                 df.to_excel(
@@ -758,15 +847,13 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
                 )
 
 
-# This is a false positive on pylint and being tracked in pylint #3060
-# pylint: disable=abstract-class-instantiated,too-many-positional-arguments
-def export_data(
+def export_data(  # noqa: PLR0912
     export_type: str,
     dir_path: str,
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: str | None = None,
-    figure: Optional["OpenBBFigure"] = None,
+    figure: Any = None,
     margin: bool = True,
 ) -> None:
     """Export data to a file.
@@ -774,17 +861,17 @@ def export_data(
     Parameters
     ----------
     export_type : str
-        Type of export between: csv,json,xlsx,xls
+        Type of export between: csv, json, xlsx, xls.
     dir_path : str
-        Path of directory from where this function is called
+        Path of directory from where this function is called.
     func_name : str
-        Name of the command that invokes this function
-    df : pd.Dataframe
-        Dataframe of data to save
-    sheet_name : str
-        If provided.  The name of the sheet to save in excel file
-    figure : Optional[OpenBBFigure]
-        Figure object to save as image file
+        Name of the command that invokes this function.
+    df : pd.DataFrame
+        Dataframe of data to save.
+    sheet_name : str | None
+        The name of the sheet to save in excel file.
+    figure : Any
+        Figure object to save as image file.
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
     """
@@ -792,10 +879,8 @@ def export_data(
         saved_path = compose_export_path(func_name, dir_path).resolve()
         saved_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
-            # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
                 saved_path = saved_path.with_name(exp_type)
-            # In this scenario we use the default filename
             else:
                 if ".OpenBB_openbb_cli" in saved_path.name:
                     saved_path = saved_path.with_name(
@@ -832,7 +917,6 @@ def export_data(
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
-                # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
 
                 if sheet_name is None:  # noqa: SIM223
@@ -849,6 +933,51 @@ def export_data(
                     session.console.print("No plot to export.")
                     continue
                 figure.show(export_image=saved_path, margin=margin)
+            elif saved_path.suffix in [".db", ".sqlite", ".sqlite3"]:
+                import sqlite3
+
+                table_name = sheet_name if sheet_name else "data"
+
+                conn = sqlite3.connect(saved_path)
+                try:
+                    cursor = conn.cursor()
+                    cursor.execute(
+                        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+                        (table_name,),
+                    )
+                    table_exists = cursor.fetchone() is not None
+
+                    if table_exists:
+                        choice = input(
+                            f"\nTable '{table_name}' exists. Overwrite/Append/New? [o/a/n]: "
+                        ).lower()
+                        if choice == "o":
+                            df.to_sql(
+                                table_name, conn, if_exists="replace", index=False
+                            )
+                        elif choice == "a":
+                            df.to_sql(table_name, conn, if_exists="append", index=False)
+                        elif choice == "n":
+                            i = 1
+                            new_name = f"{table_name}_{i}"
+                            while True:
+                                cursor.execute(
+                                    "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+                                    (new_name,),
+                                )
+                                if cursor.fetchone() is None:
+                                    break
+                                i += 1
+                                new_name = f"{table_name}_{i}"
+                            df.to_sql(new_name, conn, if_exists="fail", index=False)
+                            table_name = new_name
+                        else:
+                            session.console.print("Invalid choice. Skipping.")
+                            continue
+                    else:
+                        df.to_sql(table_name, conn, if_exists="fail", index=False)
+                finally:
+                    conn.close()
             else:
                 session.console.print("Wrong export file specified.")
                 continue
@@ -859,15 +988,16 @@ def export_data(
                 session.console.print(f"Failed to save file: {saved_path}")
 
         if figure is not None:
-            figure._exported = True  # pylint: disable=protected-access
+            figure._exported = True
 
 
 def system_clear():
     """Clear screen."""
-    os.system("cls||clear")  # nosec # noqa: S605,S607
+    subprocess.run(  # noqa: S602
+        "cls" if os.name == "nt" else "clear", shell=True, check=False
+    )
 
 
-# Write an abstract helper to make requests from a url with potential headers and params
 def request(
     url: str, method: str = "get", timeout: int = 0, **kwargs
 ) -> requests.Response:
@@ -876,29 +1006,25 @@ def request(
     Parameters
     ----------
     url : str
-        Url to make the request to
+        Url to make the request to.
     method : str
-        HTTP method to use.  Choose from:
-        delete, get, head, patch, post, put, by default "get"
+        HTTP method to use: delete, get, head, patch, post, put.
     timeout : int
-        How many seconds to wait for the server to send data
+        How many seconds to wait for the server to send data.
 
     Returns
     -------
     requests.Response
-        Request response object
+        Request response object.
 
     Raises
     ------
     ValueError
-        If invalid method is passed
+        If invalid method is passed.
     """
     method = method.lower()
     if method not in ["delete", "get", "head", "patch", "post", "put"]:
         raise ValueError(f"Invalid method: {method}")
-    # We want to add a user agent to the request, so check if there are any headers
-    # If there are headers, check if there is a user agent, if not add one.
-    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers", {})
     timeout = timeout or session.user.preferences.request_timeout
 
@@ -942,27 +1068,41 @@ def handle_obbject_display(
 ):
     """Handle the display of an OBBject."""
     df: pd.DataFrame = pd.DataFrame()
-    fig: OpenBBFigure | None = None
+    fig: Any = None
+
+    if isinstance(getattr(obbject, "results", None), SQLiteTable):
+        sqlite_tbl: SQLiteTable = obbject.results  # ty: ignore[invalid-assignment]
+        obbject.results = sqlite_tbl.to_dataframe()
+
     if chart:
         try:
             if obbject.chart:
                 obbject.show(**kwargs)
             else:
-                obbject.charting.to_chart(**kwargs)  # type: ignore
+                obbject.charting.to_chart(**kwargs)  # ty: ignore[unresolved-attribute]
             if export:
-                fig = obbject.chart.fig  # type: ignore
-                df = obbject.to_dataframe()
+                fig = obbject.chart.fig  # ty: ignore[unresolved-attribute]
+                df = extract_dataframe(obbject)
         except Exception as e:
             session.console.print(f"Failed to display chart: {e}")
     elif session.settings.USE_INTERACTIVE_DF:
-        obbject.charting.table()  # type: ignore
+        try:
+            obbject.charting.table()  # ty: ignore[unresolved-attribute]
+        except AttributeError:
+            df = extract_dataframe(obbject)
+            session.output_adapter.display(
+                data=df,
+                title=obbject.extra.get("command", ""),
+                export=bool(export),
+                chart=False,
+            )
     else:
-        df = obbject.to_dataframe()
-        print_rich_table(
-            df=df,
-            show_index=True,
+        df = extract_dataframe(obbject)
+        session.output_adapter.display(
+            data=df,
             title=obbject.extra.get("command", ""),
             export=bool(export),
+            chart=False,
         )
     if export and not df.empty:
         if sheet_name and isinstance(sheet_name, list):

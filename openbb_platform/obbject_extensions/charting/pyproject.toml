@@ -1,25 +1,91 @@
-[tool.poetry]
+[project]
 name = "openbb-charting"
 version = "3.0.0"
 description = "Charting extension for OpenBB"
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_charting" }]
+requires-python = ">=3.10,<4"  # scipy forces python <4.0 explicitly
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "pandas-ta-openbb>=0.4.24",
+    "plotly>=6.3.1",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"  # scipy forces python <4.0 explicitly
-openbb-core = "^1.6.10"
-pandas-ta-openbb = "^0.4.24"
-plotly = "^6.3.1"
-pywry = { version = ">=2.0.2", optional = true }
+[project.optional-dependencies]
+pywry = ["pywry>=2.0.0"]
 
-[tool.poetry.extras]
-pywry = ["pywry"]
+[project.entry-points."openbb_obbject_extension"]
+openbb_charting = "openbb_charting:ext"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0", "openbb-technical>=2.0.0"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
 
-[tool.poetry.plugins."openbb_obbject_extension"]
-openbb_charting = "openbb_charting:ext"
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_charting"]
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+openbb-technical = { path = "../../extensions/technical", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Charting internals carry plotting complexity that the refactor leaves intact.
+"openbb_charting/charting.py" = ["PLR0911", "PLR0912", "PLR0914", "PLR0917", "SLF001", "BLE001"]
+"openbb_charting/core/**" = ["PLR0911", "PLR0912", "PLR0914", "PLR0915", "PLR0917", "SLF001", "BLE001", "S110", "S112", "PLW2901", "SIM"]
+"openbb_charting/charts/**" = ["PLR0911", "PLR0912", "PLR0914", "PLR0915", "PLR0917", "SLF001", "BLE001", "PLW2901", "SIM"]
+"openbb_charting/styles/**" = ["PLR0912", "PLR0914", "PLR0915"]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_charting"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "ignore"
+# ty's pandas/plotly inference is environment-sensitive (pandas/numpy version,
+# Python version), so a `# ty: ignore` needed under one interpreter can be
+# unused under another. Tolerate that mismatch instead of churning per-line.
+unused-ignore-comment = "ignore"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: deterministic, self-contained charting integration tests",
+]

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 from fastapi import APIRouter, FastAPI
 from importlib_metadata import EntryPoint, EntryPoints, entry_points
+
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
 
@@ -162,7 +163,6 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
         def load_core(eps: EntryPoints) -> dict[str, "Router"]:
             """Return a dictionary of core objects."""
-            # pylint: disable=import-outside-toplevel
             from openbb_core.app.router import Router
 
             entries: dict[str, Router] = {}
@@ -183,7 +183,6 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
             Keys are entry point names and values are instances of the Provider class.
             """
-            # pylint: disable=import-outside-toplevel
             from openbb_core.provider.abstract.provider import Provider
 
             entries: dict = {}
@@ -200,4 +199,4 @@ class ExtensionLoader(metaclass=SingletonMeta):
             OpenBBGroups.core: load_core,
             OpenBBGroups.provider: load_provider,
         }
-        return func[group](entry_points_)  # type: ignore
+        return func[group](entry_points_)

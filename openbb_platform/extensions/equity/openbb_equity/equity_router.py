@@ -32,8 +32,6 @@ router.include_router(ownership_router)
 router.include_router(price_router)
 router.include_router(shorts_router)
 
-# pylint: disable=import-outside-toplevel, W0613:unused-argument
-
 
 @router.command(
     model="EquitySearch",

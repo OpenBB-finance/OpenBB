@@ -6,6 +6,7 @@ import importlib.util
 import sys
 
 import pytest
+
 from openbb_core.app.static.package_builder import (
     Linters,
 )
@@ -43,11 +44,6 @@ def test_ruff(linters):
     linters.ruff()
 
 
-def test_black(linters):
-    """Test black."""
-    linters.black()
-
-
 @pytest.mark.skipif(
     importlib.util.find_spec("ruff") is None,
     reason="ruff not installed in this environment",
@@ -81,9 +77,9 @@ def test_run_logs_not_found_when_module_missing(tmp_path, capsys):
     Uses a known-non-existent linter name to exercise the find_spec branch
     without depending on what is actually installed.
     """
-    Linters(tmp_path, verbose=True).run(linter="black")  # baseline: should run
+    Linters(tmp_path, verbose=True).run(linter="ruff")  # baseline: should run
     Linters(tmp_path, verbose=True).run(
-        linter="this_linter_definitely_does_not_exist"  # type: ignore[arg-type]
+        linter="this_linter_definitely_does_not_exist"  # ty: ignore[invalid-argument-type]
     )
     out = capsys.readouterr().out
     assert "this_linter_definitely_does_not_exist not found" in out

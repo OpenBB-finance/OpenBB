@@ -1,1 +1,0 @@
-"""Test Benzinga fetchers."""

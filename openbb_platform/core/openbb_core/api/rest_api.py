@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from openbb_core.api.app_loader import AppLoader
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
@@ -64,6 +65,7 @@ app = FastAPI(
         for s in system.api_settings.servers
     ],
     lifespan=lifespan,
+    strict_content_type=False,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -89,7 +91,6 @@ AppLoader.add_exception_handlers(app)
 
 
 if __name__ == "__main__":
-    # pylint: disable=import-outside-toplevel
     import uvicorn
 
     # This initializes the OpenBB environment variables so they can be read before uvicorn is run.

@@ -7,6 +7,9 @@ from enum import Enum
 from types import TracebackType
 from typing import Any
 
+from pydantic import BaseModel
+from pydantic_core import to_jsonable_python
+
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
@@ -15,8 +18,6 @@ from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from pydantic import BaseModel
-from pydantic_core import to_jsonable_python
 
 
 class DummyProvider(BaseModel):
@@ -195,7 +196,6 @@ class LoggingService(metaclass=SingletonMeta):
             ),
         )
 
-    # pylint: disable=R0917
     def log(
         self,
         user_settings: UserSettings,
@@ -277,6 +277,8 @@ class LoggingService(metaclass=SingletonMeta):
                 log_level = self._logger.error if error else self._logger.info
                 log_level(
                     log_message,
-                    extra={"func_name_override": func.__name__},
+                    extra={
+                        "func_name_override": func.__name__  # ty: ignore[unresolved-attribute]
+                    },
                     exc_info=exec_info,
                 )

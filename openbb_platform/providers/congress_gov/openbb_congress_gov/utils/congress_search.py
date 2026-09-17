@@ -1,9 +1,4 @@
-"""Async congress.gov search client for committee documents.
-
-Adapted from the top-level ``congress_search.py`` for use inside the
-openbb_congress_gov provider package.  Exposes only the async internals
-so callers already running in an event loop can ``await`` directly.
-"""
+"""Async congress.gov search client for committee documents."""
 
 import asyncio
 import json
@@ -178,28 +173,7 @@ async def search_async(
     chamber: Chamber | None = None,
     max_concurrent: int = 4,
 ) -> list[dict[str, Any]]:
-    """Search congress.gov for committee documents (async).
-
-    Parameters
-    ----------
-    congress
-        Congress number (e.g. 119).
-    sources
-        Document-type keys, subset of ``ALL_SOURCES``.
-    committee
-        Committee display name (e.g. "Armed Services").
-    chamber
-        "house", "senate", or "joint".  Required when *committee* is set
-        and the same name exists in multiple chambers.
-    max_concurrent
-        Max parallel HTTP requests.
-
-    Returns
-    -------
-    list[dict]
-        Each dict has ``type``, ``url``, ``heading``, and optional
-        ``title``, ``Committee``, ``date``, etc.
-    """
+    """Search congress.gov for committee documents (async)."""
     q_dict: dict[str, Any] = {"source": sources, "congress": str(congress)}
     if committee is not None:
         if chamber is not None:

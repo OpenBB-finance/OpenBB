@@ -1,21 +1,99 @@
-[tool.poetry]
+[project]
 name = "openbb-congress-gov"
-version = "1.2.3"
-description = "Congress.gov Provider Extension for the OpenBB Platform"
-authors = ["OpenBB Team <hello@openbb.co>"]
+version = "2.0.0"
+description = "Congress.gov provider extension for OpenBB Platform."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_congress_gov" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "defusedxml>=0.7",
+    "httpx>=0.27",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.plugins."openbb_provider_extension"]
+[project.entry-points."openbb_provider_extension"]
 congress_gov = "openbb_congress_gov:congress_gov_provider"
 
-[tool.poetry.plugins."openbb_core_extension"]
-uscongress = "openbb_congress_gov.router.congress_gov_router:router"
+[project.entry-points."openbb_core_extension"]
+uscongress = "openbb_congress_gov.congress_gov_router:router"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_congress_gov"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_congress_gov",
+    "openbb_congress_gov/assets/apps.json",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_congress_gov/congress_gov_router.py" = ["ARG001", "PLC0415", "PLR0913", "PLR0912", "PLR0915", "SLF001"]
+"openbb_congress_gov/utils/helpers.py" = ["PLR0911", "PLR0912", "PLR0915", "SIM102", "SIM114", "BLE001"]
+"openbb_congress_gov/utils/committees.py" = ["PLR0912", "PLR0915"]
+"openbb_congress_gov/utils/congress_search.py" = ["PLR0912", "BLE001"]
+"openbb_congress_gov/models/*.py" = ["ARG002", "PLC0415", "PLR0912"]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_congress_gov"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "@overload"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "record_http: VCR-backed HTTP cassette tests",
+    "integration: end-to-end tests that hit live services (excluded from the coverage gate)",
+]
