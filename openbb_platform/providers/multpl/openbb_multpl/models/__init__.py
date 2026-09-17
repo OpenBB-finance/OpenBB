@@ -1,1 +1,0 @@
-"""Multpl Provider Models."""

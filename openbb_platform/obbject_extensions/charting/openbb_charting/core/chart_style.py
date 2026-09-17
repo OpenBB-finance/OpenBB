@@ -19,6 +19,45 @@ from openbb_charting.core.config.openbb_styles import (
 )
 
 
+def map_layout_key() -> str:
+    """Return the layout key this Plotly uses for map styling.
+
+    Plotly 7 removed ``layout.mapbox`` in favour of ``layout.map``.
+    """
+    valid = getattr(go.Layout, "_valid_props", None)
+
+    if not valid or "mapbox" in valid:
+        return "mapbox"
+
+    return "map"
+
+
+def prune_unsupported_layout(template: dict) -> dict:
+    """Drop the layout keys the installed Plotly rejects, in place.
+
+
+    Parameters
+    ----------
+    template : dict
+        A Plotly template dict; its ``layout`` is filtered in place.
+
+    Returns
+    -------
+    dict
+        The same template, with unsupported layout keys removed.
+    """
+    layout = template.get("layout")
+    valid = getattr(go.Layout, "_valid_props", None)
+
+    if not valid or not isinstance(layout, dict):
+        return template
+
+    for key in [k for k in layout if k not in valid]:
+        layout.pop(key)
+
+    return template
+
+
 class ChartStyle:
     """The class that helps with handling of style configurations."""
 
@@ -89,12 +128,16 @@ class ChartStyle:
         style = style.lower().replace("light", "white")
 
         if self.plt_style and self.plotly_template:
+            map_key = map_layout_key()
+            prune_unsupported_layout(self.plotly_template)
             self.plotly_template.setdefault("layout", {}).setdefault(
-                "mapbox", {}
+                map_key, {}
             ).setdefault("style", "dark")
             if "tables" in self.plt_styles_available:
                 tables = self.load_json_style(self.plt_styles_available["tables"])
-                pio.templates["openbb_tables"] = go.layout.Template(tables)
+                pio.templates["openbb_tables"] = go.layout.Template(
+                    prune_unsupported_layout(tables)
+                )
             try:
                 pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             except ValueError as err:
@@ -116,7 +159,7 @@ class ChartStyle:
             pio.templates.default = "openbb"
             self.mapbox_style = (
                 self.plotly_template.setdefault("layout", {})
-                .setdefault("mapbox", {})
+                .setdefault(map_key, {})
                 .setdefault("style", "dark")
             )
 

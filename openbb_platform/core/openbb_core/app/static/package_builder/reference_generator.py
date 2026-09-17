@@ -144,7 +144,7 @@ class ReferenceGenerator:
         description = (
             "The provider to use, by default None. "
             "If None, the priority list configured in the settings is used. "
-            f"Default priority: {', '.join(default_priority)}."  # ty: ignore[no-matching-overload]
+            f"Default priority: {', '.join(default_priority)}."
         )
 
         provider_parameter_info = {
