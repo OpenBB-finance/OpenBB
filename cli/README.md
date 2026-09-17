@@ -85,6 +85,8 @@ openbb --generate-spec --server https://api.congress.gov --output congress.spec
 openbb --spec congress.spec law --congress 119 --limit 5
 ```
 
+V5 code generation keeps routing on one global base URL. If an OpenAPI path or operation declares a different concrete absolute server URL, generation emits a warning; it does not add per-command routing.
+
 ### Generate an installable OpenBB extension from a spec
 
 A `.spec` file is enough to dispatch commands directly. Going one step further, `--generate-extension` turns that spec into a full installable OpenBB Platform extension package — `Provider(...)` + `Fetcher` classes + a router that mirrors the upstream's namespace tree — that registers with `openbb-build` like any first-party extension. After install, every command shows up on the typed `obb.*` surface (auto-completion, `obb.reference`, `OBBject` envelopes, the works).
