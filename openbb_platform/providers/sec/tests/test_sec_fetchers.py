@@ -1,5 +1,6 @@
 """Tests for the SEC fetchers."""
 
+import asyncio
 import json
 from datetime import date
 from pathlib import Path
@@ -8,6 +9,11 @@ from unittest.mock import patch
 import pytest
 from openbb_core.app.service.user_service import UserService
 
+from openbb_sec.models.adviser_documents import SecAdviserDocumentsFetcher
+from openbb_sec.models.adviser_search import (
+    SecAdviserFirmsFetcher,
+    SecAdviserIndividualsFetcher,
+)
 from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
 from openbb_sec.models.balance_sheet_growth import SecBalanceSheetGrowthFetcher
 from openbb_sec.models.cash_flow import SecCashFlowStatementFetcher
@@ -160,6 +166,40 @@ def test_sec_institutions_search_fetcher(credentials=test_credentials):
     params = {"query": "Investment Trust", "use_cache": False}
 
     fetcher = SecInstitutionsSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_adviser_firms_fetcher(credentials=test_credentials):
+    """Test the SEC adviser firms fetcher."""
+    params = {"query": "citadel", "limit": 20, "use_cache": False}
+
+    query = SecAdviserFirmsFetcher.transform_query(params)
+    data = asyncio.run(SecAdviserFirmsFetcher.aextract_data(query, credentials))
+    result = SecAdviserFirmsFetcher.transform_data(query, data)
+
+    assert len(result) == 10
+    assert result[0].crd == "148826"
+    assert "CITADEL SECURITIES LLC" not in {record.name for record in result}
+
+
+@pytest.mark.record_http
+def test_sec_adviser_individuals_fetcher(credentials=test_credentials):
+    """Test the SEC adviser individuals fetcher."""
+    params = {"query": "john smith", "limit": 2, "use_cache": False}
+
+    fetcher = SecAdviserIndividualsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_adviser_documents_fetcher(credentials=test_credentials):
+    """Test the SEC adviser documents fetcher."""
+    params = {"crd": "148826", "use_cache": False}
+
+    fetcher = SecAdviserDocumentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
