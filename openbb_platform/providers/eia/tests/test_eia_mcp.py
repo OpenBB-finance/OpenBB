@@ -2,11 +2,16 @@ import runpy
 import socket
 import sys
 import types
+from copy import deepcopy
+from inspect import signature
+from typing import get_args
 
 import pytest
+from fastapi.params import Depends as DependsParam
 from starlette.requests import Request
 
 from openbb_us_eia import eia_mcp
+from openbb_us_eia.utils import rss as eia_mcp_rss
 
 
 @pytest.fixture(autouse=True)
@@ -34,6 +39,19 @@ def _request(method="GET", query="", body=b"", headers=None):
             "headers": headers,
         },
         receive=receive,
+    )
+
+
+async def _proxy(request=None):
+    """Call ``mcp_reverse_proxy`` the way FastAPI does, with its dependency resolved.
+
+    The endpoint takes the extracted dict, never the ``Request`` itself - see
+    ``test_mcp_reverse_proxy_takes_extracted_dict_not_request`` for why.
+    """
+    return await eia_mcp.mcp_reverse_proxy(
+        await eia_mcp._extract_mcp_request(
+            request if request is not None else _request()
+        )
     )
 
 
@@ -199,6 +217,40 @@ async def test_extract_mcp_request_filters_headers():
     assert "authorization" not in out["headers"]
 
 
+def test_mcp_reverse_proxy_takes_extracted_dict_not_request():
+    """The endpoint must take the extracted dict via ``Depends``, never a ``Request``.
+
+    ``add_command_map`` rewraps every extension route with ``build_api_wrapper``,
+    which hands the endpoint's resolved kwargs to ``CommandRunner``; that does
+    ``deepcopy(kwargs)`` (command_runner.py). Deep-copying a ``Request`` recurses
+    through ``starlette.datastructures.State.__getattr__`` until it raises
+    ``RecursionError``, so declaring one here 500s the route on every single call.
+    Keeping the ``Request`` inside ``_extract_mcp_request`` is what makes the
+    route work at all.
+    """
+    params = list(signature(eia_mcp.mcp_reverse_proxy).parameters.values())
+    assert len(params) == 1
+    param = params[0]
+    assert param.annotation is not Request
+    depends = [m for m in get_args(param.annotation)[1:] if isinstance(m, DependsParam)]
+    assert len(depends) == 1
+    assert depends[0].dependency is eia_mcp._extract_mcp_request
+
+
+@pytest.mark.asyncio
+async def test_extracted_request_survives_deepcopy():
+    """Whatever the endpoint receives has to survive the wrapper's ``deepcopy``."""
+    data = await eia_mcp._extract_mcp_request(
+        _request(
+            method="POST",
+            query="a=1",
+            body=b'{"jsonrpc":"2.0"}',
+            headers=[(b"accept", b"application/json")],
+        )
+    )
+    assert deepcopy(data) == data
+
+
 @pytest.mark.asyncio
 async def test_mcp_reverse_proxy_startup_failure(monkeypatch):
     monkeypatch.setattr(eia_mcp, "ensure_mcp_subprocess", lambda: None)
@@ -207,7 +259,7 @@ async def test_mcp_reverse_proxy_startup_failure(monkeypatch):
         return False
 
     monkeypatch.setattr(eia_mcp, "_await_ready", not_ready)
-    resp = await eia_mcp.mcp_reverse_proxy(_request())
+    resp = await _proxy()
     assert resp.status_code == 503
 
 
@@ -233,7 +285,7 @@ async def test_mcp_reverse_proxy_client_error(monkeypatch):
             self.closed = True
 
     monkeypatch.setattr("aiohttp.ClientSession", Session)
-    resp = await eia_mcp.mcp_reverse_proxy(_request())
+    resp = await _proxy()
     assert resp.status_code == 502
 
 
@@ -276,7 +328,7 @@ async def test_mcp_reverse_proxy_stream_success(monkeypatch):
             state["closed"] = True
 
     monkeypatch.setattr("aiohttp.ClientSession", Session)
-    resp = await eia_mcp.mcp_reverse_proxy(_request())
+    resp = await _proxy()
     body = b""
     async for chunk in resp.body_iterator:
         body += chunk
@@ -325,7 +377,7 @@ async def test_mcp_reverse_proxy_stream_iter_error(monkeypatch):
             state["closed"] = True
 
     monkeypatch.setattr("aiohttp.ClientSession", Session)
-    resp = await eia_mcp.mcp_reverse_proxy(_request())
+    resp = await _proxy()
     body = b""
     async for chunk in resp.body_iterator:
         body += chunk
@@ -420,10 +472,12 @@ async def test_build_mcp_server_tool_returns_rows(monkeypatch):
 
     class FMCP:
         def __init__(self, **_k):
-            self.tool_fn = None
+            self.tools = {}
 
         def tool(self, fn):
-            self.tool_fn = fn
+            # Key by name: the server registers several tools, and keying by
+            # name keeps these tests pinned to the one they mean.
+            self.tools[fn.__name__] = fn
             return fn
 
     monkeypatch.setitem(
@@ -467,7 +521,7 @@ async def test_build_mcp_server_tool_returns_rows(monkeypatch):
     )
     monkeypatch.setattr(eia_mcp, "_api_state_url", lambda b, u: f"http://x/{b}/{u}")
     mcp = eia_mcp._build_mcp_server()
-    rows = await mcp.tool_fn("electricity")
+    rows = await mcp.tools["get_current_browser_data"]("electricity")
     assert rows == [{"x": 1}]
     assert seen["url"].startswith("http://x/electricity/")
 
@@ -476,10 +530,12 @@ async def test_build_mcp_server_tool_returns_rows(monkeypatch):
 async def test_build_mcp_server_tool_non_200(monkeypatch):
     class FMCP:
         def __init__(self, **_k):
-            self.tool_fn = None
+            self.tools = {}
 
         def tool(self, fn):
-            self.tool_fn = fn
+            # Key by name: the server registers several tools, and keying by
+            # name keeps these tests pinned to the one they mean.
+            self.tools[fn.__name__] = fn
             return fn
 
     monkeypatch.setitem(
@@ -519,17 +575,19 @@ async def test_build_mcp_server_tool_non_200(monkeypatch):
         types.SimpleNamespace(get_http_headers=lambda include=None: {}),
     )
     mcp = eia_mcp._build_mcp_server()
-    assert await mcp.tool_fn("coal") == []
+    assert await mcp.tools["get_current_browser_data"]("coal") == []
 
 
 @pytest.mark.asyncio
 async def test_build_mcp_server_tool_non_list_payload(monkeypatch):
     class FMCP:
         def __init__(self, **_k):
-            self.tool_fn = None
+            self.tools = {}
 
         def tool(self, fn):
-            self.tool_fn = fn
+            # Key by name: the server registers several tools, and keying by
+            # name keeps these tests pinned to the one they mean.
+            self.tools[fn.__name__] = fn
             return fn
 
     monkeypatch.setitem(
@@ -569,17 +627,19 @@ async def test_build_mcp_server_tool_non_list_payload(monkeypatch):
         types.SimpleNamespace(get_http_headers=lambda include=None: {}),
     )
     mcp = eia_mcp._build_mcp_server()
-    assert await mcp.tool_fn("coal") == []
+    assert await mcp.tools["get_current_browser_data"]("coal") == []
 
 
 @pytest.mark.asyncio
 async def test_build_mcp_server_tool_invalid_json(monkeypatch):
     class FMCP:
         def __init__(self, **_k):
-            self.tool_fn = None
+            self.tools = {}
 
         def tool(self, fn):
-            self.tool_fn = fn
+            # Key by name: the server registers several tools, and keying by
+            # name keeps these tests pinned to the one they mean.
+            self.tools[fn.__name__] = fn
             return fn
 
     monkeypatch.setitem(
@@ -619,7 +679,7 @@ async def test_build_mcp_server_tool_invalid_json(monkeypatch):
         types.SimpleNamespace(get_http_headers=lambda include=None: {}),
     )
     mcp = eia_mcp._build_mcp_server()
-    assert await mcp.tool_fn("coal") == []
+    assert await mcp.tools["get_current_browser_data"]("coal") == []
 
 
 def test_module_main_invokes_serve(monkeypatch):
@@ -631,10 +691,12 @@ def test_module_main_invokes_serve(monkeypatch):
 
     class FMCP:
         def __init__(self, **_k):
-            self.tool_fn = None
+            self.tools = {}
 
         def tool(self, fn):
-            self.tool_fn = fn
+            # Key by name: the server registers several tools, and keying by
+            # name keeps these tests pinned to the one they mean.
+            self.tools[fn.__name__] = fn
             return fn
 
         def http_app(self, **_k):
@@ -656,3 +718,166 @@ def test_module_main_invokes_serve(monkeypatch):
     source = eia_mcp.__file__
     runpy.run_path(source, run_name="__main__")
     assert calls["run"] is True
+
+
+def _fake_fastmcp(monkeypatch):
+    """Install a fake ``fastmcp`` and return the built server's tools by name."""
+
+    class FMCP:
+        def __init__(self, **_k):
+            self.tools = {}
+
+        def tool(self, fn):
+            self.tools[fn.__name__] = fn
+            return fn
+
+    monkeypatch.setitem(sys.modules, "fastmcp", types.SimpleNamespace(FastMCP=FMCP))
+    monkeypatch.setitem(
+        sys.modules,
+        "fastmcp.server.dependencies",
+        types.SimpleNamespace(get_http_headers=lambda include=None: {}),
+    )
+    return eia_mcp._build_mcp_server().tools
+
+
+class _Body:
+    """Minimal aiohttp response stand-in."""
+
+    def __init__(self, status=200, text="", payload=b""):
+        self.status = status
+        self._text = text
+        self._payload = payload
+
+    async def text(self):
+        return self._text
+
+    async def read(self):
+        return self._payload
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *_a):
+        return False
+
+
+def _session_factory(monkeypatch, response, on_get=None):
+    class Session:
+        def __init__(self, **_k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_a):
+            return False
+
+        def get(self, url, **_k):
+            if on_get is not None:
+                on_get(url)
+            if isinstance(response, Exception):
+                raise response
+            return response
+
+    monkeypatch.setattr("aiohttp.ClientSession", Session)
+
+
+@pytest.mark.asyncio
+async def test_get_feed_articles_returns_records(monkeypatch):
+    tools = _fake_fastmcp(monkeypatch)
+
+    async def fake_fetch(_session, url):
+        assert url == eia_mcp_rss.EIA_RSS_FEEDS["today_in_energy"]["url"]
+        return types.SimpleNamespace(
+            feed={"title": "Today in Energy"},
+            entries=[
+                {
+                    "title": "Solar output rose",
+                    "link": "todayinenergy/detail.php?id=1",
+                    "summary": "<p>Some <b>summary</b>.</p>",
+                    "author": "EIA",
+                    "published_parsed": (2026, 9, 1, 0, 0, 0, 0, 1, 0),
+                }
+            ],
+        )
+
+    monkeypatch.setattr(eia_mcp_rss, "fetch_feed", fake_fetch)
+    _session_factory(monkeypatch, _Body())
+
+    rows = await tools["get_feed_articles"]("today_in_energy")
+    assert len(rows) == 1
+    assert set(rows[0]) == {"title", "date", "author", "url", "excerpt"}
+    assert rows[0]["title"] == "Solar output rose"
+    assert rows[0]["url"].endswith("todayinenergy/detail.php?id=1")
+
+
+@pytest.mark.asyncio
+async def test_get_feed_articles_unknown_feed_falls_back(monkeypatch):
+    tools = _fake_fastmcp(monkeypatch)
+    seen = {}
+
+    async def fake_fetch(_session, url):
+        seen["url"] = url
+        return types.SimpleNamespace(feed={}, entries=[])
+
+    monkeypatch.setattr(eia_mcp_rss, "fetch_feed", fake_fetch)
+    _session_factory(monkeypatch, _Body())
+
+    assert await tools["get_feed_articles"]("not_a_feed") == []
+    assert seen["url"] == eia_mcp_rss.EIA_RSS_FEEDS["today_in_energy"]["url"]
+
+
+@pytest.mark.asyncio
+async def test_get_feed_articles_client_error(monkeypatch):
+    import aiohttp
+
+    tools = _fake_fastmcp(monkeypatch)
+
+    async def boom(_session, _url):
+        raise aiohttp.ClientError("down")
+
+    monkeypatch.setattr(eia_mcp_rss, "fetch_feed", boom)
+    _session_factory(monkeypatch, _Body())
+
+    assert await tools["get_feed_articles"]("today_in_energy") == []
+
+
+@pytest.mark.asyncio
+async def test_get_article_content_returns_text(monkeypatch):
+    tools = _fake_fastmcp(monkeypatch)
+    _session_factory(
+        monkeypatch,
+        _Body(text="<html><style>p{}</style><body><p>Real prose.</p></body></html>"),
+    )
+    out = await tools["get_article_content"]("https://www.eia.gov/todayinenergy/x.php")
+    assert out == "Real prose."
+
+
+@pytest.mark.asyncio
+async def test_get_article_content_rejects_non_eia_host(monkeypatch):
+    tools = _fake_fastmcp(monkeypatch)
+    called = {"n": 0}
+
+    def on_get(_url):
+        called["n"] += 1
+
+    _session_factory(monkeypatch, _Body(text="secret"), on_get=on_get)
+    out = await tools["get_article_content"]("https://evil.example.com/x")
+    assert out == "Only eia.gov article URLs can be fetched."
+    assert called["n"] == 0
+
+
+@pytest.mark.asyncio
+async def test_get_article_content_non_200(monkeypatch):
+    tools = _fake_fastmcp(monkeypatch)
+    _session_factory(monkeypatch, _Body(status=404, text="nope"))
+    assert await tools["get_article_content"]("https://www.eia.gov/a.php") == ""
+
+
+@pytest.mark.asyncio
+async def test_get_article_content_client_error(monkeypatch):
+    import aiohttp
+
+    tools = _fake_fastmcp(monkeypatch)
+    _session_factory(monkeypatch, aiohttp.ClientError("boom"))
+    assert await tools["get_article_content"]("https://www.eia.gov/a.php") == ""

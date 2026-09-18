@@ -3,8 +3,9 @@ OpenBB API so the Workspace connects on the API's own host/port.
 """
 
 import logging
-from typing import Any
+from typing import Annotated, Any
 
+from fastapi import Depends
 from starlette.requests import Request
 
 from openbb_us_eia.browsers import _user_key
@@ -164,6 +165,82 @@ def _build_mcp_server() -> Any:
             return []
         return rows if isinstance(rows, list) else []
 
+    @mcp.tool
+    async def get_feed_articles(feed: str = "today_in_energy") -> list[dict]:
+        """Return the articles currently listed in one EIA RSS feed.
+
+        Parameters
+        ----------
+        feed : str
+            One of: today_in_energy, whats_new, press_releases,
+            congressional_testimony, presentations, gasoline_diesel,
+            heating_oil_propane. Unknown values fall back to today_in_energy.
+
+        Returns
+        -------
+        list[dict]
+            One record per article, with ``title``, ``date``, ``author``,
+            ``url`` and ``excerpt``. Pass a record's ``url`` to
+            ``get_article_content`` to read the full article.
+        """
+        import aiohttp
+
+        from openbb_us_eia.utils.rss import EIA_RSS_FEEDS, build_feed, fetch_feed
+
+        if feed not in EIA_RSS_FEEDS:
+            feed = "today_in_energy"
+        try:
+            async with aiohttp.ClientSession(
+                timeout=aiohttp.ClientTimeout(total=30)
+            ) as session:
+                parsed = await fetch_feed(session, EIA_RSS_FEEDS[feed]["url"])
+        except aiohttp.ClientError:
+            _logger.exception("Failed to fetch the EIA RSS feed")
+            return []
+        return [
+            {key: item[key] for key in ("title", "date", "author", "url", "excerpt")}
+            for item in build_feed(feed, parsed, 50)["items"]
+        ]
+
+    @mcp.tool
+    async def get_article_content(url: str) -> str:
+        """Return the readable text of one EIA article.
+
+        Parameters
+        ----------
+        url : str
+            The article's ``url`` from ``get_feed_articles``. Only eia.gov
+            URLs are fetched.
+
+        Returns
+        -------
+        str
+            The article's prose, or an empty string if it could not be read.
+        """
+        from urllib.parse import urlsplit
+
+        import aiohttp
+
+        from openbb_us_eia.utils.rss import article_text
+
+        host = (urlsplit(url).hostname or "").lower()
+        if host != "eia.gov" and not host.endswith(".eia.gov"):
+            return "Only eia.gov article URLs can be fetched."
+        try:
+            async with (
+                aiohttp.ClientSession(
+                    timeout=aiohttp.ClientTimeout(total=30)
+                ) as session,
+                session.get(url) as response,
+            ):
+                if response.status != 200:
+                    return ""
+                html = await response.text()
+        except (aiohttp.ClientError, UnicodeDecodeError):
+            _logger.exception("Failed to fetch the EIA article")
+            return ""
+        return article_text(html)
+
     return mcp
 
 
@@ -254,19 +331,24 @@ async def _extract_mcp_request(request: Request) -> dict:
     }
 
 
-async def mcp_reverse_proxy(request: Request) -> Any:
+async def mcp_reverse_proxy(
+    data: Annotated[dict, Depends(_extract_mcp_request)],
+) -> Any:
     """Proxy an MCP request to the local subprocess, streaming the response.
 
     Lets the Workspace connect at the OpenBB API's own host/port — the
     subprocess is an internal detail — while the subprocess still owns the
     streamable-http lifecycle that an in-process mount could not start.
+
+    The request arrives as a plain dict from ``_extract_mcp_request``: taking
+    the ``Request`` directly would put it in the command wrapper's kwargs,
+    which ``CommandRunner`` deep-copies, and deep-copying a ``Request``
+    recurses until it raises ``RecursionError``.
     """
     import asyncio
 
     import aiohttp
     from starlette.responses import JSONResponse, StreamingResponse
-
-    data = await _extract_mcp_request(request)
 
     ensure_mcp_subprocess()
     if not await _await_ready():

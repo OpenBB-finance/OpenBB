@@ -6,7 +6,7 @@ from fastapi import Depends
 from fastapi.responses import HTMLResponse
 from openbb_core.app.router import Router
 
-from openbb_us_eia.browsers import request_info
+from openbb_us_eia.browsers import _mcp_url, request_info
 from openbb_us_eia.utils.rss import (
     EIA_RSS_FEEDS,
     build_feed,
@@ -68,6 +68,7 @@ router._api_router.add_api_route(
                 {"paramName": "theme", "show": False},
             ],
             "refetchInterval": 900000,
+            "storage": {"mcpUrl": _mcp_url()},
         }
     },
 )

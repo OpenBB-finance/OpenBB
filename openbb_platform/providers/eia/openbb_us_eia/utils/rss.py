@@ -99,6 +99,40 @@ _EXCERPT_TAGS = {"strong", "em", "b", "i", "sub", "sup"}
 _VOID_TAGS = {"script", "style"}
 
 
+def article_text(html: str, limit: int = 20000) -> str:
+    """Extract an article page's readable text, dropping script/style contents.
+
+    ``strip_html`` keeps every data node, which on a full page pulls inline
+    JavaScript and CSS into the result; this mutes ``_VOID_TAGS`` so the output
+    is the prose an agent can actually read.
+    """
+    if not html:
+        return ""
+    from html.parser import HTMLParser
+
+    class _Text(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=True)
+            self.parts: list[str] = []
+            self.muted: list[str] = []
+
+        def handle_starttag(self, tag: str, attrs: list) -> None:
+            if tag in _VOID_TAGS:
+                self.muted.append(tag)
+
+        def handle_endtag(self, tag: str) -> None:
+            if tag in _VOID_TAGS and tag in self.muted:
+                self.muted.remove(tag)
+
+        def handle_data(self, data: str) -> None:
+            if not self.muted:
+                self.parts.append(data)
+
+    parser = _Text()
+    parser.feed(html)
+    return " ".join("".join(parser.parts).split())[:limit]
+
+
 def clean_excerpt(summary: str, limit: int = 320) -> str:
     """Decode a feed summary to sanitized inline HTML, truncated to ``limit`` chars."""
     from html import escape, unescape

@@ -142,6 +142,20 @@ class TestTextHelpers:
     def test_strip_html_empty(self):
         assert rss.strip_html("") == ""
 
+    def test_article_text_drops_script_and_style(self):
+        html = (
+            "<html><head><style>body{color:red}</style>"
+            "<script>var x = 1;</script></head>"
+            "<body><p>Real  prose.</p></body></html>"
+        )
+        assert rss.article_text(html) == "Real prose."
+
+    def test_article_text_empty(self):
+        assert rss.article_text("") == ""
+
+    def test_article_text_truncates_to_limit(self):
+        assert rss.article_text("<p>" + "ab " * 100 + "</p>", limit=5) == "ab ab"
+
     def test_excerpt_short_text_unchanged(self):
         assert rss.clean_excerpt("short") == "short"
 
