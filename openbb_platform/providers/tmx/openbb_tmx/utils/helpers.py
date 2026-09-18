@@ -397,7 +397,9 @@ async def get_all_options_tickers(use_cache: bool = True) -> "DataFrame":
     if r is None or r == []:
         raise OpenBBError("Error with the request")  # mypy: ignore
 
-    options_listings = read_html(StringIO(r), keep_default_na=False, na_values=[""])
+    options_listings = read_html(
+        StringIO(r), flavor="lxml", keep_default_na=False, na_values=[""]
+    )
     listings = concat(options_listings)
     listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
     symbols = listings[:-1]
@@ -447,7 +449,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
     ]
 
     r = await get_data_from_url(QUOTES_URL, use_cache=False)
-    data = read_html(StringIO(r))[0]
+    data = read_html(StringIO(r), flavor="lxml")[0]
     data = data.iloc[:-1]
 
     expirations = (

@@ -1,19 +1,24 @@
 """Tests for the TMX routers and their registration."""
 
 import pytest
+from openbb_core.app.route_iter import iter_api_routes
 
 from openbb_tmx.tmx_router import router as tmx_router
+
+
+def _paths(router) -> set:
+    """Collect the prefix-resolved path of every route on a router."""
+    return {route.path for route in iter_api_routes(router)}
 
 
 class TestRouterAssembly:
     """The assembled router surface."""
 
     def test_router_has_routes(self):
-        assert len(tmx_router.api_router.routes) > 30
+        assert len(_paths(tmx_router.api_router)) > 30
 
     def test_apps_json_is_served(self):
-        paths = {getattr(r, "path", "") for r in tmx_router.api_router.routes}
-        assert "/apps.json" in paths
+        assert "/apps.json" in _paths(tmx_router.api_router)
 
     @pytest.mark.parametrize(
         "path",
@@ -69,8 +74,7 @@ class TestRouterAssembly:
         ],
     )
     def test_route_is_registered(self, path):
-        paths = {getattr(r, "path", "") for r in tmx_router.api_router.routes}
-        assert path in paths
+        assert path in _paths(tmx_router.api_router)
 
     async def test_apps_json_resolves(self):
         from openbb_tmx.tmx_router import tmx_apps

@@ -178,9 +178,9 @@ class TestChartRoutes:
         monkeypatch.setattr(data_handler, "load_symbol", fake)
 
     def test_every_chart_route_is_registered(self):
-        paths = {
-            getattr(r, "path", "") for r in options_router.router.api_router.routes
-        }
+        from openbb_core.app.route_iter import iter_api_routes
+
+        paths = {r.path for r in iter_api_routes(options_router.router.api_router)}
 
         for path, _, _ in options_router.CHART_ROUTES:
             assert f"/options{path}" in paths

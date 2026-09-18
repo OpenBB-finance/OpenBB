@@ -30,16 +30,16 @@ openbb.build()
 
 ### Optional extras
 
-Two surfaces need a package the extension does not depend on, and neither is
-required for any dataset:
+Two surfaces need a package no dataset requires, so each is declared as an
+extra:
 
-| Extra | Needed by | Without it |
-| ----- | --------- | ---------- |
-| `openbb-charting` | `derivatives.options.smile` · `surface` · `stats` · `term_structure` | The four chart routes are not registered. |
-| `pywry` | `equity.screener_builder` and its `/screener_builder/view` iframe | The iframe raises `ImportError`, so the Workspace app's Screener tab cannot render, and the native window cannot open. |
+| Extra | Pulls in | Needed by | Without it |
+| ----- | -------- | --------- | ---------- |
+| `charting` | `openbb-charting` | `derivatives.options.smile` · `surface` · `stats` · `term_structure` | The four chart routes are not registered. |
+| `builder` | `pywry` | `equity.screener_builder` and its `/screener_builder/view` iframe | The iframe raises `ImportError`, so the Workspace app's Screener tab cannot render, and the native window cannot open. |
 
 ```bash
-pip install openbb-charting pywry
+pip install 'openbb-tmx[all]'
 ```
 
 ## Coverage
@@ -201,10 +201,12 @@ in that tab.
 ## Development
 
 ```bash
-uv pip install -e '.'
+uv pip install -e '.[all]'
 uv pip install --group dev
-pytest tests --cov=openbb_tmx --cov-report=term-missing
+pytest tests --cov=openbb_tmx --cov-report=term-missing --cov-fail-under=100
 ```
+
+The suite exercises both extras, so the unit run needs `.[all]` installed.
 
 The unit suite runs entirely offline - no cassettes and no network - and is held
 at one hundred percent coverage. Integration tests hit the live endpoints and

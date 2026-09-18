@@ -257,7 +257,12 @@ async def get_options_listings(use_cache: bool = True) -> dict:
             referer="https://www.m-x.ca/",
         )
         tables = (
-            read_html(StringIO(html), keep_default_na=False, na_values=[""])
+            read_html(
+                StringIO(html),
+                flavor="lxml",
+                keep_default_na=False,
+                na_values=[""],
+            )
             if html
             else []
         )
@@ -899,7 +904,12 @@ async def screen_covered_calls(
     try:
         tables = [
             t
-            for t in read_html(StringIO(html), keep_default_na=False, na_values=[""])
+            for t in read_html(
+                StringIO(html),
+                flavor="lxml",
+                keep_default_na=False,
+                na_values=[""],
+            )
             if "Symbol" in t.columns
         ]
     except ValueError:
