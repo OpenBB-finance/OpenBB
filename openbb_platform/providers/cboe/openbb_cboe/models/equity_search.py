@@ -1,6 +1,4 @@
-"""CBOE Equity Search Model."""
-
-# pylint: disable=unused-argument
+"""Cboe Equity Search Model."""
 
 from typing import Any
 
@@ -13,19 +11,20 @@ from pydantic import Field
 
 
 class CboeEquitySearchQueryParams(EquitySearchQueryParams):
-    """CBOE Equity Search Query.
+    """Cboe Equity Search Query.
 
     Source: https://www.cboe.com/
     """
 
     use_cache: bool = Field(
         default=True,
-        description="Whether to use the cache or not.",
+        description="When True, the company directory will be cached for 24 hours."
+        + " Set as False to bypass.",
     )
 
 
 class CboeEquitySearchData(EquitySearchData):
-    """CBOE Equity Search Data."""
+    """Cboe Equity Search Data."""
 
     __alias_dict__ = {
         "dpm_name": "DPM Name",
@@ -36,7 +35,7 @@ class CboeEquitySearchData(EquitySearchData):
         description="Name of the primary market maker.",
     )
     post_station: str | None = Field(
-        default=None, description="Post and station location on the CBOE trading floor."
+        default=None, description="Post and station location on the Cboe trading floor."
     )
 
 
@@ -46,7 +45,7 @@ class CboeEquitySearchFetcher(
         list[CboeEquitySearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints."""
+    """Transform the query, extract and transform the data from the Cboe endpoints."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CboeEquitySearchQueryParams:
@@ -59,26 +58,22 @@ class CboeEquitySearchFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> dict:
-        """Return the raw data from the CBOE endpoint."""
-        # pylint: disable=import-outside-toplevel
+        """Return the raw data from the Cboe endpoint."""
         from openbb_cboe.utils.helpers import get_company_directory
 
-        data = {}
         symbols = await get_company_directory(query.use_cache, **kwargs)
         symbols = symbols.reset_index()
         target = "name" if query.is_symbol is False else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
-        result = symbols[idx].to_dict("records")
-        data.update({"results": result})
 
-        return data
+        return {"results": symbols[idx].to_dict("records")}
 
     @staticmethod
     def transform_data(
         query: CboeEquitySearchQueryParams, data: dict, **kwargs: Any
     ) -> list[CboeEquitySearchData]:
         """Transform the data to the standard format."""
-        from math import isnan  # pylint: disable=import-outside-toplevel
+        from math import isnan
 
         def clean_nan(d: dict) -> dict:
             """Replace nan values with None for Pydantic validation."""
