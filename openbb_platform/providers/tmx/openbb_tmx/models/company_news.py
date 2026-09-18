@@ -47,10 +47,10 @@ class TmxCompanyNewsData(CompanyNewsData):
     def date_validate(cls, v):
         """Validate the datetime format."""
         # pylint: disable=import-outside-toplevel
-        import pytz
+        from zoneinfo import ZoneInfo
 
         dt = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S%z")
-        return dt.astimezone(pytz.timezone("America/New_York"))
+        return dt.astimezone(ZoneInfo("America/New_York"))
 
 
 class TmxCompanyNewsFetcher(

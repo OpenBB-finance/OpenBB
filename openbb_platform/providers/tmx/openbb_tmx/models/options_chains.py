@@ -73,9 +73,9 @@ def _flatten_chain(results: dict, symbol: str) -> dict:
         One list per field, aligned across contracts.
     """
     from math import isnan
+    from zoneinfo import ZoneInfo
 
     from pandas import DataFrame
-    from pytz import timezone
 
     rows: list[dict] = []
 
@@ -134,7 +134,7 @@ def _flatten_chain(results: dict, symbol: str) -> dict:
     from pandas import to_datetime
 
     frame = DataFrame(rows).sort_values(["expiration", "strike", "option_type"])
-    today = to_datetime(datetime.now(tz=timezone("America/New_York")).date())
+    today = to_datetime(datetime.now(tz=ZoneInfo("America/New_York")).date())
     frame["dte"] = (to_datetime(frame["expiration"]) - today).dt.days
     flattened = frame.reset_index(drop=True).to_dict(orient="list")
 

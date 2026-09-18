@@ -1,5 +1,7 @@
 """TMX Equity sub-router."""
 
+import logging
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -16,6 +18,13 @@ from openbb_tmx import EQUITY_INSTALLED
 from openbb_tmx.utils.choices import api_prefix, cell_group
 
 router = Router(prefix="/equity", description="TMX equity data.")
+
+_logger = logging.getLogger(__name__)
+
+INVALID_CONFIG = "The configuration is not valid JSON."
+NO_MATCHES = "No instruments matched the screen."
+SCREEN_FAILED = "The screen could not be run."
+PRESET_NOT_SAVED = "The preset could not be saved."
 
 
 class FilingRequest(BaseModel):
@@ -454,7 +463,7 @@ async def screener_builder_run(config: str = "", limit: int = 100):
         parsed = json.loads(config) if config else {}
     except (TypeError, ValueError):
         return JSONResponse(
-            content={"error": "The configuration is not valid JSON.", "rows": []},
+            content={"error": INVALID_CONFIG, "rows": []},
             status_code=400,
         )
 
@@ -466,8 +475,12 @@ async def screener_builder_run(config: str = "", limit: int = 100):
 
     try:
         results = await TmxEquityScreenerFetcher.fetch_data(params, {})
-    except (EmptyDataError, OpenBBError, ValueError) as error:
-        return JSONResponse(content={"error": str(error), "rows": [], "columns": []})
+    except EmptyDataError:
+        return JSONResponse(content={"error": NO_MATCHES, "rows": [], "columns": []})
+    except (OpenBBError, ValueError):
+        _logger.exception(SCREEN_FAILED)
+
+        return JSONResponse(content={"error": SCREEN_FAILED, "rows": [], "columns": []})
 
     rows = [
         row.model_dump(mode="json", exclude_none=True)
@@ -513,9 +526,15 @@ async def screener_builder_preset_save(name: str = "", config: str = ""):
 
     try:
         parsed = json.loads(config) if config else {}
+    except (TypeError, ValueError):
+        return JSONResponse(content={"error": INVALID_CONFIG}, status_code=400)
+
+    try:
         return JSONResponse(content={"presets": save_preset(name, parsed)})
-    except (TypeError, ValueError) as error:
-        return JSONResponse(content={"error": str(error)}, status_code=400)
+    except (TypeError, ValueError, OSError):
+        _logger.exception(PRESET_NOT_SAVED)
+
+        return JSONResponse(content={"error": PRESET_NOT_SAVED}, status_code=400)
 
 
 async def screener_builder_preset_delete(name: str = ""):

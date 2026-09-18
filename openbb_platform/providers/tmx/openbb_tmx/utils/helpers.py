@@ -910,7 +910,7 @@ async def get_intraday_price_history(
     """Get historical price data."""
     # pylint: disable=import-outside-toplevel
     import asyncio  # noqa
-    import pytz  # noqa
+    from zoneinfo import ZoneInfo  # noqa
     from dateutil import rrule  # noqa
 
     results: list[dict] = []
@@ -945,9 +945,9 @@ async def get_intraday_price_history(
         start_obj = datetime.combine(start, time(9, 30))
         end_obj = datetime.combine(end, time(16, 0))
 
-        est = pytz.timezone("US/Eastern")
-        start_obj_est = est.localize(start_obj)
-        end_obj_est = est.localize(end_obj)
+        eastern = ZoneInfo("America/New_York")
+        start_obj_est = start_obj.replace(tzinfo=eastern)
+        end_obj_est = end_obj.replace(tzinfo=eastern)
 
         start_time = int(start_obj_est.timestamp())
         end_time = int(end_obj_est.timestamp())

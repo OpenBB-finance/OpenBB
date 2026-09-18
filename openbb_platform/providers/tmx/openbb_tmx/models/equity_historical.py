@@ -119,13 +119,13 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
         # pylint: disable=import-outside-toplevel
-        import pytz
+        from zoneinfo import ZoneInfo
 
         if isinstance(v, (datetime, dateType)):
             return v if v.hour != 0 and v.minute != 0 and v.second != 0 else v.date()
         try:
             dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S%z")
-            return dt.astimezone(pytz.timezone("America/New_York"))
+            return dt.astimezone(ZoneInfo("America/New_York"))
         except ValueError:
             return datetime.strptime(v, "%Y-%m-%d")
 

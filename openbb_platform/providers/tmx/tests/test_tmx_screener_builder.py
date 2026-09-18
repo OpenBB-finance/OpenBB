@@ -298,6 +298,52 @@ class TestBuilderEndpoints:
         assert payload["rows"] == []
         assert "No instruments matched" in payload["error"]
 
+    def test_a_broken_screen_reports_a_fixed_message(self, client, monkeypatch):
+        from openbb_core.app.model.abstract.error import OpenBBError
+
+        async def broken(*args, **kwargs):
+            raise OpenBBError("postgres://tmx:hunter2@10.0.0.4/quotes is unreachable")
+
+        monkeypatch.setattr(
+            "openbb_tmx.models.equity_screener.TmxEquityScreenerFetcher.fetch_data",
+            broken,
+        )
+        payload = client.get(
+            "/tmx/equity/screener_builder/run", params={"config": "{}"}
+        ).json()
+
+        assert payload == {
+            "error": "The screen could not be run.",
+            "rows": [],
+            "columns": [],
+        }
+
+    def test_an_unwritable_preset_store_reports_a_fixed_message(
+        self, client, monkeypatch
+    ):
+        from openbb_tmx.utils import screener_presets
+
+        def refuse(presets):
+            raise OSError("[Errno 13] Permission denied: '/root/.openbb_platform'")
+
+        monkeypatch.setattr(screener_presets, "_write", refuse)
+        response = client.post(
+            "/tmx/equity/screener_builder/presets/save",
+            params={"name": "Income", "config": "{}"},
+        )
+
+        assert response.status_code == 400
+        assert response.json() == {"error": "The preset could not be saved."}
+
+    def test_an_invalid_preset_configuration_is_rejected(self, client):
+        response = client.post(
+            "/tmx/equity/screener_builder/presets/save",
+            params={"name": "Income", "config": "{not json"},
+        )
+
+        assert response.status_code == 400
+        assert response.json() == {"error": "The configuration is not valid JSON."}
+
     def test_rows_and_columns_are_returned(self, client, monkeypatch):
         from openbb_tmx.models.equity_screener import TmxEquityScreenerData
 

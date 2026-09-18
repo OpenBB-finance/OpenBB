@@ -14,6 +14,7 @@ dependencies = [
     "diskcache>=5.6",
     "lxml>=5.0",
     "pyarrow>=16.0",
+    "tzdata>=2024.1",
     "random-user-agent>=1.0.1",
     "exchange-calendars>=4.13.2",
     "python-dateutil>=2.8",

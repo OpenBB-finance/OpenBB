@@ -251,8 +251,9 @@ class TestHistoryEnvelope:
 
         monkeypatch.setattr("openbb_tmx.utils.helpers.get_timeseries_history", boom)
         bars = await udf.history(symbol="AC", resolution="D", from_=0, to=2_000_000_000)
-        assert bars["s"] == "error"
-        assert "upstream down" in bars["errmsg"]
+
+        assert bars == {"s": "error", "errmsg": udf.HISTORY_FAILED}
+        assert "upstream down" not in bars["errmsg"]
 
     async def test_countback_never_truncates_the_series(self, gql):
         """The chart always receives every bar the feed holds."""

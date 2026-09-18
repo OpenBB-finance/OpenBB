@@ -1,11 +1,16 @@
 """TMX TradingView UDF sub-router."""
 
+import logging
 from typing import Annotated, Any
 
 from fastapi import Query as FastAPIQuery
 from openbb_core.app.router import Router
 
 router = Router(prefix="/udf", description="TradingView UDF feed for TMX data.")
+
+_logger = logging.getLogger(__name__)
+
+HISTORY_FAILED = "The price history could not be read."
 
 SUPPORTED_RESOLUTIONS = ["1", "5", "15", "30", "60", "D", "W", "M"]
 
@@ -526,8 +531,10 @@ async def history(
             bars = await get_intraday_price_history(resolved, None, end, unit)
         else:
             bars = await get_timeseries_history(resolved, None, end, unit)
-    except Exception as exc:  # noqa: BLE001
-        return {"s": "error", "errmsg": str(exc)}
+    except Exception:  # noqa: BLE001
+        _logger.exception(HISTORY_FAILED)
+
+        return {"s": "error", "errmsg": HISTORY_FAILED}
 
     if not bars:
         return {"s": "no_data"}
