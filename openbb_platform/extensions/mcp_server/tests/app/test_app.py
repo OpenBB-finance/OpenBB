@@ -1,5 +1,6 @@
 """Unit tests for app module."""
 
+import asyncio
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -13,6 +14,7 @@ from openbb_mcp_server.app.app import (
     _read_system_prompt_file,
     _strip_api_prefix,
     create_mcp_server,
+    stdio_main,
 )
 from openbb_mcp_server.models.settings import MCPSettings
 
@@ -54,6 +56,18 @@ def test_read_system_prompt_file(tmp_path):
     prompt_file.write_text("Test prompt")
     assert _read_system_prompt_file(str(prompt_file)) == "Test prompt"
     assert _read_system_prompt_file("nonexistent.txt") is None
+
+
+@pytest.mark.asyncio
+async def test_stdio_main_runs_when_signal_handlers_are_unsupported():
+    """Windows event loops can serve stdio without registering signal handlers."""
+    loop = asyncio.get_running_loop()
+    mcp_server = MagicMock()
+
+    with patch.object(loop, "add_signal_handler", side_effect=NotImplementedError):
+        await stdio_main(mcp_server)
+
+    mcp_server.run.assert_called_once_with("stdio")
 
 
 @patch("openbb_mcp_server.app.app.process_fastapi_routes_for_mcp")

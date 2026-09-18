@@ -61,7 +61,7 @@ explicitly invokes:
 
 ```python
 result = obb.equity.price.historical("AAPL")
-result.charting.to_chart()   # accessor registered by openbb_charting
+result.charting.to_chart()  # accessor registered by openbb_charting
 ```
 
 ```toml

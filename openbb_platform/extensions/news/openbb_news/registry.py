@@ -10,6 +10,15 @@ _PROVIDER_LABELS: dict[str, str] = {
     "benzinga": "Benzinga",
     "cbc": "CBC",
     "drudge_report": "Drudge Report",
+    "drugs_com": "Drugs.com",
+    "brutalist_tech": "Brutalist — Tech",
+    "brutalist_news": "Brutalist — News",
+    "brutalist_business": "Brutalist — Business",
+    "brutalist_science": "Brutalist — Science",
+    "brutalist_gaming": "Brutalist — Gaming",
+    "brutalist_culture": "Brutalist — Culture",
+    "brutalist_politics": "Brutalist — Politics",
+    "brutalist_sports": "Brutalist — Sports",
     "fox_news": "Fox News",
     "fortune": "Fortune",
     "globenewswire": "GlobeNewswire",
@@ -597,6 +606,36 @@ _CURATED_FEEDS: dict[str, tuple[str, str, str]] = {
         "Sports — Soccer",
         "https://www.cbc.ca/webfeed/rss/rss-sports-soccer",
     ),
+    "drugs_com_medical_news": (
+        "drugs_com",
+        "Daily MedNews",
+        "https://www.drugs.com/feeds/medical_news.xml",
+    ),
+    "drugs_com_headline_news": (
+        "drugs_com",
+        "News for Health Professionals",
+        "https://www.drugs.com/feeds/headline_news.xml",
+    ),
+    "drugs_com_fda_alerts": (
+        "drugs_com",
+        "FDA MedWatch Drug Alerts",
+        "https://www.drugs.com/feeds/fda_alerts.xml",
+    ),
+    "drugs_com_new_drug_approvals": (
+        "drugs_com",
+        "New Drug Approvals",
+        "https://www.drugs.com/feeds/new_drug_approvals.xml",
+    ),
+    "drugs_com_new_drug_applications": (
+        "drugs_com",
+        "New Drug Applications",
+        "https://www.drugs.com/feeds/new_drug_applications.xml",
+    ),
+    "drugs_com_clinical_trials": (
+        "drugs_com",
+        "Clinical Trial Results",
+        "https://www.drugs.com/feeds/clinical_trials.xml",
+    ),
     "fox_news_latest": (
         "fox_news",
         "Latest Headlines",
@@ -720,6 +759,171 @@ _CURATED_FEEDS: dict[str, tuple[str, str, str]] = {
     ),
 }
 
+# The publisher sources aggregated by brutalist.report, grouped under its eight
+# topics. Each entry is (feed_key_suffix, publisher_label, native_feed_url); the
+# provider id is ``brutalist_<topic>``. Feeds validated through the shared async
+# session. Hosts needing pinned request headers are handled in parser._HOST_HEADERS.
+_BRUTALIST_TOPIC_LABELS: dict[str, str] = {
+    "tech": "Tech",
+    "news": "News",
+    "business": "Business",
+    "science": "Science",
+    "gaming": "Gaming",
+    "culture": "Culture",
+    "politics": "Politics",
+    "sports": "Sports",
+}
+_BRUTALIST_FEEDS: dict[str, tuple[tuple[str, str, str], ...]] = {
+    "tech": (
+        (
+            "androidauthority",
+            "Android Authority",
+            "https://www.androidauthority.com/feed",
+        ),
+        ("appleinsider", "AppleInsider", "https://appleinsider.com/rss/news/"),
+        (
+            "arstechnica",
+            "ArsTechnica",
+            "https://feeds.arstechnica.com/arstechnica/index",
+        ),
+        (
+            "bleepingcomputer",
+            "Bleeping Computer",
+            "https://www.bleepingcomputer.com/feed/",
+        ),
+        ("cloudflare", "Cloudflare Blog", "https://www.blog.cloudflare.com/rss/"),
+        ("cnet", "CNET", "https://www.cnet.com/rss/news/"),
+        ("coindesk", "Coindesk", "https://www.coindesk.com/arc/outboundfeeds/rss/"),
+        ("daringfireball", "Daring Fireball", "https://daringfireball.net/feeds/main"),
+        ("engadget", "Engadget", "https://www.engadget.com/category/news/feed/"),
+        ("hackaday", "Hackaday", "https://hackaday.com/feed/"),
+        ("hn", "Hacker News", "https://news.ycombinator.com/rss"),
+        ("lwn", "Linux Weekly News", "https://lwn.net/headlines/rss"),
+        ("phoronix", "Phoronix", "https://www.phoronix.com/rss.php"),
+        ("servethehome", "Serve The Home", "https://www.servethehome.com/feed/"),
+        ("slashdot", "Slashdot", "https://rss.slashdot.org/Slashdot/slashdotMain"),
+        ("techmeme", "Techmeme", "https://www.techmeme.com/feed.xml"),
+        ("techradar", "TechRadar", "https://www.techradar.com/feeds.xml"),
+        ("register", "The Register", "https://www.theregister.com/headlines.atom"),
+        ("shortcut", "The Shortcut", "https://theshortcut.com/feed"),
+        ("verge", "The Verge", "https://www.theverge.com/rss/index.xml"),
+        ("venturebeat", "Venturebeat", "https://venturebeat.com/feed/"),
+        ("wired", "Wired", "https://www.wired.com/feed/rss"),
+    ),
+    "news": (
+        ("abcnews", "ABC News", "https://feeds.abcnews.com/abcnews/topstories"),
+        ("aljazeera", "Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"),
+        ("bbc", "BBC", "https://feeds.bbci.co.uk/news/rss.xml"),
+        (
+            "foxnews",
+            "Fox News",
+            "https://moxie.foxnews.com/google-publisher/latest.xml",
+        ),
+        ("nbcnews", "NBC News", "https://feeds.nbcnews.com/nbcnews/public/news"),
+        ("npr", "NPR", "https://feeds.npr.org/1002/rss.xml"),
+        (
+            "pbsnewshour",
+            "PBS NewsHour",
+            "https://www.pbs.org/newshour/feeds/rss/headlines",
+        ),
+        ("quartz", "Quartz", "https://qz.com/rss"),
+        (
+            "conversation",
+            "The Conversation",
+            "https://theconversation.com/us/articles.atom",
+        ),
+        ("guardian", "The Guardian", "https://www.theguardian.com/international/rss"),
+        ("intercept", "The Intercept", "https://theintercept.com/feed/?rss"),
+        (
+            "nytimes",
+            "The New York Times",
+            "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+        ),
+        ("onion", "The Onion", "https://theonion.com/feed/"),
+        (
+            "wsj",
+            "The Wall Street Journal",
+            "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
+        ),
+    ),
+    "business": (
+        (
+            "businessinsider",
+            "Business Insider",
+            "https://feeds.businessinsider.com/custom/all",
+        ),
+        ("cnbc", "CNBC", "https://www.cnbc.com/id/100003114/device/rss/rss.html"),
+        ("fastcompany", "FastCompany", "https://www.fastcompany.com/latest/rss"),
+        ("fortune", "Fortune", "https://fortune.com/feed/fortune-feeds/?id=3230629"),
+        (
+            "hbr",
+            "Harvard Business Review",
+            "http://feeds.harvardbusiness.org/harvardbusiness/",
+        ),
+        (
+            "marketwatch",
+            "MarketWatch",
+            "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+        ),
+        ("yahoofinance", "Yahoo Finance", "https://finance.yahoo.com/news/rssindex"),
+        ("zerohedge", "Zero Hedge", "https://feeds.feedburner.com/zerohedge/feed"),
+    ),
+    "science": (
+        ("phys", "Phys", "https://phys.org/rss-feed/"),
+        ("quantamag", "Quanta Magazine", "https://www.quantamagazine.org/quanta/feed/"),
+        ("sciencedaily", "ScienceDaily", "https://www.sciencedaily.com/rss/all.xml"),
+        (
+            "scientificamerican",
+            "Scientific American",
+            "https://www.scientificamerican.com/platform/syndication/rss/",
+        ),
+    ),
+    "gaming": (
+        ("gamespot", "GameSpot", "https://www.gamespot.com/feeds/mashup/"),
+        ("kotaku", "Kotaku", "https://kotaku.com/feed"),
+        ("pcgamer", "PC Gamer", "https://www.pcgamer.com/feeds.xml"),
+        ("polygon", "Polygon", "https://www.polygon.com/rss/index.xml"),
+    ),
+    "culture": (
+        ("billboard", "Billboard", "https://www.billboard.com/feed/rss/"),
+        ("esquire", "Esquire", "https://www.esquire.com/rss/all.xml/"),
+        ("heavy", "Heavy", "https://heavy.com/feed/"),
+        ("mashable", "Mashable", "https://mashable.com/feeds/rss/all"),
+        ("reddit", "Reddit Front Page", "https://www.reddit.com/.rss"),
+        ("avclub", "The A.V. Club", "https://www.avclub.com/rss"),
+        ("newyorker", "The New Yorker", "https://www.newyorker.com/feed/rss"),
+        ("thepointsguy", "The Points Guy", "https://thepointsguy.com/feed/"),
+        ("tmz", "TMZ", "https://www.tmz.com/rss.xml"),
+        ("vanityfair", "Vanity Fair", "https://www.vanityfair.com/feed/rss"),
+        ("variety", "Variety", "https://variety.com/feed/rss/"),
+        ("vox", "Vox", "https://www.vox.com/rss/index.xml"),
+    ),
+    "politics": (
+        ("axios", "Axios", "https://api.axios.com/feed/"),
+        ("salon", "Salon", "https://www.salon.com/feed/"),
+        (
+            "talkingpointsmemo",
+            "Talking Points Memo",
+            "https://talkingpointsmemo.com/feed",
+        ),
+        (
+            "drudge",
+            "The Drudge Report",
+            "https://feeds.feedburner.com/DrudgeReportFeed",
+        ),
+        ("hill", "The Hill", "https://thehill.com/news/feed/"),
+        ("thenewrepublic", "The New Republic", "https://newrepublic.com/rss.xml"),
+    ),
+    "sports": (
+        ("espn_mlb", "ESPN MLB", "https://www.espn.com/espn/rss/mlb/news"),
+        ("espn_nba", "ESPN NBA", "https://www.espn.com/espn/rss/nba/news"),
+        ("espn_nfl", "ESPN NFL", "https://www.espn.com/espn/rss/nfl/news"),
+        ("espn_nhl", "ESPN NHL", "https://www.espn.com/espn/rss/nhl/news"),
+        ("espn_soccer", "ESPN SOCCER", "https://www.espn.com/espn/rss/soccer/news"),
+        ("yahoosports", "Yahoo Sports", "https://sports.yahoo.com/rss/"),
+    ),
+}
+
 
 def _slug(value: str) -> str:
     return value.replace("/", "_").replace("-", "_")
@@ -790,6 +994,13 @@ def _build_feed_registry() -> tuple[dict[str, str], dict[str, dict[str, str]]]:
     for key, (provider, label, url) in _CURATED_FEEDS.items():
         feeds[key] = url
         meta[key] = {"provider": provider, "label": label}
+
+    for topic, entries in _BRUTALIST_FEEDS.items():
+        provider = f"brutalist_{topic}"
+        for suffix, label, url in entries:
+            key = f"{provider}_{suffix}"
+            feeds[key] = url
+            meta[key] = {"provider": provider, "label": label}
 
     return feeds, meta
 
@@ -924,11 +1135,20 @@ _DEFAULT_FEED_BY_PROVIDER: dict[str, str] = {
     "bbc": "bbc_world",
     "benzinga": "benzinga_markets",
     "cbc": "cbc_business",
+    "drugs_com": "drugs_com_medical_news",
     "fox_news": "fox_news_latest",
     "globenewswire": "globenewswire_all",
     "google_news": "google_news_us",
     "pr_newswire": "pr_newswire_global",
     "wired": "wired_business",
+    "brutalist_tech": "brutalist_tech_verge",
+    "brutalist_news": "brutalist_news_guardian",
+    "brutalist_business": "brutalist_business_fortune",
+    "brutalist_science": "brutalist_science_scientificamerican",
+    "brutalist_gaming": "brutalist_gaming_polygon",
+    "brutalist_culture": "brutalist_culture_vox",
+    "brutalist_politics": "brutalist_politics_axios",
+    "brutalist_sports": "brutalist_sports_yahoosports",
 }
 
 

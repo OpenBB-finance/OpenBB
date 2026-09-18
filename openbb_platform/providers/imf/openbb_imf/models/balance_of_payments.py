@@ -364,10 +364,16 @@ class ImfBalanceOfPaymentsFetcher(
                     "debits_total_secondary_income",
                 )
             ]
-            if all(v is not None for v in credits_components):
-                bucket["credits_total"] = sum(credits_components)
-            if all(v is not None for v in debits_components):
-                bucket["debits_total"] = sum(debits_components)
+            credits_components_clean = [
+                float(v) for v in credits_components if v is not None
+            ]
+            debits_components_clean = [
+                float(v) for v in debits_components if v is not None
+            ]
+            if len(credits_components_clean) == 4:
+                bucket["credits_total"] = sum(credits_components_clean)
+            if len(debits_components_clean) == 4:
+                bucket["debits_total"] = sum(debits_components_clean)
 
             services_credits = bucket.get("credits_total_services")
             services_debits = bucket.get("debits_total_services")

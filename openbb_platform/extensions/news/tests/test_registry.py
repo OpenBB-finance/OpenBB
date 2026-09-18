@@ -55,6 +55,7 @@ def test_list_providers_default(monkeypatch):
     assert providers["benzinga"] == "Benzinga"
     assert providers["cbc"] == "CBC"
     assert providers["drudge_report"] == "Drudge Report"
+    assert providers["drugs_com"] == "Drugs.com"
     assert providers["fox_news"] == "Fox News"
     assert providers["fortune"] == "Fortune"
     assert providers["globenewswire"] == "GlobeNewswire"
@@ -62,10 +63,127 @@ def test_list_providers_default(monkeypatch):
     assert providers["pr_newswire"] == "PR Newswire"
     assert providers["yahoo_finance"] == "Yahoo Finance"
     assert providers["wired"] == "Wired"
+    assert providers["brutalist_tech"] == "Brutalist — Tech"
+    assert providers["brutalist_business"] == "Brutalist — Business"
+    assert providers["brutalist_sports"] == "Brutalist — Sports"
     assert "custom" not in providers
     assert "barchart" not in providers
     assert "cnn" not in providers
     assert "seeking_alpha" not in providers
+
+
+def test_list_feed_choices_drugs_com(monkeypatch):
+    monkeypatch.setattr(registry, "load_config", lambda: {})
+    choices = registry.list_feed_choices("drugs_com")
+    labels = [c["label"] for c in choices]
+    assert "Daily MedNews" in labels
+    assert "News for Health Professionals" in labels
+    assert "FDA MedWatch Drug Alerts" in labels
+    assert "New Drug Approvals" in labels
+    assert "New Drug Applications" in labels
+    assert "Clinical Trial Results" in labels
+    assert len(choices) == 6
+    assert labels == sorted(labels)
+
+
+def test_drugs_com_feed_urls(monkeypatch):
+    monkeypatch.setattr(registry, "load_config", lambda: {})
+    assert (
+        registry.get_feed_url("drugs_com_medical_news")
+        == "https://www.drugs.com/feeds/medical_news.xml"
+    )
+    assert (
+        registry.get_feed_url("drugs_com_headline_news")
+        == "https://www.drugs.com/feeds/headline_news.xml"
+    )
+    assert (
+        registry.get_feed_url("drugs_com_fda_alerts")
+        == "https://www.drugs.com/feeds/fda_alerts.xml"
+    )
+    assert (
+        registry.get_feed_url("drugs_com_new_drug_approvals")
+        == "https://www.drugs.com/feeds/new_drug_approvals.xml"
+    )
+    assert (
+        registry.get_feed_url("drugs_com_new_drug_applications")
+        == "https://www.drugs.com/feeds/new_drug_applications.xml"
+    )
+    assert (
+        registry.get_feed_url("drugs_com_clinical_trials")
+        == "https://www.drugs.com/feeds/clinical_trials.xml"
+    )
+
+
+_BRUTALIST_PROVIDER_COUNTS = {
+    "brutalist_tech": 22,
+    "brutalist_news": 14,
+    "brutalist_business": 8,
+    "brutalist_science": 4,
+    "brutalist_gaming": 4,
+    "brutalist_culture": 12,
+    "brutalist_politics": 6,
+    "brutalist_sports": 6,
+}
+
+
+def test_brutalist_providers_present(monkeypatch):
+    monkeypatch.setattr(registry, "load_config", lambda: {})
+    providers = registry.list_providers()
+    for pid in _BRUTALIST_PROVIDER_COUNTS:
+        assert pid in providers
+        assert providers[pid].startswith("Brutalist — ")
+
+
+def test_brutalist_feed_choices_per_topic(monkeypatch):
+    monkeypatch.setattr(registry, "load_config", lambda: {})
+    for pid, count in _BRUTALIST_PROVIDER_COUNTS.items():
+        choices = registry.list_feed_choices(pid)
+        labels = [c["label"] for c in choices]
+        assert len(choices) == count, pid
+        assert labels == sorted(labels), pid
+
+
+def test_brutalist_total_feed_count():
+    total = sum(len(v) for v in registry._BRUTALIST_FEEDS.values())
+    assert total == 76
+    assert set(registry._BRUTALIST_FEEDS) == set(registry._BRUTALIST_TOPIC_LABELS)
+
+
+def test_brutalist_feed_keys_unique_and_registered(monkeypatch):
+    monkeypatch.setattr(registry, "load_config", lambda: {})
+    feeds = registry.list_feeds()
+    keys = []
+    for topic, entries in registry._BRUTALIST_FEEDS.items():
+        for suffix, _label, url in entries:
+            key = f"brutalist_{topic}_{suffix}"
+            keys.append(key)
+            assert feeds.get(key) == url
+    assert len(keys) == len(set(keys))
+
+
+def test_brutalist_sample_feed_urls():
+    assert (
+        registry.get_feed_url("brutalist_tech_verge")
+        == "https://www.theverge.com/rss/index.xml"
+    )
+    assert (
+        registry.get_feed_url("brutalist_sports_espn_nfl")
+        == "https://www.espn.com/espn/rss/nfl/news"
+    )
+    assert (
+        registry.get_feed_url("brutalist_politics_axios")
+        == "https://api.axios.com/feed/"
+    )
+
+
+def test_brutalist_defaults_resolve(monkeypatch):
+    monkeypatch.setattr(registry, "load_config", lambda: {})
+    feeds = registry.list_feeds()
+    for pid in _BRUTALIST_PROVIDER_COUNTS:
+        default = registry.default_feed_for(pid)
+        assert default is not None
+        assert default in feeds
+        assert default.startswith(pid + "_")
 
 
 def test_get_feed_url_drudge_report():
@@ -223,6 +341,7 @@ def test_default_feed_for_curated_picks(monkeypatch):
         "bbc": "bbc_world",
         "benzinga": "benzinga_markets",
         "cbc": "cbc_business",
+        "drugs_com": "drugs_com_medical_news",
         "fox_news": "fox_news_latest",
         "globenewswire": "globenewswire_all",
         "google_news": "google_news_us",

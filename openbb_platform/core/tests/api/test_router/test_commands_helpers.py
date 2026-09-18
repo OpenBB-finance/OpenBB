@@ -534,3 +534,33 @@ def test_add_command_map_wraps_and_includes_plugin_routes(monkeypatch):
         getattr(route, "path", None) == "/plugin"
         for route in iter_api_routes(api_router)
     )
+
+
+def test_add_command_map_skips_non_apiroute_leaf(monkeypatch):
+    """A resolved route whose leaf is not an ``APIRoute`` is skipped, not wrapped."""
+    from fastapi import APIRouter
+
+    plugins_api_router = APIRouter()
+    plugins_router = type("PR", (), {"api_router": plugins_api_router})()
+
+    # Not an APIRoute -> `build_api_wrapper` must never be reached.
+    mount = MagicMock(spec=[])
+
+    monkeypatch.setattr(
+        "openbb_core.api.router.commands.RouterLoader.from_extensions",
+        lambda: plugins_router,
+    )
+    monkeypatch.setattr(
+        "openbb_core.api.router.commands.iter_api_routes",
+        lambda _router: iter([mount]),
+    )
+
+    def _boom(command_runner, route):
+        raise AssertionError("build_api_wrapper should not be called")
+
+    monkeypatch.setattr("openbb_core.api.router.commands.build_api_wrapper", _boom)
+
+    api_router = APIRouter()
+    add_command_map(MagicMock(spec=CommandRunner), api_router)
+
+    assert plugins_api_router.routes == []

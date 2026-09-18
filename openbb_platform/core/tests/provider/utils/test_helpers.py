@@ -2,6 +2,7 @@
 
 import asyncio
 import datetime as dt
+from pathlib import Path
 
 import pytest
 
@@ -652,6 +653,35 @@ def test_combine_certificates_returns_existing_combined_file(tmp_path):
     combined = tmp_path / "ca_combined.pem"
     combined.write_text("COMBINED")
     assert combine_certificates(str(cert)) == str(combined)
+
+
+def test_combine_certificates_cleanup_tolerates_missing_file(tmp_path, monkeypatch):
+    """The registered atexit cleanup must not raise if the file is already gone."""
+    import atexit
+
+    import certifi
+
+    from openbb_core.provider.utils import helpers
+
+    cert = tmp_path / "ca.pem"
+    cert.write_text("CERT")
+    bundle = tmp_path / "ca-bundle.pem"
+    bundle.write_text("BUNDLE")
+    monkeypatch.setattr(certifi, "where", lambda: str(bundle))
+
+    registered: list = []
+    monkeypatch.setattr(
+        atexit, "register", lambda func, *a, **kw: registered.append((func, a, kw))
+    )
+
+    out = Path(helpers.combine_certificates(str(cert)))
+    assert out.exists()
+    assert registered
+
+    # Something else removes it first - the cleanup must still be a no-op.
+    out.unlink()
+    for func, args, kwargs in registered:
+        func(*args, **kwargs)
 
 
 def test_make_request_timeout_from_preferences(monkeypatch):

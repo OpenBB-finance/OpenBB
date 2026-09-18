@@ -43,7 +43,7 @@ class Query:
         filtered = {}
 
         query = extra_params.__class__.__name__
-        fields = asdict(self.provider_interface.params[query]["extra"]())  # type: ignore
+        fields = asdict(self.provider_interface.params[query]["extra"]())
 
         for k, v in original.items():
             f = fields[k]
@@ -77,7 +77,7 @@ class Query:
         query_executor = self.provider_interface.create_executor()
 
         return await query_executor.execute(
-            provider_name=self.provider,  # ty: ignore[invalid-argument-type]
+            provider_name=self.provider,
             model_name=self.name,
             params={**standard_dict, **extra_dict},
             credentials=self.cc.user_settings.credentials.model_dump(),

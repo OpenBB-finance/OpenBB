@@ -294,13 +294,14 @@ def test_data_schema_descends_into_single_array_among_scalar_siblings():
         },
     }
     out = pg._data_schema({"response_schema": response})
-    # Descended through ``items`` (single-property), then through ``tags``
-    # (single array among scalar siblings), then wrapped the scalar item
-    # schema as a ``{value: str}`` row.
+    # Descended through ``items`` (single-property), then kept the
+    # inner object whole, as done in ``unpack_response``.
     assert out == {
-        "type": "object",
-        "properties": {"value": {"type": "string"}},
-        "required": ["value"],
+        "properties": {
+            "id": {"type": "string"},
+            "name": {"type": "string"},
+            "tags": {"type": "array", "items": {"type": "string"}},
+        }
     }
 
 

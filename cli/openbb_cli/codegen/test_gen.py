@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
+from openbb_cli.codegen.pydantic_gen import safe_field_name
+
 if TYPE_CHECKING:
     from openbb_cli.codegen.fetcher_gen import GeneratedFetcher
 
@@ -251,13 +253,14 @@ def _derive_test_params(
         param_providers = raw.get("providers") or []
         if param_providers and provider_name not in param_providers:
             continue
+        field_name, _ = safe_field_name(name)
         if raw.get("required"):
             value = _spec_supplied_value(raw)
             if value is None:
                 return None
-            out[name] = value
+            out[field_name] = value
         elif _is_date_param(name):
-            out[name] = _refresh_date_shape(name, "1970-01-01")
+            out[field_name] = _refresh_date_shape(name, "1970-01-01")
     return out
 
 
