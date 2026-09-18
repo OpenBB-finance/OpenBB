@@ -1,11 +1,19 @@
-"""A real installable fixture extension for charting-resolution tests.
+"""A real discoverable fixture extension for charting-resolution tests.
 
 These tests exercise the *production* plugin-resolution path: one small but real
-OpenBB extension package is written to disk, ``pip install``ed **once** for the
-whole ``charting`` test package, and discovered through real entry points by the
-real ``ExtensionLoader`` / ``importlib.metadata``. No service or entry point is
+OpenBB extension package is written to disk **once** for the whole ``charting``
+test package, together with the ``.dist-info`` directory that makes it a real
+distribution, and is then discovered through real entry points by the real
+``ExtensionLoader`` / ``importlib_metadata``. No service or entry point is
 mocked — scenarios are driven through a real ``SystemSettings`` on the real
 ``SystemService`` singleton.
+
+Discovery is driven by putting the package directory on ``sys.path``, which is
+the same path-scanning ``importlib_metadata`` applies to every installed
+distribution. Writing the ``.dist-info`` directly rather than shelling out to
+``pip install -e`` keeps the suite runnable in an environment with no ``pip``
+(a bare ``uv venv``, for one) and leaves the interpreter's site-packages
+untouched.
 
 The fixture engine registers under its own accessor name (``fake_charting``), so
 its mere presence never changes default resolution; tests opt into it via the
@@ -16,7 +24,6 @@ from __future__ import annotations
 
 import contextlib
 import importlib
-import subprocess
 import sys
 
 import pytest
@@ -29,6 +36,7 @@ from openbb_core.app.service.system_service import SystemService
 
 PACKAGE_NAME = "openbb_charting_fake"
 DIST_NAME = "openbb-charting-fake"
+DIST_VERSION = "0.0.1"
 ENGINE_ACCESSORS = ("fake_charting", "fake_boom_charting")
 
 ENGINE_INIT = '''\
@@ -125,41 +133,28 @@ class SecondaryBackend:
         return "url"
 '''
 
-ENGINE_PYPROJECT = """\
-[project]
-name = "openbb-charting-fake"
-version = "0.0.1"
-requires-python = ">=3.10,<4"
-dependencies = ["openbb-core"]
-
-[project.entry-points."openbb_obbject_extension"]
-fake_engine = "openbb_charting_fake:engine_ext"
-fake_boom_engine = "openbb_charting_fake:boom_ext"
-
-[project.entry-points."openbb_charting_hooks"]
-fake_hook = "openbb_charting_fake.hook:RecordingHook"
-fake_broken_hook = "openbb_charting_fake.hook:DoesNotExist"
-
-[project.entry-points."openbb_charting_backend"]
-fake_backend = "openbb_charting_fake.backends:PrimaryBackend"
-fake_secondary_backend = "openbb_charting_fake.backends:SecondaryBackend"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["openbb_charting_fake"]
+ENGINE_METADATA = f"""\
+Metadata-Version: 2.1
+Name: {DIST_NAME}
+Version: {DIST_VERSION}
+Requires-Python: >=3.10,<4
+Requires-Dist: openbb-core
 """
 
+# The INI form of the ``[project.entry-points.*]`` tables a build backend emits.
+ENGINE_ENTRY_POINTS = """\
+[openbb_obbject_extension]
+fake_engine = openbb_charting_fake:engine_ext
+fake_boom_engine = openbb_charting_fake:boom_ext
 
-def _pip(*args: str) -> None:
-    subprocess.run(  # noqa: S603
-        [sys.executable, "-m", "pip", *args],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
+[openbb_charting_hooks]
+fake_hook = openbb_charting_fake.hook:RecordingHook
+fake_broken_hook = openbb_charting_fake.hook:DoesNotExist
+
+[openbb_charting_backend]
+fake_backend = openbb_charting_fake.backends:PrimaryBackend
+fake_secondary_backend = openbb_charting_fake.backends:SecondaryBackend
+"""
 
 
 def _reset_extension_loader() -> None:
@@ -170,7 +165,7 @@ def _reset_extension_loader() -> None:
 
 @pytest.fixture(scope="package", autouse=True)
 def fake_charting_extension(tmp_path_factory):
-    """Build and install the real fixture package once for the whole package.
+    """Write the real fixture distribution once for the whole package.
 
     The fixture engine, hooks, and backends register through genuine entry
     points; individual tests select them via ``charting_config``.
@@ -181,13 +176,19 @@ def fake_charting_extension(tmp_path_factory):
     (pkg_dir / "__init__.py").write_text(ENGINE_INIT, encoding="utf-8")
     (pkg_dir / "hook.py").write_text(ENGINE_HOOK, encoding="utf-8")
     (pkg_dir / "backends.py").write_text(ENGINE_BACKENDS, encoding="utf-8")
-    (work / "pyproject.toml").write_text(ENGINE_PYPROJECT, encoding="utf-8")
+
+    # A real ``.dist-info`` beside the package is what makes the directory a
+    # discoverable distribution rather than a bare importable package.
+    dist_info = work / f"{PACKAGE_NAME}-{DIST_VERSION}.dist-info"
+    dist_info.mkdir()
+    (dist_info / "METADATA").write_text(ENGINE_METADATA, encoding="utf-8")
+    (dist_info / "entry_points.txt").write_text(ENGINE_ENTRY_POINTS, encoding="utf-8")
 
     pristine_accessors = set(OBBject.accessors)
     src = str(work)
-    _pip("install", "--no-deps", "-e", src)
-    # An editable install added mid-session is not on the running interpreter's
-    # ``sys.path``; add it so ``entry_point.load()`` can import the package.
+    # On ``sys.path`` the distribution is found by the same path scan
+    # ``importlib_metadata`` runs over site-packages, and ``entry_point.load()``
+    # can import the package.
     if src not in sys.path:
         sys.path.insert(0, src)
     _reset_extension_loader()
@@ -201,8 +202,6 @@ def fake_charting_extension(tmp_path_factory):
             "secondary_backend": "fake_secondary_backend",
         }
     finally:
-        with contextlib.suppress(subprocess.CalledProcessError):
-            _pip("uninstall", "-y", DIST_NAME)
         with contextlib.suppress(ValueError):
             sys.path.remove(src)
         for name in [m for m in sys.modules if m.startswith(PACKAGE_NAME)]:

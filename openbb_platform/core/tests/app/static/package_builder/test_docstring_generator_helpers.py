@@ -1647,12 +1647,18 @@ def test_generate_no_model_returns_str_type_name_and_any_fallback(monkeypatch):
 
 
 def test_get_field_type_union_renders_forward_ref_by_name():
-    """A ``ForwardRef`` inside a union renders as its target name."""
-    from typing import ForwardRef
+    """A ``ForwardRef`` inside a union renders as its target name.
 
-    out = DocstringGenerator.get_field_type(
-        list | ForwardRef("DataFrame"), is_required=True
-    )
+    Built with ``Union[...]``, not ``X | Y``: before 3.14 ``type.__or__``
+    rejects a ``ForwardRef`` operand. This is the shape ``format_params``
+    produces when it inlines the ``DataProcessingSupportedTypes``
+    constraints, so the union must be spelled the same way here.
+    """
+    from typing import ForwardRef, Union
+
+    field_type = Union[list, ForwardRef("DataFrame")]  # noqa: UP007
+
+    out = DocstringGenerator.get_field_type(field_type, is_required=True)
     assert "DataFrame" in out
     assert "ForwardRef" not in out
 
