@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/natural-gas/enr/deep/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1992&facets%5Bduoarea%5D%5B%5D=R3FM&facets%5Bprocess%5D%5B%5D=R01&facets%5Bproduct%5D%5B%5D=EPC0&facets%5Bseries%5D%5B%5D=RCRR01R3FM_1&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1992
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"1992","duoarea":"R3FM","area-name":"NA","product":"EPC0","product-name":"Crude
+        Oil","process":"R01","process-name":"Proved Reserves","series":"RCRR01R3FM_1","series-description":"Gulf
+        of America Federal Offshore Crude Oil Proved Reserves (Million Barrels)","value":"1835","units":"MMBBL"}]},"request":{"command":"\/v2\/natural-gas\/enr\/deep\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["value"],"facets":{"duoarea":["R3FM"],"product":["EPC0"],"process":["R01"],"series":["RCRR01R3FM_1"]},"start":"1992","end":"1992","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:41 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:41 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '786'
+    status:
+      code: 200
+      message: OK
+version: 1
