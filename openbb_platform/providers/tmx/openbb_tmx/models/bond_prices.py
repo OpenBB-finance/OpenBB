@@ -20,13 +20,7 @@ if TYPE_CHECKING:
 
 
 class TmxBondPricesQueryParams(BondReferenceQueryParams):
-    """
-    TMX Bond Prices Query Params.
-
-    Data will be made available by 5:00 EST on T+1
-
-    Source: https://bondtradedata.iiroc.ca/#/
-    """
+    """TMX Bond Prices Query Params."""
 
     __json_schema_extra__ = {"isin": {"multiple_items_allowed": True}}
 
