@@ -5,7 +5,7 @@ from typing import Any
 from pydantic.fields import FieldInfo
 
 
-class OpenBBField(FieldInfo):
+class OpenBBField(FieldInfo):  # ty: ignore[subclass-of-final-class]
     """Custom field for OpenBB."""
 
     def __repr__(self):
@@ -24,5 +24,5 @@ class OpenBBField(FieldInfo):
     def choices(self) -> list[Any] | None:
         """Custom choices."""
         if self.json_schema_extra:
-            return self.json_schema_extra.get("choices")  # type: ignore[union-attr,return-value]
+            return self.json_schema_extra.get("choices")  # type: ignore[union-attr,return-value]  # ty: ignore[unresolved-attribute]
         return None

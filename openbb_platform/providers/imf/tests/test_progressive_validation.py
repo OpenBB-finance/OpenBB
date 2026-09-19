@@ -1,7 +1,6 @@
 """Tests for progressive validation logic in ImfParamsBuilder and ImfQueryBuilder."""
 
 # ruff: noqa: I001
-# pylint: disable=W0621,W0613,W0212,R0903,C0302,C0415
 
 from unittest.mock import MagicMock, patch
 
@@ -67,7 +66,6 @@ class TestImfParamsBuilderInit:
                 "agencyID": "IMF",
             }
         }
-        # Dimensions in reverse order
         mock_metadata.datastructures = {
             "DSD_TEST": {
                 "id": "DSD_TEST",
@@ -157,7 +155,6 @@ class TestDimensionSelection:
         builder = ImfParamsBuilder("BOP")
         builder._selections = {"REF_AREA": "US", "INDICATOR": "IND1", "FREQ": "A"}
 
-        # Re-set REF_AREA - should clear INDICATOR and FREQ
         result = builder.set_dimension(("REF_AREA", "GB"))
 
         assert result["REF_AREA"] == "GB"
@@ -216,11 +213,6 @@ class TestDimensionSelection:
 
         builder.set_dimension(("DIM3", "VAL3"))
         assert builder.get_next_dimension_to_select() is None
-
-
-# =============================================================================
-# Get Options Tests
-# =============================================================================
 
 
 class TestGetOptionsForDimension:
@@ -334,14 +326,8 @@ class TestGetOptionsForDimension:
         builder.set_dimension(("DIM1", "VAL1"))
         builder.get_options_for_dimension("DIM2")
 
-        # Check the key passed to get_available_constraints
         call_args = mock_metadata.get_available_constraints.call_args
         assert call_args.kwargs["key"] == "VAL1.*.*"
-
-
-# =============================================================================
-# Query Builder Validation Tests
-# =============================================================================
 
 
 class TestValidateDimensionConstraints:
@@ -375,7 +361,6 @@ class TestValidateDimensionConstraints:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Should not raise
         builder.validate_dimension_constraints(
             dataflow="BOP", REF_AREA="US", INDICATOR="IND1"
         )
@@ -436,7 +421,6 @@ class TestValidateDimensionConstraints:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Should not raise
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA="*")
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
@@ -463,7 +447,6 @@ class TestValidateDimensionConstraints:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Valid comma-separated should pass
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA="US,GB")
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
@@ -522,7 +505,6 @@ class TestValidateDimensionConstraints:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Valid plus-separated should pass
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA="US+GB+DE")
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
@@ -543,14 +525,8 @@ class TestValidateDimensionConstraints:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Should not raise - empty values skipped
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA="")
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA=None)
-
-
-# =============================================================================
-# Time Period Validation Tests
-# =============================================================================
 
 
 class TestTimePeriodValidation:
@@ -680,15 +656,9 @@ class TestTimePeriodValidation:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Should not raise
         builder.validate_dimension_constraints(
             dataflow="BOP", REF_AREA="US", start_date="2010-01", end_date="2020-12"
         )
-
-
-# =============================================================================
-# Progressive Constraint Propagation Tests
-# =============================================================================
 
 
 class TestProgressiveConstraintPropagation:
@@ -713,17 +683,13 @@ class TestProgressiveConstraintPropagation:
             }
         }
 
-        # First call returns all countries
-        # Second call (after country selected) returns fewer indicators
         call_count = [0]
 
         def mock_constraints(dataflow_id, key, component_id):
             call_count[0] += 1
             if component_id == "INDICATOR" and "US" in key:
-                # US has fewer indicators
                 return {"key_values": [{"id": "INDICATOR", "values": ["IND1", "IND2"]}]}
             elif component_id == "INDICATOR" and "GB" in key:
-                # GB has more indicators
                 return {
                     "key_values": [
                         {"id": "INDICATOR", "values": ["IND1", "IND2", "IND3", "IND4"]}
@@ -737,12 +703,10 @@ class TestProgressiveConstraintPropagation:
 
         builder = ImfParamsBuilder("BOP")
 
-        # Select US
         builder.set_dimension(("REF_AREA", "US"))
         us_options = builder.get_options_for_dimension("INDICATOR")
         assert len(us_options) == 2
 
-        # Reset and select GB
         builder._selections = {"REF_AREA": None, "INDICATOR": None}
         builder.set_dimension(("REF_AREA", "GB"))
         gb_options = builder.get_options_for_dimension("INDICATOR")
@@ -771,7 +735,6 @@ class TestProgressiveConstraintPropagation:
             if component_id == "REF_AREA":
                 return {"key_values": [{"id": "REF_AREA", "values": ["US", "GB"]}]}
             elif component_id == "INDICATOR":
-                # Only IND1 available for US
                 return {"key_values": [{"id": "INDICATOR", "values": ["IND1"]}]}
             return {"key_values": []}
 
@@ -787,9 +750,7 @@ class TestProgressiveConstraintPropagation:
             )
 
         error_msg = str(exc_info.value)
-        # Error should mention the invalid value
         assert "IND_NOT_AVAILABLE_FOR_US" in error_msg
-        # Error should show prior selections
         assert "REF_AREA" in error_msg
 
 
@@ -818,7 +779,7 @@ class TestValidationEdgeCases:
         builder = ImfParamsBuilder("BOP")
         options = builder.get_options_for_dimension("REF_AREA")
 
-        assert options == []  # pylint: disable=C1803
+        assert options == []
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
     def test_missing_dimension_in_constraints_response(self, mock_metadata_cls):
@@ -838,7 +799,6 @@ class TestValidationEdgeCases:
                 ],
             }
         }
-        # Response only has REF_AREA, not INDICATOR
         mock_metadata.get_available_constraints.return_value = {
             "key_values": [{"id": "REF_AREA", "values": ["US"]}]
         }
@@ -848,7 +808,7 @@ class TestValidationEdgeCases:
         builder = ImfParamsBuilder("BOP")
         options = builder.get_options_for_dimension("INDICATOR")
 
-        assert options == []  # pylint: disable=C1803
+        assert options == []
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
     def test_list_input_validated(self, mock_metadata_cls):
@@ -872,7 +832,6 @@ class TestValidationEdgeCases:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # List input should work
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA=["US", "GB"])
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
@@ -897,7 +856,6 @@ class TestValidationEdgeCases:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Whitespace should be trimmed
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA="  US  ,  GB  ")
 
     @patch("openbb_imf.utils.query_builder.ImfMetadata")
@@ -912,14 +870,12 @@ class TestValidationEdgeCases:
 
         builder = ImfQueryBuilder()
 
-        # Should warn, not raise
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             builder.validate_dimension_constraints(
                 dataflow="NONEXISTENT", REF_AREA="US"
             )
 
-            # Check that a warning was issued
             assert len(w) == 1
             assert "could not validate" in str(w[0].message).lower()
 
@@ -940,7 +896,6 @@ class TestValidationEdgeCases:
         }
         mock_metadata.get_available_constraints.return_value = {
             "key_values": [{"id": "REF_AREA", "values": ["US"]}],
-            # No time_period key
         }
         mock_metadata_cls.return_value = mock_metadata
 
@@ -962,7 +917,6 @@ class TestValidationEdgeCases:
                 "dimensions": [{"id": "INDICATOR", "position": 1}],
             }
         }
-        # Mock constraints returning a specific indicator
         mock_metadata.get_available_constraints.return_value = {
             "key_values": [{"id": "INDICATOR", "values": ["RAF_USD"]}]
         }
@@ -970,10 +924,8 @@ class TestValidationEdgeCases:
 
         builder = ImfQueryBuilder()
 
-        # If we validate constraints for IRFCL, it should pass if the indicator is compatible
         builder.validate_dimension_constraints(dataflow="IRFCL", INDICATOR="RAF_USD")
 
-        # If we try an incompatible one (not in constraints)
         with pytest.raises(ValueError):
             builder.validate_dimension_constraints(
                 dataflow="IRFCL", INDICATOR="INCOMPATIBLE"
@@ -994,7 +946,6 @@ class TestValidationEdgeCases:
                 "dimensions": [{"id": "REF_AREA", "position": 1}],
             }
         }
-        # Constraints return everything (wildcard)
         mock_metadata.get_available_constraints.return_value = {
             "key_values": [{"id": "REF_AREA", "values": ["US", "GB", "FR"]}]
         }
@@ -1002,10 +953,8 @@ class TestValidationEdgeCases:
 
         builder = ImfQueryBuilder()
 
-        # Create a long list of codes
         long_list = ["US"] * 50
 
-        # Validation should pass because it should treat it as wildcard or check against constraints
         builder.validate_dimension_constraints(dataflow="BOP", REF_AREA=long_list)
 
         mock_metadata = MagicMock()
@@ -1018,7 +967,6 @@ class TestValidationEdgeCases:
                 "dimensions": [{"id": "REF_AREA", "position": 1}],
             }
         }
-        # No time period annotations
         mock_metadata.get_available_constraints.return_value = {
             "key_values": [{"id": "REF_AREA", "values": ["US"]}],
             "full_response": {"data": {}},
@@ -1027,15 +975,9 @@ class TestValidationEdgeCases:
         mock_metadata_cls.return_value = mock_metadata
 
         builder = ImfQueryBuilder()
-        # Should not raise even with dates provided
         builder.validate_dimension_constraints(
             dataflow="BOP", REF_AREA="US", start_date="2020-01", end_date="2023-12"
         )
-
-
-# =============================================================================
-# Build URL Tests
-# =============================================================================
 
 
 class TestBuildUrl:
@@ -1065,7 +1007,6 @@ class TestBuildUrl:
         builder.set_dimension(("REF_AREA", "US"))
         builder.set_dimension(("INDICATOR", "IND1"))
 
-        # Just verify the internal builder.build_url is called with correct args
         with patch.object(
             builder._builder, "build_url", return_value="http://test.url"
         ) as mock_build:

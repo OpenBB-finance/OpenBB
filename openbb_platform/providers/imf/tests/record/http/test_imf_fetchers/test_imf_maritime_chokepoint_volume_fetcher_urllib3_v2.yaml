@@ -12,135 +12,92 @@ interactions:
     uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Chokepoints_Data/FeatureServer/0/query?where=portid%20%3D%20'CHOKEPOINT11'AND%20date%20%3E%3D%20TIMESTAMP%20'2023-01-01%2000:00:00'%20AND%20date%20%3C%3D%20TIMESTAMP%20'2023-01-31%2000:00:00'&outFields=*&orderByFields=date&returnZ=true&resultOffset=0&resultRecordCount=1000&maxRecordCountFactor=5&outSR=&f=json
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAEALWcT28bRxLFv8pCZ6LRXf2f5yBADrt7iJHLIghom3G0kSVHprAwgnz3/dVIlqaH
-        PcPRejaGE8sczjT7db16r6qYP6/u3v77+O70w/vvr4837/9x+Hi82l/98+nvrnZXD7fXfzwcn16+
-        2v95dXt2yfXnH798Ph0//v1wfXvi95HrTvcPx792Vx9u7t4ebtqb845f9cfPV/t/Pd/u/eF05IXT
-        l0/60/Hz/fXwljf8/N3jS4eb68Pnlys//3Hz5vHipz+9uf54/Hw6fPwkvHpzvP1w+u1qX3ZX7+8+
-        sqar/e3DzQ0/HX89PNycfjrcPBwf/+6v3fMivhwP9zOL+OH2dPxwvB+t4+nis3W8XPmKJ3+8u2W5
-        ax/99eptnv3+8GX1kx+v3ea5n+7uT9fvZx794+n++vbD6MnPV589/B8/He7f/TaA8RX2YK199VqG
-        P75iNU/X/1/Wc/vLu7vHWFp/INv3bIPR7S/v77/88vbh5vdXLGP0lq1W8eHIpzrc/PLucP/h7hVL
-        mb5vq/Xc392/ZhlPl2/19NPh9vdXHYznN2y1gtfisPX+n+5Oh5vXbMDT9ds8/93h0+Hd9enLxSD9
-        7u7h7c04eXXfebao72/uDqf/cUkX4nV+RUtR+y0LWhO686u6GMDfsrSFKJ5f0Vwsf8tCFgN6finz
-        Yf0ti/nfgPp/APTaRWz0+JG07T3+nz98N3r26OJvIZefEcXHw+nh/vgoiw8nJMfbh5P++Oej5t27
-        lCV6J9YOcmIQoHux4ndPinDvdoNC0/8+6SU257e734+f7pDmzl3tXpTL/urN4fo/h9u/IW4O17pF
-        YwGxL2k3TuX7FHZn+XTv/e5rdtvX3Uui2Se3e2b9vauye+bgPR9h1+NBPl5wMUZTXXChJFvTrsNO
-        e/HJemdNSCVVSTHKbo4u9s7nkqsJuXBxjCWX3SSQ9+JyjUZSSMEnCdHG3VmA7WuNhUd6Hpe9LcWN
-        7/P0rOCSi8EZJ8llF8L4WVf76HhndCZEySFErxv0fHT2ydv0l57AOdi5ZboMu2wAe2xhD6UHu32B
-        PY1hj3UMe6pj2KXMwB7EhWQNaOYcki+hCzunI3IwTM41gUIIYQF2qblEE4pwlkrNPp/DHrx3Jlme
-        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
+      string: '{"objectIdFieldName":"ObjectId","uniqueIdField":{"name":"ObjectId","isSystemMaintained":true},"globalIdFieldName":"","fields":[{"name":"date","type":"esriFieldTypeDateOnly","alias":"date","sqlType":"sqlTypeDate","domain":null,"defaultValue":null},{"name":"year","type":"esriFieldTypeInteger","alias":"year","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"month","type":"esriFieldTypeInteger","alias":"month","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"day","type":"esriFieldTypeInteger","alias":"day","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"portid","type":"esriFieldTypeString","alias":"portid","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"portname","type":"esriFieldTypeString","alias":"portname","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"n_container","type":"esriFieldTypeInteger","alias":"n_container","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"n_dry_bulk","type":"esriFieldTypeInteger","alias":"n_dry_bulk","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"n_general_cargo","type":"esriFieldTypeInteger","alias":"n_general_cargo","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"n_roro","type":"esriFieldTypeInteger","alias":"n_roro","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"n_tanker","type":"esriFieldTypeInteger","alias":"n_tanker","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"n_cargo","type":"esriFieldTypeInteger","alias":"n_cargo","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"n_total","type":"esriFieldTypeInteger","alias":"n_total","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity_container","type":"esriFieldTypeInteger","alias":"capacity_container","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity_dry_bulk","type":"esriFieldTypeInteger","alias":"capacity_dry_bulk","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity_general_cargo","type":"esriFieldTypeInteger","alias":"capacity_general_cargo","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity_roro","type":"esriFieldTypeInteger","alias":"capacity_roro","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity_tanker","type":"esriFieldTypeInteger","alias":"capacity_tanker","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity_cargo","type":"esriFieldTypeInteger","alias":"capacity_cargo","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"capacity","type":"esriFieldTypeInteger","alias":"capacity","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"ObjectId","type":"esriFieldTypeOID","alias":"ObjectId","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null}],"features":[{"attributes":{"date":"2023-01-01","year":2023,"month":1,"day":1,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":88,"n_dry_bulk":64,"n_general_cargo":34,"n_roro":9,"n_tanker":64,"n_cargo":195,"n_total":259,"capacity_container":1662333,"capacity_dry_bulk":2372282,"capacity_general_cargo":140061,"capacity_roro":21795,"capacity_tanker":1007324,"capacity_cargo":4196473,"capacity":5203797,"ObjectId":28412}},{"attributes":{"date":"2023-01-02","year":2023,"month":1,"day":2,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":85,"n_dry_bulk":48,"n_general_cargo":31,"n_roro":6,"n_tanker":60,"n_cargo":170,"n_total":230,"capacity_container":1421460,"capacity_dry_bulk":1645141,"capacity_general_cargo":145889,"capacity_roro":24331,"capacity_tanker":487855,"capacity_cargo":3236823,"capacity":3724678,"ObjectId":28416}},{"attributes":{"date":"2023-01-03","year":2023,"month":1,"day":3,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":88,"n_dry_bulk":49,"n_general_cargo":36,"n_roro":4,"n_tanker":37,"n_cargo":177,"n_total":214,"capacity_container":1677022,"capacity_dry_bulk":2256079,"capacity_general_cargo":163452,"capacity_roro":7483,"capacity_tanker":906543,"capacity_cargo":4104039,"capacity":5010582,"ObjectId":28420}},{"attributes":{"date":"2023-01-04","year":2023,"month":1,"day":4,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":86,"n_dry_bulk":64,"n_general_cargo":27,"n_roro":3,"n_tanker":39,"n_cargo":180,"n_total":219,"capacity_container":1835824,"capacity_dry_bulk":2258882,"capacity_general_cargo":120251,"capacity_roro":4782,"capacity_tanker":372291,"capacity_cargo":4219740,"capacity":4592032,"ObjectId":28424}},{"attributes":{"date":"2023-01-05","year":2023,"month":1,"day":5,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":85,"n_dry_bulk":62,"n_general_cargo":22,"n_roro":6,"n_tanker":60,"n_cargo":175,"n_total":235,"capacity_container":1837784,"capacity_dry_bulk":1819185,"capacity_general_cargo":87079,"capacity_roro":12523,"capacity_tanker":1095683,"capacity_cargo":3756572,"capacity":4852256,"ObjectId":28428}},{"attributes":{"date":"2023-01-06","year":2023,"month":1,"day":6,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":95,"n_dry_bulk":61,"n_general_cargo":30,"n_roro":9,"n_tanker":68,"n_cargo":195,"n_total":263,"capacity_container":1599768,"capacity_dry_bulk":2914791,"capacity_general_cargo":207413,"capacity_roro":27810,"capacity_tanker":990878,"capacity_cargo":4749783,"capacity":5740662,"ObjectId":28432}},{"attributes":{"date":"2023-01-07","year":2023,"month":1,"day":7,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":92,"n_dry_bulk":56,"n_general_cargo":30,"n_roro":2,"n_tanker":53,"n_cargo":180,"n_total":233,"capacity_container":1679078,"capacity_dry_bulk":2541716,"capacity_general_cargo":162134,"capacity_roro":3512,"capacity_tanker":693996,"capacity_cargo":4386443,"capacity":5080439,"ObjectId":28436}},{"attributes":{"date":"2023-01-08","year":2023,"month":1,"day":8,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":96,"n_dry_bulk":60,"n_general_cargo":26,"n_roro":4,"n_tanker":47,"n_cargo":186,"n_total":233,"capacity_container":1539471,"capacity_dry_bulk":1872061,"capacity_general_cargo":78320,"capacity_roro":5916,"capacity_tanker":509351,"capacity_cargo":3495769,"capacity":4005120,"ObjectId":28440}},{"attributes":{"date":"2023-01-09","year":2023,"month":1,"day":9,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":81,"n_dry_bulk":63,"n_general_cargo":21,"n_roro":9,"n_tanker":62,"n_cargo":174,"n_total":236,"capacity_container":1150082,"capacity_dry_bulk":1853825,"capacity_general_cargo":113831,"capacity_roro":12454,"capacity_tanker":763003,"capacity_cargo":3130193,"capacity":3893197,"ObjectId":28444}},{"attributes":{"date":"2023-01-10","year":2023,"month":1,"day":10,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":97,"n_dry_bulk":84,"n_general_cargo":32,"n_roro":6,"n_tanker":55,"n_cargo":219,"n_total":274,"capacity_container":2064749,"capacity_dry_bulk":2922785,"capacity_general_cargo":169045,"capacity_roro":14433,"capacity_tanker":547164,"capacity_cargo":5171014,"capacity":5718178,"ObjectId":28448}},{"attributes":{"date":"2023-01-11","year":2023,"month":1,"day":11,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":93,"n_dry_bulk":74,"n_general_cargo":24,"n_roro":7,"n_tanker":34,"n_cargo":198,"n_total":232,"capacity_container":1499970,"capacity_dry_bulk":3246952,"capacity_general_cargo":93215,"capacity_roro":24585,"capacity_tanker":773332,"capacity_cargo":4864723,"capacity":5638056,"ObjectId":28452}},{"attributes":{"date":"2023-01-12","year":2023,"month":1,"day":12,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":84,"n_dry_bulk":64,"n_general_cargo":30,"n_roro":5,"n_tanker":58,"n_cargo":183,"n_total":241,"capacity_container":1422168,"capacity_dry_bulk":3355873,"capacity_general_cargo":212979,"capacity_roro":14617,"capacity_tanker":1435041,"capacity_cargo":5005638,"capacity":6440679,"ObjectId":28472}},{"attributes":{"date":"2023-01-13","year":2023,"month":1,"day":13,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":80,"n_dry_bulk":57,"n_general_cargo":22,"n_roro":4,"n_tanker":64,"n_cargo":163,"n_total":227,"capacity_container":1441870,"capacity_dry_bulk":2363899,"capacity_general_cargo":172701,"capacity_roro":7433,"capacity_tanker":1113446,"capacity_cargo":3985904,"capacity":5099351,"ObjectId":28473}},{"attributes":{"date":"2023-01-14","year":2023,"month":1,"day":14,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":49,"n_dry_bulk":48,"n_general_cargo":20,"n_roro":1,"n_tanker":39,"n_cargo":118,"n_total":157,"capacity_container":1000814,"capacity_dry_bulk":2132349,"capacity_general_cargo":123747,"capacity_roro":0,"capacity_tanker":364540,"capacity_cargo":3256911,"capacity":3621452,"ObjectId":28474}},{"attributes":{"date":"2023-01-15","year":2023,"month":1,"day":15,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":66,"n_dry_bulk":56,"n_general_cargo":18,"n_roro":3,"n_tanker":47,"n_cargo":143,"n_total":190,"capacity_container":1471439,"capacity_dry_bulk":2712179,"capacity_general_cargo":119352,"capacity_roro":10970,"capacity_tanker":432418,"capacity_cargo":4313941,"capacity":4746359,"ObjectId":28475}},{"attributes":{"date":"2023-01-16","year":2023,"month":1,"day":16,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":82,"n_dry_bulk":58,"n_general_cargo":17,"n_roro":8,"n_tanker":53,"n_cargo":165,"n_total":218,"capacity_container":1211456,"capacity_dry_bulk":2304535,"capacity_general_cargo":94594,"capacity_roro":10553,"capacity_tanker":1141171,"capacity_cargo":3621141,"capacity":4762313,"ObjectId":28476}},{"attributes":{"date":"2023-01-17","year":2023,"month":1,"day":17,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":76,"n_dry_bulk":55,"n_general_cargo":28,"n_roro":4,"n_tanker":58,"n_cargo":163,"n_total":221,"capacity_container":1461112,"capacity_dry_bulk":2327335,"capacity_general_cargo":101706,"capacity_roro":14829,"capacity_tanker":740100,"capacity_cargo":3904985,"capacity":4645086,"ObjectId":28477}},{"attributes":{"date":"2023-01-18","year":2023,"month":1,"day":18,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":91,"n_dry_bulk":56,"n_general_cargo":18,"n_roro":4,"n_tanker":52,"n_cargo":169,"n_total":221,"capacity_container":1627205,"capacity_dry_bulk":1914207,"capacity_general_cargo":109309,"capacity_roro":16302,"capacity_tanker":623209,"capacity_cargo":3667024,"capacity":4290233,"ObjectId":28478}},{"attributes":{"date":"2023-01-19","year":2023,"month":1,"day":19,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":90,"n_dry_bulk":58,"n_general_cargo":25,"n_roro":7,"n_tanker":34,"n_cargo":180,"n_total":214,"capacity_container":2049088,"capacity_dry_bulk":2265981,"capacity_general_cargo":105252,"capacity_roro":28779,"capacity_tanker":269391,"capacity_cargo":4449102,"capacity":4718493,"ObjectId":28479}},{"attributes":{"date":"2023-01-20","year":2023,"month":1,"day":20,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":81,"n_dry_bulk":50,"n_general_cargo":19,"n_roro":6,"n_tanker":52,"n_cargo":156,"n_total":208,"capacity_container":1409964,"capacity_dry_bulk":1847617,"capacity_general_cargo":104570,"capacity_roro":9310,"capacity_tanker":936346,"capacity_cargo":3371462,"capacity":4307808,"ObjectId":28480}},{"attributes":{"date":"2023-01-21","year":2023,"month":1,"day":21,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":80,"n_dry_bulk":67,"n_general_cargo":22,"n_roro":7,"n_tanker":58,"n_cargo":176,"n_total":234,"capacity_container":1459160,"capacity_dry_bulk":2427611,"capacity_general_cargo":123163,"capacity_roro":33776,"capacity_tanker":517846,"capacity_cargo":4043710,"capacity":4561556,"ObjectId":28481}},{"attributes":{"date":"2023-01-22","year":2023,"month":1,"day":22,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":80,"n_dry_bulk":69,"n_general_cargo":13,"n_roro":8,"n_tanker":65,"n_cargo":170,"n_total":235,"capacity_container":1399635,"capacity_dry_bulk":2544830,"capacity_general_cargo":62535,"capacity_roro":21565,"capacity_tanker":664454,"capacity_cargo":4028565,"capacity":4693020,"ObjectId":28482}},{"attributes":{"date":"2023-01-23","year":2023,"month":1,"day":23,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":66,"n_dry_bulk":50,"n_general_cargo":22,"n_roro":2,"n_tanker":50,"n_cargo":140,"n_total":190,"capacity_container":1265149,"capacity_dry_bulk":2083239,"capacity_general_cargo":147479,"capacity_roro":8116,"capacity_tanker":1242975,"capacity_cargo":3503984,"capacity":4746959,"ObjectId":28484}},{"attributes":{"date":"2023-01-24","year":2023,"month":1,"day":24,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":66,"n_dry_bulk":41,"n_general_cargo":14,"n_roro":4,"n_tanker":40,"n_cargo":125,"n_total":165,"capacity_container":1659130,"capacity_dry_bulk":1674222,"capacity_general_cargo":72970,"capacity_roro":13391,"capacity_tanker":789427,"capacity_cargo":3419714,"capacity":4209142,"ObjectId":28488}},{"attributes":{"date":"2023-01-25","year":2023,"month":1,"day":25,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":84,"n_dry_bulk":56,"n_general_cargo":18,"n_roro":5,"n_tanker":60,"n_cargo":163,"n_total":223,"capacity_container":1525502,"capacity_dry_bulk":2537854,"capacity_general_cargo":90205,"capacity_roro":6533,"capacity_tanker":935318,"capacity_cargo":4160095,"capacity":5095414,"ObjectId":28492}},{"attributes":{"date":"2023-01-26","year":2023,"month":1,"day":26,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":89,"n_dry_bulk":50,"n_general_cargo":25,"n_roro":3,"n_tanker":54,"n_cargo":167,"n_total":221,"capacity_container":1699118,"capacity_dry_bulk":1753624,"capacity_general_cargo":129534,"capacity_roro":15634,"capacity_tanker":828805,"capacity_cargo":3597912,"capacity":4426717,"ObjectId":28496}},{"attributes":{"date":"2023-01-27","year":2023,"month":1,"day":27,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":68,"n_dry_bulk":56,"n_general_cargo":20,"n_roro":5,"n_tanker":45,"n_cargo":149,"n_total":194,"capacity_container":1303626,"capacity_dry_bulk":2911804,"capacity_general_cargo":118305,"capacity_roro":19329,"capacity_tanker":559110,"capacity_cargo":4353066,"capacity":4912176,"ObjectId":28500}},{"attributes":{"date":"2023-01-28","year":2023,"month":1,"day":28,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":70,"n_dry_bulk":65,"n_general_cargo":23,"n_roro":1,"n_tanker":54,"n_cargo":159,"n_total":213,"capacity_container":1407109,"capacity_dry_bulk":2997400,"capacity_general_cargo":130168,"capacity_roro":1458,"capacity_tanker":963462,"capacity_cargo":4536136,"capacity":5499599,"ObjectId":28504}},{"attributes":{"date":"2023-01-29","year":2023,"month":1,"day":29,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":68,"n_dry_bulk":48,"n_general_cargo":26,"n_roro":5,"n_tanker":53,"n_cargo":147,"n_total":200,"capacity_container":1537508,"capacity_dry_bulk":1698952,"capacity_general_cargo":152055,"capacity_roro":6449,"capacity_tanker":932217,"capacity_cargo":3394965,"capacity":4327182,"ObjectId":28505}},{"attributes":{"date":"2023-01-30","year":2023,"month":1,"day":30,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":87,"n_dry_bulk":43,"n_general_cargo":29,"n_roro":2,"n_tanker":55,"n_cargo":161,"n_total":216,"capacity_container":1688092,"capacity_dry_bulk":2274794,"capacity_general_cargo":193867,"capacity_roro":4016,"capacity_tanker":1286964,"capacity_cargo":4160770,"capacity":5447734,"ObjectId":28506}},{"attributes":{"date":"2023-01-31","year":2023,"month":1,"day":31,"portid":"chokepoint11","portname":"Taiwan
+        Strait","n_container":69,"n_dry_bulk":61,"n_general_cargo":24,"n_roro":3,"n_tanker":59,"n_cargo":157,"n_total":216,"capacity_container":996719,"capacity_dry_bulk":2367407,"capacity_general_cargo":115652,"capacity_roro":10920,"capacity_tanker":509324,"capacity_cargo":3490699,"capacity":4000024,"ObjectId":28507}}]}'
     headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type, Authorization, X-Esri-Authorization
       Access-Control-Allow-Origin:
       - '*'
       Access-Control-Expose-Headers:
       - Request-Context
       Cache-Control:
-      - public, max-age=3600, s-maxage=3600
+      - public, max-age=30, s-maxage=30
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Length:
-      - '4256'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 29 May 2025 05:00:12 GMT
+      - Mon, 25 May 2026 16:20:56 GMT
       Etag:
-      - sd1674_1399598605
+      - sd2066_-496712799
       Last-Modified:
-      - Tue, 27 May 2025 14:47:09 GMT
+      - Tue, 19 May 2026 23:54:08 GMT
       Request-Context:
       - appId=cid-v1:091e3ef9-df68-4d69-9df4-ab8f80183701
       - appId=cid-v1:eccdbd2e-a85f-4676-a932-e967891b0fc6
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=63072000
       Vary:
       - X-Esri-Authorization
-      Via:
-      - 1.1 3bcf22eea36ee98708782266e5ad21d6.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id:
-      - MVTK4YOpYGKID2o6ynb1MaNluhuOxjXTgJ8zlaPSWLSfXorY4n54uA==
-      X-Amz-Cf-Pop:
-      - YVR52-P2
       X-ArcGIS-Correlation-Id:
-      - 00-5851a748fc269fa87a30f3e15a79c7bb-2983d69f06be15fb-00
+      - 0f29f79fdb410489
       X-ArcGIS-Instance:
-      - wziaf7inz000006
+      - wziaf7inz000001
       X-ArcGIS-Trace-Id:
-      - MVTK4YOpYGKID2o6ynb1MaNluhuOxjXTgJ8zlaPSWLSfXorY4n54uA==
+      - 20260525T162056Z-15cb7fd6cb42mq2lhC1WST9ybs0000000akg00000000byv3
       X-Cache:
-      - Miss from cloudfront
+      - TCP_MISS
+      content-length:
+      - '16063'
       x-arcgis-upstream:
-      - us1h09c00
+      - us1h09c00-services
+      x-azure-ref:
+      - 20260525T162056Z-15cb7fd6cb42mq2lhC1WST9ybs0000000akg00000000byv3
       x-esri-org-request-units-per-min:
-      - usage=15;max=6000
+      - usage=531;max=6000
       x-esri-query-request-units:
       - '3'
       x-esri-tiles-basic-query-mode:
       - 'true'
       x-esri-tiles-basic-query-type:
       - Basic
+      x-fd-int-roxy-purgeid:
+      - '0'
     status:
       code: 200
       message: OK

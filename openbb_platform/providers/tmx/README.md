@@ -57,7 +57,8 @@ Install with `pip install openbb-tmx`, or from the local directory, `pip install
 
 ## Symbology
 
-No exchange suffix is required to handle Canadian listings.  The extension accepts `.TO` and `.TSX` as well as no suffix.  Additionally, a composite ticker symbol can be entered. For example, `AAPL` trades as a Canadian Depositary Receipt, under the symbol `AAPL:AQN`, on the NEO Exchange. The US listing is also found as `AAPL:US`.  Some US and select European data is available from some functions, like `quote` and `historical`.
+No exchange suffix is required to handle Canadian listings.  The extension accepts `.TO` and `.TSX` as well as no suffix.  Additionally, a composite ticker symbol can be entered. For example, `AAPL` trades as a Canadian Depositary Receipt, under the symbol `AAPL:AQN`, on the NEO Exchange. The US listing is also found as `AAPL:US`.  Some US and select
+European data is available from some functions, like `quote` and `historical`.
 
 Indices all begin with `^`.
 

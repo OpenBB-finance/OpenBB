@@ -1,19 +1,114 @@
-[tool.poetry]
+[project]
 name = "openbb-bls"
-version = "1.3.1"
-description = "The Bureau of Labor Statistics' (BLS) Public Data Application Programming Interface (API) gives the public access to economic data from all BLS programs. It is the Bureau's hope that talented developers and programmers will use the BLS Public Data API to create original, inventive applications with published BLS data."
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+version = "2.0.0"
+description = "BLS provider extension for OpenBB Platform."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_bls" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "lxml>=5",
+    "openpyxl>=3.1",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
+
+[project.scripts]
+generate-bls-cache = "openbb_bls.utils.generate_cache:main"
+
+[project.entry-points."openbb_provider_extension"]
+bls = "openbb_bls:bls_provider"
+
+[project.entry-points."openbb_core_extension"]
+bls = "openbb_bls.bls_router:router"
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling>=1.25", "requests>=2.31"]
+build-backend = "hatchling.build"
 
-[tool.poetry.plugins."openbb_provider_extension"]
-bls = "openbb_bls:bls_provider"
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_bls"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "openbb_bls",
+    "openbb_bls/assets/bls_cache.zip",
+    "hatch_build.py",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
+
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_bls/utils/generate_cache.py" = ["T201", "PLR0912", "PLR0914", "PLR0915", "PLR0917", "BLE001", "S112", "S113"]
+"openbb_bls/utils/helpers.py" = ["PLR0912", "BLE001"]
+"openbb_bls/utils/metadata/*.py" = ["PLR0912", "PLR0914", "PLC0415", "SLF001"]
+"openbb_bls/utils/cpi_supplemental_tables.py" = ["PLR0912"]
+"openbb_bls/utils/jolts_tables.py" = ["PLR0912", "PLR0911"]
+"openbb_bls/utils/productivity_catalog.py" = ["PLR0912"]
+"openbb_bls/utils/productivity_tables.py" = ["PLR0912"]
+"openbb_bls/models/*.py" = ["ARG002", "PLC0415", "PLR0912"]
+"tests/**" = ["S101", "S108", "S310", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_bls"]
+exclude = ["tests", "integration", "openbb_bls/utils/generate_cache.py"]
+
+[tool.ty.rules]
+unresolved-import = "ignore"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "record_http: VCR-backed HTTP cassette tests",
+    "integration: live integration tests against BLS endpoints",
+]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning:openbb_core.provider.utils.client",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+]

@@ -2,7 +2,6 @@
 
 # pylint: disable=W0212,W0613
 
-from contextlib import asynccontextmanager
 from typing import Any
 
 from openbb_core.app.model.command_context import CommandContext
@@ -20,12 +19,6 @@ router = Router(prefix="")
 COT_CHOICES: list[dict[str, str | dict[str, str | None]]] = []
 
 
-@asynccontextmanager
-async def _cot_router_lifespan(_):
-    await build_choices()
-    yield
-
-
 async def build_choices():
     """Build the choices for Workspace."""
     # pylint: disable=import-outside-toplevel
@@ -35,17 +28,10 @@ async def build_choices():
     choices: list[dict[str, str | dict[str, str | None]]] = []
 
     for d in contracts:
-        description = (
-            f"{getattr(d, 'subcategory', '').strip() or getattr(d, 'commodity_name', '').strip()}"
-            f"  | {getattr(d, 'code', '').strip()}"
-        )
         choice: dict[str, str | dict[str, str | None]] = {
-            "label": getattr(d, "name", "").strip(),
-            "value": getattr(d, "code", "").strip(),
-            "extraInfo": {
-                "description": description,
-                "rightOfDescription": "",
-            },
+            "label": d.name.strip(),  # type: ignore
+            "value": d.code.strip(),  # type: ignore
+            "extraInfo": {"description": f"{d.subcategory.strip()}  | {d.code.strip()}", "rightOfDescription": ""},  # type: ignore
         }
         choices.append(choice)
 
@@ -54,7 +40,7 @@ async def build_choices():
     COT_CHOICES = choices
 
 
-router.api_router.lifespan_context = _cot_router_lifespan
+router.api_router.add_event_handler("startup", build_choices)
 
 
 async def get_cot_choices() -> list[dict[str, str | dict[str, str | None]]]:

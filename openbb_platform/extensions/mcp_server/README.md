@@ -77,17 +77,15 @@ Enter `openbb-mcp --help` to see the docstring from the command line.
     Path to a JSON file with a list of server prompts.
 ```
 
-#### All other arguments will be passed to `uvicorn.run`.
-
+#### All other arguments will be passed to `uvicorn.run`
 
 ## Configuration
 
 The server can be configured through multiple methods, with settings applied in the following order of precedence:
 
-1.  **Command Line Arguments**: Highest priority, overriding all other methods.
-2.  **Environment Variables**: Each setting can be controlled by an environment variable, which will override the configuration file.
-3.  **Configuration File**: A JSON file at `~/.openbb_platform/mcp_settings.json` provides the base configuration.
-  - If the configuration file does not exist, one will be populated with the defaults.
+1. **Command Line Arguments**: Highest priority, overriding all other methods.
+2. **Environment Variables**: Each setting can be controlled by an environment variable, which will override the configuration file.
+3. **Configuration File**: A JSON file at `~/.openbb_platform/mcp_settings.json` provides the base configuration. If the configuration file does not exist, one will be populated with the defaults.
 
 > **Note:** For some data providers you need to set your API key in the `~/.openbb_platform/user_settings.json` file.
 
@@ -156,19 +154,19 @@ For settings that accept a list or a dictionary, you have two flexible formats f
 
 This is a simple and readable way to define lists and simple dictionaries.
 
--   **Lists**: Provide a string of comma-separated values.
-    -   Example: `equity,news,crypto`
--   **Dictionaries**: Provide a string of comma-separated `key:value` pairs.
-    -   Example: `host:0.0.0.0,port:9000`
+- **Lists**: Provide a string of comma-separated values.
+  - Example: `equity,news,crypto`
+- **Dictionaries**: Provide a string of comma-separated `key:value` pairs.
+  - Example: `host:0.0.0.0,port:9000`
 
 #### 2. JSON-Encoded Strings
 
 For more complex data structures, or to ensure precise type handling (e.g., for numbers and booleans), you can use a JSON-encoded string.
 
--   **Lists**: A standard JSON array.
-    -   Example: `'["equity", "news", "crypto"]'`
--   **Dictionaries**: A standard JSON object.
-    -   Example: `'{"host": "0.0.0.0", "port": 9000}'`
+- **Lists**: A standard JSON array.
+  - Example: `'["equity", "news", "crypto"]'`
+- **Dictionaries**: A standard JSON object.
+  - Example: `'{"host": "0.0.0.0", "port": 9000}'`
 
 **Important Note on Quoting**: When passing JSON-encoded strings on the command line, it is highly recommended to wrap the entire string in **single quotes (`'`)**. This prevents your shell from interpreting the double quotes (`"`) inside the JSON string, which can lead to parsing errors.
 
@@ -528,7 +526,7 @@ By using the `MCPConfigModel`, you can validate your configuration and access se
 
 It can be imported with:
 
-```
+```python
 from openbb_mcp_server.models.mcp_config import MCPConfigModel
 ```
 
@@ -537,13 +535,13 @@ You only need to enter the values that you wish to customize.
 
 Below are the properties you can define within `mcp_config`:
 
--   **`expose`** (`Optional[bool]`): Set to `False` to completely hide a route from the MCP server. This is useful for internal or deprecated endpoints that should not be available as tools.
+- **`expose`** (`Optional[bool]`): Set to `False` to completely hide a route from the MCP server. This is useful for internal or deprecated endpoints that should not be available as tools.
 
--   **`mcp_type`** (`Optional[MCPType]`): Classify the route as a specific MCP type. Valid options are `"tool"`, `"resource"`, or `"resource_template"`.
+- **`mcp_type`** (`Optional[MCPType]`): Classify the route as a specific MCP type. Valid options are `"tool"`, `"resource"`, or `"resource_template"`.
 
--   **`methods`** (`Optional[list[HTTPMethod]]`): Specify which HTTP methods to expose for a route that supports multiple methods (e.g., GET, POST). If omitted, all supported methods are exposed. Valid methods include `"GET"`, `"POST"`, `"PUT"`, `"PATCH"`, `"DELETE"`, `"HEAD"`, `"OPTIONS"`, and `*` (for all).
+- **`methods`** (`Optional[list[HTTPMethod]]`): Specify which HTTP methods to expose for a route that supports multiple methods (e.g., GET, POST). If omitted, all supported methods are exposed. Valid methods include `"GET"`, `"POST"`, `"PUT"`, `"PATCH"`, `"DELETE"`, `"HEAD"`, `"OPTIONS"`, and `*` (for all).
 
--   **`exclude_args`** (`Optional[list[str]]`): Provide a list of argument names to exclude from the tool’s signature. This is useful for filtering out parameters that are handled internally or are not relevant to the end-user.
+- **`exclude_args`** (`Optional[list[str]]`): Provide a list of argument names to exclude from the tool’s signature. This is useful for filtering out parameters that are handled internally or are not relevant to the end-user.
 
 - **`prompts`** (`Optional[list[dict[str, str]]]`): List of prompts specific to the endpoint. Keys for a prompt are:
   - **`name`**: Name of the prompt.
@@ -567,7 +565,6 @@ ERROR    Invalid MCP config found in route, 'GET /equity/price'. Skipping tool c
             Input should be 'tool', 'resource' or 'resource_template' [type=enum, input_value='some_setting', input_type=str]
               For further information visit https://errors.pydantic.dev/2.11/v/enum
 ```
-
 
 ### Example
 
@@ -616,36 +613,36 @@ openbb-mcp --allowed-categories equity,crypto,news
 openbb-mcp --tool-discovery
 ```
 
-### Claude Desktop:
+### Claude Desktop
 
 To connect the OpenBB MCP server with Claude Desktop, you need to configure it as a custom tool server. Here are the steps:
 
-1.  Locate the settings or configuration file for Claude Desktop where you can define custom MCP servers.
-2.  Add the following entry to your `mcpServers` configuration. This will configure Claude Desktop to launch the OpenBB MCP server automatically using `stdio` for communication.
+1. Locate the settings or configuration file for Claude Desktop where you can define custom MCP servers.
+2. Add the following entry to your `mcpServers` configuration. This will configure Claude Desktop to launch the OpenBB MCP server automatically using `stdio` for communication.
 
-```json
-{
-  "mcpServers": {
-    "openbb-mcp": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "openbb-mcp-server",
-        "--with",
-        "openbb",
-        "openbb-mcp",
-        "--transport",
-        "stdio"
-      ]
-    }
-  }
-}
-```
+   ```json
+   {
+     "mcpServers": {
+       "openbb-mcp": {
+         "command": "uvx",
+         "args": [
+           "--from",
+           "openbb-mcp-server",
+           "--with",
+           "openbb",
+           "openbb-mcp",
+           "--transport",
+           "stdio"
+         ]
+       }
+     }
+   }
+   ```
 
-3.  Ensure that `uvx`, is installed and available in your system's PATH. If not, follow the installation instructions.
-4.  Restart Claude Desktop to apply the changes. You should now see "openbb-mcp" as an available tool source.
+3. Ensure that `uvx`, is installed and available in your system's PATH. If not, follow the installation instructions.
+4. Restart Claude Desktop to apply the changes. You should now see "openbb-mcp" as an available tool source.
 
-### Cursor:
+### Cursor
 
 To use OpenBB tools within Cursor, you first need to run the MCP server and then tell Cursor how to connect to it.
 
@@ -654,9 +651,11 @@ To use OpenBB tools within Cursor, you first need to run the MCP server and then
 Open your terminal and start the server. You can use the default settings or customize it.
 
 For a default setup, run:
+
 ```bash
 openbb-mcp
 ```
+
 The server will start on `http://127.0.0.1:8001`.
 
 **Step 2: Configure Cursor**
@@ -688,9 +687,11 @@ Search for "mcp", and the item should show up under "Chat". Check the box to ena
 Open your terminal and start the server. You can use the default settings or customize it.
 
 For a default setup, run:
+
 ```bash
 openbb-mcp
 ```
+
 The server will start on `http://127.0.0.1:8001`.
 
 **Step 3: Add Server as HTTP**

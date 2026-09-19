@@ -1,7 +1,5 @@
 """Congress Amendment Text Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -63,7 +61,6 @@ class CongressAmendmentTextFetcher(
         **kwargs: Any,
     ) -> list:
         """Extract data from the query."""
-        # pylint: disable=import-outside-toplevel
         import base64  # noqa
         from io import BytesIO
         from openbb_core.provider.utils.helpers import make_request
@@ -78,11 +75,11 @@ class CongressAmendmentTextFetcher(
         for url in urls:
             filename = url.split("/")[-1]
 
-            if "congress.gov" not in url.strip():
+            if "govinfo.gov" not in url.strip():
                 results.append(
                     {
                         "error_type": "invalid_url",
-                        "content": f"Invalid URL: {url}. Must be a valid Congress.gov API URL.",
+                        "content": f"Invalid URL: {url}. Must be a valid GovInfo URL.",
                         "filename": filename,
                     }
                 )
@@ -115,7 +112,7 @@ class CongressAmendmentTextFetcher(
                             },
                         }
                     )
-            except Exception as exc:  # pylint: disable=broad-except
+            except Exception as exc:
                 results.append(
                     {
                         "error_type": "download_error",

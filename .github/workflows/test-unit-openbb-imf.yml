@@ -1,0 +1,147 @@
+name: 🧪 test openbb-imf
+
+
+on:
+  pull_request:
+    branches: [develop, main, v5]
+    paths:
+      - "openbb_platform/providers/imf/**"
+      - ".github/workflows/test-unit-openbb-imf.yml"
+  workflow_dispatch:
+    inputs:
+      force_cache_rebuild:
+        description: "Force the build hook to regenerate the IMF cache from live SDMX (ignores actions/cache)."
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  # Cancel in-flight matrix runs when a new commit lands on the same PR.
+  group: test-openbb-imf-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build sdist + wheel
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/imf
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Restore IMF SDMX cache
+        id: imf-cache
+        uses: actions/cache@v5
+        with:
+          path: openbb_platform/providers/imf/openbb_imf/assets/imf_cache.json.xz
+          key: imf-sdmx-${{ hashFiles('openbb_platform/providers/imf/openbb_imf/utils/generate_cache.py') }}
+          restore-keys: |
+            imf-sdmx-
+
+      - name: Build sdist + wheel
+        env:
+          OPENBB_IMF_FORCE_CACHE_REBUILD: ${{ inputs.force_cache_rebuild == true && '1' || '0' }}
+        run: uv build --no-sources
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: openbb-imf-dist
+          path: openbb_platform/providers/imf/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  lint:
+    name: Lint (ruff + ty)
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/imf
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: openbb-imf-dist
+          path: openbb_platform/providers/imf/dist
+
+      - name: Install dependencies then openbb-imf wheel
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system ../../obbject_extensions/charting
+          uv pip install --system --group dev
+          uv pip install --system dist/openbb_imf-*.whl
+
+      - name: ruff check
+        run: ruff check openbb_imf tests hatch_build.py
+
+      - name: ruff format --check
+        run: ruff format --check openbb_imf tests hatch_build.py
+
+      - name: ty check
+        run: ty check openbb_imf
+
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/imf
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: openbb-imf-dist
+          path: openbb_platform/providers/imf/dist
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install dependencies then openbb-imf wheel
+        run: |
+          uv pip install --system ../../core
+          uv pip install --system ../../obbject_extensions/charting
+          uv pip install --system --group dev
+          uv pip install --system dist/openbb_imf-*.whl
+
+      - name: Test the installed wheel
+        run: |
+          rm -rf openbb_imf
+          pytest tests --cov=openbb_imf --cov-report=term-missing --cov-fail-under=100

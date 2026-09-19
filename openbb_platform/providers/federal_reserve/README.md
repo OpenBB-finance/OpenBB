@@ -39,7 +39,6 @@ Once added, click on the app to open the dashboard.
 
 The dashboard contains widgets with metadata and information, as well ones for exploring and retrieving the data.
 
-
 ## Coverage
 
 This extension creates multiple OpenBB Workspace apps, along with individual widgets for each endpoint.

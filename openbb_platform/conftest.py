@@ -1,7 +1,6 @@
 """Root configuration for pytest."""
 
 # flake8: noqa: S101
-# pylint: disable=unused-argument,unused-import
 
 import os
 from pathlib import Path

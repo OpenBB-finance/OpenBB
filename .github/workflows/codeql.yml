@@ -13,11 +13,11 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    branches: [ "develop", "PR-review", "gh-pages", "main" ]
+    branches: [ "develop", "PR-review", "gh-pages", "main", "v5" ]
     paths-ignore:
       - 'cookiecutter/**'
   pull_request:
-    branches: [ "develop", "PR-review", "gh-pages", "main" ]
+    branches: [ "develop", "PR-review", "gh-pages", "main", "v5" ]
     paths-ignore:
       - 'cookiecutter/**'
   schedule:

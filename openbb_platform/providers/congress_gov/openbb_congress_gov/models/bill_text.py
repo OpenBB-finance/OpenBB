@@ -1,7 +1,5 @@
 """Congress Gov Bills Text Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -18,10 +16,6 @@ class CongressBillTextQueryParams(QueryParams):
             "multiple_items_allowed": True,
         }
     }
-    # This field is typed this way to allow the Python interface and API
-    # to easily accept the parameter.
-    # In the API, the body can be a string, a list of URLs or a dictionary with a "urls" key.
-    # Workspace will send the body as a dictionary with a "urls" key.
     urls: str | list[str] | dict[str, list[str]] = Field(
         description="List of direct bill URLs to download.",
         kw_only=True,
@@ -70,7 +64,6 @@ class CongressBillTextFetcher(
         **kwargs: Any,
     ) -> list:
         """Extract data from the query."""
-        # pylint: disable=import-outside-toplevel
         import base64  # noqa
         from io import BytesIO
         from openbb_core.provider.utils.helpers import make_request
@@ -125,7 +118,7 @@ class CongressBillTextFetcher(
                             },
                         }
                     )
-            except Exception as exc:  # pylint: disable=broad-except
+            except Exception as exc:
                 results.append(
                     {
                         "error_type": "download_error",

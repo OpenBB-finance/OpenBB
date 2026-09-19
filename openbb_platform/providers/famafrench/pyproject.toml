@@ -1,25 +1,87 @@
-[tool.poetry]
+[project]
 name = "openbb-famafrench"
-version = "1.2.1"
+version = "2.0.0"
 description = "Fama-French data integration for OpenBB Platform."
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "AGPL-3.0-only" }
 readme = "README.md"
-packages = [{ include = "openbb_famafrench" }]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[pandas]>=2.0.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.10"
+[project.entry-points."openbb_provider_extension"]
+famafrench = "openbb_famafrench:famafrench_provider"
 
-[tool.poetry.scripts]
+[project.entry-points."openbb_core_extension"]
+famafrench = "openbb_famafrench.famafrench_router:router"
 
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.0"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
 
-[tool.poetry.plugins."openbb_provider_extension"]
-famafranch = "openbb_famafrench:famafrench_provider"
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_famafrench"]
 
-[tool.poetry.plugins."openbb_core_extension"]
-famafrench = "openbb_famafrench.famafrench_router:router"
+[tool.uv.sources]
+openbb-core = { path = "../../core", editable = true }
+openbb-devtools = { path = "../../extensions/devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_famafrench/famafrench_router.py" = ["ARG001", "PLC0415", "PLR0913"]
+"openbb_famafrench/utils/helpers.py" = ["PLR0911", "PLR0912", "PLR0915", "SIM102", "SIM114"]
+"openbb_famafrench/models/*.py" = ["ARG002", "PLC0415", "PLR0912"]
+"tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
+"integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_famafrench"]
+exclude = ["tests", "integration"]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "@overload"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "record_http: VCR-backed HTTP cassette tests",
+    "integration: end-to-end tests that hit live services (excluded from the coverage gate)",
+]
