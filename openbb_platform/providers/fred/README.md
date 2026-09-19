@@ -267,7 +267,7 @@ Disk cache, read on each access:
 | --- | --- | --- |
 | `OPENBB_FRED_DISK_CACHE` | `1` | Disk caching is off when set to `0`, `false`, or `False` |
 | `OPENBB_FRED_DISK_CACHE_DIR` | `<cache_directory>/fred` | Where the store lives. `cache_directory` is the OpenBB user preference, itself defaulting to `~/OpenBBUserData/cache` |
-| `OPENBB_FRED_DISK_CACHE_SIZE` | `536870912` | Size the store is held to, in bytes (512 * 1024 * 1024) |
+| `OPENBB_FRED_DISK_CACHE_SIZE` | `536870912` | Size the store is held to, in bytes (`512 * 1024 * 1024`) |
 | `OPENBB_FRED_DISK_TTL_MULTIPLIER` | `1.0` | Factor every lifetime above is scaled by |
 
 Throttle, retry, and the in-memory cache, read once when `openbb_fred.utils.rate_limiter` is
