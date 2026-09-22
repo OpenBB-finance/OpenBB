@@ -15,6 +15,9 @@ dependencies = [
     "python-dateutil>=2.8",
 ]
 
+[project.optional-dependencies]
+data-link = ["pdfplumber>=0.11"]
+
 [project.entry-points."openbb_provider_extension"]
 nasdaq = "openbb_nasdaq:nasdaq_provider"
 

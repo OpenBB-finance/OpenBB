@@ -14,9 +14,17 @@ from openbb_nasdaq.routers import equity, etf, index, markets, nordic
 class TestRouterAssembly:
     """Cover the sub-router assembly."""
 
+    @staticmethod
+    def _router_paths() -> list[str]:
+        from openbb_core.app.route_iter import iter_api_routes
+
+        return [
+            route.path for route in iter_api_routes(nasdaq_router.router.api_router)
+        ]
+
     def test_every_namespace_is_mounted(self):
         """Each sub-router contributes its namespace."""
-        paths = {route.path for route in nasdaq_router.router.api_router.routes}
+        paths = set(self._router_paths())
         prefixes = {path.split("/")[1] for path in paths if path.count("/") > 1}
 
         assert {
@@ -30,13 +38,11 @@ class TestRouterAssembly:
 
     def test_apps_json_is_served(self):
         """The dashboard template is exposed on the router."""
-        assert "/apps.json" in {
-            route.path for route in nasdaq_router.router.api_router.routes
-        }
+        assert "/apps.json" in set(self._router_paths())
 
     def test_no_duplicate_routes(self):
         """No path is registered twice."""
-        paths = [route.path for route in nasdaq_router.router.api_router.routes]
+        paths = self._router_paths()
 
         assert len(paths) == len(set(paths))
 
@@ -75,7 +81,8 @@ class TestAppsJson:
     """Cover the served dashboard template."""
 
     @pytest.fixture(scope="class")
-    def apps(self):
+    @classmethod
+    def apps(cls):
         """The resolved apps.json payload."""
         return asyncio.run(nasdaq_router.nasdaq_apps())
 

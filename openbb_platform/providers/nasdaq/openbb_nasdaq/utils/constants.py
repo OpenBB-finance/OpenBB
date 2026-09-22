@@ -3,6 +3,7 @@
 from typing import Literal
 
 from openbb_core.app.service.system_service import SystemService
+from pydantic import JsonValue
 
 API_PREFIX = (
     SystemService()
@@ -98,7 +99,7 @@ CALENDAR_EVENTS = {
     "SPOs": "sposList",
 }
 
-CELL_CLICK_SYMBOL = {
+CELL_CLICK_SYMBOL: dict[str, JsonValue] = {
     "renderFn": "cellOnClick",
     "renderFnParams": {
         "actionType": "groupBy",
