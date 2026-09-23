@@ -1151,9 +1151,10 @@ def collapse_repeated_headers(rows):
     # Also remove trailing empty columns (both header and all data empty)
     num_cols = len(header)
     for col_idx in range(num_cols - 1, -1, -1):
-        header_empty = not (header[col_idx].strip() if col_idx < len(header) else "")
+        header_empty = (not header[col_idx].strip()) if col_idx < len(header) else True
         data_empty = all(
-            not (row[col_idx].strip() if col_idx < len(row) else "") for row in rows[1:]
+            (not row[col_idx].strip() if col_idx < len(row) else True)
+            for row in rows[1:]
         )
         if header_empty and data_empty:
             cols_to_remove.add(col_idx)

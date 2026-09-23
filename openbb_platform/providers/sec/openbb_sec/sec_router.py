@@ -1569,6 +1569,7 @@ async def as_filed_statement(
 
 @router.api_router.get("/standardized_statement", include_in_schema=False)
 async def standardized_statement(
+    *,
     symbol: Annotated[str | None, FastAPIQuery(description="Ticker symbol.")] = "AAPL",
     statement_type: Annotated[
         str | None, FastAPIQuery(description="One of: balance, income, cash.")

@@ -566,7 +566,7 @@ def test_series_names_from_dataset_missing_columns(monkeypatch):
 def test_fetch_series_name_map_merges_sources(monkeypatch):
     """N-MFP and N-PORT maps merge into one."""
 
-    def _fake(listing_url, pattern, member, sid, name, ua):
+    def _fake(listing_url, pattern, member, sid, name, ua):  # noqa: PLR0917
         return {"S_MMF": "MMF"} if pattern == "nmfp" else {"S_ETF": "ETF"}
 
     monkeypatch.setattr(helpers, "_series_names_from_dataset", _fake)

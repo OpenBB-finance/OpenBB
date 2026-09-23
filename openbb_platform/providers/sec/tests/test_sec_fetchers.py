@@ -302,6 +302,7 @@ def _mock_get_standardized(blk_facts):
         cik=None,
         fiscal_years=None,
         period="both",
+        *,
         use_cache=True,
         pit_mode=False,
         include_preliminary=False,

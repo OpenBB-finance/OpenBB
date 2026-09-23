@@ -9,7 +9,7 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
-_PERCENT = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
+_PERCENT: dict[str, Any] = {"x-unit_measurement": "percent", "x-frontend_multiply": 100}
 
 
 class SecNportFundMetricsQueryParams(QueryParams):

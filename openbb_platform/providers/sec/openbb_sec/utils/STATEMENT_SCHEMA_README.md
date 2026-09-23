@@ -468,40 +468,40 @@ re-exported via `__init__.py`:
 ```python
 @dataclass
 class RowResult:
-    tag: str                        # Standardized tag name
-    label: str                      # Display label
-    description: str                # Long-form schema description
-    parent: str | None              # Parent tag (None = root)
-    sequence: int | float           # Display order (plugs may be fractional)
-    factor: str                     # "+", "-", or "0"
-    balance: str                    # "debit" or "credit"
-    unit: str                       # "monetary", "per_share", or "shares"
-    values: dict[str, float]        # {period_end_date: value}
-    sources: dict[str, str]         # {date: provenance string}
+    tag: str  # Standardized tag name
+    label: str  # Display label
+    description: str  # Long-form schema description
+    parent: str | None  # Parent tag (None = root)
+    sequence: int | float  # Display order (plugs may be fractional)
+    factor: str  # "+", "-", or "0"
+    balance: str  # "debit" or "credit"
+    unit: str  # "monetary", "per_share", or "shares"
+    values: dict[str, float]  # {period_end_date: value}
+    sources: dict[str, str]  # {date: provenance string}
 ```
 
 ```python
 @dataclass
 class StatementResult:
-    statement: str                   # "income_statement", "balance_sheet", "cash_flow"
-    company_type: str                # "industrial", "financial", etc.
-    frequency: str                   # "annual" or "quarterly"
-    currency: str                    # ISO code (e.g., "USD")
-    dates: list[str]                 # Sorted period-end dates
-    rows: list[RowResult]            # Extracted line items
-    fiscal_data: dict[str, dict]     # {date: {fiscal_year, fiscal_period}}
+    statement: str  # "income_statement", "balance_sheet", "cash_flow"
+    company_type: str  # "industrial", "financial", etc.
+    frequency: str  # "annual" or "quarterly"
+    currency: str  # ISO code (e.g., "USD")
+    dates: list[str]  # Sorted period-end dates
+    rows: list[RowResult]  # Extracted line items
+    fiscal_data: dict[str, dict]  # {date: {fiscal_year, fiscal_period}}
     diagnostics: list[ValidationWarning]
 ```
 
 ```python
 @dataclass
 class ValidationWarning:
-    date: str         # Period-end date of the discrepancy
-    tag: str          # Standardized tag whose value disagrees
-    expected: float   # Value computed from the accounting identity
-    actual: float     # Value extracted from XBRL
-    formula: str      # Human-readable formula
-    identity: str     # Full identity description
+    date: str  # Period-end date of the discrepancy
+    tag: str  # Standardized tag whose value disagrees
+    expected: float  # Value computed from the accounting identity
+    actual: float  # Value extracted from XBRL
+    formula: str  # Human-readable formula
+    identity: str  # Full identity description
 ```
 
 The `diagnostics` list on `StatementResult` surfaces any accounting-identity
@@ -1224,7 +1224,8 @@ components, floored at **$100,000** and capped at **$1,000,000**:
 
 ```python
 _TOLERANCE_FLOOR = 100_000
-_TOLERANCE_CAP   = 1_000_000
+_TOLERANCE_CAP = 1_000_000
+
 
 def _tolerance(*values):
     scale = max(abs(v) for v in values if v is not None)
@@ -1909,8 +1910,7 @@ The calculation linkbase is fetched with:
 ```python
 # Calculation relationships for the income statement, year 2026
 calc_url = mgr.client.find_file(
-    "https://xbrl.fasb.org/us-gaap/2026/stm/",
-    "soi", "cal", "2026"
+    "https://xbrl.fasb.org/us-gaap/2026/stm/", "soi", "cal", "2026"
 )
 content = mgr.client.fetch_file(calc_url)
 calculations = mgr.parser.parse_calculation(content, TaxonomyStyle.FASB_STANDARD)

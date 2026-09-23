@@ -120,20 +120,12 @@ async def get_form_4_urls(
     start_date = (
         start_date
         if isinstance(start_date, dateType)
-        else (
-            dateType.fromisoformat(start_date)
-            if start_date and isinstance(start_date, str)
-            else None
-        )
+        else (dateType.fromisoformat(start_date) if start_date else None)  # ty: ignore[redundant-condition]
     )
     end_date = (
         end_date
         if isinstance(end_date, dateType)
-        else (
-            dateType.fromisoformat(end_date)
-            if end_date and isinstance(end_date, str)
-            else None
-        )
+        else (dateType.fromisoformat(end_date) if end_date else None)  # ty: ignore[redundant-condition]
     )
     urls: list = []
     for item in form_4:
