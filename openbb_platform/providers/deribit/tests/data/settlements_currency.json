@@ -1,0 +1,55 @@
+{
+ "continuation": "3JbvTsVzTGQ6HW7KSsh78zQ4sZ8tMD9vrhkwQNR7TJTVHbBswFK6j9yJdsz8vwZTgaYJihMaRyXn9",
+ "settlements": [
+  {
+   "position": 31999610,
+   "timestamp": 1789891200065,
+   "type": "delivery",
+   "index_price": 80321.21,
+   "instrument_name": "BTC-20SEP26",
+   "mark_price": 80321.21,
+   "profit_loss": -3.345250995000001,
+   "session_profit_loss": 23493.117937861054
+  },
+  {
+   "position": 17.8,
+   "timestamp": 1789891200065,
+   "type": "exercise",
+   "index_price": 80321.21,
+   "instrument_name": "BTC-20SEP26-68000-P",
+   "mark_price": 0.0,
+   "profit_loss": -8.673617379884035e-19,
+   "session_profit_loss": 492.86261408100006
+  },
+  {
+   "position": 88.8,
+   "timestamp": 1789891200065,
+   "type": "exercise",
+   "index_price": 80321.21,
+   "instrument_name": "BTC-20SEP26-69000-P",
+   "mark_price": 0.0,
+   "profit_loss": 0.009744748999999999,
+   "session_profit_loss": 1642.87538027
+  },
+  {
+   "position": 65.2,
+   "timestamp": 1789891200065,
+   "type": "exercise",
+   "index_price": 80321.21,
+   "instrument_name": "BTC-20SEP26-70000-P",
+   "mark_price": 0.0,
+   "profit_loss": 0.005033333,
+   "session_profit_loss": 1642.87538027
+  },
+  {
+   "position": 8.599999999999998,
+   "timestamp": 1789891200065,
+   "type": "exercise",
+   "index_price": 80321.21,
+   "instrument_name": "BTC-20SEP26-71000-P",
+   "mark_price": 0.0,
+   "profit_loss": -0.004930000000000005,
+   "session_profit_loss": 1807.162918297
+  }
+ ]
+}
