@@ -1,6 +1,4 @@
-"""CBOE Index Snapshots Model."""
-
-# pylint: disable=unused-argument
+"""Cboe Index Snapshots Model."""
 
 from datetime import datetime
 from typing import Any, Literal
@@ -14,26 +12,52 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
+PERCENT_COLUMNS = [
+    "price_change_percent",
+    "iv30",
+    "iv30_change",
+    "iv30_change_percent",
+]
+
+DROP_COLUMNS = [
+    "exchange_id",
+    "seqno",
+    "index",
+    "security_type",
+    "ask_size",
+    "bid_size",
+]
+
+REGION_URLS = {
+    "us": "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json",
+    "eu": "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json",
+    "au": "https://cdn.cboe.com/api/global/au_indices/index_quotes/all-indices.json",
+}
+
 
 class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
-    """CBOE Index Snapshots Query.
+    """Cboe Index Snapshots Query.
 
     Source: https://www.cboe.com/
     """
 
-    region: Literal["us", "eu"] = Field(
+    __json_schema_extra__ = {"region": {"choices": ["us", "eu", "au"]}}
+
+    region: Literal["us", "eu", "au"] = Field(
         default="us",
+        description="The region of focus for the data - i.e., us, eu, au."
+        + " 'au' covers the Cboe Australia (CXA) indices.",
     )
 
     @field_validator("region", mode="after", check_fields=False)
     @classmethod
     def validate_region(cls, v):
-        """Validate region."""
+        """Validate the region."""
         return v if v else "us"
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):
-    """CBOE Index Snapshots Data."""
+    """Cboe Index Snapshots Data."""
 
     __alias_dict__ = {
         "prev_close": "prev_day_close",
@@ -41,6 +65,7 @@ class CboeIndexSnapshotsData(IndexSnapshotsData):
         "change_percent": "price_change_percent",
         "price": "current_price",
     }
+
     bid: float | None = Field(default=None, description="Current bid price.")
     ask: float | None = Field(default=None, description="Current ask price.")
     open: float | None = Field(
@@ -73,13 +98,42 @@ class CboeIndexSnapshotsData(IndexSnapshotsData):
     )
 
 
+async def _with_index_names(rows: list[dict]) -> list[dict]:
+    """Name each index from the published directory."""
+    from openbb_cboe.utils.helpers import get_index_directory
+
+    if not rows:
+        return rows
+
+    try:
+        directory = await get_index_directory()
+    except Exception:  # noqa: BLE001
+        return rows
+
+    names = {
+        str(symbol): str(name)
+        for symbol, name in zip(directory["index_symbol"], directory["name"])
+        if isinstance(name, str) and name
+    }
+
+    for row in rows:
+        symbol = str(row.get("symbol") or "").replace("^", "")
+        name = names.get(symbol)
+        row["symbol"] = symbol
+
+        if name:
+            row["name"] = name
+
+    return rows
+
+
 class CboeIndexSnapshotsFetcher(
     Fetcher[
         CboeIndexSnapshotsQueryParams,
         list[CboeIndexSnapshotsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the Cboe endpoints."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CboeIndexSnapshotsQueryParams:
@@ -89,21 +143,16 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: CboeIndexSnapshotsQueryParams,
-        credentials: dict[str, str] | None,  # pylint: disable=unused-argument
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return the raw data from the Cboe endpoint"""
-        # pylint: disable=import-outside-toplevel
+        """Return the raw data from the Cboe endpoint."""
         from openbb_core.provider.utils.helpers import amake_request
 
-        url: str = ""
-        if query.region == "us":
-            url = "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
-        if query.region == "eu":
-            url = "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
+        data = await amake_request(REGION_URLS[query.region], **kwargs)
+        rows = data.get("data", []) if isinstance(data, dict) else data
 
-        data = await amake_request(url, **kwargs)
-        return data.get("data")  # type: ignore
+        return await _with_index_names(rows)
 
     @staticmethod
     def transform_data(
@@ -111,22 +160,18 @@ class CboeIndexSnapshotsFetcher(
         data: list[dict],
         **kwargs: Any,
     ) -> list[CboeIndexSnapshotsData]:
-        """Transform the data to the standard format"""
-        # pylint: disable=import-outside-toplevel
+        """Transform the data to the standard format."""
         from pandas import DataFrame
 
         if not data:
             raise EmptyDataError()
+
         df = DataFrame(data)
-        percent_cols = [
-            "price_change_percent",
-            "iv30",
-            "iv30_change",
-            "iv30_change_percent",
-        ]
-        for col in percent_cols:
+
+        for col in PERCENT_COLUMNS:
             if col in df.columns:
-                df[col] = round(df[col] / 100, 6)
+                df[col] = df[col] / 100
+
         df = (
             df.replace(0, None)
             .replace("", None)
@@ -134,18 +179,15 @@ class CboeIndexSnapshotsFetcher(
             .fillna("N/A")
             .replace("N/A", None)
         )
-        drop_cols = [
-            "exchange_id",
-            "seqno",
-            "index",
-            "security_type",
-            "ask_size",
-            "bid_size",
-        ]
-        for col in drop_cols:
+
+        for col in DROP_COLUMNS:
             if col in df.columns:
                 df = df.drop(columns=col)
-        return [
-            CboeIndexSnapshotsData.model_validate(d)
-            for d in df.to_dict(orient="records")
-        ]
+
+        records = df.to_dict(orient="records")
+
+        for record in records:
+            if not isinstance(record.get("name"), str):
+                record.pop("name", None)
+
+        return [CboeIndexSnapshotsData.model_validate(d) for d in records]

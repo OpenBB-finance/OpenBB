@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/natural-gas/stor/wkly/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2010-01-01&facets%5Bduoarea%5D%5B%5D=R31&facets%5Bduoarea%5D%5B%5D=R32&facets%5Bduoarea%5D%5B%5D=R33&facets%5Bduoarea%5D%5B%5D=R34&facets%5Bduoarea%5D%5B%5D=R35&facets%5Bduoarea%5D%5B%5D=R48&facets%5Bprocess%5D%5B%5D=SNO&facets%5Bproduct%5D%5B%5D=EPG0&facets%5Bseries%5D%5B%5D=NW2_EPG0_SNO_R33_BCF&frequency=weekly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2010-01-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM-DD","frequency":"weekly","data":[{"period":"2010-01-01","duoarea":"R33","area-name":"NA","product":"EPG0","product-name":"Natural
+        Gas","process":"SNO","process-name":"Non-Salt Underground Storage - Working
+        Gas","series":"NW2_EPG0_SNO_R33_BCF","series-description":"Weekly Nonsalt
+        Region Natural Gas Working Underground Storage (Billion Cubic Feet)","value":"826","units":"BCF"}]},"request":{"command":"\/v2\/natural-gas\/stor\/wkly\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"weekly","data":["value"],"facets":{"duoarea":["R31","R34","R33","R32","R35","R48"],"product":["EPG0"],"process":["SNO"],"series":["NW2_EPG0_SNO_R33_BCF"]},"start":"2010-01-01","end":"2010-01-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '5'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:00:09 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:00:09 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '887'
+    status:
+      code: 200
+      message: OK
+version: 1

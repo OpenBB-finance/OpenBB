@@ -1,0 +1,1311 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/fry-9-sp-upload-user-guide.pdf",
+  "schedule_count": 5,
+  "item_count": 108,
+  "schedules": [
+    {
+      "schedule": "COVER",
+      "name": "Cover Page"
+    },
+    {
+      "schedule": "SI",
+      "name": "Schedule SI - Income Statement"
+    },
+    {
+      "schedule": "SC",
+      "name": "Schedule SC - Balance Sheet"
+    },
+    {
+      "schedule": "SC-M",
+      "name": "Schedule SC-M - Memoranda"
+    },
+    {
+      "schedule": "NOTES",
+      "name": "Notes to the Financial Statements"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Printed Name of Chief Financial Officer (or Equivalent)",
+      "mdrm": "BHSPC490",
+      "columns": [
+        "BHSPC490"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Date of Signature (MM/DD/YYYY)",
+      "mdrm": "BHSXJ196",
+      "columns": [
+        "BHSXJ196"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Name / Title",
+      "mdrm": "BHSX8901",
+      "columns": [
+        "BHSX8901"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Area Code / Phone Number",
+      "mdrm": "BHSX8902",
+      "columns": [
+        "BHSX8902"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Area Code / FAX Number",
+      "mdrm": "BHSX9116",
+      "columns": [
+        "BHSX9116"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "E-mail Address of Contact",
+      "mdrm": "BHSX4086",
+      "columns": [
+        "BHSX4086"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Is confidential treatment requested for any portion of this report submission (0=No, 1=Yes)",
+      "mdrm": "BHSPC447",
+      "columns": [
+        "BHSPC447"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "1",
+      "caption": "Income from bank subsidiary(ies)",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "1.a",
+      "caption": "Dividends",
+      "mdrm": "BHSP0508",
+      "columns": [
+        "BHSP0508"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "1.b",
+      "caption": "Other income",
+      "mdrm": "BHSP2111",
+      "columns": [
+        "BHSP2111"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "3",
+      "caption": "Income from subsidiary holding company(ies)",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "3.a",
+      "caption": "Dividends",
+      "mdrm": "BHSP0206",
+      "columns": [
+        "BHSP0206"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "3.b",
+      "caption": "Other income",
+      "mdrm": "BHSP1283",
+      "columns": [
+        "BHSP1283"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "4",
+      "caption": "Other income",
+      "mdrm": "BHSP0447",
+      "columns": [
+        "BHSP0447"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "5",
+      "caption": "TOTAL OPERATING INC (sum of items 1, 2, 3, & 4)",
+      "mdrm": "BHSP4000",
+      "columns": [
+        "BHSP4000"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "6",
+      "caption": "Interest expense",
+      "mdrm": "BHSP4073",
+      "columns": [
+        "BHSP4073"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "7",
+      "caption": "Other expenses",
+      "mdrm": "BHSP4093",
+      "columns": [
+        "BHSP4093"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "8",
+      "caption": "TOTAL OPERATING EXP (sum of items 6 and 7)",
+      "mdrm": "BHSP4130",
+      "columns": [
+        "BHSP4130"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "9.a",
+      "caption": "Income (loss) before unrealized holding gains (losses) on equity securities not held for trading, applicable income taxes, & discontinued ops (item.5 minus 8)",
+      "mdrm": "BHSPHT69",
+      "columns": [
+        "BHSPHT69"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "9.b",
+      "caption": "Change in net unrealized holding gains (losses) on equity securites not held for trading.",
+      "mdrm": "BHSPHT70",
+      "columns": [
+        "BHSPHT70"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "9.c",
+      "caption": "Income (loss) before applicable income taxes, discontinued operations and undistributed income (sum of items 9.a and 9.b)",
+      "mdrm": "BHSP4250",
+      "columns": [
+        "BHSP4250"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "10",
+      "caption": "Applicable income taxes (benefits) (estimated)",
+      "mdrm": "BHSP4302",
+      "columns": [
+        "BHSP4302"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "11",
+      "caption": "Discontinued ops, net of applicable income taxes",
+      "mdrm": "BHSPFT28",
+      "columns": [
+        "BHSPFT28"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "12",
+      "caption": "Income (loss) before undistributed income of subsidiary(ies) (sum of items 9(c) and 11 minus 10)",
+      "mdrm": "BHSP0496",
+      "columns": [
+        "BHSP0496"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "13",
+      "caption": "Equity in undistributed income (loss) of subsidairy(ies):",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "13.a",
+      "caption": "Bank subsidiary(ies)",
+      "mdrm": "BHSP3156",
+      "columns": [
+        "BHSP3156"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "13.c",
+      "caption": "Subsidiary holding company(ies)",
+      "mdrm": "BHSP3513",
+      "columns": [
+        "BHSP3513"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "14",
+      "caption": "Net income (loss) (sum of items 12 and 13)",
+      "mdrm": "BHSP4340",
+      "columns": [
+        "BHSP4340"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "M.1",
+      "caption": "Cash dividends (or non-taxable distributions) declared by the holding company to its shareholders",
+      "mdrm": "BHSP3158",
+      "columns": [
+        "BHSP3158"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "M.2",
+      "caption": "Does the reporting holding company have a Subchapter S election in effect for federal income tax purposes for current tax year? (Enter \"1\" for Yes; enter \"0\" for No.)",
+      "mdrm": "BHSPA530",
+      "columns": [
+        "BHSPA530"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "M.3",
+      "caption": "Interest expense paid to special-purpose subsidiaries that issued trust preferred sec (included item 7 above)",
+      "mdrm": "BHSPC254",
+      "columns": [
+        "BHSPC254"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SI",
+      "schedule_name": "Schedule SI - Income Statement",
+      "line": "M.5",
+      "caption": "Does your holding company have 100 or more full-time equivalent employees on a consolidated basis? (enter \"1\" for Yes; leave blank for No)",
+      "mdrm": "BHSPMZ36",
+      "columns": [
+        "BHSPMZ36"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "1",
+      "caption": "Cash and due from depository institutions:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "1.a",
+      "caption": "Balances with subsidiary or affiliated depository institutions",
+      "mdrm": "BHSP5993",
+      "columns": [
+        "BHSP5993"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "1.b",
+      "caption": "Balances with unrelated depository institutions",
+      "mdrm": "BHSP0010",
+      "columns": [
+        "BHSP0010"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "2",
+      "caption": "Securities",
+      "mdrm": "BHSP0390",
+      "columns": [
+        "BHSP0390"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "3",
+      "caption": "Loans and lease financing receivables (exclusive of loans and lease financing receivables due from bank(s) and nonbank subsidiaries):",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "3.a",
+      "caption": "Loans and leases, held for investment and held for sale",
+      "mdrm": "BHSP2122",
+      "columns": [
+        "BHSP2122"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "3.b",
+      "caption": "LESS: Allowance for credit losses on loans and leases",
+      "mdrm": "BHSP3123",
+      "columns": [
+        "BHSP3123"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "3.c",
+      "caption": "Loans and leases held for investment and held for sale, net of the allowance for loan and lease losses (item 3.a minus 3.b)",
+      "mdrm": "BHSP2723",
+      "columns": [
+        "BHSP2723"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "4",
+      "caption": "Investment in bank subsidiary(ies):",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "4.a",
+      "caption": "Equity investment",
+      "mdrm": "BHSP3239",
+      "columns": [
+        "BHSP3239"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "4.b",
+      "caption": "Goodwill",
+      "mdrm": "BHSP3238",
+      "columns": [
+        "BHSP3238"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "4.c",
+      "caption": "Loans and advances to and receivables due from bank subsidiary(ies)",
+      "mdrm": "BHSP3148",
+      "columns": [
+        "BHSP3148"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "7",
+      "caption": "Other assets",
+      "mdrm": "BHSP0027",
+      "columns": [
+        "BHSP0027"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "8",
+      "caption": "Balances due from related nonbank companies (other than investments)",
+      "mdrm": "BHSP3620",
+      "columns": [
+        "BHSP3620"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "9",
+      "caption": "TOTAL ASSETS (sum of items 1 through 8)",
+      "mdrm": "BHSP2170",
+      "columns": [
+        "BHSP2170"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "10",
+      "caption": "Short-term borrowings:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "10.a",
+      "caption": "Commercial paper",
+      "mdrm": "BHSP2309",
+      "columns": [
+        "BHSP2309"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "10.b",
+      "caption": "Other short-term borrowings",
+      "mdrm": "BHSP2724",
+      "columns": [
+        "BHSP2724"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "11",
+      "caption": "Long-term borrowings (includes limited-life preferred stock and related surplus)",
+      "mdrm": "BHSP3151",
+      "columns": [
+        "BHSP3151"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "12",
+      "caption": "Accrued interest payable (see instructions)",
+      "mdrm": "BHSP3166",
+      "columns": [
+        "BHSP3166"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "13",
+      "caption": "Other liabilities",
+      "mdrm": "BHSP3167",
+      "columns": [
+        "BHSP3167"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "14",
+      "caption": "Balances due to subsidaries and related institutions",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "14.a",
+      "caption": "Subsidiary bank(s)",
+      "mdrm": "BHSP3605",
+      "columns": [
+        "BHSP3605"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16",
+      "caption": "Equity Capital",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16.a",
+      "caption": "Perpetual preferred stock (including related surplus)",
+      "mdrm": "BHSP3283",
+      "columns": [
+        "BHSP3283"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16.b",
+      "caption": "Common stock (including related surplus)",
+      "mdrm": "BHSP3230",
+      "columns": [
+        "BHSP3230"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16.c",
+      "caption": "Retained earnings",
+      "mdrm": "BHSP3247",
+      "columns": [
+        "BHSP3247"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16.d",
+      "caption": "Accumulated other comprehensive income",
+      "mdrm": "BHSPB530",
+      "columns": [
+        "BHSPB530"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16.e",
+      "caption": "Other equity capital components",
+      "mdrm": "BHSPA130",
+      "columns": [
+        "BHSPA130"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "16.f",
+      "caption": "Total equity capital (sum of items 16.a through 16.e)",
+      "mdrm": "BHSP3210",
+      "columns": [
+        "BHSP3210"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "17",
+      "caption": "TOTAL LIABILITIES & EQUITY CAPITAL (sum of items 10 through 14.b & 16.f)",
+      "mdrm": "BHSP3300",
+      "columns": [
+        "BHSP3300"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "M.1",
+      "caption": "Has the holding company engaged in a full-scope independent external audit at any time during the calendar year (Enter \"1\" for Yes; enter \"0\" for No.)",
+      "mdrm": "BHSPC884",
+      "columns": [
+        "BHSPC884"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "M.2",
+      "caption": "If response to Memorandum item 1 is yes, indicate below the name and address of the holding company's independent external auditing firm and the name & email address of the auditing firm's engage partner.",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "M.2.a.1",
+      "caption": "Name of External Auditing Firm",
+      "mdrm": "TEXTC703",
+      "columns": [
+        "TEXTC703"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "M.2.a.2",
+      "caption": "City",
+      "mdrm": "TEXTC708",
+      "columns": [
+        "TEXTC708"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "M.2.a.3",
+      "caption": "State Abbreviation",
+      "mdrm": "TEXTC714",
+      "columns": [
+        "TEXTC714"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC",
+      "schedule_name": "Schedule SC - Balance Sheet",
+      "line": "M.2.a.4",
+      "caption": "Zip Code",
+      "mdrm": "TEXTC715",
+      "columns": [
+        "TEXTC715"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.1",
+      "caption": "Total consolidated assets of the holding company",
+      "mdrm": "BHSP8519",
+      "columns": [
+        "BHSP8519"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.2",
+      "caption": "Holding company (parent company only) borrowings not held by financial institution(s) or by insiders (including directors) and their interests (included in balance sheet items 10 or 11 above)",
+      "mdrm": "BHSP3152",
+      "columns": [
+        "BHSP3152"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.3",
+      "caption": "Treasury stock (report only if the amount exceeds 5 percent of equity capital) included in item 16.f above",
+      "mdrm": "BHSP3153",
+      "columns": [
+        "BHSP3153"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.4",
+      "caption": "Amount of nonvoting equity capital, including related surplus (included in balance sheet items 16.a., 16b., 16.c., and 16.d.)",
+      "mdrm": "BHSPC702",
+      "columns": [
+        "BHSPC702"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.5",
+      "caption": "Total loans from parent holding company and nonbank subsidiary(ies) to insiders (excluding directors) and their interests",
+      "mdrm": "BHSP3155",
+      "columns": [
+        "BHSP3155"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.6",
+      "caption": "Pledged securities",
+      "mdrm": "BHSP0416",
+      "columns": [
+        "BHSP0416"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.7.a",
+      "caption": "Fair value of securities classified as available-for-sale (included in item 2 of the balance sheet)",
+      "mdrm": "BHSP8516",
+      "columns": [
+        "BHSP8516"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.7.b",
+      "caption": "Amortized cost of securities classified as held-to-maturity (included in item 2 of the balance sheet)",
+      "mdrm": "BHSP8517",
+      "columns": [
+        "BHSP8517"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.7.c",
+      "caption": "Fair value of equity securities with readily determinable fair values (included in item 2 of the bal sheet)",
+      "mdrm": "BHSPHT95",
+      "columns": [
+        "BHSPHT95"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.8.a",
+      "caption": "Total off-balance-sheet activities conducted either directly or through a nonbank subsidiary",
+      "mdrm": "BHSPF074",
+      "columns": [
+        "BHSPF074"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.8.b",
+      "caption": "Total debt and equity securities (other than trust preferred securities) outstanding that are registered with the Securities and Exchange Commission",
+      "mdrm": "BHSPF075",
+      "columns": [
+        "BHSPF075"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11",
+      "caption": "Other assets (only report amounts that exceed 25 percent of balance sheet, line item 7).",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.a",
+      "caption": "Accounts receivable",
+      "mdrm": "BHSPA024",
+      "columns": [
+        "BHSPA024"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.b",
+      "caption": "Income taxes receivable",
+      "mdrm": "BHSPC256",
+      "columns": [
+        "BHSPC256"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.c",
+      "caption": "Premises and fixed assets",
+      "mdrm": "BHSP2145",
+      "columns": [
+        "BHSP2145"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.d",
+      "caption": "Net deferred tax assets",
+      "mdrm": "BHSP2148",
+      "columns": [
+        "BHSP2148"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.e",
+      "caption": "Cash surrender value of life insurance policies",
+      "mdrm": "BHSPC009",
+      "columns": [
+        "BHSPC009"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.f",
+      "caption": "Description",
+      "mdrm": "TEXT8520",
+      "columns": [
+        "TEXT8520"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.11.f",
+      "caption": "Amount",
+      "mdrm": "BHSP8520",
+      "columns": [
+        "BHSP8520"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.12",
+      "caption": "Other liabilities (only report amounts that exceed 25 percent of balance sheet, line item 13).",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.12.a",
+      "caption": "Accounts payable",
+      "mdrm": "BHSP3066",
+      "columns": [
+        "BHSP3066"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.12.b",
+      "caption": "Income taxes payable",
+      "mdrm": "BHSPC257",
+      "columns": [
+        "BHSPC257"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.12.c",
+      "caption": "Dividends payable",
+      "mdrm": "BHSP2932",
+      "columns": [
+        "BHSP2932"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.12.d",
+      "caption": "Net deferred tax liabilities",
+      "mdrm": "BHSP3049",
+      "columns": [
+        "BHSP3049"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.14",
+      "caption": "Have there been any changes in investments and activities (acquisitions, divestitures of subsidiaries or other businesses, openings or closings of branches) during the period that have not been reported on the FR Y-6A? If the answer to this question is no, complete the FR Y-10",
+      "mdrm": "BHSP6416",
+      "columns": [
+        "BHSP6416"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.14",
+      "caption": "Name of holding company official verifying FR Y-10 reporting",
+      "mdrm": "TEXT6428",
+      "columns": [
+        "TEXT6428"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.14",
+      "caption": "Area Code / Phone Number",
+      "mdrm": "TEXT9009",
+      "columns": [
+        "TEXT9009"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.16",
+      "caption": "Long-term borrowings included in balance sheet item 14.b",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.17.a",
+      "caption": "Total combined nonbank assets of nonbank subsidiaries",
+      "mdrm": "BHSP4778",
+      "columns": [
+        "BHSP4778"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.17.b",
+      "caption": "Total combined loans and leases of nonbank subsidiaries",
+      "mdrm": "BHSPC427",
+      "columns": [
+        "BHSPC427"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.17.c",
+      "caption": "Total aggregate operating revenue of nonbank subsidiaries",
+      "mdrm": "BHSPC428",
+      "columns": [
+        "BHSPC428"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.17.d",
+      "caption": "Combined thrift assets included in 17.a (to be completed by a bank holding company)",
+      "mdrm": "BHSP2792",
+      "columns": [
+        "BHSP2792"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.17.f",
+      "caption": "Number of thrift subsidiaries included in 17.d (to be completed by a bank holding company)",
+      "mdrm": "BHSP2796",
+      "columns": [
+        "BHSP2796"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.18",
+      "caption": "Does the holding company hold, either directly or indirectly through a subsidiary or affiliate, any nonfinancial equity investments (see instructions for definition) within a Small Business Investment Company (SBIC) structure, or under section 4(c)(6) or 4(c)(7) of the Bank Holding Company Act, or pursuant to the merchant banking authority of section 4(k)4(H) of the Bank Holding Company Act, or pursuant to the investment authority granted by Regulation K? (Enter \"1\" for Yes; enter \"0\" for No.)",
+      "mdrm": "BHSPC161",
+      "columns": [
+        "BHSPC161"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.20.a",
+      "caption": "Has the holding company sold or otherwise liquidated its holding of any nonfinancial equity investment since the previous period? (Enter \"1\" for Yes; enter \"0\" for No.)",
+      "mdrm": "BHSPC700",
+      "columns": [
+        "BHSPC700"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.20.b",
+      "caption": "Does the holding company manage any nonfinancial equity investments for the benefit of others? (Enter \"1\" for Yes; enter \"0\" for No.)",
+      "mdrm": "BHSPC701",
+      "columns": [
+        "BHSPC701"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.23.a",
+      "caption": "Senior perpetual preferred stock or similar items",
+      "mdrm": "BHSPG234",
+      "columns": [
+        "BHSPG234"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "SC-M",
+      "schedule_name": "Schedule SC-M - Memoranda",
+      "line": "M.23.b",
+      "caption": "Warrants to purchase common stock or similar items",
+      "mdrm": "BHSPG235",
+      "columns": [
+        "BHSPG235"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "NOTES",
+      "schedule_name": "Notes to the Financial Statements",
+      "line": "1",
+      "caption": "Amount - 1",
+      "mdrm": "BHSPK141",
+      "columns": [
+        "BHSPK141"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ],
+  "validation": {
+    "csv_code_count": 95,
+    "mapped_count": 95,
+    "missing": [],
+    "permanent_empty": [],
+    "duplicate_codes": [],
+    "coverage": 100.0
+  },
+  "sampled_filers": [
+    "1020395",
+    "2334062"
+  ]
+}

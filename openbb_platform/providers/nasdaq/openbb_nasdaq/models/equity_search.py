@@ -1,7 +1,5 @@
 """Nasdaq Equity Search Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -103,7 +101,6 @@ class NasdaqEquitySearchFetcher(
         **kwargs: Any,
     ) -> str:
         """Extract data from Nasdaq."""
-        # pylint: disable=import-outside-toplevel
         from openbb_nasdaq.utils.helpers import get_nasdaq_directory
 
         return get_nasdaq_directory()
@@ -115,8 +112,8 @@ class NasdaqEquitySearchFetcher(
         **kwargs: Any,
     ) -> list[NasdaqEquitySearchData]:
         """Transform the data and filter the results."""
-        # pylint: disable=import-outside-toplevel
-        from io import StringIO  # noqa
+        from io import StringIO
+
         from numpy import nan
         from pandas import read_csv
 

@@ -1,0 +1,1 @@
+"""OpenBB EIA provider assets."""

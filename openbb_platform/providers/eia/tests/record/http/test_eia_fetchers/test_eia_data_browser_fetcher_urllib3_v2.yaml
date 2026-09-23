@@ -1,0 +1,129 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/pri/spt?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: '{"response":{"id":"petroleum","description":"EIA petroleum gas survey
+        data","frequency":[{"id":"monthly","description":"One data point for each
+        month.","query":"M","format":"YYYY-MM"},{"id":"weekly","description":"One
+        data point for each week.","query":"W","format":"YYYY-MM-DD"},{"id":"annual","description":"One
+        data point for each calendar year.","query":"A","format":"YYYY"},{"id":"daily","description":"One
+        data point for each day.","query":"D","format":"YYYY-MM-DD"}],"facets":[{"id":"duoarea","description":"DuoArea"},{"id":"product","description":"Product"},{"id":"process","description":"Process"},{"id":"series","description":"Series"}],"data":{"value":[]},"startPeriod":"1986-01-03","endPeriod":"2026-07-03","defaultDateFormat":"YYYY-MM-DD","defaultFrequency":"weekly"},"request":{"command":"\/v2\/petroleum\/pri\/spt\/","params":{"api_key":"MOCK_API_KEY"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:12 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:12 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '947'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/pri/spt/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2025-03&facets%5Bproduct%5D%5B%5D=EPCBRENT&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2025-01
+  response:
+    body:
+      string: '{"response":{"total":"3","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2025-01","duoarea":"ZEU","area-name":"NA","product":"EPCBRENT","product-name":"UK
+        Brent Crude Oil","process":"PF4","process-name":"Spot Price FOB","series":"RBRTE","series-description":"Europe
+        Brent Spot Price FOB (Dollars per Barrel)","value":"79.27","units":"$\/BBL"},{"period":"2025-02","duoarea":"ZEU","area-name":"NA","product":"EPCBRENT","product-name":"UK
+        Brent Crude Oil","process":"PF4","process-name":"Spot Price FOB","series":"RBRTE","series-description":"Europe
+        Brent Spot Price FOB (Dollars per Barrel)","value":"75.44","units":"$\/BBL"},{"period":"2025-03","duoarea":"ZEU","area-name":"NA","product":"EPCBRENT","product-name":"UK
+        Brent Crude Oil","process":"PF4","process-name":"Spot Price FOB","series":"RBRTE","series-description":"Europe
+        Brent Spot Price FOB (Dollars per Barrel)","value":"72.73","units":"$\/BBL"}]},"request":{"command":"\/v2\/petroleum\/pri\/spt\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["value"],"facets":{"product":["EPCBRENT"]},"start":"2025-01","end":"2025-03","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:13 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:13 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1278'
+    status:
+      code: 200
+      message: OK
+version: 1

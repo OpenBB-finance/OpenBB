@@ -1,0 +1,387 @@
+[
+  {
+    "name": "Cboe Market Data",
+    "img": "https://mma.prnewswire.com/media/584516/CBOE_HOLDINGS__INC__FUTURES_EXCHANGE_LOGO.jpg?p=facebook",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Delayed quotes, index levels, options chains, and the VIX futures term structure, published by the Chicago Board Options Exchange.",
+    "allowCustomization": true,
+    "tabs": {
+      "options": {
+        "id": "options",
+        "name": "Options",
+        "layout": [
+          {
+            "i": "cboe_equity_quote_cboe_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 6,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_equity_historical_cboe_obb",
+            "x": 0,
+            "y": 6,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_term_structure_custom_obb",
+            "x": 0,
+            "y": 20,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_stats_custom_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_smile_custom_obb",
+            "x": 0,
+            "y": 52,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "SPY",
+                "otm": true
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_surface_custom_obb",
+            "x": 0,
+            "y": 68,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "SPY",
+                "moneyness": 10,
+                "dte_min": 15,
+                "dte_max": 60
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_chains_cboe_obb",
+            "x": 0,
+            "y": 88,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_straddle_custom_obb",
+            "x": 0,
+            "y": 104,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_strangle_custom_obb",
+            "x": 0,
+            "y": 116,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "cboe_options_spreads_custom_obb",
+            "x": 0,
+            "y": 128,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "SPY"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          }
+        ]
+      },
+      "indices": {
+        "id": "indices",
+        "name": "Indices",
+        "layout": [
+          {
+            "i": "cboe_index_search_cboe_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 12,
+            "groups": [
+              "Index Symbol"
+            ],
+            "state": {
+              "params": {
+                "symbol": "VIX"
+              }
+            }
+          },
+          {
+            "i": "cboe_index_snapshots_cboe_obb",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 14,
+            "groups": [
+              "Index Symbol"
+            ],
+            "state": {
+              "params": {
+                "symbol": "VIX"
+              }
+            }
+          },
+          {
+            "i": "cboe_index_historical_cboe_obb",
+            "x": 0,
+            "y": 26,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "VIX"
+              }
+            },
+            "groups": [
+              "Index Symbol"
+            ]
+          },
+          {
+            "i": "cboe_index_constituents_cboe_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "BUKENGY"
+              }
+            }
+          },
+          {
+            "i": "cboe_index_documents_viewer_custom_obb",
+            "x": 0,
+            "y": 56,
+            "w": 40,
+            "h": 30
+          }
+        ]
+      },
+      "optimizer": {
+        "id": "optimizer",
+        "name": "Trade Optimizer",
+        "layout": [
+          {
+            "i": "cboe_options_payoff_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "SPY",
+                "sentiment": "neutral"
+              }
+            },
+            "groups": [
+              "Optimizer Symbol",
+              "Optimizer Expiration",
+              "Optimizer Sentiment",
+              "Optimizer Target Price"
+            ]
+          },
+          {
+            "i": "cboe_options_trade_optimizer_custom_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "SPY",
+                "sentiment": "neutral"
+              }
+            },
+            "groups": [
+              "Optimizer Symbol",
+              "Optimizer Expiration",
+              "Optimizer Sentiment",
+              "Optimizer Target Price"
+            ]
+          }
+        ]
+      },
+      "futures": {
+        "id": "futures",
+        "name": "Futures",
+        "layout": [
+          {
+            "i": "cboe_futures_curve_cboe_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "symbol": "VX_EOD"
+              }
+            }
+          },
+          {
+            "i": "cboe_futures_settlement_prices_cboe_obb",
+            "x": 0,
+            "y": 15,
+            "w": 24,
+            "h": 14
+          },
+          {
+            "i": "cboe_futures_instruments_cboe_obb",
+            "x": 24,
+            "y": 15,
+            "w": 16,
+            "h": 14
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Symbol",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "SPY",
+        "widgetIds": [
+          "cboe_equity_quote_cboe_obb",
+          "cboe_equity_historical_cboe_obb",
+          "cboe_options_term_structure_custom_obb",
+          "cboe_options_stats_custom_obb",
+          "cboe_options_smile_custom_obb",
+          "cboe_options_surface_custom_obb",
+          "cboe_options_chains_cboe_obb",
+          "cboe_options_straddle_custom_obb",
+          "cboe_options_strangle_custom_obb",
+          "cboe_options_spreads_custom_obb"
+        ]
+      },
+      {
+        "name": "Index Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "VIX",
+        "widgetIds": [
+          "cboe_index_search_cboe_obb",
+          "cboe_index_snapshots_cboe_obb",
+          "cboe_index_historical_cboe_obb"
+        ]
+      },
+      {
+        "name": "Optimizer Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "SPY",
+        "widgetIds": [
+          "cboe_options_payoff_custom_obb",
+          "cboe_options_trade_optimizer_custom_obb"
+        ]
+      },
+      {
+        "name": "Optimizer Expiration",
+        "type": "param",
+        "paramName": "expiration",
+        "widgetIds": [
+          "cboe_options_payoff_custom_obb",
+          "cboe_options_trade_optimizer_custom_obb"
+        ]
+      },
+      {
+        "name": "Optimizer Sentiment",
+        "type": "param",
+        "paramName": "sentiment",
+        "defaultValue": "neutral",
+        "widgetIds": [
+          "cboe_options_payoff_custom_obb",
+          "cboe_options_trade_optimizer_custom_obb"
+        ]
+      },
+      {
+        "name": "Optimizer Target Price",
+        "type": "param",
+        "paramName": "target_price",
+        "widgetIds": [
+          "cboe_options_payoff_custom_obb",
+          "cboe_options_trade_optimizer_custom_obb"
+        ]
+      }
+    ]
+  }
+]

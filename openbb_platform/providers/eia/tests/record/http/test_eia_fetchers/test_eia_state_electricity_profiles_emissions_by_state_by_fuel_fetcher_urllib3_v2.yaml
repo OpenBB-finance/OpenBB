@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/state-electricity-profiles/emissions-by-state-by-fuel/data/?api_key=MOCK_API_KEY&data%5B0%5D=co2-rate-lbs-mwh&data%5B1%5D=co2-thousand-metric-tons&data%5B2%5D=nox-rate-lbs-mwh&data%5B3%5D=nox-short-tons&data%5B4%5D=so2-rate-lbs-mwh&data%5B5%5D=so2-short-tons&end=1990&facets%5Bfuelid%5D%5B%5D=ALL&facets%5Bstateid%5D%5B%5D=AK&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1990
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"1990","stateid":"AK","stateDescription":"Alaska","fuelid":"ALL","fuelDescription":"Total","co2-rate-lbs-mwh":"1654","co2-thousand-metric-tons":"4209","nox-rate-lbs-mwh":"4.9","nox-short-tons":"13847","so2-rate-lbs-mwh":"7.4","so2-short-tons":"20658","co2-rate-lbs-mwh-units":"pounds
+        per megawatthour","co2-thousand-metric-tons-units":"thousand metric tons","nox-rate-lbs-mwh-units":"pounds
+        per megawatthour","nox-short-tons-units":"short tons","so2-rate-lbs-mwh-units":"pounds
+        per megawatthour","so2-short-tons-units":"short tons"}],"description":"Emissions
+        from electricity generation and the production of useful thermal output at
+        conventional power plants and combined-heat-and-power plants.\n    See Electric
+        Power Annual, Technical Notes for a description of the sources and methodology
+        used to develop the emissions estimates.\n    Sources: Forms EIA-860, EIA-923,
+        and calculations made by the Office of  Energy Production, Conversion & Delivery
+        (EPCD)\n    Product: State Electricity Profiles, Table 7"},"request":{"command":"\/v2\/electricity\/state-electricity-profiles\/emissions-by-state-by-fuel\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["co2-rate-lbs-mwh","co2-thousand-metric-tons","nox-rate-lbs-mwh","nox-short-tons","so2-rate-lbs-mwh","so2-short-tons"],"facets":{"stateid":["AK"],"fuelid":["ALL"]},"start":"1990","end":"1990","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:04:02 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:04:02 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1613'
+    status:
+      code: 200
+      message: OK
+version: 1
