@@ -28,18 +28,13 @@ class CommercialPaperParams(QueryParams):
 
 
 class CommercialPaperData(Data):
-    """Commercial Paper Data."""
+    """Commercial Paper Data.
+
+    Attributes
+    ----------
+    date : dateType
+        The observation date. Every maturity requested is carried as its own
+        column, named for the maturity and category it reports.
+    """
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str | None = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
-    )
-    maturity: str = Field(description="Maturity length of the item.")
-    rate: float = Field(
-        description="Interest rate.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    title: str | None = Field(
-        default=None,
-        description="Title of the series.",
-    )
