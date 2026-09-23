@@ -1,5 +1,7 @@
 """App loader module."""
 
+from typing import Any
+
 from fastapi import APIRouter, FastAPI
 from fastapi.exceptions import ResponseValidationError
 from pydantic import ValidationError
@@ -24,7 +26,7 @@ class AppLoader:
 
     @staticmethod
     def add_openapi_tags(app: FastAPI):
-        """Add openapi tags."""
+        """Declare extension tags and collapse per-level route tags into one."""
         main_router = RouterLoader.from_extensions()
         # Add tag data for each router in the main router
         app.openapi_tags = [
@@ -34,6 +36,60 @@ class AppLoader:
             }
             for r in main_router.routers
         ]
+
+        base_openapi = app.openapi
+        extension_names = set(main_router.routers)
+
+        def _order(group: str, name: str) -> tuple[int, str]:
+            """Sort data extensions first; the core's own groups last."""
+            return (0 if group in extension_names else 1, name.lower())
+
+        def _describe(levels: list[str]) -> str:
+            """Return the router description registered for a tag's full path."""
+            return main_router.get_attr("/" + "/".join(levels), "description") or ""
+
+        def openapi() -> dict[str, Any]:
+            """Build the schema, then rewrite its tags into the nested shape."""
+            if app.openapi_schema:
+                return app.openapi_schema
+
+            schema = base_openapi()
+            composites: dict[str, list[str]] = {}
+
+            for path_item in schema.get("paths", {}).values():
+                for operation in path_item.values():
+                    if not isinstance(operation, dict):
+                        continue
+                    levels = operation.get("tags") or []
+                    if not levels:
+                        continue
+                    composite = "/".join(levels)
+                    composites[composite] = levels
+                    operation["tags"] = [composite]
+
+            if composites:
+                schema["tags"] = [
+                    {"name": name, "description": _describe(levels)}
+                    for name, levels in sorted(
+                        composites.items(), key=lambda kv: _order(kv[1][0], kv[0])
+                    )
+                ]
+                groups: dict[str, list[str]] = {}
+                for name, levels in composites.items():
+                    groups.setdefault(levels[0], []).append(name)
+                schema["x-tagGroups"] = [
+                    {"name": group, "tags": sorted(names, key=str.lower)}
+                    for group, names in sorted(
+                        groups.items(), key=lambda kv: _order(kv[0], kv[0])
+                    )
+                ]
+
+            app.openapi_schema = schema
+            return schema
+
+        # Shadowing the bound method with a plain function on the instance is
+        # the documented FastAPI hook for customising the schema.
+        app.openapi = openapi  # type: ignore[method-assign]  # ty: ignore[invalid-assignment]
 
     @staticmethod
     def add_exception_handlers(app: FastAPI):

@@ -66,9 +66,9 @@ def dataclass_to_fields(model_name: str) -> dict[str, tuple[Any, Field]]:  # typ
     dataclass = provider_interface.params[model_name]["extra"]
     fields = {}
     for name, field in dataclass.__dataclass_fields__.items():
-        type_annotation = field.default.annotation if field.default is not None else Any  # type: ignore
-        description = field.default.description if field.default is not None else None  # type: ignore
-        title = field.default.title if field.default is not None else None  # type: ignore
+        type_annotation = field.default.annotation if field.default is not None else Any
+        description = field.default.description if field.default is not None else None
+        title = field.default.title if field.default is not None else None
         fields[name] = (
             type_annotation,
             Field(..., title=title, description=description),

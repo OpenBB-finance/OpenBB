@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/coal/aggregate-production/data/?api_key=MOCK_API_KEY&data%5B0%5D=average-employees&data%5B1%5D=labor-hours&data%5B2%5D=number-of-mines&data%5B3%5D=production&data%5B4%5D=productivity&end=2001&facets%5BcoalRankId%5D%5B%5D=SUB&facets%5BmineTypeId%5D%5B%5D=ALL&facets%5BstateRegionId%5D%5B%5D=AK&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2001
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2001","stateRegionId":"AK","stateRegionDescription":"Alaska","coalRankId":"SUB","coalRankDescription":"Subbituminous","mineTypeId":"ALL","mineTypeDescription":"All","average-employees":null,"labor-hours":null,"number-of-mines":"1","production":"1514241","productivity":null,"average-employees-units":"number
+        of employees","labor-hours-units":"hours","number-of-mines-units":"number
+        of mines","production-units":"short tons","productivity-units":"short tons
+        per labor hour"}],"description":"Coal state aggregated data by mine type,
+        includes production, \r\n        productivity, labor hours, employees, and
+        coal rank.  Source: EIA Form 7A and MSHA Form \r\n        7000-2.  Interactive
+        browser:  https:\/\/www.eia.gov\/coal\/data\/browser\/"},"request":{"command":"\/v2\/coal\/aggregate-production\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["average-employees","labor-hours","number-of-mines","production","productivity"],"facets":{"stateRegionId":["AK"],"coalRankId":["SUB"],"mineTypeId":["ALL"]},"start":"2001","end":"2001","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:14 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:14 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1296'
+    status:
+      code: 200
+      message: OK
+version: 1

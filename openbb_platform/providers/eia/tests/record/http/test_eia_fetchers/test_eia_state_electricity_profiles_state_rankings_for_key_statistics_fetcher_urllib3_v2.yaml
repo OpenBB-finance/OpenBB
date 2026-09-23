@@ -1,0 +1,67 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/state-electricity-profiles/summary/data/?api_key=MOCK_API_KEY&data%5B0%5D=average-retail-price&data%5B10%5D=direct-use&data%5B11%5D=direct-use-rank&data%5B12%5D=eop-sales&data%5B13%5D=eop-sales-rank&data%5B14%5D=fsp-sales-rank&data%5B15%5D=fsp-service-provider-sales&data%5B16%5D=generation-elect-utils&data%5B17%5D=generation-elect-utils-rank&data%5B18%5D=generation-ipp&data%5B19%5D=generation-ipp-rank&data%5B1%5D=average-retail-price-rank&data%5B20%5D=net-generation&data%5B21%5D=net-generation-rank&data%5B22%5D=net-summer-capacity&data%5B23%5D=net-summer-capacity-rank&data%5B24%5D=nitrogen-oxide&data%5B25%5D=nitrogen-oxide-lbs&data%5B26%5D=nitrogen-oxide-rank&data%5B27%5D=nitrogen-oxide-rank-lbs&data%5B28%5D=prime-source&data%5B29%5D=sulfer-dioxide&data%5B2%5D=capacity-elec-utilities&data%5B30%5D=sulfer-dioxide-lbs&data%5B31%5D=sulfer-dioxide-rank&data%5B32%5D=sulfer-dioxide-rank-lbs&data%5B33%5D=total-retail-sales&data%5B34%5D=total-retail-sales-rank&data%5B3%5D=capacity-elect-utilities-rank&data%5B4%5D=capacity-ipp&data%5B5%5D=capacity-ipp-rank&data%5B6%5D=carbon-dioxide&data%5B7%5D=carbon-dioxide-lbs&data%5B8%5D=carbon-dioxide-rank&data%5B9%5D=carbon-dioxide-rank-lbs&end=2008&facets%5BstateID%5D%5B%5D=AK&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2008
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2008","stateID":"AK","stateDescription":"Alaska","average-retail-price":"14.74","average-retail-price-rank":"6","capacity-elec-utilities":"1847","capacity-elect-utilities-rank":"39","capacity-ipp":"148","capacity-ipp-rank":"50","carbon-dioxide":"4376","carbon-dioxide-lbs":"1421","carbon-dioxide-rank":"46","carbon-dioxide-rank-lbs":"24","direct-use":"328146","direct-use-rank":"37","eop-sales":null,"eop-sales-rank":null,"fsp-sales-rank":"48","fsp-service-provider-sales":"6325944","generation-elect-utils":"6262148","generation-elect-utils-rank":"39","generation-ipp":"512687","generation-ipp-rank":"48","net-generation":"6774834","net-generation-rank":"50","net-summer-capacity":"1995","net-summer-capacity-rank":"48","nitrogen-oxide":"16236","nitrogen-oxide-lbs":"4.8","nitrogen-oxide-rank":"41","nitrogen-oxide-rank-lbs":"2","prime-source":"Natural
+        Gas","sulfer-dioxide":"3884","sulfer-dioxide-lbs":"1.1","sulfer-dioxide-rank":"48","sulfer-dioxide-rank-lbs":"42","total-retail-sales":"6325944","total-retail-sales-rank":"50","average-retail-price-units":"cents
+        per kilowatthour","average-retail-price-rank-units":"rank","capacity-elec-utilities-units":"megawatts","capacity-elect-utilities-rank-units":"rank","capacity-ipp-units":"megawatts","capacity-ipp-rank-units":"rank","carbon-dioxide-units":"thousand
+        metric tons","carbon-dioxide-lbs-units":"pounds per megawatthour","carbon-dioxide-rank-units":"rank","carbon-dioxide-rank-lbs-units":"rank","direct-use-units":"megawatthours","direct-use-rank-units":"rank","eop-sales-units":"megawatthours","eop-sales-rank-units":"rank","fsp-sales-rank-units":"rank","fsp-service-provider-sales-units":"megawatthours","generation-elect-utils-units":"megawatthours","generation-elect-utils-rank-units":"rank","generation-ipp-units":"megawatthours","generation-ipp-rank-units":"rank","net-generation-units":"megawatthours","net-generation-rank-units":"rank","net-summer-capacity-units":"megawatts","net-summer-capacity-rank-units":"rank","nitrogen-oxide-units":"short
+        tons","nitrogen-oxide-lbs-units":"pounds per megawatthour","nitrogen-oxide-rank-units":"rank","nitrogen-oxide-rank-lbs-units":"rank","sulfer-dioxide-units":"short
+        tons","sulfer-dioxide-lbs-units":"pounds per megawatthour","sulfer-dioxide-rank-units":"rank","sulfer-dioxide-rank-lbs-units":"rank","total-retail-sales-units":"megawatthours","total-retail-sales-rank-units":"rank"}],"description":"State
+        rankings for key electricity statistics by state\n    Source: Forms EIA-860,
+        EIA-861, EIA-923\n    Product: State Electricity Profiles, Table 1"},"request":{"command":"\/v2\/electricity\/state-electricity-profiles\/summary\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["average-retail-price","average-retail-price-rank","capacity-elec-utilities","capacity-elect-utilities-rank","capacity-ipp","capacity-ipp-rank","carbon-dioxide","carbon-dioxide-lbs","carbon-dioxide-rank","carbon-dioxide-rank-lbs","direct-use","direct-use-rank","eop-sales","eop-sales-rank","fsp-sales-rank","fsp-service-provider-sales","generation-elect-utils","generation-elect-utils-rank","generation-ipp","generation-ipp-rank","net-generation","net-generation-rank","net-summer-capacity","net-summer-capacity-rank","nitrogen-oxide","nitrogen-oxide-lbs","nitrogen-oxide-rank","nitrogen-oxide-rank-lbs","prime-source","sulfer-dioxide","sulfer-dioxide-lbs","sulfer-dioxide-rank","sulfer-dioxide-rank-lbs","total-retail-sales","total-retail-sales-rank"],"facets":{"stateID":["AK"]},"start":"2008","end":"2008","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:04:04 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:04:04 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '3759'
+    status:
+      code: 200
+      message: OK
+version: 1

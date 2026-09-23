@@ -45,7 +45,12 @@ class ImfMetadata(
             return
 
         with self._lock:
-            if self._initialized:
+            # Re-read under the lock: another thread can finish initialising
+            # between the check above and this one acquiring the lock, which is
+            # the whole point of the second check. ty carries the narrowing from
+            # the check above through the lock acquisition and so reads this as
+            # dead - it cannot model the interleaving.
+            if self._initialized:  # ty: ignore[redundant-condition]
                 return
 
             self.dataflows: dict[str, dict] = {}

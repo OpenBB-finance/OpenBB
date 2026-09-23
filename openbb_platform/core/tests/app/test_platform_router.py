@@ -415,3 +415,23 @@ def test_router_loader_from_extensions_loaderror(monkeypatch):
         pass
     finally:
         RouterLoader.from_extensions.cache_clear()
+
+
+def test_command_with_stream_return_type():
+    """Test an ``OBBStream`` return annotation drops the response model and
+    advertises an ``text/event-stream`` 200 response."""
+    from openbb_core.app.model.stream import OBBStream
+
+    stream_router = Router()
+
+    @stream_router.command
+    async def stream_function() -> OBBStream:
+        """Stream something."""
+
+    route = stream_router.api_router.routes[-1]
+    assert route.path == "/stream_function"
+    assert route.response_model is None
+    assert route.responses[200] == {
+        "description": "Event stream",
+        "content": {"text/event-stream": {"schema": {"type": "string"}}},
+    }

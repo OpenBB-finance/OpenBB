@@ -1,0 +1,234 @@
+[
+  {
+    "name": "ECB Explorer",
+    "description": "Start from the ECB statistical release calendar — click a release's dataset to explore its dimensions, series, and data — then dive into the presentation tables, euro exchange rates, key ECB and bank interest rates, the euro short-term rate, balance of payments, a full-content viewer for ECB releases and blog posts, and the Eurosystem list of eligible collateral assets.",
+    "img": "https://www.ecb.europa.eu/home/shared/img/socialmedia/social-default.jpg",
+    "allowCustomization": true,
+    "tabs": {
+      "catalogue": {
+        "id": "catalogue",
+        "name": "Series Builder",
+        "layout": [
+          {
+            "i": "ecb_calendar_ecb_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 12,
+            "groups": ["Dataflow"]
+          },
+          {
+            "i": "ecb_search_dataflows_custom_obb",
+            "x": 0,
+            "y": 12,
+            "w": 20,
+            "h": 14,
+            "groups": ["Dataflow"]
+          },
+          {
+            "i": "ecb_get_dataflow_dimensions_custom_obb",
+            "x": 20,
+            "y": 12,
+            "w": 20,
+            "h": 14,
+            "state": {"params": {"dataflow": "ICP"}},
+            "groups": ["Dataflow"]
+          },
+          {
+            "i": "ecb_available_indicators_ecb_obb",
+            "x": 0,
+            "y": 26,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "dataflow": "ICP",
+                "frequency": "M",
+                "reference_area": "U2"
+              }
+            },
+            "groups": ["Dataflow", "Symbol"]
+          },
+          {
+            "i": "ecb_indicators_ecb_obb",
+            "x": 0,
+            "y": 42,
+            "w": 40,
+            "h": 16,
+            "state": {"params": {"symbol": "ICP::M.U2.N.000000.4.ANR"}},
+            "groups": ["Symbol"]
+          }
+        ]
+      },
+      "dataset-information": {
+        "id": "dataset-information",
+        "name": "Dataset Metadata",
+        "layout": [
+          {
+            "i": "ecb_list_concepts_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 12,
+            "groups": ["Concept"]
+          },
+          {
+            "i": "ecb_dataflow_information",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {"concept": "bank-interest-rates", "dataflow": "MIR"}
+            },
+            "groups": ["Concept"]
+          }
+        ]
+      },
+      "presentation-tables": {
+        "id": "presentation-tables",
+        "name": "Presentation Tables",
+        "layout": [
+          {
+            "i": "ecb_list_tables_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 12,
+            "groups": ["Table"]
+          },
+          {
+            "i": "ecb_presentation_table_custom_obb",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {
+                "table_id": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
+              }
+            },
+            "groups": ["Table"]
+          }
+        ]
+      },
+      "exchange-rates": {
+        "id": "exchange-rates",
+        "name": "Exchange Rates",
+        "layout": [
+          {
+            "i": "ecb_exchange_rates_ecb_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {"params": {"symbol": "EURUSD"}}
+          },
+          {
+            "i": "ecb_reference_rates_ecb_obb",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 12
+          }
+        ]
+      },
+      "interest-rates": {
+        "id": "interest-rates",
+        "name": "Interest Rates",
+        "layout": [
+          {
+            "i": "ecb_key_interest_rates_ecb_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 15
+          },
+          {
+            "i": "ecb_euro_short_term_rate_ecb_obb",
+            "x": 20,
+            "y": 0,
+            "w": 20,
+            "h": 15
+          },
+          {
+            "i": "ecb_mfi_interest_rates_ecb_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 15
+          },
+          {
+            "i": "ecb_yield_curve_ecb_obb",
+            "x": 0,
+            "y": 30,
+            "w": 40,
+            "h": 15
+          }
+        ]
+      },
+      "balance_of_payments": {
+        "id": "balance_of_payments",
+        "name": "Balance of Payments",
+        "layout": [
+          {
+            "i": "ecb_balance_of_payments_ecb_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 25,
+            "state": {"params": {"report_type": "main"}}
+          }
+        ]
+      },
+      "releases": {
+        "id": "releases",
+        "name": "Releases",
+        "layout": [
+          {
+            "i": "ecb_release_document",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {"params": {"category": "blog"}}
+          }
+        ]
+      },
+      "collateral": {
+        "id": "collateral",
+        "name": "Collateral",
+        "layout": [
+          {
+            "i": "ecb_eligible_assets_ecb_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {"params": {"currency": "EUR", "limit": 250}}
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Dataflow",
+        "type": "param",
+        "paramName": "dataflow",
+        "defaultValue": "ICP"
+      },
+      {
+        "name": "Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "ICP::M.U2.N.000000.4.ANR"
+      },
+      {
+        "name": "Table",
+        "type": "param",
+        "paramName": "table_id",
+        "defaultValue": "HCL_JDF_BSI_MFI_BALANCE_SHEET@HCL_BSI"
+      }
+    ]
+  }
+]

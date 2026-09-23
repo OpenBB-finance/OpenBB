@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/tb/pdo1_offerings_regular_weekly_treasury_bills?filter=issue_date%3Agte%3A2026-03-01%2Cissue_date%3Alte%3A2026-03-31&page%5Bnumber%5D=1&page%5Bsize%5D=10000&sort=issue_date%2Csrc_line_nbr
+  response:
+    body:
+      string: !!binary |
+        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
+        xPPk73zz/9l4v5menv4F7iPohjJDAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2075'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 16 Jul 2026 18:32:53 GMT
+      Server:
+      - nginx
+      Set-Cookie:
+      - cookiesession1=678A3E0FA86BB49B8A5F90C35D28BC6A;Expires=Fri, 16 Jul 2027 18:32:53
+        GMT;Path=/;HttpOnly
+      - BIGipServerddsfMj0s2EaKsi9WsSRnAw=!GEjQsmSrGDVrDcPfcKTyKInrG7ukTqf3T/0cHhI4hwNmXJKlKJknCq3v562ty2VUAv+ETBTt6xH2Ig==;
+        path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

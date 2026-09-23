@@ -1,6 +1,4 @@
-"""EIA Short Term Energy Outlook Model."""
-
-# pylint: disable=unused-argument,too-many-branches,too-many-statements,too-many-locals
+"""EIA Short Term Energy Outlook model."""
 
 from typing import Any, Literal
 from warnings import warn
@@ -13,12 +11,13 @@ from openbb_core.provider.standard_models.short_term_energy_outlook import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field
+
 from openbb_us_eia.utils.constants import (
     SteoTableMap,
     SteoTableNames,
     SteoTableType,
 )
-from pydantic import Field
 
 
 class EiaShortTermEnergyOutlookQueryParams(ShortTermEnergyOutlookQueryParams):
@@ -111,9 +110,10 @@ class EiaShortTermEnergyOutlookFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the EIA API."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
+        import asyncio
+
         from openbb_core.provider.utils.helpers import amake_request
+
         from openbb_us_eia.utils.helpers import response_callback
 
         api_key = credentials.get("eia_api_key") if credentials else ""
@@ -128,7 +128,6 @@ class EiaShortTermEnergyOutlookFetcher(
         start_date: str = ""
         end_date: str = ""
 
-        # Format the dates based on the frequency.
         def resample_to_quarter(dt) -> str:
             """Resample a date to a string formatted as 'YYYY-QX'."""
             year = dt.year
@@ -149,7 +148,6 @@ class EiaShortTermEnergyOutlookFetcher(
         elif query.end_date is not None and frequency == "annual":
             end_date = f"&end={query.end_date.strftime('%Y')}"
 
-        # We chunk the request to avoid pagination and make the query execution faster.
         symbols = (
             query.symbol.upper().split(",")
             if query.symbol
@@ -182,33 +180,41 @@ class EiaShortTermEnergyOutlookFetcher(
         async def get_one(url):
             """Response callback function."""
             res = await amake_request(url, response_callback=response_callback)
-            data = res.get("response", {}).get("data", [])  # type: ignore
+            data = res.get("response", {}).get("data", [])  # ty: ignore[unresolved-attribute]
             if not data:
-                series_id = res.get("request", {}).get("params", {}).get("facets", {}).get("seriesId", [])  # type: ignore
+                series_id = (
+                    res.get("request", {})  # ty: ignore[unresolved-attribute]
+                    .get("params", {})
+                    .get("facets", {})
+                    .get("seriesId", [])
+                )
                 masked_url = url.replace(api_key, "API_KEY")
                 messages.append(f"No data returned for {series_id or masked_url}")
             if data:
                 results.extend(data)
-            response_total = int(res.get("response", {}).get("total", 0))  # type: ignore
+            response_total = int(res.get("response", {}).get("total", 0))  # ty: ignore[unresolved-attribute]
             n_results = len(data)
-            # After conservatively chunking the request, we may still need to paginate.
-            # This is mostly out of an abundance of caution.
             if response_total > 5000 and n_results == 5000:
                 offset = 5000
                 url = url.replace("&offset=0", f"&offset={offset}")
                 while n_results < response_total:
                     additional_response = await amake_request(url)
-                    additional_data = additional_response.get("response", {}).get("data", [])  # type: ignore
+                    additional_data = additional_response.get(  # ty: ignore[unresolved-attribute]
+                        "response", {}
+                    ).get("data", [])
                     if not additional_data:
                         series_id = (
-                            res.get("request", {}).get("params", {}).get("facets", {}).get("seriesId", [])  # type: ignore
+                            res.get("request", {})  # ty: ignore[unresolved-attribute]
+                            .get("params", {})
+                            .get("facets", {})
+                            .get("seriesId", [])
                         )
                         masked_url = url.replace(api_key, "API_KEY")
                         messages.append(
                             f"No additional data returned for {series_id or masked_url}"
                         )
-                    if additional_data:
-                        results.extend(additional_data)
+                        break
+                    results.extend(additional_data)
                     n_results += len(additional_data)
                     url = url.replace(f"&offset={offset}", f"&offset={offset + 5000}")
                     offset += 5000
@@ -218,7 +224,7 @@ class EiaShortTermEnergyOutlookFetcher(
         except Exception as e:
             raise OpenBBError(f"Error fetching data from the EIA API -> {e}") from e
 
-        if not results and not messages:
+        if not results and not messages:  # pragma: no cover
             raise EmptyDataError(
                 "The request was returned empty with no error messages."
             )
@@ -236,8 +242,9 @@ class EiaShortTermEnergyOutlookFetcher(
         **kwargs: Any,
     ) -> list[EiaShortTermEnergyOutlookData]:
         """Transform the data."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import Categorical, DataFrame, to_datetime
+        from pandas import Categorical, DataFrame
+
+        from openbb_us_eia.utils.catalog import parse_period
 
         symbols = (
             query.symbol.upper().split(",")
@@ -252,9 +259,15 @@ class EiaShortTermEnergyOutlookFetcher(
                 seen.add(symbol)
         symbols = unique_symbols
 
+        period_formats = {
+            "month": "YYYY-MM",
+            "quarter": 'YYYY-"Q"Q',
+            "annual": "YYYY",
+        }
+        period_format = period_formats[query.frequency]
         table = query.table
         df = DataFrame(data)
-        df.period = to_datetime(df.period).dt.date
+        df.period = df.period.map(lambda p: parse_period(str(p), period_format))
         df.seriesId = Categorical(df.seriesId, categories=symbols, ordered=True)
         df = df.sort_values(["period", "seriesId"])
         df = df.reset_index(drop=True)

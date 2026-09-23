@@ -17,7 +17,7 @@ dependencies = [
     "importlib-metadata>=6.8.0",
     "python-dotenv>=1.0.0",
     "aiohttp>=3.13.3",
-    "ruff>=0.15,<0.16",
+    "ruff>=0.15",
     "pyjwt>=2.13.0",
     "tomli>=2.0.0; python_version<'3.11'",
 ]

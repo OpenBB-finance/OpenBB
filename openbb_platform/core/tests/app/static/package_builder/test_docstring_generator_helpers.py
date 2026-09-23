@@ -1644,3 +1644,62 @@ def test_generate_no_model_returns_str_type_name_and_any_fallback(monkeypatch):
         model_name=None,
     )
     assert "Any" in out2
+
+
+def test_get_field_type_union_renders_forward_ref_by_name():
+    """A ``ForwardRef`` inside a union renders as its target name.
+
+    Built with ``Union[...]``, not ``X | Y``: before 3.14 ``type.__or__``
+    rejects a ``ForwardRef`` operand. This is the shape ``format_params``
+    produces when it inlines the ``DataProcessingSupportedTypes``
+    constraints, so the union must be spelled the same way here.
+    """
+    from typing import ForwardRef, Union
+
+    field_type = Union[list, ForwardRef("DataFrame")]  # noqa: UP007
+
+    out = DocstringGenerator.get_field_type(field_type, is_required=True)
+    assert "DataFrame" in out
+    assert "ForwardRef" not in out
+
+
+def test_generate_non_model_strips_parameters_section_for_dependency_params(
+    monkeypatch,
+):
+    """A dependency-backed param drops the hand-written ``Parameters`` section."""
+    from fastapi import Depends
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    class _SS:
+        class _PS:
+            docstring_sections = ["description", "parameters"]
+            docstring_max_length = None
+
+        python_settings = _PS()
+
+    class _Svc:
+        system_settings = _SS()
+
+    monkeypatch.setattr(dg, "SystemService", _Svc)
+
+    def _dep() -> dict:
+        return {}
+
+    def _func(principal: Annotated[dict, Depends(_dep)]):
+        """Do a thing.
+
+        Parameters
+        ----------
+        principal : dict
+            The resolved principal.
+        """
+
+    out = DocstringGenerator.generate(
+        path="/x/y",
+        func=_func,
+        formatted_params=OrderedDict(),
+        model_name=None,
+    )
+    assert "Do a thing." in out
+    assert "The resolved principal." not in out

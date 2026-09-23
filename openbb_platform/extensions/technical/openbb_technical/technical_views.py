@@ -455,10 +455,7 @@ def _ta_ma(**kwargs):
         data = basemodel_to_df(kwargs["obbject_item"], index=index)
 
     if isinstance(data, list):
-        # ``data`` is opaque ``Any`` until the isinstance narrows it, and
-        # ``basemodel_to_df`` declares ``list[Data] | Data``. Callers pass
-        # a list of ``Data``-compatible models here at runtime.
-        data = basemodel_to_df(data, index=index)  # ty: ignore[invalid-argument-type]
+        data = basemodel_to_df(data, index=index)
 
     window = (
         kwargs.get("length", [])

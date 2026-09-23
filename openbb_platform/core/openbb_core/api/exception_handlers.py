@@ -47,11 +47,11 @@ class ExceptionHandlers:
             # Required parameters are missing and is not handled by ValidationError.
             if isinstance(errors, Iterable):
                 for err in errors:
-                    if err.get("type") == "missing":  # ty: ignore[unresolved-attribute]
+                    if err.get("type") == "missing":
                         return await ExceptionHandlers._handle(
                             exception=error,
                             status_code=422,
-                            detail={**err},  # ty: ignore[invalid-argument-type]
+                            detail={**err},
                         )
         return await ExceptionHandlers._handle(
             exception=error,
