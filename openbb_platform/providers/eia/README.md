@@ -31,7 +31,6 @@ pip install -e .
 
 Functions calling the EIA's API require free registration and an API key, obtained [here](https://www.eia.gov/opendata/register.php).
 
-
 ### `user_settings.json`
 
 Add it to the credentials section of `~/.openbb_platform/user_settings.json`

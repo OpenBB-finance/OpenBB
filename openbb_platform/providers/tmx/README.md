@@ -117,8 +117,8 @@ mutual funds.
 195,000 securities and 70MB, so it is fetched through a browser-impersonating
 session and held on disk as parquet for the day rather than in the HTTP cache.
 The edge refuses individual requests at random rather than blocking the session
-- a warmup that is itself refused is routinely followed by a request that
-succeeds - so every call rides out a refusal by retrying, backing off between
+— a warmup that is itself refused is routinely followed by a request that
+succeeds — so every call rides out a refusal by retrying, backing off between
 attempts. Trade history is capped at ninety days per query, so a longer range
 is bracketed into consecutive windows; an unbounded request starts at the
 bond's original issue date. A window still refused after every attempt is

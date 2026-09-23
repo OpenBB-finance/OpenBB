@@ -161,6 +161,7 @@ to ask by the underlying instead. Every one of those underlyings is offered by n
 instrument directly still works. The same views keep USDC for what it genuinely carries — 174
 futures, 47 spot pairs — and settlements, which are a settlement-currency fact, keep every
 currency the exchange collateralises in.
+
 - **Indices** — the current level of any of the 344 published indices, its history over a span, and
   the level each index has delivered at.
 - **Settlements** — the settlements, deliveries, and bankruptcies the exchange has processed.
@@ -302,4 +303,3 @@ for quotes, books, and the server clock. The cache file is swept once per proces
 
 Perpetuals can be named either in full — `SOL_USDC-PERPETUAL` — or by their shortened root,
 `SOLUSDC`.
-
