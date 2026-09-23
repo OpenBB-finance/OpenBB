@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/nuclear-outages/generator-nuclear-outages/data/?api_key=MOCK_API_KEY&data%5B0%5D=capacity&data%5B1%5D=outage&data%5B2%5D=percentOutage&end=2007-01-01&facets%5Bfacility%5D%5B%5D=46&facets%5Bgenerator%5D%5B%5D=1&frequency=daily&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2007-01-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM-DD","frequency":"daily","data":[{"period":"2007-01-01","facility":"46","facilityName":"Browns
+        Ferry","generator":"1","capacity":"1100","outage":"1100","percentOutage":"100","capacity-units":"megawatts","outage-units":"megawatts","percentOutage-units":"percent"}],"description":"Generator
+        level nuclear outages with capacity, outages, and percent outage.  \n        Source:   Nuclear
+        Regulatory Commission''s Power Reactor Status Report.  \n        Interactive
+        data report:  Daily Status of Nuclear Reactors."},"request":{"command":"\/v2\/nuclear-outages\/generator-nuclear-outages\/data\/","params":{"frequency":"daily","data":["capacity","outage","percentOutage"],"facets":{"facility":["46"],"generator":["1"]},"start":"2007-01-01","end":"2007-01-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:06:45 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:06:45 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '926'
+    status:
+      code: 200
+      message: OK
+version: 1
