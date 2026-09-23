@@ -1752,6 +1752,7 @@ charting = [
 dev = [
     { name = "openbb-charting" },
     { name = "openbb-devtools" },
+    { name = "time-machine" },
 ]
 
 [package.metadata]
@@ -1767,6 +1768,7 @@ provides-extras = ["charting"]
 dev = [
     { name = "openbb-charting", editable = "../../obbject_extensions/charting" },
     { name = "openbb-devtools", editable = "../../extensions/devtools" },
+    { name = "time-machine", specifier = ">=2.19.0" },
 ]
 
 [[package]]

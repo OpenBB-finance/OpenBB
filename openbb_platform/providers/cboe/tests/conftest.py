@@ -4,8 +4,10 @@ import json
 from pathlib import Path
 
 import pytest
+import time_machine
 
 DATA_DIR = Path(__file__).parent / "data"
+OPTIONS_SNAPSHOT = "2026-07-24 16:00:00"
 
 
 @pytest.fixture(scope="module")
@@ -38,7 +40,18 @@ def options_chain():
     payload = json.loads((DATA_DIR / "options_clx.json").read_text(encoding="utf-8"))
     query = CboeOptionsChainsQueryParams(symbol="CLX")
 
-    return CboeOptionsChainsFetcher.transform_data(query, payload).result
+    with time_machine.travel(OPTIONS_SNAPSHOT, tick=True):
+        return CboeOptionsChainsFetcher.transform_data(query, payload).result
+
+
+@pytest.fixture(autouse=True)
+def _options_snapshot_clock(request):
+    """Pin the clock to the CLX payload's snapshot for tests that consume it."""
+    if not {"options_chain", "raw_options_chain"} & set(request.fixturenames):
+        yield
+        return
+    with time_machine.travel(OPTIONS_SNAPSHOT, tick=True):
+        yield
 
 
 @pytest.fixture(autouse=True)
