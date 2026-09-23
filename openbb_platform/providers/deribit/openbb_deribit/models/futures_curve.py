@@ -1,105 +1,142 @@
 """Deribit Futures Curve Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any
 
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
 from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_deribit.utils.helpers import (
-    DERIBIT_FUTURES_CURVE_SYMBOLS,
-    FuturesCurveSymbols,
-)
 from pydantic import Field, field_validator, model_validator
+
+from openbb_deribit.utils.constants import (
+    CURVE_CHOICES_ENDPOINT,
+    SYMBOL_STYLE,
+)
 
 
 class DeribitFuturesCurveQueryParams(FuturesCurveQueryParams):
-    """
-    Deribit Futures Curve Query.
+    """Deribit Futures Curve Query.
 
-    Source: https://docs.deribit.com/?shell#public-ticker
+    Source: https://docs.deribit.com/api-reference/market-data/public-ticker
     """
 
     __json_schema_extra__ = {
         "symbol": {
             "multiple_items_allowed": False,
-            "choices": DERIBIT_FUTURES_CURVE_SYMBOLS,
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": CURVE_CHOICES_ENDPOINT,
+                "style": SYMBOL_STYLE,
+            },
         },
-        "hours_ago": {
-            "multiple_items_allowed": True,
-        },
+        "hours_ago": {"multiple_items_allowed": True},
     }
 
-    symbol: FuturesCurveSymbols = Field(
+    symbol: str = Field(
         default="BTC",
         description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " Default is 'btc' Supported symbols are: ['btc', 'eth', 'paxg']",
+        + " The underlying root, as it appears in the instrument name.",
     )
-    hours_ago: int | list[int] | str | None = Field(
+    hours_ago: str | None = Field(
         default=None,
-        description="Compare the current curve with the specified number of hours ago. Default is None.",
+        description="Compare the current curve against how it stood this many"
+        + " hours ago.",
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v):
-        """Validate the symbol."""
-        symbol = v.upper()
-        if symbol not in DERIBIT_FUTURES_CURVE_SYMBOLS:
-            raise ValueError(
-                f"Invalid Deribit symbol, {symbol}. Supported symbols are: {', '.join(DERIBIT_FUTURES_CURVE_SYMBOLS)}"
-            )
-        return symbol
 
     @field_validator("hours_ago", mode="before", check_fields=False)
     @classmethod
-    def _validate_hours_ago(cls, v):
-        """Validate hours ago."""
-        if isinstance(v, str):
-            return v
-        if isinstance(v, int):
-            return v
-        if isinstance(v, list):
-            return ",".join([str(i) for i in v])
-        return None
+    def validate_hours_ago(cls, v):
+        """Read one or more hour counts as a comma-separated string."""
+        if v is None:
+            return None
+
+        return ",".join(str(hour) for hour in v) if isinstance(v, list) else str(v)
 
     @model_validator(mode="before")
     @classmethod
-    def _validate_model(cls, values):
-        """Validate the model."""
-        if values.get("date"):
+    def validate_model(cls, values):
+        """Reject a date, which the exchange does not serve a curve for.
+
+        Raises
+        ------
+        ValueError
+            If a date was given.
+        """
+        if isinstance(values, dict) and values.get("date"):
             raise ValueError(
-                "Date field is not supported for Deribit provider. Use 'hours_ago' instead."
+                "Deribit serves no curve as of a date. Use 'hours_ago' instead."
             )
+
         return values
 
 
 class DeribitFuturesCurveData(FuturesCurveData):
     """Deribit Futures Curve Data."""
 
+    date: dateType | None = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("date", ""),
+        json_schema_extra={"x-widget_config": {"chartDataType": "excluded"}},
+    )
+    expiration: str = Field(
+        description="Futures expiration month.",
+        json_schema_extra={
+            "x-widget_config": {"chartDataType": "category", "pinned": "left"}
+        },
+    )
+    price: float | None = Field(
+        default=None,
+        description="The price of the futures contract, taken from the mark.",
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-widget_config": {"chartDataType": "series"},
+        },
+    )
+    symbol: str | None = Field(
+        default=None,
+        description="The name of the contract.",
+        json_schema_extra={"x-widget_config": {"chartDataType": "excluded"}},
+    )
+    last_price: float | None = Field(
+        default=None,
+        description="The price the contract last traded at, which on a thin"
+        + " contract can be a long way from the mark the curve is built on.",
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-widget_config": {"chartDataType": "excluded"},
+        },
+    )
     hours_ago: int | None = Field(
         default=None,
-        description="The number of hours ago represented by the price."
-        + " Only available when hours_ago is set in the query.",
+        description="How many hours back the price was read, when the query"
+        + " asked for one.",
+        json_schema_extra={"x-widget_config": {"chartDataType": "excluded"}},
     )
 
 
 class DeribitFuturesCurveFetcher(
     Fetcher[DeribitFuturesCurveQueryParams, list[DeribitFuturesCurveData]]
 ):
-    """Deribit Futures Curve Fetcher."""
+    """Transform the query, extract and transform the data from the Deribit endpoint.
+
+    The current curve is priced off each contract's mark, because a thin contract's
+    last trade can be a long way from where the exchange marks it. A curve read
+    some hours back is priced off traded closes instead, the only history the
+    exchange publishes, so it carries only the contracts that had traded by then.
+    """
+
+    require_credentials = False
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> DeribitFuturesCurveQueryParams:
-        """Transform query params."""
+        """Transform the query."""
         return DeribitFuturesCurveQueryParams(**params)
 
     @staticmethod
@@ -107,79 +144,83 @@ class DeribitFuturesCurveFetcher(
         query: DeribitFuturesCurveQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> list:
-        """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
+    ) -> list[dict]:
+        """Return the raw data from the Deribit endpoint.
+
+        Raises
+        ------
+        EmptyDataError
+            If none of the contracts on the curve published a quote.
+        """
         from openbb_deribit.utils.helpers import (
-            get_futures_curve_symbols,
-            get_ticker_data,
             get_futures_curve_by_hours_ago,
+            get_futures_curve_symbols,
+            get_tickers,
         )
 
-        try:
-            symbols = await get_futures_curve_symbols(query.symbol)
-            tasks = [get_ticker_data(s) for s in symbols]
-            data = await asyncio.gather(*tasks, return_exceptions=True)
+        symbols = await get_futures_curve_symbols(query.symbol)
+        data = await get_tickers(symbols)
 
-            if query.hours_ago is not None:
-                num_hours = query.hours_ago
+        if query.hours_ago:
+            for hour in [int(h) for h in query.hours_ago.split(",") if h.strip()]:
+                data.extend(await get_futures_curve_by_hours_ago(query.symbol, hour))
 
-                hours_ago = (
-                    [int(d) for d in num_hours.split(",")]
-                    if isinstance(num_hours, str)
-                    else [int(num_hours)] if isinstance(num_hours, int) else num_hours
-                )
+        if not data:
+            raise EmptyDataError(
+                f"Deribit published no quote for the {query.symbol} curve."
+            )
 
-                for hours in hours_ago:
-                    hours_data = await get_futures_curve_by_hours_ago(
-                        query.symbol, hours
-                    )
-                    if hours_data:
-                        data.extend(hours_data)
-            return data
-        except Exception as e:  # pylint: disable=broad-except
-            raise OpenBBError(
-                f"Failed to get futures curve -> {e.__class__.__name__ if hasattr(e, '__class__') else e}: {e.args}"
-            ) from e
+        return data
 
     @staticmethod
     def transform_data(
-        query: DeribitFuturesCurveQueryParams, data: list, **kwargs: Any
+        query: DeribitFuturesCurveQueryParams,
+        data: list[dict],
+        **kwargs: Any,
     ) -> list[DeribitFuturesCurveData]:
-        """Transform the data."""
-        # pylint: disable=import-outside-toplevel
-        from datetime import datetime  # noqa
+        """Transform the data to the model.
+
+        Raises
+        ------
+        EmptyDataError
+            If every contract on the curve came back unpriced.
+        """
+        from datetime import datetime, timezone
+
         from pandas import to_datetime
 
-        if not data:
-            raise EmptyDataError("No data found")
+        records: list[dict] = []
 
-        futures_curve: list[DeribitFuturesCurveData] = []
+        for record in data:
+            symbol = str(record.get("instrument_name") or "")
+            code = symbol.split("-")[1] if "-" in symbol else ""
+            price = record.get("mark_price") or record.get("last_price")
 
-        for d in data:
-            if not d:
+            if not symbol or price is None:
                 continue
 
-            ins_name = d.get("instrument_name", "")
-            exp = ins_name.split("-")[1]
-            hours_ago = d.get("hours_ago", 0)
-            exp = (
-                datetime.today().strftime("%Y-%m-%d")
-                if exp == "PERPETUAL"
-                else to_datetime(exp).strftime("%Y-%m-%d")
+            records.append(
+                {
+                    "symbol": symbol,
+                    "expiration": (
+                        datetime.now(timezone.utc).strftime("%Y-%m-%d")
+                        if code == "PERPETUAL"
+                        else to_datetime(code).strftime("%Y-%m-%d")
+                    ),
+                    "price": price,
+                    "last_price": record.get("last_price"),
+                    "hours_ago": record.get("hours_ago") if query.hours_ago else None,
+                }
             )
 
-            price = d.get("last_price", d.get("mark_price"))
+        if not records:
+            raise EmptyDataError(
+                f"Deribit published no priced contract on the {query.symbol} curve."
+            )
 
-            result = {"expiration": exp, "price": price}
-            if query.hours_ago:
-                result["hours_ago"] = hours_ago
-
-            if price:
-                futures_curve.append(DeribitFuturesCurveData.model_validate(result))
-
-        if not futures_curve:
-            raise EmptyDataError("No data found.")
-
-        return sorted(futures_curve, key=lambda x: x.expiration)
+        return [
+            DeribitFuturesCurveData.model_validate(record)
+            for record in sorted(
+                records, key=lambda d: (d["hours_ago"] or 0, d["expiration"])
+            )
+        ]

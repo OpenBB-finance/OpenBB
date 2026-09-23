@@ -1,39 +1,80 @@
-"""Deribit Futures Instruments Model."""
+"""Deribit Instruments Model."""
 
 from datetime import datetime
 from typing import Any
 
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.futures_instruments import (
-    FuturesInstrumentsData,
-    FuturesInstrumentsQueryParams,
-)
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
-from openbb_deribit.models.instruments import PERPETUAL_EXPIRATION
+from openbb_deribit.utils.constants import (
+    INSTRUMENT_CHOICES_ENDPOINT,
+    SYMBOL_STYLE,
+    AnyListingCurrencies,
+    InstrumentKinds,
+)
+
+PERPETUAL_EXPIRATION = 32503708800000
 
 
-class DeribitFuturesInstrumentsQueryParams(FuturesInstrumentsQueryParams):
-    """Deribit Futures Instruments Query.
+class DeribitInstrumentsQueryParams(QueryParams):
+    """Deribit Instruments Query.
 
     Source: https://docs.deribit.com/api-reference/market-data/public-get_instruments
     """
 
+    __json_schema_extra__ = {
+        "symbol": {
+            "multiple_items_allowed": True,
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": INSTRUMENT_CHOICES_ENDPOINT,
+                "style": SYMBOL_STYLE,
+            },
+        }
+    }
 
-class DeribitFuturesInstrumentData(FuturesInstrumentsData):
-    """Deribit Futures Instrument Data."""
+    symbol: str | None = Field(
+        default=None,
+        description="One or more instrument names. When given, the currency and"
+        + " kind are ignored.",
+    )
+    currency: AnyListingCurrencies = Field(
+        default="any", description="The settlement currency of the instruments."
+    )
+    kind: InstrumentKinds | None = Field(
+        default=None,
+        description="The kind of instrument. Default is all of them.",
+    )
+    expired: bool = Field(
+        default=False,
+        description="When True, returns instruments that have already expired.",
+    )
+
+    @model_validator(mode="after")
+    def _options_are_listed_by_underlying(self):
+        """Refuse a listing of options scoped to a currency that only settles them."""
+        from openbb_deribit.utils.helpers import reject_options_by_settlement
+
+        if not self.symbol:
+            reject_options_by_settlement(self.currency, self.kind)
+
+        return self
+
+
+class DeribitInstrumentsData(Data):
+    """Deribit Instruments Data."""
 
     __alias_dict__ = {"symbol": "instrument_name"}
 
-    model_config = ConfigDict(extra="ignore")
-
     symbol: str = Field(
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
+        description="The name of the instrument.",
         json_schema_extra={"x-widget_config": {"chartDataType": "category"}},
     )
-    instrument_id: int = Field(
+    instrument_id: int | None = Field(
+        default=None,
         description="The numeric identifier of the instrument.",
         json_schema_extra={
             "x-widget_config": {
@@ -204,6 +245,21 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
             "x-widget_config": {"chartDataType": "excluded"},
         },
     )
+    option_type: str | None = Field(
+        default=None,
+        description="Whether the option is a call or a put.",
+        json_schema_extra={
+            "x-widget_config": {"chartDataType": "excluded"},
+        },
+    )
+    strike: float | None = Field(
+        default=None,
+        description="The strike price of the option.",
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-widget_config": {"chartDataType": "excluded"},
+        },
+    )
     is_active: bool | None = Field(
         default=None,
         description="Whether the instrument can be traded right now.",
@@ -216,6 +272,29 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
         description="The size of one contract.",
         json_schema_extra={
             "x-widget_config": {"chartDataType": "series"},
+        },
+    )
+    is_csr: bool | None = Field(
+        default=None,
+        description="Whether the instrument is a cross settled routed pair.",
+        json_schema_extra={
+            "x-widget_config": {
+                "headerName": "Is CSR",
+                "cellDataType": "boolean",
+                "chartDataType": "excluded",
+                "hide": True,
+            },
+        },
+    )
+    is_cbe_routed: bool | None = Field(
+        default=None,
+        description="Whether the instrument routes to Coinbase Exchange liquidity.",
+        json_schema_extra={
+            "x-widget_config": {
+                "headerName": "Is CBE Routed",
+                "cellDataType": "boolean",
+                "chartDataType": "excluded",
+            },
         },
     )
     index_id: int | None = Field(
@@ -272,36 +351,38 @@ class DeribitFuturesInstrumentData(FuturesInstrumentsData):
     )
     expiration_timestamp: datetime | None = Field(
         default=None,
-        description="When the instrument expires. Perpetual contracts carry none.",
+        description="When the instrument expires. Perpetual and spot instruments carry none.",
         json_schema_extra={
             "x-widget_config": {"chartDataType": "excluded"},
         },
     )
 
-    @field_validator("expiration_timestamp", mode="before", check_fields=False)
+    @field_validator(
+        "creation_timestamp", "expiration_timestamp", mode="before", check_fields=False
+    )
     @classmethod
-    def validate_expiration(cls, v):
-        """Read the expiration, dropping the sentinel a perpetual carries."""
-        return None if not v or int(v) == PERPETUAL_EXPIRATION else v
+    def validate_timestamp(cls, v):
+        """Read the timestamp as a datetime, dropping the perpetual sentinel."""
+        from openbb_deribit.utils.helpers import from_timestamp
+
+        return None if not v or int(v) == PERPETUAL_EXPIRATION else from_timestamp(v)
 
 
-class DeribitFuturesInstrumentsFetcher(
-    Fetcher[DeribitFuturesInstrumentsQueryParams, list[DeribitFuturesInstrumentData]]
+class DeribitInstrumentsFetcher(
+    Fetcher[DeribitInstrumentsQueryParams, list[DeribitInstrumentsData]]
 ):
     """Transform the query, extract and transform the data from the Deribit endpoint."""
 
     require_credentials = False
 
     @staticmethod
-    def transform_query(
-        params: dict[str, Any],
-    ) -> DeribitFuturesInstrumentsQueryParams:
+    def transform_query(params: dict[str, Any]) -> DeribitInstrumentsQueryParams:
         """Transform the query."""
-        return DeribitFuturesInstrumentsQueryParams(**params)
+        return DeribitInstrumentsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: DeribitFuturesInstrumentsQueryParams,
+        query: DeribitInstrumentsQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
@@ -310,29 +391,38 @@ class DeribitFuturesInstrumentsFetcher(
         Raises
         ------
         EmptyDataError
-            If the exchange lists no futures.
+            If the exchange lists no matching instrument.
         """
+        from openbb_deribit.utils.client import gather
         from openbb_deribit.utils.helpers import get_instruments
 
-        data = await get_instruments("any", "future")
+        if query.symbol:
+            symbols = [s.strip().upper() for s in query.symbol.split(",") if s.strip()]
+            results = await gather(
+                [("get_instrument", {"instrument_name": s}) for s in symbols]
+            )
+            data = [result for result in results if isinstance(result, dict) and result]
+        else:
+            data = await get_instruments(query.currency, query.kind, query.expired)
 
         if not data:
-            raise EmptyDataError("Deribit lists no futures.")
+            raise EmptyDataError("Deribit lists no instrument matching the query.")
 
         return data
 
     @staticmethod
     def transform_data(
-        query: DeribitFuturesInstrumentsQueryParams,
+        query: DeribitInstrumentsQueryParams,
         data: list[dict],
         **kwargs: Any,
-    ) -> list[DeribitFuturesInstrumentData]:
+    ) -> list[DeribitInstrumentsData]:
         """Transform the data to the model."""
         return [
-            DeribitFuturesInstrumentData.model_validate(record)
+            DeribitInstrumentsData.model_validate(record)
             for record in sorted(
                 data,
                 key=lambda d: (
+                    str(d.get("kind")),
                     d.get("expiration_timestamp") or 0,
                     str(d.get("instrument_name")),
                 ),

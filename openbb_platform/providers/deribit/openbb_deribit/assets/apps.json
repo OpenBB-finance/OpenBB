@@ -1,0 +1,591 @@
+[
+  {
+    "name": "Deribit",
+    "img": "https://www.deribit.com//share-image.png",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Order books, options chains, funding, and volatility indexes from Deribit's public market data API.",
+    "allowCustomization": true,
+    "groups": [
+      {
+        "name": "Instrument",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "BTC-PERPETUAL",
+        "widgetIds": [
+          "deribit_market_ticker_deribit_obb",
+          "deribit_market_order_book_deribit_obb",
+          "deribit_market_trades_deribit_obb",
+          "deribit_market_book_summary_deribit_obb",
+          "deribit_market_settlements_deribit_obb",
+          "derivatives_futures_historical_deribit_obb",
+          "derivatives_futures_info_deribit_obb"
+        ]
+      },
+      {
+        "name": "Index",
+        "type": "endpointParam",
+        "paramName": "index_name",
+        "defaultValue": "btc_usd",
+        "widgetIds": [
+          "deribit_index_price_deribit_obb",
+          "deribit_index_historical_deribit_obb",
+          "deribit_index_delivery_prices_deribit_obb"
+        ]
+      },
+      {
+        "name": "Settlement Currency",
+        "type": "param",
+        "paramName": "currency",
+        "defaultValue": "BTC",
+        "widgetIds": [
+          "deribit_reference_expirations_deribit_obb",
+          "deribit_reference_combos_deribit_obb"
+        ]
+      },
+      {
+        "name": "Volatility Asset",
+        "type": "param",
+        "paramName": "currency",
+        "defaultValue": "BTC",
+        "widgetIds": [
+          "deribit_volatility_realized_deribit_obb",
+          "deribit_volatility_index_deribit_obb"
+        ]
+      },
+      {
+        "name": "Underlying",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "BTC",
+        "widgetIds": [
+          "derivatives_options_chains_deribit_obb",
+          "deribit_options_optimizer_custom_obb",
+          "deribit_options_payoff_custom_obb",
+          "deribit_options_smile_custom_obb",
+          "deribit_options_term_structure_custom_obb",
+          "deribit_options_surface_custom_obb",
+          "deribit_options_stats_custom_obb",
+          "deribit_options_straddle_custom_obb",
+          "deribit_options_strangle_custom_obb",
+          "deribit_options_spreads_custom_obb"
+        ]
+      },
+      {
+        "name": "Strategy",
+        "type": "endpointParam",
+        "paramName": "legs",
+        "widgetIds": [
+          "deribit_options_payoff_custom_obb"
+        ]
+      }
+    ],
+    "tabs": {
+      "markets": {
+        "id": "markets",
+        "name": "Markets",
+        "layout": [
+          {
+            "i": "deribit_market_ticker_deribit_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL"
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "deribit_market_order_book_deribit_obb",
+            "x": 0,
+            "y": 8,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL",
+                "depth": "20"
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "deribit_market_trades_deribit_obb",
+            "x": 20,
+            "y": 8,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL",
+                "limit": 100
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "deribit_market_book_summary_deribit_obb",
+            "x": 0,
+            "y": 24,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "currency": "BTC",
+                "kind": "future"
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "deribit_market_trade_volumes_deribit_obb",
+            "x": 0,
+            "y": 39,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "extended": true
+              }
+            }
+          }
+        ]
+      },
+      "futures": {
+        "id": "futures",
+        "name": "Futures",
+        "layout": [
+          {
+            "i": "derivatives_futures_curve_deribit_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            }
+          },
+          {
+            "i": "derivatives_futures_historical_deribit_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL",
+                "interval": "1d"
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "derivatives_futures_info_deribit_obb",
+            "x": 0,
+            "y": 30,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL"
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "deribit_rates_funding_history_deribit_obb",
+            "x": 0,
+            "y": 38,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL"
+              }
+            }
+          },
+          {
+            "i": "derivatives_futures_instruments_deribit_obb",
+            "x": 0,
+            "y": 52,
+            "w": 40,
+            "h": 15
+          }
+        ]
+      },
+      "options": {
+        "id": "options",
+        "name": "Options",
+        "layout": [
+          {
+            "i": "derivatives_options_chains_deribit_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_reference_expirations_deribit_obb",
+            "x": 0,
+            "y": 20,
+            "w": 20,
+            "h": 14,
+            "state": {
+              "params": {
+                "currency": "BTC",
+                "kind": "any"
+              }
+            },
+            "groups": [
+              "Settlement Currency"
+            ]
+          },
+          {
+            "i": "deribit_reference_combos_deribit_obb",
+            "x": 20,
+            "y": 20,
+            "w": 20,
+            "h": 14,
+            "state": {
+              "params": {
+                "currency": "BTC"
+              }
+            },
+            "groups": [
+              "Settlement Currency"
+            ]
+          },
+          {
+            "i": "deribit_market_block_rfq_trades_deribit_obb",
+            "x": 0,
+            "y": 34,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "limit": 50
+              }
+            }
+          }
+        ]
+      },
+      "analysis": {
+        "id": "analysis",
+        "name": "Analysis",
+        "layout": [
+          {
+            "i": "deribit_options_optimizer_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_payoff_custom_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying",
+              "Strategy"
+            ]
+          },
+          {
+            "i": "deribit_options_smile_custom_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_term_structure_custom_obb",
+            "x": 0,
+            "y": 50,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_surface_custom_obb",
+            "x": 0,
+            "y": 65,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_stats_custom_obb",
+            "x": 0,
+            "y": 72,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_straddle_custom_obb",
+            "x": 0,
+            "y": 88,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_strangle_custom_obb",
+            "x": 20,
+            "y": 88,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          },
+          {
+            "i": "deribit_options_spreads_custom_obb",
+            "x": 0,
+            "y": 104,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "BTC"
+              }
+            },
+            "groups": [
+              "Underlying"
+            ]
+          }
+        ]
+      },
+      "volatility": {
+        "id": "volatility",
+        "name": "Volatility",
+        "layout": [
+          {
+            "i": "deribit_volatility_index_deribit_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 15,
+            "state": {
+              "params": {
+                "currency": "BTC",
+                "interval": "1d"
+              }
+            },
+            "groups": [
+              "Volatility Asset"
+            ]
+          },
+          {
+            "i": "deribit_volatility_realized_deribit_obb",
+            "x": 20,
+            "y": 0,
+            "w": 20,
+            "h": 15,
+            "state": {
+              "params": {
+                "currency": "BTC"
+              }
+            },
+            "groups": [
+              "Volatility Asset"
+            ]
+          },
+          {
+            "i": "deribit_market_mark_price_history_deribit_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 14
+          }
+        ]
+      },
+      "reference": {
+        "id": "reference",
+        "name": "Reference",
+        "layout": [
+          {
+            "i": "deribit_index_price_deribit_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 8,
+            "state": {
+              "params": {
+                "index_name": "btc_usd"
+              }
+            },
+            "groups": [
+              "Index"
+            ]
+          },
+          {
+            "i": "deribit_index_historical_deribit_obb",
+            "x": 20,
+            "y": 0,
+            "w": 20,
+            "h": 8,
+            "state": {
+              "params": {
+                "index_name": "btc_usd",
+                "span": "1d"
+              }
+            },
+            "groups": [
+              "Index"
+            ]
+          },
+          {
+            "i": "deribit_index_delivery_prices_deribit_obb",
+            "x": 0,
+            "y": 8,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "index_name": "btc_usd"
+              }
+            },
+            "groups": [
+              "Index"
+            ]
+          },
+          {
+            "i": "deribit_market_settlements_deribit_obb",
+            "x": 0,
+            "y": 22,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "BTC-PERPETUAL"
+              }
+            },
+            "groups": [
+              "Instrument"
+            ]
+          },
+          {
+            "i": "deribit_rates_apr_history_deribit_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "currency": "usde"
+              }
+            }
+          },
+          {
+            "i": "deribit_reference_currencies_deribit_obb",
+            "x": 0,
+            "y": 50,
+            "w": 40,
+            "h": 12
+          },
+          {
+            "i": "deribit_reference_instruments_deribit_obb",
+            "x": 0,
+            "y": 62,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "currency": "any",
+                "kind": "future"
+              }
+            }
+          },
+          {
+            "i": "deribit_reference_announcements_deribit_obb",
+            "x": 0,
+            "y": 77,
+            "w": 40,
+            "h": 12
+          }
+        ]
+      }
+    }
+  }
+]
