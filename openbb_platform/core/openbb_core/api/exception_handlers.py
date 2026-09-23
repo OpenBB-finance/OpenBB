@@ -93,7 +93,9 @@ class ExceptionHandlers:
         except Exception:
             errors = error.errors if hasattr(error, "errors") else error
         all_in_query = all(
-            loc in query_params for err in errors for loc in err.get("loc", ())
+            err.get("type") == "missing"
+            or all(loc in query_params for loc in err.get("loc", ()))
+            for err in errors
         )
         if "QueryParams" in error.title and all_in_query:
             detail = [
