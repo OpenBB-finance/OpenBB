@@ -10,12 +10,6 @@ LOADED_SYMBOLS: dict[str, Any] = {}
 def chain_expirations(data: Any) -> list[str]:
     """Return the expirations that still have contracts in the chain.
 
-    ``OptionsChainsData.expirations`` lists every expiration in the payload,
-    including ones whose contracts ``dataframe`` has already dropped for having
-    expired. Driving a picker or a chart off that offers dates which resolve to
-    no rows at all - a chain fetched the morning after an expiration would lead
-    with a date whose quotes come back empty.
-
     Parameters
     ----------
     data : Any
@@ -30,9 +24,6 @@ def chain_expirations(data: Any) -> list[str]:
     try:
         frame = data.dataframe
     except Exception:  # noqa: BLE001
-        return list(data.expirations)
-
-    if "expiration" not in frame.columns:
         return list(data.expirations)
 
     return sorted({str(value) for value in frame["expiration"]})

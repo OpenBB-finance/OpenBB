@@ -256,25 +256,6 @@ class TestTermStructure:
 
         assert len(output.chart.content["data"]) == 1
 
-    def test_skips_expirations_absent_from_the_frame(self, options_chain):
-        """An expiration with no rows in the frame is skipped."""
-        stub = type(
-            "Stub",
-            (),
-            {
-                "has_iv": True,
-                "dataframe": options_chain.dataframe,
-                "expirations": [*options_chain.expirations, "2099-12-31"],
-                "underlying_symbol": options_chain.underlying_symbol,
-                "_identify_price_col": options_chain._identify_price_col,
-                "_get_nearest_strike": options_chain._get_nearest_strike,
-                "_get_nearest_otm_strikes": options_chain._get_nearest_otm_strikes,
-            },
-        )()
-        output = create_term_structure(stub)
-
-        assert len(output.chart.content["data"]) == 2
-
     def test_requires_iv(self, options_chain):
         """Requesting IV on a chain without it is rejected."""
         stub = type("Stub", (), {"has_iv": False})()

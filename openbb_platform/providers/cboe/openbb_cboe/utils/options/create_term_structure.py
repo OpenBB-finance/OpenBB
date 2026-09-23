@@ -77,9 +77,6 @@ def create_term_structure(
     puts = DataFrame()
 
     for expiration in expirations:
-        if expiration not in df.expiration.unique():
-            continue
-
         nearest_otm = (
             data._get_nearest_otm_strikes(expiration, moneyness=moneyness)
             if moneyness

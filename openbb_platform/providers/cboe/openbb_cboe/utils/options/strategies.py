@@ -6,8 +6,9 @@ from datetime import date as dateType
 
 from openbb_core.provider.abstract.data import Data
 from pydantic import Field
+from pydantic.config import JsonDict
 
-PERCENT = {"x-unit_measurement": "percent"}
+PERCENT: JsonDict = {"x-unit_measurement": "percent"}
 
 
 class StrategyData(Data):
