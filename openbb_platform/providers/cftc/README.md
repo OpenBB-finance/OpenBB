@@ -501,7 +501,7 @@ print(points.to_df())
 | 3M    |          4 |   160.805970 |        −133.51 |
 | 6M    |          2 |   159.128884 |        −301.22 |
 
-### Conventions and caveats
+### FX forward conventions and caveats
 
 - Rates are derived from each trade's **leg notionals**, not the reported
   `Exchange rate basis`, which flips between `USD/EUR` and `EUR/USD` on the same instrument.
