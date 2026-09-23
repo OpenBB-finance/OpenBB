@@ -68,7 +68,6 @@ obb.deribit
 #     market
 #         block_rfq_trades
 #         book_summary
-#         mark_price_history
 #         order_book
 #         settlements
 #         ticker
@@ -175,23 +174,30 @@ The chain is also the input to an analysis suite built on it. Every figure below
 the quotes the exchange publishes — there is no second data source, and no assumption about a rate
 or a dividend the exchange does not quote.
 
-- **Strategy optimizer** — builds every long call, long put, bull call spread, bear put spread,
-  straddle, and strangle the chosen expiration can form from its listed strikes, sizes each to a
-  budget, and ranks them by what they return if the underlying reaches a price by a date. Roughly
-  1,800 candidates are scored per BTC expiration.
+- **Strategy optimizer** — builds every Deribit combo structure the chosen expiration can form,
+  bought and sold: call and put spreads (CS, PS), straddles and strangles (STRD, STRG), risk
+  reversals and synthetics (RR, REV), 1x2 ratio spreads (CSR12, PSR12), butterflies and iron
+  butterflies (CBUT, PBUT, IBUT), condors and iron condors (CCOND, PCOND, ICOND), calendars and
+  diagonals against the expiration about a month later (CCAL, PCAL, CDIAG, PDIAG), and single
+  calls and puts. A position Deribit lists as a combo book is priced from that book's bid or offer,
+  and every listed combo on the expiration is ranked even outside the strike window. Each position
+  is sized so its worst loss across a threefold move either way is the budget, which is what lets
+  credit structures rank alongside debit ones. The best position of each structure is returned,
+  ranked by what it returns if the underlying reaches a price by a date.
 - **Payoff** — the profit and loss of one ranked strategy, drawn only over the prices where the
   position actually responds. A payoff is a straight line everywhere outside its strikes, so the
   range is taken from the position rather than from a fixed span either side of spot, and the
   target and breakevens are added when they sit within reach of it.
 - **Straddle, strangle, vertical spreads** — the standard structures priced at every listed
   expiration, each with its cost, its cost as a share of spot, its breakevens, and its bounds.
-- **Volatility smile** — implied volatility against strike, one line per expiration, optionally
-  keeping only the out-of-the-money side of each strike, which is where the liquidity sits.
-- **Volatility term structure** — at-the-money implied volatility against days to expiration,
-  averaged across the call and the put so neither side's skew dominates.
-- **Volatility surface** — implied volatility, or any greek, raised over expiration and strike.
-- **Statistics** — call and put open interest and volume, grouped by strike or by expiration, with
-  the put/call ratios.
+- **Volatility smile** — implied volatility or skew against strike for calls and puts, up to five
+  expirations, optionally only out of the money. Drawn the same way as the Cboe smile.
+- **Volatility term structure** — implied volatility or price at the nearest out-of-the-money
+  strike, a chosen strike, or a moneyness, across every expiration. Drawn the same way as Cboe's.
+- **Volatility surface** — implied volatility, a greek, or delta and gamma exposure, raised over
+  days to expiration and strike, for either side of the chain. Drawn the same way as Cboe's.
+- **Statistics** — call and put open interest or volume by expiration, or by strike for one
+  expiration, as values, shares of the total, or put/call ratios. Drawn the same way as Cboe's.
 
 ### Priced and Sized in the Quote Currency
 
@@ -268,7 +274,8 @@ dvol = obb.deribit.volatility.index(currency="BTC", interval="1d", provider="der
 # Every instrument the exchange lists, with its full specification.
 instruments = obb.deribit.reference.instruments(currency="any", provider="deribit")
 
-# The strategies that best serve a view of 100,000 BTC by year end, for 5,000 USD.
+# The best position of every combo structure for a view of 100,000 BTC by year end,
+# each risking 5,000 USD.
 ranked = obb.deribit.options.optimizer(
     symbol="BTC", target_price=100000, target_date="2026-12-25", budget=5000
 )
@@ -296,6 +303,3 @@ for quotes, books, and the server clock. The cache file is swept once per proces
 Perpetuals can be named either in full — `SOL_USDC-PERPETUAL` — or by their shortened root,
 `SOLUSDC`.
 
-The exchange keeps mark price history only for the subset of options its volatility indexes are
-built from, which is the two expirations bracketing thirty days. Every other instrument returns an
-empty series by design.

@@ -72,38 +72,6 @@ async def futures_root_choices() -> list[dict[str, str]]:
     return _choices(await get_futures_roots())
 
 
-async def mark_price_choices() -> list[dict[str, str]]:
-    """Return the options whose mark price the exchange keeps a history of.
-
-    The exchange keeps that history only for the contracts its volatility
-    indexes are built from, which are the two expirations bracketing thirty
-    days on BTC and ETH. Every other instrument returns an empty series, so
-    offering the whole option universe here would be offering mostly dead ends.
-
-    Returns
-    -------
-    list[dict[str, str]]
-        Each contract, labelled by its instrument name.
-    """
-    import asyncio
-
-    from openbb_deribit.utils.helpers import get_volatility_index_options
-
-    listings = await asyncio.gather(
-        *(get_volatility_index_options(currency) for currency in ("BTC", "ETH")),
-        return_exceptions=True,
-    )
-
-    return _choices(
-        sorted(
-            str(contract["instrument_name"])
-            for listing in listings
-            if isinstance(listing, list)
-            for contract in listing
-        )
-    )
-
-
 async def combo_choices(
     currency: str = "BTC", state: str | None = None
 ) -> list[dict[str, str]]:

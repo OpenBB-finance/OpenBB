@@ -30,7 +30,6 @@ from openbb_deribit.models.historical_volatility import (
 from openbb_deribit.models.index_historical import DeribitIndexHistoricalFetcher
 from openbb_deribit.models.index_price import DeribitIndexPriceFetcher
 from openbb_deribit.models.instruments import DeribitInstrumentsFetcher
-from openbb_deribit.models.mark_price_history import DeribitMarkPriceHistoryFetcher
 from openbb_deribit.models.order_book import DeribitOrderBookFetcher
 from openbb_deribit.models.settlements import DeribitSettlementsFetcher
 from openbb_deribit.models.ticker import DeribitTickerFetcher
@@ -925,65 +924,6 @@ class TestIndexHistorical:
                 {"index_name": "btc_usd"},
                 responder,
                 {"get_index_chart_data": []},
-            )
-
-
-class TestMarkPriceHistory:
-    """Mark price history is returned oldest first."""
-
-    @pytest.mark.asyncio
-    async def test_rows(self, responder, load):
-        """Each five-minute mark is a row."""
-        payload = load("mark_price_history")
-        rows = await run(
-            DeribitMarkPriceHistoryFetcher,
-            {"symbol": "BTC-9OCT26-81000-C"},
-            responder,
-            {
-                "get_mark_price_history": payload,
-                "get_instruments": load("instruments_future"),
-            },
-        )
-
-        assert len(rows) == len(payload)
-        assert [row.date for row in rows] == sorted(row.date for row in rows)
-
-    @pytest.mark.asyncio
-    async def test_resolves_a_contract_when_none_is_given(
-        self, monkeypatch, responder, load
-    ):
-        """With no symbol the front volatility index contract is read."""
-
-        async def _default(currency="BTC"):
-            return "BTC-9OCT26-86000-C"
-
-        monkeypatch.setattr(
-            "openbb_deribit.utils.helpers.default_volatility_option", _default
-        )
-        rows = await run(
-            DeribitMarkPriceHistoryFetcher,
-            {},
-            responder,
-            {
-                "get_mark_price_history": load("mark_price_history"),
-                "get_instruments": load("instruments_future"),
-            },
-        )
-
-        assert {row.symbol for row in rows} == {"BTC-9OCT26-86000-C"}
-
-    @pytest.mark.asyncio
-    async def test_empty_says_why(self, responder, load):
-        """An instrument with no history is told what does have one."""
-        with pytest.raises(EmptyDataError, match="volatility indexes"):
-            await run(
-                DeribitMarkPriceHistoryFetcher,
-                {"symbol": "BTC-PERPETUAL"},
-                responder,
-                {
-                    "get_mark_price_history": [],
-                    "get_instruments": load("instruments_future"),
-                },
             )
 
 

@@ -15,23 +15,6 @@ router = Router(prefix="/market", description="Deribit market data.")
 
 
 @router.command(
-    methods=["GET"],
-    widget_config={"exclude": True},
-    examples=[
-        APIEx(
-            description="Get the options whose mark price history the exchange keeps.",
-            parameters={},
-        )
-    ],
-)
-async def mark_price_choices() -> list[dict[str, str]]:
-    """``[{label, value}]`` of every option with a mark price history."""
-    from openbb_deribit.utils.choices import mark_price_choices as choices
-
-    return await choices()
-
-
-@router.command(
     model="DeribitBookSummary",
     widget_config={
         "name": "Deribit Book Summary",
@@ -270,33 +253,4 @@ async def settlements(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get the settlements, deliveries, and bankruptcies Deribit has processed."""
-    return await OBBject.from_query(OBBQuery(**locals()))
-
-
-@router.command(
-    model="DeribitMarkPriceHistory",
-    widget_config={
-        "name": "Deribit Mark Price History",
-        "description": "Five-minute mark prices. The exchange keeps these only for"
-        + " the options its volatility indexes are built from.",
-        "category": "Crypto",
-        "subCategory": "Market Data",
-        "source": ["Deribit"],
-        "gridData": {"w": 40, "h": 12},
-        "data": {"table": {"chartView": {"enabled": True, "chartType": "line"}}},
-    },
-    examples=[
-        APIEx(
-            description="The mark price history of one option.",
-            parameters={"symbol": "BTC-25DEC26-100000-C", "provider": "deribit"},
-        )
-    ],
-)
-async def mark_price_history(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get Deribit's five-minute mark prices for a volatility-index option."""
     return await OBBject.from_query(OBBQuery(**locals()))

@@ -26,7 +26,6 @@ from openbb_deribit.models.historical_volatility import (
 from openbb_deribit.models.index_historical import DeribitIndexHistoricalFetcher
 from openbb_deribit.models.index_price import DeribitIndexPriceFetcher
 from openbb_deribit.models.instruments import DeribitInstrumentsFetcher
-from openbb_deribit.models.mark_price_history import DeribitMarkPriceHistoryFetcher
 from openbb_deribit.models.options_chains import DeribitOptionsChainsFetcher
 from openbb_deribit.models.order_book import DeribitOrderBookFetcher
 from openbb_deribit.models.settlements import DeribitSettlementsFetcher
@@ -59,7 +58,6 @@ _fetcher_dict: dict = {
     "DeribitIndexHistorical": DeribitIndexHistoricalFetcher,
     "DeribitIndexPrice": DeribitIndexPriceFetcher,
     "DeribitInstruments": DeribitInstrumentsFetcher,
-    "DeribitMarkPriceHistory": DeribitMarkPriceHistoryFetcher,
     "DeribitOrderBook": DeribitOrderBookFetcher,
     "DeribitSettlements": DeribitSettlementsFetcher,
     "DeribitTicker": DeribitTickerFetcher,

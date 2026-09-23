@@ -86,8 +86,8 @@ def create_payoff(data: dict, theme: str = "dark", **kwargs) -> "OBBject":
     low, high = min(prices), max(prices)
     markers = [(spot, f"Spot {spot:,.6g}", "#8b949e")]
 
-    if abs(target - spot) > (high - low) / 100:
-        markers.append((target, f"Target {target:,.6g}", "#d29922"))
+    if abs(target - spot) > (high - low) / 50:
+        markers.append((target, f"Target {target:,.6g}", "#8b949e"))
 
     markers += [
         (level, f"B/E {level:,.6g}", "#e35d6a")
@@ -101,9 +101,15 @@ def create_payoff(data: dict, theme: str = "dark", **kwargs) -> "OBBject":
     profit = float(data.get("expected_profit") or 0)
     cost = float(data.get("cost") or 0)
     coin = f" &nbsp;|&nbsp; settled in {settles}" if settles != quote else ""
+    priced = (
+        f"for {cost:,.0f} {quote}"
+        if cost >= 0
+        else f"for a {abs(cost):,.0f} {quote} credit"
+    )
+    listed = f" &nbsp;|&nbsp; {data['combo']}" if data.get("combo") else ""
     figure.set_title(
-        f"{data.get('strategy', '')} for {cost:,.0f} {quote}"
-        f"<br><span style='font-size:12px'>{data.get('legs', '')}"
+        f"{data.get('strategy', '')} {priced}"
+        f"<br><span style='font-size:12px'>{data.get('legs', '')}{listed}"
         f" &nbsp;|&nbsp; expected {profit:+,.0f} {quote}"
         f" &nbsp;|&nbsp; spot {spot:,.6g}{coin}</span>",
         x=0.5,

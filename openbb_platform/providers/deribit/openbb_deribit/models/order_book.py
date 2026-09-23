@@ -11,8 +11,8 @@ from pydantic import Field, field_validator
 
 from openbb_deribit.utils.constants import (
     INSTRUMENT_CHOICES_ENDPOINT,
+    ORDER_BOOK_DEPTHS,
     SYMBOL_STYLE,
-    OrderBookDepths,
 )
 
 
@@ -30,7 +30,14 @@ class DeribitOrderBookQueryParams(QueryParams):
                 "optionsEndpoint": INSTRUMENT_CHOICES_ENDPOINT,
                 "style": SYMBOL_STYLE,
             },
-        }
+        },
+        "depth": {
+            "x-widget_config": {
+                "options": [
+                    {"label": str(depth), "value": depth} for depth in ORDER_BOOK_DEPTHS
+                ]
+            }
+        },
     }
 
     symbol: str | None = Field(
@@ -43,15 +50,29 @@ class DeribitOrderBookQueryParams(QueryParams):
         description="The numeric identifier of one instrument, used in place of"
         + " its name.",
     )
-    depth: OrderBookDepths = Field(
-        default="10", description="The number of levels to return on each side."
+    depth: int = Field(
+        default=10,
+        description="The number of levels to return on each side: 1, 5, 10, 20, 50,"
+        + " 100, 1000, or 10000.",
     )
 
-    @field_validator("depth", mode="before", check_fields=False)
+    @field_validator("depth", check_fields=False)
     @classmethod
     def validate_depth(cls, v):
-        """Read the depth as text, so a number is accepted from Python as well."""
-        return str(v) if v is not None else v
+        """Refuse a depth the exchange does not offer.
+
+        Raises
+        ------
+        ValueError
+            If the depth is not one Deribit accepts.
+        """
+        if v not in ORDER_BOOK_DEPTHS:
+            raise ValueError(
+                f"Deribit returns a book {', '.join(map(str, ORDER_BOOK_DEPTHS))}"
+                f" levels deep, not {v}."
+            )
+
+        return v
 
 
 class DeribitOrderBookData(Data):
@@ -174,7 +195,7 @@ class DeribitOrderBookFetcher(
                     "get_order_book",
                     {
                         "instrument_name": perpetuals.get(symbol, symbol),
-                        "depth": int(query.depth),
+                        "depth": query.depth,
                     },
                 )
                 for symbol in symbols
@@ -185,7 +206,7 @@ class DeribitOrderBookFetcher(
                     "get_order_book_by_instrument_id",
                     {
                         "instrument_id": query.instrument_id,
-                        "depth": int(query.depth),
+                        "depth": query.depth,
                     },
                 )
             ]

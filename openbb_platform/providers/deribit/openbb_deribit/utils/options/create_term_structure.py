@@ -1,92 +1,191 @@
-"""The volatility term structure of a Deribit underlying."""
+"""Deribit options term-structure chart across expirations."""
 
-from typing import TYPE_CHECKING, Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Literal
 
 if TYPE_CHECKING:
     from openbb_core.app.model.obbject import OBBject
+    from openbb_core.provider.standard_models.options_chains import OptionsChainsData
 
 
-def term_rows(frame, spot: float) -> list:
-    """Return the at-the-money volatility of every expiration.
+def create_term_structure(
+    data: OptionsChainsData,
+    strike: float | None = None,
+    moneyness: float | None = None,
+    metric: Literal["price", "iv"] = "iv",
+    option_type: Literal["both", "calls", "puts"] = "both",
+    **kwargs,
+) -> OBBject:
+    """Chart price or implied volatility at the nearest strike across expirations.
 
-    The strike nearest the underlying carries the volatility the market quotes
-    for that expiration, averaged across the call and the put so neither side's
-    skew dominates.
+    Parameters
+    ----------
+    data : OptionsChainsData
+        The loaded Deribit options chain.
+    strike : float | None
+        Target strike. Defaults to the nearest out-of-the-money strike per expiry.
+    moneyness : float | None
+        Select strikes this percent out-of-the-money instead of a fixed strike.
+    metric : Literal["price", "iv"]
+        Contract price or implied volatility.
+    option_type : Literal["both", "calls", "puts"]
+        Which side of the chain to plot.
 
-    An expiration already inside its last day is left out. Its reading is real
-    but it sits at zero on a time axis, where it draws as a vertical drop that
-    compresses the term the chart exists to show.
+    Returns
+    -------
+    OBBject
+        The plotted rows, with the Plotly figure attached to ``chart``.
+
+    Raises
+    ------
+    OpenBBError
+        If implied volatility was requested but is absent from the chain.
     """
-    rows: list = []
-
-    for expiration in sorted(frame["expiration"].dropna().unique()):
-        at = frame[
-            (frame["expiration"] == expiration)
-            & (frame["dte"] > 0)
-            & frame["implied_volatility"].notna()
-            & (frame["implied_volatility"] > 0)
-        ]
-
-        if at.empty:
-            continue
-
-        strike = float(at.iloc[(at["strike"] - spot).abs().argmin()]["strike"])
-        pair = at[at["strike"] == strike]
-        rows.append(
-            {
-                "expiration": expiration,
-                "dte": int(pair.iloc[0]["dte"] or 0),
-                "strike": strike,
-                "underlying_price": spot,
-                "implied_volatility": float(pair["implied_volatility"].mean()),
-                "open_interest": float(pair["open_interest"].fillna(0).sum()),
-                "volume": float(pair["volume"].fillna(0).sum()),
-            }
-        )
-
-    return rows
-
-
-def create_term_structure(data: dict, theme: str = "dark", **kwargs) -> "OBBject":
-    """Draw at-the-money implied volatility against time to expiration."""
+    from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.app.model.obbject import OBBject
     from openbb_core.app.utils import df_to_basemodel
-    from pandas import DataFrame
+    from pandas import DataFrame, concat
 
     from openbb_deribit.utils.options.theme import finalize, new_figure
 
-    frame = DataFrame(data["rows"])
-    figure, text_color, background = new_figure(theme)
+    if metric == "iv" and not data.has_iv:
+        raise OpenBBError("No implied volatility data available.")
 
-    figure.add_scatter(
-        x=frame["dte"],
-        y=frame["implied_volatility"],
-        mode="lines+markers",
-        name="ATM IV",
-        line=dict(color="#2f6fed", width=2),
-        marker=dict(size=7),
-        customdata=frame["expiration"].astype(str),
-        hovertemplate="%{customdata} (%{x}d)<b> %{y:.2f}%</b><extra></extra>",
+    from openbb_deribit.utils.options.data_handler import chain_expirations
+
+    df = data.dataframe.copy()
+    expirations = chain_expirations(data)
+    symbol = data.underlying_symbol[0]
+    price_col = (
+        "last_trade_price"
+        if "last_trade_price" in df.columns
+        else data._identify_price_col(df, "call", "ask")
     )
-    figure.set_title(
-        f"{data.get('symbol', '')} at-the-money volatility term structure",
-        x=0.5,
-        font=dict(size=15),
+    target_col_map = {"price": price_col, "iv": "implied_volatility"}
+    df.expiration = df.expiration.astype(str)
+    base = f"{symbol} {'Implied Volatility' if metric == 'iv' else 'Price'}"
+
+    if strike:
+        title = f"{base} @ Strike Nearest To ${strike}"
+    elif moneyness:
+        title = f"{base} @ {moneyness}% Moneyness"
+    else:
+        title = f"{base} Nearest OTM Strikes"
+
+    calls = DataFrame()
+    puts = DataFrame()
+
+    for expiration in expirations:
+        nearest_otm = (
+            data._get_nearest_otm_strikes(expiration, moneyness=moneyness)
+            if moneyness
+            else {}
+        )
+        call_strike = (
+            nearest_otm.get("call")
+            if nearest_otm
+            else data._get_nearest_strike(
+                option_type="call", days=expiration, strike=strike
+            )
+        )
+        put_strike = (
+            nearest_otm.get("put")
+            if nearest_otm
+            else data._get_nearest_strike(
+                option_type="put", days=expiration, strike=strike
+            )
+        )
+        calls_filtered = df[
+            (df.expiration == expiration)
+            & (df.option_type == "call")
+            & (df[price_col] > 0)
+        ]
+
+        if not calls_filtered.empty:
+            calls = concat(
+                [
+                    calls,
+                    calls_filtered.iloc[
+                        (calls_filtered.strike - call_strike).abs().argsort()[:1]
+                    ],
+                ]
+            )
+
+        puts_filtered = df[
+            (df.expiration == expiration)
+            & (df.option_type == "put")
+            & (df[price_col] > 0)
+        ]
+
+        if not puts_filtered.empty:
+            puts = concat(
+                [
+                    puts,
+                    puts_filtered.iloc[
+                        (puts_filtered.strike - put_strike).abs().argsort()[:1]
+                    ],
+                ]
+            )
+
+    output_df = concat([calls, puts], axis=0).reset_index(drop=True)
+    theme = kwargs.get("theme") or "dark"
+    fig, text_color, background = new_figure(theme)
+    hovertemplate = (
+        "$<b>%{y} @ $</b>%{customdata} Strike<extra></extra>"
+        if metric == "price"
+        else "<b>%{y} @ $</b>%{customdata} Strike<extra></extra>"
     )
-    figure.update_layout(
+
+    if option_type in ["calls", "both"] and not calls.empty:
+        fig.add_scatter(
+            x=calls["expiration"],
+            y=calls[target_col_map[metric]],
+            mode="lines+markers",
+            name="Calls",
+            marker_color="royalblue",
+            hovertemplate=hovertemplate,
+            customdata=calls["strike"],
+        )
+
+    if option_type in ["puts", "both"] and not puts.empty:
+        fig.add_scatter(
+            x=puts["expiration"],
+            y=puts[target_col_map[metric]],
+            mode="lines+markers",
+            name="Puts",
+            marker_color="red",
+            hovertemplate=hovertemplate,
+            customdata=puts["strike"],
+        )
+
+    fig.set_title(title, x=0.5, font=dict(size=16))
+    fig.update_layout(
         paper_bgcolor=background,
         plot_bgcolor=background,
-        font=dict(color=text_color),
-        margin=dict(l=10, r=10, t=60, b=10),
-        showlegend=False,
-        xaxis=dict(title="Days to expiration", showgrid=False, linecolor=text_color),
         yaxis=dict(
-            title="Implied volatility (%)",
-            side="left",
+            ticklen=0,
             showgrid=True,
+            tickfont=dict(size=12),
+            automargin=True,
             linecolor=text_color,
+            showline=True,
         ),
+        xaxis=dict(
+            showgrid=False,
+            tickfont=dict(size=11),
+            ticklen=0,
+            type="category",
+            linecolor=text_color,
+            showline=True,
+            nticks=10,
+            showspikes=False,
+        ),
+        legend=dict(orientation="v", yanchor="top", y=0.90, xanchor="right", x=-0.01),
+        hovermode="x unified",
+        font=dict(color=text_color),
+        margin=dict(l=10, r=10, t=10, b=10),
     )
-    output: Any = OBBject(results=df_to_basemodel(frame))
+    output: Any = OBBject(results=df_to_basemodel(output_df))
 
-    return finalize(output, figure, theme)
+    return finalize(output, fig, theme)

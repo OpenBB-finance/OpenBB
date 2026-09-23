@@ -2,7 +2,7 @@
 
 import pytest
 
-from openbb_deribit.routers import futures, market, options, rates, reference
+from openbb_deribit.routers import futures, options, rates, reference
 
 
 class TestReference:
@@ -149,32 +149,6 @@ class TestDerivativeChoices:
         assert await futures.perpetual_choices() == [
             {"label": "BTC-PERPETUAL", "value": "BTC-PERPETUAL"}
         ]
-
-    @pytest.mark.asyncio
-    async def test_mark_price_choices(self, responder):
-        """The mark price feed offers the volatility index constituents."""
-        from datetime import datetime, timedelta, timezone
-
-        from openbb_deribit.utils.helpers import to_timestamp
-
-        now = datetime.now(timezone.utc)
-        responder(
-            {
-                "get_instruments": lambda params: [
-                    {
-                        "instrument_name": f"{params['currency']}-{offset}-C",
-                        "expiration_timestamp": to_timestamp(
-                            now + timedelta(days=offset)
-                        ),
-                        "strike": 100.0,
-                    }
-                    for offset in (1, 29, 38)
-                ]
-            }
-        )
-        feed = await market.mark_price_choices()
-
-        assert sorted({int(row["value"].split("-")[1]) for row in feed}) == [29, 38]
 
     @pytest.mark.asyncio
     async def test_underlying_choices(self, responder, load):

@@ -76,6 +76,7 @@
         "type": "endpointParam",
         "paramName": "legs",
         "widgetIds": [
+          "deribit_options_optimizer_custom_obb",
           "deribit_options_payoff_custom_obb"
         ]
       }
@@ -310,7 +311,8 @@
               }
             },
             "groups": [
-              "Underlying"
+              "Underlying",
+              "Strategy"
             ]
           },
           {
@@ -470,13 +472,6 @@
             "groups": [
               "Volatility Asset"
             ]
-          },
-          {
-            "i": "deribit_market_mark_price_history_deribit_obb",
-            "x": 0,
-            "y": 15,
-            "w": 40,
-            "h": 14
           }
         ]
       },

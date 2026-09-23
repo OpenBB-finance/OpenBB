@@ -98,9 +98,11 @@ def _chain_rows(inverse: bool, spot: float, size: float):
                         "mark": mark,
                         "bid": mark * 0.98,
                         "ask": mark * 1.02,
+                        "last": mark,
                         "implied_volatility": 50.0 + abs(step) * 2,
                         "open_interest": 10.0 + step,
                         "volume": 5.0,
+                        "underlying_price": spot,
                         "underlying_spot_price": spot,
                         "delta": 0.5,
                         "gamma": 0.001,
@@ -125,16 +127,33 @@ def chain_frame():
 
 
 @pytest.fixture
+def options_chain(chain_frame):
+    """Return a synthetic chain as the model the options charts draw from."""
+    from openbb_deribit.utils.options.data_handler import to_chain
+
+    return to_chain(chain_frame(), "BTC")
+
+
+@pytest.fixture
 def loaded_chain(monkeypatch, chain_frame):
     """Serve a synthetic chain wherever a chain would be loaded."""
 
-    def install(inverse: bool = True, spot: float = 100.0, size: float = 1.0):
+    def install(
+        inverse: bool = True,
+        spot: float = 100.0,
+        size: float = 1.0,
+        books: list | None = None,
+    ):
         frame = chain_frame(inverse, spot, size)
 
         async def _load(symbol, use_cache=True):
             return frame.copy()
 
+        async def _combos(symbol, use_cache=True):
+            return list(books or [])
+
         monkeypatch.setattr("openbb_deribit.utils.options.chain.load_chain", _load)
+        monkeypatch.setattr("openbb_deribit.utils.options.chain.load_combos", _combos)
 
         return frame
 

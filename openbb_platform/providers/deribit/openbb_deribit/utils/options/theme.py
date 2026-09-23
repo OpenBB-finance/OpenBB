@@ -6,11 +6,7 @@ CHART_CONFIG = {"scrollZoom": True, "displayModeBar": False, "responsive": True}
 
 
 class Unplotted:
-    """Accept every drawing call and draw nothing.
-
-    The charting extension is optional, so a view that cannot draw still
-    computes the rows it would have drawn and hands those back instead.
-    """
+    """Accept every drawing call and draw nothing."""
 
     def __getattr__(self, name: str):
         """Return a call that does nothing and keeps the chain going."""
@@ -19,6 +15,29 @@ class Unplotted:
             return self
 
         return drawn
+
+
+def supported_layout(layout: dict) -> dict:
+    """Drop the layout keys the installed Plotly no longer accepts.
+
+    Parameters
+    ----------
+    layout : dict
+        The template layout to filter.
+
+    Returns
+    -------
+    dict
+        Only the keys the installed Plotly's ``Layout`` accepts.
+    """
+    from plotly.graph_objects import Layout
+
+    valid = getattr(Layout, "_valid_props", None)
+
+    if not valid:
+        return layout
+
+    return {key: value for key, value in layout.items() if key in valid}
 
 
 def new_figure(theme: str) -> "tuple[Any, str, str]":
@@ -47,7 +66,9 @@ def new_figure(theme: str) -> "tuple[Any, str, str]":
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
     figure = OpenBBFigure(create_backend=True)
-    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    figure.update_layout(
+        supported_layout(ChartStyle().plotly_template.get("layout", {}))
+    )
 
     return figure, text_color, background
 

@@ -4,10 +4,6 @@ import pytest
 
 from openbb_deribit.routers import options as router
 from openbb_deribit.utils.options import chain
-from openbb_deribit.utils.options.create_smile import smile_rows
-from openbb_deribit.utils.options.create_stats import stats_rows
-from openbb_deribit.utils.options.create_surface import surface_rows
-from openbb_deribit.utils.options.create_term_structure import term_rows
 
 
 class TestLoading:
@@ -254,6 +250,122 @@ class TestLoading:
             await chain.load_chain("NOPE")
 
 
+class TestComboLoading:
+    """The combo books listed on an underlying are read with their quotes."""
+
+    @pytest.fixture(autouse=True)
+    def _clean(self):
+        """Start each test with nothing held."""
+        chain._LOADED.clear()
+        chain._LOCKS.clear()
+
+        yield
+
+        chain._LOADED.clear()
+        chain._LOCKS.clear()
+
+    @pytest.fixture
+    def exchange(self, responder):
+        """List option, other-root, and future combos on BTC."""
+        calls: list = []
+
+        def combos(params):
+            calls.append(("combos", params["currency"]))
+
+            return [
+                {
+                    "id": "BTC-CS-30OCT26-100000_110000",
+                    "legs": [
+                        {"instrument_name": "BTC-30OCT26-100000-C", "amount": 1},
+                        {"instrument_name": "BTC-30OCT26-110000-C", "amount": -1},
+                    ],
+                },
+                {
+                    "id": "BTC-STRD-30OCT26-100000",
+                    "legs": [
+                        {"instrument_name": "BTC-30OCT26-100000-C", "amount": 1},
+                        {"instrument_name": "BTC-30OCT26-100000-P", "amount": 1},
+                    ],
+                },
+                {
+                    "id": "BTC-FS-30OCT26_PERP",
+                    "legs": [
+                        {"instrument_name": "BTC-PERPETUAL", "amount": -1},
+                        {"instrument_name": "BTC-30OCT26", "amount": 1},
+                    ],
+                },
+                {
+                    "id": "ETH-CS-30OCT26-3000_3100",
+                    "legs": [
+                        {"instrument_name": "ETH-30OCT26-3000-C", "amount": 1},
+                        {"instrument_name": "ETH-30OCT26-3100-C", "amount": -1},
+                    ],
+                },
+            ]
+
+        def quotes(params):
+            calls.append(("quotes", params["kind"]))
+
+            return [
+                {
+                    "instrument_name": "BTC-CS-30OCT26-100000_110000",
+                    "bid_price": 0.01,
+                    "ask_price": 0.02,
+                }
+            ]
+
+        responder({"get_combos": combos, "get_book_summary_by_currency": quotes})
+
+        return calls
+
+    @pytest.mark.asyncio
+    async def test_only_the_underlyings_option_combos_are_kept(self, exchange):
+        """Future spreads and other roots are left out."""
+        books = await chain.load_combos("btc")
+
+        assert [book["name"] for book in books] == [
+            "BTC-CS-30OCT26-100000_110000",
+            "BTC-STRD-30OCT26-100000",
+        ]
+        assert books[0]["legs"] == [
+            ("BTC-30OCT26-100000-C", 1),
+            ("BTC-30OCT26-110000-C", -1),
+        ]
+
+    @pytest.mark.asyncio
+    async def test_each_combo_carries_its_quote(self, exchange):
+        """A quoted combo has its bid and offer; an unquoted one has neither."""
+        quoted, unquoted = await chain.load_combos("BTC")
+
+        assert (quoted["bid"], quoted["ask"]) == (0.01, 0.02)
+        assert (unquoted["bid"], unquoted["ask"]) == (None, None)
+
+    @pytest.mark.asyncio
+    async def test_the_settlement_currency_is_read(self, exchange):
+        """The combos of a coin-settled root are read in the coin."""
+        await chain.load_combos("BTC")
+
+        assert exchange == [("combos", "BTC"), ("quotes", "option_combo")]
+
+    @pytest.mark.asyncio
+    async def test_a_second_read_reuses_the_first(self, exchange):
+        """Reading the combos twice queries the exchange once."""
+        first = await chain.load_combos("BTC")
+        first.clear()
+        second = await chain.load_combos("BTC")
+
+        assert len(exchange) == 2
+        assert len(second) == 2
+
+    @pytest.mark.asyncio
+    async def test_a_fresh_read_queries_again(self, exchange):
+        """Asking for current combos goes back to the exchange."""
+        await chain.load_combos("BTC")
+        await chain.load_combos("BTC", use_cache=False)
+
+        assert len(exchange) == 4
+
+
 class TestSettlement:
     """A root names the currency it settles in and the index that prices it."""
 
@@ -272,103 +384,6 @@ class TestSettlement:
         assert chain.settlement_of(root) == currency
 
 
-class TestRows:
-    """Each view reduces the chain to the rows it draws."""
-
-    def test_the_smile_keeps_only_quoted_volatility(self, chain_frame):
-        """A contract with no volatility is not on the smile."""
-        frame = chain_frame()
-        frame.loc[frame.index[0], "implied_volatility"] = None
-        frame.loc[frame.index[1], "implied_volatility"] = 0
-
-        rows = smile_rows(frame, 100.0, otm=False)
-
-        assert len(rows) == len(frame) - 2
-        assert all(row["implied_volatility"] > 0 for row in rows)
-
-    def test_the_smile_can_keep_one_side_of_each_strike(self, chain_frame):
-        """Out of the money keeps calls above spot and puts below it."""
-        rows = smile_rows(chain_frame(), 100.0, otm=True)
-
-        for row in rows:
-            above = row["strike"] >= 100.0
-            assert row["option_type"] == ("call" if above else "put")
-
-    def test_moneyness_is_measured_against_spot(self, chain_frame):
-        """A strike at spot is at the money."""
-        rows = smile_rows(chain_frame(), 100.0, otm=False)
-        at = [row for row in rows if row["strike"] == 100.0]
-
-        assert at and all(row["moneyness"] == 0 for row in at)
-
-    def test_no_spot_leaves_moneyness_unmeasured(self, chain_frame):
-        """Without a spot price a strike has no moneyness."""
-        rows = smile_rows(chain_frame(), 0.0, otm=False)
-
-        assert all(row["moneyness"] is None for row in rows)
-
-    def test_the_term_structure_reads_the_money(self, chain_frame):
-        """Each expiration is read at the strike nearest the underlying."""
-        rows = term_rows(chain_frame(), 100.0)
-
-        assert len(rows) == 2
-        assert all(row["strike"] == 100.0 for row in rows)
-        assert [row["dte"] for row in rows] == [1, 30]
-
-    def test_an_expiration_with_no_volatility_is_skipped(self, chain_frame):
-        """An expiration nobody quotes is left off the term structure."""
-        frame = chain_frame()
-        frame.loc[frame["dte"] == 1, "implied_volatility"] = None
-
-        assert [row["dte"] for row in term_rows(frame, 100.0)] == [30]
-
-    def test_the_surface_is_windowed(self, chain_frame):
-        """Only strikes and expirations inside the window are raised."""
-        rows = surface_rows(chain_frame(), 100.0, "vega", 0.03, 1, 1)
-
-        assert rows
-        assert all(row["dte"] == 1 for row in rows)
-        assert all(97.0 <= row["strike"] <= 103.0 for row in rows)
-
-    def test_the_surface_takes_one_side_of_each_strike(self, chain_frame):
-        """A strike appears once, from whichever side is out of the money."""
-        rows = surface_rows(chain_frame(), 100.0, "implied_volatility", 0.25, 1, 1)
-
-        assert len({row["strike"] for row in rows}) == len(rows)
-
-    def test_statistics_split_the_sides(self, chain_frame):
-        """Open interest and volume are reported per side and together."""
-        rows = stats_rows(chain_frame(), "expiration")
-
-        assert len(rows) == 2
-
-        for row in rows:
-            assert row["total_open_interest"] == (
-                row["call_open_interest"] + row["put_open_interest"]
-            )
-            assert row["total_volume"] == row["call_volume"] + row["put_volume"]
-            assert row["put_call_open_interest_ratio"] == pytest.approx(1.0)
-            assert row["put_call_volume_ratio"] == pytest.approx(1.0)
-
-    def test_a_side_with_nothing_traded_has_no_ratio(self, chain_frame):
-        """A ratio against zero is left unreported rather than invented."""
-        frame = chain_frame()
-        frame.loc[frame["option_type"] == "call", ["open_interest", "volume"]] = 0
-        rows = stats_rows(frame, "strike")
-
-        assert all(row["put_call_open_interest_ratio"] is None for row in rows)
-        assert all(row["put_call_volume_ratio"] is None for row in rows)
-
-    def test_missing_totals_count_as_nothing(self, chain_frame):
-        """A contract with no reported interest contributes zero, not nothing."""
-        frame = chain_frame()
-        frame["open_interest"] = None
-        frame["volume"] = None
-        rows = stats_rows(frame, "expiration")
-
-        assert all(row["total_open_interest"] == 0 for row in rows)
-
-
 class TestCharts:
     """Every view draws, and every view still answers without a chart."""
 
@@ -379,7 +394,7 @@ class TestCharts:
 
         expiration = chain.expirations(frame)[0]
 
-        return rank(chain.quotes_at(frame, expiration), 100.0, 120.0, 1.0, True, 1)[0]
+        return rank(frame, expiration, 100.0, 120.0, 1.0, True, 1)[0]
 
     @pytest.fixture
     def drawings(self, chain_frame):
@@ -391,8 +406,10 @@ class TestCharts:
         from openbb_deribit.utils.options.create_term_structure import (
             create_term_structure,
         )
+        from openbb_deribit.utils.options.data_handler import to_chain
 
         frame = chain_frame()
+        options_chain = to_chain(frame, "BTC")
 
         return {
             "payoff": (
@@ -404,34 +421,10 @@ class TestCharts:
                     "settles": "BTC",
                 },
             ),
-            "smile": (
-                create_smile,
-                {
-                    "rows": smile_rows(frame, 100.0, True),
-                    "spot": 100.0,
-                    "symbol": "BTC",
-                },
-            ),
-            "term_structure": (
-                create_term_structure,
-                {"rows": term_rows(frame, 100.0), "symbol": "BTC"},
-            ),
-            "surface": (
-                create_surface,
-                {
-                    "rows": surface_rows(frame, 100.0, "vega", 0.25, 1, 60),
-                    "measure": "vega",
-                    "symbol": "BTC",
-                },
-            ),
-            "stats": (
-                create_stats,
-                {
-                    "rows": stats_rows(frame, "expiration"),
-                    "by": "expiration",
-                    "symbol": "BTC",
-                },
-            ),
+            "smile": (create_smile, options_chain),
+            "term_structure": (create_term_structure, options_chain),
+            "surface": (create_surface, options_chain),
+            "stats": (create_stats, options_chain),
         }
 
     @pytest.mark.parametrize(
@@ -459,6 +452,24 @@ class TestCharts:
 
         assert output.results
         assert output.chart is None
+
+    def test_a_credit_is_titled_as_one(self, drawings):
+        """A position opened for a credit says so rather than a negative cost."""
+        from openbb_deribit.utils.options.create_payoff import create_payoff
+
+        _build, data = drawings["payoff"]
+        output = create_payoff({**data, "cost": -250.0}, theme="dark")
+
+        assert "for a 250 USD credit" in output.chart.fig.layout.title.text
+
+    def test_a_listed_combo_is_named_in_the_title(self, drawings):
+        """A position traded as a listed combo names the combo."""
+        from openbb_deribit.utils.options.create_payoff import create_payoff
+
+        _build, data = drawings["payoff"]
+        output = create_payoff({**data, "combo": "BTC-CS-X"}, theme="dark")
+
+        assert "BTC-CS-X" in output.chart.fig.layout.title.text
 
     def test_a_target_at_spot_is_not_marked_twice(self, drawings):
         """A target the underlying is already at needs no second marker."""
@@ -524,6 +535,31 @@ class TestCommands:
         ]
 
     @pytest.mark.asyncio
+    async def test_a_listed_combo_prices_the_drawn_position(self, loaded_chain):
+        """Drawing a position Deribit lists as a combo prices it off that book."""
+        frame = loaded_chain()
+        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
+        calls = sorted(
+            quotes[quotes["option_type"] == "call"]["contract_symbol"],
+            key=lambda name: float(name.split("-")[2]),
+        )
+        books = [
+            {
+                "name": "BTC-LISTED",
+                "legs": [(calls[3], 1), (calls[5], -1)],
+                "bid": 0.01,
+                "ask": 0.02,
+            }
+        ]
+        loaded_chain(books=books)
+        drawn = await router.payoff_chart(
+            symbol="BTC", legs=f"Buy {calls[3]} / Sell {calls[5]}"
+        )
+
+        assert "BTC-LISTED" in drawn["layout"]["title"]["text"]
+        assert "Bull Call Spread" in drawn["layout"]["title"]["text"]
+
+    @pytest.mark.asyncio
     async def test_optimizer(self, loaded_chain):
         """The ranking comes back with what it was measured against."""
         loaded_chain()
@@ -547,7 +583,7 @@ class TestCommands:
 
         for row in output.results:
             assert not {"position", "prices", "payoff"} & set(row)
-            assert row["strategy"] and row["legs"]
+            assert row["strategy"] and row["legs"] and row["code"]
 
     @pytest.mark.asyncio
     async def test_no_target_ranks_against_spot(self, loaded_chain):
@@ -611,7 +647,7 @@ class TestCommands:
             await router.payoff_chart(symbol="BTC", legs="Buy NOPE-1-1-C")
 
         assert raised.value.status_code == 404
-        assert "not a contract on this expiration" in raised.value.detail
+        assert "not a listed contract" in raised.value.detail
 
     @pytest.mark.asyncio
     async def test_every_ranked_strategy_can_be_drawn_back(self, loaded_chain):
@@ -627,7 +663,8 @@ class TestCommands:
             assert row["strategy"] in drawn["layout"]["title"]["text"]
 
     @pytest.mark.asyncio
-    async def test_an_unlisted_underlying_is_a_404(self, monkeypatch):
+    @pytest.mark.parametrize("view", ["smile_chart", "straddle"])
+    async def test_an_unlisted_underlying_is_a_404(self, monkeypatch, view):
         """A underlying the exchange does not list answers 404, not 500."""
         from fastapi import HTTPException
         from openbb_core.provider.utils.errors import EmptyDataError
@@ -638,7 +675,7 @@ class TestCommands:
         monkeypatch.setattr("openbb_deribit.utils.options.chain.load_chain", _empty)
 
         with pytest.raises(HTTPException) as raised:
-            await router.smile_chart(symbol="NOPE")
+            await getattr(router, view)(symbol="NOPE")
 
         assert raised.value.status_code == 404
         assert "NOPE" in raised.value.detail
@@ -676,12 +713,15 @@ class TestCommands:
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("otm", [True, False])
-    async def test_smile(self, loaded_chain, otm):
-        """The smile draws one line per expiration."""
+    @pytest.mark.parametrize("skew", [True, False])
+    async def test_smile(self, loaded_chain, otm, skew):
+        """The smile draws calls and puts for the front expiration."""
         loaded_chain()
-        drawn = await router.smile_chart(symbol="BTC", otm=otm, theme="light")
+        drawn = await router.smile_chart(
+            symbol="BTC", otm=otm, skew=skew, theme="light"
+        )
 
-        assert len(drawn["data"]) == 1
+        assert [trace["name"] for trace in drawn["data"]] == ["Calls", "Puts"]
 
     @pytest.mark.asyncio
     async def test_the_smile_draws_only_what_was_asked_for(self, loaded_chain):
@@ -692,7 +732,7 @@ class TestCommands:
             symbol="BTC", expirations=",".join(str(day) for day in listed)
         )
 
-        assert len(drawn["data"]) == len(listed) > 1
+        assert len(drawn["data"]) == 2 * len(listed) > 2
 
     @pytest.mark.asyncio
     async def test_the_smile_offers_the_expirations_it_lists(self, loaded_chain):
@@ -712,26 +752,47 @@ class TestCommands:
         rows = await router.smile_chart(symbol="BTC", raw=True)
 
         assert isinstance(rows, list)
-        assert rows and "implied_volatility" in rows[0]
+        assert rows and "IV" in rows[0]
 
     @pytest.mark.asyncio
     async def test_term_structure(self, loaded_chain):
-        """The term structure draws one point per expiration."""
+        """The term structure draws calls and puts, one point per expiration."""
         loaded_chain()
         drawn = await router.term_structure_chart(symbol="BTC")
 
-        assert len(drawn["data"]) == 1
-        assert len(drawn["data"][0]["x"]) == 2
+        assert [trace["name"] for trace in drawn["data"]] == ["Calls", "Puts"]
+        assert all(len(trace["x"]) == 2 for trace in drawn["data"])
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("measure", ["implied_volatility", "vega"])
-    async def test_surface(self, loaded_chain, measure):
-        """Any published measure can be raised over the chain."""
+    async def test_term_structure_at_a_strike(self, loaded_chain):
+        """A chosen strike and metric reach the chart."""
         loaded_chain()
-        drawn = await router.surface_chart(symbol="BTC", measure=measure, dte_max=60)
+        drawn = await router.term_structure_chart(
+            symbol="BTC", strike=100.0, metric="price", option_type="calls"
+        )
+
+        assert [trace["name"] for trace in drawn["data"]] == ["Calls"]
+        assert "$100.0" in drawn["layout"]["title"]["text"]
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("metric", ["implied_volatility", "vega", "gex"])
+    async def test_surface(self, loaded_chain, metric):
+        """Any published metric can be raised over the chain."""
+        loaded_chain()
+        drawn = await router.surface_chart(symbol="BTC", metric=metric, dte_max=60)
 
         assert drawn["data"][0]["type"] == "mesh3d"
         assert drawn["config"]["responsive"] is True
+
+    @pytest.mark.asyncio
+    async def test_surface_without_a_window(self, loaded_chain):
+        """With no DTE bounds every expiration is raised."""
+        loaded_chain()
+        drawn = await router.surface_chart(
+            symbol="BTC", option_type="calls", oi=True, volume=True
+        )
+
+        assert drawn["data"][0]["type"] == "mesh3d"
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("by", ["strike", "expiration"])
@@ -740,8 +801,51 @@ class TestCommands:
         loaded_chain()
         drawn = await router.stats_chart(symbol="BTC", by=by, theme="light")
 
-        assert len(drawn["data"]) == 2
-        assert {trace["name"] for trace in drawn["data"]} == {"Calls", "Puts"}
+        assert [trace["name"] for trace in drawn["data"]] == ["Calls", "Puts"]
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "unit,name", [("percent", "% of Total"), ("pcr", "Put/Call Ratio")]
+    )
+    async def test_stats_units(self, loaded_chain, unit, name):
+        """The unit chooses what the bars measure."""
+        loaded_chain()
+        drawn = await router.stats_chart(symbol="BTC", metric="volume", unit=unit)
+
+        assert [trace["name"] for trace in drawn["data"]] == [name]
+
+    @pytest.mark.asyncio
+    async def test_stats_for_one_expiration(self, loaded_chain):
+        """Naming an expiration draws its strikes."""
+        frame = loaded_chain()
+        drawn = await router.stats_chart(
+            symbol="BTC", date=str(chain.expirations(frame)[1])
+        )
+
+        assert drawn["layout"]["title"]["text"] == "BTC Open Interest By Strike"
+
+    @pytest.mark.asyncio
+    async def test_strike_choices(self, loaded_chain):
+        """The strike dropdown leads with the nearest out-of-the-money default."""
+        frame = loaded_chain()
+        offered = await router.strike_choices(symbol="BTC")
+
+        assert offered[0] == {"label": "Nearest OTM", "value": None}
+        assert [item["value"] for item in offered[1:]] == sorted(
+            frame["strike"].unique()
+        )
+
+    @pytest.mark.asyncio
+    async def test_strike_choices_for_an_unlisted_underlying(self, monkeypatch):
+        """An underlying with no options offers no strikes."""
+        from openbb_core.provider.utils.errors import EmptyDataError
+
+        async def _empty(symbol, use_cache=True):
+            raise EmptyDataError("nothing listed")
+
+        monkeypatch.setattr("openbb_deribit.utils.options.chain.load_chain", _empty)
+
+        assert await router.strike_choices(symbol="NOPE") == []
 
     @pytest.mark.asyncio
     async def test_a_linear_underlying_settles_in_its_quote(self, loaded_chain):
@@ -750,56 +854,42 @@ class TestCommands:
         output = await router.optimizer(symbol="XRP_USDC", target_price=2.0, budget=100)
 
         assert output.extra["results_metadata"]["settlement_currency"] == "USDC"
-        assert all(row["cost"] == 100.0 for row in output.results)
-
-
-class TestNamingAChosenPosition:
-    """A position picked off the ranking is named by the shape its legs make."""
-
-    @staticmethod
-    def _leg(strike, option_type, quantity):
-        """Return one leg of a chosen position."""
-        return {"strike": strike, "option_type": option_type, "quantity": quantity}
-
-    @pytest.mark.parametrize(
-        "legs,name",
-        [
-            ([("c", 100.0, 1)], "Long Call"),
-            ([("p", 100.0, 1)], "Long Put"),
-            ([("c", 100.0, 1), ("p", 100.0, 1)], "Long Straddle"),
-            ([("c", 104.0, 1), ("p", 96.0, 1)], "Long Strangle"),
-            ([("c", 100.0, 1), ("c", 104.0, -1)], "Bull Call Spread"),
-            ([("p", 100.0, 1), ("p", 96.0, -1)], "Bear Put Spread"),
-            ([("c", 100.0, -1), ("c", 104.0, -1)], "Custom"),
-        ],
-    )
-    def test_the_shape_names_the_position(self, legs, name):
-        """Each combination of legs reads back as the strategy it is."""
-        built = [
-            self._leg(strike, "call" if side == "c" else "put", quantity)
-            for side, strike, quantity in legs
-        ]
-
-        assert router._named(built) == name
+        assert output.results
 
 
 class TestPayoffRefusals:
     """A position a budget cannot size is refused rather than drawn wrong."""
 
     @pytest.mark.asyncio
-    async def test_a_credit_position_is_refused(self, loaded_chain):
-        """A position taken in for a credit is not sized against a budget."""
-        from fastapi import HTTPException
-
+    async def test_a_credit_position_is_drawn(self, loaded_chain):
+        """A position taken in for a credit is sized by what it risks."""
         frame = loaded_chain()
         quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
         sold = quotes[quotes["option_type"] == "call"].iloc[0]["contract_symbol"]
+        drawn = await router.payoff_chart(symbol="BTC", legs=f"Sell {sold}")
+
+        assert "Short Call" in drawn["layout"]["title"]["text"]
+        assert "credit" in drawn["layout"]["title"]["text"]
+
+    @pytest.mark.asyncio
+    async def test_a_position_with_nothing_at_risk_is_refused(
+        self, loaded_chain, monkeypatch
+    ):
+        """A position that cannot lose has no capital to size against."""
+        from fastapi import HTTPException
+
+        from openbb_deribit.utils.options import optimizer as engine
+
+        frame = loaded_chain()
+        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
+        bought = quotes[quotes["option_type"] == "call"].iloc[0]["contract_symbol"]
+        monkeypatch.setattr(engine, "score", lambda *args, **kwargs: None)
 
         with pytest.raises(HTTPException) as raised:
-            await router.payoff_chart(symbol="BTC", legs=f"Sell {sold}")
+            await router.payoff_chart(symbol="BTC", legs=f"Buy {bought}")
 
         assert raised.value.status_code == 404
-        assert "credit" in raised.value.detail
+        assert "nothing at risk" in raised.value.detail
 
     @pytest.mark.asyncio
     async def test_an_expiration_with_nothing_to_size_is_refused(

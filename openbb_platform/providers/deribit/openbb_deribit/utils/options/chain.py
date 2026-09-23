@@ -166,6 +166,74 @@ async def load_chain(symbol: str, use_cache: bool = True) -> "DataFrame":
         return frame.copy()
 
 
+async def load_combos(symbol: str, use_cache: bool = True) -> list:
+    """Return the combo books listed on an underlying's options, with their quotes.
+
+    Parameters
+    ----------
+    symbol : str
+        The underlying root, as it appears in the instrument name.
+    use_cache : bool
+        Whether a read taken moments ago may be reused.
+
+    Returns
+    -------
+    list
+        One record per combo: its name, its legs as (instrument, amount) pairs,
+        and its bid and ask in the currency the combo is quoted in.
+    """
+    from time import monotonic
+
+    from openbb_deribit.utils.client import request
+
+    root = symbol.upper()
+    key = f"{root}#combos"
+    lock = _LOCKS.setdefault(key, asyncio.Lock())
+
+    async with lock:
+        held = _LOADED.get(key)
+
+        if use_cache and held and monotonic() - held[0] < CHAIN_TTL:
+            return list(held[1])
+
+        currency = settlement_of(root)
+        listed, quoted = await asyncio.gather(
+            request("get_combos", {"currency": currency}),
+            request(
+                "get_book_summary_by_currency",
+                {"currency": currency, "kind": "option_combo"},
+            ),
+        )
+        quotes = {str(row["instrument_name"]): row for row in quoted or []}
+        books = []
+
+        for combo in listed or []:
+            legs = [
+                (str(leg["instrument_name"]), int(leg["amount"]))
+                for leg in combo["legs"]
+            ]
+
+            if not all(
+                name.split("-")[0] == root and len(name.split("-")) == 4
+                for name, _ in legs
+            ):
+                continue
+
+            quote = quotes.get(str(combo["id"]), {})
+            books.append(
+                {
+                    "name": str(combo["id"]),
+                    "legs": legs,
+                    "bid": quote.get("bid_price"),
+                    "ask": quote.get("ask_price"),
+                }
+            )
+
+        _LOADED[key] = (monotonic(), books)
+
+        return list(books)
+
+
 def underlying_price(frame: "DataFrame") -> float:
     """Return the spot price of the underlying the chain was quoted against."""
     spot = frame["underlying_spot_price"].dropna()
@@ -213,20 +281,51 @@ def nearest_expiration(frame: "DataFrame", target: Any) -> Any:
     return min(listed, key=lambda day: abs((day - wanted).days))
 
 
-def quotes_at(frame: "DataFrame", expiration: Any) -> "DataFrame":
-    """Return the tradeable contracts of one expiration.
+def far_expiration(frame: "DataFrame", near: Any, gap: int = 30) -> Any:
+    """Return the expiration a calendar sells the near one against.
 
-    A contract with no price cannot be entered, so it is left out rather than
-    modelled at a price nobody quoted.
+    Parameters
+    ----------
+    frame : DataFrame
+        The chain.
+    near : Any
+        The expiration being traded.
+    gap : int
+        How many days past it the far expiration is sought.
 
-    Where nobody is quoting, the exchange still publishes a mark, and far out
-    of the money that mark runs below the smallest price the instrument trades
-    in. Buying at it is not possible, and sizing a budget against it invents a
-    position hundreds of times larger than the money would really buy, so a
-    contract that is priced at all is entered at no less than one tick. A
-    contract with no price is still left out rather than lifted to one.
+    Returns
+    -------
+    Any
+        The later expiration nearest the gap, or None when nothing is later.
     """
-    at = frame[frame["expiration"] == expiration].copy()
+    later = [day for day in expirations(frame) if day > near]
+
+    if not later:
+        return None
+
+    return min(later, key=lambda day: abs((day - near).days - gap))
+
+
+def quotes_at(frame: "DataFrame", expiration: Any = None) -> "DataFrame":
+    """Return the tradeable contracts, entered at no less than one tick.
+
+    Parameters
+    ----------
+    frame : DataFrame
+        The chain.
+    expiration : Any
+        The expiration to keep. None keeps every expiration.
+
+    Returns
+    -------
+    DataFrame
+        The contracts with a price, each with the price it is entered and left at.
+    """
+    at = (
+        frame.copy()
+        if expiration is None
+        else frame[frame["expiration"] == expiration].copy()
+    )
 
     for column in ("bid", "ask", "mark", "tick_size"):
         at[column] = at[column].astype(float)

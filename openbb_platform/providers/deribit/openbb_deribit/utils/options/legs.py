@@ -183,18 +183,9 @@ def payoff(
     elapsed: int = 0,
     inverse: bool = False,
     entry_price: "float | None" = None,
+    cost: "float | None" = None,
 ) -> "list[float]":
     """Return the profit and loss of a position across a price range, in the quote currency.
-
-    An inverse contract is paid for in the coin, so the premium is coin the
-    account no longer holds, and what that costs is whatever the coin is worth
-    at the price being valued. The payout is already quoted, so only the
-    premium is carried. A linear contract is paid for in the quote currency and
-    its premium is simply that.
-
-    This is why an inverse position's loss is not flat: holding it through a
-    rise that leaves it worthless still costs more, because the coin paid for
-    it became worth more.
 
     Parameters
     ----------
@@ -210,6 +201,9 @@ def payoff(
     entry_price : float or None
         The price of the underlying when the position was opened, which an
         inverse premium was paid at. Required when inverse.
+    cost : float or None
+        What the position was opened for, in the quote currency, when it was
+        traded as one combo rather than leg by leg. None prices it off its legs.
 
     Returns
     -------
@@ -221,7 +215,7 @@ def payoff(
     ValueError
         If an inverse position is valued without the price it was opened at.
     """
-    entry = net_cost(legs)
+    entry = net_cost(legs) if cost is None else cost
 
     if not inverse:
         return [position_value(legs, price, elapsed) - entry for price in prices]

@@ -21,7 +21,7 @@ PERPETUAL_CHOICES_ENDPOINT = f"{API_PREFIX}/deribit/futures/perpetual_choices"
 UNDERLYING_CHOICES_ENDPOINT = f"{API_PREFIX}/deribit/options/underlying_choices"
 EXPIRATION_CHOICES_ENDPOINT = f"{API_PREFIX}/deribit/options/expiration_choices"
 STRATEGY_CHOICES_ENDPOINT = f"{API_PREFIX}/deribit/options/strategy_choices"
-MARK_PRICE_CHOICES_ENDPOINT = f"{API_PREFIX}/deribit/market/mark_price_choices"
+STRIKE_CHOICES_ENDPOINT = f"{API_PREFIX}/deribit/options/strike_choices"
 
 SYMBOL_STYLE = {"popupWidth": 600}
 
@@ -53,8 +53,7 @@ FundingLengths = Literal["8h", "24h", "1m"]
 IndexChartRanges = Literal["1h", "1d", "2d", "1m", "1y", "all"]
 AprCurrencies = Literal["usde", "steth", "usdc", "build"]
 
-ORDER_BOOK_DEPTHS = ("1", "5", "10", "20", "50", "100", "1000", "10000")
-OrderBookDepths = Literal["1", "5", "10", "20", "50", "100", "1000", "10000"]
+ORDER_BOOK_DEPTHS = (1, 5, 10, 20, 50, 100, 1000, 10000)
 
 INTERVALS = (
     "1m",

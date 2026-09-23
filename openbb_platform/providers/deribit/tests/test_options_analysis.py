@@ -220,106 +220,371 @@ class TestChain:
         )
 
 
+def _leg(kind, strike, quantity, dte=30, price=1.0):
+    """Return one unit leg of a position."""
+    return {
+        "symbol": f"TEST-{dte}-{strike:g}-{kind[0].upper()}",
+        "expiration": str(dte),
+        "strike": float(strike),
+        "option_type": "call" if kind == "c" else "put",
+        "quantity": quantity,
+        "size": 1.0,
+        "price": price,
+        "dte": dte,
+        "implied_volatility": 0.5,
+    }
+
+
+class TestClassify:
+    """A position reads back as the Deribit combo it is, and the side taken."""
+
+    @pytest.mark.parametrize(
+        "legs,expected",
+        [
+            ([("c", 100, 1)], ("C", 1)),
+            ([("p", 100, -1)], ("P", -1)),
+            ([("c", 100, 1), ("c", 104, -1)], ("CS", 1)),
+            ([("c", 100, -1), ("c", 104, 1)], ("CS", -1)),
+            ([("p", 104, 1), ("p", 100, -1)], ("PS", 1)),
+            ([("p", 104, -1), ("p", 100, 1)], ("PS", -1)),
+            ([("c", 100, 1), ("c", 104, -2)], ("CSR12", 1)),
+            ([("c", 100, -1), ("c", 104, 2)], ("CSR12", -1)),
+            ([("p", 104, 1), ("p", 100, -2)], ("PSR12", 1)),
+            ([("p", 104, -1), ("p", 100, 2)], ("PSR12", -1)),
+            ([("c", 100, 1), ("c", 104, 1)], ("", 1)),
+            ([("c", 100, 1), ("c", 100, -1)], ("", 1)),
+            ([("c", 100, 1), ("c", 104, -3)], ("", 1)),
+            ([("c", 100, 1), ("p", 100, 1)], ("STRD", 1)),
+            ([("c", 100, -1), ("p", 100, -1)], ("STRD", -1)),
+            ([("c", 100, 1), ("p", 100, -1)], ("REV", 1)),
+            ([("c", 100, -1), ("p", 100, 1)], ("REV", -1)),
+            ([("p", 96, 1), ("c", 104, 1)], ("STRG", 1)),
+            ([("p", 96, -1), ("c", 104, -1)], ("STRG", -1)),
+            ([("p", 96, 1), ("c", 104, -1)], ("RR", 1)),
+            ([("p", 96, -1), ("c", 104, 1)], ("RR", -1)),
+            ([("p", 104, 1), ("c", 96, 1)], ("", 1)),
+            ([("c", 100, 2), ("p", 100, 1)], ("", 1)),
+            ([("c", 96, 1), ("c", 100, -2), ("c", 104, 1)], ("CBUT", 1)),
+            ([("c", 96, -1), ("c", 100, 2), ("c", 104, -1)], ("CBUT", -1)),
+            ([("p", 96, 1), ("p", 100, -2), ("p", 104, 1)], ("PBUT", 1)),
+            ([("c", 96, 1), ("c", 100, -2), ("c", 106, 1)], ("", 1)),
+            ([("c", 96, 1), ("p", 100, -2), ("c", 104, 1)], ("", 1)),
+            (
+                [("c", 96, 1), ("c", 100, -1), ("c", 104, -1), ("c", 108, 1)],
+                ("CCOND", 1),
+            ),
+            (
+                [("p", 96, -1), ("p", 100, 1), ("p", 104, 1), ("p", 108, -1)],
+                ("PCOND", -1),
+            ),
+            (
+                [("c", 96, 1), ("c", 100, -1), ("c", 104, 1), ("c", 108, -1)],
+                ("", 1),
+            ),
+            (
+                [("p", 96, 1), ("p", 100, -1), ("c", 104, -1), ("c", 108, 1)],
+                ("ICOND", 1),
+            ),
+            (
+                [("p", 96, -1), ("p", 100, 1), ("c", 104, 1), ("c", 108, -1)],
+                ("ICOND", -1),
+            ),
+            (
+                [("p", 96, 1), ("p", 100, -1), ("c", 100, -1), ("c", 104, 1)],
+                ("IBUT", 1),
+            ),
+            (
+                [("p", 96, 1), ("p", 100, 1), ("c", 104, -1), ("c", 108, 1)],
+                ("", 1),
+            ),
+            (
+                [("p", 96, 1), ("p", 104, -1), ("c", 100, -1), ("c", 108, 1)],
+                ("", 1),
+            ),
+            (
+                [("p", 92, 1), ("p", 96, 1), ("p", 100, -1), ("c", 108, 1)],
+                ("", 1),
+            ),
+            (
+                [
+                    ("c", 92, 1),
+                    ("c", 96, 1),
+                    ("c", 100, -1),
+                    ("c", 104, 1),
+                    ("c", 108, 1),
+                ],
+                ("", 1),
+            ),
+        ],
+    )
+    def test_one_expiration(self, legs, expected):
+        """Every single-expiration structure is named by its combo code."""
+        assert optimizer.classify([_leg(*leg) for leg in legs]) == expected
+
+    @pytest.mark.parametrize(
+        "legs,expected",
+        [
+            ([("c", 100, -1, 30), ("c", 100, 1, 60)], ("CCAL", 1)),
+            ([("c", 100, 1, 30), ("c", 100, -1, 60)], ("CCAL", -1)),
+            ([("p", 100, -1, 30), ("p", 104, 1, 60)], ("PDIAG", 1)),
+            ([("p", 100, -1, 30), ("p", 104, 2, 60)], ("", 1)),
+            ([("c", 100, -1, 30), ("p", 100, 1, 60)], ("", 1)),
+            ([("c", 96, 1, 30), ("c", 100, -1, 60), ("c", 104, 1, 60)], ("", 1)),
+        ],
+    )
+    def test_two_expirations(self, legs, expected):
+        """A calendar shares a strike across terms; a diagonal does not."""
+        assert optimizer.classify([_leg(*leg) for leg in legs]) == expected
+
+
 class TestOptimizer:
-    """Strategies are built, sized to a budget, and ranked by what they return."""
+    """Every combo structure is built, sized to what it risks, and ranked."""
 
-    def test_builds_every_shape(self, chain_frame):
-        """Singles, verticals, straddles, and strangles are all offered."""
+    @staticmethod
+    def _near(frame):
+        """Return the nearer of the two expirations."""
+        return chain.expirations(frame)[0]
+
+    def test_builds_every_structure(self, chain_frame):
+        """Every Deribit combo structure is offered, bought and sold."""
         frame = chain_frame()
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
-        names = {item["strategy"] for item in optimizer.candidates(quotes, 100.0)}
+        built = optimizer.candidates(frame, self._near(frame), 100.0, (), True)
 
-        assert names == {
-            "Long Call",
-            "Long Put",
-            "Bull Call Spread",
-            "Bear Put Spread",
-            "Long Straddle",
-            "Long Strangle",
-        }
+        assert {item["strategy"] for item in built} == set(optimizer.NAMES.values())
+        assert all(item["code"] for item in built)
 
-    def test_ranks_by_what_the_view_returns(self, chain_frame):
-        """The best strategy for a view is the one that profits most."""
+    def test_a_position_is_offered_once(self, chain_frame):
+        """No two candidates trade the same contracts in the same amounts."""
         frame = chain_frame()
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
-        ranked = optimizer.rank(quotes, 100.0, 120.0, 1.0, True)
+        built = optimizer.candidates(frame, self._near(frame), 100.0, (), True)
+        keys = [optimizer._key(item["legs"]) for item in built]
 
-        assert ranked
-        profits = [item["expected_profit"] for item in ranked]
-        assert profits == sorted(profits, reverse=True)
+        assert len(keys) == len(set(keys))
 
-    def test_every_position_costs_the_budget(self, chain_frame):
-        """A budget means the same on a coin-settled contract as on a linear one."""
+    def test_the_last_expiration_has_no_calendar(self, chain_frame):
+        """With nothing later to trade against, no calendar is built."""
         frame = chain_frame()
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
+        last = chain.expirations(frame)[-1]
+        built = optimizer.candidates(frame, last, 100.0, (), True)
 
-        for item in optimizer.rank(quotes, 100.0, 120.0, 5000.0, True):
-            assert item["cost"] == 5000.0
+        assert not {item["code"] for item in built} & {"CCAL", "PCAL", "CDIAG", "PDIAG"}
 
-    def test_an_inverse_loss_is_the_budget_at_the_price_it_was_opened(
+    def test_a_far_expiration_missing_one_side_builds_no_calendar_on_it(
         self, chain_frame
     ):
-        """What the premium cost is what the coin was worth when it was paid."""
+        """A far expiration without puts offers no put calendar."""
+        frame = chain_frame()
+        far = chain.expirations(frame)[-1]
+        frame = frame[~((frame["expiration"] == far) & (frame["option_type"] == "put"))]
+        built = optimizer.candidates(frame, self._near(frame), 100.0, (), True)
+        codes = {item["code"] for item in built}
+
+        assert "CCAL" in codes
+        assert not codes & {"PCAL", "PDIAG"}
+
+    def test_ranks_the_best_of_each_structure(self, chain_frame):
+        """Each structure appears once, the most profitable first."""
+        frame = chain_frame()
+        ranked = optimizer.rank(frame, self._near(frame), 100.0, 104.0, 1.0, True)
+        names = [item["strategy"] for item in ranked]
+        profits = [item["expected_profit"] for item in ranked]
+
+        assert len(names) == len(set(names)) == len(optimizer.NAMES)
+        assert profits == sorted(profits, reverse=True)
+
+    def test_the_limit_caps_the_structures(self, chain_frame):
+        """Asking for fewer structures returns the best of them."""
+        frame = chain_frame()
+        ranked = optimizer.rank(frame, self._near(frame), 100.0, 104.0, 1.0, True, 3)
+
+        assert len(ranked) == 3
+
+    @pytest.mark.parametrize("inverse", [True, False])
+    def test_every_position_risks_the_budget(self, chain_frame, inverse):
+        """The worst loss across a threefold move either way is the budget."""
         from openbb_deribit.utils.options.legs import payoff
 
-        frame = chain_frame()
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
+        frame = chain_frame(inverse=inverse)
 
-        for item in optimizer.rank(quotes, 100.0, 120.0, 5000.0, True, 3):
-            at_entry = payoff(item["position"], [100.0], item["elapsed"], True, 100.0)
+        for item in optimizer.rank(
+            frame, self._near(frame), 100.0, 104.0, 5000.0, inverse
+        ):
+            points = optimizer._stress(item["position"], 100.0, item["elapsed"])
+            losses = payoff(
+                item["position"], points, item["elapsed"], inverse, 100.0, item["cost"]
+            )
 
-            assert at_entry[0] == pytest.approx(-5000.0)
+            if inverse:
+                losses = [
+                    loss / price * 100.0
+                    for loss, price in zip(losses, points, strict=True)
+                ]
 
-    def test_a_credit_is_not_ranked(self):
-        """A structure taken in for a credit is not sized against a budget."""
-        sold = {
-            "strategy": "Sold",
-            "legs": [
-                {
-                    "symbol": "X",
-                    "strike": 100.0,
-                    "option_type": "call",
-                    "quantity": -1,
-                    "size": 1,
-                    "price": 5.0,
-                    "dte": 1,
-                    "implied_volatility": None,
-                }
-            ],
-        }
+            assert min(losses) == pytest.approx(-5000.0), item["strategy"]
 
-        assert optimizer.score(sold, 100.0, 120.0, False) is None
+    def test_a_credit_is_sized_by_what_it_risks(self):
+        """A position taken in for a credit is ranked, not dropped."""
+        sold = {"strategy": "Short Call", "legs": [_leg("c", 100, -1, 1, 5.0)]}
+        scored = optimizer.score(sold, 100.0, 90.0, False)
+
+        assert scored["cost"] < 0
+        assert scored["expected"] > 0
+
+    def test_a_position_with_nothing_at_risk_is_not_ranked(self):
+        """A position that cannot lose has no capital at risk to size against."""
+        free = {"strategy": "Long Call", "legs": [_leg("c", 100, 1, 1, 0.0)]}
+
+        assert optimizer.score(free, 100.0, 120.0, False) is None
+
+    def test_a_calendar_is_stressed_across_its_remaining_life(self):
+        """A leg still alive at the valuation date is sought across a grid."""
+        legs = [_leg("c", 100, -1, 30), _leg("c", 100, 1, 60)]
+
+        assert len(optimizer._stress(legs, 100.0, 30)) > optimizer.STRESS_STEPS
+        assert optimizer._stress(legs[:1], 100.0, 30) == [100.0 / 3, 100.0, 300.0]
 
     def test_the_budget_scales_the_result(self, chain_frame):
-        """Doubling the budget doubles the profit and the loss."""
+        """Doubling the budget doubles the profit and the contracts."""
         frame = chain_frame()
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
-        one = optimizer.rank(quotes, 100.0, 120.0, 1000.0, True, 1)[0]
-        two = optimizer.rank(quotes, 100.0, 120.0, 2000.0, True, 1)[0]
+        one = optimizer.rank(frame, self._near(frame), 100.0, 104.0, 1000.0, True, 1)
+        two = optimizer.rank(frame, self._near(frame), 100.0, 104.0, 2000.0, True, 1)
 
-        assert two["expected_profit"] == pytest.approx(one["expected_profit"] * 2)
-        assert two["contracts"] == pytest.approx(one["contracts"] * 2)
+        assert two[0]["expected_profit"] == pytest.approx(one[0]["expected_profit"] * 2)
+        assert two[0]["contracts"] == pytest.approx(one[0]["contracts"] * 2)
 
     def test_a_linear_chain_is_ranked_in_its_quote(self, chain_frame):
-        """A linear position is measured in the currency it is quoted in."""
+        """A linear chain ranks without the coin conversion."""
         frame = chain_frame(inverse=False, spot=1.5, size=1000)
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
-        ranked = optimizer.rank(quotes, 1.5, 2.0, 1000.0, False, 3)
 
-        assert ranked
-        assert all(item["cost"] == 1000.0 for item in ranked)
+        assert optimizer.rank(frame, self._near(frame), 1.5, 2.0, 1000.0, False, 3)
 
     def test_strikes_far_from_the_money_are_left_out(self, chain_frame):
         """A strike well outside the window is not offered."""
         frame = chain_frame()
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
-        offered = {
-            leg["strike"]
-            for item in optimizer.candidates(quotes, 100.0)
-            for leg in item["legs"]
-        }
+        built = optimizer.candidates(frame, self._near(frame), 100.0, (), True)
+        offered = {leg["strike"] for item in built for leg in item["legs"]}
 
         assert max(offered) <= 100.0 * (1 + optimizer.STRIKE_WINDOW)
+
+
+class TestComboBooks:
+    """A position Deribit lists as a combo is priced from that combo's book."""
+
+    @staticmethod
+    def _book(frame, bid=0.4, ask=0.5):
+        """List a call spread on the far expiration of the synthetic chain."""
+        far = chain.expirations(frame)[-1]
+        calls = frame[(frame["expiration"] == far) & (frame["option_type"] == "call")]
+        low, high = sorted(
+            calls["contract_symbol"], key=lambda name: float(name.split("-")[2])
+        )[3:5]
+
+        return far, {
+            "name": "TEST-CS-FAR",
+            "legs": [(low, 1), (high, -1)],
+            "bid": bid,
+            "ask": ask,
+        }
+
+    def test_buying_pays_the_offer_and_selling_takes_the_bid(self, chain_frame):
+        """The combo is bought at its ask and sold at its bid, carried to USD."""
+        frame = chain_frame()
+        far, book = self._book(frame)
+        built = optimizer.candidates(frame, far, 100.0, [book], True)
+        listed = {
+            item["strategy"]: item for item in built if item["combo"] == "TEST-CS-FAR"
+        }
+
+        assert listed["Bull Call Spread"]["premium"] == pytest.approx(50.0)
+        assert listed["Bear Call Spread"]["premium"] == pytest.approx(-40.0)
+
+    def test_a_linear_combo_is_not_carried(self):
+        """A combo quoted in the quote currency is taken as quoted."""
+        book = {"name": "X", "legs": [("A", 1), ("B", -1)], "bid": 0.4, "ask": 0.5}
+
+        assert optimizer.combo_book([book], 100.0, False)[
+            frozenset([("A", 1), ("B", -1)])
+        ] == ("X", 0.5)
+
+    def test_an_unquoted_side_prices_nothing(self):
+        """A combo with no bid or offer leaves that side to its legs."""
+        book = {"name": "X", "legs": [("A", 1), ("B", -1)], "bid": None, "ask": None}
+
+        assert optimizer.combo_book([book], 100.0, True) == {}
+
+    def test_a_listed_combo_outside_the_window_is_still_offered(self, chain_frame):
+        """A combo someone listed is ranked even where the builder does not reach."""
+        frame = chain_frame()
+        far, book = self._book(frame)
+        built = optimizer.candidates(frame, far, 1000.0, [book], True)
+
+        assert {item["combo"] for item in built} == {"TEST-CS-FAR"}
+
+    def test_a_combo_on_another_expiration_is_left_out(self, chain_frame):
+        """Only combos held to the expiration being ranked are offered."""
+        frame = chain_frame()
+        _far, book = self._book(frame)
+        built = optimizer.candidates(frame, self._near(frame), 1000.0, [book], True)
+
+        assert not any(item["combo"] for item in built)
+
+    def test_a_combo_on_an_unquoted_contract_is_left_out(self, chain_frame):
+        """A combo naming a contract nobody quotes cannot be priced leg by leg."""
+        frame = chain_frame()
+        far, book = self._book(frame)
+        book["legs"] = [("NOPE-1-1-C", 1), *book["legs"][1:]]
+        built = optimizer.candidates(frame, far, 1000.0, [book], True)
+
+        assert built == []
+
+    @staticmethod
+    def _near(frame):
+        """Return the nearer of the two expirations."""
+        return chain.expirations(frame)[0]
+
+
+class TestRebuild:
+    """A description of legs reads back as the position it names."""
+
+    def test_counts_are_read(self, chain_frame):
+        """'Sell 2 SYMBOL' sells two contracts."""
+        frame = chain_frame()
+        quotes = chain.quotes_at(frame)
+        names = sorted(
+            quotes[(quotes["dte"] == 30) & (quotes["option_type"] == "call")][
+                "contract_symbol"
+            ],
+            key=lambda name: float(name.split("-")[2]),
+        )
+        built = optimizer.rebuild(f"Buy {names[3]} / Sell 2 {names[5]}", quotes)
+
+        assert built["code"] == "CSR12"
+        assert [leg["quantity"] for leg in built["legs"]] == [1, -2]
+        assert optimizer._describe(built["legs"]) == (
+            f"Buy {names[3]} / Sell 2 {names[5]}"
+        )
+
+    @pytest.mark.parametrize(
+        "written", ["garbage", "Buy", "Hold X", "Buy two X", "Sell 0 X", "Buy 1 2 X"]
+    )
+    def test_something_that_is_not_a_leg_says_so(self, chain_frame, written):
+        """Text that names no leg is refused with what the format is."""
+        with pytest.raises(ValueError, match="Buy SYMBOL / Sell SYMBOL"):
+            optimizer.rebuild(written, chain.quotes_at(chain_frame()))
+
+    def test_an_unlisted_contract_says_so(self, chain_frame):
+        """A contract the chain does not list cannot be priced."""
+        with pytest.raises(ValueError, match="not a listed contract"):
+            optimizer.rebuild("Buy NOPE-1-1-C", chain.quotes_at(chain_frame()))
+
+    def test_an_unrecognised_shape_is_custom(self, chain_frame):
+        """Contracts that make no combo are still priced, as a custom position."""
+        quotes = chain.quotes_at(chain_frame())
+        calls = quotes[(quotes["dte"] == 30) & (quotes["option_type"] == "call")]
+        low, high = list(calls["contract_symbol"])[:2]
+        built = optimizer.rebuild(f"Buy {low} / Buy {high}", quotes)
+
+        assert (built["strategy"], built["code"]) == ("Custom", None)
 
 
 class TestStrategies:
@@ -406,8 +671,9 @@ class TestPayoffWindow:
     def _drawn(chain_frame, target, inverse=True, spot=100.0):
         """Rank one strategy and return the range its payoff was drawn over."""
         frame = chain_frame(inverse=inverse, spot=spot)
-        quotes = chain.quotes_at(frame, chain.expirations(frame)[0])
-        item = optimizer.rank(quotes, spot, target, 5000.0, inverse, 1)[0]
+        item = optimizer.rank(
+            frame, chain.expirations(frame)[0], spot, target, 5000.0, inverse, 1
+        )[0]
 
         return item, min(item["prices"]), max(item["prices"])
 

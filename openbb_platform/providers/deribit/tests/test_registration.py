@@ -34,7 +34,6 @@ PROVIDER_KEYS = {
     "DeribitIndexHistorical",
     "DeribitIndexPrice",
     "DeribitInstruments",
-    "DeribitMarkPriceHistory",
     "DeribitOrderBook",
     "DeribitSettlements",
     "DeribitTicker",
@@ -114,4 +113,4 @@ class TestProvider:
         assert provider.name == "deribit"
         assert provider.credentials == []
         assert "deribit.com" in provider.website
-        assert len(provider.fetcher_dict) == 26
+        assert len(provider.fetcher_dict) == 25

@@ -10,7 +10,6 @@ dependencies = [
     "openbb-core[pandas]>=2.0.0",
     "aiohttp-client-cache>=0.11",
     "aiosqlite>=0.20",
-    "websockets>=13.0",
 ]
 
 [project.entry-points."openbb_provider_extension"]
@@ -61,7 +60,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "openbb_deribit/routers/*.py" = ["ARG001", "PLC0415", "PLR0913", "PLR0917"]
 "openbb_deribit/models/*.py" = ["ARG002", "PLC0415", "PLR0912"]
-"openbb_deribit/utils/options/*.py" = ["PLC0415", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001"]
+"openbb_deribit/utils/options/*.py" = ["PLC0415", "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "SLF001"]
 "tests/**" = ["S101", "S108", "D", "SIM105", "SIM117"]
 "integration/**" = ["S101", "S108", "D", "SIM105", "SIM117", "PLC0415", "ARG001"]
 "**/__init__.py" = ["F401"]

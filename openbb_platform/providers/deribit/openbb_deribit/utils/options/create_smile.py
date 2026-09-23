@@ -1,200 +1,209 @@
-"""The volatility smile of a Deribit expiration."""
+"""Deribit implied-volatility smile and skew chart."""
 
-from typing import TYPE_CHECKING, Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from openbb_core.app.model.obbject import OBBject
+    from openbb_core.provider.standard_models.options_chains import OptionsChainsData
+
+MAX_EXPIRATIONS = 5
 
 COLORS = [
-    "#2f6fed",
-    "#d29922",
-    "#3fb950",
-    "#e35d6a",
-    "#a371f7",
-    "#1f9cb3",
-    "#f0883e",
-    "#db61a2",
+    "royalblue",
+    "red",
+    "orange",
+    "green",
+    "grey",
+    "burlywood",
+    "magenta",
+    "cyan",
+    "indigo",
+    "yellowgreen",
 ]
 
-MAX_LINES = 8
 
-
-def chosen_expirations(frame, asked: "str | None") -> list:
-    """Return the expirations to draw.
-
-    A chain lists eleven expirations and drawing them all makes a thicket no
-    reader can follow, so one is drawn unless more are asked for by name. The
-    one drawn by default is the nearest that still has a day to run: the one
-    expiring within hours is quoted, but its smile is the last hours of a
-    contract rather than the shape of the market.
+def _first_priced_expiration(data: OptionsChainsData) -> str:
+    """Return the front expiration that still carries non-zero implied volatility.
 
     Parameters
     ----------
-    frame : DataFrame
-        The chain.
-    asked : str or None
-        The expirations asked for, comma separated. None draws the default.
+    data : OptionsChainsData
+        The loaded Deribit options chain.
 
     Returns
     -------
-    list
-        The expirations to draw, nearest first.
+    str
+        The earliest expiration with usable implied volatility.
     """
-    from openbb_deribit.utils.options.chain import expirations
+    df = data.dataframe
+    priced = df[df["implied_volatility"] > 0]
 
-    listed = expirations(frame)
-    live = [
-        day
-        for day in listed
-        if int(frame[frame["expiration"] == day]["dte"].max() or 0) > 0
-    ]
-    default = (live or listed)[:1]
+    if priced.empty:
+        from openbb_deribit.utils.options.data_handler import chain_expirations
 
-    if not asked:
-        return default
+        expirations = chain_expirations(data)
 
-    wanted = {part.strip() for part in str(asked).split(",") if part.strip()}
-    picked = [day for day in listed if str(day) in wanted]
+        return expirations[0] if expirations else data.expirations[0]
 
-    return (picked or default)[:MAX_LINES]
+    return sorted(priced["expiration"].astype(str).unique())[0]
 
 
-def smile_rows(frame, spot: float, otm: bool, moneyness: float = 0.25) -> list:
-    """Return the quoted volatility of each strike, by expiration.
-
-    Far out of the money the exchange stops publishing a distinct volatility
-    and pins whole runs of strikes to one clamped value -- 107.96 across every
-    BTC strike from 39% to 120% above spot on one read. Those are not market
-    observations, and drawing them puts a flat shelf on the smile and stretches
-    the axis past where anything trades, so the strikes drawn are held to a
-    band either side of spot.
+def create_smile(
+    data: OptionsChainsData,
+    expirations: str | None = None,
+    otm: bool = False,
+    skew: bool = False,
+    **kwargs,
+) -> OBBject:
+    """Build the IV smile/skew across strikes for up to five expirations.
 
     Parameters
     ----------
-    frame : DataFrame
-        The chain.
-    spot : float
-        The current price of the underlying.
+    data : OptionsChainsData
+        The loaded Deribit options chain.
+    expirations : str | None
+        Up to five comma-separated expiration dates. Defaults to the front expiry.
     otm : bool
-        When True, keeps only the out-of-the-money side of each strike, which
-        is the side that carries the liquidity.
-    moneyness : float
-        How far either side of spot to keep, as a share of it.
-
-    Returns
-    -------
-    list
-        One record per contract that published a volatility.
-    """
-    quoted = frame[frame["implied_volatility"].notna()]
-    quoted = quoted[quoted["implied_volatility"] > 0]
-
-    if spot and moneyness:
-        quoted = quoted[
-            (quoted["strike"] >= spot * (1 - moneyness))
-            & (quoted["strike"] <= spot * (1 + moneyness))
-        ]
-
-    if otm:
-        quoted = quoted[
-            ((quoted["option_type"] == "call") & (quoted["strike"] >= spot))
-            | ((quoted["option_type"] == "put") & (quoted["strike"] < spot))
-        ]
-
-    return [
-        {
-            "expiration": row["expiration"],
-            "dte": int(row["dte"] or 0),
-            "strike": float(row["strike"]),
-            "moneyness": float(row["strike"]) / spot - 1 if spot else None,
-            "option_type": row["option_type"],
-            "implied_volatility": float(row["implied_volatility"]),
-            "open_interest": row["open_interest"],
-            "volume": row["volume"],
-        }
-        for _, row in quoted.sort_values(["expiration", "strike"]).iterrows()
-    ]
-
-
-def create_smile(data: dict, theme: str = "dark", **kwargs) -> "OBBject":
-    """Draw implied volatility against strike, one line per expiration.
-
-    Parameters
-    ----------
-    data : dict
-        The rows to draw, the spot price, and the underlying's name.
-    theme : str
-        Either 'dark' or 'light'.
+        When True, restrict each curve to out-of-the-money contracts.
+    skew : bool
+        When True, plot the skew relative to ATM instead of raw implied volatility.
 
     Returns
     -------
     OBBject
-        The figure, with the plotted rows as its results.
+        The plotted rows, with the Plotly figure attached to ``chart``.
+
+    Raises
+    ------
+    OpenBBError
+        If the chain carries no implied volatility, or more than five expirations
+        were requested.
     """
+    from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.app.model.obbject import OBBject
     from openbb_core.app.utils import df_to_basemodel
-    from pandas import DataFrame
+    from pandas import DataFrame, concat, to_datetime
 
     from openbb_deribit.utils.options.theme import finalize, new_figure
 
-    rows = data["rows"]
-    spot = float(data.get("spot") or 0)
-    frame = DataFrame(rows)
-    figure, text_color, background = new_figure(theme)
-    drawn = sorted(frame["expiration"].unique())
-
-    for index, expiration in enumerate(drawn):
-        at = frame[frame["expiration"] == expiration].sort_values("strike")
-        figure.add_scatter(
-            x=at["strike"],
-            y=at["implied_volatility"],
-            mode="lines+markers",
-            name=f"{expiration}  ({int(at['dte'].iloc[0])}d)",
-            line=dict(color=COLORS[index % len(COLORS)], width=2),
-            marker=dict(size=4),
-            hovertemplate="%{x:,.0f}<b> %{y:.2f}%</b><extra></extra>",
+    if data.has_iv is False:
+        raise OpenBBError(
+            "Implied Volatility was not found in the data and is required here."
         )
 
-    figure.add_vline(
-        x=spot,
-        line_width=1,
-        line_dash="dash",
-        line_color="#8b949e",
-        annotation_text=f"Spot {spot:,.6g}",
-        annotation_font=dict(size=10, color="#8b949e"),
+    exp_list = (
+        expirations.split(",")
+        if isinstance(expirations, str)
+        else expirations
+        if isinstance(expirations, list)
+        else [_first_priced_expiration(data)]
     )
-    figure.set_title(
-        f"{data.get('symbol', '')} implied volatility by strike",
-        x=0.5,
-        font=dict(size=15),
+    exp_list = [data._get_nearest_expiration(e) for e in exp_list]
+
+    if len(exp_list) > MAX_EXPIRATIONS:
+        raise OpenBBError("Too many dates! Up to five can be selected.")
+
+    df = concat(
+        [data.skew(date=cast(str, to_datetime(exp).date())) for exp in exp_list]
     )
-    figure.update_layout(
-        paper_bgcolor=background,
-        plot_bgcolor=background,
-        font=dict(color=text_color),
-        margin=dict(l=10, r=132, t=56, b=10),
+    output_df = DataFrame()
+    symbol = data.underlying_symbol[0]
+    index_name = exp_list[0] if len(exp_list) <= 1 else None
+    target_col = "Skew" if skew is True else "IV"
+    title = (
+        f"{symbol} {'OTM ' if otm is True else ''}"
+        f"{'IV Skew' if skew is True else 'Implied Volatility'}"
+    )
+    theme = kwargs.get("theme") or "dark"
+    fig, text_color, background = new_figure(theme)
+    color = -1
+
+    for expiration in exp_list:
+        calls = (
+            df.query("`Expiration` == @expiration & `Option Type` == 'call'")
+            .copy()
+            .reset_index(drop=True)
+        )
+        puts = (
+            df.query("`Expiration` == @expiration & `Option Type` == 'put'")
+            .copy()
+            .reset_index(drop=True)
+        )
+
+        if otm is True:
+            put_idx = puts[puts["Skew"] == 0].index.values[0]
+            call_idx = calls[calls["Skew"] == 0].index.values[0]
+            puts = puts.iloc[0 : put_idx + 1].reset_index(drop=True)
+            calls = calls.iloc[call_idx:-1].reset_index(drop=True)
+
+        output_df = (
+            concat([output_df, calls, puts], axis=0)
+            if not output_df.empty
+            else concat([calls, puts], axis=0)
+        )
+        color = color + 1
+        fig.add_scatter(
+            x=calls["Strike"].unique().tolist(),
+            y=calls[target_col],
+            mode="lines+markers",
+            name="Calls" if len(exp_list) <= 1 else f"Calls at {expiration}",
+            marker_color=COLORS[color],
+            hoverinfo="x+y+name",
+        )
+        color = color + 1
+        fig.add_scatter(
+            x=puts["Strike"].unique().tolist(),
+            y=puts[target_col],
+            mode="lines+markers",
+            name="Puts" if len(exp_list) <= 1 else f"Puts at {expiration}",
+            marker_color=COLORS[color],
+            hoverinfo="x+y+name",
+        )
+
+    fig.update_layout(
+        title=dict(text=title, x=0.5, font=dict(size=18)),
+        yaxis=dict(
+            ticklen=0,
+            showline=False,
+            linecolor=text_color,
+            tickfont=dict(size=14),
+            nticks=7,
+        ),
+        xaxis=dict(
+            showgrid=False,
+            autorange=True,
+            ticklen=5,
+            showline=False,
+            linecolor=text_color,
+            title=dict(text=index_name if index_name else "", font=dict(size=16)),
+            tickfont=dict(size=16),
+            nticks=7,
+            showspikes=False,
+            tickprefix="$",
+        ),
         legend=dict(
+            font=dict(size=14),
             orientation="v",
             yanchor="top",
             y=1,
-            xanchor="left",
-            x=1.01,
-            font=dict(size=10),
-            bgcolor="rgba(0,0,0,0)",
+            xanchor="center",
+            x=0.5,
+            itemdoubleclick="toggleothers",
         ),
-        xaxis=dict(
-            title="Strike",
-            showgrid=False,
-            linecolor=text_color,
-            hoverformat=",.6g",
-        ),
-        yaxis=dict(
-            title="Implied volatility (%)",
-            side="left",
-            showgrid=True,
-            linecolor=text_color,
-        ),
+        font=dict(color=text_color),
+        paper_bgcolor=background,
+        plot_bgcolor=background,
+        hoverdistance=1,
+        hovermode="x unified",
+        dragmode="pan",
     )
-    output: Any = OBBject(results=df_to_basemodel(frame))
+    output_df = (
+        output_df.set_index(["Expiration", "Strike", "Option Type"])
+        .sort_index()
+        .reset_index()
+    )
+    output: Any = OBBject(results=df_to_basemodel(output_df))
 
-    return finalize(output, figure, theme)
+    return finalize(output, fig, theme)

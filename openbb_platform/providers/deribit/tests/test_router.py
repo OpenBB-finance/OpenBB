@@ -74,7 +74,6 @@ MODEL_COMMANDS = [
     market.trade_volumes,
     market.block_rfq_trades,
     market.settlements,
-    market.mark_price_history,
     index.price,
     index.historical,
     index.delivery_prices,

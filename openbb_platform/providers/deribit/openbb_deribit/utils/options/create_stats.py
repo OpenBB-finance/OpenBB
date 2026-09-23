@@ -1,100 +1,143 @@
-"""Open interest and volume across a Deribit chain."""
+"""Deribit open-interest and volume statistics chart."""
 
-from typing import TYPE_CHECKING, Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Literal
 
 if TYPE_CHECKING:
     from openbb_core.app.model.obbject import OBBject
+    from openbb_core.provider.standard_models.options_chains import OptionsChainsData
 
-BY = {"strike": "Strike", "expiration": "Expiration"}
 
-
-def stats_rows(frame, by: str) -> list:
-    """Return open interest and volume, split by side and grouped.
+def create_stats(
+    data: OptionsChainsData,
+    by: Literal["strike", "expiration"] = "expiration",
+    metric: Literal["oi", "volume"] = "oi",
+    date: str | None = None,
+    unit: Literal["value", "percent", "pcr"] = "value",
+    **kwargs,
+) -> OBBject:
+    """Chart open interest or volume by strike or expiration.
 
     Parameters
     ----------
-    frame : DataFrame
-        The chain.
-    by : str
-        Either 'strike' or 'expiration'.
+    data : OptionsChainsData
+        The loaded Deribit options chain.
+    by : Literal["strike", "expiration"]
+        The axis to aggregate over.
+    metric : Literal["oi", "volume"]
+        Open interest or contract volume.
+    date : str | None
+        Restrict to a single expiration, which forces the strike axis.
+    unit : Literal["value", "percent", "pcr"]
+        Raw values, share of total, or the put/call ratio.
 
     Returns
     -------
-    list
-        One record per group, with each side's open interest and volume.
+    OBBject
+        The aggregated rows, with the Plotly figure attached to ``chart``.
     """
-    working = frame.copy()
-    working["open_interest"] = working["open_interest"].fillna(0)
-    working["volume"] = working["volume"].fillna(0)
-    rows: list = []
-
-    for key in sorted(working[by].dropna().unique()):
-        at = working[working[by] == key]
-        calls = at[at["option_type"] == "call"]
-        puts = at[at["option_type"] == "put"]
-        call_oi = float(calls["open_interest"].sum())
-        put_oi = float(puts["open_interest"].sum())
-        call_volume = float(calls["volume"].sum())
-        put_volume = float(puts["volume"].sum())
-        rows.append(
-            {
-                by: key,
-                "call_open_interest": call_oi,
-                "put_open_interest": put_oi,
-                "total_open_interest": call_oi + put_oi,
-                "put_call_open_interest_ratio": put_oi / call_oi if call_oi else None,
-                "call_volume": call_volume,
-                "put_volume": put_volume,
-                "total_volume": call_volume + put_volume,
-                "put_call_volume_ratio": (
-                    put_volume / call_volume if call_volume else None
-                ),
-            }
-        )
-
-    return rows
-
-
-def create_stats(data: dict, theme: str = "dark", **kwargs) -> "OBBject":
-    """Draw call and put open interest against the chosen grouping."""
     from openbb_core.app.model.obbject import OBBject
     from openbb_core.app.utils import df_to_basemodel
-    from pandas import DataFrame
 
     from openbb_deribit.utils.options.theme import finalize, new_figure
 
-    by = data.get("by", "strike")
-    frame = DataFrame(data["rows"])
-    figure, text_color, background = new_figure(theme)
-    axis = frame[by].astype(str) if by == "expiration" else frame[by]
+    stat = "open_interest" if metric == "oi" else metric
 
-    for name, column, color in (
-        ("Calls", "call_open_interest", "#3fb950"),
-        ("Puts", "put_open_interest", "#e35d6a"),
-    ):
-        figure.add_bar(
-            x=axis,
-            y=frame[column],
-            name=name,
-            marker=dict(color=color),
-            hovertemplate="%{x}<b> %{y:,.2f}</b><extra></extra>",
+    if date is not None:
+        date = data._get_nearest_expiration(date)
+        stats = data.filter_data(by=by, date=date, stat=stat)
+    else:
+        stats = data.filter_data(by=by, stat=stat)
+
+    symbol = data.underlying_symbol[-1]
+    stat_type = stat.replace("_", " ").title()
+    index_name = "Expiration" if by == "expiration" and not date else "Strike"
+    stats = stats.set_index(index_name)
+    stats.Puts = stats.Puts * (-1)
+    title = (
+        f"{symbol} {stat_type} (%)"
+        if unit == "percent"
+        else f"{symbol} {stat_type} By {index_name}"
+    )
+    theme = kwargs.get("theme") or "dark"
+    fig, text_color, background = new_figure(theme)
+    xtick_vals = (
+        [
+            round(d) if "." in str(d) and str(d).endswith(".0") else round(d, 2)
+            for d in stats.index.tolist()
+        ]
+        if by == "strike"
+        else stats.index
+    )
+
+    if unit == "percent":
+        stats = stats.dropna(subset=["Net Percent"])
+        fig.add_bar(
+            x=stats.index,
+            y=stats["Net Percent"],
+            name="% of Total",
+            orientation="v",
+            hovertemplate="%{y:.4f}%",
+        )
+    elif unit == "pcr":
+        title = f"{symbol} {stat_type} Put/Call Ratio"
+        fig.add_bar(
+            x=xtick_vals,
+            y=stats.PCR,
+            orientation="v",
+            name="Put/Call Ratio",
+            hovertemplate="%{y:.4f}",
+        )
+    else:
+        fig.add_bar(
+            x=xtick_vals,
+            y=stats.Calls,
+            name="Calls",
+            orientation="v",
+            marker=dict(color="royalblue"),
+            hovertemplate="%{y:.0f}",
+        )
+        fig.add_bar(
+            x=xtick_vals,
+            y=stats.Puts,
+            name="Puts",
+            orientation="v",
+            marker=dict(color="red"),
+            hovertemplate="%{y:.0f}",
         )
 
-    figure.set_title(
-        f"{data.get('symbol', '')} open interest by {BY.get(by, by).lower()}",
-        x=0.5,
-        font=dict(size=15),
-    )
-    figure.update_layout(
-        barmode="relative",
+    fig.update_traces(width=0.95, selector=dict(type="bar"))
+    fig.set_title(title, x=0.5, font=dict(size=16))
+    fig.update_layout(
         paper_bgcolor=background,
         plot_bgcolor=background,
+        barmode="relative",
+        yaxis=dict(
+            ticklen=0,
+            showgrid=True,
+            tickfont=dict(size=12),
+            automargin=True,
+            linecolor=text_color,
+            showline=True,
+        ),
+        xaxis=dict(
+            showgrid=False,
+            tickfont=dict(size=11),
+            ticklen=0,
+            type="category",
+            linecolor=text_color,
+            showline=True,
+            nticks=10,
+            tickprefix="$" if by == "strike" else "",
+            showspikes=False,
+        ),
+        legend=dict(orientation="v", yanchor="top", y=0.90, xanchor="right", x=-0.01),
         font=dict(color=text_color),
-        margin=dict(l=10, r=10, t=60, b=10),
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, x=0),
-        xaxis=dict(title=BY.get(by, by), showgrid=False, linecolor=text_color),
-        yaxis=dict(title="Open interest", showgrid=True, linecolor=text_color),
+        margin=dict(l=10, r=10, t=10, b=10),
+        hovermode="x unified",
     )
-    output: Any = OBBject(results=df_to_basemodel(frame))
+    stats.Puts = stats.Puts * (-1)
+    output: Any = OBBject(results=df_to_basemodel(stats))
 
-    return finalize(output, figure, theme)
+    return finalize(output, fig, theme)

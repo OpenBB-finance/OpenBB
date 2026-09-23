@@ -19,6 +19,7 @@ from openbb_deribit import DERIVATIVES_INSTALLED
 from openbb_deribit.utils.constants import (
     EXPIRATION_CHOICES_ENDPOINT,
     STRATEGY_CHOICES_ENDPOINT,
+    STRIKE_CHOICES_ENDPOINT,
     SYMBOL_STYLE,
     UNDERLYING_CHOICES_ENDPOINT,
 )
@@ -26,11 +27,6 @@ from openbb_deribit.utils.constants import (
 _logger = logging.getLogger(__name__)
 
 router = Router(prefix="/options", description="Deribit options data and analysis.")
-
-SURFACE_MEASURES = Literal[
-    "implied_volatility", "delta", "gamma", "theta", "vega", "rho"
-]
-GROUPED_BY = Literal["strike", "expiration"]
 
 _UNDERLYING = {
     "x-widget_config": {
@@ -55,6 +51,72 @@ def _excluded_query(description: str = "") -> Any:
     return FastAPIQuery(
         description=description,
         json_schema_extra={"x-widget_config": {"exclude": True}},
+    )
+
+
+def _expiry_query(description: str, multi: bool = False) -> Any:
+    """Build an expiration query parameter backed by the expiration choices."""
+    config: dict = {
+        "type": "endpoint",
+        "optionsEndpoint": EXPIRATION_CHOICES_ENDPOINT,
+        "optionsParams": {"symbol": "$symbol"},
+        "style": SYMBOL_STYLE,
+    }
+
+    if multi:
+        config["multiSelect"] = True
+
+    return FastAPIQuery(
+        description=description, json_schema_extra={"x-widget_config": config}
+    )
+
+
+def _strike_query(description: str) -> Any:
+    """Build a strike query parameter backed by the strike choices."""
+    return FastAPIQuery(
+        description=description,
+        json_schema_extra={
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": STRIKE_CHOICES_ENDPOINT,
+                "optionsParams": {"symbol": "$symbol"},
+                "style": SYMBOL_STYLE,
+            }
+        },
+    )
+
+
+def _choice_query(description: str, options: list[tuple[str, str]]) -> Any:
+    """Build a query parameter rendered as a labelled dropdown."""
+    return FastAPIQuery(
+        description=description,
+        json_schema_extra={
+            "x-widget_config": {
+                "options": [
+                    {"label": label, "value": value} for label, value in options
+                ]
+            }
+        },
+    )
+
+
+def _legs_query(description: str) -> Any:
+    """Build the strategy parameter the optimizer's Legs column groups by."""
+    return FastAPIQuery(
+        description=description,
+        json_schema_extra={
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": STRATEGY_CHOICES_ENDPOINT,
+                "optionsParams": {
+                    "symbol": "$symbol",
+                    "target_price": "$target_price",
+                    "target_date": "$target_date",
+                    "budget": "$budget",
+                },
+                "style": SYMBOL_STYLE,
+            }
+        },
     )
 
 
@@ -117,6 +179,7 @@ CHAIN_COLUMNS = [
 
 OPTIMIZER_COLUMNS = [
     _column("strategy", "Strategy", pinned="left", cellDataType="text"),
+    _column("code", "Combo Type", cellDataType="text"),
     _column(
         "legs",
         "Legs",
@@ -128,8 +191,9 @@ OPTIMIZER_COLUMNS = [
             "groupBy": {"paramName": "legs"},
         },
     ),
+    _column("combo", "Listed Combo", cellDataType="text"),
     _column("contracts", "Contracts", **_COUNT),
-    _column("cost", "Cost", **_MONEY),
+    _column("cost", "Net Premium", **_MONEY),
     _column("expected_profit", "Expected Profit", **_MONEY, renderFn="greenRed"),
     _column("expected_return", "Expected Return", **_NORMALIZED, renderFn="greenRed"),
     _column("max_profit", "Max Profit", **_MONEY),
@@ -251,6 +315,32 @@ def _figure_json(output: Any, raw: bool) -> Any:
     return figure_json
 
 
+async def _chart_json(builder, symbol: str, theme: str, raw: bool, **kwargs) -> Any:
+    """Load the chain, build the view, and return rows or figure JSON.
+
+    Raises
+    ------
+    HTTPException
+        If the exchange lists no options on the underlying.
+    """
+    from fastapi import HTTPException
+    from openbb_core.app.model.abstract.error import OpenBBError
+
+    from openbb_deribit.utils.options.data_handler import load_symbol
+
+    try:
+        data = await load_symbol(symbol)
+    except OpenBBError as exc:
+        _logger.exception("Loading the Deribit option chain for %s failed", symbol)
+
+        raise HTTPException(
+            status_code=404,
+            detail=f"Deribit lists no options on {symbol}.",
+        ) from exc
+
+    return _figure_json(builder(data, theme=theme, **kwargs), raw)
+
+
 async def _chain_or_404(symbol: str) -> tuple:
     """Load a chain, answering 404 when the exchange lists none.
 
@@ -314,6 +404,32 @@ async def expiration_choices(
     ]
 
 
+@router.command(
+    methods=["GET"],
+    widget_config={"exclude": True},
+    examples=[
+        APIEx(
+            description="Get the strikes listed on an underlying.",
+            parameters={"symbol": "BTC"},
+        )
+    ],
+)
+async def strike_choices(
+    symbol: Annotated[str, _underlying()] = "BTC",
+) -> list[dict]:
+    """``[{label, value}]`` of every strike the underlying lists."""
+    from openbb_core.app.model.abstract.error import OpenBBError
+
+    from openbb_deribit.utils.options.data_handler import get_strikes, load_symbol
+
+    try:
+        data = await load_symbol(symbol)
+    except OpenBBError:
+        return []
+
+    return get_strikes(data)
+
+
 if not DERIVATIVES_INSTALLED:
 
     @router.command(
@@ -351,23 +467,11 @@ def _quote(symbol: str) -> str:
     return "USDC" if symbol.upper().endswith("_USDC") else "USD"
 
 
-def _named(legs: list) -> str:
-    """Name a position by the shape its legs make."""
-    sides = {leg["option_type"] for leg in legs}
-    bought = sum(1 for leg in legs if leg["quantity"] > 0)
+async def _combos(symbol: str) -> list:
+    """Return the combo books listed on an underlying."""
+    from openbb_deribit.utils.options.chain import load_combos
 
-    if len(legs) == 1:
-        return f"Long {legs[0]['option_type'].capitalize()}"
-
-    if len(sides) == 2:
-        strikes = {leg["strike"] for leg in legs}
-
-        return "Long Straddle" if len(strikes) == 1 else "Long Strangle"
-
-    call = "call" in sides
-    spread = "Bull Call Spread" if call else "Bear Put Spread"
-
-    return spread if bought else "Custom"
+    return await load_combos(symbol)
 
 
 def _ranked_row(item: dict) -> dict:
@@ -376,7 +480,9 @@ def _ranked_row(item: dict) -> dict:
 
     return {
         "strategy": item["strategy"],
+        "code": item["code"],
         "legs": item["legs"],
+        "combo": item["combo"],
         "contracts": item["contracts"],
         "cost": item["cost"],
         "expected_profit": item["expected_profit"],
@@ -392,8 +498,10 @@ def _ranked_row(item: dict) -> dict:
     methods=["GET"],
     widget_config=_table_widget(
         "Strategy Optimizer",
-        "Every strategy the expiration can form, sized to a budget and ranked"
-        " by what it returns if the underlying reaches a price.",
+        "Every Deribit combo structure the expiration can form, bought and sold,"
+        " priced from its listed combo book where one trades, sized to the"
+        " capital it puts at risk, and ranked by what it returns if the"
+        " underlying reaches a price.",
         OPTIMIZER_COLUMNS,
         18,
     ),
@@ -420,20 +528,36 @@ async def optimizer(
     ] = None,
     budget: Annotated[
         float,
-        FastAPIQuery(description="What there is to spend, in the quote currency."),
+        FastAPIQuery(
+            description="The capital to put at risk, in the quote currency. Each"
+            " position is sized so its worst loss across a threefold move either"
+            " way is this much."
+        ),
     ] = 5000.0,
     limit: Annotated[
-        int, FastAPIQuery(description="How many strategies to return.")
-    ] = 12,
+        int,
+        FastAPIQuery(
+            description="How many structures to return, each at its best strikes."
+        ),
+    ] = 40,
+    legs: Annotated[
+        str | None,
+        _legs_query(
+            "The strategy picked from the Legs column, shared with the payoff"
+            " chart. It does not change the ranking."
+        ),
+    ] = None,
 ) -> OBBject:
-    """Rank the option strategies that best serve a view on the underlying."""
-    from openbb_deribit.utils.options.chain import nearest_expiration, quotes_at
+    """Rank every combo structure against a view on the underlying."""
+    from openbb_deribit.utils.options.chain import nearest_expiration
     from openbb_deribit.utils.options.optimizer import rank
 
     frame, spot, inverse, settles = await _chain_or_404(symbol)
     target = float(target_price) if target_price else spot
     expiration = nearest_expiration(frame, target_date or frame["expiration"].min())
-    ranked = rank(quotes_at(frame, expiration), spot, target, budget, inverse, limit)
+    ranked = rank(
+        frame, expiration, spot, target, budget, inverse, limit, await _combos(symbol)
+    )
 
     return OBBject(
         results=[_ranked_row(item) for item in ranked],
@@ -538,13 +662,22 @@ async def strategy_choices(
     budget: Annotated[float, FastAPIQuery()] = 5000.0,
 ) -> list[dict[str, str]]:
     """``[{label, value}]`` of the strategies the optimizer ranks for a view."""
-    from openbb_deribit.utils.options.chain import nearest_expiration, quotes_at
-    from openbb_deribit.utils.options.optimizer import rank
+    from openbb_deribit.utils.options.chain import nearest_expiration
+    from openbb_deribit.utils.options.optimizer import SHORTLIST, rank
 
     frame, spot, inverse, _settles = await _loaded(symbol)
     target = float(target_price) if target_price else spot
     expiration = nearest_expiration(frame, target_date or frame["expiration"].min())
-    ranked = rank(quotes_at(frame, expiration), spot, target, budget, inverse)
+    ranked = rank(
+        frame,
+        expiration,
+        spot,
+        target,
+        budget,
+        inverse,
+        SHORTLIST,
+        await _combos(symbol),
+    )
 
     return [
         {"label": f"{item['strategy']} — {item['legs']}", "value": item["legs"]}
@@ -563,38 +696,24 @@ async def payoff_chart(
     ] = None,
     budget: Annotated[
         float,
-        FastAPIQuery(description="What there is to spend, in the quote currency."),
+        FastAPIQuery(
+            description="The capital to put at risk, in the quote currency. Each"
+            " position is sized so its worst loss across a threefold move either"
+            " way is this much."
+        ),
     ] = 5000.0,
     legs: Annotated[
         str | None,
-        FastAPIQuery(
-            description="The contracts to draw, as 'Buy SYMBOL / Sell SYMBOL'."
-            + " Click the Legs cell of a strategy in the optimizer to set it,"
-            + " or pick one here. Left empty, the best strategy for the view is"
-            + " drawn.",
-            json_schema_extra={
-                "x-widget_config": {
-                    "type": "endpoint",
-                    "optionsEndpoint": STRATEGY_CHOICES_ENDPOINT,
-                    "optionsParams": {
-                        "symbol": "$symbol",
-                        "target_price": "$target_price",
-                        "target_date": "$target_date",
-                        "budget": "$budget",
-                    },
-                    "style": SYMBOL_STYLE,
-                }
-            },
+        _legs_query(
+            "The contracts to draw, as 'Buy SYMBOL / Sell 2 SYMBOL'. Click the"
+            " Legs cell of a strategy in the optimizer to set it, or pick one"
+            " here. Left empty, the best strategy for the view is drawn."
         ),
     ] = None,
     raw: Annotated[bool, _excluded_query()] = False,
     theme: Annotated[str, _excluded_query()] = "dark",
 ):
     """Draw what one position returns across a range of underlying prices.
-
-    Naming the contracts draws exactly them, which is what clicking a strategy
-    in the optimizer does. Nothing is ranked in that case: the contracts are
-    read straight off the chain and priced.
 
     Raises
     ------
@@ -610,28 +729,26 @@ async def payoff_chart(
     frame, spot, inverse, settles = await _chain_or_404(symbol)
     target = float(target_price) if target_price else spot
     expiration = nearest_expiration(frame, target_date or frame["expiration"].min())
-    quotes = quotes_at(frame, expiration)
+    books = await _combos(symbol)
 
     if legs:
         try:
-            built = rebuild(legs, quotes)
+            built = rebuild(legs, quotes_at(frame), books, spot, inverse)
         except ValueError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
 
-        scored = score(
-            {"strategy": _named(built), "legs": built}, spot, target, inverse
-        )
+        scored = score(built, spot, target, inverse)
 
         if scored is None:
             raise HTTPException(
                 status_code=404,
-                detail="That position is opened for a credit, so a budget does"
-                " not size it. Pick one the optimizer ranked.",
+                detail="That position puts nothing at risk, so a budget does not"
+                " size it. Pick one the optimizer ranked.",
             )
 
         chosen = draw(scored, spot, target, budget, inverse)
     else:
-        ranked = rank(quotes, spot, target, budget, inverse, 1)
+        ranked = rank(frame, expiration, spot, target, budget, inverse, 1, books)
 
         if not ranked:
             raise HTTPException(
@@ -660,113 +777,172 @@ async def smile_chart(
     symbol: Annotated[str, _underlying()] = "BTC",
     expirations: Annotated[
         str | None,
-        FastAPIQuery(
-            description="The expirations to draw. Left empty, the nearest one is"
-            + " drawn on its own.",
-            json_schema_extra={
-                "x-widget_config": {
-                    "type": "endpoint",
-                    "multiSelect": True,
-                    "optionsEndpoint": EXPIRATION_CHOICES_ENDPOINT,
-                    "optionsParams": {"symbol": "$symbol"},
-                    "style": SYMBOL_STYLE,
-                }
-            },
-        ),
+        _expiry_query("Up to five expiration dates (comma-separated).", multi=True),
     ] = None,
-    moneyness: Annotated[
-        float,
-        FastAPIQuery(description="How far either side of spot to keep, in percent."),
-    ] = 25.0,
     otm: Annotated[
-        bool,
-        FastAPIQuery(description="Keep only the out-of-the-money side of each strike."),
-    ] = True,
+        bool, FastAPIQuery(description="Show only out-of-the-money contracts.")
+    ] = False,
+    skew: Annotated[
+        bool, FastAPIQuery(description="Plot skew relative to ATM instead of IV.")
+    ] = False,
     raw: Annotated[bool, _excluded_query()] = False,
     theme: Annotated[str, _excluded_query()] = "dark",
 ):
-    """Draw implied volatility against strike, one line per expiration."""
-    from openbb_deribit.utils.options.create_smile import (
-        chosen_expirations,
-        create_smile,
-        smile_rows,
+    """Implied-volatility smile / skew across strikes."""
+    from openbb_deribit.utils.options.create_smile import create_smile
+
+    return await _chart_json(
+        create_smile, symbol, theme, raw, expirations=expirations, otm=otm, skew=skew
     )
-
-    frame, spot, _inverse, _settles = await _chain_or_404(symbol)
-    drawn = chosen_expirations(frame, expirations)
-    rows = smile_rows(
-        frame[frame["expiration"].isin(drawn)], spot, otm, abs(moneyness) / 100
-    )
-    output = create_smile({"rows": rows, "spot": spot, "symbol": symbol}, theme)
-
-    return _figure_json(output, raw)
-
-
-async def term_structure_chart(
-    symbol: Annotated[str, _underlying()] = "BTC",
-    raw: Annotated[bool, _excluded_query()] = False,
-    theme: Annotated[str, _excluded_query()] = "dark",
-):
-    """Draw at-the-money implied volatility against time to expiration."""
-    from openbb_deribit.utils.options.create_term_structure import (
-        create_term_structure,
-        term_rows,
-    )
-
-    frame, spot, _inverse, _settles = await _chain_or_404(symbol)
-    output = create_term_structure(
-        {"rows": term_rows(frame, spot), "symbol": symbol}, theme
-    )
-
-    return _figure_json(output, raw)
 
 
 async def surface_chart(
     symbol: Annotated[str, _underlying()] = "BTC",
-    measure: Annotated[
-        SURFACE_MEASURES,
-        FastAPIQuery(description="What to raise into the third dimension."),
+    metric: Annotated[
+        Literal[
+            "implied_volatility", "delta", "gamma", "theta", "vega", "rho", "dex", "gex"
+        ],
+        _choice_query(
+            "The surface metric.",
+            [
+                ("Implied Volatility", "implied_volatility"),
+                ("Delta", "delta"),
+                ("Gamma", "gamma"),
+                ("Theta", "theta"),
+                ("Vega", "vega"),
+                ("Rho", "rho"),
+                ("Delta Exposure", "dex"),
+                ("Gamma Exposure", "gex"),
+            ],
+        ),
     ] = "implied_volatility",
-    moneyness: Annotated[
-        float,
-        FastAPIQuery(description="How far either side of spot to keep, in percent."),
-    ] = 25.0,
+    option_type: Annotated[
+        Literal["otm", "itm", "puts", "calls"],
+        _choice_query(
+            "Which side of the chain to plot.",
+            [
+                ("Out-Of-The-Money", "otm"),
+                ("In-The-Money", "itm"),
+                ("Puts", "puts"),
+                ("Calls", "calls"),
+            ],
+        ),
+    ] = "otm",
     dte_min: Annotated[
-        int, FastAPIQuery(description="The nearest expiration to keep, in days.")
-    ] = 1,
+        int | None, FastAPIQuery(description="Minimum days to expiry.")
+    ] = None,
     dte_max: Annotated[
-        int, FastAPIQuery(description="The furthest expiration to keep, in days.")
-    ] = 120,
+        int | None, FastAPIQuery(description="Maximum days to expiry.")
+    ] = None,
+    moneyness: Annotated[
+        float | None,
+        FastAPIQuery(description="Percent from the underlying price to include."),
+    ] = None,
+    oi: Annotated[
+        bool, FastAPIQuery(description="Drop contracts with no open interest.")
+    ] = False,
+    volume: Annotated[
+        bool, FastAPIQuery(description="Drop contracts that have not traded.")
+    ] = False,
     raw: Annotated[bool, _excluded_query()] = False,
     theme: Annotated[str, _excluded_query()] = "dark",
 ):
-    """Draw a measure over time to expiration and strike."""
-    from openbb_deribit.utils.options.create_surface import create_surface, surface_rows
+    """Implied-volatility or greeks 3-D surface over DTE and strike."""
+    from openbb_deribit.utils.options.create_surface import create_surface
 
-    frame, spot, _inverse, _settles = await _chain_or_404(symbol)
-    rows = surface_rows(frame, spot, measure, abs(moneyness) / 100, dte_min, dte_max)
-    output = create_surface({"rows": rows, "measure": measure, "symbol": symbol}, theme)
+    dte_range = [dte_min or 0, dte_max or 5000] if (dte_min or dte_max) else None
 
-    return _figure_json(output, raw)
+    return await _chart_json(
+        create_surface,
+        symbol,
+        theme,
+        raw,
+        option_type=option_type,
+        metric=metric,
+        dte_range=dte_range,
+        moneyness=moneyness,
+        oi=oi,
+        volume=volume,
+    )
 
 
 async def stats_chart(
     symbol: Annotated[str, _underlying()] = "BTC",
     by: Annotated[
-        GROUPED_BY, FastAPIQuery(description="What to group the totals by.")
+        Literal["strike", "expiration"],
+        _choice_query(
+            "Aggregate by strike or expiration.",
+            [("Expiration", "expiration"), ("Strike", "strike")],
+        ),
     ] = "expiration",
+    metric: Annotated[
+        Literal["oi", "volume"],
+        _choice_query(
+            "Open interest or volume.",
+            [("Open Interest", "oi"), ("Volume", "volume")],
+        ),
+    ] = "oi",
+    date: Annotated[
+        str | None,
+        _expiry_query("Expiry to view by strike (switches 'by' to strike)."),
+    ] = None,
+    unit: Annotated[
+        Literal["value", "percent", "pcr"],
+        _choice_query(
+            "Raw values, share of total, or put/call ratio.",
+            [("Value", "value"), ("Percent", "percent"), ("Put/Call Ratio", "pcr")],
+        ),
+    ] = "value",
     raw: Annotated[bool, _excluded_query()] = False,
     theme: Annotated[str, _excluded_query()] = "dark",
 ):
-    """Draw call and put open interest and volume."""
-    from openbb_deribit.utils.options.create_stats import create_stats, stats_rows
+    """Open-interest or volume statistics by strike or expiration."""
+    from openbb_deribit.utils.options.create_stats import create_stats
 
-    frame, _spot, _inverse, _settles = await _chain_or_404(symbol)
-    output = create_stats(
-        {"rows": stats_rows(frame, by), "by": by, "symbol": symbol}, theme
+    return await _chart_json(
+        create_stats, symbol, theme, raw, by=by, metric=metric, date=date, unit=unit
     )
 
-    return _figure_json(output, raw)
+
+async def term_structure_chart(
+    symbol: Annotated[str, _underlying()] = "BTC",
+    strike: Annotated[
+        float | None, _strike_query("Target strike. Default is nearest OTM per expiry.")
+    ] = None,
+    moneyness: Annotated[
+        float | None,
+        FastAPIQuery(description="Percent out-of-the-money instead of a fixed strike."),
+    ] = None,
+    metric: Annotated[
+        Literal["iv", "price"],
+        _choice_query(
+            "Implied volatility or price.",
+            [("Implied Volatility", "iv"), ("Price", "price")],
+        ),
+    ] = "iv",
+    option_type: Annotated[
+        Literal["both", "calls", "puts"],
+        _choice_query(
+            "Which side of the chain to plot.",
+            [("Both", "both"), ("Calls", "calls"), ("Puts", "puts")],
+        ),
+    ] = "both",
+    raw: Annotated[bool, _excluded_query()] = False,
+    theme: Annotated[str, _excluded_query()] = "dark",
+):
+    """Price or IV term structure across expirations."""
+    from openbb_deribit.utils.options.create_term_structure import create_term_structure
+
+    return await _chart_json(
+        create_term_structure,
+        symbol,
+        theme,
+        raw,
+        strike=strike,
+        moneyness=moneyness,
+        metric=metric,
+        option_type=option_type,
+    )
 
 
 CHART_ROUTES = (
@@ -781,21 +957,21 @@ CHART_ROUTES = (
         "/smile",
         smile_chart,
         "Volatility Smile",
-        "Implied volatility by strike, per expiration.",
+        "Implied volatility smile or skew across strikes, per expiration.",
         16,
     ),
     (
         "/term_structure",
         term_structure_chart,
         "Volatility Term Structure",
-        "At-the-money implied volatility against time to expiration.",
+        "Price or implied volatility at one strike across expirations.",
         16,
     ),
     (
         "/surface",
         surface_chart,
         "Volatility Surface",
-        "A measure raised over time to expiration and strike.",
+        "Implied volatility or a greek as a surface over DTE and strike.",
         20,
     ),
     (

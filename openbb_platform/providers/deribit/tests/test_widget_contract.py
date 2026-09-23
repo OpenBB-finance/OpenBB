@@ -49,10 +49,6 @@ MODEL_DATA = {
     "DeribitIndexHistorical": ("index_historical", "DeribitIndexHistoricalData"),
     "DeribitIndexPrice": ("index_price", "DeribitIndexPriceData"),
     "DeribitInstruments": ("instruments", "DeribitInstrumentsData"),
-    "DeribitMarkPriceHistory": (
-        "mark_price_history",
-        "DeribitMarkPriceHistoryData",
-    ),
     "DeribitOptionsChains": ("options_chains", "DeribitOptionsChainsData"),
     "DeribitOrderBook": ("order_book", "DeribitOrderBookData"),
     "DeribitSettlements": ("settlements", "DeribitSettlementsData"),
@@ -120,21 +116,29 @@ class TestQueryStringChoices:
 
     @pytest.mark.parametrize("depth", ORDER_BOOK_DEPTHS)
     def test_depth_accepts_its_own_choices(self, depth):
-        """Every advertised depth is accepted exactly as advertised."""
+        """Every advertised depth is accepted as the number it is."""
         query = DeribitOrderBookQueryParams(symbol="BTC-PERPETUAL", depth=depth)
 
         assert query.depth == depth
 
-    def test_depth_accepts_a_number_from_python(self):
-        """A Python caller passing a number is still understood."""
-        query = DeribitOrderBookQueryParams(symbol="BTC-PERPETUAL", depth=20)
+    def test_depth_accepts_the_query_string_text(self):
+        """A widget's query string carries the depth as text."""
+        query = DeribitOrderBookQueryParams(symbol="BTC-PERPETUAL", depth="20")
 
-        assert query.depth == "20"
+        assert query.depth == 20
 
-    def test_depth_rejects_an_unlisted_value(self):
+    @pytest.mark.parametrize("depth", [7, "7"])
+    def test_depth_rejects_an_unlisted_value(self, depth):
         """A depth the exchange does not offer is refused."""
-        with pytest.raises(ValidationError):
-            DeribitOrderBookQueryParams(symbol="BTC-PERPETUAL", depth="7")
+        with pytest.raises(ValidationError, match="not 7"):
+            DeribitOrderBookQueryParams(symbol="BTC-PERPETUAL", depth=depth)
+
+    def test_depth_is_offered_as_a_dropdown(self):
+        """The widget offers every depth the exchange accepts."""
+        schema = DeribitOrderBookQueryParams.__json_schema_extra__["depth"]
+        options = schema["x-widget_config"]["options"]
+
+        assert [option["value"] for option in options] == list(ORDER_BOOK_DEPTHS)
 
 
 class TestExchangeLimits:
@@ -526,6 +530,75 @@ class TestGroupEndpoints:
                 assert param.get("optional"), (
                     f"group {group['name']} names no starting value and"
                     f" {widget_id} requires {group['paramName']}"
+                )
+
+
+class TestCellClickGroups:
+    """A clickable cell drives a group its own widget belongs to."""
+
+    @pytest.fixture(scope="class")
+    def emitters(self):
+        """Return each Deribit widget's clickable columns and the parameter set."""
+        found = []
+
+        for widget_id, widget in _served_widgets().items():
+            if "Deribit" not in (widget.get("source") or []):
+                continue
+
+            for column in (
+                widget.get("data", {}).get("table", {}).get("columnsDefs") or []
+            ):
+                action = column.get("renderFnParams") or {}
+
+                if column.get("renderFn") != "cellOnClick":
+                    continue
+
+                param = (action.get("groupBy") or {}).get("paramName") or action.get(
+                    "groupByParamName"
+                )
+                found.append((widget_id, column["field"], param))
+
+        return found
+
+    @pytest.fixture(scope="class")
+    def apps(self):
+        """Return the dashboard as it is served."""
+        import asyncio
+
+        from openbb_deribit.deribit_router import deribit_apps
+
+        return asyncio.run(deribit_apps())
+
+    def test_there_is_a_clickable_column(self, emitters):
+        """The optimizer's Legs column is clickable."""
+        assert ("deribit_options_optimizer_custom_obb", "legs", "legs") in emitters
+
+    def test_the_emitting_widget_has_the_parameter(self, emitters):
+        """A click sets a parameter the clicked widget declares."""
+        widgets = _served_widgets()
+
+        for widget_id, field, param in emitters:
+            offered = {item["paramName"] for item in widgets[widget_id]["params"]}
+
+            assert param in offered, (
+                f"{widget_id}.{field} groups by {param}, which it has no parameter for"
+            )
+
+    def test_the_emitting_widget_is_in_a_group_for_it(self, emitters, apps):
+        """A click reaches other widgets only through a group the emitter joins."""
+        for widget_id, field, param in emitters:
+            joined = [
+                group
+                for app in apps
+                for group in app["groups"]
+                if group["paramName"] == param and widget_id in group["widgetIds"]
+            ]
+
+            assert joined, f"{widget_id}.{field} groups by {param} in no group"
+
+            for group in joined:
+                assert len(group["widgetIds"]) > 1, (
+                    f"group {group['name']} holds only {widget_id}"
                 )
 
 

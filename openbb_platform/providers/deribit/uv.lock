@@ -2217,8 +2217,6 @@ dependencies = [
     { name = "aiohttp-client-cache" },
     { name = "aiosqlite" },
     { name = "openbb-core", extra = ["pandas"] },
-    { name = "websockets", version = "16.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "websockets", version = "17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
 
 [package.dev-dependencies]
@@ -2233,7 +2231,6 @@ requires-dist = [
     { name = "aiohttp-client-cache", specifier = ">=0.11" },
     { name = "aiosqlite", specifier = ">=0.20" },
     { name = "openbb-core", extras = ["pandas"], editable = "../../core" },
-    { name = "websockets", specifier = ">=13.0" },
 ]
 
 [package.metadata.requires-dev]

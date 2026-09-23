@@ -34,7 +34,6 @@ URL_CACHE_TTL = {
     "*/public/get_funding_rate_history*": 15 * MINUTE,
     "*/public/get_funding_chart_data*": 5 * MINUTE,
     "*/public/get_funding_rate_value*": 5 * MINUTE,
-    "*/public/get_mark_price_history*": 5 * MINUTE,
     "*/public/get_tradingview_chart_data*": 5 * MINUTE,
     "*/public/get_index_chart_data*": 5 * MINUTE,
     "*/public/get_last_settlements_by_currency*": 5 * MINUTE,
