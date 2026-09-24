@@ -57,12 +57,12 @@ class FederalReservePeerGroupAverageQueryParams(QueryParams):
         default="1",
         description="The UBPR peer-group name; the default groups the largest"
         " insured commercial banks (assets greater than $100 billion).",
-        json_schema_extra={"choices": _PEER_GROUP_NAMES},
+        json_schema_extra={"choices": list(_PEER_GROUP_NAMES)},
     )
     section: str = Field(
         default="Summary Ratios",
         description="The Peer Group Average Report section (page) to return.",
-        json_schema_extra={"choices": PGA_SECTIONS},
+        json_schema_extra={"choices": list(PGA_SECTIONS)},
     )
     all_periods: bool = Field(
         default=False,

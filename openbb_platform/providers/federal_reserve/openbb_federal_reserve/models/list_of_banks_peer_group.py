@@ -30,7 +30,7 @@ class FederalReserveListOfBanksPeerGroupQueryParams(QueryParams):
     peer_group: str = Field(
         default="1",
         description="The UBPR peer-group name (e.g. '1', 'NATIONAL', 'ALCOM').",
-        json_schema_extra={"choices": _PEER_GROUP_NAMES},
+        json_schema_extra={"choices": list(_PEER_GROUP_NAMES)},
     )
     date: str | None = Field(
         default=None,

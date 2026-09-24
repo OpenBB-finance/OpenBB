@@ -86,7 +86,7 @@ class FederalReservePrimaryDealerPositioningQueryParams(
     category: PdsCategories = Field(
         default="treasuries",
         description="The category of asset to return, defaults to 'treasuries'.",
-        json_schema_extra={"choices": PDS_CATEGORY_CHOICES},
+        json_schema_extra={"choices": list(PDS_CATEGORY_CHOICES)},
     )
 
 

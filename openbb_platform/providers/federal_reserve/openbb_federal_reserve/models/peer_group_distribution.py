@@ -59,12 +59,12 @@ class FederalReservePeerGroupDistributionQueryParams(QueryParams):
     peer_group: str = Field(
         default="1",
         description="The UBPR peer-group name (e.g. '1', 'NATIONAL', 'ALCOM').",
-        json_schema_extra={"choices": _PEER_GROUP_NAMES},
+        json_schema_extra={"choices": list(_PEER_GROUP_NAMES)},
     )
     section: str = Field(
         default="Summary Ratios",
         description="The report page (section) to return.",
-        json_schema_extra={"choices": PEER_GROUP_DISTRIBUTION_SECTIONS},
+        json_schema_extra={"choices": list(PEER_GROUP_DISTRIBUTION_SECTIONS)},
     )
     period: str | None = Field(
         default=None,

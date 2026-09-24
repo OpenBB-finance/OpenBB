@@ -10,8 +10,9 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, field_validator
+from pydantic.config import JsonDict
 
-_VOL_COLOR_RULES = {
+_VOL_COLOR_RULES: JsonDict = {
     "colorRules": [
         {"condition": "lt", "value": 5, "color": "#2e7d32", "fill": True},
         {

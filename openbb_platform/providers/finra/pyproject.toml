@@ -2,7 +2,7 @@
 name = "openbb-finra"
 version = "1.6.1"
 description = "FINRA extension for OpenBB"
-authors = ["OpenBB Team <hello@openbb.co>"]
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = "Apache-2.0"
 readme = "README.md"
 requires-python = ">=3.10,<4"

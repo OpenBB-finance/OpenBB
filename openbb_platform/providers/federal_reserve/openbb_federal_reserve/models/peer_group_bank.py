@@ -270,7 +270,7 @@ class FederalReservePeerGroupBankQueryParams(QueryParams):
     section: str = Field(
         default="Summary Ratios",
         description="The UBPR report section (page) to return.",
-        json_schema_extra={"choices": PEER_GROUP_BANK_SECTIONS},
+        json_schema_extra={"choices": list(PEER_GROUP_BANK_SECTIONS)},
     )
 
 

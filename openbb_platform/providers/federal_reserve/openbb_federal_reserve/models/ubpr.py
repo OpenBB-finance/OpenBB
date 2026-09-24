@@ -64,7 +64,7 @@ class FederalReserveUBPRQueryParams(QueryParams):
     section: str = Field(
         default="Summary Ratios",
         description="The UBPR report section (page) to return.",
-        json_schema_extra={"choices": UBPR_SECTIONS},
+        json_schema_extra={"choices": list(UBPR_SECTIONS)},
     )
     all_periods: bool = Field(
         default=False,
