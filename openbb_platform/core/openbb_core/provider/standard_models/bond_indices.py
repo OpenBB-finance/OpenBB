@@ -42,11 +42,13 @@ class BondIndicesQueryParams(QueryParams):
 
 
 class BondIndicesData(Data):
-    """Bond Indices Data."""
+    """Bond Indices Data.
+
+    Attributes
+    ----------
+    date : dateType
+        The observation date. Every index requested is carried as its own
+        column, named for the index it reports.
+    """
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str | None = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-    )
-    value: float = Field(description="Index values.")

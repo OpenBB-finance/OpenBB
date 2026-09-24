@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Boston Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Federal_Reserve_from_South_Boston.jpg/960px-Federal_Reserve_from_South_Boston.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Federal_Reserve_from_South_Boston.jpg/960px-Federal_Reserve_from_South_Boston.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Federal_Reserve_from_South_Boston.jpg/960px-Federal_Reserve_from_South_Boston.jpg",
+    "description": "New England regional economics from the Boston Fed's New England Public Policy Center - employment, output, and prices across the six New England states, benchmarked against the nation.",
+    "allowCustomization": true,
+    "tabs": {
+      "new-england-indicators": {
+        "id": "new-england-indicators",
+        "name": "New England Indicators",
+        "layout": [
+          {
+            "i": "boston_economic_indicators_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "boston_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

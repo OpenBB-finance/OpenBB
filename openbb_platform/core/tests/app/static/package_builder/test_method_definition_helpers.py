@@ -1651,3 +1651,98 @@ def test_build_command_method_body_raw_query_params_fallback(monkeypatch):
 
     code = MethodDefinition.build_command_method_body("/x/y", endpoint)
     assert '"symbol": symbol' in code
+
+
+def test_surfaced_param_spec_takes_description_from_metadata():
+    from fastapi import Header
+
+    param = Parameter(
+        "x_api_key",
+        Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=Annotated[str, Header(description="The API key.")],
+    )
+    annotation, _default = MethodDefinition._surfaced_param_spec(param)
+    field = annotation.__metadata__[0]
+    assert isinstance(field, OpenBBField)
+    assert field.description == "The API key."
+
+
+def test_collect_dependency_calls_surfaces_unsafe_but_resolvable_dependency():
+    """An unsafe dependency that is surfaceable is called with surfaced arguments."""
+    from fastapi import Depends, Header
+
+    def get_principal(x_api_key: Annotated[str, Header()]) -> dict: ...
+
+    parameter_map = {
+        "principal": Parameter(
+            "principal",
+            Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=Annotated[dict, Depends(get_principal)],
+        )
+    }
+
+    calls, names = MethodDefinition._collect_dependency_calls("/x/y", parameter_map)
+    assert calls == ["        principal = get_principal(x_api_key=x_api_key)"]
+    assert names == {"principal"}
+
+
+def test_build_command_method_promotes_surfaced_dependency_params(monkeypatch):
+    """Parameters surfaced from a dependency land on the generated signature."""
+    from fastapi import Depends, Header
+
+    monkeypatch.setattr(
+        MethodDefinition, "is_deprecated_function", staticmethod(lambda p: False)
+    )
+
+    def get_principal(x_api_key: Annotated[str, Header()]) -> dict: ...
+
+    def endpoint(principal: Annotated[dict, Depends(get_principal)]) -> dict:
+        return principal
+
+    code = MethodDefinition.build_command_method("/x/y", endpoint)
+    assert "x_api_key" in code
+    assert "principal = get_principal(x_api_key=x_api_key)" in code
+
+
+def test_build_command_method_falls_back_to_response_model(monkeypatch):
+    """With no return annotation the passed ``response_model`` becomes the return type."""
+    from openbb_core.app.model.obbject import OBBject
+
+    monkeypatch.setattr(
+        MethodDefinition, "is_deprecated_function", staticmethod(lambda p: False)
+    )
+
+    def endpoint(symbol: str = "AAPL"):
+        return symbol
+
+    code = MethodDefinition.build_command_method(
+        "/x/y", endpoint, response_model=OBBject
+    )
+    assert "-> OBBject" in code
+
+
+def test_format_params_expands_query_params_model_field_types():
+    """Unpacking a bare ``QueryParams`` param expands ``TYPE_EXPANSION`` fields and
+    leaves unexpanded fields at their declared type."""
+    from typing import get_args
+
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    class _QP(QueryParams):
+        data: list = []
+        symbol: str = "AAPL"
+
+    parameter_map = {
+        "params": Parameter("params", Parameter.POSITIONAL_OR_KEYWORD, annotation=_QP)
+    }
+
+    out = MethodDefinition.format_params("/x/y", parameter_map)
+
+    # ``data`` is in TYPE_EXPANSION -> the TypeVar constraints are inlined.
+    data_type = get_args(out["data"].annotation)[0]
+    rendered = str(data_type)
+    assert "DataFrame" in rendered
+    assert "dict" in rendered
+
+    # ``symbol`` is not in TYPE_EXPANSION -> the declared type is kept as-is.
+    assert get_args(out["symbol"].annotation)[0] is str

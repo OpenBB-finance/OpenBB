@@ -61,6 +61,7 @@ class Backend:
 
         from openbb_charting.core.chart_style import (
             ChartStyle,
+            prune_unsupported_layout,
         )
 
         cs = ChartStyle()
@@ -73,6 +74,9 @@ class Backend:
             if obb_name in cs.plt_styles_available:
                 data = cs.load_json_style(cs.plt_styles_available[obb_name])
                 data.pop("line", None)
+                # The style files still carry layout keys newer Plotly releases
+                # have dropped; one of them fails the whole template merge.
+                prune_unsupported_layout(data)
                 merged = go.layout.Template(pio.templates[plotly_name])
                 merged.update(data)
                 pio.templates[plotly_name] = merged

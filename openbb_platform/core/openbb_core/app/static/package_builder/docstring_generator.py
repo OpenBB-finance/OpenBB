@@ -725,7 +725,7 @@ class DocstringGenerator:
                                 "provider"
                             )
                             providers = (
-                                list(provider_field.type.__args__)  # type: ignore[union-attr]  # ty: ignore[unresolved-attribute]
+                                list(provider_field.type.__args__)  # type: ignore[union-attr]
                                 if provider_field
                                 else []
                             )

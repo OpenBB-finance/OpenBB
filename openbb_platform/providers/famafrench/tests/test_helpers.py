@@ -568,6 +568,18 @@ def test_get_international_portfolio_data_index_missing_in_zip(monkeypatch):
         helpers.get_international_portfolio_data(index="all")
 
 
+def test_get_international_portfolio_data_unresolved_country_index(monkeypatch):
+    monkeypatch.setitem(helpers.COUNTRY_PORTFOLIO_FILES, "Japan", None)
+    monkeypatch.setattr(
+        helpers,
+        "download_international_portfolios",
+        lambda url: _IntlResponse(_make_zip("Other.Dat", b"data")),
+    )
+
+    with pytest.raises(ValueError, match="Could not resolve portfolio index"):
+        helpers.get_international_portfolio_data(country="japan")
+
+
 # ---------------------------------------------------------------------------
 # get_international_portfolio  (measure validation - monkeypatched network)
 # ---------------------------------------------------------------------------

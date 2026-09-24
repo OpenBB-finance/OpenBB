@@ -232,6 +232,20 @@ async def test_fetch_feed_http_error(stub_session_factory):
     assert len(parsed.entries) == 0
 
 
+async def test_fetch_feed_pins_headers_for_gated_host(stub_session_factory, sample_rss):
+    url = "https://www.espn.com/espn/rss/nfl/news"
+    session = stub_session_factory({url: sample_rss})
+    await parser.fetch_feed(session, url)
+    assert session.headers_sent == [parser._HOST_HEADERS["espn.com"]]
+
+
+async def test_fetch_feed_no_headers_for_normal_host(stub_session_factory, sample_rss):
+    url = "https://feeds.bbci.co.uk/news/rss.xml"
+    session = stub_session_factory({url: sample_rss})
+    await parser.fetch_feed(session, url)
+    assert session.headers_sent == [None]
+
+
 def test_extract_body_jsonld_top_level(sample_jsonld_html):
     assert parser._extract_body(sample_jsonld_html) == "JSON-LD top-level body."
 
@@ -590,6 +604,211 @@ def test_jsonld_field_image_object_with_url():
     body = parser._extract_body(payload)
     assert body is not None
     assert body.startswith("![](https://x.test/obj.jpg)")
+
+
+DRUGS_COM_URL = "https://www.drugs.com/news/fda-clears-cholesterol-pill-130672.html"
+
+
+def test_host_strips_www():
+    assert parser._host("https://www.drugs.com/news/x.html") == "drugs.com"
+
+
+def test_host_without_www():
+    assert parser._host("https://drugs.com/news/x.html") == "drugs.com"
+
+
+def test_host_is_lowercased():
+    assert parser._host("https://WWW.Drugs.COM/news/x.html") == "drugs.com"
+
+
+def test_host_empty_url():
+    assert parser._host(None) == ""
+    assert parser._host("") == ""
+
+
+def test_host_url_without_hostname():
+    assert parser._host("not-a-url") == ""
+
+
+def test_cut_tail_removes_marker_and_everything_after():
+    doc = html.fromstring(
+        b"<div id='c'>"
+        b"<p>Keep one.</p>"
+        b"<!-- comment -->"
+        b"<p>Keep two.</p>"
+        b"<h2>More news resources</h2>"
+        b"<ul><li>link</li></ul>"
+        b"<p>Newsletter pitch.</p>"
+        b"</div>"
+    )
+    container = doc.xpath("//div")[0]
+    parser._cut_tail(container, parser._SITE_RULES["drugs.com"].cut)
+    text = container.text_content()
+    assert "Keep one." in text
+    assert "Keep two." in text
+    assert "More news resources" not in text
+    assert "Newsletter pitch." not in text
+
+
+def test_cut_tail_without_marker_keeps_all():
+    doc = html.fromstring(b"<div><p>One.</p><p>Two.</p></div>")
+    container = doc.xpath("//div")[0]
+    parser._cut_tail(container, parser._SITE_RULES["drugs.com"].cut)
+    assert len(container.xpath(".//p")) == 2
+
+
+def test_site_body_no_container_returns_empty():
+    doc = html.fromstring(b"<html><body><p>One.</p><p>Two.</p></body></html>")
+    assert parser._site_body(doc, parser._SITE_RULES["drugs.com"]) == ""
+
+
+def test_site_body_picks_largest_container():
+    doc = html.fromstring(
+        b"<html><body>"
+        b"<div class='ddc-main-content'>"
+        b"<p>Short one.</p><p>Short two.</p></div>"
+        b"<div class='ddc-main-content'>"
+        b"<p>Longer container paragraph one with much more substance.</p>"
+        b"<p>Longer container paragraph two with additional detail.</p></div>"
+        b"</body></html>"
+    )
+    body = parser._site_body(doc, parser._SITE_RULES["drugs.com"])
+    assert "Longer container paragraph one" in body
+    assert "Short one." not in body
+
+
+def test_site_body_skips_unclean_container():
+    doc = html.fromstring(
+        b"<html><body><div class='ddc-main-content'>"
+        b"<p>[[ template ]] junk</p><p>{{ binding }} more junk</p>"
+        b"</div></body></html>"
+    )
+    assert parser._site_body(doc, parser._SITE_RULES["drugs.com"]) == ""
+
+
+def test_extract_body_drugs_com_keeps_article_text(sample_drugs_com_html):
+    body = parser._extract_body(sample_drugs_com_html, DRUGS_COM_URL)
+    assert body is not None
+    assert "By Ellyn Vohnoutka HealthDay Reporter" in body
+    assert "A new daily pill will lower cholesterol." in body
+    assert "The FDA acted today to approve the drug for adults." in body
+
+
+def test_extract_body_drugs_com_drops_trailing_furniture(sample_drugs_com_html):
+    body = parser._extract_body(sample_drugs_com_html, DRUGS_COM_URL)
+    assert body is not None
+    assert "Disclaimer:" not in body
+    assert "HealthDay. All rights reserved." not in body
+    assert "Related teaser one." not in body
+    assert "Whatever your topic of interest" not in body
+
+
+def test_extract_body_drugs_com_drops_sidebar(sample_drugs_com_html):
+    body = parser._extract_body(sample_drugs_com_html, DRUGS_COM_URL)
+    assert body is not None
+    assert "Sidebar drug teaser one." not in body
+    assert "Podcast pitch paragraph." not in body
+    assert "ddc-podcast-cover" not in body
+
+
+def test_extract_body_drugs_com_skips_placeholder_hero(sample_drugs_com_html):
+    body = parser._extract_body(sample_drugs_com_html, DRUGS_COM_URL)
+    assert body is not None
+    assert "ddc-opengraph-logomark" not in body
+    assert not body.startswith("![")
+
+
+def test_extract_body_drugs_com_keeps_real_hero():
+    payload = (
+        b"<html><head>"
+        b'<meta property="og:image" content="https://media.test/featured.jpg">'
+        b"</head><body><div class='ddc-main-content'>"
+        b"<p>Lede paragraph of the story.</p><p>Second paragraph.</p>"
+        b"</div></body></html>"
+    )
+    body = parser._extract_body(payload, DRUGS_COM_URL)
+    assert body is not None
+    assert body.split("\n\n")[0] == "![](https://media.test/featured.jpg)"
+
+
+def test_extract_body_drugs_com_falls_back_when_container_missing():
+    payload = (
+        b"<html><body><article>"
+        b"<p>Generic paragraph one.</p><p>Generic paragraph two.</p>"
+        b"</article></body></html>"
+    )
+    body = parser._extract_body(payload, DRUGS_COM_URL)
+    assert body == "Generic paragraph one.\n\nGeneric paragraph two."
+
+
+def test_extract_body_unknown_host_uses_generic_path(sample_drugs_com_html):
+    body = parser._extract_body(sample_drugs_com_html, "https://other.test/x.html")
+    assert body is not None
+    assert "Whatever your topic of interest" in body
+
+
+def test_extract_body_without_url_uses_generic_path(sample_drugs_com_html):
+    body = parser._extract_body(sample_drugs_com_html)
+    assert body is not None
+    assert "Whatever your topic of interest" in body
+
+
+async def test_fetch_article_body_applies_site_rule(
+    stub_session_factory, sample_drugs_com_html
+):
+    session = stub_session_factory({DRUGS_COM_URL: sample_drugs_com_html})
+    body = await parser.fetch_article_body(session, DRUGS_COM_URL)
+    assert body is not None
+    assert "A new daily pill will lower cholesterol." in body
+    assert "Whatever your topic of interest" not in body
+
+
+async def test_fetch_article_body_pins_user_agent_for_drugs_com(
+    stub_session_factory, sample_drugs_com_html
+):
+    session = stub_session_factory({DRUGS_COM_URL: sample_drugs_com_html})
+    await parser.fetch_article_body(session, DRUGS_COM_URL)
+    assert session.headers_sent == [parser._HOST_HEADERS["drugs.com"]]
+    assert session.headers_sent[0]["User-Agent"] == parser._WEBKIT_UA
+
+
+def test_drugs_com_pinned_user_agent_is_not_gecko():
+    # drugs.com articles 403 any Gecko user agent.
+    ua = parser._HOST_HEADERS["drugs.com"]["User-Agent"]
+    assert "Gecko/" not in ua
+    assert "AppleWebKit" in ua
+
+
+def test_host_headers_pin_safe_encoding():
+    # Overriding headers drops the session default Accept-Encoding; every pinned
+    # host must exclude br, which the shared session cannot decode.
+    for host, headers in parser._HOST_HEADERS.items():
+        assert headers["Accept-Encoding"] == "gzip, deflate", host
+        assert "br" not in headers["Accept-Encoding"], host
+
+
+def test_host_headers_cover_expected_hosts():
+    assert set(parser._HOST_HEADERS) == {
+        "drugs.com",
+        "espn.com",
+        "heavy.com",
+        "bleepingcomputer.com",
+        "pbs.org",
+        "techmeme.com",
+    }
+
+
+def test_pinned_helper_omits_user_agent_when_none():
+    assert "User-Agent" not in parser._pinned()
+    assert parser._pinned("UA/1.0")["User-Agent"] == "UA/1.0"
+
+
+async def test_fetch_article_body_keeps_session_user_agent_for_other_hosts(
+    stub_session_factory, sample_article_html
+):
+    session = stub_session_factory({"https://x.test/a": sample_article_html})
+    await parser.fetch_article_body(session, "https://x.test/a")
+    assert session.headers_sent == [None]
 
 
 def test_extract_image_jsonld_fallback_path():

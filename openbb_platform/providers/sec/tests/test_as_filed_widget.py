@@ -109,3 +109,41 @@ def test_no_url_returns_empty():
 def test_empty_or_missing_statement_returns_empty():
     assert _run(pd.DataFrame()) == []
     assert _run(None) == []
+
+
+def test_all_columns_dropped_returns_empty():
+    df = pd.DataFrame(
+        [
+            {
+                "tag": "us-gaap_Cash",
+                "value": 10,
+                "period_ending": "2025-05-31",
+                "context_ref": "c1",
+            }
+        ]
+    )
+    assert _run(df) == []
+
+
+def test_pivot_branch_preserves_dash_values():
+    df = pd.DataFrame(
+        [
+            {
+                "order": 1,
+                "label": "Cash",
+                "unit": "USD",
+                "period_ending": "2025-05-31",
+                "value": 10,
+            },
+            {
+                "order": 2,
+                "label": "AR",
+                "unit": "USD",
+                "period_ending": "2024-05-31",
+                "value": 7,
+            },
+        ]
+    )
+    rows = _run(df)
+    assert rows[0]["2024-05-31"] == "--"
+    assert rows[1]["2025-05-31"] == "--"

@@ -423,16 +423,16 @@ async def beneficial_ownership(
 
 
 @router.command(
-    model="SecManagementOwnership",
+    model="SecManagementProfiles",
     examples=[APIEx(parameters={"symbol": "AAPL", "provider": "sec"})],
 )
-async def management_ownership(
+async def management_profiles(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the directors and executive officers ownership table from a proxy (DEF 14A)."""
+    """Get management profiles from annual filings and referenced proxy statements."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -858,7 +858,10 @@ else:
                         "renderFn": "cellOnClick",
                         "renderFnParams": {
                             "actionType": "groupBy",
-                            "groupBy": {"paramName": "url"},
+                            "groupBy": {
+                                "paramName": "url",
+                                "valueField": "report_url",
+                            },
                         },
                     },
                     {
@@ -1638,6 +1641,7 @@ async def as_filed_statement(
 
 @router.api_router.get("/standardized_statement", include_in_schema=False)
 async def standardized_statement(
+    *,
     symbol: Annotated[str | None, FastAPIQuery(description="Ticker symbol.")] = "AAPL",
     statement_type: Annotated[
         str | None, FastAPIQuery(description="One of: balance, income, cash.")

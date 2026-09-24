@@ -2,11 +2,17 @@
 
 import warnings
 from pathlib import Path
+from unittest.mock import patch
 
+import plotly.graph_objects as go
 import plotly.io as pio
 import pytest
 
-from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.chart_style import (
+    ChartStyle,
+    map_layout_key,
+    prune_unsupported_layout,
+)
 from openbb_charting.core.config.openbb_styles import (
     PLT_COLORWAY,
     PLT_DECREASING_COLORWAY,
@@ -47,6 +53,50 @@ def restore_style(style):
     ):
         setattr(style, attr, saved[attr])
     pio.templates.default = saved["default"]
+
+
+class TestMapLayoutKey:
+    """Resolve the layout key for the installed Plotly."""
+
+    def test_mapbox_key_when_plotly_still_supports_it(self):
+        """Plotly < 7 exposes ``mapbox``, so that is the key to use."""
+        with patch.object(go.Layout, "_valid_props", {"mapbox", "width"}):
+            assert map_layout_key() == "mapbox"
+
+    def test_mapbox_key_when_valid_props_unavailable(self):
+        """With no introspectable props, fall back to the legacy key."""
+        with patch.object(go.Layout, "_valid_props", set()):
+            assert map_layout_key() == "mapbox"
+
+
+class TestPruneUnsupportedLayout:
+    """Drop only the layout keys the installed Plotly rejects."""
+
+    def test_template_without_layout_is_returned_unchanged(self):
+        """A template carrying no ``layout`` has nothing to prune."""
+        template = {"data": {"scatter": [{}]}}
+        assert prune_unsupported_layout(template) is template
+        assert template == {"data": {"scatter": [{}]}}
+
+    def test_non_dict_layout_is_returned_unchanged(self):
+        """A ``layout`` that is not a dict is left alone."""
+        template = {"layout": "not-a-dict"}
+        assert prune_unsupported_layout(template) is template
+        assert template == {"layout": "not-a-dict"}
+
+    def test_valid_props_unavailable_prunes_nothing(self):
+        """With no introspectable props, no key can be judged unsupported."""
+        template = {"layout": {"not_a_real_property_xyz": 1}}
+        with patch.object(go.Layout, "_valid_props", set()):
+            assert prune_unsupported_layout(template) is template
+        assert template == {"layout": {"not_a_real_property_xyz": 1}}
+
+    def test_unsupported_layout_key_is_removed_in_place(self):
+        """An unknown layout key is dropped from the same dict."""
+        layout = {"not_a_real_property_xyz": 1, "width": 100}
+        template = {"layout": layout}
+        assert prune_unsupported_layout(template) is template
+        assert layout == {"width": 100}
 
 
 class TestSingleton:
@@ -164,9 +214,21 @@ class TestApplyStyle:
     def test_apply_style_value_error_non_legend2_is_swallowed(
         self, style, restore_style
     ):
-        """A non-legend2 ValueError from the template is swallowed, not fatal."""
+        """A non-legend2 ValueError from the template is swallowed, not fatal.
+
+        The bad value sits on ``width``, a *supported* layout property, so
+        ``prune_unsupported_layout`` cannot strip it on the way through -
+        an unknown key would be pruned and the template would build cleanly,
+        leaving the handler unexercised.
+        """
         style.plt_style = "dark"
-        style.plotly_template = {"layout": {"not_a_real_property_xyz": 1}}
+        style.plotly_template = {"layout": {"width": "not-a-number"}}
+
+        # Guard the premise: plotly must actually reject this template, or the
+        # test would pass while covering nothing.
+        with pytest.raises(ValueError):
+            go.layout.Template(style.plotly_template)
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             style.apply_style("dark")

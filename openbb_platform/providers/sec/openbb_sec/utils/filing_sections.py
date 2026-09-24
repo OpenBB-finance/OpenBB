@@ -5,7 +5,7 @@ import re
 _ITEM_HEADER = re.compile(
     r"^(?:#{1,4}\s*)?\*{0,2}\s*"
     r"(?:Part\s+(?:I{1,3}|[1-4])[.\s,\-–—]*)?"
-    r"(?:ITEM|Item)\s*(1[0-5]?|[2-9])([A-Ca-c])?"
+    r"(?:ITEM|Item)\s*(1[0-6]?|[2-9])([A-Ia-i])?"
     r"[.\s\-–—:)]*\s*(.*)$",
     re.IGNORECASE,
 )
@@ -14,7 +14,7 @@ _PART_HEADER = re.compile(
     re.IGNORECASE,
 )
 _ANY_ITEM_TEXT = re.compile(
-    r"^(?:Part\s+(?:I{1,3}|IV|[1-4])[.\s,\-–—]*)?(?:ITEM|Item)\s*(1[0-5]?|[2-9])([A-Ca-c])?\b",
+    r"^(?:Part\s+(?:I{1,3}|IV|[1-4])[.\s,\-–—]*)?(?:ITEM|Item)\s*(1[0-6]?|[2-9])([A-Ia-i])?\b",
     re.IGNORECASE,
 )
 
@@ -411,7 +411,7 @@ def extract_item_sections(markdown: str) -> dict:
 
 _XREF_PART_LINE = re.compile(r"^\s*\|\s*Part\s+(I{1,3}|IV|[1-4])\s*\|", re.IGNORECASE)
 _XREF_ITEM_LINE = re.compile(
-    r"^\s*\|\s*Item\s+(1[0-5]?|[2-9])([A-Ca-c])?\s*\|"
+    r"^\s*\|\s*Item\s+(1[0-6]?|[2-9])([A-Ia-i])?\s*\|"
     r"\s*([^|]+?)\s*\|"
     r"\s*([^|]*?)\s*\|\s*$",
     re.IGNORECASE,

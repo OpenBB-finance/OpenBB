@@ -12,11 +12,20 @@ from openbb_core.provider.standard_models.index_snapshots import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
+from openbb_tmx.utils.choices import literal_choices
+
 
 class TmxIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     """TMX Index Snapshots Query Params."""
 
-    region: Literal["ca", "us"] | None = Field(default="ca")  # type: ignore
+    __json_schema_extra__ = {
+        "region": {"x-widget_config": {"options": literal_choices(("ca", "us"))}}
+    }
+
+    region: Literal["ca", "us"] | None = Field(
+        default="ca",
+        description="The region the indices are published for.",
+    )
     use_cache: bool = Field(
         default=True,
         description="Whether to use a cached request."
@@ -157,26 +166,15 @@ class TmxIndexSnapshotsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import (  # noqa
-            NASDAQ_GIDS,
-            get_data_from_gql,
-            get_data_from_url,
-            get_random_agent,
-            get_indices_backend,
-        )
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import NASDAQ_GIDS, get_data_from_url
 
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
-        user_agent = get_random_agent()
         results = []
+
         if query.region == "ca":
-            data = await get_data_from_url(
-                url,
-                use_cache=query.use_cache,
-                backend=get_indices_backend(),
-            )
+            data = await get_data_from_url(url, use_cache=query.use_cache)
             if not data:
                 raise EmptyDataError
             symbols = []
@@ -201,33 +199,15 @@ class TmxIndexSnapshotsFetcher(
                 )
                 results.append(new_data)
 
-            # Get current levels for each index.
-
-            payload = gql.get_quote_for_symbols_payload.copy()
-            payload["variables"]["symbols"] = symbols
-
-            url = "https://app-money.tmx.com/graphql"
-            response = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": "https://money.tmx.com/en/quote/^TSX",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=5,
+            response = await amake_gql_request(
+                "getQuoteForSymbols", gql.QUOTE_FOR_SYMBOLS, {"symbols": symbols}
             )
-            if response.get("data") and response["data"].get("getQuoteForSymbols"):
-                quote_data = response["data"]["getQuoteForSymbols"]
-                for d in data:
-                    if "longname" in d:
-                        d.pop("longname")
-                    if "percentChange" in d:
-                        d.pop("percentChange")
+
+            if response and response.get("getQuoteForSymbols"):
+                quote_data = response["getQuoteForSymbols"]
+                for row in results:
+                    row.pop("longname", None)
+                    row.pop("percentChange", None)
                 merged_list = [
                     {
                         **d1,
@@ -242,28 +222,19 @@ class TmxIndexSnapshotsFetcher(
 
         if query.region == "us":
             symbols = [f"{symbol}:US" for symbol in NASDAQ_GIDS]
-            payload = gql.get_quote_for_symbols_payload.copy()
-            payload["variables"]["symbols"] = symbols
-
-            url = "https://app-money.tmx.com/graphql"
-            response = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": "https://money.tmx.com/en/quote/^TSX",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=5,
+            response = await amake_gql_request(
+                "getQuoteForSymbols", gql.QUOTE_FOR_SYMBOLS, {"symbols": symbols}
             )
-            if response.get("data") and response["data"].get("getQuoteForSymbols"):
-                results = response["data"]["getQuoteForSymbols"]
+
+            if response and response.get("getQuoteForSymbols"):
+                results = [
+                    item
+                    for item in response["getQuoteForSymbols"]
+                    if item.get("price") is not None
+                ]
+
             for item in results:
-                item["change_percent"] = item.pop("percentChange")
+                item["change_percent"] = item.pop("percentChange", None)
 
         return results
 

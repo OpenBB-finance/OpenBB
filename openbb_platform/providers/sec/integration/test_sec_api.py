@@ -339,12 +339,12 @@ def test_sec_beneficial_ownership(params, headers):
     [({"symbol": "CAT", "calendar_year": 2024, "provider": "sec"})],
 )
 @pytest.mark.integration
-def test_sec_management_ownership(params, headers):
-    """Test the SEC management ownership endpoint."""
+def test_sec_management_profiles(params, headers):
+    """Test the SEC management profiles endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://localhost:8000/api/v1/sec/management_ownership?{query_str}"
+    url = f"http://localhost:8000/api/v1/sec/management_profiles?{query_str}"
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -204,8 +204,12 @@
       function (_m, pre, q, rel) { return pre + q + OB_API + rel + q; }
     );
     doc.querySelectorAll('a[href]').forEach(function (a) {
-      var href = a.getAttribute("href") || "";
+      var href = (a.getAttribute("href") || "").trim();
+      var hrefLower = href.toLowerCase();
+      var hasInlineHandler = a.hasAttribute("onclick");
       if (href.charAt(0) === "#") {
+        a.removeAttribute("target");
+        a.removeAttribute("rel");
         a.addEventListener("click", function (e) {
           e.preventDefault();
           var id = href.slice(1);
@@ -216,9 +220,16 @@
             tgt.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         });
-      } else {
+      } else if (/^(https?:)?\/\//i.test(href)) {
         a.setAttribute("target", "_blank");
         a.setAttribute("rel", "noopener");
+      } else {
+        a.removeAttribute("target");
+        a.removeAttribute("rel");
+        if (hrefLower.indexOf("javascript:") === 0 || hasInlineHandler) {
+          a.removeAttribute("target");
+          a.removeAttribute("rel");
+        }
       }
     });
     // Financial-report pages carry the SEC Show.js for row collapse/expand;
@@ -600,25 +611,77 @@
       .catch(function () {});
   }
 
-  function applyParams(params) {
-    if (!params) return;
+  function resolveParamName(key) {
+    if (key == null) return null;
+    var k = String(key);
+    if (k === "document_url") return "document_url";
+    if (k === "documentUrl") return "document_url";
+    if (k === "url") return "document_url";
+    if (PARAM_KEYS.indexOf(k) >= 0) return k;
+    return null;
+  }
+
+  function unwrapValue(v) {
+    if (!v || typeof v !== "object" || Array.isArray(v)) return v;
+    if ("value" in v) return v.value;
+    if ("selected" in v) return v.selected;
+    if ("current" in v) return v.current;
+    if ("url" in v) return v.url;
+    return v;
+  }
+
+  function toParamPairs(input) {
     var pairs = [];
-    if (Array.isArray(params)) {
-      pairs = params.map(function (p) { return [p.paramName || p.name, p.value]; });
-    } else if (typeof params === "object") {
-      pairs = Object.keys(params).map(function (k) {
-        var v = params[k];
-        return [k, (v && typeof v === "object" && "value" in v) ? v.value : v];
+    function add(key, value) {
+      var resolved = resolveParamName(key);
+      if (!resolved) return;
+      var unwrapped = unwrapValue(value);
+      if (unwrapped == null) return;
+      pairs.push([resolved, unwrapped]);
+    }
+    function visit(node) {
+      if (node == null) return;
+      if (Array.isArray(node)) {
+        node.forEach(visit);
+        return;
+      }
+      if (typeof node !== "object") return;
+      add(node.paramName || node.name || node.key || node.param || node.id, node.value);
+      add("document_url", node.document_url);
+      add("documentUrl", node.documentUrl);
+      add("url", node.url);
+      if ("params" in node) visit(node.params);
+      if ("payload" in node) visit(node.payload);
+      if ("data" in node) visit(node.data);
+      if ("values" in node) visit(node.values);
+      Object.keys(node).forEach(function (k) {
+        add(k, node[k]);
       });
     }
+    visit(input);
+    return pairs;
+  }
+
+  function applyParams(params) {
+    if (!params) return;
+    var pairs = toParamPairs(params);
+    if (!pairs.length) return;
     var qs = new URLSearchParams(window.location.search), changed = false;
+    var nextDocumentUrl;
     pairs.forEach(function (pair) {
       var k = pair[0], v = pair[1];
-      if (!k || v == null || PARAM_KEYS.indexOf(k) < 0) return;
       var s = String(v);
       if (qs.get(k) !== s) { qs.set(k, s); changed = true; }
+      if (k === "document_url") nextDocumentUrl = s;
     });
-    if (changed) window.location.search = qs.toString();
+    if (changed) {
+      var next = window.location.pathname + (qs.toString() ? "?" + qs.toString() : "");
+      window.history.replaceState(null, "", next);
+    }
+    if (nextDocumentUrl !== undefined) {
+      if (nextDocumentUrl) render(nextDocumentUrl);
+      else render(null);
+    }
   }
 
   window.addEventListener("message", function (event) {
@@ -629,19 +692,27 @@
       || (d.data && (d.data.theme || d.data.colorScheme))
       || (d.settings && d.settings.theme);
     if (typeof theme === "string") applyTheme(theme);
-    if (!d.type) return;
     if (d.type === "openbb-request") {
       if (d.widgetId === null || d.widgetId === undefined
           || d.widgetId === "sec-filing-document") {
         sendDocumentData();
       }
-    } else if (d.type === "openbb-params-update" || d.type === "openbb:widget-params:update") {
+      return;
+    }
+    if (
+      d.type === "openbb-params-update"
+      || d.type === "openbb:widget-params:update"
+      || d.type === "openbb:params:update"
+      || d.type === "openbb-widget-params-update"
+      || !d.type
+    ) {
       applyParams(d.params || d.payload || d.data || d.values || d);
     }
   });
 
   try {
-    var initial = new URLSearchParams(window.location.search).get("document_url");
+    var search = new URLSearchParams(window.location.search);
+    var initial = search.get("document_url") || search.get("documentUrl") || search.get("url");
     if (initial) { render(initial); }
     else { renderDefault(); }
   } catch (e) {}

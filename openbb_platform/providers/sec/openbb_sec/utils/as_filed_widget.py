@@ -1,4 +1,4 @@
-"""Pivot as-filed SEC statements into period-ending columns for Workspace widgets."""
+"""Shape as-filed SEC statement tables for Workspace widgets."""
 
 from types import SimpleNamespace
 
@@ -10,7 +10,9 @@ async def get_as_filed_widget_rows(
     calendar_period: str | None = None,
     use_cache: bool = True,
 ) -> list[dict]:
-    """Return an as-filed statement pivoted to period-ending columns, newest first."""
+    """Return as-filed statement rows from the standard statement pipeline."""
+    from pandas import isna
+
     from openbb_sec.models.sec_financials import (
         FinancialStatements,
         resolve_section_url,
@@ -32,33 +34,69 @@ async def get_as_filed_widget_rows(
     if data is None or data.empty:
         return []
 
-    records = data.to_dict("records")
-
-    if "period_ending" not in data.columns:
-        return [
-            {"order": index + 1, **{k: v for k, v in record.items() if k != "tag"}}
-            for index, record in enumerate(records)
+    if {"label", "period_ending", "value"}.issubset(data.columns):
+        id_columns = ["order", "label"]
+        if "unit" in data.columns:
+            id_columns.append("unit")
+        data = data[
+            ~(
+                data["label"].isna()
+                & data.groupby("order")["value"].transform(lambda s: s.isna().all())
+            )
         ]
+        period_order = list(dict.fromkeys(data["period_ending"].astype(str).tolist()))
+        data = data.drop_duplicates(
+            subset=[*id_columns, "period_ending"],
+            keep="first",
+        )
+        data = data.pivot(
+            index=id_columns,
+            columns="period_ending",
+            values="value",
+        ).reset_index()
+        ordered_periods = [p for p in period_order if p in data.columns]
+        data = data[[*id_columns, *ordered_periods]]
+        data = data.fillna("--")
+    else:
+        drop_columns = {
+            "tag",
+            "parent_tag",
+            "preferred_label",
+            "balance",
+            "weight",
+            "decimals",
+            "context_ref",
+            "period_beginning",
+            "period_ending",
+            "value",
+            "taxonomy",
+            "data_type",
+            "period_type",
+            "description",
+            "name",
+        }
+        keep_columns = [c for c in data.columns if str(c) not in drop_columns]
+        data = data[keep_columns]
 
-    periods = sorted(
-        {str(r["period_ending"]) for r in records if r.get("period_ending")},
-        reverse=True,
-    )
-    rows: dict = {}
-    order: list = []
-    for record in records:
-        key = (record.get("order"), record.get("label"), record.get("unit"))
-        if key not in rows:
-            row = {
-                "order": record.get("order"),
-                "label": record.get("label"),
-                "unit": record.get("unit"),
-            }
-            row.update({period_ending: None for period_ending in periods})
-            rows[key] = row
-            order.append(key)
-        period_ending = str(record.get("period_ending"))
-        if period_ending in rows[key]:
-            rows[key][period_ending] = record.get("value")
+    source_columns = list(data.columns)
+    if not source_columns:
+        return []
 
-    return [rows[key] for key in order]
+    label_column = "label" if "label" in source_columns else source_columns[0]
+    rows: list[dict] = []
+
+    for idx, row in enumerate(data.itertuples(index=False), start=1):
+        values = list(row)
+        output: dict = {"order": idx}
+        for column_name, value in zip(source_columns, values):
+            if str(column_name) == "order":
+                output["order"] = value
+                continue
+            key = "label" if column_name == label_column else str(column_name)
+            if value == "--":
+                output[key] = "--"
+            else:
+                output[key] = None if isna(value) else value
+        rows.append(output)
+
+    return rows

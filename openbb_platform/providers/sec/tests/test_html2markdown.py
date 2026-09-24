@@ -1097,7 +1097,7 @@ def test_remove_repeated_page_elements_no_repeats():
 # ===========================================================================
 
 
-def _abs_frag(idx, left, top, text, fs=10, bold=False):
+def _abs_frag(idx, left, top, text, *, fs=10, bold=False):
     """Build a Certent-CDM-style absolutely-positioned text fragment div."""
     weight = "font-weight:bold;" if bold else ""
     return (
@@ -4298,7 +4298,7 @@ def _abs_layout_html():
     """
     ids = [0]
 
-    def af(top, left, text, bold=False, fs=10, w=None, h=None, idn=None):
+    def af(top, left, text, *, bold=False, fs=10, w=None, h=None, idn=None):
         style = f"position:absolute;left:{left}px;top:{top}px;font-size:{fs}px"
         if bold:
             style += ";font-weight:bold"

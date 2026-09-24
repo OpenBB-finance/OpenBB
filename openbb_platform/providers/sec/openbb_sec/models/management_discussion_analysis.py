@@ -195,11 +195,7 @@ class SecManagementDiscussionAnalysisFetcher(
         )
 
         if query.calendar_year is None and query.calendar_period is None:
-            target_filing = (
-                filings[0]
-                if not query.calendar_year and not query.calendar_period
-                else None
-            )
+            target_filing = filings[0]
             # For foreign issuers the most-recent 10-K/10-Q/40-F/20-F
             # may be older than a 6-K that contains quarterly MD&A.
             # Check whether a newer 6-K with an MD&A exhibit exists.

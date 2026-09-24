@@ -429,6 +429,42 @@ def test_business_non_10k_by_name():
     assert fs.business() == "Body"
 
 
+def test_business_foreign_slices_section_from_extracted_html():
+    fs = make_fs(
+        _document_type="20-F",
+        _items={"x": {"item_num": "4", "name": "Info", "text": "fallback"}},
+    )
+    section_text = "Intro\nB. Business\nOperating discussion\nITEM 5\nOther"
+    with (
+        patch.object(fs, "get_main_document_content", return_value="<html/>"),
+        patch(
+            "openbb_sec.utils.filing_sections.extract_section_html",
+            return_value="<div>section</div>",
+        ),
+        patch.object(fs, "_clean_html_to_text", return_value=section_text),
+    ):
+        out = fs.business()
+    assert out == "B. Business\nOperating discussion"
+
+
+def test_business_foreign_fallback_text_without_business_heading():
+    fs = make_fs(
+        _document_type="20-F",
+        _items={"x": {"item_num": "4", "name": "Info", "text": "General company text"}},
+    )
+    with patch.object(fs, "get_main_document_content", return_value=None):
+        out = fs.business()
+    assert out == "General company text"
+
+
+def test_business_foreign_falls_back_to_business_name_lookup():
+    fs = make_fs(
+        _document_type="20-F",
+        _items={"x": {"name": "Our business", "text": "Body"}},
+    )
+    assert fs.business() == "Body"
+
+
 def test_business_none_when_missing():
     fs = make_fs(_document_type="10-K", _items={"item_2": {"item_num": "2"}})
     assert fs.business() is None
@@ -513,6 +549,15 @@ def test_legal_contingencies_note_none_match():
 def test_risk_factors_no_item():
     fs = make_fs(_items={"item_2": {"item_num": "2"}})
     assert fs.risk_factors() == []
+
+
+def test_risk_factors_foreign_item_3d_path():
+    fs = make_fs(
+        _document_type="20-F", _items={"x": {"item_num": "3D", "text": " body "}}
+    )
+    with patch.object(fs, "get_main_document_content", return_value=None):
+        out = fs.risk_factors()
+    assert out == [{"risk_factor": None, "text": "body"}]
 
 
 def test_risk_factors_blocks_from_html():
@@ -3448,6 +3493,174 @@ def test_download_statement_context_ref_and_orphan_edges():
     assert refs["Unmatched label here"] is None
 
 
+def test_download_statement_context_ref_month_words_and_duration_match():
+    from pandas import DataFrame
+
+    fs = make_fs(
+        _document_type="10-Q",
+        _period_ending="2024-02-29",
+        _instance={
+            "us-gaap_WordMonths": {
+                "context": [
+                    {
+                        "context_ref": "ctx_bad",
+                        "value": "10",
+                        "start": "2023-11-01",
+                        "end": "2024-02-29",
+                        "unit": "iso4217:USD",
+                    },
+                    {
+                        "context_ref": "ctx_good",
+                        "value": "10",
+                        "start": "2024-01-01",
+                        "end": "2024-02-29",
+                        "unit": "iso4217:USD",
+                    },
+                ]
+            }
+        },
+        _tags={
+            "us-gaap_WordMonths": {
+                "label": "Word months line",
+                "crdr": "credit",
+                "name": "WordMonths",
+            }
+        },
+        _period_context={
+            "ctx_bad": {"start": "2023-11-01"},
+            "ctx_good": {"start": "2024-01-01"},
+        },
+        _resources={
+            "r1": {
+                "group": "statement",
+                "short_name": "Statement of Operations",
+                "url": "https://sec.gov/R4.htm",
+            }
+        },
+    )
+
+    def _from_url(url, is_equity=False):
+        table = DataFrame(
+            {
+                "Statement of Operations $ in Millions": ["Word months line"],
+                "2024-02-29 -- Two Months Ended": [10],
+            }
+        )
+        return table, DataFrame()
+
+    with patch.object(fs, "_download_statement_from_url", side_effect=_from_url):
+        data, _ = fs._download_statement("income")
+    assert data.iloc[0].context_ref == "ctx_good"
+
+
+def test_download_statement_period_ending_from_context_duration():
+    from pandas import DataFrame
+
+    fs = make_fs(
+        _document_type="10-Q",
+        _period_ending="2024-12-31",
+        _instance={
+            "us-gaap_DurationRow": {
+                "context": [
+                    {
+                        "context_ref": "ctx_duration",
+                        "value": "100",
+                        "unit": "iso4217:USD",
+                    }
+                ]
+            }
+        },
+        _tags={
+            "us-gaap_DurationRow": {
+                "label": "Duration row",
+                "crdr": "credit",
+                "name": "DurationRow",
+            }
+        },
+        _period_context={
+            "ctx_duration": {
+                "start": "2024-01-01",
+                "end": "2024-12-31",
+                "period_type": "duration",
+            }
+        },
+        _resources={
+            "r1": {
+                "group": "statement",
+                "short_name": "Statement of Operations",
+                "url": "https://sec.gov/R4.htm",
+            }
+        },
+    )
+
+    def _from_url(url, is_equity=False):
+        table = DataFrame(
+            {
+                "Statement of Operations $ in Millions": ["Duration row"],
+                "2024-12-31 -- 12 Months Ended": [100],
+            }
+        )
+        return table, DataFrame()
+
+    with patch.object(fs, "_download_statement_from_url", side_effect=_from_url):
+        data, _ = fs._download_statement("income")
+    assert data.iloc[0].period_ending == "2024-12-31 -- 12 Months Ended"
+
+
+def test_download_statement_period_ending_from_context_instant():
+    from pandas import DataFrame
+
+    fs = make_fs(
+        _document_type="10-Q",
+        _period_ending="2024-12-31",
+        _instance={
+            "us-gaap_InstantRow": {
+                "context": [
+                    {
+                        "context_ref": "ctx_instant",
+                        "value": "100",
+                        "unit": "iso4217:USD",
+                    }
+                ]
+            }
+        },
+        _tags={
+            "us-gaap_InstantRow": {
+                "label": "Instant row",
+                "crdr": "credit",
+                "name": "InstantRow",
+            }
+        },
+        _period_context={
+            "ctx_instant": {
+                "start": None,
+                "end": "2024-12-31",
+                "period_type": "instant",
+            }
+        },
+        _resources={
+            "r1": {
+                "group": "statement",
+                "short_name": "Statement of Operations",
+                "url": "https://sec.gov/R4.htm",
+            }
+        },
+    )
+
+    def _from_url(url, is_equity=False):
+        table = DataFrame(
+            {
+                "Statement of Operations $ in Millions": ["Instant row"],
+                "2024-12-31 -- 12 Months Ended": [100],
+            }
+        )
+        return table, DataFrame()
+
+    with patch.object(fs, "_download_statement_from_url", side_effect=_from_url):
+        data, _ = fs._download_statement("income")
+    assert data.iloc[0].period_ending == "2024-12-31"
+
+
 def test_download_statement_period_beginning_context_heuristics():
     """Plain context refs fall through to length heuristics or yield no beginning."""
     from pandas import DataFrame
@@ -3710,6 +3923,45 @@ def test_apply_fix_tag_single_tags_matching():
     assert data[data.label == "Net total"].tag.tolist() == ["srt_AlphaXxxx"]
 
 
+def test_apply_label_returns_none_for_none_and_nan_labels():
+    from pandas import DataFrame
+
+    fs = _fix_tag_fs(
+        tags={
+            "us-gaap_Revenue": {
+                "label": "Revenue",
+                "crdr": "credit",
+                "name": "Revenue",
+            }
+        },
+        instance={
+            "us-gaap_Revenue": {
+                "context": [
+                    {
+                        "value": "3",
+                        "context_ref": "duration_2023_09_01_to_2024_08_31",
+                        "unit": "iso4217:USD",
+                    }
+                ]
+            }
+        },
+    )
+
+    def _from_url(url, is_equity=False):
+        table = DataFrame(
+            {
+                "Statement of Operations $ in Millions": [None, "nan", "Revenue"],
+                "2024-08-31 -- 12 Months Ended": [1, 2, 3],
+            }
+        )
+        return table, DataFrame()
+
+    with patch.object(fs, "_download_statement_from_url", side_effect=_from_url):
+        data, _ = fs._download_statement("income")
+    assert data[data.label.isna()].iloc[0].tag is None
+    assert data[data.label == "nan"].iloc[0].tag is None
+
+
 def test_download_statement_from_url_parent_tag_from_meta():
     """A meta tag carrying a parent_tag is mapped into the item map's parent_tag column."""
     from pandas import DataFrame
@@ -3752,6 +4004,22 @@ def test_download_statement_from_url_empty_date_header():
         {
             "Income Statement $ in Millions": ["Net sales and revenues"],
             "": ["100"],
+        }
+    )
+    meta = DataFrame({0: ["Name", "Balance Type"], 1: ["us-gaap_Revenues", "credit"]})
+    with patch.object(fs, "_get_document", return_value=[table, meta]):
+        out_table, _ = fs._download_statement_from_url("https://sec.gov/R4.htm")
+    assert str(out_table.columns[1]).startswith("None -- ")
+
+
+def test_download_statement_from_url_unparseable_date_header():
+    from pandas import DataFrame
+
+    fs = make_fs(_document_type="10-Q", _instance={}, _tags={})
+    table = DataFrame(
+        {
+            "Income Statement $ in Millions": ["Net sales and revenues"],
+            "Not a Date Header": ["100"],
         }
     )
     meta = DataFrame({0: ["Name", "Balance Type"], 1: ["us-gaap_Revenues", "credit"]})

@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/upcoming_auctions?page%5Bnumber%5D=1&page%5Bsize%5D=10000
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2094'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 16 Jul 2026 18:32:50 GMT
+      Server:
+      - nginx
+      Set-Cookie:
+      - cookiesession1=678A3E0FD7BE18730E612910B29C46AF;Expires=Fri, 16 Jul 2027 18:32:50
+        GMT;Path=/;HttpOnly
+      - BIGipServerddsfMj0s2EaKsi9WsSRnAw=!LZ8wQ8xxXm0VDfvfcKTyKInrG7ukTuHqlMANnxcMwyLrPZxILzGMQVjwJxKAOWc5j8UoK9NwmvIKqg==;
+        path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,2320 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/fry-9lp-user-guide.pdf",
+  "schedule_count": 6,
+  "item_count": 193,
+  "schedules": [
+    {
+      "schedule": "PI",
+      "name": "Parent Company Only Income Statement"
+    },
+    {
+      "schedule": "PI-A",
+      "name": "Cash Flow Statement"
+    },
+    {
+      "schedule": "PC",
+      "name": "Parent Company Only Balance Sheet"
+    },
+    {
+      "schedule": "PC-A",
+      "name": "Investments in Subsidiaries and Associated Companies"
+    },
+    {
+      "schedule": "PC-B",
+      "name": "Memoranda"
+    },
+    {
+      "schedule": "COVER",
+      "name": "Cover Page"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.a.(1)",
+      "caption": "Dividends",
+      "mdrm": "BHCP0508",
+      "columns": [
+        "BHCP0508"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.a.(2)",
+      "caption": "Interest",
+      "mdrm": "BHCP0512",
+      "columns": [
+        "BHCP0512"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.a.(3)",
+      "caption": "Management and service fees",
+      "mdrm": "BHCP0515",
+      "columns": [
+        "BHCP0515"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.a.(4)",
+      "caption": "Other",
+      "mdrm": "BHCP0518",
+      "columns": [
+        "BHCP0518"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.a.(5)",
+      "caption": "Total (sum of items 1.a(1) through 1.a(4))",
+      "mdrm": "BHCP0520",
+      "columns": [
+        "BHCP0520"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.b.(1)",
+      "caption": "Dividends",
+      "mdrm": "BHCP1275",
+      "columns": [
+        "BHCP1275"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.b.(2)",
+      "caption": "Interest",
+      "mdrm": "BHCP1276",
+      "columns": [
+        "BHCP1276"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.b.(3)",
+      "caption": "Management and service fees",
+      "mdrm": "BHCP1277",
+      "columns": [
+        "BHCP1277"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.b.(4)",
+      "caption": "Other",
+      "mdrm": "BHCP1278",
+      "columns": [
+        "BHCP1278"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.b.(5)",
+      "caption": "Total (sum of items 1.b(1) through 1.b(4))",
+      "mdrm": "BHCP1279",
+      "columns": [
+        "BHCP1279"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.c.(1)",
+      "caption": "Dividends",
+      "mdrm": "BHCP0206",
+      "columns": [
+        "BHCP0206"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.c.(2)",
+      "caption": "Interest",
+      "mdrm": "BHCP0207",
+      "columns": [
+        "BHCP0207"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.c.(3)",
+      "caption": "Management and service fees",
+      "mdrm": "BHCP0208",
+      "columns": [
+        "BHCP0208"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.c.(4)",
+      "caption": "Other",
+      "mdrm": "BHCP0209",
+      "columns": [
+        "BHCP0209"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.c.(5)",
+      "caption": "Total (sum of items 1.c(1) through 1.c(4))",
+      "mdrm": "BHCP0210",
+      "columns": [
+        "BHCP0210"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.d",
+      "caption": "Securities gains/(losses)",
+      "mdrm": "BHCP4091",
+      "columns": [
+        "BHCP4091"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.e",
+      "caption": "All other operating income",
+      "mdrm": "BHCP0447",
+      "columns": [
+        "BHCP0447"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "1.f",
+      "caption": "Total operating income (sum of items 1.a(5), 1.b(5), 1.c(5), 1.d, and 1.e)",
+      "mdrm": "BHCP4000",
+      "columns": [
+        "BHCP4000"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "2.a",
+      "caption": "Salaries and employee benefits",
+      "mdrm": "BHCP4135",
+      "columns": [
+        "BHCP4135"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "2.b",
+      "caption": "Interest expense",
+      "mdrm": "BHCP4073",
+      "columns": [
+        "BHCP4073"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "2.d",
+      "caption": "All other expenses",
+      "mdrm": "BHCP0522",
+      "columns": [
+        "BHCP0522"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "2.c",
+      "caption": "Provision for loan and lease losses*",
+      "mdrm": "BHCPJJ33",
+      "columns": [
+        "BHCPJJ33"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "2.e",
+      "caption": "Total operating expense (sum of items 2.a through 2.d)",
+      "mdrm": "BHCP4130",
+      "columns": [
+        "BHCP4130"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "3.a",
+      "caption": "Income (loss) before unrealized holding gains (losses) on equity securities not held for trading, applicable income taxes, and discontinued operations (item1.f. minus item 2.e.)",
+      "mdrm": "BHCPHT69",
+      "columns": [
+        "BHCPHT69"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "3.b",
+      "caption": "Unrealized holding gains (losses) on equity securities not held for trading **",
+      "mdrm": "BHCPHT70",
+      "columns": [
+        "BHCPHT70"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "3.c",
+      "caption": "Income (loss) before applicable income taxes, discontinued operations and undistributed income (sum of items 3.a and 3.b)",
+      "mdrm": "BHCP4250",
+      "columns": [
+        "BHCP4250"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "4",
+      "caption": "Applicable income taxes",
+      "mdrm": "BHCP4302",
+      "columns": [
+        "BHCP4302"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "5",
+      "caption": "Discontinued operations, net of applicable income taxes",
+      "mdrm": "BHCPFT28",
+      "columns": [
+        "BHCPFT28"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "6",
+      "caption": "Income (loss) before undistributed income of subsidiaries and associated companies (sum of items 3.c and 5 minus item 4)",
+      "mdrm": "BHCP0496",
+      "columns": [
+        "BHCP0496"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "7.a",
+      "caption": "Bank",
+      "mdrm": "BHCP3156",
+      "columns": [
+        "BHCP3156"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "7.b",
+      "caption": "Nonbank",
+      "mdrm": "BHCP3147",
+      "columns": [
+        "BHCP3147"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "7.c",
+      "caption": "Subsidiary holding companies",
+      "mdrm": "BHCP3513",
+      "columns": [
+        "BHCP3513"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "8",
+      "caption": "Net Income (loss) (sum of items 6, 7.a, 7.b, and 7.c)",
+      "mdrm": "BHCP4340",
+      "columns": [
+        "BHCP4340"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": null,
+      "caption": "Memoranda",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "M.1",
+      "caption": "Noncash items included in operating expense",
+      "mdrm": "BHCP4647",
+      "columns": [
+        "BHCP4647"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "M.2",
+      "caption": "Loan and lease financing receivables charged-off",
+      "mdrm": "BHCP4635",
+      "columns": [
+        "BHCP4635"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "M.3",
+      "caption": "Loan and lease financing receivables recoveries",
+      "mdrm": "BHCP4605",
+      "columns": [
+        "BHCP4605"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "M.4",
+      "caption": "Interest expense paid to special-purpose subsidiaries that issued trust preferred securities (included in item 2.d above)",
+      "mdrm": "BHCPC254",
+      "columns": [
+        "BHCPC254"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI",
+      "schedule_name": "Parent Company Only Income Statement",
+      "line": "M.5",
+      "caption": "Net change in fair values of financial instruments accounted for under a fair value option",
+      "mdrm": "BHCPJ980",
+      "columns": [
+        "BHCPJ980"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": null,
+      "caption": "Part I. Cash Flows from Operating Activities:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "1",
+      "caption": "Net income (loss) (must equal Schedule PI, item 8)",
+      "mdrm": "BHPA4340",
+      "columns": [
+        "BHPA4340"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": null,
+      "caption": "Adjustments to reconcile net income to net cash provided by operating activities:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.a",
+      "caption": "Provision for deferred income taxes",
+      "mdrm": "BHCP3611",
+      "columns": [
+        "BHCP3611"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.b",
+      "caption": "(Gain) or loss on sales of assets",
+      "mdrm": "BHCP3612",
+      "columns": [
+        "BHCP3612"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.c",
+      "caption": "Equity in undistributed (earnings) losses of subsidiaries",
+      "mdrm": "BHCP3613",
+      "columns": [
+        "BHCP3613"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.e",
+      "caption": "Net change in other liabilities",
+      "mdrm": "BHCP3615",
+      "columns": [
+        "BHCP3615"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.f",
+      "caption": "Net change in other assets",
+      "mdrm": "BHCP3616",
+      "columns": [
+        "BHCP3616"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.g",
+      "caption": "Other, net",
+      "mdrm": "BHCP3617",
+      "columns": [
+        "BHCP3617"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.h",
+      "caption": "Total adjustments (sum of items 2.a through 2.g)",
+      "mdrm": "BHCP3618",
+      "columns": [
+        "BHCP3618"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "3",
+      "caption": "Net cash provided (used) by operating activities (sum of Part I, items 1 and 2.h)",
+      "mdrm": "BHCP3619",
+      "columns": [
+        "BHCP3619"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": null,
+      "caption": "Part II. Cash Flows from Investing Activities:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "1",
+      "caption": "Purchases of held-to-maturity and available-for-sale securities",
+      "mdrm": "BHCP6552",
+      "columns": [
+        "BHCP6552"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "1.a",
+      "caption": "Purchases of equity securities with readily determinable fair value *",
+      "mdrm": "BHCPHU25",
+      "columns": [
+        "BHCPHU25"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2",
+      "caption": "Sales and maturities of held-to-maturity and available-for-sale securities",
+      "mdrm": "BHCP6567",
+      "columns": [
+        "BHCP6567"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2.a",
+      "caption": "Sales and maturities of equity securities with readily determinable fair value *",
+      "mdrm": "BHCPHU26",
+      "columns": [
+        "BHCPHU26"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "3",
+      "caption": "Payments for investments in and advances to subsidiaries",
+      "mdrm": "BHCP6571",
+      "columns": [
+        "BHCP6571"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "4",
+      "caption": "Sale or repayment of investments in and advances to subsidiaries",
+      "mdrm": "BHCP6573",
+      "columns": [
+        "BHCP6573"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "5",
+      "caption": "Outlays for business acquisitions",
+      "mdrm": "BHCPF737",
+      "columns": [
+        "BHCPF737"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "6",
+      "caption": "Proceeds from business divestitures",
+      "mdrm": "BHCPF817",
+      "columns": [
+        "BHCPF817"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "7",
+      "caption": "Other, net",
+      "mdrm": "BHCP6588",
+      "columns": [
+        "BHCP6588"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "8",
+      "caption": "Net cash provided (used) by investing activities (sum of Part II, items 2, 2.a, 4, 6, and 7 minus items 1, 1.a, 3, and 5)",
+      "mdrm": "BHCP6589",
+      "columns": [
+        "BHCP6589"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": null,
+      "caption": "Part III. Cash Flows from Financing Activities:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "1",
+      "caption": "Net change in purchased funds and other short-term borrowings",
+      "mdrm": "BHCPF818",
+      "columns": [
+        "BHCPF818"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "3",
+      "caption": "Proceeds from advances from subsidiaries",
+      "mdrm": "BHCP6592",
+      "columns": [
+        "BHCP6592"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "4",
+      "caption": "Repayment of advances from subsidiaries",
+      "mdrm": "BHCP6596",
+      "columns": [
+        "BHCP6596"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "5",
+      "caption": "Proceeds from issuance of long-term debt",
+      "mdrm": "BHCP6600",
+      "columns": [
+        "BHCP6600"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "6",
+      "caption": "Repayment of long-term debt",
+      "mdrm": "BHCP6604",
+      "columns": [
+        "BHCP6604"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "7",
+      "caption": "Proceeds from issuance of common stock",
+      "mdrm": "BHCP6607",
+      "columns": [
+        "BHCP6607"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "8",
+      "caption": "Payment to repurchase common stock",
+      "mdrm": "BHCP8518",
+      "columns": [
+        "BHCP8518"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "9",
+      "caption": "Proceeds from issuance of preferred stock",
+      "mdrm": "BHCP6619",
+      "columns": [
+        "BHCP6619"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "10",
+      "caption": "Payment to repurchase preferred stock",
+      "mdrm": "BHCP6741",
+      "columns": [
+        "BHCP6741"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "11",
+      "caption": "Dividends paid",
+      "mdrm": "BHCP6742",
+      "columns": [
+        "BHCP6742"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "12",
+      "caption": "Other, net",
+      "mdrm": "BHCP6743",
+      "columns": [
+        "BHCP6743"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "13",
+      "caption": "Net cash provided (used) by financing activities (sum of Part III, items 1, 3, 5, 7, 9, and 12 minus items 4, 6, 8, 10, and 11)",
+      "mdrm": "BHCP6744",
+      "columns": [
+        "BHCP6744"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": null,
+      "caption": "Part IV. Cash and Cash Equivalents:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "1",
+      "caption": "Net (decrease) increase in cash and cash equivalents (sum of Part I, item 3, Part II, item 8, and Part III, item 13)",
+      "mdrm": "BHCP6758",
+      "columns": [
+        "BHCP6758"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "2",
+      "caption": "Cash and cash equivalents at beginning of year",
+      "mdrm": "BHCP6773",
+      "columns": [
+        "BHCP6773"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PI-A",
+      "schedule_name": "Cash Flow Statement",
+      "line": "3",
+      "caption": "Cash and cash equivalents, current year-to-date (sum of Part IV, items 1 and 2)",
+      "mdrm": "BHCP6775",
+      "columns": [
+        "BHCP6775"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "1",
+      "caption": "Cash and balances due from depository institutions:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "1.a",
+      "caption": "Balances with subsidiary or affiliated depository institutions",
+      "mdrm": "BHCP5993",
+      "columns": [
+        "BHCP5993"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "1.b",
+      "caption": "Balances with unrelated depository institutions",
+      "mdrm": "BHCP0010",
+      "columns": [
+        "BHCP0010"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "2",
+      "caption": "Securities:*",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "2.a",
+      "caption": "U.S. Treasury securities",
+      "mdrm": "BHCP0400",
+      "columns": [
+        "BHCP0400"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "2.b",
+      "caption": "Securities of U.S. Government agencies and corporations and securities issued by states and political subdivisions",
+      "mdrm": "BHCP6791",
+      "columns": [
+        "BHCP6791"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "2.c",
+      "caption": "Other debt and equity securities",
+      "mdrm": "BHCP1299",
+      "columns": [
+        "BHCP1299"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "3",
+      "caption": "Securities purchased under agreements to resell**",
+      "mdrm": "BHCP0277",
+      "columns": [
+        "BHCP0277"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4",
+      "caption": "Loans and lease financing receivables:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "a",
+      "caption": "Loans:",
+      "mdrm": null,
+      "columns": null,
+      "level": 2,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.a.(1)",
+      "caption": "To U.S. addressees (domicile)",
+      "mdrm": "BHCP0362",
+      "columns": [
+        "BHCP0362"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.a.(2)",
+      "caption": "To non-U.S. addressees (domicile)",
+      "mdrm": "BHCP0363",
+      "columns": [
+        "BHCP0363"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.b",
+      "caption": "LESS: Unearned income on loans",
+      "mdrm": "BHCP2123",
+      "columns": [
+        "BHCP2123"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.c",
+      "caption": "Loans, held for investment and held for sale (sum of items 4.a(1) and 4.a(2) minus item 4.b)",
+      "mdrm": "BHCP0364",
+      "columns": [
+        "BHCP0364"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.d",
+      "caption": "Lease financing receivables, net of unearned income",
+      "mdrm": "BHCP2165",
+      "columns": [
+        "BHCP2165"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.e",
+      "caption": "LESS: Allowance for loan and lease losses***",
+      "mdrm": "BHCP3123",
+      "columns": [
+        "BHCP3123"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "4.f",
+      "caption": "Loans and leases, held for investment and held for sale, net of allowance for loan and lease losses (sum of items 4.c and 4.d minus item 4.e)",
+      "mdrm": "BHCP2125",
+      "columns": [
+        "BHCP2125"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "5",
+      "caption": "Investments in and receivables due from subsidiaries and associated companies (from Schedule PC-A, item 4)",
+      "mdrm": "BHCP0365",
+      "columns": [
+        "BHCP0365"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "6",
+      "caption": "Premises and fixed assets (including right-of-use assets)",
+      "mdrm": "BHCP2145",
+      "columns": [
+        "BHCP2145"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": null,
+      "caption": "Intangible assets (other than reported in item 5 above):",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "7.a",
+      "caption": "Goodwill",
+      "mdrm": "BHCP3163",
+      "columns": [
+        "BHCP3163"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "7.b",
+      "caption": "Mortgage servicing assets",
+      "mdrm": "BHCP3164",
+      "columns": [
+        "BHCP3164"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "7.c",
+      "caption": "Other identifiable intangibles",
+      "mdrm": "BHCP3165",
+      "columns": [
+        "BHCP3165"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "8",
+      "caption": "Other assets**",
+      "mdrm": "BHCP2160",
+      "columns": [
+        "BHCP2160"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "9",
+      "caption": "Balances due from related institutions, other than investments:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "9.a",
+      "caption": "Related banks",
+      "mdrm": "BHCP3602",
+      "columns": [
+        "BHCP3602"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "9.b",
+      "caption": "Related nonbank companies",
+      "mdrm": "BHCP3603",
+      "columns": [
+        "BHCP3603"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "9.c",
+      "caption": "Related holding companies",
+      "mdrm": "BHCP3604",
+      "columns": [
+        "BHCP3604"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "10",
+      "caption": "TOTAL ASSETS (sum of items 1.a through 3, and 4.f through 9.c above)",
+      "mdrm": "BHCP2170",
+      "columns": [
+        "BHCP2170"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "11",
+      "caption": "Deposits",
+      "mdrm": "BHCP2200",
+      "columns": [
+        "BHCP2200"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "12",
+      "caption": "Securities sold under agreements to repurchase",
+      "mdrm": "BHCP0279",
+      "columns": [
+        "BHCP0279"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "13.a",
+      "caption": "Commercial paper",
+      "mdrm": "BHCP2309",
+      "columns": [
+        "BHCP2309"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "13.b",
+      "caption": "Other borrowings",
+      "mdrm": "BHCP2332",
+      "columns": [
+        "BHCP2332"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "14",
+      "caption": "Other borrowed money with a remaining maturity of more than one year",
+      "mdrm": "BHCP0368",
+      "columns": [
+        "BHCP0368"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "16",
+      "caption": "Subordinated notes and debentures ****",
+      "mdrm": "BHCP4062",
+      "columns": [
+        "BHCP4062"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "17",
+      "caption": "Other liabilities",
+      "mdrm": "BHCP2930",
+      "columns": [
+        "BHCP2930"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "18.a",
+      "caption": "Subsidiary banks",
+      "mdrm": "BHCP3605",
+      "columns": [
+        "BHCP3605"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "18.b",
+      "caption": "Nonbank subsidiaries",
+      "mdrm": "BHCP3606",
+      "columns": [
+        "BHCP3606"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "18.c",
+      "caption": "Related holding companies",
+      "mdrm": "BHCP3607",
+      "columns": [
+        "BHCP3607"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.a",
+      "caption": "Perpetual preferred stock (including related surplus)",
+      "mdrm": "BHCP3283",
+      "columns": [
+        "BHCP3283"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.b",
+      "caption": "Common stock (par value)",
+      "mdrm": "BHCP3230",
+      "columns": [
+        "BHCP3230"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.c",
+      "caption": "Surplus (exclude all surplus related to preferred stock)",
+      "mdrm": "BHCP3240",
+      "columns": [
+        "BHCP3240"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.d",
+      "caption": "Retained earnings",
+      "mdrm": "BHCP3247",
+      "columns": [
+        "BHCP3247"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.e",
+      "caption": "Accumulated other comprehensive income *****",
+      "mdrm": "BHCPB530",
+      "columns": [
+        "BHCPB530"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.f",
+      "caption": "Other equity capital components ******",
+      "mdrm": "BHCPA130",
+      "columns": [
+        "BHCPA130"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "20.h",
+      "caption": "TOTAL EQUITY CAPITAL (sum of items 20.a through 20.f)",
+      "mdrm": "BHCP3210",
+      "columns": [
+        "BHCP3210"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "21",
+      "caption": "TOTAL LIABILITIES AND EQUITY CAPITAL (sum of items 11 through 20)",
+      "mdrm": "BHCP3300",
+      "columns": [
+        "BHCP3300"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": null,
+      "caption": "Memoranda",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "M.1.a",
+      "caption": "Total assets",
+      "mdrm": "BHCPF819",
+      "columns": [
+        "BHCPF819"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC",
+      "schedule_name": "Parent Company Only Balance Sheet",
+      "line": "M.1.b",
+      "caption": "Total liabilities",
+      "mdrm": "BHCPF820",
+      "columns": [
+        "BHCPF820"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "1.a.(1)",
+      "caption": "Common and preferred stock (net of amount reported in item 1.a(2))",
+      "mdrm": "BHCP3239",
+      "columns": [
+        "BHCP3239"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "1.a.(2)(a)",
+      "caption": "Goodwill",
+      "mdrm": "BHCP3238",
+      "columns": [
+        "BHCP3238"
+      ],
+      "level": 4,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "1.a.(2)(b)",
+      "caption": "Other identifiable intangibles",
+      "mdrm": "BHCP4485",
+      "columns": [
+        "BHCP4485"
+      ],
+      "level": 4,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "1.b.(1)",
+      "caption": "Loans, advances, notes, bonds, and debentures",
+      "mdrm": "BHCP0533",
+      "columns": [
+        "BHCP0533"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "1.b.(2)",
+      "caption": "Other receivables",
+      "mdrm": "BHCP0534",
+      "columns": [
+        "BHCP0534"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "2.a.(1)",
+      "caption": "Common and preferred stock (net of amount reported in items 2.a(2))",
+      "mdrm": "BHCP1273",
+      "columns": [
+        "BHCP1273"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "2.a.(2)(a)",
+      "caption": "Goodwill",
+      "mdrm": "BHCP0087",
+      "columns": [
+        "BHCP0087"
+      ],
+      "level": 4,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "2.a.(2)(b)",
+      "caption": "Other identifiable intangibles",
+      "mdrm": "BHCP0536",
+      "columns": [
+        "BHCP0536"
+      ],
+      "level": 4,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "2.b.(1)",
+      "caption": "Loans, advances, notes, bonds, and debentures",
+      "mdrm": "BHCP0537",
+      "columns": [
+        "BHCP0537"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "2.b.(2)",
+      "caption": "Other receivables",
+      "mdrm": "BHCP0538",
+      "columns": [
+        "BHCP0538"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "3.a.(1)",
+      "caption": "Common and preferred stock (net of amount reported in Item 3.a(2))",
+      "mdrm": "BHCP0201",
+      "columns": [
+        "BHCP0201"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "3.a.(2)(a)",
+      "caption": "Goodwill",
+      "mdrm": "BHCP0202",
+      "columns": [
+        "BHCP0202"
+      ],
+      "level": 4,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "3.a.(2)(b)",
+      "caption": "Other identifiable intangibles",
+      "mdrm": "BHCP0203",
+      "columns": [
+        "BHCP0203"
+      ],
+      "level": 4,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "3.b.(1)",
+      "caption": "Loans, advances, notes, bonds, and debentures",
+      "mdrm": "BHCP0204",
+      "columns": [
+        "BHCP0204"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "3.b.(2)",
+      "caption": "Other receivables",
+      "mdrm": "BHCP0205",
+      "columns": [
+        "BHCP0205"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-A",
+      "schedule_name": "Investments in Subsidiaries and Associated Companies",
+      "line": "4",
+      "caption": "TOTAL (sum of items 1 through 3) (must equal Schedule PC, item 5)",
+      "mdrm": "BHPA0365",
+      "columns": [
+        "BHPA0365"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "1",
+      "caption": "Amount of assets scheduled to mature within one year (including contractual payments to be repaid within one year)",
+      "mdrm": "BHCP0543",
+      "columns": [
+        "BHCP0543"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "2",
+      "caption": "Amount of borrowings included in Schedule PC, items 16 and 18 that is scheduled to mature within one year (exclude short-term debt)",
+      "mdrm": "BHCP3409",
+      "columns": [
+        "BHCP3409"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "3",
+      "caption": "Amount of liabilities (other than borrowings) scheduled to mature within one year (including any contractual payments to be repaid within one year)",
+      "mdrm": "BHCP3609",
+      "columns": [
+        "BHCP3609"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "4.a",
+      "caption": "Bank",
+      "mdrm": "BHCP0540",
+      "columns": [
+        "BHCP0540"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "4.b",
+      "caption": "Nonbank",
+      "mdrm": "BHCP0541",
+      "columns": [
+        "BHCP0541"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "4.c",
+      "caption": "Related holding companies",
+      "mdrm": "BHCP0542",
+      "columns": [
+        "BHCP0542"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "5",
+      "caption": "Borrowing by the parent from subsidiaries and associated companies (included in Schedule PC, item 18):",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "5.a",
+      "caption": "Bank",
+      "mdrm": "BHCP0467",
+      "columns": [
+        "BHCP0467"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "5.b",
+      "caption": "Nonbank",
+      "mdrm": "BHCP1274",
+      "columns": [
+        "BHCP1274"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "5.c",
+      "caption": "Related holding companies",
+      "mdrm": "BHCP0539",
+      "columns": [
+        "BHCP0539"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "6",
+      "caption": "Long-term debt that reprices within one year",
+      "mdrm": "BHCP3298",
+      "columns": [
+        "BHCP3298"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "7",
+      "caption": "Loans and lease financing receivables of the parent:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "7.a",
+      "caption": "Past due 90 days or more and still accruing",
+      "mdrm": "BHCP1407",
+      "columns": [
+        "BHCP1407"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "7.b",
+      "caption": "Nonaccrual status",
+      "mdrm": "BHCP1403",
+      "columns": [
+        "BHCP1403"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "8",
+      "caption": "Loans of the parent restructured in troubled debt restructurings that are in compliance with their modified terms",
+      "mdrm": "BHCPK297",
+      "columns": [
+        "BHCPK297"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "10",
+      "caption": "Pledged securities *",
+      "mdrm": "BHCP0416",
+      "columns": [
+        "BHCP0416"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "11.a",
+      "caption": "Fair value of securities classified as available-for-sale in Schedule PC, items 2.a through 2.c",
+      "mdrm": "BHCP8516",
+      "columns": [
+        "BHCP8516"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "11.b",
+      "caption": "Amortized cost of securities classified as held-to-maturity in Schedule PC, items 2.a through 2.c",
+      "mdrm": "BHCP8517",
+      "columns": [
+        "BHCP8517"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "11.c",
+      "caption": "Fair value of equity securities with readily determinable fair values not held for trading in Schedule PC, items 2.a through 2.c. **",
+      "mdrm": "BHCPJA22",
+      "columns": [
+        "BHCPJA22"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "12",
+      "caption": "Balances held by subsidiary banks of the holding company due from:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "12.a",
+      "caption": "Other bank subsidiaries of the holding company",
+      "mdrm": "BHCP6792",
+      "columns": [
+        "BHCP6792"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "12.b",
+      "caption": "Nonbank subsidiaries of the holding company",
+      "mdrm": "BHCP6793",
+      "columns": [
+        "BHCP6793"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "13",
+      "caption": "Balances held by subsidiary banks of the holding company due to:",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "13.a",
+      "caption": "Other bank subsidiaries of the holding company",
+      "mdrm": "BHCP6794",
+      "columns": [
+        "BHCP6794"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "13.b",
+      "caption": "Nonbank subsidiaries of the holding company",
+      "mdrm": "BHCP6795",
+      "columns": [
+        "BHCP6795"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "14",
+      "caption": "Holding company (parent company only) borrowings not held by financial institutions or by insiders (including directors) and their interests",
+      "mdrm": "BHCP3152",
+      "columns": [
+        "BHCP3152"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.a",
+      "caption": "Total combined nonbank assets of nonbank subsidiaries",
+      "mdrm": "BHCP4778",
+      "columns": [
+        "BHCP4778"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.b",
+      "caption": "Total combined loans and leases of nonbank subsidiaries",
+      "mdrm": "BHCPC427",
+      "columns": [
+        "BHCPC427"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.c",
+      "caption": "Total aggregate operating revenue of nonbank subsidiaries",
+      "mdrm": "BHCPC428",
+      "columns": [
+        "BHCPC428"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.e",
+      "caption": "Combined foreign nonbank subsidiary assets included in 15.a",
+      "mdrm": "BHCP2793",
+      "columns": [
+        "BHCP2793"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.d",
+      "caption": "Combined thrift assets included in 15.a (to be completed only by a bank holding company)",
+      "mdrm": "BHCP2792",
+      "columns": [
+        "BHCP2792"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.f",
+      "caption": "Number of nonbank subsidiaries included in 15.a",
+      "mdrm": "BHCP2794",
+      "columns": [
+        "BHCP2794"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.g",
+      "caption": "Number of thrift subsidiaries included in 15.d (to be completed only by a bank holding company)",
+      "mdrm": "BHCP2796",
+      "columns": [
+        "BHCP2796"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "15.h",
+      "caption": "Number of foreign nonbank subsidiaries included in 15.e",
+      "mdrm": "BHCP2831",
+      "columns": [
+        "BHCP2831"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "16",
+      "caption": "Notes payable to special-purpose subsidiaries that issued trust preferred securities (included in Schedule PC, item 18.b and item 5.b above)",
+      "mdrm": "BHCPC255",
+      "columns": [
+        "BHCPC255"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "17",
+      "caption": "Total nonbank assets of a holding company (to be completed only by top-tier holding companies that are subject to the Federal Reserve Board's capital plan rule (12 CFR 225.8) and top-tier savings and loan holding companies with $100 billion or more in total consolidated assets****",
+      "mdrm": "BHCPHK02",
+      "columns": [
+        "BHCPHK02"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": null,
+      "caption": "Notes to the Parent Company Only Financial Statements",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "1",
+      "caption": "Amount",
+      "mdrm": "BHCP5485",
+      "columns": [
+        "BHCP5485"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "2",
+      "caption": "Amount",
+      "mdrm": "BHCP5486",
+      "columns": [
+        "BHCP5486"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "3",
+      "caption": "Amount",
+      "mdrm": "BHCP5487",
+      "columns": [
+        "BHCP5487"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "4",
+      "caption": "Amount",
+      "mdrm": "BHCP5488",
+      "columns": [
+        "BHCP5488"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "PC-B",
+      "schedule_name": "Memoranda",
+      "line": "5",
+      "caption": "Amount",
+      "mdrm": "BHCP5489",
+      "columns": [
+        "BHCP5489"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Contact Name",
+      "mdrm": "BHPX8901",
+      "columns": [
+        "BHPX8901"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Contact Phone",
+      "mdrm": "BHPX8902",
+      "columns": [
+        "BHPX8902"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Contact FAX",
+      "mdrm": "BHPX9116",
+      "columns": [
+        "BHPX9116"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Contact email",
+      "mdrm": "BHPX4086",
+      "columns": [
+        "BHPX4086"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Confidentiality Treatment Request Indicator",
+      "mdrm": "BHCPC447",
+      "columns": [
+        "BHCPC447"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Name of Chief Financial Officer",
+      "mdrm": "BHCPC490",
+      "columns": [
+        "BHCPC490"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Signature Date",
+      "mdrm": "BHPXJ196",
+      "columns": [
+        "BHPXJ196"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ],
+  "validation": {
+    "csv_mdrm_count": 175,
+    "covered_count": 175,
+    "missing": [],
+    "permanent_empty": [],
+    "coverage": 100.0
+  }
+}
