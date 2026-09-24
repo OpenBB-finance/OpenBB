@@ -3,7 +3,7 @@ name = "openbb"
 version = "4.7.3"
 description = "Investment research for everyone, anywhere."
 authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+license = "Apache-2.0"
 readme = "README.md"
 
 packages = [{ include = "openbb", from = "core" }]

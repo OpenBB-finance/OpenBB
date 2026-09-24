@@ -179,5 +179,5 @@ Report bugs on
 
 ## License
 
-AGPL-3.0-only. See
+Apache-2.0. See
 [LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE).

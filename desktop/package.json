@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.2",
   "type": "module",
-  "license": "AGPL-3.0",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "vite --port 1470",
     "build": "tsc && vite build",
