@@ -1,0 +1,128 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json
+  response:
+    body:
+      string: |
+        {"results":{"indicators":[{"source":"10100002","title":"HTTP error cube"}]}}
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_10100002
+  response:
+    body:
+      string: |
+        <html><head><title>503 Service Unavailable</title></head><body>503 Service Unavailable</body></html>
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+    status:
+      code: 503
+      message: Service Unavailable
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_10100002
+  response:
+    body:
+      string: |
+        <html><head><title>503 Service Unavailable</title></head><body>503 Service Unavailable</body></html>
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+    status:
+      code: 503
+      message: Service Unavailable
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_10100002
+  response:
+    body:
+      string: |
+        <html><head><title>503 Service Unavailable</title></head><body>503 Service Unavailable</body></html>
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+    status:
+      code: 503
+      message: Service Unavailable
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_10100002
+  response:
+    body:
+      string: |
+        <html><head><title>503 Service Unavailable</title></head><body>503 Service Unavailable</body></html>
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+    status:
+      code: 503
+      message: Service Unavailable
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_10100002
+  response:
+    body:
+      string: |
+        <html><head><title>503 Service Unavailable</title></head><body>503 Service Unavailable</body></html>
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+    status:
+      code: 503
+      message: Service Unavailable
+version: 1

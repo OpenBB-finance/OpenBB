@@ -1,0 +1,131 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json
+  response:
+    body:
+      string: |
+        {"results":{"indicators":[{"source":"18100004","title":"Consumer Price Index","releaseTime":"2024-01-16T08:30"}]}}
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_18100004
+  response:
+    body:
+      string: |
+        <?xml version="1.0" encoding="utf-8"?>
+        <mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+          <mes:Header>
+            <mes:ID>IDREF_18100004</mes:ID>
+            <mes:Test>false</mes:Test>
+            <mes:Prepared>2024-01-16T08:30:00</mes:Prepared>
+            <mes:Sender id="STATCAN"/>
+          </mes:Header>
+          <mes:Structures>
+            <str:Codelists>
+              <str:Codelist id="CL_Geography" agencyID="STATCAN" version="1.0">
+                <com:Name xml:lang="en">Geography</com:Name>
+                <com:Name xml:lang="fr">Géographie</com:Name>
+                <str:Code id="2">
+                  <com:Name xml:lang="en">Canada</com:Name>
+                  <com:Name xml:lang="fr">Canada</com:Name>
+                </str:Code>
+                <str:Code id="35">
+                  <com:Name xml:lang="en">Ontario</com:Name>
+                </str:Code>
+              </str:Codelist>
+              <str:Codelist id="CL_Products_and_product_groups" agencyID="STATCAN" version="1.0">
+                <com:Name xml:lang="en">Products and product groups</com:Name>
+                <com:Name xml:lang="fr">Produits et groupes de produits</com:Name>
+                <str:Code id="2">
+                  <com:Name xml:lang="en">All-items</com:Name>
+                  <com:Name xml:lang="fr">Ensemble</com:Name>
+                </str:Code>
+                <str:Code id="6">
+                  <com:Name xml:lang="en">Food</com:Name>
+                  <com:Name xml:lang="fr">Aliments</com:Name>
+                </str:Code>
+              </str:Codelist>
+            </str:Codelists>
+            <str:Dataflows>
+              <str:Dataflow id="DF_18100004" agencyID="STATCAN" version="1.0">
+                <com:Name xml:lang="en">Consumer Price Index, monthly, not seasonally adjusted</com:Name>
+                <com:Name xml:lang="fr">Indice des prix à la consommation, mensuel, non désaisonnalisé</com:Name>
+                <str:Structure>
+                  <Ref id="Data_Structure_18100004" agencyID="STATCAN" version="1.0" class="DataStructure"/>
+                </str:Structure>
+              </str:Dataflow>
+            </str:Dataflows>
+            <str:DataStructures>
+              <str:DataStructure id="Data_Structure_18100004" agencyID="STATCAN" version="1.0">
+                <com:Name xml:lang="en">Consumer Price Index, monthly, not seasonally adjusted</com:Name>
+                <com:Name xml:lang="fr">Indice des prix à la consommation, mensuel, non désaisonnalisé</com:Name>
+                <str:DataStructureComponents>
+                  <str:DimensionList id="DimensionDescriptor">
+                    <str:Dimension id="Products_and_product_groups" position="2">
+                      <str:LocalRepresentation>
+                        <str:Enumeration>
+                          <Ref id="CL_Products_and_product_groups" agencyID="STATCAN" version="1.0" class="Codelist"/>
+                        </str:Enumeration>
+                      </str:LocalRepresentation>
+                    </str:Dimension>
+                    <str:Dimension id="Geography" position="1">
+                      <str:LocalRepresentation>
+                        <str:Enumeration>
+                          <Ref id="CL_Geography" agencyID="STATCAN" version="1.0" class="Codelist"/>
+                        </str:Enumeration>
+                      </str:LocalRepresentation>
+                    </str:Dimension>
+                    <str:TimeDimension id="TIME_PERIOD" position="3">
+                      <str:LocalRepresentation>
+                        <str:TextFormat textType="ObservationalTimePeriod" pattern="YYYY-MM"/>
+                      </str:LocalRepresentation>
+                    </str:TimeDimension>
+                  </str:DimensionList>
+                  <str:AttributeList id="AttributeDescriptor">
+                    <str:Attribute id="UOM" assignmentStatus="Conditional"/>
+                    <str:Attribute id="DGUID" assignmentStatus="Conditional"/>
+                    <str:Attribute id="SCALAR_FACTOR" assignmentStatus="Conditional"/>
+                    <str:Attribute id="VECTOR_ID" assignmentStatus="Conditional"/>
+                    <str:Attribute id="NB_DECIMAL" assignmentStatus="Conditional"/>
+                    <str:Attribute id="SYMBOL" assignmentStatus="Conditional"/>
+                    <str:Attribute id="STATUS_CAN" assignmentStatus="Conditional"/>
+                    <str:Attribute id="TERMINATED" assignmentStatus="Conditional"/>
+                    <str:Attribute id="SECURITY_LEVEL" assignmentStatus="Conditional"/>
+                  </str:AttributeList>
+                  <str:MeasureList id="MeasureDescriptor">
+                    <str:PrimaryMeasure id="OBS_VALUE"/>
+                  </str:MeasureList>
+                </str:DataStructureComponents>
+              </str:DataStructure>
+            </str:DataStructures>
+          </mes:Structures>
+        </mes:Structure>
+    headers:
+      Content-Type:
+      - application/vnd.sdmx.structure+xml;version=2.1; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,53 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/n1/dai-quo/ssi/homepage/ind-econ.json
+  response:
+    body:
+      string: |
+        {"results":{"indicators":[{"source":"99999999","title":"Malformed structure cube"}]}}
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.sdmx.structure+xml;version=2.1
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www150.statcan.gc.ca/t1/wds/sdmx/statcan/rest/structure/Data_Structure_99999999
+  response:
+    body:
+      string: |
+        <?xml version="1.0" encoding="utf-8"?>
+        <mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+          <mes:Header>
+            <mes:ID>IDREF_99999999</mes:ID>
+          </mes:Header>
+          <mes:Structures>
+            <str:DataStructures>
+              <str:DataStructure id="Data_Structure_99999999"
+        unterminated attribute and a stray closing tag </str:Nope>
+        {"truncated":"this body mixes XML and JSON and is never closed"
+    headers:
+      Content-Type:
+      - application/vnd.sdmx.structure+xml;version=2.1; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1

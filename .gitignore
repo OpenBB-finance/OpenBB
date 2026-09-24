@@ -52,6 +52,7 @@ cli/openbb_cli/assets/styles/user/*
 
 # Platform
 openbb_platform/core/openbb/package/*
+openbb_platform/providers/government_ca/openbb_government_ca/assets/*
 
 # Dev Container env
 obb/*
