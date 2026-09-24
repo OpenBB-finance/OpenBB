@@ -19,6 +19,15 @@
         "website": "https://www.cboe.com"
     },
     {
+        "packageName": "openbb-cme",
+        "optional": true,
+        "reprName": "CME Group Public Settlement Data",
+        "description": "CME Group provider for public equity index futures settlement data, term structures, contract specifications, and listed instruments.",
+        "credentials": [],
+        "website": "https://www.cmegroup.com/",
+        "instructions": "No credentials are required. Settlement data is published after the trading session."
+    },
+    {
         "packageName": "openbb-cftc",
         "optional": false,
         "reprName": "Commodity Futures Trading Commission (CFTC) Public Reporting API",
