@@ -567,4 +567,4 @@ The browser will warn about the untrusted cert — accept once, or add `localhos
 
 ## License
 
-AGPL-3.0-only. © OpenBB.
+Apache-2.0. © OpenBB.

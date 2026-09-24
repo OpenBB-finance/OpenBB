@@ -3,7 +3,7 @@ name = "openbb-federal-reserve"
 version = "2.0.0"
 description = "US Federal Reserve provider extension for OpenBB. Data, documents, indicators, and research from the Federal Reserve System, FOMC, FRB, and twelve regional districts."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
