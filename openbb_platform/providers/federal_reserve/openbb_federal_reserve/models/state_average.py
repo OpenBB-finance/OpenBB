@@ -61,17 +61,17 @@ class FederalReserveStateAverageQueryParams(QueryParams):
     state: str = Field(
         default="SD",
         description="The two-letter state (or territory) code to average.",
-        json_schema_extra={"choices": STATE_CODES},
+        json_schema_extra={"choices": list(STATE_CODES)},
     )
     group_type: str = Field(
         default="commercial",
         description="The institution peer group to average across the state.",
-        json_schema_extra={"choices": GROUP_TYPES},
+        json_schema_extra={"choices": list(GROUP_TYPES)},
     )
     section: str = Field(
         default="Summary Ratios",
         description="The UBPR State Average report section (page) to return.",
-        json_schema_extra={"choices": STATE_AVERAGE_SECTIONS},
+        json_schema_extra={"choices": list(STATE_AVERAGE_SECTIONS)},
     )
     all_periods: bool = Field(
         default=False,

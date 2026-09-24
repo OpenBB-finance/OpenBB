@@ -95,7 +95,7 @@ class FederalReserveCallReportSectionedQueryParams(QueryParams):
     section: str = Field(
         default="Schedule RC - Balance Sheet",
         description="The Call Report schedule (section) to return.",
-        json_schema_extra={"choices": CALL_REPORT_SECTIONS},
+        json_schema_extra={"choices": list(CALL_REPORT_SECTIONS)},
     )
     all_periods: bool = Field(
         default=False,
