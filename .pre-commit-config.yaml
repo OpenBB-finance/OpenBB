@@ -39,15 +39,14 @@ repos:
           [
             "--ignore-words=.codespell.ignore",
             "--quiet-level=2",
-            "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
-            "-x=.github/workflows/general-linting.yml"
+            "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml"
           ]
   - repo: https://github.com/astral-sh/ty-pre-commit
-    rev: 0.0.1a14
+    rev: v0.0.40
     hooks:
       - id: ty
         name: ty (static type check)
-        args: ["check"]
+        entry: ty check
         exclude: 'test_.*\.py|tests/.*\.py'
   - repo: https://github.com/kynan/nbstripout
     rev: 0.8.1

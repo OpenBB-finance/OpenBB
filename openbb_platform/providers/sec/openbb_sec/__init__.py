@@ -4,6 +4,12 @@ from importlib.util import find_spec
 
 from openbb_core.provider.abstract.provider import Provider
 
+from openbb_sec.models.adviser_documents import SecAdviserDocumentsFetcher
+from openbb_sec.models.adviser_search import (
+    SecAdviserFirmsFetcher,
+    SecAdviserIndividualsFetcher,
+)
+from openbb_sec.models.adviser_universe import SecAdviserUniverseFetcher
 from openbb_sec.models.balance_sheet import SecBalanceSheetFetcher
 from openbb_sec.models.balance_sheet_growth import SecBalanceSheetGrowthFetcher
 from openbb_sec.models.cash_flow import SecCashFlowStatementFetcher
@@ -94,6 +100,10 @@ sec_provider = Provider(
         ),
         _equity_key("InsiderTrading", "SecInsiderTrading"): SecInsiderTradingFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
+        "SecAdviserFirms": SecAdviserFirmsFetcher,
+        "SecAdviserIndividuals": SecAdviserIndividualsFetcher,
+        "SecAdviserDocuments": SecAdviserDocumentsFetcher,
+        "SecAdviserUniverse": SecAdviserUniverseFetcher,
         _equity_key("LatestFinancialReports", "SecLatestFinancialReports"): (
             SecLatestFinancialReportsFetcher
         ),

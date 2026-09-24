@@ -205,6 +205,78 @@ async def institutions_search(
 
 
 @router.command(
+    model="SecAdviserFirms",
+    examples=[
+        APIEx(parameters={"query": "blackrock", "provider": "sec"}),
+    ],
+)
+async def adviser_firms(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search SEC investment adviser firms."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SecAdviserIndividuals",
+    examples=[
+        APIEx(parameters={"query": "john smith", "provider": "sec"}),
+    ],
+)
+async def adviser_individuals(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search SEC adviser individuals, with one row per current employer."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SecAdviserDocuments",
+    examples=[
+        APIEx(parameters={"crd": "148826", "provider": "sec"}),
+    ],
+)
+async def adviser_documents(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """List available Form ADV and brochure documents by firm CRD."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SecAdviserUniverse",
+    examples=[
+        APIEx(parameters={"registration_type": "registered", "provider": "sec"}),
+        APIEx(parameters={"registration_type": "exempt", "provider": "sec"}),
+        APIEx(
+            parameters={
+                "registration_type": "registered",
+                "crd": "148826",
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+async def adviser_universe(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get current registered or exempt Form ADV Part 1 data, optionally by CRD."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="SchemaFiles",
     examples=[
         APIEx(parameters={"provider": "sec"}),
