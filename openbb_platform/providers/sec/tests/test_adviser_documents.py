@@ -8,6 +8,7 @@ from json import dumps
 from typing import cast
 
 import pytest
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ValidationError
 
@@ -122,3 +123,65 @@ def test_documents_reject_malformed_iapd_response(monkeypatch) -> None:
 
     with pytest.raises(EmptyDataError, match="No investment adviser firm"):
         asyncio.run(SecAdviserDocumentsFetcher.aextract_data(query, None))
+
+
+def test_get_adviser_firm_rejects_non_string_iacontent(monkeypatch) -> None:
+    async def fake_request_iapd(*_args: object) -> object:
+        return {"hits": {"hits": [{"_source": {"iacontent": 12345}}]}}
+
+    monkeypatch.setattr(adviser_documents, "request_iapd", fake_request_iapd)
+    query = SecAdviserDocumentsQueryParams(crd="148826")
+
+    with pytest.raises(OpenBBError, match="iacontent must be JSON text"):
+        asyncio.run(SecAdviserDocumentsFetcher.aextract_data(query, None))
+
+
+def test_get_adviser_firm_rejects_invalid_json_iacontent(monkeypatch) -> None:
+    async def fake_request_iapd(*_args: object) -> object:
+        return {"hits": {"hits": [{"_source": {"iacontent": "{bad json"}}]}}
+
+    monkeypatch.setattr(adviser_documents, "request_iapd", fake_request_iapd)
+    query = SecAdviserDocumentsQueryParams(crd="148826")
+
+    with pytest.raises(OpenBBError, match="invalid JSON"):
+        asyncio.run(SecAdviserDocumentsFetcher.aextract_data(query, None))
+
+
+def test_get_adviser_firm_raises_when_crd_not_matched(monkeypatch) -> None:
+    payload = _firm_payload(
+        _firm_content(
+            basicInformation={
+                "firmId": 999999,
+                "firmName": "OTHER FIRM",
+                "hasPdf": "N",
+            }
+        )
+    )
+
+    async def fake_request_iapd(*_args: object) -> object:
+        return payload
+
+    monkeypatch.setattr(adviser_documents, "request_iapd", fake_request_iapd)
+    query = SecAdviserDocumentsQueryParams(crd="148826")
+
+    with pytest.raises(EmptyDataError, match="No investment adviser firm"):
+        asyncio.run(SecAdviserDocumentsFetcher.aextract_data(query, None))
+
+
+def test_profile_section_returns_empty_when_not_required() -> None:
+    result = adviser_documents._profile_section({}, "missing_section", required=False)
+    assert result == {}
+
+
+def test_object_list_rejects_non_list() -> None:
+    with pytest.raises(OpenBBError, match="must be a list"):
+        adviser_documents._object_list("not_a_list", "brochuredetails")
+
+
+def test_yes_no_returns_none_for_absent_flag() -> None:
+    assert adviser_documents._yes_no(None) is None
+
+
+def test_yes_no_rejects_invalid_flag() -> None:
+    with pytest.raises(OpenBBError, match="Y/N flag"):
+        adviser_documents._yes_no("X")

@@ -451,3 +451,15 @@ def test_adviser_models_are_flat() -> None:
             value is None or isinstance(value, date | str | int)
             for value in record.model_dump().values()
         )
+
+
+def test_individual_records_rejects_non_list_employments() -> None:
+    records_source = {
+        "ind_source_id": "123",
+        "ind_firstname": "Jane",
+        "ind_lastname": "Doe",
+        "ind_ia_scope": "Active",
+        "ind_ia_current_employments": "not_a_list",
+    }
+    with pytest.raises(OpenBBError, match="current employments must be a list"):
+        adviser_search._individual_records(records_source)

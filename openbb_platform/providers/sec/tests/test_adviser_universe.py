@@ -432,3 +432,162 @@ def test_adviser_universe_rejects_unknown_crd(monkeypatch) -> None:
         match="No registered investment adviser with CRD 999999",
     ):
         asyncio.run(SecAdviserUniverseFetcher.aextract_data(query, None))
+
+
+def test_adviser_universe_empty_report_no_crd(monkeypatch) -> None:
+    report_url = "https://www.sec.gov/files/ia07012026.zip"
+    catalog = _catalog(
+        _distribution(
+            "Registered Investment Advisers, July 2026",
+            report_url,
+        )
+    )
+    archive = _report_archive([])
+
+    async def fake_cached_request(*_args: object, **_kwargs: object) -> object:
+        return catalog
+
+    def fake_cached_bytes(*_args: object, **_kwargs: object) -> bytes:
+        return archive
+
+    monkeypatch.setattr(adviser_universe, "cached_request", fake_cached_request)
+    monkeypatch.setattr(adviser_universe, "cached_bytes", fake_cached_bytes)
+    query = SecAdviserUniverseQueryParams(registration_type="registered")
+
+    with pytest.raises(EmptyDataError, match="adviser report was empty"):
+        asyncio.run(SecAdviserUniverseFetcher.aextract_data(query, None))
+
+
+def test_latest_report_rejects_missing_dataset_list() -> None:
+    with pytest.raises(OpenBBError, match="expected a dataset list"):
+        adviser_universe._latest_report({"dataset": "not_a_list"}, "registered")
+
+
+def test_latest_report_rejects_missing_adviser_dataset() -> None:
+    catalog = {"dataset": [{"title": "Something Else", "distribution": []}]}
+    with pytest.raises(OpenBBError, match="missing the investment adviser dataset"):
+        adviser_universe._latest_report(catalog, "registered")
+
+
+def test_latest_report_rejects_no_matching_type() -> None:
+    catalog = _catalog(
+        _distribution(
+            "Registered Investment Advisers, July 2026",
+            "https://www.sec.gov/files/ia07012026.zip",
+        )
+    )
+    with pytest.raises(EmptyDataError, match="No exempt"):
+        adviser_universe._latest_report(catalog, "exempt")
+
+
+def test_latest_report_rejects_duplicate_month() -> None:
+    catalog = _catalog(
+        _distribution(
+            "Registered Investment Advisers, July 2026",
+            "https://www.sec.gov/files/ia07012026a.zip",
+        ),
+        _distribution(
+            "Registered Investment Advisers, July 2026",
+            "https://www.sec.gov/files/ia07012026b.zip",
+        ),
+    )
+    with pytest.raises(OpenBBError, match="multiple registered"):
+        adviser_universe._latest_report(catalog, "registered")
+
+
+def test_report_from_distribution_returns_none_for_missing_fields() -> None:
+    assert adviser_universe._report_from_distribution({"title": None}) is None
+
+
+def test_report_from_distribution_returns_none_for_unrecognized_title() -> None:
+    result = adviser_universe._report_from_distribution(
+        {
+            "title": "Unrelated Dataset, July 2026",
+            "mediaType": "application/zip",
+            "downloadURL": "https://example.com/file.zip",
+        }
+    )
+    assert result is None
+
+
+def test_report_from_distribution_rejects_title_without_date() -> None:
+    with pytest.raises(OpenBBError, match="unable to read date"):
+        adviser_universe._report_from_distribution(
+            {
+                "title": "Registered Investment Advisers",
+                "mediaType": "application/zip",
+                "downloadURL": "https://example.com/file.zip",
+            }
+        )
+
+
+def test_report_from_distribution_rejects_invalid_date() -> None:
+    with pytest.raises(OpenBBError, match="Invalid SEC adviser report date"):
+        adviser_universe._report_from_distribution(
+            {
+                "title": "Registered Investment Advisers, Smarch 2026",
+                "mediaType": "application/zip",
+                "downloadURL": "https://example.com/file.zip",
+            }
+        )
+
+
+def test_public_column_names_rejects_duplicates() -> None:
+    with pytest.raises(OpenBBError, match="duplicate field names"):
+        adviser_universe._public_column_names(["Foo Bar", "foo_bar"])
+
+
+def test_normalize_column_name_rejects_empty() -> None:
+    with pytest.raises(OpenBBError, match="empty column heading"):
+        adviser_universe._normalize_column_name("!!!")
+
+
+def test_required_text_raises_on_missing() -> None:
+    with pytest.raises(OpenBBError, match="Name is required"):
+        adviser_universe._required_text(None, "Name")
+
+
+def test_required_date_raises_on_non_date() -> None:
+    with pytest.raises(OpenBBError, match="Date is required"):
+        adviser_universe._required_date("not_a_date", "Date")
+
+
+def test_optional_text_returns_none() -> None:
+    assert adviser_universe._optional_text(None) is None
+
+
+def test_optional_text_rejects_bool() -> None:
+    with pytest.raises(OpenBBError, match="scalar value"):
+        adviser_universe._optional_text(True)
+
+
+def test_optional_int_rejects_non_digit() -> None:
+    with pytest.raises(OpenBBError, match="integer value"):
+        adviser_universe._optional_int("abc")
+
+
+def test_optional_number_rejects_invalid_decimal() -> None:
+    with pytest.raises(OpenBBError, match="numeric value"):
+        adviser_universe._optional_number("not_a_number")
+
+
+def test_optional_date_returns_none() -> None:
+    assert adviser_universe._optional_date(None) is None
+
+
+def test_optional_date_rejects_bad_format() -> None:
+    with pytest.raises(OpenBBError, match="MM/DD/YYYY"):
+        adviser_universe._optional_date("2026-07-01")
+
+
+def test_object_record_rejects_non_dict() -> None:
+    with pytest.raises(OpenBBError, match="expected an object"):
+        adviser_universe._object_record("not_a_dict", "expected an object")
+
+
+def test_transform_query() -> None:
+    result = SecAdviserUniverseFetcher.transform_query(
+        {"registration_type": "registered"}
+    )
+    assert isinstance(result, SecAdviserUniverseQueryParams)
+    assert result.registration_type == "registered"
