@@ -7,8 +7,6 @@ import requests
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
-# pylint: disable=too-many-lines,redefined-outer-name
-
 
 @pytest.fixture(scope="session")
 def headers():

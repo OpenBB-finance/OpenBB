@@ -897,6 +897,39 @@ def test_generate_fetcher_module_get_endpoint_emits_valid_python():
     assert "raise OpenBBError(" in src
 
 
+def test_generate_fetcher_module_streaming_endpoint_emits_stream_data():
+    spec = fg.FetcherCommandSpec(
+        name="crypto.feed",
+        cmd_spec={
+            "parameters": [
+                {"name": "limit", "type": "integer", "help": "Number of ticks."}
+            ],
+            "url_path": "/crypto/feed",
+            "method": "get",
+            "description": "Live crypto feed.",
+            "response_schemas": {
+                "200": {"text/event-stream": {"schema": {"type": "string"}}}
+            },
+            "response_schema": {
+                "type": "object",
+                "properties": {"tick": {"type": "integer"}},
+            },
+        },
+        base_url="https://api.example.com/",
+        api_prefix="api/v1",
+        provider_name="wargame",
+    )
+    out = fg.generate_fetcher_module(spec)
+
+    assert out.is_streaming is True
+    src = out.source
+    ast.parse(src)
+    assert "AsyncIterator" in src
+    assert "async def aextract_data" in src
+    assert "async def stream_data" in src
+    assert "httpx.AsyncClient" in src
+
+
 def test_generate_fetcher_module_path_params_substituted_into_url():
     spec = fg.FetcherCommandSpec(
         name="us_congress.bill",

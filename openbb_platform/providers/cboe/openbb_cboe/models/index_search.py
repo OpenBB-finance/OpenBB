@@ -1,6 +1,4 @@
-"""CBOE Index Search Model."""
-
-# pylint: disable=unused-argument
+"""Cboe Index Search Model."""
 
 from datetime import time
 from typing import Any
@@ -14,7 +12,7 @@ from pydantic import Field
 
 
 class CboeIndexSearchQueryParams(IndexSearchQueryParams):
-    """CBOE Index Search Query.
+    """Cboe Index Search Query.
 
     Source: https://www.cboe.com/
     """
@@ -27,7 +25,7 @@ class CboeIndexSearchQueryParams(IndexSearchQueryParams):
 
 
 class CboeIndexSearchData(IndexSearchData):
-    """CBOE Index Search Data."""
+    """Cboe Index Search Data."""
 
     __alias_dict__ = {
         "symbol": "index_symbol",
@@ -74,7 +72,7 @@ class CboeIndexSearchFetcher(
         list[CboeIndexSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints."""
+    """Transform the query, extract and transform the data from the Cboe endpoints."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CboeIndexSearchQueryParams:
@@ -87,12 +85,12 @@ class CboeIndexSearchFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return the raw data from the CBOE endpoint."""
-        # pylint: disable=import-outside-toplevel
+        """Return the raw data from the Cboe endpoint."""
         from openbb_cboe.utils.helpers import get_index_directory
 
         symbols = await get_index_directory(use_cache=query.use_cache, **kwargs)
-        symbols.drop(columns=["source"], inplace=True)
+        symbols = symbols.drop(columns=["source"])
+
         if query.is_symbol is True:
             result = symbols[
                 symbols["index_symbol"].str.contains(query.query, case=False)

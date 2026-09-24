@@ -4,7 +4,7 @@ version = "0.0.1"
 description = "{{ cookiecutter.project_name }}"
 authors = ["{{ cookiecutter.full_name }} <{{ cookiecutter.email }}>"]
 readme = "README.md"
-license = "AGPL-3.0-only"
+license = "Apache-2.0"
 packages = [{ include = "{{ cookiecutter.package_name }}" }]
 
 [tool.poetry.dependencies]

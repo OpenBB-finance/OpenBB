@@ -496,8 +496,8 @@ def combine_certificates(cert: str, bundle: str | None = None) -> str:
             with open(cert, "rb") as cert_file:
                 shutil.copyfileobj(cert_file, combined_cert_file)
 
-        # Register the combined certificate file for deletion
-        atexit.register(os.remove, combined_cert)
+        # Register the combined certificate file for deletion.
+        atexit.register(Path(combined_cert).unlink, missing_ok=True)
 
         return combined_cert
     except Exception as e:

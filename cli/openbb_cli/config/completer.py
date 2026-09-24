@@ -4,6 +4,7 @@ from collections.abc import Callable, Iterable, Mapping
 from re import Pattern
 from typing import (
     Any,
+    cast,
 )
 
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
@@ -65,8 +66,7 @@ class WordCompleter(Completer):
     ) -> Iterable[Completion]:
         """Get completions."""
         words = self.words
-        if callable(words):
-            words = words()  # ty: ignore[call-top-callable]
+        word_list = cast("list[str]", words if isinstance(words, list) else words())
 
         if self.sentence:
             word_before_cursor = document.text_before_cursor
@@ -97,7 +97,7 @@ class WordCompleter(Completer):
                 return word_before_cursor in word
             return word.startswith(word_before_cursor)
 
-        for a in words:
+        for a in word_list:
             if word_matches(a):
                 display = self.display_dict.get(a, a)
                 display_meta = self.meta_dict.get(a, "")

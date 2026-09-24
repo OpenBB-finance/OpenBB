@@ -1,7 +1,5 @@
 """Nasdaq Company Filings Models."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -51,7 +49,7 @@ class NasdaqCompanyFilingsQueryParams(CompanyFilingsQueryParams):
                         }
                         for year in range(1994, datetime.now().year + 1)
                     ],
-                    key=lambda x: x["label"],  # type: ignore
+                    key=lambda x: x["label"],
                     reverse=True,
                 ),
                 "value": datetime.now().year,
@@ -150,13 +148,14 @@ class NasdaqCompanyFilingsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract data from the query."""
-        # pylint: disable=import-outside-toplevel
-        import time  # noqa
+        import time
+
         from openbb_core.provider.utils.errors import OpenBBError
         from openbb_core.provider.utils.helpers import get_requests_session
-        from openbb_nasdaq.utils.helpers import get_headers
         from requests.exceptions import ReadTimeout
         from urllib3.exceptions import ReadTimeoutError
+
+        from openbb_nasdaq.utils.helpers import get_headers
 
         if not query.symbol:
             raise OpenBBError("Symbol field is required.")

@@ -455,6 +455,14 @@ def _generate_spec(
     else:
         source_url = server_url.rstrip("/") + "/openapi.json"
     spec_doc = build_spec_document(openapi, base_url=server_url, source_url=source_url)
+    if not spec_doc["commands"]:
+        sys.stderr.write(
+            f"generated 0 commands from {source_url} — the document exposes no "
+            "GET/POST operations OpenBB can map. Multi-file specs that split "
+            "paths across documents with external $refs must be bundled into "
+            "a single file first.\n"
+        )
+        return 2
     write_spec(output_path, spec_doc)
     sys.stdout.write(f"wrote {len(spec_doc['commands'])} commands to {output_path}\n")
     return 0
@@ -539,6 +547,13 @@ def _generate_extension(
 
     spec_doc = load_spec(spec_path)
     original_count = len(spec_doc.get("commands") or {})
+    if original_count == 0:
+        sys.stderr.write(
+            f"--generate-extension: spec at {spec_path} contains 0 commands — "
+            "nothing to generate. Regenerate the spec against a source that "
+            "exposes GET/POST operations.\n"
+        )
+        return 2
     spec_doc = _filter_spec_commands(spec_doc, include=include, exclude=exclude)
     filtered_count = len(spec_doc.get("commands") or {})
     if (include or exclude) and filtered_count == 0:
@@ -591,7 +606,11 @@ def _run_spec_one_shot(
 ) -> int:
     """Dispatch a single command using one or more precomputed ``.spec`` files."""
     from openbb_cli.dispatchers.protocol import Request, Response
-    from openbb_cli.dispatchers.runtime import _to_json_line
+    from openbb_cli.dispatchers.runtime import (
+        _follow_stream,
+        _looks_like_stream,
+        _to_json_line,
+    )
     from openbb_cli.dispatchers.spec import SpecCommandError, parse_command_argv
 
     if not command_argv:
@@ -622,8 +641,13 @@ def _run_spec_one_shot(
             await dispatcher.aclose()
 
     response: Response = asyncio.run(_dispatch_and_close())
+
+    if response.ok and _looks_like_stream(response.result):
+        return _follow_stream(response.result)
+
     sys.stdout.write(_to_json_line(response) + "\n")
     sys.stdout.flush()
+
     return 0 if response.ok else 1
 
 
@@ -859,7 +883,11 @@ def _run_spec_dispatch(
 ) -> int:
     """Schema-validated one-shot dispatch reusing an existing dispatcher."""
     from openbb_cli.dispatchers.protocol import Request, Response
-    from openbb_cli.dispatchers.runtime import _to_json_line
+    from openbb_cli.dispatchers.runtime import (
+        _follow_stream,
+        _looks_like_stream,
+        _to_json_line,
+    )
     from openbb_cli.dispatchers.spec import SpecCommandError, parse_command_argv
 
     try:
@@ -872,8 +900,13 @@ def _run_spec_dispatch(
         return await dispatcher.dispatch(Request(command=command, params=params))
 
     response: Response = asyncio.run(_dispatch())
+
+    if response.ok and _looks_like_stream(response.result):
+        return _follow_stream(response.result)
+
     sys.stdout.write(_to_json_line(response) + "\n")
     sys.stdout.flush()
+
     return 0 if response.ok else 1
 
 

@@ -47,10 +47,10 @@ class TmxCompanyNewsData(CompanyNewsData):
     def date_validate(cls, v):
         """Validate the datetime format."""
         # pylint: disable=import-outside-toplevel
-        import pytz
+        from zoneinfo import ZoneInfo
 
         dt = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S%z")
-        return dt.astimezone(pytz.timezone("America/New_York"))
+        return dt.astimezone(ZoneInfo("America/New_York"))
 
 
 class TmxCompanyNewsFetcher(
@@ -70,53 +70,40 @@ class TmxCompanyNewsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        import asyncio
 
-        user_agent = get_random_agent()
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
+
         symbols = query.symbol.split(",")  # type: ignore
         results: list[dict] = []
 
         async def create_task(symbol, results):
-            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
-            symbol = (
-                symbol.upper().replace(".TO", "").replace(".TSX", "").replace("-", ".")
+            """Fetch the news and events for a single symbol."""
+            symbol = normalize_symbol(symbol)
+            data = (
+                await amake_gql_request(
+                    "getNewsAndEvents",
+                    gql.NEWS_AND_EVENTS,
+                    {
+                        "symbol": symbol,
+                        "page": query.page or 1,
+                        "limit": query.limit or 100,
+                        "locale": "en",
+                    },
+                    symbol=symbol,
+                )
+                or {}
             )
-            payload = gql.get_company_news_events_payload
-            payload["variables"]["symbol"] = symbol
-            payload["variables"]["page"] = query.page
-            payload["variables"]["limit"] = query.limit
-            payload["variables"]["locale"] = "en"
-            url = "https://app-money.tmx.com/graphql"
-            data: dict = {}
-            response = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
-            data = response["data"] if response.get("data") else data
+
             if data.get("news") is not None:
                 news = data["news"]
                 for i in range(len(news)):  # pylint: disable=C0200
                     url = f"https://money.tmx.com/quote/{symbol.upper()}/news/{news[i]['newsid']}"
                     news[i]["url"] = url
-                    # The newsid was used to create the URL, so we drop it.
                     news[i].pop("newsid", None)
-                    # The summary is a duplicated headline, so we drop it.
                     news[i].pop("summary", None)
-                    # Add the symbol to the data for multi-ticker support.
                     news[i]["symbols"] = symbol
                 results.extend(news)
 

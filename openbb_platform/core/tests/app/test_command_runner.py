@@ -460,17 +460,25 @@ def test_static_command_runner_chart():
         OBBject.accessors.discard("charting")
 
 
-def test_static_command_runner_chart_raises_when_charting_not_installed():
+def test_static_command_runner_chart_raises_when_charting_not_installed(monkeypatch):
     """``_chart`` raises ``OpenBBError`` when the charting accessor is not registered."""
+    from openbb_core.app.charting.manager import ChartingManager
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.env import Env
 
+    # Resolve to an accessor guaranteed not registered, so the test is
+    # deterministic whether or not a charting engine is installed.
+    monkeypatch.setattr(
+        ChartingManager,
+        "accessor_name",
+        classmethod(lambda cls: "not_a_charting_accessor"),
+    )
     obbject = OBBject(results=[{"x": 1}], provider="mock_provider")
 
     # Force DEBUG_MODE so the suppressed exception is re-raised
     with (
         patch.object(Env, "DEBUG_MODE", new=True),
-        pytest.raises(OpenBBError, match="Charting is not installed"),
+        pytest.raises(OpenBBError, match="No charting extension is installed"),
     ):
         StaticCommandRunner._chart(obbject)
 
@@ -725,10 +733,17 @@ def test_chart_merges_nested_kwargs_chart_params():
         OBBject.accessors.discard("charting")
 
 
-def test_chart_warns_in_non_debug_mode_on_failure():
+def test_chart_warns_in_non_debug_mode_on_failure(monkeypatch):
     """Without DEBUG_MODE, a chart failure should be downgraded to an OpenBBWarning."""
+    from openbb_core.app.charting.manager import ChartingManager
+
+    monkeypatch.setattr(
+        ChartingManager,
+        "accessor_name",
+        classmethod(lambda cls: "not_a_charting_accessor"),
+    )
     obb = OBBject(results=[{"x": 1}], provider="mock")
-    with pytest.warns(OpenBBWarning, match="Charting is not installed"):
+    with pytest.warns(OpenBBWarning, match="No charting extension is installed"):
         StaticCommandRunner._chart(obb)
 
 

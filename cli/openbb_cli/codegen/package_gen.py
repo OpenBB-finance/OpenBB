@@ -297,13 +297,38 @@ def _build_root_router(
     package_name: str,
     root_namespace: str,
     sub_routers: list[GeneratedRouter],
+    root_commands: list[str] | None = None,
+    root_post_imports: list[tuple[str, str]] | None = None,
+    root_has_stream: bool = False,
 ) -> GeneratedRouter:
-    """Emit a top-level router that mounts every namespace under ``root_namespace``."""
+    """Emit a top-level router that mounts every namespace under ``root_namespace``.
+
+    Top-level leaf commands (no namespace of their own) are rendered directly
+    on this router; unused imports are cleaned up by the ruff pass.
+    """
+    commands = root_commands or []
+    post_imports = root_post_imports or []
     parts: list[str] = [
         f'"""Root router for {root_namespace} — generated from spec."""',
         "",
-        "from openbb_core.app.router import Router",
     ]
+    if commands:
+        parts.append("from openbb_core.app.model.command_context import CommandContext")
+        parts.append("from openbb_core.app.model.obbject import OBBject")
+        if root_has_stream:
+            parts.append("from openbb_core.app.model.stream import OBBStream")
+        parts.append(
+            "from openbb_core.app.provider_interface import "
+            "ExtraParams, ProviderChoices, StandardParams"
+        )
+        parts.append("from openbb_core.app.query import Query")
+    parts.append("from openbb_core.app.router import Router")
+    if post_imports:
+        parts.append("")
+        for module_path, function_name in post_imports:
+            parts.append(
+                f"from {module_path} import {function_name} as _{function_name}"
+            )
     if sub_routers:
         parts.append("")
         for r in sub_routers:
@@ -321,6 +346,9 @@ def _build_root_router(
                 f"router.include_router(_{r.module_name}_router, "
                 f'prefix="/{r.module_name}")'
             )
+    if commands:
+        parts.append("")
+        parts.extend(commands)
     return GeneratedRouter(
         module_name=root_namespace,
         entry_point_name=root_namespace,
@@ -466,6 +494,16 @@ def generate_packages(
             f"{package_name}.providers..models.",
             f"{package_name}.providers.tools.models.",
         )
+    routers.root_post_imports = [
+        (
+            module_path.replace(
+                f"{package_name}.providers..models.",
+                f"{package_name}.providers.tools.models.",
+            ),
+            function_name,
+        )
+        for module_path, function_name in routers.root_post_imports
+    ]
 
     root_namespace = _slugify(provider_name or project_slug)
     sub_routers = [r for r in routers.routers if r.entry_point_name]
@@ -475,6 +513,9 @@ def generate_packages(
         package_name=package_name,
         root_namespace=root_namespace,
         sub_routers=sub_routers,
+        root_commands=routers.root_commands,
+        root_post_imports=routers.root_post_imports,
+        root_has_stream=routers.root_has_stream,
     )
     routers.routers.append(root_router)
 

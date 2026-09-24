@@ -3,7 +3,7 @@ name = "openbb-core"
 version = "2.0.0"
 description = "OpenBB package with core functionality."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
@@ -17,7 +17,7 @@ dependencies = [
     "importlib-metadata>=6.8.0",
     "python-dotenv>=1.0.0",
     "aiohttp>=3.13.3",
-    "ruff>=0.15,<0.16",
+    "ruff>=0.15",
     "pyjwt>=2.13.0",
     "tomli>=2.0.0; python_version<'3.11'",
 ]
@@ -29,7 +29,7 @@ pandas = ["pandas>=1.5.3"]
 openbb-build = "openbb_core.build:main"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [build-system]
 requires = ["hatchling"]

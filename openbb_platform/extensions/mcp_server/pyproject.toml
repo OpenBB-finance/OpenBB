@@ -3,7 +3,7 @@ name = "openbb-mcp-server"
 version = "2.0.0"
 description = "OpenBB Platform MCP Server: Model-Context-Protocol bridge for the Open Data Platform by OpenBB."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [

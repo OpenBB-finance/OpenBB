@@ -1118,9 +1118,217 @@ def test_partition_params_splits_query_and_body_by_in_tag():
         }
     }
     d = HttpDispatcher("http://t", spec_doc=spec_doc)
-    query, body = d._partition_params("x.y", {"fmt": "json", "data": [1], "extra": 9})
+    query, body, headers = d._partition_params(
+        "x.y", {"fmt": "json", "data": [1], "extra": 9}
+    )
     assert query == {"fmt": "json"}
     assert body == {"data": [1], "extra": 9}
+    assert headers == {}
+
+
+def test_partition_params_surfaces_header_tagged_params():
+    """Params tagged ``in: header`` are routed to the headers map, not query/body."""
+    spec_doc = {
+        "commands": {
+            "x.y": {
+                "parameters": [
+                    {"name": "x-api-key", "in": "header", "type": "string"},
+                    {"name": "fmt", "in": "query", "type": "string"},
+                ],
+            }
+        }
+    }
+    d = HttpDispatcher("http://t", spec_doc=spec_doc)
+    query, body, headers = d._partition_params(
+        "x.y", {"x_api_key": "secret", "fmt": "json", "payload": 1}
+    )
+    assert query == {"fmt": "json"}
+    assert body == {"payload": 1}
+    assert headers == {"x-api-key": "secret"}
+
+
+def test_partition_params_drops_none_header_value():
+    """A header-tagged param with a ``None`` value is omitted from headers."""
+    spec_doc = {
+        "commands": {
+            "x.y": {
+                "parameters": [{"name": "x-api-key", "in": "header", "type": "string"}],
+            }
+        }
+    }
+    d = HttpDispatcher("http://t", spec_doc=spec_doc)
+    _query, _body, headers = d._partition_params("x.y", {"x_api_key": None})
+    assert headers == {}
+
+
+# --- streaming (SSE) ---
+
+
+def test_is_streaming_command_detects_event_stream():
+    spec_doc = {
+        "commands": {
+            "x.feed": {"response_schemas": {"200": {"text/event-stream": {}}}},
+            "x.plain": {"response_schemas": {"200": {"application/json": {}}}},
+        }
+    }
+    d = HttpDispatcher("http://t", spec_doc=spec_doc)
+    assert d._is_streaming_command("x.feed") is True
+    assert d._is_streaming_command("x.plain") is False
+    assert d._is_streaming_command("missing") is False
+
+
+@pytest.mark.asyncio
+async def test_dispatch_streaming_get_returns_obbstream():
+    from openbb_core.app.model.stream import OBBStream
+
+    spec_doc = {
+        "commands": {
+            "x.feed": {
+                "method": "get",
+                "response_schemas": {"200": {"text/event-stream": {}}},
+            }
+        }
+    }
+    d = HttpDispatcher("http://t", spec_doc=spec_doc, command_methods={"x.feed": "get"})
+    resp = await d.dispatch(Request(command="x.feed", params={"limit": 2}))
+    await d.aclose()
+    assert resp.ok
+    assert isinstance(resp.result, OBBStream)
+
+
+@pytest.mark.asyncio
+async def test_dispatch_streaming_post_returns_obbstream():
+    from openbb_core.app.model.stream import OBBStream
+
+    spec_doc = {
+        "commands": {
+            "x.feed": {
+                "method": "post",
+                "response_schemas": {"200": {"text/event-stream": {}}},
+                "request_body_schema": {
+                    "type": "object",
+                    "properties": {"data": {"type": "array"}},
+                },
+            }
+        }
+    }
+    d = HttpDispatcher(
+        "http://t", spec_doc=spec_doc, command_methods={"x.feed": "post"}
+    )
+    resp = await d.dispatch(Request(command="x.feed", params={"data": [1]}))
+    await d.aclose()
+    assert resp.ok
+    assert isinstance(resp.result, OBBStream)
+
+
+@pytest.mark.asyncio
+async def test_http_sse_source_iterates_get(monkeypatch):
+    import openbb_cli.dispatchers.http as http_mod
+    from openbb_cli.dispatchers.http import _HttpSSESource
+
+    captured: dict = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["method"] = request.method
+        captured["url"] = str(request.url)
+        return httpx.Response(200, text="data: 0\n\ndata: 1\n")
+
+    real_client = httpx.AsyncClient
+
+    def make_client(*args, **kwargs):
+        kwargs["transport"] = httpx.MockTransport(handler)
+        return real_client(*args, **kwargs)
+
+    monkeypatch.setattr(http_mod.httpx, "AsyncClient", make_client)
+    source = _HttpSSESource("http://t/feed", {"limit": 2}, None, "get", None)
+    lines = [line async for line in source.body_iterator]
+    assert captured["method"] == "GET"
+    assert "limit=2" in captured["url"]
+    assert any("data: 0" in line for line in lines)
+
+
+@pytest.mark.asyncio
+async def test_http_sse_source_iterates_post_with_body(monkeypatch):
+    import openbb_cli.dispatchers.http as http_mod
+    from openbb_cli.dispatchers.http import _HttpSSESource
+
+    captured: dict = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["method"] = request.method
+        captured["body"] = request.content.decode()
+        return httpx.Response(200, text="data: 0\n")
+
+    real_client = httpx.AsyncClient
+
+    def make_client(*args, **kwargs):
+        kwargs["transport"] = httpx.MockTransport(handler)
+        return real_client(*args, **kwargs)
+
+    monkeypatch.setattr(http_mod.httpx, "AsyncClient", make_client)
+    source = _HttpSSESource("http://t/feed", None, None, "post", {"data": [1]})
+    lines = [line async for line in source.body_iterator]
+    assert captured["method"] == "POST"
+    assert "data" in captured["body"]
+    assert any("data: 0" in line for line in lines)
+
+
+@pytest.mark.asyncio
+async def test_http_sse_source_consumes_warning_header(monkeypatch):
+    import json as _json
+
+    from openbb_core.app.model.abstract.warning import OpenBBWarning
+
+    import openbb_cli.dispatchers.http as http_mod
+    from openbb_cli.dispatchers.http import _HttpSSESource
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            text="data: 0\n",
+            headers={
+                "X-OpenBB-Provider": "fmp",
+                "X-OpenBB-Warning": _json.dumps(
+                    [{"category": "OpenBBWarning", "message": "heads up"}]
+                ),
+            },
+        )
+
+    real_client = httpx.AsyncClient
+
+    def make_client(*args, **kwargs):
+        kwargs["transport"] = httpx.MockTransport(handler)
+        return real_client(*args, **kwargs)
+
+    monkeypatch.setattr(http_mod.httpx, "AsyncClient", make_client)
+    source = _HttpSSESource("http://t/feed", None, None, "get", None)
+    with pytest.warns(OpenBBWarning, match="heads up"):
+        _lines = [line async for line in source.body_iterator]
+    assert source.provider == "fmp"
+    assert source.warnings is not None
+    assert source.warnings[0]["message"] == "heads up"
+
+
+@pytest.mark.asyncio
+async def test_http_sse_source_ignores_malformed_warning_header(monkeypatch):
+    import openbb_cli.dispatchers.http as http_mod
+    from openbb_cli.dispatchers.http import _HttpSSESource
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200, text="data: 0\n", headers={"X-OpenBB-Warning": "not-json"}
+        )
+
+    real_client = httpx.AsyncClient
+
+    def make_client(*args, **kwargs):
+        kwargs["transport"] = httpx.MockTransport(handler)
+        return real_client(*args, **kwargs)
+
+    monkeypatch.setattr(http_mod.httpx, "AsyncClient", make_client)
+    source = _HttpSSESource("http://t/feed", None, None, "get", None)
+    _lines = [line async for line in source.body_iterator]
+    assert source.warnings is None
 
 
 # --- _help_for_provider edge: empty section ---

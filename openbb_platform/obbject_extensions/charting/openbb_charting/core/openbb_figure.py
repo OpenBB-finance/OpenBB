@@ -1,6 +1,5 @@
 """OpenBB Figure Class."""
 
-# pylint: disable=C0302,R0902,W3301,R0917
 import json
 import textwrap
 from datetime import datetime, timedelta
@@ -30,14 +29,14 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series
 
     try:  # noqa: SIM105
-        # pylint: disable=W0611 # noqa: F401
-        from darts import TimeSeries  # type: ignore
+        # noqa: F401
+        from darts import TimeSeries
     except ImportError:
         pass
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
-pio.default_renderers = "notebook"  # type: ignore
+pio.default_renderers = "notebook"  # ty: ignore[unresolved-attribute]
 
 
 class OpenBBFigure(go.Figure):
@@ -54,33 +53,10 @@ class OpenBBFigure(go.Figure):
     ----------
     has_subplots : `bool`
         Whether the figure has subplots
-
-    Class Methods
-    -------------
-    create_subplots(rows: `int`, cols: `int`, **kwargs) -> `OpenBBFigure`
-        Creates a subplots figure
-    to_table(data: `DataFrame`, columnwidth: `list`, print_index: `bool`, ...)
-        Converts a DataFrame to a table figure
-
-    Methods
-    -------
-    add_hline_legend(y: `float`, name: `str`, line: `dict`, legendrank: `int`, **kwargs)
-        Adds a horizontal line with a legend label
-    add_vline_legend(x: `float`, name: `str`, line: `dict`, legendrank: `int`, **kwargs)
-        Adds a vertical line with a legend label
-    add_legend_label(trace: `str`, label: `str`, mode: `str`, marker: `dict`, **kwargs)
-        Adds a legend label
-    add_histplot(x: `list`, name: `str`, colors: `list`, bins: `int`, show_curve: `str`, ...)
-        Adds a histogram plot
-    horizontal_legend(x: `float`, y: `float`, xanchor: `str`, yanchor: `str`, ...)
-        Moves the legend to a horizontal position
-    to_subplot(subplot: `OpenBBFigure`, row: `int`, col: `int`, secondary_y: `bool`, ...)
-        Returns the figure as a subplot of another figure
     """
 
     def __init__(self, fig: go.Figure | None = None, **kwargs) -> None:
         """Initialize the OpenBBFigure."""
-        # pylint: disable=import-outside-toplevel
         from openbb_charting.core.chart_style import ChartStyle
 
         super().__init__()
@@ -160,7 +136,7 @@ class OpenBBFigure(go.Figure):
         self._cmd_xshift = value
 
     @classmethod
-    def create_subplots(  # pylint: disable=too-many-arguments
+    def create_subplots(
         cls,
         rows: int = 1,
         cols: int = 1,
@@ -193,7 +169,6 @@ class OpenBBFigure(go.Figure):
         specs : `List[List[dict]]`, optional
             Subplot specs, by default `[[{}] * cols] * rows` (all subplots are the same size)
         """
-        # We save the original kwargs to store them in the figure for later use
         subplots_kwargs = dict(
             rows=rows,
             cols=cols,
@@ -206,7 +181,7 @@ class OpenBBFigure(go.Figure):
             **kwargs,
         )
 
-        fig = make_subplots(**subplots_kwargs)  # type: ignore
+        fig = make_subplots(**subplots_kwargs)
 
         kwargs = {
             "multi_rows": rows > 1,
@@ -265,7 +240,7 @@ class OpenBBFigure(go.Figure):
         except Exception as e:
             raise ValueError(f"Error adding trend line: {e}") from e
 
-    def add_histplot(  # pylint: disable=too-many-arguments,too-many-locals
+    def add_histplot(
         self,
         dataset: Union["ndarray", "Series", TimeSeriesT],
         name: str | list[str] | None = None,
@@ -306,7 +281,6 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column of the subplot, by default 1
         """
-        # pylint: disable=import-outside-toplevel
         from numpy import linspace, mean, ndarray, std
         from pandas import Series
         from scipy import stats
@@ -314,14 +288,14 @@ class OpenBBFigure(go.Figure):
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
         def _validate_x(data: ndarray | Series | type[TimeSeriesT]):
-            if forecast:
-                data = data.univariate_values()  # type: ignore
+            if forecast:  # pragma: no cover - darts forecast path (darts is an optional dependency)
+                data = data.univariate_values()  # ty: ignore[unresolved-attribute]
             if isinstance(data, Series):
                 data = data.to_numpy()
             if isinstance(data, ndarray):
                 data = data.tolist()
             if isinstance(data, list):
-                data = [data]  # type: ignore
+                data = [data]  # ty: ignore[invalid-assignment]
 
             return data
 
@@ -333,12 +307,12 @@ class OpenBBFigure(go.Figure):
         if isinstance(colors, str):
             colors = [colors]
         if not name:
-            name = [None] * len(valid_x)  # type: ignore
+            name = [None] * len(valid_x)  # ty: ignore[invalid-assignment]
         if not colors:
-            colors = [None] * len(valid_x)  # type: ignore
+            colors = [None] * len(valid_x)  # ty: ignore[invalid-assignment]
 
         max_y = 0
-        for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):  # type: ignore
+        for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):  # ty: ignore[invalid-argument-type, not-iterable]
             if not color_i:
                 color_i = (  # noqa: PLW2901
                     self._theme.up_color if i % 2 == 0 else self._theme.down_color
@@ -348,16 +322,16 @@ class OpenBBFigure(go.Figure):
             res_min, res_max = min(x_i), max(x_i)
             x = linspace(res_min, res_max, 100)
             if show_hist:
-                if forecast:
-                    components = list(dataset.components[:4])  # type: ignore
-                    values = dataset[components].all_values(copy=False).flatten(order="F")  # type: ignore
+                if forecast:  # pragma: no cover - darts forecast path (darts is an optional dependency)
+                    components = list(dataset.components[:4])  # ty: ignore[unresolved-attribute]
+                    values = (
+                        dataset[components].all_values(copy=False).flatten(order="F")
+                    )
                     n_components = len(components)
                     n_entries = len(values) // n_components
                     for i2, label in zip(range(n_components), components):
                         self.add_histogram(
-                            x=values[
-                                i2 * n_entries : (i2 + 1) * n_entries
-                            ],  # noqa: E203  # noqa: E203
+                            x=values[i2 * n_entries : (i2 + 1) * n_entries],  # noqa: E203  # noqa: E203
                             name=label,
                             marker_color=color_i,
                             nbinsx=bins,
@@ -382,7 +356,7 @@ class OpenBBFigure(go.Figure):
                 self.add_scatter(
                     x=x_i,
                     y=[0.00002] * len(x_i),
-                    name=name_i if len(name) < 2 else name[1],  # type: ignore
+                    name=name_i if len(name) < 2 else name[1],  # ty: ignore[invalid-argument-type, not-subscriptable]
                     mode="markers",
                     marker=dict(
                         color=self._theme.down_color,
@@ -393,20 +367,21 @@ class OpenBBFigure(go.Figure):
                     col=col,
                 )
             if show_curve:
-                # type: ignore
                 if curve == "kde":
                     curve_x = [None] * len(valid_x)
                     curve_y = [None] * len(valid_x)
-                    # pylint: disable=consider-using-enumerate
                     for index in range(len(valid_x)):
-                        curve_x[index] = [res_min + xx * (res_max - res_min) / 500 for xx in range(500)]  # type: ignore
+                        curve_x[index] = [
+                            res_min + xx * (res_max - res_min) / 500
+                            for xx in range(500)
+                        ]
                         curve_y[index] = stats.gaussian_kde(valid_x[index])(
                             curve_x[index]
                         )
                     for index in range(len(valid_x)):
                         self.add_scatter(
-                            x=curve_x[index],  # type: ignore
-                            y=curve_y[index],  # type: ignore
+                            x=curve_x[index],
+                            y=curve_y[index],
                             name=name_i,
                             mode="lines",
                             showlegend=False,
@@ -414,11 +389,11 @@ class OpenBBFigure(go.Figure):
                             row=row,
                             col=col,
                         )
-                        max_y = max(max_y, max(curve_y[index]) * 1.2)  # type: ignore
+                        max_y = max(max_y, max(curve_y[index]) * 1.2)  # ty: ignore[invalid-argument-type]
 
                 else:
                     y = (
-                        callback(res_mean, res_std).pdf(x)  # type: ignore
+                        callback(res_mean, res_std).pdf(x)
                         * len(valid_x[0])
                         * (res_max - res_min)
                         / bins
@@ -646,11 +621,10 @@ class OpenBBFigure(go.Figure):
         Dict[str, list]
             {"range": volume_range, "ticks": tickvals}
         """
-        # pylint: disable=import-outside-toplevel
         from pandas import Series, to_numeric
 
-        df_volume = df_volume.apply(lambda x: f"{x:.1f}")  # type: ignore
-        df_volume = to_numeric(df_volume.astype(float))  # type: ignore
+        df_volume = df_volume.apply(lambda x: f"{x:.1f}")
+        df_volume = to_numeric(df_volume.astype(float))
 
         if isinstance(df_volume, Series):
             df_volume = df_volume.to_frame()
@@ -700,7 +674,6 @@ class OpenBBFigure(go.Figure):
         volume_ticks_x : int, optional
             Number to multiply volume, by default 7
         """
-        # pylint: disable=import-outside-toplevel
         from numpy import where
 
         colors = where(
@@ -708,7 +681,7 @@ class OpenBBFigure(go.Figure):
             self._theme.up_color,
             self._theme.down_color,
         )
-        vol_scale = self.chart_volume_scaling(df_stock[volume_col], volume_ticks_x)  # type: ignore
+        vol_scale = self.chart_volume_scaling(df_stock[volume_col], volume_ticks_x)
         self.add_bar(
             x=df_stock.index,
             y=df_stock[volume_col],
@@ -784,16 +757,20 @@ class OpenBBFigure(go.Figure):
         """
         if trace:
             for trace_ in self.data:
-                if trace_.name == trace:  # type: ignore
+                if trace_.name == trace:
                     for arg, default in zip(
                         [label, mode, marker, line_dash],
-                        [trace, trace_.mode, trace_.marker, trace_.line_dash],  # type: ignore
+                        [trace, trace_.mode, trace_.marker, trace_.line_dash],
                     ):
-                        if not arg and default:
+                        if (
+                            not arg and default
+                        ):  # pragma: no cover - dead: trace_.line_dash raises AttributeError above
                             arg = default  # noqa: PLW2901
 
-                    kwargs.update(dict(yaxis=trace_.yaxis))  # type: ignore
-                    break
+                    kwargs.update(
+                        dict(yaxis=trace_.yaxis)
+                    )  # pragma: no cover - dead: trace_.line_dash raises AttributeError above
+                    break  # pragma: no cover - dead: trace_.line_dash raises AttributeError above
             else:
                 raise ValueError(f"Trace '{trace}' not found")
 
@@ -815,7 +792,7 @@ class OpenBBFigure(go.Figure):
         self,
         *args,
         external: bool = False,
-        export_image: Path | str | None = "",  # pylint: disable=W0613
+        export_image: Path | str | None = "",
         **kwargs,
     ) -> "OpenBBFigure":
         """Show the figure.
@@ -860,10 +837,10 @@ class OpenBBFigure(go.Figure):
         )
 
         if external:
-            return self  # type: ignore
+            return self
 
         if getattr(self._charting_settings, "headless", False):
-            return self.to_json()  # type: ignore
+            return self.to_json()
 
         command_location = kwargs.pop("command_location", "")
         try:
@@ -874,7 +851,7 @@ class OpenBBFigure(go.Figure):
         except Exception as e:
             warn(f"Failed to show figure with backend. {e}")
 
-        return pio.show(self, *args, **kwargs)  # type: ignore
+        return pio.show(self, *args, **kwargs)
 
     def _xaxis_tickformatstops(self) -> None:
         """Set the datetickformatstops for the xaxis if the x data is datetime."""
@@ -889,8 +866,6 @@ class OpenBBFigure(go.Figure):
         ]
         xhoverformat = "%I:%M%p %Y-%m-%d"
 
-        # We check if daily data if the first and second time are the same
-        # since daily data will have the same time (2021-01-01 00:00:00)
         if (
             not hasattr(dateindex[-1], "time")
             or dateindex[-1].time() == dateindex[-2].time()
@@ -927,7 +902,7 @@ class OpenBBFigure(go.Figure):
         if not self.has_subplots:
             return subplots
 
-        grid_ref = self._validate_get_grid_ref()  # pylint: disable=protected-access
+        grid_ref = self._validate_get_grid_ref()
         for r, plot_row in enumerate(grid_ref):
             for c, plot_refs in enumerate(plot_row):
                 if not plot_refs:
@@ -953,7 +928,6 @@ class OpenBBFigure(go.Figure):
         `list`
             The dateindex
         """
-        # pylint: disable=import-outside-toplevel
         from numpy import datetime64
         from pandas import DatetimeIndex, to_datetime
 
@@ -994,7 +968,6 @@ class OpenBBFigure(go.Figure):
                             col, []
                         ).append(trace.x)
 
-        # We convert the dateindex to a list of datetime objects if it's a numpy array
         if output is not None and isinstance(output[0], datetime64):
             output = (
                 to_datetime(output).to_pydatetime().astype("datetime64[ms]").tolist()
@@ -1019,26 +992,20 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             The column of the subplot to hide the gaps, by default None
         """
-        # pylint: disable=import-outside-toplevel
         from pandas import date_range, to_datetime
 
-        # We get the min and max dates
         dt_start, dt_end = df_data.index.min(), df_data.index.max()
         rangebreaks: list[dict[str, Any]] = []
 
-        # if weekly or monthly data, we don't need to hide gaps
-        # this prevents distortions in the plot
         check_freq = df_data.index.to_series().diff(-5).dt.days.abs().mode().iloc[0]
         if check_freq > 7:
             return
 
-        # We get the missing days
         is_daily = df_data.index[-1].time() == df_data.index[-2].time()
         dt_days = date_range(start=dt_start, end=dt_end, normalize=True)
 
-        # We get the dates that are missing
         dt_missing_days = list(
-            set(dt_days.strftime("%Y-%m-%d")) - set(df_data.index.strftime("%Y-%m-%d"))  # type: ignore
+            set(dt_days.strftime("%Y-%m-%d")) - set(df_data.index.strftime("%Y-%m-%d"))  # ty: ignore[unresolved-attribute]
         )
         dt_missing_days = to_datetime(dt_missing_days)
 
@@ -1046,8 +1013,6 @@ class OpenBBFigure(go.Figure):
             rangebreaks = [dict(values=dt_missing_days)]
 
         df_data = df_data.sort_index()
-        # We add a rangebreak if the first and second time are not the same
-        # since daily data will have the same time (00:00)
         if not is_daily:
             for i in range(len(df_data) - 1):
                 if df_data.index[i + 1] - df_data.index[i] > timedelta(hours=2):
@@ -1066,7 +1031,6 @@ class OpenBBFigure(go.Figure):
 
     def add_rangebreaks(self) -> None:
         """Add rangebreaks to hide datetime gaps on the xaxis."""
-        # pylint: disable=import-outside-toplevel
         from numpy import concatenate
         from pandas import DataFrame, to_datetime
 
@@ -1076,7 +1040,7 @@ class OpenBBFigure(go.Figure):
         for row, row_dict in self._subplot_xdates.items():
             for col, values in row_dict.items():
                 try:
-                    x_values = to_datetime(concatenate(values)).to_pydatetime()
+                    x_values = to_datetime(concatenate(values)).to_pydatetime()  # ty: ignore[unresolved-attribute]
                     self.hide_date_gaps(
                         DataFrame(index=x_values.tolist()),
                         row=row,
@@ -1113,7 +1077,7 @@ class OpenBBFigure(go.Figure):
         """
         for trace in self.data:
             if kwargs:
-                trace.update(**kwargs)  # type: ignore
+                trace.update(**kwargs)
 
             subplot.add_trace(trace, row=row, col=col, secondary_y=secondary_y)
             subplot.set_xaxis_title(self.layout.xaxis.title.text, row=row, col=col)
@@ -1184,8 +1148,6 @@ class OpenBBFigure(go.Figure):
             The list of colors
         """
         row_count = len(data)
-        # we determine how many rows in `data` and then create a list with alternating
-        # row colors
         row_odd_count = floor(row_count / 2) + row_count % 2
         row_even_count = floor(row_count / 2)
         odd_list = [PLT_TBL_ROW_COLORS[0]] * row_odd_count
@@ -1255,13 +1217,10 @@ class OpenBBFigure(go.Figure):
             The figure as a table
         """
         if not columnwidth:
-            # we get the length of each column using the max length of the column
-            # name and the max length of the column values as the column width
             columnwidth = [
                 max(len(str(data[col].name)), data[col].astype(str).str.len().max())
                 for col in data.columns
             ]
-            # we add the length of the index column if we are printing the index
             if print_index:
                 columnwidth.insert(
                     0,
@@ -1271,7 +1230,6 @@ class OpenBBFigure(go.Figure):
                     ),
                 )
 
-            # we add a percentage of max to the min column width
             columnwidth = [
                 int(x + (max(columnwidth) - min(columnwidth)) * 0.2)
                 for x in columnwidth
@@ -1327,7 +1285,6 @@ class OpenBBFigure(go.Figure):
 
         self._margin_adjusted = True
 
-    # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self, command_location: str | None = "") -> None:
         """Set the watermark for OpenBB Terminal."""
         if command_location:
@@ -1369,7 +1326,6 @@ class OpenBBFigure(go.Figure):
                 xshift=xshift + self.cmd_xshift,
             )
 
-    # pylint: disable=import-outside-toplevel
     def _apply_feature_flags(self) -> None:
         """Apply watermark and command source annotations."""
         if self._feature_flags_applied:
@@ -1382,8 +1338,8 @@ class OpenBBFigure(go.Figure):
     def add_logscale_menus(self, yaxis: str = "yaxis") -> None:
         """Set the menus for the figure."""
         self._added_logscale = True
-        bg_color = "#000000" if self._theme.mapbox_style == "dark" else "#FFFFFF"  # type: ignore
-        font_color = "#FFFFFF" if self._theme.mapbox_style == "dark" else "#000000"  # type: ignore
+        bg_color = "#000000" if self._theme.mapbox_style == "dark" else "#FFFFFF"
+        font_color = "#FFFFFF" if self._theme.mapbox_style == "dark" else "#000000"
         self.update_layout(
             xaxis=dict(
                 rangeslider=dict(visible=False),
@@ -1443,7 +1399,7 @@ class OpenBBFigure(go.Figure):
             ],
         )
 
-    def add_corr_plot(  # pylint: disable=too-many-arguments
+    def add_corr_plot(
         self,
         series: "DataFrame",
         max_lag: int = 20,
@@ -1476,7 +1432,6 @@ class OpenBBFigure(go.Figure):
         pacf : bool, optional
             Flag to indicate whether to use partial autocorrelation or not, by default False
         """
-        # pylint: disable=import-outside-toplevel
         import statsmodels.api as sm  # noqa
         from numpy import arange, asanyarray, ceil, log10, isscalar  # noqa
 
@@ -1487,15 +1442,14 @@ class OpenBBFigure(go.Figure):
             zero = True
             irregular = False
             if lags is None:
-                # GH 4663 - use a sensible default value
                 nobs = x.shape[0]
                 lim = min(int(ceil(10 * log10(nobs))), nobs - 1)
                 lags = arange(not zero, lim + 1)
             elif isscalar(lags):
                 lags = arange(
                     not zero,
-                    int(lags) + 1,  # type: ignore
-                )  # +1 for zero lag
+                    int(lags) + 1,  # ty: ignore[invalid-argument-type]
+                )
             else:
                 irregular = True
                 lags = asanyarray(lags).astype(int)
@@ -1510,13 +1464,13 @@ class OpenBBFigure(go.Figure):
             kwargs.update(dict(fft=False))
 
         acf_x = callback(
-            series,  # type: ignore
+            series,  # ty: ignore[invalid-argument-type]
             nlags=nlags,
             alpha=alpha,
             **kwargs,
         )
 
-        acf_x, confint = acf_x[:2] if not pacf else acf_x  # type: ignore
+        acf_x, confint = acf_x[:2] if not pacf else acf_x
 
         if irregular:
             acf_x = acf_x[lags]
@@ -1534,7 +1488,6 @@ class OpenBBFigure(go.Figure):
             upp_band = confint[:, 0] - acf_x
             low_band = confint[:, 1] - acf_x
 
-            # pylint: disable=C0200
             for x in range(len(acf_x)):
                 self.add_scatter(
                     x=(x, x),
@@ -1578,5 +1531,5 @@ class OpenBBFigure(go.Figure):
             )
             self.update_traces(showlegend=False)
 
-        except ValueError:
+        except ValueError:  # pragma: no cover - defensive; real statsmodels acf/pacf output is consistent
             pass

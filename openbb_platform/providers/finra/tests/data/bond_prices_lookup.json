@@ -1,0 +1,156 @@
+[
+ {
+  "method": "GET",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/CorporateAndAgencySecurities",
+  "params": null,
+  "json": null,
+  "status": 400,
+  "headers": {},
+  "text": "{\"status\":\"failure\",\"statusMessage\":\"Bad Request.\"}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/bondSearch",
+  "params": null,
+  "json": {
+   "fields": [
+    "cusip",
+    "issueSymbolIdentifier",
+    "issuerName",
+    "bondType"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "cusip",
+     "values": [
+      "037833EH9",
+      "912810UG1"
+     ]
+    }
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:41 GMT\"],\"Record-Total\":[\"2\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"6ed900d7-f69e-4ab2-b595-b0a486334170\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"issuerName\\\":\\\"APPLE INC\\\",\\\"bondType\\\":\\\"CA\\\"},{\\\"cusip\\\":\\\"912810UG1\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS5996103\\\",\\\"issuerName\\\":\\\"UNITED STATES TREASURY\\\",\\\"bondType\\\":\\\"TS\\\"}]\"}}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/bondSearch",
+  "params": null,
+  "json": {
+   "fields": [
+    "cusip",
+    "issueSymbolIdentifier",
+    "issuerName",
+    "bondType"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "issueSymbolIdentifier",
+     "values": [
+      "AAPL5231623"
+     ]
+    }
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:42 GMT\"],\"Record-Total\":[\"1\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"2998dc3b-af81-4e7f-8a5c-1f4c51a36b66\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"issuerName\\\":\\\"APPLE INC\\\",\\\"bondType\\\":\\\"CA\\\"}]\"}}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/treasurySecurities",
+  "params": null,
+  "json": {
+   "fields": [
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "issuerName",
+    "productSubTypeCode",
+    "securityDescription",
+    "benchmarkTermCode",
+    "couponRate",
+    "couponType",
+    "maturityDate",
+    "traceGradeCode",
+    "priceType",
+    "lastSalePrice",
+    "lastSaleYield",
+    "lastTradeDate",
+    "lastTradeTime",
+    "priceChangeNumber",
+    "priceChangePercent"
+   ],
+   "sortFields": [
+    "finraSecurityIdentifier"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "cusip",
+     "values": [
+      "912810UG1"
+     ]
+    }
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:42 GMT\"],\"Record-Total\":[\"1\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"678f9150-1320-4447-a8ef-30ca9882e90e\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"912810UG1\\\",\\\"benchmarkTermCode\\\":null,\\\"issueSymbolIdentifier\\\":\\\"TSRYS5996103\\\",\\\"issuerName\\\":\\\"UNITED STATES TREASURY\\\",\\\"finraSecurityIdentifier\\\":5996103,\\\"priceType\\\":null,\\\"securityDescription\\\":\\\"United States Treasury Bond\\\",\\\"priceChangeNumber\\\":-0.7609881,\\\"couponRate\\\":4.625,\\\"couponType\\\":\\\"FIX\\\",\\\"maturityDate\\\":\\\"2055-02-15\\\",\\\"lastTradeTime\\\":null,\\\"productSubTypeCode\\\":\\\"NOTE\\\",\\\"lastTradeDate\\\":null,\\\"traceGradeCode\\\":\\\"I\\\",\\\"lastSaleYield\\\":null,\\\"priceChangePercent\\\":-0.78,\\\"lastSalePrice\\\":null}]\"}}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/corporateAndAgencySecurities",
+  "params": null,
+  "json": {
+   "fields": [
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "issuerName",
+    "productSubTypeCode",
+    "couponRate",
+    "couponType",
+    "maturityDate",
+    "isPerpetual",
+    "isCallable",
+    "nextCallDate",
+    "isConvertible",
+    "is144A",
+    "industryGroup",
+    "traceGradeCode",
+    "moodysRating",
+    "moodyRatingDate",
+    "standardAndPoorsRating",
+    "standardAndPoorsRatingDate",
+    "lastSalePrice",
+    "lastSaleYield",
+    "lastTradeDate",
+    "priceChangeNumber",
+    "priceChangePercent"
+   ],
+   "sortFields": [
+    "finraSecurityIdentifier"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "cusip",
+     "values": [
+      "037833EH9"
+     ]
+    }
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:42 GMT\"],\"Record-Total\":[\"1\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"131c19a2-2cfc-44ac-aed1-0caa58112748\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"037833EH9\\\",\\\"is144A\\\":\\\"N\\\",\\\"moodyRatingDate\\\":\\\"2024-11-20\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"issuerName\\\":\\\"APPLE INC\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"priceChangeNumber\\\":0.00765,\\\"standardAndPoorsRating\\\":\\\"AA+\\\",\\\"standardAndPoorsRatingDate\\\":\\\"2021-07-29\\\",\\\"isCallable\\\":\\\"Y\\\",\\\"couponRate\\\":1.4,\\\"couponType\\\":\\\"FXPV\\\",\\\"maturityDate\\\":\\\"2028-08-05\\\",\\\"productSubTypeCode\\\":\\\"CORP\\\",\\\"nextCallDate\\\":\\\"2028-06-05\\\",\\\"lastTradeDate\\\":\\\"2026-09-23\\\",\\\"isConvertible\\\":\\\"N\\\",\\\"isPerpetual\\\":null,\\\"moodysRating\\\":\\\"Aaa\\\",\\\"traceGradeCode\\\":\\\"I\\\",\\\"lastSaleYield\\\":4.812886,\\\"priceChangePercent\\\":0,\\\"industryGroup\\\":\\\"TRON\\\",\\\"lastSalePrice\\\":93.99065}]\"}}"
+ }
+]

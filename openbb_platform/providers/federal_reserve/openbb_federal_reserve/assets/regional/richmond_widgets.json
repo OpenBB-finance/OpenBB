@@ -1,0 +1,721 @@
+{
+  "richmond_manufacturing_survey_federal_reserve_obb": {
+    "name": "Richmond Fed Manufacturing Survey",
+    "description": "Fifth District Survey of Manufacturing Activity diffusion indexes, by indicator and horizon.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "richmond_manufacturing_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_manufacturing_survey"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "manufacturing_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "adjustment",
+            "formatterFn": null,
+            "headerName": "Adjustment",
+            "headerTooltip": "The seasonal adjustment (NSA or SA).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "horizon",
+            "formatterFn": null,
+            "headerName": "Horizon",
+            "headerTooltip": "Current conditions or six-month-ahead expectations.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Richmond"
+  },
+  "richmond_service_sector_survey_federal_reserve_obb": {
+    "name": "Richmond Fed Service Sector Survey",
+    "description": "Fifth District Survey of Service Sector Activity diffusion indexes, by indicator and horizon.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "richmond_service_sector_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_service_sector_survey"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "service_sector_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "adjustment",
+            "formatterFn": null,
+            "headerName": "Adjustment",
+            "headerTooltip": "The seasonal adjustment (NSA or SA).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "horizon",
+            "formatterFn": null,
+            "headerName": "Horizon",
+            "headerTooltip": "Current conditions or six-month-ahead expectations.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Richmond"
+  },
+  "richmond_state_survey_federal_reserve_obb": {
+    "name": "Richmond Fed State Business Survey",
+    "description": "Fifth District per-state combined business survey diffusion indexes, by indicator and horizon.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "richmond_state_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_state_survey"
+    },
+    "params": [
+      {
+        "label": "State",
+        "description": "The Fifth District jurisdiction survey to retrieve.",
+        "optional": true,
+        "type": "text",
+        "value": "virginia",
+        "show": true,
+        "options": [
+          {
+            "label": "Carolinas",
+            "value": "carolinas"
+          },
+          {
+            "label": "Maryland",
+            "value": "maryland"
+          },
+          {
+            "label": "Virginia",
+            "value": "virginia"
+          }
+        ],
+        "paramName": "state"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "state_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "adjustment",
+            "formatterFn": null,
+            "headerName": "Adjustment",
+            "headerTooltip": "The seasonal adjustment (NSA or SA).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "horizon",
+            "formatterFn": null,
+            "headerName": "Horizon",
+            "headerTooltip": "Current conditions or six-month-ahead expectations.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Richmond"
+  },
+  "richmond_cfo_survey_federal_reserve_obb": {
+    "name": "Richmond Fed CFO Survey",
+    "description": "Quarterly CFO Survey optimism, expectations, and credit series, by measure and breakdown.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "richmond_cfo_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_cfo_survey"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The CFO Survey table to return: optimism, expectations, spending, GDP/S&P 500 forecasts, investment plans, or credit conditions - several broken out by firm size, employment, or sector. The 'legacy_through_q1_2020' table holds the pre-Q2-2020 Duke CFO Survey series (optimism, growth expectations, and S&P 500 forecasts).",
+        "optional": true,
+        "type": "text",
+        "value": "optimism",
+        "show": true,
+        "options": [
+          {
+            "label": "Credit Difficulty",
+            "value": "credit_difficulty"
+          },
+          {
+            "label": "Credit Received",
+            "value": "credit_received"
+          },
+          {
+            "label": "Expectations",
+            "value": "expectations"
+          },
+          {
+            "label": "Expectations by Employment",
+            "value": "expectations_by_employment"
+          },
+          {
+            "label": "Expectations by Sector",
+            "value": "expectations_by_sector"
+          },
+          {
+            "label": "Gdp Mean Probability",
+            "value": "gdp_mean_probability"
+          },
+          {
+            "label": "Investment Plans",
+            "value": "investment_plans"
+          },
+          {
+            "label": "Legacy Through Q1 2020",
+            "value": "legacy_through_q1_2020"
+          },
+          {
+            "label": "Lenders",
+            "value": "lenders"
+          },
+          {
+            "label": "New Credit",
+            "value": "new_credit"
+          },
+          {
+            "label": "Optimism",
+            "value": "optimism"
+          },
+          {
+            "label": "Optimism by Employment",
+            "value": "optimism_by_employment"
+          },
+          {
+            "label": "Optimism by Sector",
+            "value": "optimism_by_sector"
+          },
+          {
+            "label": "Optimism by Size",
+            "value": "optimism_by_size"
+          },
+          {
+            "label": "Reason Difficult",
+            "value": "reason_difficult"
+          },
+          {
+            "label": "Reason Easy",
+            "value": "reason_easy"
+          },
+          {
+            "label": "Reason Invest",
+            "value": "reason_invest"
+          },
+          {
+            "label": "Reason Not Invest",
+            "value": "reason_not_invest"
+          },
+          {
+            "label": "Sp500",
+            "value": "sp500"
+          },
+          {
+            "label": "Spending 3mo",
+            "value": "spending_3mo"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "cfo_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "category",
+            "formatterFn": null,
+            "headerName": "Category",
+            "headerTooltip": "The breakdown the row applies to, where the table is disaggregated (e.g. firm size, sector, employment category, or the expectation measure); null for undisaggregated tables.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Richmond"
+  },
+  "richmond_non_employment_index_federal_reserve_obb": {
+    "name": "Richmond Fed Non-Employment Index (NEI)",
+    "description": "Monthly NEI and NEI+PTER labor-market underutilization, with the official U-5, U-6, and U-3 rates.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "richmond_non_employment_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_non_employment_index"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "non_employment_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "nei",
+            "formatterFn": "percent",
+            "headerName": "NEI",
+            "headerTooltip": "The Non-Employment Index, seasonally adjusted.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "nei_plus",
+            "formatterFn": "percent",
+            "headerName": "NEI+PTER",
+            "headerTooltip": "The NEI including those marginally attached / part-time for economic reasons (NEI+PTER).",
+            "cellDataType": "number"
+          },
+          {
+            "field": "u_5",
+            "formatterFn": "percent",
+            "headerName": "U-5",
+            "headerTooltip": "The official U-5 rate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "u_6",
+            "formatterFn": "percent",
+            "headerName": "U-6",
+            "headerTooltip": "The official U-6 rate.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "unemployment_rate",
+            "formatterFn": "percent",
+            "headerName": "U-3 Unemployment Rate",
+            "headerTooltip": "The official U-3 unemployment rate.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Richmond"
+  },
+  "richmond_recession_indicator_federal_reserve_obb": {
+    "name": "Richmond Fed SOS Recession Indicator",
+    "description": "Weekly Sum of Stalls (SOS) recession indicator, with its constant 0.2 recession-signal threshold.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "richmond_recession_indicator_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_recession_indicator"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "recession_indicator",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The end-of-week observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "sos",
+            "formatterFn": "none",
+            "headerName": "Sum of Stalls",
+            "headerTooltip": "The Sum of Stalls recession indicator value.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "recession_threshold",
+            "formatterFn": "none",
+            "headerName": "Recession Threshold",
+            "headerTooltip": "The constant recession-signal threshold (0.2).",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Richmond"
+  },
+  "richmond_publications_federal_reserve_obb": {
+    "name": "Richmond Fed Publications",
+    "description": "Richmond Fed publications indexed on Fed in Print. Select one or more documents to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "richmond_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "richmond_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Econ Focus",
+            "value": "econ_focus"
+          },
+          {
+            "label": "Working Paper",
+            "value": "working_paper"
+          },
+          {
+            "label": "Economic Quarterly",
+            "value": "economic_quarterly"
+          },
+          {
+            "label": "Economic Review",
+            "value": "economic_review"
+          },
+          {
+            "label": "Monograph",
+            "value": "monograph"
+          },
+          {
+            "label": "Annual Report",
+            "value": "annual_report"
+          },
+          {
+            "label": "Research Digest",
+            "value": "research_digest"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Limit",
+        "description": "The maximum number of documents to return.",
+        "optional": true,
+        "type": "number",
+        "value": 20,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "label": "Offset",
+        "description": "The result offset to begin from, for pagination.",
+        "optional": true,
+        "type": "number",
+        "value": 0,
+        "show": true,
+        "paramName": "offset"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "richmond",
+          "end_date": "$end_date",
+          "limit": "$limit",
+          "offset": "$offset",
+          "series": "$series",
+          "start_date": "$start_date"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Richmond"
+    ],
+    "subCategory": "Richmond",
+    "refetchInterval": false
+  }
+}

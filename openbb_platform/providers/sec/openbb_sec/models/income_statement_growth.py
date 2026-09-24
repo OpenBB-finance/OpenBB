@@ -1,7 +1,5 @@
 """SEC Income Statement Growth Model."""
 
-# pylint: disable=unused-argument
-
 from math import isnan
 from typing import Any, Literal
 from warnings import warn
@@ -125,6 +123,11 @@ class SecIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of amortization expense.",
         json_schema_extra=_PCT,
     )
+    growth_depreciation_and_amortization: float | None = Field(
+        default=None,
+        description="Growth rate of depreciation and amortization.",
+        json_schema_extra=_PCT,
+    )
     growth_depletion_expense: float | None = Field(
         default=None,
         description="Growth rate of depletion expense.",
@@ -240,19 +243,39 @@ class SecIncomeStatementGrowthData(IncomeStatementGrowthData):
         description="Growth rate of net interest income.",
         json_schema_extra=_PCT,
     )
+    growth_revenues_excl_interest_dividends: float | None = Field(
+        default=None,
+        description="Growth rate of revenues excluding interest and dividends.",
+        json_schema_extra=_PCT,
+    )
+    growth_trust_fee_income: float | None = Field(
+        default=None,
+        description="Growth rate of trust fee income.",
+        json_schema_extra=_PCT,
+    )
+    growth_service_charges_on_deposits_income: float | None = Field(
+        default=None,
+        description="Growth rate of service charges on deposit accounts.",
+        json_schema_extra=_PCT,
+    )
+    growth_other_service_charge_income: float | None = Field(
+        default=None,
+        description="Growth rate of other service charge income.",
+        json_schema_extra=_PCT,
+    )
+    growth_net_realized_capital_gains: float | None = Field(
+        default=None,
+        description="Growth rate of net realized and unrealized capital gains on investments.",
+        json_schema_extra=_PCT,
+    )
+    growth_premiums_earned: float | None = Field(
+        default=None,
+        description="Growth rate of premiums earned.",
+        json_schema_extra=_PCT,
+    )
     growth_investment_banking_income: float | None = Field(
         default=None,
         description="Growth rate of investment banking income.",
-        json_schema_extra=_PCT,
-    )
-    growth_trading_revenue: float | None = Field(
-        default=None,
-        description="Growth rate of trading revenue.",
-        json_schema_extra=_PCT,
-    )
-    growth_securities_gains: float | None = Field(
-        default=None,
-        description="Growth rate of net securities gains / (losses).",
         json_schema_extra=_PCT,
     )
     growth_other_noninterest_income: float | None = Field(
@@ -529,7 +552,6 @@ class SecIncomeStatementGrowthFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.company_facts import (
             PeriodType,
             get_standardized_financials,
@@ -557,7 +579,6 @@ class SecIncomeStatementGrowthFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[SecIncomeStatementGrowthData]]:
         """Transform the data and validate the model."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.company_facts import (
             StandardizedStatements,
             normalize_period_fields,

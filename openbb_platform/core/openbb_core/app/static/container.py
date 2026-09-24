@@ -43,6 +43,11 @@ class Container:
 
         obbject = self._command_runner.sync_run(*args, **kwargs)
 
+        if not hasattr(obbject, "_results_only") and hasattr(obbject, "body_iterator"):
+            from openbb_core.app.model.stream import OBBStream
+
+            return OBBStream(obbject)
+
         results_only = getattr(obbject, "_results_only", False)
 
         if results_only is True:

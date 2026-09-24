@@ -217,10 +217,7 @@ def multi(params: MultiQueryParams) -> OBBject[list[MultiResultRow]]:
                 bucket[f"{request.indicator}.{col}"] = value
 
     ordered_keys = sorted(merged.keys(), key=str)
-    out_rows = [
-        MultiResultRow(date=key, values=merged[key])  # ty: ignore[invalid-argument-type]
-        for key in ordered_keys
-    ]
+    out_rows = [MultiResultRow(date=key, values=merged[key]) for key in ordered_keys]
     return OBBject(results=out_rows)
 
 

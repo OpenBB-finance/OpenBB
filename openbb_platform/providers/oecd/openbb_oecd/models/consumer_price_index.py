@@ -208,7 +208,7 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, list[OECDCPIData]]):
         if query.harmonized is True and freq == "quarter":
             freq = "monthly"
 
-        freq_code = _FREQ_MAP.get(freq, freq[0].upper() if freq else "M")
+        freq_code = _FREQ_MAP.get(freq, freq[0].upper())
         transform_code = _TRANSFORM_MAP.get(query.transform, "_Z")
         exp_items = [s.strip() for s in query.expenditure.split(",") if s.strip()]
         if "all" in exp_items:

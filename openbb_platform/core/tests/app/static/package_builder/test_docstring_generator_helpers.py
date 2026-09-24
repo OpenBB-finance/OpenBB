@@ -260,6 +260,36 @@ def test_get_OBBject_description_default_providers():
     assert "Optional[str]" in out
 
 
+def test_get_OBBStream_description_mirrors_obbject_field_format():
+    out = DocstringGenerator.get_OBBStream_description("MyFeed")
+    assert "OBBStream" in out
+    assert "results : AsyncIterator[MyFeed]" in out
+    assert "id : str" in out
+    assert "provider : Optional[str]" in out
+    assert "warnings : Optional[list[Warning_]]" in out
+    assert "extra : dict[str, Any]" in out
+    assert "start : (output=None, handler=None) -> OBBStream" in out
+    assert "stop : (timeout=5.0) -> None" in out
+    assert "wait : (timeout=None) -> None" in out
+
+
+def test_generate_model_docstring_streaming_emits_obbstream_returns():
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="MyFeed",
+        summary="Stream it.",
+        explicit_params={},
+        kwarg_params={},
+        returns={},
+        results_type="MyFeed",
+        sections=["returns"],
+        is_streaming=True,
+    )
+    assert "OBBStream" in out
+    assert "results : AsyncIterator[MyFeed]" in out
+    # The OBBject result block must not be used for a stream.
+    assert "Serializable results." not in out
+
+
 def test_get_field_type_handles_forward_ref_extended():
     from typing import ForwardRef
 
@@ -1614,3 +1644,62 @@ def test_generate_no_model_returns_str_type_name_and_any_fallback(monkeypatch):
         model_name=None,
     )
     assert "Any" in out2
+
+
+def test_get_field_type_union_renders_forward_ref_by_name():
+    """A ``ForwardRef`` inside a union renders as its target name.
+
+    Built with ``Union[...]``, not ``X | Y``: before 3.14 ``type.__or__``
+    rejects a ``ForwardRef`` operand. This is the shape ``format_params``
+    produces when it inlines the ``DataProcessingSupportedTypes``
+    constraints, so the union must be spelled the same way here.
+    """
+    from typing import ForwardRef, Union
+
+    field_type = Union[list, ForwardRef("DataFrame")]  # noqa: UP007
+
+    out = DocstringGenerator.get_field_type(field_type, is_required=True)
+    assert "DataFrame" in out
+    assert "ForwardRef" not in out
+
+
+def test_generate_non_model_strips_parameters_section_for_dependency_params(
+    monkeypatch,
+):
+    """A dependency-backed param drops the hand-written ``Parameters`` section."""
+    from fastapi import Depends
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    class _SS:
+        class _PS:
+            docstring_sections = ["description", "parameters"]
+            docstring_max_length = None
+
+        python_settings = _PS()
+
+    class _Svc:
+        system_settings = _SS()
+
+    monkeypatch.setattr(dg, "SystemService", _Svc)
+
+    def _dep() -> dict:
+        return {}
+
+    def _func(principal: Annotated[dict, Depends(_dep)]):
+        """Do a thing.
+
+        Parameters
+        ----------
+        principal : dict
+            The resolved principal.
+        """
+
+    out = DocstringGenerator.generate(
+        path="/x/y",
+        func=_func,
+        formatted_params=OrderedDict(),
+        model_name=None,
+    )
+    assert "Do a thing." in out
+    assert "The resolved principal." not in out

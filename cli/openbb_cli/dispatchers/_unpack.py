@@ -35,11 +35,13 @@ def unpack_response(
     if len(list_keys) == 1:
         key = list_keys[0]
         items = payload[key]
-        rows = [r for r in items if isinstance(r, dict)]
-        if not rows and items:
-            rows = [{"value": r} for r in items]
         metadata = {k: v for k, v in payload.items() if k != key}
-        return rows, metadata
+        # Only return this as an envelope if all items are dicts or the list is
+        # the only thing in the payload.
+        if all(isinstance(v, dict) for v in items):
+            return items, metadata
+        if len(payload) == 1:
+            return [{"value": r} for r in items], metadata
     if len(payload) == 1:
         only_value = next(iter(payload.values()))
         if isinstance(only_value, (list, dict)):

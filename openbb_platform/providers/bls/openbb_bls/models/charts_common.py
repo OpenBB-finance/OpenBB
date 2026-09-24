@@ -12,10 +12,10 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field, create_model
+from pydantic.config import JsonDict
 
 _HIDE: dict[str, Any] = {"x-widget_config": {"hide": True}}
 
-# Friendly column header for each cross-section stub field.
 _STUB_HEADER: dict[str, str] = {
     "industry": "Industry",
     "period": "Period",
@@ -53,7 +53,6 @@ def _widget(
             "$.source": ["BLS"],
             "$.category": "Economy",
             "$.subCategory": subcategory,
-            # Table renders first; the chart is an opt-in toggle.
             "table": {
                 "showAll": True,
                 "enableCharts": True,
@@ -86,6 +85,7 @@ class _ChartData(Data):
 
 def _make_base(kind: str, period_header: str) -> type[Data]:
     """Build the shared (stub + bookkeeping) fields for a chart's Data model."""
+    stub_cfg: JsonDict
     if kind == "ts":
         stub_field = "date"
         stub_type: Any = dateType

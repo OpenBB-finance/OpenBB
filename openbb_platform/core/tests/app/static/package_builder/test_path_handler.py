@@ -122,3 +122,44 @@ def test_get_router_description_returns_description(monkeypatch):
     )
     result = PathHandler.get_router_description("/equity")
     assert result == "My router description"
+
+
+def test_build_route_map_skips_route_without_path(monkeypatch):
+    """A resolved route that carries no ``path`` is skipped."""
+    monkeypatch.setattr(
+        "openbb_core.app.static.package_builder.path_handler.RouterLoader.from_extensions",
+        MagicMock(),
+    )
+    monkeypatch.setattr(
+        "openbb_core.app.static.package_builder.path_handler.iter_api_routes",
+        lambda _router: iter([MagicMock(spec=[])]),
+    )
+    assert PathHandler.build_route_map() == {}
+
+
+def test_build_route_map_skips_route_excluded_from_schema(monkeypatch):
+    """A route flagged ``include_in_schema=False`` is left out of the route map."""
+    from fastapi import APIRouter as FastAPIRouter
+
+    async def hidden_endpoint() -> None:
+        pass
+
+    async def visible_endpoint() -> None:
+        pass
+
+    inner = FastAPIRouter()
+    inner.add_api_route(
+        "/hidden", hidden_endpoint, methods=["GET"], include_in_schema=False
+    )
+    inner.add_api_route("/visible", visible_endpoint, methods=["GET"])
+
+    r = Router()
+    r._api_router = inner
+    monkeypatch.setattr(
+        "openbb_core.app.static.package_builder.path_handler.RouterLoader.from_extensions",
+        lambda: r,
+    )
+
+    route_map = PathHandler.build_route_map()
+    assert "/visible" in route_map
+    assert "/hidden" not in route_map

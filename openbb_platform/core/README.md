@@ -61,7 +61,7 @@ explicitly invokes:
 
 ```python
 result = obb.equity.price.historical("AAPL")
-result.charting.to_chart()   # accessor registered by openbb_charting
+result.charting.to_chart()  # accessor registered by openbb_charting
 ```
 
 ```toml
@@ -179,5 +179,5 @@ Report bugs on
 
 ## License
 
-AGPL-3.0-only. See
+Apache-2.0. See
 [LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE).

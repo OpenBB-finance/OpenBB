@@ -1,15 +1,36 @@
 """FRED SOFR Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sofr import SOFRData, SOFRQueryParams
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field, field_validator
+
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
+
+TIME_AXIS: dict[str, Any] = {"x-widget_config": {"chartDataType": "time"}}
+PERCENT_SERIES: dict[str, Any] = {
+    "x-unit_measurement": "percent",
+    "x-widget_config": {"chartDataType": "series"},
+}
+VOLUME_EXCLUDED_FROM_CHART: dict[str, Any] = {
+    "x-unit_measurement": "currency",
+    "x-frontend_multiply": 1e9,
+    "x-widget_config": {
+        "prefix": "$",
+        "suffix": "B",
+        "chartDataType": "excluded",
+    },
+}
+INDEX_EXCLUDED_FROM_CHART: dict[str, Any] = {
+    "x-widget_config": {"chartDataType": "excluded"}
+}
 
 SOFR_ID_TO_FIELD = {
     "SOFR": "rate",
@@ -25,7 +46,7 @@ SOFR_ID_TO_FIELD = {
 }
 
 
-class FREDSOFRQueryParams(SOFRQueryParams):
+class FREDSOFRQueryParams(UseCacheQueryParams, SOFRQueryParams):
     """FRED SOFR Query."""
 
     frequency: (
@@ -129,24 +150,59 @@ class FREDSOFRData(SOFRData):
         "index": "SOFRINDEX",
     }
 
+    date: dateType = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+        json_schema_extra=TIME_AXIS,
+    )
+    rate: float = Field(
+        description="Effective federal funds rate.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_1: float | None = Field(
+        default=None,
+        description="1st percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_25: float | None = Field(
+        default=None,
+        description="25th percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_75: float | None = Field(
+        default=None,
+        description="75th percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_99: float | None = Field(
+        default=None,
+        description="99th percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    volume: float | None = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("volume", "")
+        + "The notional volume of transactions (Billions of $).",
+        json_schema_extra=VOLUME_EXCLUDED_FROM_CHART,
+    )
     average_30d: float | None = Field(
         default=None,
         description="30-Day Average SOFR",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        json_schema_extra=PERCENT_SERIES,
     )
     average_90d: float | None = Field(
         default=None,
         description="90-Day Average SOFR",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        json_schema_extra=PERCENT_SERIES,
     )
     average_180d: float | None = Field(
         default=None,
         description="180-Day Average SOFR",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        json_schema_extra=PERCENT_SERIES,
     )
     index: float | None = Field(
         default=None,
         description="SOFR index as 2018-04-02 = 1",
+        json_schema_extra=INDEX_EXCLUDED_FROM_CHART,
     )
 
     @field_validator(
@@ -164,7 +220,7 @@ class FREDSOFRData(SOFRData):
     @classmethod
     def normalize_percent(cls, v):
         """Normalize percent."""
-        return float(v) / 100 if v else None
+        return float(v) if v else None
 
 
 class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, list[FREDSOFRData]]):
@@ -190,15 +246,18 @@ class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, list[FREDSOFRData]]):
                     frequency=query.frequency,
                     aggregation_method=query.aggregation_method,
                     transform=query.transform,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod

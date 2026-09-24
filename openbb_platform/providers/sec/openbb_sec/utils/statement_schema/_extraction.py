@@ -1,7 +1,5 @@
 """Row-level value extraction from SEC XBRL facts."""
 
-# pylint: disable=R0912,R0914,R0915,R0917
-
 from __future__ import annotations
 
 from collections import defaultdict
@@ -11,7 +9,7 @@ from typing import Any
 
 from openbb_sec.utils.statement_schema._types import (
     ALL_FORMS,
-    ANNUAL_FORMS,
+    ANNUAL_PERIOD_FORMS,
     PRELIMINARY_FORMS,
     SEMI_ANNUAL_FORMS,
     Frequency,
@@ -75,11 +73,10 @@ def _get_annual_values(
         entries_by_date: dict[str, dict[str, tuple[str, float]]] = {}
 
         for entry in unit_data:
-
             _av_allowed = (
-                ANNUAL_FORMS | PRELIMINARY_FORMS
+                ANNUAL_PERIOD_FORMS | PRELIMINARY_FORMS
                 if include_preliminary
-                else ANNUAL_FORMS
+                else ANNUAL_PERIOD_FORMS
             )
             if entry.get("form", "") not in _av_allowed:
                 continue
@@ -133,7 +130,9 @@ def _get_annual_values(
                 if ref_filed is None or earliest < ref_filed:
                     ref_filed = earliest
 
-        if ref_filed is None:
+        if (
+            ref_filed is None
+        ):  # pragma: no cover - all_dates keys guarantee a ref filing
             continue
 
         for i, tc in enumerate(tag_candidates):
@@ -261,7 +260,7 @@ def extract_row_values(  # noqa: PLR0912
     period_type = row.period_type
     values_by_date: dict[str, float] = {}
     sources_by_date: dict[str, str] = {}
-    _base_forms = ANNUAL_FORMS if frequency == "annual" else ALL_FORMS
+    _base_forms = ANNUAL_PERIOD_FORMS if frequency == "annual" else ALL_FORMS
     allowed_forms = (
         _base_forms | PRELIMINARY_FORMS if include_preliminary else _base_forms
     )
@@ -327,7 +326,9 @@ def extract_row_values(  # noqa: PLR0912
                     if not 300 <= days <= 400:
                         continue
                 elif form in SEMI_ANNUAL_FORMS:
-                    if not (60 <= days <= 135 or 150 <= days <= 200):
+                    if not (
+                        60 <= days <= 135 or 150 <= days <= 200 or 240 <= days <= 310
+                    ):
                         continue
                 elif not 60 <= days <= 135:
                     if collect_ytd and 136 <= days <= 310:
@@ -562,7 +563,7 @@ def extract_row_values(  # noqa: PLR0912
                         for q_end in sorted(values_by_date)
                         if fy_start < q_end < fy_end
                     ]
-                    q_labels = "+".join(f"Q{i+1}[{s}]" for i, s in enumerate(q_srcs))
+                    q_labels = "+".join(f"Q{i + 1}[{s}]" for i, s in enumerate(q_srcs))
                     values_by_date[fy_end] = fy_val - q_sum
                     sources_by_date[fy_end] = (
                         f"Q4: FY[{fy_xbrl_src}] \u2212 ({q_labels})"
@@ -598,7 +599,7 @@ def compute_ref_filings(
     pit_mode: bool = False,
 ) -> dict[str, str]:
     """Compute the reference filing date per end_date across all rows."""
-    _base_forms = ANNUAL_FORMS if frequency == "annual" else ALL_FORMS
+    _base_forms = ANNUAL_PERIOD_FORMS if frequency == "annual" else ALL_FORMS
     allowed_forms = (
         _base_forms | PRELIMINARY_FORMS if include_preliminary else _base_forms
     )
@@ -648,7 +649,11 @@ def compute_ref_filings(
                         if not 300 <= days <= 400:
                             continue
                     elif form in SEMI_ANNUAL_FORMS:
-                        if not (60 <= days <= 135 or 150 <= days <= 200):
+                        if not (
+                            60 <= days <= 135
+                            or 150 <= days <= 200
+                            or 240 <= days <= 310
+                        ):
                             continue
                     elif not 60 <= days <= 135:
                         continue
@@ -694,7 +699,7 @@ def quarterly_ref_filings(
                 for entry in entries:
                     form = entry.get("form", "")
 
-                    if form not in ANNUAL_FORMS:
+                    if form not in ANNUAL_PERIOD_FORMS:
                         continue
 
                     start = entry.get("start", "")

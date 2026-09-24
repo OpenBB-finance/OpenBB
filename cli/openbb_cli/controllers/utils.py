@@ -7,13 +7,14 @@ import random
 import re
 import shutil
 import sqlite3
+import subprocess
 import sys
 from contextlib import contextmanager
 from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import Any
 from zoneinfo import ZoneInfo, available_timezones
 
 import numpy as np
@@ -26,11 +27,6 @@ from rich.table import Table
 
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
-
-if TYPE_CHECKING:
-    from openbb_charting.core.openbb_figure import (  # ty: ignore[unresolved-import]
-        OpenBBFigure,
-    )
 
 
 class SQLiteTable:
@@ -857,7 +853,7 @@ def export_data(  # noqa: PLR0912
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: str | None = None,
-    figure: Optional["OpenBBFigure"] = None,
+    figure: Any = None,
     margin: bool = True,
 ) -> None:
     """Export data to a file.
@@ -874,7 +870,7 @@ def export_data(  # noqa: PLR0912
         Dataframe of data to save.
     sheet_name : str | None
         The name of the sheet to save in excel file.
-    figure : OpenBBFigure | None
+    figure : Any
         Figure object to save as image file.
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
@@ -997,7 +993,9 @@ def export_data(  # noqa: PLR0912
 
 def system_clear():
     """Clear screen."""
-    os.system("cls||clear")  # noqa: S605, S607
+    subprocess.run(  # noqa: S602
+        "cls" if os.name == "nt" else "clear", shell=True, check=False
+    )
 
 
 def request(
@@ -1070,7 +1068,7 @@ def handle_obbject_display(
 ):
     """Handle the display of an OBBject."""
     df: pd.DataFrame = pd.DataFrame()
-    fig: OpenBBFigure | None = None
+    fig: Any = None
 
     if isinstance(getattr(obbject, "results", None), SQLiteTable):
         sqlite_tbl: SQLiteTable = obbject.results  # ty: ignore[invalid-assignment]

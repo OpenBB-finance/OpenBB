@@ -38,6 +38,46 @@ _SAMPLE_JSONLD_HTML = b"""<!DOCTYPE html><html><body>
 </body></html>
 """
 
+# Mirrors the real drugs.com article DOM: no <article>, sidebar inside <main>,
+# and trailing furniture after the disclaimer.
+_SAMPLE_DRUGS_COM_HTML = b"""<!DOCTYPE html><html><head>
+<meta property="og:image" content="https://www.drugs.com/img/social/ddc-opengraph-logomark.png">
+</head><body>
+<main id="container" class="ddc-main-container ddc-width-container">
+<div class="ddc-main-content">
+<div class="ddc-main-content-head">Home News Consumer News Print page</div>
+<nav>All News Consumer Pro New Drugs</nav>
+<h1 class="ddc-title-length-xl">FDA Clears First Cholesterol Pill</h1>
+<p class="ddc-mgt-2 ddc-mgb-0 ddc-media-metadata">By Ellyn Vohnoutka HealthDay Reporter</p>
+<!-- comment node between children -->
+<p>THURSDAY, July 16, 2026 &mdash; A new daily pill will lower cholesterol.</p>
+<p>The FDA acted today to approve the drug for adults.</p>
+<div class="ddc-reference-list"><ul><li>Sources</li></ul></div>
+<p class="ddc-disclaimer">Disclaimer: Statistical data in medical articles provide general trends.</p>
+<div class="ddc-mgt-3 ddc-mgb-3"><img src="/img/logo/vendor/healthday-logo.png"/>
+<p class="ddc-mgt-0">&copy; 2026 HealthDay. All rights reserved.</p></div>
+<div class="more-resources"><h2>Read this next</h2>
+<div class="ddc-media-list"><p>Related teaser one.</p><p>Related teaser two.</p></div></div>
+<h2>More news resources</h2>
+<ul><li>FDA Medwatch Drug Alerts</li></ul>
+<h2>Subscribe to our newsletter</h2>
+<p>Whatever your topic of interest, subscribe to our newsletters.</p>
+</div>
+<div class="ddc-main-sidebar">
+<div class="ddc-sidebox ddc-sidebox-podcast"><img src="/img/banners/ddc-podcast-cover.png"/>
+<p>Podcast pitch paragraph.</p></div>
+<div class="ddc-sidebox ddc-sidebox-news"><p>Sidebar drug teaser one.</p>
+<p>Sidebar drug teaser two.</p></div>
+</div>
+</main>
+</body></html>
+"""
+
+
+@pytest.fixture
+def sample_drugs_com_html() -> bytes:
+    return _SAMPLE_DRUGS_COM_HTML
+
 
 @pytest.fixture
 def sample_rss() -> bytes:
@@ -83,10 +123,12 @@ class _FakeSession:
     def __init__(self, response_map: dict) -> None:
         self.response_map = response_map
         self.calls: list[str] = []
+        self.headers_sent: list[dict | None] = []
         self.closed = False
 
-    async def get(self, url: str, **_kwargs: Any) -> _FakeResponse:
+    async def get(self, url: str, **kwargs: Any) -> _FakeResponse:
         self.calls.append(url)
+        self.headers_sent.append(kwargs.get("headers"))
         result = self.response_map.get(url)
         if result is None:
             raise KeyError(f"unmocked URL: {url}")

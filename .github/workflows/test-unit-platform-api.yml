@@ -1,0 +1,89 @@
+name: 🛰️ openbb-platform-api
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - v5
+      - feature/cli-2
+    paths:
+      - 'openbb_platform/extensions/platform_api/**'
+      - 'openbb_platform/core/**'
+      - 'openbb_platform/extensions/devtools/**'
+      - '.github/workflows/test-unit-platform-api.yml'
+  merge_group:
+    types: [checks_requested]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    working-directory: openbb_platform/extensions/platform_api
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    runs-on: ${{ matrix.os }}
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}/.uv-cache
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux: full sweep across every supported Python.
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          # macOS and Windows: min and max supported.
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+          cache: "pip"
+
+      - name: Cache uv (built wheels)
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.uv-cache
+          key: uv-${{ runner.os }}-py${{ matrix.python_version }}-${{ hashFiles('openbb_platform/extensions/platform_api/pyproject.toml', 'openbb_platform/extensions/platform_api/uv.lock', 'openbb_platform/core/pyproject.toml', 'openbb_platform/extensions/devtools/pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-py${{ matrix.python_version }}-
+
+      - name: Install openbb-platform-api
+        run: |
+          python -m pip install --upgrade pip uv
+          python -m uv pip install --system -e . --group dev
+
+      - name: Run unit tests
+        run: |
+          python -m pytest tests \
+            --cov=openbb_platform_api \
+            --cov-config=.coveragerc \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage-unit.xml
+
+      - name: Upload unit-test coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openbb-platform-api-coverage-unit-${{ matrix.os }}-py${{ matrix.python_version }}
+          path: openbb_platform/extensions/platform_api/coverage-unit.xml

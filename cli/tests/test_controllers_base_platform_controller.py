@@ -281,6 +281,47 @@ def test_generated_call_with_obbject_results_dispatches_to_output_adapter(mock_s
     mock_session.output_adapter.display.assert_called_once()
 
 
+def test_generated_call_obbstream_result_is_followed(mock_session):
+    """A command returning an ``OBBStream`` is followed to completion."""
+    from openbb_core.app.model.stream import OBBStream
+
+    class _Source:
+        media_type = "text/event-stream"
+
+        def __init__(self):
+            self.body_iterator = self._gen()
+
+        async def _gen(self):
+            yield "data: 0\n\n"
+
+    stream = OBBStream(_Source())
+    controller, _translator = _make_command_call_test_setup(
+        mock_session, command_returns=stream
+    )
+    ns = MagicMock()
+    ns.export = ""
+    ns.register_obbject = False
+    ns.chart = False
+    ns.sheet_name = None
+    controller.parse_known_args_and_warn.return_value = ns
+
+    controller.call_cmd([])
+    assert stream.running is False
+
+
+def test_follow_stream_handles_keyboard_interrupt(mock_session):
+    """``_follow_stream`` stops the stream cleanly when interrupted."""
+    controller = PlatformController.__new__(PlatformController)
+    stream = MagicMock()
+    stream.media_type = "text/event-stream"
+    stream.wait.side_effect = KeyboardInterrupt
+
+    controller._follow_stream(stream)
+
+    stream.start.assert_called_once()
+    stream.stop.assert_called_once()
+
+
 def test_generated_call_wraps_list_in_obbject(mock_session):
     """A command returning a plain list gets wrapped in an ``OBBject`` before display."""
     controller, translator = _make_command_call_test_setup(
