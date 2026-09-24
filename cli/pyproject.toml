@@ -31,7 +31,7 @@ Repository = "https://github.com/OpenBB-finance/OpenBB"
 Documentation = "https://docs.openbb.co/cli"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [build-system]
 requires = ["hatchling"]
@@ -51,7 +51,6 @@ include = [
 [tool.uv.sources]
 openbb-core = { path = "../openbb_platform/core", editable = true }
 openbb-charting = { path = "../openbb_platform/obbject_extensions/charting", editable = true }
-openbb-devtools = { path = "../openbb_platform/extensions/devtools", editable = true }
 
 [tool.ruff]
 line-length = 88

@@ -23,7 +23,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0", "openbb-technical>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1", "openbb-technical>=2.0.0"]
 
 [build-system]
 requires = ["hatchling>=1.25"]

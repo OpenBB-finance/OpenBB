@@ -9,7 +9,7 @@ requires-python = ">=3.10,<4"
 dependencies = ["openbb-core>=2.0.0"]
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [project.entry-points."openbb_core_extension"]
 etf = "openbb_etf.etf_router:router"
@@ -38,7 +38,6 @@ include = [
 # This is here while V5 is under development
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
-openbb-devtools = { path = "../devtools", editable = true }
 
 [tool.ruff]
 line-length = 88

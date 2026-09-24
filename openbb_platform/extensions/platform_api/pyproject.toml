@@ -23,7 +23,7 @@ Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-a
 
 [dependency-groups]
 dev = [
-    "openbb-devtools>=2.0.0",
+    "openbb-devtools>=2.0.1",
     "httpx>=0.28.0,<1.0.0",
 ]
 
@@ -44,7 +44,6 @@ include = [
 # openbb-core is path-sourced because v5's has not yet been published.
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
-openbb-devtools = { path = "../devtools", editable = true }
 
 [tool.ruff]
 line-length = 88

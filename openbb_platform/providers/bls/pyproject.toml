@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [project.scripts]
 generate-bls-cache = "openbb_bls.utils.generate_cache:main"
