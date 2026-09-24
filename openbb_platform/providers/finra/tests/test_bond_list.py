@@ -1,6 +1,7 @@
 """Tests for the bond list model."""
 
 import asyncio
+from urllib.parse import urlparse
 
 import pytest
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -48,7 +49,9 @@ class TestBondList:
 
         assert [row.cusip for row in result] == ["X"]
         assert "orFilters" not in session.calls[1]["json"]
-        assert session.calls[1]["url"].endswith("mortgageBackedSecurities")
+        assert urlparse(session.calls[1]["url"]).path.endswith(
+            "/mortgageBackedSecurities"
+        )
 
     def test_empty(self, fake_session, response, trace_answer):
         """A product with no bonds is empty."""

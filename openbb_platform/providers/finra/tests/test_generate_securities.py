@@ -4,6 +4,7 @@ import gzip
 import io
 import json
 from urllib.error import HTTPError
+from urllib.parse import urlparse
 
 import pytest
 
@@ -230,7 +231,7 @@ def _universe_responder(partitions_status=200):
     """Answer the weekly partitions and summaries."""
 
     def respond(url, params, payload):
-        if "partitions" in url:
+        if urlparse(url).path.startswith("/partitions/"):
             body = {"availablePartitions": [{"partitions": ["2026-08-31", "T1"]}]}
 
             return partitions_status, json.dumps(body), {}
@@ -270,7 +271,7 @@ class TestFetchUniverse:
         """A page with no rows ends that summary type."""
 
         def respond(url, params, payload):
-            if "partitions" in url:
+            if urlparse(url).path.startswith("/partitions/"):
                 return (
                     200,
                     json.dumps({"availablePartitions": [{"partitions": ["w", "T1"]}]}),
@@ -292,7 +293,7 @@ class TestFetchUniverse:
         """A refused summary request raises."""
 
         def respond(url, params, payload):
-            if "partitions" in url:
+            if urlparse(url).path.startswith("/partitions/"):
                 return (
                     200,
                     json.dumps({"availablePartitions": [{"partitions": ["w", "T1"]}]}),
@@ -310,7 +311,7 @@ def _lookup_responder(statuses=None, reject=()):
     queue = list(statuses or [])
 
     def respond(url, params, payload):
-        if url.endswith("finralogin.jsp"):
+        if urlparse(url).path == "/finralogin.jsp":
             return 200, "\n", {}
 
         if queue:
@@ -344,7 +345,7 @@ class TestLookups:
         """A symbol missed on its market is looked up on any US market."""
 
         def respond(url, params, payload):
-            if url.endswith("finralogin.jsp"):
+            if urlparse(url).path == "/finralogin.jsp":
                 return 200, "\n", {}
 
             if ":" in params["symbol"]:
@@ -393,7 +394,7 @@ class TestBuild:
         lookups = _lookup_responder(reject=("ACPpA",))
 
         def respond(url, params, payload):
-            if "api.finra.org" in url:
+            if urlparse(url).hostname == "api.finra.org":
                 return universe(url, params, payload)
 
             return lookups(url, params, payload)

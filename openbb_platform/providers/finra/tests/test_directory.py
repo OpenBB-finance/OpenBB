@@ -3,6 +3,7 @@
 import asyncio
 import gzip
 import json
+from urllib.parse import urlparse
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -109,15 +110,15 @@ def _responder(response, lookup_statuses=None, reject=()):
     def respond(call):
         url = call["url"]
 
-        if "partitions" in url:
+        if urlparse(url).path.startswith("/partitions/"):
             return response(200, _partitions())
 
-        if "weeklySummary" in url:
+        if urlparse(url).path.endswith("/weeklySummary"):
             body, headers = _summary(call)
 
             return response(200, body, headers)
 
-        if url.endswith("finralogin.jsp"):
+        if urlparse(url).path == "/finralogin.jsp":
             return response(200, "\n")
 
         if statuses:
@@ -165,12 +166,16 @@ class TestList:
         assert list(rows) == ["AAPL", "ACHR.W", "NEWCO", "SPY"]
         assert rows["AAPL"]["security_type"] == "ST"
         assert rows["AAPL"]["tier"] == "NMS Tier 1"
-        assert rows["AAPL"]["url"].endswith("query=19:0P000000GY")
+        assert urlparse(rows["AAPL"]["url"]).query == "query=19:0P000000GY"
         assert rows["SPY"]["security_type"] == "FE"
         assert rows["ACHR.W"].get("security_type") is None
         assert rows["ACHR.W"]["url"] is None
 
-        lookups = [call for call in session.calls if call["url"].endswith("getids.jsp")]
+        lookups = [
+            call
+            for call in session.calls
+            if urlparse(call["url"]).path == "/getids.jsp"
+        ]
 
         assert [call["params"] for call in lookups] == [
             {"symbol": "22:NEWCO"},
@@ -214,7 +219,9 @@ class TestLookups:
             fake_session, response, ["AAA"], lookup_statuses=[429]
         )
         logins = [
-            call for call in session.calls if call["url"].endswith("finralogin.jsp")
+            call
+            for call in session.calls
+            if urlparse(call["url"]).path == "/finralogin.jsp"
         ]
 
         assert set(classes) == {"AAA"}
@@ -236,7 +243,7 @@ class TestLookups:
         """A symbol missed on its market is kept from any market only if it is US."""
 
         def respond(call):
-            if call["url"].endswith("finralogin.jsp"):
+            if urlparse(call["url"]).path == "/finralogin.jsp":
                 return response(200, "\n")
 
             if ":" in call["params"]["symbol"]:

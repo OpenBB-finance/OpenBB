@@ -3,6 +3,7 @@
 import asyncio
 import json
 from datetime import date
+from urllib.parse import urlparse
 
 import pytest
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -57,7 +58,7 @@ class TestProfiles:
             responder=lambda call: response(
                 200,
                 "\n"
-                if call["url"].endswith("finralogin.jsp")
+                if urlparse(call["url"]).path == "/finralogin.jsp"
                 else json.dumps({"Records": []}),
             )
         )

@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+from urllib.parse import urlparse
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -326,7 +327,7 @@ class TestMarketDataSession:
     @staticmethod
     def _call(fake_session, response, answer, method, *args):
         def responder(call):
-            if call["url"].endswith("finralogin.jsp"):
+            if urlparse(call["url"]).path == "/finralogin.jsp":
                 return response(200, "\n")
 
             return answer

@@ -2,6 +2,7 @@
 
 import asyncio
 from datetime import date
+from urllib.parse import urlparse
 
 import pytest
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -41,7 +42,9 @@ class TestHistory:
             "U.S. Treasury",
         }
 
-        datasets = {call["url"].rsplit("/", 1)[1] for call in session.calls[2:]}
+        datasets = {
+            urlparse(call["url"]).path.rsplit("/", 1)[1] for call in session.calls[2:]
+        }
 
         assert datasets == {"endOfDayPriceYield", "treasuryEndOfDayPriceYield"}
 
@@ -63,7 +66,7 @@ class TestHistory:
             if call["method"] == "GET":
                 return response(400, "{}")
 
-            if call["url"].endswith("bondSearch"):
+            if urlparse(call["url"]).path.endswith("/bondSearch"):
                 return trace_answer([{"cusip": "037833EH9", "bondType": "CA"}])
 
             return trace_answer([])

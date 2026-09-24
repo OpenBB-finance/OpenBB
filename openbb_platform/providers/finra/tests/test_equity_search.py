@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+from urllib.parse import urlparse
 
 import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -35,7 +36,7 @@ class TestSearch:
         assert apple.security_type == "Stock"
         assert apple.listing_market == "NASDAQ"
         assert apple.composite_market == "USCOMP"
-        assert apple.url and apple.url.endswith("query=19:0P000000GY")
+        assert urlparse(apple.url or "").query == "query=19:0P000000GY"
         assert len({row.quote_symbol for row in result}) == len(result)
 
     def test_is_symbol(self, fake_session, response):
@@ -49,7 +50,10 @@ class TestSearch:
         """The security type selects the search condition."""
         session = fake_session(
             responder=lambda call: response(
-                200, "\n" if call["url"].endswith("finralogin.jsp") else '{"id": "1"}'
+                200,
+                "\n"
+                if urlparse(call["url"]).path == "/finralogin.jsp"
+                else '{"id": "1"}',
             )
         )
 
@@ -77,7 +81,7 @@ class TestSearch:
             responder=lambda call: response(
                 200,
                 "\n"
-                if call["url"].endswith("finralogin.jsp")
+                if urlparse(call["url"]).path == "/finralogin.jsp"
                 else json.dumps({"result": records}),
             )
         )
