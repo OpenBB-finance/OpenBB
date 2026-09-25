@@ -108,7 +108,7 @@ def _normalize_parameter(
     required = bool(param.get("required")) or location == "path"
     default = schema.get("default")
     lower_choices = {str(c).lower() for c in choices}
-    if "json" in lower_choices and "xml" in lower_choices:
+    if "json" in lower_choices and lower_choices & {"xml", "csv"}:
         default = "json"
     if default is not None:
         required = False
@@ -150,6 +150,45 @@ def _normalize_parameter(
     }
 
 
+def _security_parameters(
+    spec: dict[str, Any], op: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Materialize ``apiKey`` security schemes as optional operation parameters.
+
+    Auth declared only through ``components.securitySchemes`` (no per-operation
+    parameter) would otherwise vanish from the spec — codegen and dispatch both
+    read the parameter list. Per-operation ``security`` overrides the
+    document-level default, including the explicit-public ``security: []``.
+    """
+    requirements = op.get("security")
+    if requirements is None:
+        requirements = spec.get("security") or []
+    schemes = (spec.get("components") or {}).get("securitySchemes") or {}
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for requirement in requirements:
+        if not isinstance(requirement, dict):
+            continue
+        for scheme_name in requirement:
+            scheme = schemes.get(scheme_name)
+            if not isinstance(scheme, dict) or scheme.get("type") != "apiKey":
+                continue
+            name = scheme.get("name")
+            location = scheme.get("in", "query")
+            if not name or name in seen or location not in ("query", "header"):
+                continue
+            seen.add(name)
+            out.append(
+                {
+                    "name": name,
+                    "in": location,
+                    "schema": {"type": "string"},
+                    "description": scheme.get("description"),
+                }
+            )
+    return out
+
+
 def _build_operation_entry(
     spec: dict[str, Any], url: str, method: str, op: dict[str, Any]
 ) -> dict[str, Any]:
@@ -162,6 +201,13 @@ def _build_operation_entry(
         if not resolved:
             continue
         normalized = _normalize_parameter(resolved, providers_set)
+        if normalized is not None:
+            params.append(normalized)
+    declared = {p["name"] for p in params}
+    for raw in _security_parameters(spec, op):
+        if raw["name"] in declared:
+            continue
+        normalized = _normalize_parameter(raw)
         if normalized is not None:
             params.append(normalized)
     return {

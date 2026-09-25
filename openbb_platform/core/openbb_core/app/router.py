@@ -29,6 +29,7 @@ from openbb_core.app.provider_interface import (
     ProviderInterface,
     StandardParams,
 )
+from openbb_core.app.route_iter import iter_api_routes
 from openbb_core.env import Env
 
 P = ParamSpec("P")
@@ -134,6 +135,11 @@ class Router:
                 if not no_validate
                 else func.__annotations__["return"]
             )
+            from openbb_core.app.model.stream import OBBStream
+
+            _ret = func.__annotations__.get("return")
+            if isclass(_ret) and issubclass(_ret, OBBStream):
+                kwargs["response_model"] = None
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
             )
@@ -159,6 +165,12 @@ class Router:
                     },
                 },
             )
+
+            if isclass(_ret) and issubclass(_ret, OBBStream):
+                kwargs["responses"][200] = {
+                    "description": "Event stream",
+                    "content": {"text/event-stream": {"schema": {"type": "string"}}},
+                }
 
             # For custom deprecation
             if kwargs.get("deprecated", False):
@@ -236,8 +248,14 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Callable[P, OBBject] | None:
         """Complete function signature."""
-        if isclass(return_type := func.__annotations__["return"]) and not issubclass(
-            return_type, OBBject
+        from openbb_core.app.model.stream import OBBStream
+
+        return_type = func.__annotations__["return"]
+        is_stream = isclass(return_type) and issubclass(return_type, OBBStream)
+        if (
+            isclass(return_type)
+            and not issubclass(return_type, OBBject)
+            and not is_stream
         ):
             return func
 
@@ -280,10 +298,11 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            func = cls.inject_return_annotation(
-                func=func,
-                annotation=provider_interface.return_annotations[model],
-            )
+            if not is_stream:
+                func = cls.inject_return_annotation(
+                    func=func,
+                    annotation=provider_interface.return_annotations[model],
+                )
 
         else:
             func = cls.polish_return_schema(func)
@@ -430,7 +449,9 @@ class CommandMap:
     ) -> dict[str, Callable]:
         """Get command map."""
         api_router = router.api_router
-        command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
+        command_map = {
+            route.path: route.endpoint for route in iter_api_routes(api_router)
+        }
         return command_map
 
     @staticmethod
@@ -443,7 +464,7 @@ class CommandMap:
         mapping = ProviderInterface().map
 
         coverage_map: dict[Any, Any] = {}
-        for route in api_router.routes:
+        for route in iter_api_routes(api_router):
             openapi_extra = getattr(route, "openapi_extra", None)
             if openapi_extra:
                 model = openapi_extra.get("model", None)
@@ -458,7 +479,7 @@ class CommandMap:
                             rp = (
                                 route.path
                                 if sep is None
-                                else route.path.replace("/", sep)  # type: ignore
+                                else route.path.replace("/", sep)
                             )
                             coverage_map[provider].append(rp)
 
@@ -474,7 +495,7 @@ class CommandMap:
         mapping = ProviderInterface().map
 
         coverage_map: dict[Any, Any] = {}
-        for route in api_router.routes:
+        for route in iter_api_routes(api_router):
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
                 model = openapi_extra.get("model", None)
@@ -484,7 +505,7 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
-                        rp = route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                        rp = route.path if sep is None else route.path.replace("/", sep)
                         if route.path not in coverage_map:
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
@@ -496,12 +517,12 @@ class CommandMap:
         api_router = router.api_router
 
         coverage_map: dict[Any, Any] = {}
-        for route in api_router.routes:
+        for route in iter_api_routes(api_router):
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
                 model = openapi_extra.get("model", None)
                 if model and hasattr(route, "path"):
-                    rp = route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                    rp = route.path if sep is None else route.path.replace("/", sep)
                     if route.path not in coverage_map:
                         coverage_map[rp] = []
                     coverage_map[rp] = model

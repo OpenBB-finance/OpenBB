@@ -261,9 +261,11 @@ def _envelope_inner_schema(
     array_keys = [
         k for k, v in props.items() if isinstance(v, dict) and v.get("type") == "array"
     ]
+    # Only resolve as an envelope if there is exactly one list of all dicts,
+    # or if the list is the only element present.
     if len(array_keys) == 1:
         items = props[array_keys[0]].get("items")
-        if isinstance(items, dict):
+        if isinstance(items, dict) and not _is_scalar_schema(items):
             return cast(dict[str, Any], items)
     return None
 

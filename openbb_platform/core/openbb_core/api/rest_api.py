@@ -67,6 +67,11 @@ app = FastAPI(
         for s in system.api_settings.servers
     ],
     lifespan=lifespan,
+    strict_content_type=False,
+    # Swagger UI defaults ``docExpansion`` to "list", which opens every tag
+    # section on load - hundreds of endpoint rows before the reader has picked
+    # anything. "none" renders the tag cards collapsed.
+    swagger_ui_parameters={"docExpansion": "none"},
 )
 app.add_middleware(
     CORSMiddleware,

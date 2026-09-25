@@ -1,0 +1,116 @@
+[
+ {
+  "method": "GET",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/CorporateAndAgencySecurities",
+  "params": null,
+  "json": null,
+  "status": 400,
+  "headers": {},
+  "text": "{\"status\":\"failure\",\"statusMessage\":\"Bad Request.\"}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/bondSearch",
+  "params": null,
+  "json": {
+   "fields": [
+    "cusip",
+    "issueSymbolIdentifier",
+    "issuerName",
+    "bondType"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "cusip",
+     "values": [
+      "037833EH9",
+      "91282CRK9"
+     ]
+    }
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:47 GMT\"],\"Record-Total\":[\"2\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"3a5aab59-6b50-4127-9c52-8059cdf4e79a\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"issuerName\\\":\\\"APPLE INC\\\",\\\"bondType\\\":\\\"CA\\\"},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"issuerName\\\":\\\"UNITED STATES TREASURY\\\",\\\"bondType\\\":\\\"TS\\\"}]\"}}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/endOfDayPriceYield",
+  "params": null,
+  "json": {
+   "fields": [
+    "tradeDate",
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "productType",
+    "lastSalePrice",
+    "lastSaleYield"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "cusip",
+     "values": [
+      "037833EH9"
+     ]
+    }
+   ],
+   "dateRangeFilters": [
+    {
+     "fieldName": "tradeDate",
+     "startDate": "2026-09-01",
+     "endDate": "2026-09-23"
+    }
+   ],
+   "sortFields": [
+    "tradeDate"
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:48 GMT\"],\"Record-Total\":[\"15\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"d1103600-6a21-414f-a5df-dbc41f867e8c\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-01\\\",\\\"lastSaleYield\\\":4.38,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.538},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-02\\\",\\\"lastSaleYield\\\":4.39,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.539},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-03\\\",\\\"lastSaleYield\\\":4.32,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.664},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-04\\\",\\\"lastSaleYield\\\":4.4,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.559605},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-08\\\",\\\"lastSaleYield\\\":4.4,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.56},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-09\\\",\\\"lastSaleYield\\\":4.46,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.47},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-10\\\",\\\"lastSaleYield\\\":4.59,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.2564},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-11\\\",\\\"lastSaleYield\\\":4.6,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.257},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-14\\\",\\\"lastSaleYield\\\":4.69,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.117},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-15\\\",\\\"lastSaleYield\\\":4.68,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.128522},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-16\\\",\\\"lastSaleYield\\\":4.76,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":93.9983},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-17\\\",\\\"lastSaleYield\\\":4.65,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.1959},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-18\\\",\\\"lastSaleYield\\\":4.72,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.109},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-21\\\",\\\"lastSaleYield\\\":4.69,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.169},{\\\"cusip\\\":\\\"037833EH9\\\",\\\"issueSymbolIdentifier\\\":\\\"AAPL5231623\\\",\\\"finraSecurityIdentifier\\\":5231623,\\\"tradeDate\\\":\\\"2026-09-22\\\",\\\"lastSaleYield\\\":4.68,\\\"productType\\\":\\\"CA\\\",\\\"lastSalePrice\\\":94.2}]\"}}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/treasuryEndOfDayPriceYield",
+  "params": null,
+  "json": {
+   "fields": [
+    "tradeDate",
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "lastSalePrice",
+    "lastSaleYield",
+    "dailyLastSaleYieldDirection"
+   ],
+   "domainFilters": [
+    {
+     "fieldName": "cusip",
+     "values": [
+      "91282CRK9"
+     ]
+    }
+   ],
+   "dateRangeFilters": [
+    {
+     "fieldName": "tradeDate",
+     "startDate": "2026-09-01",
+     "endDate": "2026-09-23"
+    }
+   ],
+   "sortFields": [
+    "tradeDate"
+   ],
+   "offset": 0,
+   "limit": 5000
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5000\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:48 GMT\"],\"Record-Total\":[\"15\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"d059fa19-e7e7-461a-9f06-2481140a0a36\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5000\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-01\\\",\\\"lastSaleYield\\\":4.537303,\\\"lastSalePrice\\\":99.28163409},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-02\\\",\\\"lastSaleYield\\\":4.560836,\\\"lastSalePrice\\\":99.17828597},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-03\\\",\\\"lastSaleYield\\\":4.527552,\\\"lastSalePrice\\\":99.32500861},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-04\\\",\\\"lastSaleYield\\\":4.548322,\\\"lastSalePrice\\\":99.2346},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-08\\\",\\\"lastSaleYield\\\":4.565392,\\\"lastSalePrice\\\":99.15997925},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-09\\\",\\\"lastSaleYield\\\":4.568539,\\\"lastSalePrice\\\":99.14648438},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-10\\\",\\\"lastSaleYield\\\":4.637998,\\\"lastSalePrice\\\":98.84313189},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-11\\\",\\\"lastSaleYield\\\":4.754742,\\\"lastSalePrice\\\":98.33731598},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-14\\\",\\\"lastSaleYield\\\":4.777954,\\\"lastSalePrice\\\":98.23758683},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-15\\\",\\\"lastSaleYield\\\":4.851779,\\\"lastSalePrice\\\":97.91988076},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-16\\\",\\\"lastSaleYield\\\":4.818005,\\\"lastSalePrice\\\":98.06626033},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-17\\\",\\\"lastSaleYield\\\":4.783747,\\\"lastSalePrice\\\":98.21484375},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-18\\\",\\\"lastSaleYield\\\":4.827551,\\\"lastSalePrice\\\":98.02856626},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-21\\\",\\\"lastSaleYield\\\":4.823564,\\\"lastSalePrice\\\":98.0465717},{\\\"cusip\\\":\\\"91282CRK9\\\",\\\"issueSymbolIdentifier\\\":\\\"TSRYS6486581\\\",\\\"dailyLastSaleYieldDirection\\\":null,\\\"finraSecurityIdentifier\\\":6486581,\\\"tradeDate\\\":\\\"2026-09-22\\\",\\\"lastSaleYield\\\":4.831917,\\\"lastSalePrice\\\":98.01154773}]\"}}"
+ }
+]

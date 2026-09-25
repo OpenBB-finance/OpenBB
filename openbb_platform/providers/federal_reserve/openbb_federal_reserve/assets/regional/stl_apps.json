@@ -1,0 +1,71 @@
+[
+  {
+    "name": "Saint Louis Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/St_Louis_night_expblend.jpg/960px-St_Louis_night_expblend.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/St_Louis_night_expblend.jpg/960px-St_Louis_night_expblend.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/St_Louis_night_expblend.jpg/960px-St_Louis_night_expblend.jpg",
+    "description": "Macroeconomic data from the St. Louis Fed - the FRED-MD and FRED-QD large macro datasets, a national economic index, and the Economic Synopses research series.",
+    "allowCustomization": true,
+    "tabs": {
+      "macro-data-panels": {
+        "id": "macro-data-panels",
+        "name": "Macro Data Panels",
+        "layout": [
+          {
+            "i": "stl_fred_md_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "stl_fred_qd_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "national-indexes": {
+        "id": "national-indexes",
+        "name": "National Indexes",
+        "layout": [
+          {
+            "i": "stl_national_index_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "stl_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

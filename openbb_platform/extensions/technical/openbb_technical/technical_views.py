@@ -1,6 +1,6 @@
 """Views for the technical Extension."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
@@ -349,8 +349,13 @@ class TechnicalViews:
         show_tails = kwargs.get("show_tails")
         show_tails = True if show_tails is None else show_tails
         tail_periods = int(kwargs["tail_periods"]) if "tail_periods" in kwargs else 16
-        tail_interval = (
-            str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"
+        tail_interval = cast(
+            Literal["day", "week", "month"],
+            {
+                "day": "day",
+                "week": "week",
+                "month": "month",
+            }.get(str(kwargs.get("tail_interval", "week")), "week"),
         )
         date = kwargs.get("date") if "date" in kwargs else None
         show_tails = False if date is not None else show_tails
@@ -450,10 +455,7 @@ def _ta_ma(**kwargs):
         data = basemodel_to_df(kwargs["obbject_item"], index=index)
 
     if isinstance(data, list):
-        # ``data`` is opaque ``Any`` until the isinstance narrows it, and
-        # ``basemodel_to_df`` declares ``list[Data] | Data``. Callers pass
-        # a list of ``Data``-compatible models here at runtime.
-        data = basemodel_to_df(data, index=index)  # ty: ignore[invalid-argument-type]
+        data = basemodel_to_df(data, index=index)
 
     window = (
         kwargs.get("length", [])

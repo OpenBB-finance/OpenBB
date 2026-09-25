@@ -1,0 +1,1244 @@
+{
+  "chicago_national_activity_federal_reserve_obb": {
+    "name": "Chicago Fed National Activity Index (CFNAI)",
+    "description": "Monthly index of 85 indicators of U.S. national economic activity, with category contributions; zero is trend growth.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_national_activity_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_national_activity"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "national_activity",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "cfnai",
+            "formatterFn": "none",
+            "headerName": "CFNAI",
+            "headerTooltip": "The CFNAI index value.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cfnai_ma_3",
+            "formatterFn": "none",
+            "headerName": "CFNAI MA3",
+            "headerTooltip": "The three-month moving average of the CFNAI.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "diffusion",
+            "formatterFn": "none",
+            "headerName": "Diffusion",
+            "headerTooltip": "The CFNAI diffusion index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "production_income",
+            "formatterFn": "none",
+            "headerName": "Production & Income",
+            "headerTooltip": "Production and income contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "employment",
+            "formatterFn": "none",
+            "headerName": "Employment",
+            "headerTooltip": "Employment, unemployment, and hours contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "consumption_housing",
+            "formatterFn": "none",
+            "headerName": "Consumption & Housing",
+            "headerTooltip": "Personal consumption and housing contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "sales_orders_inventories",
+            "formatterFn": "none",
+            "headerName": "Sales, Orders & Inventories",
+            "headerTooltip": "Sales, orders, and inventories contribution.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_financial_conditions_federal_reserve_obb": {
+    "name": "Chicago Fed National Financial Conditions Index (NFCI)",
+    "description": "Weekly index of U.S. financial conditions with the adjusted ANFCI and risk, credit, and leverage subindexes; zero is average.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_financial_conditions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_financial_conditions"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "financial_conditions",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The Friday of the observation week.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "nfci",
+            "formatterFn": "none",
+            "headerName": "NFCI",
+            "headerTooltip": "The NFCI index value.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "adjusted_nfci",
+            "formatterFn": "none",
+            "headerName": "Adjusted NFCI",
+            "headerTooltip": "The adjusted NFCI (ANFCI), relative to economic conditions.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "risk",
+            "formatterFn": "none",
+            "headerName": "Risk",
+            "headerTooltip": "The risk subindex.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "credit",
+            "formatterFn": "none",
+            "headerName": "Credit",
+            "headerTooltip": "The credit subindex.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "leverage",
+            "formatterFn": "none",
+            "headerName": "Leverage",
+            "headerTooltip": "The leverage subindex.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "nonfinancial_leverage",
+            "formatterFn": "none",
+            "headerName": "Nonfinancial Leverage",
+            "headerTooltip": "The nonfinancial leverage subindex.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_economic_conditions_federal_reserve_obb": {
+    "name": "Chicago Fed Survey of Economic Conditions (CFSEC)",
+    "description": "Monthly Seventh District diffusion indexes of business activity, outlook, hiring, capital spending, and cost pressures.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_economic_conditions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_economic_conditions"
+    },
+    "params": [
+      {
+        "label": "Date Basis",
+        "description": "Index the series by the survey's publication month or by its reference-period end date.",
+        "optional": true,
+        "type": "text",
+        "value": "publication",
+        "show": true,
+        "options": [
+          {
+            "label": "Publication Month",
+            "value": "publication"
+          },
+          {
+            "label": "Reference-Period End Date",
+            "value": "reference"
+          }
+        ],
+        "paramName": "date_basis"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "economic_conditions",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "activity",
+            "formatterFn": "none",
+            "headerName": "Activity",
+            "headerTooltip": "The overall business activity index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "activity_manufacturing",
+            "formatterFn": "none",
+            "headerName": "Activity (Manufacturing)",
+            "headerTooltip": "The manufacturing business activity index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "activity_nonmanufacturing",
+            "formatterFn": "none",
+            "headerName": "Activity (Non-Manufacturing)",
+            "headerTooltip": "The non-manufacturing business activity index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "outlook",
+            "formatterFn": "none",
+            "headerName": "Outlook",
+            "headerTooltip": "The outlook for the U.S. economy index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "hiring",
+            "formatterFn": "none",
+            "headerName": "Hiring",
+            "headerTooltip": "The current hiring index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "hiring_expectations",
+            "formatterFn": "none",
+            "headerName": "Hiring Expectations",
+            "headerTooltip": "The expected hiring index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "capital_spending_expectations",
+            "formatterFn": "none",
+            "headerName": "Capital Spending Expectations",
+            "headerTooltip": "The expected capital spending index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "labor_costs",
+            "formatterFn": "none",
+            "headerName": "Labor Costs",
+            "headerTooltip": "The labor cost pressures index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "nonlabor_costs",
+            "formatterFn": "none",
+            "headerName": "Non-Labor Costs",
+            "headerTooltip": "The non-labor cost pressures index.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_retail_trade_federal_reserve_obb": {
+    "name": "Chicago Fed Advance Retail Trade Summary (CARTS)",
+    "description": "Weekly U.S. retail and food services sales index with monthly nowcasts and benchmark comparisons, one column per series.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_retail_trade_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_retail_trade"
+    },
+    "params": [
+      {
+        "label": "Figure",
+        "description": "The dashboard figure to return: the weekly sales index (``weekly``), the monthly m/m percent changes with nowcast (``monthly``), the latest month's sales and prices snapshot (``current_month``), the latest nowcast contribution breakdown (``nowcast_contributions``), or the nowcast benchmarked against the Census/VISA (``vs_census_visa``) or BEA/CPI (``vs_bea_cpi``) series.",
+        "optional": true,
+        "type": "text",
+        "value": "weekly",
+        "show": true,
+        "options": [
+          {
+            "label": "Current Month Snapshot",
+            "value": "current_month"
+          },
+          {
+            "label": "Monthly m/m % Change",
+            "value": "monthly"
+          },
+          {
+            "label": "Nowcast Contributions",
+            "value": "nowcast_contributions"
+          },
+          {
+            "label": "Nowcast vs. BEA / CPI",
+            "value": "vs_bea_cpi"
+          },
+          {
+            "label": "Nowcast vs. Census / VISA",
+            "value": "vs_census_visa"
+          },
+          {
+            "label": "Weekly Sales Index",
+            "value": "weekly"
+          }
+        ],
+        "paramName": "figure"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "retail_trade",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_labor_market_federal_reserve_obb": {
+    "name": "Chicago Fed Labor Market Indicators (CFLMI)",
+    "description": "Monthly U.S. labor-market flow rates and the real-time unemployment-rate nowcast, one column per indicator by vintage.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_labor_market_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_labor_market"
+    },
+    "params": [
+      {
+        "label": "Table",
+        "description": "The labor-market flow rates, the real-time unemployment-rate nowcast, its component contributions, or its forecast probabilities.",
+        "optional": true,
+        "type": "text",
+        "value": "rates",
+        "show": true,
+        "options": [
+          {
+            "label": "Rates",
+            "value": "rates"
+          },
+          {
+            "label": "Chicago Fed Real-Time UR",
+            "value": "realtime_unemployment"
+          },
+          {
+            "label": "Real-Time UR Contributions",
+            "value": "unemployment_contributions"
+          },
+          {
+            "label": "Real-Time UR Probs",
+            "value": "unemployment_probabilities"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "labor_market",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "release",
+            "formatterFn": null,
+            "headerName": "Release",
+            "headerTooltip": "The estimate vintage, where applicable ('advance' or 'final'). Real-time unemployment tables publish two estimates per date.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_farmland_values_federal_reserve_obb": {
+    "name": "Chicago Fed AgLetter Farmland Values",
+    "description": "Quarterly year-over-year percent changes in Seventh District farmland values, in aggregate and by state.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_farmland_values_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_farmland_values"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "farmland_values",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The quarter-end month of the observation.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "year_over_year",
+            "formatterFn": "percent",
+            "headerName": "District (Y/Y)",
+            "headerTooltip": "The District year-over-year percent change in farmland values.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "illinois",
+            "formatterFn": "percent",
+            "headerName": "Illinois (Y/Y)",
+            "headerTooltip": "The Illinois year-over-year percent change.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "indiana",
+            "formatterFn": "percent",
+            "headerName": "Indiana (Y/Y)",
+            "headerTooltip": "The Indiana year-over-year percent change.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "iowa",
+            "formatterFn": "percent",
+            "headerName": "Iowa (Y/Y)",
+            "headerTooltip": "The Iowa year-over-year percent change.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "wisconsin",
+            "formatterFn": "percent",
+            "headerName": "Wisconsin (Y/Y)",
+            "headerTooltip": "The Wisconsin year-over-year percent change.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_ag_credit_conditions_federal_reserve_obb": {
+    "name": "Chicago Fed AgLetter Agricultural Credit Conditions",
+    "description": "Quarterly Seventh District diffusion indexes of farm loan demand, fund availability, and repayment, with the loan-to-deposit ratio.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_ag_credit_conditions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_ag_credit_conditions"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ag_credit_conditions",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The quarter-end month of the observation.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "loan_demand_index",
+            "formatterFn": "none",
+            "headerName": "Loan Demand Index",
+            "headerTooltip": "The loan demand diffusion index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "fund_availability_index",
+            "formatterFn": "none",
+            "headerName": "Fund Availability Index",
+            "headerTooltip": "The fund availability diffusion index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "loan_repayment_index",
+            "formatterFn": "none",
+            "headerName": "Loan Repayment Index",
+            "headerTooltip": "The loan repayment rate diffusion index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "loan_to_deposit_ratio",
+            "formatterFn": "none",
+            "headerName": "Loan-to-Deposit Ratio",
+            "headerTooltip": "The average loan-to-deposit ratio, in percent.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_farm_loan_rates_federal_reserve_obb": {
+    "name": "Chicago Fed AgLetter New Farm Loan Interest Rates",
+    "description": "Quarterly average interest rates on new Seventh District farm operating, feeder cattle, and real estate loans, in percent.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_farm_loan_rates_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_farm_loan_rates"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "farm_loan_rates",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The quarter-end month of the observation.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "operating_loans",
+            "formatterFn": "percent",
+            "headerName": "Operating Loans",
+            "headerTooltip": "The average rate on new operating loans, in percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "feeder_cattle_loans",
+            "formatterFn": "percent",
+            "headerName": "Feeder Cattle Loans",
+            "headerTooltip": "The average rate on new feeder cattle loans, in percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "farm_real_estate_loans",
+            "formatterFn": "percent",
+            "headerName": "Farm Real Estate Loans",
+            "headerTooltip": "The average rate on new farm real estate loans, in percent.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_brave_butters_kelley_federal_reserve_obb": {
+    "name": "Chicago Fed Brave-Butters-Kelley Indexes (BBKI)",
+    "description": "Discontinued monthly decomposition of U.S. real GDP growth into trend, cyclical, and irregular components; last observation May 2022.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_brave_butters_kelley_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_brave_butters_kelley"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "brave_butters_kelley",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "coincident_index",
+            "formatterFn": "none",
+            "headerName": "Coincident Index",
+            "headerTooltip": "The BBK coincident index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "leading_index",
+            "formatterFn": "none",
+            "headerName": "Leading Index",
+            "headerTooltip": "The BBK leading index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cycle",
+            "formatterFn": "none",
+            "headerName": "Cycle",
+            "headerTooltip": "The cyclical component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cycle_leading",
+            "formatterFn": "none",
+            "headerName": "Cycle (Leading)",
+            "headerTooltip": "The leading cyclical component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "cycle_lagging",
+            "formatterFn": "none",
+            "headerName": "Cycle (Lagging)",
+            "headerTooltip": "The lagging cyclical component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "trend",
+            "formatterFn": "none",
+            "headerName": "Trend",
+            "headerTooltip": "The trend component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "irregular",
+            "formatterFn": "none",
+            "headerName": "Irregular",
+            "headerTooltip": "The irregular component.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "monthly_gdp",
+            "formatterFn": "none",
+            "headerName": "Monthly GDP",
+            "headerTooltip": "The monthly GDP growth estimate.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_midwest_economy_federal_reserve_obb": {
+    "name": "Chicago Fed Midwest Economy Index (MEI)",
+    "description": "Discontinued monthly index of Seventh District nonfarm business activity, by state and sector; last observation May 2021.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "chicago_midwest_economy_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_midwest_economy"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "midwest_economy",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation month.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "mei",
+            "formatterFn": "none",
+            "headerName": "MEI",
+            "headerTooltip": "The Midwest Economy Index.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "illinois",
+            "formatterFn": "none",
+            "headerName": "Illinois",
+            "headerTooltip": "The Illinois state contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "indiana",
+            "formatterFn": "none",
+            "headerName": "Indiana",
+            "headerTooltip": "The Indiana state contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "iowa",
+            "formatterFn": "none",
+            "headerName": "Iowa",
+            "headerTooltip": "The Iowa state contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "michigan",
+            "formatterFn": "none",
+            "headerName": "Michigan",
+            "headerTooltip": "The Michigan state contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "wisconsin",
+            "formatterFn": "none",
+            "headerName": "Wisconsin",
+            "headerTooltip": "The Wisconsin state contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "regional",
+            "formatterFn": "none",
+            "headerName": "Regional",
+            "headerTooltip": "The relative regional MEI.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "manufacturing",
+            "formatterFn": "none",
+            "headerName": "Manufacturing",
+            "headerTooltip": "The manufacturing sector contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "construction",
+            "formatterFn": "none",
+            "headerName": "Construction & Mining",
+            "headerTooltip": "The construction and mining sector contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "services",
+            "formatterFn": "none",
+            "headerName": "Services",
+            "headerTooltip": "The service sector contribution.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "consumer",
+            "formatterFn": "none",
+            "headerName": "Consumer Spending",
+            "headerTooltip": "The consumer spending sector contribution.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Chicago"
+  },
+  "chicago_publications_federal_reserve_obb": {
+    "name": "Chicago Fed Publications",
+    "description": "Chicago Fed publications indexed on Fed in Print. Select one or more documents to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "chicago_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "chicago_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Working Paper Series",
+            "value": "working_paper_series"
+          },
+          {
+            "label": "Chicago Fed Letter",
+            "value": "chicago_fed_letter"
+          },
+          {
+            "label": "Economic Perspectives",
+            "value": "economic_perspectives"
+          },
+          {
+            "label": "Profitwise",
+            "value": "profitwise"
+          },
+          {
+            "label": "Working Paper Series, Macroeconomic Issues",
+            "value": "working_paper_series_macroeconomic_issues"
+          },
+          {
+            "label": "Agricultural Letter",
+            "value": "agricultural_letter"
+          },
+          {
+            "label": "Working Paper Series, Issues in Financial Regulation",
+            "value": "working_paper_series_issues_in_financial_regulation"
+          },
+          {
+            "label": "Speech",
+            "value": "speech"
+          },
+          {
+            "label": "Working Paper Series, Regional Economic Issues",
+            "value": "working_paper_series_regional_economic_issues"
+          },
+          {
+            "label": "Risk Perspectives",
+            "value": "risk_perspectives"
+          },
+          {
+            "label": "Policy Discussion Paper Series",
+            "value": "policy_discussion_paper_series"
+          },
+          {
+            "label": "Annual Report",
+            "value": "annual_report"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Limit",
+        "description": "The maximum number of documents to return.",
+        "optional": true,
+        "type": "number",
+        "value": 20,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "label": "Offset",
+        "description": "The result offset to begin from, for pagination.",
+        "optional": true,
+        "type": "number",
+        "value": 0,
+        "show": true,
+        "paramName": "offset"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "chicago",
+          "end_date": "$end_date",
+          "limit": "$limit",
+          "offset": "$offset",
+          "series": "$series",
+          "start_date": "$start_date"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Chicago"
+    ],
+    "subCategory": "Chicago",
+    "refetchInterval": false
+  }
+}

@@ -280,6 +280,37 @@ class TestOpenAPISchema:
         ]
         assert any(r and r.endswith("OptionsChainsData") for r in refs)
 
+    def test_nested_model_field_emits_defs_in_openapi(self):
+        """A nested-model field on a subclass surfaces ``$defs`` in the schema.
+
+        The row model's ``$defs`` (definitions for nested models referenced by
+        ``$ref``) are popped from the item schema and re-attached at the array
+        level so the OpenAPI document carries the nested definitions. The base
+        model has only scalar fields, so this path is exercised through a
+        subclass that adds a nested model.
+        """
+        from fastapi import FastAPI
+        from pydantic import BaseModel, Field
+
+        class _Greeks(BaseModel):
+            delta: float | None = None
+
+        class _SubChains(OptionsChainsData):
+            greeks: list[_Greeks] | None = Field(
+                default=None, description="Greeks for the contract."
+            )
+
+        app = FastAPI()
+
+        @app.get("/sub")
+        def sub() -> OBBject[_SubChains]:  # pragma: no cover - schema-only
+            ...
+
+        component = app.openapi()["components"]["schemas"]["_SubChains"]
+        assert component["type"] == "array"
+        assert "$defs" in component
+        assert "_Greeks" in component["$defs"]
+
     def test_row_schema_field_set_pins_serializer_contract(self):
         """Snapshot guard: every model field appears in the row schema.
 

@@ -58,6 +58,8 @@ class SystemSettings(Tagged):
     headless: bool = False
     allow_mutable_extensions: bool = getattr(Env(), "ALLOW_MUTABLE_EXTENSIONS", False)
     allow_on_command_output: bool = getattr(Env(), "ALLOW_ON_COMMAND_OUTPUT", False)
+    charting_extension: str | None = getattr(Env(), "CHARTING_EXTENSION", None)
+    charting_backend: str | None = getattr(Env(), "CHARTING_BACKEND", None)
 
     model_config = ConfigDict(validate_assignment=True, frozen=True)
 

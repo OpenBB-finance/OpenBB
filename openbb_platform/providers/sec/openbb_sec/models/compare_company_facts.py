@@ -1,7 +1,5 @@
 """SEC Compare Company Facts Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 from warnings import warn
 
@@ -13,12 +11,13 @@ from openbb_core.provider.standard_models.compare_company_facts import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field, field_validator
+
 from openbb_sec.utils.definitions import (
+    CALENDAR_PERIODS,
     FACT_CHOICES,
     FACTS,
-    FISCAL_PERIODS,
 )
-from pydantic import Field, field_validator
 
 
 class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
@@ -37,7 +36,7 @@ class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
     __json_schema_extra__ = {
         "symbol": {"multiple_items_allowed": True},
         "fact": {"multiple_items_allowed": False, "choices": sorted(FACTS)},
-        "fiscal_period": {
+        "calendar_period": {
             "multiple_items_allowed": False,
             "choices": ["fy", "q1", "q2", "q3", "q4"],
         },
@@ -47,25 +46,36 @@ class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
         default="Revenues",
         description="Fact or concept from the SEC taxonomy, in UpperCamelCase. Defaults to, 'Revenues'."
         + " AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'."
-        + " In previous years, they have reported as 'Revenues'.",
+        + " In previous years, they have reported as 'Revenues'."
+        + "\nFacts fall into two groups. Instantaneous balance-sheet concepts are measured at a"
+        + " point in time (e.g. 'Assets', 'Liabilities', 'StockholdersEquity', 'Goodwill', 'LongTermDebt');"
+        + " the full set is openbb_sec.utils.definitions.INSTANT_FACTS. Everything else is a flow concept"
+        + " from the income or cash-flow statement, measured over a period"
+        + " (e.g. 'Revenues', 'NetIncomeLoss', 'NetCashProvidedByUsedInOperatingActivities')."
+        + " The 'instantaneous' parameter and the standalone-Q4 derivation apply only to flow concepts;"
+        + " balance-sheet concepts are always point-in-time, including the year-end (Q4) value.",
     )
     year: int | None = Field(
         default=None,
-        description="The year to retrieve the data for. If not provided, the current year is used."
-        + " When symbol(s) are provided, excluding the year will return all reported values for the concept.",
+        description="The calendar year to retrieve the data for. If not provided, the current year is used."
+        + " When symbol(s) are provided, excluding the year will return all reported values for the concept."
+        + " Values are aligned by the calendar quarter/year of the period end, not the fiscal calendar.",
     )
-    fiscal_period: FISCAL_PERIODS | None = Field(
+    calendar_period: CALENDAR_PERIODS | None = Field(
         default=None,
-        description="The fiscal period to retrieve the data for."
+        description="The calendar period to retrieve the data for."
+        + " Periods are aligned to the calendar quarter/year of the report period end, not the"
+        + " filer's fiscal calendar, so off-calendar filers stay comparable."
         + " If not provided, the most recent quarter is used."
-        + " This parameter is ignored when a symbol is supplied.",
+        + " 'q1'-'q4' return standalone (3-month) quarters; the fourth quarter is derived as FY - 9-month."
+        + " When a symbol is supplied, cumulative year-to-date values are reduced to standalone quarters.",
     )
     instantaneous: bool = Field(
         default=False,
         description="Whether to retrieve instantaneous data. See the notes above for more information."
         + " Defaults to False. Some facts are only available as instantaneous data."
         + "\nThe function will automatically attempt the inverse of this parameter"
-        + " if the initial fiscal quarter request fails."
+        + " if the initial calendar quarter request fails."
         + " This parameter is ignored when a symbol is supplied.",
     )
     use_cache: bool = Field(
@@ -118,9 +128,18 @@ class SecCompareCompanyFactsData(CompareCompanyFactsData):
     fact: str = Field(
         description="The display name of the fact or concept.",
     )
-    unit: str = Field(
+    unit: str | None = Field(
         default=None,
         description="The unit of measurement for the fact or concept.",
+    )
+    calendar_year: int | None = Field(
+        default=None,
+        description="Calendar year the value is aligned to"
+        + " (by the calendar quarter/year of the period end, not the fiscal calendar).",
+    )
+    calendar_period: str | None = Field(
+        default=None,
+        description="Calendar period the value is aligned to: 'FY' or 'Q1'-'Q4'.",
     )
 
 
@@ -141,31 +160,39 @@ class SecCompareCompanyFactsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_sec.utils.frames import get_concept, get_frame
+        from openbb_sec.utils.frames import (
+            get_concept,
+            get_frame,
+            get_universe_quarter4,
+        )
 
         results: dict = {}
         if not query.symbol:
-            results = await get_frame(
-                fact=query.fact,
-                year=query.year,
-                fiscal_period=query.fiscal_period,
-                instantaneous=query.instantaneous,
-                use_cache=query.use_cache,
-            )
+            if query.calendar_period == "q4" and not query.instantaneous:
+                # No standalone Q4 duration frame exists; derive FY - (Q1+Q2+Q3).
+                results = await get_universe_quarter4(
+                    fact=query.fact,
+                    year=query.year,
+                    use_cache=query.use_cache,
+                )
+            else:
+                results = await get_frame(
+                    fact=query.fact,
+                    year=query.year,
+                    calendar_period=query.calendar_period,
+                    instantaneous=query.instantaneous,
+                    use_cache=query.use_cache,
+                )
         if query.symbol is not None:
             if query.instantaneous is True:
                 warn(
                     "The 'instantaneous' parameter is ignored when a symbol is supplied."
                 )
-            if query.fiscal_period is not None:
-                warn(
-                    "The 'fiscal_period' parameter is ignored when a symbol is supplied."
-                )
             results = await get_concept(
                 symbol=query.symbol,
                 fact=query.fact,
                 year=query.year,
+                calendar_period=query.calendar_period,
                 use_cache=query.use_cache,
             )
         if not results:
@@ -185,6 +212,6 @@ class SecCompareCompanyFactsFetcher(
         metadata = data.get("metadata")
         results_data = data.get("data", [])
         return AnnotatedResult(
-            result=[SecCompareCompanyFactsData.model_validate(d) for d in results_data],  # type: ignore
+            result=[SecCompareCompanyFactsData.model_validate(d) for d in results_data],
             metadata=metadata,
         )

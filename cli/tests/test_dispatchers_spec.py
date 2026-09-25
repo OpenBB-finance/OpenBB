@@ -1175,6 +1175,123 @@ def test_normalize_parameter_xml_default_flips_to_json():
     assert out["default"] == "json"
 
 
+def test_normalize_parameter_csv_default_flips_to_json():
+    """When ``csv`` and ``json`` are both offered, default flips to ``json``."""
+    out = _normalize_parameter(
+        {
+            "name": "fmt",
+            "schema": {"type": "string", "enum": ["json", "csv"]},
+        }
+    )
+    assert out["default"] == "json"
+    assert out["required"] is False
+
+
+def test_normalize_parameter_json_only_enum_keeps_no_default():
+    """A lone ``json`` choice is not a format toggle — no default injected."""
+    out = _normalize_parameter(
+        {
+            "name": "fmt",
+            "schema": {"type": "string", "enum": ["json"]},
+        }
+    )
+    assert out["default"] is None
+
+
+# --- securitySchemes → synthetic credential parameters ---
+
+
+def _apikey_spec(**op_extra):
+    return {
+        "security": [{"KeyAuth": []}],
+        "components": {
+            "securitySchemes": {
+                "KeyAuth": {
+                    "type": "apiKey",
+                    "in": "query",
+                    "name": "api_token",
+                    "description": "API key.",
+                }
+            }
+        },
+        "paths": {"/data": {"get": {"summary": "Data", **op_extra}}},
+    }
+
+
+def test_build_command_spec_materializes_global_apikey_as_optional_param():
+    commands = build_command_spec(_apikey_spec(), api_prefix="")
+    params = {p["name"]: p for p in commands["data"]["parameters"]}
+    assert "api_token" in params
+    assert params["api_token"]["in"] == "query"
+    assert params["api_token"]["required"] is False
+    assert params["api_token"]["help"] == "API key."
+
+
+def test_build_command_spec_operation_security_empty_suppresses_global():
+    commands = build_command_spec(_apikey_spec(security=[]), api_prefix="")
+    names = [p["name"] for p in commands["data"]["parameters"]]
+    assert "api_token" not in names
+
+
+def test_build_command_spec_declared_param_not_duplicated_by_security():
+    spec = _apikey_spec(
+        parameters=[{"name": "api_token", "in": "query", "schema": {"type": "string"}}]
+    )
+    commands = build_command_spec(spec, api_prefix="")
+    names = [p["name"] for p in commands["data"]["parameters"]]
+    assert names.count("api_token") == 1
+
+
+def test_security_parameters_header_scheme_and_non_apikey():
+    from openbb_cli.dispatchers.spec import _security_parameters
+
+    spec = {
+        "security": [{"HeaderAuth": []}, {"Bearer": []}, {"CookieAuth": []}],
+        "components": {
+            "securitySchemes": {
+                "HeaderAuth": {"type": "apiKey", "in": "header", "name": "X-Api-Key"},
+                "Bearer": {"type": "http", "scheme": "bearer"},
+                "CookieAuth": {"type": "apiKey", "in": "cookie", "name": "sid"},
+            }
+        },
+    }
+    out = _security_parameters(spec, {})
+    assert out == [
+        {
+            "name": "X-Api-Key",
+            "in": "header",
+            "schema": {"type": "string"},
+            "description": None,
+        }
+    ]
+
+
+def test_security_parameters_dedupes_repeated_scheme_name():
+    from openbb_cli.dispatchers.spec import _security_parameters
+
+    spec = {
+        "security": [{"KeyAuth": []}, {"KeyAuth": []}],
+        "components": {
+            "securitySchemes": {
+                "KeyAuth": {"type": "apiKey", "in": "query", "name": "api_token"}
+            }
+        },
+    }
+    assert len(_security_parameters(spec, {})) == 1
+
+
+def test_security_parameters_skips_malformed_requirements():
+    from openbb_cli.dispatchers.spec import _security_parameters
+
+    spec = {
+        "security": ["not-a-dict", {"Missing": []}, {"NoName": []}],
+        "components": {
+            "securitySchemes": {"NoName": {"type": "apiKey", "in": "query"}}
+        },
+    }
+    assert _security_parameters(spec, {}) == []
+
+
 def test_operation_providers_skips_non_dict_param_entries():
     """Defensive: a malformed parameter entry doesn't crash provider extraction."""
     from openbb_cli.dispatchers.spec import _operation_providers

@@ -5,10 +5,7 @@ from datetime import date, timedelta
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
-# pylint: disable=too-many-lines,redefined-outer-name
 
-
-# pylint: disable=import-outside-toplevel,inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
@@ -16,6 +13,8 @@ def obb(pytestconfig):
         import openbb
 
         return openbb.obb
+
+    pytest.skip("Integration tests are not enabled.")
 
 
 @pytest.mark.parametrize(

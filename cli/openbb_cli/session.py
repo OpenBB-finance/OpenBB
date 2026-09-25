@@ -137,14 +137,36 @@ class Session(metaclass=SingletonMeta):
         except Exception:
             return None
 
+    @staticmethod
+    def _resolve_backend_class() -> Any:
+        """Resolve the charting backend class, honoring overrides and the engine.
+
+        Prefers a backend registered under the ``openbb_charting_backend``
+        entry-point group, otherwise asks the resolved charting engine for its
+        built-in backend, so the CLI never depends on ``openbb_charting`` by name.
+        """
+        from openbb_core.app.charting import (
+            ChartingManager,
+            get_charting_backend_class,
+        )
+
+        backend_class = get_charting_backend_class()
+        if backend_class is not None:
+            return backend_class
+
+        engine = ChartingManager.get_charting_class()
+        getter = getattr(engine, "get_backend_class", None) if engine else None
+        return getter() if callable(getter) else None
+
     def _build_backend(self) -> Any:
         try:
-            from openbb_charting.core.backend import (  # ty: ignore[unresolved-import]
-                Backend,
-            )
             from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
-            return Backend(
+            backend_class = self._resolve_backend_class()
+            if backend_class is None:
+                return None
+
+            return backend_class(
                 ChartingSettings(
                     system_settings=self._obb.system,
                     user_settings=self._obb.user,

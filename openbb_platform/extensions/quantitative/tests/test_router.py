@@ -33,7 +33,9 @@ EXPECTED_ROUTES = {
 
 def test_router_aggregates_every_command():
     """The top-level router wires every quantitative command exactly once."""
+    from openbb_core.app.route_iter import iter_api_routes
+
     assert isinstance(router, Router)
-    paths = [r.path for r in router.api_router.routes]
+    paths = [r.path for r in iter_api_routes(router.api_router)]
     assert set(paths) == EXPECTED_ROUTES
     assert len(paths) == len(EXPECTED_ROUTES)

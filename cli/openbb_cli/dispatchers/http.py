@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import contextlib
 import inspect
+import json
 import re
+import warnings
 from datetime import datetime, timezone
 from time import perf_counter_ns
 from typing import Any
 
 import httpx
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 
 from openbb_cli.auth import AuthContext, AuthDecision, AuthHook
 from openbb_cli.dispatchers._unpack import unpack_response
@@ -134,6 +137,55 @@ def _decode_response(response: httpx.Response) -> Any:
         except ValueError:
             return response.text
     return response.text
+
+
+class _HttpSSESource:
+    """Adapt an HTTP streaming endpoint to the ``OBBStream`` body_iterator protocol.
+
+    Holds the request details and opens the connection lazily on first iteration
+    (inside ``OBBStream``'s worker loop), so the stream's lifetime is bound to the
+    handle — not to the dispatcher's event loop.
+    """
+
+    media_type = "text/event-stream"
+
+    def __init__(self, url, params, headers, method="get", body=None) -> None:
+        self.provider: str | None = None
+        self.warnings: list[dict[str, Any]] | None = None
+        self.body_iterator = self._iterate(url, params, headers, method, body)
+
+    def _consume_headers(self, response_headers) -> None:
+        """Surface the server's out-of-band stream headers (provider, warnings).
+
+        Parameters
+        ----------
+        response_headers : Mapping
+            The streaming response's headers.
+        """
+        self.provider = response_headers.get("X-OpenBB-Provider")
+        raw = response_headers.get("X-OpenBB-Warning")
+        if not raw:
+            return
+        try:
+            items = json.loads(raw)
+        except (ValueError, TypeError):
+            return
+        self.warnings = items
+        for item in items:
+            message = item.get("message") if isinstance(item, dict) else str(item)
+            warnings.warn(message, OpenBBWarning, stacklevel=2)
+
+    async def _iterate(self, url, params, headers, method, body):
+        async with httpx.AsyncClient(timeout=None) as client:  # noqa: S113
+            request_kwargs: dict[str, Any] = {"params": params, "headers": headers}
+            if method == "post":
+                request_kwargs["json"] = body or {}
+            async with client.stream(method.upper(), url, **request_kwargs) as resp:
+                resp.raise_for_status()
+                self._consume_headers(resp.headers)
+                async for line in resp.aiter_lines():
+                    if line:
+                        yield line + "\n"
 
 
 _NUMERIC_RESPONSE_TYPES: frozenset[str] = frozenset(
@@ -673,24 +725,47 @@ class HttpDispatcher:
             return override.lower()
         return self._command_methods.get(command, "post").lower()
 
+    def _is_streaming_command(self, command: str) -> bool:
+        """Return whether the command's success response is a stream."""
+        cmd_spec = (self._spec_doc.get("commands") or {}).get(command) or {}
+        for status, content in (cmd_spec.get("response_schemas") or {}).items():
+            if (
+                str(status).startswith("2")
+                and isinstance(content, dict)
+                and any("event-stream" in str(ct) for ct in content)
+            ):
+                return True
+        return False
+
     def _partition_params(
         self, command: str, params: dict[str, Any]
-    ) -> tuple[dict[str, Any], dict[str, Any]]:
-        """Split dispatch params into ``(query, body)`` by their spec ``in`` tag."""
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+        """Split dispatch params into ``(query, body, headers)`` by spec ``in`` tag."""
         cmd_spec = (self._spec_doc.get("commands") or {}).get(command) or {}
-        locations = {
-            p["name"]: p.get("in", "query")
-            for p in command_parameters(cmd_spec)
-            if isinstance(p, dict) and p.get("name")
-        }
+        locations: dict[str, tuple[str, str]] = {}
+        for p in command_parameters(cmd_spec):
+            if isinstance(p, dict) and p.get("name"):
+                spec_name = p["name"]
+                loc = p.get("in", "query")
+                for key in {
+                    spec_name,
+                    spec_name.replace("-", "_"),
+                    spec_name.replace("_", "-"),
+                }:
+                    locations[key] = (loc, spec_name)
         query: dict[str, Any] = {}
         body: dict[str, Any] = {}
+        headers: dict[str, Any] = {}
         for name, value in params.items():
-            if locations.get(name, "body") == "body":
+            loc, spec_name = locations.get(name, ("body", name))
+            if loc == "header":
+                if value is not None:
+                    headers[spec_name] = str(value)
+            elif loc == "body":
                 body[name] = value
             else:
                 query[name] = value
-        return query, body
+        return query, body, headers
 
     async def _invoke_auth_hook(
         self, request: Request, method_lower: str
@@ -747,14 +822,45 @@ class HttpDispatcher:
                         message=decision.deny_reason or "auth hook denied request",
                     ),
                 )
-            extra_headers = decision.headers or None
             extra_query = decision.query_params or None
+            query_part, body_part, header_part = self._partition_params(
+                wire_request.command, body_or_query
+            )
+            extra_headers = {**(decision.headers or {}), **header_part} or None
+            # GET carries every non-header param in the query string; only POST
+            # splits the body out as JSON.
+            get_query = {**query_part, **body_part}
+
+            if self._is_streaming_command(wire_request.command):
+                from openbb_core.app.model.stream import OBBStream
+
+                if method_lower == "get":
+                    merged_query = {
+                        **self._query_params,
+                        **(extra_query or {}),
+                        **get_query,
+                    }
+                    stream_body: dict[str, Any] = {}
+                else:
+                    merged_query = {
+                        **self._query_params,
+                        **(extra_query or {}),
+                        **query_part,
+                    }
+                    stream_body = body_part
+                source = _HttpSSESource(
+                    url, merged_query or None, extra_headers, method_lower, stream_body
+                )
+                return Response(
+                    id=request.id, ok=True, result=OBBStream(source), error=None
+                )
+
             async with self._client_context() as client:
                 if method_lower == "get":
                     merged_query = {
                         **self._query_params,
                         **(extra_query or {}),
-                        **body_or_query,
+                        **get_query,
                     }
                     if fetch_all:
                         payload = await _fetch_all_pages(
@@ -776,9 +882,6 @@ class HttpDispatcher:
                         response.raise_for_status()
                         payload = _decode_response(response)
                 else:
-                    query_part, body_part = self._partition_params(
-                        wire_request.command, body_or_query
-                    )
                     merged_query = {
                         **self._query_params,
                         **(extra_query or {}),

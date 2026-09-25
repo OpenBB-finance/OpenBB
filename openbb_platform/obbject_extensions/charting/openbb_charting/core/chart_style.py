@@ -1,6 +1,5 @@
 """Chart and style helpers for Plotly."""
 
-# pylint: disable=C0302,R0902,W3301
 import json
 import sys
 from pathlib import Path
@@ -20,13 +19,47 @@ from openbb_charting.core.config.openbb_styles import (
 )
 
 
-class ChartStyle:
-    """The class that helps with handling of style configurations.
+def map_layout_key() -> str:
+    """Return the layout key this Plotly uses for map styling.
 
-    It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
-    to the .pltstyle files. For `Plotly` and `Rich` this class serves custom
-    styles as python dictionaries.
+    Plotly 7 removed ``layout.mapbox`` in favour of ``layout.map``.
     """
+    valid = getattr(go.Layout, "_valid_props", None)
+
+    if not valid or "mapbox" in valid:
+        return "mapbox"
+
+    return "map"
+
+
+def prune_unsupported_layout(template: dict) -> dict:
+    """Drop the layout keys the installed Plotly rejects, in place.
+
+
+    Parameters
+    ----------
+    template : dict
+        A Plotly template dict; its ``layout`` is filtered in place.
+
+    Returns
+    -------
+    dict
+        The same template, with unsupported layout keys removed.
+    """
+    layout = template.get("layout")
+    valid = getattr(go.Layout, "_valid_props", None)
+
+    if not valid or not isinstance(layout, dict):
+        return template
+
+    for key in [k for k in layout if k not in valid]:
+        layout.pop(key)
+
+    return template
+
+
+class ChartStyle:
+    """The class that helps with handling of style configurations."""
 
     STYLES_REPO = Path(__file__).parent.parent / "styles"
     user_styles_directory: Path = STYLES_REPO
@@ -49,10 +82,10 @@ class ChartStyle:
     initialized: bool = False
     instance: ClassVar["ChartStyle | None"] = None
 
-    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
+    def __new__(cls, *args, **kwargs):
         """Create a singleton."""
         if cls.instance is None:
-            cls.instance = super().__new__(cls)  # pylint: disable=E1120
+            cls.instance = super().__new__(cls)
         return cls.instance
 
     def __init__(
@@ -69,7 +102,6 @@ class ChartStyle:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.service.user_service import UserService
 
         if self.initialized:
@@ -93,19 +125,25 @@ class ChartStyle:
         if style != self.plt_style:
             self.load_style(style)
 
-        style = style.lower().replace("light", "white")  # type: ignore
+        style = style.lower().replace("light", "white")
 
         if self.plt_style and self.plotly_template:
+            map_key = map_layout_key()
+            prune_unsupported_layout(self.plotly_template)
             self.plotly_template.setdefault("layout", {}).setdefault(
-                "mapbox", {}
+                map_key, {}
             ).setdefault("style", "dark")
             if "tables" in self.plt_styles_available:
                 tables = self.load_json_style(self.plt_styles_available["tables"])
-                pio.templates["openbb_tables"] = go.layout.Template(tables)
+                pio.templates["openbb_tables"] = go.layout.Template(
+                    prune_unsupported_layout(tables)
+                )
             try:
                 pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             except ValueError as err:
-                if "plotly.graph_objs.Layout: 'legend2'" in str(err):
+                if (
+                    "plotly.graph_objs.Layout: 'legend2'" in str(err)
+                ):  # pragma: no cover - plotly<5.15 only; installed plotly supports legend2
                     warn(
                         "[red]Warning: Plotly multiple legends are "
                         "not supported in currently installed version.[/]\n\n"
@@ -121,17 +159,12 @@ class ChartStyle:
             pio.templates.default = "openbb"
             self.mapbox_style = (
                 self.plotly_template.setdefault("layout", {})
-                .setdefault("mapbox", {})
+                .setdefault(map_key, {})
                 .setdefault("style", "dark")
             )
 
     def load_available_styles_from_folder(self, folder: Path | str) -> None:
         """Load custom styles from folder.
-
-        Parses the styles/default and styles/user folders and loads style files.
-        To be recognized files need to follow a naming convention:
-        *.pltstyle        - plotly stylesheets
-        *.richstyle.json  - rich stylesheets
 
         Parameters
         ----------

@@ -269,7 +269,7 @@ class CLIController(BaseController):
                 bound_method = MethodType(method_call_command, self)
                 bound_method = update_wrapper(
                     partial(bound_method, router=router),
-                    method_call_command,  # ty: ignore[invalid-argument-type]
+                    method_call_command,
                 )
 
             setattr(self, f"call_{router}", bound_method)

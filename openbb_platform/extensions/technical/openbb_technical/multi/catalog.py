@@ -5,6 +5,7 @@ import inspect
 from typing import Any, Literal, get_args, get_origin, get_type_hints
 
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.route_iter import iter_api_routes
 from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -374,7 +375,7 @@ def _build_catalog() -> list[IndicatorEntry]:
         if family_router is None:
             continue  # pragma: no cover - every family module exposes ``router``
         candidates = _module_query_params(module)
-        for route in family_router.api_router.routes:
+        for route in iter_api_routes(family_router.api_router):
             endpoint = route.endpoint
             endpoint_name = endpoint.__name__
             query_params = _match_query_params_for(endpoint_name, candidates)

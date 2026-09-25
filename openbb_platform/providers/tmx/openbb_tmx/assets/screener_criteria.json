@@ -1,0 +1,1353 @@
+{
+ "CA": [
+  {
+   "id": 0,
+   "name": "Popular",
+   "fixed": [
+    {
+     "id": "exchangeGroups",
+     "name": "Exchange",
+     "description": "Where the security trades",
+     "values": [
+      "TSXV",
+      "TSX",
+      "CSE",
+      "NEO"
+     ]
+    },
+    {
+     "id": "sectors",
+     "name": "Sector",
+     "description": "Group of companies in the same segment of economy/share similar business type",
+     "values": null
+    }
+   ],
+   "ranged": [
+    {
+     "id": "divyield",
+     "name": "Dividend Yield",
+     "description": "Size of the cash dividend"
+    },
+    {
+     "id": "marketcap",
+     "name": "Market Capitalization",
+     "description": "The aggregate value for the company's stock"
+    },
+    {
+     "id": "forwardpe",
+     "name": "Forward PE Ratio",
+     "description": "Forward-looking price-to-earnings ratio"
+    },
+    {
+     "id": "profitmargin",
+     "name": "Profit Margin",
+     "description": "Company's profitability from continuing operations after taxes"
+    },
+    {
+     "id": "averagevolume90",
+     "name": "Volume 90-Day Average",
+     "description": "Average volume of last 90 days"
+    },
+    {
+     "id": "pricechange",
+     "name": "Price Change ($)",
+     "description": "Dollar change in trading price"
+    },
+    {
+     "id": "performance3month",
+     "name": "Price Performance 90 days",
+     "description": "Price percent change over last 90 days"
+    },
+    {
+     "id": "performance365",
+     "name": "52-Week Change",
+     "description": "How far stock has changed over the past 52 weeks"
+    },
+    {
+     "id": "close",
+     "name": "Stock Price",
+     "description": "The most recent price"
+    },
+    {
+     "id": "performance1month",
+     "name": "Price Performance 30 days",
+     "description": "Price percent change over last 30 days"
+    },
+    {
+     "id": "sharesoutstanding",
+     "name": "Outstanding Shares",
+     "description": "Total number of shares outstanding"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "name": "Company Basics",
+   "fixed": [
+    {
+     "id": "exchangeGroups",
+     "name": "Exchange",
+     "description": "Where the security trades",
+     "values": [
+      "TSXV",
+      "TSX",
+      "CSE",
+      "NEO"
+     ]
+    },
+    {
+     "id": "sectors",
+     "name": "Sector",
+     "description": "Group of companies in the same segment of economy/share similar business type",
+     "values": null
+    },
+    {
+     "id": "optionable",
+     "name": "Optionable",
+     "description": "Stocks with Options Available",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "indexdji",
+     "name": "Index = Dow Jones Industrial",
+     "description": "Index = Dow Jones Industrial",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "primarysymbol",
+     "name": "Primary Exchange Listed Symbols",
+     "description": "Only include symbols that belong to the primary exchange for the company",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "filingcurrent",
+     "name": "Filing Status is Current",
+     "description": "Company has filed an annual or quarterly report over the last 90 days",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "indices",
+     "name": "Index List",
+     "description": "List of indices representing different sectors and segments",
+     "values": [
+      "S&P/TSX Venture Composite Index",
+      "S&P/TSX 60 Index",
+      "S&P/TSX 60 Equal Weight Index",
+      "S&P/TSX Capped Composite Index",
+      "S&P/TSX Smallcap Index"
+     ]
+    }
+   ],
+   "ranged": [
+    {
+     "id": "totalrevenue",
+     "name": "Total Revenue",
+     "description": "Total revenue from latest financial report."
+    },
+    {
+     "id": "shortfloat",
+     "name": "Short Float",
+     "description": "Percent of float shares shorted"
+    },
+    {
+     "id": "marketcap",
+     "name": "Market Capitalization",
+     "description": "The aggregate value for the company's stock"
+    },
+    {
+     "id": "freecashflow",
+     "name": "Free Cash Flow",
+     "description": "Free cash flow is the cash left over after a company pays for its operating expenses and capital expenditures, also known as CAPEX."
+    },
+    {
+     "id": "sharesfloat",
+     "name": "Shares Float",
+     "description": "Number of shares available for trading"
+    },
+    {
+     "id": "shortratio",
+     "name": "Short Ratio",
+     "description": "The estimated number of trading days it takes for short sellers to cover borrowed shares"
+    },
+    {
+     "id": "ltmrev",
+     "name": "Revenue LTM",
+     "description": "Total sales for the company"
+    },
+    {
+     "id": "employees",
+     "name": "Employees",
+     "description": "Number of people working for the company"
+    },
+    {
+     "id": "close",
+     "name": "Stock Price",
+     "description": "The most recent price"
+    },
+    {
+     "id": "sharesoutstanding",
+     "name": "Outstanding Shares",
+     "description": "Total number of shares outstanding"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "Performance",
+   "fixed": [
+    {
+     "id": "high52week",
+     "name": "Trading above 52 wk High",
+     "description": "Trading above the 52 week high value could indicate an overvalued security or simply market value appreciation",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "low52week",
+     "name": "Trading below 52 wk Low",
+     "description": "Trading below the 52 week low could indicate an undervalued security but prudent investors use this only as starting point for further analysis",
+     "values": [
+      "false",
+      "true"
+     ]
+    }
+   ],
+   "ranged": [
+    {
+     "id": "performance1day",
+     "name": "Price Change (%)",
+     "description": "The change in trading price in one day (percentage)"
+    },
+    {
+     "id": "revgrow3",
+     "name": "3 Yr Annual Revenue Growth",
+     "description": "3 Yr Revenue growth is the increase (or decrease) in a company's sales over the three year period, shown as a percentage."
+    },
+    {
+     "id": "performance6month",
+     "name": "Price Performance 6 months",
+     "description": "Price percent change over last 6 months"
+    },
+    {
+     "id": "performance5year",
+     "name": "Price Performance 5 years",
+     "description": "Price percent change over last 5 years"
+    },
+    {
+     "id": "performance7day",
+     "name": "Price Performance 7 days",
+     "description": "Price percent change over last 7 days"
+    },
+    {
+     "id": "revgrow5",
+     "name": "5 Yr Annual Revenue Growth",
+     "description": "5 Yr Revenue growth is the increase (or decrease) in a company's sales over the five year period, shown as a percentage."
+    },
+    {
+     "id": "incgrow3",
+     "name": "3 Yr Annual Income Growth Rate",
+     "description": "3 year annual income growth rate"
+    },
+    {
+     "id": "pricechange",
+     "name": "Price Change ($)",
+     "description": "Dollar change in trading price"
+    },
+    {
+     "id": "incgrow5",
+     "name": "5 Yr Annual Income Growth Rate",
+     "description": "5 year annual income growth rate"
+    },
+    {
+     "id": "performance3month",
+     "name": "Price Performance 90 days",
+     "description": "Price percent change over last 90 days"
+    },
+    {
+     "id": "performance3year",
+     "name": "Price Performance 3 years",
+     "description": "Price percent change over last 3 years"
+    },
+    {
+     "id": "performanceytd",
+     "name": "Price Performance Year-to-Date",
+     "description": "Price percent change year to date"
+    },
+    {
+     "id": "performance365",
+     "name": "52-Week Change",
+     "description": "How far stock has changed over the past 52 weeks"
+    },
+    {
+     "id": "performance1month",
+     "name": "Price Performance 30 days",
+     "description": "Price percent change over last 30 days"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "Key Ratios",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "pbrat",
+     "name": "Price/Book Ratio",
+     "description": "Market versus current reported value for company"
+    },
+    {
+     "id": "currat",
+     "name": "Current Ratio",
+     "description": "Company's ability to pay short-term obligations"
+    },
+    {
+     "id": "psrat",
+     "name": "Price/Sales Ratio",
+     "description": "If stock is well-valued versus current revenue"
+    },
+    {
+     "id": "latfisceps",
+     "name": "Latest Fiscal EPS",
+     "description": "Earnings per share at the latest fiscal date"
+    },
+    {
+     "id": "bvps",
+     "name": "Book Value Per Share",
+     "description": "Common Shareholder's Equity / Diluted Shares Outstanding"
+    },
+    {
+     "id": "quickrat",
+     "name": "Quick Ratio",
+     "description": "A measure of how well a company can meet its short-term financial liabilities"
+    },
+    {
+     "id": "totdebteqrat",
+     "name": "Debt to Equity Ratio",
+     "description": "A  measurement of company's financial leverage comparing total debt to total equity"
+    },
+    {
+     "id": "lngtrmdebttototcap",
+     "name": "Debt to Capital Ratio",
+     "description": "A  measurement of company's financial leverage comparing total debt to total capital"
+    },
+    {
+     "id": "forwardpe",
+     "name": "Forward PE Ratio",
+     "description": "Forward-looking price-to-earnings ratio"
+    },
+    {
+     "id": "perat",
+     "name": "P/E (LTM)",
+     "description": "If stock is fairly valued"
+    },
+    {
+     "id": "ltdebteqrat",
+     "name": "LT Debt/Equity",
+     "description": "Long term debt to equity ratio"
+    },
+    {
+     "id": "pcashfrat",
+     "name": "Price/Cash Flow Ratio",
+     "description": "If stock is well-valued versus cash generated"
+    },
+    {
+     "id": "pegratio",
+     "name": "PEG Ratio",
+     "description": "PEG Ratio"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "name": "Dividends",
+   "fixed": [
+    {
+     "id": "divFrequency",
+     "name": "Dividend Frequency",
+     "description": "How often dividends are paid",
+     "values": [
+      "Monthly",
+      "Quarterly",
+      "Semi-Annual",
+      "Annual",
+      "Unspecified",
+      "Irregular"
+     ]
+    }
+   ],
+   "ranged": [
+    {
+     "id": "divamount",
+     "name": "Dividend Amount",
+     "description": "Amount of cash dividend"
+    },
+    {
+     "id": "divyield",
+     "name": "Dividend Yield",
+     "description": "Size of the cash dividend"
+    },
+    {
+     "id": "prevdivamount",
+     "name": "Previous Div Amount",
+     "description": "The previous amount of cash dividend"
+    },
+    {
+     "id": "divgrow3",
+     "name": "Dividend Growth Rate 3 Year Average",
+     "description": "3 year dividend history"
+    },
+    {
+     "id": "divgrow5",
+     "name": "Dividend Growth Rate 5 Year Average",
+     "description": "5 year dividend history"
+    },
+    {
+     "id": "exdivdate",
+     "name": "Previous Ex-Dividend Date",
+     "description": "The previous cutoff date for dividend eligibility"
+    },
+    {
+     "id": "div",
+     "name": "Dividend Rate",
+     "description": "How the dividend is changing"
+    },
+    {
+     "id": "nextexdivdate",
+     "name": "Upcoming Ex-Dividend Date",
+     "description": "The next expected cutoff date for dividend eligibility"
+    },
+    {
+     "id": "payoutratio",
+     "name": "Payout Ratio",
+     "description": "Dividend amount relative to net income"
+    },
+    {
+     "id": "nextdivamount",
+     "name": "Upcoming Dividend Amount",
+     "description": "The next expected amount of cash dividend"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "Profitability",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "profitmargin",
+     "name": "Profit Margin",
+     "description": "Company's profitability from continuing operations after taxes"
+    },
+    {
+     "id": "revps",
+     "name": "Revenue Per Share",
+     "description": "Amount of revenue over common shares outstanding"
+    },
+    {
+     "id": "roa",
+     "name": "Return on Assets (LTM)",
+     "description": "Company's profitability relative to its total assets"
+    },
+    {
+     "id": "roe",
+     "name": "Return on Equity (LTM)",
+     "description": "Profitability compared to shareholder investment"
+    },
+    {
+     "id": "grossmarg",
+     "name": "Gross Margin",
+     "description": "Profitability of business activity"
+    },
+    {
+     "id": "roc",
+     "name": "Return on Capital (LTM)",
+     "description": "Earning power of company's capital"
+    },
+    {
+     "id": "ebitdamarg",
+     "name": "EBITDA Margin",
+     "description": "Company's profitability before interest, taxes, depreciation and amortization"
+    },
+    {
+     "id": "ebitmarg",
+     "name": "EBIT Margin",
+     "description": "Company's profitability before interest and taxes"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "name": "Trading",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "averagevolume90",
+     "name": "Volume 90-Day Average",
+     "description": "Average volume of last 90 days"
+    },
+    {
+     "id": "yesterdaysvolume",
+     "name": "Yesterday's Volume",
+     "description": "Total shares traded yesterday"
+    },
+    {
+     "id": "relativevolume30",
+     "name": "Relative Volume (30d)",
+     "description": "Today\u2019s trading volume versus the 30\u2011day average"
+    },
+    {
+     "id": "inspct",
+     "name": "% of Insider Holdings",
+     "description": "If insiders are bullish on their company"
+    },
+    {
+     "id": "beta",
+     "name": "Beta",
+     "description": "Price correlation with the local market index"
+    },
+    {
+     "id": "sma20",
+     "name": "SMA20",
+     "description": "The average closing price over the last 20 days"
+    },
+    {
+     "id": "high",
+     "name": "Day High",
+     "description": "The high price of the symbol"
+    },
+    {
+     "id": "instpct",
+     "name": "% of Inst. Ownership",
+     "description": "Ownership stake in a company"
+    },
+    {
+     "id": "r2",
+     "name": "R Squared",
+     "description": "The degree to which volatility is a result of the day-to-day fluctuations"
+    },
+    {
+     "id": "averagevolume30",
+     "name": "Volume 30-Day Average",
+     "description": "Typical volume of last 30 days"
+    },
+    {
+     "id": "open",
+     "name": "Day Open",
+     "description": "The opening price of the symbol"
+    },
+    {
+     "id": "low",
+     "name": "Day Low",
+     "description": "The low price of the symbol"
+    },
+    {
+     "id": "averagetradevalue90",
+     "name": "Trade Value 90-Day Average",
+     "description": "Average Trade Value of last 90 days"
+    },
+    {
+     "id": "pricevs52weeklow",
+     "name": "Price vs 52-Week Low",
+     "description": "The % difference from 52-Week Low"
+    },
+    {
+     "id": "relativevolume10",
+     "name": "Relative Volume (10d)",
+     "description": "Today\u2019s trading volume versus the 10\u2011day average"
+    },
+    {
+     "id": "sma50",
+     "name": "SMA50",
+     "description": "The average closing price over the last 50 days"
+    },
+    {
+     "id": "stddev",
+     "name": "Standard Deviation",
+     "description": "The tendency of the returns to rise or fall drastically in a short period of time"
+    },
+    {
+     "id": "relativevolume90",
+     "name": "Relative Volume (90d)",
+     "description": "Today\u2019s trading volume versus the 90\u2011day average"
+    },
+    {
+     "id": "pricevs52weekhigh",
+     "name": "Price vs 52-Week High",
+     "description": "The % difference from 52-Week High"
+    },
+    {
+     "id": "averagevolume50",
+     "name": "Volume 50-Day Average",
+     "description": "Typical volume of last 50 days"
+    },
+    {
+     "id": "alpha",
+     "name": "Alpha",
+     "description": "How much the extra risk helped the to outperform its corresponding benchmark"
+    },
+    {
+     "id": "relativevolume50",
+     "name": "Relative Volume (50d)",
+     "description": "Today\u2019s trading volume versus the 50\u2011day average"
+    },
+    {
+     "id": "volume",
+     "name": "Volume",
+     "description": "How many shares traded"
+    },
+    {
+     "id": "averagevolume10",
+     "name": "Volume 10-Day Average",
+     "description": "Typical volume of last 10 days"
+    },
+    {
+     "id": "sma200",
+     "name": "SMA200",
+     "description": "The average closing price over the last 200 days"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "name": "Balance Sheet",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "bookvalue",
+     "name": "Book Value",
+     "description": "Tangible Book Value representing the company's total book value less the value of any intangible assets"
+    },
+    {
+     "id": "totalequity",
+     "name": "Total Equity",
+     "description": "Total Equity (Stockholder's Equity + minority interest)"
+    },
+    {
+     "id": "totalassets",
+     "name": "Total Assets",
+     "description": "Total assets from latest financial report."
+    },
+    {
+     "id": "currentliabilities",
+     "name": "Current Liabilities",
+     "description": "Total Current Liabilities"
+    },
+    {
+     "id": "currentassets",
+     "name": "Current Assets",
+     "description": "Current assets from latest financial report."
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "name": "Analyst Research",
+   "fixed": [
+    {
+     "id": "zacksRating",
+     "name": "Zacks Research",
+     "description": "Zacks Research Analyst Rating",
+     "values": [
+      "Strong Buy",
+      "Buy",
+      "Hold",
+      "Sell",
+      "Strong Sell"
+     ]
+    }
+   ],
+   "ranged": []
+  }
+ ],
+ "US": [
+  {
+   "id": 0,
+   "name": "Popular",
+   "fixed": [
+    {
+     "id": "exchangeGroups",
+     "name": "Exchange",
+     "description": "Where the security trades",
+     "values": [
+      "AMX",
+      "NSD",
+      "NYE",
+      "OTC Markets"
+     ]
+    },
+    {
+     "id": "sectors",
+     "name": "Sector",
+     "description": "Group of companies in the same segment of economy/share similar business type",
+     "values": null
+    }
+   ],
+   "ranged": [
+    {
+     "id": "divyield",
+     "name": "Dividend Yield",
+     "description": "Size of the cash dividend"
+    },
+    {
+     "id": "marketcap",
+     "name": "Market Capitalization",
+     "description": "The aggregate value for the company's stock"
+    },
+    {
+     "id": "forwardpe",
+     "name": "Forward PE Ratio",
+     "description": "Forward-looking price-to-earnings ratio"
+    },
+    {
+     "id": "profitmargin",
+     "name": "Profit Margin",
+     "description": "Company's profitability from continuing operations after taxes"
+    },
+    {
+     "id": "averagevolume90",
+     "name": "Volume 90-Day Average",
+     "description": "Average volume of last 90 days"
+    },
+    {
+     "id": "pricechange",
+     "name": "Price Change ($)",
+     "description": "Dollar change in trading price"
+    },
+    {
+     "id": "performance3month",
+     "name": "Price Performance 90 days",
+     "description": "Price percent change over last 90 days"
+    },
+    {
+     "id": "performance365",
+     "name": "52-Week Change",
+     "description": "How far stock has changed over the past 52 weeks"
+    },
+    {
+     "id": "close",
+     "name": "Stock Price",
+     "description": "The most recent price"
+    },
+    {
+     "id": "performance1month",
+     "name": "Price Performance 30 days",
+     "description": "Price percent change over last 30 days"
+    },
+    {
+     "id": "sharesoutstanding",
+     "name": "Outstanding Shares",
+     "description": "Total number of shares outstanding"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "name": "Company Basics",
+   "fixed": [
+    {
+     "id": "exchangeGroups",
+     "name": "Exchange",
+     "description": "Where the security trades",
+     "values": [
+      "AMX",
+      "NSD",
+      "NYE",
+      "OTC Markets"
+     ]
+    },
+    {
+     "id": "sectors",
+     "name": "Sector",
+     "description": "Group of companies in the same segment of economy/share similar business type",
+     "values": null
+    },
+    {
+     "id": "optionable",
+     "name": "Optionable",
+     "description": "Stocks with Options Available",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "indexdji",
+     "name": "Index = Dow Jones Industrial",
+     "description": "Index = Dow Jones Industrial",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "primarysymbol",
+     "name": "Primary Exchange Listed Symbols",
+     "description": "Only include symbols that belong to the primary exchange for the company",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "filingcurrent",
+     "name": "Filing Status is Current",
+     "description": "Company has filed an annual or quarterly report over the last 90 days",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "indices",
+     "name": "Index List",
+     "description": "List of indices representing different sectors and segments",
+     "values": [
+      "Dow Jones Composite Average",
+      "Dow Jones Industrial Average",
+      "Dow Jones Transportation",
+      "S&P 500",
+      "S&P Top 100",
+      "S&P Midcap 400",
+      "NASDAQ Composite",
+      "NASDQ 100"
+     ]
+    }
+   ],
+   "ranged": [
+    {
+     "id": "totalrevenue",
+     "name": "Total Revenue",
+     "description": "Total revenue from latest financial report."
+    },
+    {
+     "id": "shortfloat",
+     "name": "Short Float",
+     "description": "Percent of float shares shorted"
+    },
+    {
+     "id": "marketcap",
+     "name": "Market Capitalization",
+     "description": "The aggregate value for the company's stock"
+    },
+    {
+     "id": "freecashflow",
+     "name": "Free Cash Flow",
+     "description": "Free cash flow is the cash left over after a company pays for its operating expenses and capital expenditures, also known as CAPEX."
+    },
+    {
+     "id": "sharesfloat",
+     "name": "Shares Float",
+     "description": "Number of shares available for trading"
+    },
+    {
+     "id": "shortratio",
+     "name": "Short Ratio",
+     "description": "The estimated number of trading days it takes for short sellers to cover borrowed shares"
+    },
+    {
+     "id": "ltmrev",
+     "name": "Revenue LTM",
+     "description": "Total sales for the company"
+    },
+    {
+     "id": "employees",
+     "name": "Employees",
+     "description": "Number of people working for the company"
+    },
+    {
+     "id": "close",
+     "name": "Stock Price",
+     "description": "The most recent price"
+    },
+    {
+     "id": "sharesoutstanding",
+     "name": "Outstanding Shares",
+     "description": "Total number of shares outstanding"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "Performance",
+   "fixed": [
+    {
+     "id": "high52week",
+     "name": "Trading above 52 wk High",
+     "description": "Trading above the 52 week high value could indicate an overvalued security or simply market value appreciation",
+     "values": [
+      "false",
+      "true"
+     ]
+    },
+    {
+     "id": "low52week",
+     "name": "Trading below 52 wk Low",
+     "description": "Trading below the 52 week low could indicate an undervalued security but prudent investors use this only as starting point for further analysis",
+     "values": [
+      "false",
+      "true"
+     ]
+    }
+   ],
+   "ranged": [
+    {
+     "id": "performance1day",
+     "name": "Price Change (%)",
+     "description": "The change in trading price in one day (percentage)"
+    },
+    {
+     "id": "revgrow3",
+     "name": "3 Yr Annual Revenue Growth",
+     "description": "3 Yr Revenue growth is the increase (or decrease) in a company's sales over the three year period, shown as a percentage."
+    },
+    {
+     "id": "performance6month",
+     "name": "Price Performance 6 months",
+     "description": "Price percent change over last 6 months"
+    },
+    {
+     "id": "performance5year",
+     "name": "Price Performance 5 years",
+     "description": "Price percent change over last 5 years"
+    },
+    {
+     "id": "performance7day",
+     "name": "Price Performance 7 days",
+     "description": "Price percent change over last 7 days"
+    },
+    {
+     "id": "revgrow5",
+     "name": "5 Yr Annual Revenue Growth",
+     "description": "5 Yr Revenue growth is the increase (or decrease) in a company's sales over the five year period, shown as a percentage."
+    },
+    {
+     "id": "incgrow3",
+     "name": "3 Yr Annual Income Growth Rate",
+     "description": "3 year annual income growth rate"
+    },
+    {
+     "id": "pricechange",
+     "name": "Price Change ($)",
+     "description": "Dollar change in trading price"
+    },
+    {
+     "id": "incgrow5",
+     "name": "5 Yr Annual Income Growth Rate",
+     "description": "5 year annual income growth rate"
+    },
+    {
+     "id": "performance3month",
+     "name": "Price Performance 90 days",
+     "description": "Price percent change over last 90 days"
+    },
+    {
+     "id": "performance3year",
+     "name": "Price Performance 3 years",
+     "description": "Price percent change over last 3 years"
+    },
+    {
+     "id": "performanceytd",
+     "name": "Price Performance Year-to-Date",
+     "description": "Price percent change year to date"
+    },
+    {
+     "id": "performance365",
+     "name": "52-Week Change",
+     "description": "How far stock has changed over the past 52 weeks"
+    },
+    {
+     "id": "performance1month",
+     "name": "Price Performance 30 days",
+     "description": "Price percent change over last 30 days"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "Key Ratios",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "pbrat",
+     "name": "Price/Book Ratio",
+     "description": "Market versus current reported value for company"
+    },
+    {
+     "id": "currat",
+     "name": "Current Ratio",
+     "description": "Company's ability to pay short-term obligations"
+    },
+    {
+     "id": "psrat",
+     "name": "Price/Sales Ratio",
+     "description": "If stock is well-valued versus current revenue"
+    },
+    {
+     "id": "latfisceps",
+     "name": "Latest Fiscal EPS",
+     "description": "Earnings per share at the latest fiscal date"
+    },
+    {
+     "id": "bvps",
+     "name": "Book Value Per Share",
+     "description": "Common Shareholder's Equity / Diluted Shares Outstanding"
+    },
+    {
+     "id": "quickrat",
+     "name": "Quick Ratio",
+     "description": "A measure of how well a company can meet its short-term financial liabilities"
+    },
+    {
+     "id": "totdebteqrat",
+     "name": "Debt to Equity Ratio",
+     "description": "A  measurement of company's financial leverage comparing total debt to total equity"
+    },
+    {
+     "id": "lngtrmdebttototcap",
+     "name": "Debt to Capital Ratio",
+     "description": "A  measurement of company's financial leverage comparing total debt to total capital"
+    },
+    {
+     "id": "forwardpe",
+     "name": "Forward PE Ratio",
+     "description": "Forward-looking price-to-earnings ratio"
+    },
+    {
+     "id": "perat",
+     "name": "P/E (LTM)",
+     "description": "If stock is fairly valued"
+    },
+    {
+     "id": "ltdebteqrat",
+     "name": "LT Debt/Equity",
+     "description": "Long term debt to equity ratio"
+    },
+    {
+     "id": "pcashfrat",
+     "name": "Price/Cash Flow Ratio",
+     "description": "If stock is well-valued versus cash generated"
+    },
+    {
+     "id": "pegratio",
+     "name": "PEG Ratio",
+     "description": "PEG Ratio"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "name": "Dividends",
+   "fixed": [
+    {
+     "id": "divFrequency",
+     "name": "Dividend Frequency",
+     "description": "How often dividends are paid",
+     "values": [
+      "Monthly",
+      "Quarterly",
+      "Semi-Annual",
+      "Annual",
+      "Unspecified",
+      "Irregular"
+     ]
+    }
+   ],
+   "ranged": [
+    {
+     "id": "divamount",
+     "name": "Dividend Amount",
+     "description": "Amount of cash dividend"
+    },
+    {
+     "id": "divyield",
+     "name": "Dividend Yield",
+     "description": "Size of the cash dividend"
+    },
+    {
+     "id": "prevdivamount",
+     "name": "Previous Div Amount",
+     "description": "The previous amount of cash dividend"
+    },
+    {
+     "id": "divgrow3",
+     "name": "Dividend Growth Rate 3 Year Average",
+     "description": "3 year dividend history"
+    },
+    {
+     "id": "divgrow5",
+     "name": "Dividend Growth Rate 5 Year Average",
+     "description": "5 year dividend history"
+    },
+    {
+     "id": "exdivdate",
+     "name": "Previous Ex-Dividend Date",
+     "description": "The previous cutoff date for dividend eligibility"
+    },
+    {
+     "id": "div",
+     "name": "Dividend Rate",
+     "description": "How the dividend is changing"
+    },
+    {
+     "id": "nextexdivdate",
+     "name": "Upcoming Ex-Dividend Date",
+     "description": "The next expected cutoff date for dividend eligibility"
+    },
+    {
+     "id": "payoutratio",
+     "name": "Payout Ratio",
+     "description": "Dividend amount relative to net income"
+    },
+    {
+     "id": "nextdivamount",
+     "name": "Upcoming Dividend Amount",
+     "description": "The next expected amount of cash dividend"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "Profitability",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "profitmargin",
+     "name": "Profit Margin",
+     "description": "Company's profitability from continuing operations after taxes"
+    },
+    {
+     "id": "revps",
+     "name": "Revenue Per Share",
+     "description": "Amount of revenue over common shares outstanding"
+    },
+    {
+     "id": "roa",
+     "name": "Return on Assets (LTM)",
+     "description": "Company's profitability relative to its total assets"
+    },
+    {
+     "id": "roe",
+     "name": "Return on Equity (LTM)",
+     "description": "Profitability compared to shareholder investment"
+    },
+    {
+     "id": "grossmarg",
+     "name": "Gross Margin",
+     "description": "Profitability of business activity"
+    },
+    {
+     "id": "roc",
+     "name": "Return on Capital (LTM)",
+     "description": "Earning power of company's capital"
+    },
+    {
+     "id": "ebitdamarg",
+     "name": "EBITDA Margin",
+     "description": "Company's profitability before interest, taxes, depreciation and amortization"
+    },
+    {
+     "id": "ebitmarg",
+     "name": "EBIT Margin",
+     "description": "Company's profitability before interest and taxes"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "name": "Trading",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "averagevolume90",
+     "name": "Volume 90-Day Average",
+     "description": "Average volume of last 90 days"
+    },
+    {
+     "id": "yesterdaysvolume",
+     "name": "Yesterday's Volume",
+     "description": "Total shares traded yesterday"
+    },
+    {
+     "id": "relativevolume30",
+     "name": "Relative Volume (30d)",
+     "description": "Today\u2019s trading volume versus the 30\u2011day average"
+    },
+    {
+     "id": "inspct",
+     "name": "% of Insider Holdings",
+     "description": "If insiders are bullish on their company"
+    },
+    {
+     "id": "beta",
+     "name": "Beta",
+     "description": "Price correlation with the local market index"
+    },
+    {
+     "id": "sma20",
+     "name": "SMA20",
+     "description": "The average closing price over the last 20 days"
+    },
+    {
+     "id": "high",
+     "name": "Day High",
+     "description": "The high price of the symbol"
+    },
+    {
+     "id": "instpct",
+     "name": "% of Inst. Ownership",
+     "description": "Ownership stake in a company"
+    },
+    {
+     "id": "r2",
+     "name": "R Squared",
+     "description": "The degree to which volatility is a result of the day-to-day fluctuations"
+    },
+    {
+     "id": "averagevolume30",
+     "name": "Volume 30-Day Average",
+     "description": "Typical volume of last 30 days"
+    },
+    {
+     "id": "open",
+     "name": "Day Open",
+     "description": "The opening price of the symbol"
+    },
+    {
+     "id": "low",
+     "name": "Day Low",
+     "description": "The low price of the symbol"
+    },
+    {
+     "id": "averagetradevalue90",
+     "name": "Trade Value 90-Day Average",
+     "description": "Average Trade Value of last 90 days"
+    },
+    {
+     "id": "pricevs52weeklow",
+     "name": "Price vs 52-Week Low",
+     "description": "The % difference from 52-Week Low"
+    },
+    {
+     "id": "relativevolume10",
+     "name": "Relative Volume (10d)",
+     "description": "Today\u2019s trading volume versus the 10\u2011day average"
+    },
+    {
+     "id": "sma50",
+     "name": "SMA50",
+     "description": "The average closing price over the last 50 days"
+    },
+    {
+     "id": "stddev",
+     "name": "Standard Deviation",
+     "description": "The tendency of the returns to rise or fall drastically in a short period of time"
+    },
+    {
+     "id": "relativevolume90",
+     "name": "Relative Volume (90d)",
+     "description": "Today\u2019s trading volume versus the 90\u2011day average"
+    },
+    {
+     "id": "pricevs52weekhigh",
+     "name": "Price vs 52-Week High",
+     "description": "The % difference from 52-Week High"
+    },
+    {
+     "id": "averagevolume50",
+     "name": "Volume 50-Day Average",
+     "description": "Typical volume of last 50 days"
+    },
+    {
+     "id": "alpha",
+     "name": "Alpha",
+     "description": "How much the extra risk helped the to outperform its corresponding benchmark"
+    },
+    {
+     "id": "relativevolume50",
+     "name": "Relative Volume (50d)",
+     "description": "Today\u2019s trading volume versus the 50\u2011day average"
+    },
+    {
+     "id": "volume",
+     "name": "Volume",
+     "description": "How many shares traded"
+    },
+    {
+     "id": "averagevolume10",
+     "name": "Volume 10-Day Average",
+     "description": "Typical volume of last 10 days"
+    },
+    {
+     "id": "sma200",
+     "name": "SMA200",
+     "description": "The average closing price over the last 200 days"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "name": "Balance Sheet",
+   "fixed": [],
+   "ranged": [
+    {
+     "id": "bookvalue",
+     "name": "Book Value",
+     "description": "Tangible Book Value representing the company's total book value less the value of any intangible assets"
+    },
+    {
+     "id": "totalequity",
+     "name": "Total Equity",
+     "description": "Total Equity (Stockholder's Equity + minority interest)"
+    },
+    {
+     "id": "totalassets",
+     "name": "Total Assets",
+     "description": "Total assets from latest financial report."
+    },
+    {
+     "id": "currentliabilities",
+     "name": "Current Liabilities",
+     "description": "Total Current Liabilities"
+    },
+    {
+     "id": "currentassets",
+     "name": "Current Assets",
+     "description": "Current assets from latest financial report."
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "name": "Analyst Research",
+   "fixed": [
+    {
+     "id": "zacksRating",
+     "name": "Zacks Research",
+     "description": "Zacks Research Analyst Rating",
+     "values": [
+      "Strong Buy",
+      "Buy",
+      "Hold",
+      "Sell",
+      "Strong Sell"
+     ]
+    }
+   ],
+   "ranged": []
+  }
+ ]
+}

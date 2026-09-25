@@ -86,6 +86,13 @@ def test_unpack_response_does_not_descend_into_scalar_single_key_value():
     assert metadata == {}
 
 
+def test_unpack_response_keeps_record_with_scalar_list_field_whole():
+    """A record whose single list holds scalars is a row, not an envelope."""
+    rows, metadata = unpack_response({"id": "x", "tags": ["a", "b"]})
+    assert rows == [{"id": "x", "tags": ["a", "b"]}]
+    assert metadata == {}
+
+
 def test_unpack_response_returns_multi_property_dict_as_single_row():
     rows, metadata = unpack_response({"a": 1, "b": 2})
     assert rows == [{"a": 1, "b": 2}]

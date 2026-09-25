@@ -3,7 +3,8 @@
 from functools import lru_cache
 from typing import Literal
 
-from openbb_core.provider.utils.lru import ttl_cache
+from openbb_federal_reserve.utils.cache import disk_cached
+from openbb_federal_reserve.utils.fomc_calendar import seconds_until_next_fomc_release
 
 FomcDocumentType = Literal[
     "all",
@@ -27,7 +28,6 @@ FomcDocumentType = Literal[
 @lru_cache(maxsize=1)
 def load_historical_fomc_documents() -> list:
     """Load historical FOMC documents map from the static assets."""
-    # pylint: disable=import-outside-toplevel
     import json
     from pathlib import Path
 
@@ -42,7 +42,7 @@ def load_historical_fomc_documents() -> list:
     return historical_docs
 
 
-@ttl_cache(maxsize=1, ttl=3600)
+@disk_cached("fomc_current_documents", ttl=seconds_until_next_fomc_release)
 def get_current_fomc_documents(url: str | None = None) -> list:
     """
     Get the current FOMC documents from https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm.
@@ -61,8 +61,8 @@ def get_current_fomc_documents(url: str | None = None) -> list:
         - url: str
             The URL of the document
     """
-    # pylint: disable=import-outside-toplevel
-    import re  # noqa
+    import re
+
     from bs4 import BeautifulSoup
     from openbb_core.provider.utils.helpers import make_request
 
@@ -82,7 +82,7 @@ def get_current_fomc_documents(url: str | None = None) -> list:
     soup = BeautifulSoup(response.content, "html.parser")
 
     for link in soup.find_all("a"):
-        url = link.get("href", "")  # type: ignore[assignment]
+        url = str(link.get("href", "") or "")
 
         if "/newsevents/pressreleases" in url:
             continue
@@ -127,7 +127,7 @@ def get_current_fomc_documents(url: str | None = None) -> list:
     return data_releases
 
 
-@ttl_cache(maxsize=32, ttl=3600)
+@disk_cached("fomc_documents_by_year", ttl=seconds_until_next_fomc_release)
 def get_fomc_documents_by_year(
     year: int | None = None,
     document_type: FomcDocumentType | None = None,
@@ -179,13 +179,13 @@ def get_fomc_documents_by_year(
     filtered_docs: list[dict] = []
     choice_types = list(getattr(FomcDocumentType, "__args__", ()))
 
+    if year is not None and not isinstance(year, int):
+        if not str(year).isdigit():
+            raise ValueError("Year must be an integer.")
+        year = int(year)
+
     if year and year < 1959:
         raise ValueError("Year must be from 1959.")
-
-    if year and isinstance(year, str):
-        year = int(year) if year.isdigit() else 0
-        if year == 0:
-            raise ValueError("Year must be an integer.")
 
     if not document_type:
         document_type = "all"

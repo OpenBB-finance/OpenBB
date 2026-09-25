@@ -154,7 +154,9 @@ def router_with_router_level_dep(monkeypatch, fake_router):
 
 def _resolve_test_path(router: Router) -> str:
     """Return the single registered sub-route path under ``/test``."""
-    routes = router.routers["test"].api_router.routes
+    from openbb_core.app.route_iter import iter_api_routes
+
+    routes = list(iter_api_routes(router.routers["test"].api_router))
     assert routes, "fake_router has no sub-routes"
     return f"/test{routes[0].path}"
 

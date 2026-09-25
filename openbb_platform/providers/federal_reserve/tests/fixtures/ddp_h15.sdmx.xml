@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>  <message:MessageGroup xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"  xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/common"  xmlns:frb="http://www.federalreserve.gov/structure/compact/common"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message SDMXMessage.xsd http://www.federalreserve.gov/structure/compact/common frb_common.xsd"><message:Header xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message">
+    <message:ID>H15</message:ID>
+    <message:Test>false</message:Test>
+    <message:Name>H.15 Selected Interest Rates</message:Name>
+    <message:Prepared>2026-06-24T15:40:01</message:Prepared>
+    <message:Sender id="FRB">
+      <message:Name>Federal Reserve Board</message:Name>
+      <message:Contact>
+        <message:Name>Banking Analysis Section</message:Name>
+        <message:Email>MA-BA-Releases@frb.gov</message:Email>
+      </message:Contact>
+    </message:Sender>
+  </message:Header>
+<frb:DataSet id="H15" xmlns:kf="http://www.federalreserve.gov/structure/compact/H15_H15" xsi:schemaLocation="http://www.federalreserve.gov/structure/compact/H15_H15 H15_H15.xsd">
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="M1" SERIES_NAME="RIFLGFCM01_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>1-month Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 1-month
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3.66" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3.65" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="M3" SERIES_NAME="RIFLGFCM03_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>3-month Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 3-month
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3.85" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3.85" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="M6" SERIES_NAME="RIFLGFCM06_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>6-month Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 6-month
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3.98" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3.96" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y1" SERIES_NAME="RIFLGFCY01_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>1-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 1-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.04" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.01" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y2" SERIES_NAME="RIFLGFCY02_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>2-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 2-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.24" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.16" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y3" SERIES_NAME="RIFLGFCY03_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>3-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 3-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.25" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.22" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y5" SERIES_NAME="RIFLGFCY05_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>5-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 5-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.29" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.27" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y7" SERIES_NAME="RIFLGFCY07_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>7-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 7-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.39" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.38" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y10" SERIES_NAME="RIFLGFCY10_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>10-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 10-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.51" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.50" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y20" SERIES_NAME="RIFLGFCY20_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>20-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 20-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.97" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.96" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+<kf:Series CURRENCY="NA" FREQ="9" INSTRUMENT="TCMNOM" MATURITY="Y30" SERIES_NAME="RIFLGFCY30_N.B" UNIT="Percent:_Per_Year" UNIT_MULT="1">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>30-year Treasury constant maturity</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Market yield on U.S. Treasury securities at 30-year
+  constant maturity, quoted on investment basis</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="ND" OBS_VALUE="-9999" TIME_PERIOD="2026-06-19"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.95" TIME_PERIOD="2026-06-22"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="4.94" TIME_PERIOD="2026-06-23"/>
+</kf:Series>
+</frb:DataSet>
+</message:MessageGroup>

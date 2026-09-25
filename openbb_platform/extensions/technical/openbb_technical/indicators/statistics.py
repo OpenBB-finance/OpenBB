@@ -16,8 +16,6 @@ from pydantic import Field, PositiveInt
 
 from openbb_technical.helpers import clenow_momentum, validate_data
 
-# Bare 'date' alias for function signatures so the static-package builder
-# writes 'date' (which it imports from datetime) rather than 'dateType' which it does not.
 date = dateType
 
 
@@ -568,7 +566,7 @@ def _kpss_block(values, regression: str) -> dict:
 
     from statsmodels.tsa.stattools import kpss
 
-    kpss_reg: Literal["c", "ct"] = "c" if regression not in {"c", "ct"} else regression  # ty: ignore[invalid-assignment]
+    kpss_reg: Literal["c", "ct"] = "c" if regression not in {"c", "ct"} else regression
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         stat, pvalue, _, crit = kpss(values, regression=kpss_reg, nlags="auto")
@@ -641,7 +639,7 @@ def stationarity(params: StationarityQueryParams) -> OBBject[list[StationarityDa
         else None
     )
     payload["overall_verdict"] = _overall_verdict(adf_v, kpss_v, params.regression)
-    return OBBject(results=[StationarityData(**payload)])  # ty: ignore[invalid-argument-type]
+    return OBBject(results=[StationarityData(**payload)])
 
 
 class HurstQueryParams(QueryParams):

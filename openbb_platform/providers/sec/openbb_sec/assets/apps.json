@@ -1,0 +1,853 @@
+[
+  {
+    "name": "SEC Form 10-K/Q",
+    "img": "https://ismg-cdn.nyc3.cdn.digitaloceanspaces.com/articles/sec-releases-updated-cybersecurity-guidance-showcase_image-6-a-10678.jpg",
+    "description": "Detailed SEC 10-K/10-Q analysis: Unstructured text, financial statements, and supplementary tables.",
+    "allowCustomization": true,
+    "tabs": {
+      "overview": {
+        "id": "overview",
+        "name": "Overview",
+        "layout": [
+          {
+            "i": "sec_company_overview_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_executive_compensation_sec_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_pay_versus_performance_sec_obb",
+            "x": 0,
+            "y": 33,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_beneficial_ownership_sec_obb",
+            "x": 0,
+            "y": 45,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_management_profiles_sec_obb",
+            "x": 0,
+            "y": 57,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_segment_revenue_sec_obb",
+            "x": 0,
+            "y": 75,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          }
+        ]
+      },
+      "risk_legal": {
+        "id": "risk_legal",
+        "name": "Risk Factors & Legal Proceedings",
+        "layout": [
+          {
+            "i": "sec_risk_factors_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_legal_proceedings_sec_obb",
+            "x": 0,
+            "y": 21,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          }
+        ]
+      },
+      "financials": {
+        "id": "financials",
+        "name": "Disclosures & As-Reported Statements",
+        "layout": [
+          {
+            "i": "sec_financial_statements_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "AAPL",
+                "statement_type": "balance"
+              }
+            }
+          },
+          {
+            "i": "sec_disclosures_sec_obb",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          }
+        ]
+      },
+      "mdna": {
+        "id": "mdna",
+        "name": "Management Discussion & Analysis",
+        "layout": [
+          {
+            "i": "sec_management_discussion_analysis_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          }
+        ]
+      },
+      "standardized": {
+        "id": "standardized",
+        "name": "Standardized Financial Statements",
+        "layout": [
+          {
+            "i": "sec_balance_sheet_facts_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_income_statement_facts_sec_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          },
+          {
+            "i": "sec_cash_flow_facts_sec_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              }
+            }
+          }
+        ]
+      },
+      "exhibits": {
+        "id": "exhibits",
+        "name": "Exhibits",
+        "layout": [
+          {
+            "i": "sec_exhibit_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 30
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Symbol",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "AAPL",
+        "widgetIds": [
+          "sec_company_overview_sec_obb",
+          "sec_executive_compensation_sec_obb",
+          "sec_pay_versus_performance_sec_obb",
+          "sec_beneficial_ownership_sec_obb",
+          "sec_management_profiles_sec_obb",
+          "sec_segment_revenue_sec_obb",
+          "sec_financial_statements_sec_obb",
+          "sec_disclosures_sec_obb",
+          "sec_risk_factors_sec_obb",
+          "sec_legal_proceedings_sec_obb",
+          "sec_management_discussion_analysis_sec_obb",
+          "sec_balance_sheet_facts_sec_obb",
+          "sec_income_statement_facts_sec_obb",
+          "sec_cash_flow_facts_sec_obb",
+          "sec_exhibit_sec_obb"
+        ]
+      },
+      {
+        "name": "Calendar Year",
+        "type": "endpointParam",
+        "paramName": "calendar_year",
+        "defaultValue": null,
+        "widgetIds": [
+          "sec_company_overview_sec_obb",
+          "sec_executive_compensation_sec_obb",
+          "sec_pay_versus_performance_sec_obb",
+          "sec_beneficial_ownership_sec_obb",
+          "sec_management_profiles_sec_obb",
+          "sec_segment_revenue_sec_obb",
+          "sec_risk_factors_sec_obb",
+          "sec_legal_proceedings_sec_obb",
+          "sec_disclosures_sec_obb",
+          "sec_financial_statements_sec_obb",
+          "sec_management_discussion_analysis_sec_obb",
+          "sec_exhibit_sec_obb"
+        ]
+      },
+      {
+        "name": "Calendar Period",
+        "type": "param",
+        "paramName": "calendar_period",
+        "defaultValue": null,
+        "widgetIds": [
+          "sec_segment_revenue_sec_obb",
+          "sec_risk_factors_sec_obb",
+          "sec_legal_proceedings_sec_obb",
+          "sec_disclosures_sec_obb",
+          "sec_financial_statements_sec_obb",
+          "sec_management_discussion_analysis_sec_obb",
+          "sec_exhibit_sec_obb"
+        ]
+      },
+      {
+        "name": "Period",
+        "type": "param",
+        "paramName": "period",
+        "defaultValue": "FY",
+        "widgetIds": [
+          "sec_balance_sheet_facts_sec_obb",
+          "sec_income_statement_facts_sec_obb",
+          "sec_cash_flow_facts_sec_obb"
+        ]
+      },
+      {
+        "name": "Transform",
+        "type": "param",
+        "paramName": "transform",
+        "defaultValue": "None",
+        "widgetIds": [
+          "sec_balance_sheet_facts_sec_obb",
+          "sec_income_statement_facts_sec_obb",
+          "sec_cash_flow_facts_sec_obb"
+        ]
+      },
+      {
+        "name": "Transpose",
+        "type": "param",
+        "paramName": "transpose",
+        "defaultValue": true,
+        "widgetIds": [
+          "sec_balance_sheet_facts_sec_obb",
+          "sec_income_statement_facts_sec_obb",
+          "sec_cash_flow_facts_sec_obb"
+        ]
+      },
+      {
+        "name": "Limit",
+        "type": "param",
+        "paramName": "limit",
+        "defaultValue": 10,
+        "widgetIds": [
+          "sec_balance_sheet_facts_sec_obb",
+          "sec_income_statement_facts_sec_obb",
+          "sec_cash_flow_facts_sec_obb"
+        ]
+      }
+    ],
+    "prompts": [
+      "Summarize the key risk factors for the selected company.",
+      "What are the company's reportable business and geographic segments, and their revenues?",
+      "Summarize any material legal proceedings disclosed in the filing."
+    ]
+  },
+  {
+    "name": "SEC Filings",
+    "img": "https://ismg-cdn.nyc3.cdn.digitaloceanspaces.com/articles/sec-releases-updated-cybersecurity-guidance-showcase_image-6-a-10678.jpg",
+    "description": "Browse a company's SEC filings, use the EDGAR full-text search, view the latest submissions, get fund holdings, and read 13-F positions.",
+    "allowCustomization": true,
+    "tabs": {
+      "filings": {
+        "id": "filings",
+        "name": "Filings",
+        "layout": [
+          {
+            "i": "sec_company_filings_sec_obb",
+            "x": 0,
+            "y": 2,
+            "w": 21,
+            "h": 11,
+            "state": {
+              "params": {
+                "symbol": "AAPL"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "report_url",
+                      "report_type"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "filing_date",
+                      "report_date",
+                      "report_url",
+                      "report_type",
+                      "act",
+                      "items",
+                      "primary_doc_description",
+                      "primary_doc",
+                      "accession_number",
+                      "file_number",
+                      "film_number",
+                      "is_inline_xbrl",
+                      "is_xbrl",
+                      "size",
+                      "complete_submission_url",
+                      "filing_detail_url",
+                      "accepted_date"
+                    ]
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "act",
+                      "primary_doc",
+                      "accession_number",
+                      "file_number",
+                      "film_number",
+                      "is_inline_xbrl",
+                      "is_xbrl",
+                      "size",
+                      "complete_submission_url",
+                      "filing_detail_url"
+                    ]
+                  },
+                  "rowSelection": [
+                    "0"
+                  ]
+                }
+              }
+            },
+            "groups": [
+              "Filing URL"
+            ]
+          },
+          {
+            "i": "sec_filing_headers_sec_obb",
+            "x": 21,
+            "y": 2,
+            "w": 19,
+            "h": 11,
+            "state": {
+              "params": {},
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "sequence",
+                      "url"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "sequence",
+                      "url",
+                      "type",
+                      "filename",
+                      "content",
+                      "description"
+                    ]
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "sequence"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Filing URL",
+              "Document URL"
+            ]
+          },
+          {
+            "i": "sec_filing_viewer_sec_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "params": {}
+            },
+            "groups": [
+              "Document URL"
+            ]
+          }
+        ]
+      },
+      "latest": {
+        "id": "latest",
+        "name": "Latest Reports",
+        "layout": [
+          {
+            "i": "sec_latest_financial_reports_sec_obb",
+            "x": 0,
+            "y": 2,
+            "w": 23,
+            "h": 12,
+            "state": {
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "url",
+                      "symbol",
+                      "report_type"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "filing_date",
+                      "period_ending",
+                      "url",
+                      "symbol",
+                      "name",
+                      "description",
+                      "cik",
+                      "sic",
+                      "report_type",
+                      "items",
+                      "index_headers",
+                      "complete_submission",
+                      "metadata",
+                      "financial_report"
+                    ]
+                  },
+                  "rowSelection": [
+                    "0"
+                  ],
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "index_headers",
+                      "complete_submission",
+                      "metadata",
+                      "financial_report"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Filing URL"
+            ]
+          },
+          {
+            "i": "sec_filing_headers_sec_obb",
+            "x": 23,
+            "y": 2,
+            "w": 17,
+            "h": 12,
+            "state": {
+              "params": {},
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "url",
+                      "sequence",
+                      "type"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "url",
+                      "sequence",
+                      "type",
+                      "filename",
+                      "content"
+                    ]
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "sequence"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Filing URL",
+              "Document URL"
+            ]
+          },
+          {
+            "i": "sec_filing_viewer_sec_obb",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "params": {}
+            },
+            "groups": [
+              "Document URL"
+            ]
+          }
+        ]
+      },
+      "search": {
+        "id": "search",
+        "name": "Full-Text Search",
+        "layout": [
+          {
+            "i": "sec_full_text_search_sec_obb",
+            "x": 0,
+            "y": 2,
+            "w": 22,
+            "h": 11,
+            "state": {
+              "params": {
+                "form_type": "S-1"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "symbol",
+                      "url"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "filing_date",
+                      "cik",
+                      "name",
+                      "form",
+                      "symbol",
+                      "description",
+                      "url"
+                    ]
+                  },
+                  "rowSelection": [
+                    "0"
+                  ]
+                }
+              }
+            },
+            "groups": [
+              "Filing URL"
+            ]
+          },
+          {
+            "i": "sec_filing_headers_sec_obb",
+            "x": 22,
+            "y": 2,
+            "w": 18,
+            "h": 11,
+            "state": {
+              "params": {},
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "type",
+                    "sequence"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "sequence",
+                      "url"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "sequence",
+                      "type",
+                      "filename",
+                      "url",
+                      "description",
+                      "content"
+                    ]
+                  },
+                  "rowSelection": [
+                    "0"
+                  ]
+                }
+              }
+            },
+            "groups": [
+              "Filing URL",
+              "Document URL"
+            ]
+          },
+          {
+            "i": "sec_filing_viewer_sec_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "params": {}
+            },
+            "groups": [
+              "Document URL"
+            ]
+          }
+        ]
+      },
+      "nport": {
+        "id": "nport",
+        "name": "Fund Holdings (NPORT-P)",
+        "layout": [
+          {
+            "i": "sec_nport_fund_metrics_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 8,
+            "state": {
+              "params": {
+                "symbol": "XLK"
+              }
+            },
+            "groups": [
+              "Fund",
+              "Filing Period"
+            ]
+          },
+          {
+            "i": "sec_nport_disclosure_sec_obb",
+            "x": 0,
+            "y": 8,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "XLK"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "name",
+                      "weight",
+                      "value"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "name",
+                      "weight",
+                      "value",
+                      "title",
+                      "asset_category",
+                      "maturity_date",
+                      "annualized_return",
+                      "coupon",
+                      "country",
+                      "currency",
+                      "balance",
+                      "units",
+                      "cusip",
+                      "isin",
+                      "lei"
+                    ]
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "other_id",
+                      "is_restricted",
+                      "fair_value_level",
+                      "issuer_category",
+                      "is_cash_collateral",
+                      "is_non_cash_collateral",
+                      "is_loan_by_fund",
+                      "loan_value",
+                      "payoff_profile",
+                      "issuer_conditional",
+                      "asset_conditional"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Fund",
+              "Filing Period"
+            ]
+          }
+        ]
+      },
+      "form13f": {
+        "id": "form13f",
+        "name": "13F Institutional Holdings",
+        "layout": [
+          {
+            "i": "sec_form_13f_sec_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24,
+            "state": {
+              "params": {
+                "symbol": "BRK-A"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Filing URL",
+        "type": "param",
+        "paramName": "url",
+        "defaultValue": null,
+        "widgetIds": [
+          "sec_company_filings_sec_obb",
+          "sec_latest_financial_reports_sec_obb",
+          "sec_full_text_search_sec_obb",
+          "sec_filing_headers_sec_obb"
+        ]
+      },
+      {
+        "name": "Document URL",
+        "type": "param",
+        "paramName": "document_url",
+        "defaultValue": null,
+        "widgetIds": [
+          "sec_filing_headers_sec_obb",
+          "sec_filing_viewer_sec_obb"
+        ]
+      },
+      {
+        "name": "Fund",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "XLK",
+        "widgetIds": [
+          "sec_nport_fund_metrics_sec_obb",
+          "sec_nport_disclosure_sec_obb"
+        ]
+      },
+      {
+        "name": "Filing Period",
+        "type": "endpointParam",
+        "paramName": "date",
+        "defaultValue": null,
+        "widgetIds": [
+          "sec_nport_fund_metrics_sec_obb",
+          "sec_nport_disclosure_sec_obb"
+        ]
+      }
+    ]
+  }
+]

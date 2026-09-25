@@ -275,6 +275,38 @@ class TmxEquityQuoteData(EquityQuoteData):
         return round(float(v) / 100, 6) if v else None
 
 
+async def _quote_batch(symbols: list[str]) -> list[dict]:
+    """Quote symbols the single-symbol feed does not serve.
+
+    Parameters
+    ----------
+    symbols : list[str]
+        The symbols to quote.
+
+    Returns
+    -------
+    list[dict]
+        One entry per symbol the batch query priced.
+    """
+    from openbb_tmx.utils import gql
+    from openbb_tmx.utils.cache import amake_gql_request
+
+    response = await amake_gql_request(
+        "getQuoteForSymbols",
+        gql.QUOTE_FOR_SYMBOLS,
+        {"symbols": symbols},
+        symbol=",".join(symbols),
+    )
+    rows = (response or {}).get("getQuoteForSymbols") or []
+    quoted = [row for row in rows if row.get("price") is not None]
+
+    for symbol in symbols:
+        if symbol not in {row["symbol"] for row in quoted}:
+            warn(f"Could not get data for {symbol}.")
+
+    return quoted
+
+
 class TmxEquityQuoteFetcher(
     Fetcher[
         TmxEquityQuoteQueryParams,
@@ -295,52 +327,42 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        import asyncio
+
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
 
         symbols = query.symbol.split(",")
-
-        # The list where the results will be stored and appended to.
         results: list[dict] = []
-        user_agent = get_random_agent()
-
-        url = "https://app-money.tmx.com/graphql"
+        unquoted: list[str] = []
 
         async def create_task(symbol: str, results) -> None:
-            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
-            symbol = (
-                symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
-            )
+            """Fetch the quote for a single symbol."""
+            from openbb_core.app.model.abstract.error import OpenBBError
 
-            payload = gql.stock_info_payload.copy()
-            payload["variables"]["symbol"] = symbol
+            symbol = normalize_symbol(symbol)
 
-            data = {}
-            r = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
-            if r["data"].get("getQuoteBySymbol"):
-                data = r["data"]["getQuoteBySymbol"]
-                results.append(data)
+            try:
+                response = await amake_gql_request(
+                    "getQuoteBySymbol",
+                    gql.QUOTE_BY_SYMBOL,
+                    {"symbol": symbol, "locale": "en"},
+                    symbol=symbol,
+                )
+            except OpenBBError:
+                response = None
+
+            if response and response.get("getQuoteBySymbol"):
+                results.append(response["getQuoteBySymbol"])
             else:
-                warn(f"Could not get data for {symbol}.")
+                unquoted.append(symbol)
 
-        tasks = [create_task(symbol, results) for symbol in symbols]
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*(create_task(symbol, results) for symbol in symbols))
+
+        if unquoted:
+            results.extend(await _quote_batch(unquoted))
+
         return results
 
     @staticmethod
@@ -353,7 +375,6 @@ class TmxEquityQuoteFetcher(
         # pylint: disable=import-outside-toplevel
         from numpy import nan
 
-        # Remove the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",
             "longDescription",
@@ -367,12 +388,10 @@ class TmxEquityQuoteFetcher(
             "exShortName",
         ]
         data = [{k: v for k, v in d.items() if k not in items_list} for d in data]
-        # Replace all NaN values with None.
         for d in data:
             for k, v in d.items():
                 if v in (nan, 0, ""):
                     d[k] = None
-        # Sort the data by the order of the symbols in the query.
         symbols = query.symbol.split(",")
         symbol_to_index = {symbol: index for index, symbol in enumerate(symbols)}
         data = sorted(data, key=lambda d: symbol_to_index[d["symbol"]])

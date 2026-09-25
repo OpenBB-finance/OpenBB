@@ -136,3 +136,27 @@ def test_custom_groups_from_reference_pulls_route_when_present():
             reference={"/plain/hello": {"some": "reference-data"}},
         )
     rp_class.assert_called()
+
+
+def test_custom_groups_from_reference_matches_underscore_namespace():
+    """A namespace name containing ``_`` (e.g. binance_stream) resolves correctly."""
+    fake_rp = MagicMock()
+    fake_rp.custom_groups = {"/binance_stream/book_ticker": ["grp"]}
+    saved = ArgparseClassProcessor._reference
+    ArgparseClassProcessor._reference = {
+        "/binance_stream/book_ticker": {"parameters": {}}
+    }
+    try:
+        with patch(
+            "openbb_cli.argparse_translator.argparse_class_processor.ReferenceToArgumentsProcessor",
+            return_value=fake_rp,
+        ) as rp_class:
+            out = ArgparseClassProcessor._custom_groups_from_reference(
+                "binance_stream", "book_ticker"
+            )
+        rp_class.assert_called_once_with(
+            {"/binance_stream/book_ticker": {"parameters": {}}}
+        )
+        assert out == ["grp"]
+    finally:
+        ArgparseClassProcessor._reference = saved

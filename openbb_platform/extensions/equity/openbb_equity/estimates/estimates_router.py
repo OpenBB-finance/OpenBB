@@ -13,8 +13,6 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="/estimates")
 
-# pylint: disable=unused-argument
-
 
 @router.command(
     model="PriceTarget",
