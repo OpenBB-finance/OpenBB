@@ -62,14 +62,19 @@ class DerivativesViews:
         --------
         ```python
         from openbb import obb
-        data = obb.derivatives.futures.curve(symbol="vx", provider="cboe", date=["2020-03-31", "2024-06-28"], chart=True)
+
+        data = obb.derivatives.futures.curve(
+            symbol="vx", provider="cboe", date=["2020-03-31", "2024-06-28"], chart=True
+        )
         data.show()
         ```
 
         Redraw the chart, from the same data, with a custom colorway and title:
 
         ```python
-        data.charting.to_chart(colors=["green", "red"], title="VIX Futures Curve - 2020 vs. 2024")
+        data.charting.to_chart(
+            colors=["green", "red"], title="VIX Futures Curve - 2020 vs. 2024"
+        )
         ```
         """
         from openbb_core.app.model.abstract.error import OpenBBError

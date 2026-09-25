@@ -1,4 +1,4 @@
-﻿---
+---
 name: develop_extension
 description: This is a complete guide for creating a new OpenBB Platform extension from scratch. Follow every phase in order. When the user says "build me an application that does X", use this guide to scaffold, implement, install, and verify the extension.
 ---
@@ -167,7 +167,7 @@ exclude in the second argument as a list (use `[]` if nothing to exclude).
 For use inside `extract_data` (sync fetchers):
 
 ```python
-from openbb_core.provider.utils import make_request
+from openbb_core.provider.utils.helpers import make_request
 
 # Returns a requests.Response object
 response = make_request(url, headers={"Authorization": f"Bearer {api_key}"})
@@ -218,11 +218,13 @@ from openbb_core.provider.utils.helpers import amake_request
 
 results: list[dict] = []
 
+
 async def csv_callback(response, _: Any):
     """Parse CSV response into list of dicts."""
     text = await response.text()
     df = read_csv(StringIO(text))
     results.extend(df.to_dict("records"))
+
 
 await amake_request(url, response_callback=csv_callback)
 # results now contains the parsed rows
@@ -254,7 +256,7 @@ async with await get_async_requests_session() as session:
 | Scenario | Function | Module |
 |---|---|---|
 | Build a query string | `get_querystring()` | `openbb_core.provider.utils.helpers` |
-| Sync single request | `make_request()` | `openbb_core.provider.utils` |
+| Sync single request | `make_request()` | `openbb_core.provider.utils.helpers` |
 | Sync session | `get_requests_session()` | `openbb_core.provider.utils.helpers` |
 | Async single request (JSON) | `amake_request()` | `openbb_core.provider.utils.helpers` |
 | Async multiple URLs (JSON) | `amake_requests()` | `openbb_core.provider.utils.helpers` |
@@ -306,7 +308,7 @@ that model name (see Phase 4).
 
 If your provider needs an API key:
 1. Add `credentials=["api_key"]` to the Provider constructor
-2. Access it in `extract_data` via `credentials.get("<package_name>_api_key")`
+2. Access it in `extract_data` via `credentials.get("<provider_name>_api_key")` (the `Provider` prefixes each credential with its lower-cased `name`)
 3. Users configure it in their OpenBB user settings
 
 ---
@@ -341,6 +343,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from pydantic import BaseModel
+
 
 @router.command(model="MyCustomModel")
 async def my_command(
@@ -377,8 +380,8 @@ async def my_endpoint(symbol: str = "AAPL") -> OBBject[dict]:
 ```python
 @router.command(methods=["POST"])
 async def my_post_endpoint(
-    data: BaseModel,   # Body parameters
-    flag: bool = False, # Query parameters
+    data: BaseModel,  # Body parameters
+    flag: bool = False,  # Query parameters
 ) -> OBBject[dict]:
     """Process submitted data."""
     return OBBject(results={"processed": True})
@@ -424,7 +427,7 @@ This is **critical** — OpenBB discovers your code entirely through these entry
 ### Provider Entry Point
 
 ```toml
-[tool.poetry.plugins."openbb_provider_extension"]
+[project.entry-points."openbb_provider_extension"]
 my_provider = "my_package.providers.my_provider:my_provider_variable"
 ```
 
@@ -434,7 +437,7 @@ in Phase 3.
 ### Router Entry Point
 
 ```toml
-[tool.poetry.plugins."openbb_core_extension"]
+[project.entry-points."openbb_core_extension"]
 my_router = "my_package.routers.my_router:router"
 ```
 
@@ -444,14 +447,14 @@ For example, `my_router` means endpoints appear under `/my_router/...`.
 ### Charting Entry Point (Optional)
 
 ```toml
-[tool.poetry.plugins."openbb_charting_extension"]
+[project.entry-points."openbb_charting_extension"]
 my_router = "my_package.routers.my_router_views:MyRouterViews"
 ```
 
 ### OBBject Entry Point (Optional)
 
 ```toml
-[tool.poetry.plugins."openbb_obbject_extension"]
+[project.entry-points."openbb_obbject_extension"]
 my_accessor = "my_package.obbject.my_obbject:ext"
 my_namespace = "my_package.obbject.my_obbject:class_ext"
 ```
@@ -467,6 +470,7 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
+
 
 class MyRouterViews:
     """Chart views for the router."""
@@ -486,6 +490,40 @@ class MyRouterViews:
 Method naming convention: `<router_name>_<command_name>` matching the route path
 in lower_snake_case.
 
+### Charting Engine, Hooks, and Backends
+
+Every interface (Python, REST API, CLI, and MCP) resolves charts through
+`openbb_core.app.charting.ChartingManager`, so these seams apply everywhere:
+
+| Seam | Register under | Selected by |
+|---|---|---|
+| Replacement charting engine | `openbb_obbject_extension`, as an accessor named `charting` | the `charting_extension` system setting, to use an accessor with another name |
+| Lifecycle hooks | `openbb_charting_hooks`, as a `ChartingHook` subclass | always active; `routes` limits and `priority` orders them |
+| Rendering backend | `openbb_charting_backend` | the `charting_backend` system setting, by entry-point name (opt-in) |
+
+Set `charting_extension` and `charting_backend` under `[system]` in `openbb.toml`
+or in `~/.openbb_platform/system_settings.json`.
+
+A hook overrides any of `resolve_data`, `pre_figure`, `post_figure`, `pre_render`,
+and `post_render`. Each receives a `HookContext` and may mutate it in place or
+return a replacement:
+
+```python
+from openbb_core.app.charting.hooks import ChartingHook, HookContext
+
+
+class Watermark(ChartingHook):
+    routes = ("/equity/price/historical",)
+
+    def post_figure(self, context: HookContext) -> None:
+        context.figure.add_annotation(text="My Firm", showarrow=False)
+```
+
+```toml
+[project.entry-points."openbb_charting_hooks"]
+watermark = "my_package.hooks:Watermark"
+```
+
 ---
 
 ## Phase 7 — OBBject Accessors (Optional)
@@ -499,6 +537,7 @@ from openbb_core.app.model.extension import Extension
 
 ext = Extension(name="to_csv", description="Convert results to CSV string.")
 
+
 @ext.obbject_accessor
 def to_csv(obbject, **kwargs) -> str:
     """Convert to CSV."""
@@ -509,6 +548,7 @@ def to_csv(obbject, **kwargs) -> str:
 
 ```python
 class_ext = Extension(name="my_tools", description="Custom result tools.")
+
 
 @class_ext.obbject_accessor
 class MyTools:
@@ -530,7 +570,7 @@ class MyTools:
 From the generated project root directory:
 
 ```
-pip install -e ".[dev]"
+uv pip install -e . --group dev
 ```
 
 This registers the entry points so OpenBB discovers your extension immediately.
@@ -609,9 +649,9 @@ When a user asks "Build me an application that does X":
    `routers/<name>.py`.
 7. **Update entry points** — Ensure `pyproject.toml` entry points match your actual
    module paths and variable names.
-8. **Add dependencies** — Add any third-party packages to `[tool.poetry.dependencies]`
-   in `pyproject.toml`.
-9. **Install** — Run `pip install -e ".[dev]"` from the project root.
+8. **Add dependencies** — Add any third-party packages to the `[project]`
+   `dependencies` list in `pyproject.toml`.
+9. **Install** — Run `uv pip install -e . --group dev` from the project root.
 10. **Build** — Run `openbb-build` to regenerate static assets for the Python
     interface. Skip this step if only using the API server.
 11. **Test** — Verify the commands work, then write tests.
