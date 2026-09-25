@@ -1,0 +1,18 @@
+[project]
+name = "openbb-mcp-fixture"
+version = "0.0.1"
+description = "Deterministic OpenBB extension that the openbb-mcp-server tests dispatch against."
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10,<4"
+dependencies = ["openbb-core>=2.0.0"]
+
+[project.entry-points."openbb_core_extension"]
+mcp_fixture = "openbb_mcp_fixture.router:router"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_mcp_fixture"]

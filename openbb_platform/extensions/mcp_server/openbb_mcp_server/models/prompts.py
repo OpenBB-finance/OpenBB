@@ -17,19 +17,9 @@ class StaticPrompt(Prompt):
         self,
         arguments: dict[str, Any] | None = None,
     ) -> list[Message | str]:
-        """Render the prompt with arguments.
-
-        Return type matches an element of ``Prompt.render``'s union
-        (``str | list[Message | str] | PromptResult``) exactly —
-        ``list`` is invariant in Python's type system, so a tighter
-        ``list[Message]`` annotation would still trip the parent's
-        Liskov check even though every value we produce is a
-        ``Message``.
-        """
-        # Start with stored defaults, then overlay caller-supplied values
+        """Render the prompt with arguments."""
         args = {**self.argument_defaults, **(arguments or {})}
 
-        # Validate required arguments
         if self.arguments:
             required = {arg.name for arg in self.arguments if arg.required}
             provided = set(args)

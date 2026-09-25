@@ -1,4 +1,4 @@
-﻿---
+---
 name: work_with_server
 description: This guide explains how to call tools, interpret responses, discover capabilities, use prompts, and handle errors when interacting with an OpenBB MCP server.
 ---
@@ -13,11 +13,11 @@ MCP server.
 
 ## Tool Discovery Workflow
 
-When first connecting, the server exposes a small set of **admin** tools for
-discovering and activating the full catalog. Not all tools are active by default.
+When the server runs with `--tool-discovery`, the OpenBB tools are left out of
+the tool list, and a small set of discovery tools finds and runs them.
 
-All visibility changes are **per-session** — each connected client maintains its
-own active toolset, so multiple agents can operate independently.
+Discovery holds no per-session state — every client sees the same tool list, and
+nothing needs to be activated before a call.
 
 ### Step 1 — List Categories
 
@@ -55,75 +55,54 @@ Call `available_tools` with a category name:
 
 // Output
 [
-    {"name": "equity_price_historical", "active": true, "description": "Get historical price data..."},
-    {"name": "equity_price_quote", "active": false, "description": "Get current price quote..."}
+    {"name": "equity_price_historical", "description": "Get historical price data..."},
+    {"name": "equity_price_quote", "description": "Get current price quote..."}
 ]
 ```
 
-The `active` field shows whether the tool is currently enabled. Inactive tools
-cannot be called until activated, but they still show a short cached description
-so they remain discoverable.
+Each entry has the tool's name and a one-sentence description. The
+`subcategory` argument is optional. Omit it to see all tools in the category.
 
-The `subcategory` argument is optional. Omit it to see all tools in the
-category.
+### Step 3 — Search for Tools
 
-### Step 3 — Activate Tools
-
-Call `activate_tools` with a list of tool names:
+Call `search_tools` with a natural-language query:
 
 ```json
 // Input
-{"tool_names": ["equity_price_quote", "equity_price_historical"]}
+{"query": "historical stock prices"}
 
-// Output
-"Activated: equity_price_quote, equity_price_historical"
+// Output - full tool definitions, in the same format as list_tools
+[
+    {"name": "equity_price_historical", "description": "...", "inputSchema": {"...": "..."}}
+]
 ```
 
-Tools that were already active are silently included. Unknown names are reported
-in the response:
+Search covers the hidden OpenBB tools and returns at most five matches. Use
+each match's `inputSchema` to build the arguments.
 
-```
-"Activated: equity_price_quote  Not found: nonexistent_tool"
-```
+### Step 4 — Call a Tool
 
-### Step 4 — Activate an Entire Category
-
-Call `activate_category` to bulk-activate all tools in a category (or subcategory):
+Call `call_tool` with the tool name and its arguments:
 
 ```json
-// Activate everything in equity
-{"category": "equity"}
-
-// Activate only equity/price tools
-{"category": "equity", "subcategory": "price"}
-
-// Output
-"Activated 5 tools in 'equity'/'price': equity_price_historical, equity_price_quote, ..."
+{"name": "equity_price_historical", "arguments": {"symbol": "AAPL", "provider": "yfinance"}}
 ```
 
-This is faster than listing tool names individually when you need a whole category.
-
-### Step 5 — Deactivate Tools
-
-Call `deactivate_tools` to disable tools no longer needed:
-
-```json
-{"tool_names": ["equity_price_quote"]}
-```
-
-This reduces noise in the active tool list and can improve context efficiency.
+`call_tool` runs the named tool and returns its result. A hidden tool can also
+be called directly by name, with the same arguments.
 
 ### When Discovery Is Disabled
 
-If the server was started without `--tool-discovery`, the admin tools are not
-available. All tools in `default_tool_categories` are permanently active.
+If the server was started without `--tool-discovery`, the discovery tools are not
+available. All tools in `default_tool_categories` are listed and called directly;
+tools outside them are not served, and calling one fails with "Unknown tool".
 
 ---
 
 ## openbb-cli Dispatcher Tools
 
 When the optional `openbb-mcp-server[cli]` extra is installed (it pulls in
-`openbb-cli`), the server also registers three first-class tools that wrap
+`openbb-cli`), the server also registers four first-class tools that wrap
 `openbb-cli`'s NDJSON dispatcher protocol. They give an agent the same
 `obb`-namespace command surface that the `openbb` CLI exposes — without
 shelling out or standing up a Python REPL.
@@ -149,8 +128,20 @@ Execute a single command and return its serialized result.
 | `params` | `dict \| null` | Keyword arguments forwarded to the command. Defaults to `{}`. |
 | `server_url` | `string \| null` | When set, dispatches against a remote `openbb-platform-api` server (HTTP). When omitted, falls back to `OPENBB_SERVER_URL`, then in-process local dispatch. |
 
-The result is the standard OBBject envelope (`id`, `results`, `provider`,
-`warnings`, `chart`, `extra`) — same shape as a direct tool call.
+The result is a dispatcher response. `ok` reports success, `result` holds the
+command's OBBject fields (`results`, `provider`, ...), and `error` carries the
+`type` and `message` of a failure instead of raising:
+
+```json
+{
+    "id": null,
+    "ok": true,
+    "result": {"results": [{"date": "2025-01-02", "close": 243.85}], "provider": "yfinance"},
+    "error": null
+}
+```
+
+Remote dispatch unwraps a single-row `results` list to the row itself.
 
 ### `openbb_batch_dispatch`
 
@@ -173,18 +164,30 @@ Each entry needs `command` (dotted path); `params` and `id` are optional. The
 surface as response objects with `ok=False` and a structured `error` block —
 no exception bubbles up, errors are per-request.
 
+### `openbb_list_commands`
+
+List every command with a one-line description. Takes only the optional
+`server_url`. The response's `result` is a list of `{"name", "description"}`
+entries. Equivalent to `openbb --list-commands` on the CLI.
+
 ### `openbb_describe_command`
 
-Return parameter schema, description, and provider info for one command.
+Return one command's parameters and output schema.
 
 ```json
 {
     "name": "openbb_describe_command",
-    "arguments": {"command": "equity.price.historical"}
+    "arguments": {"command": "equity.price.historical", "provider": "yfinance"}
 }
 ```
 
-Equivalent to `openbb --describe equity.price.historical` on the CLI.
+The response's `result` has the command `name`, its `parameters` (each with
+`name`, `in`, and `type`, plus `required`, `default`, `choices`, and `help` when
+set), and its `output_schema`. For a command with several providers, pass
+`provider` to get that provider's `parameters` and `output_schema`; without it,
+`result.providers` maps every provider to its own `parameters` and
+`output_schema`. Equivalent to `openbb --describe equity.price.historical`
+(`equity.price.historical:yfinance` for one provider) on the CLI.
 
 ### Local vs remote dispatch
 
@@ -194,8 +197,8 @@ Equivalent to `openbb --describe equity.price.historical` on the CLI.
 | Remote | `server_url` arg or `OPENBB_SERVER_URL` env | `HttpDispatcher` proxies commands to a long-running `openbb-platform-api` server. Multi-tenant; the heavy import lives on the server. |
 
 Mode is per-call — different requests in the same session can target different
-servers. Dispatcher singletons are cached for the server's lifetime, so the
-`import openbb` cost (local) and the httpx connection (remote) are paid once.
+servers. Dispatchers are cached for the server's lifetime, so the `import openbb`
+cost (local) and the remote server's OpenAPI download are paid once per target.
 
 ---
 
@@ -253,6 +256,13 @@ Key rules:
 - **Provider-specific parameters** — some parameters are only relevant for
   certain providers. The schema unions all of them; irrelevant ones are
   silently ignored.
+- **Valid values** — never guess a value. A parameter with a fixed set of
+  values has an `enum`. When the values differ by provider, or several can be
+  comma-separated, the description lists them (`Valid values by provider:
+  ...`, `Valid values for provider oecd (comma-separate several): ...`). When
+  another tool lists them, the description names it and its arguments
+  (``Get the valid values from the `derivatives_options_strikes` tool with
+  symbol=<the symbol you pass here>.``) — call that tool first.
 
 ### Example Tool Call
 
@@ -301,7 +311,7 @@ Every OpenBB tool returns an **OBBject** — a standardized response envelope:
 | `results` | `list[dict] \| dict \| string \| null` | The actual data. Usually a list of records |
 | `provider` | `string \| null` | Which provider fulfilled the request |
 | `warnings` | `list[object] \| null` | Non-fatal warnings from the provider or platform |
-| `chart` | `object \| null` | Chart data if `chart=true` was passed |
+| `chart` | `object \| null` | Chart artifact if `chart=true` was passed |
 | `extra` | `dict` | Execution metadata and results metadata |
 
 ### The `results` Field
@@ -393,18 +403,28 @@ metadata). Contents vary by endpoint and provider.
 
 ### The `chart` Field
 
-When a tool is called with `chart: true` (where supported), the chart field
-contains a Plotly figure:
+When a tool is called with `chart: true` (where supported), the server
+replaces the Plotly figure with an OpenBB Workspace artifact:
 
 ```json
 "chart": {
-    "content": { "data": [...], "layout": {...} },
-    "fig": { "data": [...], "layout": {...} }
+    "type": "chart",
+    "name": "AAPL Close",
+    "description": "Output of the equity_price_historical tool.",
+    "uuid": "5b0e1c52-6f3e-4a51-9d6f-0f1b6a2f4c11",
+    "content": [{"date": "2025-01-02", "close": 243.85}],
+    "chart_params": {"chartType": "line", "xKey": "date", "yKey": ["close"]}
 }
 ```
 
-The `content` key contains the Plotly JSON that can be rendered directly.
-Not all endpoints support charting.
+`content` holds the rows the chart is drawn from and `chart_params` says how:
+`chartType` is `line`, `bar`, or `scatter` with `xKey` and `yKey`, or `pie`
+or `donut` with `angleKey` and `calloutLabelKey`. Figures that cannot be
+drawn that way (surfaces, candlesticks, heatmaps) come back as a `table`
+artifact of their data, without `chart_params`. Tools that return a figure
+directly return the artifact as their whole output. Present the artifact
+as it is; do not convert it or re-plot it. Not all endpoints support
+charting.
 
 ---
 
@@ -458,34 +478,35 @@ Call `list_prompts` (no arguments):
 
 ```json
 [
-    {"name": "develop_extension", "tags": ["skill"], "arguments": []},
-    {"name": "build_workspace_app", "tags": ["skill"], "arguments": []},
-    {"name": "configure_mcp_server", "tags": ["skill"], "arguments": []},
-    {"name": "analyze_stock", "tags": ["analysis"], "arguments": [
-        {"name": "symbol", "type": "str", "required": true},
-        {"name": "focus", "type": "str", "required": false, "default": "fundamentals"}
+    {"name": "system_prompt", "description": "System prompt with guidance...", "arguments": []},
+    {"name": "analyze_stock", "description": "Analyze a stock.", "arguments": [
+        {"name": "symbol", "description": "Ticker.", "required": true},
+        {"name": "focus", "description": "Area.", "required": false}
     ]}
 ]
 ```
 
-### Execute a Prompt
+### Get a Prompt
 
-Call `execute_prompt` with the prompt name and any required arguments:
+Call `get_prompt` with the prompt `name` and any `arguments`:
 
 ```json
 // Input
-{"prompt_name": "analyze_stock", "arguments": {"symbol": "AAPL"}}
+{"name": "analyze_stock", "arguments": {"symbol": "AAPL"}}
 
-// Output - rendered prompt content
+// Output - the rendered prompt
 {
     "messages": [
-        {"role": "user", "content": "Analyze AAPL focusing on fundamentals..."}
+        {"role": "user", "content": "Analyze AAPL focusing on fundamentals."}
     ]
 }
 ```
 
-Prompts with no arguments (like skills) return their full content as-is.
-Prompts with arguments substitute the provided values into the template.
+Pass every argument value as a string (`{"years": "10"}`, not `{"years": 10}`);
+MCP prompt arguments are strings. Prompts without arguments return their
+content as-is. Omitted optional arguments fall back to their defaults, and a
+missing required argument is an error. Skills are resources, not prompts; see
+[Working With Skills](#working-with-skills).
 
 ### Prompt Categories by Tag
 
@@ -508,7 +529,8 @@ Prompts with arguments substitute the provided values into the template.
 | **Provider authentication failure** | Error with HTTP 401/403 indicating credentials are missing or invalid |
 | **Provider rate limit** | Error with HTTP 429 or provider-specific rate limit message |
 | **No data available** | Successful response with `results: null` or `results: []` |
-| **Tool not active** | Tool does not appear in the available tools list |
+| **Tool hidden by discovery** | Tool is not in the tool list; find it with `search_tools` and run it with `call_tool` |
+| **Tool outside the served categories** | "Unknown tool" error, by name, through `call_tool`, and through `run_pipeline` |
 | **Unknown tool name** | Standard MCP protocol error |
 | **Category not found** (discovery) | Error listing available categories |
 | **Connection failure** | Error with "Request error: ..." |
@@ -540,7 +562,7 @@ The `loc` field shows which parameter failed, and `msg` explains why.
 
 ### Fetching Time Series Data
 
-1. Activate the tool: `activate_tools(["equity_price_historical"])`
+1. With discovery enabled, find the tool: `search_tools({"query": "historical stock prices"})`
 2. Call with date range:
    ```json
    {"symbol": "AAPL", "provider": "fmp", "start_date": "2025-01-01", "end_date": "2025-02-01"}
@@ -567,6 +589,43 @@ Use the output of one tool as input to another:
 2. Extract symbols from `results`
 3. Get quotes: `equity_price_quote({"symbol": "AAPL,PEER1,PEER2", "provider": "fmp"})`
 
+When a later tool needs the earlier tool's rows rather than a few values picked
+from them, use `run_pipeline` (below) so the rows never pass through the
+conversation.
+
+### Running Data-Processing Tools With `run_pipeline`
+
+Technical, quantitative, and econometrics tools (`technical_rsi`,
+`technical_macd`, ...) take the rows to analyze as a `data` argument. Fetch and
+analyze in one `run_pipeline` call instead of copying a price history into
+their arguments:
+
+```json
+{
+    "steps": [
+        {
+            "id": "prices",
+            "tool": "equity_price_historical",
+            "arguments": {"symbol": "AAPL", "provider": "yfinance", "start_date": "2025-01-01"}
+        },
+        {"id": "rsi", "tool": "technical_rsi", "arguments": {"length": 14}, "inputs": {"data": "prices"}},
+        {"id": "macd", "tool": "technical_macd", "inputs": {"data": "prices"}}
+    ],
+    "outputs": ["rsi", "macd"]
+}
+```
+
+- Each step has a `tool`, its `arguments`, an optional `id`, and `inputs`, which
+  maps an argument name to the `id` of an earlier step. That step's `results`
+  fill the argument (its whole output when it has no `results`).
+- A step without an `id` is referred to by its position (`"0"`, `"1"`, ...).
+- `outputs` lists the steps to return; by default only the last step comes back.
+- The request is validated before any step runs. A failing step is reported as
+  `Step '<id>' (<tool>) failed: ...`.
+- With tool discovery, use `search_tools` to find the tools and their
+  parameters; `run_pipeline` can call tools hidden by discovery by name, but
+  not tools outside the categories the server serves.
+
 ### Checking Data Coverage
 
 When unsure what providers are available for an endpoint, look at the tool's
@@ -574,13 +633,15 @@ input schema — the `provider` parameter's `enum` lists all installed options.
 
 ### Using Charts
 
-Pass `chart: true` to get a pre-built Plotly visualization:
+Pass `chart: true` to get a pre-built visualization:
 
 ```json
 {"symbol": "AAPL", "provider": "fmp", "chart": true}
 ```
 
-The `chart` field in the response contains the Plotly figure JSON.
+The `chart` field in the response holds a `chart` or `table` artifact (see
+The `chart` Field). In `run_pipeline`, a step that returns an artifact passes
+its `content` rows to later steps.
 
 ---
 
@@ -683,7 +744,8 @@ Call `list_resources()` (no arguments):
     {"uri": "skill://develop_extension/SKILL.md", "name": "develop_extension"},
     {"uri": "skill://build_workspace_app/SKILL.md", "name": "build_workspace_app"},
     {"uri": "skill://configure_mcp_server/SKILL.md", "name": "configure_mcp_server"},
-    {"uri": "skill://work_with_server/SKILL.md", "name": "work_with_server"}
+    {"uri": "skill://work_with_server/SKILL.md", "name": "work_with_server"},
+    {"uri": "skill://use_openbb_cli/SKILL.md", "name": "use_openbb_cli"}
 ]
 ```
 
@@ -713,10 +775,15 @@ discover any supporting files packaged alongside the main `SKILL.md`.
 | Tool | Input | Returns |
 |---|---|---|
 | `available_categories` | *(none)* | List of categories with subcategories and tool counts |
-| `available_tools` | `category`, `subcategory?` | List of tools with active status and descriptions |
-| `activate_tools` | `tool_names: list` | Status message |
-| `deactivate_tools` | `tool_names: list` | Status message |
-| `activate_category` | `category`, `subcategory?` | Status message with count and tool names |
+| `available_tools` | `category`, `subcategory?` | List of tools with names and descriptions |
+| `search_tools` | `query` | Full definitions of the matching tools |
+| `call_tool` | `name`, `arguments?` | The tool's result |
+
+### Pipeline Tool (Always Listed)
+
+| Tool | Input | Returns |
+|---|---|---|
+| `run_pipeline` | `steps`, `outputs?` | Outputs of the selected steps, keyed by step id |
 
 ### OBBject Response Structure
 
@@ -726,5 +793,5 @@ discover any supporting files packaged alongside the main `SKILL.md`.
 | `results` | Yes | Data payload (list, dict, string, or null) |
 | `provider` | Yes | Provider name or null |
 | `warnings` | Yes | Warning list or null |
-| `chart` | Yes | Chart data or null |
+| `chart` | Yes | Chart artifact or null |
 | `extra` | Yes | Metadata dict (may be empty) |

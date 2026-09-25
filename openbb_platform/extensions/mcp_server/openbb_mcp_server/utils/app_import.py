@@ -1,20 +1,7 @@
-"""Backwards-compatibility shim.
-
-The launcher's helpers were split across purpose-specific modules in
-the V5 layout reorganization:
-
-* ``import_app`` moved to ``openbb_mcp_server.app.bootstrap``.
-* ``parse_args`` moved to ``openbb_mcp_server.app.args``.
-
-Every symbol is resolved lazily through ``__getattr__`` so the shim
-always reflects the current source-module state — important when test
-helpers (or hot-reload loops) pop the source module from
-``sys.modules`` and re-import it.
-"""
+"""Backwards-compatible lazy aliases for ``import_app`` and ``parse_args``."""
 
 from importlib import import_module
 
-#: ``shim_attr -> (source_module, source_attr)`` mapping.
 _LAZY_TARGETS: dict[str, tuple[str, str]] = {
     "import_app": ("openbb_mcp_server.app.bootstrap", "import_app"),
     "parse_args": ("openbb_mcp_server.app.args", "parse_args"),

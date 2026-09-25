@@ -8,8 +8,8 @@ readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
     "openbb-core>=2.0.0",
-    "fastmcp>=3.2.0",
-    # Backport of stdlib ``tomllib`` for py3.10.
+    "fastapi>=0.138.2",
+    "fastmcp>=4.0.9",
     "tomli>=2.0;python_version<'3.11'",
 ]
 
@@ -26,9 +26,10 @@ Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-m
 
 [dependency-groups]
 dev = [
-    "openbb-devtools>=2.0.0",
+    "openbb-devtools>=2.0.1",
     "httpx>=0.28.0,<1.0.0",
     "openbb-cli>=2.0.0",
+    "openbb-mcp-fixture",
 ]
 
 [build-system]
@@ -45,11 +46,10 @@ include = [
     "pyproject.toml",
 ]
 
-# Sibling packages are path-sourced because v5 hasn't been published.
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
 openbb-cli = { path = "../../../cli", editable = true }
-openbb-devtools = { path = "../devtools", editable = true }
+openbb-mcp-fixture = { path = "tests/fixtures/openbb_mcp_fixture", editable = true }
 
 [tool.ruff]
 line-length = 88
@@ -131,4 +131,26 @@ include = ["openbb_mcp_server"]
 exclude = ["openbb_mcp_server/skills", "tests", "integration"]
 
 [tool.ty.rules]
-unresolved-import = "warn"
+unresolved-import = "ignore"
+
+[tool.coverage.run]
+branch = true
+source = ["openbb_mcp_server"]
+omit = ["*/openbb_mcp_server/skills/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning:openbb_core.provider.utils.client",
+]

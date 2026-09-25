@@ -1,27 +1,4 @@
-"""Launch the MCP server from an ``openbb-cli`` generated ``.spec`` file.
-
-A ``.spec`` is a digested OpenAPI snapshot — commands with their
-``url_path``, ``parameters``, ``response_schema``, and a ``base_url``
-pointing at the upstream that produced it. Feeding one to
-``openbb-mcp`` synthesizes a Workspace-compatible FastAPI app that:
-
-* exposes the same surface as the upstream (every command becomes a
-  FastAPI route), and
-* proxies every request to ``base_url + url_path``, replaying query
-  string / body / headers verbatim.
-
-``FastMCP.from_fastapi`` then walks the synthesized routes and turns
-each one into an MCP tool, so a single ``.spec`` file becomes a full
-MCP toolset wired to the remote upstream.
-
-Use cases:
-
-* Connect MCP-aware agents to a remote OpenBB Platform deployment
-  without running the full backend locally — ship just
-  ``openbb-mcp-server`` and the spec.
-* Containerize a thin agent-facing MCP gateway that dispatches to a
-  managed backend in another cluster / region.
-"""
+"""Launch the MCP server from an ``openbb-cli`` generated ``.spec`` file."""
 
 from __future__ import annotations
 
@@ -33,33 +10,14 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-#: Trailing ``T00:00:00`` patterns we treat as "no real time-of-day"
-#: when EVERY row in a response carries the same shape for a given
-#: field. Matches ``T00:00:00``, ``T00:00:00.000``, ``T00:00:00Z``,
-#: ``T00:00:00.000Z``, and ``T00:00:00+00:00``-style offsets.
 _ZERO_TIME_RE = re.compile(r"T00:00:00(?:\.0+)?(?:Z|[+-]\d{2}:?\d{2})?$")
 
-#: Common envelope keys whose value is the row-list.
 _ENVELOPE_KEYS: tuple[str, ...] = ("results", "data", "rows", "records")
 
 from fastapi import FastAPI, Request
 from fastapi.responses import Response
 
-#: Spec versions this loader knows how to consume. Matches the
-#: openbb-cli generator and openbb-platform-api launcher.
 SUPPORTED_SPEC_VERSIONS: frozenset[int] = frozenset({5})
-
-
-# ---------------------------------------------------------------------------
-# Spec provenance + structural compatibility models
-# ---------------------------------------------------------------------------
-#
-# Mirrors ``openbb_cli.dispatchers.spec.SpecDocument`` and
-# ``openbb_platform_api.app.spec``'s pydantic shape so all three loaders
-# accept exactly the same docs. Inlining (rather than importing from
-# openbb-cli) keeps the MCP launcher's runtime dep tree light — the
-# ``[cli]`` extra is optional, and spec-driven launches must work
-# without it.
 
 
 class _CommandParameterModel(BaseModel):
@@ -88,13 +46,7 @@ class _CommandSpecModel(BaseModel):
 
 
 class _SpecDocumentModel(BaseModel):
-    """The on-disk shape of a ``.spec`` file.
-
-    ``content_sha256`` is required — every spec produced by
-    ``openbb-cli`` stamps the field at generation time, so an absent
-    value indicates corruption or a hand-rolled forgery; either way
-    the launcher refuses to load it.
-    """
+    """The on-disk shape of a ``.spec`` file."""
 
     model_config = ConfigDict(extra="allow")
 
@@ -112,13 +64,7 @@ class _SpecDocumentModel(BaseModel):
 
 
 def _content_hash(spec_doc: dict[str, Any]) -> str:
-    """Hash the spec doc deterministically, ignoring ``content_sha256``.
-
-    Same algorithm openbb-cli uses when stamping the spec at
-    generation time — canonical JSON serialization (sorted keys,
-    compact separators) of the doc with the ``content_sha256`` field
-    excluded, hashed under SHA-256.
-    """
+    """Hash the spec doc deterministically, ignoring ``content_sha256``."""
     payload = {k: v for k, v in spec_doc.items() if k != "content_sha256"}
     canonical = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(canonical).hexdigest()
@@ -129,33 +75,7 @@ def load_spec(
     *,
     expected_content_sha256: str | None = None,
 ) -> dict[str, Any]:
-    """Read, validate, and verify the integrity of a ``.spec`` file.
-
-    Performs four checks before handing the spec to downstream
-    consumers (proxy builder, FastMCP route extractor):
-
-    1. **File parseability** — must exist + valid JSON object.
-    2. **Version compatibility** — ``version`` ∈
-       ``SUPPORTED_SPEC_VERSIONS``.
-    3. **Structural schema** — pydantic-validated against
-       ``_SpecDocumentModel`` (required fields, declared types,
-       command shape).
-    4. **Content integrity** — recompute SHA-256 over canonical JSON
-       and verify against the spec's ``content_sha256``. The field
-       is REQUIRED — every spec from ``openbb-cli`` carries one,
-       and an absent or mismatched value indicates corruption or
-       tampering. When ``expected_content_sha256`` is also supplied
-       (typically from ``[mcp.spec].content_sha256`` in the deploy
-       TOML), the recomputed hash must ALSO match the deploy pin so
-       a remotely-distributed spec can be tied to a specific
-       revision in the deployment manifest. Both checks raise
-       distinct errors so the operator sees whether the failure is
-       in-file tampering or version drift.
-
-    Returns the spec as a plain dict. Each ``ValueError`` names the
-    offending file path so multi-spec deployments can pinpoint the
-    bad input.
-    """
+    """Read, validate, and verify the integrity of a ``.spec`` file."""
     p = Path(path)
     if not p.is_file():
         raise FileNotFoundError(f"Spec file not found: {path}")
@@ -187,8 +107,6 @@ def load_spec(
             f"Spec file at {path} does not conform to the expected schema:\n{exc}"
         ) from exc
 
-    # ``content_sha256`` is required by the pydantic schema, so we
-    # know it's a non-empty string at this point.
     recorded_hash = spec["content_sha256"]
     actual_hash = _content_hash(spec)
     if recorded_hash != actual_hash:
@@ -216,9 +134,7 @@ _SPEC_TYPE_TO_JSON_SCHEMA: dict[str, str] = {
 
 
 def _spec_param_to_openapi(param: dict[str, Any]) -> dict[str, Any]:
-    """Reverse ``cli.spec``'s ``_normalize_parameter`` so the param looks
-    like the OpenAPI parameter object FastAPI emits.
-    """
+    """Reverse ``cli.spec``'s ``_normalize_parameter`` so the param looks like the OpenAPI parameter object FastAPI emits."""
     schema: dict[str, Any] = {}
     type_name = param.get("type", "string")
     json_schema_type = _SPEC_TYPE_TO_JSON_SCHEMA.get(type_name, "string")
@@ -290,7 +206,6 @@ def synthesize_openapi_from_spec(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-#: Hop-by-hop headers that must NOT be forwarded across a proxy.
 _HOP_BY_HOP_HEADERS: frozenset[str] = frozenset(
     {
         "connection",
@@ -325,28 +240,7 @@ def build_app_from_spec(
     extra_headers: dict[str, str] | None = None,
     spec_name: str | None = None,
 ) -> FastAPI:
-    """Synthesize a FastAPI app whose routes proxy to ``spec.base_url``.
-
-    ``FastMCP.from_fastapi`` consumes the result and turns each route
-    into an MCP tool.
-
-    ``base_url_override`` swaps the spec's recorded ``base_url`` —
-    useful when a single spec is shared across staging/prod or when
-    the recorded URL points at an internal host the launcher needs
-    to reroute.
-
-    ``extra_headers`` injects static headers on every upstream
-    request. Configured via ``[mcp.spec.headers]`` in the launcher
-    TOML so deployments can ship credentials (``Authorization``,
-    ``X-API-Key``, …) without baking them into the spec or relying
-    on the incoming MCP request to carry them. Config-supplied
-    headers OVERRIDE matching incoming-request headers.
-
-    ``spec_name`` is the human-readable label stashed on
-    ``app.state.openbb_spec_source``. Mirrors the platform-api
-    convention so downstream consumers (custom tags, telemetry,
-    skill prompts) can cite the spec file by name.
-    """
+    """Synthesize a FastAPI app whose routes proxy to ``spec.base_url``."""
     base_url = (base_url_override or spec["base_url"]).rstrip("/")
     api_title = "OpenBB Platform MCP Server (spec-driven proxy)"
 
@@ -355,10 +249,6 @@ def build_app_from_spec(
         version=str(spec.get("api_version") or "1.0"),
     )
 
-    # Provenance metadata captured at spec-generation time. Exposed
-    # so observability / telemetry layers can fingerprint the active
-    # spec, and so MCP clients have a forensic trail back to the
-    # openbb-cli invocation that produced it.
     app.state.openbb_spec = spec
     app.state.openbb_spec_base_url = base_url
     app.state.openbb_spec_source = spec_name
@@ -376,11 +266,6 @@ def build_app_from_spec(
         wire_name_map: dict[str, str],
     ):
         async def handler(request: Request):
-            # Substitute FastAPI path-parameter placeholders
-            # (``{axis}`` etc.) with the resolved values before
-            # forwarding upstream — the spec carries the path
-            # template verbatim, but the upstream expects the
-            # resolved URL.
             resolved_path = _substitute_path_params(upstream_path, request.path_params)
             return await _proxy_request(
                 request,
@@ -436,32 +321,7 @@ def build_app_from_spec(
 def build_apps_from_specs(
     specs_config: dict[str, dict[str, Any]],
 ) -> FastAPI:
-    """Build a parent FastAPI app that mounts each spec at its prefix.
-
-    ``specs_config`` is a dict of ``{name: per_spec_kwargs}`` where each
-    per-spec entry carries:
-
-    * ``spec`` — the loaded spec dict (already validated by
-      ``load_spec``).
-    * ``mount`` — the path prefix to mount the spec's app at, e.g.
-      ``/equity``. Defaults to ``"/" + name`` when not supplied.
-    * ``base_url_override`` / ``extra_headers`` / ``spec_name`` — same
-      semantics as ``build_app_from_spec``; passed through verbatim
-      so each spec keeps its own upstream target, credential headers,
-      and citation label.
-    * ``auth_hooks`` / ``middleware_hooks`` — optional lists of
-      ``module:async_callable`` references applied as
-      ``BaseHTTPMiddleware`` to that spec's sub-app. Auth runs as the
-      outermost layer, then the middleware list. Hooks are scoped to
-      the sub-app's mount prefix because they're registered on that
-      sub-app instance, not the parent. ``FastMCP.from_fastapi`` walks
-      the parent's mounted routes and converts each into an MCP tool;
-      tool invocations dispatch through the sub-app's ASGI stack so
-      the per-spec hooks fire on every tool call into that mount.
-
-    Returns a parent ``FastAPI`` whose ``app.state.openbb_specs`` is
-    a dict of ``{mount: state_snapshot}`` for telemetry / introspection.
-    """
+    """Build a parent FastAPI app that mounts each spec at its prefix."""
     if not specs_config:
         raise ValueError("build_apps_from_specs requires at least one spec entry.")
 
@@ -502,10 +362,6 @@ def build_apps_from_specs(
             spec_name=entry.get("spec_name") or name,
         )
 
-        # Per-spec auth + middleware hooks become Starlette middleware
-        # on the sub-app. Auth registered LAST = outermost overall, so
-        # unauthenticated requests are rejected before any middleware
-        # hook spends cycles on them.
         from starlette.middleware.base import BaseHTTPMiddleware
 
         from openbb_mcp_server.app.middleware import (
@@ -554,15 +410,7 @@ def build_apps_from_specs(
 
 
 def _substitute_path_params(template: str, params: dict[str, Any]) -> str:
-    """Replace FastAPI ``{name}`` path-param placeholders with resolved values.
-
-    The spec records URL paths in their template form
-    (``/breakdown/{axis}``). FastAPI parses path-params from incoming
-    requests into ``request.path_params``; we splice them back into
-    the template so the upstream URL is fully resolved before the
-    proxy hop. URL-quote each value so segments containing slashes,
-    spaces, or other special characters don't corrupt the path.
-    """
+    """Replace FastAPI ``{name}`` path-param placeholders with resolved values."""
     from urllib.parse import quote
 
     resolved = template
@@ -652,10 +500,7 @@ async def _proxy_request(
     extra_headers: dict[str, str] | None = None,
     wire_name_map: dict[str, str] | None = None,
 ) -> Response:
-    """Forward ``request`` to ``upstream_url`` and stream the response.
-
-    Uses ``aiohttp`` (already a runtime dep of ``openbb-core``).
-    """
+    """Forward ``request`` to ``upstream_url`` and stream the response."""
     import aiohttp
 
     body = await request.body() if method in {"post", "put", "patch"} else None

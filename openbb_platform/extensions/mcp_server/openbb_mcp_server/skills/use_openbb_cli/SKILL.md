@@ -44,7 +44,7 @@ across modes).
 | `--batch` | Read NDJSON requests from stdin; emit NDJSON responses to stdout. |
 | `--generate-spec` | Fetch `openapi.json` from `--server` and write a precomputed `.spec` file to `--output`. |
 | `--generate-extension` | Build a full installable OpenBB Platform extension package from a `.spec` file. |
-| `--list-commands` / `--describe COMMAND` | Print the command catalog or one command's schema as JSON. |
+| `--list-commands` / `--describe COMMAND[:PROVIDER]` | Print the command catalog or one command's schema as JSON. Needs `--spec` or `--server`. |
 
 ### Single-shot
 
@@ -52,7 +52,10 @@ across modes).
 openbb equity.price.historical --symbol AAPL --provider yfinance
 ```
 
-Output is one OBBject envelope as a JSON line (`{"id": ..., "results": ..., "provider": ...}`).
+Output is one dispatcher response as a JSON line: `{"ok": true, "result": ...}`
+on success, where `result` holds the command's OBBject fields (`results`,
+`provider`, ...), or `{"ok": false, "error": {"type": ..., "message": ...}}` on
+failure. Unset fields are left out.
 Exit code is `0` on success, `1` on a dispatch error, `2` on a usage error.
 
 ### Interactive REPL
@@ -135,21 +138,23 @@ parse on every call:
 openbb --spec cli.spec economy.gdp
 openbb --spec cli.spec --list-commands
 openbb --spec cli.spec --describe equity.price.historical
+openbb --spec cli.spec --describe equity.price.historical:yfinance
 ```
 
-The spec's recorded `base_url` is the default upstream; pass `--server URL`
-to override at dispatch time.
+The spec carries the upstream `base_url` it was generated against, so
+`--server` is not needed alongside `--spec`.
 
-### Filtering commands at generation
+### Filtering commands
 
 `--include` and `--exclude` are repeatable glob patterns over dotted command
-names. When `--include` is supplied it takes priority — anything not matching
-is dropped regardless of `--exclude`.
+names, applied by `--generate-extension` (`--generate-spec` always writes every
+command). When `--include` is supplied it takes priority — anything not
+matching is dropped regardless of `--exclude`.
 
 ```bash
-openbb --generate-spec \
-  --server https://api.example.com \
-  --output equity.spec \
+openbb --generate-extension \
+  --spec cli.spec \
+  --output ./openbb-equity-subset \
   --include 'equity.*' \
   --exclude 'equity.fundamentals.*'
 ```
@@ -176,8 +181,10 @@ openbb --header-file ./headers.json --query-param-file ./query.json economy.gdp
 Env-var auto-loading: any `OPENBB_HTTP_QUERY_*` env var becomes a query param
 (`OPENBB_HTTP_QUERY_API_KEY=xxx` → `?api_key=xxx`). CLI flags beat env vars.
 
-For multi-spec dispatchers, headers can be scoped per namespace via the TOML
-config (`[specs.<ns>.headers]`).
+For multi-spec dispatchers, prefix a header or query parameter with a
+namespace to send it to that spec only (`-H 'congress:X-API-Key: xxx'`,
+`-Q 'nyfed:format=json'`), or scope it in the TOML config
+(`[specs.<ns>.headers]`, `[specs.<ns>.query]`).
 
 ---
 
@@ -197,20 +204,27 @@ pyproject.toml [tool.openbb-cli]
 
 CLI flags always beat env vars; env vars beat TOML.
 
+The CLI reads top-level keys of `openbb.toml` (and of `[tool.openbb-cli]` in
+`pyproject.toml`): `server`, `spec`, `openapi-path`, `header-file`,
+`query-param-file`, `auth-hook`, and the `[headers]`, `[query]`,
+`[specs.<ns>]`, and `[settings]` tables. Set the batch concurrency with
+`--batch-concurrency` or `OPENBB_CLI_BATCH_CONCURRENCY`.
+
 ```toml
 # openbb.toml
-[openbb-cli]
 server = "https://api.example.com"
-batch_concurrency = 8
 
-[openbb-cli.headers]
-Authorization = "Bearer $OPENBB_UPSTREAM_TOKEN"
+[headers]
+Authorization = "Bearer ..."
 
 [specs.congress]
 path = "/etc/openbb/congress.spec"
 [specs.congress.headers]
-"X-API-Key" = "$CONGRESS_KEY"
+"X-API-Key" = "..."
 ```
+
+Header and query values are sent as written; they are not expanded from
+`$VAR` references.
 
 ```bash
 openbb --config /etc/openbb/openbb.toml --list-commands
@@ -223,24 +237,28 @@ openbb --show-config                # merged config as JSON
 ## Building Extensions From a Spec
 
 `--generate-extension` builds a full installable OpenBB Platform extension
-package from a `.spec` file. Each spec becomes one provider with its own
-router; `pip install -e <output>` + `openbb-build` registers it.
+package from exactly one `.spec` file. The project is written to
+`<output>/<project-name>`; the command prints that path with its providers,
+routers, and install commands.
 
 ```bash
 openbb --generate-extension \
   --spec congress.spec \
-  --output ./openbb-congress-gov \
+  --output ./extensions \
   --provider-name congress_gov \
   --project-name openbb-congress-gov \
-  --package-name openbb_congress_gov \
-  --router-name congress
+  --package-name openbb_congress_gov
 
-pip install -e ./openbb-congress-gov
+pip install -e ./extensions/openbb-congress-gov
 openbb-build
 ```
 
-After registration the extension's commands are reachable via `obb.congress.*`
-in Python and `congress.*` from any backend.
+`--project-name` defaults to `openbb-<provider-name>`, `--package-name` to
+`openbb_<provider-name>`, and `--provider-name` to the name of the `--output`
+directory. `--router-name` is accepted but not used by the generator yet.
+
+After registration the extension's commands are reachable under the printed
+routers, as `obb.<router>.*` in Python and `<router>.*` from any backend.
 
 ---
 
@@ -278,6 +296,23 @@ mounts (`[mcp.spec.NAME]`), per-spec auth/middleware hooks, and the
 
 ---
 
+## The Same Commands as MCP Tools
+
+When `openbb-cli` is installed next to `openbb-mcp-server`, the MCP server
+exposes the CLI's dispatcher as tools, so an agent gets the same surface:
+
+| CLI | MCP tool |
+|---|---|
+| `openbb <command> --param value` | `openbb_dispatch` (`command`, `params`) |
+| `openbb --batch` | `openbb_batch_dispatch` (`requests`) |
+| `openbb --list-commands` | `openbb_list_commands` |
+| `openbb --describe <command>` | `openbb_describe_command` (`command`, optional `provider`) |
+
+Every tool takes an optional `server_url`, the counterpart of `--server`, and
+falls back to `OPENBB_SERVER_URL` like the CLI does.
+
+---
+
 ## Useful Environment Variables
 
 | Variable | Purpose |
@@ -298,9 +333,9 @@ shell exports beat both.
 ## Quick Reference
 
 ```bash
-# Discover commands
-openbb --list-commands
-openbb --describe equity.price.historical
+# Discover commands (needs --server or --spec)
+openbb --server URL --list-commands
+openbb --server URL --describe equity.price.historical
 
 # One-shot dispatch
 openbb equity.price.historical --symbol AAPL --provider yfinance

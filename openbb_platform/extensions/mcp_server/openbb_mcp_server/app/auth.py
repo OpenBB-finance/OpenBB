@@ -1,114 +1,77 @@
-"""Custom authentication for the MCP server."""
+"""Bearer-token authentication for the MCP server."""
 
 import base64
-import binascii
 import secrets
 
-from fastapi import HTTPException
-from fastmcp.server.auth import AuthProvider
-
-# Use fastmcp's ``AccessToken`` (which subclasses ``mcp.server.auth.provider.AccessToken``
-# with extra JWT-claim fields) so our ``verify_token`` override matches
-# ``AuthProvider.verify_token``'s signature exactly — Liskov-safe.
+from fastmcp.server.auth import AuthProvider, TokenVerifier
 from fastmcp.server.auth.auth import AccessToken
-from starlette.requests import Request
-
-from openbb_mcp_server.models.settings import MCPSettings
 
 
-class TokenAuthProvider(AuthProvider):
-    """Token authentication provider for basic authentication via Bearer tokens."""
+class TokenAuthProvider(TokenVerifier):
+    """Accept Bearer tokens that carry ``base64(username:password)`` for fixed credentials.
 
-    def __init__(self, settings: MCPSettings):
-        """Initialize the token auth provider."""
+    Parameters
+    ----------
+    credentials : tuple[str, str]
+        The accepted ``(username, password)`` pair.
+    """
+
+    def __init__(self, credentials: tuple[str, str]) -> None:
         super().__init__()
-        self.server_auth = settings.server_auth
-        uvicorn_config = settings.uvicorn_config or {}
-        host = uvicorn_config.get("host", "127.0.0.1")
-        port = uvicorn_config.get("port", "8001")
-        use_https = uvicorn_config.get("ssl_keyfile") and uvicorn_config.get(
-            "ssl_certfile"
-        )
-        scheme = "https" if use_https else "http"
-        base_url = f"{scheme}://{host}:{port}"
-
-        self.resource_server_url = f"{base_url}/mcp"
-        self.authorization_url = f"{base_url}/mcp/auth"
-        self.token_url = f"{base_url}/mcp/token"
-
-    async def authorize(self, request: Request) -> bool:
-        """Authorize the request."""
-        if not self.server_auth:
-            return True
-
-        auth_header = request.headers.get("Authorization")
-        if not auth_header:
-            raise HTTPException(
-                status_code=401,
-                detail="Not authenticated",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        try:
-            scheme, token = auth_header.split()
-            if scheme.lower() != "bearer":
-                raise ValueError("Invalid authentication scheme.")
-
-            try:
-                decoded = base64.b64decode(token).decode("utf-8")
-                username, password = decoded.split(":", 1)
-            except (binascii.Error, ValueError) as e:
-                raise ValueError("Invalid base64-encoded token.") from e
-
-            expected_username, expected_password = self.server_auth
-
-            is_user_valid = secrets.compare_digest(username, expected_username)
-            is_pass_valid = secrets.compare_digest(password, expected_password)
-
-            if not (is_user_valid and is_pass_valid):
-                raise ValueError("Invalid username or password.")
-
-            request.state.user = {"username": username}
-        except (ValueError, HTTPException) as e:
-            detail = getattr(e, "detail", str(e))
-            raise HTTPException(
-                status_code=401,
-                detail=detail,
-                headers={"WWW-Authenticate": "Bearer"},
-            ) from e
-
-        return True
+        self._username = credentials[0].encode("utf-8")
+        self._password = credentials[1].encode("utf-8")
 
     async def verify_token(self, token: str) -> AccessToken | None:
-        """Verify the token."""
-        if not self.server_auth:
-            return None
-
+        """Return an access token when the Bearer token carries the configured credentials."""
         try:
-            try:
-                decoded = base64.b64decode(token).decode("utf-8")
-                username, password = decoded.split(":", 1)
-            except (binascii.Error, ValueError):
-                return None
-
-            expected_username, expected_password = self.server_auth
-
-            is_user_valid = secrets.compare_digest(username, expected_username)
-            is_pass_valid = secrets.compare_digest(password, expected_password)
-
-            if not (is_user_valid and is_pass_valid):
-                return None
-
-            return AccessToken(
-                token=token,
-                client_id=username,
-                scopes=[],
-                expires_at=None,
-            )
-        except (ValueError, HTTPException):
+            decoded = base64.b64decode(token, validate=True)
+        except ValueError:
             return None
+        username, separator, password = decoded.partition(b":")
+        if not separator:
+            return None
+        is_user_valid = secrets.compare_digest(username, self._username)
+        is_pass_valid = secrets.compare_digest(password, self._password)
+        if not (is_user_valid and is_pass_valid):
+            return None
+        return AccessToken(
+            token=token,
+            client_id=username.decode("utf-8", errors="replace"),
+            scopes=[],
+            expires_at=None,
+        )
 
 
-def get_auth_provider(settings: MCPSettings) -> TokenAuthProvider:
-    """Get the authentication provider."""
-    return TokenAuthProvider(settings)
+def get_auth_provider(
+    auth: AuthProvider | tuple[str, str] | list[str] | None,
+) -> AuthProvider | None:
+    """Return the auth provider for the ``auth`` argument of ``create_mcp_server``.
+
+    Parameters
+    ----------
+    auth : AuthProvider | tuple[str, str] | list[str] | None
+        A FastMCP auth provider, a ``(username, password)`` pair, or None for no authentication.
+
+    Returns
+    -------
+    AuthProvider | None
+        The provider that guards the server, or None when no authentication is configured.
+
+    Raises
+    ------
+    TypeError
+        If ``auth`` is neither an auth provider nor a pair of non-empty strings.
+    """
+    if auth is None:
+        return None
+    if isinstance(auth, AuthProvider):
+        return auth
+    if (
+        isinstance(auth, (tuple, list))
+        and len(auth) == 2
+        and all(isinstance(part, str) and part for part in auth)
+    ):
+        return TokenAuthProvider((auth[0], auth[1]))
+    raise TypeError(
+        "auth must be a fastmcp AuthProvider or a (username, password) pair of non-empty strings."
+    )

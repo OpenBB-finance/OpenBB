@@ -1,4 +1,4 @@
-﻿---
+---
 name: configure_mcp_server
 description: This guide covers installation, configuration, authentication, tool discovery, prompt management, and client integration for `openbb-mcp-server`.
 ---
@@ -27,6 +27,14 @@ Or install individual extensions:
 
 ```
 pip install openbb-equity openbb-economy
+```
+
+The `cli` extra adds `openbb-cli` and its four dispatcher tools
+(`openbb_dispatch`, `openbb_batch_dispatch`, `openbb_list_commands`,
+`openbb_describe_command`); `enable_cli_tools=false` turns them off:
+
+```
+pip install "openbb-mcp-server[cli]"
 ```
 
 ---
@@ -79,13 +87,17 @@ openbb-mcp --app ./my_app.py:create_app --factory
 | `--host <host>` | Server host | `127.0.0.1` |
 | `--port <port>` | Server port | `8001` |
 | `--transport <type>` | `streamable-http`, `sse`, or `stdio` | `streamable-http` |
-| `--default-categories <csv>` | Comma-separated default active tool categories | `all` |
-| `--allowed-categories <csv>` | Restrict available categories to this list | All categories |
-| `--tool-discovery` | Enable runtime tool activation/deactivation | Discovery disabled |
+| `--default-categories <csv>` | Categories served when tool discovery is off | `all` |
+| `--allowed-categories <csv>` | The only categories served, with or without discovery | All categories |
+| `--tool-discovery` | Hide the tools behind `available_categories`, `available_tools`, `search_tools`, and `call_tool` | Discovery disabled |
 | `--system-prompt <path>` | Path to a `.txt` system prompt file | None |
 | `--server-prompts <path>` | Path to a `.json` server prompts file | None |
 
-Any additional `--key value` pairs are forwarded to Uvicorn as config.
+Every other `--key value` is routed by name: an `MCPSettings` field sets that
+setting (`--enable-cli-tools false`, `--server-auth '["user", "pass"]'`),
+`--httpx-<option>` sets an option of the httpx client that calls the API
+(`--httpx-verify false`), and anything else is passed to uvicorn
+(`--log-level debug`).
 
 ---
 
@@ -165,17 +177,20 @@ X-API-Key = "$CRYPTO_KEY"
 
 ## openbb.toml Cascade
 
-The launcher reads the same layered TOML cascade openbb-core ships with:
+The launcher reads the same layered TOML cascade openbb-core ships with,
+lowest priority first:
 
 ```
-pyproject.toml [tool.openbb-mcp] → user-global ~/.openbb_platform/openbb.toml
+pyproject.toml [tool.openbb] (so [tool.openbb.mcp]) → user-global ~/.openbb_platform/openbb.toml
   → project openbb.toml (walking up from CWD) → --config-file PATH (explicit)
-  → .env files → real shell env vars
 ```
 
-Every layer is optional; `--config-file` (or `OPENBB_MCP_CONFIG` /
-`OPENBB_API_CONFIG` / `OPENBB_CONFIG`) is the highest-priority TOML layer.
-Real shell env vars always beat TOML. CLI flags always beat env vars.
+Every layer is optional, and `.openbb.toml` works in place of `openbb.toml`.
+`--config-file` (or `OPENBB_MCP_CONFIG` / `OPENBB_API_CONFIG` /
+`OPENBB_CONFIG`) is the highest-priority TOML layer. `[mcp]` values are
+applied like CLI flags: a CLI flag beats them, and they beat `OPENBB_MCP_*`
+environment variables. `[env]` entries never replace a variable already set
+in the shell or a `.env` file.
 
 ### Top-level tables
 
@@ -206,6 +221,8 @@ hooks = ["my_pkg.middleware:rate_limit", "my_pkg.middleware:request_logger"]
 Auth hooks register before middleware hooks; within each list, registration
 order matches TOML order. Per-spec hooks (under `[mcp.spec.NAME.auth]` /
 `[mcp.spec.NAME.middleware]`) are scoped to that spec's mounted sub-app.
+The top-level hooks wrap the HTTP transports (`streamable-http`, `sse`);
+the `stdio` transport has no HTTP stack, so they do not run there.
 
 ### Env injection
 
@@ -226,9 +243,9 @@ already present in the real environment is preserved.
 Settings are resolved in this order (highest priority first):
 
 1. **CLI arguments** — command-line flags
-2. **Environment variables** — `OPENBB_MCP_` prefixed (or shell vars referenced from `[env]`)
-3. **`openbb.toml` cascade** — `--config-file PATH` > project `openbb.toml` > user-global `~/.openbb_platform/openbb.toml` > `[tool.openbb-mcp]` in `pyproject.toml`
-4. **Legacy JSON config** — `~/.openbb_platform/mcp_settings.json` (still loaded for back-compat)
+2. **`[mcp]` table of the `openbb.toml` cascade** — applied like CLI flags; `--config-file PATH` > project `openbb.toml` > user-global `~/.openbb_platform/openbb.toml` > `[tool.openbb.mcp]` in `pyproject.toml`
+3. **Environment variables** — `OPENBB_MCP_` prefixed, including those set by `[env]`
+4. **JSON settings file** — `~/.openbb_platform/mcp_settings.json`, written with the defaults on first run
 5. **Defaults** — built-in MCPSettings defaults
 
 ### Config File Example
@@ -269,6 +286,8 @@ OPENBB_MCP_SERVER_PROMPTS_FILE="/path/to/prompts.json"
 | `name` | `OPENBB_MCP_NAME` | `str` | `"OpenBB MCP"` |
 | `description` | `OPENBB_MCP_DESCRIPTION` | `str` | Auto-generated |
 | `version` | `OPENBB_MCP_VERSION` | `str \| None` | `None` |
+| `instructions` | `OPENBB_MCP_INSTRUCTIONS` | `str \| None` | `None` (the system prompt, when one is loaded) |
+| `mask_error_details` | `OPENBB_MCP_MASK_ERROR_DETAILS` | `bool \| None` | `None` |
 
 ### Tool Configuration
 
@@ -277,9 +296,14 @@ OPENBB_MCP_SERVER_PROMPTS_FILE="/path/to/prompts.json"
 | `default_tool_categories` | `OPENBB_MCP_DEFAULT_TOOL_CATEGORIES` | `list[str]` | `["all"]` |
 | `allowed_tool_categories` | `OPENBB_MCP_ALLOWED_TOOL_CATEGORIES` | `list[str] \| None` | `None` |
 | `enable_tool_discovery` | `OPENBB_MCP_ENABLE_TOOL_DISCOVERY` | `bool` | `false` |
+| `enable_cli_tools` | `OPENBB_MCP_ENABLE_CLI_TOOLS` | `bool` | `true` |
 | `list_page_size` | `OPENBB_MCP_LIST_PAGE_SIZE` | `int \| None` | `None` |
 | `describe_responses` | `OPENBB_MCP_DESCRIBE_RESPONSES` | `bool` | `false` |
 | `api_prefix` | `OPENBB_MCP_API_PREFIX` | `str \| None` | `None` |
+
+`enable_cli_tools` registers the `openbb-cli` dispatcher tools when
+`openbb-cli` is installed. `mask_error_details` hides exception details from
+clients.
 
 ### Prompt Configuration
 
@@ -296,14 +320,16 @@ OPENBB_MCP_SERVER_PROMPTS_FILE="/path/to/prompts.json"
 | Setting | Env Var | Type | Default |
 |---|---|---|---|
 | `uvicorn_config` | `OPENBB_MCP_UVICORN_CONFIG` | `dict` | `{"host": "127.0.0.1", "port": "8001"}` |
+| `httpx_client_kwargs` | `OPENBB_MCP_HTTPX_CLIENT_KWARGS` | `dict` | `{}` |
+
+`httpx_client_kwargs` configures the httpx client that sends tool calls to the
+API (headers, timeout, TLS verification).
 
 ### Duplicate Handling
 
 | Setting | Env Var | Type | Default |
 |---|---|---|---|
-| `on_duplicate_tools` | `OPENBB_MCP_ON_DUPLICATE_TOOLS` | `str \| None` | `None` |
-| `on_duplicate_resources` | `OPENBB_MCP_ON_DUPLICATE_RESOURCES` | `str \| None` | `None` |
-| `on_duplicate_prompts` | `OPENBB_MCP_ON_DUPLICATE_PROMPTS` | `str \| None` | `None` |
+| `on_duplicate` | `OPENBB_MCP_ON_DUPLICATE` | `str \| None` | `None` |
 
 Options: `"warn"`, `"error"`, `"replace"`, `"ignore"`
 
@@ -311,10 +337,15 @@ Options: `"warn"`, `"error"`, `"replace"`, `"ignore"`
 
 | Setting | Env Var | Type | Default |
 |---|---|---|---|
-| `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | `dict \| None` | Auto-detected |
+| `module_exclusion_map` | `OPENBB_MCP_MODULE_EXCLUSION_MAP` | `dict \| None` | `None` |
 
-By default, categories whose Python modules cannot be imported are excluded
-(e.g., `econometrics`, `quantitative`, `technical`, `coverage`).
+Maps route path segments to Python modules: routes under a segment are hidden
+while its module is imported. `None` uses `{"coverage": "openbb_core"}`, which
+hides the platform's `coverage` routes; `{}` hides nothing. Data-processing
+extensions (`technical`, `quantitative`, `econometrics`) are exposed when
+installed. Pair them with `run_pipeline`, or leave them out with
+`allowed_tool_categories` (or, with tool discovery off,
+`default_tool_categories`).
 
 ---
 
@@ -376,45 +407,44 @@ mcp = create_mcp_server(settings, my_fastapi_app, auth=my_auth_provider)
 
 ## Tool Discovery
 
-When `enable_tool_discovery` is `true`, five admin tools are
-available to the agent:
+When `enable_tool_discovery` is `true`, the OpenBB tools are left out of the
+tool list and these tools are available to the agent instead:
 
 | Tool | Description |
 |---|---|
 | `available_categories` | Lists all tool categories with tool counts |
-| `available_tools` | Lists tools in a specific category with active state and short descriptions |
-| `activate_tools` | Enables tools by name for this session |
-| `deactivate_tools` | Disables tools by name for this session |
-| `activate_category` | Bulk-activates all tools in a category (or subcategory) for this session |
+| `available_tools` | Lists the tools in a category with one-sentence descriptions |
+| `search_tools` | Finds tools by a natural-language query and returns their full definitions |
+| `call_tool` | Runs any tool by name with its arguments |
 
-All visibility changes are **per-session** — each connected client maintains its
-own active toolset, so the server is safe for multi-user deployments.
+Discovery holds no per-session state: every client sees the same tool list, and
+a hidden tool can also be called directly by name. It behaves the same over every
+transport and protocol version, so the server is safe for multi-user deployments.
 
-### Controlling Active Tools on Startup
+### Choosing the Served Categories
 
-Use `default_tool_categories` to control which categories are active initially:
-
-```
-# Only equity and economy tools active on start
-openbb-mcp --default-categories equity,economy
-
-# All admin tools active (for exploration)
-openbb-mcp --default-categories admin
-```
-
-The agent can then use `available_categories` and `activate_tools` (or
-`activate_category` for bulk activation) to dynamically enable additional
-tools as needed.
-
-### Restricting Available Categories
-
-Use `allowed_tool_categories` to permanently hide categories:
+Use `allowed_tool_categories` to serve only some categories, with or without
+discovery:
 
 ```
 openbb-mcp --allowed-categories equity,economy,crypto
 ```
 
-Categories not in this list cannot be activated even via discovery tools.
+Routes in other categories are never registered: they can't be listed,
+searched, or called, by name, through `call_tool`, or through `run_pipeline`.
+`None` or `all` serves every category.
+
+Without discovery, `default_tool_categories` also limits the served tools:
+
+```
+openbb-mcp --default-categories equity,economy
+```
+
+Tools outside these categories are registered but disabled, so they are not
+listed and calling them fails with "Unknown tool". A route's
+`mcp_config.enable` overrides this per tool. Nothing can re-enable a disabled
+tool at runtime. With discovery on, `default_tool_categories` is ignored and
+every allowed tool is reachable through `search_tools` and `call_tool`.
 
 ### Enabling Discovery
 
@@ -422,8 +452,8 @@ Categories not in this list cannot be activated even via discovery tools.
 openbb-mcp --tool-discovery
 ```
 
-All tools in `default_tool_categories` are active and the admin tools are
-not registered unless discovery is enabled.
+Without discovery, all tools in `default_tool_categories` are listed and the
+discovery tools are not registered.
 
 ---
 
@@ -437,16 +467,20 @@ Tools are named from their API route path after stripping the API prefix:
 | `/economy/cpi` | `economy_cpi` |
 | `/my_app/process` | `my_app_process` |
 
-The first path segment is the **category**, the last segment is the **tool
-name**, and segments in between form the **subcategory**. When there is no
-subcategory, it defaults to `"general"`.
+The first path segment is the **category** and the second, on paths with three
+or more segments, the **subcategory**; otherwise the subcategory is
+`"general"`. `{placeholder}` segments are skipped, and a single-segment path
+repeats its segment (`/hello` is `hello_hello`). When one path serves several
+methods, the non-GET tools get a `_<method>` suffix (`demo_items` and
+`demo_items_post`). A route's `mcp_config.name` replaces the generated name.
 
 ---
 
 ## Prompt System
 
-The server supports four layers of prompts, all accessible via the
-`list_prompts` and `execute_prompt` tools.
+The server supports three layers of prompts, all accessible via the
+`list_prompts` and `get_prompt` tools. Bundled skills are served alongside them
+as resources.
 
 ### 1. System Prompt (tag: `system`)
 
@@ -488,6 +522,8 @@ A JSON file defining reusable prompts with optional arguments:
 Argument types: `str`, `int`, `float`, `bool`, `list`, `dict`, `any`
 
 Arguments with a `default` value are optional; those without are required.
+Clients pass prompt arguments as strings (`{"aspect": "valuation"}`,
+`{"years": "10"}`).
 
 ```
 openbb-mcp --server-prompts /path/to/prompts.json
@@ -506,15 +542,21 @@ Define prompts directly on FastAPI routes via `openapi_extra`:
                 {
                     "name": "usage_guide",
                     "description": "How to use this endpoint.",
-                    "content": "To analyze {symbol}, call this endpoint with..."
+                    "content": "To analyze {symbol}, call this endpoint with...",
                 }
             ]
         }
     },
 )
-async def my_endpoint(symbol: str) -> OBBject:
-    ...
+async def my_endpoint(symbol: str) -> OBBject: ...
 ```
+
+Each `{placeholder}` in `content` becomes an argument: a prompt argument of the
+same name, else the endpoint parameter, else a required string. Arguments
+without a default are required. The rendered prompt starts with
+`Use the tool, <tool name>, to perform the following task.`, naming the
+route's tool (including a name set with `mcp_config.name`), and the tool's
+description lists its prompts.
 
 ### 4. Bundled Skills (Resources)
 
@@ -607,15 +649,56 @@ Control how individual routes appear in the MCP server via `openapi_extra`:
 )
 ```
 
+The configuration is read from `openapi_extra["mcp_config"]`, or from
+`openapi_extra["x-mcp"]` when `mcp_config` is absent. An invalid configuration
+is logged and ignored for that route.
+
 ### MCPConfigModel Fields
 
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `expose` | `bool \| None` | `None` | Set `false` to hide route from MCP |
 | `mcp_type` | `str \| None` | `None` | `"tool"`, `"resource"`, or `"resource_template"` |
-| `methods` | `list[str] \| None` | `None` | HTTP methods to expose |
-| `exclude_args` | `list[str] \| None` | `None` | Arguments to hide from the tool schema |
+| `methods` | `list[str] \| None` | `None` | The route's HTTP methods to serve; the others are left out (`"*"` for all) |
+| `exclude_args` | `list[str] \| None` | `None` | Arguments left out of the tool schema; each needs a default, which then applies |
+| `name` | `str \| None` | `None` | Tool name, replacing the one built from the path |
+| `tags` | `list[str] \| None` | `None` | Tags added to the tool next to its category |
+| `enable` | `bool \| None` | `None` | With discovery off, serve (`true`) or hide (`false`) the tool regardless of `default_tool_categories` |
+| `describe_responses` | `bool \| None` | `None` | Keep (`true`) or cut (`false`) the response documentation in the tool description |
+| `mime_type` | `str \| None` | `None` | MIME type of a route served as a resource |
 | `prompts` | `list[dict]` | `[]` | Inline prompt definitions |
+
+---
+
+## What Agents Get
+
+Beyond one tool per route, every server provides:
+
+- **`run_pipeline`** — chains tools on the server, feeding an earlier step's
+  `results` (or a chart artifact's rows) into a later step's argument, so
+  data-processing tools (`technical_*`, `quantitative_*`, `econometrics_*`)
+  receive price histories without them passing through the conversation. It
+  calls only tools the server serves.
+- **Parameter choices** — provider `choices` and widget `x-widget_config`
+  options become an `enum`, or a "Valid values" note in the description, and
+  an `optionsEndpoint` names the tool that lists the values. Options endpoints
+  hidden from the API schema have no tool to name.
+- **Chart artifacts** — a Plotly figure in a result (a figure route, or an
+  OBBject `chart` from `chart: true`) is replaced by an OpenBB Workspace
+  artifact: a `chart` artifact with rows and `chart_params` for line, bar,
+  scatter, pie, and donut figures, else a `table` artifact of the figure's
+  data.
+- **Prompt and resource tools** — `list_prompts`, `get_prompt`,
+  `list_resources`, and `read_resource` for clients without native prompt or
+  resource support.
+- **`openbb-cli` dispatcher tools** — with the `cli` extra and
+  `enable_cli_tools`.
+- **`install_skill`** — writes a skill into the bundled or a vendor skills
+  directory. Skill names are limited to lowercase letters, digits,
+  underscores, and hyphens, and file paths must stay inside the skill
+  directory, but any connected client can call it. When clients are
+  untrusted, keep the skills directories read-only for the server process or
+  require `server_auth`.
 
 ---
 
@@ -668,7 +751,7 @@ For a custom app:
 {
     "mcpServers": {
         "openbb-mcp": {
-            "url": "http://localhost:8001/mcp/"
+            "url": "http://localhost:8001/mcp"
         }
     }
 }
@@ -709,7 +792,7 @@ Clients include the Bearer token in their configuration:
 {
     "mcpServers": {
         "openbb-mcp": {
-            "url": "http://localhost:8001/mcp/",
+            "url": "http://localhost:8001/mcp",
             "headers": {
                 "Authorization": "Bearer YWRtaW46c2VjcmV0cGFzcw=="
             }
@@ -772,9 +855,11 @@ from openbb_mcp_server.models.settings import MCPSettings
 
 app = FastAPI()
 
+
 @app.get("/hello")
 async def hello():
     return "Hello World"
+
 
 settings = MCPSettings(
     name="My Custom MCP",
@@ -797,5 +882,5 @@ To configure and deploy an OpenBB MCP server:
 3. **Add prompts**: Write a system prompt file and/or server prompts JSON.
 4. **Start**: Run `openbb-mcp` with appropriate CLI flags.
 5. **Connect**: Configure your MCP client (Claude Desktop, Cursor, VS Code) with the server URL or stdio command.
-6. **Discover**: Use `available_categories`, `activate_tools`, and `activate_category` to find and enable tools.
+6. **Discover**: Use `available_categories`, `search_tools`, and `call_tool` to find and run tools.
 7. **Iterate**: Adjust settings, add inline `mcp_config` to routes, add skill files.
