@@ -663,7 +663,7 @@ def _derive_table_context(
 
     non_row = [d for d in dims_order if d not in row_dims]
     pools = {
-        d: sorted({r.get(d) for r in records if r.get(d) is not None}) for d in non_row
+        d: sorted({v for r in records if (v := r.get(d)) is not None}) for d in non_row
     }
     seed = max(
         records,
