@@ -39,6 +39,31 @@ def is_plotly_figure(data: Any) -> bool:
     )
 
 
+def strip_theme_colors(layout: Any) -> Any:
+    """Remove the server-side theme from a figure layout.
+
+    Parameters
+    ----------
+    layout : Any
+        A Plotly layout, or any value nested inside one.
+
+    Returns
+    -------
+    Any
+        A copy without the embedded ``template`` or any ``*color`` setting, so
+        the displaying window's own light and dark templates style the chart.
+    """
+    if isinstance(layout, dict):
+        return {
+            key: strip_theme_colors(value)
+            for key, value in layout.items()
+            if key != "template" and not key.lower().endswith("color")
+        }
+    if isinstance(layout, list):
+        return [strip_theme_colors(value) for value in layout]
+    return layout
+
+
 def _plotlyjs_tag() -> str:
     """Return the script tag that loads plotly.js, inlined when plotly is installed.
 
@@ -94,7 +119,9 @@ def show_figure(figure: dict, title: str = "") -> None:
             from plotly.graph_objects import Figure
 
             backend.send_figure(
-                Figure(data=figure["data"], layout=figure["layout"]),
+                Figure(
+                    data=figure["data"], layout=strip_theme_colors(figure["layout"])
+                ),
                 command_location=title,
             )
             return
