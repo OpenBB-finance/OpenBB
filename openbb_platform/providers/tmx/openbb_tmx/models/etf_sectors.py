@@ -73,6 +73,8 @@ class TmxEtfSectorsFetcher(
                 target = DataFrame.from_records(_target.iloc[0]).rename(
                     columns={"name": "sector", "percent": "weight"}
                 )
+
+            if not target.empty:
                 target["symbol"] = symbol.upper()
                 result = (
                     target[["symbol", "sector", "weight"]]

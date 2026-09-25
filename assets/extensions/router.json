@@ -60,9 +60,9 @@
         "description": "Quantitative analysis tools."
     },
     {
-        "packageName": "openbb-regulators",
+        "packageName": "openbb-sec",
         "optional": false,
-        "description": "Financial market regulators data."
+        "description": "US Securities and Exchange Commission (SEC) data."
     },
     {
         "packageName": "openbb-technical",

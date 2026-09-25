@@ -1,0 +1,96 @@
+[
+  {
+    "name": "FINRA",
+    "img": "",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Security reference data, short interest, and OTC volume from the FINRA Market Data Center and Query API, with TRACE bond reference data, last sales, and end-of-day prices.",
+    "allowCustomization": true,
+    "tabs": {
+      "equities": {
+        "id": "equities",
+        "name": "Equities",
+        "layout": [
+          {
+            "i": "equity_profile_finra_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 12,
+            "state": {"params": {"symbol": "AAPL"}},
+            "groups": ["Symbol"]
+          },
+          {
+            "i": "equity_shorts_short_interest_finra_obb",
+            "x": 0,
+            "y": 12,
+            "w": 20,
+            "h": 16,
+            "state": {"params": {"symbol": "AAPL"}},
+            "groups": ["Symbol"]
+          },
+          {
+            "i": "equity_darkpool_otc_finra_obb",
+            "x": 20,
+            "y": 12,
+            "w": 20,
+            "h": 16,
+            "state": {"params": {"symbol": "AAPL", "tier": "T1", "is_ats": "true"}},
+            "groups": ["Symbol"]
+          },
+          {
+            "i": "equity_search_finra_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 14,
+            "state": {"params": {"query": "apple"}}
+          }
+        ]
+      },
+      "bonds": {
+        "id": "bonds",
+        "name": "Bonds",
+        "layout": [
+          {
+            "i": "fixedincome_corporate_bond_prices_finra_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {"params": {"issuer_name": "apple inc"}}
+          },
+          {
+            "i": "finra_fixedincome_bond_historical_finra_obb",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 16,
+            "state": {"params": {"cusip": "037833EH9"}},
+            "groups": ["Bond"]
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "AAPL",
+        "widgetIds": [
+          "equity_profile_finra_obb",
+          "equity_shorts_short_interest_finra_obb",
+          "equity_darkpool_otc_finra_obb"
+        ]
+      },
+      {
+        "name": "Bond",
+        "type": "param",
+        "paramName": "cusip",
+        "defaultValue": "037833EH9",
+        "widgetIds": ["finra_fixedincome_bond_historical_finra_obb"]
+      }
+    ]
+  }
+]

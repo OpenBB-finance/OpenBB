@@ -6,6 +6,7 @@ from importlib import import_module
 from types import ModuleType
 
 from fastapi import APIRouter
+
 from openbb_core.api.router.user import (
     auth_hook as default_auth_hook,
     router as default_router,
@@ -54,7 +55,7 @@ class AuthService(metaclass=SingletonMeta):
     def _is_installed(ext_name: str) -> bool:
         """Check if auth_extension is installed."""
         extension = ExtensionLoader().get_core_entry_point(ext_name) or False
-        return extension and ext_name == extension.name  # type: ignore
+        return extension and ext_name == extension.name
 
     @staticmethod
     def _get_entry_mod(ext_name: str) -> ModuleType:

@@ -1,7 +1,5 @@
 """Nasdaq Equity Screener Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal, get_args
 from warnings import warn
 
@@ -12,8 +10,11 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerQueryParams,
 )
 from openbb_core.provider.utils.country_utils import Country
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
+
+from openbb_nasdaq.utils.constants import CELL_CLICK_SYMBOL
 
 EXCHANGE_CHOICES = Literal["all", "nasdaq", "nyse", "amex"]
 EXSUBCATEGORY_CHOICES = Literal["all", "ngs", "ngm", "ncm", "adr"]
@@ -313,8 +314,13 @@ class NasdaqEquityScreenerData(EquityScreenerData):
         "change": "netchange",
         "change_percent": "pctchange",
         "market_cap": "marketCap",
+        "ipo_year": "ipoyear",
     }
 
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+        json_schema_extra={"x-widget_config": CELL_CLICK_SYMBOL},
+    )
     last_price: float = Field(
         description="Last sale price.",
         json_schema_extra={"x-unit_measurement": "currency"},
@@ -329,10 +335,30 @@ class NasdaqEquityScreenerData(EquityScreenerData):
         description="1-day percent change in price.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    market_cap: int | None = Field(
+    market_cap: float | None = Field(
         default=None,
         description="Market cap.",
         json_schema_extra={"x-unit_measurement": "currency"},
+    )
+    volume: float | None = Field(
+        default=None,
+        description="The last session's share volume.",
+    )
+    country: str | None = Field(
+        default=None,
+        description="The country the company is domiciled in.",
+    )
+    ipo_year: int | None = Field(
+        default=None,
+        description="The year the company listed.",
+    )
+    industry: str | None = Field(
+        default=None,
+        description="The industry of the company.",
+    )
+    sector: str | None = Field(
+        default=None,
+        description="The sector of the company.",
     )
 
     @field_validator(
@@ -340,12 +366,16 @@ class NasdaqEquityScreenerData(EquityScreenerData):
         "change",
         "change_percent",
         "market_cap",
+        "volume",
+        "ipo_year",
         mode="before",
         check_fields=False,
     )
     @classmethod
     def validate_numbers(cls, v):
         """Validate numbers."""
+        if not isinstance(v, str):
+            return v
         if "%" in v:
             v = v.replace("%", "")
             return float(v) / 100
@@ -381,15 +411,12 @@ class NasdaqEquityScreenerFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract data from the Nasdaq Equity Screener."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_querystring, make_request
+
         from openbb_nasdaq.utils.helpers import get_headers
 
         HEADERS = get_headers(accept_type="text")
-        base_url = (
-            "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit="
-            f"{query.limit or 10000}&"
-        )
+        base_url = "https://api.nasdaq.com/api/screener/stocks?download=true&"
         exchange = query.exchange.split(",")
         exsubcategory = query.exsubcategory.split(",")
         marketcap = query.mktcap.split(",")
@@ -432,12 +459,15 @@ class NasdaqEquityScreenerFetcher(
         """Transform data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")
-        rows = data.get("data", {}).get("table", {}).get("rows")
+        rows = data.get("data", {}).get("rows") or data.get("data", {}).get(
+            "table", {}
+        ).get("rows")
         if not rows:
             raise EmptyDataError("No results were found.")
         results: list[NasdaqEquityScreenerData] = []
-        for row in sorted(rows, key=lambda x: x["pctchange"], reverse=True):
+        for row in sorted(rows, key=lambda x: x.get("pctchange") or "", reverse=True):
             row.pop("url", None)
+            row.pop("deltaIndicator", None)
             results.append(NasdaqEquityScreenerData.model_validate(row))
 
-        return results
+        return results[: query.limit] if query.limit else results

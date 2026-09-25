@@ -1,7 +1,5 @@
 """Nasdaq Dividend Calendar Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import Any
 
@@ -10,8 +8,11 @@ from openbb_core.provider.standard_models.calendar_dividend import (
     CalendarDividendData,
     CalendarDividendQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
+
+from openbb_nasdaq.utils.constants import CELL_CLICK_SYMBOL
 
 
 class NasdaqCalendarDividendQueryParams(CalendarDividendQueryParams):
@@ -34,6 +35,10 @@ class NasdaqCalendarDividendData(CalendarDividendData):
         "annualized_amount": "indicated_Annual_Dividend",
     }
 
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+        json_schema_extra={"x-widget_config": CELL_CLICK_SYMBOL},
+    )
     annualized_amount: float | None = Field(
         default=None,
         description="The indicated annualized dividend amount.",
@@ -67,7 +72,6 @@ class NasdaqCalendarDividendFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> NasdaqCalendarDividendQueryParams:
         """Transform the query params."""
-        # pylint: disable=import-outside-toplevel
         from datetime import timedelta
 
         now = datetime.today().date()
@@ -84,16 +88,14 @@ class NasdaqCalendarDividendFetcher(
     @staticmethod
     async def aextract_data(
         query: NasdaqCalendarDividendQueryParams,
-        credentials: dict[str, str] | None,  # pylint: disable=unused-argument
+        credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        import asyncio
 
-        IPO_HEADERS = get_headers(accept_type="json")
+        from openbb_nasdaq.utils.helpers import date_range, get_nasdaq_data
+
         data: list[dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
@@ -103,14 +105,13 @@ class NasdaqCalendarDividendFetcher(
         async def get_calendar_data(date: str) -> None:
             """Get the calendar data."""
             response: list = []
-            url = f"https://api.nasdaq.com/api/calendar/dividends?date={date}"
-            r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
-            if (
-                "data" in r_json  # type: ignore
-                and "calendar" in r_json["data"]  # type: ignore
-                and "rows" in r_json["data"]["calendar"]  # type: ignore
-            ):
-                response = r_json["data"]["calendar"]["rows"]  # type: ignore
+            payload = await get_nasdaq_data(
+                f"calendar/dividends?date={date}", timeout=5
+            )
+            calendar = (payload or {}).get("calendar") or {}
+
+            if calendar.get("rows"):
+                response = calendar["rows"]
             if response:
                 data.extend(response)
 

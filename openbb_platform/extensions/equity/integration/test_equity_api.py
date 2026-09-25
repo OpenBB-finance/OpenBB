@@ -7,8 +7,6 @@ import requests
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
-# pylint: disable=too-many-lines,redefined-outer-name
-
 
 @pytest.fixture(scope="session")
 def headers():
@@ -779,24 +777,6 @@ def test_equity_ownership_major_holders(params, headers):
     [
         ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
         ({"symbol": "AAPL", "provider": "finviz"}),
-        (
-            {
-                "symbol": "AAPL",
-                "limit": 10,
-                "provider": "benzinga",
-                # optional provider params
-                "fields": None,
-                "date": None,
-                "start_date": None,
-                "end_date": None,
-                "importance": None,
-                "updated": None,
-                "action": None,
-                "analyst_ids": None,
-                "firm_ids": None,
-                "page": 0,
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -811,37 +791,7 @@ def test_equity_estimates_price_target(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "limit": 10,
-                "provider": "benzinga",
-                # optional provider params
-                "fields": None,
-                "analyst_ids": None,
-                "firm_ids": None,
-                "firm_name": "Barclays",
-                "analyst_name": None,
-                "page": 0,
-            }
-        ),
-        (
-            {
-                "limit": 3,
-                "provider": "benzinga",
-                # optional provider params
-                "fields": None,
-                "analyst_ids": None,
-                "firm_ids": None,
-                "firm_name": "Barclays,Credit Suisse",
-                "analyst_name": None,
-                "page": 1,
-            }
-        ),
-    ],
-)
+@pytest.mark.skip(reason="Not implemented")
 @pytest.mark.integration
 def test_equity_estimates_analyst_search(params, headers):
     """Test the equity estimates analyst search endpoint."""
@@ -1097,17 +1047,6 @@ def test_equity_compare_groups(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "adjustment": "unadjusted",
-                "extended_hours": True,
-                "provider": "alpha_vantage",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "15m",
-            }
-        ),
         (
             {
                 "provider": "cboe",
@@ -1880,17 +1819,7 @@ def test_equity_market_snapshots(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
-        (
-            {
-                "symbol": "AAPL",
-                "period": "quarter",
-                "limit": 5,
-                "provider": "alpha_vantage",
-            }
-        ),
-    ],
+    [({"symbol": "AAPL", "limit": 5, "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_historical_eps(params, headers):

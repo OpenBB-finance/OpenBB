@@ -1,7 +1,5 @@
 """FRED Consumer Price Index Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -11,12 +9,17 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
-from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
 from pydantic import field_validator
 
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
+
+class FREDConsumerPriceIndexQueryParams(
+    UseCacheQueryParams, ConsumerPriceIndexQueryParams
+):
     """FRED Consumer Price Index Query."""
 
     __json_schema_extra__ = {
@@ -78,7 +81,6 @@ class FREDConsumerPriceIndexFetcher(
         """Extract data."""
         frequency = "quarterly" if query.frequency == "quarter" else query.frequency
 
-        # Convert the params to series IDs.
         all_options = all_cpi_options(query.harmonized)
         units_dict = {
             "period": "growth_previous",
@@ -99,11 +101,13 @@ class FREDConsumerPriceIndexFetcher(
             symbol=",".join(ids),
             start_date=query.start_date,
             end_date=query.end_date,
+            use_cache=query.use_cache,
         )
         results: dict = {}
         temp = await FredSeriesFetcher.fetch_data(item_query, credentials)
-        result = [d.model_dump() for d in temp.result]  # type: ignore
-        results["metadata"] = {country_map.get(k): v for k, v in temp.metadata.items()}  # type: ignore
+        rows, metadata = unwrap_series(temp)
+        result = [d.model_dump() for d in rows]
+        results["metadata"] = {country_map.get(k): v for k, v in metadata.items()}
         results["data"] = [
             {country_map.get(k, k): v for k, v in d.items()} for d in result
         ]
@@ -117,7 +121,6 @@ class FREDConsumerPriceIndexFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FREDConsumerPriceIndexData]]:
         """Transform data and validate the model."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
 
         df = DataFrame.from_records(data["data"])
@@ -125,7 +128,6 @@ class FREDConsumerPriceIndexFetcher(
             raise EmptyDataError(
                 "No data found for the given query. Try adjusting the parameters."
             )
-        # Flatten the data as a pivot table.
         df = (
             df.melt(id_vars="date", var_name="country", value_name="value")
             .query("value.notnull()")
@@ -133,10 +135,6 @@ class FREDConsumerPriceIndexFetcher(
             .sort_index()
             .reset_index()
         )
-        # Normalize the percent values.
-        if query.transform in ("period", "yoy"):
-            df["value"] = df["value"] / 100
-
         records = df.to_dict(orient="records")
         metadata = data.get("metadata", {})
         return AnnotatedResult(

@@ -1,6 +1,6 @@
 """IMF Direction Of Trade Model."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from datetime import date as dateType
 from typing import Any
@@ -13,11 +13,12 @@ from openbb_core.provider.standard_models.direction_of_trade import (
     DirectionOfTradeQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import ConfigDict, Field, field_validator
+
 from openbb_imf.utils.dot_helpers import (
     get_label_to_code_map,
     resolve_country_input,
 )
-from pydantic import ConfigDict, Field, field_validator
 
 dot_indicators_dict = {
     "exports": "XG_FOB_USD",
@@ -51,22 +52,19 @@ class ImfDirectionOfTradeQueryParams(DirectionOfTradeQueryParams):
     @field_validator("country", "counterpart", mode="before")
     @classmethod
     def _validate_country_fields(cls, v):
-        """Validate country and counterpart fields.
-
-        Accepts both ISO3 codes (e.g., 'USA') and snake_case country names
-        (e.g., 'united_states'). Converts names to ISO3 codes.
-        """
+        """Validate country and counterpart fields."""
         if not v:
             raise ValueError("Required parameter for IMF provider not supplied.")
 
         if isinstance(v, str) and v.lower() in ["all", "*"]:
             return "*"
 
-        # Split by comma if string
         values = (
             v.split(",")
             if isinstance(v, str) and "," in v
-            else [v] if isinstance(v, str) else v
+            else [v]
+            if isinstance(v, str)
+            else v
         )
 
         result: list[str] = []
@@ -78,7 +76,6 @@ class ImfDirectionOfTradeQueryParams(DirectionOfTradeQueryParams):
                         "'all' cannot be used with other country codes in a list."
                     )
                 return "*"
-            # Resolve the country input (handles both codes and names)
             resolved = resolve_country_input(item_stripped)
             result.append(resolved)
 
@@ -88,7 +85,21 @@ class ImfDirectionOfTradeQueryParams(DirectionOfTradeQueryParams):
 class ImfDirectionOfTradeData(DirectionOfTradeData):
     """IMF Direction Of Trade Data."""
 
-    model_config = ConfigDict(extra="ignore")
+    model_config = ConfigDict(
+        extra="ignore",
+        json_schema_extra={
+            "x-widget_config": {
+                "$.name": "Direction of Trade",
+                "$.description": (
+                    "Direction of Trade data. Shows the value of exports,"
+                    " imports, and trade balance between reporting countries and their"
+                    " trading partners."
+                ),
+                "$.gridData": {"w": 40, "h": 14},
+                "$.refetchInterval": False,
+            }
+        },
+    )
     __alias_dict__ = {
         "date": "TIME_PERIOD",
         "symbol": "series_id",
@@ -144,7 +155,6 @@ class ImfDirectionOfTradeFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the data from the IMF API."""
-        # pylint: disable=import-outside-toplevel
         from openbb_imf.utils.dot_helpers import imts_query
 
         if query.limit:

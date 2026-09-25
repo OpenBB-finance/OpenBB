@@ -1,0 +1,476 @@
+[
+  {
+    "category": "Governance",
+    "title": "Cboe Index Policies & Practices",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Cboe_Index_Policies_Practices.pdf"
+  },
+  {
+    "category": "Governance",
+    "title": "Global Index Administration Oversight Body Charter",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Global_Index_Administration_Oversight_Body_Charter.pdf"
+  },
+  {
+    "category": "Governance",
+    "title": "Global Index Policy Committee Charter",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Global_Index_Policy_Committee_Charter.pdf"
+  },
+  {
+    "category": "Governance",
+    "title": "Equity Committee Charter",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Equity_Committee_Charter.pdf"
+  },
+  {
+    "category": "Governance",
+    "title": "Derivatives Committee Charter",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Derivatives_Committee_Charter.pdf"
+  },
+  {
+    "category": "Governance",
+    "title": "Theoretical Pricing Subcommittee Charter",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Theoretical_Pricing_Subcommittee_Charter.pdf"
+  },
+  {
+    "category": "Governance",
+    "title": "Cboe Indices Committee Meeting Protocol",
+    "url": "https://cdn.cboe.com/resources/indices/governance/Cboe_Indices_Committee_Meeting_Protocol.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Customized Calculation of NDX Implied Volatility - Wednesday Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Customized_Calculation_of_NDX_Implied_Volatility_Wednesday_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Left Tail Volatility Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_SnP_500_Left_Tail_Volatility_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Spot Volatility Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_SnP_500_Spot_Volatility_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Volatility Index Mathematics Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Volatility_Index_Mathematics_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Volatility Index Methodology - Cboe Volatility Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Volatility_Index_Methodology_Cboe_Volatility_Index.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Volatility Index Methodology - Selected Broad-Based Index, Equity and ETF Volatility Indices",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Volatility_Index_Methodology_Selected_Broad_Based_Index_Equity_and_ETF_Volatility_Indices.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Volatility Index Methodology - Selected SPX Single Term Expected Volatility Indices",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Volatility_Index_Methodology_Selected_SPX_Single_Term_Expected_Volatility_Indices.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Volatility Index Methodology - Selected SPX Target Expected Volatility Term Indices",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Volatility_Index_Methodology_Selected_SPX_Target_Expected_Volatility_Term_Indices.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Volatility Index Methodology - Cboe 1-Day Volatility Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Volatility_Index_Methodology_Cboe_1-Day_Volatility_Index.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe 20+ Year Treasury Bond ETF Volatility Basis Point Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_VIXTLT_Basis_Point_Volatility_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Low Volatility Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Low_Volatility_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Nasdaq-100 Implied Volatility Index Series Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Nasdaq_100_Implied_Volatility_Index_Series_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe GBTC BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_GBTC_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Buffer Protect Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Buffer_Protect_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe 20+ Year Treasury Bond One-Week BuyWrite Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/BXTW_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Daily BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Daily_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Volatility Contingent Daily Covered Call Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Volatility_Contingent_Daily_Covered_Call_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Capped VIX Premium Strategy Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/VPN_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Collar Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Collar_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Conditional BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Conditional_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe DJIA Half BuyWrite Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_DJIA_Half_BuyWrite_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe ETF BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_ETF_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Fixed Income ETF BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Fixed_Income_ETF_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Gold 10% (-5% to -15%) Buffer Protect Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/GLDBUF_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Gold Target Income Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/GLDTI_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Half BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Half_Buywrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Israeli Calendar Buffer Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Israeli_Calendar_Buffer_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe NASDAQ BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_NASDAQ_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe PutWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_PutWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Russell 2000 30-Delta BuyWrite V2 Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/BXRT_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Russell Daily Buffer Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe-Russell-Daily-Buffer-Indices-Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 15% WHT Buffer Protect Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_SP_500_15_WHT_Buffer_Protect_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 BuyWrite 15% WHT",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/BXMU_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Covered Combo Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/CMBO_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Dividend Aristocrats Target Income Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_S_P_500_Dividend_Aristocrats_Target_Income_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Iron Butterfly Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/BFLY_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Iron Condor Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/CNDR_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Market-Neutral Volatility Risk Premia Optimized Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/SVRPO_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Multi-Week BuyWrite Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/BXMW_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Put Protection Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_SP_500_Put_Protection_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 PutWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_SP_500_PutWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Risk Reversal Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/RXM_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Scored & Screened BuyWrite Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_SP_500_Scored_Screened_Buywrite_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Volatility Managed BuyWrite Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/BXMVM_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe S&P 500 Volatility Managed PutWrite Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/PUTVM_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Select Sector Half BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Select_Sector_Half_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Single Stock Defined Income Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Single_Stock_Defined_Income_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Smile Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/SMILE_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe VIX Premium Strategy Index",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/VPD_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe VIX Tail Hedge Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_VIX_Tail_Hedge_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Zero-Cost Put Spread Collar Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Zero-Cost_Put_Spread_Collar_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Validus Dynamic Call BuyWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Validus_Dynamic_Call_BuyWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Validus Dynamic PutWrite Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Validus_Dynamic_PutWrite_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Enhanced Growth Indices Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Enhanced_Growth_Indices_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Theoretical Pricing Services: Policies & Practices",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_TPS_Policies_Practices.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe American and European-Style Theoretical Options Calculation Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_American_and_European-Style_Theoretical_Options_Calculation_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Europe Indices Methodology",
+    "url": "https://cdn.cboe.com/resources/europe/indices/participant_resources/CboeEuropeIndex_RulesAndMethodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Bitcoin U.S. ETF Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Bitcoin_US_ETF_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe U.S. Large-Mid Cap Indices Methodology",
+    "url": "https://cdn.cboe.com/resources/indices/documents/Cboe-US-Large-Mid-Cap-Indices-Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Magnificent 10 Index Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Magnificent_10_Index_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Corporate Action Methodology - Derivatives-Based Indices",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Corporate_Action_Treatment_Methodology_-_Derivatives-Based_Indices.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Theoretical Options Pricing Service - File Specification",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Theoretical_Options_PricingService-File_Specification.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Indicative Value Calculation Service - Guide",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Indicative_Value_Calculation_Service-Guide.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Indices Special Opening Quotation Methodology",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Cboe_Indices_Special_Opening_Quotation_Methodology.pdf"
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Australia CXA 200 Index Methodology",
+    "url": "https://cdn.cboe.com/resources/au/products/indices/CXA200_Index_Methodology_V1.5.pdf",
+    "symbols": [
+      "X2C",
+      "X2CF",
+      "X2CG",
+      "X2CN"
+    ]
+  },
+  {
+    "category": "Methodology",
+    "title": "Cboe Australia CXA Index Naming Convention",
+    "url": "https://cdn.cboe.com/resources/au/products/indices/CXA_Index_Naming_Convention_V1.7.pdf",
+    "symbols": [
+      "X2C",
+      "X2CF",
+      "X2CG",
+      "X2CN"
+    ]
+  },
+  {
+    "category": "Reference",
+    "title": "Cboe Australia CXA Indices Vendor Codes",
+    "url": "https://cdn.cboe.com/resources/au/products/indices/CXA_Indices_Vendor_Codes_V1.4.pdf",
+    "symbols": [
+      "X2C",
+      "X2CF",
+      "X2CG",
+      "X2CN"
+    ]
+  },
+  {
+    "category": "Reference",
+    "title": "Cboe Europe Index List",
+    "url": "https://cdn.cboe.com/resources/europe/indices/Cboe_Europe_Index_List.pdf"
+  },
+  {
+    "category": "Reference",
+    "title": "Cboe Europe Index File Specification",
+    "url": "https://cdn.cboe.com/resources/europe/indices/participant_resources/CboeEuropeIndexFileSpecification.pdf"
+  },
+  {
+    "category": "Reference",
+    "title": "Cboe Europe Index Reference File",
+    "url": "https://cdn.cboe.com/resources/europe/indices/participant_resources/Cboe_Europe_Index_Reference_File.csv"
+  },
+  {
+    "category": "Consultations",
+    "title": "Consultation Regarding Changes to Cboe's Theoretical Options Pricing Service (TOPS)",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Consultation_Regarding_Changes_to_Cboes_Theoretical_Options_Pricing_Service_TOPS.pdf"
+  },
+  {
+    "category": "Consultations",
+    "title": "Consultation Regarding Proposed Name Changes to the Cboe VIX Futures TAS Prices",
+    "url": "https://cdn.cboe.com/api/global/us_indices/governance/Consultation_Regarding_Proposed_Name_Changes_to_the_Cboe_VIX_Futures_TAS_Indices.pdf"
+  },
+  {
+    "category": "Regulatory Resources",
+    "title": "Status of Cboe Indices as of January 1, 2026",
+    "url": "https://cdn.cboe.com/resources/europe/indices/participant_resources/Status_of_Cboe_Indices_as_of_January_1_2026.pdf"
+  },
+  {
+    "category": "Factsheet",
+    "title": "Cboe Australia CXA 200 Factsheet",
+    "url": "https://cdn.cboe.com/resources/au/products/indices/CXA200_Factsheet.pdf",
+    "symbols": [
+      "X2C",
+      "X2CF",
+      "X2CG",
+      "X2CN"
+    ]
+  },
+  {
+    "category": "Constituents",
+    "title": "SPBFA Constituents",
+    "url": "https://cdn.cboe.com/resources/indices/constituents/SPBFA_constituents.pdf",
+    "symbols": [
+      "SPBFA"
+    ]
+  },
+  {
+    "category": "Constituents",
+    "title": "SPBSA Constituents",
+    "url": "https://cdn.cboe.com/resources/indices/constituents/SPBSA_constituents.pdf",
+    "symbols": [
+      "SPBSA"
+    ]
+  },
+  {
+    "category": "Constituents",
+    "title": "SPBFQ Constituents",
+    "url": "https://cdn.cboe.com/resources/indices/constituents/SPBFQ_constituents.pdf",
+    "symbols": [
+      "SPBFQ"
+    ]
+  },
+  {
+    "category": "Constituents",
+    "title": "SPBNQ Constituents",
+    "url": "https://cdn.cboe.com/resources/indices/constituents/SPBNQ_constituents.pdf",
+    "symbols": [
+      "SPBNQ"
+    ]
+  },
+  {
+    "category": "Constituents",
+    "title": "BXMU Constituents",
+    "url": "https://cdn.cboe.com/resources/indices/constituents/BXMU_constituents.pdf",
+    "symbols": [
+      "BXMU"
+    ]
+  }
+]

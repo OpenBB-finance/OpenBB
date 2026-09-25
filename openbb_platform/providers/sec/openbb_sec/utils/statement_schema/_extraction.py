@@ -1,7 +1,5 @@
 """Row-level value extraction from SEC XBRL facts."""
 
-# pylint: disable=R0912,R0914,R0915,R0917
-
 from __future__ import annotations
 
 from collections import defaultdict
@@ -75,7 +73,6 @@ def _get_annual_values(
         entries_by_date: dict[str, dict[str, tuple[str, float]]] = {}
 
         for entry in unit_data:
-
             _av_allowed = (
                 ANNUAL_PERIOD_FORMS | PRELIMINARY_FORMS
                 if include_preliminary
@@ -133,7 +130,9 @@ def _get_annual_values(
                 if ref_filed is None or earliest < ref_filed:
                     ref_filed = earliest
 
-        if ref_filed is None:
+        if (
+            ref_filed is None
+        ):  # pragma: no cover - all_dates keys guarantee a ref filing
             continue
 
         for i, tc in enumerate(tag_candidates):
@@ -564,7 +563,7 @@ def extract_row_values(  # noqa: PLR0912
                         for q_end in sorted(values_by_date)
                         if fy_start < q_end < fy_end
                     ]
-                    q_labels = "+".join(f"Q{i+1}[{s}]" for i, s in enumerate(q_srcs))
+                    q_labels = "+".join(f"Q{i + 1}[{s}]" for i, s in enumerate(q_srcs))
                     values_by_date[fy_end] = fy_val - q_sum
                     sources_by_date[fy_end] = (
                         f"Q4: FY[{fy_xbrl_src}] \u2212 ({q_labels})"

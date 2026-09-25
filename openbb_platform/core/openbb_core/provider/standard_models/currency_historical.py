@@ -6,13 +6,14 @@ from datetime import (
 )
 
 from dateutil import parser
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class CurrencyHistoricalQueryParams(QueryParams):
@@ -32,7 +33,7 @@ class CurrencyHistoricalQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def validate_symbol(cls, v: str | list[str] | set[str]):  # pylint: disable=E0213
+    def validate_symbol(cls, v: str | list[str] | set[str]):
         """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
@@ -62,7 +63,7 @@ class CurrencyHistoricalData(Data):
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return formatted datetime."""
         if ":" in str(v):
             return parser.isoparse(str(v))

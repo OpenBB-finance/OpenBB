@@ -4,12 +4,16 @@ import inspect
 import re
 import sys
 from collections.abc import Sequence
+from types import UnionType
+from typing import Any, Union, cast, get_args, get_origin
 
 from fastapi import FastAPI
-from fastapi.routing import APIRoute
+from fastapi.routing import APIRoute, iter_route_contexts
 from fastmcp.server.providers.openapi import MCPType, RouteMap
+from fastmcp.utilities.openapi import HttpMethod
 from openbb_core.app.service.system_service import SystemService
-from pydantic import ValidationError
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 
 from openbb_mcp_server.models.mcp_config import MCPConfigModel, validate_mcp_config
 from openbb_mcp_server.models.settings import MCPSettings
@@ -22,12 +26,13 @@ class ProcessedRouteData:
         """Initialize with empty lists and dictionaries."""
         self.route_maps: list[RouteMap] = []
         self.route_lookup: dict[tuple[str, str], APIRoute] = {}
-        self.removed_routes: list[APIRoute] = []
+        self.excluded_routes: list[APIRoute] = []
         self.prompt_definitions: list[dict] = []
+        self.exposed_methods: dict[str, set[str]] = {}
 
 
 def get_api_prefix(settings: MCPSettings | None) -> str:
-    """Get normalized API prefix (leading slash, no trailing slash). Prefer settings.api_prefix if present."""
+    """Get normalized API prefix (leading slash, no trailing slash)."""
     override = getattr(settings, "api_prefix", None)
     if isinstance(override, str) and override.strip():
         prefix = override
@@ -39,31 +44,91 @@ def get_api_prefix(settings: MCPSettings | None) -> str:
     return prefix
 
 
+def strip_api_prefix(path: str, api_prefix: str) -> str:
+    """Strip the exact API prefix from a path and return the remainder without a leading slash."""
+    if not path:
+        return ""
+    if not path.startswith("/"):
+        path = "/" + path
+    remainder = (
+        path[len(api_prefix) :] if api_prefix and path.startswith(api_prefix) else path
+    )
+    return remainder.lstrip("/")
+
+
+def route_naming(path: str, api_prefix: str) -> tuple[str, str, str]:
+    """Return the category, subcategory, and default tool name of a route path.
+
+    Parameters
+    ----------
+    path : str
+        The route path as served.
+    api_prefix : str
+        The normalized API prefix to strip first.
+
+    Returns
+    -------
+    tuple[str, str, str]
+        The category (first segment), the subcategory (second segment of paths with
+        three or more segments, else ``general``), and the tool name built from them.
+    """
+    local_path = strip_api_prefix(path, api_prefix)
+    segments = [seg for seg in local_path.split("/") if seg and "{" not in seg]
+    if not segments:
+        return "general", "general", "general_root"
+    category = segments[0]
+    if len(segments) <= 2:
+        return category, "general", f"{category}_{segments[-1]}"
+    subcategory = segments[1]
+    return category, subcategory, f"{category}_{subcategory}_{'_'.join(segments[2:])}"
+
+
+def tool_name_for_route(
+    path: str,
+    method: str,
+    api_prefix: str,
+    exposed_methods: dict[str, set[str]],
+    override: str | None = None,
+) -> str:
+    """Return the MCP tool name of one method of a route.
+
+    Parameters
+    ----------
+    path : str
+        The route path as served.
+    method : str
+        The HTTP method, upper case.
+    api_prefix : str
+        The normalized API prefix.
+    exposed_methods : dict[str, set[str]]
+        The methods exposed at each path.
+    override : str | None
+        A name set in the route's ``mcp_config``, used as given.
+
+    Returns
+    -------
+    str
+        The tool name; non-GET methods of a path that exposes several methods get a
+        ``_<method>`` suffix so every tool name is unique.
+    """
+    if override:
+        return override
+    name = route_naming(path, api_prefix)[2]
+    if method != "GET" and len(exposed_methods.get(path, ())) > 1:
+        return f"{name}_{method.lower()}"
+    return name
+
+
 def _get_module_exclusion_targets(settings: MCPSettings | None) -> dict[str, str]:
-    """Map path segment -> module name. Prefer settings.module_exclusion_map if a dict is provided."""
+    """Map each excluded path segment to the module whose presence hides it; an empty mapping hides nothing."""
     override = getattr(settings, "module_exclusion_map", None)
-    if isinstance(override, dict) and override:
-        # Ensure keys/values are strings
+    if isinstance(override, dict):
         return {str(k): str(v) for k, v in override.items()}
-    return {
-        "econometrics": "openbb_econometrics",
-        "quantitative": "openbb_quantitative",
-        "technical": "openbb_technical",
-        "coverage": "openbb_core",
-    }
+    return {"coverage": "openbb_core"}
 
 
 def get_mcp_config(route: APIRoute, *, strict: bool = False) -> MCPConfigModel:
-    """
-    Read and validate per-route MCP config from openapi_extra.
-
-    Args:
-        route: The APIRoute to process.
-        strict: If True, raise validation errors. If False, log warnings.
-
-    Returns:
-        A validated MCPConfigModel instance.
-    """
+    """Read and validate per-route MCP config from openapi_extra."""
     extra = route.openapi_extra or {}
     raw_config = extra.get("mcp_config") or extra.get("x-mcp") or {}
 
@@ -72,99 +137,74 @@ def get_mcp_config(route: APIRoute, *, strict: bool = False) -> MCPConfigModel:
             raise TypeError("mcp_config must be a dictionary.")
         raw_config = {}
 
-    try:
-        return validate_mcp_config(raw_config, strict=strict)
-    except (ValidationError, TypeError, ValueError) as e:
-        if strict:
-            raise e from e
-        return MCPConfigModel()
+    return validate_mcp_config(raw_config, strict=strict)
 
 
 def _get_prompt_configs(route: APIRoute) -> list[dict]:
-    """Extract prompt configurations from per-route MCP config.
-
-    Supports a 'prompts' list of dicts.
-    Returns a list of prompt configurations.
-    """
+    """Extract prompt configurations from per-route MCP config."""
     mcp_cfg = get_mcp_config(route)
-    # Convert PromptConfigModel to dict
-    return [p.model_dump() for p in mcp_cfg.prompts] if mcp_cfg.prompts else []
+    return [p.model_dump(exclude_none=True) for p in mcp_cfg.prompts]
+
+
+def _type_name(annotation: Any) -> str:
+    """Return the class name of a parameter annotation, unwrapping ``X | None``, or ``str`` for anything else."""
+    members = (
+        [arg for arg in get_args(annotation) if arg is not type(None)]
+        if get_origin(annotation) in (Union, UnionType)
+        else [annotation]
+    )
+    if (
+        len(members) == 1
+        and isinstance(members[0], type)
+        and get_origin(members[0]) is None
+        and members[0] is not inspect.Parameter.empty
+    ):
+        return members[0].__name__
+    return "str"
+
+
+def _endpoint_argument(parameter: inspect.Parameter) -> dict:
+    """Return the prompt argument definition of an endpoint parameter, with a default only when the parameter has one."""
+    argument = {"name": parameter.name, "type": _type_name(parameter.annotation)}
+    default = parameter.default
+    if isinstance(default, FieldInfo):
+        default = default.default
+    if not any(default is unset for unset in (parameter.empty, ..., PydanticUndefined)):
+        argument["default"] = default
+    return argument
 
 
 def _create_prompt_definitions_for_route(
-    route: APIRoute, settings: MCPSettings | None = None
+    route: APIRoute,
+    settings: MCPSettings | None = None,
+    path: str | None = None,
+    tool_name: str | None = None,
 ) -> list[dict]:
-    """Create prompt definitions for a route if prompt configs exist."""
+    """Create prompt definitions for a route served at ``path`` (default ``route.path``) as the tool ``tool_name``."""
     prompt_configs = _get_prompt_configs(route)
     definitions: list[dict] = []
 
     if not prompt_configs:
         return definitions
 
-    # Get argument definitions from the endpoint's signature
-    # This provides the ground truth for parameter names, types, and defaults
-    try:
-        sig = inspect.signature(route.endpoint)
-        endpoint_args = {
-            p.name: {
-                "name": p.name,
-                "type": (
-                    p.annotation.__name__
-                    if hasattr(p.annotation, "__name__")
-                    else "str"
-                ),
-                "default": p.default if p.default is not p.empty else ...,
-            }
-            for p in sig.parameters.values()
-            if p.kind in (p.POSITIONAL_OR_KEYWORD, p.KEYWORD_ONLY)
-        }
-    except (ValueError, TypeError):
-        # Cannot inspect signature
-        endpoint_args = {}
+    endpoint_args = {
+        p.name: _endpoint_argument(p)
+        for p in inspect.signature(route.endpoint).parameters.values()
+        if p.kind in (p.POSITIONAL_OR_KEYWORD, p.KEYWORD_ONLY)
+    }
 
-    # Common info for all prompts on this route
-    api_prefix = get_api_prefix(settings)
-    tool_uri = route.path.replace(api_prefix, "").lstrip("/").replace("/", "_")
-    path = route.path or ""
-    if not path.startswith("/"):
-        path = "/" + path
-    remainder = (
-        path[len(api_prefix) :] if api_prefix and path.startswith(api_prefix) else path
-    )
-    local_path = remainder.lstrip("/")
-    segments = [seg for seg in local_path.split("/") if seg and "{" not in seg]
-
-    if segments:
-        category = segments[0]
-        if len(segments) == 1:
-            subcategory = "general"
-            tool = segments[0]
-        elif len(segments) == 2:
-            subcategory = "general"
-            tool = segments[1]
-        else:
-            subcategory = segments[1]
-            tool = "_".join(segments[2:])
-    else:
-        category, subcategory, tool = "general", "general", "root"
+    route_path = path or route.path
+    if not route_path.startswith("/"):
+        route_path = "/" + route_path
+    default_name = route_naming(route_path, get_api_prefix(settings))[2]
+    tool_uri = tool_name or get_mcp_config(route).name or default_name
 
     for i, prompt_cfg in enumerate(prompt_configs):
-        if not prompt_cfg or not prompt_cfg.get("content"):
-            continue
-
-        # Generate prompt name
         prompt_name = prompt_cfg.get("name")
         if not prompt_name:
-            base_name = (
-                f"{category}_{subcategory}_{tool}"
-                if subcategory != "general"
-                else f"{category}_{tool}"
-            )
-            # Add index for uniqueness if multiple unnamed prompts exist
             suffix = f"_{i}" if len(prompt_configs) > 1 else ""
-            prompt_name = f"{base_name}_prompt{suffix}"
+            prompt_name = f"{default_name}_prompt{suffix}"
 
-        # Arguments for the prompt can be a combination of endpoint args and custom ones
         final_args: dict = {}
         prompt_arg_defs = {arg["name"]: arg for arg in prompt_cfg.get("arguments", [])}
         content = (
@@ -172,21 +212,16 @@ def _create_prompt_definitions_for_route(
             + prompt_cfg.get("content", "")
         )
 
-        # All variables in the content string are considered arguments for the prompt
         prompt_vars = re.findall(r"\{(\w+)\}", content)
 
-        for var in set(prompt_vars):
+        for var in dict.fromkeys(prompt_vars):
             if var in prompt_arg_defs:
-                # Use the definition from the prompt's own 'arguments' list
                 final_args[var] = prompt_arg_defs[var]
             elif var in endpoint_args:
-                # Inherit the definition from the endpoint's signature
                 final_args[var] = endpoint_args[var]
             else:
-                # Argument is required by prompt but not defined anywhere
                 final_args[var] = {"name": var, "type": "str"}
 
-        # Build prompt definition
         prompt_def = {
             "name": prompt_name,
             "description": prompt_cfg.get("description") or f"Prompt for {tool_uri}",
@@ -195,10 +230,9 @@ def _create_prompt_definitions_for_route(
             "tool": tool_uri,
         }
 
-        # Add tags, always including the route path
         tags = list(prompt_cfg.get("tags", []))
-        if route.path and route.path not in tags:
-            tags.insert(0, route.path)
+        if route_path not in tags:
+            tags.insert(0, route_path)
         prompt_def["tags"] = tags
 
         definitions.append(prompt_def)
@@ -207,7 +241,7 @@ def _create_prompt_definitions_for_route(
 
 
 def _normalize_methods(methods: Sequence[str] | None) -> list[str]:
-    """Uppercase and filter out HEAD/OPTIONS. Return [] if None/empty."""
+    """Uppercase and filter out HEAD/OPTIONS."""
     if not methods:
         return []
     out = []
@@ -224,7 +258,6 @@ def _normalize_methods(methods: Sequence[str] | None) -> list[str]:
 def _methods_from_config_or_route(cfg: MCPConfigModel, route: APIRoute) -> list:
     """Pull methods from cfg.methods if present; otherwise from route.methods."""
     if cfg.methods:
-        # Handle the '*' wildcard for all methods
         if any(m.value == "*" for m in cfg.methods):
             return ["*"]
         methods = [m.value for m in cfg.methods]
@@ -251,7 +284,6 @@ def _should_exclude_by_module_and_path(path: str, settings: MCPSettings | None) 
     api_prefix = get_api_prefix(settings)
     targets = _get_module_exclusion_targets(settings)
 
-    # Normalize path to avoid double slashes annoyance
     if not path.startswith("/"):
         path = "/" + path
 
@@ -262,70 +294,87 @@ def _should_exclude_by_module_and_path(path: str, settings: MCPSettings | None) 
     return False
 
 
+def _outside_allowed_categories(
+    path: str, settings: MCPSettings | None, api_prefix: str
+) -> bool:
+    """Return whether ``allowed_tool_categories`` leaves out the category of a route path."""
+    allowed = getattr(settings, "allowed_tool_categories", None)
+    if not allowed or "all" in allowed:
+        return False
+    return route_naming(path, api_prefix)[0] not in allowed
+
+
 def process_fastapi_routes_for_mcp(
     app: FastAPI, settings: MCPSettings | None = None
 ) -> ProcessedRouteData:
-    """Single-pass processing of FastAPI routes that:
-
-    1. Removes unwanted routes from the app in-place
-    2. Builds route maps for FastMCP
-    3. Creates route lookup dictionary for customization
-    """
+    """Build the FastMCP route maps, route lookup, and prompt definitions for every API route of ``app``."""
     processed = ProcessedRouteData()
-    routes_to_keep = []
+    typed_route_maps: list[RouteMap] = []
+    prompted: list[tuple[APIRoute, str, list[str], str | None]] = []
+    api_prefix = get_api_prefix(settings)
 
-    for route in app.router.routes:
+    for context in iter_route_contexts(app.router.routes):
+        route = context.original_route
         if not isinstance(route, APIRoute):
-            routes_to_keep.append(route)  # keep non-HTTP routes
             continue
 
-        # Check if route should be excluded
+        path = cast("str", context.path)
+        methods = cast("list[HttpMethod]", sorted(cast("set[str]", route.methods)))
+        pattern = f"^{re.escape(path)}$"
         cfg = get_mcp_config(route)
-        should_exclude = False
 
-        # Explicit per-route exposure control
-        if cfg.expose is False or _should_exclude_by_module_and_path(
-            route.path or "", settings
+        if (
+            cfg.expose is False
+            or _should_exclude_by_module_and_path(path, settings)
+            or _outside_allowed_categories(path, settings, api_prefix)
         ):
-            should_exclude = True
-
-        if should_exclude:
-            processed.removed_routes.append(route)
+            processed.excluded_routes.append(route)
+            processed.route_maps.append(
+                RouteMap(pattern=pattern, methods=methods, mcp_type=MCPType.EXCLUDE)
+            )
             continue
 
-        # Keep the route
-        routes_to_keep.append(route)
+        configured = _methods_from_config_or_route(cfg, route)
+        route_methods = _normalize_methods(methods)
+        exposed = [m for m in route_methods if "*" in configured or m in configured]
+        dropped = [m for m in route_methods if m not in exposed]
+        if dropped:
+            processed.route_maps.append(
+                RouteMap(
+                    pattern=pattern,
+                    methods=cast("list[HttpMethod]", dropped),
+                    mcp_type=MCPType.EXCLUDE,
+                )
+            )
 
-        # Build route lookup for customization (only for kept routes)
-        for method in route.methods or []:
-            method_upper = str(method).upper()
-            if method_upper not in {"HEAD", "OPTIONS"}:
-                processed.route_lookup[(route.path, method_upper)] = route
+        for method in exposed:
+            processed.route_lookup[(path, method)] = route
+            processed.exposed_methods.setdefault(path, set()).add(method)
 
-        # Build route maps for FastMCP (only for routes with explicit mcp_type)
         mcp_type_str = cfg.mcp_type.value if cfg.mcp_type else None
         mcp_type = _resolve_mcp_type(mcp_type_str)
         if mcp_type is not None:
-            methods = _methods_from_config_or_route(cfg, route)
-            pattern = f"^{re.escape(route.path)}$"
-            if methods:
-                processed.route_maps.append(
-                    RouteMap(pattern=pattern, methods=methods, mcp_type=mcp_type)
+            if configured:
+                typed_route_maps.append(
+                    RouteMap(pattern=pattern, methods=configured, mcp_type=mcp_type)
                 )
             else:
-                processed.route_maps.append(
-                    RouteMap(pattern=pattern, mcp_type=mcp_type)
-                )
+                typed_route_maps.append(RouteMap(pattern=pattern, mcp_type=mcp_type))
 
-        # Collect prompt definitions (only for routes with prompt config)
-        prompt_defs = _create_prompt_definitions_for_route(route, settings)
-        if prompt_defs:
-            processed.prompt_definitions.extend(prompt_defs)
+        if exposed:
+            prompted.append((route, path, exposed, cfg.name))
 
-    # Update the app's routes in-place
-    app.router.routes = routes_to_keep
+    for route, path, exposed, override in prompted:
+        method = "GET" if "GET" in exposed else exposed[0]
+        tool_name = tool_name_for_route(
+            path, method, api_prefix, processed.exposed_methods, override
+        )
+        processed.prompt_definitions.extend(
+            _create_prompt_definitions_for_route(route, settings, path, tool_name)
+        )
 
-    # Add catch-all route map
+    processed.route_maps.extend(typed_route_maps)
+
     catchall_type = (
         _resolve_mcp_type(getattr(settings, "default_catchall_mcp_type", None))
         or MCPType.TOOL

@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/move/ptb/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1986-01&facets%5Bduoarea%5D%5B%5D=R10-R20&facets%5Bduoarea%5D%5B%5D=R20-R30&facets%5Bduoarea%5D%5B%5D=R20-R40&facets%5Bduoarea%5D%5B%5D=R40-R20&facets%5Bduoarea%5D%5B%5D=R50-R20&facets%5Bprocess%5D%5B%5D=TNR&facets%5Bproduct%5D%5B%5D=EPPA&facets%5Bseries%5D%5B%5D=MAPMXP1P21&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1986-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"1986-01","duoarea":"R10-R20","area-name":"PADD
+        2","product":"EPPA","product-name":"Asphalt and Road Oil","process":"TNR","process-name":"Receipts
+        by Pipeline, Tanker, Barge and Rail","series":"MAPMXP1P21","series-description":"East
+        Coast (PADD 1) Receipts by Pipeline, Tanker, Barge and Rail from Midwest (PADD
+        2) of Asphalt and Road Oil (Thousand Barrels)","value":"77","units":"MBBL"}]},"request":{"command":"\/v2\/petroleum\/move\/ptb\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["value"],"facets":{"duoarea":["R40-R20","R10-R20","R50-R20","R20-R30","R20-R40"],"product":["EPPA"],"process":["TNR"],"series":["MAPMXP1P21"]},"start":"1986-01","end":"1986-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:02:53 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:02:53 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '934'
+    status:
+      code: 200
+      message: OK
+version: 1

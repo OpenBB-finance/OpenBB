@@ -86,85 +86,49 @@ class TmxCompanyFilingsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import json  # noqa
-        from dateutil import rrule  # noqa
-        from datetime import timedelta  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        import asyncio
+        from datetime import timedelta
 
-        user_agent = get_random_agent()
+        from dateutil import rrule
+
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
+
+        symbol = normalize_symbol(str(query.symbol))
         results: list[dict] = []
 
-        # Generate a list of dates from start_date to end_date with a frequency of 1 week
         dates = list(
             rrule.rrule(
                 rrule.WEEKLY, interval=1, dtstart=query.start_date, until=query.end_date
             )
         )
 
-        # Add end_date to the list if it's not there already
         if dates[-1] != query.end_date:
             dates.append(query.end_date)  # type: ignore
 
-        # Create a list of 4-week chunks
         chunks = [
             (dates[i], dates[i + 1] - timedelta(days=1)) for i in range(len(dates) - 1)
         ]
 
-        # Adjust the end date of the last chunk to be the final end date
         chunks[-1] = (chunks[-1][0], query.end_date)  # type: ignore
 
         async def create_task(start, end, results):
-            """Create tasks from the chunked start/end dates."""
-            data = []
-            payload = gql.get_company_filings_payload
-            payload["variables"]["symbol"] = query.symbol
-            payload["variables"]["fromDate"] = start.strftime("%Y-%m-%d")
-            payload["variables"]["toDate"] = end.strftime("%Y-%m-%d")
-            payload["variables"]["limit"] = 1000
-            url = "https://app-money.tmx.com/graphql"
+            """Fetch one date chunk of filings."""
+            data = await amake_gql_request(
+                "getCompanyFilings",
+                gql.COMPANY_FILINGS,
+                {
+                    "symbol": symbol,
+                    "fromDate": start.strftime("%Y-%m-%d"),
+                    "toDate": end.strftime("%Y-%m-%d"),
+                    "limit": 1000,
+                },
+                symbol=symbol,
+            )
 
-            async def try_again():
-                return await get_data_from_gql(
-                    method="POST",
-                    url=url,
-                    data=json.dumps(payload),
-                    headers={
-                        "authority": "app-money.tmx.com",
-                        "referer": f"https://money.tmx.com/en/quote/{query.symbol}",
-                        "locale": "en",
-                        "Content-Type": "application/json",
-                        "User-Agent": user_agent,
-                        "Accept": "*/*",
-                    },
-                    timeout=10,
-                )
-
-            try:
-                data = await get_data_from_gql(
-                    method="POST",
-                    url=url,
-                    data=json.dumps(payload),
-                    headers={
-                        "authority": "app-money.tmx.com",
-                        "referer": f"https://money.tmx.com/en/quote/{query.symbol}",
-                        "locale": "en",
-                        "Content-Type": "application/json",
-                        "User-Agent": user_agent,
-                        "Accept": "*/*",
-                    },
-                    timeout=10,
-                )
-            except Exception:
-                data = await try_again()
-
-            if isinstance(data, str):
-                data = await try_again()
-
-            if data and data.get("data", {}).get("filings"):  # type: ignore
-                results.extend(data["data"]["filings"])  # type: ignore
+            if data and data.get("filings"):
+                results.extend(data["filings"])
 
             return results
 

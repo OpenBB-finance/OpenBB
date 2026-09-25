@@ -1,0 +1,408 @@
+{
+  "wr-productivity-change": {
+    "slug": "percent-change-in-productivity",
+    "label": "Percent Change in Productivity by Industry",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "productivity_1_year_percent_change_2025",
+        "Productivity 1-year percent change, 2025",
+        "pct"
+      ],
+      [
+        "productivity_annual_percent_change_1987_2025",
+        "Productivity annual percent change, 1987-2025",
+        "pct"
+      ]
+    ]
+  },
+  "wr-productivity-by-period": {
+    "slug": "percent-change-in-productivity-by-select-periods",
+    "label": "Percent Change in Productivity by Select Periods",
+    "kind": "period",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "wholesale_trade",
+        "Wholesale trade",
+        "pct"
+      ],
+      [
+        "retail_trade",
+        "Retail trade",
+        "pct"
+      ]
+    ]
+  },
+  "wr-indexes-by-sector": {
+    "slug": "indexes-by-sector",
+    "label": "Output, Hours, and Productivity Indexes by Sector (1987=100)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "wholesale_trade_output",
+        "Wholesale trade Output",
+        "num"
+      ],
+      [
+        "wholesale_trade_hours_worked",
+        "Wholesale trade Hours worked",
+        "num"
+      ],
+      [
+        "wholesale_trade_labor_productivity_output_per_hour",
+        "Wholesale trade Labor productivity (output per hour)",
+        "num"
+      ],
+      [
+        "retail_trade_output",
+        "Retail trade Output",
+        "num"
+      ],
+      [
+        "retail_trade_hours_worked",
+        "Retail trade Hours worked",
+        "num"
+      ],
+      [
+        "retail_trade_labor_productivity_output_per_hour",
+        "Retail trade Labor productivity (output per hour)",
+        "num"
+      ]
+    ]
+  },
+  "wr-lp-by-industry": {
+    "slug": "labor-productivity-indexes-by-industry",
+    "label": "Labor Productivity Indexes by Industry (1987=100)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "wholesale_trade",
+        "Wholesale trade",
+        "num"
+      ],
+      [
+        "motor_vehicles_and_parts",
+        "Motor vehicles and parts",
+        "num"
+      ],
+      [
+        "furniture_and_furnishings",
+        "Furniture and furnishings",
+        "num"
+      ],
+      [
+        "lumber_and_construction_supplies",
+        "Lumber and construction supplies",
+        "num"
+      ],
+      [
+        "commercial_equipment",
+        "Commercial equipment",
+        "num"
+      ],
+      [
+        "metals_and_minerals",
+        "Metals and minerals",
+        "num"
+      ],
+      [
+        "appliances_and_electric_goods",
+        "Appliances and electric goods",
+        "num"
+      ],
+      [
+        "hardware_and_plumbing",
+        "Hardware and plumbing",
+        "num"
+      ],
+      [
+        "machinery_and_supplies",
+        "Machinery and supplies",
+        "num"
+      ],
+      [
+        "miscellaneous_durable_goods",
+        "Miscellaneous durable goods",
+        "num"
+      ],
+      [
+        "paper_and_paper_products",
+        "Paper and paper products",
+        "num"
+      ],
+      [
+        "druggists_goods",
+        "Druggists' goods",
+        "num"
+      ],
+      [
+        "apparel_and_piece_goods",
+        "Apparel and piece goods",
+        "num"
+      ],
+      [
+        "grocery_and_related_products",
+        "Grocery and related products",
+        "num"
+      ],
+      [
+        "farm_product_raw_materials",
+        "Farm product raw materials",
+        "num"
+      ],
+      [
+        "chemicals",
+        "Chemicals",
+        "num"
+      ],
+      [
+        "petroleum",
+        "Petroleum",
+        "num"
+      ],
+      [
+        "alcoholic_beverages",
+        "Alcoholic beverages",
+        "num"
+      ],
+      [
+        "miscellaneous_nondurable_goods",
+        "Miscellaneous nondurable goods",
+        "num"
+      ],
+      [
+        "electronic_markets_and_agents_and_brokers",
+        "Electronic markets and agents and brokers",
+        "num"
+      ],
+      [
+        "retail_trade",
+        "Retail trade",
+        "num"
+      ],
+      [
+        "automobile_dealers",
+        "Automobile dealers",
+        "num"
+      ],
+      [
+        "other_motor_vehicle_dealers",
+        "Other motor vehicle dealers",
+        "num"
+      ],
+      [
+        "auto_parts_accessories_and_tire_stores",
+        "Auto parts, accessories, and tire stores",
+        "num"
+      ],
+      [
+        "furniture_stores",
+        "Furniture stores",
+        "num"
+      ],
+      [
+        "home_furnishings_stores",
+        "Home furnishings stores",
+        "num"
+      ],
+      [
+        "electronics_and_appliance_stores",
+        "Electronics and appliance stores",
+        "num"
+      ],
+      [
+        "building_material_and_supplies_dealers",
+        "Building material and supplies dealers",
+        "num"
+      ],
+      [
+        "lawn_and_garden_equipment_and_supplies_stores",
+        "Lawn and garden equipment and supplies stores",
+        "num"
+      ],
+      [
+        "grocery_stores",
+        "Grocery stores",
+        "num"
+      ],
+      [
+        "specialty_food_stores",
+        "Specialty food stores",
+        "num"
+      ],
+      [
+        "beer_wine_and_liquor_stores",
+        "Beer, wine and liquor stores",
+        "num"
+      ],
+      [
+        "health_and_personal_care_stores",
+        "Health and personal care stores",
+        "num"
+      ],
+      [
+        "gasoline_stations",
+        "Gasoline stations",
+        "num"
+      ],
+      [
+        "clothing_stores",
+        "Clothing stores",
+        "num"
+      ],
+      [
+        "shoe_stores",
+        "Shoe stores",
+        "num"
+      ],
+      [
+        "jewelry_luggage_and_leather_goods_stores",
+        "Jewelry, luggage, and leather goods stores",
+        "num"
+      ],
+      [
+        "sporting_goods_and_musical_instrument_stores",
+        "Sporting goods and musical instrument stores",
+        "num"
+      ],
+      [
+        "book_stores_and_news_dealers",
+        "Book stores and news dealers",
+        "num"
+      ],
+      [
+        "department_stores",
+        "Department stores",
+        "num"
+      ],
+      [
+        "other_general_merchandise_stores",
+        "Other general merchandise stores",
+        "num"
+      ],
+      [
+        "florists",
+        "Florists",
+        "num"
+      ],
+      [
+        "office_supplies_stationery_and_gift_stores",
+        "Office supplies, stationery and gift stores",
+        "num"
+      ],
+      [
+        "used_merchandise_stores",
+        "Used merchandise stores",
+        "num"
+      ],
+      [
+        "other_miscellaneous_store_retailers",
+        "Other miscellaneous store retailers",
+        "num"
+      ],
+      [
+        "electronic_shopping_and_mail_order_houses",
+        "Electronic shopping and mail-order houses",
+        "num"
+      ],
+      [
+        "vending_machine_operators",
+        "Vending machine operators",
+        "num"
+      ],
+      [
+        "direct_selling_establishments",
+        "Direct selling establishments",
+        "num"
+      ]
+    ]
+  },
+  "wr-1yr-change": {
+    "slug": "1-year-percent-change-hours-and-output-and-employment",
+    "label": "1-Year % Change in Hours and Output, and Employment Level",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "hours",
+        "Hours",
+        "pct"
+      ],
+      [
+        "output",
+        "Output",
+        "pct"
+      ],
+      [
+        "employment_level",
+        "Employment level",
+        "num"
+      ]
+    ]
+  },
+  "wr-longterm-change": {
+    "slug": "long-term-percent-change-hours-and-output-and-employment",
+    "label": "Long-Term % Change in Hours and Output, and Employment Level",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "hours",
+        "Hours",
+        "pct"
+      ],
+      [
+        "output",
+        "Output",
+        "pct"
+      ],
+      [
+        "employment_level",
+        "Employment level",
+        "num"
+      ]
+    ]
+  },
+  "wr-labor-cost-by-sector": {
+    "slug": "labor-cost-indexes-by-sector",
+    "label": "Labor Productivity, Unit Labor Costs, and Hourly Compensation Indexes by Sector (1987=100)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "wholesale_trade_labor_productivity_output_per_hour",
+        "Wholesale trade labor productivity (output per hour)",
+        "num"
+      ],
+      [
+        "wholesale_trade_unit_labor_costs",
+        "Wholesale trade unit labor costs",
+        "num"
+      ],
+      [
+        "wholesale_trade_hourly_compensation",
+        "Wholesale trade hourly compensation",
+        "num"
+      ],
+      [
+        "retail_trade_labor_productivity_output_per_hour",
+        "Retail trade labor productivity (output per hour)",
+        "num"
+      ],
+      [
+        "retail_trade_unit_labor_costs",
+        "Retail trade unit labor costs",
+        "num"
+      ],
+      [
+        "retail_trade_hourly_compensation",
+        "Retail trade hourly compensation",
+        "num"
+      ]
+    ]
+  }
+}

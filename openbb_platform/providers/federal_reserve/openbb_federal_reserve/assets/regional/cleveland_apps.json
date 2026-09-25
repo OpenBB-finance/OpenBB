@@ -1,0 +1,97 @@
+[
+  {
+    "name": "Cleveland Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Federal_Reserve_Bank%2C_Cleveland%2C_Ohio_LCCN2010630382.jpg/960px-Federal_Reserve_Bank%2C_Cleveland%2C_Ohio_LCCN2010630382.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Federal_Reserve_Bank%2C_Cleveland%2C_Ohio_LCCN2010630382.jpg/960px-Federal_Reserve_Bank%2C_Cleveland%2C_Ohio_LCCN2010630382.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Federal_Reserve_Bank%2C_Cleveland%2C_Ohio_LCCN2010630382.jpg/960px-Federal_Reserve_Bank%2C_Cleveland%2C_Ohio_LCCN2010630382.jpg",
+    "description": "Inflation measurement from the Cleveland Fed - model-based Inflation Expectations, the Inflation Nowcast, and Median and trimmed-mean CPI with component detail, plus a systemic-risk indicator.",
+    "allowCustomization": true,
+    "tabs": {
+      "inflation-expectations": {
+        "id": "inflation-expectations",
+        "name": "Inflation Expectations",
+        "layout": [
+          {
+            "i": "cleveland_inflation_expectations_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "cleveland_inflation_nowcast_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "median-cpi": {
+        "id": "median-cpi",
+        "name": "Median CPI",
+        "layout": [
+          {
+            "i": "cleveland_median_cpi_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "cleveland_median_cpi_components_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "financial-risk": {
+        "id": "financial-risk",
+        "name": "Financial Risk",
+        "layout": [
+          {
+            "i": "cleveland_systemic_risk_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "cleveland_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

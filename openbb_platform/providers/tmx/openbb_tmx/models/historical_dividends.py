@@ -58,48 +58,21 @@ class TmxHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
 
-        user_agent = get_random_agent()
-        symbol = (
-            query.symbol.upper()
-            .replace("-", ".")
-            .replace(".TO", "")
-            .replace(".TSX", "")
+        symbol = normalize_symbol(query.symbol)
+        response = await amake_gql_request(
+            "getDividendsForSymbol",
+            gql.DIVIDENDS_FOR_SYMBOL,
+            {"symbol": symbol, "page": 1, "batch": 500},
+            symbol=symbol,
         )
-        data = []
-        payload = gql.historical_dividends_payload.copy()
-        payload["variables"]["symbol"] = symbol
-        payload["variables"]["batch"] = 500
-        payload["variables"]["page"] = 1
+        history = (response or {}).get("dividendHistory") or {}
+        dividends = history.get("dividends") or []
 
-        url = "https://app-money.tmx.com/graphql"
-        response = await get_data_from_gql(
-            method="POST",
-            url=url,
-            data=json.dumps(payload),
-            headers={
-                "authority": "app-money.tmx.com",
-                "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                "locale": "en",
-                "Content-Type": "application/json",
-                "User-Agent": user_agent,
-                "Accept": "*/*",
-            },
-            timeout=5,
-        )
-        try:
-            if response.get("data", {}).get("dividends"):  # type: ignore
-                data = response["data"]["dividends"]  # type: ignore
-                data = sorted(data["dividends"], key=lambda d: d["exDate"])  # type: ignore
-
-        except Exception as e:
-            raise RuntimeError(e) from e
-
-        return data
+        return sorted(dividends, key=lambda d: d["exDate"])
 
     @staticmethod
     def transform_data(

@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 import dotenv
+
 from openbb_core.app.constants import OPENBB_DIRECTORY
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 

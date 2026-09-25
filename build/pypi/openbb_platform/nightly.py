@@ -1,7 +1,7 @@
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 import toml
 
@@ -9,8 +9,8 @@ PLATFORM_PATH = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_p
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 
 SUB_PACKAGES = {}
-DEPENDENCIES: Dict[str, Any] = {}
-PLUGINS: Dict[str, Dict] = {
+DEPENDENCIES: dict[str, Any] = {}
+PLUGINS: dict[str, dict] = {
     "openbb_core_extension": {},
     "openbb_provider_extension": {},
     "openbb_obbject_extension": {},
@@ -19,7 +19,7 @@ CMD = [sys.executable, "-m", "poetry", "build"]
 
 
 PYPROJECT_TOML = toml.load(PYPROJECT)
-POETRY_DICT: Dict[str, dict] = PYPROJECT_TOML["tool"]["poetry"]
+POETRY_DICT: dict[str, dict] = PYPROJECT_TOML["tool"]["poetry"]
 POETRY_DICT.pop("extras", None)
 
 
@@ -36,7 +36,7 @@ def gather_metadata(sub_path: str):
     """
     for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
         pyproject_toml = toml.load(path)
-        poetry_dict: Dict[str, dict] = pyproject_toml["tool"]["poetry"]
+        poetry_dict: dict[str, dict] = pyproject_toml["tool"]["poetry"]
         package_name = poetry_dict["packages"][0]["include"]
 
         for extension in list(PLUGINS.keys()):

@@ -1,0 +1,148 @@
+name: 🧹 General Linting
+
+env:
+  PIP_DEFAULT_TIMEOUT: 100
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+    paths:
+      - 'openbb_platform/**'
+      - '!openbb_platform/api/**'
+      - '!openbb_platform/extensions/**'
+      - '!openbb_platform/providers/**'
+      - '!openbb_platform/obbject_extensions/**'
+      - '.github/workflows/lint-openbb-platform.yml'
+  merge_group:
+    types: [checks_requested]
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-linting:
+    name: General Code Linting
+    runs-on: ubuntu-latest
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}/.uv-cache
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6 # actions/checkout v3.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          fetch-depth: 20
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch base branch
+        run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
+
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+          architecture: x64
+
+      - name: Get changed files in openbb_platform for PR
+        if: github.event_name == 'pull_request'
+        run: |
+          # Limit this workflow to shared platform surfaces; extension/provider
+          # modules have dedicated unit+lint workflows.
+          echo "diff_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${HEAD_REF} | grep -E '^openbb_platform/.*\.py$' | grep -v '^openbb_platform/api/' | grep -v '^openbb_platform/extensions/' | grep -v '^openbb_platform/providers/' | grep -v '^openbb_platform/obbject_extensions/' | grep -v 'openbb_platform/core/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+          echo $diff_files
+
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+      - name: Cache uv (built wheels)
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.uv-cache
+          key: uv-${{ runner.os }}-py3.10-lint-${{ hashFiles('openbb_platform/**/pyproject.toml', 'cli/pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-py3.10-lint-
+
+      - name: Install tooling (ruff + ty + codespell)
+        run: |
+          python -m pip install --upgrade pip uv
+          uv pip install --system -e ./openbb_platform/extensions/devtools
+
+      - name: Install openbb-core editable (resident, single identity for ty)
+        run: |
+          # Install core last and editable so the in-tree source is the resident
+          # `openbb_core`. A published wheel pulled in as a transitive dep above
+          # would otherwise shadow it and produce spurious type-identity errors.
+          uv pip install --system -e "./openbb_platform/core[pandas]" numpy
+
+      - name: codespell
+        run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
+
+      - name: ruff + ty (per package, from each package root)
+        if: env.diff_files != ''
+        run: |
+          # ty must run from each package's own root. Invoked from the repo root,
+          # an in-tree file like openbb_platform/core/openbb_core/app/router.py
+          # resolves under a different module identity than the installed
+          # `openbb_core`, yielding false "incompatible type" errors. Grouping
+          # changed files by their nearest pyproject.toml ancestor makes each
+          # package its own ty project root, so first-party imports resolve to a
+          # single identity (matching how the per-package test-unit jobs run ty).
+          status=0
+          declare -A pkg_files
+          for f in ${{ env.diff_files }}; do
+            dir=$(dirname "$f")
+            while [ "$dir" != "." ] && [ ! -f "$dir/pyproject.toml" ]; do
+              dir=$(dirname "$dir")
+            done
+            if [ -f "$dir/pyproject.toml" ]; then
+              pkg_files["$dir"]+="${f#"$dir"/} "
+            else
+              echo "::warning::no pyproject.toml ancestor for $f; checking from repo root"
+              pkg_files["."]+="$f "
+            fi
+          done
+          for pkg in "${!pkg_files[@]}"; do
+            files=${pkg_files[$pkg]}
+            echo "::group::Linting $pkg"
+            (
+              cd "$pkg"
+              rc=0
+              ruff format --check $files || rc=1
+              ruff check $files || rc=1
+              ty check $files || rc=1
+              exit $rc
+            ) || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+
+  markdown-link-check:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        name: Check out the code
+      - name: Lint Code Base
+        uses: docker://avtodev/markdown-lint:v1
+        with:
+          ignore: "./openbb_platform/extensions/mcp_server/openbb_mcp_server/skills/**/*.md ./openbb_platform/providers/sec/openbb_sec/utils/STATEMENT_SCHEMA_README.md"
+          args: "./*.md ./changelogs/*.md ./openbb_platform/**/*.md"
+
+  json-yaml-validate:
+    name: JSON Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: json-yaml-validate
+        id: json-yaml-validate
+        uses: GrantBirki/json-yaml-validate@9bbaa8474e3af4e91f25eda8ac194fdc30564d96 # v4
+        with:
+          yaml_exclude_regex: "construct.yaml"
+          use_gitignore: false

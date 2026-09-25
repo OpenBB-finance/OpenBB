@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel,unused-argument
 """Fama-French Router."""
 
 from typing import Annotated
@@ -154,7 +153,6 @@ async def factor_choices(
 
     Intended to be referenced in 'widgets.json', and returns a list of {'value': str, 'label': str}.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_famafrench.utils.helpers import get_factor_choices
 
     return await get_factor_choices(
@@ -187,6 +185,9 @@ async def factor_choices(
             },
         ),
     ],
+    widget_config={
+        "name": "Fama-French US Portfolio Returns",
+    },
 )
 async def us_portfolio_returns(
     cc: CommandContext,
@@ -516,3 +517,14 @@ async def breakpoints(
     https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html#Breakpoints
     """
     return await OBBject.from_query(OpenBBQuery(**locals()))
+
+
+@router.api_router.get("/apps.json", include_in_schema=False)
+async def famafrench_apps():
+    """Serve the bundled Fama-French dashboard template (``assets/apps.json``)."""
+    import json
+    from pathlib import Path
+
+    _APPS_JSON = Path(__file__).parent / "assets" / "apps.json"
+
+    return json.loads(_APPS_JSON.read_text(encoding="utf-8"))

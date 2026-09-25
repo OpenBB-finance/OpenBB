@@ -1,7 +1,5 @@
 """Company type detection, filing-date resolution, and fiscal metadata."""
 
-# pylint: disable=R0912,R0914
-
 from __future__ import annotations
 
 from collections import Counter
@@ -45,12 +43,7 @@ def detect_type(
     is_financial = fin_count >= min_financial_signals
 
     if is_insurance and is_financial:
-        # Both templates plausible: prefer financial when core-banking signals
-        # outnumber insurance income-statement signals. This keeps genuine
-        # insurers (few financial signals) on the insurance template while
-        # classifying banks that carry an insurance subsidiary (e.g., BMO,
-        # 5 financial vs 4 insurance-IS signals) as financial.
-        return "insurance" if ins_is >= fin_count else "financial"
+        return "insurance" if ins_total > fin_count else "financial"
     if is_insurance:
         return "insurance"
     if is_financial:
@@ -158,16 +151,9 @@ def get_filing_dates(  # noqa: PLR0912
         # (common for 40-F/MJDS filers that report only annually via 6-K).
         # Treat that as no quarterly data so callers fall back to annual.
         if interim_dates and canonical_annual:
-            latest_annual = max(canonical_annual)
-            latest_interim = max(interim_dates)
-            try:
-                lapse = (
-                    datetime.strptime(latest_annual, "%Y-%m-%d")
-                    - datetime.strptime(latest_interim, "%Y-%m-%d")
-                ).days
-            except (ValueError, TypeError):
-                lapse = 0
-            if lapse > 460:
+            latest_annual = datetime.strptime(max(canonical_annual), "%Y-%m-%d")
+            latest_interim = datetime.strptime(max(interim_dates), "%Y-%m-%d")
+            if (latest_annual - latest_interim).days > 460:
                 return set()
 
         # Fold a fiscal year-end into the quarterly series only when that
@@ -302,13 +288,15 @@ def get_fiscal_meta(  # noqa: PLR0912
 
                     if not filed:
                         continue
-                    if fy is None or not fp:
-                        continue
 
                     if form in ANNUAL_FORMS:
+                        if fy is None or not fp:
+                            continue
                         if end not in best_annual or filed < best_annual[end][0]:
                             best_annual[end] = (filed, fy, fp)
                     elif form in QUARTERLY_FORMS:
+                        if fy is None or not fp:
+                            continue
                         if end not in best_quarterly or filed < best_quarterly[end][0]:
                             best_quarterly[end] = (filed, fy, fp)
                     elif form in SEMI_ANNUAL_FORMS:
@@ -316,19 +304,16 @@ def get_fiscal_meta(  # noqa: PLR0912
                         start = entry.get("start", "")
                         days = None
                         if start and start != end:
-                            try:
-                                days = (
-                                    datetime.strptime(end, "%Y-%m-%d")
-                                    - datetime.strptime(start, "%Y-%m-%d")
-                                ).days
-                            except (ValueError, TypeError):
-                                days = None
+                            days = (
+                                datetime.strptime(end, "%Y-%m-%d")
+                                - datetime.strptime(start, "%Y-%m-%d")
+                            ).days
                         end_month = int(end[5:7])
                         fis_year = (
                             int(end[:4]) if end_month <= fye_month else int(end[:4]) + 1
                         )
                         fis_q = f"Q{((end_month - fye_month - 1) % 12) // 3 + 1}"
-                        q_label = fp if fp.startswith("Q") else fis_q
+                        q_label = fp if fp and fp.startswith("Q") else fis_q
                         if days is not None and 300 <= days <= 400:
                             if end not in best_annual or filed < best_annual[end][0]:
                                 best_annual[end] = (filed, fis_year, "FY")
@@ -461,7 +446,7 @@ def detect_reporting_currency(facts: dict[str, Any]) -> str:
     if not currency_counts:
         return "USD"
 
-    return max(currency_counts, key=currency_counts.get)  # type: ignore[arg-type]
+    return max(currency_counts, key=lambda _k: currency_counts[_k])
 
 
 def prior_period_end(date: str) -> str | None:

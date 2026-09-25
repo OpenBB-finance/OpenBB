@@ -1,7 +1,5 @@
 """FRED High Quality Market Corporate Bond Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -10,11 +8,22 @@ from openbb_core.provider.standard_models.high_quality_market import (
     HighQualityMarketCorporateBondData,
     HighQualityMarketCorporateBondQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from pydantic import Field, field_validator
+
+from openbb_fred.utils.query import UseCacheQueryParams
+
+TIME_COLUMN: dict[str, Any] = {"x-widget_config": {"chartDataType": "time"}}
+CATEGORY_COLUMN: dict[str, Any] = {"x-widget_config": {"chartDataType": "category"}}
+EXCLUDED_COLUMN: dict[str, Any] = {"x-widget_config": {"chartDataType": "excluded"}}
+SERIES_PERCENT_COLUMN: dict[str, Any] = {
+    "x-unit_measurement": "percent",
+    "x-widget_config": {"cellDataType": "number", "chartDataType": "series"},
+}
 
 
 class FredHighQualityMarketCorporateBondQueryParams(
-    HighQualityMarketCorporateBondQueryParams
+    UseCacheQueryParams, HighQualityMarketCorporateBondQueryParams
 ):
     """FRED High Quality Market Corporate Bond Query."""
 
@@ -29,26 +38,27 @@ class FredHighQualityMarketCorporateBondQueryParams(
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def validate_date(cls, v):
-        """Validate the dates entered."""
-        if v is None:
-            return None
-        if isinstance(v, (list, dateType)):
-            return v
-        new_dates: list = []
-        date_param = v
-        if isinstance(date_param, str):
-            new_dates = date_param.split(",")
-        elif isinstance(date_param, dateType):
-            new_dates.append(date_param.strftime("%Y-%m-%d"))
-        elif isinstance(date_param, list) and isinstance(date_param[0], dateType):
-            new_dates = [d.strftime("%Y-%m-%d") for d in new_dates]
-        else:
-            new_dates = date_param
-        return ",".join(new_dates) if len(new_dates) > 1 else new_dates[0]
+        """Normalize the dates entered to comma-separated ISO dates."""
+        from openbb_fred.utils.query import join_dates
+
+        return join_dates(v)
 
 
 class FredHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData):
     """FRED High Quality Market Corporate Bond Data."""
+
+    date: dateType = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+        json_schema_extra=EXCLUDED_COLUMN,
+    )
+    rate: float = Field(
+        description="Interest rate.",
+        json_schema_extra=SERIES_PERCENT_COLUMN,
+    )
+    maturity: str = Field(
+        description="Maturity.",
+        json_schema_extra=CATEGORY_COLUMN,
+    )
 
 
 class FredHighQualityMarketCorporateBondFetcher(
@@ -73,36 +83,26 @@ class FredHighQualityMarketCorporateBondFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from dateutil import parser  # noqa
+        from openbb_fred.utils.api import observation_dates, release_tables_url
         from openbb_fred.utils.rate_limiter import fred_get  # noqa
 
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         element_id = "219299" if query.yield_curve == "spot" else "219294"
-        dates: list = [""]
-        if query.date:
-            if query.date and isinstance(query.date, dateType):
-                query.date = query.date.strftime("%Y-%m-%d")
-            dates = query.date.split(",")  # type: ignore
-            dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
-            dates = list(set(dates))
-            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
         URLS = [
-            f"https://api.stlouisfed.org/fred/release/tables?release_id=402&element_id={element_id}"
-            + f"{date}&include_observation_values=true&api_key={api_key}"
-            + "&file_type=json"
-            for date in dates
+            release_tables_url("402", element_id, api_key, date)
+            for date in observation_dates(query.date)
         ]
         results = []
 
         async def get_one(URL):
             """Get the observations for a single date."""
-            data = await fred_get(URL)
+            data = await fred_get(URL, use_cache=query.use_cache)
             if data:
-                elements = dict(data.get("elements", {}).items())  # type: ignore
-                for k, v in elements.items():  # pylint: disable=W0612
+                elements = dict(data.get("elements", {}).items())
+                for k, v in elements.items():
                     value = v.get("observation_value")
                     if not value:
                         continue
@@ -112,7 +112,7 @@ class FredHighQualityMarketCorporateBondFetcher(
                             "date": parser.parse(
                                 v.get("observation_date"),
                             ).date(),
-                            "rate": float(value) / 100,
+                            "rate": float(value),
                             "maturity": (maturity[1] + "_" + maturity[0]).replace(
                                 " ", ""
                             ),
@@ -130,7 +130,6 @@ class FredHighQualityMarketCorporateBondFetcher(
         **kwargs: Any,
     ) -> list[FredHighQualityMarketCorporateBondData]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame
 
         df = DataFrame(data)

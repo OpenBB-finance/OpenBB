@@ -5,16 +5,23 @@ from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Literal, get_origin
 
+from pydantic import BaseModel
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.registry import Registry, RegistryLoader
-from pydantic import BaseModel
 
 MapType = dict[str, dict[str, dict[str, dict[str, Any]]]]
 
 STANDARD_MODELS_FOLDER = Path(__file__).parent / "standard_models"
 SKIP = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
+
+
+def _model_fields(model_or_cls: Any):
+    """Return pydantic model fields from either a class or an instance."""
+    model_cls = model_or_cls if isinstance(model_or_cls, type) else type(model_or_cls)
+    return model_cls.model_fields
 
 
 class RegistryMap:
@@ -136,8 +143,30 @@ class RegistryMap:
 
     @staticmethod
     def _get_results_type(fetcher: Fetcher) -> Any:
-        """Extract return info from fetcher."""
-        return get_origin(getattr(fetcher, "return_type", None))
+        """Extract return info from fetcher.
+
+        Parameters
+        ----------
+        fetcher : Fetcher
+            The fetcher whose return container is inspected.
+
+        Returns
+        -------
+        Any
+            The results container origin; streaming containers normalize to list.
+        """
+        from collections.abc import (
+            AsyncGenerator,
+            AsyncIterable,
+            AsyncIterator,
+            Iterable,
+            Iterator,
+        )
+
+        origin = get_origin(getattr(fetcher, "return_type", None))
+        if origin in (AsyncIterator, AsyncIterable, AsyncGenerator, Iterator, Iterable):
+            return list
+        return origin
 
     @staticmethod
     def _extract_info(
@@ -158,7 +187,7 @@ class RegistryMap:
 
             fields = {
                 name: field
-                for name, field in child.model_fields.items()
+                for name, field in _model_fields(child).items()
                 # This ensures fields inherited by c are discarded.
                 # We need to compare child and parent __annotations__
                 # because this attribute is redirected to the parent class
