@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+import warnings
 
 import pytest
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 
 from openbb_cli.dispatchers.spec import (
     SPEC_VERSION,
@@ -133,6 +135,219 @@ def test_build_command_spec_keys_by_dotted_path():
 def test_build_command_spec_uses_post_when_get_missing():
     openapi = {"paths": {"/api/v1/x": {"post": {"operationId": "x"}}}}
     assert build_command_spec(openapi)["x"]["method"] == "post"
+
+
+def test_build_command_spec_warns_for_path_server_override():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://path.example/api"}],
+                "get": {"operationId": "x"},
+            }
+        },
+    }
+
+    with pytest.warns(OpenBBWarning, match="x.*https://path.example/api"):
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+
+
+def test_build_command_spec_operation_server_overrides_path_server():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://path.example/api"}],
+                "get": {
+                    "operationId": "x",
+                    "servers": [{"url": "https://operation.example/api"}],
+                },
+            }
+        },
+    }
+
+    with pytest.warns(
+        OpenBBWarning, match="x.*https://operation.example/api"
+    ) as caught:
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert len(caught) == 1
+    assert "https://path.example/api" not in str(caught[0].message)
+
+
+def test_build_command_spec_redundant_server_overrides_do_not_warn():
+    openapi = {
+        "servers": [{"url": "https://root.example/api/"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://root.example/api"}],
+                "get": {
+                    "operationId": "x",
+                    "servers": [{"url": "https://root.example/api/"}],
+                },
+            }
+        },
+    }
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert not [item for item in caught if issubclass(item.category, OpenBBWarning)]
+
+
+def test_build_command_spec_redundant_root_trailing_slash_does_not_warn():
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://root.example/"}],
+                "get": {"operationId": "x"},
+            }
+        }
+    }
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert not [item for item in caught if issubclass(item.category, OpenBBWarning)]
+
+
+def test_build_command_spec_skips_relative_server_overrides():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "/other"}],
+                "get": {"operationId": "x"},
+            }
+        },
+    }
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert not [item for item in caught if issubclass(item.category, OpenBBWarning)]
+
+
+def test_build_command_spec_skips_server_variables():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://{tenant}.example/api"}],
+                "get": {"operationId": "x"},
+            }
+        },
+    }
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert not [item for item in caught if issubclass(item.category, OpenBBWarning)]
+
+
+def test_build_command_spec_uses_supplied_global_base_without_root_server():
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://override.example/api"}],
+                "get": {"operationId": "x"},
+            }
+        }
+    }
+
+    with pytest.warns(OpenBBWarning, match="x.*https://override.example/api"):
+        build_spec_document(
+            openapi,
+            base_url="https://global.example/api",
+            api_prefix="/api/v1",
+        )
+
+
+def test_build_command_spec_compares_with_resolved_global_base_url():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://root.example/api"}],
+                "get": {"operationId": "x"},
+            }
+        },
+    }
+
+    with pytest.warns(OpenBBWarning, match="https://root.example/custom"):
+        doc = build_spec_document(
+            openapi,
+            base_url="https://root.example/custom",
+            api_prefix="/api/v1",
+        )
+    assert doc["base_url"] == "https://root.example/custom"
+
+
+def test_build_command_spec_deduplicates_command_and_server_warnings():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x": {
+                "servers": [{"url": "https://override.example/api"}],
+                "get": {"operationId": "x"},
+            },
+            "/api/v1/x/{id}": {
+                "servers": [{"url": "https://override.example/api/"}],
+                "get": {"operationId": "x"},
+            },
+        },
+    }
+
+    with pytest.warns(OpenBBWarning) as caught:
+        build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert len(caught) == 1
+
+
+def test_build_command_spec_merged_entries_do_not_duplicate_warnings():
+    openapi = {
+        "servers": [{"url": "https://root.example/api"}],
+        "paths": {
+            "/api/v1/x/{id}": {
+                "servers": [{"url": "https://override.example/api"}],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {"name": "id", "in": "path", "required": True},
+                    ],
+                },
+            },
+            "/api/v1/x/{id}/{sub_id}": {
+                "servers": [{"url": "https://override.example/api"}],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {"name": "id", "in": "path", "required": True},
+                        {"name": "sub_id", "in": "path", "required": True},
+                    ],
+                },
+            },
+        },
+    }
+
+    with pytest.warns(OpenBBWarning) as caught:
+        out = build_spec_document(
+            openapi, base_url="https://root.example", api_prefix="/api/v1"
+        )
+    assert len(caught) == 1
+    assert len(out["commands"]["x"]["url_templates"]) == 2
 
 
 def test_build_command_spec_skips_other_methods():
