@@ -843,6 +843,27 @@ def test_header_dict_construction_skips_query_credentials():
     assert "apikey" not in out
 
 
+# --- _cookie_dict_construction ---
+
+
+def test_cookie_dict_construction_emits_cookie_credentials():
+    creds = {"xero_session": {"name": "xero-session", "in": "cookie"}}
+    out = fg._cookie_dict_construction(creds)
+    assert "_cookies: dict[str, str] = {}" in out
+    assert "if _cred_xero_session:" in out
+    assert "_cookies['xero-session'] = _cred_xero_session" in out
+
+
+def test_cookie_dict_construction_skips_header_and_query_credentials():
+    creds = {
+        "authorization": {"name": "Authorization", "in": "header"},
+        "api_key": {"name": "apikey", "in": "query"},
+    }
+    out = fg._cookie_dict_construction(creds)
+    assert "Authorization" not in out
+    assert "apikey" not in out
+
+
 # --- generate_fetcher_module (end-to-end) ---
 
 
@@ -1030,3 +1051,48 @@ def test_generate_fetcher_module_credentials_round_trip_to_query_string():
     src = out.source
     assert f'_cred_{canonical} = _creds.get("fmp_{canonical}", "")' in src
     assert f"_query_dict['apikey'] = _cred_{canonical}" in src
+
+
+def test_generate_fetcher_module_required_cookie_reaches_the_request():
+    """A required path-item cookie (Xero's tenant-scoped session, e.g.) is sent.
+
+    Regression guard for the case ``operation_parameters`` intentionally never
+    fixes: a required header/cookie the path item declares for every operation
+    isn't a CLI/Python-interface argument, it's a stored credential — but it
+    still has to actually reach the outgoing request.
+    """
+    spec = fg.FetcherCommandSpec(
+        name="accounting.accounts",
+        cmd_spec={
+            "parameters": [
+                {
+                    "name": "xero-tenant-id",
+                    "type": "string",
+                    "in": "header",
+                    "required": True,
+                },
+                {
+                    "name": "xero-session",
+                    "type": "string",
+                    "in": "cookie",
+                    "required": True,
+                },
+            ],
+            "url_path": "/Accounts",
+            "method": "get",
+            "description": "List accounts.",
+            "response_schema": {"type": "object"},
+        },
+        base_url="https://api.xero.com/api.xro/2.0",
+        api_prefix="",
+        provider_name="xero",
+    )
+    out = fg.generate_fetcher_module(spec)
+    assert set(out.credentials_used) == {"xero_tenant_id", "xero_session"}
+    src = out.source
+    assert "_cred_xero_tenant_id" in src
+    assert "_cred_xero_session" in src
+    assert "_headers['xero-tenant-id'] = _cred_xero_tenant_id" in src
+    assert "_cookies['xero-session'] = _cred_xero_session" in src
+    assert "cookies=_cookies" in src
+    ast.parse(src)

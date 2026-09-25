@@ -1367,13 +1367,19 @@ def test_build_command_spec_inherits_path_item_parameters():
     assert record["required"] is True
 
 
-def test_build_command_spec_drops_path_item_header_parameters():
-    """Path-item headers/cookies are not turned into command arguments."""
+def test_build_command_spec_routes_required_path_item_headers_to_credentials():
+    """A required path-item header/cookie is kept as a credential, not a CLI arg.
+
+    An optional one (``session`` here) still has nowhere to go and is dropped,
+    same as before — only a required value is the "every operation needs
+    this static secret" profile that credential handling exists for.
+    """
     openapi = {
         "paths": {
             "/api/v1/x": {
                 "parameters": [
                     {"name": "x-tenant-id", "in": "header", "required": True},
+                    {"name": "x-session", "in": "cookie", "required": True},
                     {"name": "session", "in": "cookie"},
                     {"name": "page", "in": "query", "schema": {"type": "integer"}},
                 ],
@@ -1382,7 +1388,12 @@ def test_build_command_spec_drops_path_item_header_parameters():
         }
     }
     out = build_command_spec(openapi)
-    assert [p["name"] for p in out["x"]["parameters"]] == ["page"]
+    params = {p["name"]: p for p in out["x"]["parameters"]}
+    assert set(params) == {"page", "x-tenant-id", "x-session"}
+    assert params["x-tenant-id"]["in"] == "header"
+    assert params["x-tenant-id"]["required"] is True
+    assert params["x-session"]["in"] == "cookie"
+    assert params["x-session"]["required"] is True
 
 
 def test_build_command_spec_resolves_path_item_ref_parameters():

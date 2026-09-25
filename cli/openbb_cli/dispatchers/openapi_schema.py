@@ -164,6 +164,36 @@ def operation_parameters(
     return merged
 
 
+def path_item_credential_parameters(
+    spec: dict[str, Any], path_item: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """Return the path item's required ``header``/``cookie`` parameters, dereferenced.
+
+    These are exactly what :func:`operation_parameters` drops: a value every
+    operation under the path needs (a tenant id, a session cookie) that isn't a
+    per-call argument. They're a per-integration secret, not different per
+    request, so they route through ``openbb_cli.codegen.credentials`` the same
+    way an ``apiKey`` security scheme does, rather than becoming a required
+    argument the caller has to supply on every command.
+
+    A path-item parameter that is optional is left for the caller to notice —
+    only a required one is dead-on-arrival without this.
+    """
+    out: list[dict[str, Any]] = []
+    for raw in path_item.get("parameters") or []:
+        if not isinstance(raw, dict):
+            continue
+        resolved = deref_parameter(spec, raw)
+        if not resolved or not resolved.get("name"):
+            continue
+        if resolved.get("in") not in ("header", "cookie"):
+            continue
+        if not resolved.get("required"):
+            continue
+        out.append(resolved)
+    return out
+
+
 _NON_SCHEMA_KEYWORDS = frozenset({"default", "example", "examples", "enum", "const"})
 
 

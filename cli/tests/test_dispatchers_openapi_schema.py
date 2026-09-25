@@ -29,6 +29,7 @@ from openbb_cli.dispatchers.openapi_schema import (
     operation_parameters,
     parameter_to_kwargs,
     parse_json_arg,
+    path_item_credential_parameters,
     request_body_parameters,
     url_to_command,
 )
@@ -1955,6 +1956,67 @@ def test_operation_parameters_skips_unresolvable_and_unnamed_entries():
         ]
     }
     assert [p["name"] for p in operation_parameters({}, path_item, {})] == ["record_id"]
+
+
+def test_path_item_credential_parameters_returns_required_header_and_cookie():
+    path_item = {
+        "parameters": [
+            {"name": "xero-tenant-id", "in": "header", "required": True},
+            {"name": "xero-session", "in": "cookie", "required": True},
+        ]
+    }
+    out = path_item_credential_parameters({}, path_item)
+    assert [p["name"] for p in out] == ["xero-tenant-id", "xero-session"]
+
+
+def test_path_item_credential_parameters_skips_optional_header_or_cookie():
+    """An optional path-item header/cookie has no clear destination; it's dropped."""
+    path_item = {
+        "parameters": [
+            {"name": "If-Modified-Since", "in": "header"},
+            {"name": "session", "in": "cookie", "required": False},
+        ]
+    }
+    assert path_item_credential_parameters({}, path_item) == []
+
+
+def test_path_item_credential_parameters_ignores_path_and_query():
+    """Path/query params are ``operation_parameters``'s job, not this one's."""
+    path_item = {
+        "parameters": [
+            {"name": "record_id", "in": "path", "required": True},
+            {"name": "page", "in": "query", "required": True},
+        ]
+    }
+    assert path_item_credential_parameters({}, path_item) == []
+
+
+def test_path_item_credential_parameters_resolves_refs():
+    spec = {
+        "components": {
+            "parameters": {
+                "tenant": {
+                    "name": "xero-tenant-id",
+                    "in": "header",
+                    "required": True,
+                }
+            }
+        }
+    }
+    path_item = {"parameters": [{"$ref": "#/components/parameters/tenant"}]}
+    out = path_item_credential_parameters(spec, path_item)
+    assert [p["name"] for p in out] == ["xero-tenant-id"]
+
+
+def test_path_item_credential_parameters_skips_malformed_entries():
+    path_item = {
+        "parameters": [
+            "not-a-dict",
+            {"$ref": "#/components/parameters/missing"},
+            {"in": "header", "required": True},
+        ]
+    }
+    assert path_item_credential_parameters({}, path_item) == []
 
 
 def test_build_command_index_inherits_path_item_parameters():

@@ -712,6 +712,15 @@ def _render_body_block(
         lines.append(f"    if {var}:")
         lines.append(f"        _headers[{wire_name!r}] = {var}")
 
+    lines.append("    _cookies: dict[str, str] = {}")
+    for canonical, info in creds.items():
+        if info["in"] != "cookie":
+            continue
+        wire_name = info["name"]
+        var = f"_cred_{canonical}"
+        lines.append(f"    if {var}:")
+        lines.append(f"        _cookies[{wire_name!r}] = {var}")
+
     body_top_is_array = (cmd_spec.get("request_body_schema") or {}).get(
         "type"
     ) == "array"
@@ -742,7 +751,7 @@ def _render_body_block(
     lines.append("    async with await get_async_requests_session() as _session:")
     lines.append(
         "        async with await _session.request("
-        '"POST", _url, headers=_headers, json=_body) as _resp:'
+        '"POST", _url, headers=_headers, cookies=_cookies, json=_body) as _resp:'
     )
     lines.append("            _ct = (_resp.headers.get('Content-Type') or '').lower()")
     lines.append("            _text = await _resp.text()")

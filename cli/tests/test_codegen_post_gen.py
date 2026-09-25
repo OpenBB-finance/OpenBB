@@ -660,6 +660,37 @@ def test_generate_post_command_module_with_credentials_renders_cred_block():
     ast.parse(src)
 
 
+def test_generate_post_command_module_with_cookie_credential_renders_cookie_block():
+    """A required path-item cookie (e.g. a session id) reaches the request as a cookie."""
+    spec = pg.PostCommandSpec(
+        name="x.y",
+        cmd_spec={
+            "url_path": "/x",
+            "method": "post",
+            "description": "X.",
+            "parameters": [
+                {
+                    "name": "xero-session",
+                    "type": "string",
+                    "in": "cookie",
+                    "required": True,
+                },
+            ],
+            "request_body_schema": {"type": "object", "properties": {}},
+            "response_schema": {"type": "object"},
+        },
+        base_url="https://api.example.com",
+        api_prefix="",
+        provider_name="xero",
+    )
+    out = pg.generate_post_command_module(spec)
+    src = out.source
+    assert "_cred_xero_session" in src
+    assert "_cookies['xero-session']" in src
+    assert "cookies=_cookies" in src
+    ast.parse(src)
+
+
 def test_generate_post_command_module_multiline_description_renders_block_doc():
     spec = pg.PostCommandSpec(
         name="x.y",

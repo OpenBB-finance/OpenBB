@@ -66,7 +66,7 @@ class GeneratedFetcher:
     source : str
         Full module source ready to write to disk.
     credentials_used : dict
-        ``{canonical_name: {"name": wire_name, "in": "query"|"header"}}``.
+        ``{canonical_name: {"name": wire_name, "in": "query"|"header"|"cookie"}}``.
     """
 
     module_name: str
@@ -491,6 +491,30 @@ def _header_dict_construction(creds: dict[str, dict[str, str]]) -> str:
     return "\n".join(lines)
 
 
+def _cookie_dict_construction(creds: dict[str, dict[str, str]]) -> str:
+    """Compose the ``_cookies = {...}`` block for credential cookies.
+
+    Parameters
+    ----------
+    creds : dict
+        Credential entries.
+
+    Returns
+    -------
+    str
+        Python source for the cookies dict.
+    """
+    lines = ["        _cookies: dict[str, str] = {}"]
+    for canonical, info in creds.items():
+        if info["in"] != "cookie":
+            continue
+        var = f"_cred_{canonical}"
+        wire_name = info["name"]
+        lines.append(f"        if {var}:")
+        lines.append(f"            _cookies[{wire_name!r}] = {var}")
+    return "\n".join(lines)
+
+
 def _resolve_url_path(api_prefix: str, url_path: str) -> str:
     """Combine api_prefix with url_path; the prefix is dropped if already present."""
     prefix = ("/" + api_prefix.strip("/")) if api_prefix.strip("/") else ""
@@ -568,6 +592,7 @@ def generate_fetcher_module(spec: FetcherCommandSpec) -> GeneratedFetcher:
         spec.cmd_spec, creds, path_params, spec.provider_name
     )
     header_block = _header_dict_construction(creds)
+    cookie_block = _cookie_dict_construction(creds)
 
     if _command_is_streaming(spec.cmd_spec):
         source = _render_streaming_fetcher_source(
@@ -582,6 +607,7 @@ def generate_fetcher_module(spec: FetcherCommandSpec) -> GeneratedFetcher:
             cred_lines=cred_lines,
             query_block=query_block,
             header_block=header_block,
+            cookie_block=cookie_block,
             description=description,
         )
         return GeneratedFetcher(
@@ -610,6 +636,7 @@ def generate_fetcher_module(spec: FetcherCommandSpec) -> GeneratedFetcher:
         cred_lines=cred_lines,
         query_block=query_block,
         header_block=header_block,
+        cookie_block=cookie_block,
         creds=creds,
         description=description,
         imports=consolidate_imports(imports),
@@ -640,6 +667,7 @@ def _render_streaming_fetcher_source(
     cred_lines: list[str],
     query_block: str,
     header_block: str,
+    cookie_block: str,
     description: str,
 ) -> str:
     """Format a streaming fetcher module source.
@@ -668,6 +696,8 @@ def _render_streaming_fetcher_source(
         Pre-rendered query-dict source.
     header_block : str
         Pre-rendered headers-dict source.
+    cookie_block : str
+        Pre-rendered cookies-dict source.
     description : str
         First paragraph of the spec command's description.
 
@@ -749,6 +779,7 @@ def _render_streaming_fetcher_source(
         ' + ("?" + _query_string if _query_string else "")'
     )
     parts.append(header_block)
+    parts.append(cookie_block)
     parts.append("")
     parts.append("        async def _stream() -> AsyncIterator[str]:")
     parts.append(
@@ -756,7 +787,7 @@ def _render_streaming_fetcher_source(
     )
     parts.append(
         f'                async with _client.stream("{method.upper()}", '
-        "_url, headers=_headers) as _resp:"
+        "_url, headers=_headers, cookies=_cookies) as _resp:"
     )
     parts.append("                    _resp.raise_for_status()")
     parts.append("                    async for _line in _resp.aiter_lines():")
@@ -792,6 +823,7 @@ def _render_fetcher_source(
     cred_lines: list[str],
     query_block: str,
     header_block: str,
+    cookie_block: str,
     creds: dict[str, dict[str, str]],
     description: str,
     imports: list[str],
@@ -819,8 +851,8 @@ def _render_fetcher_source(
         Names of placeholders in ``url_path_template``.
     cred_lines : list of str
         Credential-extraction source lines.
-    query_block, header_block : str
-        Pre-rendered query-dict and headers-dict source.
+    query_block, header_block, cookie_block : str
+        Pre-rendered query-dict, headers-dict, and cookies-dict source.
     creds : dict
         Credential entries.
     description : str
@@ -926,6 +958,7 @@ def _render_fetcher_source(
         cred_lines=cred_lines,
         query_block=query_block,
         header_block=header_block,
+        cookie_block=cookie_block,
         body_field_names=list(
             (spec.cmd_spec.get("request_body_schema") or {}).get("properties") or {}
         ),
@@ -993,6 +1026,7 @@ def _aextract_body(
     cred_lines: list[str],
     query_block: str,
     header_block: str,
+    cookie_block: str,
     body_field_names: list[str],
     has_path_params: bool,
     has_query_creds: bool,
@@ -1015,6 +1049,8 @@ def _aextract_body(
         Pre-rendered query-dict construction block.
     header_block : str
         Pre-rendered headers-dict construction block.
+    cookie_block : str
+        Pre-rendered cookies-dict construction block.
     body_field_names : list of str
         Names of fields that should travel in the JSON request body.
     has_path_params : bool
@@ -1042,6 +1078,8 @@ def _aextract_body(
     lines.append("")
     lines.append(header_block)
     lines.append("")
+    lines.append(cookie_block)
+    lines.append("")
     if method == "post":
         body_literal = (
             "{"
@@ -1060,7 +1098,7 @@ def _aextract_body(
     lines.append("        async with await get_async_requests_session() as _session:")
     lines.append(
         "            async with await _session.request("
-        "_method, _url, headers=_headers, **_request_kwargs) as _resp:"
+        "_method, _url, headers=_headers, cookies=_cookies, **_request_kwargs) as _resp:"
     )
     lines.append(
         "                _ct = (_resp.headers.get('Content-Type') or '').lower()"

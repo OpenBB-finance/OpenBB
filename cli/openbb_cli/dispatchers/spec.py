@@ -29,6 +29,7 @@ from openbb_cli.dispatchers.openapi_schema import (
     operation_parameters,
     param_provider_membership,
     parse_json_arg,
+    path_item_credential_parameters,
     request_body_parameters,
     url_to_command,
 )
@@ -207,6 +208,16 @@ def _build_operation_entry(
         if normalized is not None:
             params.append(normalized)
     declared = {p["name"] for p in params}
+    # A required header/cookie the path item declares for every operation (a
+    # tenant id, a session cookie) isn't a per-call argument — it routes through
+    # credentials.classify_parameter, same as an apiKey security scheme.
+    for resolved in path_item_credential_parameters(spec, path_item or {}):
+        if resolved["name"] in declared:
+            continue
+        normalized = _normalize_parameter(resolved, providers_set)
+        if normalized is not None:
+            params.append(normalized)
+            declared.add(normalized["name"])
     for raw in _security_parameters(spec, op):
         if raw["name"] in declared:
             continue
