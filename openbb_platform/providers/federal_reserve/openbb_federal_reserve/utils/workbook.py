@@ -75,6 +75,31 @@ def _first_data_row(column: list[Any]) -> int | None:
     return None
 
 
+def cell_dates(values: Any) -> list[dateType | None]:
+    """Return each Excel date cell as a date, and None for every other cell.
+
+    Parameters
+    ----------
+    values : Any
+        The column's cells, as read from the workbook.
+
+    Returns
+    -------
+    list[date | None]
+        One entry per cell: the date for a date or datetime cell, else None.
+    """
+    from pandas import notna
+
+    return [
+        value.date()
+        if isinstance(value, datetime) and notna(value)
+        else value
+        if isinstance(value, dateType) and not isinstance(value, datetime)
+        else None
+        for value in values
+    ]
+
+
 def _text(value: Any) -> str:
     """Return a trimmed, newline-collapsed string for a header cell, else empty."""
     from pandas import isna

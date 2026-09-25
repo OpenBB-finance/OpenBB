@@ -146,7 +146,7 @@ def fetch_guide_concepts(
     """
     from concurrent.futures import ThreadPoolExecutor
 
-    resolved = lines or ubpr_concept_lines()
+    resolved = ubpr_concept_lines() if lines is None else lines
     report_date = _report_date()
     pairs = sorted({(c, resolved[c]) for c in concepts if c in resolved})
     if not pairs or not report_date:

@@ -214,14 +214,9 @@ class TestExecutiveSummaryCassette:
     """Replay the captured ESR transports through the full real fetcher."""
 
     @pytest.fixture(scope="class")
-    def parsed(self):
-        """Run transform_query -> extract_data -> transform_data over the cassette.
-
-        Serves the router responses, parsed guide concepts and filtered concept
-        index entirely from the recording, so the parse runs with no live network
-        and no pre-warmed cache. The Call Report filer set is served as the bank's
-        own RSSD so the lead-bank resolution is a no-op and never hits the network.
-        """
+    @classmethod
+    def parsed(cls):
+        """Run the full fetcher over the cassette with no live network."""
         with pytest.MonkeyPatch.context() as patch, replay(_ESR_CASSETTE):
             patch.setattr(
                 "openbb_federal_reserve.utils.ticker.call_report_filers",

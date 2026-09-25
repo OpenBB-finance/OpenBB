@@ -6,9 +6,10 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import pytest
 from openpyxl import Workbook, load_workbook
-from pandas import DataFrame
+from pandas import DataFrame, NaT, Series, Timestamp
 
 from openbb_federal_reserve.utils.workbook import (
+    cell_dates,
     melt_sheet,
     pivot_wide,
     round_value,
@@ -238,3 +239,33 @@ class TestMeltSheet:
             end_date=date(2024, 12, 31),
         )
         assert [r["date"] for r in records] == [date(2024, 1, 31)]
+
+
+class TestCellDates:
+    """Tests for ``cell_dates``."""
+
+    def test_keeps_only_date_cells(self):
+        """Datetime and date cells become dates; text, numbers and NaT become None."""
+        cells = Series(
+            [
+                datetime(2026, 1, 1, 12, 30),
+                Timestamp("2026-02-01"),
+                date(2026, 3, 1),
+                NaT,
+                None,
+                "not a date",
+                "3",
+                202604,
+            ],
+            dtype=object,
+        )
+        assert cell_dates(cells) == [
+            date(2026, 1, 1),
+            date(2026, 2, 1),
+            date(2026, 3, 1),
+            None,
+            None,
+            None,
+            None,
+            None,
+        ]

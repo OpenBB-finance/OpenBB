@@ -125,7 +125,9 @@ class FederalReserveAtlantaTaylorRuleFetcher(
         """Overlay each rule's prescription with the actual rate, keyed by date."""
         from io import BytesIO
 
-        from pandas import isna, read_excel, to_datetime
+        from pandas import isna, read_excel
+
+        from openbb_federal_reserve.utils.workbook import cell_dates
 
         frames = read_excel(
             BytesIO(data[0]["_raw"]),
@@ -145,12 +147,11 @@ class FederalReserveAtlantaTaylorRuleFetcher(
                 (c for c in frame.columns if str(c).strip() == "Actual Fed Funds Rate"),
                 None,
             )
-            dates = to_datetime(frame[frame.columns[0]], errors="coerce")
+            dates = cell_dates(frame[frame.columns[0]])
             for index in range(len(frame)):
-                observation = dates.iloc[index]
-                if isna(observation):
+                observation = dates[index]
+                if observation is None:
                     continue
-                observation = observation.date()
                 record = merged.setdefault(observation, {"date": observation})
                 cell = frame[prescribed].iloc[index] if prescribed else None
                 record[field] = None if cell is None or isna(cell) else float(cell)

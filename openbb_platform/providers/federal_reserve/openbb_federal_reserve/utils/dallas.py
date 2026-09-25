@@ -27,7 +27,9 @@ def parse_dgei(
     """Melt a DGEI sheet's side-by-side measure blocks to long records."""
     from io import BytesIO
 
-    from pandas import isna, notna, read_excel, to_datetime, to_numeric
+    from pandas import isna, notna, read_excel, to_numeric
+
+    from openbb_federal_reserve.utils.workbook import cell_dates
 
     raw = read_excel(BytesIO(content), sheet_name=sheet, header=None)
     label_row = next(
@@ -60,8 +62,7 @@ def parse_dgei(
             if notna(candidate) and str(candidate).strip():
                 measure = re.split(r"[,=]", str(candidate).strip())[0].strip()
                 break
-        stamps = to_datetime(body.iloc[:, start], errors="coerce")
-        dates = [None if isna(stamp) else stamp.date() for stamp in stamps]
+        dates = cell_dates(body.iloc[:, start])
         for index in range(start + 1, stop):
             label = labels.iloc[index]
             if isna(label):
@@ -143,6 +144,8 @@ def melt_two_level(
 
     from pandas import isna, notna, read_excel, to_datetime, to_numeric
 
+    from openbb_federal_reserve.utils.workbook import cell_dates
+
     raw = read_excel(BytesIO(content), sheet_name=sheet, header=None)
     if raw.shape[0] <= label_row + 1:
         return []
@@ -176,8 +179,7 @@ def melt_two_level(
         )
         dates = [None if isna(stamp) else stamp.date() for stamp in stamps]
     else:
-        stamps = to_datetime(first, errors="coerce")
-        dates = [None if isna(stamp) else stamp.date() for stamp in stamps]
+        dates = cell_dates(first)
 
     values = {
         index: to_numeric(body.iloc[:, index], errors="coerce")
