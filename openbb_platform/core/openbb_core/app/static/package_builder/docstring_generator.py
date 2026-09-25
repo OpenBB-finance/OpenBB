@@ -54,6 +54,74 @@ from openbb_core.app.static.package_builder._indent import (  # noqa: F401
     create_indent,
 )
 
+_MERGED_PROVIDER_DESCRIPTION_RE = re.compile(r"(\(provider:\s*[^)]+\))\s*;\s*")
+_QUOTED_TYPE_NAME_RE = re.compile(r"'([A-Za-z_][\w.]*)'")
+
+
+def _strip_annotated(type_: Any) -> Any:
+    """Remove ``Annotated`` metadata from a type, recursing into unions and containers.
+
+    Parameters
+    ----------
+    type_ : Any
+        The type to unwrap.
+
+    Returns
+    -------
+    Any
+        The type with every ``Annotated[X, ...]`` replaced by ``X``.
+    """
+    origin = get_origin(type_)
+    if origin is Annotated:
+        return _strip_annotated(get_args(type_)[0])
+    if origin is Union or origin is UnionType:
+        return Union[tuple(_strip_annotated(arg) for arg in get_args(type_))]  # noqa: UP007
+    if origin in (list, dict, set, tuple) and get_args(type_):
+        return origin[tuple(_strip_annotated(arg) for arg in get_args(type_))]
+    return type_
+
+
+def _literal_type_name(type_: Any) -> str:
+    """Return the value type of a ``Literal``, e.g. ``str`` for ``Literal['a', 'b']``.
+
+    Parameters
+    ----------
+    type_ : Any
+        A ``Literal`` type.
+
+    Returns
+    -------
+    str
+        The sorted, ``|``-joined type names of the literal's values.
+    """
+    return " | ".join(sorted({type(arg).__name__ for arg in get_args(type_)}))
+
+
+def _literal_choices(type_: Any) -> list:
+    """Return the values of every ``Literal`` in a type, including inside unions.
+
+    Parameters
+    ----------
+    type_ : Any
+        The type to inspect.
+
+    Returns
+    -------
+    list
+        The literal values, in declaration order.
+    """
+    type_ = _strip_annotated(type_)
+    if get_origin(type_) is Literal:
+        return list(get_args(type_))
+    if get_origin(type_) is Union or get_origin(type_) is UnionType:
+        return [
+            value
+            for arg in get_args(type_)
+            if get_origin(arg) is Literal
+            for value in get_args(arg)
+        ]
+    return []
+
 
 class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
@@ -92,6 +160,13 @@ class DocstringGenerator:
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"
 
+            _type = _strip_annotated(_type)
+
+            if isinstance(_type, TypeVar):
+                _type = "Any"
+            elif get_origin(_type) is Literal:
+                _type = _literal_type_name(_type)
+
             origin = get_origin(_type)
             # On Python 3.10-3.13, ``X | Y`` produces ``types.UnionType``
             # whose ``get_origin()`` is ``types.UnionType`` — distinct from
@@ -108,6 +183,10 @@ class DocstringGenerator:
                         has_none = True
                         continue
                     if get_origin(arg) is Literal:
+                        type_names.append(_literal_type_name(arg))
+                        continue
+                    if isinstance(arg, TypeVar):
+                        type_names.append("Any")
                         continue
                     type_name = str(arg)
                     if hasattr(arg, "__forward_arg__"):
@@ -124,6 +203,7 @@ class DocstringGenerator:
                     # Unwrap any ForwardRef('X') left inside a container repr,
                     # e.g. ``list[ForwardRef('DataFrame')]`` -> ``list[DataFrame]``.
                     type_name = re.sub(r"ForwardRef\('([^']+)'\)", r"\1", type_name)
+                    type_name = _QUOTED_TYPE_NAME_RE.sub(r"\1", type_name)
                     if "openbb_" in type_name:
                         # Strip the dotted module path but preserve any
                         # generic-container prefix like ``list[`` so
@@ -156,6 +236,8 @@ class DocstringGenerator:
                     .replace("NoneType", "None")
                     .replace(", None", "")
                 )
+                if "Literal[" not in _type:
+                    _type = _QUOTED_TYPE_NAME_RE.sub(r"\1", _type)
 
             if "openbb_" in str(_type):
                 _type = (
@@ -187,7 +269,7 @@ class DocstringGenerator:
         providers: str | None,
     ) -> str:
         """Get the command output description."""
-        available_providers = providers or "Optional[str]"
+        available_providers = providers or "str | None"
         indent = 2
 
         obbject_description = (
@@ -196,9 +278,9 @@ class DocstringGenerator:
             f"{create_indent(indent + 2)}Serializable results.\n"
             f"{create_indent(indent + 1)}provider : {available_providers}\n"
             f"{create_indent(indent + 2)}Provider name.\n"
-            f"{create_indent(indent + 1)}warnings : Optional[list[Warning_]]\n"
+            f"{create_indent(indent + 1)}warnings : list[Warning_] | None\n"
             f"{create_indent(indent + 2)}List of warnings.\n"
-            f"{create_indent(indent + 1)}chart : Optional[Chart]\n"
+            f"{create_indent(indent + 1)}chart : Chart | None\n"
             f"{create_indent(indent + 2)}Chart object.\n"
             f"{create_indent(indent + 1)}extra : dict[str, Any]\n"
             f"{create_indent(indent + 2)}Extra info.\n"
@@ -219,9 +301,9 @@ class DocstringGenerator:
             " use ``async for row in stream``.\n"
             f"{create_indent(indent + 1)}id : str\n"
             f"{create_indent(indent + 2)}Unique identifier of the stream.\n"
-            f"{create_indent(indent + 1)}provider : Optional[str]\n"
+            f"{create_indent(indent + 1)}provider : str | None\n"
             f"{create_indent(indent + 2)}Provider name.\n"
-            f"{create_indent(indent + 1)}warnings : Optional[list[Warning_]]\n"
+            f"{create_indent(indent + 1)}warnings : list[Warning_] | None\n"
             f"{create_indent(indent + 2)}List of warnings.\n"
             f"{create_indent(indent + 1)}extra : dict[str, Any]\n"
             f"{create_indent(indent + 2)}Extra info.\n"
@@ -283,7 +365,7 @@ class DocstringGenerator:
 
         def format_type(type_: str, char_limit: int | None = None) -> str:
             """Format type in docstrings."""
-            type_str = str(type_)
+            type_str = str(_strip_annotated(type_))
 
             # Apply the standard formatting first
             type_str = (
@@ -409,7 +491,7 @@ class DocstringGenerator:
                     if line.startswith("Multiple comma separated items allowed"):
                         # Save current provider's choices first
                         if current_provider and current_choices:
-                            provider_choices[current_provider] = " ".join(
+                            provider_choices[current_provider] = "\n".join(
                                 current_choices
                             )
                             current_provider = None
@@ -420,7 +502,7 @@ class DocstringGenerator:
                     if line.startswith("Choices for "):
                         # Save previous provider's choices if any
                         if current_provider and current_choices:
-                            provider_choices[current_provider] = " ".join(
+                            provider_choices[current_provider] = "\n".join(
                                 current_choices
                             )
 
@@ -436,7 +518,7 @@ class DocstringGenerator:
 
                 # Save the last provider's choices
                 if current_provider and current_choices:
-                    provider_choices[current_provider] = " ".join(current_choices)
+                    provider_choices[current_provider] = "\n".join(current_choices)
 
             # Extract multiple items text from main_description if not already found
             if not multi_items_text:
@@ -448,9 +530,11 @@ class DocstringGenerator:
                     multi_items_text = multi_match.group().strip()
                     main_description = re.sub(multi_pattern, "", main_description)
 
-            # Handle semicolon-separated provider descriptions
-            if ";" in main_description and "(provider:" in main_description:
-                parts = main_description.split(";")
+            if _MERGED_PROVIDER_DESCRIPTION_RE.search(main_description):
+                pieces = _MERGED_PROVIDER_DESCRIPTION_RE.split(main_description)
+                parts = [
+                    pieces[i] + pieces[i + 1] for i in range(0, len(pieces) - 1, 2)
+                ] + [pieces[-1]]
                 provider_sections = []
 
                 # Extract provider tag pattern
@@ -613,13 +697,13 @@ class DocstringGenerator:
             if provider_param:
                 _, description = get_param_info(provider_param)  # type: ignore
                 provider_param._annotation = str  # type: ignore
-                docstring += f"{create_indent(2)}provider : str\n"
+                docstring += f"{create_indent(2)}provider : str | None\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
             # Explicit parameters
             for param_name, param in explicit_params.items():
                 type_, description = get_param_info(param)
-                type_str = format_type(str(type_), char_limit=86)
+                type_str = format_type(type_, char_limit=86)
                 docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
                 docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -781,8 +865,7 @@ class DocstringGenerator:
                                 line_length > 0
                                 and line_length + len(choice_str) + 2 > line_limit
                             ):
-                                # End the current line
-                                formatted_choices.append("\n")
+                                formatted_choices.append(",\n")
                                 line_length = 0
 
                             # Add comma and space if not the first choice in the line
@@ -998,14 +1081,14 @@ class DocstringGenerator:
                     type_str = cls.get_field_type(
                         p_type, param.default is Parameter.empty
                     )
-                    # Emit at column 0; a single blanket indent at the end of
-                    # this branch shifts the whole docstring to the method's
-                    # docstring column. Param name aligns with the header,
-                    # description sits one level in.
                     param_section += f"{param_name} : {type_str}\n"
 
                     if description and description.strip() != '""':
                         param_section += f"{create_indent(1)}{description}\n"
+
+                    if choices := _literal_choices(p_type):
+                        formatted = ", ".join(repr(choice) for choice in choices)
+                        param_section += f"{create_indent(1)}Choices: {formatted}\n"
 
                 result_doc += param_section + "\n"
 
@@ -1046,6 +1129,10 @@ class DocstringGenerator:
                                 fields = getattr(return_annotation, "model_fields", {})
 
                                 for field_name, field in fields.items():
+                                    if type_name.startswith("OBBject") and (
+                                        field_name == "id"
+                                    ):
+                                        continue
                                     field_type = cls.get_field_type(
                                         field.annotation, field.is_required
                                     )
@@ -1054,17 +1141,10 @@ class DocstringGenerator:
                                         if field.description
                                         else ""
                                     )
-
-                                    if type_name.startswith("OBBject"):
-                                        if field_name != "id":
-                                            returns_section += "\n"
-
-                                        returns_section += f"{create_indent(1)}{field_name.strip()} : {field_type}"
-                                    else:
-                                        returns_section += f"{create_indent(1)}{field_name} : {field_type}\n"
+                                    returns_section += f"{create_indent(1)}{field_name.strip()} : {field_type}\n"
                                     if description:
                                         returns_section += (
-                                            f"\n{create_indent(2)}{description}"
+                                            f"{create_indent(2)}{description}\n"
                                         )
 
                         except (AttributeError, TypeError):

@@ -3,7 +3,6 @@
 import builtins
 import inspect
 import re
-import textwrap
 from collections import OrderedDict
 from collections.abc import Callable
 from inspect import Parameter, _empty, isclass, signature
@@ -1111,6 +1110,32 @@ class MethodDefinition:
                 s = s[7:]
             return s
 
+        def normalize_type_names(text: str) -> str:
+            """Rewrite ``typing`` and fully-qualified names in a rendered type."""
+            text = text.replace("NoneType", "None")
+            text = text.replace("pandas.core.frame.DataFrame", "pandas.DataFrame")
+            text = text.replace("openbb_core.provider.abstract.data.Data", "Data")
+            text = text.replace("ForwardRef('Data')", "Data")
+            text = text.replace("ForwardRef('DataFrame')", "DataFrame")
+            text = text.replace("ForwardRef('Series')", "Series")
+            text = text.replace("ForwardRef('ndarray')", "ndarray")
+            text = re.sub(r"\bDict\b", "dict", text)
+            text = re.sub(r"\bList\b", "list", text)
+            return text.replace("typing.", "")
+
+        def split_preserving_whitespace(text: str, width: int) -> list[str]:
+            """Split text into chunks of about ``width`` characters that rejoin exactly."""
+            chunks: list[str] = []
+            current = ""
+            for word in re.findall(r"\S+\s*|\s+", text):
+                if current and len(current) + len(word.rstrip()) > width:
+                    chunks.append(current)
+                    current = ""
+                current += word
+            if current:
+                chunks.append(current)
+            return chunks
+
         def stringify_param(param: Parameter) -> str:
             """Format a parameter as a string."""
             if not (
@@ -1119,10 +1144,10 @@ class MethodDefinition:
                     isinstance(m, OpenBBField) for m in param.annotation.__metadata__
                 )
             ):
-                return str(param)
+                return normalize_type_names(str(param))
 
             type_hint = param.annotation.__args__[0]
-            type_repr = get_type_repr(type_hint)
+            type_repr = normalize_type_names(get_type_repr(type_hint))
             meta = next(
                 m for m in param.annotation.__metadata__ if isinstance(m, OpenBBField)
             )
@@ -1137,9 +1162,7 @@ class MethodDefinition:
             if len(desc) <= max_width:
                 desc_repr = repr(desc)
             else:
-                parts = textwrap.wrap(desc, width=max_width)
-                # For function signature context, don't add extra indentation
-                # The parameter will be properly indented by the calling context
+                parts = split_preserving_whitespace(desc, max_width)
                 joined = "\n                    ".join(f"{repr(p)}" for p in parts)
                 desc_repr = f"(\n                    {joined}" + "\n                )"
 
@@ -1166,23 +1189,7 @@ class MethodDefinition:
             return final_param
 
         params_list = [stringify_param(p) for p in formatted_params.values()]
-        func_params = ",\n        ".join(params_list)
-
-        func_params = func_params.replace("NoneType", "None")
-        func_params = func_params.replace(
-            "pandas.core.frame.DataFrame", "pandas.DataFrame"
-        )
-        func_params = func_params.replace(
-            "openbb_core.provider.abstract.data.Data", "Data"
-        )
-        func_params = func_params.replace("ForwardRef('Data')", "Data")
-        func_params = func_params.replace("ForwardRef('DataFrame')", "DataFrame")
-        func_params = func_params.replace("ForwardRef('Series')", "Series")
-        func_params = func_params.replace("ForwardRef('ndarray')", "ndarray")
-        func_params = func_params.replace("Dict", "dict").replace("List", "list")
-        func_params = func_params.replace("typing.", "")
-
-        return func_params
+        return ",\n        ".join(params_list)
 
     @staticmethod
     def build_func_returns(return_type: type) -> str:
@@ -1263,7 +1270,7 @@ class MethodDefinition:
         )
 
         code = (
-            f'{create_indent(2)}"""{doc}{create_indent(2)}"""  # noqa: E501\n\n'
+            f'{create_indent(2)}"""{doc.rstrip()}\n{create_indent(2)}"""  # noqa: E501\n\n'
             if doc
             else ""
         )

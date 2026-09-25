@@ -217,7 +217,7 @@ def test_generated_command_method_imports_and_has_expected_signature(
 
     The generator deliberately emits a superset of imports (``import
     pandas``, ``import numpy``, ``from openbb_core.app.provider_interface
-    import OBBject_<Model>``, etc.) and relies on ``ruff --fix --unsafe-fixes``
+    import OBBject_<Model>``, etc.) and relies on ``ruff --fix-only --unsafe-fixes``
     in ``_run_linters`` to strip those that are unused by the rendered
     method body — see the comment at ``ImportDefinition.build``
     (package_builder.py ~line 560). With ``lint=True`` the generated

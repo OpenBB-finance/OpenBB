@@ -55,7 +55,7 @@ class Linters:
 
     def ruff(self):
         """Run ruff."""
-        flags = ["check", "--fix", "--unsafe-fixes"]
+        flags = ["check", "--fix-only", "--unsafe-fixes"]
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")
         self.run(linter="ruff", flags=flags)

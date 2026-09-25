@@ -1326,3 +1326,28 @@ def test_build_purges_on_keyboard_interrupt(tmp_openbb_dir):
         assert mock_clean.call_count == 2
         # console.error should NOT be called for KeyboardInterrupt
         mock_error.assert_not_called()
+
+
+def test_normalize_code_annotations_leaves_strings_and_comments_untouched():
+    from openbb_core.app.static.package_builder.builder import (
+        _normalize_code_annotations,
+    )
+
+    code = (
+        "def f(x: typing.List[int]) -> List:\n"
+        '    """List of values from typing.Any."""\n'
+        "    y = 'List every row'  # List of rows\n"
+        "    return x\n"
+    )
+    out = _normalize_code_annotations(code)
+    assert "def f(x: list[int]) -> list:" in out
+    assert '"""List of values from typing.Any."""' in out
+    assert "'List every row'  # List of rows" in out
+
+
+def test_normalize_code_annotations_falls_back_on_untokenizable_code():
+    from openbb_core.app.static.package_builder.builder import (
+        _normalize_code_annotations,
+    )
+
+    assert _normalize_code_annotations("x: typing.List[int] = (") == "x: list[int] = ("

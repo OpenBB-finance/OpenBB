@@ -71,6 +71,22 @@ def test_ruff_strips_unused_imports_via_module_invocation(tmp_path, monkeypatch)
     assert "import os" not in sample.read_text()
 
 
+@pytest.mark.skipif(
+    importlib.util.find_spec("ruff") is None,
+    reason="ruff not installed in this environment",
+)
+def test_ruff_does_not_report_unfixable_violations(tmp_path, capfd):
+    """Leftover violations in generated code are not reported in verbose mode."""
+    sample = tmp_path / "sample.py"
+    sample.write_text("import os\n\nundefined_name\n")
+
+    Linters(tmp_path, verbose=True).ruff()
+
+    assert "import os" not in sample.read_text()
+    out, err = capfd.readouterr()
+    assert "F821" not in out + err
+
+
 def test_run_logs_not_found_when_module_missing(tmp_path, capsys):
     """Missing linter should be reported, not silently skipped.
 

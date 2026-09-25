@@ -1,12 +1,68 @@
 """Shared fixtures and ``openbb_core`` submodule bindings for the test suite."""
 
+import importlib
 import logging
+import shutil
 import socket
+import subprocess
 import sys
 import threading
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
+from importlib.metadata import PackageNotFoundError, distribution
+from importlib.util import find_spec
+from pathlib import Path
+
+FIXTURE_EXTENSION = Path(__file__).parent / "fixtures" / "openbb_mcp_fixture"
+
+
+def _pip_install_command() -> list[str]:
+    """Return the command that installs packages into the running interpreter.
+
+    Returns
+    -------
+    list[str]
+        ``uv pip install`` when uv is available, otherwise ``pip install``.
+    """
+    if find_spec("uv"):
+        return [
+            sys.executable,
+            "-m",
+            "uv",
+            "pip",
+            "install",
+            "--python",
+            sys.executable,
+        ]
+    if uv := shutil.which("uv"):
+        return [uv, "pip", "install", "--python", sys.executable]
+    return [sys.executable, "-m", "pip", "install"]
+
+
+def _install_fixture_extension() -> None:
+    """Install the ``openbb-mcp-fixture`` extension the tests dispatch against."""
+    try:
+        distribution("openbb-mcp-fixture")
+    except PackageNotFoundError:
+        subprocess.run(  # noqa: S603
+            [
+                *_pip_install_command(),
+                "--no-deps",
+                "--editable",
+                str(FIXTURE_EXTENSION),
+            ],
+            check=True,
+        )
+        if str(FIXTURE_EXTENSION) not in sys.path:
+            sys.path.append(str(FIXTURE_EXTENSION))
+        importlib.invalidate_caches()
+        from openbb_core.app.extension_loader import ExtensionLoader
+
+        type(ExtensionLoader)._instances.pop(ExtensionLoader, None)
+
+
+_install_fixture_extension()
 
 import openbb_core.api
 import openbb_core.api.app_loader

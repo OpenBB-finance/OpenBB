@@ -1746,3 +1746,46 @@ def test_format_params_expands_query_params_model_field_types():
 
     # ``symbol`` is not in TYPE_EXPANSION -> the declared type is kept as-is.
     assert get_args(out["symbol"].annotation)[0] is str
+
+
+def test_build_func_params_wrapped_description_keeps_spaces_and_case():
+    description = (
+        "The provider to use, by default None. If None, the priority list "
+        "configured in the settings is used. List of Dict values is accepted."
+    )
+    annotation = Annotated[Literal["fred"] | None, OpenBBField(description=description)]
+    param_map = OrderedDict(
+        provider=Parameter(
+            "provider",
+            Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=annotation,
+            default=None,
+        )
+    )
+    rendered = MethodDefinition.build_func_params(param_map)
+    namespace: dict = {}
+    exec(  # noqa: S102
+        "from typing import Annotated, Literal\n"
+        "from openbb_core.app.model.field import OpenBBField\n"
+        f"def f({rendered}): pass\n",
+        namespace,
+    )
+    rendered_annotation = namespace["f"].__annotations__["provider"]
+    assert rendered_annotation.__metadata__[0].description == description
+
+
+def test_build_func_params_normalizes_typing_names_in_types_only():
+    from typing import Dict, List  # noqa: UP035
+
+    annotation = Annotated[
+        List[Dict[str, int]] | None,  # noqa: UP006
+        OpenBBField(description="List of Dict rows."),
+    ]
+    param_map = OrderedDict(
+        rows=Parameter(
+            "rows", Parameter.POSITIONAL_OR_KEYWORD, annotation=annotation, default=None
+        )
+    )
+    rendered = MethodDefinition.build_func_params(param_map)
+    assert "list[dict[str, int]]" in rendered
+    assert "'List of Dict rows.'" in rendered
