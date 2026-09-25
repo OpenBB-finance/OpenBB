@@ -239,6 +239,7 @@ def test_log_startup(logging_service):
 )
 def test_log(
     logging_service,
+    *,
     user_settings,
     system_settings,
     route,

@@ -1,7 +1,5 @@
 """OpenBB MCP Server."""
 
-# pylint: disable=C0302, R0912, W0212
-
 import asyncio
 import json
 import os
@@ -16,7 +14,7 @@ from fastapi.routing import APIRoute
 from fastmcp import FastMCP
 from fastmcp.prompts import PromptArgument
 from fastmcp.prompts.function_prompt import FunctionPrompt
-from fastmcp.server.context import Context
+from fastmcp.server.auth import AuthProvider
 from fastmcp.server.providers.openapi import (
     OpenAPIResource,
     OpenAPIResourceTemplate,
@@ -45,6 +43,15 @@ from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.types import ASGIApp, Receive, Scope, Send
 
+from openbb_mcp_server.app.args import parse_args
+from openbb_mcp_server.app.artifacts import (
+    ChartArtifactMiddleware,
+    artifact_output_schema,
+)
+from openbb_mcp_server.app.auth import get_auth_provider
+from openbb_mcp_server.app.cli_tools import register_cli_tools
+from openbb_mcp_server.app.discovery import OpenBBToolCatalog
+from openbb_mcp_server.app.pipeline import register_pipeline_tool
 from openbb_mcp_server.models.category_index import CategoryIndex
 from openbb_mcp_server.models.mcp_config import (
     ArgumentDefinitionModel,
@@ -54,13 +61,17 @@ from openbb_mcp_server.models.prompts import StaticPrompt
 from openbb_mcp_server.models.settings import MCPSettings
 from openbb_mcp_server.models.tools import CategoryInfo, SubcategoryInfo, ToolInfo
 from openbb_mcp_server.service.mcp_service import MCPService
-from openbb_mcp_server.utils.app_import import parse_args
+from openbb_mcp_server.utils.choices import expose_choices
 from openbb_mcp_server.utils.fastapi import (
     get_api_prefix,
     process_fastapi_routes_for_mcp,
+    route_naming,
+    tool_name_for_route,
 )
 
 logger = get_logger(__name__)
+
+_SKILL_NAME = re.compile(r"[a-z0-9][a-z0-9_-]*")
 
 _VENDOR_SKILLS_PROVIDERS = {
     "claude": ClaudeSkillsProvider,
@@ -95,23 +106,34 @@ def _get_mcp_config_from_route(fa_route: APIRoute | None) -> dict:
     return {}
 
 
-def _strip_api_prefix(path: str, api_prefix: str) -> str:
-    """Strip the exact api_prefix (from SystemService) from an absolute path.
+def _without_arguments(schema: dict, names: list[str]) -> dict:
+    """Return a tool input schema without the named arguments."""
+    if not names:
+        return schema
+    return {
+        **schema,
+        "properties": {
+            key: value
+            for key, value in (schema.get("properties") or {}).items()
+            if key not in names
+        },
+        "required": [key for key in schema.get("required", []) if key not in names],
+    }
 
-    Returns the remainder without a leading slash.
-    """
-    if not path:
-        return ""
-    if not path.startswith("/"):
-        path = "/" + path
-    remainder = (
-        path[len(api_prefix) :] if api_prefix and path.startswith(api_prefix) else path
-    )
-    return remainder.lstrip("/")
+
+def _checked_skill_files(skill_dir: Path, files: dict[str, str]) -> None:
+    """Raise ``ValueError`` unless every file of a skill stays inside its directory."""
+    root = skill_dir.resolve()
+    for filename in files:
+        target = (skill_dir / filename).resolve()
+        if Path(filename).is_absolute() or not target.is_relative_to(root):
+            raise ValueError(
+                f"Skill file '{filename}' must be a relative path inside the skill directory."
+            )
 
 
 def _read_system_prompt_file(file_path: str) -> str | None:
-    """Read system prompt content from a text file. Returns None if file doesn't exist or can't be read."""
+    """Read system prompt content from a text file."""
     try:
         prompt_path = Path(file_path)
         if prompt_path.exists() and prompt_path.is_file():
@@ -135,6 +157,33 @@ def _build_runtime_middleware() -> list:
             expose_headers=["Mcp-Session-Id"],
         )
     ]
+
+
+def _trim_model_descriptions(schema: Any) -> Any:
+    """Return ``schema`` with every object-model description cut to its first paragraph."""
+    if isinstance(schema, list):
+        return [_trim_model_descriptions(item) for item in schema]
+    if not isinstance(schema, dict):
+        return schema
+    trimmed = {key: _trim_model_descriptions(value) for key, value in schema.items()}
+    description = trimmed.get("description")
+    if (
+        trimmed.get("type") == "object"
+        and "title" in trimmed
+        and isinstance(description, str)
+    ):
+        trimmed["description"] = description.split("\n\n", 1)[0]
+    return trimmed
+
+
+def _returns_json(route: HTTPRoute) -> bool:
+    """Return whether a route declares a JSON success response."""
+    return any(
+        "json" in media_type
+        for status, response in route.responses.items()
+        if status.startswith("2")
+        for media_type in response.content_schema
+    )
 
 
 def _setup_file_system_prompt(mcp: FastMCP, settings: MCPSettings) -> None:
@@ -178,7 +227,7 @@ def _add_prompts_from_json(mcp: FastMCP, settings: MCPSettings) -> None:
     try:
         with open(settings.server_prompts_file, encoding="utf-8") as f:
             prompts_json: list = json.load(f) or []
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         logger.error("Failed to load prompts from JSON file: %s", e)
         return
 
@@ -211,36 +260,30 @@ def _add_prompts_from_json(mcp: FastMCP, settings: MCPSettings) -> None:
             )
             continue
 
-        prompt_arguments_def = prompt_def.get("arguments", [])
         arguments: list = []
-
         argument_defaults: dict = {}
 
-        if prompt_arguments_def:
-            for arg in prompt_arguments_def:
-                try:
-                    validated_arg = ArgumentDefinitionModel(**arg).model_dump(
-                        exclude_none=True
+        for arg in prompt_def.get("arguments") or []:
+            try:
+                validated_arg = ArgumentDefinitionModel(**arg).model_dump(
+                    exclude_none=True
+                )
+                arguments.append(
+                    PromptArgument(
+                        name=validated_arg["name"],
+                        description=validated_arg.get("description"),
+                        required="default" not in validated_arg,
                     )
-                    arguments.append(
-                        PromptArgument(
-                            name=validated_arg["name"],
-                            description=validated_arg["description"],
-                            required="default" not in validated_arg,
-                        )
-                    )
-                    if "default" in validated_arg:
-                        argument_defaults[validated_arg["name"]] = validated_arg[
-                            "default"
-                        ]
-                except Exception as e:  # pylint: disable=broad-except
-                    logger.error(
-                        "Skipping argument definition in server prompt, %s, due to error: %s\nDefinition: %s",
-                        prompt_name,
-                        e,
-                        arg,
-                    )
-                    continue
+                )
+                if "default" in validated_arg:
+                    argument_defaults[validated_arg["name"]] = validated_arg["default"]
+            except Exception as e:
+                logger.error(
+                    "Skipping argument definition in server prompt, %s, due to error: %s\nDefinition: %s",
+                    prompt_name,
+                    e,
+                    arg,
+                )
 
         prompt_tags = prompt_def.get("tags", [])
         tags = set(prompt_tags) if isinstance(prompt_tags, list | set) else set()
@@ -342,44 +385,41 @@ def _add_skills_default_prompt(mcp: FastMCP) -> None:
     logger.info("Added default system prompt with skill awareness nudge.")
 
 
-# pylint: disable=R0914,R0915
 def create_mcp_server(
     settings: MCPSettings,
     fastapi_app: FastAPI,
     httpx_kwargs: dict | None = None,
-    auth: Any | None = None,
+    auth: AuthProvider | tuple[str, str] | list[str] | None = None,
 ) -> FastMCP:
     """Create and configure the FastMCP server from a FastAPI app instance.
 
     Parameters
     ----------
-    settings: MCPSettings
-        The MCPSettings instance containing configuration options for the server.
-    fastapi_app: FastAPI
-        The FastAPI app instance to be used for the server.
-    httpx_kwargs: dict | None
-        Optional keyword arguments to pass to the httpx client.
-    auth: Any | None
-        The authentication provider to use for the server.
-        Should be a valid FastMCP.server.auth.AuthProvider instance,
-        or an object accepted by the `auth` parameter of FastMCP initialization.
+    settings : MCPSettings
+        The configuration options for the server.
+    fastapi_app : FastAPI
+        The FastAPI app whose routes become MCP components.
+    httpx_kwargs : dict | None
+        Keyword arguments for the httpx client that proxies tool calls.
+    auth : AuthProvider | tuple[str, str] | list[str] | None
+        A FastMCP auth provider, or ``(username, password)`` credentials for Bearer authentication.
 
     Returns
     -------
     FastMCP
         The configured FastMCP server instance.
-    """
-    auth_provider = None
-    if auth and isinstance(auth, list | tuple) and len(auth) == 2 and all(auth):
-        # pylint: disable=import-outside-toplevel
-        from .auth import get_auth_provider
 
-        auth_provider = get_auth_provider(settings)
+    Raises
+    ------
+    TypeError
+        If ``auth`` is neither an auth provider nor a pair of non-empty strings.
+    """
+    auth_provider = get_auth_provider(auth)
 
     category_index = CategoryIndex()
     _enabled_tools: set[str] = set()
+    route_tools: list[tuple[HTTPRoute, OpenAPITool]] = []
 
-    # Single-pass processing: filter routes, build route maps, and create lookup dictionary
     processed_data = process_fastapi_routes_for_mcp(fastapi_app, settings)
 
     route_lookup = processed_data.route_lookup
@@ -390,9 +430,7 @@ def create_mcp_server(
         tool_name = prompt_def.get("tool")
 
         if tool_name:
-            if tool_name not in tool_prompts_map:
-                tool_prompts_map[tool_name] = []
-            tool_prompts_map[tool_name].append(
+            tool_prompts_map.setdefault(tool_name, []).append(
                 {
                     "name": prompt_def.get("name"),
                     "description": prompt_def.get("description"),
@@ -400,13 +438,11 @@ def create_mcp_server(
                 }
             )
 
-    # pylint: disable=R0912
     def customize_components(
         route: HTTPRoute,
         component: OpenAPITool | OpenAPIResource | OpenAPIResourceTemplate,
     ) -> None:
         """Apply naming, tags, enable/disable, and resource mime type using per-route config."""
-        # Map back to FastAPI route to read openapi_extra
         fa_route = route_lookup.get((route.path, route.method.upper()))
         mcp_cfg = _get_mcp_config_from_route(fa_route)
 
@@ -420,50 +456,38 @@ def create_mcp_server(
             )
             mcp_cfg = {}
 
-        # Use the exact API prefix to determine category/subcategory/tool
-        local_path = _strip_api_prefix(route.path, api_prefix)
-        segments = [seg for seg in local_path.split("/") if seg and "{" not in seg]
+        category, subcategory, _ = route_naming(route.path, api_prefix)
+        component.name = tool_name_for_route(
+            route.path,
+            route.method.upper(),
+            api_prefix,
+            processed_data.exposed_methods,
+            mcp_cfg.get("name"),
+        )
 
-        if segments:
-            category = segments[0]
-            if len(segments) == 1:
-                subcategory = "general"
-                tool = segments[0]
-            elif len(segments) == 2:
-                subcategory = "general"
-                tool = segments[1]
-            else:
-                subcategory = segments[1]
-                tool = "_".join(segments[2:])
-        else:
-            category, subcategory, tool = "general", "general", "root"
-
-        # Name override
-        if name := mcp_cfg.get("name"):
-            component.name = name
-        else:
-            component.name = (
-                f"{category}_{subcategory}_{tool}"
-                if subcategory != "general"
-                else f"{category}_{tool}"
-            )
-
-        # Tags
         component.tags.add(category)
         extra_tags = mcp_cfg.get("tags") or []
         for t in extra_tags:
             component.tags.add(str(t))
 
-        # Compress schemas (only for OpenAPITool which has these attributes)
         if isinstance(component, OpenAPITool):
             if component.parameters:
-                component.parameters = compress_schema(component.parameters)
-            if hasattr(component, "output_schema"):
-                output_schema = getattr(component, "output_schema", None)
-                if output_schema is not None:
-                    component.output_schema = compress_schema(output_schema)
+                component.parameters = _without_arguments(
+                    _trim_model_descriptions(compress_schema(component.parameters)),
+                    mcp_cfg.get("exclude_args") or [],
+                )
+            if component.output_schema is not None:
+                component.output_schema = (
+                    artifact_output_schema(
+                        _trim_model_descriptions(
+                            compress_schema(component.output_schema)
+                        )
+                    )
+                    if _returns_json(route)
+                    else None
+                )
+            route_tools.append((route, component))
 
-        # Description trimming
         describe_override = mcp_cfg.get("describe_responses")
         if describe_override is False or (
             describe_override is None and not settings.describe_responses
@@ -472,7 +496,6 @@ def create_mcp_server(
                 component.description or ""
             )
 
-        # Add prompt metadata to the tool description
         if isinstance(component, OpenAPITool):
             prompts = tool_prompts_map.get(component.name)
             if prompts:
@@ -487,7 +510,6 @@ def create_mcp_server(
                     component.description or ""
                 ) + prompt_metadata_str
 
-        # Enable/disable: per-route override first, then category defaults
         enable_override = mcp_cfg.get("enable")
         if isinstance(enable_override, bool):
             should_enable = enable_override
@@ -502,13 +524,11 @@ def create_mcp_server(
         if should_enable and isinstance(component, OpenAPITool):
             _enabled_tools.add(component.name)
 
-        # Resource-specific mime type
         if isinstance(component, OpenAPIResource):
             mime_type = mcp_cfg.get("mime_type")
             if isinstance(mime_type, str) and mime_type:
                 component.mime_type = mime_type
 
-        # Register tool in the category index for discovery browsing
         if isinstance(component, OpenAPITool):
             category_index.register(
                 category=category,
@@ -517,15 +537,12 @@ def create_mcp_server(
                 description=component.description or "",
             )
 
-    # Extract httpx_client_kwargs from settings/kwargs if available
     httpx_client_kwargs = httpx_kwargs or settings.get_httpx_kwargs()
 
-    # Get only FastMCP constructor parameters (excludes uvicorn_config, httpx_client_kwargs)
     fastmcp_kwargs = settings.get_fastmcp_kwargs()
 
-    # Create MCP server from the processed FastAPI app.
     mcp = FastMCP.from_fastapi(
-        app=fastapi_app,  # app has been modified in-place
+        app=fastapi_app,
         mcp_component_fn=customize_components,
         route_maps=processed_data.route_maps,
         httpx_client_kwargs=httpx_client_kwargs,
@@ -533,32 +550,28 @@ def create_mcp_server(
         **fastmcp_kwargs,
     )
 
-    # Disable ALL non-admin tools first, then selectively re-enable.
+    tool_names = {
+        route.path: tool.name
+        for route, tool in route_tools
+        if route.method.upper() == "GET"
+    }
+    for _, tool in route_tools:
+        tool.parameters = expose_choices(tool.parameters, tool_names)
+    mcp.add_middleware(ChartArtifactMiddleware())
+
     all_registered = category_index.all_tool_names()
-    if all_registered:
+    if not settings.enable_tool_discovery and all_registered:
         mcp.disable(names=all_registered)
+        if _enabled_tools:
+            mcp.enable(names=_enabled_tools)
 
-    if settings.enable_tool_discovery:
-        # Discovery mode: everything stays disabled.
-        # Agents progressively activate what they need per-session
-        # via activate_tools / activate_category.
-        pass
-    elif _enabled_tools:
-        # Fixed-toolset mode: re-enable tools that matched
-        # per-route overrides or default_tool_categories.
-        mcp.enable(names=_enabled_tools)
-
-    # Add system prompt if configured
     if settings.system_prompt_file:
         _setup_file_system_prompt(mcp, settings)
 
-    # Load the prompts json file, if added to the settings configuration.
     _add_prompts_from_json(mcp, settings)
 
-    # Add inline prompts from route configurations
     _add_inline_prompts(mcp, processed_data.prompt_definitions)
 
-    # Load bundled skills via SkillsDirectoryProvider
     _bundled_skills_loaded = False
     if settings.default_skills_dir:
         skills_dir = Path(settings.default_skills_dir)
@@ -572,7 +585,6 @@ def create_mcp_server(
             _bundled_skills_loaded = True
             logger.info("Loaded bundled skills from '%s'", skills_dir)
 
-    # Load user-configured vendor skill providers
     if settings.skills_providers:
         for provider_name in settings.skills_providers:
             key = provider_name.lower().strip()
@@ -587,14 +599,12 @@ def create_mcp_server(
                     ", ".join(_VENDOR_SKILLS_PROVIDERS),
                 )
 
-    # If any skills were loaded and no custom system prompt is configured,
-    # add a brief default system prompt nudging agents to discover them.
     _skills_loaded = _bundled_skills_loaded or bool(settings.skills_providers)
     if _skills_loaded and not settings.system_prompt_file:
         _add_skills_default_prompt(mcp)
 
-    # Admin/discovery tools if enabled
     if settings.enable_tool_discovery:
+        mcp.add_transform(OpenBBToolCatalog(category_index))
 
         @mcp.tool(tags={"admin"})
         def available_categories() -> list[CategoryInfo]:
@@ -615,7 +625,7 @@ def create_mcp_server(
             ]
 
         @mcp.tool(tags={"admin"})
-        async def available_tools(
+        def available_tools(
             category: Annotated[
                 str, Field(description="The category of tools to list")
             ],
@@ -627,7 +637,7 @@ def create_mcp_server(
                 ),
             ] = None,
         ) -> list[ToolInfo]:
-            """List tools in a specific category and subcategory."""
+            """List the tools in a category; get their parameters with search_tools and run them with call_tool."""
             cat_data = category_index.get_subcategories(category)
 
             if cat_data is None:
@@ -647,96 +657,18 @@ def create_mcp_server(
             else:
                 names = category_index.get_category_names(category)
 
-            # Resolve active state from FastMCP's live tool list
-            active_tools = await mcp.list_tools()
-            active_names = {t.name for t in active_tools}
+            return [
+                ToolInfo(name=name, description=category_index.get_description(name))
+                for name in sorted(names)
+            ]
 
-            # Build descriptions — use live tool object when available,
-            # fall back to cached short description from the index.
-            tool_map = {t.name: t for t in active_tools}
-            results: list[ToolInfo] = []
-            for name in sorted(names):
-                if name in tool_map:
-                    desc = _extract_brief_description(tool_map[name].description or "")
-                else:
-                    desc = category_index.get_description(name)
-                results.append(
-                    ToolInfo(name=name, active=name in active_names, description=desc)
-                )
-            return results
-
-        @mcp.tool(tags={"admin"})
-        async def activate_tools(
-            tool_names: Annotated[
-                list[str], Field(description="Names of tools to activate")
-            ],
-            ctx: Context,
-        ) -> str:
-            """Activate one or more tools for this session."""
-            valid = [n for n in tool_names if category_index.has_tool(n)]
-            invalid = [n for n in tool_names if not category_index.has_tool(n)]
-            if valid:
-                await ctx.enable_components(names=set(valid))
-            parts: list[str] = []
-            if valid:
-                parts.append(f"Activated: {', '.join(valid)}")
-            if invalid:
-                parts.append(f"Not found: {', '.join(invalid)}")
-            return " ".join(parts) or "No tools processed."
-
-        @mcp.tool(tags={"admin"})
-        async def deactivate_tools(
-            tool_names: Annotated[
-                list[str], Field(description="Names of tools to deactivate")
-            ],
-            ctx: Context,
-        ) -> str:
-            """Deactivate one or more tools for this session."""
-            valid = [n for n in tool_names if category_index.has_tool(n)]
-            invalid = [n for n in tool_names if not category_index.has_tool(n)]
-            if valid:
-                await ctx.disable_components(names=set(valid))
-            parts: list[str] = []
-            if valid:
-                parts.append(f"Deactivated: {', '.join(valid)}")
-            if invalid:
-                parts.append(f"Not found: {', '.join(invalid)}")
-            return " ".join(parts) or "No tools processed."
-
-        @mcp.tool(tags={"admin"})
-        async def activate_category(
-            category: Annotated[
-                str, Field(description="Category name to activate all tools for")
-            ],
-            ctx: Context,
-            subcategory: Annotated[
-                str | None,
-                Field(description="Optional subcategory to narrow activation"),
-            ] = None,
-        ) -> str:
-            """Activate all tools in a category (or subcategory) for this session."""
-            if subcategory:
-                names = category_index.get_subcategory_names(category, subcategory)
-            else:
-                names = category_index.get_category_names(category)
-            if not names:
-                available = list(category_index.get_categories().keys())
-                raise ValueError(
-                    f"No tools found in '{category}'"
-                    + (f"/'{subcategory}'" if subcategory else "")
-                    + f". Available categories: {', '.join(sorted(available))}"
-                )
-            await ctx.enable_components(names=names)
-            scope = f"'{category}'" + (f"/'{subcategory}'" if subcategory else "")
-            return (
-                f"Activated {len(names)} tools in {scope}"
-                f": {', '.join(sorted(names))}"
-            )
-
-    # Expose prompts and resources as tools via transforms so that
-    # tool-only clients can list/render prompts and list/read resources.
     mcp.add_transform(PromptsAsTools(mcp))
     mcp.add_transform(ResourcesAsTools(mcp))
+
+    register_pipeline_tool(mcp)
+
+    if settings.enable_cli_tools:
+        register_cli_tools(mcp)
 
     @mcp.tool(tags={"resource", "admin"})
     async def install_skill(
@@ -744,8 +676,8 @@ def create_mcp_server(
             str,
             Field(
                 description=(
-                    "Name of the skill (used as the directory name). "
-                    "Must be a valid directory name (lowercase, underscores)."
+                    "Name of the skill (used as the directory name): lowercase "
+                    "letters, digits, underscores, and hyphens."
                 ),
             ),
         ],
@@ -754,6 +686,7 @@ def create_mcp_server(
             Field(
                 description=(
                     "Dictionary of filename -> content for the skill directory. "
+                    "Filenames are relative paths inside the skill directory. "
                     "Must include 'SKILL.md' as the main file. "
                     "May include supporting files such as templates, examples, "
                     "or configuration snippets (e.g. 'pyproject.toml.template', 'example.py')."
@@ -773,18 +706,17 @@ def create_mcp_server(
             ),
         ] = "bundled",
     ) -> dict:
-        """Install a skill (SKILL.md + supporting files) into a SkillsDirectoryProvider.
-
-        Creates the skill directory if needed, writes all files,
-        and registers the new skill with the target provider so it becomes
-        immediately available via list_resources / read_resource.
-        """
+        """Install a skill (SKILL.md plus supporting files) and make it readable via list_resources and read_resource."""
         if "SKILL.md" not in files:
             raise ValueError(
                 "The 'files' dict must include a 'SKILL.md' entry as the main skill file."
             )
+        if not _SKILL_NAME.fullmatch(skill_name):
+            raise ValueError(
+                f"Invalid skill name '{skill_name}'. Use lowercase letters, digits,"
+                " underscores, and hyphens, starting with a letter or digit."
+            )
 
-        # Find the target SkillsDirectoryProvider
         target_key = target.lower().strip()
         target_provider: SkillsDirectoryProvider | None = None
 
@@ -795,7 +727,7 @@ def create_mcp_server(
             if target_key == "bundled":
                 if settings.default_skills_dir:
                     bundled_root = Path(settings.default_skills_dir).resolve()
-                    if bundled_root in provider._roots:  # noqa: SLF001
+                    if bundled_root in provider._roots:
                         target_provider = provider
                         break
             else:
@@ -815,39 +747,34 @@ def create_mcp_server(
                 f"Available targets: {', '.join(available)}"
             )
 
-        if not target_provider._roots:  # noqa: SLF001
+        if not target_provider._roots:
             raise ValueError(
                 f"Target provider '{target}' has no configured root directories."
             )
 
-        # Use the first root directory for writing
-        root_dir = target_provider._roots[0]  # noqa: SLF001
+        root_dir = target_provider._roots[0]
         skill_dir = root_dir / skill_name
+        _checked_skill_files(skill_dir, files)
 
-        # Create the directory and write all files
         skill_dir.mkdir(parents=True, exist_ok=True)
         written_files: list[str] = []
         for filename, content in files.items():
             file_path = skill_dir / filename
-            # Create subdirectories if the filename contains path separators
             file_path.parent.mkdir(parents=True, exist_ok=True)
             file_path.write_text(content, encoding="utf-8")
             written_files.append(filename)
 
-        # Register the new skill with the provider
         already_loaded = {
-            p._skill_path.name  # noqa: SLF001
+            getattr(getattr(p, "_skill_path", None), "name", None)
             for p in target_provider.providers
-            if hasattr(p, "_skill_path")
-        }
+        } - {None}
 
         if skill_name not in already_loaded:
             new_skill_provider = SkillProvider(skill_path=skill_dir)
             target_provider.providers.append(new_skill_provider)
             action = "Installed"
         else:
-            # Skill already exists — re-discover to pick up changed content
-            target_provider._discover_skills()  # noqa: SLF001
+            target_provider._discover_skills()
             action = "Updated"
 
         logger.info(
@@ -884,14 +811,12 @@ class SSEShutdownWrapper:
             await self.asgi_app(scope, receive, send)
             return
 
-        # Check if this is an SSE endpoint
         path = scope.get("path", "")
 
         if not path.endswith("/sse/"):
             await self.asgi_app(scope, receive, send)
             return
 
-        # Wrap send to handle shutdown gracefully
         response_started = False
 
         async def safe_send(message):
@@ -905,29 +830,26 @@ class SSEShutdownWrapper:
                 elif message["type"] == "http.response.body":
                     await send(message)
             except (ConnectionResetError, ConnectionAbortedError):
-                # Client disconnected, ignore
                 pass
             except RuntimeError as e:
-                if "Expected ASGI message" in str(e):
-                    # ASGI protocol violation during shutdown, handle gracefully
-                    if not response_started:
-                        # Send a proper response start if we haven't yet
-                        await send(
-                            {
-                                "type": "http.response.start",
-                                "status": 200,
-                                "headers": [(b"content-type", b"text/plain")],
-                            }
-                        )
-                        await send(
-                            {
-                                "type": "http.response.body",
-                                "body": b"Connection closed",
-                                "more_body": False,
-                            }
-                        )
-                else:
+                if "Expected ASGI message" not in str(e):
                     raise
+                if response_started:
+                    return
+                await send(
+                    {
+                        "type": "http.response.start",
+                        "status": 200,
+                        "headers": [(b"content-type", b"text/plain")],
+                    }
+                )
+                await send(
+                    {
+                        "type": "http.response.body",
+                        "body": b"Connection closed",
+                        "more_body": False,
+                    }
+                )
 
         await self.asgi_app(scope, receive, safe_send)
 
@@ -939,14 +861,12 @@ async def stdio_main(mcp_server):
     def signal_handler():
         """Signal handler to exit the process immediately."""
         logger.info("Shutdown signal received. Terminating process.")
-        os._exit(0)  # pylint: disable=protected-access
+        os._exit(0)
 
     for sig in (signal.SIGINT, signal.SIGTERM):
         try:
             loop.add_signal_handler(sig, signal_handler)
         except NotImplementedError:
-            # Windows event loops do not support signal handlers. The MCP client
-            # owns the stdio child process and closes it directly.
             break
 
     logger.info("Starting OpenBB MCP Server in STDIO mode. Press Ctrl+C to stop.")
@@ -954,60 +874,47 @@ async def stdio_main(mcp_server):
     await loop.run_in_executor(None, mcp_server.run, "stdio")
 
 
-def main():
-    """Start the OpenBB MCP server with enhanced FastAPI app import capabilities."""
-    args = parse_args()
+def launch_mcp() -> None:
+    """Launch the OpenBB MCP server from the parsed CLI arguments and the layered settings."""
+    parsed = parse_args()
+    target_app = parsed["app"] if parsed["app"] is not None else app
+    transport = parsed["transport"]
+
     mcp_service = MCPService()
-    # Collect all command-line overrides from parsed args
-    cli_overrides = args.uvicorn_config.copy()
-    # Add MCP-specific CLI arguments if they exist
-    if hasattr(args, "allowed_categories") and args.allowed_categories:
-        cli_overrides["allowed_categories"] = args.allowed_categories
+    cli_overrides: dict = dict(parsed["uvicorn_overrides"])
+    cli_overrides.update(parsed["mcp_overrides"])
 
-    if hasattr(args, "default_categories") and args.default_categories:
-        cli_overrides["default_categories"] = args.default_categories
-
-    if hasattr(args, "tool_discovery") and args.tool_discovery:
-        cli_overrides["tool_discovery"] = args.tool_discovery
-
-    if hasattr(args, "system_prompt") and args.system_prompt:
-        cli_overrides["system_prompt"] = args.system_prompt
-
-    if hasattr(args, "server_prompts") and args.server_prompts:
-        cli_overrides["server_prompts"] = args.server_prompts
-
-    # Load settings with proper priority order (CLI > env > config file > defaults)
     settings = mcp_service.load_with_overrides(**cli_overrides)
 
     try:
-        # Use imported app if provided, otherwise default OpenBB app
-        target_app = args.imported_app if args.imported_app else app
-
-        # Extract runtime configuration from settings
         http_run_kwargs = settings.get_http_run_kwargs()
         httpx_kwargs = settings.get_httpx_kwargs()
 
-        # Create MCP server with comprehensive configuration
         mcp_server = create_mcp_server(
             settings, target_app, httpx_kwargs, auth=settings.server_auth
         )
 
-        if args.transport == "stdio":
+        if transport == "stdio":
             asyncio.run(stdio_main(mcp_server))
         else:
             cors_middleware = _build_runtime_middleware()
 
-            # Start building arguments mcp.run
-            run_kwargs = {
-                "transport": args.transport,
-                "middleware": cors_middleware,
+            from openbb_mcp_server.app.config import get_bootstrapped_config
+            from openbb_mcp_server.app.middleware import build_hook_middleware
+
+            mcp_table = get_bootstrapped_config().get("mcp") or {}
+            hook_middleware = build_hook_middleware(
+                auth_hooks=(mcp_table.get("auth") or {}).get("hooks"),
+                middleware_hooks=(mcp_table.get("middleware") or {}).get("hooks"),
+            )
+
+            run_kwargs: dict = {
+                "transport": transport,
             }
 
-            # Extract uvicorn settings
             if http_run_kwargs.get("uvicorn_config"):
                 uvicorn_config = http_run_kwargs["uvicorn_config"].copy()
 
-                # Pop host and port to pass them as top-level args
                 if "host" in uvicorn_config:
                     run_kwargs["host"] = uvicorn_config.pop("host")
 
@@ -1015,13 +922,12 @@ def main():
                     port = uvicorn_config.pop("port")
                     run_kwargs["port"] = int(port) if isinstance(port, str) else port
 
-                # Pass the rest of the config in the nested dict.
                 if uvicorn_config:
                     run_kwargs["uvicorn_config"] = uvicorn_config
 
-            # Add SSE shutdown handling to middleware stack
-            cors_middleware.append(Middleware(SSEShutdownWrapper))
-            run_kwargs["middleware"] = cors_middleware
+            run_kwargs["middleware"] = (
+                cors_middleware + hook_middleware + [Middleware(SSEShutdownWrapper)]
+            )
 
             mcp_server.run(**run_kwargs)
 
@@ -1033,5 +939,12 @@ def main():
         sys.exit(1)
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Back-compat shim — delegates to ``openbb_mcp_server.main:main``."""
+    from openbb_mcp_server.main import main as _main
+
+    _main()
+
+
+if __name__ == "__main__":  # pragma: no cover
     main()

@@ -238,3 +238,17 @@ class TestRichOutputDisplay:
             rich_output.display(data=df)
         assert captured.get("df") is not None
         assert list(captured["df"].columns) == ["0", "1", "2"]
+
+
+class TestRichOutputFigure:
+    """Plotly figure JSON in the rich adapter."""
+
+    def test_figure_dict_is_shown_as_chart(self, rich_output, mock_session):
+        figure = {"data": [{"type": "bar"}], "layout": {}}
+        with (
+            patch("openbb_cli.outputs.rich.show_figure") as show,
+            patch("openbb_cli.outputs.rich.print_rich_table") as mock_prt,
+        ):
+            rich_output.display(data=figure, title="t")
+        show.assert_called_once_with(figure, "t")
+        mock_prt.assert_not_called()

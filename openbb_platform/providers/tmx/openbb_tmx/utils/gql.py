@@ -1,12 +1,8 @@
-"""GraphQL query definitions."""
+"""GraphQL query documents for the TMX money API."""
 
-# pylint: disable=line-too-long
 # ruff: noqa: E501
 
-stock_info_query = """ query getQuoteBySymbol(
-  $symbol: String,
-  $locale: String
-) {
+QUOTE_BY_SYMBOL = """query getQuoteBySymbol($symbol: String, $locale: String) {
   getQuoteBySymbol(symbol: $symbol, locale: $locale) {
     symbol
     name
@@ -16,6 +12,7 @@ stock_info_query = """ query getQuoteBySymbol(
     exchangeName
     exShortName
     exchangeCode
+    marketPlace
     sector
     industry
     volume
@@ -33,8 +30,8 @@ stock_info_query = """ query getQuoteBySymbol(
     beta
     eps
     exDividendDate
-    shortDescription
     longDescription
+    fulldescription
     website
     email
     phoneNumber
@@ -50,6 +47,7 @@ stock_info_query = """ query getQuoteBySymbol(
     weeks52low
     alpha
     averageVolume10D
+    averageVolume20D
     averageVolume30D
     averageVolume50D
     priceToBook
@@ -63,127 +61,98 @@ stock_info_query = """ query getQuoteBySymbol(
     dividend5Years
     datatype
     issueType
+    secType
+    close
     qmdescription
+    currency
   }
-}
-"""
-
-stock_info_payload = {
-    "operationName": "getQuoteBySymbol",
-    "variables": {"locale": "en"},
-    "query": stock_info_query,
-}
-
-get_timeseries_query = """query getTimeSeriesData($symbol: String!, $freq: String, $interval: Int, $start: String, $end: String, $startDateTime: Int, $endDateTime: Int) {
- getTimeSeriesData(
- symbol: $symbol
- freq: $freq
- interval: $interval
- start: $start
- end: $end
- startDateTime: $startDateTime
- endDateTime: $endDateTime
- ) {
- dateTime
- open
- high
- low
- close
- volume
-}
 }"""
 
-get_timeseries_payload = {
-    "operationName": "getTimeSeriesData",
-    "variables": {
-        "symbol": "BNS",
-        "freq": "day",
-        "interval": "",
-        "start": "2013-09-30",
-        "end": "2013-10-31",
-        "startDateTime": "",
-        "endDateTime": "",
-    },
-    "query": get_timeseries_query,
-}
-
-get_company_price_history_query = """query getCompanyPriceHistory($symbol: String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType: String, $unadjusted: Boolean, $limit: Int) {
- getCompanyPriceHistory(
- symbol: $symbol
- start: $start
- end: $end
- adjusted: $adjusted
- adjustmentType: $adjustmentType
- unadjusted: $unadjusted
- limit: $limit
- ) {
- datetime
- openPrice
- closePrice
- high
- low
- volume
- tradeValue
- numberOfTrade
- change
- changePercent
- vwap
-}
+QUOTE_FOR_SYMBOLS = """query getQuoteForSymbols($symbols: [String]) {
+  getQuoteForSymbols(symbols: $symbols) {
+    symbol
+    longname
+    shortName
+    currency
+    exchange
+    price
+    volume
+    openPrice
+    priceChange
+    percentChange
+    dayHigh
+    dayLow
+    prevClose
+    bid
+    ask
+    weeks52high
+    weeks52low
+  }
 }"""
 
-get_company_price_history_payload = {
-    "operationName": "getCompanyPriceHistory",
-    "variables": {
-        "adjusted": True,
-        "adjustmentType": "SO",
-        "end": "2023-10-28",
-        "start": "2023-10-01",
-        "symbol": "BNS",
-        "unadjusted": False,
-    },
-    "query": get_company_price_history_query,
-}
-
-get_company_most_recent_trades_query = """query getCompanyMostRecentTrades(
-  $symbol: String!
-  $limit: Int
-) {
-trades: getCompanyMostRecentTrades(
-  symbol: $symbol,
-  limit: $limit
-) {
-  price
-  volume
-  datetime
-  sellerId
-  sellerName
-  buyerId
-  buyerName
-  exchangeCode
+TIME_SERIES = """query getTimeSeriesData($symbol: String!, $freq: String, $interval: Int, $start: String, $end: String, $startDateTime: Int, $endDateTime: Int) {
+  getTimeSeriesData(
+    symbol: $symbol
+    freq: $freq
+    interval: $interval
+    start: $start
+    end: $end
+    startDateTime: $startDateTime
+    endDateTime: $endDateTime
+  ) {
+    dateTime
+    open
+    high
+    low
+    close
+    volume
   }
-}
-"""
+}"""
 
-get_company_most_recent_trades_payload = {
-    "operationName": "getCompanyMostRecentTrades",
-    "variables": {
-        "symbol": "BNS",
-        "limit": 51,
-    },
-    "query": get_company_most_recent_trades_query,
-}
+COMPANY_PRICE_HISTORY = """query getCompanyPriceHistory($symbol: String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType: String, $unadjusted: Boolean, $limit: Int) {
+  getCompanyPriceHistory(
+    symbol: $symbol
+    start: $start
+    end: $end
+    adjusted: $adjusted
+    adjustmentType: $adjustmentType
+    unadjusted: $unadjusted
+    limit: $limit
+  ) {
+    datetime
+    openPrice
+    closePrice
+    high
+    low
+    volume
+    tradeValue
+    numberOfTrade
+    change
+    changePercent
+    vwap
+  }
+}"""
 
-get_company_news_events_query = """query getNewsAndEvents(
-  $symbol: String!,
-  $page: Int!,
-  $limit: Int!,
-  $locale: String!
-) {
+MOST_RECENT_TRADES = """query getCompanyMostRecentTrades($symbol: String, $limit: Int) {
+  getCompanyMostRecentTrades(symbol: $symbol, limit: $limit) {
+    price
+    volume
+    datetime
+    sellerId
+    sellerName
+    buyerId
+    buyerName
+    exchangeCode
+  }
+}"""
+
+NEWS_AND_EVENTS = """query getNewsAndEvents($symbol: String!, $page: Int!, $limit: Int!, $locale: String!, $companyInNews: Boolean) {
   news: getNewsForSymbol(
-    symbol: $symbol,
-    page: $page,
-    limit: $limit,
+    symbol: $symbol
+    page: $page
+    limit: $limit
     locale: $locale
+    companyInNews: $companyInNews
   ) {
     headline
     datetime
@@ -196,94 +165,67 @@ get_company_news_events_query = """query getNewsAndEvents(
     date
     status
     type
-    }
   }
-"""
-
-get_company_news_events_payload = {
-    "operationName": "getNewsAndEvents",
-    "variables": {"symbol": "ART", "page": 1, "limit": 100, "locale": "en"},
-    "query": get_company_news_events_query,
-}
-
-get_company_filings_query = """query getCompanyFilings($symbol: String!, $fromDate: String, $toDate: String, $limit: Int) {
-  filings: getCompanyFilings(
-  symbol: $symbol
-  fromDate: $fromDate
-  toDate: $toDate
-  limit: $limit
-  ) {
-size
-filingDate
-description
-name
-urlToPdf
-}
 }"""
 
-get_company_filings_payload = {
-    "operationName": "getCompanyFilings",
-    "variables": {
-        "symbol": "AC",
-        "fromDate": "2020-09-01",
-        "toDate": "2023-09-20",
-        "limit": 100,
-    },
-    "query": get_company_filings_query,
-}
+NEWS_FOR_SYMBOLS = """query getNewsForSymbols($symbols: [String!], $page: Int!, $limit: Int!, $locale: String!) {
+  news: getNewsForSymbols(symbols: $symbols, page: $page, limit: $limit, locale: $locale) {
+    headline
+    datetime
+    source
+    newsid
+    summary
+    topic
+  }
+}"""
 
-historical_dividends_query = """query getDividendsForSymbol(
-  $symbol: String!
-  $page: Int,
-  $batch: Int
-) {
-  dividends: getDividendsForSymbol(
+COMPANY_FILINGS = """query getCompanyFilings($symbol: String!, $fromDate: String, $toDate: String, $limit: Int) {
+  filings: getCompanyFilings(
     symbol: $symbol
-    page: $page
-    batch: $batch
+    fromDate: $fromDate
+    toDate: $toDate
+    limit: $limit
   ) {
+    size
+    filingDate
+    description
+    name
+    urlToPdf
+  }
+}"""
+
+DIVIDENDS_FOR_SYMBOL = """query getDividendsForSymbol($symbol: String!, $page: Int, $batch: Int) {
+  dividendHistory: getDividendsForSymbol(symbol: $symbol, page: $page, batch: $batch) {
     pageNumber
     hasNextPage
-    dividends
-      {
-        exDate
-        amount
-        currency
-        payableDate
-        declarationDate
-        recordDate
+    dividends {
+      exDate
+      amount
+      currency
+      payableDate
+      declarationDate
+      recordDate
     }
   }
 }"""
 
-historical_dividends_payload = {
-    "operationName": "getDividendsForSymbol",
-    "variables": {
-        "batch": 10,
-        "page": 1,
-        "symbol": "BNS",
-    },
-    "query": historical_dividends_query,
-}
+SPLITS_FOR_SYMBOL = """query getSplitsForSymbol($symbol: String!) {
+  getSplitsForSymbol(symbol: $symbol) {
+    splitDate
+    ratio
+  }
+}"""
 
-get_company_analysts_query = """query getCompanyAnalysts(
-  $symbol: String!
-  $dataType: String,
-) {
-  analysts: getCompanyAnalysts(
-    datatype: $dataType,
-    symbol: $symbol
-  ) {
+COMPANY_ANALYSTS = """query getCompanyAnalysts($symbol: String!, $datatype: String) {
+  getCompanyAnalysts(symbol: $symbol, datatype: $datatype) {
     totalAnalysts
-    priceTarget
-      {
-        highPriceTarget
-        lowPriceTarget
-        priceTarget
-        priceTargetUpside
+    priceTarget {
+      lowPriceTarget
+      highPriceTarget
+      priceTarget
+      priceTargetUpside
     }
-    consensusAnalysts
-      {
+    consensusAnalysts {
       consensus
       buy
       sell
@@ -292,127 +234,82 @@ get_company_analysts_query = """query getCompanyAnalysts(
   }
 }"""
 
-get_company_analysts_payload = {
-    "operationName": "getCompanyAnalysts",
-    "variables": {
-        "symbol": "BNS",
-        "datatype": "equity",
-    },
-    "query": get_company_analysts_query,
-}
-
-get_earnings_date_query = """query getEnhancedEarningsForDate(
-  $date: String!
-  ) {
-  getEnhancedEarningsForDate(
-    date: $date
-) {
-      symbol
-      companyName
-      announceTime
-      estimatedEps
-      actualEps
-      epsSurprisePercent
-      epsSurpriseDollar
+EARNINGS_FOR_DATE = """query getEnhancedEarningsForDate($date: String!) {
+  getEnhancedEarningsForDate(date: $date) {
+    symbol
+    companyName
+    announceTime
+    estimatedEps
+    actualEps
+    epsSurprisePercent
+    epsSurpriseDollar
   }
 }"""
 
-get_earnings_date_payload = {
-    "operationName": "getEnhancedEarningsForDate",
-    "variables": {
-        "date": "2023-10-04",
-    },
-    "query": get_earnings_date_query,
-}
-
-get_index_overview_query = """query getIndexBySymbol(
-  $symbol: String!,
-  $locale: String
-  ) {
-  getIndexBySymbol(
-    symbol: $symbol,
-    locale: $locale
-) {
-      name
-      intro
-      overview
+INDEX_CONSTITUENTS = """query getIndexConstituents($symbol: String!) {
+  constituents: getIndexConstituents(symbol: $symbol) {
+    symbol
+    quotedMarketValue
+    longName
+    shortName
+    weight
+    exShortName
+    exchange
+    exLongName
+  }
+  keyData: getIndexKeyData(symbol: $symbol) {
+    adjMarketCap
+    avgConstituentMarketCap
+    numConstituents
+    top10HoldingsAdjMarketCap
+    ytdPriceReturn
+    prevDayPriceReturn
+    prevMonthPriceReturn
+    prevQuarterPriceReturn
+    percentWeightLargestConstituent
+    peRatio
+    pbRatio
+    priceToSales
+    divYield
+    pcfRatio
   }
 }"""
 
-get_index_overview_payload = {
-    "operationName": "getIndexBySymbol",
-    "variables": {
-        "symbol": "^TSX",
-    },
-    "query": get_index_overview_query,
-}
-
-get_index_constituents_query = """query getIndexConstituents(
-  $symbol: String!
-) {
-    constituents: getIndexConstituents(
-      symbol: $symbol
-  ) {
-      symbol
-      quotedMarketValue
-      longName
-      shortName
-      weight
-      exShortName
-      exchange
-      exLongName
+INDEX_KEY_DATA = """query getIndexKeyData($symbol: String!) {
+  getIndexKeyData(symbol: $symbol) {
+    adjMarketCap
+    avgConstituentMarketCap
+    numConstituents
+    top10HoldingsAdjMarketCap
+    ytdPriceReturn
+    prevDayPriceReturn
+    prevMonthPriceReturn
+    prevQuarterPriceReturn
+    percentWeightLargestConstituent
+    peRatio
+    pbRatio
+    priceToSales
+    divYield
+    pcfRatio
   }
-    keyData: getIndexKeyData(
-      symbol: $symbol
-  ) {
-      adjMarketCap
-      avgConstituentMarketCap
-      numConstituents
-      top10HoldingsAdjMarketCap
-      ytdPriceReturn
-      prevDayPriceReturn
-      prevMonthPriceReturn
-      prevQuarterPriceReturn
-      percentWeightLargestConstituent
-      peRatio
-      pbRatio
-      priceToSales
-      divYield
-      pcfRatio
-    }
-  }"""
+}"""
 
-get_index_constituents_payload = {
-    "operationName": "getIndexConstituents",
-    "variables": {
-        "symbol": "^TSX",
-    },
-    "query": get_index_constituents_query,
-}
-
-get_stock_list_query = """query getStockListSymbolsWithQuote(
-  $stockListId: String!
-  $locale: String,
-) {
-  stockList: getStockListSymbolsWithQuote(
-    stockListId: $stockListId,
-    locale: $locale
-  ) {
+STOCK_LIST = """query getStockListSymbolsWithQuote($stockListId: String!, $locale: String) {
+  stockList: getStockListSymbolsWithQuote(stockListId: $stockListId, locale: $locale) {
     stockListId
     name
     description
     longDescription
     metricTitle
-    listItems
-      {
-        symbol
-        longName
-        rank
-        metric
-        price
-        priceChange
-        percentChange
-        volume
+    listItems {
+      symbol
+      longName
+      rank
+      metric
+      price
+      priceChange
+      percentChange
+      volume
     }
     totalPriceChange
     totalPercentChange
@@ -421,18 +318,8 @@ get_stock_list_query = """query getStockListSymbolsWithQuote(
   }
 }"""
 
-get_stock_list_payload = {
-    "operationName": "getStockListSymbolsWithQuote",
-    "variables": {"locale": "en", "stockListId": "TOP_VOLUME"},
-    "query": get_stock_list_query,
-}
-
-get_company_insiders_query = """query getCompanyInsidersActivities(
-    $symbol: String
-) {
-    getCompanyInsidersActivities(
-      symbol: $symbol
-  ) {
+COMPANY_INSIDERS = """query getCompanyInsidersActivities($symbol: String) {
+  getCompanyInsidersActivities(symbol: $symbol) {
     insiderActivities {
       periodkey
       buy {
@@ -441,73 +328,123 @@ get_company_insiders_query = """query getCompanyInsidersActivities(
         shares
         sharesHeld
         tradeValue
-    }
+      }
       sell {
         name
         trades
         shares
         sharesHeld
         tradeValue
+      }
     }
-  }
     activitySummary {
       periodkey
       buyShares
       soldShares
       netActivity
       totalShares
+      buyTrades
+      sellTrades
+      totalTrades
     }
   }
 }"""
 
-get_company_insiders_payload = {
-    "operationName": "getCompanyInsidersActivities",
-    "variables": {
-        "symbol": "CNQ",
-    },
-    "query": get_company_insiders_query,
-}
-
-
-get_quote_for_symbols_query = """query getQuoteForSymbols($symbols: [String]) {
- getQuoteForSymbols(symbols: $symbols) {
- symbol
- longname
- price
- prevClose
- priceChange
- percentChange
- weeks52high
- weeks52low
- }
+INSIDER_TRANSACTIONS = """query getInsiderTransactions($symbol: String!, $monthDuration: Int) {
+  getInsiderTransactions(symbol: $symbol, monthDuration: $monthDuration)
 }"""
 
-get_quote_for_symbols_payload = {
-    "operationName": "getQuoteForSymbols",
-    "variables": {
-        "symbols": [
-            "SRE:US",
-            "BWVTF:US",
-            "C.P.K:US",
-            "BAC.PY:US",
-            "BALTF:US",
-            "BACRP:US",
-        ],
-    },
-    "query": get_quote_for_symbols_query,
-}
+SHORT_INTEREST = """query GetCompanyShortInterest($symbol: String!) {
+  getCompanyShortInterest(symbol: $symbol) {
+    QM_TICKER
+    BUSINESS_DATE
+    TICKER
+    SHORT_INTEREST
+    SHORTINTERESTPCT
+    DAYSTOCOVER10DAY
+    DAYSTOCOVER30DAY
+    DAYSTOCOVER90DAY
+  }
+}"""
 
-get_index_price_history_query = """query getIndexPriceHistory($symbol: String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType: String, $unadjusted: Boolean, $limit: Int) {\n  getIndexPriceHistory(\n    symbol: $symbol\n    start: $start\n    end: $end\n    adjusted: $adjusted\n    adjustmentType: $adjustmentType\n    unadjusted: $unadjusted\n    limit: $limit\n  ) {\n    datetime\n    openPrice\n    closePrice\n    high\n    low\n    volume\n    change\n    changePercent\n    triv\n      }\n}"}"""
+MARKET_MOVERS = """query getMarketMovers($sortOrder: String!, $statExchange: String!, $marketId: Int, $limit: Int, $statCountry: String) {
+  getMarketMovers(
+    sortOrder: $sortOrder
+    statExchange: $statExchange
+    marketId: $marketId
+    limit: $limit
+    statCountry: $statCountry
+  ) {
+    symbol
+    name
+    exchangeName
+    exchangeCode
+    price
+    priceChange
+    percentChange
+    volume
+    tradeVolume
+    open
+    high
+    low
+    weeks52low
+    weeks52high
+  }
+}"""
 
-get_index_price_history_payload = {
-    "operationName": "getIndexPriceHistory",
-    "variables": {
-        "symbol": "^TSX",
-        "start": "2023-12-01",
-        "end": "2023-12-31",
-        "adjusted": True,
-        "adjustmentType": "SO",
-        "unadjusted": False,
-    },
-    "query": get_index_price_history_query,
-}
+TSX30 = """query GetTsx30Companies {
+  getTsx30Companies {
+    rank
+    ticker
+    sharePrice {
+      en
+    }
+    name {
+      en
+    }
+    industry {
+      en
+    }
+    location {
+      en
+    }
+    desc {
+      en
+    }
+    website
+    logoUrl
+  }
+}"""
+
+VENTURE50 = """query getVenture50Companies {
+  getVenture50Companies {
+    rank
+    ticker
+    sharePriceAppreciation
+    marketCapChange
+    url
+    name {
+      en
+    }
+    sector {
+      en
+    }
+    location {
+      en
+    }
+    desc {
+      en
+    }
+    logoUrl
+  }
+}"""
+
+NEWS_FOR_SYMBOL = """query getNewsForSymbol($symbol: String!, $page: Int!, $limit: Int!, $locale: String!) {
+  getNewsForSymbol(symbol: $symbol, page: $page, limit: $limit, locale: $locale) {
+    newsid
+    headline
+    datetime
+    source
+    summary
+  }
+}"""

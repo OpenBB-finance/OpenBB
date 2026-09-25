@@ -150,7 +150,7 @@ We are most active on [our Discord](https://openbb.co/discord), but feel free to
 
 ## 3. License
 
-Distributed under the AGPLv3 License. See
+Distributed under the Apache License, Version 2.0. See
 [LICENSE](https://github.com/OpenBB-finance/OpenBB/blob/main/LICENSE) for more information.
 
 ## 4. Disclaimer

@@ -16,31 +16,34 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
+from openbb_tmx.utils.choices import literal_choices
+
 
 class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """
-    TMX Equity Historical Query Params.
+    """TMX Equity Historical Query Params."""
 
-    Ticker symbols are assumed to be Canadian listings when no suffix is provided.
-    ".TO" or ."TSX" are accepted but will automatically be removed.
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "adjustment": {
+            "x-widget_config": {
+                "options": literal_choices(
+                    ("splits_only", "splits_and_dividends", "unadjusted")
+                )
+            }
+        },
+    }
 
-    US tickers are supported via their composite format: "AAPL:US"
-
-    Canadian Depositary Receipts (CDRs) are: "AAPL:AQL"
-
-    CDRs are the underlying asset for CAD-hedged assets.
-
-    source: https://money.tmx.com
-    """
-
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
-
-    interval: Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"] | str | int = Field(  # type: ignore
+    interval: (
+        Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"]
+        | str
+        | int
+    ) = Field(
         description=QUERY_DESCRIPTIONS.get("interval", "")
         + " Or, any integer (entered as a string) representing the number of minutes."
         + " Default is daily data."
@@ -85,6 +88,16 @@ class TmxEquityHistoricalData(EquityHistoricalData):
         "change_percent": "changePercent",
     }
 
+    high: float | None = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("high", "")
+        + " The feed leaves it empty on a handful of historical foreign bars.",
+    )
+    low: float | None = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("low", "")
+        + " The feed leaves it empty on a handful of historical foreign bars.",
+    )
     vwap: float | None = Field(
         description="Volume weighted average price for the day.", default=None
     )
@@ -106,13 +119,13 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
         # pylint: disable=import-outside-toplevel
-        import pytz
+        from zoneinfo import ZoneInfo
 
         if isinstance(v, (datetime, dateType)):
-            return v if v.hour != 0 and v.minute != 0 and v.second != 0 else v.date()  # type: ignore
+            return v if v.hour != 0 and v.minute != 0 and v.second != 0 else v.date()
         try:
             dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S%z")
-            return dt.astimezone(pytz.timezone("America/New_York"))
+            return dt.astimezone(ZoneInfo("America/New_York"))
         except ValueError:
             return datetime.strptime(v, "%Y-%m-%d")
 
@@ -155,7 +168,6 @@ class TmxEquityHistoricalFetcher(
         async def create_task(symbol, results):
             """Make a POST request to the TMX GraphQL endpoint for a single ticker."""
             data: list[dict] = []
-            # A different request is used for each type of interval.
             if query.interval == "day":
                 data = await get_daily_price_history(
                     symbol,
@@ -168,7 +180,7 @@ class TmxEquityHistoricalFetcher(
                     symbol,
                     start_date=query.start_date,
                     end_date=query.end_date,
-                    interval=query.interval,  # type: ignore
+                    interval=query.interval,
                 )
             if isinstance(query.interval, int):
                 data = await get_intraday_price_history(
@@ -179,7 +191,6 @@ class TmxEquityHistoricalFetcher(
                 )
 
             if data != []:
-                # Add the symbol to the data for multi-ticker support.
                 data = [{**d, "symbol": symbol} for d in data]
                 results.extend(data)
 
@@ -208,7 +219,6 @@ class TmxEquityHistoricalFetcher(
         if results.empty or len(results) == 0:
             raise EmptyDataError()
 
-        # Handle the date formatting differences.
         results = results.rename(columns={"dateTime": "datetime"})
         if query.interval != "day":
             results["datetime"] = to_datetime(results["datetime"], utc=True)
@@ -224,21 +234,18 @@ class TmxEquityHistoricalFetcher(
             )
 
         symbols = query.symbol.split(",")
-        # If there are multiple symbols, sort the data by datetime and symbol.
         if len(symbols) > 1:
             results = results.set_index(["datetime", "symbol"]).sort_index()
             results = results.reset_index()
-        # If there is only one symbol, drop the symbol column.
         if len(symbols) == 1:
             results = results.drop(columns=["symbol"])
-        # Normalizes the percent change values.
         if "changePercent" in results.columns:
             results["changePercent"] = results["changePercent"].astype(float) / 100
-        # For the week beginning 2011-09-12 replace the openPrice NaN with 0 because of 9/11.
         if query.interval == "week":
             results["open"] = results["open"].fillna(0)
-        # Convert any NaN values to None.
-        results = results.fillna(value="N/A").replace("N/A", None)
+        from openbb_tmx.utils.helpers import purge_nulls
+
+        results = purge_nulls(results)
 
         return [
             TmxEquityHistoricalData.model_validate(d)

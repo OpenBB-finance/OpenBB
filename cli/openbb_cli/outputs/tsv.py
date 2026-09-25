@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from typing import Any
 
 import pandas as pd
+
+from openbb_cli.outputs.figure import is_plotly_figure
 
 
 def _coerce_results(results: Any) -> pd.DataFrame | None:
@@ -49,6 +52,10 @@ class TsvOutput:
         if export:
             return
         if chart and hasattr(data, "chart") and data.chart is not None:
+            return
+        if is_plotly_figure(data):
+            sys.stdout.write(json.dumps(data) + "\n")
+            sys.stdout.flush()
             return
         df = _to_dataframe(data)
         if df is not None:

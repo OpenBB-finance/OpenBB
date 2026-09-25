@@ -222,6 +222,25 @@ def test_translator_handles_basemodel_param_flattens_fields():
     assert any("data" in opt and "field2" in opt for opt in optstrings)
 
 
+def test_translator_basemodel_param_skips_variadic_signature_parameters():
+    """A model allowing extra fields flattens its fields but not its ``**extra_data``."""
+    from pydantic import ConfigDict
+
+    class ExtraData(BaseModel):
+        model_config = ConfigDict(extra="allow")
+
+        field1: str = "a"
+
+    def f(data: ExtraData) -> dict:
+        """f."""
+        return {}
+
+    t = ArgparseTranslator(f)
+    optstrings = {opt for action in t.parser._actions for opt in action.option_strings}
+    assert any("data" in opt and "field1" in opt for opt in optstrings)
+    assert not any("extra_data" in opt for opt in optstrings)
+
+
 def test_translator_required_vs_optional_param_routing():
     """Required params land in the 'required arguments' group; optional in standard."""
 

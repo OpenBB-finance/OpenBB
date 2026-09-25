@@ -1,20 +1,70 @@
 """Top-level PackageBuilder coordinator."""
 
 import contextlib
+import io
 import os
 import re
 import shutil
 import signal
 import sys
+import tokenize
 import traceback
 from json import dumps, load
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
+    Any,
     TypeVar,
 )
 
 _LIST_ANNOTATION_RE = re.compile(r"\bList\b")
+_PROTECTED_TOKENS = {
+    tokenize.STRING,
+    tokenize.COMMENT,
+    *(
+        getattr(tokenize, name)
+        for name in ("FSTRING_MIDDLE", "TSTRING_MIDDLE")
+        if hasattr(tokenize, name)
+    ),
+}
+
+
+def _normalize_code_annotations(code: str) -> str:
+    """Rewrite ``typing.X`` and ``List`` to builtins outside string literals and comments.
+
+    Parameters
+    ----------
+    code : str
+        Generated Python source.
+
+    Returns
+    -------
+    str
+        The source with annotations normalized and docstrings, descriptions,
+        and comments left untouched.
+    """
+    line_starts = [0]
+    for line in code.splitlines(keepends=True):
+        line_starts.append(line_starts[-1] + len(line))
+    try:
+        tokens = list(tokenize.generate_tokens(io.StringIO(code).readline))
+    except (tokenize.TokenError, SyntaxError):
+        return _LIST_ANNOTATION_RE.sub("list", code.replace("typing.", ""))
+    parts: list[str] = []
+    cursor = 0
+    for token in tokens:
+        if token.type not in _PROTECTED_TOKENS:
+            continue
+        start = line_starts[token.start[0] - 1] + token.start[1]
+        end = line_starts[token.end[0] - 1] + token.end[1]
+        segment = code[cursor:start]
+        parts.append(_LIST_ANNOTATION_RE.sub("list", segment.replace("typing.", "")))
+        parts.append(code[start:end])
+        cursor = end
+    tail = code[cursor:]
+    parts.append(_LIST_ANNOTATION_RE.sub("list", tail.replace("typing.", "")))
+    return "".join(parts)
+
 
 from importlib_metadata import entry_points
 
@@ -179,9 +229,28 @@ class PackageBuilder:
 
         for group, entry_point in zip(og, el.entry_points):
             ext_map[group] = [
-                f"{e.name}@{getattr(e.dist, 'version', '')}" for e in entry_point
+                f"{e.name}@{self._distribution_version(e.dist)}" for e in entry_point
             ]
         return ext_map
+
+    @staticmethod
+    def _distribution_version(dist: Any) -> str:
+        """Return a distribution's version, or ``""`` when its metadata is unreadable.
+
+        Parameters
+        ----------
+        dist : Any
+            The distribution that provides an entry point.
+
+        Returns
+        -------
+        str
+            The version string.
+        """
+        try:
+            return getattr(dist, "version", "") or ""
+        except (TypeError, KeyError, OSError):
+            return ""
 
     def _save_modules(
         self,
@@ -256,7 +325,7 @@ class PackageBuilder:
         self.console.log(str(package_path))
 
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
-            file.write(_LIST_ANNOTATION_RE.sub("list", code.replace("typing.", "")))
+            file.write(_normalize_code_annotations(code) if extension == "py" else code)
 
     @staticmethod
     def _read(path: Path) -> dict:

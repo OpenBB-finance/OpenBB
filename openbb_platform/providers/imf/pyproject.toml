@@ -3,7 +3,7 @@ name = "openbb-imf"
 version = "2.1.2"
 description = "IMF provider extension for OpenBB Platform."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
@@ -33,7 +33,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [build-system]
 requires = ["hatchling>=1.25", "requests>=2.31"]
@@ -69,7 +69,7 @@ fix = true
 [tool.ruff.lint]
 select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
 ignore = [
-    "PLR2004", "PLR0913", "PLR0915", "PLC0415",
+    "PLR2004", "PLR0913", "PLR0915", "PLR0917", "PLC0415",
     "E402", "E501",
     "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
     "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",

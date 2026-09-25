@@ -165,3 +165,17 @@ class TestHtmlOutputDisplay:
         with patch("openbb_cli.outputs.html.webbrowser") as mock_wb:
             html_output.display(data=[{"a": 1}, {"a": 2}])
         mock_wb.open.assert_called_once()
+
+
+class TestHtmlOutputFigure:
+    """Plotly figure JSON in the HTML adapter."""
+
+    def test_figure_dict_is_shown_as_chart(self, html_output, mock_session):
+        figure = {"data": [{"type": "bar"}], "layout": {}}
+        with (
+            patch("openbb_cli.outputs.html.show_figure") as show,
+            patch("openbb_cli.outputs.html.webbrowser") as mock_wb,
+        ):
+            html_output.display(data=figure, title="t")
+        show.assert_called_once_with(figure, "t")
+        mock_wb.open.assert_not_called()

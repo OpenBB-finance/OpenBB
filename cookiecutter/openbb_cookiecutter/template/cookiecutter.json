@@ -7,6 +7,6 @@
   "extension_types": "all",
   "provider_name": "template",
   "router_name": "template",
-  "obbject_name": "template",
+  "obbject_name": "template_ext",
   "_template": "{% now 'utc', '%Y%m%d%H%M%S' %}"
 }

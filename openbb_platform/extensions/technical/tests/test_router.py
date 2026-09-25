@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from openbb_core.app.route_iter import iter_api_routes
+
 from openbb_technical.router import router
 
 

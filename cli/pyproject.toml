@@ -3,7 +3,7 @@ name = "openbb-cli"
 version = "2.0.0"
 description = "Investment Research for Everyone, Anywhere."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
@@ -31,7 +31,7 @@ Repository = "https://github.com/OpenBB-finance/OpenBB"
 Documentation = "https://docs.openbb.co/cli"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [build-system]
 requires = ["hatchling"]
@@ -51,7 +51,6 @@ include = [
 [tool.uv.sources]
 openbb-core = { path = "../openbb_platform/core", editable = true }
 openbb-charting = { path = "../openbb_platform/obbject_extensions/charting", editable = true }
-openbb-devtools = { path = "../openbb_platform/extensions/devtools", editable = true }
 
 [tool.ruff]
 line-length = 88
@@ -78,6 +77,7 @@ ignore = [
     "PLR2004",
     "PLR0913",
     "PLR0915",
+    "PLR0917",
     "PLC0415",
     "E402",
     "E501",

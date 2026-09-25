@@ -2230,3 +2230,186 @@ def test_deref_schema_leaves_instance_data_untouched():
     }
     assert out["x-sample"] == {"$ref": "#/components/schemas/Thing"}
     assert out["properties"]["real"] == {"type": "integer"}
+
+
+def _serve_documents(monkeypatch, documents):
+    from openbb_cli.dispatchers import openapi_schema
+
+    fetched: list[str] = []
+
+    class _Response:
+        status_code = 200
+        headers = {"content-type": "application/json"}
+        is_redirect = False
+        encoding = "utf-8"
+
+        def __init__(self, url):
+            fetched.append(url)
+            self.content = documents[url].encode()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def iter_bytes(self, *, chunk_size):
+            yield self.content
+
+        def raise_for_status(self):
+            return None
+
+    monkeypatch.setattr(
+        openapi_schema.httpx,
+        "stream",
+        lambda _method, url, **_kwargs: _Response(url),
+    )
+    return fetched
+
+
+def test_bundle_external_refs_fetches_each_document_once(monkeypatch):
+    fetched = _serve_documents(
+        monkeypatch,
+        {
+            "https://api.example/defs.json": '{"a": {"type": "string"}, "b": {"type": "integer"}}'
+        },
+    )
+    bundled = _bundle_external_refs(
+        {
+            "openapi": "3.1.0",
+            "components": {
+                "schemas": {
+                    "A": {"$ref": "defs.json#/a"},
+                    "B": {"$ref": "defs.json#/b"},
+                }
+            },
+        },
+        "https://api.example/openapi.json",
+        timeout=1,
+        headers={},
+    )
+    assert bundled["components"]["schemas"] == {
+        "A": {"type": "string"},
+        "B": {"type": "integer"},
+    }
+    assert fetched == ["https://api.example/defs.json"]
+
+
+def test_bundle_external_refs_rejects_too_many_documents(monkeypatch):
+    documents = {f"https://api.example/d{i}.json": "{}" for i in range(520)}
+    _serve_documents(monkeypatch, documents)
+    paths = {f"/p{i}": {"$ref": f"d{i}.json"} for i in range(520)}
+    with pytest.raises(ValueError, match="document limit"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "paths": paths},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_rejects_excessive_depth():
+    node: dict = {"type": "string"}
+    for _ in range(130):
+        node = {"nested": node}
+    with pytest.raises(ValueError, match="depth limit"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "components": node},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_rejects_anchor_fragments():
+    with pytest.raises(ValueError, match="anchors are not supported"):
+        _bundle_external_refs(
+            {"openapi": "3.1.0", "paths": {"/x": {"$ref": "x.json#anchor"}}},
+            "https://api.example/openapi.json",
+            timeout=1,
+            headers={},
+        )
+
+
+def test_bundle_external_refs_keeps_circular_references_as_refs(monkeypatch):
+    _serve_documents(
+        monkeypatch,
+        {
+            "https://api.example/a.json": '{"child": {"$ref": "b.json"}}',
+            "https://api.example/b.json": '{"parent": {"$ref": "a.json"}}',
+        },
+    )
+    bundled = _bundle_external_refs(
+        {"openapi": "3.1.0", "components": {"schemas": {"A": {"$ref": "a.json"}}}},
+        "https://api.example/openapi.json",
+        timeout=1,
+        headers={},
+    )
+    assert bundled["components"]["schemas"]["A"] == {
+        "child": {"parent": {"$ref": "https://api.example/a.json#"}}
+    }
+
+
+def test_bundle_external_refs_returns_non_object_targets_as_is(monkeypatch):
+    _serve_documents(
+        monkeypatch, {"https://api.example/values.json": '{"items": ["a", "b"]}'}
+    )
+    bundled = _bundle_external_refs(
+        {"openapi": "3.1.0", "x-values": {"$ref": "values.json#/items"}},
+        "https://api.example/openapi.json",
+        timeout=1,
+        headers={},
+    )
+    assert bundled["x-values"] == ["a", "b"]
+
+
+def test_resolve_json_pointer_walks_lists_and_unescapes_tokens():
+    from openbb_cli.dispatchers.openapi_schema import _resolve_json_pointer
+
+    document = {"a/b": [{"~key": 1}]}
+    assert _resolve_json_pointer(document, "/a~1b/0/~0key") == 1
+
+
+def test_resolve_json_pointer_rejects_relative_and_scalar_paths():
+    from openbb_cli.dispatchers.openapi_schema import _resolve_json_pointer
+
+    with pytest.raises(ValueError, match="Unsupported OpenAPI reference fragment"):
+        _resolve_json_pointer({"a": 1}, "a")
+    with pytest.raises(ValueError, match="Invalid OpenAPI reference fragment"):
+        _resolve_json_pointer({"a": 1}, "/a/b")
+
+
+def test_url_origin_rejects_non_http_urls():
+    from openbb_cli.dispatchers.openapi_schema import _url_origin
+
+    with pytest.raises(ValueError, match="Unsupported OpenAPI reference URL"):
+        _url_origin("file:///etc/passwd")
+
+
+def test_request_body_parameters_unwraps_single_object_anyof_member():
+    body = {
+        "anyOf": [
+            {"type": "object", "properties": {"symbol": {"type": "string"}}},
+            {"type": "null"},
+        ]
+    }
+    assert [p["name"] for p in request_body_parameters(body)] == ["symbol"]
+
+
+def test_fetch_openapi_raises_generic_error_when_response_has_no_parse_error(
+    monkeypatch,
+):
+    """A failing status that ``raise_for_status`` lets through still raises."""
+    from openbb_cli.dispatchers import openapi_schema
+
+    class _Resp:
+        status_code = 404
+        text = "{}"
+        headers = {"content-type": "application/json"}
+
+        def raise_for_status(self):
+            return None
+
+    monkeypatch.setattr(openapi_schema.httpx, "get", lambda *a, **k: _Resp())
+    with pytest.raises(ValueError, match="Could not load an OpenAPI document"):
+        openapi_schema.fetch_openapi("http://h", path="/custom.json")

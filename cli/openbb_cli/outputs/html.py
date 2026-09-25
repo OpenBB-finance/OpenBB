@@ -7,6 +7,7 @@ from typing import Any
 
 import pandas as pd
 
+from openbb_cli.outputs.figure import is_plotly_figure, show_figure
 from openbb_cli.session import Session
 
 session = Session()
@@ -24,6 +25,10 @@ class HtmlOutput:
     ) -> None:
         """Display as HTML in default browser."""
         if export:
+            return
+
+        if is_plotly_figure(data):
+            show_figure(data, title)
             return
 
         if hasattr(data, "model_dump"):

@@ -1,0 +1,17 @@
+[run]
+source = openbb_nasdaq
+omit =
+    env/*
+    tests/*
+    **/tests/**
+    **/package/**
+    cookiecutter/**
+    openbb_nasdaq/nasdaq_router.py
+    openbb_nasdaq/routers/*.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:
+    raise NotImplementedError
+    @overload

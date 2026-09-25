@@ -929,3 +929,20 @@ def test_signature_params_never_emits_a_duplicate_identifier():
     assert "kept" in names
     # Every emitted name is a usable Python identifier.
     assert all(n.isidentifier() for n in names)
+
+
+def test_envelope_inner_schema_single_object_array_among_other_properties():
+    row = {"type": "object", "properties": {"symbol": {"type": "string"}}}
+    props = {
+        "count": {"type": "integer"},
+        "data": {"type": "array", "items": row},
+    }
+    assert pg._envelope_inner_schema({"type": "object"}, props) == row
+
+
+def test_envelope_inner_schema_single_scalar_array_is_not_an_envelope():
+    props = {
+        "count": {"type": "integer"},
+        "tags": {"type": "array", "items": {"type": "string"}},
+    }
+    assert pg._envelope_inner_schema({"type": "object"}, props) is None

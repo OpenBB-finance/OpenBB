@@ -1,1 +1,1 @@
-"""{{ cookiecutter.provider_name}} utilities module."""
+"""{{ cookiecutter.provider_name }} utilities."""

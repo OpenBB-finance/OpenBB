@@ -3,7 +3,7 @@ name = "openbb-platform-api"
 version = "2.0.0"
 description = "OpenBB Platform API: launcher and widgets builder for the Open Data Platform REST API and OpenBB Workspace custom-backend connector."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
@@ -23,7 +23,7 @@ Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-a
 
 [dependency-groups]
 dev = [
-    "openbb-devtools>=2.0.0",
+    "openbb-devtools>=2.0.1",
     "httpx>=0.28.0,<1.0.0",
 ]
 
@@ -44,7 +44,6 @@ include = [
 # openbb-core is path-sourced because v5's has not yet been published.
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
-openbb-devtools = { path = "../devtools", editable = true }
 
 [tool.ruff]
 line-length = 88

@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
-from typing import Any
+from typing import Any, NoReturn
 from urllib.parse import unquote, urldefrag, urljoin, urlsplit
 
 import httpx
@@ -1009,6 +1009,31 @@ def _bundle_external_refs(
     )
 
 
+def _raise_fetch_failure(
+    response: Any, parse_error: ValueError | None, url: str
+) -> NoReturn:
+    """Raise why the spec at ``url`` could not be loaded.
+
+    Parameters
+    ----------
+    response : Any
+        The response for the spec URL.
+    parse_error : ValueError | None
+        The error from parsing a successful response, if any.
+    url : str
+        The spec URL.
+
+    Raises
+    ------
+    httpx.HTTPStatusError
+        If the response has an error status.
+    ValueError
+        If the response body is not a parseable OpenAPI document.
+    """
+    response.raise_for_status()
+    raise parse_error or ValueError(f"Could not load an OpenAPI document from {url}")
+
+
 def fetch_openapi(
     base_url: str,
     *,
@@ -1035,6 +1060,7 @@ def fetch_openapi(
         headers=merged_headers,
         params=query_params or None,
     )
+    parse_error: ValueError | None = None
     if response.status_code < 400:
         try:
             parsed = _ensure_openapi_dict(
@@ -1050,24 +1076,11 @@ def fetch_openapi(
                 timeout=timeout,
                 headers=merged_headers,
             )
-        except (json.JSONDecodeError, ValueError):
-            pass
+        except ValueError as exc:
+            parse_error = exc
 
     if explicit_path:
-        response.raise_for_status()
-        parsed = _ensure_openapi_dict(
-            _parse_spec_text(
-                response.text,
-                content_type=response.headers.get("content-type", ""),
-            ),
-            full_url,
-        )
-        return _bundle_external_refs(
-            parsed,
-            str(getattr(response, "url", full_url)),
-            timeout=timeout,
-            headers=merged_headers,
-        )
+        _raise_fetch_failure(response, parse_error, full_url)
 
     landing_url = base_url.rstrip("/") + "/"
     landing = httpx.get(
@@ -1087,20 +1100,7 @@ def fetch_openapi(
             headers=merged_headers,
         )
 
-    response.raise_for_status()
-    parsed = _ensure_openapi_dict(
-        _parse_spec_text(
-            response.text,
-            content_type=response.headers.get("content-type", ""),
-        ),
-        full_url,
-    )
-    return _bundle_external_refs(
-        parsed,
-        str(getattr(response, "url", full_url)),
-        timeout=timeout,
-        headers=merged_headers,
-    )
+    _raise_fetch_failure(response, parse_error, full_url)
 
 
 def _ensure_openapi_dict(parsed: Any, source_url: str) -> dict[str, Any]:

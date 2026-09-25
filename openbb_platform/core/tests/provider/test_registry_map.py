@@ -7,6 +7,14 @@ providers built in ``tests/conftest.py``. The suite intentionally does
 not depend on any installed provider extension.
 """
 
+from collections.abc import (
+    AsyncGenerator,
+    AsyncIterable,
+    AsyncIterator,
+    Iterable,
+    Iterator,
+)
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -186,6 +194,27 @@ def test_results_type_is_none_for_single_data_return(
     """A fetcher returning a single ``Data`` (not ``list[Data]``) has ``results_type=None``."""
     record = registry_map.original_models[single_result_model_name][fake_provider_name]
     assert record["results_type"] is None
+
+
+@pytest.mark.parametrize(
+    "return_type",
+    [
+        AsyncIterator[Data],
+        AsyncIterable[Data],
+        AsyncGenerator[Data, None],
+        Iterator[Data],
+        Iterable[Data],
+    ],
+)
+def test_results_type_normalizes_streaming_containers(return_type: Any):
+    """A fetcher returning a streaming container normalizes to ``list``."""
+    fetcher = SimpleNamespace(return_type=return_type)
+    assert RegistryMap._get_results_type(fetcher) is list
+
+
+def test_results_type_is_none_when_fetcher_has_no_return_type():
+    """A fetcher with no ``return_type`` has no results container."""
+    assert RegistryMap._get_results_type(SimpleNamespace()) is None
 
 
 def test_validate_rejects_non_data_subclass():

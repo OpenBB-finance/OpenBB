@@ -1,24 +1,88 @@
-[tool.poetry]
+[project]
 name = "openbb-cookiecutter"
 version = "0.6.0"
 description = "Extensions template for the OpenBB Python Package."
-license = "AGPL-3.0-only"
-authors = ["OpenBB Team <hello@openbb.co>"]
-packages = [{ include = "openbb_cookiecutter" }]
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "Apache-2.0" }
 readme = "README.md"
-homepage = "https://openbb.co"
-repository = "https://github.com/OpenBB-finance/openbb-cookiecutter"
+requires-python = ">=3.10,<4"
+dependencies = [
+    "cookiecutter>=2.6.0",
+    "rich>=13.0.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-cookiecutter = "^2.6.0"
-
-[tool.poetry.scripts]
+[project.scripts]
 openbb-cookiecutter = "openbb_cookiecutter.cli:main"
 
-[tool.poetry.plugins."cookiecutter.templates"]
+[project.entry-points."cookiecutter.templates"]
 openbb = "openbb_cookiecutter"
 
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+
+[dependency-groups]
+dev = ["openbb-devtools>=2.0.1"]
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+    "**/__pycache__",
+    "**/*.pyc",
+    "**/.ruff_cache",
+    "**/.pytest_cache",
+    "**/.ipynb_checkpoints",
+    "**/.DS_Store",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["openbb_cookiecutter"]
+
+[tool.hatch.build.targets.sdist]
+include = ["openbb_cookiecutter", "tests", "README.md", "pyproject.toml"]
+
+[tool.uv.sources]
+openbb-devtools = { path = "../openbb_platform/extensions/devtools", editable = true }
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+extend-exclude = ["openbb_cookiecutter/template"]
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLR0917", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"openbb_cookiecutter/cli.py" = ["T201"]
+"tests/**" = ["S101", "S603", "S607", "D"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["openbb_cookiecutter"]
+exclude = ["openbb_cookiecutter/template", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"

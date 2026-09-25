@@ -286,7 +286,7 @@ def correlation_matrix(
     if hasattr(anchor, "date") and callable(
         anchor.date
     ):  # pragma: no cover - object-index path is used in practice
-        as_of_out = anchor.date()  # ty: ignore[invalid-assignment, call-top-callable]
+        as_of_out = anchor.date()  # ty: ignore[invalid-assignment]
     elif isinstance(anchor, date):
         as_of_out = anchor
     else:  # pragma: no cover - unexpected anchor type

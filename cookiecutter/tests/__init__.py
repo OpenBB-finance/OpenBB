@@ -1,0 +1,1 @@
+"""openbb-cookiecutter tests."""

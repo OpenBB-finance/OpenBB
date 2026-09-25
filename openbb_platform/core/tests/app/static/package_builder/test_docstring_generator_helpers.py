@@ -158,7 +158,7 @@ def test_get_obbject_description_default_provider_placeholder():
     out = DocstringGenerator.get_OBBject_description("MyResults", None)
     assert "OBBject" in out
     assert "results : MyResults" in out
-    assert "provider : Optional[str]" in out
+    assert "provider : str | None" in out
     assert "warnings" in out
     assert "chart" in out
     assert "extra" in out
@@ -257,7 +257,7 @@ def test_get_OBBject_description_with_providers():
 
 def test_get_OBBject_description_default_providers():
     out = DocstringGenerator.get_OBBject_description("X", None)
-    assert "Optional[str]" in out
+    assert "str | None" in out
 
 
 def test_get_OBBStream_description_mirrors_obbject_field_format():
@@ -265,8 +265,8 @@ def test_get_OBBStream_description_mirrors_obbject_field_format():
     assert "OBBStream" in out
     assert "results : AsyncIterator[MyFeed]" in out
     assert "id : str" in out
-    assert "provider : Optional[str]" in out
-    assert "warnings : Optional[list[Warning_]]" in out
+    assert "provider : str | None" in out
+    assert "warnings : list[Warning_] | None" in out
     assert "extra : dict[str, Any]" in out
     assert "start : (output=None, handler=None) -> OBBStream" in out
     assert "stop : (timeout=5.0) -> None" in out
@@ -1644,3 +1644,300 @@ def test_generate_no_model_returns_str_type_name_and_any_fallback(monkeypatch):
         model_name=None,
     )
     assert "Any" in out2
+
+
+def test_get_field_type_union_renders_forward_ref_by_name():
+    """A ``ForwardRef`` inside a union renders as its target name.
+
+    Built with ``Union[...]``, not ``X | Y``: before 3.14 ``type.__or__``
+    rejects a ``ForwardRef`` operand. This is the shape ``format_params``
+    produces when it inlines the ``DataProcessingSupportedTypes``
+    constraints, so the union must be spelled the same way here.
+    """
+    from typing import ForwardRef, Union
+
+    field_type = Union[list, ForwardRef("DataFrame")]  # noqa: UP007
+
+    out = DocstringGenerator.get_field_type(field_type, is_required=True)
+    assert "DataFrame" in out
+    assert "ForwardRef" not in out
+
+
+def test_generate_non_model_strips_parameters_section_for_dependency_params(
+    monkeypatch,
+):
+    """A dependency-backed param drops the hand-written ``Parameters`` section."""
+    from fastapi import Depends
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    class _SS:
+        class _PS:
+            docstring_sections = ["description", "parameters"]
+            docstring_max_length = None
+
+        python_settings = _PS()
+
+    class _Svc:
+        system_settings = _SS()
+
+    monkeypatch.setattr(dg, "SystemService", _Svc)
+
+    def _dep() -> dict:
+        return {}
+
+    def _func(principal: Annotated[dict, Depends(_dep)]):
+        """Do a thing.
+
+        Parameters
+        ----------
+        principal : dict
+            The resolved principal.
+        """
+
+    out = DocstringGenerator.generate(
+        path="/x/y",
+        func=_func,
+        formatted_params=OrderedDict(),
+        model_name=None,
+    )
+    assert "Do a thing." in out
+    assert "The resolved principal." not in out
+
+
+def _param_with_description(name, description):
+    from inspect import Parameter
+
+    annotation = Annotated[str, OpenBBField(description=description)]
+    param = Parameter(
+        name=name,
+        kind=Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=annotation,
+        default=None,
+    )
+    object.__setattr__(param, "_annotation", annotation)
+    return param
+
+
+def _render_params(**params):
+    return DocstringGenerator.generate_model_docstring(
+        model_name="NoSuchModelXYZ",
+        summary="S",
+        explicit_params=dict(params),
+        kwarg_params={},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+
+
+def test_generate_model_docstring_keeps_single_provider_semicolons_intact():
+    desc = (
+        "Data column(s) to return, comma-separated. Choices: capacity (megawatts);"
+        " outage (megawatts); percent_outage (percent). (provider: eia)"
+    )
+    out = _render_params(data_type=_param_with_description("data_type", desc))
+    assert "Data column(s) to return, comma-separated." in out
+    assert "capacity (megawatts); outage (megawatts); percent_outage (percent)." in out
+
+
+def test_generate_model_docstring_keeps_semicolons_inside_examples():
+    desc = (
+        "A semicolon delimited list of tag names.  Example: 'japan;imports'"
+        " (provider: fred)"
+    )
+    out = _render_params(tag_names=_param_with_description("tag_names", desc))
+    assert "Example: 'japan;imports'" in out
+
+
+def test_generate_model_docstring_splits_merged_provider_descriptions():
+    desc = "Alpha detail. (provider: a);\n    Beta detail. (provider: b)"
+    out = _render_params(kind=_param_with_description("kind", desc))
+    assert "(provider: a)" in out
+    assert "Alpha detail." in out
+    assert "(provider: b)" in out
+    assert "Beta detail." in out
+
+
+def test_generate_model_docstring_wrapped_choices_keep_separating_commas():
+    import re
+    from types import SimpleNamespace
+    from typing import Literal
+
+    choices = [f"choice_number_{i:02d}" for i in range(12)]
+    kwarg_param = SimpleNamespace(
+        _annotation=Literal["seed"],
+        type=Literal["seed"],
+        default=SimpleNamespace(
+            description="Pick one. (provider: wrap)",
+            json_schema_extra={"wrap": {"choices": choices}},
+        ),
+        annotation=Literal["seed"],
+    )
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="NoSuchModelXYZ",
+        summary="S",
+        explicit_params={},
+        kwarg_params={"wrapped": kwarg_param},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+    assert not re.search(r"'\s+'", out)
+    assert ", ".join(f"'{c}'" for c in choices) == re.sub(
+        r",\s+", ", ", out[out.index("'choice_number_00'") : out.rindex("'") + 1]
+    )
+    assert max(len(line) for line in out.splitlines()) < 120
+
+
+def test_generate_model_docstring_strips_annotated_metadata_from_kwarg_types():
+    from types import SimpleNamespace
+
+    from annotated_types import Ge
+
+    kwarg_param = SimpleNamespace(
+        _annotation=Annotated[int, Ge(0)] | None,
+        type=Annotated[int, Ge(0)] | None,
+        default=SimpleNamespace(description="Row limit.", json_schema_extra=None),
+        annotation=Annotated[int, Ge(0)] | None,
+    )
+    out = DocstringGenerator.generate_model_docstring(
+        model_name="NoSuchModelXYZ",
+        summary="S",
+        explicit_params={},
+        kwarg_params={"limit": kwarg_param},
+        returns={},
+        results_type="",
+        sections=["parameters"],
+    )
+    assert "limit : int | None" in out
+    assert "Annotated" not in out
+    assert "Ge(" not in out
+
+
+def test_generate_model_docstring_provider_type_matches_none_default():
+    out = _render_params(provider=_param_with_description("provider", "The provider."))
+    assert "provider : str | None" in out
+
+
+def test_get_field_type_optional_literal_renders_value_type():
+    from typing import Literal
+
+    assert (
+        DocstringGenerator.get_field_type(Literal["a", "b"] | None, False)
+        == "str | None"
+    )
+    assert DocstringGenerator.get_field_type(Literal["a", "b"], True) == "str"
+
+
+def test_get_field_type_strips_annotated_metadata():
+    from annotated_types import Gt
+
+    out = DocstringGenerator.get_field_type(Annotated[float, Gt(0)] | None, False)
+    assert out == "float | None"
+
+
+def test_get_field_type_unquotes_string_forward_refs():
+    forward_ref = "DataFrame"
+    out = DocstringGenerator.get_field_type(list[forward_ref] | dict, True)
+    assert out == "dict | list[DataFrame]"
+
+
+def test_get_field_type_typevar_renders_any():
+    from typing import TypeVar
+
+    T = TypeVar("T")
+    assert DocstringGenerator.get_field_type(T | None, False) == "Any | None"
+
+
+def test_generate_non_model_lists_literal_choices_and_hides_obbject_id(monkeypatch):
+    from inspect import Parameter
+    from typing import Literal
+
+    from openbb_core.app.static.package_builder import docstring_generator as dg
+
+    class _SS:
+        class _PS:
+            docstring_sections = ["description", "parameters", "returns"]
+            docstring_max_length = None
+
+        python_settings = _PS()
+
+    class _Svc:
+        system_settings = _SS()
+
+    monkeypatch.setattr(dg, "SystemService", _Svc)
+
+    annotation = Annotated[
+        Literal["coal", "petroleum"] | None, OpenBBField(description="The group.")
+    ]
+
+    async def _func(group: annotation = None) -> OBBject:
+        """List the datasets."""
+
+    param = Parameter(
+        name="group",
+        kind=Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=annotation,
+        default=None,
+    )
+    object.__setattr__(param, "_annotation", annotation)
+
+    out = DocstringGenerator.generate(
+        path="/x/datasets",
+        func=_func,
+        formatted_params=OrderedDict({"group": param}),
+        model_name=None,
+    )
+    assert "group : str | None" in out
+    assert "Choices: 'coal', 'petroleum'" in out
+    assert "id : str" not in out
+    assert "results : Any | None" in out
+    assert "warnings : list[Warning_] | None" in out
+    assert "\n\n\n" not in out
+
+
+def test_generate_model_docstring_strips_annotated_metadata_from_explicit_params():
+    from inspect import Parameter
+
+    from annotated_types import Ge
+
+    annotation = Annotated[
+        Annotated[int, Ge(0)] | None, OpenBBField(description="Row limit.")
+    ]
+    param = Parameter(
+        name="limit",
+        kind=Parameter.POSITIONAL_OR_KEYWORD,
+        annotation=annotation,
+        default=None,
+    )
+    object.__setattr__(param, "_annotation", annotation)
+    out = _render_params(limit=param)
+    assert "limit : int | None" in out
+    assert "Annotated" not in out
+
+
+def test_get_field_type_bare_typevar_renders_any():
+    from typing import TypeVar
+
+    T = TypeVar("T")
+    assert DocstringGenerator.get_field_type(T, True) == "Any"
+
+
+def test_generate_model_docstring_untagged_merged_description_becomes_base():
+    desc = "Alpha detail. (provider: a);\n    Shared base text."
+    out = _render_params(kind=_param_with_description("kind", desc))
+    assert out.index("Shared base text.") < out.index("(provider: a)")
+    assert "Alpha detail." in out
+
+
+def test_literal_choices_reads_bare_optional_and_non_literal_types():
+    from typing import Literal
+
+    from openbb_core.app.static.package_builder.docstring_generator import (
+        _literal_choices,
+    )
+
+    assert _literal_choices(Literal["a", "b"]) == ["a", "b"]
+    assert _literal_choices(Literal["a", "b"] | None) == ["a", "b"]
+    assert _literal_choices(int | None) == []

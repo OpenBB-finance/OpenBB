@@ -479,3 +479,19 @@ def test_find_ruff_returns_none_when_unavailable(tmp_path, monkeypatch):
     monkeypatch.setattr(pkg.sys, "executable", str(fake_python))
     monkeypatch.setattr(pkg.shutil, "which", lambda name: None)
     assert pkg._find_ruff() is None
+
+
+def test_build_root_router_imports_stream_and_post_processing_functions():
+    router = pkg._build_root_router(
+        package_name="openbb_x",
+        root_namespace="x",
+        sub_routers=[],
+        root_commands=["@router.command()\nasync def live(): ..."],
+        root_post_imports=[("openbb_x.post", "shape_rows")],
+        root_has_stream=True,
+    )
+    assert "from openbb_core.app.model.stream import OBBStream" in router.source
+    assert "from openbb_x.post import shape_rows as _shape_rows" in router.source
+    assert router.source.index("_shape_rows") < router.source.index(
+        'router = Router(prefix="")'
+    )

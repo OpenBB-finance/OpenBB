@@ -238,39 +238,60 @@ def _combine_partial_coverage() -> None:
             partial.unlink()
 
 
+OBB_WORKER = """\
+import contextlib, io, json, sys, traceback
+from openbb import obb
+out = sys.stdout
+for line in sys.stdin:
+    namespace = {"obb": obb}
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            exec(json.loads(line), namespace)
+        response = {"ok": True, "result": namespace["RESULT"]}
+    except Exception:
+        response = {"ok": False, "error": traceback.format_exc()}
+    out.write(json.dumps(response, default=str) + "\\n")
+    out.flush()
+"""
+
+
 @pytest.fixture(scope="session")
-def run_in_obb(cli_fake_extension_installed):  # noqa: ARG001
-    """Run an inline snippet under a fresh subprocess that imports ``openbb``.
+def run_in_obb(cli_fake_extension_installed, tmp_path_factory):  # noqa: ARG001
+    """Run inline snippets in one session-wide subprocess that imports ``openbb`` once.
 
     Returns a callable ``run(snippet: str) -> dict``. The snippet must assign
-    a JSON-serializable value to ``RESULT``; the wrapper ``json.dumps`` it to
-    stdout and the helper parses it back into Python.
-
-    Use this for any test that needs to resolve commands via the real
-    generated static ``obb`` namespace — entry-point caching makes
-    in-process resolution unreliable after a fresh build.
+    a JSON-serializable value to ``RESULT``. Each snippet executes in a fresh
+    namespace inside a worker started after the session build, so commands
+    resolve through the real generated static ``obb`` namespace without
+    re-importing it for every test.
     """
-
-    def _run(snippet: str) -> dict:
-        wrapper = textwrap.dedent("""\
-            import json, sys
-            from openbb import obb  # noqa: F401
-            {snippet}
-            sys.stdout.write(json.dumps(RESULT, default=str))
-            """).format(snippet=textwrap.dedent(snippet).strip())
-        proc = subprocess.run(  # noqa: S603
-            [sys.executable, "-c", wrapper],
-            check=False,
-            capture_output=True,
+    stderr_path = tmp_path_factory.mktemp("obb_worker") / "stderr.log"
+    with stderr_path.open("w", encoding="utf-8") as stderr:
+        worker = subprocess.Popen(  # noqa: S603
+            [sys.executable, "-c", OBB_WORKER],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=stderr,
             text=True,
             env=_subprocess_env({"OPENBB_AUTO_BUILD": "false"}),
         )
-        if proc.returncode != 0:
-            raise AssertionError(
-                f"obb subprocess failed (rc={proc.returncode})\n"
-                f"--- stdout ---\n{proc.stdout}\n"
-                f"--- stderr ---\n{proc.stderr}"
-            )
-        return json.loads(proc.stdout)
 
-    return _run
+        def _run(snippet: str) -> dict:
+            worker.stdin.write(json.dumps(textwrap.dedent(snippet).strip()) + "\n")
+            worker.stdin.flush()
+            line = worker.stdout.readline()
+            if not line:
+                raise AssertionError(
+                    f"obb worker exited (rc={worker.wait()})\n"
+                    f"--- stderr ---\n{stderr_path.read_text(encoding='utf-8')}"
+                )
+            response = json.loads(line)
+            if not response["ok"]:
+                raise AssertionError(f"obb snippet failed\n{response['error']}")
+            return response["result"]
+
+        try:
+            yield _run
+        finally:
+            worker.stdin.close()
+            worker.wait(timeout=60)

@@ -531,7 +531,7 @@ async def presentation_table_choices(
             elif dim_id == country_dim:
                 pb.set_dimension((dim_id, str(country).replace(",", "+")))
 
-        options = pb.get_options_for_dimension(freq_dim) if freq_dim else []
+        options = pb.get_options_for_dimension(freq_dim)
 
         return options
 
@@ -973,13 +973,13 @@ async def indicator_choices(  # noqa: PLR0912
 
         return choices
 
-    if country == "true" and country_dim:
+    if country == "true":
         choices = get_choices_for_dim(country_dim)
         choices = sorted(choices, key=lambda x: x["label"])
         choices.insert(0, {"label": "All Countries", "value": "*"})
         return choices
 
-    if frequency == "true" and freq_dim:
+    if frequency == "true":
         return get_choices_for_dim(freq_dim)
 
     if transform == "true" and effective_transform_dim:

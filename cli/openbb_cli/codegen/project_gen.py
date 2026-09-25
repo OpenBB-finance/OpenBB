@@ -75,7 +75,7 @@ name = "{project_name}"
 version = "{version}"
 description = {description!r}
 requires-python = ">=3.10,<4"
-license = {{ text = "AGPL-3.0-only" }}
+license = {{ text = "Apache-2.0" }}
 dependencies = [
     "openbb-core>=2.0.0",
 ]

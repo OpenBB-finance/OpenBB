@@ -1,0 +1,200 @@
+name: 📦 publish openbb-ecb
+
+# Triggers exclusively on the merge of a ``release/openbb-ecb-v*`` branch
+# into ``develop``. No push / tag triggers. Sequential jobs — build once,
+# test the built artifact across the full cross-platform matrix, and only
+# publish to PyPI if the entire matrix is green.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [develop, v5]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  version-check:
+    name: Verify version bump
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/openbb-ecb-v')) || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/ecb
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+
+      - name: Parse [project].version from pyproject.toml
+        id: parse
+        run: |
+          VERSION=$(grep -m1 -E '^version[[:space:]]*=' pyproject.toml | sed -E 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/')
+          if [ -z "$VERSION" ]; then
+            echo "::error::Could not parse [project].version from pyproject.toml."
+            exit 1
+          fi
+          echo "Local version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Fail if version already exists on PyPI
+        env:
+          VERSION: ${{ steps.parse.outputs.version }}
+        run: |
+          STATUS=$(curl -sS -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/openbb-ecb/${VERSION}/json")
+          case "$STATUS" in
+            200)
+              echo "::error::openbb-ecb ${VERSION} is already published on PyPI."
+              echo "Bump openbb_platform/providers/ecb/pyproject.toml [project].version and re-merge a fresh release branch."
+              exit 1
+              ;;
+            404)
+              echo "openbb-ecb ${VERSION} is not yet on PyPI — proceeding."
+              ;;
+            *)
+              echo "::error::Unexpected status $STATUS from PyPI JSON API. Aborting to avoid a silent skip."
+              exit 1
+              ;;
+          esac
+
+      - name: Verify release branch name matches pyproject version
+        if: github.event_name == 'pull_request'
+        env:
+          VERSION: ${{ steps.parse.outputs.version }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          EXPECTED="release/openbb-ecb-v${VERSION}"
+          if [ "$BRANCH" != "$EXPECTED" ]; then
+            echo "::error::Release branch '${BRANCH}' does not match pyproject version '${VERSION}'."
+            echo "Expected branch name: '${EXPECTED}'."
+            echo "Either rename the release branch or update [project].version in pyproject.toml so they agree."
+            exit 1
+          fi
+          echo "Branch '${BRANCH}' matches pyproject version '${VERSION}'."
+
+  build:
+    name: Build sdist + wheel
+    needs: version-check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/ecb
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Restore ECB SDMX cache (warming pool for PR workflow)
+        uses: actions/cache@v4
+        with:
+          path: openbb_platform/providers/ecb/openbb_ecb/assets/ecb_cache.json.xz
+          key: ecb-sdmx-${{ hashFiles('openbb_platform/providers/ecb/openbb_ecb/utils/generate_cache.py') }}
+
+      - name: Build sdist + wheel (fresh ECB cache)
+        env:
+          OPENBB_ECB_FORCE_CACHE_REBUILD: "1"
+        run: uv build --no-sources
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openbb-ecb-dist
+          path: openbb_platform/providers/ecb/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux: full sweep across every released Python.
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          # macOS + Windows: min and max supported.
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/providers/ecb
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-ecb-dist
+          path: openbb_platform/providers/ecb/dist
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Seed the cache asset from the built wheel
+        # Extract the bundled cache out of the wheel into the source tree
+        # so the editable install below sees it on disk and the build
+        # hook's idempotent ``if _CACHE_PATH.exists(): reuse`` branch
+        # fires — guaranteeing no ECB fetch in this job.
+        run: |
+          WHEEL=$(ls dist/openbb_ecb-*.whl | head -1)
+          mkdir -p openbb_ecb/assets
+          python -c "
+          import sys, zipfile, shutil
+          wheel = sys.argv[1]
+          dest = sys.argv[2]
+          with zipfile.ZipFile(wheel) as z:
+              with z.open('openbb_ecb/assets/ecb_cache.json.xz') as src, open(dest, 'wb') as out:
+                  shutil.copyfileobj(src, out)
+          " "$WHEEL" openbb_ecb/assets/ecb_cache.json.xz
+
+      - name: Install with uv (resolves openbb-core / devtools via [tool.uv.sources])
+        # ``uv sync`` reads ``[tool.uv.sources]`` and installs ``openbb-core[pandas]``
+        # editable from the sibling tree at ``../../core`` (plus ``openbb-devtools``
+        # — pytest, pytest-asyncio, pytest-cov, pytest-recorder — and the ``dev``
+        # group). ``uv pip install`` ignores ``tool.uv.sources`` and would fail to
+        # resolve ``openbb-core>=2.0.0`` from PyPI until it ships; the wheel is still
+        # the artifact uploaded to PyPI by the ``publish`` job — this matrix just
+        # validates the source the wheel was built from.
+        run: uv sync --python ${{ matrix.python_version }}
+
+      - name: Run unit tests
+        run: uv run pytest tests --cov=openbb_ecb --cov-report=term-missing
+
+  publish:
+    name: Publish to PyPI
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required for PyPI OIDC trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-ecb-dist
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
