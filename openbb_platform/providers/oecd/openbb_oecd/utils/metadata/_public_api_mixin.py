@@ -275,6 +275,7 @@ class PublicApiMixin(_MixinBase):
         def _make_row(
             crumb: list[str],
             id_crumb: list[str],
+            *,
             table_name: str,
             dataflow_id: str,
             short_id: str,
@@ -326,10 +327,10 @@ class PublicApiMixin(_MixinBase):
                             _make_row(
                                 crumb,
                                 ids,
-                                family["family_name"],
-                                rep,
-                                family["rep_short_id"],
-                                family["member_count"],
+                                table_name=family["family_name"],
+                                dataflow_id=rep,
+                                short_id=family["rep_short_id"],
+                                countries=family["member_count"],
                             )
                         )
                     else:
@@ -337,10 +338,10 @@ class PublicApiMixin(_MixinBase):
                             _make_row(
                                 crumb,
                                 ids,
-                                entry.get("name", fid),
-                                fid,
-                                entry.get("short_id", fid.split("@")[-1]),
-                                0,
+                                table_name=entry.get("name", fid),
+                                dataflow_id=fid,
+                                short_id=entry.get("short_id", fid.split("@")[-1]),
+                                countries=0,
                             )
                         )
 
