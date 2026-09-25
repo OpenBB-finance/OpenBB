@@ -196,6 +196,54 @@ def test_basemodel_to_df_with_date_index():
     assert df.index.name == "date"
 
 
+def test_basemodel_to_df_mixed_offsets_all_midnight_reduces_to_date():
+    """A mixed-offset column that is entirely midnight still reduces to dates.
+
+    The payload crosses a daylight-savings boundary, so it has no single
+    datetime64 representation and stays object dtype. Every value is midnight
+    local time, so it must still be reduced to ``datetime.date``.
+    """
+    from datetime import date
+
+    data = [
+        Data(date="2023-11-03 00:00:00-04:00", value=1),
+        Data(date="2023-11-06 00:00:00-05:00", value=2),
+        Data(date="2023-11-08 00:00:00-05:00", value=3),
+    ]
+    result = basemodel_to_df(data)
+    assert list(result["date"]) == [
+        date(2023, 11, 3),
+        date(2023, 11, 6),
+        date(2023, 11, 8),
+    ]
+
+
+def test_basemodel_to_df_falls_back_to_per_element_parse(monkeypatch):
+    """A column the vectorized parse rejects is parsed one value at a time.
+
+    Whether a mixed-offset column raises depends on the pandas version - 3.x
+    raises, 2.x returns object dtype - so the fallback is forced here rather
+    than left to the installed version.
+    """
+    from datetime import date
+
+    real_to_datetime = pd.to_datetime
+
+    def fake_to_datetime(arg, *args, **kwargs):
+        if isinstance(arg, pd.Series):
+            raise ValueError("Mixed timezones detected. Pass utc=True")
+        return real_to_datetime(arg, *args, **kwargs)
+
+    monkeypatch.setattr(pd, "to_datetime", fake_to_datetime)
+
+    data = [
+        Data(date="2023-11-03 00:00:00-04:00", value=1),
+        Data(date="2023-11-06 00:00:00-05:00", value=2),
+    ]
+    result = basemodel_to_df(data)
+    assert list(result["date"]) == [date(2023, 11, 3), date(2023, 11, 6)]
+
+
 def test_df_to_basemodel_with_date_only_column_keeps_date_format():
     df = pd.DataFrame(
         {
