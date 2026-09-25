@@ -3,7 +3,7 @@ name = "openbb-equity"
 version = "2.0.0"
 description = "Equity extension for OpenBB"
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = ["openbb-core>=2.0.0"]
@@ -19,7 +19,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [build-system]
 requires = ["hatchling"]
@@ -33,7 +33,6 @@ include = ["openbb_equity", "README.md", "pyproject.toml"]
 
 [tool.uv.sources]
 openbb-core = { path = "../../core", editable = true }
-openbb-devtools = { path = "../devtools", editable = true }
 
 [tool.ruff]
 line-length = 88

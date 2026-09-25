@@ -1,19 +1,18 @@
 """Company Facts — Standardized Financial Statements from SEC XBRL Data."""
 
-# pylint: disable=R0917
-
 from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
+from pydantic import BaseModel
+
 from openbb_sec.utils.statement_schema import (
     Frequency,
     StatementSchema,
     ValidationWarning,
 )
-from pydantic import BaseModel
 
 PeriodType = Literal[
     "annual", "quarterly", "both", "ttm", "yoy", "yoy_quarterly", "pop"
@@ -447,7 +446,7 @@ def resolve_company_facts(
             facts_json,
             frequency=freq,
             company_type=company_type,
-            pit_mode=pit_mode,  # type: ignore
+            pit_mode=pit_mode,
             include_preliminary=include_preliminary,
         )
         for stmt_result in stmts.values():
@@ -486,7 +485,7 @@ def resolve_company_facts(
                 facts_json,
                 frequency=freq,
                 company_type=company_type,
-                pit_mode=pit_mode,  # type: ignore
+                pit_mode=pit_mode,
                 include_preliminary=include_preliminary,
             )
             for stmt_result in stmts.values():
@@ -532,7 +531,7 @@ async def get_standardized_financials(
     period : PeriodType
         Which periods to return.
     use_cache : bool
-        Whether to use in-memory HTTP caching (6-hour TTL).
+        Whether to use the SEC disk cache (6-hour TTL).
     pit_mode : bool
         If True, skip the 10-K vintage override for quarterly data,
         preserving point-in-time fidelity for backtesting.
@@ -544,9 +543,9 @@ async def get_standardized_financials(
     -------
     StandardizedStatements
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.abstract.error import OpenBBError
-    from openbb_core.provider.utils.helpers import amake_request
+
+    from openbb_sec.utils.cache import cached_request
     from openbb_sec.utils.definitions import HEADERS
     from openbb_sec.utils.helpers import symbol_map
 
@@ -571,23 +570,12 @@ async def get_standardized_financials(
 
     async def _fetch(cik_str: str) -> dict:
         url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_str}.json"
-        if use_cache:
-            from aiohttp_client_cache.session import (
-                CachedSession,
-            )  # pylint: disable=import-outside-toplevel
-
-            async with CachedSession(expire_after=3600 * 6) as session:
-                try:
-                    resp = await amake_request(
-                        url, headers=HEADERS, session=session, timeout=300
-                    )
-                finally:
-                    await session.close()
-        else:
-            resp = await amake_request(url, headers=HEADERS, timeout=300)
+        resp = await cached_request(
+            url, headers=HEADERS, timeout=300, use_cache=use_cache, expire=3600 * 6
+        )
         if not isinstance(resp, dict) or "facts" not in resp:
             raise OpenBBError(f"Unexpected response from SEC for CIK {cik_str}")
-        return resp  # type: ignore[return-value]
+        return resp
 
     responses = [await _fetch(c) for c in cik_list]
 

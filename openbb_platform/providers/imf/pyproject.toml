@@ -3,7 +3,7 @@ name = "openbb-imf"
 version = "2.1.2"
 description = "IMF provider extension for OpenBB Platform."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
@@ -33,7 +33,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1"]
 
 [build-system]
 requires = ["hatchling>=1.25", "requests>=2.31"]

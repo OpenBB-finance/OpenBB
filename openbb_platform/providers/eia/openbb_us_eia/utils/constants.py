@@ -1,8 +1,6 @@
-"""OpenBB EIA Provider Module Constants."""
+"""OpenBB EIA provider constants."""
 
-# pylint: disable=too-many-lines
-
-from typing import Literal
+from typing import Literal, get_args
 
 WpsrCategoryType = Literal[
     "balance_sheet",
@@ -19,21 +17,7 @@ WpsrCategoryType = Literal[
     "spot_prices_diesel_jet_fuel_propane",
     "retail_prices",
 ]
-WpsrCategoryChoices = [
-    "balance_sheet",
-    "inputs_and_production",
-    "refiner_blender_net_production",
-    "crude_petroleum_stocks",
-    "gasoline_fuel_stocks",
-    "total_gasoline_by_sub_padd",
-    "distillate_fuel_oil_stocks",
-    "imports",
-    "imports_by_country",
-    "weekly_estimates",
-    "spot_prices_crude_gas_heating",
-    "spot_prices_diesel_jet_fuel_propane",
-    "retail_prices",
-]
+WpsrCategoryChoices = list(get_args(WpsrCategoryType))
 WpsrTableType = Literal[
     "all",
     "conventional_gas",
@@ -75,47 +59,7 @@ WpsrTableType = Literal[
     "ulta_low_sulfur_distillate_reclassification_avg",
     "weekly",
 ]
-WpsrTableChoices = [
-    "all",
-    "conventional_gas",
-    "crude",
-    "crude_production",
-    "crude_production_avg",
-    "diesel",
-    "ethanol_plant_production",
-    "ethanol_plant_production_avg",
-    "exports",
-    "exports_avg",
-    "heating_oil",
-    "imports",
-    "imports_avg",
-    "imports_by_country",
-    "imports_by_country_avg",
-    "inputs_and_utilization",
-    "inputs_and_utilization_avg",
-    "jet_fuel",
-    "monthly",
-    "net_imports_inc_spr_avg",
-    "net_imports_incl_spr",
-    "net_production",
-    "net_production_avg",
-    "net_production_by_product",
-    "net_production_by_production_avg",
-    "product_by_region",
-    "product_by_region_avg",
-    "product_supplied",
-    "product_supplied_avg",
-    "propane",
-    "rbob",
-    "refiner_blender_net_production",
-    "refiner_blender_net_production_avg",
-    "stocks",
-    "supply",
-    "supply_avg",
-    "ulta_low_sulfur_distillate_reclassification",
-    "ulta_low_sulfur_distillate_reclassification_avg",
-    "weekly",
-]
+WpsrTableChoices = list(get_args(WpsrTableType))
 WpsrFileMap = {
     "balance_sheet": "https://ir.eia.gov/wpsr/psw01.xls",
     "inputs_and_production": "https://ir.eia.gov/wpsr/psw02.xls",

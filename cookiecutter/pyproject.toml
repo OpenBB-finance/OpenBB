@@ -2,7 +2,7 @@
 name = "openbb-cookiecutter"
 version = "0.6.0"
 description = "Extensions template for the OpenBB Python Package."
-license = "AGPL-3.0-only"
+license = "Apache-2.0"
 authors = ["OpenBB Team <hello@openbb.co>"]
 packages = [{ include = "openbb_cookiecutter" }]
 readme = "README.md"

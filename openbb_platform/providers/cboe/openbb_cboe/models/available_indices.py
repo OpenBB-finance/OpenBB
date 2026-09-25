@@ -1,7 +1,5 @@
 """Cboe Available Indices Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import time
 from typing import Any
 
@@ -86,7 +84,7 @@ class CboeAvailableIndicesFetcher(
         list[CboeAvailableIndicesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints."""
+    """Transform the query, extract and transform the data from the Cboe endpoints."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CboeAvailableIndicesQueryParams:
@@ -99,11 +97,11 @@ class CboeAvailableIndicesFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return the raw data from the CBOE endpoint."""
-        # pylint: disable=import-outside-toplevel
+        """Return the raw data from the Cboe endpoint."""
         from openbb_cboe.utils.helpers import get_index_directory
 
         data = await get_index_directory(use_cache=query.use_cache, **kwargs)
+
         return data.to_dict("records")
 
     @staticmethod

@@ -3,7 +3,7 @@ name = "openbb-charting"
 version = "3.0.0"
 description = "Charting extension for OpenBB"
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
-license = { text = "AGPL-3.0-only" }
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"  # scipy forces python <4.0 explicitly
 dependencies = [
@@ -23,7 +23,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.0", "openbb-technical>=2.0.0"]
+dev = ["openbb-devtools>=2.0.1", "openbb-technical>=2.0.0"]
 
 [build-system]
 requires = ["hatchling>=1.25"]

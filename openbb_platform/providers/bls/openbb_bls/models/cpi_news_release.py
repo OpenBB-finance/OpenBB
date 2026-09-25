@@ -13,6 +13,7 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import ConfigDict, Field, field_serializer
+from pydantic.config import JsonDict
 
 from openbb_bls.utils.constants import BLS_USER_AGENT
 
@@ -53,7 +54,7 @@ class _CpiNrQueryParams(QueryParams):
     )
 
 
-_LABEL_HOVER_CARD = {
+_LABEL_HOVER_CARD: JsonDict = {
     "x-widget_config": {
         "renderFn": "hoverCard",
         "renderFnParams": {

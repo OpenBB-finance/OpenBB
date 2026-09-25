@@ -24,12 +24,7 @@ _FREQ_MAP = {"annual": "A", "quarter": "Q", "monthly": "M"}
 
 
 class OECDUnemploymentQueryParams(UnemploymentQueryParams):
-    """OECD Unemployment Query.
-
-    Notes
-    -----
-    Source: https://data-explorer.oecd.org/?lc=en
-    """
+    """OECD Unemployment Query."""
 
     __json_schema_extra__ = {
         "country": {
@@ -50,7 +45,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
     age: Literal[AgesLiteral] = Field(
         description="Age group to get unemployment for. Total indicates 15 years or over",
         default="total",
-        json_schema_extra={"choices": AGES},
+        json_schema_extra={"choices": list(AGES)},
     )
     seasonal_adjustment: bool = Field(
         description="Whether to get seasonally adjusted unemployment. Defaults to False.",

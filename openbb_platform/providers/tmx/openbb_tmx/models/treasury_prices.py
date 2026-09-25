@@ -12,17 +12,22 @@ from openbb_core.provider.standard_models.treasury_prices import (
 )
 from pydantic import Field, field_validator
 
+from openbb_tmx.utils.choices import literal_choices
+
 if TYPE_CHECKING:
     from pandas import DataFrame
 
 
 class TmxTreasuryPricesQueryParams(TreasuryPricesQueryParams):
-    """TMX Treasury Prices Query Params.
+    """TMX Treasury Prices Query Params."""
 
-    Data will be made available by 5:00 EST on T+1
-
-    Source: https://bondtradedata.iiroc.ca/#/
-    """
+    __json_schema_extra__ = {
+        "govt_type": {
+            "x-widget_config": {
+                "options": literal_choices(("federal", "provincial", "municipal"))
+            }
+        }
+    }
 
     govt_type: Literal["federal", "provincial", "municipal"] = Field(
         default="federal",
@@ -155,7 +160,9 @@ class TmxTreasuryPricesFetcher(
 
         if len(data) > 0:
             data = data.drop(columns=["bondType", "securityId", "secKey"])
-            data = data.fillna("N/A").replace("N/A", None)
+            from openbb_tmx.utils.helpers import purge_nulls
+
+            data = purge_nulls(data)
             results = data.to_dict("records")
 
         return [TmxTreasuryPricesData.model_validate(d) for d in results]

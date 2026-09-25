@@ -39,7 +39,13 @@ class SpotRateQueryParams(QueryParams):
 
 
 class SpotRateData(Data):
-    """Spot Rate Data."""
+    """Spot Rate Data.
+
+    Attributes
+    ----------
+    date : dateType
+        The observation date. Every maturity requested is carried as its own
+        column, named for the maturity it reports.
+    """
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float | None = Field(description="Spot Rate.")

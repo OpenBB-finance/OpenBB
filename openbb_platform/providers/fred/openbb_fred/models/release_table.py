@@ -1,7 +1,5 @@
 """FRED Release Table Table Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -15,33 +13,34 @@ from openbb_core.provider.standard_models.fred_release_table import (
     ReleaseTableQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import field_validator
+from pydantic import Field
+
+from openbb_fred.utils.query import UseCacheQueryParams
+from openbb_fred.utils.release_tables import get_units, shown, tree
 
 
-class FredReleaseTableQueryParams(ReleaseTableQueryParams):
+def _quarter_start(value: str) -> str:
+    """Return the first day of the quarter one date falls in.
+
+    Parameters
+    ----------
+    value : str
+        A date, as ``YYYY-MM-DD``.
+
+    Returns
+    -------
+    str
+        The quarter's first day, as ``YYYY-MM-DD``.
+    """
+    read = datetime.strptime(value, "%Y-%m-%d")
+
+    return read.replace(month=(read.month - 1) // 3 * 3 + 1, day=1).strftime("%Y-%m-%d")
+
+
+class FredReleaseTableQueryParams(UseCacheQueryParams, ReleaseTableQueryParams):
     """FRED Release Table Query Params."""
 
     __json_schema_extra__ = {"date": {"multiple_items_allowed": True}}
-
-    @field_validator("date", mode="before", check_fields=False)
-    @classmethod
-    def validate_date(cls, v):
-        """Validate the dates entered."""
-        if v is None:
-            return None
-        if isinstance(v, (list, dateType)):
-            return v
-        new_dates: list = []
-        date_param = v
-        if isinstance(date_param, str):
-            new_dates = date_param.split(",")
-        elif isinstance(date_param, dateType):
-            new_dates.append(date_param.strftime("%Y-%m-%d"))
-        elif isinstance(date_param, list) and isinstance(date_param[0], dateType):
-            new_dates = [d.strftime("%Y-%m-%d") for d in new_dates]
-        else:
-            new_dates = date_param
-        return ",".join(new_dates) if len(new_dates) > 1 else new_dates[0]
 
 
 class FredReleaseTableData(ReleaseTableData):
@@ -53,6 +52,62 @@ class FredReleaseTableData(ReleaseTableData):
         "symbol": "series_id",
         "element_type": "type",
     }
+
+    date: dateType | None = Field(
+        default=None,
+        description="The date of the observation.",
+        json_schema_extra=shown("date"),
+    )
+    symbol: str | None = Field(
+        default=None,
+        description="The series id of the observation.",
+        json_schema_extra=shown("symbol"),
+    )
+    name: str | None = Field(
+        default=None,
+        description="The name of the series.",
+        json_schema_extra=shown("name"),
+    )
+    units: str | None = Field(
+        default=None,
+        description="The unit of measure the series is published in.",
+        json_schema_extra=shown("units"),
+    )
+    value: float | None = Field(
+        default=None,
+        description="The observed value.",
+        json_schema_extra=shown("value"),
+    )
+    element_type: str | None = Field(
+        default=None,
+        description="The type of the element.",
+        json_schema_extra=tree(),
+    )
+    element_id: str | None = Field(
+        default=None,
+        description="The element id in the parent/child relationship.",
+        json_schema_extra=tree(),
+    )
+    parent_id: str | None = Field(
+        default=None,
+        description="The parent id in the parent/child relationship.",
+        json_schema_extra=tree(),
+    )
+    children: str | None = Field(
+        default=None,
+        description="The element_id of each child, as a comma-separated string.",
+        json_schema_extra=tree(),
+    )
+    level: int | None = Field(
+        default=None,
+        description="The indentation level of the element.",
+        json_schema_extra=tree(),
+    )
+    line: int | None = Field(
+        default=None,
+        description="The line number of the series in the table.",
+        json_schema_extra=tree(),
+    )
 
 
 class FredReleaseTableFetcher(
@@ -75,77 +130,56 @@ class FredReleaseTableFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from openbb_fred.utils.api import release_tables_url
+        from openbb_fred.utils.query import join_dates
         from openbb_fred.utils.rate_limiter import fred_get
         from openbb_fred.models.search import FredSearchFetcher
         from numpy import nan
-        from pandas import DataFrame, to_datetime
+        from pandas import DataFrame, to_datetime, to_numeric
+        from pandas.api.types import is_numeric_dtype
 
         api_key = credentials.get("fred_api_key") if credentials else ""
-        dates: list = [""]
 
-        # We'll verify that the release_id is valid and check the frequency for monthly/quarterly data.
         release_info = await FredSearchFetcher.fetch_data(
-            {"release_id": query.release_id}, credentials
+            {"release_id": query.release_id, "use_cache": query.use_cache}, credentials
         )
 
         if not release_info:
             raise OpenBBError(f"No release information found for, {query.release_id}.")
 
-        release_freq = list(set([d.model_dump().get("frequency_short") for d in release_info]))[0]  # type: ignore  # pylint: disable=R1718
-
-        if query.date is not None:
-            if isinstance(query.date, dateType):
-                query.date = query.date.strftime("%Y-%m-%d")  # type: ignore
-            dates = query.date.split(",")  # type: ignore
-            # Set the date to the first of the observation frequency for each date.
-            # Daily observations should automatically fetch the closest date.
-            if release_freq == "M":
-                dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
-            elif release_freq == "Q":
-
-                def to_quarter_start(d):
-                    date_obj = datetime.strptime(d, "%Y-%m-%d")
-                    quarter = (date_obj.month - 1) // 3 + 1
-                    start_month = (quarter - 1) * 3 + 1
-                    return date_obj.replace(month=start_month, day=1).strftime(
-                        "%Y-%m-%d"
-                    )
-
-                dates = [to_quarter_start(d) for d in dates if len(d) == 10]
-
-            dates = list(set(dates))
-            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
-
-        element_id = (
-            f"&element_id={query.element_id}" if query.element_id is not None else ""
+        release_freq = next(
+            iter({getattr(d, "frequency_short", None) for d in release_info})
         )
+        joined = join_dates(query.date)
+        dates: list = [None]
+
+        if joined:
+            requested = joined.split(",")
+
+            if release_freq == "M":
+                requested = [f"{d[:-2]}01" for d in requested]
+            elif release_freq == "Q":
+                requested = [_quarter_start(d) for d in requested]
+
+            dates = sorted(set(requested))
 
         URLS = [
-            f"https://api.stlouisfed.org/fred/release/tables?release_id={query.release_id}"
-            + f"{element_id}{date}&include_observation_values=true&api_key={api_key}"
-            + "&file_type=json"
+            release_tables_url(query.release_id, query.element_id, api_key, date)
             for date in dates
         ]
         results: list = []
 
         async def get_one(URL):
             """Get the observations for a single date."""
-            response = await fred_get(URL)
+            response = await fred_get(URL, use_cache=query.use_cache)
 
-            # If the response has no elements we return empty and try the next URL.
-            # If all URLs return empty, it will raise in `transform_data`.
             if "elements" not in response:
                 return
 
             res: list = []
             data: list = []
-            # We use `res` to store the table and section elements
-            # and to identify if observation values are returned.
-            # We use `data` to store the observation values.
-            # Only one scenario should unfold.
-            for v in response.get("elements", {}).values():  # type: ignore
+            for v in response.get("elements", {}).values():
                 if v and (v.get("type") == "section" or v.get("type") == "table"):
                     v["element_id"] = str(v["element_id"])
                     v["parent_id"] = str(v["parent_id"]) if v.get("parent_id") else None
@@ -159,26 +193,22 @@ class FredReleaseTableFetcher(
                 ):
                     v["element_id"] = str(v["element_id"])
                     data.append(v)
-            # When observation values are returned, we parse and collect the parent elements while flattening the data.
             if data:
                 index_cols = ["line", "element_id", "parent_id"]
                 df = DataFrame(data).dropna(how="all", axis=1)
                 for index_col in index_cols.copy():
                     if index_col not in df.columns:
                         index_cols.remove(index_col)
-                df = (
-                    df.set_index(index_cols)
-                    .sort_index()[
-                        [
-                            "level",
-                            "series_id",
-                            "name",
-                            "observation_date",
-                            "observation_value",
-                        ]
+                df = df[
+                    index_cols
+                    + [
+                        "level",
+                        "series_id",
+                        "name",
+                        "observation_date",
+                        "observation_value",
                     ]
-                    .reset_index()
-                )
+                ]
                 df["parent_id"] = df.parent_id.astype(str)
                 df["element_id"] = df.element_id.astype(str)
                 df["observation_value"] = df.observation_value.str.replace(
@@ -186,9 +216,8 @@ class FredReleaseTableFetcher(
                 ).astype(float)
 
                 if "line" in df.columns:
-                    df["line"] = df.line.astype(int)
+                    df["line"] = to_numeric(df.line, errors="coerce").astype("Int64")
 
-                # Some dates are in the format 'Jan 2021' and others are '2021-01-01'.
                 def apply_date_format(x):
                     """Apply the date format."""
                     x = x.replace(" ", "-")
@@ -224,23 +253,32 @@ class FredReleaseTableFetcher(
                     "parent_id",
                     "level",
                 ]
-                for index_col in new_index_cols.copy():
-                    if index_col not in df.columns:
-                        new_index_cols.remove(index_col)
+                order = [c for c in new_index_cols if c in df.columns]
+                keys = [f"_sort_{c}" for c in order]
+
+                for column, key in zip(order, keys):
+                    df[key] = df[column].fillna(
+                        -1 if is_numeric_dtype(df[column]) else ""
+                    )
+
                 df = (
-                    df.set_index(new_index_cols)
-                    .sort_index()
-                    .reset_index()
+                    df.sort_values(by=keys)
+                    .drop(columns=keys)
+                    .reset_index(drop=True)
                     .replace({nan: None})
                 )
                 results.extend(df.to_dict("records"))
-            # If no observation values are returned, we collect the unique element IDs for the user.
             elif res:
                 for item in res:
                     if not any(r["element_id"] == item["element_id"] for r in results):
                         results.append(item)
 
         await asyncio.gather(*[get_one(URL) for URL in URLS])
+
+        units = await get_units(query.release_id, credentials)
+
+        for row in results:
+            row["units"] = units.get(row.get("series_id"))
 
         return results
 
@@ -268,8 +306,8 @@ class FredReleaseTableFetcher(
             for d in sorted(
                 data,
                 key=lambda x: (
-                    x.get("observation_date", float("inf")),
-                    x.get("line", float("inf")),
+                    str(x.get("observation_date") or ""),
+                    x.get("line") if x.get("line") is not None else float("inf"),
                 ),
             )
         ]
