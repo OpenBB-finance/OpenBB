@@ -1615,8 +1615,10 @@ pandas = [
 
 [package.metadata]
 requires-dist = [
+    { name = "a2wsgi", marker = "extra == 'flask'", specifier = ">=1.10.10" },
     { name = "aiohttp", specifier = ">=3.13.3" },
     { name = "fastapi", specifier = ">=0.136.3" },
+    { name = "flask", marker = "extra == 'flask'", specifier = ">=3.1.2" },
     { name = "importlib-metadata", specifier = ">=6.8.0" },
     { name = "pandas", marker = "extra == 'pandas'", specifier = ">=1.5.3" },
     { name = "pydantic", specifier = ">=2.12.3,<3.0.0" },
@@ -1630,10 +1632,14 @@ requires-dist = [
     { name = "uvicorn", specifier = ">=0.48.0" },
     { name = "websockets", specifier = ">=15.0" },
 ]
-provides-extras = ["pandas"]
+provides-extras = ["pandas", "flask"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "openbb-devtools", editable = "../openbb_platform/extensions/devtools" }]
+dev = [
+    { name = "a2wsgi", specifier = ">=1.10.10" },
+    { name = "flask", specifier = ">=3.1.2" },
+    { name = "openbb-devtools", editable = "../openbb_platform/extensions/devtools" },
+]
 
 [[package]]
 name = "openbb-devtools"

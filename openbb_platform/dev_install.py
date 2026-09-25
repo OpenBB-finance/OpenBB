@@ -1,208 +1,214 @@
-"""Install for development script."""
+"""Install the tracked, published OpenBB packages in editable mode."""
 
-# flake8: noqa: S603
+# flake8: noqa: S603, S607
 
+import argparse
+import os
+import shutil
 import subprocess
 import sys
+import time
+from importlib.util import find_spec
 from pathlib import Path
 
-from tomlkit import dumps, load, loads
-
 PLATFORM_PATH = Path(__file__).parent.resolve()
-LOCK = PLATFORM_PATH / "poetry.lock"
-PYPROJECT = PLATFORM_PATH / "pyproject.toml"
-CLI_PATH = Path(__file__).parent.parent.resolve() / "cli"
-CLI_PYPROJECT = CLI_PATH / "pyproject.toml"
-CLI_LOCK = CLI_PATH / "poetry.lock"
-
-LOCAL_DEPS = """
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
-openbb-core = { path = "./core", develop = true }
-openbb-platform-api = { path = "./extensions/platform_api", develop = true }
-
-openbb-bls = { path = "./providers/bls", develop = true }
-openbb-cftc = { path = "./providers/cftc", develop = true }
-openbb-congress-gov = { path = "./providers/congress_gov", develop = true }
-openbb-econdb = { path = "./providers/econdb", develop = true }
-openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
-openbb-fmp = { path = "./providers/fmp", develop = true }
-openbb-fred = { path = "./providers/fred", develop = true }
-openbb-government-us = { path = "./providers/government_us", develop = true }
-openbb-imf = { path = "./providers/imf", develop = true }
-openbb-intrinio = { path = "./providers/intrinio", develop = true }
-openbb-oecd = { path = "./providers/oecd", develop = true }
-openbb-sec = { path = "./providers/sec", develop = true }
-openbb-tiingo = { path = "./providers/tiingo", develop = true }
-openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
-openbb-us-eia = { path = "./providers/eia", develop = true }
-openbb-yfinance = { path = "./providers/yfinance", develop = true }
-
-openbb-commodity = { path = "./extensions/commodity", develop = true }
-openbb-crypto = { path = "./extensions/crypto", develop = true }
-openbb-currency = { path = "./extensions/currency", develop = true }
-openbb-derivatives = { path = "./extensions/derivatives", develop = true }
-openbb-economy = { path = "./extensions/economy", develop = true }
-openbb-equity = { path = "./extensions/equity", develop = true }
-openbb-etf = { path = "./extensions/etf", develop = true }
-openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
-openbb-index = { path = "./extensions/index", develop = true }
-openbb-news = { path = "./extensions/news", develop = true }
-openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers = "python_version >= '3.10'" }
-
-# Community dependencies
-openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
-openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }
-openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
-openbb-famafrench = { path = "./providers/famafrench", optional = true, develop = true }
-openbb-finra = { path = "./providers/finra", optional = true, develop = true }
-openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
-openbb-multpl = { path = "./providers/multpl", optional = true, develop = true }
-openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
-openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
-openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
-openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
-
-openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
-openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
-openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
-openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
-"""
+REPO_PATH = PLATFORM_PATH.parent
+PACKAGE_GLOBS = (
+    "openbb_platform/core/pyproject.toml",
+    "openbb_platform/extensions/*/pyproject.toml",
+    "openbb_platform/obbject_extensions/*/pyproject.toml",
+    "openbb_platform/providers/*/pyproject.toml",
+    "cli/pyproject.toml",
+)
+ROUTERS_PATH = Path("openbb_platform/extensions")
+ALWAYS_INSTALLED_ROUTERS = frozenset({"openbb-news"})
+UV_BUILD_LOG = "uv_build_frontend=debug"
 
 
-def extract_dependencies(local_dep_path, dev: bool = False):
-    """Extract development dependencies from a given package's pyproject.toml."""
-    package_pyproject_path = PLATFORM_PATH / local_dep_path
-    if package_pyproject_path.exists():
-        with open(package_pyproject_path / "pyproject.toml") as f:
-            package_pyproject_toml = load(f)
-        if dev:
-            return (
-                package_pyproject_toml.get("tool", {})
-                .get("poetry", {})
-                .get("group", {})
-                .get("dev", {})
-                .get("dependencies", {})
+def log(message: str) -> None:
+    """Write a progress line to stdout immediately.
+
+    Parameters
+    ----------
+    message : str
+        The line to write.
+    """
+    sys.stdout.write(f"[dev_install] {message}\n")
+    sys.stdout.flush()
+
+
+def run_step(title: str, command: list[str], env: dict[str, str]) -> None:
+    """Run one install step, streaming its output and reporting its duration.
+
+    Parameters
+    ----------
+    title : str
+        The step name shown in the progress lines.
+    command : list[str]
+        The command to run from the repository root.
+    env : dict[str, str]
+        The environment for the command.
+    """
+    log(f"{title}...")
+    start = time.monotonic()
+    subprocess.run(command, cwd=REPO_PATH, env=env, check=True)
+    log(f"{title} finished in {time.monotonic() - start:.1f}s")
+
+
+def get_uv() -> list[str]:
+    """Return the command that invokes uv.
+
+    Returns
+    -------
+    list[str]
+        The uv module of the running interpreter, else the uv executable on PATH.
+
+    Raises
+    ------
+    SystemExit
+        If uv is not installed.
+    """
+    if find_spec("uv"):
+        return [sys.executable, "-m", "uv"]
+    uv = shutil.which("uv")
+    if uv:
+        return [uv]
+    sys.exit(
+        "dev_install.py requires uv: "
+        "https://docs.astral.sh/uv/getting-started/installation/"
+    )
+
+
+def load_toml(path: Path) -> dict:
+    """Parse a TOML file.
+
+    Parameters
+    ----------
+    path : Path
+        The TOML file to read.
+
+    Returns
+    -------
+    dict
+        The parsed document.
+    """
+    if sys.version_info >= (3, 11):
+        import tomllib
+    else:
+        if find_spec("tomli") is None:
+            subprocess.run(
+                [*get_uv(), "pip", "install", "--python", sys.executable, "tomli>=2"],
+                check=True,
             )
-        return (
-            package_pyproject_toml.get("tool", {})
-            .get("poetry", {})
-            .get("dependencies", {})
-        )
-    return {}
+        import tomli as tomllib
+    return tomllib.loads(path.read_text(encoding="utf-8"))
 
 
-def get_all_dev_dependencies():
-    """Aggregate development dependencies from all local packages."""
-    all_dev_dependencies = {}
-    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
-    for _, package_info in local_deps.items():
-        if "path" in package_info:
-            dev_deps = extract_dependencies(Path(package_info["path"]), dev=True)
-            all_dev_dependencies.update(dev_deps)
-    return all_dev_dependencies
+def get_tracked_packages() -> list[Path]:
+    """Return the repository-relative directory of every tracked, published package.
+
+    Returns
+    -------
+    list[Path]
+        Package directories, sorted.
+    """
+    result = subprocess.run(
+        ["git", "ls-files", "-z", "--", *(f":(glob){g}" for g in PACKAGE_GLOBS)],
+        cwd=REPO_PATH,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return sorted(Path(f).parent for f in result.stdout.split("\0") if f)
 
 
-def install_platform_local(_extras: bool = False):
-    """Install the Platform locally for development purposes."""
-    original_lock = LOCK.read_text(encoding="utf-8")
-    original_pyproject = PYPROJECT.read_text(encoding="utf-8")
+def is_optional_router(package: Path, pyproject: dict) -> bool:
+    """Return whether a package is a router extension installed only with --routers.
 
-    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
-    with open(PYPROJECT) as f:
-        pyproject_toml = load(f)
-    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
-        local_deps
+    Parameters
+    ----------
+    package : Path
+        The repository-relative package directory.
+    pyproject : dict
+        The package's parsed pyproject.toml.
+
+    Returns
+    -------
+    bool
+        True for an extension that registers an `openbb_core_extension` router,
+        other than those in ALWAYS_INSTALLED_ROUTERS.
+    """
+    project = pyproject.get("project", {})
+    return (
+        package.parent == ROUTERS_PATH
+        and "openbb_core_extension" in project.get("entry-points", {})
+        and project.get("name") not in ALWAYS_INSTALLED_ROUTERS
     )
 
-    if _extras:
-        dev_dependencies = get_all_dev_dependencies()
-        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault(
-            "group", {}
-        ).setdefault("dev", {}).setdefault("dependencies", {})
-        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"][
-            "dependencies"
-        ].update(dev_dependencies)
 
-    TEMP_PYPROJECT = dumps(pyproject_toml)
+def get_install_args(package: Path, pyproject: dict) -> list[str]:
+    """Return the uv arguments that install a package with its extras and dev group.
 
-    try:
-        with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(TEMP_PYPROJECT)
+    Parameters
+    ----------
+    package : Path
+        The repository-relative package directory.
+    pyproject : dict
+        The package's parsed pyproject.toml.
 
-        CMD = [sys.executable, "-m", "poetry"]
-        extras_args = ["-E", "all"] if _extras else []
-
-        subprocess.run(
-            CMD + ["lock", "--regenerate"],
-            cwd=PLATFORM_PATH,
-            check=True,
-        )
-        subprocess.run(
-            CMD + ["install"] + extras_args,
-            cwd=PLATFORM_PATH,
-            check=True,
-        )
-
-    except (Exception, KeyboardInterrupt) as e:
-        print(e)  # noqa: T201
-        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
-
-    finally:
-        # Revert pyproject.toml and poetry.lock to their original state.
-        with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_pyproject)
-
-        with open(LOCK, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_lock)
+    Returns
+    -------
+    list[str]
+        The editable requirement, followed by the dev group when the package has one.
+    """
+    extras = sorted(pyproject.get("project", {}).get("optional-dependencies", {}))
+    target = package.as_posix() + (f"[{','.join(extras)}]" if extras else "")
+    args = ["--editable", target]
+    if "dev" in pyproject.get("dependency-groups", {}):
+        args += ["--group", f"{package.as_posix()}/pyproject.toml:dev"]
+    return args
 
 
-def install_platform_cli():
-    """Install the CLI locally for development purposes."""
-    original_lock = CLI_LOCK.read_text(encoding="utf-8")
-    original_pyproject = CLI_PYPROJECT.read_text(encoding="utf-8")
+def main(argv: list[str] | None = None) -> None:
+    """Install the packages into the running interpreter and build the static assets.
 
-    with open(CLI_PYPROJECT) as f:
-        pyproject_toml = load(f)
-
-    # remove "openbb" from dependencies
-    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop(
-        "openbb", None
+    Parameters
+    ----------
+    argv : list[str] | None
+        Command-line arguments, defaulting to sys.argv.
+    """
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--routers",
+        action="store_true",
+        help="Also install the router extensions (equity, economy, fixedincome, ...).",
     )
-
-    TEMP_PYPROJECT = dumps(pyproject_toml)
-
-    try:
-        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(TEMP_PYPROJECT)
-
-        CMD = [sys.executable, "-m", "poetry"]
-
-        subprocess.run(
-            CMD + ["lock", "--regenerate"],
-            cwd=CLI_PATH,
-            check=True,  # noqa: S603
-        )
-        subprocess.run(CMD + ["install"], cwd=CLI_PATH, check=True)  # noqa: S603
-
-    except (Exception, KeyboardInterrupt) as e:
-        print(e)  # noqa: T201
-        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
-
-    finally:
-        # Revert pyproject.toml and poetry.lock to their original state.
-        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_pyproject)
-
-        with open(CLI_LOCK, "w", encoding="utf-8", newline="\n") as f:
-            f.write(original_lock)
+    args = parser.parse_args(argv)
+    log(f"Installing into {sys.executable}")
+    install_args: list[str] = []
+    skipped: list[str] = []
+    for package in get_tracked_packages():
+        pyproject = load_toml(REPO_PATH / package / "pyproject.toml")
+        if args.routers or not is_optional_router(package, pyproject):
+            install_args += get_install_args(package, pyproject)
+            log(f"  + {package.as_posix()}")
+        else:
+            skipped.append(package.name)
+    if skipped:
+        log(f"Skipping routers (pass --routers to include): {', '.join(skipped)}")
+    run_step(
+        "Resolving, building, and installing with uv "
+        "(package builds and their hook output stream below)",
+        [*get_uv(), "pip", "install", "--python", sys.executable, *install_args],
+        {**os.environ, "RUST_LOG": os.environ.get("RUST_LOG", UV_BUILD_LOG)},
+    )
+    run_step(
+        "Building the openbb package",
+        [sys.executable, "-c", "import openbb; openbb.build(verbose=True)"],
+        {**os.environ, "OPENBB_AUTO_BUILD": "false"},
+    )
+    log("Done")
 
 
 if __name__ == "__main__":
-    args = sys.argv[1:]
-    extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
-    cli = any(arg.lower() in ["-c", "--cli"] for arg in args)
-    install_platform_local(extras)
-    if cli:
-        install_platform_cli()
+    main()
