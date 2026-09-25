@@ -1,5 +1,7 @@
 """Unit tests for ``openbb_sec.utils.xbrl_render``."""
 
+import pytest
+
 from openbb_sec.utils.xbrl_render import (
     _clean_member,
     _dims_str,
@@ -142,10 +144,21 @@ def _facts():
     }
 
 
-def _patch_parser(monkeypatch, *, contexts=None, units=None, facts=None, exc=None):
+def _patch_parser(
+    monkeypatch,
+    *,
+    contexts=None,
+    units=None,
+    facts=None,
+    exc=None,
+    linkbase_errors=None,
+):
     """Replace ``XBRLParser`` with a fake returning fixed parse_instance output."""
 
     class _FakeXBRLParser:
+        def __init__(self):
+            self.linkbase_errors = linkbase_errors or {}
+
         def parse_instance(self, stream, base_url=None):
             if exc is not None:
                 raise exc
@@ -293,6 +306,55 @@ class TestRenderXbrlFacts:
             ]
         }
         _patch_parser(monkeypatch, facts=facts)
+        assert render_xbrl_facts(_XBRL_BYTES) is None
+
+
+class TestUnavailablePresentation:
+    """A presentation document that failed to load is reported, not hidden."""
+
+    _FACTS = {
+        "us-gaap:Revenues": [
+            {
+                "end": "2023-12-31",
+                "period_type": "instant",
+                "label": "Revenues",
+                "tag": "us-gaap:Revenues",
+                "dimensions": {},
+                "value": 1,
+                "unit": None,
+                "presentation": None,
+            }
+        ]
+    }
+
+    @pytest.mark.parametrize("kind", ["presentation", "schema"])
+    def test_failed_document_is_explained(self, monkeypatch, kind):
+        _patch_parser(
+            monkeypatch,
+            facts=self._FACTS,
+            linkbase_errors={kind: "HTTPError: 429 <Too Many>"},
+        )
+        html = render_xbrl_facts(_XBRL_BYTES, source_url="https://www.sec.gov/d/x.xml")
+        assert f"filing's {kind} document could not be loaded" in html
+        assert "HTTPError: 429 &lt;Too Many&gt;" in html
+        assert 'href="https://www.sec.gov/d/x.xml"' in html
+
+    def test_failed_document_without_source_url(self, monkeypatch):
+        _patch_parser(
+            monkeypatch,
+            facts=self._FACTS,
+            linkbase_errors={"presentation": "Timeout: slow"},
+        )
+        html = render_xbrl_facts(_XBRL_BYTES)
+        assert "could not be loaded (Timeout: slow)." in html
+        assert "Open the XBRL document" not in html
+
+    def test_label_failure_alone_is_not_reported(self, monkeypatch):
+        _patch_parser(
+            monkeypatch,
+            facts=self._FACTS,
+            linkbase_errors={"label": "Timeout: slow"},
+        )
         assert render_xbrl_facts(_XBRL_BYTES) is None
 
 

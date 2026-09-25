@@ -101,14 +101,20 @@ SEC Taxonomy Reference Links
 
 # flake8: noqa: PLR0912, PLR0914
 
+import time
 import warnings
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from io import BytesIO
 from typing import Any
-from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import Element, ParseError
 
+import requests
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.model.abstract.warning import OpenBBWarning
+
+LINKBASE_FETCH_ATTEMPTS = 3
+LINKBASE_RETRY_BACKOFF = 1.0
 
 # Constants for XBRL Namespaces
 NS = {
@@ -1346,11 +1352,111 @@ class XBRLParser:
         self.labels = labels or {}
         self.documentation: dict[str, str] = {}
         self.element_properties: dict[str, dict[str, Any]] = {}
+        self.linkbase_errors: dict[str, str] = {}
 
     def _get_xml_root(self, file_content: str | BytesIO) -> Element | None:
         from defusedxml.ElementTree import parse
 
         return parse(file_content).getroot()
+
+    @staticmethod
+    def _is_transient_fetch_error(exc: OSError) -> bool:
+        """Return whether a failed download is worth retrying.
+
+        Parameters
+        ----------
+        exc : OSError
+            The download error.
+
+        Returns
+        -------
+        bool
+            True for timeouts, connection errors, HTTP 429, and HTTP 5xx.
+        """
+        if isinstance(exc, (requests.Timeout, requests.ConnectionError)):
+            return True
+        response = getattr(exc, "response", None)
+        return (
+            isinstance(exc, requests.HTTPError)
+            and response is not None
+            and (response.status_code == 429 or response.status_code >= 500)
+        )
+
+    def _fetch_filing_document(self, url: str) -> bytes:
+        """Download a filing document, retrying transient failures.
+
+        Parameters
+        ----------
+        url : str
+            The document URL.
+
+        Returns
+        -------
+        bytes
+            The document body.
+
+        Raises
+        ------
+        OSError
+            If the download fails permanently or on the final attempt.
+        """
+        from openbb_sec.utils.cache import cached_bytes
+        from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
+
+        for attempt in range(LINKBASE_FETCH_ATTEMPTS - 1):
+            try:
+                return cached_bytes(url, headers=SEC_HEADERS)
+            except OSError as exc:
+                if not self._is_transient_fetch_error(exc):
+                    raise
+                time.sleep(LINKBASE_RETRY_BACKOFF * 2**attempt)
+        return cached_bytes(url, headers=SEC_HEADERS)
+
+    def _load_filing_document(self, kind: str, url: str) -> Element | None:
+        """Download and parse a filing document, warning when it is unavailable.
+
+        Parameters
+        ----------
+        kind : str
+            The document kind, ``schema``, ``label``, or ``presentation``.
+        url : str
+            The document URL.
+
+        Returns
+        -------
+        Element | None
+            The document root, or None when it could not be downloaded or parsed.
+        """
+        try:
+            return self._get_xml_root(BytesIO(self._fetch_filing_document(url)))
+        except (OSError, ParseError, ValueError) as exc:
+            reason = f"{type(exc).__name__}: {exc}"
+            self.linkbase_errors[kind] = reason
+            warnings.warn(
+                f"Could not load the filing's {kind} document from {url}: {reason}",
+                OpenBBWarning,
+                stacklevel=3,
+            )
+            return None
+
+    @staticmethod
+    def _parse_order(value: str | None) -> float | None:
+        """Parse a presentation arc ``order``, ignoring invalid values.
+
+        Parameters
+        ----------
+        value : str | None
+            The ``order`` attribute.
+
+        Returns
+        -------
+        float | None
+            The order, or None when missing or not numeric.
+        """
+        try:
+            return float(value) if value else None
+        except ValueError:
+            return None
 
     def parse_schema(
         self, file_content: BytesIO
@@ -2179,14 +2285,10 @@ class XBRLParser:
               ``table`` (role short name), ``parent`` (parent element_id),
               ``order`` (float), and ``preferred_label`` (role short name).
         """
-        from openbb_sec.utils.cache import cached_bytes
-        from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
-
         link_ns = "http://www.xbrl.org/2003/linkbase"
         xlink_ns = "http://www.w3.org/1999/xlink"
         labels_map: dict[str, dict[str, str]] = {}
         presentation_map: dict[str, list[dict[str, Any]]] = {}
-        # 1. Find schemaRef in instance document
         schema_href = None
 
         for ref in root.findall(f".//{{{link_ns}}}schemaRef"):
@@ -2198,7 +2300,6 @@ class XBRLParser:
         if not schema_href:
             return labels_map, presentation_map
 
-        # Resolve schema URL (may be relative)
         from urllib.parse import urljoin
 
         schema_url = (
@@ -2206,17 +2307,9 @@ class XBRLParser:
             if schema_href.startswith("http")
             else urljoin(base_url, schema_href)
         )
+        schema_root = self._load_filing_document("schema", schema_url)
 
-        # 2. Fetch company schema and find linkbaseRef entries
-        try:
-            schema_root = self._get_xml_root(
-                BytesIO(cached_bytes(schema_url, headers=SEC_HEADERS))
-            )
-
-            if schema_root is None:
-                return labels_map, presentation_map
-
-        except Exception:  # noqa: S112
+        if schema_root is None:
             return labels_map, presentation_map
 
         label_url = None
@@ -2235,96 +2328,75 @@ class XBRLParser:
             elif "presentationLinkbaseRef" in role or "presentationLinkbase" in role:
                 pre_url = full_url
 
-        # 3. Parse label linkbase
-        if label_url:
-            try:
-                lab_root = self._get_xml_root(
-                    BytesIO(cached_bytes(label_url, headers=SEC_HEADERS))
-                )
+        lab_root = self._load_filing_document("label", label_url) if label_url else None
 
-                if lab_root is not None:
-                    # Build loc_map: xlink:label -> element_id
-                    loc_map: dict[str, str] = {}
+        if lab_root is not None:
+            loc_map: dict[str, str] = {}
 
-                    for loc in lab_root.findall(f".//{{{link_ns}}}loc"):
-                        href = loc.get(f"{{{xlink_ns}}}href", "")
-                        loc_label = loc.get(f"{{{xlink_ns}}}label", "")
+            for loc in lab_root.findall(f".//{{{link_ns}}}loc"):
+                href = loc.get(f"{{{xlink_ns}}}href", "")
+                loc_label = loc.get(f"{{{xlink_ns}}}label", "")
 
-                        if href and "#" in href:
-                            loc_map[loc_label] = href.split("#")[1]
+                if href and "#" in href:
+                    loc_map[loc_label] = href.split("#")[1]
 
-                    # Build resource_map: xlink:label -> {role_short: text}
-                    resource_map: dict[str, dict[str, str]] = {}
+            resource_map: dict[str, dict[str, str]] = {}
 
-                    for res in lab_root.findall(f".//{{{link_ns}}}label"):
-                        role = res.get(f"{{{xlink_ns}}}role", "")
-                        role_short = role.split("/")[-1] if role else "label"
-                        res_label = res.get(f"{{{xlink_ns}}}label", "")
+            for res in lab_root.findall(f".//{{{link_ns}}}label"):
+                role = res.get(f"{{{xlink_ns}}}role", "")
+                role_short = role.split("/")[-1] if role else "label"
+                res_label = res.get(f"{{{xlink_ns}}}label", "")
 
-                        if res_label not in resource_map:
-                            resource_map[res_label] = {}
+                if res_label not in resource_map:
+                    resource_map[res_label] = {}
 
-                        resource_map[res_label][role_short] = res.text or ""
+                resource_map[res_label][role_short] = res.text or ""
 
-                    # Follow arcs to connect elements to labels
-                    for arc in lab_root.findall(f".//{{{link_ns}}}labelArc"):
-                        from_loc = arc.get(f"{{{xlink_ns}}}from", "")
-                        to_label = arc.get(f"{{{xlink_ns}}}to", "")
+            for arc in lab_root.findall(f".//{{{link_ns}}}labelArc"):
+                from_loc = arc.get(f"{{{xlink_ns}}}from", "")
+                to_label = arc.get(f"{{{xlink_ns}}}to", "")
 
-                        if from_loc in loc_map and to_label in resource_map:
-                            elem_id = loc_map[from_loc]
+                if from_loc in loc_map and to_label in resource_map:
+                    elem_id = loc_map[from_loc]
 
-                            if elem_id not in labels_map:
-                                labels_map[elem_id] = {}
+                    if elem_id not in labels_map:
+                        labels_map[elem_id] = {}
 
-                            labels_map[elem_id].update(resource_map[to_label])
-            except Exception:  # noqa: S110
-                pass
+                    labels_map[elem_id].update(resource_map[to_label])
 
-        # 4. Parse presentation linkbase for hierarchy, order, and preferred labels
-        if pre_url:
-            try:
-                pre_root = self._get_xml_root(
-                    BytesIO(cached_bytes(pre_url, headers=SEC_HEADERS))
-                )
-                if pre_root is not None:
-                    # Process each presentationLink (table/role) separately
-                    for plink in pre_root.findall(f".//{{{link_ns}}}presentationLink"):
-                        role = plink.get(f"{{{xlink_ns}}}role", "")
-                        role_short = role.split("/")[-1] if role else ""
+        pre_root = (
+            self._load_filing_document("presentation", pre_url) if pre_url else None
+        )
 
-                        # Build loc_map for this role
-                        pre_loc_map: dict[str, str] = {}
-                        for loc in plink.findall(f"{{{link_ns}}}loc"):
-                            href = loc.get(f"{{{xlink_ns}}}href", "")
-                            loc_label = loc.get(f"{{{xlink_ns}}}label", "")
-                            if href and "#" in href:
-                                pre_loc_map[loc_label] = href.split("#")[1]
+        if pre_root is not None:
+            for plink in pre_root.findall(f".//{{{link_ns}}}presentationLink"):
+                role = plink.get(f"{{{xlink_ns}}}role", "")
+                role_short = role.split("/")[-1] if role else ""
+                pre_loc_map: dict[str, str] = {}
 
-                        # Extract parent, order, and preferred label from arcs
-                        for arc in plink.findall(f"{{{link_ns}}}presentationArc"):
-                            from_loc = arc.get(f"{{{xlink_ns}}}from", "")
-                            to_loc = arc.get(f"{{{xlink_ns}}}to", "")
-                            order = arc.get("order")
-                            pref = arc.get("preferredLabel", "")
+                for loc in plink.findall(f"{{{link_ns}}}loc"):
+                    href = loc.get(f"{{{xlink_ns}}}href", "")
+                    loc_label = loc.get(f"{{{xlink_ns}}}label", "")
+                    if href and "#" in href:
+                        pre_loc_map[loc_label] = href.split("#")[1]
 
-                            parent_id = pre_loc_map.get(from_loc)
-                            child_id = pre_loc_map.get(to_loc)
+                for arc in plink.findall(f"{{{link_ns}}}presentationArc"):
+                    child_id = pre_loc_map.get(arc.get(f"{{{xlink_ns}}}to", ""))
 
-                            if child_id is not None:
-                                entry: dict[str, Any] = {
-                                    "table": role_short,
-                                    "parent": parent_id,
-                                    "order": (float(order) if order else None),
-                                    "preferred_label": (
-                                        pref.split("/")[-1] if pref else None
-                                    ),
-                                }
-                                if child_id not in presentation_map:
-                                    presentation_map[child_id] = []
-                                presentation_map[child_id].append(entry)
-            except Exception:  # noqa: S110
-                pass
+                    if child_id is not None:
+                        pref = arc.get("preferredLabel", "")
+                        presentation_map.setdefault(child_id, []).append(
+                            {
+                                "table": role_short,
+                                "parent": pre_loc_map.get(
+                                    arc.get(f"{{{xlink_ns}}}from", "")
+                                ),
+                                "order": self._parse_order(arc.get("order")),
+                                "preferred_label": (
+                                    pref.split("/")[-1] if pref else None
+                                ),
+                            }
+                        )
 
         return labels_map, presentation_map
 

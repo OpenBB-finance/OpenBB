@@ -1,34 +1,19 @@
-"""Comprehensive tests for XBRL taxonomy handling, parsing, and fact resolution.
-
-Covers:
-  - Taxonomy registry (TAXONOMIES dict, TaxonomyConfig, TaxonomyCategory)
-  - XBRLNode dataclass
-  - XBRLParser static helpers (_resolve_measure, _build_ns_prefix_map, _resolve_ns_prefix)
-  - XBRLParser parsing methods (schema, labels, presentation, calculation, instance)
-  - XBRLManager high-level API (list taxonomies, years, components, structure, metadata)
-  - Instance-level fact resolution (units, contexts, labels, presentation, dimensions)
-  - Schema files fetcher integration (progressive drill-down modes)
-
-Network strategy
-----------------
-All tests that require HTTP make real network requests — no VCR cassettes.
-
-**Module-scoped fixtures** ensure each expensive download or parse happens
-at most **once per pytest run** of this file.  Cheap index-page fetches
-(``get_available_years``, ``list_available_components``) are small enough
-that per-test fetching is acceptable.
-"""
+"""Tests for XBRL taxonomy handling, parsing, and fact resolution."""
 
 # flake8: noqa: D102, E501
 
 from __future__ import annotations
 
+import gzip
 from io import BytesIO
+from pathlib import Path
 from typing import Any
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.service.user_service import UserService
 
 from openbb_sec.models.schema_files import (
@@ -84,31 +69,32 @@ def _reset_ifrs_cache():
         xth._ifrs_version_dates_cache = saved
 
 
-# ─── Module-scoped fixtures — each expensive fetch runs at most once ──────
+APPLE_10K_URL = (
+    "https://www.sec.gov/Archives/edgar/data/320193/"
+    "000032019324000123/aapl-20240928_htm.xml"
+)
+APPLE_10K_FILES = Path(__file__).parent / "fixtures" / "apple_10k"
+
+
+def serve_apple_10k_file(url: str, **kwargs: Any) -> bytes:
+    """Return a stored Apple 10-K filing document in place of downloading it."""
+    base = APPLE_10K_URL.rsplit("/", 1)[0] + "/"
+    if not url.startswith(base):
+        raise AssertionError(f"Unexpected request outside the Apple 10-K filing: {url}")
+    return gzip.decompress((APPLE_10K_FILES / f"{url[len(base) :]}.gz").read_bytes())
 
 
 @pytest.fixture(scope="module")
 def apple_10k_parsed():
-    """Download + fully parse Apple 10-K XBRL once for the module.
-
-    This is the most expensive single operation in the suite (~15 s)
-    because ``parse_instance`` with *base_url* resolves labels,
-    presentation, and schemas from the filing's schemaRef chain.
+    """Parse Apple's FY2024 10-K instance with its schema and linkbases from stored files.
 
     Returns ``(contexts, units, facts)``.
     """
-    from openbb_core.provider.utils.helpers import make_request
-
-    from openbb_sec.utils.definitions import HEADERS as SEC_HEADERS
-
-    url = (
-        "https://www.sec.gov/Archives/edgar/data/320193/"
-        "000032019324000123/aapl-20240928_htm.xml"
-    )
-    resp = make_request(url, headers=SEC_HEADERS)
-    p = XBRLParser()
-    contexts, units, facts = p.parse_instance(BytesIO(resp.content), base_url=url)
-    return contexts, units, facts
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setattr("openbb_sec.utils.cache.cached_bytes", serve_apple_10k_file)
+        return XBRLParser().parse_instance(
+            BytesIO(serve_apple_10k_file(APPLE_10K_URL)), base_url=APPLE_10K_URL
+        )
 
 
 @pytest.fixture(scope="module")
@@ -2280,6 +2266,39 @@ def _filing_dispatch(url, **kwargs):
     raise AssertionError(f"unexpected url {url}")
 
 
+def _http_error(status_code: int) -> requests.HTTPError:
+    """Build an HTTPError carrying a response with the given status."""
+    response = requests.Response()
+    response.status_code = status_code
+    return requests.HTTPError(f"{status_code}", response=response)
+
+
+class TestFilingDocumentHelpers:
+    """Retry classification and presentation order parsing."""
+
+    @pytest.mark.parametrize(
+        ("exc", "expected"),
+        [
+            (requests.Timeout("slow"), True),
+            (requests.ConnectionError("reset"), True),
+            (_http_error(429), True),
+            (_http_error(503), True),
+            (_http_error(404), False),
+            (requests.HTTPError("no response"), False),
+            (OSError("disk"), False),
+        ],
+    )
+    def test_is_transient_fetch_error(self, exc, expected):
+        assert XBRLParser._is_transient_fetch_error(exc) is expected
+
+    @pytest.mark.parametrize(
+        ("value", "expected"),
+        [("1.5", 1.5), ("2", 2.0), (None, None), ("", None), ("n/a", None)],
+    )
+    def test_parse_order(self, value, expected):
+        assert XBRLParser._parse_order(value) == expected
+
+
 class TestParseFilingLabels:
     """parse_instance(base_url=...) → _parse_filing_labels resolution."""
 
@@ -2308,8 +2327,8 @@ class TestParseFilingLabels:
             _, _, facts = parser.parse_instance(_b(no_ref), base_url=_BASE)
         assert facts["us-gaap_Assets"][0]["label"] == "us-gaap_Assets"
 
-    def test_label_linkbase_parse_error_swallowed(self, parser: XBRLParser):
-        """A label linkbase that fails to parse is swallowed (line 2120-2121)."""
+    def test_label_linkbase_parse_error_warns(self, parser: XBRLParser):
+        """A label linkbase that fails to parse is reported and skipped."""
 
         def dispatch(url, **kwargs):
             if url.endswith("aapl-20240928.xsd"):
@@ -2320,16 +2339,18 @@ class TestParseFilingLabels:
                 return _PRE_LINKBASE.encode("utf-8")
             raise AssertionError(url)
 
-        with patch(f"{CACHE_MOD}.cached_bytes", side_effect=dispatch):
+        with (
+            patch(f"{CACHE_MOD}.cached_bytes", side_effect=dispatch),
+            pytest.warns(OpenBBWarning, match="label document"),
+        ):
             _, _, facts = parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
-        # Label resolution failed, so the fact label falls back to the tag,
-        # but presentation (from the valid _pre.xml) still resolves.
+        assert "ParseError" in parser.linkbase_errors["label"]
         fact = facts["us-gaap_Assets"][0]
         assert fact["label"] == "us-gaap_Assets"
         assert fact["presentation"][0]["table"] == "BalanceSheet"
 
-    def test_presentation_linkbase_bad_order_swallowed(self, parser: XBRLParser):
-        """A non-numeric ``order`` raises inside the pres loop (line 2165-2166)."""
+    def test_presentation_linkbase_bad_order_keeps_hierarchy(self, parser: XBRLParser):
+        """A non-numeric ``order`` is dropped without losing the presentation."""
         bad_pre = _PRE_LINKBASE.replace('order="1.0"', 'order="not-a-number"')
 
         def dispatch(url, **kwargs):
@@ -2343,16 +2364,21 @@ class TestParseFilingLabels:
 
         with patch(f"{CACHE_MOD}.cached_bytes", side_effect=dispatch):
             _, _, facts = parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
-        # Labels still resolved; presentation parse aborted mid-way -> no key.
         fact = facts["us-gaap_Assets"][0]
         assert fact["label"] == "Total Assets"
-        assert "presentation" not in fact
+        assert fact["presentation"][0]["table"] == "BalanceSheet"
+        assert fact["presentation"][0]["order"] is None
 
-    def test_schema_fetch_error_swallowed(self, parser: XBRLParser):
-        with patch(f"{CACHE_MOD}.cached_bytes", side_effect=OSError("boom")):
+    def test_schema_fetch_error_warns(self, parser: XBRLParser):
+        fetch = MagicMock(side_effect=OSError("boom"))
+        with (
+            patch(f"{CACHE_MOD}.cached_bytes", fetch),
+            pytest.warns(OpenBBWarning, match="schema document"),
+        ):
             _, _, facts = parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
-        # label falls back to the tag name when schema can't be fetched
         assert facts["us-gaap_Assets"][0]["label"] == "us-gaap_Assets"
+        assert parser.linkbase_errors == {"schema": "OSError: boom"}
+        assert fetch.call_count == 1
 
     def test_schema_root_none_returns_empty(self, parser: XBRLParser):
         """A None schema root short-circuits filing-label resolution (line 2056).
@@ -2378,6 +2404,60 @@ class TestParseFilingLabels:
             _, _, facts = parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
         # No labels resolved -> fact label falls back to the tag name.
         assert facts["us-gaap_Assets"][0]["label"] == "us-gaap_Assets"
+
+    def test_transient_presentation_failures_are_retried(self, parser: XBRLParser):
+        failures = [requests.Timeout("slow"), requests.ConnectionError("reset")]
+
+        def dispatch(url, **kwargs):
+            if url.endswith("_pre.xml") and failures:
+                raise failures.pop(0)
+            return _filing_dispatch(url)
+
+        with (
+            patch(f"{CACHE_MOD}.cached_bytes", side_effect=dispatch),
+            patch.object(xth, "LINKBASE_RETRY_BACKOFF", 0),
+        ):
+            _, _, facts = parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
+        assert facts["us-gaap_Assets"][0]["presentation"][0]["table"] == "BalanceSheet"
+        assert not failures
+        assert parser.linkbase_errors == {}
+
+    def test_rate_limited_presentation_warns_after_retries(self, parser: XBRLParser):
+        calls: list[str] = []
+
+        def dispatch(url, **kwargs):
+            if url.endswith("_pre.xml"):
+                calls.append(url)
+                raise _http_error(429)
+            return _filing_dispatch(url)
+
+        with (
+            patch(f"{CACHE_MOD}.cached_bytes", side_effect=dispatch),
+            patch.object(xth, "LINKBASE_RETRY_BACKOFF", 0),
+            pytest.warns(OpenBBWarning, match="presentation document"),
+        ):
+            _, _, facts = parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
+        fact = facts["us-gaap_Assets"][0]
+        assert fact["label"] == "Total Assets"
+        assert "presentation" not in fact
+        assert len(calls) == xth.LINKBASE_FETCH_ATTEMPTS
+        assert "HTTPError" in parser.linkbase_errors["presentation"]
+
+    def test_missing_presentation_is_not_retried(self, parser: XBRLParser):
+        calls: list[str] = []
+
+        def dispatch(url, **kwargs):
+            if url.endswith("_pre.xml"):
+                calls.append(url)
+                raise _http_error(404)
+            return _filing_dispatch(url)
+
+        with (
+            patch(f"{CACHE_MOD}.cached_bytes", side_effect=dispatch),
+            pytest.warns(OpenBBWarning, match="presentation document"),
+        ):
+            parser.parse_instance(_b(_INSTANCE), base_url=_BASE)
+        assert len(calls) == 1
 
     def test_absolute_hrefs_in_schema(self, parser: XBRLParser):
         """linkbaseRef with absolute hrefs are used directly."""

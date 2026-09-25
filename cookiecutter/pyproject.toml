@@ -1,6 +1,6 @@
 [project]
 name = "openbb-cookiecutter"
-version = "0.6.0"
+version = "1.0.0"
 description = "Extensions template for the OpenBB Python Package."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "Apache-2.0" }
