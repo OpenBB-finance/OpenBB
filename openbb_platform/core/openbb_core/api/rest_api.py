@@ -2,6 +2,7 @@
 
 import logging
 from contextlib import asynccontextmanager
+from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +13,7 @@ from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.system import router as router_system
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
+from openbb_core.app.utils.flask import merge_flask_openapi, mount_flask_extensions
 from openbb_core.env import Env
 
 logger = logging.getLogger("uvicorn.error")
@@ -92,6 +94,24 @@ AppLoader.add_routers(
 )
 AppLoader.add_openapi_tags(app)
 AppLoader.add_exception_handlers(app)
+
+mount_flask_extensions(app, system.api_settings.prefix)
+
+
+_base_openapi = app.openapi
+
+
+def _custom_openapi() -> dict[str, Any]:
+    """Return the OpenAPI schema with mounted Flask routes merged in."""
+    if app.openapi_schema:
+        return app.openapi_schema
+    schema = _base_openapi()
+    merge_flask_openapi(schema, system.api_settings.prefix)
+    app.openapi_schema = schema
+    return schema
+
+
+app.openapi = _custom_openapi  # ty: ignore[invalid-assignment]
 
 
 if __name__ == "__main__":

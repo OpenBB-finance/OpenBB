@@ -51,6 +51,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
         self._obbject_objects: dict[str, Extension] = {}
         self._core_objects: dict[str, Router] = {}
         self._provider_objects: dict[str, Provider] = {}
+        self._flask_objects: dict[str, Any] = {}
         self._on_command_output_callbacks: dict[str, list[Extension]] = {}
         self._register_command_output_callbacks()
 
@@ -138,6 +139,21 @@ class ExtensionLoader(metaclass=SingletonMeta):
             self._provider_entry_points, OpenBBGroups.provider
         )
         return self._provider_objects
+
+    @property
+    def flask_objects(self) -> dict[str, Any]:
+        """Return Flask applications referenced by core extension entry points."""
+        if not self._flask_objects:
+            from openbb_core.app.utils.flask import is_flask_app
+
+            for ep in self._core_entry_points:
+                try:
+                    entry = ep.load()
+                except (ImportError, AttributeError):
+                    continue
+                if is_flask_app(entry):
+                    self._flask_objects[ep.name] = entry
+        return self._flask_objects
 
     @staticmethod
     def _sorted_entry_points(group: str) -> EntryPoints:

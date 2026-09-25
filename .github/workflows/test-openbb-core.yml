@@ -67,11 +67,11 @@ jobs:
           allow-prereleases: true
           cache: "pip"
 
-      - name: Install openbb-core (with pandas extra) and test deps
+      - name: Install openbb-core (with pandas and flask extras) and test deps
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[pandas]"
-          pip install pytest pytest-cov pytest-asyncio httpx coverage[toml]
+          pip install -e ".[pandas,flask]"
+          pip install pytest pytest-cov pytest-asyncio httpx2 coverage[toml]
 
       - name: Run unit tests
         run: |
@@ -110,11 +110,11 @@ jobs:
           python-version: "3.13"
           cache: "pip"
 
-      - name: Install openbb-core (with pandas extra) and test deps
+      - name: Install openbb-core (with pandas and flask extras) and test deps
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[pandas]"
-          pip install pytest pytest-cov pytest-asyncio httpx coverage[toml]
+          pip install -e ".[pandas,flask]"
+          pip install pytest pytest-cov pytest-asyncio httpx2 coverage[toml]
 
       - name: Enable subprocess coverage (sitecustomize shim)
         run: |
