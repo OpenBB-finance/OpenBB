@@ -275,11 +275,15 @@ def run_in_obb(cli_fake_extension_installed, tmp_path_factory):  # noqa: ARG001
             text=True,
             env=_subprocess_env({"OPENBB_AUTO_BUILD": "false"}),
         )
+        if worker.stdin is None or worker.stdout is None:
+            raise RuntimeError("obb worker started without piped stdin/stdout")
+        worker_stdin = worker.stdin
+        worker_stdout = worker.stdout
 
         def _run(snippet: str) -> dict:
-            worker.stdin.write(json.dumps(textwrap.dedent(snippet).strip()) + "\n")
-            worker.stdin.flush()
-            line = worker.stdout.readline()
+            worker_stdin.write(json.dumps(textwrap.dedent(snippet).strip()) + "\n")
+            worker_stdin.flush()
+            line = worker_stdout.readline()
             if not line:
                 raise AssertionError(
                     f"obb worker exited (rc={worker.wait()})\n"
@@ -293,5 +297,5 @@ def run_in_obb(cli_fake_extension_installed, tmp_path_factory):  # noqa: ARG001
         try:
             yield _run
         finally:
-            worker.stdin.close()
+            worker_stdin.close()
             worker.wait(timeout=60)

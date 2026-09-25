@@ -182,6 +182,11 @@ def _merge_redactions(
                 continue
             if location == "header":
                 headers[wire] = _mock_value_for(wire)
+            elif location == "cookie":
+                # Cookies travel on the wire as the ``Cookie`` header, which
+                # ``_STANDARD_HEADER_REDACTIONS`` already blanket-redacts below
+                # — VCR has no way to filter a single cookie within it.
+                continue
             else:
                 queries[wire] = _mock_value_for(wire)
     for n, v in _STANDARD_HEADER_REDACTIONS:
