@@ -1,10 +1,5 @@
 name: 📦 publish openbb-quantitative
 
-# Triggers exclusively on the merge of a ``release/openbb-quantitative-v*``
-# branch into ``develop`` (or ``v5``). Four sequential jobs — verify the
-# version bump, build once, test the built source across the full
-# cross-platform matrix, and only publish to PyPI if the matrix is green.
-
 on:
   pull_request:
     types: [closed]
@@ -28,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Parse [project].version from pyproject.toml
         id: parse
@@ -87,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -129,7 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -151,7 +146,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # required for PyPI OIDC trusted publishing
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:

@@ -1,9 +1,5 @@
 name: 📦 publish openbb-technical
 
-# Triggers exclusively on the merge of a ``release/openbb-technical-v*``
-# branch into ``develop``. Four sequential jobs — version-check,
-# build, test, publish — with PyPI OIDC trusted publishing.
-
 on:
   pull_request:
     types: [closed]
@@ -27,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Parse [project].version from pyproject.toml
         id: parse
@@ -86,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -128,7 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -143,13 +139,6 @@ jobs:
       - run: python -m pip install --upgrade pip uv
 
       - name: Install openbb-technical from source (+ dev group)
-        # Source install via ``-e .`` reads ``[tool.uv.sources]`` and
-        # resolves ``openbb-core[pandas]`` from the sibling tree at
-        # ``../../core``. Installing the wheel directly would fail
-        # dependency resolution until ``openbb-core>=2.0.0`` ships to
-        # PyPI; the wheel is still the artifact uploaded to PyPI by
-        # the ``publish`` job — this matrix validates the source the
-        # wheel was built from.
         run: |
           uv pip install --system -e .
           uv pip install --system --group dev

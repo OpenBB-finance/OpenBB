@@ -1,7 +1,5 @@
 name: 📦 publish openbb-bls
 
-# Triggers exclusively on the merge of a ``release/openbb-bls-v*`` branch into ``develop``.
-
 on:
   pull_request:
     types: [closed]
@@ -25,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Parse [project].version from pyproject.toml
         id: parse
@@ -84,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -99,9 +97,6 @@ jobs:
           key: bls-cache-${{ hashFiles('openbb_platform/providers/bls/openbb_bls/utils/generate_cache.py') }}
 
       - name: Build sdist + wheel (fresh BLS cache)
-        # ``OPENBB_BLS_FORCE_CACHE_REBUILD=1`` makes the build hook
-        # bypass its idempotent skip and regenerate against live
-        # download.bls.gov so the published artifact is always current.
         env:
           OPENBB_BLS_FORCE_CACHE_REBUILD: "1"
         run: uv build --no-sources
@@ -120,13 +115,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux: full sweep across every released Python.
           - { os: ubuntu-latest, python_version: "3.10" }
           - { os: ubuntu-latest, python_version: "3.11" }
           - { os: ubuntu-latest, python_version: "3.12" }
           - { os: ubuntu-latest, python_version: "3.13" }
           - { os: ubuntu-latest, python_version: "3.14" }
-          # macOS + Windows: min and max supported.
           - { os: macos-latest, python_version: "3.10" }
           - { os: macos-latest, python_version: "3.14" }
           - { os: windows-latest, python_version: "3.10" }
@@ -139,7 +132,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -179,7 +172,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # required for PyPI OIDC trusted publishing
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:

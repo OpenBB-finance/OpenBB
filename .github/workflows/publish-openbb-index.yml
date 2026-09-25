@@ -1,9 +1,5 @@
 name: 📦 publish openbb-index
 
-# Triggers exclusively on the merge of a ``release/openbb-index-v*``
-# branch into ``develop``. Four sequential jobs — version-check,
-# build, test, publish — with PyPI OIDC trusted publishing.
-
 on:
   pull_request:
     types: [closed]
@@ -27,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Parse [project].version from pyproject.toml
         id: parse
@@ -86,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:

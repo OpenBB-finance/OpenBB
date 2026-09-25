@@ -1,10 +1,5 @@
 name: 📦 publish openbb-core
 
-# Triggers exclusively on the merge of a ``release/openbb-core-v*`` branch
-# into ``develop``. No push / tag triggers. Three sequential jobs —
-# build once, test the built artifact across the full cross-platform
-# matrix, and only publish to PyPI if the entire matrix is green.
-
 on:
   pull_request:
     types: [closed]
@@ -28,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Parse [project].version from pyproject.toml
         id: parse
@@ -87,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -115,13 +110,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux: full sweep across every supported Python.
           - { os: ubuntu-latest, python_version: "3.10" }
           - { os: ubuntu-latest, python_version: "3.11" }
           - { os: ubuntu-latest, python_version: "3.12" }
           - { os: ubuntu-latest, python_version: "3.13" }
           - { os: ubuntu-latest, python_version: "3.14" }
-          # macOS + Windows: min and max supported.
           - { os: macos-latest, python_version: "3.10" }
           - { os: macos-latest, python_version: "3.14" }
           - { os: windows-latest, python_version: "3.10" }
@@ -134,7 +127,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - uses: actions/setup-python@v6
         with:
@@ -155,10 +148,6 @@ jobs:
           uv pip install --system pytest pytest-cov pytest-asyncio httpx coverage[toml]
 
       - name: Test the installed wheel
-        # Remove the local ``openbb_core/`` and ``openbb/`` source trees so
-        # pytest imports the packages from site-packages — i.e., the EXACT
-        # wheel that's about to be uploaded to PyPI. This is a release
-        # pipeline; the source tree can't be allowed to shadow the artifact.
         run: |
           rm -rf openbb_core openbb
           pytest tests --cov=openbb_core --cov-report=term-missing
@@ -168,7 +157,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # required for PyPI OIDC trusted publishing
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
