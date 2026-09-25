@@ -13,6 +13,7 @@ from json import dumps, load
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
+    Any,
     TypeVar,
 )
 
@@ -228,9 +229,28 @@ class PackageBuilder:
 
         for group, entry_point in zip(og, el.entry_points):
             ext_map[group] = [
-                f"{e.name}@{getattr(e.dist, 'version', '')}" for e in entry_point
+                f"{e.name}@{self._distribution_version(e.dist)}" for e in entry_point
             ]
         return ext_map
+
+    @staticmethod
+    def _distribution_version(dist: Any) -> str:
+        """Return a distribution's version, or ``""`` when its metadata is unreadable.
+
+        Parameters
+        ----------
+        dist : Any
+            The distribution that provides an entry point.
+
+        Returns
+        -------
+        str
+            The version string.
+        """
+        try:
+            return getattr(dist, "version", "") or ""
+        except (TypeError, KeyError, OSError):
+            return ""
 
     def _save_modules(
         self,

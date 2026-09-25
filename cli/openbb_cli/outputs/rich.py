@@ -5,6 +5,7 @@ from typing import Any
 import pandas as pd
 
 from openbb_cli.controllers.utils import print_rich_table
+from openbb_cli.outputs.figure import is_plotly_figure, show_figure
 from openbb_cli.session import Session
 
 session = Session()
@@ -84,6 +85,9 @@ class RichTableOutput:
                 return
         elif isinstance(data, pd.Series):
             df = data.to_frame()
+        elif is_plotly_figure(data):
+            show_figure(data, title)
+            return
         elif isinstance(data, dict):
             try:
                 df = pd.DataFrame.from_dict(data, orient="columns")

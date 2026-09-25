@@ -10,9 +10,63 @@ import pandas as pd
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
+from openbb_cli.outputs.figure import is_plotly_figure
 from openbb_cli.session import Session
 
 session = Session()
+
+
+def _is_empty_result(result: object) -> bool:
+    """Return whether a command result is ``None`` or an empty collection.
+
+    Parameters
+    ----------
+    result : object
+        The command result.
+
+    Returns
+    -------
+    bool
+        True for ``None`` and for empty lists, tuples, and dicts.
+    """
+    return result is None or (isinstance(result, (list, tuple, dict)) and not result)
+
+
+def _display_dict_result(result: dict, title: str, export: bool) -> pd.DataFrame:
+    """Display a dict command result, rendering Plotly figure JSON as a chart.
+
+    Parameters
+    ----------
+    result : dict
+        The command result.
+    title : str
+        The command location used as the display title.
+    export : bool
+        Whether the result is being exported instead of displayed.
+
+    Returns
+    -------
+    pd.DataFrame
+        The tabular form of the result for export, empty for figures and
+        results that cannot be tabulated.
+    """
+    if is_plotly_figure(result):
+        if export:
+            session.console.print(
+                "[yellow]This command returns a chart. "
+                "Add --raw to export its data.[/yellow]"
+            )
+        else:
+            session.output_adapter.display(data=result, title=title, chart=True)
+        return pd.DataFrame()
+    try:
+        df = pd.DataFrame.from_dict(result, orient="columns")
+    except ValueError:
+        if not export:
+            session.console.print(result)
+        return pd.DataFrame()
+    print_rich_table(df=df, show_index=True, title=title, export=export)
+    return df
 
 
 @lru_cache(maxsize=1)
@@ -281,13 +335,13 @@ class PlatformController(BaseController):
                                         session.console.print(results)
 
                         elif isinstance(obbject, dict):
-                            df = pd.DataFrame.from_dict(obbject, orient="columns")
-                            print_rich_table(
-                                df=df, show_index=True, title=title, export=export
-                            )
+                            df = _display_dict_result(obbject, title, export)
 
                         elif not isinstance(obbject, _OBBject()):
                             session.console.print(obbject)
+
+                    elif not export and _is_empty_result(obbject):
+                        session.console.print("[yellow]No results.[/yellow]")
 
                     if export and not df.empty:
                         sheet_name = getattr(ns_parser, "sheet_name", None)

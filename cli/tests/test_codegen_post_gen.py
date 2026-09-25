@@ -797,3 +797,20 @@ def test_generate_post_command_module_no_body_props_uses_empty_body_dict():
     )
     out = pg.generate_post_command_module(spec)
     assert "_body: dict[str, Any] = {}" in out.source
+
+
+def test_envelope_inner_schema_single_object_array_among_other_properties():
+    row = {"type": "object", "properties": {"symbol": {"type": "string"}}}
+    props = {
+        "count": {"type": "integer"},
+        "data": {"type": "array", "items": row},
+    }
+    assert pg._envelope_inner_schema({"type": "object"}, props) == row
+
+
+def test_envelope_inner_schema_single_scalar_array_is_not_an_envelope():
+    props = {
+        "count": {"type": "integer"},
+        "tags": {"type": "array", "items": {"type": "string"}},
+    }
+    assert pg._envelope_inner_schema({"type": "object"}, props) is None

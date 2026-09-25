@@ -667,3 +667,80 @@ def test_print_help_emits_warnings(mock_session):
         controller.print_help()
     msgs = [str(c) for c in mock_session.console.print.call_args_list]
     assert any("cmd: broken" in m for m in msgs)
+
+
+FIGURE_RESULT = {
+    "data": [{"type": "scatter", "x": [1, 2], "y": [3, 4]}],
+    "layout": {"title": {"text": "Chart"}},
+    "config": {"displaylogo": False},
+}
+
+
+def test_generated_call_figure_result_is_rendered_as_chart(mock_session):
+    """Plotly figure JSON goes to the output adapter as a chart, not a table."""
+    controller, translator = _make_command_call_test_setup(
+        mock_session, command_returns=FIGURE_RESULT
+    )
+    ns = MagicMock(export="", register_obbject=False, chart=False, sheet_name=None)
+    controller.parse_known_args_and_warn.return_value = ns
+    with patch(
+        "openbb_cli.controllers.base_platform_controller.print_rich_table"
+    ) as print_table:
+        controller.call_cmd([])
+    mock_session.output_adapter.display.assert_called_once_with(
+        data=FIGURE_RESULT, title="/parent/test/test_command", chart=True
+    )
+    print_table.assert_not_called()
+
+
+def test_generated_call_figure_result_export_points_to_raw(mock_session):
+    """Exporting a chart result asks for ``--raw`` instead of exporting nothing."""
+    controller, translator = _make_command_call_test_setup(
+        mock_session, command_returns=FIGURE_RESULT
+    )
+    ns = MagicMock(export=["csv"], chart=False, sheet_name=None)
+    controller.parse_known_args_and_warn.return_value = ns
+    with patch(
+        "openbb_cli.controllers.base_platform_controller.export_data"
+    ) as export_data:
+        controller.call_cmd([])
+    mock_session.output_adapter.display.assert_not_called()
+    export_data.assert_not_called()
+    msgs = [str(c) for c in mock_session.console.print.call_args_list]
+    assert any("--raw" in m for m in msgs)
+
+
+def test_generated_call_untabulable_dict_is_printed(mock_session):
+    """A dict mixing lists and nested dicts is printed instead of raising."""
+    result = {"rows": [1, 2], "meta": {"source": "x"}}
+    controller, translator = _make_command_call_test_setup(
+        mock_session, command_returns=result
+    )
+    ns = MagicMock(export="", register_obbject=False, chart=False, sheet_name=None)
+    controller.parse_known_args_and_warn.return_value = ns
+    controller.call_cmd([])
+    mock_session.console.print.assert_any_call(result)
+
+
+@pytest.mark.parametrize("empty", [[], {}, (), None])
+def test_generated_call_empty_result_reports_no_results(mock_session, empty):
+    """An empty or missing result says so instead of printing nothing."""
+    controller, translator = _make_command_call_test_setup(
+        mock_session, command_returns=empty
+    )
+    ns = MagicMock(export="", register_obbject=False, chart=False, sheet_name=None)
+    controller.parse_known_args_and_warn.return_value = ns
+    controller.call_cmd([])
+    mock_session.console.print.assert_called_once_with("[yellow]No results.[/yellow]")
+
+
+def test_generated_call_falsy_scalar_result_is_not_reported_empty(mock_session):
+    """A falsy scalar such as ``0`` is a result, not an empty one."""
+    controller, translator = _make_command_call_test_setup(
+        mock_session, command_returns=0
+    )
+    ns = MagicMock(export="", register_obbject=False, chart=False, sheet_name=None)
+    controller.parse_known_args_and_warn.return_value = ns
+    controller.call_cmd([])
+    msgs = [str(c) for c in mock_session.console.print.call_args_list]
+    assert not any("No results" in m for m in msgs)

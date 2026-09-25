@@ -239,10 +239,13 @@ The hook receives an `AuthContext` (namespace, command, params, method) and retu
 from openbb_cli.auth import AuthContext, AuthDecision
 from myapp.identity import current_user, get_token
 
+
 def rbac_hook(ctx: AuthContext) -> AuthDecision:
     user = current_user()
     if not user.can_access(ctx.namespace, ctx.command):
-        return AuthDecision(allow=False, deny_reason=f"{user.role} cannot call {ctx.command}")
+        return AuthDecision(
+            allow=False, deny_reason=f"{user.role} cannot call {ctx.command}"
+        )
     return AuthDecision(headers={"Authorization": f"Bearer {get_token(user)}"})
 ```
 

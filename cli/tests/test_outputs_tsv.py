@@ -104,3 +104,16 @@ def test_to_dataframe_returns_none_for_unknown():
         pass
 
     assert _to_dataframe(X()) is None
+
+
+class TestTsvOutputFigure:
+    """Plotly figure JSON in the TSV adapter."""
+
+    def test_figure_dict_is_written_as_json_line(self, tsv_output, capsys):
+        import json
+
+        figure = {"data": [{"type": "bar"}], "layout": {"title": {"text": "x"}}}
+        tsv_output.display(data=figure)
+        out = capsys.readouterr().out
+        assert out.endswith("\n")
+        assert json.loads(out) == figure
