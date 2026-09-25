@@ -19,7 +19,14 @@ def mount_flask_extensions(app: FastAPI, prefix: str = "") -> None:
     if not flask_apps:
         return
 
-    from fastapi.middleware.wsgi import WSGIMiddleware
+    from openbb_core.app.model.abstract.error import OpenBBError
+    from openbb_core.app.utils_optional import require_optional
+
+    try:
+        WSGIMiddleware = require_optional("a2wsgi").WSGIMiddleware  # noqa: N806
+    except OpenBBError as exc:
+        logger.warning("Flask extensions not mounted: %s", exc)
+        return
 
     base = prefix.rstrip("/")
     for name, flask_app in flask_apps.items():

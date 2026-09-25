@@ -220,17 +220,52 @@ def test_mount_flask_extensions_mounts_and_registers(mock_flask_objects):
     assert "demo" in FlaskMountRegistry.names()
 
 
-@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
-def test_wsgi_mount_serves_flask_and_documents_routes():
-    pytest.importorskip("httpx")
+@patch(
+    "openbb_core.app.extension_loader.ExtensionLoader.flask_objects",
+    new_callable=PropertyMock,
+)
+def test_mount_flask_extensions_without_a2wsgi_skips_mount(
+    mock_flask_objects, monkeypatch, caplog
+):
+    import builtins
+
     from fastapi import FastAPI
-    from fastapi.middleware.wsgi import WSGIMiddleware
+
+    from openbb_core.app.utils.flask import mount_flask_extensions
+
+    real_import = builtins.__import__
+
+    def _no_a2wsgi(name, *args, **kwargs):
+        if name == "a2wsgi":
+            raise ImportError("No module named 'a2wsgi'")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", _no_a2wsgi)
+    mock_flask_objects.return_value = {"demo": object()}
+
+    api = FastAPI()
+    routes_before = list(api.routes)
+    with caplog.at_level("WARNING", logger="openbb_core.app.utils.flask"):
+        mount_flask_extensions(api, "/api/v1")
+
+    assert api.routes == routes_before
+    assert FlaskMountRegistry.names() == []
+    assert "openbb-core[flask]" in caplog.text
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+@patch(
+    "openbb_core.app.extension_loader.ExtensionLoader.flask_objects",
+    new_callable=PropertyMock,
+)
+def test_wsgi_mount_serves_flask_and_documents_routes(mock_flask_objects):
+    from fastapi import FastAPI
     from flask import Flask
     from starlette.testclient import TestClient
 
-    from openbb_core.app.utils.flask.loader import (
-        _register_openapi,
+    from openbb_core.app.utils.flask import (
         merge_flask_openapi,
+        mount_flask_extensions,
     )
 
     flask_app = Flask(__name__)
@@ -245,9 +280,10 @@ def test_wsgi_mount_serves_flask_and_documents_routes():
         """Say hello."""
         return {"msg": "hi"}
 
+    mock_flask_objects.return_value = {"demo": flask_app}
+
     api = FastAPI()
-    api.mount("/api/v1/demo", WSGIMiddleware(flask_app), name="demo")
-    _register_openapi(flask_app, "demo")
+    mount_flask_extensions(api, "/api/v1")
 
     response = TestClient(api).get("/api/v1/demo/hello")
 

@@ -18,6 +18,18 @@ resolution-markers = [
 ]
 
 [[package]]
+name = "a2wsgi"
+version = "1.10.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9a/cb/822c56fbea97e9eee201a2e434a80437f6750ebcb1ed307ee3a0a7505b14/a2wsgi-1.10.10.tar.gz", hash = "sha256:a5bcffb52081ba39df0d5e9a884fc6f819d92e3a42389343ba77cbf809fe1f45", size = 18799, upload-time = "2025-06-18T09:00:10.843Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/02/d5/349aba3dc421e73cbd4958c0ce0a4f1aa3a738bc0d7de75d2f40ed43a535/a2wsgi-1.10.10-py3-none-any.whl", hash = "sha256:d2b21379479718539dc15fce53b876251a0efe7615352dfe49f6ad1bc507848d", size = 17389, upload-time = "2025-06-18T09:00:09.676Z" },
+]
+
+[[package]]
 name = "aiohappyeyeballs"
 version = "2.6.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1596,6 +1608,10 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+flask = [
+    { name = "a2wsgi" },
+    { name = "flask" },
+]
 pandas = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -1603,14 +1619,17 @@ pandas = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "a2wsgi" },
     { name = "flask" },
     { name = "openbb-devtools" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "a2wsgi", marker = "extra == 'flask'", specifier = ">=1.10.10" },
     { name = "aiohttp", specifier = ">=3.13.3" },
     { name = "fastapi", specifier = ">=0.136.3" },
+    { name = "flask", marker = "extra == 'flask'", specifier = ">=3.1.2" },
     { name = "importlib-metadata", specifier = ">=6.8.0" },
     { name = "pandas", marker = "extra == 'pandas'", specifier = ">=1.5.3" },
     { name = "pydantic", specifier = ">=2.12.3,<3.0.0" },
@@ -1624,10 +1643,11 @@ requires-dist = [
     { name = "uvicorn", specifier = ">=0.48.0" },
     { name = "websockets", specifier = ">=15.0" },
 ]
-provides-extras = ["pandas"]
+provides-extras = ["pandas", "flask"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "a2wsgi", specifier = ">=1.10.10" },
     { name = "flask", specifier = ">=3.1.2" },
     { name = "openbb-devtools", editable = "../extensions/devtools" },
 ]

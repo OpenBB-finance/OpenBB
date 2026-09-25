@@ -24,6 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 pandas = ["pandas>=1.5.3"]
+flask = ["flask>=3.1.2", "a2wsgi>=1.10.10"]
 
 [project.scripts]
 openbb-build = "openbb_core.build:main"
@@ -32,6 +33,7 @@ openbb-build = "openbb_core.build:main"
 dev = [
     "openbb-devtools>=2.0.1",
     "flask>=3.1.2",
+    "a2wsgi>=1.10.10",
 ]
 
 [build-system]

@@ -19,6 +19,8 @@ _INSTALL_HINTS: dict[str, str] = {
     "openbb_charting": "pip install openbb-charting",
     "pycountry": "pip install pycountry",
     "bs4": "pip install beautifulsoup4",
+    "flask": "pip install 'openbb-core[flask]'",
+    "a2wsgi": "pip install 'openbb-core[flask]'",
 }
 
 
