@@ -104,6 +104,38 @@ def test_classify_parameter_returns_none_for_non_dict_input():
     assert cr.classify_parameter("not-a-dict") is None  # type: ignore[arg-type]
 
 
+def test_classify_parameter_returns_header_for_required_unnamed_header():
+    """A required header credential is recognized by shape, not just by name.
+
+    e.g. Xero's ``xero-tenant-id`` — a required per-tenant header every
+    operation needs, but not a name on the known-secret allowlist.
+    """
+    p = {"name": "xero-tenant-id", "in": "header", "required": True}
+    assert cr.classify_parameter(p) == "header"
+
+
+def test_classify_parameter_returns_cookie_for_required_unnamed_cookie():
+    p = {"name": "xero-session", "in": "cookie", "required": True}
+    assert cr.classify_parameter(p) == "cookie"
+
+
+def test_classify_parameter_returns_none_for_optional_unnamed_header():
+    """An optional, non-secret-named header stays a regular parameter."""
+    p = {"name": "If-Modified-Since", "in": "header", "required": False}
+    assert cr.classify_parameter(p) is None
+
+
+def test_classify_parameter_returns_none_for_optional_unnamed_cookie():
+    p = {"name": "session", "in": "cookie"}
+    assert cr.classify_parameter(p) is None
+
+
+def test_classify_parameter_known_name_wins_over_required_check():
+    """A known secret name still classifies query/header, even if required."""
+    p = {"name": "api_key", "in": "query", "required": True}
+    assert cr.classify_parameter(p) == "query"
+
+
 # --- credentials_from_command ---
 
 
@@ -119,6 +151,20 @@ def test_credentials_from_command_extracts_query_and_header_entries():
     assert out == {
         "api_key": {"name": "api_key", "in": "query"},
         "authorization": {"name": "Authorization", "in": "header"},
+    }
+
+
+def test_credentials_from_command_extracts_required_cookie_entry():
+    cmd = {
+        "parameters": [
+            {"name": "xero-tenant-id", "in": "header", "required": True},
+            {"name": "xero-session", "in": "cookie", "required": True},
+        ]
+    }
+    out = cr.credentials_from_command(cmd)
+    assert out == {
+        "xero_tenant_id": {"name": "xero-tenant-id", "in": "header"},
+        "xero_session": {"name": "xero-session", "in": "cookie"},
     }
 
 

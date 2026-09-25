@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-CredentialLocation = Literal["query", "header"]
+CredentialLocation = Literal["query", "header", "cookie"]
 
 _CREDENTIAL_NAMES: frozenset[str] = frozenset(
     {
@@ -50,12 +50,24 @@ def is_credential_name(name: str) -> bool:
 
 
 def classify_parameter(param: dict[str, Any]) -> CredentialLocation | None:
-    """Return ``"query"`` / ``"header"`` for a credential param, ``None`` otherwise."""
+    """Return ``"query"`` / ``"header"`` / ``"cookie"`` for a credential param.
+
+    A parameter is a credential when its name is a known secret alias
+    (``api_key``, ``token``, ...), or when it's a *required* ``header``/
+    ``cookie`` parameter regardless of name — that's the profile of a
+    per-integration value (a tenant id, a session cookie) declared once on a
+    path item for every operation under it, not something request-specific
+    like ``If-Modified-Since``. Returns ``None`` for anything else.
+    """
     name = param.get("name") if isinstance(param, dict) else None
-    if not isinstance(name, str) or not is_credential_name(name):
+    if not isinstance(name, str) or not name:
         return None
     location = param.get("in", "query")
-    return "header" if location == "header" else "query"
+    if is_credential_name(name):
+        return "header" if location == "header" else "query"
+    if param.get("required") and location in ("header", "cookie"):
+        return location
+    return None
 
 
 def credentials_from_command(
