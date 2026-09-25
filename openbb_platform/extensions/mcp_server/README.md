@@ -230,7 +230,8 @@ OPENBB_MCP_UVICORN_CONFIG='{"host": "0.0.0.0", "port": 9000, "env_file": "./path
 
 ### openbb.toml
 
-The launcher reads the same layered TOML cascade as `openbb-core`, each layer overriding the one before: the `[tool.openbb]` table of the nearest `pyproject.toml` (so `[tool.openbb.mcp]` there), then `~/.openbb_platform/openbb.toml`, then the nearest `openbb.toml` walking up from the working directory, then the file passed with `--config-file` (or `$OPENBB_MCP_CONFIG`, `$OPENBB_API_CONFIG`, `$OPENBB_CONFIG`). `.openbb.toml` works in place of `openbb.toml`.
+The launcher reads the same layered TOML cascade as `openbb-core`, each layer overriding the one before:
+the `[tool.openbb]` table of the nearest `pyproject.toml` (so `[tool.openbb.mcp]` there), then `~/.openbb_platform/openbb.toml`, then the nearest `openbb.toml` walking up from the working directory, then the file passed with `--config-file` (or `$OPENBB_MCP_CONFIG`, `$OPENBB_API_CONFIG`, `$OPENBB_CONFIG`). `.openbb.toml` works in place of `openbb.toml`.
 
 ```toml
 [mcp]
@@ -309,7 +310,8 @@ For example:
 
 Each category contains subcategories that group related functionality (e.g., `equity_price`, `equity_fundamental`, etc.).
 
-Tool names come from the route path after the API prefix, skipping `{placeholder}` segments: `/equity/price/historical` is `equity_price_historical`, `/economy/cpi` is `economy_cpi`, and a single-segment `/hello` is `hello_hello`. When one path serves several methods, the non-GET tools get a `_<method>` suffix (`demo_items` and `demo_items_post`). A route's `mcp_config.name` replaces the generated name.
+Tool names come from the route path after the API prefix, skipping `{placeholder}` segments: `/equity/price/historical` is `equity_price_historical`, `/economy/cpi` is `economy_cpi`, and a single-segment `/hello` is `hello_hello`.
+When one path serves several methods, the non-GET tools get a `_<method>` suffix (`demo_items` and `demo_items_post`). A route's `mcp_config.name` replaces the generated name.
 
 ### Root Tools
 
@@ -395,7 +397,8 @@ Tool input schemas state every parameter's valid values, taken from the provider
 
 ### Charts
 
-A Plotly figure in a tool result, returned directly or as an OBBject's `chart` (`chart: true`), is replaced by an OpenBB Workspace artifact that Copilot renders natively. Line, bar, scatter, pie, and donut figures become a `chart` artifact whose `content` rows and `chart_params` (`chartType`, `xKey`, `yKey`, or `angleKey` and `calloutLabelKey`) redraw the figure. Other figures become a `table` artifact of their data. Tool output schemas declare the artifact in place of the Plotly figure.
+A Plotly figure in a tool result, returned directly or as an OBBject's `chart` (`chart: true`), is replaced by an OpenBB Workspace artifact that Copilot renders natively.
+Line, bar, scatter, pie, and donut figures become a `chart` artifact whose `content` rows and `chart_params` (`chartType`, `xKey`, `yKey`, or `angleKey` and `calloutLabelKey`) redraw the figure. Other figures become a `table` artifact of their data. Tool output schemas declare the artifact in place of the Plotly figure.
 
 ```json
 {
