@@ -1,1 +1,1 @@
-"""Providers Module"""
+"""Providers module."""

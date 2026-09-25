@@ -135,7 +135,7 @@ class TestShowFigure:
         ):
             show_figure(FIGURE, "t")
         open_browser.assert_called_once_with((tmp_path / "chart.html").as_uri())
-        assert "Plotly.newPlot" in (tmp_path / "chart.html").read_text()
+        assert "Plotly.newPlot" in (tmp_path / "chart.html").read_text(encoding="utf-8")
 
 
 class TestStripThemeColors:
