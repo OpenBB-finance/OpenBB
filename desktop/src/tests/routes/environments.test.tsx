@@ -237,12 +237,11 @@ describe('EnvironmentsPage', () => {
   });
 
   it('starts Jupyter Lab for an environment', async () => {
-    // Mock localStorage to return the correct extension for the environment
     mockLocalStorage.getItem.mockImplementation((key) => {
       if (key === 'environments-first-load-done') return 'true';
       if (key === 'env-extensions-cache') {
         return JSON.stringify({
-          'test-env': [{ package: 'notebook', version: '7.0.0' }]
+          'test-env': { extensions: [{ package: 'notebook', version: '7.0.0' }], pythonVersion: '3.10' }
         });
       }
       return null;
@@ -282,12 +281,11 @@ describe('EnvironmentsPage', () => {
   });
 
   it('stops Jupyter server for an environment', async () => {
-    // Mock localStorage to return the correct extension for the environment
     mockLocalStorage.getItem.mockImplementation((key) => {
       if (key === 'environments-first-load-done') return 'true';
       if (key === 'env-extensions-cache') {
         return JSON.stringify({
-          'test-env': [{ package: 'jupyter', version: '1.0.0' }]
+          'test-env': { extensions: [{ package: 'jupyter', version: '1.0.0' }], pythonVersion: '3.10' }
         });
       }
       return null;
@@ -331,13 +329,11 @@ describe('EnvironmentsPage', () => {
   });
 
   it('views Jupyter logs for an environment', async () => {
-    // Mock localStorage to return the correct extension for the environment
     mockLocalStorage.getItem.mockImplementation((key) => {
       if (key === 'environments-first-load-done') return 'true';
       if (key === 'env-extensions-cache') {
-        // This must match what your component expects for hasJupyterSupport
         return JSON.stringify({
-          'test-env': [{ package: 'jupyter', version: '1.0.0' }]
+          'test-env': { extensions: [{ package: 'jupyter', version: '1.0.0' }], pythonVersion: '3.10' }
         });
       }
       return null;
