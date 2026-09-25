@@ -122,6 +122,39 @@ def _pivot_table(entries: list, units: dict) -> str:
     )
 
 
+def _unavailable_presentation(linkbase_errors: dict, source_url: str) -> "str | None":
+    """Explain why statement tables are missing when the presentation failed to load.
+
+    Parameters
+    ----------
+    linkbase_errors : dict
+        Filing documents that could not be loaded, by kind, with the reason.
+    source_url : str
+        The instance document URL, linked for viewing the raw facts.
+
+    Returns
+    -------
+    str | None
+        An HTML notice, or None when the filing simply has no presentation.
+    """
+    kind = next((k for k in ("presentation", "schema") if k in linkbase_errors), None)
+    if kind is None:
+        return None
+    link = (
+        f' <a href="{escape(source_url)}" target=_blank rel=noopener>'
+        "Open the XBRL document</a>."
+        if source_url
+        else ""
+    )
+    return (
+        _STYLE
+        + "<div class=ob-xbrl><h1>XBRL Facts</h1>"
+        + "<p class=ob-trunc>The statement tables are unavailable because the "
+        + f"filing's {kind} document could not be loaded "
+        + f"({escape(linkbase_errors[kind])}).{link}</p></div>"
+    )
+
+
 def _header_line(facts: dict) -> str:
     """Entity / document context line from the cover facts."""
     found: dict = {}
@@ -146,8 +179,9 @@ def render_xbrl_facts(
     from openbb_sec.utils.xbrl_taxonomy_helper import XBRLParser
 
     base_url = source_url.rsplit("/", 1)[0] + "/" if source_url else None
+    parser = XBRLParser()
     try:
-        _contexts, units, facts = XBRLParser().parse_instance(
+        _contexts, units, facts = parser.parse_instance(
             io.BytesIO(xml_bytes), base_url=base_url
         )
     except Exception:  # noqa: BLE001
@@ -161,7 +195,7 @@ def render_xbrl_facts(
             for pres in fact.get("presentation") or []:
                 tables.setdefault(pres.get("table") or "Other", []).append((fact, pres))
     if not tables:
-        return None
+        return _unavailable_presentation(parser.linkbase_errors, source_url)
 
     ordered = sorted(tables, key=lambda name: (name != "Cover", name))
 

@@ -741,6 +741,7 @@ def test_edgar_document_rendered_no_index_link(monkeypatch):
         return b"<?xml version='1.0'?><x/>"
 
     _patch_bytes(monkeypatch, _bytes)
+    _patch_stream(monkeypatch, [], status_code=404)
     resp = asyncio.run(sec_router.edgar_document(url=base + "/form.xml"))
     assert resp.media_type.startswith("text/plain")
 
@@ -756,6 +757,7 @@ def test_edgar_document_rendered_index_error(monkeypatch):
         return b"<?xml version='1.0'?><x/>"
 
     _patch_bytes(monkeypatch, _bytes)
+    _patch_stream(monkeypatch, [], status_code=404)
     resp = asyncio.run(sec_router.edgar_document(url=base + "/form.xml"))
     assert resp.media_type.startswith("text/plain")
 
