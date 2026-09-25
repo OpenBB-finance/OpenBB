@@ -240,7 +240,7 @@ def test_introspector_reads_widget_config_attribute():
         """Get a quote."""
         return {}
 
-    quote.widget_config = {"name": "Quote", "category": "Equity"}
+    setattr(quote, "widget_config", {"name": "Quote", "category": "Equity"})
 
     routes, _ = FlaskIntrospector(app).introspect()
     assert routes[0].operations[0].widget_config == {

@@ -323,3 +323,21 @@ def test_flask_objects_collects_flask_entry_points(mock_entry_points):
     assert "flask_extension" in el.flask_objects
     assert el.flask_objects["flask_extension"] is flask_app
     assert "flask_extension" not in el.core_objects
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_flask_objects_skips_entry_points_that_fail_to_load(mock_entry_points):
+    """Entry points raising ImportError/AttributeError on load are skipped."""
+    core_group = "openbb_core_extension"
+    core_eps = [
+        EntryPoint("missing_module", "openbb_no_such_module:app", core_group),
+        EntryPoint("missing_attr", "json:no_such_attr", core_group),
+        EntryPoint("plain_object", "json:loads", core_group),
+    ]
+
+    def entry_points_side_effect(group=None):
+        return core_eps if group == core_group else []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    assert ExtensionLoader().flask_objects == {}

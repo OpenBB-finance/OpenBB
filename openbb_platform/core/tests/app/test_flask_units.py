@@ -72,6 +72,7 @@ def _v_form():
 
 def test_ast_form_get_and_subscript():
     _, _, body, _ = aa.analyze_view_source(_v_form)
+    assert body is not None
     assert body.media_type == "application/x-www-form-urlencoded"
     assert {"a", "b"} <= set(body.schema["properties"])
 
@@ -84,6 +85,7 @@ def _v_files():
 
 def test_ast_files_multipart():
     _, _, body, _ = aa.analyze_view_source(_v_files)
+    assert body is not None
     assert body.media_type == "multipart/form-data"
     assert body.schema["properties"]["f"] == {"type": "string", "format": "binary"}
 
@@ -96,6 +98,7 @@ def _v_data():
 
 def test_ast_data_binary():
     _, _, body, _ = aa.analyze_view_source(_v_data)
+    assert body is not None
     assert body.media_type == "application/octet-stream"
 
 
@@ -119,6 +122,7 @@ def _v_json_binding():
 
 def test_ast_json_binding_subscript():
     _, _, body, _ = aa.analyze_view_source(_v_json_binding)
+    assert body is not None
     assert body.media_type == "application/json"
     assert "k" in body.schema["properties"]
 
