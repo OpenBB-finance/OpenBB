@@ -1915,3 +1915,29 @@ def test_generate_model_docstring_strips_annotated_metadata_from_explicit_params
     out = _render_params(limit=param)
     assert "limit : int | None" in out
     assert "Annotated" not in out
+
+
+def test_get_field_type_bare_typevar_renders_any():
+    from typing import TypeVar
+
+    T = TypeVar("T")
+    assert DocstringGenerator.get_field_type(T, True) == "Any"
+
+
+def test_generate_model_docstring_untagged_merged_description_becomes_base():
+    desc = "Alpha detail. (provider: a);\n    Shared base text."
+    out = _render_params(kind=_param_with_description("kind", desc))
+    assert out.index("Shared base text.") < out.index("(provider: a)")
+    assert "Alpha detail." in out
+
+
+def test_literal_choices_reads_bare_optional_and_non_literal_types():
+    from typing import Literal
+
+    from openbb_core.app.static.package_builder.docstring_generator import (
+        _literal_choices,
+    )
+
+    assert _literal_choices(Literal["a", "b"]) == ["a", "b"]
+    assert _literal_choices(Literal["a", "b"] | None) == ["a", "b"]
+    assert _literal_choices(int | None) == []

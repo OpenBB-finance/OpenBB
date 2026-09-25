@@ -1765,7 +1765,7 @@ def test_build_func_params_wrapped_description_keeps_spaces_and_case():
     rendered = MethodDefinition.build_func_params(param_map)
     namespace: dict = {}
     exec(  # noqa: S102
-        "from typing import Annotated, Literal\n"
+        "from typing import Annotated, Literal, Optional\n"
         "from openbb_core.app.model.field import OpenBBField\n"
         f"def f({rendered}): pass\n",
         namespace,
