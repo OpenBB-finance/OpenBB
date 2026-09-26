@@ -67,8 +67,8 @@ res.show()
 List every available indicator and its parameters:
 
 ```python
-res.charting.indicators()    # from a result
-Charting.indicators()        # standalone
+res.charting.indicators()  # from a result
+Charting.indicators()  # standalone
 ```
 
 ## Building charts directly from data
@@ -80,7 +80,9 @@ res = obb.equity.price.historical("AAPL", provider="yfinance")
 df = res.to_dataframe()
 
 fig = res.charting.create_line_chart(data=res.results, target="close", render=False)
-fig = res.charting.create_bar_chart(data=res.results, x="date", y="volume", render=False)
+fig = res.charting.create_bar_chart(
+    data=res.results, x="date", y="volume", render=False
+)
 fig = res.charting.create_correlation_matrix(data=res.results, method="pearson")
 fig = res.charting.create_3d_surface(X=df["open"], Y=df["high"], Z=df["close"])
 fig.show()
@@ -148,8 +150,8 @@ from openbb_core.app.charting import ChartingHook
 class MyHook(ChartingHook):
     """Watermark every figure after it is built."""
 
-    routes = ()        # empty matches all routes
-    priority = 100     # lower runs first
+    routes = ()  # empty matches all routes
+    priority = 100  # lower runs first
 
     def post_figure(self, context):
         context.figure.add_annotation(text="INTERNAL", opacity=0.1)

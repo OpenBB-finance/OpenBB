@@ -87,6 +87,33 @@ def _install_fake_pywry() -> None:
 
 _install_fake_pywry()
 
+FIB_LEVELS = (0, 0.235, 0.382, 0.5, 0.618, 0.65, 1)
+
+
+def _calculate_fib_levels(data, close_col, limit=120, start_date=None, end_date=None):
+    """Return ``calculate_fib_levels`` outputs for the trailing ``limit`` closes."""
+    close = data.iloc[-limit:][close_col]
+    lvl_text = "left" if close.idxmin() < close.idxmax() else "right"
+    first, last = sorted((close.idxmin(), close.idxmax()))
+    min_pr, max_pr = close[first], close[last]
+    levels = [max_pr - (max_pr - min_pr) * level for level in FIB_LEVELS]
+    return pd.DataFrame({"Price": levels}), first, last, min_pr, max_pr, lvl_text
+
+
+def _clenow_momentum(values, window=90):
+    """Return ``clenow_momentum`` outputs for the trailing ``window`` values."""
+    return 0.0, 0.0, pd.Series(np.log(values.to_numpy()[-window:]))
+
+
+@pytest.fixture
+def technical_helpers(monkeypatch) -> types.ModuleType:
+    """Stub ``openbb_technical.helpers`` with deterministic Fib and Clenow outputs."""
+    helpers = types.ModuleType("openbb_technical.helpers")
+    helpers.calculate_fib_levels = _calculate_fib_levels  # type: ignore[attr-defined]
+    helpers.clenow_momentum = _clenow_momentum  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "openbb_technical.helpers", helpers)
+    return helpers
+
 
 def _make_ohlcv(
     seed: int, periods: int = 200, start: str = "2023-01-01"
