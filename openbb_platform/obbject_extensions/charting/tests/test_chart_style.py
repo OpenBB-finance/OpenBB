@@ -68,6 +68,11 @@ class TestMapLayoutKey:
         with patch.object(go.Layout, "_valid_props", set()):
             assert map_layout_key() == "mapbox"
 
+    def test_map_key_when_plotly_dropped_mapbox(self):
+        """Plotly 7 removed ``mapbox``, so ``map`` is the key to use."""
+        with patch.object(go.Layout, "_valid_props", {"map", "width"}):
+            assert map_layout_key() == "map"
+
 
 class TestPruneUnsupportedLayout:
     """Drop only the layout keys the installed Plotly rejects."""
