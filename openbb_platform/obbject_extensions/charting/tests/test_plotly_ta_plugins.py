@@ -138,10 +138,11 @@ class TestMomentumPlugin:
         fig = _plot(daily_df, {"stoch": {}}, candles=True, volume=True)
         assert isinstance(fig, OpenBBFigure)
 
-    def test_clenow_inchart(self, daily_df):
+    def test_clenow_inchart(self, daily_df, technical_helpers):
         """The Clenow momentum overlay fits and plots its trend line."""
         fig = _plot(daily_df, {"clenow": {"window": 90}}, candles=True, volume=True)
         assert isinstance(fig, OpenBBFigure)
+        assert "CLenow" in [trace.name for trace in fig.data]
 
     def test_clenow_import_error_warns(self, daily_df, monkeypatch):
         """A missing ``openbb-technical`` install warns and returns unchanged."""
@@ -369,12 +370,13 @@ class TestTrendPlugin:
 class TestCustomPlugin:
     """Tests for ``Custom`` custom indicators."""
 
-    def test_fib_inchart_daily(self, daily_df):
+    def test_fib_inchart_daily(self, daily_df, technical_helpers):
         """Fibonacci retracement levels are plotted from daily data."""
         fig = _plot(daily_df, {"fib": {}}, candles=True, volume=True)
         assert isinstance(fig, OpenBBFigure)
+        assert "Fib" in [trace.name for trace in fig.data]
 
-    def test_fib_rising_series_left_labels(self):
+    def test_fib_rising_series_left_labels(self, technical_helpers):
         """A rising series yields left-anchored Fibonacci labels."""
         idx = pd.date_range("2023-01-01", periods=150, freq="D")
         close = np.linspace(100, 200, 150)
@@ -393,8 +395,10 @@ class TestCustomPlugin:
         fig = inst.init_plot("AAA", candles=True)
         out = inst.plot_fib(fig, inst.df_ta)
         assert isinstance(out, OpenBBFigure)
+        zero = next(out.select_traces(selector={"name": "<b>0</b>"}))
+        assert zero.textposition == "top left"
 
-    def test_fib_falling_series_right_labels(self):
+    def test_fib_falling_series_right_labels(self, technical_helpers):
         """A falling series yields right-anchored Fibonacci labels."""
         idx = pd.date_range("2023-01-01", periods=150, freq="D")
         close = np.linspace(200, 100, 150)
@@ -413,13 +417,16 @@ class TestCustomPlugin:
         fig = inst.init_plot("AAA", candles=True)
         out = inst.plot_fib(fig, inst.df_ta)
         assert isinstance(out, OpenBBFigure)
+        zero = next(out.select_traces(selector={"name": "<b>0</b>"}))
+        assert zero.textposition == "bottom right"
 
-    def test_fib_intraday_branch(self, recent_intraday_df):
+    def test_fib_intraday_branch(self, recent_intraday_df, technical_helpers):
         """Fibonacci handles the intraday same-day resampling branch."""
         inst = _prepared(recent_intraday_df, {"fib": {}}, intraday=True)
         fig = inst.init_plot("AAA", candles=True)
         out = inst.plot_fib(fig, inst.df_ta)
         assert isinstance(out, OpenBBFigure)
+        assert "<b>1</b>" in [trace.name for trace in out.data]
 
     def test_fib_import_error_warns(self, daily_df, monkeypatch):
         """A missing ``openbb-technical`` install warns and returns unchanged."""
