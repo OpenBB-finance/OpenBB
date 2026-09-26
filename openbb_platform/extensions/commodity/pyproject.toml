@@ -28,9 +28,6 @@ packages = ["openbb_commodity"]
 [tool.hatch.build.targets.sdist]
 include = ["openbb_commodity", "README.md", "pyproject.toml"]
 
-[tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
-
 [tool.ruff]
 line-length = 88
 target-version = "py310"

@@ -36,9 +36,6 @@ include = [
 ]
 
 # This is here while V5 is under development
-[tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
-
 [tool.ruff]
 line-length = 88
 target-version = "py310"

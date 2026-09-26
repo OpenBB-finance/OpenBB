@@ -47,7 +47,6 @@ include = [
 ]
 
 [tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
 openbb-cli = { path = "../../../cli", editable = true }
 openbb-mcp-fixture = { path = "tests/fixtures/openbb_mcp_fixture", editable = true }
 

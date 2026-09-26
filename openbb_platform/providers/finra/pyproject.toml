@@ -41,7 +41,6 @@ exclude = ["openbb_finra/scripts"]
 path = "hatch_build.py"
 
 [tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
 openbb-devtools = { path = "../../extensions/devtools", editable = true }
 openbb-platform-api = { path = "../../extensions/platform_api", editable = true }
 

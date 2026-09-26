@@ -35,7 +35,6 @@ build-backend = "hatchling.build"
 packages = ["openbb_fred"]
 
 [tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
 openbb-devtools = { path = "../../extensions/devtools", editable = true }
 
 [tool.ruff]

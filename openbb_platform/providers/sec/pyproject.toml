@@ -47,11 +47,7 @@ include = [
     "pyproject.toml",
 ]
 
-[tool.uv]
-override-dependencies = ["openbb-core[pandas] @ ${PROJECT_ROOT}/../../core"]
-
 [tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
 openbb-platform-api = { path = "../../extensions/platform_api", editable = true }
 openbb-devtools = { path = "../../extensions/devtools", editable = true }
 

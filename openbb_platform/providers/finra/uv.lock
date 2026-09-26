@@ -1806,7 +1806,7 @@ wheels = [
 [[package]]
 name = "openbb-core"
 version = "2.0.0"
-source = { editable = "../../core" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "fastapi" },
@@ -1823,39 +1823,15 @@ dependencies = [
     { name = "websockets", version = "16.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "websockets", version = "17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/a4/9c/c3d082d234f15919cc1d626e7f4ed4694e3660cdad0fc91dddcfa8880f06/openbb_core-2.0.0.tar.gz", hash = "sha256:9418669e22c5dd191a1c50bf27bf1cdb24ec5932aa70717ace4ec5839957ebf0", size = 284642, upload-time = "2026-09-26T07:49:32.421Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/65/9e5d11b6ef5b49e21efc869a495f142419d658197fe59cd1676736311461/openbb_core-2.0.0-py3-none-any.whl", hash = "sha256:4b11b3efd2f1a7b225ba45344423fed1b9c3ac0a90f14a94791ce33352030908", size = 436126, upload-time = "2026-09-26T07:49:30.689Z" },
+]
 
 [package.optional-dependencies]
 pandas = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "a2wsgi", marker = "extra == 'flask'", specifier = ">=1.10.10" },
-    { name = "aiohttp", specifier = ">=3.13.3" },
-    { name = "fastapi", specifier = ">=0.136.3" },
-    { name = "flask", marker = "extra == 'flask'", specifier = ">=3.1.2" },
-    { name = "importlib-metadata", specifier = ">=6.8.0" },
-    { name = "pandas", marker = "extra == 'pandas'", specifier = ">=1.5.3" },
-    { name = "pydantic", specifier = ">=2.12.3,<3.0.0" },
-    { name = "pyjwt", specifier = ">=2.13.0" },
-    { name = "python-dotenv", specifier = ">=1.0.0" },
-    { name = "python-multipart", specifier = ">=0.0.29" },
-    { name = "requests", specifier = ">=2.34.2" },
-    { name = "ruff", specifier = ">=0.15" },
-    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.0" },
-    { name = "uuid7", specifier = ">=0.1.0" },
-    { name = "uvicorn", specifier = ">=0.48.0" },
-    { name = "websockets", specifier = ">=15.0" },
-]
-provides-extras = ["pandas", "flask"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "a2wsgi", specifier = ">=1.10.10" },
-    { name = "flask", specifier = ">=3.1.2" },
-    { name = "openbb-devtools", editable = "../../extensions/devtools" },
 ]
 
 [[package]]
@@ -1920,7 +1896,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "openbb-core", extras = ["pandas"], editable = "../../core" }]
+requires-dist = [{ name = "openbb-core", extras = ["pandas"], specifier = ">=2.0.0" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -1941,7 +1917,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "deepdiff", specifier = ">=8.6.2" },
-    { name = "openbb-core", editable = "../../core" },
+    { name = "openbb-core", specifier = ">=2.0.0" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
 ]
 

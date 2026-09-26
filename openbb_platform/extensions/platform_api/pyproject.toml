@@ -41,10 +41,6 @@ include = [
     "pyproject.toml",
 ]
 
-# openbb-core is path-sourced because v5's has not yet been published.
-[tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
-
 [tool.ruff]
 line-length = 88
 target-version = "py310"

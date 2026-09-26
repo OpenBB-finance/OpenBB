@@ -30,7 +30,6 @@ bls = "openbb_bls.bls_router:router"
 Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
-
 [build-system]
 requires = ["hatchling>=1.25", "requests>=2.31"]
 build-backend = "hatchling.build"
@@ -51,7 +50,6 @@ include = [
 path = "hatch_build.py"
 
 [tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
 openbb-devtools = { path = "../../extensions/devtools", editable = true }
 
 [tool.ruff]

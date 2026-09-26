@@ -42,7 +42,6 @@ include = [
 ]
 
 [tool.uv.sources]
-openbb-core = { path = "../../core", editable = true }
 openbb-charting = { path = "../../obbject_extensions/charting", editable = true }
 
 [tool.ruff]
