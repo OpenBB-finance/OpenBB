@@ -134,5 +134,7 @@ jobs:
       - name: Create and push release tag
         run: |
           TAG="${PACKAGE}-v${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$TAG" "$RELEASE_SHA" -m "${PACKAGE} ${VERSION}"
           git push origin "refs/tags/${TAG}"
