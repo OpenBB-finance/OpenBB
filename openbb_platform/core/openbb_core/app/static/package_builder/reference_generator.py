@@ -411,7 +411,7 @@ class ReferenceGenerator:
         )
 
         # Find all matches in the parameters section only
-        matches = pattern.finditer(params_section)
+        matches = list(pattern.finditer(params_section))
 
         if matches:
             # Iterate over the matches to extract details

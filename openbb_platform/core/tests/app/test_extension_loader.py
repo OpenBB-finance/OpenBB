@@ -341,3 +341,20 @@ def test_flask_objects_skips_entry_points_that_fail_to_load(mock_entry_points):
     mock_entry_points.side_effect = entry_points_side_effect
 
     assert ExtensionLoader().flask_objects == {}
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_flask_objects_when_is_flask_app_false(mock_entry_points):
+    """Entry points loaded successfully but not Flask apps are skipped."""
+    core_group = "openbb_core_extension"
+
+    mock_ep = MagicMock(spec=EntryPoint)
+    mock_ep.name = "not_flask"
+    mock_ep.load.return_value = object()
+
+    def entry_points_side_effect(group=None):
+        return [mock_ep] if group == core_group else []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    assert ExtensionLoader().flask_objects == {}

@@ -1,6 +1,7 @@
 """Tests for Flask route introspection, AST analysis and docstring parsing."""
 
 import importlib.util
+from unittest.mock import patch
 
 import pytest
 
@@ -318,3 +319,101 @@ def test_introspector_html_route_uses_text_html_response():
     content = routes[0].operations[0].responses["200"]["content"]
     assert "text/html" in content
     assert "application/json" not in content
+
+
+def _view_accessor_on_non_request():
+    undefined_var = {"key": "value"}
+    return {"value": undefined_var.get("key")}
+
+
+def test_ast_accessor_on_non_request_ignored():
+    query, _, _, partial = analyze_view_source(_view_accessor_on_non_request)
+    assert len(query) == 0
+    assert partial is False
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+def test_introspector_skips_static_endpoint():
+    from flask import Flask
+
+    from openbb_core.app.utils.flask.introspector import FlaskIntrospector
+
+    app = Flask(__name__)
+
+    routes, _ = FlaskIntrospector(app).introspect()
+    route_names = [r.path for r in routes]
+    assert "/static/<path:filename>" not in route_names
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+def test_introspector_self_spec_returns_none_if_no_spec():
+    from flask import Flask
+
+    from openbb_core.app.utils.flask.introspector import FlaskIntrospector
+
+    app = Flask(__name__)
+    introspector = FlaskIntrospector(app)
+    spec = introspector.try_self_spec()
+    assert spec is None
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+def test_introspector_model_ref_adds_to_components():
+    from flask import Flask
+    from pydantic import BaseModel
+
+    from openbb_core.app.utils.flask.introspector import FlaskIntrospector
+
+    class Item(BaseModel):
+        name: str
+
+    app = Flask(__name__)
+
+    @app.route("/item", methods=["GET"])
+    def get_item() -> Item:
+        """Get item."""
+        return Item(name="test")
+
+    routes, components = FlaskIntrospector(app).introspect()
+    assert "Item" in components
+    assert routes[0].operations[0].responses["200"]["content"]["application/json"][
+        "schema"
+    ] == {"$ref": "#/components/schemas/Item"}
+
+
+def _view_with_default():
+    from flask import request
+
+    value = request.args.get("value", default=42)
+    return {"value": value}
+
+
+def test_ast_query_default_as_example():
+    query, _, _, _ = analyze_view_source(_view_with_default)
+    by_name = {p.name: p for p in query}
+    assert by_name["value"].example == 42
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+def test_introspector_with_no_url_rules():
+    from flask import Flask
+
+    from openbb_core.app.utils.flask.introspector import FlaskIntrospector
+
+    app = Flask(__name__)
+    routes, _ = FlaskIntrospector(app).introspect()
+    assert routes == []
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+def test_introspector_with_view_without_endpoint():
+    from flask import Flask
+
+    from openbb_core.app.utils.flask.introspector import FlaskIntrospector
+
+    app = Flask(__name__)
+    introspector = FlaskIntrospector(app)
+
+    with patch.object(introspector, "_view_functions", {}):
+        routes, _ = introspector.introspect()
+        assert routes == []

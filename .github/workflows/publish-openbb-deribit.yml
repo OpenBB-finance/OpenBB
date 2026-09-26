@@ -163,3 +163,24 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist
+
+  create-tag:
+    name: Create release tag
+    needs: [publish, version-check]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      PACKAGE: openbb-deribit
+      VERSION: ${{ needs.version-check.outputs.version }}
+      RELEASE_SHA: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
+
+      - name: Create and push release tag
+        run: |
+          TAG="${PACKAGE}-v${VERSION}"
+          git tag -a "$TAG" "$RELEASE_SHA" -m "${PACKAGE} ${VERSION}"
+          git push origin "refs/tags/${TAG}"

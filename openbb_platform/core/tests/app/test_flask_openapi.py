@@ -293,3 +293,47 @@ def test_wsgi_mount_serves_flask_and_documents_routes(mock_flask_objects):
 
     schema = merge_flask_openapi({"paths": {}, "components": {}}, "/api/v1")
     assert "/api/v1/demo/hello" in schema["paths"]
+
+
+def test_mount_flask_extensions_with_no_flask_apps():
+    """Test mount_flask_extensions when there are no Flask apps."""
+    from unittest.mock import PropertyMock, patch
+
+    from fastapi import FastAPI
+
+    from openbb_core.app.utils.flask import mount_flask_extensions
+
+    with patch(
+        "openbb_core.app.extension_loader.ExtensionLoader.flask_objects",
+        new_callable=PropertyMock,
+        return_value={},
+    ):
+        api = FastAPI()
+        routes_before = list(api.routes)
+        mount_flask_extensions(api)
+        assert api.routes == routes_before
+
+
+def test_merge_flask_openapi_with_no_registered_apps():
+    """Test merge_flask_openapi when no Flask apps are registered."""
+    from openbb_core.app.utils.flask import merge_flask_openapi
+
+    schema = {"paths": {}, "components": {}}
+    result = merge_flask_openapi(schema)
+    assert result == {"paths": {}, "components": {}}
+
+
+def test_merge_flask_openapi_with_existing_paths():
+    """Test merge_flask_openapi merges into existing paths."""
+    from openbb_core.app.utils.flask import merge_flask_openapi
+
+    FlaskMountRegistry.register("ext", {"/new": {"get": {}}}, {"schemas": {"Obj": {}}})
+    schema = {
+        "paths": {"/old": {"get": {}}},
+        "components": {"schemas": {"OldObj": {}}},
+    }
+    result = merge_flask_openapi(schema, "/api")
+    assert "/api/ext/new" in result["paths"]
+    assert "/old" in result["paths"]
+    assert "Obj" in result["components"]["schemas"]
+    assert "OldObj" in result["components"]["schemas"]
