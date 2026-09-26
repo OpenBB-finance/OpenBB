@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/electric-power-operational-data/data/?api_key=MOCK_API_KEY&data%5B0%5D=ash-content&data%5B10%5D=receipts-btu&data%5B11%5D=stocks&data%5B12%5D=sulfur-content&data%5B13%5D=total-consumption&data%5B14%5D=total-consumption-btu&data%5B1%5D=consumption-for-eg&data%5B2%5D=consumption-for-eg-btu&data%5B3%5D=consumption-uto&data%5B4%5D=consumption-uto-btu&data%5B5%5D=cost&data%5B6%5D=cost-per-btu&data%5B7%5D=generation&data%5B8%5D=heat-content&data%5B9%5D=receipts&end=2001-01&facets%5Bfueltypeid%5D%5B%5D=ALL&facets%5Blocation%5D%5B%5D=AK&facets%5Bsectorid%5D%5B%5D=1&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2001-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2001-01","location":"AK","stateDescription":"Alaska","sectorid":"1","sectorDescription":"Electric
+        Utility","fueltypeid":"ALL","fuelTypeDescription":"all fuels","ash-content":"0","ash-content-units":"percent","consumption-for-eg":null,"consumption-for-eg-units":"thousand
+        physical units","consumption-for-eg-btu":"5.308","consumption-for-eg-btu-units":"million
+        MMBtu","consumption-uto":null,"consumption-uto-units":"thousand physical units","consumption-uto-btu":null,"consumption-uto-btu-units":"million
+        MMBtu","cost":"2.12","cost-units":"dollars per physical units","cost-per-btu":"2.1211","cost-per-btu-units":"dollars
+        per million Btu","generation":"493.206","generation-units":"thousand megawatthours","heat-content":"2.63","heat-content-units":"Btu
+        per physical units","receipts":"2074.494","receipts-units":"thousand physical
+        units","receipts-btu":"2074.494","receipts-btu-units":"billion Btu","stocks":"29.357","stocks-units":"thousand
+        physical units","sulfur-content":"0","sulfur-content-units":"percent","total-consumption":null,"total-consumption-units":"thousand
+        physical units","total-consumption-btu":"5.308","total-consumption-btu-units":"million
+        MMBtu"}],"description":"Monthly and annual electric power operations by state,
+        sector, and energy source.\n    Source: Form EIA-923"},"request":{"command":"\/v2\/electricity\/electric-power-operational-data\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["ash-content","consumption-for-eg","consumption-for-eg-btu","consumption-uto","consumption-uto-btu","cost","cost-per-btu","generation","heat-content","receipts","receipts-btu","stocks","sulfur-content","total-consumption","total-consumption-btu"],"facets":{"location":["AK"],"sectorid":["1"],"fueltypeid":["ALL"]},"start":"2001-01","end":"2001-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:23 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:23 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '2034'
+    status:
+      code: 200
+      message: OK
+version: 1

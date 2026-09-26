@@ -1,100 +1,115 @@
-"""OpenBB Platform Extension post-generation script."""
+"""OpenBB Platform extension post-generation script."""
 
-import os
 import re
 import shutil
+import subprocess
 import sys
+from pathlib import Path
 
 MODULE_REGEX = r"^[_a-zA-Z][_a-zA-Z0-9]+$"
-
 MODULE_NAME = "{{ cookiecutter.package_name }}"
-PROVIDER_NAME = "{{ cookiecutter.provider_name }}" or ""
-ROUTER_NAME = "{{ cookiecutter.router_name }}" or ""
-OBBJECT_NAME = "{{ cookiecutter.obbject_name }}" or ""
+PROVIDER_NAME = "{{ cookiecutter.provider_name }}"
+ROUTER_NAME = "{{ cookiecutter.router_name }}"
+OBBJECT_NAME = "{{ cookiecutter.obbject_name }}"
 EXTENSION_TYPES_RAW = "{{ cookiecutter.extension_types }}"
+ALL_TYPES = {"router", "provider", "obbject", "on_command_output", "charting"}
+LOCAL_ARTIFACTS = (".ruff_cache", ".pytest_cache", ".ipynb_checkpoints", "__pycache__", ".DS_Store")
 
 
 def parse_extension_types(raw: str) -> set[str]:
+    """Return the selected extension types, expanding ``all``.
+
+    Parameters
+    ----------
+    raw : str
+        Comma-separated extension types.
+
+    Returns
+    -------
+    set[str]
+        The selected extension types.
+    """
     types = {t.strip().lower() for t in raw.split(",") if t.strip()}
-    if "all" in types:
-        return {"router", "provider", "obbject", "on_command_output", "charting"}
-    return types
+    return set(ALL_TYPES) if "all" in types else types
 
 
-def remove_path(path: str):
-    if os.path.isdir(path):
+def remove_path(path: Path) -> None:
+    """Remove a generated file or directory if it exists.
+
+    Parameters
+    ----------
+    path : Path
+        The file or directory to remove.
+    """
+    if path.is_dir():
         shutil.rmtree(path)
-    elif os.path.isfile(path):
-        os.remove(path)
+    elif path.exists():
+        path.unlink()
 
 
-EXTENSION_TYPES = parse_extension_types(EXTENSION_TYPES_RAW)
+def require_module_name(name: str, label: str) -> None:
+    """Exit when a name is not a valid Python module name.
 
-if not re.match(MODULE_REGEX, MODULE_NAME):
-    print(f"ERROR: {MODULE_NAME} is not a valid Python package name.")
+    Parameters
+    ----------
+    name : str
+        The name to check.
+    label : str
+        What the name is used for, shown in the error.
+    """
+    if not re.match(MODULE_REGEX, name):
+        print(f"ERROR: {label} '{name}' must be a lower snake_case Python name.")
+        sys.exit(1)
+
+
+types = parse_extension_types(EXTENSION_TYPES_RAW)
+has_router = "router" in types
+has_charting = "charting" in types
+has_provider = "provider" in types
+has_obbject = "obbject" in types
+has_on_command_output = "on_command_output" in types
+
+require_module_name(MODULE_NAME, "package_name")
+if has_provider:
+    require_module_name(PROVIDER_NAME, "provider_name")
+if has_router or has_charting:
+    require_module_name(ROUTER_NAME, "router_name")
+if has_obbject or has_on_command_output:
+    require_module_name(OBBJECT_NAME, "obbject_name")
+if has_provider and has_obbject and PROVIDER_NAME == OBBJECT_NAME:
+    print(
+        f"ERROR: provider_name and obbject_name are both '{PROVIDER_NAME}'; "
+        "they share the credentials namespace, so use different names."
+    )
     sys.exit(1)
 
-has_router = "router" in EXTENSION_TYPES
-has_charting = "charting" in EXTENSION_TYPES
-has_provider = "provider" in EXTENSION_TYPES
-has_obbject = "obbject" in EXTENSION_TYPES
-has_on_command_output = "on_command_output" in EXTENSION_TYPES
-
-if has_provider and PROVIDER_NAME and not re.match(MODULE_REGEX, PROVIDER_NAME):
-    print(f"ERROR: {PROVIDER_NAME} should be in lower snakecase.")
-    sys.exit(1)
-
-if (
-    (has_router or has_charting)
-    and ROUTER_NAME
-    and not re.match(MODULE_REGEX, ROUTER_NAME)
-):
-    print(f"ERROR: {ROUTER_NAME} should be in lower snakecase.")
-    sys.exit(1)
-
-if (
-    (has_obbject or has_on_command_output)
-    and OBBJECT_NAME
-    and not re.match(MODULE_REGEX, OBBJECT_NAME)
-):
-    print(f"ERROR: {OBBJECT_NAME} should be in lower snakecase.")
-    sys.exit(1)
-
-routers_dir = os.path.join(MODULE_NAME, "routers")
-providers_dir = os.path.join(MODULE_NAME, "providers")
-obbject_dir = os.path.join(MODULE_NAME, "obbject")
+package = Path(MODULE_NAME)
+routers = package / "routers"
+obbject = package / "obbject"
+tests = Path("tests")
 
 if not has_router:
-    remove_path(os.path.join(routers_dir, ROUTER_NAME + ".py"))
-    remove_path(os.path.join(routers_dir, "depends.py"))
-
+    remove_path(routers / f"{ROUTER_NAME}.py")
+    remove_path(tests / "test_router.py")
 if not has_charting:
-    remove_path(os.path.join(routers_dir, ROUTER_NAME + "_views.py"))
-
+    remove_path(routers / f"{ROUTER_NAME}_views.py")
+    remove_path(tests / "test_views.py")
 if not has_router and not has_charting:
-    remove_path(routers_dir)
-
+    remove_path(routers)
 if not has_provider:
-    remove_path(providers_dir)
-
+    remove_path(package / "providers")
+    remove_path(tests / "test_provider.py")
+if not has_obbject:
+    remove_path(tests / "test_obbject.py")
+if not has_on_command_output:
+    remove_path(obbject / OBBJECT_NAME / "on_command_output.py")
+    remove_path(tests / "test_on_command_output.py")
 if not has_obbject and not has_on_command_output:
-    remove_path(obbject_dir)
+    remove_path(obbject)
 
-if (has_obbject or has_on_command_output) and not has_router:
-    try:
-        from importlib.metadata import entry_points
+for artifact in LOCAL_ARTIFACTS:
+    for path in sorted(Path().rglob(artifact), reverse=True):
+        remove_path(path)
 
-        eps = entry_points()
-        core_eps = (
-            eps.select(group="openbb_core_extension")
-            if hasattr(eps, "select")
-            else eps.get("openbb_core_extension", [])
-        )
-        if not list(core_eps):
-            print(
-                "\n  WARNING: No 'openbb_core_extension' entry points found in the environment."
-                "\n  The 'obbject' and 'on_command_output' extension types require at least"
-                "\n  one router extension to be installed in order to function.\n"
-            )
-    except Exception:
-        pass
+if ruff := shutil.which("ruff"):
+    subprocess.run([ruff, "format", "--quiet", "--no-cache", "."], check=False)

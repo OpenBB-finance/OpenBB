@@ -1,0 +1,54 @@
+[
+ {
+  "method": "GET",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/CorporateAndAgencySecurities",
+  "params": null,
+  "json": null,
+  "status": 400,
+  "headers": {},
+  "text": "{\"status\":\"failure\",\"statusMessage\":\"Bad Request.\"}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/tbaSecurities",
+  "params": null,
+  "json": {
+   "fields": [
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "productSubTypeCode",
+    "subProductType",
+    "issuingAgency",
+    "couponRate",
+    "couponType",
+    "settlementDateMonth",
+    "lastSalePrice",
+    "lastTradeDate",
+    "priceChangeNumber",
+    "priceChangePercent"
+   ],
+   "sortFields": [
+    "finraSecurityIdentifier"
+   ],
+   "multiFieldMatchFilters": [
+    {
+     "searchValue": "ginnie",
+     "fuzzy": false,
+     "synonym": false,
+     "fields": [
+      {
+       "name": "issuingAgency",
+       "boost": 1
+      }
+     ]
+    }
+   ],
+   "offset": 0,
+   "limit": 5
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:45 GMT\"],\"Record-Total\":[\"11196\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"fa3995b5-c263-43e9-8a2a-c1ed7b5fcc87\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"01H0424C2\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMB3515563\\\",\\\"finraSecurityIdentifier\\\":3515563,\\\"issuingAgency\\\":\\\"Ginnie Mae 2\\\",\\\"settlementDateMonth\\\":12,\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"couponRate\\\":4.5,\\\"couponType\\\":\\\"L\\\",\\\"productSubTypeCode\\\":\\\"TBA\\\",\\\"lastTradeDate\\\":null,\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"01H0426C0\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMB3515564\\\",\\\"finraSecurityIdentifier\\\":3515564,\\\"issuingAgency\\\":\\\"Ginnie Mae 2\\\",\\\"settlementDateMonth\\\":12,\\\"priceChangeNumber\\\":-110.328125,\\\"subProductType\\\":\\\"Single Family\\\",\\\"couponRate\\\":4.5,\\\"couponType\\\":\\\"L\\\",\\\"productSubTypeCode\\\":\\\"TBA\\\",\\\"lastTradeDate\\\":\\\"2022-12-21\\\",\\\"priceChangePercent\\\":-100,\\\"lastSalePrice\\\":0},{\\\"cusip\\\":\\\"01H0434C0\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMB3515565\\\",\\\"finraSecurityIdentifier\\\":3515565,\\\"issuingAgency\\\":\\\"Ginnie Mae 2\\\",\\\"settlementDateMonth\\\":12,\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"couponRate\\\":4.75,\\\"couponType\\\":\\\"L\\\",\\\"productSubTypeCode\\\":\\\"TBA\\\",\\\"lastTradeDate\\\":null,\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"01H0436C8\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMB3515566\\\",\\\"finraSecurityIdentifier\\\":3515566,\\\"issuingAgency\\\":\\\"Ginnie Mae 2\\\",\\\"settlementDateMonth\\\":12,\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"couponRate\\\":4.75,\\\"couponType\\\":\\\"L\\\",\\\"productSubTypeCode\\\":\\\"TBA\\\",\\\"lastTradeDate\\\":null,\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"01H0504C5\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMB3515567\\\",\\\"finraSecurityIdentifier\\\":3515567,\\\"issuingAgency\\\":\\\"Ginnie Mae 2\\\",\\\"settlementDateMonth\\\":12,\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"couponRate\\\":5,\\\"couponType\\\":\\\"L\\\",\\\"productSubTypeCode\\\":\\\"TBA\\\",\\\"lastTradeDate\\\":null,\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":null}]\"}}"
+ }
+]

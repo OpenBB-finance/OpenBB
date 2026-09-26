@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/facility-fuel/data/?api_key=MOCK_API_KEY&data%5B0%5D=average-heat-content&data%5B1%5D=consumption-for-eg&data%5B2%5D=consumption-for-eg-btu&data%5B3%5D=generation&data%5B4%5D=gross-generation&data%5B5%5D=total-consumption&data%5B6%5D=total-consumption-btu&end=2001-01&facets%5Bfuel2002%5D%5B%5D=ALL&facets%5BfuelType%5D%5B%5D=ALL&facets%5BplantCode%5D%5B%5D=2&facets%5BprimeMover%5D%5B%5D=ALL&facets%5Bstate%5D%5B%5D=AL&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2001-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2001-01","plantCode":"2","plantName":"Bankhead
+        Dam","fuel2002":"ALL","fuel2002TypeDescription":"Total","fuelType":"ALL","fuelTypeDescription":"Total","state":"AL","stateDescription":"Alabama","primeMover":"ALL","average-heat-content":null,"average-heat-content-units":null,"consumption-for-eg":null,"consumption-for-eg-units":null,"consumption-for-eg-btu":"195479.69","generation":"18918","gross-generation":"19109.09","total-consumption":null,"total-consumption-units":null,"total-consumption-btu":"195479.69","consumption-for-eg-btu-units":"MMBtu","generation-units":"megawatthours","gross-generation-units":"megawatthours","total-consumption-btu-units":"MMBtu"}],"description":"Annual
+        and monthly electric power operations for individual power plants, by energy
+        source and prime mover\n    Source: Form EIA-923"},"request":{"command":"\/v2\/electricity\/facility-fuel\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["average-heat-content","consumption-for-eg","consumption-for-eg-btu","generation","gross-generation","total-consumption","total-consumption-btu"],"facets":{"plantCode":["2"],"fuel2002":["ALL"],"fuelType":["ALL"],"state":["AL"],"primeMover":["ALL"]},"start":"2001-01","end":"2001-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:23 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:23 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1473'
+    status:
+      code: 200
+      message: OK
+version: 1

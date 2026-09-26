@@ -2,11 +2,12 @@
 
 from typing import Any
 
+from pydantic import SecretStr
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.registry import Registry, RegistryLoader
-from pydantic import SecretStr
 
 
 class QueryExecutor:

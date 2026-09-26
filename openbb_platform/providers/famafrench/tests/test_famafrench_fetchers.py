@@ -2,6 +2,7 @@
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+
 from openbb_famafrench.models.breakpoints import FamaFrenchBreakpointFetcher
 from openbb_famafrench.models.country_portfolio_returns import (
     FamaFrenchCountryPortfolioReturnsFetcher,
@@ -22,20 +23,10 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
-@pytest.fixture(scope="module")
-def vcr_config():
-    """VCR configuration."""
-    return {
-        "filter_headers": [
-            ("User-Agent", None),
-        ],
-    }
-
-
 @pytest.mark.record_http
 def test_famafrench_factors(credentials=test_credentials):
     """Test Fama-French factors fetcher."""
-    params = {"region": "america", "factor": "3_factors", "interval": "annual"}
+    params = {"region": "america", "factor": "3_factors", "frequency": "annual"}
 
     fetcher = FamaFrenchFactorsFetcher()
     result = fetcher.test(params, credentials)
@@ -60,7 +51,7 @@ def test_us_portfolio_returns(credentials=test_credentials):
 def test_regional_portfolio_returns(credentials=test_credentials):
     """Test regional portfolio returns fetcher."""
     params = {
-        "region": "europe",
+        "portfolio": "europe_6_portfolios_me_op",
     }
 
     fetcher = FamaFrenchRegionalPortfolioReturnsFetcher()

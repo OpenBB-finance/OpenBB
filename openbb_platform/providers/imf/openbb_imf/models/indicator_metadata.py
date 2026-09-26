@@ -1,5 +1,7 @@
 """Miscellaneous metadata models for IMF provider."""
 
+from __future__ import annotations
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field

@@ -3,7 +3,7 @@
 This extension aggregates the dependencies that facilitate a nice development experience
 for OpenBB. It does not contain any code itself, but rather pulls in the following dependencies:
 
-- Linters (ruff, pylint, mypy)
+- Linters and type checkers (ruff, ty)
 - Code formatters (black)
 - Code quality tools (bandit)
 - Pre-commit hooks (pre-commit)

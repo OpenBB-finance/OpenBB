@@ -1,0 +1,146 @@
+[
+  {
+    "name": "Fama-French Research Data",
+    "img": "https://www.cantechletter.com/wp-content/uploads/What-does-SMB-stand-for-in-finance.webp",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Explore the Kenneth R. French Data Library: research factors, research portfolios, country and international index portfolios, and the NYSE breakpoints used to construct them.",
+    "allowCustomization": true,
+    "tabs": {
+      "factors": {
+        "id": "factors",
+        "name": "Factors",
+        "layout": [
+          {
+            "i": "famafrench_factors_famafrench_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {
+                "region": "america",
+                "factor": "3_factors",
+                "frequency": "monthly"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "famafrench_breakpoints_famafrench_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "breakpoint_type": "me"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "portfolios": {
+        "id": "portfolios",
+        "name": "Portfolios",
+        "layout": [
+          {
+            "i": "famafrench_us_portfolio_returns_famafrench_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "portfolio": "portfolios_formed_on_me",
+                "measure": "value",
+                "frequency": "monthly"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "famafrench_regional_portfolio_returns_famafrench_obb",
+            "x": 20,
+            "y": 0,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "portfolio": "developed_ex_us_6_portfolios_me_op",
+                "measure": "value",
+                "frequency": "monthly"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "famafrench_country_portfolio_returns_famafrench_obb",
+            "x": 0,
+            "y": 16,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "country": "united_kingdom",
+                "measure": "usd",
+                "frequency": "monthly"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "famafrench_international_index_returns_famafrench_obb",
+            "x": 20,
+            "y": 16,
+            "w": 20,
+            "h": 16,
+            "state": {
+              "params": {
+                "index": "all",
+                "measure": "usd",
+                "frequency": "monthly"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            },
+            "groups": []
+          }
+        ]
+      }
+    }
+  }
+]

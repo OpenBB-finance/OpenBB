@@ -1,7 +1,5 @@
 """CLI for OpenBB Cookiecutter template."""
 
-# pylint: disable=W0718
-
 import argparse
 import sys
 
@@ -21,6 +19,23 @@ VALID_EXTENSION_TYPES = [
 
 
 def _parse_extension_types(value: str) -> list[str]:
+    """Parse a comma-separated extension type list.
+
+    Parameters
+    ----------
+    value : str
+        Comma-separated extension types.
+
+    Returns
+    -------
+    list[str]
+        The selected extension types.
+
+    Raises
+    ------
+    ValueError
+        If a type is not valid or none is given.
+    """
     types = [t.strip() for t in value.split(",") if t.strip()]
     invalid = [t for t in types if t not in VALID_EXTENSION_TYPES]
     if invalid:
@@ -34,6 +49,18 @@ def _parse_extension_types(value: str) -> list[str]:
 
 
 def _prompt_context(preset_extension_types: list[str] | None = None) -> dict:
+    """Prompt for the template context.
+
+    Parameters
+    ----------
+    preset_extension_types : list[str] | None
+        Extension types given on the command line, which skip that prompt.
+
+    Returns
+    -------
+    dict
+        The cookiecutter context.
+    """
     context = {}
 
     context["full_name"] = Prompt.ask("  full_name", default="Hello World")
@@ -75,9 +102,9 @@ def _prompt_context(preset_extension_types: list[str] | None = None) -> dict:
         context["router_name"] = "template"
 
     if is_all or "obbject" in types or "on_command_output" in types:
-        context["obbject_name"] = Prompt.ask("  obbject_name", default="template")
+        context["obbject_name"] = Prompt.ask("  obbject_name", default="template_ext")
     else:
-        context["obbject_name"] = "template"
+        context["obbject_name"] = "template_ext"
 
     return context
 
@@ -85,11 +112,15 @@ def _prompt_context(preset_extension_types: list[str] | None = None) -> dict:
 def main(argv: list | None = None) -> int:
     """Run the OpenBB cookiecutter template.
 
-    Args:
-        argv: Command line arguments (defaults to sys.argv[1:])
+    Parameters
+    ----------
+    argv : list | None
+        Command line arguments, defaulting to ``sys.argv[1:]``.
 
-    Returns:
-        Exit code (0 for success, non-zero for error)
+    Returns
+    -------
+    int
+        The exit code, 0 on success.
     """
     parser = argparse.ArgumentParser(
         description="Generate an OpenBB Platform extension from template"
@@ -120,8 +151,9 @@ def main(argv: list | None = None) -> int:
         nargs="+",
         choices=VALID_EXTENSION_TYPES,
         default=None,
-        help="Extension types to include (default: all). "
-        "Choices: router, provider, obbject, on_command_output, charting, all",
+        help="Extension types to include. Prompted when omitted, and 'all' with "
+        "--no-input. Choices: router, provider, obbject, on_command_output, "
+        "charting, all",
     )
 
     args = parser.parse_args(argv)
@@ -155,7 +187,7 @@ def main(argv: list | None = None) -> int:
         )
         return 0
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)  # noqa
+        print(f"Error: {e}", file=sys.stderr)
         return 1
 
 

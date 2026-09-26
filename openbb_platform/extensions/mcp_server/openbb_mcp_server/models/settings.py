@@ -22,14 +22,12 @@ class MCPSettings(BaseModel):
         extra="allow",
     )
 
-    # ===== Basic OpenBB MCP Configuration =====
     api_prefix: str | None = Field(
         default=None,
         description="If set, overrides the API prefix from SystemService. For testing or special cases.",
         alias="OPENBB_MCP_API_PREFIX",
     )
 
-    # Basic server configuration
     name: str = Field(
         default="OpenBB MCP",
         alias="OPENBB_MCP_NAME",
@@ -46,7 +44,6 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_VERSION",
     )
 
-    # Tool category filtering
     default_tool_categories: list[str] = Field(
         default_factory=lambda: ["all"],
         description="Default active tool categories on startup",
@@ -58,17 +55,14 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_ALLOWED_TOOL_CATEGORIES",
     )
 
-    # Tool discovery configuration
     enable_tool_discovery: bool = Field(
         default=False,
-        description="""
-            Enable tool discovery, allowing the agent to hot-swap tools at runtime.
-            Disable for multi-client or fixed toolset deployments.
-        """,
+        description="Hide the OpenBB tools from the tool list and expose them through"
+        + " available_categories, available_tools, search_tools, and call_tool."
+        + " Stateless, so every client sees the same tool list.",
         alias="OPENBB_MCP_ENABLE_TOOL_DISCOVERY",
     )
 
-    # Pagination configuration
     list_page_size: int | None = Field(
         default=None,
         description="Maximum number of tools/resources/prompts returned per page in list responses. "
@@ -76,14 +70,12 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_LIST_PAGE_SIZE",
     )
 
-    # Response configuration
     describe_responses: bool = Field(
         default=False,
         description="Include response types in tool descriptions",
         alias="OPENBB_MCP_DESCRIBE_RESPONSES",
     )
 
-    # Prompt configuration
     instructions: str | None = Field(
         default=None,
         description="Server instructions sent to the agent during the MCP initialize handshake."
@@ -106,56 +98,21 @@ the exact same operations available to REST clients.""",
 
     default_skills_dir: str | None = Field(
         default=_DEFAULT_SKILLS_DIR,
-        description="Path to a directory containing bundled skill prompt files (.md/.txt)."
-        " Set to None or empty string to disable loading default skills.",
+        description="Directory of bundled skills, one sub-directory per skill with a SKILL.md."
+        " Set to None or an empty string to disable the bundled skills.",
         alias="OPENBB_MCP_DEFAULT_SKILLS_DIR",
     )
 
-    # ===== FastMCP Core Configuration =====
-
-    # Cache configuration
-    cache_expiration_seconds: float | None = Field(
+    on_duplicate: DuplicateBehavior | None = Field(
         default=None,
-        description="Cache expiration time in seconds. set to 0 to disable caching.",
-        alias="OPENBB_MCP_CACHE_EXPIRATION_SECONDS",
-    )
-
-    # Duplicate handling
-    on_duplicate_tools: DuplicateBehavior | None = Field(
-        default=None,
-        description="Behavior when duplicate tools are registered",
-        alias="OPENBB_MCP_ON_DUPLICATE_TOOLS",
-    )
-
-    on_duplicate_resources: DuplicateBehavior | None = Field(
-        default=None,
-        description="Behavior when duplicate resources are registered",
-        alias="OPENBB_MCP_ON_DUPLICATE_RESOURCES",
-    )
-
-    on_duplicate_prompts: DuplicateBehavior | None = Field(
-        default=None,
-        description="Behavior when duplicate prompts are registered",
-        alias="OPENBB_MCP_ON_DUPLICATE_PROMPTS",
-    )
-
-    # Resource and component configuration
-    resource_prefix_format: Literal["protocol", "path"] | None = Field(
-        default=None,
-        description="Format for resource URI prefixes: 'protocol' (prefix+protocol://path) or 'path' (protocol://prefix/path)",
-        alias="OPENBB_MCP_RESOURCE_PREFIX_FORMAT",
+        description="Behavior when a tool, resource, or prompt is registered twice",
+        alias="OPENBB_MCP_ON_DUPLICATE",
     )
 
     mask_error_details: bool | None = Field(
         default=None,
         description="If True, mask error details from user functions before sending to clients",
         alias="OPENBB_MCP_MASK_ERROR_DETAILS",
-    )
-
-    dependencies: list[str] | None = Field(
-        default=None,
-        description="list of dependencies to install in the server environment",
-        alias="OPENBB_MCP_DEPENDENCIES",
     )
 
     skills_reload: bool = Field(
@@ -173,18 +130,24 @@ the exact same operations available to REST clients.""",
 
     module_exclusion_map: dict[str, str] | None = Field(
         default=None,
-        description="Key:Value pairs mapping API Tags with their Python module names."
-        + " Example, {'econometrics': 'openbb_econometrics'}",
+        description="Route path segments mapped to Python modules; routes under a segment are"
+        " hidden while its module is imported. None uses {'coverage': 'openbb_core'};"
+        " an empty mapping hides nothing.",
         alias="OPENBB_MCP_MODULE_EXCLUSION_MAP",
     )
-    deprecation_warnings: bool | None = Field(
-        default=False,
-        description="If True, show deprecation warnings in the console.",
+
+    enable_cli_tools: bool = Field(
+        default=True,
+        description=(
+            "If True (default) and ``openbb-cli`` is installed, register"
+            " ``openbb_dispatch``, ``openbb_batch_dispatch``, ``openbb_list_commands``,"
+            " and ``openbb_describe_command``, which wrap the CLI's"
+            " LocalDispatcher / HttpDispatcher protocol. Set to False to"
+            " suppress registration even when openbb-cli is available."
+        ),
+        alias="OPENBB_MCP_ENABLE_CLI_TOOLS",
     )
 
-    # ===== HTTP Transport Configuration =====
-
-    # Uvicorn server configuration
     uvicorn_config: dict[str, Any] | None = Field(
         default_factory=lambda: {"host": "127.0.0.1", "port": "8001"},
         description="Additional configuration object for the Uvicorn server."
@@ -192,7 +155,6 @@ the exact same operations available to REST clients.""",
         alias="OPENBB_MCP_UVICORN_CONFIG",
     )
 
-    # HTTP client configuration for outbound requests
     httpx_client_kwargs: dict[str, Any] | None = Field(
         default_factory=dict,
         description="Configuration object for async httpx client used by FastMCP."
@@ -202,27 +164,21 @@ the exact same operations available to REST clients.""",
     )
     client_auth: tuple[str, str] | None = Field(
         default=None,
-        description="""
-        A tuple of (username, password) for client-side basic authentication.
-        If provided, this will be passed to the httpx client for downstream requests.
-        Example: OPENBB_MCP_CLIENT_AUTH='["user","pass"]'
-        """,
+        description="A (username, password) pair passed as httpx ``auth`` on requests to the"
+        ' wrapped API. Example: OPENBB_MCP_CLIENT_AUTH=\'["user","pass"]\'',
         alias="OPENBB_MCP_CLIENT_AUTH",
     )
     server_auth: tuple[str, str] | None = Field(
         default=None,
-        description="""
-        A tuple of (username, password) for server-side basic authentication.
-        If provided, the MCP server will require incoming requests to provide these credentials.
-        Example: OPENBB_MCP_SERVER_AUTH='["user","pass"]'
-        """,
+        description="A (username, password) pair. When set, HTTP requests must carry"
+        " ``Authorization: Bearer <base64(username:password)>``."
+        ' Example: OPENBB_MCP_SERVER_AUTH=\'["user","pass"]\'',
         alias="OPENBB_MCP_SERVER_AUTH",
     )
 
     @field_validator(
         "default_tool_categories",
         "allowed_tool_categories",
-        "dependencies",
         "skills_providers",
         mode="before",
     )
@@ -242,40 +198,24 @@ the exact same operations available to REST clients.""",
             try:
                 return json.loads(v)
             except json.JSONDecodeError:
-                # Fallback for simple string if not valid JSON
                 return v
         return v
 
     def get_fastmcp_kwargs(self) -> dict:
-        """
-        Extract FastMCP constructor arguments from the settings.
-
-        Returns a dictionary containing only the non-None FastMCP parameters
-        that can be passed directly to the FastMCP constructor.
-        """
+        """Return the FastMCP constructor arguments that are set."""
         fastmcp_fields = {
             "name": self.name,
             "instructions": self.instructions,
             "version": self.version,
-            "cache_expiration_seconds": self.cache_expiration_seconds,
-            "on_duplicate_tools": self.on_duplicate_tools,
-            "on_duplicate_resources": self.on_duplicate_resources,
-            "on_duplicate_prompts": self.on_duplicate_prompts,
-            "resource_prefix_format": self.resource_prefix_format,
+            "on_duplicate": self.on_duplicate,
             "mask_error_details": self.mask_error_details,
-            "dependencies": self.dependencies,
             "list_page_size": self.list_page_size,
         }
 
-        # Only include non-None values
         return {k: v for k, v in fastmcp_fields.items() if v is not None}
 
     def get_http_run_kwargs(self) -> dict:
-        """
-        Extract HTTP runtime arguments for FastMCP.run_http_async() method.
-
-        Returns a dictionary containing HTTP transport settings.
-        """
+        """Return the HTTP runtime arguments for ``FastMCP.run``."""
         run_fields: dict = {}
 
         if self.uvicorn_config is not None:
@@ -284,12 +224,8 @@ the exact same operations available to REST clients.""",
         return run_fields
 
     def get_httpx_kwargs(self) -> dict:
-        """
-        Extract httpx client configuration.
-
-        Returns a dictionary containing httpx client settings.
-        """
-        kwargs = self.httpx_client_kwargs or {}
+        """Return the httpx client configuration, with ``client_auth`` attached as ``auth``."""
+        kwargs = dict(self.httpx_client_kwargs or {})
         if self.client_auth:
             kwargs["auth"] = self.client_auth
         return kwargs

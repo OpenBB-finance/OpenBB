@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/move/impcp/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1981-01&facets%5Bduoarea%5D%5B%5D=R10-Z00&facets%5Bprocess%5D%5B%5D=IP0&facets%5Bproduct%5D%5B%5D=EPC0&facets%5Bseries%5D%5B%5D=MCRIPP11&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1981-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"1981-01","duoarea":"R10-Z00","area-name":"PADD
+        1","product":"EPC0","product-name":"Crude Oil","process":"IP0","process-name":"Imports
+        by PADD of Processing","series":"MCRIPP11","series-description":"East Coast
+        (PADD 1) Imports by PADD of Processing of Crude Oil (Thousand Barrels)","value":"36649","units":"MBBL"}]},"request":{"command":"\/v2\/petroleum\/move\/impcp\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["value"],"facets":{"duoarea":["R10-Z00"],"product":["EPC0"],"process":["IP0"],"series":["MCRIPP11"]},"start":"1981-01","end":"1981-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '2'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:03:11 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:03:11 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '821'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,72 +1,73 @@
-# OpenBB ODP Extensions Cookiecutter
+# OpenBB Extensions Cookiecutter
 
-[Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/) is a command-line utility that creates projects from templates.
+A [Cookiecutter](https://cookiecutter.readthedocs.io/) template that generates a new OpenBB Platform extension as an installable Python project.
 
-This extension is a simple template for setting up new OpenBB Python Package extensions and projects.
+## Extension types
 
-## Template Structure
+Choose one or more types, or `all`:
 
-The Cookiecutter template prompts the user for information to use in the `pyproject.toml` file, and then generates a project based on that information.
-All fields are optional.
+| Type | Generates |
+|------|-----------|
+| `router` | Commands under `obb.<router_name>` |
+| `provider` | A data provider with an example model and an `EquityHistorical` standard-model implementation |
+| `charting` | Chart views for the router's commands, used with `openbb-charting` |
+| `obbject` | Accessors added to every command result |
+| `on_command_output` | A plugin that runs after a command returns |
 
-- Your Name
-- Your Email
-- Project Name
-- Project Tag (some-distributable-package)
-- Package Name ("include" code folder name - "some_package")
-- Provider Name - name of the provider for the entry point - i.e, 'fmp'
-- Router Name - name of the router path - i.e. `obb.{some_package}`
-- OBBject Name - name of the OBBject accessor namespace.
-
-The template will generate all extension types as a single, installable Python project.
-You likely won't always use all in tandem, just delete the unwanted folders and entrypoints.
+The generated project follows the same conventions as the extensions in this repository: hatchling packaging, entry points in `[project.entry-points]`, a `dev` dependency group, ruff and ty configuration in `pyproject.toml`, and tests for every generated module.
 
 ## Usage
 
-1. Install in a Python environment from PyPI with:
+Run it with [uv](https://docs.astral.sh/uv/) without installing:
 
-```
-pip install openbb-cookiecutter
-```
-
-Alternatively, with `uvx`:
-
-```
+```bash
 uvx openbb-cookiecutter
 ```
 
-2. Navigate the current working directory to the desired output location and run:
+Or install it and run the command:
 
-```
+```bash
+pip install openbb-cookiecutter
 openbb-cookiecutter
 ```
 
-Enter values or press `enter` to continue with the default.
+Enter a value at each prompt or press enter to accept the default. Pass the types directly to skip that prompt:
 
-3. Create a new Python environment for the project.
-
-4. Navigate into the generated folder and install with:
-
-```
-pip install -e .
+```bash
+openbb-cookiecutter -e router provider
 ```
 
-5. Python static files will be generated on first import, or trigger with `openbb-build`.
+Generate without prompts, into another directory:
 
-6. Import the Python package or start the API and use like any other OpenBB application.
+```bash
+openbb-cookiecutter --no-input -o ./extensions -e all
+```
 
-7. Modify the business logic and get started building!
+Override any template value with `--extra-context KEY=VALUE`, for example `--extra-context provider_name=my_source`.
 
-See the developer documentation [here](https://docs.openbb.co/python/developer).
+The provider and the OBBject extension each register a credentials namespace under their name, so they need different names.
 
-## Contributing
+## Working on the generated project
 
-We welcome contributions to this template! Please feel free to open an issue or submit a pull request with your improvements.
+The generated `README.md` covers setup. In short, from the project directory:
+
+```bash
+uv sync
+uv run openbb-build
+uv run pytest
+```
+
+## Developing the template
+
+From this directory:
+
+```bash
+uv sync
+uv run pytest
+```
+
+The tests generate a project for each extension type and check its files, its entry points, and that it passes ruff and ty.
 
 ## Contacts
 
-If you have any questions about the cookiecutter or anything OpenBB, feel free to email us at `support@openbb.co`
-
-If you want to say hi, or are interested in partnering with us, feel free to reach us at `hello@openbb.co`
-
-Any of our social media platforms: [openbb.co/links](https://openbb.co/links)
+Questions about the template or OpenBB: `support@openbb.co`. Partnerships: `hello@openbb.co`. Social links: [openbb.co/links](https://openbb.co/links).

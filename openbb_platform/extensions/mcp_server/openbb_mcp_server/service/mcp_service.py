@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import types
 from pathlib import Path
 from typing import Any, Union, get_args, get_origin
 
@@ -11,31 +12,21 @@ from openbb_core.app.model.abstract.singleton import SingletonMeta
 
 from openbb_mcp_server.models.settings import MCPSettings
 
+_UNION_ORIGINS = (Union, types.UnionType)
+_BUNDLED_SKILLS_DIR = MCPSettings.model_fields["default_skills_dir"].default
+
 
 def _merge_nested_dict(base: dict[str, Any], override: dict[str, Any]) -> None:
     """Merge override dict into base dict."""
     for key, value in override.items():
         if key in base and isinstance(base[key], dict) and isinstance(value, dict):
-            # Merge nested dictionaries
             base[key].update(value)
         else:
-            # Direct replacement for non-dict values or new keys
             base[key] = value
 
 
 class MCPService(metaclass=SingletonMeta):
-    """MCP Service. This class is a singleton.
-
-    Manages the MCP settings and merging with command line arguments.
-    It handles loading settings from the ~/.openbb_platform/mcp_settings.json file,
-    environment variables, and command-line arguments, giving priority to the latter.
-
-    Priority order (highest to lowest):
-        1. Command line arguments (cli_overrides)
-        2. Environment variables
-        3. Configuration file (already loaded in self._mcp_settings)
-        4. Default values (from MCPSettings model)
-    """
+    """Singleton that merges MCP settings from the settings file, environment variables, and CLI overrides."""
 
     MCP_SETTINGS_PATH: Path = OPENBB_DIRECTORY / "mcp_settings.json"
 
@@ -45,13 +36,7 @@ class MCPService(metaclass=SingletonMeta):
 
     @classmethod
     def _read_from_file(cls, **kwargs: Any) -> MCPSettings:
-        """
-        Read MCP settings from the configuration file.
-
-        If the file exists, it is loaded and validated.
-        Any additional keys present in the file are preserved.
-        Keyword arguments can be used to override values defined in the `mcp_settings.json` file.
-        """
+        """Read MCP settings from the configuration file."""
         settings_dict: dict[str, Any] = {}
         if cls.MCP_SETTINGS_PATH.exists():
             try:
@@ -69,21 +54,21 @@ class MCPService(metaclass=SingletonMeta):
             )
             default_settings = MCPSettings()
             cls.write_to_file(default_settings)
-            settings_dict = default_settings.model_dump()
+            settings_dict = default_settings.model_dump(exclude={"default_skills_dir"})
 
-        # kwargs will override values from the file
         settings_dict.update(kwargs)
 
         return MCPSettings.model_validate(settings_dict)
 
     @classmethod
     def write_to_file(cls, settings: MCPSettings) -> None:
-        """Write MCP settings to the configuration file."""
+        """Write MCP settings to the configuration file, leaving out the install-specific bundled skills path."""
+        data = settings.model_dump(mode="json")
+        if data["default_skills_dir"] == _BUNDLED_SKILLS_DIR:
+            del data["default_skills_dir"]
         try:
             cls.MCP_SETTINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
-            settings_json = json.dumps(
-                settings.model_dump(mode="json"), indent=4, ensure_ascii=False
-            )
+            settings_json = json.dumps(data, indent=4, ensure_ascii=False)
             with cls.MCP_SETTINGS_PATH.open(mode="w", encoding="utf-8") as f:
                 f.write(settings_json)
         except OSError as e:
@@ -106,32 +91,17 @@ class MCPService(metaclass=SingletonMeta):
         return self._mcp_settings
 
     def load_with_overrides(self, **cli_overrides: Any) -> MCPSettings:
-        """
-        Load MCP settings with proper priority handling.
-
-        Priority order (highest to lowest):
-        1. Command line arguments (cli_overrides)
-        2. Environment variables
-        3. Configuration file (already loaded in self._mcp_settings)
-        4. Default values (from MCPSettings model)
-
-        Returns:
-            The combined MCPSettings instance.
-        """
-        # Start with config file as base
+        """Load MCP settings with proper priority handling."""
         combined_dict = self._mcp_settings.model_dump()
 
-        # Load and apply environment variable overrides
         env_overrides = self._load_settings_from_env()
         if env_overrides:
             _merge_nested_dict(combined_dict, env_overrides)
 
-        # Map and apply command line overrides
         mapped_cli_overrides = self._map_cli_args_to_settings(cli_overrides)
         if mapped_cli_overrides:
             _merge_nested_dict(combined_dict, mapped_cli_overrides)
 
-        # Create final settings instance and update the service state
         final_settings = MCPSettings(**combined_dict)
         self._mcp_settings = final_settings
         return final_settings
@@ -150,7 +120,7 @@ class MCPService(metaclass=SingletonMeta):
                 is_json_field = False
                 if origin in (dict, list, tuple):
                     is_json_field = True
-                elif origin is Union:
+                elif origin in _UNION_ORIGINS:
                     is_json_field = any(
                         get_origin(arg) in (dict, list, tuple)
                         for arg in get_args(annotation)
@@ -171,7 +141,7 @@ class MCPService(metaclass=SingletonMeta):
                             }
                         else:
                             env_vars[field_name] = value
-                    except (json.JSONDecodeError, ValueError):
+                    except ValueError:
                         env_vars[field_name] = value
                 else:
                     env_vars[field_name] = value
@@ -180,7 +150,6 @@ class MCPService(metaclass=SingletonMeta):
             return {}
 
         try:
-            # Use MCPSettings to validate and process env vars
             temp_settings = MCPSettings(**env_vars)
             return temp_settings.model_dump(exclude_unset=True)
         except Exception as e:
@@ -189,12 +158,7 @@ class MCPService(metaclass=SingletonMeta):
 
     @staticmethod
     def _map_cli_args_to_settings(server_kwargs: dict[str, Any]) -> dict[str, Any]:
-        """
-        Map command line arguments to MCPSettings field names.
-
-        This handles the translation between CLI argument names and settings field names,
-        and separates out Uvicorn and httpx-specific configurations.
-        """
+        """Map command line arguments to MCPSettings field names."""
         mcp_settings_fields = set(MCPSettings.model_fields.keys())
         cli_to_settings_map = {
             "allowed_categories": "allowed_tool_categories",
@@ -231,7 +195,6 @@ class MCPService(metaclass=SingletonMeta):
             "ssl_ca_certs",
             "ssl_ciphers",
             "header",
-            "version",
         }
         excluded_fields = {"transport"}
         httpx_fields = {k for k in server_kwargs if k.startswith("httpx_")}
@@ -255,7 +218,6 @@ class MCPService(metaclass=SingletonMeta):
             elif key in mcp_settings_fields:
                 settings_overrides[key] = value
             else:
-                # Fallback for unknown fields to uvicorn_config
                 uvicorn_config[key] = value
 
         if uvicorn_config:

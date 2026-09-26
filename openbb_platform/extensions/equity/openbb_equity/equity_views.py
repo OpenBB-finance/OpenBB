@@ -1,5 +1,6 @@
 """Views for the Equity Extension."""
 
+from importlib import import_module
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -12,34 +13,36 @@ class EquityViews:
     """Equity Views."""
 
     @staticmethod
-    def equity_price_historical(  # noqa: PLR0912
+    def equity_price_historical(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Equity Price Historical Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.price_historical import price_historical
+        price_historical = import_module(
+            "openbb_charting.charts.price_historical"
+        ).price_historical
 
         return price_historical(**kwargs)
 
     @staticmethod
-    def equity_price_performance(  # noqa: PLR0912
+    def equity_price_performance(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Equity Price Performance Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.price_performance import price_performance
+        price_performance = import_module(
+            "openbb_charting.charts.price_performance"
+        ).price_performance
 
-        return price_performance(**kwargs)  # type: ignore
+        return price_performance(**kwargs)  # ty: ignore[invalid-return-type]
 
     @staticmethod
-    def equity_historical_market_cap(  # noqa: PLR0912
+    def equity_historical_market_cap(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Equity Historical Market Cap Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.generic_charts import line_chart
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
+
+        line_chart = import_module("openbb_charting.charts.generic_charts").line_chart
 
         title = kwargs.pop("title", "Historical Market Cap")
 
@@ -48,11 +51,11 @@ class EquityViews:
         if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
             data = kwargs["data"]
         elif "data" in kwargs and isinstance(kwargs["data"], list):
-            data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
+            data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
         else:
             data = basemodel_to_df(
                 kwargs["obbject_item"],
-                index=kwargs.get("index", "date"),  # type: ignore
+                index=kwargs.get("index", "date"),
             )
 
         if "date" in data.columns:
@@ -80,6 +83,6 @@ class EquityViews:
             scatter_kwargs=scatter_kwargs,
             **kwargs,
         )
-        content = fig.show(external=True).to_plotly_json()  # type: ignore
+        content = fig.show(external=True).to_plotly_json()
 
-        return fig, content  # type: ignore
+        return fig, content  # ty: ignore[invalid-return-type]

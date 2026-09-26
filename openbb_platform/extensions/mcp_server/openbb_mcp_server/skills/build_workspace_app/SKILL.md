@@ -1,4 +1,4 @@
-﻿---
+---
 name: build_workspace_app
 description: This guide covers the full lifecycle of building, running, and serving a custom OpenBB Workspace application from an extension project scaffolded by `openbb-cookiecutter`. It assumes the project shell already exists (see the `develop_extension` skill for scaffolding instructions).
 ---
@@ -80,7 +80,7 @@ The top-level API path prefix is determined by the entry point name in
 `pyproject.toml`, not the `prefix` argument. Only use `prefix` for sub-routers.
 
 ```toml
-[tool.poetry.plugins."openbb_core_extension"]
+[project.entry-points."openbb_core_extension"]
 my_app = "my_package.routers.my_router:router"
 ```
 
@@ -93,9 +93,14 @@ Connect a router command to one or more provider fetchers via the model name:
 ```python
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.provider_interface import ExtraParams, ProviderChoices, StandardParams
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
 from openbb_core.app.query import Query
 from pydantic import BaseModel
+
 
 @router.command(model="MyModel")
 async def my_command(
@@ -125,6 +130,7 @@ async def hello() -> OBBject[str]:
 ```python
 from openbb_core.provider.abstract.data import Data
 
+
 @router.command(methods=["POST"])
 async def process(data: Data, some_param: str) -> OBBject:
     """Process submitted data."""
@@ -138,9 +144,12 @@ async def process(data: Data, some_param: str) -> OBBject:
 - `methods` — list of HTTP methods, typically `["GET"]` or `["POST"]`
 - `examples` — list of `APIEx` or `PythonEx` for docs
 - `deprecated` — deprecation notice
-- `exclude_from_api` — Python Interface only
 - `no_validate` — skip response validation, treat output as `Any`
 - `openapi_extra` — dictionary for inline `widget_config` or `mcp_config`
+
+Fields of a response model marked
+`Field(json_schema_extra={"exclude_from_api": True})` are dropped from REST
+API responses and kept in the Python Interface, as `Chart.fig` is.
 
 ### Using FastAPI APIRouter Directly
 
@@ -162,7 +171,7 @@ code. Define the entry point in `pyproject.toml` pointed at the FastAPI or
 APIRouter instance:
 
 ```toml
-[tool.poetry.plugins."openbb_core_extension"]
+[project.entry-points."openbb_core_extension"]
 my_app = "my_package.app:app"
 ```
 
@@ -259,9 +268,10 @@ Dropdowns are auto-generated from `Literal` types:
 ```python
 from typing import Literal
 
+
 @app.get("/with_dropdown")
 async def with_dropdown(
-    choices: Literal["Choice 1", "Choice 2", "Choice 3"] = "Choice 3"
+    choices: Literal["Choice 1", "Choice 2", "Choice 3"] = "Choice 3",
 ):
     pass
 ```
@@ -274,9 +284,11 @@ Use Pydantic response models to auto-generate table column definitions:
 import datetime
 from pydantic import BaseModel, Field
 
+
 class MyData(BaseModel):
     date: datetime.date = Field(description="The date.")
     value: float = Field(description="The value.")
+
 
 @app.get("/my_data")
 async def my_data() -> list[MyData]:
@@ -299,10 +311,12 @@ async def my_data() -> list[MyData]:
 ```python
 from openbb_platform_api.response_models import MetricResponseModel, PdfResponseModel
 
+
 @app.get("/metric", response_model=MetricResponseModel)
 async def metric():
     """A metric widget."""
     return dict(label="Revenue", value=12345, delta=5.67)
+
 
 @app.get("/pdf", response_model=PdfResponseModel)
 async def open_pdf(file_path: str):
@@ -343,9 +357,7 @@ my_param: Annotated[
         title="My Title",
         description="Detailed hover text",
         json_schema_extra={
-            "x-widget_config": {
-                "optionsEndpoint": "/my_choices_endpoint"
-            }
+            "x-widget_config": {"optionsEndpoint": "/my_choices_endpoint"}
         },
     ),
 ]
@@ -370,6 +382,7 @@ from openbb_core.app.model.extension import Extension
 
 ext = Extension(name="my_tools", description="Custom result tools.")
 
+
 @ext.obbject_accessor
 class MyTools:
     def __init__(self, obbject):
@@ -383,7 +396,7 @@ class MyTools:
 Register in `pyproject.toml`:
 
 ```toml
-[tool.poetry.plugins."openbb_obbject_extension"]
+[project.entry-points."openbb_obbject_extension"]
 my_tools = "my_package.obbject.my_ext:ext"
 ```
 
@@ -391,6 +404,7 @@ my_tools = "my_package.obbject.my_ext:ext"
 
 ```python
 ext = Extension(name="to_csv", description="Convert results to CSV.")
+
 
 @ext.obbject_accessor
 def to_csv(obbject):
@@ -473,6 +487,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
+
 class MyViews:
     """Chart views for the router."""
 
@@ -494,7 +509,7 @@ in lower_snake_case.
 Register in `pyproject.toml`:
 
 ```toml
-[tool.poetry.plugins."openbb_charting_extension"]
+[project.entry-points."openbb_charting_extension"]
 my_router = "my_package.routers.my_views:MyViews"
 ```
 
@@ -508,6 +523,40 @@ my_router = "my_package.routers.my_views:MyViews"
 | `extra_params` | Provider-specific parameters |
 | `provider` | Provider name used |
 | `extra` | Execution metadata |
+
+### Charting Engine, Hooks, and Backends
+
+Every interface (Python, REST API, CLI, and MCP) resolves charts through
+`openbb_core.app.charting.ChartingManager`, so these seams apply everywhere:
+
+| Seam | Register under | Selected by |
+|---|---|---|
+| Replacement charting engine | `openbb_obbject_extension`, as an accessor named `charting` | the `charting_extension` system setting, to use an accessor with another name |
+| Lifecycle hooks | `openbb_charting_hooks`, as a `ChartingHook` subclass | always active; `routes` limits and `priority` orders them |
+| Rendering backend | `openbb_charting_backend` | the `charting_backend` system setting, by entry-point name (opt-in) |
+
+Set `charting_extension` and `charting_backend` under `[system]` in `openbb.toml`
+or in `~/.openbb_platform/system_settings.json`.
+
+A hook overrides any of `resolve_data`, `pre_figure`, `post_figure`, `pre_render`,
+and `post_render`. Each receives a `HookContext` and may mutate it in place or
+return a replacement:
+
+```python
+from openbb_core.app.charting.hooks import ChartingHook, HookContext
+
+
+class Watermark(ChartingHook):
+    routes = ("/equity/price/historical",)
+
+    def post_figure(self, context: HookContext) -> None:
+        context.figure.add_annotation(text="My Firm", showarrow=False)
+```
+
+```toml
+[project.entry-points."openbb_charting_hooks"]
+watermark = "my_package.hooks:Watermark"
+```
 
 ---
 
@@ -526,7 +575,7 @@ query_string = get_querystring(query.model_dump(), ["exclude_this_param"])
 ### Synchronous Requests
 
 ```python
-from openbb_core.provider.utils import make_request
+from openbb_core.provider.utils.helpers import make_request
 
 response = make_request(url, headers=headers, params=params)
 ```
@@ -559,16 +608,18 @@ results = await amake_requests([url1, url2, url3])
 
 ```python
 from io import StringIO
-from pandas import DataFrame
+from pandas import read_csv
 
 results = []
 
+
 async def response_callback(response, _):
     text = await response.text()
-    data = DataFrame(StringIO(text), skiprows=2)
-    results.append(data.to_dict("records"))
+    data = read_csv(StringIO(text), skiprows=2)
+    results.extend(data.to_dict("records"))
 
-await amake_requests(url, response_callback=response_callback)
+
+await amake_requests([url1, url2], response_callback=response_callback)
 ```
 
 ### Async Session
@@ -652,7 +703,7 @@ uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 From the project root:
 
 ```
-pip install -e ".[dev]"
+uv pip install -e . --group dev
 ```
 
 ### Build Python Interface
@@ -689,7 +740,7 @@ When a user asks "Build me a Workspace application that does X":
 5. **Implement router commands** in `routers/<name>.py`.
 6. **Add widget config** via `openapi_extra` for Workspace-specific behavior.
 7. **Update `pyproject.toml`** entry points and dependencies.
-8. **Install** with `pip install -e ".[dev]"`.
+8. **Install** with `uv pip install -e . --group dev`.
 9. **Build** static assets with `openbb-build`.
 10. **Serve** with `openbb-api` and verify widgets in OpenBB Workspace.
 11. **Test** with `pytest` and fetcher `.test()` methods.

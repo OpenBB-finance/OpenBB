@@ -1,7 +1,5 @@
 """SEC Balance Sheet Growth Model."""
 
-# pylint: disable=unused-argument
-
 from math import isnan
 from typing import Any, Literal
 from warnings import warn
@@ -602,7 +600,6 @@ class SecBalanceSheetGrowthFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.company_facts import (
             PeriodType,
             get_standardized_financials,
@@ -630,7 +627,6 @@ class SecBalanceSheetGrowthFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[SecBalanceSheetGrowthData]]:
         """Transform the data and validate the model."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.company_facts import (
             StandardizedStatements,
             normalize_period_fields,

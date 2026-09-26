@@ -1,12 +1,16 @@
 """Test company facts resolution and imputation logic."""
 
-# pylint: disable=C0302,W0613,W0621
 # flake8: noqa: D102,D103,D403
 
+import asyncio
 import json
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
+from openbb_core.app.model.abstract.error import OpenBBError
+
+import openbb_sec.utils.company_facts as cf
 from openbb_sec.utils.company_facts import resolve_company_facts
 from openbb_sec.utils.statement_schema import StatementSchema
 from openbb_sec.utils.statement_schema._detection import get_filing_dates
@@ -17,11 +21,6 @@ _FIXTURE_DIR = Path(__file__).parent / "record"
 @pytest.fixture(scope="module")
 def schema():
     return StatementSchema()
-
-
-# ---------------------------------------------------------------------------
-# BLK (BlackRock) fixture — real SEC XBRL data (CIK 0002012383, ~477 KB)
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture(scope="module")
@@ -558,11 +557,12 @@ class TestBLKZeroDiagnostics:
     """All accounting identities must hold — zero violations."""
 
     def test_no_identity_violations(self, blk_annual):
-        assert (
-            len(blk_annual.diagnostics) == 0
-        ), f"Expected 0 diagnostics, got {len(blk_annual.diagnostics)}: " + "; ".join(
-            f"{d.tag}@{d.date}: expected={d.expected}, actual={d.actual}"
-            for d in blk_annual.diagnostics
+        assert len(blk_annual.diagnostics) == 0, (
+            f"Expected 0 diagnostics, got {len(blk_annual.diagnostics)}: "
+            + "; ".join(
+                f"{d.tag}@{d.date}: expected={d.expected}, actual={d.actual}"
+                for d in blk_annual.diagnostics
+            )
         )
 
 
@@ -1010,11 +1010,6 @@ class TestBLKMultiYear:
         min_count = min(counts.values())
         # Tag count shouldn't vary widely between years
         assert max_count - min_count <= 10, f"Tag count varies too much: {counts}"
-
-
-# =========================================================================
-# Mock-based tests — scenarios NOT coverable with BLK fixture
-# =========================================================================
 
 
 def _anchor(year, extra=None):
@@ -2338,13 +2333,8 @@ class TestCashBridgePeriodCarryover:
             assert "derived" in begin[0]["source"]
 
 
-# ---------------------------------------------------------------------------
-# TTM (Trailing Twelve Months) tests
-# ---------------------------------------------------------------------------
-
-
 class TestTTM:
-    """Trailing-twelve-month aggregation from quarterly records."""
+    """Tests for trailing-twelve-month (TTM) aggregation."""
 
     @staticmethod
     def _quarterly_revenue(years_quarters):
@@ -2582,13 +2572,8 @@ class TestTTM:
         assert ttm_recs[1]["value"] == 500  # Q2 2023 - Q1 2024
 
 
-# ---------------------------------------------------------------------------
-# Percentage change tests
-# ---------------------------------------------------------------------------
-
-
 class TestPctChange:
-    """Period-over-period and year-over-year percentage change."""
+    """Tests for period-over-period percent-change calculation."""
 
     @staticmethod
     def _annual_revenue(year_vals):
@@ -2828,13 +2813,8 @@ class TestPctChange:
             assert "2023-12-31" in src
 
 
-# ---------------------------------------------------------------------------
-# Period type propagation tests
-# ---------------------------------------------------------------------------
-
-
 class TestPeriodType:
-    """period_type metadata propagation into output records."""
+    """Tests for period_type handling in standardized records."""
 
     def test_period_type_in_records(self):
         mock = create_mock_facts(
@@ -2862,6 +2842,198 @@ class TestPeriodType:
         assets = [r for r in res.balance_sheet if r["tag"] == "total_assets"]
         if assets:
             assert assets[0]["period_type"] == "instant"
+
+
+def _mini_result(rows, dates, currency="USD", fiscal=None, preliminary=None):
+    """Build a minimal StatementResult-shaped namespace for _build_records."""
+    from types import SimpleNamespace
+
+    return SimpleNamespace(
+        currency=currency,
+        rows=rows,
+        dates=dates,
+        fiscal_data=fiscal or {},
+        preliminary_dates=preliminary or set(),
+    )
+
+
+def _row(tag, values, sources=None, **kw):
+    from types import SimpleNamespace
+
+    defaults = dict(
+        tag=tag,
+        label=tag.replace("_", " ").title(),
+        description="d",
+        parent=None,
+        sequence=1,
+        factor="+",
+        balance="debit",
+        unit="monetary",
+        period_type="duration",
+        values=values,
+        sources=sources or {},
+    )
+    defaults.update(kw)
+    return SimpleNamespace(**defaults)
+
+
+def test_build_records_skips_all_zero_tags():
+    """A tag that is all-zero (and not imputed/corrected) is dropped entirely."""
+    zero_row = _row("dead_tag", {"2023-12-31": 0, "2022-12-31": 0})
+    live_row = _row(
+        "live_tag",
+        {"2023-12-31": 100, "2022-12-31": 90},
+        sources={"2023-12-31": "Assets", "2022-12-31": "Assets"},
+    )
+    result = _mini_result([zero_row, live_row], ["2022-12-31", "2023-12-31"])
+    records = cf._build_records(result)
+    tags = {r["tag"] for r in records}
+    assert "dead_tag" not in tags  # all-zero tag excluded
+    assert "live_tag" in tags
+    assert len(records) == 2  # one live tag x two dates
+
+
+def test_build_records_zero_kept_when_imputed():
+    """An all-zero tag whose source is 'imputed' is retained (not suspect-dropped)."""
+    imp_zero = _row(
+        "imp_tag",
+        {"2023-12-31": 0},
+        sources={"2023-12-31": "imputed: a - b"},
+    )
+    result = _mini_result([imp_zero], ["2023-12-31"])
+    records = cf._build_records(result)
+    assert len(records) == 1
+    # Suspect-zero policy rewrites 'imputed' -> 'imputed-zero'.
+    assert records[0]["source"].startswith("imputed-zero")
+    assert records[0]["value"] == 0
+
+
+def test_build_records_corrected_zero_prefixed():
+    """A 'corrected:' exact-zero takes the else-branch, prefixing 'imputed-zero: '."""
+    corrected_zero = _row(
+        "corr_tag",
+        {"2023-12-31": 0},
+        sources={"2023-12-31": "corrected: a - b"},
+    )
+    result = _mini_result([corrected_zero], ["2023-12-31"])
+    records = cf._build_records(result)
+    assert len(records) == 1
+    # Non-'imputed' suspect sources are wrapped, not replaced.
+    assert records[0]["source"] == "imputed-zero: corrected: a - b"
+    assert records[0]["value"] == 0
+
+
+def test_build_records_fiscal_year_filter():
+    """fiscal_years filters out periods whose fiscal_year is excluded."""
+    row = _row(
+        "rev",
+        {"2023-12-31": 100, "2022-12-31": 90},
+        sources={"2023-12-31": "Revenues", "2022-12-31": "Revenues"},
+    )
+    fiscal = {
+        "2023-12-31": {"fiscal_year": 2023, "fiscal_period": "FY"},
+        "2022-12-31": {"fiscal_year": 2022, "fiscal_period": "FY"},
+    }
+    result = _mini_result([row], ["2022-12-31", "2023-12-31"], fiscal=fiscal)
+    records = cf._build_records(result, fiscal_years=[2023])
+    assert {r["period_ending"] for r in records} == {"2023-12-31"}
+
+
+def test_get_standardized_financials_int_cik(blk_facts):
+    """An integer CIK is zero-padded and fetched once via cached_request."""
+    calls = []
+
+    async def _fake_request(url, **kwargs):
+        calls.append(url)
+        return blk_facts
+
+    with patch("openbb_sec.utils.cache.cached_request", _fake_request):
+        res = asyncio.run(cf.get_standardized_financials(cik=2012383, period="annual"))
+    assert len(calls) == 1
+    assert "CIK0002012383.json" in calls[0]
+    assert res.entity_name == "BlackRock, Inc."
+    assert len(res.income_statement) > 0
+
+
+def test_get_standardized_financials_symbol_maps_to_cik(blk_facts):
+    """A symbol is resolved through symbol_map then fetched."""
+
+    async def _fake_symbol_map(symbol, use_cache=True):
+        return "0002012383"
+
+    async def _fake_request(url, **kwargs):
+        return blk_facts
+
+    with (
+        patch("openbb_sec.utils.helpers.symbol_map", _fake_symbol_map),
+        patch("openbb_sec.utils.cache.cached_request", _fake_request),
+    ):
+        res = asyncio.run(
+            cf.get_standardized_financials(symbol="BLKX", period="annual")
+        )
+    assert res.entity_name == "BlackRock, Inc."
+
+
+def test_get_standardized_financials_symbol_no_cik_raises():
+    """A symbol that maps to an empty CIK raises a not-found error."""
+
+    async def _fake_symbol_map(symbol, use_cache=True):
+        return ""
+
+    with patch("openbb_sec.utils.helpers.symbol_map", _fake_symbol_map):
+        with pytest.raises(OpenBBError, match="Could not find CIK"):
+            asyncio.run(cf.get_standardized_financials(symbol="NOPE"))
+
+
+def test_get_standardized_financials_requires_input():
+    """Neither symbol nor cik raises an error."""
+    with pytest.raises(OpenBBError, match="Either symbol or cik"):
+        asyncio.run(cf.get_standardized_financials())
+
+
+def test_get_standardized_financials_empty_string_cik_raises():
+    """An empty-string cik resolves to an empty cik_list and raises.
+
+    Distinct from the None case: ``cik=""`` enters the ``isinstance(cik, str)``
+    branch which produces ``[]``, then the ``if not cik_list`` guard fires.
+    """
+    with pytest.raises(OpenBBError, match="Either symbol or cik"):
+        asyncio.run(cf.get_standardized_financials(cik=""))
+
+
+def test_get_standardized_financials_unexpected_response():
+    """A response without a 'facts' key raises an unexpected-response error."""
+
+    async def _fake_request(url, **kwargs):
+        return {"not": "facts"}
+
+    with patch("openbb_sec.utils.cache.cached_request", _fake_request):
+        with pytest.raises(OpenBBError, match="Unexpected response"):
+            asyncio.run(cf.get_standardized_financials(cik="0000320193"))
+
+
+def test_get_standardized_financials_multi_cik_merge(blk_facts):
+    """A MULTI_CIK_TICKERS symbol fetches every CIK and merges the facts."""
+    calls = []
+
+    async def _fake_symbol_map(symbol, use_cache=True):
+        return "0002012383"
+
+    async def _fake_request(url, **kwargs):
+        calls.append(url)
+        return blk_facts
+
+    # BLK is in MULTI_CIK_TICKERS with two CIKs. symbol_map is still called for
+    # the not-found guard before MULTI_CIK_TICKERS is consulted, so it must be
+    # patched at its source (helpers binds cached_request at import, so the
+    # cached_request patch alone does not intercept get_all_companies).
+    with (
+        patch("openbb_sec.utils.helpers.symbol_map", _fake_symbol_map),
+        patch("openbb_sec.utils.cache.cached_request", _fake_request),
+    ):
+        res = asyncio.run(cf.get_standardized_financials(symbol="BLK", period="annual"))
+    assert len(calls) == 2  # one request per CIK
+    assert res.entity_name == "BlackRock, Inc."
 
 
 def _six_k_filer_facts():
@@ -2932,7 +3104,7 @@ def _six_k_filer_facts():
             "filed": "2024-02-15",
         },
     ]
-    for end, filed, assets, rev, cf in (
+    for end, filed, assets, rev, cash in (
         ("2023-03-31", "2023-05-01", 24500, 2000, 500),  # ~90 days
         ("2023-06-30", "2023-08-01", 25000, 4100, 1000),  # ~181 days
         ("2023-09-30", "2023-11-01", 25500, 6200, 1500),  # ~273 days (9-month)
@@ -2955,7 +3127,7 @@ def _six_k_filer_facts():
             },
             {
                 "tag": "NetCashProvidedByUsedInOperatingActivities",
-                "val": cf,
+                "val": cash,
                 "start": "2023-01-01",
                 "end": end,
                 "form": "6-K",

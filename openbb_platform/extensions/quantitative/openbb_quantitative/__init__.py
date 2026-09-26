@@ -1,1 +1,1 @@
-"""Quantitative analysis extension for OpenBB Platform."""
+"""OpenBB Quantitative Analysis Extension."""

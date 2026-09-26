@@ -1,0 +1,251 @@
+[
+    {
+        "name": "US Department of the Treasury",
+        "img": "https://home.treasury.gov/system/files/291/treasury-preview-1900x950.jpg",
+        "img_dark": "https://home.treasury.gov/system/files/291/treasury-preview-1900x950.jpg",
+        "img_light": "https://home.treasury.gov/system/files/291/treasury-preview-1900x950.jpg",
+        "description": "Federal debt, daily cash and debt operations, marketable securities auctions, the quarterly Treasury Bulletin, and federal contract and assistance awards, from the Bureau of the Fiscal Service, TreasuryDirect, and USAspending.gov.",
+        "allowCustomization": true,
+        "tabs": {
+            "debt": {
+                "id": "debt",
+                "name": "Debt",
+                "layout": [
+                    {
+                        "i": "ustreasury_debt_to_penny_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 14,
+                        "state": {
+                            "params": {
+                                "start_date": "2025-01-01"
+                            }
+                        }
+                    }
+                ]
+            },
+            "daily_statement": {
+                "id": "daily_statement",
+                "name": "Daily Treasury Statement",
+                "layout": [
+                    {
+                        "i": "ustreasury_daily_statement_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 15,
+                        "state": {
+                            "params": {
+                                "table": "operating_cash_balance"
+                            }
+                        }
+                    }
+                ]
+            },
+            "auctions": {
+                "id": "auctions",
+                "name": "Auctions",
+                "layout": [
+                    {
+                        "i": "ustreasury_upcoming_auctions_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 10
+                    },
+                    {
+                        "i": "ustreasury_auction_results_us_treasury_obb",
+                        "x": 0,
+                        "y": 10,
+                        "w": 40,
+                        "h": 14,
+                        "state": {
+                            "params": {
+                                "security_type": "bill"
+                            }
+                        }
+                    },
+                    {
+                        "i": "ustreasury_weekly_bill_offerings_us_treasury_obb",
+                        "x": 0,
+                        "y": 24,
+                        "w": 40,
+                        "h": 14
+                    }
+                ]
+            },
+            "securities": {
+                "id": "securities",
+                "name": "Securities",
+                "layout": [
+                    {
+                        "i": "ustreasury_treasury_auctions_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 14
+                    },
+                    {
+                        "i": "ustreasury_treasury_prices_us_treasury_obb",
+                        "x": 0,
+                        "y": 14,
+                        "w": 40,
+                        "h": 14
+                    }
+                ]
+            },
+            "explorer": {
+                "id": "explorer",
+                "name": "Spending Explorer",
+                "layout": [
+                    {
+                        "i": "ustreasury_spending_explorer_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 20,
+                        "state": {
+                            "params": {
+                                "explorer_type": "object_class",
+                                "period": "latest"
+                            }
+                        }
+                    }
+                ]
+            },
+            "awards": {
+                "id": "awards",
+                "name": "Federal Awards",
+                "layout": [
+                    {
+                        "i": "ustreasury_award_search_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 16,
+                        "state": {
+                            "params": {
+                                "award_group": "contracts",
+                                "agency": "Department of Defense"
+                            }
+                        }
+                    },
+                    {
+                        "i": "ustreasury_award_info_us_treasury_obb",
+                        "x": 0,
+                        "y": 16,
+                        "w": 40,
+                        "h": 20,
+                        "state": {
+                            "params": {
+                                "award_id": "CONT_IDV_15F06724A0000314_1549"
+                            }
+                        }
+                    },
+                    {
+                        "i": "ustreasury_award_us_treasury_obb",
+                        "x": 0,
+                        "y": 36,
+                        "w": 40,
+                        "h": 20,
+                        "state": {
+                            "params": {
+                                "award_id": "CONT_IDV_15F06724A0000314_1549",
+                                "section": "subawards"
+                            }
+                        }
+                    }
+                ]
+            },
+            "recipients": {
+                "id": "recipients",
+                "name": "Recipients",
+                "layout": [
+                    {
+                        "i": "ustreasury_recipient_search_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 14,
+                        "state": {
+                            "params": {
+                                "keyword": "Lockheed Martin",
+                                "award_type": "all"
+                            }
+                        }
+                    },
+                    {
+                        "i": "ustreasury_recipient_info_us_treasury_obb",
+                        "x": 0,
+                        "y": 14,
+                        "w": 40,
+                        "h": 22,
+                        "state": {
+                            "params": {
+                                "recipient_id": "b97d19b0-833c-8d8f-3a2c-157d04ea55ef-P",
+                                "year": "latest"
+                            }
+                        }
+                    },
+                    {
+                        "i": "ustreasury_recipient_awards_us_treasury_obb",
+                        "x": 0,
+                        "y": 36,
+                        "w": 40,
+                        "h": 22,
+                        "state": {
+                            "params": {
+                                "recipient_id": "b97d19b0-833c-8d8f-3a2c-157d04ea55ef-P",
+                                "award_group": "contracts"
+                            }
+                        }
+                    }
+                ]
+            },
+            "bulletin": {
+                "id": "bulletin",
+                "name": "Treasury Bulletin",
+                "layout": [
+                    {
+                        "i": "ustreasury_bulletin_us_treasury_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 15,
+                        "state": {
+                            "params": {
+                                "table": "ofs2"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "groups": [
+            {
+                "name": "Award",
+                "type": "param",
+                "paramName": "award_id",
+                "defaultValue": "CONT_IDV_15F06724A0000314_1549",
+                "widgetIds": [
+                    "ustreasury_award_info_us_treasury_obb",
+                    "ustreasury_award_search_us_treasury_obb",
+                    "ustreasury_award_us_treasury_obb",
+                    "ustreasury_recipient_awards_us_treasury_obb"
+                ]
+            },
+            {
+                "name": "Recipient",
+                "type": "param",
+                "paramName": "recipient_id",
+                "defaultValue": "b97d19b0-833c-8d8f-3a2c-157d04ea55ef-P",
+                "widgetIds": [
+                    "ustreasury_recipient_awards_us_treasury_obb",
+                    "ustreasury_recipient_info_us_treasury_obb",
+                    "ustreasury_recipient_search_us_treasury_obb"
+                ]
+            }
+        ]
+    }
+]

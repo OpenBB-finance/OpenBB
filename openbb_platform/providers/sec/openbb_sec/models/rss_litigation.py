@@ -1,16 +1,15 @@
 """SEC Litigation RSS Feed Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
-from typing import Any
+from typing import Any, cast
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_sec.utils.definitions import HEADERS
 from pydantic import Field
+
+from openbb_sec.utils.definitions import HEADERS
 
 
 class SecRssLitigationQueryParams(QueryParams):
@@ -19,25 +18,71 @@ class SecRssLitigationQueryParams(QueryParams):
     Source: https://sec.gov/
     """
 
+    limit: int = Field(
+        default=25,
+        description="Number of litigation releases to return, newest first.",
+    )
+
 
 class SecRssLitigationData(Data):
     """SEC Litigation RSS Feed Data."""
 
-    __alias_dict__ = {
-        "published": "date",
-    }
+    title: str = Field(description="The title of the litigation release.")
+    date: datetime = Field(description="The date of publication.")
+    author: str | None = Field(default=None, description="The author of the release.")
+    excerpt: str | None = Field(
+        default=None, description="Short summary of the release."
+    )
+    body: str | None = Field(
+        default=None,
+        description="Full text of the litigation release, when retrievable.",
+    )
+    url: str = Field(description="URL to the litigation release.")
+    id: str | None = Field(
+        default=None, description="The litigation release identifier."
+    )
 
-    published: datetime = Field(description="The date of publication.")
-    title: str = Field(description="The title of the release.")
-    summary: str = Field(description="Short summary of the release.")
-    id: str = Field(description="The identifier associated with the release.")
-    link: str = Field(description="URL to the release.")
+
+async def _text_callback(response, _session):
+    """Return the response body as text."""
+    return await response.text()
+
+
+async def _fetch_body(url: str) -> str | None:
+    """Best-effort fetch and clean of a litigation release's full text."""
+    try:
+        from bs4 import BeautifulSoup
+
+        from openbb_sec.utils.html2markdown import html_to_markdown
+        from openbb_sec.utils.ratelimit import sec_amake_request as amake_request
+
+        text = cast(
+            "str | None",
+            await amake_request(url, headers=HEADERS, response_callback=_text_callback),
+        )
+        if not text:
+            return None
+        soup = BeautifulSoup(text, "html.parser")
+        for tag in soup(["script", "style", "nav", "header", "footer", "form"]):
+            tag.decompose()
+        main = (
+            soup.find("article")
+            or soup.find(id="main-content")
+            or soup.find("main")
+            or soup.body
+        )
+        if main is None:
+            return None
+        body = html_to_markdown(str(main), base_url=url).strip()
+        return body or None
+    except Exception:  # noqa: BLE001
+        return None
 
 
 class SecRssLitigationFetcher(
     Fetcher[SecRssLitigationQueryParams, list[SecRssLitigationData]]
 ):
-    """SEC RSS Litigration Fetcher."""
+    """SEC RSS Litigation Fetcher."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> SecRssLitigationQueryParams:
@@ -45,48 +90,66 @@ class SecRssLitigationFetcher(
         return SecRssLitigationQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: SecRssLitigationQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import re  # noqa
+        """Return the litigation releases, attempting to include the full text."""
+        import asyncio
+        import re
+        from email.utils import parsedate_to_datetime
+
         import xmltodict
-        from openbb_core.provider.utils.helpers import make_request
-        from pandas import DataFrame, to_datetime
+
+        from openbb_sec.utils.ratelimit import sec_amake_request as amake_request
+
+        def _parse_date(value):
+            """Parse an RFC822 RSS date string."""
+            try:
+                return parsedate_to_datetime(value) if value else None
+            except (TypeError, ValueError):
+                return None
+
+        url = "https://www.sec.gov/enforcement-litigation/litigation-releases/rss"
+        content = cast(
+            "str | None",
+            await amake_request(url, headers=HEADERS, response_callback=_text_callback),
+        )
+        if not content:
+            raise OpenBBError("No data returned from the SEC litigation RSS feed.")
+
+        cleaned = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;)", "&amp;", content)
+        items = xmltodict.parse(cleaned)["rss"]["channel"]["item"]
+
+        if isinstance(items, dict):
+            items = [items]
 
         results: list = []
-        url = "https://www.sec.gov/enforcement-litigation/litigation-releases/rss"
-        r = make_request(url, headers=HEADERS)
-
-        if r.status_code != 200:
-            raise OpenBBError(f"Status code {r.status_code} returned.")
-
-        def clean_xml(xml_content):
-            """Clean the XML content before parsing."""
-            xml_content = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;)", "&amp;", xml_content)
-            return xml_content
-
-        cleaned_content = clean_xml(r.text)
-        data = xmltodict.parse(cleaned_content)
-        cols = ["title", "link", "summary", "date", "id"]
-        feed = DataFrame.from_records(data["rss"]["channel"]["item"])[
-            ["title", "link", "description", "pubDate", "dc:creator"]
-        ]
-        feed.columns = cols
-        feed["date"] = to_datetime(feed["date"], format="mixed")
-        feed = feed.set_index("date")
-        # Remove special characters
-        for column in ["title", "summary"]:
-            feed[column] = (
-                feed[column]
-                .replace(r"[^\w\s]|_", "", regex=True)
-                .replace(r"\n", "", regex=True)
+        for item in items[: query.limit]:
+            link = item.get("link", "")
+            release_id = None
+            if match := re.search(r"(lr-?\d+|\d{5,})", link, re.IGNORECASE):
+                release_id = match.group(1).upper()
+            results.append(
+                {
+                    "title": re.sub(r"\s+", " ", (item.get("title") or "")).strip(),
+                    "date": _parse_date(item.get("pubDate")),
+                    "author": None,
+                    "excerpt": re.sub(
+                        r"\s+", " ", (item.get("description") or "")
+                    ).strip()
+                    or None,
+                    "url": link,
+                    "id": item.get("dc:creator") or release_id,
+                }
             )
 
-        results = feed.reset_index().to_dict(orient="records")
+        bodies = await asyncio.gather(
+            *[_fetch_body(r["url"]) for r in results if r["url"]]
+        )
+        for result, body in zip(results, bodies):
+            result["body"] = body or result["excerpt"]
 
         return results
 

@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: '{"jurisdiction": "CFTC", "assetClass": "RATES", "currency": "CLP", "minNotionalAmount":
+      "0", "maxNotionalAmount": "999999999999", "displayType": "w", "disseminationDateTimeLow":
+      "07/13/2026", "disseminationDateTimeHigh": "07/15/2026", "productId": null,
+      "underlyingAsset": null, "upi": null, "upiShortName": "NA/Swap OIS CLP", "name":
+      null, "searchIndicator": "post"}'
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://pddata.dtcc.com/ppd/api/search/webdisplay
+  response:
+    body:
+      string: '{"tradeList":null,"errorList":[{"errorCode":"1009","errorMessage":"Dissemination
+        Date Time format is not correct.","severity":"Fatal"}]}'
+    headers:
+      Akamai-GRN:
+      - 0.8ed02e17.1784263289.1c0092a3
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '136'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Jul 2026 04:41:29 GMT
+      Expires:
+      - Fri, 17 Jul 2026 04:41:29 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - DTCCSRV
+      Set-Cookie:
+      - AWSALB=+4KpWkwsuJiZJlvH0xEnPz6G9nalghopB/3oFq1vfgoS+eRaAyV5H0LdD8AAXiePZisiZTHvDtI8fso76ocoSyiSD+Jq19N514rWUJCIzh6073y2TDFpysTsI62u;
+        Expires=Fri, 24 Jul 2026 04:41:29 GMT; Path=/
+      - AWSALBCORS=+4KpWkwsuJiZJlvH0xEnPz6G9nalghopB/3oFq1vfgoS+eRaAyV5H0LdD8AAXiePZisiZTHvDtI8fso76ocoSyiSD+Jq19N514rWUJCIzh6073y2TDFpysTsI62u;
+        Expires=Fri, 24 Jul 2026 04:41:29 GMT; Path=/; SameSite=None; Secure
+    status:
+      code: 200
+      message: OK
+version: 1

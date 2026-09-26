@@ -1,1 +1,1 @@
-"""{{ cookiecutter.provider_name}} helper functions."""
+"""{{ cookiecutter.provider_name }} helper functions."""
