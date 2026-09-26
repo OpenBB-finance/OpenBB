@@ -24,7 +24,6 @@ Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-a
 [dependency-groups]
 dev = [
     "openbb-devtools>=2.0.1",
-    "httpx>=0.28.0,<1.0.0",
 ]
 
 [build-system]
