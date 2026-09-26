@@ -1,6 +1,6 @@
 [project]
 name = "openbb-core"
-version = "2.0.0"
+version = "2.0.0rc1"
 description = "OpenBB package with core functionality."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "Apache-2.0" }
