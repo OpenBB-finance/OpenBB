@@ -11,9 +11,9 @@ from openbb_core.build import main
 class TestBuild:
     """Test the build module."""
 
-    @patch("openbb_core.build.subprocess.run")
     @patch("builtins.__import__")
-    def test_main_successful_build_found(self, mock_import, mock_run):
+    @patch("openbb_core.build.subprocess.run")
+    def test_main_successful_build_found(self, mock_run, mock_import):
         """Test main when import openbb produces a build."""
         mock_result = MagicMock()
         mock_result.returncode = 0
@@ -26,9 +26,9 @@ class TestBuild:
         assert exc_info.value.code == 0
         mock_import.assert_not_called()
 
-    @patch("openbb_core.build.subprocess.run")
     @patch("builtins.__import__")
-    def test_main_successful_build_required(self, mock_import, mock_run):
+    @patch("openbb_core.build.subprocess.run")
+    def test_main_successful_build_required(self, mock_run, mock_import):
         """Test main when openbb needs to be built after import."""
         mock_result = MagicMock()
         mock_result.returncode = 0
@@ -70,9 +70,9 @@ class TestBuild:
             main()
         assert exc_info.value.code == 1
 
-    @patch("openbb_core.build.subprocess.run")
     @patch("builtins.__import__")
-    def test_main_build_failure(self, mock_import, mock_run):
+    @patch("openbb_core.build.subprocess.run")
+    def test_main_build_failure(self, mock_run, mock_import):
         """Test main when build fails during import."""
         mock_result = MagicMock()
         mock_result.returncode = 0
@@ -85,9 +85,9 @@ class TestBuild:
         with pytest.raises(RuntimeError):
             main()
 
-    @patch("openbb_core.build.subprocess.run")
     @patch("builtins.__import__")
-    def test_main_exception_handling(self, mock_import, mock_run):
+    @patch("openbb_core.build.subprocess.run")
+    def test_main_exception_handling(self, mock_run, mock_import):
         """Test main handles exceptions during build gracefully."""
         mock_result = MagicMock()
         mock_result.returncode = 0
