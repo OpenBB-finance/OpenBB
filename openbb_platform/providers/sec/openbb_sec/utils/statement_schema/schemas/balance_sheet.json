@@ -1082,6 +1082,14 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -1122,6 +1130,18 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         },
         {
@@ -3627,6 +3647,14 @@
         {
           "tag": "ShortTermDebtCurrent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -3649,6 +3677,18 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         }
       ]
@@ -3757,12 +3797,6 @@
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
-        {
-          "tag": "OtherShortTermBorrowings",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "OtherLiabilitiesCurrent",
           "namespace": "us-gaap",
@@ -5871,6 +5905,14 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -5911,6 +5953,18 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         },
         {
@@ -8342,6 +8396,14 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -8370,6 +8432,18 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         }
       ]
@@ -8486,12 +8560,6 @@
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
-        {
-          "tag": "OtherShortTermBorrowings",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "OtherLiabilitiesCurrent",
           "namespace": "us-gaap",
