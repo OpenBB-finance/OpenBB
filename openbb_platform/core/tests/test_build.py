@@ -21,9 +21,10 @@ class TestBuild:
         mock_result.stderr = ""
         mock_run.return_value = mock_result
 
-        with patch("sys.exit") as mock_exit:
+        with pytest.raises(SystemExit) as exc_info:
             main()
-            mock_exit.assert_called_once_with(0)
+        assert exc_info.value.code == 0
+        mock_import.assert_not_called()
 
     @patch("openbb_core.build.subprocess.run")
     @patch("builtins.__import__")
@@ -39,9 +40,10 @@ class TestBuild:
         mock_openbb.build = MagicMock()
         mock_import.return_value = mock_openbb
 
-        with patch("sys.exit") as mock_exit:
+        with pytest.raises(SystemExit) as exc_info:
             main()
-            mock_exit.assert_called_once_with(0)
+        assert exc_info.value.code == 0
+        mock_openbb.build.assert_called_once()
 
     @patch("openbb_core.build.subprocess.run")
     def test_main_openbb_not_installed(self, mock_run):
