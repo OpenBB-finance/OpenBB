@@ -14,6 +14,16 @@ from typing import Any
 from openbb_cli.utils.utils import change_logging_sub_app, reset_logging_sub_app
 
 
+def _debug_enabled() -> bool:
+    """Return True when debug output (full tracebacks) is requested."""
+    return os.environ.get("OPENBB_DEBUG_MODE", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
 def _materialize_socrata_spec(story_source: str) -> str:
     """Build a Socrata spec from a story and write it to a temp file."""
     import tempfile
@@ -364,13 +374,35 @@ def _launch_repl(
         )
         backend = SpecBackend(dispatcher._spec_doc, dispatcher)
     elif server_url:
+        import httpx
+
         from openbb_cli.backend import SpecBackend
         from openbb_cli.dispatchers.http import http_dispatcher_from_server
         from openbb_cli.dispatchers.openapi_schema import fetch_openapi
         from openbb_cli.dispatchers.spec import build_spec_document
 
-        openapi = fetch_openapi(server_url, headers=headers, query_params=query_params)
+        try:
+            openapi = fetch_openapi(
+                server_url, headers=headers, query_params=query_params
+            )
+        except (httpx.HTTPError, ValueError) as exc:
+            sys.stderr.write(
+                f"failed to fetch the OpenAPI document from {server_url}: {exc}\n"
+            )
+            if _debug_enabled():
+                import traceback
+
+                sys.stderr.write(traceback.format_exc())
+            return 2
         spec_doc = build_spec_document(openapi, base_url=server_url)
+        if not spec_doc["commands"]:
+            sys.stderr.write(
+                f"generated 0 commands from {server_url} — the document exposes no "
+                "GET/POST operations OpenBB can map. Multi-file specs that split "
+                "paths across documents with external $refs must be bundled into "
+                "a single file first.\n"
+            )
+            return 2
         backend = SpecBackend(
             spec_doc,
             http_dispatcher_from_server(
@@ -440,12 +472,24 @@ def _generate_spec(
         )
         return 2
 
+    import httpx
+
     from openbb_cli.dispatchers.openapi_schema import fetch_openapi
     from openbb_cli.dispatchers.spec import build_spec_document
 
-    openapi = fetch_openapi(
-        server_url, path=openapi_path, headers=headers, query_params=query_params
-    )
+    try:
+        openapi = fetch_openapi(
+            server_url, path=openapi_path, headers=headers, query_params=query_params
+        )
+    except (httpx.HTTPError, ValueError) as exc:
+        sys.stderr.write(
+            f"failed to fetch the OpenAPI document from {server_url}: {exc}\n"
+        )
+        if _debug_enabled():
+            import traceback
+
+            sys.stderr.write(traceback.format_exc())
+        return 2
     if openapi_path and (
         openapi_path.startswith("http://") or openapi_path.startswith("https://")
     ):
