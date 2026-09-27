@@ -492,26 +492,25 @@ def clenow_momentum(
     Series:
         Values for best fit line
     """
-    from numpy import arange, exp, log
+    from numpy import arange, exp, log, polyfit
     from pandas import Series
-    from sklearn.linear_model import LinearRegression
 
     if len(values) < window:
         raise ValueError(f"Calculation asks for at least last {window} days of data")
 
-    values = values[-window:]
+    y = log(values[-window:].to_numpy(dtype=float))
+    x = arange(len(y))
+    coef, intercept = polyfit(x, y, 1)
+    fit = coef * x + intercept
 
-    y = log(values)
-    X = arange(len(y)).reshape(-1, 1)
+    r2 = (
+        0.0
+        if y.max() == y.min()
+        else float(1 - ((y - fit) ** 2).sum() / ((y - y.mean()) ** 2).sum())
+    )
+    annualized_coef = float(exp(coef) ** 252 - 1)
 
-    lr = LinearRegression()
-    lr.fit(X, y)
-
-    r2 = lr.score(X, y)
-    coef = lr.coef_[0]
-    annualized_coef = (exp(coef) ** 252) - 1
-
-    return r2, annualized_coef, Series(lr.predict(X))
+    return r2, annualized_coef, Series(fit)
 
 
 def calculate_fib_levels(

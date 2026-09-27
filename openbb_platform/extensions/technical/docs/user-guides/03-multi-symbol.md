@@ -7,7 +7,7 @@ Example input shape:
 ```python
 import pandas as pd
 
-df = pd.read_csv("dow30.csv")          # columns: date, symbol, open, high, low, close, volume
+df = pd.read_csv("dow30.csv")  # columns: date, symbol, open, high, low, close, volume
 print(df.head())
 #         date open    high    low    close   volume    symbol
 # 0 2024-01-02 187.15  188.44  183.89 185.64  82488700  AAPL
@@ -39,12 +39,12 @@ Builds a single point-in-time correlation matrix across every symbol in the inpu
 ```python
 result = obb.technical.correlation_matrix(
     data=data,
-    window=60,                       # rolling window ending at as_of_date
+    window=60,  # rolling window ending at as_of_date
     method="spearman",
-    as_of_date="2024-06-28",         # None = most recent date in input
+    as_of_date="2024-06-28",  # None = most recent date in input
 ).results[0]
-print(result.symbols)                # ['AAPL', 'AMZN', 'MSFT', ...]
-print(result.matrix)                 # nested list, indexed by symbols order
+print(result.symbols)  # ['AAPL', 'AMZN', 'MSFT', ...]
+print(result.matrix)  # nested list, indexed by symbols order
 ```
 
 ## Screen
@@ -68,8 +68,8 @@ matches = obb.technical.screen(
             "value": 0.0,
         },
     ],
-    combine="and",                   # "or" for union semantics
-    as_of_date="2024-06-28",         # None = each symbol's latest bar
+    combine="and",  # "or" for union semantics
+    as_of_date="2024-06-28",  # None = each symbol's latest bar
 ).results
 ```
 
@@ -95,17 +95,17 @@ Computes the JdK RS-Ratio (relative-strength level) and RS-Momentum (relative-st
 # call, or pick one of the constituents as the benchmark.
 rrg = obb.technical.relative_rotation(
     data=data,
-    benchmark="AAPL",                # any symbol present in `data`
-    study="price",                   # or "volume", "volatility"
-    long_period=252,                 # RS-Ratio standardisation window
-    short_period=21,                 # RS-Momentum standardisation window
-    window=21,                       # trail length retained in the output
-    trading_periods=252,             # used by the volatility study
+    benchmark="AAPL",  # any symbol present in `data`
+    study="price",  # or "volume", "volatility"
+    long_period=252,  # RS-Ratio standardisation window
+    short_period=21,  # RS-Momentum standardisation window
+    window=21,  # trail length retained in the output
+    trading_periods=252,  # used by the volatility study
 )
 
-rrg.results.rs_ratios               # one frame per symbol, indexed by date
-rrg.results.rs_momentum             # same shape
-rrg.results.benchmark               # echoed for charting
+rrg.results.rs_ratios  # one frame per symbol, indexed by date
+rrg.results.rs_momentum  # same shape
+rrg.results.benchmark  # echoed for charting
 ```
 
 Quadrant interpretation (`x = RS-Ratio`, `y = RS-Momentum`, both centred at 100):
