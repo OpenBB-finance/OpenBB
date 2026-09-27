@@ -3070,6 +3070,7 @@ class TestSixKReportingPeriods:
         with pytest.raises(OpenBBError, match="quarterly"):
             resolve_company_facts(_six_k_lapsed_interim_facts(), period="quarterly")
 
+
 # Regression tests: missing debt tag spellings (issue #7634)
 # ---------------------------------------------------------------------------
 
