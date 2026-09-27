@@ -122,6 +122,11 @@ def order_field_meta(
 # Module-level schema instance (loaded once, reused for all calls)
 _schema = StatementSchema()
 
+#: SEC XBRL company-facts endpoint template (``{cik_str}`` = zero-padded CIK).
+_COMPANY_FACTS_URL_TEMPLATE = (
+    "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_str}.json"
+)
+
 _STATEMENT_NAMES = ("income_statement", "balance_sheet", "cash_flow")
 
 # Tickers whose full history requires merging facts from multiple CIKs.
@@ -570,13 +575,24 @@ async def get_standardized_financials(
         raise OpenBBError("Either symbol or cik must be provided.")
 
     async def _fetch(cik_str: str) -> dict:
-        url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik_str}.json"
+        url = _COMPANY_FACTS_URL_TEMPLATE.format(cik_str=cik_str)
         if use_cache:
+            from aiohttp_client_cache import SQLiteBackend
             from aiohttp_client_cache.session import (
                 CachedSession,
             )  # pylint: disable=import-outside-toplevel
+            from openbb_core.app.utils import (
+                get_user_cache_directory,
+            )  # pylint: disable=import-outside-toplevel
 
-            async with CachedSession(expire_after=3600 * 6) as session:
+            # Share one on-disk cache across calls (and processes) so the
+            # 6-hour TTL actually produces cache hits.  Previously each call
+            # built a CachedSession with a throwaway in-memory backend, so
+            # the full companyfacts payload was re-downloaded on every call.
+            cache_dir = f"{get_user_cache_directory()}/http/sec_company_facts"
+            async with CachedSession(
+                cache=SQLiteBackend(cache_dir), expire_after=3600 * 6
+            ) as session:
                 try:
                     resp = await amake_request(
                         url, headers=HEADERS, session=session, timeout=300

@@ -3069,3 +3069,74 @@ class TestSixKReportingPeriods:
 
         with pytest.raises(OpenBBError, match="quarterly"):
             resolve_company_facts(_six_k_lapsed_interim_facts(), period="quarterly")
+
+
+# ---------------------------------------------------------------------------
+# Regression tests: SEC company-facts HTTP cache (issue #7655)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_company_facts_fetch_shares_cache_across_calls(tmp_path, monkeypatch):
+    """The 6h company-facts cache must persist across calls.
+
+    Two sequential fetches of the same CIK must hit the network exactly once;
+    the second call must be served from the shared on-disk cache instead of
+    re-downloading the full companyfacts payload.
+    """
+    from aiohttp import web
+    from openbb_sec.utils import company_facts as cf_module
+    from openbb_sec.utils.company_facts import get_standardized_financials
+
+    hits = 0
+    payload = {
+        "cik": "0000000001",
+        "entityName": "Cache Test Co",
+        "facts": {
+            "us-gaap": {
+                "Assets": {
+                    "units": {
+                        "USD": [
+                            {
+                                "end": "2024-12-31",
+                                "val": 1000,
+                                "form": "10-K",
+                                "filed": "2025-02-01",
+                                "fy": 2024,
+                                "fp": "FY",
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+    }
+
+    async def handler(request):
+        nonlocal hits
+        hits += 1
+        return web.json_response(payload)
+
+    app = web.Application()
+    app.router.add_get("/api/xbrl/companyfacts/CIK{cik}.json", handler)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "127.0.0.1", 0)
+    await site.start()
+    port = site._server.sockets[0].getsockname()[1]
+    monkeypatch.setattr(
+        cf_module,
+        "_COMPANY_FACTS_URL_TEMPLATE",
+        f"http://127.0.0.1:{port}/api/xbrl/companyfacts/CIK{{cik_str}}.json",
+    )
+    monkeypatch.setattr(
+        "openbb_core.app.utils.get_user_cache_directory", lambda: str(tmp_path)
+    )
+    try:
+        await get_standardized_financials(cik="0000000001", period="annual")
+        await get_standardized_financials(cik="0000000001", period="annual")
+    finally:
+        await runner.cleanup()
+
+    assert hits == 1
+
