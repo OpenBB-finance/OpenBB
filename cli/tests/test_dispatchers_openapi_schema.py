@@ -2120,6 +2120,18 @@ def test_merge_allof_leaves_non_object_compositions_alone():
     assert merge_allof(scalar_member) == scalar_member
 
 
+def test_merge_allof_boolean_member_blocks_merge():
+    """A boolean schema member is not a property bag."""
+    schema = {"allOf": [True, {"properties": {"a": {"type": "string"}}}]}
+    assert merge_allof(schema) == schema
+
+
+def test_merge_allof_stops_at_max_depth():
+    """At zero remaining depth the node is returned unmerged."""
+    schema = {"allOf": [{"properties": {"a": {}}}, {"properties": {"b": {}}}]}
+    assert merge_allof(schema, max_depth=0) is schema
+
+
 def test_merge_allof_ignores_schemas_without_allof():
     schema = {"type": "object", "properties": {"a": {"type": "string"}}}
     assert merge_allof(schema) == schema
