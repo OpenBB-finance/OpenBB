@@ -171,7 +171,7 @@ class TestPlotlyTAPlot:
         fig = PlotlyTA.plot(ohlcv_df, indicators=None, symbol="AAA")
         assert isinstance(fig, OpenBBFigure)
 
-    def test_plot_with_fib_and_srlines(self, ohlcv_df):
+    def test_plot_with_fib_and_srlines(self, ohlcv_df, technical_helpers):
         """Overlay-only indicators (fib, srlines) are plotted on the chart."""
         fig = PlotlyTA.plot(
             ohlcv_df,
@@ -180,6 +180,7 @@ class TestPlotlyTAPlot:
             candles=True,
         )
         assert isinstance(fig, OpenBBFigure)
+        assert [t.name for t in fig.data if t.name == "Fib" and t.showlegend] == ["Fib"]
 
     def test_plot_with_inchart_overlay_indicators(self, ohlcv_df):
         """In-chart overlay indicators (donchian, ichimoku) are plotted."""

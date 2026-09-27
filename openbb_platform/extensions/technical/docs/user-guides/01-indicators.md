@@ -59,7 +59,7 @@ Use the volume column. Useful for confirming or invalidating price moves.
 ```python
 obv = obb.technical.obv(data=data).to_df()
 ad = obb.technical.ad(data=data).to_df()
-vwap = obb.technical.vwap(data=data, anchor="D").to_df()    # pandas offset alias
+vwap = obb.technical.vwap(data=data, anchor="D").to_df()  # pandas offset alias
 ```
 
 `obv` (On-Balance Volume), `ad` (Accumulation/Distribution), `adosc` (Chaikin A/D Oscillator), `vwap` (Volume-Weighted Average Price).
@@ -123,6 +123,7 @@ Overlay/oscillator endpoints expose a `length` (or `period`) parameter for the r
 
 ```python
 import pandas as pd
+
 df = pd.read_csv("spy.csv")
 obb.technical.rsi(data=df, length=14)
 ```
@@ -131,6 +132,7 @@ obb.technical.rsi(data=df, length=14)
 
 ```python
 import csv
+
 with open("spy.csv") as f:
     records = list(csv.DictReader(f))
 obb.technical.rsi(data=records, length=14)

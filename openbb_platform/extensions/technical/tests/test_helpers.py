@@ -101,6 +101,12 @@ class TestClenowMomentum:
         assert isinstance(coef, float)
         assert len(preds) == 90
 
+    def test_flat_window_has_zero_r2(self):
+        r2, coef, preds = clenow_momentum(pd.Series([100.0] * 120))
+        assert r2 == 0.0
+        assert coef == pytest.approx(0.0, abs=1e-10)
+        assert preds.to_numpy() == pytest.approx(np.log(100.0))
+
     def test_raises_when_window_exceeds_data(self):
         with pytest.raises(ValueError, match="at least last"):
             clenow_momentum(pd.Series([1.0, 2.0]), window=90)

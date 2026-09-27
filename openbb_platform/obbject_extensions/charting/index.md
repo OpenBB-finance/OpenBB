@@ -88,7 +88,7 @@ When creating a chart directly from the OpenBB Platform endpoint, chart paramete
 chart_params = dict(
     title="AAPL 50/200 Day EMA",
     indicators=dict(
-        ema=dict(length=[50,200]),
+        ema=dict(length=[50, 200]),
     ),
 )
 params = dict(
@@ -258,7 +258,7 @@ obb.equity.price.historical(
     start_date="2024-01-01",
     provider="yfinance",
     chart=True,
-    chart_params=dict(title="XLK YTD", heikin_ashi=True)
+    chart_params=dict(title="XLK YTD", heikin_ashi=True),
 ).show()
 ```
 
@@ -348,7 +348,7 @@ External data can also be supplied, providing an opportunity to filter or apply 
 
 ```python
 new_df = df.to_df().T
-new_df.index.name="metric"
+new_df.index.name = "metric"
 new_df.columns = new_df.loc["symbol"]
 new_df.drop("symbol", inplace=True)
 data.charting.table(data=new_df)

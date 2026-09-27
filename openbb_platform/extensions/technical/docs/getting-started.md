@@ -6,7 +6,7 @@
 pip install openbb-technical
 ```
 
-The extension depends on `openbb-core[pandas]`, `pandas-ta-openbb`, `scikit-learn`, `scipy`, and `statsmodels` — all installed transitively.
+The extension depends on `openbb-core[pandas]`, `pandas-ta-openbb`, `scipy`, and `statsmodels` — all installed transitively.
 
 ## Three ways to call an endpoint
 
@@ -22,8 +22,8 @@ data = obb.equity.price.historical(
 ).results
 
 result = obb.technical.rsi(data=data, length=14)
-print(result.results[0])         # first row of the RSI series
-df = result.to_df()              # convert results to a DataFrame
+print(result.results[0])  # first row of the RSI series
+df = result.to_df()  # convert results to a DataFrame
 ```
 
 ### 2. REST API
@@ -62,11 +62,11 @@ Every endpoint returns an `OBBject`. The interesting bits:
 ```python
 result = obb.technical.bbands(data=data, length=20)
 
-result.results          # list[BbandsData] — one row per bar
-result.to_df()          # pandas DataFrame keyed by date
-result.to_dict()        # dict form
-len(result.results)     # row count
-result.results[-1]      # last row (most recent bar)
+result.results  # list[BbandsData] — one row per bar
+result.to_df()  # pandas DataFrame keyed by date
+result.to_dict()  # dict form
+len(result.results)  # row count
+result.results[-1]  # last row (most recent bar)
 ```
 
 ## Discovering what's available
