@@ -497,7 +497,7 @@ def test_list_nargs():
     actions = {action.dest: action for action in parser._actions}
 
     assert actions["symbols"].nargs == "+"
-    assert "values" in actions
+    assert actions["values"].nargs == "+"
 
 
 def test_custom_type_flattening():

@@ -316,7 +316,7 @@ class ArgparseTranslator:
         if origin is list:
             return "+"
 
-        if origin is Union and any(
+        if origin in (Union, types.UnionType) and any(
             get_origin(arg) is list for arg in get_args(param_type)
         ):
             return "+"
