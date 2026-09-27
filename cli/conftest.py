@@ -3,9 +3,9 @@
 Every test under ``cli/`` (both ``cli/tests/`` and ``cli/integration/``) runs
 against the same generated static-package surface. The fixture writes a
 self-contained extension distribution to disk, ``pip install``s it into the
-current interpreter, and runs ``openbb-build`` so the static package under
-``openbb_platform/core/openbb/package/`` is regenerated with the test
-extension's commands baked in.
+current interpreter, and runs ``openbb-build`` so the static package of the
+installed ``openbb`` distribution is regenerated with the test extension's
+commands baked in.
 
 Modeled directly on ``openbb_platform/core/integration/conftest.py``; reuses
 the same snapshot-and-restore approach so the production package dir is
@@ -20,6 +20,7 @@ that.
 from __future__ import annotations
 
 import contextlib
+import importlib.util
 import json
 import os
 import shutil
@@ -30,9 +31,16 @@ from pathlib import Path
 
 import pytest
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-CORE_DIR = REPO_ROOT / "openbb_platform" / "core"
-OPENBB_DIR = CORE_DIR / "openbb"
+
+def _installed_openbb_dir() -> Path:
+    """Return the directory of the ``openbb`` package this interpreter imports."""
+    spec = importlib.util.find_spec("openbb")
+    if spec is None or not spec.submodule_search_locations:
+        raise RuntimeError("The `openbb` package is not installed in this interpreter.")
+    return Path(next(iter(spec.submodule_search_locations)))
+
+
+OPENBB_DIR = _installed_openbb_dir()
 PACKAGE_DIR = OPENBB_DIR / "package"
 ASSETS_DIR = OPENBB_DIR / "assets"
 
