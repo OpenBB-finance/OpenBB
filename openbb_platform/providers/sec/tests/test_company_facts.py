@@ -3069,3 +3069,165 @@ class TestSixKReportingPeriods:
 
         with pytest.raises(OpenBBError, match="quarterly"):
             resolve_company_facts(_six_k_lapsed_interim_facts(), period="quarterly")
+
+# Regression tests: missing debt tag spellings (issue #7634)
+# ---------------------------------------------------------------------------
+
+
+def _bs_anchor(year, extra=None):
+    """Balance-sheet mock anchor with coherent per-year filing metadata.
+
+    ``extract_all`` keeps only dates common to all three statements, so the
+    anchor needs a duration income tag (in addition to ``_anchor``'s instant
+    Assets and duration cash-flow tags). Each entry is filed ~3 months after
+    its period end so the 450-day filing-gap rule does not drop older years.
+    """
+    filed = f"{year + 1}-03-01"
+    entries = [
+        {
+            "tag": "Assets",
+            "val": 1000,
+            "end": f"{year}-12-31",
+            "filed": filed,
+            "fy": year,
+        },
+        {
+            "tag": "NetCashProvidedByUsedInOperatingActivities",
+            "val": 100,
+            "start": f"{year}-01-01",
+            "end": f"{year}-12-31",
+            "filed": filed,
+            "fy": year,
+        },
+        {
+            "tag": "Revenues",
+            "val": 500,
+            "start": f"{year}-01-01",
+            "end": f"{year}-12-31",
+            "filed": filed,
+            "fy": year,
+        },
+    ]
+    for e in extra or []:
+        merged = dict(e)
+        merged.setdefault("filed", filed)
+        merged.setdefault("fy", year)
+        entries.append(merged)
+    return entries
+
+
+def test_current_portion_of_long_term_debt_tag_spellings():
+    """Issuers filing DebtCurrent / LongTermDebtAndCapitalLeaseObligationsCurrent /
+    LongTermDebtCurrentMaturities must resolve to current_portion_of_long_term_debt.
+    """
+    facts = create_mock_facts(
+        _bs_anchor(
+            2021,
+            extra=[
+                {
+                    "tag": "LongTermDebtCurrentMaturities",
+                    "val": 1200000000,
+                    "end": "2021-12-31",
+                }
+            ],
+        )
+        + _bs_anchor(
+            2022,
+            extra=[
+                {
+                    "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+                    "val": 4493000000,
+                    "end": "2022-12-31",
+                }
+            ],
+        )
+        + _bs_anchor(
+            2023,
+            extra=[{"tag": "DebtCurrent", "val": 10139000000, "end": "2023-12-31"}],
+        )
+    )
+    res = resolve_company_facts(facts, period="annual")
+
+    v, src = _val(res.balance_sheet, "current_portion_of_long_term_debt", "2023-12-31")
+    assert v == 10139000000
+    assert "DebtCurrent" in src
+
+    v, src = _val(res.balance_sheet, "current_portion_of_long_term_debt", "2022-12-31")
+    assert v == 4493000000
+    assert "LongTermDebtAndCapitalLeaseObligationsCurrent" in src
+
+    v, src = _val(res.balance_sheet, "current_portion_of_long_term_debt", "2021-12-31")
+    assert v == 1200000000
+    assert "LongTermDebtCurrentMaturities" in src
+
+
+def test_short_term_debt_tag_spellings():
+    """Issuers filing NotesAndLoansPayable / OtherShortTermBorrowings must
+    resolve to short_term_debt.
+    """
+    facts = create_mock_facts(
+        _bs_anchor(
+            2022,
+            extra=[
+                {
+                    "tag": "OtherShortTermBorrowings",
+                    "val": 750000000,
+                    "end": "2022-12-31",
+                }
+            ],
+        )
+        + _bs_anchor(
+            2023,
+            extra=[
+                {"tag": "NotesAndLoansPayable", "val": 2500000000, "end": "2023-12-31"}
+            ],
+        )
+    )
+    res = resolve_company_facts(facts, period="annual")
+
+    v, src = _val(res.balance_sheet, "short_term_debt", "2023-12-31")
+    assert v == 2500000000
+    assert "NotesAndLoansPayable" in src
+
+    v, src = _val(res.balance_sheet, "short_term_debt", "2022-12-31")
+    assert v == 750000000
+    assert "OtherShortTermBorrowings" in src
+
+
+# ---------------------------------------------------------------------------
+# Regression tests: operating income imputed as revenue (issue #7634)
+# ---------------------------------------------------------------------------
+
+
+def test_diversified_operating_income_subtracts_costs_and_expenses(schema):
+    """Diversified issuers reporting CostsAndExpenses must get operating income
+    as revenue minus costs & expenses -- never revenue alone (100% margin).
+    """
+    facts = create_mock_facts(
+        _anchor(
+            2023,
+            extra=[
+                {
+                    "tag": "Revenues",
+                    "val": 349585000000,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+                {
+                    "tag": "CostsAndExpenses",
+                    "val": 300712000000,
+                    "start": "2023-01-01",
+                    "end": "2023-12-31",
+                },
+            ],
+        )
+    )
+    # Sanity: this shape classifies as diversified (CostsAndExpenses, no COGS).
+    assert schema.detect_type(facts["facts"]) == "diversified"
+
+    res = resolve_company_facts(facts, period="annual")
+    v, src = _val(res.income_statement, "total_operating_income", "2023-12-31")
+
+    assert v == 48873000000
+    assert v != 349585000000
+    assert "costs_and_expenses" in src

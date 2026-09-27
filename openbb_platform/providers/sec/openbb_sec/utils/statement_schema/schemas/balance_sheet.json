@@ -1082,6 +1082,18 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -1123,6 +1135,24 @@
         {
           "tag": "CurrentPortionOfLongTermDebt",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "DebtCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         },
         {
           "tag": "CurrentPortionOfNoncurrentBorrowings",
@@ -5871,6 +5901,18 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -5912,6 +5954,24 @@
         {
           "tag": "CurrentPortionOfLongTermDebt",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "DebtCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         },
         {
           "tag": "CurrentPortionOfNoncurrentBorrowings",
