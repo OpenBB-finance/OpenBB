@@ -4,8 +4,8 @@ parallel = True
 source = openbb_cli
 data_file = .coverage
 omit =
-    openbb_cli/cli.py
-    openbb_cli/assets/**
+    */openbb_cli/cli.py
+    */openbb_cli/assets/*
     tests/*
     integration/*
 
