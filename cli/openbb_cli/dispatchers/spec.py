@@ -202,8 +202,6 @@ def _build_operation_entry(
     providers_set = set(providers) if providers else None
     params: list[dict[str, Any]] = []
     for resolved in operation_parameters(spec, path_item or {}, op):
-        if not resolved:
-            continue
         normalized = _normalize_parameter(resolved, providers_set)
         if normalized is not None:
             params.append(normalized)

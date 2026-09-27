@@ -2,6 +2,7 @@
 
 import argparse
 import ast
+import io
 import os
 import random
 import re
@@ -205,12 +206,23 @@ Please feel free to check out our other products:
 def bootup():
     """Bootup the cli."""
     if sys.platform == "win32":  # pragma: no cover
-        os.system("")  # noqa: S605, S607
+        import ctypes
+
+        std_output_handle = -11
+        enable_virtual_terminal_processing = 0x0004
+        kernel32 = ctypes.windll.kernel32
+        handle = kernel32.GetStdHandle(std_output_handle)
+        mode = ctypes.c_ulong()
+        if kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
+            kernel32.SetConsoleMode(
+                handle, mode.value | enable_virtual_terminal_processing
+            )
 
     try:
         if os.name == "nt":  # pragma: no cover
-            sys.stdin.reconfigure(encoding="utf-8")
-            sys.stdout.reconfigure(encoding="utf-8")
+            for stream in (sys.stdin, sys.stdout):
+                if isinstance(stream, io.TextIOWrapper):
+                    stream.reconfigure(encoding="utf-8")
     except Exception as e:  # pragma: no cover
         session.console.print(e, "\n")
 

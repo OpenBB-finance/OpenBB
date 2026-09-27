@@ -504,6 +504,21 @@ def test_merge_redactions_skips_credentials_without_wire_name():
     assert all(name for name, _ in queries)
 
 
+def test_merge_redactions_leaves_cookie_credentials_to_cookie_header():
+    """A cookie credential gets no filter of its own; ``Cookie`` covers it."""
+    fetchers = [
+        _Fetcher(
+            module_name="x",
+            fetcher_class="XFetcher",
+            credentials_used={"session": {"name": "sid", "in": "cookie"}},
+        ),
+    ]
+    headers, queries = tg._merge_redactions(fetchers)
+    assert "sid" not in dict(headers)
+    assert "sid" not in dict(queries)
+    assert dict(headers)["Cookie"] == "MOCK_COOKIE"
+
+
 def test_merge_redactions_picks_up_provider_credential_outside_baseline():
     fetchers = [
         _Fetcher(

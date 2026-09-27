@@ -1396,6 +1396,34 @@ def test_build_command_spec_routes_required_path_item_headers_to_credentials():
     assert params["x-session"]["required"] is True
 
 
+def test_build_command_spec_operation_header_overrides_path_item_credential():
+    """An operation's own header wins over a same-named required path-item header."""
+    openapi = {
+        "paths": {
+            "/api/v1/x": {
+                "parameters": [
+                    {"name": "x-tenant-id", "in": "header", "required": True}
+                ],
+                "get": {
+                    "operationId": "x",
+                    "parameters": [
+                        {
+                            "name": "x-tenant-id",
+                            "in": "header",
+                            "description": "Tenant.",
+                        }
+                    ],
+                },
+            }
+        }
+    }
+    out = build_command_spec(openapi)
+    params = [p for p in out["x"]["parameters"] if p["name"] == "x-tenant-id"]
+    assert len(params) == 1
+    assert params[0]["required"] is False
+    assert params[0]["help"] == "Tenant."
+
+
 def test_build_command_spec_resolves_path_item_ref_parameters():
     """A path-item parameter given as a $ref is resolved before inheriting."""
     openapi = {
