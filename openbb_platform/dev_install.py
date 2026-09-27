@@ -55,6 +55,7 @@ openbb-mcp-server = { path = "./extensions/mcp_server", develop = true, markers 
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
+openbb-arkleon = { path = "./providers/arkleon", optional = true, develop = true }
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-deribit = { path = "./providers/deribit", optional = true, develop = true }

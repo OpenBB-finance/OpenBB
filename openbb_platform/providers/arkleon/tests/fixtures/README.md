@@ -1,0 +1,1 @@
+These fixtures are built by tests/build_fixtures.py from a SEC EDGAR companyfacts recording for CIK 320193 (data.sec.gov, recorded 2026-09-27), reshaped to the /v1/facts response shape in the Arkleon API contract. They are not recorded /v1 responses, and taxonomy is the bare namespace us-gaap because companyfacts carries no taxonomy version.
