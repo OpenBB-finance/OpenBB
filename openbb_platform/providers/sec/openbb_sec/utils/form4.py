@@ -1,6 +1,7 @@
 """Module for handling Form 4 data, by company, from the SEC."""
 
 import logging
+import threading
 from datetime import date as dateType
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -95,6 +96,10 @@ def get_logger():
 
 
 logger = get_logger()
+
+# Serializes the per-process cache lifecycle (decompress → open → compress/delete)
+# so concurrent callers in different threads don't race on the shared .db/.db.gz files.
+_db_lock = threading.Lock()
 
 
 def setup_database(conn):
@@ -504,16 +509,29 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
 
     results: list = []
     non_cached_urls: list = []
+    conn = None
+    db_path = None
+
+    if use_cache:
+        _db_lock.acquire()
 
     try:
         if use_cache is True:
             db_dir = f"{get_user_cache_directory()}/sql"
             db_path = f"{db_dir}/sec_form4.db"
-            # Decompress the database file
-            if os.path.exists(f"{db_path}.gz"):
-                decompress_db(db_path)
-
             os.makedirs(db_dir, exist_ok=True)
+
+            # Decompress the database file; discard corrupted archives rather than propagating.
+            if os.path.exists(f"{db_path}.gz"):
+                try:
+                    decompress_db(db_path)
+                except Exception:
+                    logger.info(
+                        "Corrupted Form 4 cache archive detected; discarding and starting fresh."
+                    )
+                    os.remove(f"{db_path}.gz")
+                    if os.path.exists(db_path):
+                        os.remove(db_path)
 
             try:
                 conn = sqlite3.connect(db_path)
@@ -523,25 +541,23 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
                 for url in urls:
                     if url not in cached_urls:
                         non_cached_urls.append(url)
-            except sqlite3.DatabaseError as e:
-                logger.info("Error connecting to the database.")
-                retry_input = input(
-                    "Would you like to retry with a new database? (y/n): "
+            except sqlite3.DatabaseError:
+                # Corrupted .db — close whatever handle we have, discard, and start fresh.
+                logger.info(
+                    "Corrupted Form 4 cache database detected; discarding and starting fresh."
                 )
-                if retry_input.lower() == "y":
-                    faulty_db_path = f"{db_path}.faulty"
-                    os.rename(db_path, faulty_db_path)
-                    logger.info("Renamed faulty database to %s", faulty_db_path)
-                    db_path = f"{db_dir}/sec_form4.db"
-                    conn = sqlite3.connect(db_path)
-                    setup_database(conn)
-                    cached_data = get_cached_data(urls, conn)
-                    cached_urls = {entry["filing_url"] for entry in cached_data}
-                    for url in urls:
-                        if url not in cached_urls:
-                            non_cached_urls.append(url)
-                else:
-                    raise OpenBBError(e) from e
+                if conn is not None:
+                    try:
+                        conn.close()
+                    except Exception:
+                        pass
+                    conn = None
+                if os.path.exists(db_path):
+                    os.remove(db_path)
+                conn = sqlite3.connect(db_path)
+                setup_database(conn)
+                cached_data = []
+                non_cached_urls = list(urls)
 
             results.extend(cached_data)
         elif use_cache is False:
@@ -598,19 +614,27 @@ async def download_data(urls, use_cache: bool = True):  # noqa: PLR0915
                     await asyncio.gather(*[get_one(url) for url in url_chunk])
                     await asyncio.sleep(1.125)
 
-        if use_cache is True:
+        if use_cache is True and conn is not None:
             close_db(conn, db_path)
+            conn = None
 
         results = [entry for entry in results if entry.get("filing_date")]
 
         return sorted(results, key=lambda x: x["filing_date"], reverse=True)
 
     except Exception as e:  # pylint: disable=broad-except
-        if use_cache is True:
-            close_db(conn, db_path)
+        if use_cache is True and conn is not None:
+            try:
+                close_db(conn, db_path)
+            except Exception:
+                pass
         raise OpenBBError(
             f"Unexpected error while downloading and processing data -> {e.__class__.__name__}: {e}"
         ) from e
+
+    finally:
+        if use_cache:
+            _db_lock.release()
 
 
 def get_cached_data(urls, conn):
