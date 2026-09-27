@@ -43,9 +43,9 @@ The `indicators` endpoint returns a structured description of every registered r
 ```python
 catalog = obb.technical.indicators(category="all").results
 
-print(len(catalog.indicators))      # total endpoints registered
+print(len(catalog.indicators))  # total endpoints registered
 for entry in catalog.indicators:
-    summary = entry.description.split("\n", 1)[0]   # first line of the docstring
+    summary = entry.description.split("\n", 1)[0]  # first line of the docstring
     print(f"{entry.category:>10s}  {entry.name:<20s}  {summary}")
 ```
 
@@ -66,13 +66,13 @@ Each `IndicatorEntry` carries:
 ```python
 entry = obb.technical.indicators(category="all").results.indicators[0]
 
-entry.name                # str — endpoint name as called via obb.technical.<name>
-entry.category            # str — one of the categories above
-entry.description         # str — full QueryParams class docstring (first line is the summary)
-entry.requires_columns    # list[str] — OHLC(V) columns the endpoint reads from `data`
-entry.params              # list[IndicatorParam] — every kwarg besides `data`
-entry.output_columns      # list[IndicatorOutputColumn] — every output column
-entry.example_call        # dict — a ready-to-invoke kwargs example with default values
+entry.name  # str — endpoint name as called via obb.technical.<name>
+entry.category  # str — one of the categories above
+entry.description  # str — full QueryParams class docstring (first line is the summary)
+entry.requires_columns  # list[str] — OHLC(V) columns the endpoint reads from `data`
+entry.params  # list[IndicatorParam] — every kwarg besides `data`
+entry.output_columns  # list[IndicatorOutputColumn] — every output column
+entry.example_call  # dict — a ready-to-invoke kwargs example with default values
 ```
 
 `IndicatorParam` rows include `name`, `type` (the Python type repr), `default` (or `None` if required), `choices` (the literal values for `Literal[...]` typed fields, otherwise `None`), `description`, and a `constraints` dict carrying `gt`/`ge`/`lt`/`le` bounds where the field declares them.

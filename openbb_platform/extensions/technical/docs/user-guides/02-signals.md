@@ -21,7 +21,7 @@ events = obb.technical.signals.crossovers(
     data=data,
     fast_length=20,
     slow_length=50,
-    mamode="sma",       # or "ema", "wma", "hma", "zlma"
+    mamode="sma",  # or "ema", "wma", "hma", "zlma"
 ).results
 ```
 
@@ -34,9 +34,9 @@ Labels every bar with a regime (`overbought` / `oversold` / `neutral`) for the c
 ```python
 sig = obb.technical.signals.oscillator_signals(
     data=data,
-    indicator="rsi",                 # or "mfi", "stoch", "williams_r", "cci"
+    indicator="rsi",  # or "mfi", "stoch", "williams_r", "cci"
     length=14,
-    overbought_threshold=70.0,       # optional override; defaults per indicator
+    overbought_threshold=70.0,  # optional override; defaults per indicator
     oversold_threshold=30.0,
 ).results
 ```
@@ -50,9 +50,9 @@ Detects when price closes beyond a rolling-channel envelope.
 ```python
 events = obb.technical.signals.breakouts(
     data=data,
-    method="donchian",   # rolling high/low; or "bollinger" (mean +/- stdev band)
+    method="donchian",  # rolling high/low; or "bollinger" (mean +/- stdev band)
     length=20,
-    band_std=2.0,        # only used for "bollinger"
+    band_std=2.0,  # only used for "bollinger"
 ).results
 ```
 
@@ -65,10 +65,10 @@ Detects classical bullish/bearish/hidden/exaggerated divergences between price a
 ```python
 events = obb.technical.signals.divergences(
     data=data,
-    indicator="rsi",                 # or "macd", "stoch", "cci"
+    indicator="rsi",  # or "macd", "stoch", "cci"
     indicator_length=14,
     lookback=60,
-    swing_window=3,                  # bars on either side that define a swing high/low
+    swing_window=3,  # bars on either side that define a swing high/low
 ).results
 ```
 
@@ -81,7 +81,7 @@ Single-bar and two-bar pattern detection.
 ```python
 events = obb.technical.signals.candlestick_patterns(
     data=data,
-    patterns=["doji", "hammer", "shooting_star", "engulfing"],   # None = all
+    patterns=["doji", "hammer", "shooting_star", "engulfing"],  # None = all
 ).results
 ```
 
@@ -109,9 +109,12 @@ Regimes: `strong_trend`, `weak_trend`, `ranging`, `transition`. Each row also fl
 The sparse event endpoints (`crossovers`, `breakouts`, `divergences`, `candlestick_patterns`) are designed to plug directly into a vectorised backtester:
 
 ```python
-events = obb.technical.signals.crossovers(data=data, fast_length=20, slow_length=50).results
+events = obb.technical.signals.crossovers(
+    data=data, fast_length=20, slow_length=50
+).results
 trades = [
-    e for e in events
+    e
+    for e in events
     if e.direction == "bullish" and e.distance > 0.5  # filter weak crossovers
 ]
 ```
@@ -119,12 +122,15 @@ trades = [
 The dense endpoints (`oscillator_signals`, `regime`) are designed for filter conditions:
 
 ```python
-sig = obb.technical.signals.oscillator_signals(data=data, indicator="rsi", length=14).results
+sig = obb.technical.signals.oscillator_signals(
+    data=data, indicator="rsi", length=14
+).results
 regime = obb.technical.signals.regime(data=data).results
 
 # Only act on RSI crosses during a strong trend
 combined = [
-    s for s, r in zip(sig, regime)
+    s
+    for s, r in zip(sig, regime)
     if s.crossed_into_overbought and r.regime == "strong_trend"
 ]
 ```
