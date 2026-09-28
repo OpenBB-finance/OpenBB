@@ -115,15 +115,30 @@ def test_apply_settings_to_env_handles_none_or_empty():
 
 def test_apply_settings_to_env_translates_kebab_keys(monkeypatch):
     monkeypatch.delenv("OPENBB_ALLOWED_NUMBER_OF_ROWS", raising=False)
-    applied = loader.apply_settings_to_env({"settings": {"allowed-number-of-rows": 50}})
-    assert "OPENBB_ALLOWED_NUMBER_OF_ROWS" in applied
-    assert os.environ["OPENBB_ALLOWED_NUMBER_OF_ROWS"] == "50"
+    try:
+        applied = loader.apply_settings_to_env(
+            {"settings": {"allowed-number-of-rows": 50}}
+        )
+        assert "OPENBB_ALLOWED_NUMBER_OF_ROWS" in applied
+        assert os.environ["OPENBB_ALLOWED_NUMBER_OF_ROWS"] == "50"
+    finally:
+        # `apply_settings_to_env` writes straight to the real `os.environ`,
+        # which `monkeypatch.delenv` above never registered for auto-cleanup
+        # (nothing existed yet to revert). `monkeypatch.delenv` again here
+        # would be wrong too — once the key exists, it records "50" as the
+        # value to *restore* on teardown, re-leaking it. A direct pop is the
+        # only way to guarantee it doesn't leak into later tests that
+        # construct a real ``Settings()`` and read ``os.environ``.
+        os.environ.pop("OPENBB_ALLOWED_NUMBER_OF_ROWS", None)
 
 
 def test_apply_settings_to_env_serializes_booleans_capitalized(monkeypatch):
     monkeypatch.delenv("OPENBB_USE_PROMPT_TOOLKIT", raising=False)
-    loader.apply_settings_to_env({"settings": {"use-prompt-toolkit": True}})
-    assert os.environ["OPENBB_USE_PROMPT_TOOLKIT"] == "True"
+    try:
+        loader.apply_settings_to_env({"settings": {"use-prompt-toolkit": True}})
+        assert os.environ["OPENBB_USE_PROMPT_TOOLKIT"] == "True"
+    finally:
+        os.environ.pop("OPENBB_USE_PROMPT_TOOLKIT", None)
 
 
 def test_apply_settings_to_env_settings_table_does_not_clobber_existing(monkeypatch):
@@ -136,14 +151,17 @@ def test_apply_settings_to_env_settings_table_does_not_clobber_existing(monkeypa
 def test_apply_settings_to_env_top_level_overrides_settings_table(monkeypatch):
     """Top-level promoted keys (snake_case after normalization) override [settings]."""
     monkeypatch.delenv("OPENBB_OUTPUT_MODE", raising=False)
-    # Mimic what `load_config()` produces: top-level keys arrive snake_cased
-    loader.apply_settings_to_env(
-        {
-            "output_mode": "rich",
-            "settings": {"output-mode": "tsv"},
-        }
-    )
-    assert os.environ["OPENBB_OUTPUT_MODE"] == "rich"
+    try:
+        # Mimic what `load_config()` produces: top-level keys arrive snake_cased
+        loader.apply_settings_to_env(
+            {
+                "output_mode": "rich",
+                "settings": {"output-mode": "tsv"},
+            }
+        )
+        assert os.environ["OPENBB_OUTPUT_MODE"] == "rich"
+    finally:
+        os.environ.pop("OPENBB_OUTPUT_MODE", None)
 
 
 # --- load_env_files ---
@@ -154,9 +172,12 @@ def test_load_env_files_loads_explicit_path(tmp_path, monkeypatch):
     monkeypatch.delenv("OPENBB_FROM_DOTENV", raising=False)
     # Block discovery of the user-global .env so this test stays hermetic
     monkeypatch.setattr(loader, "USER_OPENBB_DIR", tmp_path / "no-such-dir")
-    loaded = loader.load_env_files(str(env))
-    assert env in loaded
-    assert os.environ["OPENBB_FROM_DOTENV"] == "hello"
+    try:
+        loaded = loader.load_env_files(str(env))
+        assert env in loaded
+        assert os.environ["OPENBB_FROM_DOTENV"] == "hello"
+    finally:
+        os.environ.pop("OPENBB_FROM_DOTENV", None)
 
 
 def test_load_env_files_does_not_override_existing(tmp_path, monkeypatch):
@@ -177,8 +198,11 @@ def test_load_env_files_uses_env_var_when_no_explicit(tmp_path, monkeypatch):
     monkeypatch.delenv("OPENBB_FROM_ENV_VAR", raising=False)
     monkeypatch.setenv(loader.EXPLICIT_ENV_FILE_ENV, str(env))
     monkeypatch.setattr(loader, "USER_OPENBB_DIR", tmp_path / "no-such-dir")
-    loader.load_env_files()
-    assert os.environ["OPENBB_FROM_ENV_VAR"] == "yes"
+    try:
+        loader.load_env_files()
+        assert os.environ["OPENBB_FROM_ENV_VAR"] == "yes"
+    finally:
+        os.environ.pop("OPENBB_FROM_ENV_VAR", None)
 
 
 # --- render_config_template ---
@@ -273,10 +297,13 @@ def test_load_env_files_imports_dotenv_values(tmp_path, monkeypatch):
     monkeypatch.setattr(loader, "USER_OPENBB_DIR", tmp_path / "no-user")
     monkeypatch.delenv("OPENBB_LOADER_REAL", raising=False)
     monkeypatch.delenv("NULL_VALUE", raising=False)
-    loader.load_env_files(str(env))
-    assert os.environ["OPENBB_LOADER_REAL"] == "yes"
-    # Bare ``NULL_VALUE`` (no equals) parses as None and is skipped, not set
-    assert "NULL_VALUE" not in os.environ
+    try:
+        loader.load_env_files(str(env))
+        assert os.environ["OPENBB_LOADER_REAL"] == "yes"
+        # Bare ``NULL_VALUE`` (no equals) parses as None and is skipped, not set
+        assert "NULL_VALUE" not in os.environ
+    finally:
+        os.environ.pop("OPENBB_LOADER_REAL", None)
 
 
 def test_load_env_files_picks_up_user_global_env(tmp_path, monkeypatch):
@@ -291,8 +318,11 @@ def test_load_env_files_picks_up_user_global_env(tmp_path, monkeypatch):
     monkeypatch.setattr(loader, "USER_OPENBB_DIR", user_dir)
     monkeypatch.delenv("OPENBB_LOADER_USER_GLOBAL", raising=False)
     monkeypatch.delenv(loader.EXPLICIT_ENV_FILE_ENV, raising=False)
-    loader.load_env_files()
-    assert os.environ["OPENBB_LOADER_USER_GLOBAL"] == "present"
+    try:
+        loader.load_env_files()
+        assert os.environ["OPENBB_LOADER_USER_GLOBAL"] == "present"
+    finally:
+        os.environ.pop("OPENBB_LOADER_USER_GLOBAL", None)
 
 
 # --- render_config_template with active values ---

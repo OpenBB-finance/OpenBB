@@ -77,9 +77,11 @@ class FamaFrenchUSPortfolioReturnsData(Data):
     ] = Field(
         description="The measure of the portfolio.",
     )
-    value: int | float = Field(
+    value: int | float | None = Field(
+        default=None,
         description="The value represented by the 'measure'."
-        + " Missing data are indicated by -99.99 or -999",
+        + " Returns are in percent for the 'value' and 'equal' measures."
+        + " None where the source reports missing data.",
     )
 
 
@@ -133,6 +135,11 @@ class FamaFrenchUSPortfolioReturnsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FamaFrenchUSPortfolioReturnsData]]:
         """Transform the extracted data."""
+        from openbb_famafrench.utils.missing_values import (
+            is_missing_value,
+            replace_missing_values,
+        )
+
         dfs, meta = data
 
         if not dfs:
@@ -143,19 +150,11 @@ class FamaFrenchUSPortfolioReturnsFetcher(
 
         returns_data = dfs[0] if isinstance(dfs, list) else dfs
 
-        # Values of -99.99  or -999 indicate no data,
-        # Drop columns that have no data.
         for col in returns_data.columns:
-            if all(returns_data[col].values == "-99.99") or all(
-                returns_data[col].values == "-999"
-            ):
+            if all(is_missing_value(value) for value in returns_data[col].values):
                 returns_data = returns_data.drop(columns=[col])
             else:
-                returns_data[col] = (
-                    returns_data[col].astype(int)
-                    if query.measure == "number_of_firms"
-                    else returns_data[col].astype(float)
-                )
+                returns_data[col] = returns_data[col].astype(float)
 
         if query.start_date:
             returns_data = returns_data[
@@ -167,8 +166,6 @@ class FamaFrenchUSPortfolioReturnsFetcher(
                 returns_data.index <= query.end_date.strftime("%Y-%m-%d")
             ]
 
-        # Flatten the DataFrame to conform to the Data model
-        # This avoids having undefined fields.
         flattened_data = (
             returns_data.reset_index()
             .melt(
@@ -183,7 +180,12 @@ class FamaFrenchUSPortfolioReturnsFetcher(
         return AnnotatedResult(
             result=[
                 FamaFrenchUSPortfolioReturnsData(**d)
-                for d in flattened_data.to_dict(orient="records")
+                for d in replace_missing_values(
+                    flattened_data.to_dict(orient="records"),
+                    integer_fields=(
+                        ("value",) if query.measure == "number_of_firms" else ()
+                    ),
+                )
             ],
             metadata=meta[0] if isinstance(meta, list) else meta,
         )

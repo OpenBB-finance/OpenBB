@@ -10,7 +10,7 @@ dependencies = [
     "openbb-core[pandas]>=2.0.0",
     "numpy>=1.24",
     "scipy>=1.11",
-    "statsmodels>=0.14",
+    "statsmodels>=0.15",
 ]
 
 [project.entry-points."openbb_core_extension"]

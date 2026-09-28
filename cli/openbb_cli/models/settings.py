@@ -1,5 +1,6 @@
 """Settings model."""
 
+import os
 from enum import Enum
 from typing import Any, Literal
 from zoneinfo import available_timezones
@@ -199,9 +200,18 @@ class Settings(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def from_env(cls, values: dict) -> dict:
-        """Load settings from .env."""
+        """Load settings from the persisted dotfile and ``OPENBB_*`` env vars.
+
+        Precedence (lowest to highest): the persisted ``.cli.env`` dotfile,
+        then ``OPENBB_*`` process env vars — which also carries TOML
+        ``[settings]`` values promoted into the environment by
+        ``apply_settings_to_env`` — then explicit constructor values.
+        """
         settings = {}
         settings.update(dotenv_values(ENV_FILE_SETTINGS))
+        settings.update(
+            {k: v for k, v in os.environ.items() if k.startswith("OPENBB_")}
+        )
         settings.update(values)
         filtered = {k.replace("OPENBB_", ""): v for k, v in settings.items()}
         return filtered

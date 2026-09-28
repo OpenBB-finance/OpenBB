@@ -56,7 +56,7 @@ class RollingVarianceData(Data):
     """One rolling variance observation."""
 
     date: datetime | dateType | str = Field(description="Observation date.")
-    variance: float = Field(description="Rolling variance value.")
+    variance: float = Field(description="Rolling sample variance value.")
 
 
 class RollingStdevQueryParams(QueryParams):
@@ -77,7 +77,7 @@ class RollingStdevData(Data):
     """One rolling standard deviation observation."""
 
     date: datetime | dateType | str = Field(description="Observation date.")
-    stdev: float = Field(description="Rolling standard deviation value.")
+    stdev: float = Field(description="Rolling sample standard deviation value.")
 
 
 class RollingKurtosisQueryParams(QueryParams):
@@ -357,7 +357,7 @@ def quantile(
     quantile for analyzing trends, outliers, and risk.
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
-    from pandas import concat
+    from pandas import DataFrame, concat
 
     from openbb_quantitative.helpers import validate_window
 
@@ -365,22 +365,25 @@ def quantile(
     series = get_target_column(df, params.target)
     validate_window(series, params.window)
     roll = series.rolling(params.window)
-    result = (
-        concat(
-            [
-                roll.median().rename("median"),
-                roll.quantile(params.quantile_pct).rename("quantile"),
-            ],
-            axis=1,
-        )
-        .dropna()
-        .reset_index()
+    result = concat(
+        [
+            roll.median().rename("median"),
+            roll.quantile(params.quantile_pct).rename("quantile"),
+        ],
+        axis=1,
+    ).dropna()
+    frame = DataFrame(
+        {
+            "date": result.index,
+            "median": result["median"].to_numpy(),
+            "quantile": result["quantile"].to_numpy(),
+        }
     )
     out = [
         RollingQuantileData(
             date=r["date"], median=float(r["median"]), quantile=float(r["quantile"])
         )
-        for r in result.to_dict(orient="records")
+        for r in frame.to_dict(orient="records")
     ]
     return OBBject(results=out)
 
@@ -392,14 +395,15 @@ class RollingFactorsQueryParams(QueryParams):
     __output_columns__ = ("date", "factor", "coefficient", "t_statistic")
 
     data: list[Data] = Field(
-        description="Target time series (index column plus the target column)."
+        description="Target periodic return series (index column plus the target column)."
     )
     factors_data: list[Data] = Field(
-        description="Factor matrix (index column plus one column per factor)."
+        description="Factor return matrix (index column plus one column per factor),"
+        " in the same units as the target."
     )
     target: str = Field(
         default="close",
-        description="Name of the column in `data` to regress on the factor matrix.",
+        description="Name of the return column in `data` to regress on the factor matrix.",
     )
     index: str = Field(
         default="date",

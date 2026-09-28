@@ -25,14 +25,15 @@ class RiskDecompositionQueryParams(QueryParams):
     __output_columns__ = ("period", "factor", "contribution", "share")
 
     data: list[Data] = Field(
-        description="Target time series (index column plus the target column)."
+        description="Target periodic return series (index column plus the target column)."
     )
     factors_data: list[Data] = Field(
-        description="Factor matrix (index column plus one column per factor)."
+        description="Factor return matrix (index column plus one column per factor),"
+        " in the same units as the target."
     )
     target: str = Field(
         default="close",
-        description="Name of the column in `data` to decompose against the factors.",
+        description="Name of the return column in `data` to decompose against the factors.",
     )
     index: str = Field(
         default="date",

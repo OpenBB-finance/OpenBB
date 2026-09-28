@@ -442,6 +442,39 @@ def test_bootstrap_launcher_config_picks_up_api_config_env(tmp_path, monkeypatch
     assert os.environ.get("OPENBB_CONTAINER_TEST") == "yes"
 
 
+def test_bootstrap_launcher_config_applies_env_before_pushing_to_services(
+    tmp_path, monkeypatch
+):
+    """``[env]`` reaches ``os.environ`` before ``apply_config_to_services`` runs.
+
+    ``apply_config_to_services`` is what first imports
+    ``openbb_core.app.model.credentials``, whose ``Credentials`` model
+    takes a one-shot snapshot of ``os.environ`` at import time — a
+    credential supplied only via the TOML ``[env]`` table (not a real
+    shell export) would be invisible to that snapshot if the order
+    were reversed.
+    """
+    from openbb_platform_api.app.config import bootstrap_launcher_config
+
+    cfg = tmp_path / "openbb.toml"
+    cfg.write_text('[env]\nOPENBB_ORDER_TEST_KEY = "yes"\n')
+    monkeypatch.delenv("OPENBB_ORDER_TEST_KEY", raising=False)
+
+    seen: dict = {}
+
+    def fake_apply_config_to_services(config):
+        seen["env_var_at_call_time"] = os.environ.get("OPENBB_ORDER_TEST_KEY")
+        return {"system": [], "user": []}
+
+    with patch(
+        "openbb_core.app.config.loader.apply_config_to_services",
+        side_effect=fake_apply_config_to_services,
+    ):
+        bootstrap_launcher_config(["--config-file", str(cfg)])
+
+    assert seen["env_var_at_call_time"] == "yes"
+
+
 def test_load_launcher_config_explicit_missing_path_is_tolerated(tmp_path):
     """A missing file at the explicit path is tolerated — the cascade
     just falls through to the next layer. Only parse failures escalate.

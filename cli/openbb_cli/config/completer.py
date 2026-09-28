@@ -366,7 +366,11 @@ class CustomFileHistory(FileHistory):
 
     def sanitize_input(self, string: str) -> str:
         """Sanitize sensitive information from the input string by parsing arguments."""
-        keywords = ["--password", "--email", "--pat"]
+        # "-v"/"--value" is how /user/credentials/ sets a provider API key
+        # (e.g. "fmp_api_key -v sk-..."); masking it here costs seeing a past
+        # non-secret "-v" setting in history, in exchange for never writing a
+        # credential to disk in the clear.
+        keywords = ["--password", "--email", "--pat", "-v", "--value"]
         string_list = string.split(" ")
 
         for kw in keywords:

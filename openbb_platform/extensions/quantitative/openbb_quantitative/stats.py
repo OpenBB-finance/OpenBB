@@ -39,7 +39,7 @@ class StatsVarianceQueryParams(QueryParams):
 class StatsVarianceData(Data):
     """Variance of the analyzed series."""
 
-    variance: float = Field(description="Variance of the distribution.")
+    variance: float = Field(description="Sample variance of the distribution.")
 
 
 class StatsStdevQueryParams(QueryParams):
@@ -55,7 +55,7 @@ class StatsStdevQueryParams(QueryParams):
 class StatsStdevData(Data):
     """Standard deviation of the analyzed series."""
 
-    stdev: float = Field(description="Standard deviation of the distribution.")
+    stdev: float = Field(description="Sample standard deviation of the distribution.")
 
 
 class StatsKurtosisQueryParams(QueryParams):

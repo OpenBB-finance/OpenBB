@@ -360,6 +360,22 @@ def test_custom_file_history_store_string_writes_sanitized(tmp_path):
     assert "********" in contents
 
 
+def test_custom_file_history_sanitizes_credential_value_flag(tmp_path):
+    """``/user/credentials/`` sets a provider key via ``<field> -v <secret>``;
+    that value must never reach the on-disk history in the clear.
+    """
+    from openbb_cli.config.completer import CustomFileHistory
+
+    h = CustomFileHistory(filename=str(tmp_path / "hist.txt"))
+    out = h.sanitize_input("fmp_api_key -v sk-THIS-IS-A-SECRET-KEY-12345")
+    assert "sk-THIS-IS-A-SECRET-KEY-12345" not in out
+    assert "********" in out
+
+    out_long = h.sanitize_input("polygon_api_key --value another-secret")
+    assert "another-secret" not in out_long
+    assert "********" in out_long
+
+
 def test_get_completions_complementary_reverse_processed_pair():
     """Complementary pair with the *second* flag already processed → first appended.
 

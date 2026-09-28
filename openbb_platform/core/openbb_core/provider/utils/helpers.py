@@ -240,6 +240,13 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
     python_settings = get_python_request_settings()
     _ = kwargs.pop("raise_for_status", None)
 
+    # "password" is only valid as input to ssl.load_cert_chain, below; aiohttp
+    # accepts neither it nor "proxy_headers" as a ClientSession constructor
+    # kwarg, so both must be kept out of the generic settings merge/pass-through
+    # further down or ClientSession(**conn_kwargs) raises a TypeError.
+    password = python_settings.pop("password", None)
+    python_settings.pop("proxy_headers", None)
+
     proxy = python_settings.get("proxy")
     http_proxy = os.environ.get("HTTP_PROXY", os.environ.get("HTTPS_PROXY"))
     https_proxy = os.environ.get("HTTPS_PROXY", os.environ.get("HTTP_PROXY"))
@@ -261,7 +268,6 @@ async def get_async_requests_session(**kwargs) -> ClientSession:
         ca = python_settings.get("cafile") or os.environ.get("REQUESTS_CA_BUNDLE")
         cert = python_settings.get("certfile")
         key = python_settings.get("keyfile")
-        password = python_settings.get("password")
         ssl_context = ssl.create_default_context()
 
         if ca:

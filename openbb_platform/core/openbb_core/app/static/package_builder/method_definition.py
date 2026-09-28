@@ -1092,36 +1092,38 @@ class MethodDefinition:
             od[param] = new_value
 
     @staticmethod
+    def _get_type_repr(type_hint: Any) -> str:
+        """Get the string representation of a type hint."""
+        if isinstance(type_hint, type):
+            return type_hint.__name__
+
+        # Unwrap ForwardRef to its inner string so we don't emit
+        # ForwardRef('int') in generated signatures.
+        if hasattr(type_hint, "__forward_arg__"):
+            return type_hint.__forward_arg__
+
+        s = str(type_hint)
+        if s.startswith("typing."):
+            s = s[7:]
+        return s
+
+    @staticmethod
+    def _normalize_type_names(text: str) -> str:
+        """Rewrite ``typing`` and fully-qualified names in a rendered type."""
+        text = text.replace("NoneType", "None")
+        text = text.replace("pandas.core.frame.DataFrame", "pandas.DataFrame")
+        text = text.replace("openbb_core.provider.abstract.data.Data", "Data")
+        text = text.replace("ForwardRef('Data')", "Data")
+        text = text.replace("ForwardRef('DataFrame')", "DataFrame")
+        text = text.replace("ForwardRef('Series')", "Series")
+        text = text.replace("ForwardRef('ndarray')", "ndarray")
+        text = re.sub(r"\bDict\b", "dict", text)
+        text = re.sub(r"\bList\b", "list", text)
+        return text.replace("typing.", "")
+
+    @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Convert function params to string representations."""
-
-        def get_type_repr(type_hint: Any) -> str:
-            """Get the string representation of a type hint."""
-            if isinstance(type_hint, type):
-                return type_hint.__name__
-
-            # Unwrap ForwardRef to its inner string so we don't emit
-            # ForwardRef('int') in generated signatures.
-            if hasattr(type_hint, "__forward_arg__"):
-                return type_hint.__forward_arg__
-
-            s = str(type_hint)
-            if s.startswith("typing."):
-                s = s[7:]
-            return s
-
-        def normalize_type_names(text: str) -> str:
-            """Rewrite ``typing`` and fully-qualified names in a rendered type."""
-            text = text.replace("NoneType", "None")
-            text = text.replace("pandas.core.frame.DataFrame", "pandas.DataFrame")
-            text = text.replace("openbb_core.provider.abstract.data.Data", "Data")
-            text = text.replace("ForwardRef('Data')", "Data")
-            text = text.replace("ForwardRef('DataFrame')", "DataFrame")
-            text = text.replace("ForwardRef('Series')", "Series")
-            text = text.replace("ForwardRef('ndarray')", "ndarray")
-            text = re.sub(r"\bDict\b", "dict", text)
-            text = re.sub(r"\bList\b", "list", text)
-            return text.replace("typing.", "")
 
         def split_preserving_whitespace(text: str, width: int) -> list[str]:
             """Split text into chunks of about ``width`` characters that rejoin exactly."""
@@ -1144,10 +1146,12 @@ class MethodDefinition:
                     isinstance(m, OpenBBField) for m in param.annotation.__metadata__
                 )
             ):
-                return normalize_type_names(str(param))
+                return MethodDefinition._normalize_type_names(str(param))
 
             type_hint = param.annotation.__args__[0]
-            type_repr = normalize_type_names(get_type_repr(type_hint))
+            type_repr = MethodDefinition._normalize_type_names(
+                MethodDefinition._get_type_repr(type_hint)
+            )
             meta = next(
                 m for m in param.annotation.__metadata__ if isinstance(m, OpenBBField)
             )
@@ -1200,8 +1204,12 @@ class MethodDefinition:
             func_returns = return_type
         elif isclass(return_type) and issubclass(return_type, OBBject):
             func_returns = "OBBject"
+        elif return_type:
+            func_returns = MethodDefinition._normalize_type_names(
+                MethodDefinition._get_type_repr(return_type)
+            )
         else:
-            func_returns = return_type.__name__ if return_type else Any
+            func_returns = Any
 
         return func_returns  # type: ignore
 

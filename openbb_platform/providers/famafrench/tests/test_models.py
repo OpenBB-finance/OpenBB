@@ -1,5 +1,3 @@
-"""Tests for the Fama-French fetcher models."""
-
 import asyncio
 
 import pytest
@@ -31,13 +29,8 @@ from openbb_famafrench.models.us_portfolio_returns import (
     FamaFrenchUSPortfolioReturnsQueryParams,
 )
 
-# ---------------------------------------------------------------------------
-# factors.py
-# ---------------------------------------------------------------------------
-
 
 def test_factors_query_defaults():
-    """The factors query builds with default values."""
     query = FamaFrenchFactorsQueryParams()
 
     assert query.region == "america"
@@ -46,7 +39,6 @@ def test_factors_query_defaults():
 
 
 def test_factors_query_valid_variant():
-    """The factors query accepts a valid non-default combination."""
     query = FamaFrenchFactorsQueryParams(
         region="europe", factor="5_factors", frequency="daily"
     )
@@ -56,19 +48,16 @@ def test_factors_query_valid_variant():
 
 
 def test_factors_query_invalid_region():
-    """An invalid region raises a validation error."""
     with pytest.raises(ValueError, match="Invalid region"):
         FamaFrenchFactorsQueryParams(region="atlantis")
 
 
 def test_factors_query_invalid_factor_for_region():
-    """A factor unavailable for the region raises a validation error."""
     with pytest.raises(ValueError, match="Invalid factor"):
         FamaFrenchFactorsQueryParams(region="europe", factor="st_reversal")
 
 
 def test_factors_query_invalid_frequency():
-    """A frequency unavailable for the factor raises a validation error."""
     with pytest.raises(ValueError, match="Invalid frequency"):
         FamaFrenchFactorsQueryParams(
             region="europe", factor="momentum", frequency="weekly"
@@ -76,7 +65,6 @@ def test_factors_query_invalid_frequency():
 
 
 def test_factors_transform_query():
-    """transform_query returns a FamaFrenchFactorsQueryParams instance."""
     query = FamaFrenchFactorsFetcher.transform_query({"region": "japan"})
 
     assert isinstance(query, FamaFrenchFactorsQueryParams)
@@ -84,7 +72,6 @@ def test_factors_transform_query():
 
 
 def test_factors_transform_data_with_date_filters():
-    """transform_data filters by start and end date."""
     frame = DataFrame(
         {
             "Mkt-RF": [1.0, 2.0, 3.0],
@@ -104,7 +91,6 @@ def test_factors_transform_data_with_date_filters():
 
 
 def test_factors_aextract_data_invalid_dataset():
-    """An empty mapped dataset raises an OpenBBError."""
 
     class _Query:
         region = "emerging"
@@ -116,7 +102,6 @@ def test_factors_aextract_data_invalid_dataset():
 
 
 def test_factors_aextract_data_helper_error(monkeypatch):
-    """A failure inside get_portfolio_data is wrapped in an OpenBBError."""
 
     def _boom(*args, **kwargs):
         raise RuntimeError("network down")
@@ -128,20 +113,13 @@ def test_factors_aextract_data_helper_error(monkeypatch):
         asyncio.run(FamaFrenchFactorsFetcher.aextract_data(query, None))
 
 
-# ---------------------------------------------------------------------------
-# breakpoints.py
-# ---------------------------------------------------------------------------
-
-
 def test_breakpoints_query_defaults():
-    """The breakpoints query builds with default values."""
     query = FamaFrenchBreakpointQueryParams()
 
     assert query.breakpoint_type == "me"
 
 
 def test_breakpoints_transform_query():
-    """transform_query returns a FamaFrenchBreakpointQueryParams instance."""
     query = FamaFrenchBreakpointFetcher.transform_query({"breakpoint_type": "op"})
 
     assert isinstance(query, FamaFrenchBreakpointQueryParams)
@@ -149,7 +127,6 @@ def test_breakpoints_transform_query():
 
 
 def test_breakpoints_transform_data_with_date_filters():
-    """transform_data filters by start and end date."""
     frame = DataFrame(
         {
             "date": ["2020-01-31", "2020-02-29", "2020-03-31"],
@@ -169,7 +146,6 @@ def test_breakpoints_transform_data_with_date_filters():
 
 
 def test_breakpoints_transform_data_empty():
-    """transform_data raises an OpenBBError when no frames are returned."""
     query = FamaFrenchBreakpointQueryParams()
 
     with pytest.raises(OpenBBError, match="unexpectedly empty"):
@@ -177,7 +153,6 @@ def test_breakpoints_transform_data_empty():
 
 
 def test_breakpoints_aextract_data_helper_error(monkeypatch):
-    """A failure inside get_breakpoint_data is wrapped in an OpenBBError."""
 
     def _boom(*args, **kwargs):
         raise RuntimeError("network down")
@@ -189,13 +164,7 @@ def test_breakpoints_aextract_data_helper_error(monkeypatch):
         asyncio.run(FamaFrenchBreakpointFetcher.aextract_data(query, None))
 
 
-# ---------------------------------------------------------------------------
-# us_portfolio_returns.py / regional_portfolio_returns.py
-# ---------------------------------------------------------------------------
-
-
 def _portfolio_frame():
-    """A returns frame with a string column that is entirely missing data."""
     frame = DataFrame(
         {
             "Lo 30": ["1.0", "2.0", "3.0"],
@@ -218,7 +187,6 @@ def _portfolio_frame():
     ],
 )
 def test_portfolio_transform_query(fetcher, query_cls):
-    """transform_query returns the expected QueryParams type."""
     query = fetcher.transform_query({})
 
     assert isinstance(query, query_cls)
@@ -235,14 +203,12 @@ def test_portfolio_transform_query(fetcher, query_cls):
     ],
 )
 def test_portfolio_transform_data(fetcher, query_cls):
-    """transform_data drops empty columns, casts, and filters by date."""
     query = query_cls(measure="value", start_date="2020-02-01", end_date="2020-02-29")
     data = ([_portfolio_frame()], [{"description": "Portfolio"}])
 
     result = fetcher.transform_data(query, data)
 
     assert result.result
-    # The fully-missing column was dropped.
     assert all(r.portfolio == "Lo 30" for r in result.result)
     assert all(r.measure == "value" for r in result.result)
 
@@ -258,7 +224,6 @@ def test_portfolio_transform_data(fetcher, query_cls):
     ],
 )
 def test_portfolio_transform_data_number_of_firms(fetcher, query_cls):
-    """The number_of_firms measure casts values to integers."""
     frame = DataFrame(
         {"Lo 30": ["10", "20"]},
         index=["2020-01-31", "2020-02-29"],
@@ -283,7 +248,6 @@ def test_portfolio_transform_data_number_of_firms(fetcher, query_cls):
     ],
 )
 def test_portfolio_transform_data_empty(fetcher, query_cls):
-    """transform_data raises an OpenBBError when no frames are returned."""
     with pytest.raises(OpenBBError, match="returned empty"):
         fetcher.transform_data(query_cls(), ([], []))
 
@@ -299,7 +263,6 @@ def test_portfolio_transform_data_empty(fetcher, query_cls):
     ],
 )
 def test_portfolio_aextract_data_helper_error(monkeypatch, fetcher, query_cls):
-    """A failure inside get_portfolio_data is wrapped in an OpenBBError."""
 
     def _boom(*args, **kwargs):
         raise RuntimeError("network down")
@@ -311,7 +274,6 @@ def test_portfolio_aextract_data_helper_error(monkeypatch, fetcher, query_cls):
 
 
 def test_us_portfolio_aextract_data_daily(monkeypatch):
-    """A daily portfolio passes a None frequency to get_portfolio_data."""
     captured = {}
 
     def _capture(dataset, measure=None, frequency=None):
@@ -329,7 +291,6 @@ def test_us_portfolio_aextract_data_daily(monkeypatch):
 
 
 def test_regional_portfolio_aextract_data_daily(monkeypatch):
-    """A daily regional portfolio passes a None frequency to get_portfolio_data."""
     captured = {}
 
     def _capture(dataset, measure=None, frequency=None):
@@ -346,13 +307,7 @@ def test_regional_portfolio_aextract_data_daily(monkeypatch):
     assert captured["frequency"] is None
 
 
-# ---------------------------------------------------------------------------
-# country_portfolio_returns.py / international_index_returns.py
-# ---------------------------------------------------------------------------
-
-
 def _international_frame(multiindex: bool = False):
-    """A returns frame with a fully-missing column and an optional MultiIndex."""
     frame = DataFrame(
         {
             "Mkt": ["1.0", "2.0", "3.0"],
@@ -383,7 +338,6 @@ def _international_frame(multiindex: bool = False):
     ],
 )
 def test_international_transform_query(fetcher, query_cls):
-    """transform_query returns the expected QueryParams type."""
     query = fetcher.transform_query({})
 
     assert isinstance(query, query_cls)
@@ -403,7 +357,6 @@ def test_international_transform_query(fetcher, query_cls):
     ],
 )
 def test_international_transform_data(fetcher, query_cls):
-    """transform_data drops empty columns and filters by date."""
     query = query_cls(measure="usd", start_date="2020-02-01", end_date="2020-02-29")
     data = ([_international_frame()], [{"description": "Index"}])
 
@@ -427,7 +380,6 @@ def test_international_transform_data(fetcher, query_cls):
     ],
 )
 def test_international_transform_data_multiindex(fetcher, query_cls):
-    """transform_data flattens MultiIndex columns."""
     query = query_cls(measure="usd")
     data = ([_international_frame(multiindex=True)], [{"description": "Index"}])
 
@@ -450,7 +402,6 @@ def test_international_transform_data_multiindex(fetcher, query_cls):
     ],
 )
 def test_international_transform_data_ratios_firms(fetcher, query_cls):
-    """The ratios measure casts the firms column to integers."""
     frame = DataFrame(
         {
             "firms": ["100", "200"],
@@ -481,7 +432,6 @@ def test_international_transform_data_ratios_firms(fetcher, query_cls):
     ],
 )
 def test_international_transform_data_empty(fetcher, query_cls):
-    """transform_data raises an OpenBBError when no frames are returned."""
     with pytest.raises(OpenBBError, match="returned empty"):
         fetcher.transform_data(query_cls(), ([], []))
 
@@ -500,7 +450,6 @@ def test_international_transform_data_empty(fetcher, query_cls):
     ],
 )
 def test_international_aextract_data_helper_error(monkeypatch, fetcher, query_cls):
-    """A failure inside get_international_portfolio is wrapped in an OpenBBError."""
 
     def _boom(*args, **kwargs):
         raise RuntimeError("network down")
@@ -529,7 +478,6 @@ def test_international_aextract_data_helper_error(monkeypatch, fetcher, query_cl
 def test_international_aextract_data_ratios_monthly_warns(
     monkeypatch, fetcher, query_cls
 ):
-    """The ratios measure with monthly frequency warns and forces annual."""
     captured = {}
 
     def _capture(*args, **kwargs):
@@ -545,3 +493,99 @@ def test_international_aextract_data_ratios_monthly_warns(
         asyncio.run(fetcher.aextract_data(query, None))
 
     assert captured["frequency"] == "annual"
+
+
+DATES = ["2020-01-31", "2020-02-29", "2020-03-31"]
+PORTFOLIO_FETCHERS = [
+    (FamaFrenchUSPortfolioReturnsFetcher, FamaFrenchUSPortfolioReturnsQueryParams),
+    (
+        FamaFrenchRegionalPortfolioReturnsFetcher,
+        FamaFrenchRegionalPortfolioReturnsQueryParams,
+    ),
+]
+INTERNATIONAL_FETCHERS = [
+    (
+        FamaFrenchCountryPortfolioReturnsFetcher,
+        FamaFrenchCountryPortfolioReturnsQueryParams,
+    ),
+    (
+        FamaFrenchInternationalIndexReturnsFetcher,
+        FamaFrenchInternationalIndexReturnsQueryParams,
+    ),
+]
+
+
+def test_factors_transform_data_missing_values():
+    frame = DataFrame(
+        {"Mkt-RF": ["1.0", "-99.99"], "SMB": ["0.1", "0.2"], "RF": ["0.01", "-999"]},
+        index=DATES[:2],
+    )
+    frame.index.name = "Date"
+
+    result = FamaFrenchFactorsFetcher.transform_data(
+        FamaFrenchFactorsQueryParams(), ([frame], [{"description": "Factors"}])
+    ).result
+
+    assert [r.mkt_rf for r in result] == [1.0, None]
+    assert [r.smb for r in result] == [0.1, 0.2]
+    assert [r.rf for r in result] == [0.01, None]
+
+
+@pytest.mark.parametrize(("fetcher", "query_cls"), PORTFOLIO_FETCHERS)
+def test_portfolio_transform_data_missing_values(fetcher, query_cls):
+    frame = DataFrame(
+        {
+            "Lo 30": ["1.0", "-99.99", "3.0"],
+            "Hi 30": ["-999", "2.0", "-99.990"],
+            "Med 40": ["-99.99", "-999", "-999.00"],
+        },
+        index=DATES,
+    )
+    frame.index.name = "Date"
+
+    result = fetcher.transform_data(
+        query_cls(measure="value"), ([frame], [{"description": "Portfolio"}])
+    ).result
+
+    assert {(str(r.date), r.portfolio): r.value for r in result} == {
+        ("2020-01-31", "Lo 30"): 1.0,
+        ("2020-02-29", "Lo 30"): None,
+        ("2020-03-31", "Lo 30"): 3.0,
+        ("2020-01-31", "Hi 30"): None,
+        ("2020-02-29", "Hi 30"): 2.0,
+        ("2020-03-31", "Hi 30"): None,
+    }
+
+
+@pytest.mark.parametrize(("fetcher", "query_cls"), PORTFOLIO_FETCHERS)
+def test_portfolio_transform_data_number_of_firms_missing_values(fetcher, query_cls):
+    frame = DataFrame({"Lo 30": ["10", "-999", "-99.99"]}, index=DATES)
+    frame.index.name = "Date"
+
+    result = fetcher.transform_data(
+        query_cls(measure="number_of_firms"), ([frame], [{"description": "Portfolio"}])
+    ).result
+
+    assert [r.value for r in result] == [10, None, None]
+    assert isinstance(result[0].value, int)
+
+
+@pytest.mark.parametrize(("fetcher", "query_cls"), INTERNATIONAL_FETCHERS)
+def test_international_transform_data_missing_values(fetcher, query_cls):
+    frame = DataFrame(
+        {
+            "Date": DATES,
+            "Mkt": ["1.0", "-99.99", "3.0"],
+            "High": ["0.5", "-99.99", "-999"],
+            "Low": ["-99.99", "0.2", "0.3"],
+        }
+    ).set_index(["Date", "Mkt"])
+    frame.columns = MultiIndex.from_arrays([["BE/ME", "BE/ME"], ["High", "Low"]])
+
+    result = fetcher.transform_data(
+        query_cls(measure="usd"), ([frame], [{"description": "Index"}])
+    ).result
+
+    assert [r.mkt for r in result] == [1.0, None, 3.0]
+    assert [r.be_me_high for r in result] == [0.5, None, None]
+    assert [r.be_me_low for r in result] == [None, 0.2, 0.3]

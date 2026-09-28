@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Literal
+from typing import Literal, cast
 
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
@@ -547,11 +547,12 @@ def _adf_block(values, regression: str) -> dict:
     """Run ADF and package the result."""
     from statsmodels.tsa.stattools import adfuller
 
-    result = adfuller(values, regression=regression)
-    stat, pvalue, _, _, crit, _ = result
+    result = adfuller(values, regression=regression, result_object=True)
+    pvalue = result.pvalue
+    crit = result.critical_values
     verdict = "stationary" if pvalue < 0.05 else "non_stationary"
     return {
-        "adf_statistic": float(stat),
+        "adf_statistic": float(result.statistic),
         "adf_pvalue": float(pvalue),
         "adf_critical_1pct": float(crit.get("1%")),
         "adf_critical_5pct": float(crit.get("5%")),
@@ -561,19 +562,23 @@ def _adf_block(values, regression: str) -> dict:
 
 
 def _kpss_block(values, regression: str) -> dict:
-    """Run KPSS and package the result. KPSS supports ``c`` or ``ct`` only."""
+    """Run KPSS and package the result."""
     import warnings
 
-    from statsmodels.tsa.stattools import kpss
+    from statsmodels.tsa.stattools import KPSSResult, kpss
 
     kpss_reg: Literal["c", "ct"] = "c" if regression not in {"c", "ct"} else regression
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        stat, pvalue, _, crit = kpss(values, regression=kpss_reg, nlags="auto")
+        result = cast(
+            KPSSResult,
+            kpss(values, regression=kpss_reg, nlags="auto", result_object=True),
+        )
+    pvalue = result.pvalue
     verdict = "non_stationary" if pvalue < 0.05 else "stationary"
-    crit_map: dict[str, float] = dict(crit)
+    crit_map: dict[str, float] = dict(result.critical_values)
     return {
-        "kpss_statistic": float(stat),
+        "kpss_statistic": float(result.statistic),
         "kpss_pvalue": float(pvalue),
         "kpss_critical_1pct": crit_map.get("1%", float("nan")),
         "kpss_critical_5pct": crit_map.get("5%", float("nan")),
@@ -585,7 +590,7 @@ def _kpss_block(values, regression: str) -> dict:
 def _overall_verdict(adf, kpss_, regression: str) -> str:
     """Combine ADF + KPSS verdicts into an overall verdict."""
     if adf is None and kpss_ is None:
-        return "inconclusive"  # pragma: no cover - guarded by the caller
+        return "inconclusive"  # pragma: no cover
     if adf is not None and kpss_ is None:
         return "stationary" if adf == "stationary" else "non_stationary"
     if kpss_ is not None and adf is None:
@@ -908,6 +913,7 @@ def autocorrelation(
 ) -> OBBject[list[AutocorrelationData]]:
     """Compute autocorrelation (ACF) and partial autocorrelation (PACF) with bands."""
     from statsmodels.tsa.stattools import (
+        PacfResult,
         acf as _acf,
         pacf as _pacf,
     )
@@ -921,12 +927,18 @@ def autocorrelation(
     acf_lower = None
     acf_upper = None
     if params.method in {"acf", "both"}:
-        acf_vals, conf = _acf(series.to_numpy(), nlags=params.max_lag, alpha=0.05)
+        acf_result = _acf(
+            series.to_numpy(), nlags=params.max_lag, alpha=0.05, result_object=True
+        )
+        acf_vals, conf = acf_result.acf, acf_result.confint
         acf_lower = conf[:, 0] - acf_vals
         acf_upper = conf[:, 1] - acf_vals
     pacf_vals = None
     if params.method in {"pacf", "both"}:
-        pacf_vals = _pacf(series.to_numpy(), nlags=params.max_lag)
+        pacf_vals = cast(
+            PacfResult,
+            _pacf(series.to_numpy(), nlags=params.max_lag, result_object=True),
+        ).pacf
     out: list[AutocorrelationData] = []
     for lag in range(params.max_lag + 1):
         acf_v = float(acf_vals[lag]) if acf_vals is not None else None

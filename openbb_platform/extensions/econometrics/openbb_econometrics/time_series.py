@@ -5,7 +5,7 @@ from datetime import (
     datetime,
 )
 from itertools import combinations
-from typing import Literal
+from typing import Literal, cast
 
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -265,17 +265,16 @@ def unit_root(params: UnitRootQueryParams) -> OBBject[UnitRootData]:
         maxlag=params.maxlag,
         regression=params.regression,
         autolag=params.autolag,
+        result_object=True,
     )
-    adf_stat, p_value, used_lag, nobs, critical_values = result[:5]
-    ic_best = result[5] if len(result) > 5 else None
     return OBBject(
         results=UnitRootData(
-            adf_stat=float(adf_stat),
-            p_value=float(p_value),
-            used_lag=int(used_lag),
-            nobs=int(nobs),
-            ic_best=float(ic_best) if ic_best is not None else None,
-            critical_values=dict(critical_values),
+            adf_stat=float(result.statistic),
+            p_value=float(result.pvalue),
+            used_lag=int(result.lags),
+            nobs=int(result.nobs),
+            ic_best=float(result.icbest) if result.icbest is not None else None,
+            critical_values=dict(result.critical_values),
         )
     )
 
@@ -296,25 +295,33 @@ def kpss(params: KpssQueryParams) -> OBBject[KpssData]:
 
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from statsmodels.tools.sm_exceptions import InterpolationWarning
-    from statsmodels.tsa.stattools import kpss as _kpss
+    from statsmodels.tsa.stattools import (
+        KPSSResult,
+        kpss as _kpss,
+    )
 
     series = get_target_column(basemodel_to_df(params.data), params.column)
-    # Capture statsmodels' off-table InterpolationWarning as a typed result field.
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always", InterpolationWarning)
-        statistic, p_value, lags, critical_values = _kpss(
-            series, regression=params.regression, nlags=params.nlags
+        result = cast(
+            KPSSResult,
+            _kpss(
+                series,
+                regression=params.regression,
+                nlags=params.nlags,
+                result_object=True,
+            ),
         )
     p_value_interpolated = not any(
         issubclass(w.category, InterpolationWarning) for w in caught
     )
     return OBBject(
         results=KpssData(
-            kpss_stat=float(statistic),
-            p_value=float(p_value),
+            kpss_stat=float(result.statistic),
+            p_value=float(result.pvalue),
             p_value_interpolated=p_value_interpolated,
-            lags=int(lags),
-            critical_values=dict(critical_values),
+            lags=int(result.lags),
+            critical_values=dict(result.critical_values),
         )
     )
 

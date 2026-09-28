@@ -1142,6 +1142,25 @@ def test_build_func_returns_obbject_subclass():
     assert MethodDefinition.build_func_returns(_O) == "OBBject"
 
 
+def test_build_func_returns_plain_class():
+    assert MethodDefinition.build_func_returns(int) == "int"
+
+
+def test_build_func_returns_pep604_union():
+    from openbb_core.provider.abstract.data import Data
+
+    assert MethodDefinition.build_func_returns(Data | None) == "Data | None"
+
+
+def test_build_func_returns_falsy_return_type():
+    """A falsy (but not ``inspect._empty``) return type — e.g. ``None`` —
+    falls through to the ``Any`` sentinel rather than a rendered type name.
+    """
+    from typing import Any
+
+    assert MethodDefinition.build_func_returns(None) is Any
+
+
 def test_collect_dependency_calls_skips_unsafe_annotated_dependency():
     def _unsafe() -> None:
         return None

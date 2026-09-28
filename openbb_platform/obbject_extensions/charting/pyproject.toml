@@ -8,8 +8,9 @@ readme = "README.md"
 requires-python = ">=3.10,<4"  # scipy forces python <4.0 explicitly
 dependencies = [
     "openbb-core[pandas]>=2.0.0",
-    "pandas-ta-openbb>=0.4.24",
+    "pandas-ta-openbb>=0.4.25",
     "plotly>=6.3.1",
+    "statsmodels>=0.15",
 ]
 
 [project.optional-dependencies]

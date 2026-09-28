@@ -4,6 +4,8 @@ from typing import Any, Literal
 
 BASE_URL = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
 
+PERCENT_UNIT: dict[str, Any] = {"x-unit_measurement": "percent"}
+
 DATASET_CHOICES = [
     {
         "label": "F-F Research Data Factors",

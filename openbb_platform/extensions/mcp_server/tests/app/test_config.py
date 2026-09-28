@@ -301,6 +301,31 @@ class TestBootstrapLauncherConfig:
         bootstrap_launcher_config(["--config-file", str(cfg)])
         assert os.environ.get("OPENBB_BOOT_TEST_KEY") == "yes"
 
+    def test_bootstrap_launcher_config_applies_env_before_pushing_to_services(
+        self, tmp_path, monkeypatch
+    ):
+        """``[env]`` reaches ``os.environ`` before ``apply_config_to_services``
+        runs, so a credential supplied only via TOML ``[env]`` (not a real
+        shell export) is visible to ``Credentials``' one-shot env snapshot.
+        """
+        cfg = tmp_path / "openbb.toml"
+        cfg.write_text('[env]\nOPENBB_ORDER_TEST_KEY = "yes"\n')
+        monkeypatch.delenv("OPENBB_ORDER_TEST_KEY", raising=False)
+
+        seen: dict = {}
+
+        def fake_apply_config_to_services(config):
+            seen["env_var_at_call_time"] = os.environ.get("OPENBB_ORDER_TEST_KEY")
+            return {"system": [], "user": []}
+
+        with patch(
+            "openbb_core.app.config.loader.apply_config_to_services",
+            side_effect=fake_apply_config_to_services,
+        ):
+            bootstrap_launcher_config(["--config-file", str(cfg)])
+
+        assert seen["env_var_at_call_time"] == "yes"
+
     def test_reset_bootstrapped_config_clears_state(self, tmp_path):
         """``reset_bootstrapped_config`` blanks the stored config."""
         cfg = tmp_path / "openbb.toml"

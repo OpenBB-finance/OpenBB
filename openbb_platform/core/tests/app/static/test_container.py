@@ -201,6 +201,24 @@ def test_run_with_dataframe_output_type(mock_sync_run):
     assert out == "DF"
 
 
+@patch("openbb_core.app.command_runner.CommandRunner.sync_run")
+def test_run_no_validate_dict_result_with_non_default_output_type(mock_sync_run):
+    """A ``no_validate=True`` command may return a bare ``dict`` (or other
+    non-``OBBject`` shape) instead of an ``OBBject``. A non-default
+    ``output_type`` (e.g. ``dataframe``) must not crash trying to call a
+    ``to_dataframe`` conversion method that plain dicts don't have — the
+    raw result is returned unchanged since there's nothing to convert.
+    """
+    settings = UserSettings()
+    settings.preferences.output_type = "dataframe"
+    c = Container(CommandRunner(user_settings=settings))
+
+    mock_sync_run.return_value = {"content": "base64-pdf-data"}
+
+    out = c._run("/foo", standard_params={}, extra_params={})
+    assert out == {"content": "base64-pdf-data"}
+
+
 def test_get_provider_single_provider_in_config_short_circuits():
     class MockCredentials(BaseModel):
         provider_1_api_key: SecretStr | None = None
