@@ -56,7 +56,13 @@ class TestJoinDates:
 
     def test_a_comma_always_separates(self):
         """A date written with a comma in it is two entries, not one."""
-        assert join_dates("March 17, 2024") != "2024-03-17"
+        try:
+            joined = join_dates("March 17, 2024")
+        except OpenBBError as error:
+            assert "Invalid date: March 17" in str(error)
+        else:
+            assert joined is not None
+            assert len(joined.split(",")) == 2
 
     def test_padding_is_ignored(self):
         assert join_dates(" 2024-03-17 , 2024-04-30 ") == "2024-03-17,2024-04-30"

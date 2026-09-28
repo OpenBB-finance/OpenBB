@@ -17,12 +17,14 @@ class TestRouter:
     @economy_owned
     def test_every_fetcher_is_reachable(self):
         """A registered model with no command is unreachable."""
+        from openbb_core.app.route_iter import iter_api_routes
+
         from openbb_fred import fred_provider
         from openbb_fred.fred_router import router
 
         routed = {
             route.openapi_extra.get("model")
-            for route in router.api_router.routes
+            for route in iter_api_routes(router.api_router)
             if getattr(route, "openapi_extra", None)
         }
 
