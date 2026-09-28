@@ -217,15 +217,13 @@ def residual_autocorrelation(
     from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 
     results = _ols_fit(params.data, params.y_column, params.x_columns)
-    lm_stat, lm_p_value, f_stat, f_p_value = acorr_breusch_godfrey(
-        results, nlags=params.lags
-    )
+    test = acorr_breusch_godfrey(results, nlags=params.lags, result_object=True)
     return OBBject(
         results=ResidualAutocorrelationData(
-            lm_statistic=float(lm_stat),
-            lm_p_value=float(lm_p_value),
-            f_statistic=float(f_stat),
-            f_p_value=float(f_p_value),
+            lm_statistic=float(test.lm),
+            lm_p_value=float(test.lmpval),
+            f_statistic=float(test.fval),
+            f_p_value=float(test.fpval),
         )
     )
 

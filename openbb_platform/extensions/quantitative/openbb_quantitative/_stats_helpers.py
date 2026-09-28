@@ -11,12 +11,12 @@ from scipy import stats
 
 
 def kurtosis_(data: DataFrame | Series | ndarray) -> float:
-    """Compute kurtosis - the tailedness of a distribution."""
+    """Compute the excess kurtosis."""
     return float(stats.kurtosis(data))
 
 
 def skew_(data: DataFrame | Series | ndarray) -> float:
-    """Compute skewness - the asymmetry of a distribution about its mean."""
+    """Compute the skewness."""
     return float(stats.skew(data))
 
 
@@ -26,10 +26,10 @@ def mean_(data: DataFrame | Series | ndarray) -> float:
 
 
 def std_dev_(data: DataFrame | Series | ndarray) -> float:
-    """Compute the standard deviation - the dispersion of a set of values."""
-    return float(std_np(data))
+    """Compute the sample standard deviation."""
+    return float(std_np(data, ddof=1))
 
 
 def var_(data: DataFrame | Series | ndarray) -> float:
-    """Compute the variance - the squared dispersion of a set of values."""
-    return float(var_np(data))
+    """Compute the sample variance."""
+    return float(var_np(data, ddof=1))

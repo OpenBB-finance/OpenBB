@@ -1,6 +1,6 @@
 """Quantitative analysis metrics commands."""
 
-from typing import Literal
+from typing import Literal, cast
 
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -10,6 +10,8 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, NonNegativeInt
 
 router = Router(prefix="", description="Quantitative analysis commands.")
+
+_CAPM_MIN_OBSERVATIONS = 3
 
 
 class NormalityQueryParams(QueryParams):
@@ -45,10 +47,12 @@ class NormalityData(Data):
     shapiro_wilk_statistic: float = Field(description="Shapiro-Wilk test statistic.")
     shapiro_wilk_p_value: float = Field(description="p-value of the Shapiro-Wilk test.")
     kolmogorov_smirnov_statistic: float = Field(
-        description="Kolmogorov-Smirnov test statistic."
+        description="Kolmogorov-Smirnov test statistic against a normal distribution"
+        + " with the sample mean and variance (Lilliefors test)."
     )
     kolmogorov_smirnov_p_value: float = Field(
-        description="p-value of the Kolmogorov-Smirnov test."
+        description="p-value of the Lilliefors-corrected Kolmogorov-Smirnov test,"
+        + " bounded to the range 0.001 to 0.99."
     )
 
 
@@ -59,7 +63,7 @@ class CapmQueryParams(QueryParams):
     __output_columns__ = ("market_risk", "systematic_risk", "idiosyncratic_risk")
 
     data: list[Data] = Field(description="Input dataset.")
-    target: str = Field(description="Name of the column to analyze.")
+    target: str = Field(description="Name of the price column to analyze.")
 
 
 class CapmData(Data):
@@ -168,8 +172,8 @@ class SummaryData(Data):
 
     count: int = Field(description="Number of observations.")
     mean: float = Field(description="Arithmetic mean.")
-    std: float = Field(description="Standard deviation.")
-    var: float = Field(description="Variance.")
+    std: float = Field(description="Sample standard deviation.")
+    var: float = Field(description="Sample variance.")
     min: float = Field(description="Minimum value.")
     p25: float = Field(description="25th percentile.")
     p50: float = Field(description="50th percentile (median).")
@@ -192,6 +196,7 @@ def normality(params: NormalityQueryParams) -> OBBject[NormalityData]:
     """
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from scipy import stats
+    from statsmodels.stats.diagnostic import lilliefors
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
     try:
@@ -203,8 +208,8 @@ def normality(params: NormalityQueryParams) -> OBBject[NormalityData]:
     skewness_statistic, skewness_p_value = stats.skewtest(series)
     jarque_bera_statistic, jarque_bera_p_value = stats.jarque_bera(series)
     shapiro_wilk_statistic, shapiro_wilk_p_value = stats.shapiro(series)
-    kolmogorov_smirnov_statistic, kolmogorov_smirnov_p_value = stats.kstest(
-        series, "norm"
+    kolmogorov_smirnov_statistic, kolmogorov_smirnov_p_value = lilliefors(
+        series, dist="norm"
     )
 
     return OBBject(
@@ -253,12 +258,22 @@ def capm(params: CapmQueryParams) -> OBBject[CapmData]:
         .dropna()
     )
     monthly_return.name = "asset_return"
+    if len(monthly_return) < _CAPM_MIN_OBSERVATIONS:
+        raise ValueError(
+            f"CAPM requires at least {_CAPM_MIN_OBSERVATIONS} monthly returns;"
+            f" the data produced {len(monthly_return)}."
+        )
     start_date = monthly_return.index.min().strftime("%Y-%m-%d")
     end_date = monthly_return.index.max().strftime("%Y-%m-%d")
     factors = get_fama_raw(start_date, end_date)
     merged = monthly_return.to_frame().merge(factors, left_index=True, right_index=True)
     merged["excess_return"] = merged["asset_return"] - merged["rf"]
     merged = merged.dropna()
+    if len(merged) < _CAPM_MIN_OBSERVATIONS:
+        raise ValueError(
+            f"CAPM requires at least {_CAPM_MIN_OBSERVATIONS} monthly returns"
+            f" overlapping the Fama-French factors; found {len(merged)}."
+        )
     model = sm.OLS(merged[["excess_return"]], sm.add_constant(merged["mkt_rf"])).fit()
 
     return OBBject(
@@ -289,6 +304,7 @@ def unitroot_test(params: UnitRootTestQueryParams) -> OBBject[UnitRootData]:
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from statsmodels.tools.sm_exceptions import InterpolationWarning
     from statsmodels.tsa import stattools
+    from statsmodels.tsa.stattools import KPSSResult
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
     adf = stattools.adfuller(
@@ -296,12 +312,18 @@ def unitroot_test(params: UnitRootTestQueryParams) -> OBBject[UnitRootData]:
         maxlag=params.maxlag,
         regression=params.fuller_reg,
         autolag=params.autolag,
+        result_object=True,
     )
-    adf_icbest = adf[5] if len(adf) > 5 else None
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always", InterpolationWarning)
-        kpss_result = stattools.kpss(
-            series, regression=params.kpss_reg, nlags=params.nlags
+        kpss_result = cast(
+            KPSSResult,
+            stattools.kpss(
+                series,
+                regression=params.kpss_reg,
+                nlags=params.nlags,
+                result_object=True,
+            ),
         )
     kpss_p_value_interpolated = not any(
         issubclass(entry.category, InterpolationWarning) for entry in caught
@@ -309,14 +331,14 @@ def unitroot_test(params: UnitRootTestQueryParams) -> OBBject[UnitRootData]:
 
     return OBBject(
         results=UnitRootData(
-            adf_statistic=float(adf[0]),
-            adf_p_value=float(adf[1]),
-            adf_nlags=int(adf[2]),
-            adf_nobs=int(adf[3]),
-            adf_icbest=float(adf_icbest) if adf_icbest is not None else None,
-            kpss_statistic=float(kpss_result[0]),
-            kpss_p_value=float(kpss_result[1]),
-            kpss_nlags=int(kpss_result[2]),
+            adf_statistic=float(adf.statistic),
+            adf_p_value=float(adf.pvalue),
+            adf_nlags=int(adf.lags),
+            adf_nobs=int(adf.nobs),
+            adf_icbest=float(adf.icbest) if adf.icbest is not None else None,
+            kpss_statistic=float(kpss_result.statistic),
+            kpss_p_value=float(kpss_result.pvalue),
+            kpss_nlags=int(kpss_result.lags),
             kpss_p_value_interpolated=kpss_p_value_interpolated,
         )
     )

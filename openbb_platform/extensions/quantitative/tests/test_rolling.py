@@ -1,12 +1,41 @@
-"""Tests for ``openbb_quantitative.rolling`` - rolling-statistics commands."""
-
 from math import isfinite
+
+import pytest
+from openbb_core.app.utils import df_to_basemodel
 
 from openbb_quantitative import rolling
 
 
+def test_rolling_quantile_custom_index(prices_df):
+    frame = prices_df.rename(columns={"date": "timestamp"})
+    out = rolling.quantile(
+        rolling.RollingQuantileQueryParams(
+            data=df_to_basemodel(frame),
+            target="close",
+            window=20,
+            quantile_pct=0.75,
+            index="timestamp",
+        )
+    ).results
+    expected = frame.set_index("timestamp")["close"].rolling(20)
+    assert len(out) == len(frame) - 19
+    assert out[-1].median == pytest.approx(expected.median().iloc[-1])
+    assert out[-1].quantile == pytest.approx(expected.quantile(0.75).iloc[-1])
+
+
+def test_rolling_dispersion_is_sample_statistic(prices_data, prices_df):
+    variance = rolling.variance(
+        rolling.RollingVarianceQueryParams(data=prices_data, target="close", window=20)
+    ).results
+    stdev = rolling.stdev(
+        rolling.RollingStdevQueryParams(data=prices_data, target="close", window=20)
+    ).results
+    expected = prices_df["close"].rolling(20)
+    assert variance[-1].variance == pytest.approx(expected.var().iloc[-1])
+    assert stdev[-1].stdev == pytest.approx(expected.std().iloc[-1])
+
+
 def test_rolling_skew(prices_data):
-    """Rolling skew returns finite values for each completed window."""
     params = rolling.RollingSkewQueryParams(data=prices_data, target="close", window=20)
     out = rolling.skew(params)
     results = out.results
@@ -19,7 +48,6 @@ def test_rolling_skew(prices_data):
 
 
 def test_rolling_variance(prices_data):
-    """Rolling variance returns finite, non-negative values."""
     params = rolling.RollingVarianceQueryParams(
         data=prices_data, target="close", window=20
     )
@@ -35,7 +63,6 @@ def test_rolling_variance(prices_data):
 
 
 def test_rolling_stdev(prices_data):
-    """Rolling standard deviation returns finite, non-negative values."""
     params = rolling.RollingStdevQueryParams(
         data=prices_data, target="close", window=20
     )
@@ -51,7 +78,6 @@ def test_rolling_stdev(prices_data):
 
 
 def test_rolling_kurtosis(prices_data):
-    """Rolling kurtosis returns finite values for each completed window."""
     params = rolling.RollingKurtosisQueryParams(
         data=prices_data, target="close", window=20
     )
@@ -66,7 +92,6 @@ def test_rolling_kurtosis(prices_data):
 
 
 def test_rolling_mean(prices_data):
-    """Rolling mean returns finite values for each completed window."""
     params = rolling.RollingMeanQueryParams(data=prices_data, target="close", window=20)
     out = rolling.mean(params)
     results = out.results
@@ -79,7 +104,6 @@ def test_rolling_mean(prices_data):
 
 
 def test_rolling_quantile(prices_data):
-    """Rolling quantile returns finite median and quantile values."""
     params = rolling.RollingQuantileQueryParams(
         data=prices_data, target="close", window=20
     )
@@ -95,7 +119,6 @@ def test_rolling_quantile(prices_data):
 
 
 def test_rolling_query_params_defaults():
-    """The rolling QueryParams expose the documented default values."""
     skew_params = rolling.RollingSkewQueryParams(data=[], target="close")
     assert skew_params.window == 21
     assert skew_params.index == "date"
@@ -118,7 +141,6 @@ def test_rolling_query_params_defaults():
 
 
 def test_rolling_factors_happy_path(target_returns_data, factor_matrix_data):
-    """Rolling factors emits one row per (window-end, regressor) with finite stats."""
     params = rolling.RollingFactorsQueryParams(
         data=target_returns_data,
         factors_data=factor_matrix_data,
@@ -141,7 +163,6 @@ def test_rolling_factors_happy_path(target_returns_data, factor_matrix_data):
 
 
 def test_rolling_factors_default_params():
-    """Default ``window`` and ``step`` match the documented values."""
     params = rolling.RollingFactorsQueryParams(data=[], factors_data=[], target="close")
     assert params.window == 252
     assert params.step == 21
@@ -150,9 +171,6 @@ def test_rolling_factors_default_params():
 
 
 def test_rolling_factors_window_too_large(target_returns_data, factor_matrix_data):
-    """A window longer than the aligned data raises ValueError."""
-    import pytest
-
     params = rolling.RollingFactorsQueryParams(
         data=target_returns_data,
         factors_data=factor_matrix_data,
@@ -164,9 +182,6 @@ def test_rolling_factors_window_too_large(target_returns_data, factor_matrix_dat
 
 
 def test_rolling_factors_window_too_small(target_returns_data, factor_matrix_data):
-    """A window not large enough to fit regressors+1 raises ValueError."""
-    import pytest
-
     params = rolling.RollingFactorsQueryParams(
         data=target_returns_data,
         factors_data=factor_matrix_data,

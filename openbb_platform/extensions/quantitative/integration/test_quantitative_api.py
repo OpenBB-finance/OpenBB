@@ -1,5 +1,3 @@
-"""Integration tests for the openbb-quantitative HTTP API interface."""
-
 import base64
 
 import pytest
@@ -11,7 +9,6 @@ _headers: dict = {}
 
 
 def get_headers():
-    """Build the Basic-auth headers for the local API server."""
     if _headers:
         return _headers
 
@@ -22,7 +19,6 @@ def get_headers():
 
 
 def _post(endpoint: str, payload: dict) -> requests.Response:
-    """POST a QueryParams payload to a quantitative endpoint."""
     return requests.post(
         f"{_BASE_URL}/{endpoint}", headers=get_headers(), timeout=30, json=payload
     )
@@ -158,7 +154,11 @@ def test_quantitative_stats_quantile(prices_data):
 
 @pytest.mark.integration
 def test_quantitative_performance_omega_ratio(prices_data):
-    result = _post("performance/omega_ratio", {"data": prices_data, "target": "close"})
+    returns = [
+        {"date": current["date"], "return": current["close"] / previous["close"] - 1}
+        for previous, current in zip(prices_data, prices_data[1:])
+    ]
+    result = _post("performance/omega_ratio", {"data": returns, "target": "return"})
     assert result.status_code == 200
     assert result.json()["results"]
 
