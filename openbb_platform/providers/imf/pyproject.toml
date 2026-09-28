@@ -1,6 +1,6 @@
 [project]
 name = "openbb-imf"
-version = "2.1.2"
+version = "3.0.0"
 description = "IMF provider extension for OpenBB Platform."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "Apache-2.0" }
