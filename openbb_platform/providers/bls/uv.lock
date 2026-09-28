@@ -1627,7 +1627,7 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "openbb-devtools", editable = "../../extensions/devtools" }]
+dev = [{ name = "openbb-devtools", specifier = ">=2.0.1" }]
 
 [[package]]
 name = "openbb-core"
@@ -1662,7 +1662,7 @@ pandas = [
 [[package]]
 name = "openbb-devtools"
 version = "2.0.1"
-source = { editable = "../../extensions/devtools" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "codespell" },
     { name = "httpx2" },
@@ -1683,27 +1683,9 @@ dependencies = [
     { name = "types-requests" },
     { name = "types-toml" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "codespell", specifier = ">=2.2.5,<3.0.0" },
-    { name = "httpx2", specifier = ">=2.0.0" },
-    { name = "ipykernel", specifier = ">=6.30.1" },
-    { name = "pre-commit", specifier = ">=3.5.0,<4.0.0" },
-    { name = "pydocstyle", specifier = ">=6.3.0,<7.0.0" },
-    { name = "pytest", specifier = ">=9.0.3" },
-    { name = "pytest-asyncio", specifier = ">=1.3.0,<2.0.0" },
-    { name = "pytest-cov", specifier = ">=4.1.0,<5.0.0" },
-    { name = "pytest-freezer", specifier = ">=0.4.9,<1.0.0" },
-    { name = "pytest-order", specifier = ">=1.3.0,<2.0.0" },
-    { name = "pytest-recorder", specifier = ">=1.0.0" },
-    { name = "pytest-subtests", specifier = ">=0.11.0,<1.0.0" },
-    { name = "ruff", specifier = ">=0.15" },
-    { name = "tox", specifier = ">=4.11.3,<5.0.0" },
-    { name = "ty", specifier = ">=0.0.40" },
-    { name = "types-python-dateutil", specifier = ">=2.8.19.14,<3.0.0" },
-    { name = "types-requests", specifier = ">=2.32,<3.0.0" },
-    { name = "types-toml", specifier = ">=0.10.8.7,<1.0.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/09/40/63d7a9f4cf8e725ed5a3c3df1f13c1ccb62562541516b1d1c5b47adaa74d/openbb_devtools-2.0.1.tar.gz", hash = "sha256:3aae0e274c410a688fd8a1a80a7295d76d581c9107032d34874bc83baf6e3416", size = 1739, upload-time = "2026-09-24T21:51:03.69Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/41/e1ad4ea518f756a0a330a72f3df29a0b692c0cff25a7202f0ab36689f75e/openbb_devtools-2.0.1-py3-none-any.whl", hash = "sha256:ff3d96622f7ecaaf37cf2b898f32ecd69234e58f0ca162043e8e2b9bb608517c", size = 1665, upload-time = "2026-09-24T21:51:04.637Z" },
 ]
 
 [[package]]
@@ -2678,15 +2660,15 @@ wheels = [
 
 [[package]]
 name = "starlette"
-version = "1.2.0"
+version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/bf/616a066c2760f6c2b1ae3437cc28149734d069fbb46511712beae118a68c/starlette-1.2.0.tar.gz", hash = "sha256:3c5a6b23fff42492914e93890bb80cbfea72dbf37de268eec06185d62a4ca553", size = 2668923, upload-time = "2026-05-28T11:42:50.568Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7b/2b/3850dc6bf7ef71b088962eba31dafc6cffd2f96e577ebb0bb316df96da3e/starlette-1.7.0.tar.gz", hash = "sha256:c79f74ea63cff761804fbbfb182f1e0b440c2d07b164d24700c5a1bab5d6ff5d", size = 2736246, upload-time = "2026-09-23T07:30:26.35Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9f/85/492183764d5d01d4514be3730fdb8e228a80605783099551c51627578b5d/starlette-1.2.0-py3-none-any.whl", hash = "sha256:36e0c76ac59157e75dc4b3bdeafba97fb04eaf1878045f15dbef666a6f092ed7", size = 73213, upload-time = "2026-05-28T11:42:48.801Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/d6/1ec1b290f9e0fb067899b61e1d37a30c923068bad260b216dbe37a7d2967/starlette-1.7.0-py3-none-any.whl", hash = "sha256:67f8e99895493dd2911a03f11314af6ceebeae4e704bb9f43dfc6a9db151c93e", size = 78980, upload-time = "2026-09-23T07:30:24.567Z" },
 ]
 
 [[package]]
