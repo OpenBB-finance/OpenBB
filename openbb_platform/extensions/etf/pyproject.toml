@@ -35,7 +35,6 @@ include = [
 	"pyproject.toml",
 ]
 
-# This is here while V5 is under development
 [tool.ruff]
 line-length = 88
 target-version = "py310"
