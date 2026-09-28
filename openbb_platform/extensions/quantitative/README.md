@@ -96,8 +96,12 @@ obb.quantitative.attribution(
 
 # Refit OLS on a 36-month sliding window to track time-varying factor exposures.
 obb.quantitative.rolling.factors(
-    data=target, factors_data=factors, target="return",
-    window=36, step=1, risk_free_column="rf",
+    data=target,
+    factors_data=factors,
+    target="return",
+    window=36,
+    step=1,
+    risk_free_column="rf",
 )
 ```
 
