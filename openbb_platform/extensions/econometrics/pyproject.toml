@@ -25,7 +25,7 @@ Homepage = "https://openbb.co"
 Repository = "https://github.com/OpenBB-finance/OpenBB"
 
 [dependency-groups]
-dev = ["openbb-devtools>=2.0.1", "openbb-charting>=3.0.0"]
+dev = ["openbb-devtools>=2.0.1", "openbb-charting>=4.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -36,9 +36,6 @@ packages = ["openbb_econometrics"]
 
 [tool.hatch.build.targets.sdist]
 include = ["openbb_econometrics", "README.md", "pyproject.toml"]
-
-[tool.uv.sources]
-openbb-charting = { path = "../../obbject_extensions/charting", editable = true }
 
 [tool.ruff]
 line-length = 88
