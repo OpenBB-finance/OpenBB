@@ -27,3 +27,11 @@ def fred_cache(tmp_path_factory):
         os.environ.pop("OPENBB_FRED_DISK_CACHE_DIR", None)
     else:
         os.environ["OPENBB_FRED_DISK_CACHE_DIR"] = previous
+
+
+@pytest.fixture(autouse=True)
+def no_request_spacing(monkeypatch):
+    """Replay recorded requests without the live API's request spacing."""
+    from openbb_fred.utils import rate_limiter
+
+    monkeypatch.setattr(rate_limiter, "MIN_INTERVAL_SECONDS", 0.0)

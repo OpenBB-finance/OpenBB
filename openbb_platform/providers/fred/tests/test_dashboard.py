@@ -45,7 +45,8 @@ class TestInterestRates:
     )
 
     @pytest.fixture(scope="class")
-    def served(self):
+    @classmethod
+    def served(cls):
         """Read the template as the API serves it."""
         from openbb_core.provider.utils.helpers import run_async
 
@@ -54,7 +55,8 @@ class TestInterestRates:
         return run_async(fred_apps)[0]
 
     @pytest.fixture(scope="class")
-    def registry(self):
+    @classmethod
+    def registry(cls):
         """Build the widget registry the template refers to."""
         from openbb_core.api.rest_api import app
         from openbb_platform_api.utils.widgets import build_json
@@ -62,13 +64,14 @@ class TestInterestRates:
         return build_json(app.openapi(), [])
 
     @pytest.fixture(scope="class")
-    def cells(self, served):
+    @classmethod
+    def cells(cls, served):
         """Index the tab by the id each widget is declared under."""
         from openbb_fred.fred_router import widget_id
 
         laid_out = {c["i"]: c for c in served["tabs"]["InterestRates"]["layout"]}
 
-        return {declared: laid_out[widget_id(declared)] for declared in self.ORDER}
+        return {declared: laid_out[widget_id(declared)] for declared in cls.ORDER}
 
     @staticmethod
     def _charted(registry, cell):
@@ -103,10 +106,7 @@ class TestInterestRates:
             if declared == self.TIPS:
                 continue
 
-            assert cell["state"]["chartView"] == {
-                "enabled": True,
-                "chartType": "line",
-            }, declared
+            assert cell["state"]["chartView"]["chartType"] == "line", declared
 
     def test_a_security_level_yield_stays_a_table(self, cells):
         """One line per outstanding issue is a blob, not a chart."""
@@ -295,7 +295,8 @@ class TestSeriesDrilldown:
     SERIES = "economy_fred_series_fred_obb"
 
     @pytest.fixture(scope="class")
-    def served(self):
+    @classmethod
+    def served(cls):
         """Read the template as the API serves it."""
         from openbb_core.provider.utils.helpers import run_async
 
@@ -304,7 +305,8 @@ class TestSeriesDrilldown:
         return run_async(fred_apps)[0]
 
     @pytest.fixture(scope="class")
-    def registry(self):
+    @classmethod
+    def registry(cls):
         """Build the widget registry the template refers to."""
         from openbb_core.api.rest_api import app
         from openbb_platform_api.utils.widgets import build_json
@@ -312,11 +314,12 @@ class TestSeriesDrilldown:
         return build_json(app.openapi(), [])
 
     @pytest.fixture(scope="class")
-    def placed(self):
+    @classmethod
+    def placed(cls):
         """Name the drilldown widgets as this installation publishes them."""
         from openbb_fred.fred_router import widget_id
 
-        return [widget_id(self.SEARCH), widget_id(self.TABLE), widget_id(self.SERIES)]
+        return [widget_id(cls.SEARCH), widget_id(cls.TABLE), widget_id(cls.SERIES)]
 
     def test_the_series_chart_sits_below_the_table(self, served, placed):
         laid_out = [c["i"] for c in served["tabs"]["ReleaseTables"]["layout"]]

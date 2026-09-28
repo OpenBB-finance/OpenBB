@@ -63,6 +63,9 @@ from openbb_fred.models.yield_curve import FREDYieldCurveFetcher
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
+test_credentials["fred_api_key"] = (
+    test_credentials.get("fred_api_key") or "MOCK_API_KEY"
+)
 
 
 def decompress_body(response):

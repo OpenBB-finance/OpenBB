@@ -1292,7 +1292,8 @@ class TestChartMetadata:
     """What each rate widget tells the Workspace to plot, read from its widget JSON."""
 
     @pytest.fixture(scope="class")
-    def columns(self):
+    @classmethod
+    def columns(cls):
         """Read every rate widget's built column definitions, keyed by field."""
         from openbb_core.api.rest_api import app
         from openbb_platform_api.utils.widgets import build_json
