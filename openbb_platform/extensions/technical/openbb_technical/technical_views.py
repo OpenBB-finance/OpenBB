@@ -418,11 +418,7 @@ def _ta_ma(**kwargs):
     )
     from pandas import DataFrame
 
-    index = (
-        kwargs.get("index")
-        if "index" in kwargs and kwargs.get("index") is not None
-        else "date"
-    )
+    index = kwargs.get("index") or "date"
     ma_type = (
         kwargs["ma_type"]
         if "ma_type" in kwargs and kwargs.get("ma_type") is not None
