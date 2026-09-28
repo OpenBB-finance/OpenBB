@@ -66,9 +66,6 @@ include = [
     "pyproject.toml",
 ]
 
-[tool.uv.sources]
-openbb-devtools = { path = "../../extensions/devtools", editable = true }
-openbb-platform-api = { path = "../../extensions/platform_api", editable = true }
 
 [tool.ruff]
 line-length = 88
