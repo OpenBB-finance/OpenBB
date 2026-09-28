@@ -27,9 +27,7 @@ Documentation = "https://docs.openbb.co/odp/python/extensions/interface/openbb-m
 [dependency-groups]
 dev = [
     "openbb-devtools>=2.0.1",
-    "httpx>=0.28.0,<1.0.0",
     "openbb-cli>=2.0.0",
-    "openbb-mcp-fixture",
 ]
 
 [build-system]
@@ -45,10 +43,6 @@ include = [
     "README.md",
     "pyproject.toml",
 ]
-
-[tool.uv.sources]
-openbb-cli = { path = "../../../cli", editable = true }
-openbb-mcp-fixture = { path = "tests/fixtures/openbb_mcp_fixture", editable = true }
 
 [tool.ruff]
 line-length = 88

@@ -71,7 +71,7 @@ jobs:
       - name: Install dependencies then openbb-mcp-server wheel
         run: |
           uv pip install --system ../../core
-          uv pip install --system --no-sources ../../../cli tests/fixtures/openbb_mcp_fixture
+          uv pip install --system --no-sources ../../../cli
           uv pip install --system --no-sources --group dev
           uv pip install --system --no-sources dist/openbb_mcp_server-*.whl
 
@@ -123,7 +123,7 @@ jobs:
       - name: Install dependencies then openbb-mcp-server wheel
         run: |
           uv pip install --system ../../core
-          uv pip install --system --no-sources ../../../cli tests/fixtures/openbb_mcp_fixture
+          uv pip install --system --no-sources ../../../cli
           uv pip install --system --no-sources --group dev
           uv pip install --system --no-sources dist/openbb_mcp_server-*.whl
 

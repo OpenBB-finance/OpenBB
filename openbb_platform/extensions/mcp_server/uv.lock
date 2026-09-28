@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.10, <4"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -2222,7 +2222,7 @@ wheels = [
 [[package]]
 name = "openbb-cli"
 version = "2.0.0"
-source = { editable = "../../../cli" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "openbb-core", extra = ["pandas"] },
@@ -2233,26 +2233,10 @@ dependencies = [
     { name = "rich" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "httpx", specifier = ">=0.28.0,<1.0.0" },
-    { name = "openbb-charting", marker = "extra == 'all'", editable = "../../obbject_extensions/charting" },
-    { name = "openbb-charting", marker = "extra == 'charting'", editable = "../../obbject_extensions/charting" },
-    { name = "openbb-core", extras = ["pandas"], specifier = ">=2.0.0" },
-    { name = "openpyxl", specifier = ">=3.1.5,<4.0.0" },
-    { name = "prompt-toolkit", specifier = ">=3.0.50,<4.0.0" },
-    { name = "python-dotenv", specifier = ">=1.0.1,<2.0.0" },
-    { name = "pywry", marker = "extra == 'all'", specifier = ">=2.0.0" },
-    { name = "pywry", marker = "extra == 'interactive'", specifier = ">=2.0.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "rich", specifier = ">=14.0.0,<15.0.0" },
-    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/93/01/043189ce5bf7c782f674b02baec0da4bfa445305a731a774523779bb9150/openbb_cli-2.0.0.tar.gz", hash = "sha256:6694e898228502ac0f1a9d28088da0eec9a01efed6660d877801b54f9b48e5de", size = 371511, upload-time = "2026-09-27T21:25:32.68Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/09/a0/efb5eaaaaf6e5ab2d691209ad120a915737ebfefb554a89e364573be94d8/openbb_cli-2.0.0-py3-none-any.whl", hash = "sha256:fa2a0681948f3206b60da6a290d1cac1c687584bf64e4a467bd920186a231e19", size = 406321, upload-time = "2026-09-27T21:25:30.981Z" },
 ]
-provides-extras = ["charting", "interactive", "all"]
-
-[package.metadata.requires-dev]
-dev = [{ name = "openbb-devtools", specifier = ">=2.0.1" }]
 
 [[package]]
 name = "openbb-core"
@@ -2315,17 +2299,6 @@ wheels = [
 ]
 
 [[package]]
-name = "openbb-mcp-fixture"
-version = "0.0.1"
-source = { editable = "tests/fixtures/openbb_mcp_fixture" }
-dependencies = [
-    { name = "openbb-core" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "openbb-core", specifier = ">=2.0.0" }]
-
-[[package]]
 name = "openbb-mcp-server"
 version = "2.0.0"
 source = { editable = "." }
@@ -2343,17 +2316,15 @@ cli = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "httpx" },
     { name = "openbb-cli" },
     { name = "openbb-devtools" },
-    { name = "openbb-mcp-fixture" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.138.2" },
     { name = "fastmcp", specifier = ">=4.0.9" },
-    { name = "openbb-cli", marker = "extra == 'cli'", editable = "../../../cli" },
+    { name = "openbb-cli", marker = "extra == 'cli'", specifier = ">=2.0.0" },
     { name = "openbb-core", specifier = ">=2.0.0" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
 ]
@@ -2361,10 +2332,8 @@ provides-extras = ["cli"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "httpx", specifier = ">=0.28.0,<1.0.0" },
-    { name = "openbb-cli", editable = "../../../cli" },
+    { name = "openbb-cli", specifier = ">=2.0.0" },
     { name = "openbb-devtools", specifier = ">=2.0.1" },
-    { name = "openbb-mcp-fixture", editable = "tests/fixtures/openbb_mcp_fixture" },
 ]
 
 [[package]]
