@@ -1,6 +1,6 @@
 [project]
 name = "openbb-technical"
-version = "2.0.0"
+version = "2.0.1"
 description = "Technical Analysis extension for OpenBB"
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "Apache-2.0" }
