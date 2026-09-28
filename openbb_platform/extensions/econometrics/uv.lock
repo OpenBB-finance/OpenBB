@@ -1618,24 +1618,16 @@ wheels = [
 [[package]]
 name = "openbb-charting"
 version = "4.0.0"
-source = { editable = "../../obbject_extensions/charting" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "openbb-core", extra = ["pandas"] },
     { name = "pandas-ta-openbb" },
     { name = "plotly" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "openbb-core", extras = ["pandas"], specifier = ">=2.0.0" },
-    { name = "pandas-ta-openbb", specifier = ">=0.4.24" },
-    { name = "plotly", specifier = ">=6.3.1" },
-    { name = "pywry", marker = "extra == 'pywry'", specifier = ">=2.0.4" },
+sdist = { url = "https://files.pythonhosted.org/packages/35/7e/58d534668b3d0483c2912cc7f9a6f1d6bf4d93983fb64218937f9821b9d3/openbb_charting-4.0.0.tar.gz", hash = "sha256:201fe475ae42c2e3e2a771010f306be08dbc27e10f66a76e4192d3d7f49d406a", size = 775448, upload-time = "2026-09-26T23:55:00.553Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b2/88/51ebbb8906d6b6d3284be41be3c9aa3f865ff372ce214d4e269b6f2146fe/openbb_charting-4.0.0-py3-none-any.whl", hash = "sha256:5cf984171bd0fbbb74cbadd963e4c7545c2639b8fd7c262e6c9f8358840e40cf", size = 499278, upload-time = "2026-09-26T23:54:58.545Z" },
 ]
-provides-extras = ["pywry"]
-
-[package.metadata.requires-dev]
-dev = [{ name = "openbb-devtools", specifier = ">=2.0.1" }]
 
 [[package]]
 name = "openbb-core"
@@ -1726,7 +1718,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "openbb-charting", editable = "../../obbject_extensions/charting" },
+    { name = "openbb-charting", specifier = ">=4.0.0" },
     { name = "openbb-devtools", specifier = ">=2.0.1" },
 ]
 
