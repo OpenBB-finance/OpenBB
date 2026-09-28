@@ -416,6 +416,10 @@ def launch_api(**_kwargs):  # noqa: PLR0912
         f"\n{f'Documentation is available at {app.docs_url}.' if app.docs_url else ''}"
     )
     logger.info(_msg)
+    # Everything left in _kwargs at this point is an unrecognized flag meant
+    # for uvicorn.run itself; its parameters are underscored (ssl_keyfile,
+    # proxy_headers, ...), but parse_args only ever strips the leading "--".
+    _kwargs = {k.replace("-", "_"): v for k, v in _kwargs.items()}
     uvicorn.run("openbb_platform_api.main:app", host=host, port=port, **_kwargs)
 
 

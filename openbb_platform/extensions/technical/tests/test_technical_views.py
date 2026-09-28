@@ -177,6 +177,33 @@ class TestTaMaHelper:
         fig, _ = _ta_ma(data=_records_to_data(ohlcv_records))
         assert fig is not None
 
+    def test_falls_back_to_extra_params_data_when_obbject_item_is_thin(
+        self, ohlcv_records, ta_accessor
+    ):
+        """The command's own result (obbject_item) carries no price columns,
+        as with sma/rsi/macd/adx/aroon; the original price series should be
+        recovered from extra_params rather than raising on a missing target.
+        """
+        from openbb_technical.technical_views import _ta_ma
+
+        thin_results = [{"date": r["date"], "sma": 1.0} for r in ohlcv_records]
+        fig, _ = _ta_ma(
+            obbject_item=thin_results,
+            extra_params={"data": _records_to_data(ohlcv_records)},
+        )
+        assert fig is not None
+
+    def test_extra_params_data_as_records(self, ohlcv_records, ta_accessor):
+        """extra_params.data may be plain dicts, not just Data instances."""
+        from openbb_technical.technical_views import _ta_ma
+
+        thin_results = [{"date": r["date"], "sma": 1.0} for r in ohlcv_records]
+        fig, _ = _ta_ma(
+            obbject_item=thin_results,
+            extra_params={"data": ohlcv_records},
+        )
+        assert fig is not None
+
     def test_with_index_column_already_set(self, ohlcv_df, ta_accessor):
         from openbb_technical.technical_views import _ta_ma
 
@@ -364,6 +391,22 @@ class TestTechnicalRsi:
 
         fig, _ = TechnicalViews.technical_rsi(
             obbject_item=_records_to_data(ohlcv_records)
+        )
+        assert fig is not None
+
+    def test_falls_back_to_extra_params_data_when_obbject_item_is_thin(
+        self, ohlcv_records
+    ):
+        """rsi's own result carries no price columns; CommandRunner._chart nests
+        the caller's original data under extra_params, which is where the real
+        series must be recovered from.
+        """
+        from openbb_technical.technical_views import TechnicalViews
+
+        thin_results = [{"date": r["date"], "rsi": 50.0} for r in ohlcv_records]
+        fig, _ = TechnicalViews.technical_rsi(
+            obbject_item=thin_results,
+            extra_params={"data": _records_to_data(ohlcv_records)},
         )
         assert fig is not None
 

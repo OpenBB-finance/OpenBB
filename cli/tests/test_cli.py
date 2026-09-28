@@ -1060,3 +1060,100 @@ def test_generate_extension_filters_commands_before_codegen(tmp_path, capsys):
     assert captured["spec_commands"] == ["equity.balance", "equity.price"]
     out = capsys.readouterr().out
     assert "filter: 2/3 commands kept" in out
+
+
+def test_generate_extension_passes_router_name_to_codegen(tmp_path):
+    """``--router-name`` reaches ``generate_packages`` verbatim, distinct
+    from ``--provider-name`` — it must not be silently dropped on the way
+    from the CLI argument to codegen.
+    """
+    from openbb_cli.dispatchers.spec import SPEC_VERSION, write_spec
+
+    spec_path = tmp_path / "x.spec"
+    write_spec(
+        spec_path,
+        {
+            "version": SPEC_VERSION,
+            "base_url": "http://x",
+            "api_prefix": "/api/v1",
+            "commands": {"equity.price": _stub_command_spec()},
+        },
+    )
+    captured: dict = {}
+
+    def fake_generate_packages(spec_doc, **kwargs):  # noqa: ARG001
+        captured["router_name"] = kwargs.get("router_name")
+        captured["provider_name"] = kwargs.get("provider_name")
+        package_set = MagicMock()
+        package_set.write.return_value = []
+        package_set.packages = []
+        return package_set
+
+    with patch(
+        "openbb_cli.codegen.package_gen.generate_packages",
+        side_effect=fake_generate_packages,
+    ):
+        rc = cli._generate_extension(
+            [(None, str(spec_path))],
+            str(tmp_path / "out"),
+            provider_name="myprovider",
+            project_name=None,
+            package_name=None,
+            router_name="custom_router",
+        )
+    assert rc == 0
+    assert captured["router_name"] == "custom_router"
+    assert captured["provider_name"] == "myprovider"
+
+
+def test_apply_config_defaults_applies_output_and_batch_concurrency():
+    """TOML ``output``/``batch-concurrency`` reach parsed args when the CLI flag
+    isn't passed. Both flags bake a non-empty literal into their argparse
+    default, so a naive "is the existing default falsy" check silently
+    discards the TOML value for these two keys even though it correctly
+    applies for the other ``_CONFIG_SCALAR_KEYS``.
+    """
+    from openbb_cli.dispatchers.runtime import build_parser
+
+    config = {"output": "from_toml.spec", "batch_concurrency": 42}
+    parser = build_parser()
+    cli._apply_config_defaults(parser, [], config)
+    args = parser.parse_args(["--generate-spec"])
+    assert args.output == "from_toml.spec"
+    assert args.batch_concurrency == 42
+
+
+def test_apply_config_defaults_cli_flag_beats_toml():
+    """An explicit ``--output`` on the command line still wins over TOML."""
+    from openbb_cli.dispatchers.runtime import build_parser
+
+    config = {"output": "from_toml.spec"}
+    argv = ["--generate-spec", "--output", "from_cli.spec"]
+    parser = build_parser()
+    cli._apply_config_defaults(parser, argv, config)
+    args = parser.parse_args(argv)
+    assert args.output == "from_cli.spec"
+
+
+def test_apply_config_defaults_env_var_beats_toml(monkeypatch):
+    """``OPENBB_CLI_BATCH_CONCURRENCY`` still wins over TOML, per the documented
+    precedence (TOML < env vars < CLI flags)."""
+    from openbb_cli.dispatchers.runtime import build_parser
+
+    monkeypatch.setenv("OPENBB_CLI_BATCH_CONCURRENCY", "99")
+    config = {"batch_concurrency": 42}
+    parser = build_parser()
+    cli._apply_config_defaults(parser, [], config)
+    args = parser.parse_args(["--generate-spec"])
+    assert args.batch_concurrency == 99
+
+
+def test_apply_config_defaults_falls_back_to_hardcoded_default():
+    """With no TOML, env, or CLI value, the hardcoded argparse default stands."""
+    from openbb_cli.dispatchers.runtime import build_parser
+
+    parser = build_parser()
+    cli._apply_config_defaults(parser, [], {})
+    args = parser.parse_args(["--generate-spec"])
+    assert args.output == "openbb.spec"
+    assert args.batch_concurrency == 8

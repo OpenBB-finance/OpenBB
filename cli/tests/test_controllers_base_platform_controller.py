@@ -551,6 +551,35 @@ def test_generated_call_chart_export_extracts_fig(mock_session):
     export_data.assert_called_once()
 
 
+def test_generated_call_obbject_export_invokes_export_data(mock_session):
+    """``ns.export`` + an ``OBBject`` result → ``export_data`` is called.
+
+    The generated method's local ``df`` must be populated from the OBBject's
+    own results (via ``extract_dataframe``), not left as the empty sentinel
+    initialized before the OBBject branch — otherwise every OBBject export
+    falls through to the "No data to export." warning regardless of whether
+    the command actually returned data.
+    """
+    from openbb_core.app.model.obbject import OBBject
+
+    obbject = OBBject(results=[{"a": 1}, {"a": 2}])
+    controller, translator = _make_command_call_test_setup(
+        mock_session, command_returns=obbject
+    )
+    ns = MagicMock(export=["csv"], register_obbject=False, chart=False, sheet_name=None)
+    del ns.register_key
+    controller.parse_known_args_and_warn.return_value = ns
+    mock_session.max_obbjects_exceeded.return_value = False
+    with patch(
+        "openbb_cli.controllers.base_platform_controller.export_data"
+    ) as export_data:
+        controller.call_cmd([])
+    export_data.assert_called_once()
+    assert not export_data.call_args.kwargs["df"].empty
+    msgs = [str(c) for c in mock_session.console.print.call_args_list]
+    assert not any("No data to export" in m for m in msgs)
+
+
 def test_generated_call_export_with_empty_df_warns(mock_session):
     """When ``ns.export`` is set but the local ``df`` is empty, a yellow warning runs."""
     controller, translator = _make_command_call_test_setup(

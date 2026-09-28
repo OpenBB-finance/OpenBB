@@ -6,6 +6,7 @@ from pathlib import Path
 from importlib import import_module
 from typing import List, Optional, Union
 
+from openbb_core.app.config import load_layered_config as _load_layered_config
 from openbb_core.app.static.app_factory import (
     BaseApp as _BaseApp,
     create_app as _create_app,
@@ -39,6 +40,13 @@ def build(
 
 _PackageBuilder(_this_dir).auto_build()
 _ReferenceLoader(_this_dir)
+
+# Runs the same layered TOML cascade the launchers (openbb-api, openbb-mcp,
+# openbb-cli) bootstrap explicitly, so `openbb.toml` / `OPENBB_*` env vars
+# take effect for a bare `from openbb import obb` too. Best-effort by
+# construction — every cascade layer is independently optional, so this is a
+# no-op when no config file is present anywhere in the cascade.
+_load_layered_config()
 
 try:
     _extensions_module = import_module("openbb.package.__extensions__")

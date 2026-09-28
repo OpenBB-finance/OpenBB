@@ -8,6 +8,30 @@ if TYPE_CHECKING:
     )
 
 
+def _resolve_price_data(kwargs: dict, index: str = "date"):
+    """Return the original OHLCV series a chart should draw against.
+
+    The caller's own ``data`` argument is repacked by ``CommandRunner._chart``
+    into ``kwargs["extra_params"]["data"]`` before reaching the chart function,
+    so the indicator's own (price-column-free) result is checked last.
+    """
+    from openbb_core.app.utils import basemodel_to_df
+    from pandas import DataFrame
+
+    data = kwargs.get("data")
+    if data is None:
+        data = kwargs.get("extra_params", {}).get("data")
+
+    if isinstance(data, DataFrame) and not data.empty:
+        return data.set_index(index) if index in data.columns else data
+
+    if isinstance(data, list) and data:
+        df = DataFrame(data) if isinstance(data[0], dict) else basemodel_to_df(data)
+        return df.set_index(index) if index in df.columns else df
+
+    return basemodel_to_df(kwargs["obbject_item"], index=index)
+
+
 class TechnicalViews:
     """Technical Views."""
 
@@ -52,18 +76,8 @@ class TechnicalViews:
         from openbb_charting.core.plotly_ta.ta_class import (
             PlotlyTA,
         )
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -98,18 +112,8 @@ class TechnicalViews:
         from openbb_charting.core.plotly_ta.ta_class import (
             PlotlyTA,
         )
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -142,18 +146,8 @@ class TechnicalViews:
         from openbb_charting.core.plotly_ta.ta_class import (
             PlotlyTA,
         )
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -183,18 +177,8 @@ class TechnicalViews:
         from openbb_charting.core.plotly_ta.ta_class import (
             PlotlyTA,
         )
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -432,7 +416,6 @@ def _ta_ma(**kwargs):
     from openbb_charting.styles.colors import (
         LARGE_CYCLER,
     )
-    from openbb_core.app.utils import basemodel_to_df
     from pandas import DataFrame
 
     index = (
@@ -440,7 +423,6 @@ def _ta_ma(**kwargs):
         if "index" in kwargs and kwargs.get("index") is not None
         else "date"
     )
-    data = kwargs.get("data")
     ma_type = (
         kwargs["ma_type"]
         if "ma_type" in kwargs and kwargs.get("ma_type") is not None
@@ -448,14 +430,7 @@ def _ta_ma(**kwargs):
     )
     ma_types = ma_type.split(",") if isinstance(ma_type, str) else ma_type
 
-    if isinstance(data, DataFrame) and not data.empty:
-        data = data.set_index(index) if index in data.columns else data
-
-    if data is None:
-        data = basemodel_to_df(kwargs["obbject_item"], index=index)
-
-    if isinstance(data, list):
-        data = basemodel_to_df(data, index=index)
+    data = _resolve_price_data(kwargs, index)
 
     window = (
         kwargs.get("length", [])

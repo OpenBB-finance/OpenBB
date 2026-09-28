@@ -349,6 +349,28 @@ def test_command_runner_properties():
     assert runner.command_map == cmd_map
 
 
+def test_command_runner_default_user_settings_reads_live_user_service_singleton():
+    """When no ``user_settings`` is passed, the default comes from the live
+    ``UserService()`` singleton's ``default_user_settings`` — mirroring
+    ``system_settings``' own ``SystemService().system_settings`` default —
+    not a fresh ``UserService.read_from_file()`` disk re-read.
+
+    A fresh classmethod re-read would bypass any layered-TOML ``[user]``
+    overrides that ``apply_config_to_services`` merged onto the singleton
+    instance, since that function patches the singleton in place rather
+    than rewriting the on-disk JSON.
+    """
+    sentinel = UserSettings()
+    with patch(
+        "openbb_core.app.service.user_service.UserService",
+    ) as mock_user_service_cls:
+        mock_user_service_cls.return_value.default_user_settings = sentinel
+        runner = CommandRunner()
+
+    mock_user_service_cls.assert_called_once()
+    assert runner.user_settings is sentinel
+
+
 @patch("openbb_core.app.command_runner.CommandRunner")
 def test_command_runner_run(_):
     """Test run."""

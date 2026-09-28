@@ -56,7 +56,11 @@ class Container:
 
         output_type = self._command_runner.user_settings.preferences.output_type
 
-        if output_type == "OBBject":
+        if output_type == "OBBject" or not hasattr(obbject, "to_" + output_type):
+            # A ``no_validate=True`` command may return something other than
+            # an ``OBBject`` (e.g. a bare dict/list) with no `to_*`
+            # conversion methods, so a non-default `output_type` has nothing
+            # to apply — hand the result back exactly as the command built it.
             return obbject
 
         return getattr(obbject, "to_" + output_type)()

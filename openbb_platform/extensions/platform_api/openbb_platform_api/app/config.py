@@ -320,13 +320,26 @@ def bootstrap_launcher_config(
 
     Safe to call before any ``openbb-core`` import — the only modules
     touched are stdlib + the core's lightweight loader module.
+
+    ``[env]`` is applied BEFORE ``apply_config_to_services`` runs.
+    That order matters: ``apply_config_to_services`` is what first
+    imports ``openbb_core.app.model.credentials``, whose ``Credentials``
+    model takes a one-shot snapshot of ``os.environ`` at import time.
+    Pushing ``[env]`` after that import would mean a credential
+    supplied only via the TOML ``[env]`` table (not a real shell
+    export) is invisible to that snapshot.
     """
     global _BOOTSTRAPPED_CONFIG  # noqa: PLW0603
 
     cli_path = extract_config_file_from_argv(argv)
     explicit_path = resolve_explicit_config_path(cli_path)
-    config = load_launcher_config(explicit_path=explicit_path)
+    config = load_launcher_config(explicit_path=explicit_path, apply_to_services=False)
     apply_launcher_env(config.get("env"))
+
+    from openbb_core.app.config.loader import apply_config_to_services
+
+    apply_config_to_services(config)
+
     _BOOTSTRAPPED_CONFIG = config
     return config
 

@@ -9,7 +9,11 @@ import pandas as pd
 
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
-from openbb_cli.controllers.utils import export_data, print_rich_table
+from openbb_cli.controllers.utils import (
+    export_data,
+    extract_dataframe,
+    print_rich_table,
+)
 from openbb_cli.outputs.figure import is_plotly_figure
 from openbb_cli.session import Session
 
@@ -270,6 +274,8 @@ class PlatformController(BaseController):
                             self._follow_stream(obbject)
 
                         elif isinstance(obbject, _OBBject()):
+                            df = extract_dataframe(obbject)
+
                             if (
                                 session.max_obbjects_exceeded()
                                 and obbject.results

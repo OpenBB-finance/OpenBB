@@ -575,6 +575,7 @@ def _generate_extension(
         provider_name=derived_provider,
         project_name=project_name,
         package_name=package_name,
+        router_name=router_name,
     )
     paths = package_set.write()
     for pkg, path in zip(package_set.packages, paths, strict=True):
@@ -660,6 +661,18 @@ _CONFIG_SCALAR_KEYS = (
     "batch_concurrency",
 )
 
+# Env var (if any) that already wins over TOML for each key, per the documented
+# precedence "defaults -> ... -> TOML -> .env files -> OPENBB_* env vars -> CLI
+# flags". Some of these flags bake a non-empty literal into their argparse
+# default (e.g. --output, --batch-concurrency), so `parser.get_default(key)`
+# can't be used to detect "unset" — it's checked against the env var directly.
+_CONFIG_SCALAR_ENV_VARS = {
+    "server": "OPENBB_SERVER_URL",
+    "header_file": "OPENBB_HEADER_FILE",
+    "query_param_file": "OPENBB_QUERY_PARAM_FILE",
+    "batch_concurrency": "OPENBB_CLI_BATCH_CONCURRENCY",
+}
+
 
 def _peek_flag(argv: list[str], flag: str) -> str | None:
     """Pull ``--flag VALUE`` (or ``--flag=VALUE``) out of argv without parsing the rest."""
@@ -680,9 +693,10 @@ def _apply_config_defaults(
         value = config.get(key)
         if value is None:
             continue
-        existing = parser.get_default(key)
-        if existing in (None, "", []):
-            overrides[key] = value
+        env_var = _CONFIG_SCALAR_ENV_VARS.get(key)
+        if env_var and os.environ.get(env_var):
+            continue
+        overrides[key] = value
     if overrides:
         parser.set_defaults(**overrides)
 

@@ -15,7 +15,7 @@ class Preferences(BaseModel):
     export_directory: str = str(Path.home() / "OpenBBUserData" / "exports")
     metadata: bool = True
     output_type: Literal[
-        "OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"
+        "OBBject", "dataframe", "polars", "numpy", "dict", "llm"
     ] = Field(
         default="OBBject",
         description="Python default output type.",
