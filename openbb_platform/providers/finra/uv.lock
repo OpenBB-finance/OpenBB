@@ -1837,7 +1837,7 @@ pandas = [
 [[package]]
 name = "openbb-devtools"
 version = "2.0.1"
-source = { editable = "../../extensions/devtools" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "codespell" },
     { name = "httpx2" },
@@ -1858,27 +1858,9 @@ dependencies = [
     { name = "types-requests" },
     { name = "types-toml" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "codespell", specifier = ">=2.2.5,<3.0.0" },
-    { name = "httpx2", specifier = ">=2.0.0" },
-    { name = "ipykernel", specifier = ">=6.30.1" },
-    { name = "pre-commit", specifier = ">=3.5.0,<4.0.0" },
-    { name = "pydocstyle", specifier = ">=6.3.0,<7.0.0" },
-    { name = "pytest", specifier = ">=9.0.3" },
-    { name = "pytest-asyncio", specifier = ">=1.3.0,<2.0.0" },
-    { name = "pytest-cov", specifier = ">=4.1.0,<5.0.0" },
-    { name = "pytest-freezer", specifier = ">=0.4.9,<1.0.0" },
-    { name = "pytest-order", specifier = ">=1.3.0,<2.0.0" },
-    { name = "pytest-recorder", specifier = ">=1.0.0" },
-    { name = "pytest-subtests", specifier = ">=0.11.0,<1.0.0" },
-    { name = "ruff", specifier = ">=0.15" },
-    { name = "tox", specifier = ">=4.11.3,<5.0.0" },
-    { name = "ty", specifier = ">=0.0.40" },
-    { name = "types-python-dateutil", specifier = ">=2.8.19.14,<3.0.0" },
-    { name = "types-requests", specifier = ">=2.32,<3.0.0" },
-    { name = "types-toml", specifier = ">=0.10.8.7,<1.0.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/09/40/63d7a9f4cf8e725ed5a3c3df1f13c1ccb62562541516b1d1c5b47adaa74d/openbb_devtools-2.0.1.tar.gz", hash = "sha256:3aae0e274c410a688fd8a1a80a7295d76d581c9107032d34874bc83baf6e3416", size = 1739, upload-time = "2026-09-24T21:51:03.69Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/41/e1ad4ea518f756a0a330a72f3df29a0b692c0cff25a7202f0ab36689f75e/openbb_devtools-2.0.1-py3-none-any.whl", hash = "sha256:ff3d96622f7ecaaf37cf2b898f32ecd69234e58f0ca162043e8e2b9bb608517c", size = 1665, upload-time = "2026-09-24T21:51:04.637Z" },
 ]
 
 [[package]]
@@ -1900,31 +1882,22 @@ requires-dist = [{ name = "openbb-core", extras = ["pandas"], specifier = ">=2.0
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "openbb-devtools", editable = "../../extensions/devtools" },
-    { name = "openbb-platform-api", editable = "../../extensions/platform_api" },
+    { name = "openbb-devtools", specifier = ">=2.0.1" },
+    { name = "openbb-platform-api", specifier = ">=2.0.0" },
 ]
 
 [[package]]
 name = "openbb-platform-api"
 version = "2.0.0"
-source = { editable = "../../extensions/platform_api" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "deepdiff" },
     { name = "openbb-core" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "deepdiff", specifier = ">=8.6.2" },
-    { name = "openbb-core", specifier = ">=2.0.0" },
-    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "httpx", specifier = ">=0.28.0,<1.0.0" },
-    { name = "openbb-devtools", specifier = ">=2.0.1" },
+sdist = { url = "https://files.pythonhosted.org/packages/25/fa/33e0abff04ab2df5b92cb3fb0c7f13fd5d89f37dfe8487949db40d4c0fcb/openbb_platform_api-2.0.0.tar.gz", hash = "sha256:03225df7e43f2e7786c3befbe7790f8ffe0dc1da9c100249f09c948085eb7003", size = 73224, upload-time = "2026-09-26T20:06:09.259Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4e/06/4eeb74fc2568a22719ce45948c0a5203e4cabf8054651ad52c98f216c97e/openbb_platform_api-2.0.0-py3-none-any.whl", hash = "sha256:d67bdf0af2234f4cee60baed65f08202a7390c5e884b060abc314f7355510795", size = 87098, upload-time = "2026-09-26T20:06:07.494Z" },
 ]
 
 [[package]]
