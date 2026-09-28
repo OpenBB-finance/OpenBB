@@ -49,6 +49,38 @@ def test_from_env(mock_dotenv_values):
     assert settings["VERSION"] == "2.0.0"
 
 
+@patch("openbb_cli.models.settings.dotenv_values", return_value={})
+def test_from_env_reads_openbb_prefixed_os_environ(mock_dotenv_values, monkeypatch):
+    """A real ``OPENBB_*`` process env var reaches the constructed settings,
+    not just the persisted ``.cli.env`` dotfile — this is also how TOML
+    ``[settings]`` values reach ``Settings()``, since ``apply_settings_to_env``
+    promotes them into ``os.environ`` as ``OPENBB_*`` before the REPL starts.
+    """
+    monkeypatch.setenv("OPENBB_FLAIR", ":rocket")
+    settings = Settings()
+    assert settings.FLAIR == ":rocket"
+
+
+@patch(
+    "openbb_cli.models.settings.dotenv_values",
+    return_value={"OPENBB_FLAIR": ":bug"},
+)
+def test_from_env_os_environ_overrides_dotfile(mock_dotenv_values, monkeypatch):
+    """``OPENBB_*`` env vars outrank the persisted dotfile, per the documented
+    precedence (dotfile < env vars < explicit constructor values)."""
+    monkeypatch.setenv("OPENBB_FLAIR", ":rocket")
+    settings = Settings()
+    assert settings.FLAIR == ":rocket"
+
+
+@patch("openbb_cli.models.settings.dotenv_values", return_value={})
+def test_from_env_explicit_values_override_os_environ(mock_dotenv_values, monkeypatch):
+    """An explicit constructor kwarg still outranks an ``OPENBB_*`` env var."""
+    monkeypatch.setenv("OPENBB_FLAIR", ":rocket")
+    settings = Settings(FLAIR=":bug")
+    assert settings.FLAIR == ":bug"
+
+
 @patch("openbb_cli.models.settings.set_key")
 @patch(
     "openbb_cli.models.settings.open",

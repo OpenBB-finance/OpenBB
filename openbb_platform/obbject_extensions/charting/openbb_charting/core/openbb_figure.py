@@ -1467,10 +1467,14 @@ class OpenBBFigure(go.Figure):
             series,  # ty: ignore[invalid-argument-type]
             nlags=nlags,
             alpha=alpha,
+            result_object=True,
             **kwargs,
         )
 
         acf_x, confint = acf_x[:2] if not pacf else acf_x
+
+        if confint is None:
+            raise ValueError("`alpha` is required to plot the confidence band.")
 
         if irregular:
             acf_x = acf_x[lags]
@@ -1531,5 +1535,5 @@ class OpenBBFigure(go.Figure):
             )
             self.update_traces(showlegend=False)
 
-        except ValueError:  # pragma: no cover - defensive; real statsmodels acf/pacf output is consistent
+        except ValueError:  # pragma: no cover
             pass

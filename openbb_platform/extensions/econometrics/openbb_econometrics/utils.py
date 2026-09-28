@@ -28,10 +28,9 @@ def get_engle_granger_two_step_cointegration_test(
 
     alpha = short_run_ols_fit.params.iloc[0]
 
-    # adfuller's p-value assumes z is not pre-estimated; limited effect for high N.
-    adfstat, pvalue, _, _, _ = adfuller(z, maxlag=1, autolag=None)
+    adf = adfuller(z, maxlag=1, autolag=None, result_object=True)
 
-    return c, gamma, alpha, z, adfstat, pvalue
+    return c, gamma, alpha, z, adf.statistic, adf.pvalue
 
 
 def mock_multi_index_data():

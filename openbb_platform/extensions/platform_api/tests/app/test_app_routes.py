@@ -177,6 +177,30 @@ def test_launch_api_invokes_uvicorn_run_with_normalized_host_and_port():
     assert "use_colors" in kwargs
 
 
+def test_launch_api_normalizes_hyphenated_uvicorn_flags():
+    """Flags with internal hyphens (e.g. ``--ssl-keyfile``) survive
+    ``parse_args`` as literally-hyphenated dict keys; uvicorn's own
+    signature only accepts the underscored form.
+    """
+    from openbb_platform_api.app import app as app_module
+
+    with (
+        patch.object(app_module.uvicorn, "run") as mock_run,
+        patch.object(app_module, "check_port", return_value=8000),
+    ):
+        app_module.launch_api(
+            host="127.0.0.1",
+            port=8000,
+            **{"ssl-keyfile": "/tmp/x.pem", "proxy-headers": True},
+        )
+    mock_run.assert_called_once()
+    _, kwargs = mock_run.call_args
+    assert kwargs["ssl_keyfile"] == "/tmp/x.pem"
+    assert kwargs["proxy_headers"] is True
+    assert "ssl-keyfile" not in kwargs
+    assert "proxy-headers" not in kwargs
+
+
 def test_launch_api_uses_env_vars_when_kwargs_omit_host_and_port(monkeypatch):
     """``OPENBB_API_HOST`` / ``OPENBB_API_PORT`` are the env-var defaults."""
     from openbb_platform_api.app import app as app_module

@@ -1,12 +1,9 @@
-"""Integration tests for the openbb-quantitative Python interface."""
-
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
 
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
-    """Return the obb application object for the integration session."""
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -136,7 +133,11 @@ def test_quantitative_stats_quantile(obb, prices_data):
 
 @pytest.mark.integration
 def test_quantitative_performance_omega_ratio(obb, prices_data):
-    result = obb.quantitative.performance.omega_ratio(data=prices_data, target="close")
+    returns = [
+        {"date": current["date"], "return": current["close"] / previous["close"] - 1}
+        for previous, current in zip(prices_data, prices_data[1:])
+    ]
+    result = obb.quantitative.performance.omega_ratio(data=returns, target="return")
     assert isinstance(result, OBBject)
     assert result.results
 

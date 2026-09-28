@@ -17,6 +17,8 @@ router = Router(
     description="Quantitative performance-metric commands.",
 )
 
+_PERIODS_PER_YEAR = 252
+
 
 class OmegaRatioQueryParams(QueryParams):
     """Query parameters for the Omega ratio endpoint."""
@@ -25,12 +27,16 @@ class OmegaRatioQueryParams(QueryParams):
     __output_columns__ = ("threshold", "omega")
 
     data: list[Data] = Field(description="Input dataset.")
-    target: str = Field(description="Name of the column to analyze.")
+    target: str = Field(description="Name of the periodic return column to analyze.")
     threshold_start: float = Field(
-        default=0.0, description="Lower bound of the return-threshold range."
+        default=0.0,
+        description="Lower bound of the annualized return-threshold range,"
+        + " as a decimal fraction.",
     )
     threshold_end: float = Field(
-        default=1.5, description="Upper bound of the return-threshold range."
+        default=1.5,
+        description="Upper bound of the annualized return-threshold range,"
+        + " as a decimal fraction.",
     )
     bins: PositiveInt = Field(
         default=50, description="Number of evenly spaced thresholds to evaluate."
@@ -40,7 +46,9 @@ class OmegaRatioQueryParams(QueryParams):
 class OmegaRatioData(Data):
     """One Omega ratio evaluated at a return threshold."""
 
-    threshold: float = Field(description="Return threshold the ratio is evaluated at.")
+    threshold: float = Field(
+        description="Annualized return threshold the ratio is evaluated at."
+    )
     omega: float = Field(description="Omega ratio at the threshold.")
 
 
@@ -51,9 +59,9 @@ class SharpeRatioQueryParams(QueryParams):
     __output_columns__ = ("date", "sharpe_ratio")
 
     data: list[Data] = Field(description="Input dataset.")
-    target: str = Field(description="Name of the column to analyze.")
+    target: str = Field(description="Name of the price column to analyze.")
     rfr: float = Field(
-        default=0.0, description="Risk-free rate, as a decimal fraction."
+        default=0.0, description="Annualized risk-free rate, as a decimal fraction."
     )
     window: PositiveInt = Field(
         default=252, description="Number of observations in each rolling window."
@@ -65,7 +73,7 @@ class SharpeRatioData(Data):
     """One rolling Sharpe ratio observation."""
 
     date: datetime | dateType | str = Field(description="Observation date.")
-    sharpe_ratio: float = Field(description="Rolling Sharpe ratio.")
+    sharpe_ratio: float = Field(description="Rolling annualized Sharpe ratio.")
 
 
 class SortinoRatioQueryParams(QueryParams):
@@ -75,9 +83,10 @@ class SortinoRatioQueryParams(QueryParams):
     __output_columns__ = ("date", "sortino_ratio")
 
     data: list[Data] = Field(description="Input dataset.")
-    target: str = Field(description="Name of the column to analyze.")
+    target: str = Field(description="Name of the price column to analyze.")
     target_return: float = Field(
-        default=0.0, description="Minimum acceptable return, as a decimal fraction."
+        default=0.0,
+        description="Annualized minimum acceptable return, as a decimal fraction.",
     )
     window: PositiveInt = Field(
         default=252, description="Number of observations in each rolling window."
@@ -94,7 +103,7 @@ class SortinoRatioData(Data):
     """One rolling Sortino ratio observation."""
 
     date: datetime | dateType | str = Field(description="Observation date.")
-    sortino_ratio: float = Field(description="Rolling Sortino ratio.")
+    sortino_ratio: float = Field(description="Rolling annualized Sortino ratio.")
 
 
 @router.command(
@@ -102,20 +111,24 @@ class SortinoRatioData(Data):
     examples=[
         APIEx(
             parameters={
-                "target": "close",
-                "data": APIEx.mock_data("timeseries"),
+                "target": "return",
+                "data": APIEx.mock_data(
+                    "timeseries", sample={"date": "2023-01-01", "return": 0.01}
+                ),
             }
         ),
     ],
 )
 def omega_ratio(params: OmegaRatioQueryParams) -> OBBject[list[OmegaRatioData]]:
-    """Calculate the Omega ratio across a range of return thresholds.
+    """Calculate the Omega ratio of a periodic return series across return thresholds.
 
     The Omega ratio measures the probability-weighted gains above a threshold relative
-    to the losses below it. The ratio is evaluated at 50 thresholds spanning the
-    requested range, giving a profile of risk and reward rather than a single number.
+    to the losses below it. Each annualized threshold is converted to a per-period
+    threshold assuming 252 periods per year. The ratio is evaluated at `bins`
+    thresholds spanning the requested range, giving a profile of risk and reward
+    rather than a single number.
     """
-    from numpy import linspace, sqrt
+    from numpy import linspace
     from openbb_core.app.utils import basemodel_to_df, get_target_column
 
     series = get_target_column(basemodel_to_df(params.data), params.target)
@@ -123,8 +136,8 @@ def omega_ratio(params: OmegaRatioQueryParams) -> OBBject[list[OmegaRatioData]]:
 
     def get_omega_ratio(df_target, threshold: float) -> float:
         """Get omega ratio."""
-        daily_threshold = (threshold + 1) ** sqrt(1 / 252) - 1
-        excess = df_target - daily_threshold
+        period_threshold = (threshold + 1) ** (1 / _PERIODS_PER_YEAR) - 1
+        excess = df_target - period_threshold
         numerator = excess[excess > 0].sum()
         denominator = -excess[excess < 0].sum() + epsilon
         return numerator / denominator
@@ -151,13 +164,13 @@ def omega_ratio(params: OmegaRatioQueryParams) -> OBBject[list[OmegaRatioData]]:
     ],
 )
 def sharpe_ratio(params: SharpeRatioQueryParams) -> OBBject[list[SharpeRatioData]]:
-    """Calculate the rolling Sharpe ratio of a return series.
+    """Calculate the rolling annualized Sharpe ratio of a price series.
 
-    The Sharpe ratio measures the excess return earned per unit of total volatility.
-    It is computed over a rolling window so the result tracks how risk-adjusted
-    performance evolves over time.
+    The prices are converted to periodic returns. In each rolling window, the mean
+    return in excess of the risk-free rate is divided by the standard deviation of
+    the returns and annualized assuming 252 periods per year.
     """
-    from numpy import sqrt
+    from numpy import isfinite, sqrt
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
@@ -165,10 +178,12 @@ def sharpe_ratio(params: SharpeRatioQueryParams) -> OBBject[list[SharpeRatioData
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
-    validate_window(series, params.window)
-    returns = series.pct_change(fill_method=None).dropna().rolling(params.window).sum()
-    std = series.rolling(params.window).std() / sqrt(params.window)
-    ratio = ((returns - params.rfr) / std).dropna()
+    returns = series.pct_change(fill_method=None).dropna()
+    validate_window(returns, params.window)
+    period_rfr = (1 + params.rfr) ** (1 / _PERIODS_PER_YEAR) - 1
+    window = returns.rolling(params.window)
+    ratio = (window.mean() - period_rfr) / window.std() * sqrt(_PERIODS_PER_YEAR)
+    ratio = ratio[isfinite(ratio)]
 
     frame = DataFrame({"date": ratio.index, "sharpe_ratio": ratio.to_numpy()})
     out = [
@@ -192,13 +207,15 @@ def sharpe_ratio(params: SharpeRatioQueryParams) -> OBBject[list[SharpeRatioData
     ],
 )
 def sortino_ratio(params: SortinoRatioQueryParams) -> OBBject[list[SortinoRatioData]]:
-    """Calculate the rolling Sortino ratio of a return series.
+    """Calculate the rolling annualized Sortino ratio of a price series.
 
-    The Sortino ratio refines the Sharpe ratio by penalizing only downside volatility
-    measured against a minimum acceptable return. When adjusted, the ratio is scaled by
-    1/sqrt(2) so it can be compared directly with the Sharpe ratio.
+    The prices are converted to periodic returns. In each rolling window, the mean
+    return in excess of the minimum acceptable return is divided by the downside
+    deviation below that return and annualized assuming 252 periods per year. When
+    adjusted, the ratio is scaled by 1/sqrt(2) so it can be compared directly with
+    the Sharpe ratio.
     """
-    from numpy import isfinite, nan, sqrt
+    from numpy import isfinite, sqrt
     from openbb_core.app.utils import basemodel_to_df, get_target_column
     from pandas import DataFrame
 
@@ -206,24 +223,18 @@ def sortino_ratio(params: SortinoRatioQueryParams) -> OBBject[list[SortinoRatioD
 
     df = basemodel_to_df(params.data, index=params.index)
     series = get_target_column(df, params.target)
-    validate_window(series, params.window)
-    returns = (
-        series.pct_change(fill_method=None)
-        .dropna()
-        .rolling(params.window)
-        .sum()
-        .dropna()
+    returns = series.pct_change(fill_method=None).dropna()
+    validate_window(returns, params.window)
+    period_target = (1 + params.target_return) ** (1 / _PERIODS_PER_YEAR) - 1
+    excess = returns - period_target
+    downside_deviation = (excess.clip(upper=0.0) ** 2).rolling(
+        params.window
+    ).mean() ** 0.5
+    ratio = (
+        excess.rolling(params.window).mean()
+        / downside_deviation
+        * sqrt(_PERIODS_PER_YEAR)
     )
-
-    def downside_deviation(values) -> float:
-        """Annualized standard deviation of the negative returns in a window."""
-        negative = values[values < 0]
-        if negative.size < 2:
-            return nan
-        return float(negative.std() / sqrt(252) * 100)
-
-    deviation = returns.rolling(params.window).apply(downside_deviation, raw=True)
-    ratio = (returns - params.target_return) / deviation
     ratio = ratio[isfinite(ratio)]
 
     if params.adjusted:

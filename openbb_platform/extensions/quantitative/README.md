@@ -42,40 +42,62 @@ obb.quantitative.unitroot_test(data=prices, target="close")
 # Rolling standard deviation over a moving window.
 obb.quantitative.rolling.stdev(data=prices, target="close", window=21)
 
-# Rolling Sharpe ratio.
+# Rolling annualized Sharpe ratio of the closing prices.
 obb.quantitative.performance.sharpe_ratio(data=prices, target="close")
 ```
 
 ### Working with factors
 
-The factor endpoints take two payloads — a target series and a factor matrix —
-plus an optional risk-free column name. Pair with any factor source; for
+The factor endpoints take two payloads — a target return series and a factor
+return matrix — plus an optional risk-free column name. Both payloads must share
+the same dates, frequency, and units. Pair with any factor source; for
 Fama-French data the [`openbb-famafrench`](../../providers/famafrench) provider
-exposes the canonical research datasets.
+exposes the canonical research datasets. Its monthly factors are percentages
+dated the first of each month, so convert the target to monthly returns on the
+same dates and scale the factors to decimal fractions.
 
 ```python
-target = obb.equity.price.historical("SPY", provider="yfinance").results
-factors = obb.famafrench.factors(provider="famafrench").results
+import pandas as pd
+
+prices = obb.equity.price.historical(
+    "SPY", start_date="2010-01-01", provider="yfinance"
+).to_df()
+prices.index = pd.to_datetime(prices.index)
+monthly_returns = prices["close"].resample("MS").last().pct_change().dropna()
+target = [{"date": d.date(), "return": r} for d, r in monthly_returns.items()]
+
+factors = [
+    {
+        "date": row.date,
+        "mkt_rf": row.mkt_rf / 100,
+        "smb": row.smb / 100,
+        "hml": row.hml / 100,
+        "rf": row.rf / 100,
+    }
+    for row in obb.famafrench.factors(
+        start_date="2010-01-01", provider="famafrench"
+    ).results
+]
 
 # Multi-period regression: betas, p-values, CIs, R-squared per named window.
 obb.quantitative.factors(
-    data=target, factors_data=factors, target="close", risk_free_column="rf"
+    data=target, factors_data=factors, target="return", risk_free_column="rf"
 )
 
 # Share of Var(target) attributable to each factor (residual sums to 1 - R^2).
 obb.quantitative.risk_decomposition(
-    data=target, factors_data=factors, target="close", risk_free_column="rf"
+    data=target, factors_data=factors, target="return", risk_free_column="rf"
 )
 
 # Decompose the period's total return into factor contributions + alpha + residual.
 obb.quantitative.attribution(
-    data=target, factors_data=factors, target="close", risk_free_column="rf"
+    data=target, factors_data=factors, target="return", risk_free_column="rf"
 )
 
-# Refit OLS on a sliding window to track time-varying factor exposures.
+# Refit OLS on a 36-month sliding window to track time-varying factor exposures.
 obb.quantitative.rolling.factors(
-    data=target, factors_data=factors, target="close",
-    window=252, step=21, risk_free_column="rf",
+    data=target, factors_data=factors, target="return",
+    window=36, step=1, risk_free_column="rf",
 )
 ```
 
@@ -88,8 +110,8 @@ All commands are available under `obb.quantitative.*`.
 
 ### Metrics
 
-- `normality` — kurtosis, skewness, Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov normality tests
-- `capm` — Capital Asset Pricing Model risk measures
+- `normality` — kurtosis, skewness, Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov (Lilliefors) normality tests
+- `capm` — Capital Asset Pricing Model risk measures from monthly returns and the Fama-French market factor
 - `unitroot_test` — Augmented Dickey-Fuller and KPSS unit root tests
 - `summary` — descriptive summary statistics of a series
 
@@ -120,9 +142,11 @@ All commands are available under `obb.quantitative.*`.
 
 ### Performance
 
-- `performance.omega_ratio` — Omega ratio across a range of return thresholds
-- `performance.sharpe_ratio` — rolling Sharpe ratio
-- `performance.sortino_ratio` — rolling Sortino ratio
+- `performance.omega_ratio` — Omega ratio of a periodic return series across a range of annualized return thresholds
+- `performance.sharpe_ratio` — rolling annualized Sharpe ratio of a price series
+- `performance.sortino_ratio` — rolling annualized Sortino ratio of a price series
+
+The performance ratios annualize assuming 252 periods per year.
 
 ### Charts
 

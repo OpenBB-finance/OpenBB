@@ -8,9 +8,9 @@ readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
     "openbb-core[pandas]>=2.0.0",
-    "pandas-ta-openbb>=0.4.23",
+    "pandas-ta-openbb>=0.4.25",
     "scipy>=1.11",
-    "statsmodels>=0.14",
+    "statsmodels>=0.15",
 ]
 
 [project.entry-points."openbb_core_extension"]

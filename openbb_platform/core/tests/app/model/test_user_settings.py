@@ -45,9 +45,9 @@ def test_user_settings_invalid_json_warns_and_uses_kwargs(tmp_path, monkeypatch)
     monkeypatch.setattr(user_settings_module, "USER_SETTINGS_PATH", str(p))
 
     with pytest.warns(UserWarning, match="Error loading user settings"):
-        settings = UserSettings(preferences=Preferences(output_type="chart"))
+        settings = UserSettings(preferences=Preferences(output_type="dataframe"))
 
-    assert settings.preferences.output_type == "chart"
+    assert settings.preferences.output_type == "dataframe"
 
 
 def test_user_settings_oserror_warns_and_uses_kwargs(monkeypatch):
@@ -80,5 +80,5 @@ def test_user_settings_repr_contains_sections():
 def test_user_settings_no_file_uses_kwargs(monkeypatch):
     monkeypatch.setattr(user_settings_module.os.path, "exists", lambda _p: False)
 
-    settings = UserSettings(preferences=Preferences(output_type="chart"))
-    assert settings.preferences.output_type == "chart"
+    settings = UserSettings(preferences=Preferences(output_type="dataframe"))
+    assert settings.preferences.output_type == "dataframe"

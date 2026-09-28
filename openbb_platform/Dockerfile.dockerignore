@@ -1,0 +1,42 @@
+# .git is intentionally NOT excluded: dev_install.py resolves the installable
+# package set via `git ls-files`, so the build stage needs a real git index.
+#
+# Everything outside openbb_platform/, cli/, and .git is irrelevant to this
+# image and gets excluded explicitly (desktop/ alone is a ~29GB node_modules
+# tree) rather than relying on an allowlist, since the top-level layout is
+# effectively a monorepo of unrelated projects.
+desktop
+images
+examples
+wargame
+cookiecutter
+build
+docs
+.venv
+**/.venv
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+**/.pytest_cache
+.ruff_cache
+**/.ruff_cache
+.mypy_cache
+**/.mypy_cache
+.coverage
+**/.coverage
+htmlcov
+**/htmlcov
+dist
+**/dist
+*.egg-info
+**/*.egg-info
+.DS_Store
+**/.DS_Store
+node_modules
+**/node_modules
+.idea
+.vscode
+*.md
+!openbb_platform/**/README.md

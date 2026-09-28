@@ -420,8 +420,9 @@ def parse_args() -> dict:  # noqa: PLR0912
 
     if _kwargs.get("widgets-json"):
         _kwargs["editable"] = True
-        # If the file already exists, we assume that it is already built.
-        if os.path.exists(_kwargs["widgets-json"]):
+        # If the file already exists, assume it's already built — unless the
+        # caller explicitly asked to (re)build it.
+        if os.path.exists(_kwargs["widgets-json"]) and not _kwargs.get("build"):
             _kwargs["no-build"] = True
 
     # Handle apps-json and templates-path in the same way as widgets-path

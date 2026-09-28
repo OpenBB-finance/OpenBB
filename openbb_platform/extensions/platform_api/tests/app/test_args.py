@@ -205,6 +205,21 @@ def test_parse_args_widgets_json_existing_file_implies_no_build(tmp_path):
         assert out["editable"] is True
 
 
+def test_parse_args_widgets_json_existing_file_explicit_build_wins(tmp_path):
+    """An explicit ``--build true`` must not be silently overridden by the
+    existing-file auto-``no-build`` heuristic above.
+    """
+    widgets_file = tmp_path / "widgets.json"
+    widgets_file.write_text("{}")
+    with patch(
+        "sys.argv",
+        ["openbb-api", "--widgets-json", str(widgets_file), "--build", "true"],
+    ):
+        out = parse_args()
+        assert out.get("build") is True
+        assert out.get("no-build") is not True
+
+
 # ---------------------------------------------------------------------------
 # --apps-json / --templates-path resolution
 # ---------------------------------------------------------------------------

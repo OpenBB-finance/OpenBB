@@ -435,6 +435,91 @@ def test_get_async_requests_session_ssl_context_with_cert(tmp_path, monkeypatch)
     asyncio.run(_go())
 
 
+def test_get_async_requests_session_password_and_proxy_headers_do_not_crash(
+    monkeypatch,
+):
+    """python_settings.http.password/proxy_headers must never reach
+    ClientSession(**conn_kwargs) directly; aiohttp accepts neither as a
+    constructor kwarg.
+    """
+    import asyncio
+
+    from openbb_core.provider.utils import helpers as H
+
+    monkeypatch.setattr(
+        H,
+        "get_python_request_settings",
+        lambda: {"password": "secret", "proxy_headers": {"X-Foo": "bar"}},
+    )
+
+    async def _go():
+        s = await H.get_async_requests_session()
+        await s.close()
+
+    asyncio.run(_go())
+
+
+def test_get_async_requests_session_ssl_password_still_used(tmp_path, monkeypatch):
+    """The password setting must still reach ssl_context.load_cert_chain."""
+    import asyncio
+    import subprocess
+
+    from openbb_core.provider.utils import helpers as H
+
+    cert = tmp_path / "c.pem"
+    key = tmp_path / "k.pem"
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "openssl",
+            "req",
+            "-x509",
+            "-newkey",
+            "rsa:2048",
+            "-keyout",
+            str(key),
+            "-out",
+            str(cert),
+            "-days",
+            "1",
+            "-nodes",
+            "-subj",
+            "/CN=t",
+        ],
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "openssl",
+            "rsa",
+            "-in",
+            str(key),
+            "-out",
+            str(key),
+            "-aes256",
+            "-passout",
+            "pass:correct-horse",
+        ],
+        check=True,
+        capture_output=True,
+    )
+    monkeypatch.setattr(
+        H,
+        "get_python_request_settings",
+        lambda: {
+            "certfile": str(cert),
+            "keyfile": str(key),
+            "password": "wrong-password",
+        },
+    )
+
+    async def _go():
+        await H.get_async_requests_session()
+
+    with pytest.raises(Exception, match="PEM"):
+        asyncio.run(_go())
+
+
 def test_get_async_requests_session_with_basic_auth_and_cookies():
     """Lines 303, 317-318: proxy_auth/auth/dict cookies."""
     import asyncio

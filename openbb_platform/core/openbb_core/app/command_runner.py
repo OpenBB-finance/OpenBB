@@ -647,7 +647,7 @@ class CommandRunner:
 
         self._command_map = command_map or CommandMap()
         self._system_settings = system_settings or SystemService().system_settings
-        self._user_settings = user_settings or UserService.read_from_file()
+        self._user_settings = user_settings or UserService().default_user_settings
 
     def init_logging_service(self) -> None:
         """Initialize the logging service."""

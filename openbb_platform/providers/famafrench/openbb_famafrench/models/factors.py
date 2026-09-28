@@ -11,7 +11,11 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, model_validator
 
-from openbb_famafrench.utils.constants import FACTOR_REGION_MAP, REGIONS_MAP
+from openbb_famafrench.utils.constants import (
+    FACTOR_REGION_MAP,
+    PERCENT_UNIT,
+    REGIONS_MAP,
+)
 
 api_prefix = SystemService().system_settings.api_settings.prefix
 factors_dict = {
@@ -180,21 +184,27 @@ class FamaFrenchFactorsData(Data):
         default=None,
         description="Excess return on the market, value-weighted return of all firms,"
         + " minus the one-month Treasury bill rate."
-        + " Not returned for momentum or reversal factors.",
+        + " Not returned for momentum or reversal factors."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="Mkt-RF",
     )
     smb: float | None = Field(
         default=None,
         description="Small minus big (SMB) factor returns."
         + " Average return of small minus big stock portfolios."
-        + " Not returned for momentum or reversal factors.",
+        + " Not returned for momentum or reversal factors."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="SMB",
     )
     hml: float | None = Field(
         default=None,
         description="High minus low (HML) factor returns."
         + " Average return on value minus average return on growth portfolios."
-        + " Not returned for momentum or reversal factors.",
+        + " Not returned for momentum or reversal factors."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="HML",
     )
     rmw: float | None = Field(
@@ -202,7 +212,9 @@ class FamaFrenchFactorsData(Data):
         description="Robust minus weak (RMW) factor returns."
         + " Average return on robust operating profitability portfolios,"
         " minus average return on weak operating profitability portfolios."
-        + " Only returned when 5 Factor model is selected.",
+        + " Only returned when 5 Factor model is selected."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="RMW",
     )
     cma: float | None = Field(
@@ -210,20 +222,26 @@ class FamaFrenchFactorsData(Data):
         description="Conservative minus aggressive (CMA) factor returns."
         + " Average return on conservative investment portfolios,"
         " minus average return on aggressive investment portfolios."
-        + " Only returned when 5 Factor model is selected.",
+        + " Only returned when 5 Factor model is selected."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="CMA",
     )
     rf: float | None = Field(
         default=None,
         description="Risk-free rate (RF) returns."
         + " The one-month US Treasury bill rate."
-        + " Not returned when momentum or reversal factors are selected.",
+        + " Not returned when momentum or reversal factors are selected."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="RF",
     )
     mom: float | None = Field(
         default=None,
         description="Momentum (Mom) factor returns."
-        + " Returned only when the momentum factor is selected and the region is 'america'.",
+        + " Returned only when the momentum factor is selected and the region is 'america'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="Mom",
     )
     wml: float | None = Field(
@@ -231,21 +249,27 @@ class FamaFrenchFactorsData(Data):
         description="Winners minus losers (WML) factor returns."
         + " Equal-weight average of the returns for the winner portfolios"
         + " minus the average of the returns for the loser portfolios."
-        + " Returned only when the momentum factor is selected, and the region is not 'america'.",
+        + " Returned only when the momentum factor is selected, and the region is not 'america'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="WML",
     )
     lt_rev: float | None = Field(
         default=None,
         description="Long-term reversal (LT_Rev) factor returns."
         + " Returned only when the long-term reversal factor is selected,"
-        + " and the region is 'america'.",
+        + " and the region is 'america'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="LT_Rev",
     )
     st_rev: float | None = Field(
         default=None,
         description="Short-term reversal (ST_Rev) factor returns."
         + " Returned only when the short-term reversal factor is selected,"
-        + " and the region is 'america'.",
+        + " and the region is 'america'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="ST_Rev",
     )
 
@@ -295,6 +319,8 @@ class FamaFrenchFactorsFetcher(
         """Transform the raw data and insert metadata."""
         from pandas import to_datetime
 
+        from openbb_famafrench.utils.missing_values import replace_missing_values
+
         table = data[0][0].reset_index()
 
         if query.start_date:
@@ -303,7 +329,7 @@ class FamaFrenchFactorsFetcher(
         if query.end_date:
             table = table[to_datetime(table.Date) <= to_datetime(query.end_date)]
 
-        records = table.to_dict(orient="records")
+        records = replace_missing_values(table.to_dict(orient="records"))
         metadata = data[1][0]
 
         return AnnotatedResult(

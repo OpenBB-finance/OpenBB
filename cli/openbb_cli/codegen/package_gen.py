@@ -382,6 +382,7 @@ def generate_packages(
     provider_name: str | None = None,
     project_name: str | None = None,
     package_name: str | None = None,
+    router_name: str | None = None,
     description: str | None = None,
     website: str | None = None,
     version: str = "0.1.0",
@@ -398,6 +399,9 @@ def generate_packages(
         Project / package slug.
     project_name, package_name, description, website : str, optional
         Project-level overrides.
+    router_name : str, optional
+        Overrides the generated top-level router's module/entry-point name.
+        Defaults to ``provider_name``.
     version : str
         Initial version string for ``pyproject.toml``.
 
@@ -505,7 +509,7 @@ def generate_packages(
         for module_path, function_name in routers.root_post_imports
     ]
 
-    root_namespace = _slugify(provider_name or project_slug)
+    root_namespace = _slugify(router_name or provider_name or project_slug)
     sub_routers = [r for r in routers.routers if r.entry_point_name]
     for r in sub_routers:
         r.entry_point_name = None
