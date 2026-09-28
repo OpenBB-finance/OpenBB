@@ -1579,12 +1579,15 @@ requires-dist = [
     { name = "aiohttp-client-cache", specifier = ">=0.11" },
     { name = "aiosqlite", specifier = ">=0.20" },
     { name = "openbb-charting", marker = "extra == 'charting'", specifier = ">=4.0.0" },
+    { name = "openbb-charting", marker = "extra == 'charting'", specifier = ">=4.0.0" },
     { name = "openbb-core", extras = ["pandas"], specifier = ">=2.0.0" },
 ]
 provides-extras = ["charting"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "openbb-charting", specifier = ">=4.0.0" },
+    { name = "openbb-devtools", specifier = ">=2.0.1" },
     { name = "openbb-charting", specifier = ">=4.0.0" },
     { name = "openbb-devtools", specifier = ">=2.0.1" },
     { name = "time-machine", specifier = ">=2.19.0" },
