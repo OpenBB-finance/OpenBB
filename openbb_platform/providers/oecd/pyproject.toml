@@ -48,9 +48,6 @@ include = [
 [tool.hatch.build.hooks.custom]
 path = "hatch_build.py"
 
-[tool.uv.sources]
-openbb-devtools = { path = "../../extensions/devtools", editable = true }
-
 [tool.ruff]
 line-length = 88
 target-version = "py310"

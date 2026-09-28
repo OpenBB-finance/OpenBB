@@ -13,10 +13,8 @@ dependencies = [
     "async-lru>=2.0.5",
     "random-user-agent>=1.0.1",
     "python-dateutil>=2.8",
+    "pdfplumber>=0.11",
 ]
-
-[project.optional-dependencies]
-data-link = ["pdfplumber>=0.11"]
 
 [project.entry-points."openbb_provider_extension"]
 nasdaq = "openbb_nasdaq:nasdaq_provider"
@@ -37,9 +35,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["openbb_nasdaq"]
-
-[tool.uv.sources]
-openbb-devtools = { path = "../../extensions/devtools", editable = true }
 
 [tool.ruff]
 line-length = 88
