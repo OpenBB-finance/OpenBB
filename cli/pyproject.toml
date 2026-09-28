@@ -1,13 +1,13 @@
 [project]
 name = "openbb-cli"
-version = "2.0.0"
+version = "2.0.1"
 description = "Investment Research for Everyone, Anywhere."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
-    "openbb-core[pandas]>=2.0.0",
+    "openbb-core[pandas]>=2.0.1",
     "prompt-toolkit>=3.0.50,<4.0.0",
     "rich>=14.0.0,<15.0.0",
     "python-dotenv>=1.0.1,<2.0.0",
@@ -19,8 +19,8 @@ dependencies = [
 
 [project.optional-dependencies]
 charting = ["openbb-charting>=4.0.0"]
-interactive = ["pywry>=2.0.4"]
-all = ["openbb-charting>=3.0.0", "pywry>=2.0.4"]
+interactive = ["pywry>=2.0.6"]
+all = ["openbb-charting>=4.0.0", "pywry>=2.0.6"]
 
 [project.scripts]
 openbb = "openbb_cli.cli:main"
